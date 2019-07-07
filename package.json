@@ -1,0 +1,32 @@
+{
+  "name": "@yandex-cloud/sdk",
+  "version": "1.0.1",
+  "description": "Yandex.Cloud NodeJS SDK",
+  "keywords": [
+    "yandex-cloud",
+    "cloud",
+    "sdk"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yandex-cloud/nodejs-sdk.git"
+  },
+  "author": "Yandex LLC",
+  "license": "MIT",
+  "main": "index.js",
+  "bugs": {
+    "url": "https://github.com/yandex-cloud/nodejs-sdk/issues"
+  },
+  "homepage": "https://github.com/yandex-cloud/nodejs-sdk#readme",
+  "dependencies": {
+    "grpc": "^1.17.0",
+    "protobufjs": "^6.8.8",
+    "yaml": "^1.6.0"
+  },
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  }
+}
