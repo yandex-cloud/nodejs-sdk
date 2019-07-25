@@ -4,6 +4,8 @@
 [![Build Status](https://travis-ci.com/yandex-cloud/nodejs-sdk.svg?branch=master)](https://travis-ci.com/yandex-cloud/nodejs-sdk)
 [![License](https://img.shields.io/github/license/yandex-cloud/nodejs-sdk.svg)](https://github.com/yandex-cloud/nodejs-sdk/blob/master/LICENSE)
 
+**This is a Technical Preview version. There are no guarantees on API compatibility.**
+
 Need to automate your infrastructure or use services provided by Yandex.Cloud? We've got you covered.
 
 Installation:
