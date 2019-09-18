@@ -1,53 +1,35 @@
-const yaml = require("yaml");
-const fs = require("fs");
-const path = require("path");
-
-const yc = require("@yandex-cloud/sdk");
-
+const yaml = require('yaml');
+const fs = require('fs');
+const path = require('path');
+const yc = require('yandex-cloud');
 function readCliConfig() {
-  const configFile = path.join(
-    process.env["HOME"],
-    ".config/yandex-cloud/config.yaml"
-  );
+  const configFile = path.join(process.env['HOME'], '.config/yandex-cloud/config.yaml');
   let config;
-
   try {
-    config = yaml.parse(fs.readFileSync(configFile, "utf8"));
+    config = yaml.parse(fs.readFileSync(configFile, 'utf8'));
   } catch (e) {
     throw new Error(`Failed to read config ${configFile}: ${e.toString()}`);
   }
-
-  const current = config["current"];
+  const current = config['current'];
   if (!current) {
-    throw new Error(
-      `Invalid config in ${configFile}: no current profile selected`
-    );
+    throw new Error(`Invalid config in ${configFile}: no current profile selected`);
   }
-
-  if (!config["profiles"][current]) {
-    throw new Error(
-      `Invalid config in ${configFile}: no profile named ${current} exists`
-    );
+  if (!config['profiles'][current]) {
+    throw new Error(`Invalid config in ${configFile}: no profile named ${current} exists`);
   }
-
-  return config["profiles"][current];
+  return config['profiles'][current];
 }
-
 function run(fn) {
   const config = readCliConfig();
   const session = new yc.Session({
-    endpoint: config["endpoint"],
-    oauthToken: config["token"]
+    endpoint: config['endpoint'],
+    oauthToken: config['token']
   });
-
-  fn(session, config["cloud-id"], config["folder-id"])
+  fn(session, config['cloud-id'], config['folder-id'])
     .then(() => {})
     .catch(e => {
       console.error(e);
       process.exit(1);
     });
 }
-
-module.exports = {
-  run
-};
+module.exports = { run };

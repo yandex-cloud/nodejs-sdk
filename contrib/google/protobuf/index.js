@@ -1313,7 +1313,7 @@ module.exports = (function() {
       FileOptions.prototype.objcClassPrefix = '';
       FileOptions.prototype.csharpNamespace = '';
       FileOptions.prototype.uninterpretedOption = $util.emptyArray;
-      FileOptions.prototype['.yandex.api.tools.file'] = null;
+      FileOptions.prototype['.yandex.cloud.api.tools.file'] = null;
       FileOptions.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.javaPackage != null && m.hasOwnProperty('javaPackage')) w.uint32(10).string(m.javaPackage);
@@ -1333,7 +1333,7 @@ module.exports = (function() {
         if (m.uninterpretedOption != null && m.uninterpretedOption.length) {
           for (let i = 0; i < m.uninterpretedOption.length; ++i) $root.contrib.google.protobuf.UninterpretedOption.encode(m.uninterpretedOption[i], w.uint32(7994).fork()).ldelim();
         }
-        if (m['.yandex.api.tools.file'] != null && m.hasOwnProperty('.yandex.api.tools.file')) $root.contrib.yandex.api.tools.FileOptions.encode(m['.yandex.api.tools.file'], w.uint32(538570).fork()).ldelim();
+        if (m['.yandex.cloud.api.tools.file'] != null && m.hasOwnProperty('.yandex.cloud.api.tools.file')) $root.api.api.tools.FileOptions.encode(m['.yandex.cloud.api.tools.file'], w.uint32(538570).fork()).ldelim();
         return w;
       };
       FileOptions.decode = function decode(r, l) {
@@ -1390,7 +1390,7 @@ module.exports = (function() {
               m.uninterpretedOption.push($root.contrib.google.protobuf.UninterpretedOption.decode(r, r.uint32()));
               break;
             case 67321:
-              m['.yandex.api.tools.file'] = $root.contrib.yandex.api.tools.FileOptions.decode(r, r.uint32());
+              m['.yandex.cloud.api.tools.file'] = $root.api.api.tools.FileOptions.decode(r, r.uint32());
               break;
             default:
               r.skipType(t & 7);
@@ -1422,7 +1422,7 @@ module.exports = (function() {
       MessageOptions.prototype.deprecated = false;
       MessageOptions.prototype.mapEntry = false;
       MessageOptions.prototype.uninterpretedOption = $util.emptyArray;
-      MessageOptions.prototype['.yandex.api.tools.message'] = null;
+      MessageOptions.prototype['.yandex.cloud.api.tools.message'] = null;
       MessageOptions.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.messageSetWireFormat != null && m.hasOwnProperty('messageSetWireFormat')) w.uint32(8).bool(m.messageSetWireFormat);
@@ -1432,7 +1432,7 @@ module.exports = (function() {
         if (m.uninterpretedOption != null && m.uninterpretedOption.length) {
           for (let i = 0; i < m.uninterpretedOption.length; ++i) $root.contrib.google.protobuf.UninterpretedOption.encode(m.uninterpretedOption[i], w.uint32(7994).fork()).ldelim();
         }
-        if (m['.yandex.api.tools.message'] != null && m.hasOwnProperty('.yandex.api.tools.message')) $root.contrib.yandex.api.tools.MessageOptions.encode(m['.yandex.api.tools.message'], w.uint32(538570).fork()).ldelim();
+        if (m['.yandex.cloud.api.tools.message'] != null && m.hasOwnProperty('.yandex.cloud.api.tools.message')) $root.api.api.tools.MessageOptions.encode(m['.yandex.cloud.api.tools.message'], w.uint32(538570).fork()).ldelim();
         return w;
       };
       MessageOptions.decode = function decode(r, l) {
@@ -1459,7 +1459,7 @@ module.exports = (function() {
               m.uninterpretedOption.push($root.contrib.google.protobuf.UninterpretedOption.decode(r, r.uint32()));
               break;
             case 67321:
-              m['.yandex.api.tools.message'] = $root.contrib.yandex.api.tools.MessageOptions.decode(r, r.uint32());
+              m['.yandex.cloud.api.tools.message'] = $root.api.api.tools.MessageOptions.decode(r, r.uint32());
               break;
             default:
               r.skipType(t & 7);
@@ -1484,7 +1484,7 @@ module.exports = (function() {
       FieldOptions.prototype.deprecated = false;
       FieldOptions.prototype.weak = false;
       FieldOptions.prototype.uninterpretedOption = $util.emptyArray;
-      FieldOptions.prototype['.yandex.api.tools.field'] = null;
+      FieldOptions.prototype['.yandex.cloud.api.tools.field'] = null;
       FieldOptions.prototype['.yandex.cloud.required'] = false;
       FieldOptions.prototype['.yandex.cloud.pattern'] = '';
       FieldOptions.prototype['.yandex.cloud.value'] = '';
@@ -1502,7 +1502,7 @@ module.exports = (function() {
         if (m.uninterpretedOption != null && m.uninterpretedOption.length) {
           for (let i = 0; i < m.uninterpretedOption.length; ++i) $root.contrib.google.protobuf.UninterpretedOption.encode(m.uninterpretedOption[i], w.uint32(7994).fork()).ldelim();
         }
-        if (m['.yandex.api.tools.field'] != null && m.hasOwnProperty('.yandex.api.tools.field')) $root.contrib.yandex.api.tools.FieldOptions.encode(m['.yandex.api.tools.field'], w.uint32(538570).fork()).ldelim();
+        if (m['.yandex.cloud.api.tools.field'] != null && m.hasOwnProperty('.yandex.cloud.api.tools.field')) $root.api.api.tools.FieldOptions.encode(m['.yandex.cloud.api.tools.field'], w.uint32(538570).fork()).ldelim();
         if (m['.yandex.cloud.required'] != null && m.hasOwnProperty('.yandex.cloud.required')) w.uint32(812008).bool(m['.yandex.cloud.required']);
         if (m['.yandex.cloud.pattern'] != null && m.hasOwnProperty('.yandex.cloud.pattern')) w.uint32(812018).string(m['.yandex.cloud.pattern']);
         if (m['.yandex.cloud.value'] != null && m.hasOwnProperty('.yandex.cloud.value')) w.uint32(812026).string(m['.yandex.cloud.value']);
@@ -1541,7 +1541,7 @@ module.exports = (function() {
               m.uninterpretedOption.push($root.contrib.google.protobuf.UninterpretedOption.decode(r, r.uint32()));
               break;
             case 67321:
-              m['.yandex.api.tools.field'] = $root.contrib.yandex.api.tools.FieldOptions.decode(r, r.uint32());
+              m['.yandex.cloud.api.tools.field'] = $root.api.api.tools.FieldOptions.decode(r, r.uint32());
               break;
             case 101501:
               m['.yandex.cloud.required'] = r.bool();
@@ -1638,7 +1638,7 @@ module.exports = (function() {
       EnumOptions.prototype.allowAlias = false;
       EnumOptions.prototype.deprecated = false;
       EnumOptions.prototype.uninterpretedOption = $util.emptyArray;
-      EnumOptions.prototype['.yandex.api.tools.enumeration'] = null;
+      EnumOptions.prototype['.yandex.cloud.api.tools.enumeration'] = null;
       EnumOptions.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.allowAlias != null && m.hasOwnProperty('allowAlias')) w.uint32(16).bool(m.allowAlias);
@@ -1646,7 +1646,7 @@ module.exports = (function() {
         if (m.uninterpretedOption != null && m.uninterpretedOption.length) {
           for (let i = 0; i < m.uninterpretedOption.length; ++i) $root.contrib.google.protobuf.UninterpretedOption.encode(m.uninterpretedOption[i], w.uint32(7994).fork()).ldelim();
         }
-        if (m['.yandex.api.tools.enumeration'] != null && m.hasOwnProperty('.yandex.api.tools.enumeration')) $root.contrib.yandex.api.tools.EnumOptions.encode(m['.yandex.api.tools.enumeration'], w.uint32(538570).fork()).ldelim();
+        if (m['.yandex.cloud.api.tools.enumeration'] != null && m.hasOwnProperty('.yandex.cloud.api.tools.enumeration')) $root.api.api.tools.EnumOptions.encode(m['.yandex.cloud.api.tools.enumeration'], w.uint32(538570).fork()).ldelim();
         return w;
       };
       EnumOptions.decode = function decode(r, l) {
@@ -1667,7 +1667,7 @@ module.exports = (function() {
               m.uninterpretedOption.push($root.contrib.google.protobuf.UninterpretedOption.decode(r, r.uint32()));
               break;
             case 67321:
-              m['.yandex.api.tools.enumeration'] = $root.contrib.yandex.api.tools.EnumOptions.decode(r, r.uint32());
+              m['.yandex.cloud.api.tools.enumeration'] = $root.api.api.tools.EnumOptions.decode(r, r.uint32());
               break;
             default:
               r.skipType(t & 7);
@@ -1687,14 +1687,14 @@ module.exports = (function() {
       }
       EnumValueOptions.prototype.deprecated = false;
       EnumValueOptions.prototype.uninterpretedOption = $util.emptyArray;
-      EnumValueOptions.prototype['.yandex.api.tools.value'] = null;
+      EnumValueOptions.prototype['.yandex.cloud.api.tools.value'] = null;
       EnumValueOptions.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.deprecated != null && m.hasOwnProperty('deprecated')) w.uint32(8).bool(m.deprecated);
         if (m.uninterpretedOption != null && m.uninterpretedOption.length) {
           for (let i = 0; i < m.uninterpretedOption.length; ++i) $root.contrib.google.protobuf.UninterpretedOption.encode(m.uninterpretedOption[i], w.uint32(7994).fork()).ldelim();
         }
-        if (m['.yandex.api.tools.value'] != null && m.hasOwnProperty('.yandex.api.tools.value')) $root.contrib.yandex.api.tools.EnumValueOptions.encode(m['.yandex.api.tools.value'], w.uint32(538570).fork()).ldelim();
+        if (m['.yandex.cloud.api.tools.value'] != null && m.hasOwnProperty('.yandex.cloud.api.tools.value')) $root.api.api.tools.EnumValueOptions.encode(m['.yandex.cloud.api.tools.value'], w.uint32(538570).fork()).ldelim();
         return w;
       };
       EnumValueOptions.decode = function decode(r, l) {
@@ -1712,7 +1712,7 @@ module.exports = (function() {
               m.uninterpretedOption.push($root.contrib.google.protobuf.UninterpretedOption.decode(r, r.uint32()));
               break;
             case 67321:
-              m['.yandex.api.tools.value'] = $root.contrib.yandex.api.tools.EnumValueOptions.decode(r, r.uint32());
+              m['.yandex.cloud.api.tools.value'] = $root.api.api.tools.EnumValueOptions.decode(r, r.uint32());
               break;
             default:
               r.skipType(t & 7);
@@ -1732,14 +1732,14 @@ module.exports = (function() {
       }
       ServiceOptions.prototype.deprecated = false;
       ServiceOptions.prototype.uninterpretedOption = $util.emptyArray;
-      ServiceOptions.prototype['.yandex.api.tools.service'] = null;
+      ServiceOptions.prototype['.yandex.cloud.api.tools.service'] = null;
       ServiceOptions.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.deprecated != null && m.hasOwnProperty('deprecated')) w.uint32(264).bool(m.deprecated);
         if (m.uninterpretedOption != null && m.uninterpretedOption.length) {
           for (let i = 0; i < m.uninterpretedOption.length; ++i) $root.contrib.google.protobuf.UninterpretedOption.encode(m.uninterpretedOption[i], w.uint32(7994).fork()).ldelim();
         }
-        if (m['.yandex.api.tools.service'] != null && m.hasOwnProperty('.yandex.api.tools.service')) $root.contrib.yandex.api.tools.ServiceOptions.encode(m['.yandex.api.tools.service'], w.uint32(538570).fork()).ldelim();
+        if (m['.yandex.cloud.api.tools.service'] != null && m.hasOwnProperty('.yandex.cloud.api.tools.service')) $root.api.api.tools.ServiceOptions.encode(m['.yandex.cloud.api.tools.service'], w.uint32(538570).fork()).ldelim();
         return w;
       };
       ServiceOptions.decode = function decode(r, l) {
@@ -1757,7 +1757,7 @@ module.exports = (function() {
               m.uninterpretedOption.push($root.contrib.google.protobuf.UninterpretedOption.decode(r, r.uint32()));
               break;
             case 67321:
-              m['.yandex.api.tools.service'] = $root.contrib.yandex.api.tools.ServiceOptions.decode(r, r.uint32());
+              m['.yandex.cloud.api.tools.service'] = $root.api.api.tools.ServiceOptions.decode(r, r.uint32());
               break;
             default:
               r.skipType(t & 7);
@@ -1777,8 +1777,8 @@ module.exports = (function() {
       }
       MethodOptions.prototype.deprecated = false;
       MethodOptions.prototype.uninterpretedOption = $util.emptyArray;
-      MethodOptions.prototype['.yandex.api.operation'] = null;
-      MethodOptions.prototype['.yandex.api.tools.method'] = null;
+      MethodOptions.prototype['.yandex.cloud.api.operation'] = null;
+      MethodOptions.prototype['.yandex.cloud.api.tools.method'] = null;
       MethodOptions.prototype['.google.api.http'] = null;
       MethodOptions.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
@@ -1786,8 +1786,8 @@ module.exports = (function() {
         if (m.uninterpretedOption != null && m.uninterpretedOption.length) {
           for (let i = 0; i < m.uninterpretedOption.length; ++i) $root.contrib.google.protobuf.UninterpretedOption.encode(m.uninterpretedOption[i], w.uint32(7994).fork()).ldelim();
         }
-        if (m['.yandex.api.tools.method'] != null && m.hasOwnProperty('.yandex.api.tools.method')) $root.contrib.yandex.api.tools.MethodOptions.encode(m['.yandex.api.tools.method'], w.uint32(538570).fork()).ldelim();
-        if (m['.yandex.api.operation'] != null && m.hasOwnProperty('.yandex.api.operation')) $root.contrib.yandex.api.Operation.encode(m['.yandex.api.operation'], w.uint32(698674).fork()).ldelim();
+        if (m['.yandex.cloud.api.tools.method'] != null && m.hasOwnProperty('.yandex.cloud.api.tools.method')) $root.api.api.tools.MethodOptions.encode(m['.yandex.cloud.api.tools.method'], w.uint32(538570).fork()).ldelim();
+        if (m['.yandex.cloud.api.operation'] != null && m.hasOwnProperty('.yandex.cloud.api.operation')) $root.api.api.Operation.encode(m['.yandex.cloud.api.operation'], w.uint32(698674).fork()).ldelim();
         if (m['.google.api.http'] != null && m.hasOwnProperty('.google.api.http')) $root.contrib.google.api.HttpRule.encode(m['.google.api.http'], w.uint32(578365826).fork()).ldelim();
         return w;
       };
@@ -1806,10 +1806,10 @@ module.exports = (function() {
               m.uninterpretedOption.push($root.contrib.google.protobuf.UninterpretedOption.decode(r, r.uint32()));
               break;
             case 87334:
-              m['.yandex.api.operation'] = $root.contrib.yandex.api.Operation.decode(r, r.uint32());
+              m['.yandex.cloud.api.operation'] = $root.api.api.Operation.decode(r, r.uint32());
               break;
             case 67321:
-              m['.yandex.api.tools.method'] = $root.contrib.yandex.api.tools.MethodOptions.decode(r, r.uint32());
+              m['.yandex.cloud.api.tools.method'] = $root.api.api.tools.MethodOptions.decode(r, r.uint32());
               break;
             case 72295728:
               m['.google.api.http'] = $root.contrib.google.api.HttpRule.decode(r, r.uint32());

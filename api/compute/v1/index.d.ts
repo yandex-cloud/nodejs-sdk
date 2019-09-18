@@ -543,7 +543,9 @@ export namespace Image {
 
 export interface Os {
   /**
-   * Operating system type.
+   * Operating system type. The default is `LINUX`.
+   *
+   * This field is used to correctly emulate a vCPU and calculate the cost of using an instance.
    */
   type?: Os.Type;
 }
@@ -704,8 +706,9 @@ export interface CreateImageRequest {
   labels?: { [s: string]: string };
 
   /**
-   * The name of the image family to which this image belongs.
-   * To get information about the most recent image from a family, use a [ImageService.GetLatestByFamily] request.
+   * The name of the image family to which this image belongs. For more information, see [Image family](/docs/compute/concepts/image#family).
+   *
+   * To get an information about the most recent image from a family, use a [ImageService.GetLatestByFamily] request.
    */
   family?: string;
 
@@ -751,6 +754,8 @@ export interface CreateImageRequest {
 
   /**
    * Operating system that is contained in the image.
+   *
+   * If not specified and you used the `image_id` or `disk_id` field to set the source, then the value can be inherited from the source resource.
    */
   os?: Os;
 }
@@ -1323,8 +1328,7 @@ export interface CreateInstanceRequest {
    * ID of the hardware platform configuration for the instance.
    * This field affects the available values in [resources_spec] field.
    *
-   * Currently only several platforms is available - `standard-v1`, `standard-v2`. These platforms are suitable for most tasks.
-   * These platforms allows you to create various types of instances: with a large amount of memory,
+   * Platforms allows you to create various types of instances: with a large amount of memory,
    * with a large number of cores, with a burstable performance.
    * For more information, see [Platforms](/docs/compute/concepts/vm-platforms).
    */
@@ -1426,8 +1430,7 @@ export interface UpdateInstanceRequest {
    * ID of the hardware platform configuration for the instance.
    * This field affects the available values in [resources_spec] field.
    *
-   * Currently only several platforms is available - `standard-v1`, `standard-v2`. These platforms are suitable for most tasks.
-   * These platforms allows you to create various types of instances: with a large amount of memory,
+   * Platforms allows you to create various types of instances: with a large amount of memory,
    * with a large number of cores, with a burstable performance.
    * For more information, see [Platforms](/docs/compute/concepts/vm-platforms).
    */

@@ -797,11 +797,6 @@ export interface CreateSubnetRequest {
   v4CidrBlocks?: string[];
 
   /**
-   * IPv6 not available yet.
-   */
-  v6CidrBlocks?: string[];
-
-  /**
    * ID of route table the subnet is linked to.
    */
   routeTableId?: string;

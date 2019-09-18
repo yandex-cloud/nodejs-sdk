@@ -1,1 +1,1 @@
-console.log("There is no tests, yet :(");
+console.log('There is no tests, yet :(');

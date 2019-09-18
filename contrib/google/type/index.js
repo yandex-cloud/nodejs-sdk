@@ -8,6 +8,24 @@ module.exports = (function() {
   const $util = $protobuf.util;
   let root = {};
   (function($root) {
+    $root.DayOfWeek = (function() {
+      let DayOfWeek = (function() {
+        let valuesById = {},
+          values = Object.create(valuesById);
+        values[(valuesById[0] = 'DAY_OF_WEEK_UNSPECIFIED')] = 0;
+        values[(valuesById[1] = 'MONDAY')] = 1;
+        values[(valuesById[2] = 'TUESDAY')] = 2;
+        values[(valuesById[3] = 'WEDNESDAY')] = 3;
+        values[(valuesById[4] = 'THURSDAY')] = 4;
+        values[(valuesById[5] = 'FRIDAY')] = 5;
+        values[(valuesById[6] = 'SATURDAY')] = 6;
+        values[(valuesById[7] = 'SUNDAY')] = 7;
+        return values;
+      })();
+      return DayOfWeek;
+    })();
+  })(root);
+  (function($root) {
     $root.TimeOfDay = (function() {
       function TimeOfDay(p) {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];

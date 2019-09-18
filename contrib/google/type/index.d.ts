@@ -6,9 +6,54 @@ import Long = util.Long;
 import * as events from 'events';
 
 /**
+ * Represents a day of week.
+ */
+export enum DayOfWeek {
+  /**
+   * The unspecified day-of-week.
+   */
+  DAY_OF_WEEK_UNSPECIFIED = 0,
+
+  /**
+   * The day-of-week of Monday.
+   */
+  MONDAY = 1,
+
+  /**
+   * The day-of-week of Tuesday.
+   */
+  TUESDAY = 2,
+
+  /**
+   * The day-of-week of Wednesday.
+   */
+  WEDNESDAY = 3,
+
+  /**
+   * The day-of-week of Thursday.
+   */
+  THURSDAY = 4,
+
+  /**
+   * The day-of-week of Friday.
+   */
+  FRIDAY = 5,
+
+  /**
+   * The day-of-week of Saturday.
+   */
+  SATURDAY = 6,
+
+  /**
+   * The day-of-week of Sunday.
+   */
+  SUNDAY = 7
+}
+
+/**
  * Represents a time of day. The date and time zone are either not significant
  * or are specified elsewhere. An API may choose to allow leap seconds. Related
- * types are [google.type.Date][google.type.Date] and `google.protobuf.Timestamp`.
+ * types are [google.type.Date](https://github.com/googleapis/googleapis/blob/master/google/type/date.proto) and [google.protobuf.Timestamp](https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/timestamp.proto).
  */
 export interface TimeOfDay {
   /**

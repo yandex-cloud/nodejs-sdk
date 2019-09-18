@@ -7,6 +7,7 @@ import * as events from 'events';
 
 import * as protobuf from '../../../contrib/google/protobuf';
 import * as operation from '../../../api/operation';
+import * as type from '../../../contrib/google/type';
 
 /**
  * A Kubernetes cluster.
@@ -81,6 +82,8 @@ export interface Cluster {
    * Service account to be used by the worker nodes of the Kubernetes cluster to access Container Registry or to push node logs and metrics.
    */
   nodeServiceAccountId?: string;
+
+  releaseChannel?: ReleaseChannel;
 }
 
 export namespace Cluster {
@@ -133,6 +136,16 @@ export namespace Cluster {
   }
 }
 
+export enum ReleaseChannel {
+  RELEASE_CHANNEL_UNSPECIFIED = 0,
+
+  RAPID = 1,
+
+  REGULAR = 2,
+
+  STABLE = 3
+}
+
 export interface Master {
   /**
    * Parameters of the availability zone for the master.
@@ -154,6 +167,10 @@ export interface Master {
    * Master authentication parameters are used to establish trust between the master and a client.
    */
   masterAuth?: MasterAuth;
+
+  versionInfo?: VersionInfo;
+
+  maintenancePolicy?: MasterMaintenancePolicy;
 }
 
 export interface MasterAuth {
@@ -207,6 +224,12 @@ export interface IPAllocationPolicy {
    * It should not overlap with any subnet in the network the Kubernetes cluster located in.
    */
   serviceIpv4CidrBlock?: string;
+}
+
+export interface MasterMaintenancePolicy {
+  autoUpgrade?: boolean;
+
+  maintenanceWindow?: MaintenanceWindow;
 }
 
 /**
@@ -352,12 +375,26 @@ export interface UpdateClusterRequest {
 
   gatewayIpv4Address?: string;
 
+  masterSpec?: MasterUpdateSpec;
+
   /**
    * Service account to be used for provisioning Compute Cloud and VPC resources for Kubernetes cluster.
    * Selected service account should have `edit` role on the folder where the Kubernetes cluster will be
    * located and on the folder where selected network resides.
    */
   serviceAccountId?: string;
+
+  /**
+   * Service account to be used by the worker nodes of the Kubernetes cluster to access Container Registry
+   * or to push node logs and metrics.
+   */
+  nodeServiceAccountId?: string;
+}
+
+export interface MasterUpdateSpec {
+  version?: UpdateVersionSpec;
+
+  maintenancePolicy?: MasterMaintenancePolicy;
 }
 
 export interface UpdateClusterMetadata {
@@ -421,6 +458,8 @@ export interface CreateClusterRequest {
    * Service account to be used by the worker nodes of the Kubernetes cluster to access Container Registry or to push node logs and metrics.
    */
   nodeServiceAccountId: string;
+
+  releaseChannel?: ReleaseChannel;
 }
 
 export interface CreateClusterMetadata {
@@ -551,6 +590,34 @@ export interface InternalAddressSpec {
 
 export interface ExternalAddressSpec {}
 
+export interface MaintenanceWindow {
+  anytime?: AnytimeMaintenanceWindow;
+
+  dailyMaintenanceWindow?: DailyMaintenanceWindow;
+
+  weeklyMaintenanceWindow?: WeeklyMaintenanceWindow;
+}
+
+export interface AnytimeMaintenanceWindow {}
+
+export interface DailyMaintenanceWindow {
+  startTime: type.TimeOfDay;
+
+  duration?: protobuf.Duration;
+}
+
+export interface DaysOfWeekMaintenanceWindow {
+  days?: type.DayOfWeek[];
+
+  startTime: type.TimeOfDay;
+
+  duration?: protobuf.Duration;
+}
+
+export interface WeeklyMaintenanceWindow {
+  daysOfWeek?: DaysOfWeekMaintenanceWindow[];
+}
+
 export interface NodeGroup {
   /**
    * ID of the node group.
@@ -610,8 +677,13 @@ export interface NodeGroup {
 
   /**
    * Version of Kubernetes components that runs on the nodes.
+   * Deprecated. Use version_info.current_version.
    */
   nodeVersion?: string;
+
+  versionInfo?: VersionInfo;
+
+  maintenancePolicy?: NodeGroupMaintenancePolicy;
 }
 
 export namespace NodeGroup {
@@ -784,6 +856,14 @@ export interface SchedulingPolicy {
   preemptible?: boolean;
 }
 
+export interface NodeGroupMaintenancePolicy {
+  autoUpgrade?: boolean;
+
+  autoRepair?: boolean;
+
+  maintenanceWindow?: MaintenanceWindow;
+}
+
 /**
  * A set of methods for managing node groups.
  */
@@ -925,9 +1005,24 @@ export interface UpdateNodeGroupRequest {
   labels?: { [s: string]: string };
 
   /**
+   * Node template for the node group.
+   * Change may trigger nodes rolling reboot or recreate.
+   */
+  nodeTemplate?: NodeTemplate;
+
+  /**
    * Scale policy of the node group.
    */
   scalePolicy?: ScalePolicy;
+
+  /**
+   * Allocation policy of the node group by the zones and regions.
+   */
+  allocationPolicy?: NodeGroupAllocationPolicy;
+
+  version?: UpdateVersionSpec;
+
+  maintenancePolicy?: NodeGroupMaintenancePolicy;
 }
 
 export interface UpdateNodeGroupMetadata {
@@ -974,6 +1069,10 @@ export interface CreateNodeGroupRequest {
    * Allocation policy of the node group by the zones and regions.
    */
   allocationPolicy?: NodeGroupAllocationPolicy;
+
+  version?: string;
+
+  maintenancePolicy?: NodeGroupMaintenancePolicy;
 }
 
 export interface CreateNodeGroupMetadata {
@@ -1023,4 +1122,59 @@ export interface ListNodeGroupOperationsResponse {
    * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
    */
   nextPageToken?: string;
+}
+
+export interface VersionInfo {
+  /**
+   * Current kubernetes version, major.minor (e.g. 1.15).
+   */
+  currentVersion?: string;
+
+  /**
+   * Newer revisions may include kubernetes patches (e.g 1.15.1 -> 1.15.2) as well
+   * as some internal component updates - new features or bug fixes in yandex-specific
+   * components either on the master or nodes.
+   */
+  newRevisionAvailable?: boolean;
+
+  /**
+   * Human readable description of the changes to be applied when updating to the latest
+   * revision. Empty if new_revision_available is false.
+   */
+  newRevisionSummary?: string;
+
+  /**
+   * The current version is on the deprecation schedule, component (master or node group)
+   * should be upgraded.
+   */
+  versionDeprecated?: boolean;
+}
+
+export interface UpdateVersionSpec {
+  /**
+   * Request update to a newer version of kubernetes (1.x -> 1.y).
+   */
+  version?: string;
+
+  /**
+   * Request update to the latest revision for the current version.
+   */
+  latestRevision?: boolean;
+}
+
+export class VersionService {
+  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  list(request: ListVersionsRequest): Promise<ListVersionsResponse>;
+}
+
+export interface ListVersionsRequest {}
+
+export interface ListVersionsResponse {
+  availableVersions?: AvailableVersions[];
+}
+
+export interface AvailableVersions {
+  releaseChannel?: ReleaseChannel;
+
+  versions?: string[];
 }

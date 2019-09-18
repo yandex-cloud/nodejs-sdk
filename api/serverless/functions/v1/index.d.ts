@@ -7,6 +7,7 @@ import * as events from 'events';
 
 import * as protobuf from '../../../../contrib/google/protobuf';
 import * as operation from '../../../../api/operation';
+import * as access from '../../../../api/access';
 
 export interface Function {
   id?: string;
@@ -24,6 +25,22 @@ export interface Function {
   logGroupId?: string;
 
   httpInvokeUrl?: string;
+
+  status?: Function.Status;
+}
+
+export namespace Function {
+  export enum Status {
+    STATUS_UNSPECIFIED = 0,
+
+    CREATING = 1,
+
+    ACTIVE = 2,
+
+    DELETING = 3,
+
+    ERROR = 4
+  }
 }
 
 export interface Version {
@@ -107,6 +124,12 @@ export class FunctionService {
   listRuntimes(request: ListRuntimesRequest): Promise<ListRuntimesResponse>;
 
   listOperations(request: ListFunctionOperationsRequest): Promise<ListFunctionOperationsResponse>;
+
+  listAccessBindings(request: access.ListAccessBindingsRequest): Promise<access.ListAccessBindingsResponse>;
+
+  setAccessBindings(request: access.SetAccessBindingsRequest): Promise<operation.Operation>;
+
+  updateAccessBindings(request: access.UpdateAccessBindingsRequest): Promise<operation.Operation>;
 }
 
 export interface GetFunctionRequest {

@@ -1,4 +1,4 @@
-import { ChannelCredentials } from "grpc";
+import { ChannelCredentials } from 'grpc';
 
 interface GenericConfig {
   endpoint: string;
@@ -9,10 +9,12 @@ export interface OAuthCredentialsConfig extends GenericConfig {
   oauthToken: string;
 }
 
-export class Session {
-  constructor(config: OAuthCredentialsConfig);
+export interface MetadataCredentialsConfig extends GenericConfig {
+  metadataToken: boolean;
+}
 
-  client<T>(cls: {
-    new (address: string, credentials: ChannelCredentials, options?: object): T;
-  }): Promise<T>;
+export class Session {
+  constructor(config: OAuthCredentialsConfig | MetadataCredentialsConfig);
+
+  client<T>(cls: { new (address: string, credentials: ChannelCredentials, options?: object): T }): Promise<T>;
 }

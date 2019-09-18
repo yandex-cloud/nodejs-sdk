@@ -1,6 +1,6 @@
 {
-  "name": "@yandex-cloud/sdk",
-  "version": "1.0.2",
+  "name": "yandex-cloud",
+  "version": "1.0.0",
   "description": "Yandex.Cloud NodeJS SDK",
   "keywords": [
     "yandex-cloud",
@@ -19,9 +19,13 @@
   },
   "homepage": "https://github.com/yandex-cloud/nodejs-sdk#readme",
   "dependencies": {
+    "node-fetch": "^2.6.0",
     "grpc": "^1.17.0",
     "protobufjs": "^6.8.8",
     "yaml": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^10.14.13"
   },
   "scripts": {
     "test": "node test/test.js"

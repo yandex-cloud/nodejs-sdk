@@ -28,6 +28,7 @@ module.exports = (function() {
       Cluster.prototype.gatewayIpv4Address = '';
       Cluster.prototype.serviceAccountId = '';
       Cluster.prototype.nodeServiceAccountId = '';
+      Cluster.prototype.releaseChannel = 0;
       let $oneOfFields;
       Object.defineProperty(Cluster.prototype, 'internetGateway', {
         get: $util.oneOfGetter(($oneOfFields = ['gatewayIpv4Address'])),
@@ -59,6 +60,7 @@ module.exports = (function() {
         if (m.gatewayIpv4Address != null && m.hasOwnProperty('gatewayIpv4Address')) w.uint32(98).string(m.gatewayIpv4Address);
         if (m.serviceAccountId != null && m.hasOwnProperty('serviceAccountId')) w.uint32(106).string(m.serviceAccountId);
         if (m.nodeServiceAccountId != null && m.hasOwnProperty('nodeServiceAccountId')) w.uint32(114).string(m.nodeServiceAccountId);
+        if (m.releaseChannel != null && m.hasOwnProperty('releaseChannel')) w.uint32(120).int32(m.releaseChannel);
         return w;
       };
       Cluster.decode = function decode(r, l) {
@@ -115,6 +117,9 @@ module.exports = (function() {
             case 14:
               m.nodeServiceAccountId = r.string();
               break;
+            case 15:
+              m.releaseChannel = r.int32();
+              break;
             default:
               r.skipType(t & 7);
               break;
@@ -148,6 +153,20 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
+    $root.ReleaseChannel = (function() {
+      let ReleaseChannel = (function() {
+        let valuesById = {},
+          values = Object.create(valuesById);
+        values[(valuesById[0] = 'RELEASE_CHANNEL_UNSPECIFIED')] = 0;
+        values[(valuesById[1] = 'RAPID')] = 1;
+        values[(valuesById[2] = 'REGULAR')] = 2;
+        values[(valuesById[3] = 'STABLE')] = 3;
+        return values;
+      })();
+      return ReleaseChannel;
+    })();
+  })(root);
+  (function($root) {
     $root.Master = (function() {
       function Master(p) {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
@@ -156,6 +175,8 @@ module.exports = (function() {
       Master.prototype.version = '';
       Master.prototype.endpoints = null;
       Master.prototype.masterAuth = null;
+      Master.prototype.versionInfo = null;
+      Master.prototype.maintenancePolicy = null;
       let $oneOfFields;
       Object.defineProperty(Master.prototype, 'masterType', {
         get: $util.oneOfGetter(($oneOfFields = ['zonalMaster'])),
@@ -167,6 +188,8 @@ module.exports = (function() {
         if (m.version != null && m.hasOwnProperty('version')) w.uint32(18).string(m.version);
         if (m.endpoints != null && m.hasOwnProperty('endpoints')) $root.api.k8s.v1.MasterEndpoints.encode(m.endpoints, w.uint32(26).fork()).ldelim();
         if (m.masterAuth != null && m.hasOwnProperty('masterAuth')) $root.api.k8s.v1.MasterAuth.encode(m.masterAuth, w.uint32(34).fork()).ldelim();
+        if (m.versionInfo != null && m.hasOwnProperty('versionInfo')) $root.api.k8s.v1.VersionInfo.encode(m.versionInfo, w.uint32(42).fork()).ldelim();
+        if (m.maintenancePolicy != null && m.hasOwnProperty('maintenancePolicy')) $root.api.k8s.v1.MasterMaintenancePolicy.encode(m.maintenancePolicy, w.uint32(50).fork()).ldelim();
         return w;
       };
       Master.decode = function decode(r, l) {
@@ -187,6 +210,12 @@ module.exports = (function() {
               break;
             case 4:
               m.masterAuth = $root.api.k8s.v1.MasterAuth.decode(r, r.uint32());
+              break;
+            case 5:
+              m.versionInfo = $root.api.k8s.v1.VersionInfo.decode(r, r.uint32());
+              break;
+            case 6:
+              m.maintenancePolicy = $root.api.k8s.v1.MasterMaintenancePolicy.decode(r, r.uint32());
               break;
             default:
               r.skipType(t & 7);
@@ -340,6 +369,42 @@ module.exports = (function() {
         return m;
       };
       return IPAllocationPolicy;
+    })();
+  })(root);
+  (function($root) {
+    $root.MasterMaintenancePolicy = (function() {
+      function MasterMaintenancePolicy(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      MasterMaintenancePolicy.prototype.autoUpgrade = false;
+      MasterMaintenancePolicy.prototype.maintenanceWindow = null;
+      MasterMaintenancePolicy.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.autoUpgrade != null && m.hasOwnProperty('autoUpgrade')) w.uint32(8).bool(m.autoUpgrade);
+        if (m.maintenanceWindow != null && m.hasOwnProperty('maintenanceWindow')) $root.api.k8s.v1.MaintenanceWindow.encode(m.maintenanceWindow, w.uint32(18).fork()).ldelim();
+        return w;
+      };
+      MasterMaintenancePolicy.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.MasterMaintenancePolicy();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.autoUpgrade = r.bool();
+              break;
+            case 2:
+              m.maintenanceWindow = $root.api.k8s.v1.MaintenanceWindow.decode(r, r.uint32());
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return MasterMaintenancePolicy;
     })();
   })(root);
   (function($root) {
@@ -646,7 +711,9 @@ module.exports = (function() {
       UpdateClusterRequest.prototype.description = '';
       UpdateClusterRequest.prototype.labels = $util.emptyObject;
       UpdateClusterRequest.prototype.gatewayIpv4Address = '';
+      UpdateClusterRequest.prototype.masterSpec = null;
       UpdateClusterRequest.prototype.serviceAccountId = '';
+      UpdateClusterRequest.prototype.nodeServiceAccountId = '';
       let $oneOfFields;
       Object.defineProperty(UpdateClusterRequest.prototype, 'internetGateway', {
         get: $util.oneOfGetter(($oneOfFields = ['gatewayIpv4Address'])),
@@ -670,6 +737,8 @@ module.exports = (function() {
           }
         }
         if (m.gatewayIpv4Address != null && m.hasOwnProperty('gatewayIpv4Address')) w.uint32(50).string(m.gatewayIpv4Address);
+        if (m.masterSpec != null && m.hasOwnProperty('masterSpec')) $root.api.k8s.v1.MasterUpdateSpec.encode(m.masterSpec, w.uint32(58).fork()).ldelim();
+        if (m.nodeServiceAccountId != null && m.hasOwnProperty('nodeServiceAccountId')) w.uint32(66).string(m.nodeServiceAccountId);
         if (m.serviceAccountId != null && m.hasOwnProperty('serviceAccountId')) w.uint32(74).string(m.serviceAccountId);
         return w;
       };
@@ -703,8 +772,14 @@ module.exports = (function() {
             case 6:
               m.gatewayIpv4Address = r.string();
               break;
+            case 7:
+              m.masterSpec = $root.api.k8s.v1.MasterUpdateSpec.decode(r, r.uint32());
+              break;
             case 9:
               m.serviceAccountId = r.string();
+              break;
+            case 8:
+              m.nodeServiceAccountId = r.string();
               break;
             default:
               r.skipType(t & 7);
@@ -714,6 +789,42 @@ module.exports = (function() {
         return m;
       };
       return UpdateClusterRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.MasterUpdateSpec = (function() {
+      function MasterUpdateSpec(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      MasterUpdateSpec.prototype.version = null;
+      MasterUpdateSpec.prototype.maintenancePolicy = null;
+      MasterUpdateSpec.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.version != null && m.hasOwnProperty('version')) $root.api.k8s.v1.UpdateVersionSpec.encode(m.version, w.uint32(10).fork()).ldelim();
+        if (m.maintenancePolicy != null && m.hasOwnProperty('maintenancePolicy')) $root.api.k8s.v1.MasterMaintenancePolicy.encode(m.maintenancePolicy, w.uint32(18).fork()).ldelim();
+        return w;
+      };
+      MasterUpdateSpec.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.MasterUpdateSpec();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.version = $root.api.k8s.v1.UpdateVersionSpec.decode(r, r.uint32());
+              break;
+            case 2:
+              m.maintenancePolicy = $root.api.k8s.v1.MasterMaintenancePolicy.decode(r, r.uint32());
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return MasterUpdateSpec;
     })();
   })(root);
   (function($root) {
@@ -763,6 +874,7 @@ module.exports = (function() {
       CreateClusterRequest.prototype.gatewayIpv4Address = '';
       CreateClusterRequest.prototype.serviceAccountId = '';
       CreateClusterRequest.prototype.nodeServiceAccountId = '';
+      CreateClusterRequest.prototype.releaseChannel = 0;
       let $oneOfFields;
       Object.defineProperty(CreateClusterRequest.prototype, 'internetGateway', {
         get: $util.oneOfGetter(($oneOfFields = ['gatewayIpv4Address'])),
@@ -790,6 +902,7 @@ module.exports = (function() {
         if (m.gatewayIpv4Address != null && m.hasOwnProperty('gatewayIpv4Address')) w.uint32(66).string(m.gatewayIpv4Address);
         if (m.serviceAccountId != null && m.hasOwnProperty('serviceAccountId')) w.uint32(74).string(m.serviceAccountId);
         if (m.nodeServiceAccountId != null && m.hasOwnProperty('nodeServiceAccountId')) w.uint32(82).string(m.nodeServiceAccountId);
+        if (m.releaseChannel != null && m.hasOwnProperty('releaseChannel')) w.uint32(88).int32(m.releaseChannel);
         return w;
       };
       CreateClusterRequest.decode = function decode(r, l) {
@@ -833,6 +946,9 @@ module.exports = (function() {
               break;
             case 10:
               m.nodeServiceAccountId = r.string();
+              break;
+            case 11:
+              m.releaseChannel = r.int32();
               break;
             default:
               r.skipType(t & 7);
@@ -1182,6 +1298,199 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
+    $root.MaintenanceWindow = (function() {
+      function MaintenanceWindow(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      MaintenanceWindow.prototype.anytime = null;
+      MaintenanceWindow.prototype.dailyMaintenanceWindow = null;
+      MaintenanceWindow.prototype.weeklyMaintenanceWindow = null;
+      let $oneOfFields;
+      Object.defineProperty(MaintenanceWindow.prototype, 'policy', {
+        get: $util.oneOfGetter(($oneOfFields = ['anytime', 'dailyMaintenanceWindow', 'weeklyMaintenanceWindow'])),
+        set: $util.oneOfSetter($oneOfFields)
+      });
+      MaintenanceWindow.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.anytime != null && m.hasOwnProperty('anytime')) $root.api.k8s.v1.AnytimeMaintenanceWindow.encode(m.anytime, w.uint32(10).fork()).ldelim();
+        if (m.dailyMaintenanceWindow != null && m.hasOwnProperty('dailyMaintenanceWindow')) $root.api.k8s.v1.DailyMaintenanceWindow.encode(m.dailyMaintenanceWindow, w.uint32(18).fork()).ldelim();
+        if (m.weeklyMaintenanceWindow != null && m.hasOwnProperty('weeklyMaintenanceWindow')) $root.api.k8s.v1.WeeklyMaintenanceWindow.encode(m.weeklyMaintenanceWindow, w.uint32(26).fork()).ldelim();
+        return w;
+      };
+      MaintenanceWindow.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.MaintenanceWindow();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.anytime = $root.api.k8s.v1.AnytimeMaintenanceWindow.decode(r, r.uint32());
+              break;
+            case 2:
+              m.dailyMaintenanceWindow = $root.api.k8s.v1.DailyMaintenanceWindow.decode(r, r.uint32());
+              break;
+            case 3:
+              m.weeklyMaintenanceWindow = $root.api.k8s.v1.WeeklyMaintenanceWindow.decode(r, r.uint32());
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return MaintenanceWindow;
+    })();
+  })(root);
+  (function($root) {
+    $root.AnytimeMaintenanceWindow = (function() {
+      function AnytimeMaintenanceWindow(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      AnytimeMaintenanceWindow.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        return w;
+      };
+      AnytimeMaintenanceWindow.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.AnytimeMaintenanceWindow();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return AnytimeMaintenanceWindow;
+    })();
+  })(root);
+  (function($root) {
+    $root.DailyMaintenanceWindow = (function() {
+      function DailyMaintenanceWindow(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      DailyMaintenanceWindow.prototype.startTime = null;
+      DailyMaintenanceWindow.prototype.duration = null;
+      DailyMaintenanceWindow.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.startTime != null && m.hasOwnProperty('startTime')) $root.contrib.google.type.TimeOfDay.encode(m.startTime, w.uint32(10).fork()).ldelim();
+        if (m.duration != null && m.hasOwnProperty('duration')) $root.contrib.google.protobuf.Duration.encode(m.duration, w.uint32(18).fork()).ldelim();
+        return w;
+      };
+      DailyMaintenanceWindow.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.DailyMaintenanceWindow();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.startTime = $root.contrib.google.type.TimeOfDay.decode(r, r.uint32());
+              break;
+            case 2:
+              m.duration = $root.contrib.google.protobuf.Duration.decode(r, r.uint32());
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return DailyMaintenanceWindow;
+    })();
+  })(root);
+  (function($root) {
+    $root.DaysOfWeekMaintenanceWindow = (function() {
+      function DaysOfWeekMaintenanceWindow(p) {
+        this.days = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      DaysOfWeekMaintenanceWindow.prototype.days = $util.emptyArray;
+      DaysOfWeekMaintenanceWindow.prototype.startTime = null;
+      DaysOfWeekMaintenanceWindow.prototype.duration = null;
+      DaysOfWeekMaintenanceWindow.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.days != null && m.days.length) {
+          w.uint32(10).fork();
+          for (let i = 0; i < m.days.length; ++i) w.int32(m.days[i]);
+          w.ldelim();
+        }
+        if (m.startTime != null && m.hasOwnProperty('startTime')) $root.contrib.google.type.TimeOfDay.encode(m.startTime, w.uint32(18).fork()).ldelim();
+        if (m.duration != null && m.hasOwnProperty('duration')) $root.contrib.google.protobuf.Duration.encode(m.duration, w.uint32(26).fork()).ldelim();
+        return w;
+      };
+      DaysOfWeekMaintenanceWindow.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.DaysOfWeekMaintenanceWindow();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              if (!(m.days && m.days.length)) m.days = [];
+              if ((t & 7) === 2) {
+                let c2 = r.uint32() + r.pos;
+                while (r.pos < c2) m.days.push(r.int32());
+              } else m.days.push(r.int32());
+              break;
+            case 2:
+              m.startTime = $root.contrib.google.type.TimeOfDay.decode(r, r.uint32());
+              break;
+            case 3:
+              m.duration = $root.contrib.google.protobuf.Duration.decode(r, r.uint32());
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return DaysOfWeekMaintenanceWindow;
+    })();
+  })(root);
+  (function($root) {
+    $root.WeeklyMaintenanceWindow = (function() {
+      function WeeklyMaintenanceWindow(p) {
+        this.daysOfWeek = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      WeeklyMaintenanceWindow.prototype.daysOfWeek = $util.emptyArray;
+      WeeklyMaintenanceWindow.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.daysOfWeek != null && m.daysOfWeek.length) {
+          for (let i = 0; i < m.daysOfWeek.length; ++i) $root.api.k8s.v1.DaysOfWeekMaintenanceWindow.encode(m.daysOfWeek[i], w.uint32(10).fork()).ldelim();
+        }
+        return w;
+      };
+      WeeklyMaintenanceWindow.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.WeeklyMaintenanceWindow();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              if (!(m.daysOfWeek && m.daysOfWeek.length)) m.daysOfWeek = [];
+              m.daysOfWeek.push($root.api.k8s.v1.DaysOfWeekMaintenanceWindow.decode(r, r.uint32()));
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return WeeklyMaintenanceWindow;
+    })();
+  })(root);
+  (function($root) {
     $root.NodeGroup = (function() {
       function NodeGroup(p) {
         this.labels = {};
@@ -1199,6 +1508,8 @@ module.exports = (function() {
       NodeGroup.prototype.allocationPolicy = null;
       NodeGroup.prototype.instanceGroupId = '';
       NodeGroup.prototype.nodeVersion = '';
+      NodeGroup.prototype.versionInfo = null;
+      NodeGroup.prototype.maintenancePolicy = null;
       NodeGroup.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.id != null && m.hasOwnProperty('id')) w.uint32(10).string(m.id);
@@ -1223,6 +1534,8 @@ module.exports = (function() {
         if (m.allocationPolicy != null && m.hasOwnProperty('allocationPolicy')) $root.api.k8s.v1.NodeGroupAllocationPolicy.encode(m.allocationPolicy, w.uint32(82).fork()).ldelim();
         if (m.instanceGroupId != null && m.hasOwnProperty('instanceGroupId')) w.uint32(90).string(m.instanceGroupId);
         if (m.nodeVersion != null && m.hasOwnProperty('nodeVersion')) w.uint32(98).string(m.nodeVersion);
+        if (m.versionInfo != null && m.hasOwnProperty('versionInfo')) $root.api.k8s.v1.VersionInfo.encode(m.versionInfo, w.uint32(106).fork()).ldelim();
+        if (m.maintenancePolicy != null && m.hasOwnProperty('maintenancePolicy')) $root.api.k8s.v1.NodeGroupMaintenancePolicy.encode(m.maintenancePolicy, w.uint32(114).fork()).ldelim();
         return w;
       };
       NodeGroup.decode = function decode(r, l) {
@@ -1272,6 +1585,12 @@ module.exports = (function() {
               break;
             case 12:
               m.nodeVersion = r.string();
+              break;
+            case 13:
+              m.versionInfo = $root.api.k8s.v1.VersionInfo.decode(r, r.uint32());
+              break;
+            case 14:
+              m.maintenancePolicy = $root.api.k8s.v1.NodeGroupMaintenancePolicy.decode(r, r.uint32());
               break;
             default:
               r.skipType(t & 7);
@@ -1688,6 +2007,47 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
+    $root.NodeGroupMaintenancePolicy = (function() {
+      function NodeGroupMaintenancePolicy(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      NodeGroupMaintenancePolicy.prototype.autoUpgrade = false;
+      NodeGroupMaintenancePolicy.prototype.autoRepair = false;
+      NodeGroupMaintenancePolicy.prototype.maintenanceWindow = null;
+      NodeGroupMaintenancePolicy.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.autoUpgrade != null && m.hasOwnProperty('autoUpgrade')) w.uint32(8).bool(m.autoUpgrade);
+        if (m.autoRepair != null && m.hasOwnProperty('autoRepair')) w.uint32(16).bool(m.autoRepair);
+        if (m.maintenanceWindow != null && m.hasOwnProperty('maintenanceWindow')) $root.api.k8s.v1.MaintenanceWindow.encode(m.maintenanceWindow, w.uint32(26).fork()).ldelim();
+        return w;
+      };
+      NodeGroupMaintenancePolicy.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.NodeGroupMaintenancePolicy();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.autoUpgrade = r.bool();
+              break;
+            case 2:
+              m.autoRepair = r.bool();
+              break;
+            case 3:
+              m.maintenanceWindow = $root.api.k8s.v1.MaintenanceWindow.decode(r, r.uint32());
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return NodeGroupMaintenancePolicy;
+    })();
+  })(root);
+  (function($root) {
     $root.NodeGroupService = function() {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
@@ -1975,7 +2335,11 @@ module.exports = (function() {
       UpdateNodeGroupRequest.prototype.name = '';
       UpdateNodeGroupRequest.prototype.description = '';
       UpdateNodeGroupRequest.prototype.labels = $util.emptyObject;
+      UpdateNodeGroupRequest.prototype.nodeTemplate = null;
       UpdateNodeGroupRequest.prototype.scalePolicy = null;
+      UpdateNodeGroupRequest.prototype.allocationPolicy = null;
+      UpdateNodeGroupRequest.prototype.version = null;
+      UpdateNodeGroupRequest.prototype.maintenancePolicy = null;
       UpdateNodeGroupRequest.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.nodeGroupId != null && m.hasOwnProperty('nodeGroupId')) w.uint32(10).string(m.nodeGroupId);
@@ -1994,6 +2358,10 @@ module.exports = (function() {
           }
         }
         if (m.scalePolicy != null && m.hasOwnProperty('scalePolicy')) $root.api.k8s.v1.ScalePolicy.encode(m.scalePolicy, w.uint32(50).fork()).ldelim();
+        if (m.nodeTemplate != null && m.hasOwnProperty('nodeTemplate')) $root.api.k8s.v1.NodeTemplate.encode(m.nodeTemplate, w.uint32(66).fork()).ldelim();
+        if (m.allocationPolicy != null && m.hasOwnProperty('allocationPolicy')) $root.api.k8s.v1.NodeGroupAllocationPolicy.encode(m.allocationPolicy, w.uint32(74).fork()).ldelim();
+        if (m.version != null && m.hasOwnProperty('version')) $root.api.k8s.v1.UpdateVersionSpec.encode(m.version, w.uint32(82).fork()).ldelim();
+        if (m.maintenancePolicy != null && m.hasOwnProperty('maintenancePolicy')) $root.api.k8s.v1.NodeGroupMaintenancePolicy.encode(m.maintenancePolicy, w.uint32(90).fork()).ldelim();
         return w;
       };
       UpdateNodeGroupRequest.decode = function decode(r, l) {
@@ -2023,8 +2391,20 @@ module.exports = (function() {
               r.pos++;
               m.labels[k] = r.string();
               break;
+            case 8:
+              m.nodeTemplate = $root.api.k8s.v1.NodeTemplate.decode(r, r.uint32());
+              break;
             case 6:
               m.scalePolicy = $root.api.k8s.v1.ScalePolicy.decode(r, r.uint32());
+              break;
+            case 9:
+              m.allocationPolicy = $root.api.k8s.v1.NodeGroupAllocationPolicy.decode(r, r.uint32());
+              break;
+            case 10:
+              m.version = $root.api.k8s.v1.UpdateVersionSpec.decode(r, r.uint32());
+              break;
+            case 11:
+              m.maintenancePolicy = $root.api.k8s.v1.NodeGroupMaintenancePolicy.decode(r, r.uint32());
               break;
             default:
               r.skipType(t & 7);
@@ -2080,6 +2460,8 @@ module.exports = (function() {
       CreateNodeGroupRequest.prototype.nodeTemplate = null;
       CreateNodeGroupRequest.prototype.scalePolicy = null;
       CreateNodeGroupRequest.prototype.allocationPolicy = null;
+      CreateNodeGroupRequest.prototype.version = '';
+      CreateNodeGroupRequest.prototype.maintenancePolicy = null;
       CreateNodeGroupRequest.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.clusterId != null && m.hasOwnProperty('clusterId')) w.uint32(10).string(m.clusterId);
@@ -2099,6 +2481,8 @@ module.exports = (function() {
         if (m.nodeTemplate != null && m.hasOwnProperty('nodeTemplate')) $root.api.k8s.v1.NodeTemplate.encode(m.nodeTemplate, w.uint32(42).fork()).ldelim();
         if (m.scalePolicy != null && m.hasOwnProperty('scalePolicy')) $root.api.k8s.v1.ScalePolicy.encode(m.scalePolicy, w.uint32(50).fork()).ldelim();
         if (m.allocationPolicy != null && m.hasOwnProperty('allocationPolicy')) $root.api.k8s.v1.NodeGroupAllocationPolicy.encode(m.allocationPolicy, w.uint32(58).fork()).ldelim();
+        if (m.version != null && m.hasOwnProperty('version')) w.uint32(66).string(m.version);
+        if (m.maintenancePolicy != null && m.hasOwnProperty('maintenancePolicy')) $root.api.k8s.v1.NodeGroupMaintenancePolicy.encode(m.maintenancePolicy, w.uint32(74).fork()).ldelim();
         return w;
       };
       CreateNodeGroupRequest.decode = function decode(r, l) {
@@ -2133,6 +2517,12 @@ module.exports = (function() {
               break;
             case 7:
               m.allocationPolicy = $root.api.k8s.v1.NodeGroupAllocationPolicy.decode(r, r.uint32());
+              break;
+            case 8:
+              m.version = r.string();
+              break;
+            case 9:
+              m.maintenancePolicy = $root.api.k8s.v1.NodeGroupMaintenancePolicy.decode(r, r.uint32());
               break;
             default:
               r.skipType(t & 7);
@@ -2259,6 +2649,217 @@ module.exports = (function() {
         return m;
       };
       return ListNodeGroupOperationsResponse;
+    })();
+  })(root);
+  (function($root) {
+    $root.VersionInfo = (function() {
+      function VersionInfo(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      VersionInfo.prototype.currentVersion = '';
+      VersionInfo.prototype.newRevisionAvailable = false;
+      VersionInfo.prototype.newRevisionSummary = '';
+      VersionInfo.prototype.versionDeprecated = false;
+      VersionInfo.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.currentVersion != null && m.hasOwnProperty('currentVersion')) w.uint32(10).string(m.currentVersion);
+        if (m.newRevisionAvailable != null && m.hasOwnProperty('newRevisionAvailable')) w.uint32(16).bool(m.newRevisionAvailable);
+        if (m.newRevisionSummary != null && m.hasOwnProperty('newRevisionSummary')) w.uint32(26).string(m.newRevisionSummary);
+        if (m.versionDeprecated != null && m.hasOwnProperty('versionDeprecated')) w.uint32(32).bool(m.versionDeprecated);
+        return w;
+      };
+      VersionInfo.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.VersionInfo();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.currentVersion = r.string();
+              break;
+            case 2:
+              m.newRevisionAvailable = r.bool();
+              break;
+            case 3:
+              m.newRevisionSummary = r.string();
+              break;
+            case 4:
+              m.versionDeprecated = r.bool();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return VersionInfo;
+    })();
+  })(root);
+  (function($root) {
+    $root.UpdateVersionSpec = (function() {
+      function UpdateVersionSpec(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      UpdateVersionSpec.prototype.version = '';
+      UpdateVersionSpec.prototype.latestRevision = false;
+      let $oneOfFields;
+      Object.defineProperty(UpdateVersionSpec.prototype, 'specifier', {
+        get: $util.oneOfGetter(($oneOfFields = ['version', 'latestRevision'])),
+        set: $util.oneOfSetter($oneOfFields)
+      });
+      UpdateVersionSpec.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.version != null && m.hasOwnProperty('version')) w.uint32(10).string(m.version);
+        if (m.latestRevision != null && m.hasOwnProperty('latestRevision')) w.uint32(16).bool(m.latestRevision);
+        return w;
+      };
+      UpdateVersionSpec.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.UpdateVersionSpec();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.version = r.string();
+              break;
+            case 2:
+              m.latestRevision = r.bool();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return UpdateVersionSpec;
+    })();
+  })(root);
+  (function($root) {
+    $root.VersionService = function() {
+      let ctor = grpc.makeGenericClientConstructor({
+        list: {
+          path: '/yandex.cloud.k8s.v1.VersionService/List',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.k8s.v1.ListVersionsRequest,
+          responseType: $root.api.k8s.v1.ListVersionsResponse,
+          requestSerialize: r => {
+            return $root.api.k8s.v1.ListVersionsRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.k8s.v1.ListVersionsRequest.decode,
+          responseSerialize: r => {
+            return $root.api.k8s.v1.ListVersionsResponse.encode(r).finish();
+          },
+          responseDeserialize: $root.api.k8s.v1.ListVersionsResponse.decode
+        }
+      });
+      ctor.__endpointId = 'managed-kubernetes';
+      return ctor;
+    };
+  })(root);
+  (function($root) {
+    $root.ListVersionsRequest = (function() {
+      function ListVersionsRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListVersionsRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        return w;
+      };
+      ListVersionsRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.ListVersionsRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListVersionsRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.ListVersionsResponse = (function() {
+      function ListVersionsResponse(p) {
+        this.availableVersions = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListVersionsResponse.prototype.availableVersions = $util.emptyArray;
+      ListVersionsResponse.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.availableVersions != null && m.availableVersions.length) {
+          for (let i = 0; i < m.availableVersions.length; ++i) $root.api.k8s.v1.AvailableVersions.encode(m.availableVersions[i], w.uint32(10).fork()).ldelim();
+        }
+        return w;
+      };
+      ListVersionsResponse.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.ListVersionsResponse();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              if (!(m.availableVersions && m.availableVersions.length)) m.availableVersions = [];
+              m.availableVersions.push($root.api.k8s.v1.AvailableVersions.decode(r, r.uint32()));
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListVersionsResponse;
+    })();
+  })(root);
+  (function($root) {
+    $root.AvailableVersions = (function() {
+      function AvailableVersions(p) {
+        this.versions = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      AvailableVersions.prototype.releaseChannel = 0;
+      AvailableVersions.prototype.versions = $util.emptyArray;
+      AvailableVersions.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.releaseChannel != null && m.hasOwnProperty('releaseChannel')) w.uint32(8).int32(m.releaseChannel);
+        if (m.versions != null && m.versions.length) {
+          for (let i = 0; i < m.versions.length; ++i) w.uint32(18).string(m.versions[i]);
+        }
+        return w;
+      };
+      AvailableVersions.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.AvailableVersions();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.releaseChannel = r.int32();
+              break;
+            case 2:
+              if (!(m.versions && m.versions.length)) m.versions = [];
+              m.versions.push(r.string());
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return AvailableVersions;
     })();
   })(root);
   registar.register('api.k8s.v1', root);

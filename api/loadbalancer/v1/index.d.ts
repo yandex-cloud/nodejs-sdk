@@ -17,7 +17,7 @@ export interface HealthCheck {
   /**
    * Name of the health check. The name must be unique for each target group that attached to a single load balancer. 3-63 characters long.
    */
-  name?: string;
+  name: string;
 
   /**
    * The interval between health checks. The default is 2 seconds.
@@ -230,7 +230,7 @@ export namespace NetworkLoadBalancer {
 }
 
 /**
- * An AttachedTargetGroup resource. For more information, see [Attached Target Groups](/load-balancer/concepts)
+ * An AttachedTargetGroup resource. For more information, see [Targets and groups](/docs/load-balancer/concepts/target-resources).
  */
 export interface AttachedTargetGroup {
   /**

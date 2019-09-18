@@ -196,6 +196,11 @@ export interface AnalyzeSpec {
    * Max count of requested features for one file is 8.
    */
   features?: Feature[];
+
+  /**
+   * [MIME type](https://en.wikipedia.org/wiki/Media_type) of content (for example, `` application/pdf ``).
+   */
+  mimeType?: string;
 }
 
 export interface Feature {

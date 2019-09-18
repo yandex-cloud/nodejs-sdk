@@ -7,6 +7,7 @@ import * as events from 'events';
 
 import * as protobuf from '../../../contrib/google/protobuf';
 import * as operation from '../../../api/operation';
+import * as access from '../../../api/access';
 
 /**
  * A Blob resource.
@@ -26,6 +27,8 @@ export interface Blob {
    * Size of the blob, specified in bytes.
    */
   size?: Long;
+
+  urls?: string[];
 }
 
 /**
@@ -281,6 +284,21 @@ export class RegistryService {
    * Deletes the specified registry.
    */
   delete(request: DeleteRegistryRequest): Promise<operation.Operation>;
+
+  /**
+   * Lists access bindings for the specified registry.
+   */
+  listAccessBindings(request: access.ListAccessBindingsRequest): Promise<access.ListAccessBindingsResponse>;
+
+  /**
+   * Sets access bindings for the specified registry.
+   */
+  setAccessBindings(request: access.SetAccessBindingsRequest): Promise<operation.Operation>;
+
+  /**
+   * Updates access bindings for the specified registry.
+   */
+  updateAccessBindings(request: access.UpdateAccessBindingsRequest): Promise<operation.Operation>;
 }
 
 export interface GetRegistryRequest {
@@ -428,6 +446,11 @@ export interface Repository {
    * The name is unique within the registry.
    */
   name?: string;
+
+  /**
+   * Output only. ID of the repository.
+   */
+  id?: string;
 }
 
 /**
@@ -436,9 +459,56 @@ export interface Repository {
 export class RepositoryService {
   constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
   /**
+   * Returns the specified Repository resource.
+   *
+   * To get the list of available Repository resources, make a [List] request.
+   */
+  get(request: GetRepositoryRequest): Promise<Repository>;
+
+  /**
+   * Returns the specified Repository resource.
+   *
+   * To get the list of available Repository resources, make a [List] request.
+   */
+  getByName(request: GetRepositoryByNameRequest): Promise<Repository>;
+
+  /**
    * Retrieves the list of Repository resources in the specified registry.
    */
   list(request: ListRepositoriesRequest): Promise<ListRepositoriesResponse>;
+
+  /**
+   * Lists access bindings for the specified repository.
+   */
+  listAccessBindings(request: access.ListAccessBindingsRequest): Promise<access.ListAccessBindingsResponse>;
+
+  /**
+   * Sets access bindings for the specified repository.
+   */
+  setAccessBindings(request: access.SetAccessBindingsRequest): Promise<operation.Operation>;
+
+  /**
+   * Updates access bindings for the specified repository.
+   */
+  updateAccessBindings(request: access.UpdateAccessBindingsRequest): Promise<operation.Operation>;
+}
+
+export interface GetRepositoryRequest {
+  /**
+   * ID of the Repository resource to return.
+   *
+   * To get the repository ID use a [RepositoryService.List] request.
+   */
+  repositoryId: string;
+}
+
+export interface GetRepositoryByNameRequest {
+  /**
+   * Name of the Repository resource to return.
+   *
+   * To get the repository name use a [RepositoryService.List] request.
+   */
+  repositoryName: string;
 }
 
 export interface ListRepositoriesRequest {

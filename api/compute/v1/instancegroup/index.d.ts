@@ -182,9 +182,38 @@ export interface ScalePolicy {
    * Fixed scaling policy of the instance group.
    */
   fixedScale?: ScalePolicy.FixedScale;
+
+  autoScale?: ScalePolicy.AutoScale;
 }
 
 export namespace ScalePolicy {
+  export interface AutoScale {
+    /**
+     * Lower limit for instance count in each zone.
+     */
+    minZoneSize?: Long;
+
+    /**
+     * Upper limit for total instance count (across all zones).
+     * 0 means maximum limit = 100.
+     */
+    maxSize?: Long;
+
+    measurementDuration: protobuf.Duration;
+
+    warmupDuration?: protobuf.Duration;
+
+    stabilizationDuration?: protobuf.Duration;
+
+    initialSize?: Long;
+
+    cpuUtilizationRule?: CpuUtilizationRule;
+  }
+
+  export interface CpuUtilizationRule {
+    utilizationTarget?: number;
+  }
+
   export interface FixedScale {
     /**
      * Number of instances in the instance group.
@@ -256,8 +285,7 @@ export interface InstanceTemplate {
 
   /**
    * ID of the hardware platform configuration for the instance.
-   * Currently only several platforms is available - `standard-v1`, `standard-v2`. These platforms are suitable for most tasks.
-   * These platforms allows you to create various types of instances: with a large amount of memory,
+   * Platforms allows you to create various types of instances: with a large amount of memory,
    * with a large number of cores, with a burstable performance.
    * For more information, see [Platforms](/docs/compute/concepts/vm-platforms).
    */
@@ -318,6 +346,11 @@ export interface ResourcesSpec {
    * This field sets baseline performance for each core.
    */
   coreFraction?: Long;
+
+  /**
+   * The number of GPUs available to the instance.
+   */
+  gpus?: Long;
 }
 
 export interface AttachedDiskSpec {
@@ -528,7 +561,7 @@ export namespace HealthCheckSpec {
 }
 
 /**
- * A ManagedInstance resource. For more information, see [Instance Groups Concepts](/docs/instance-groups/concepts).
+ * A ManagedInstance resource. For more information, see [Instance Groups Concepts](/docs/compute/concepts/instance-groups/).
  */
 export interface ManagedInstance {
   /**

@@ -287,14 +287,16 @@ module.exports = (function() {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       ScalePolicy.prototype.fixedScale = null;
+      ScalePolicy.prototype.autoScale = null;
       let $oneOfFields;
       Object.defineProperty(ScalePolicy.prototype, 'scaleType', {
-        get: $util.oneOfGetter(($oneOfFields = ['fixedScale'])),
+        get: $util.oneOfGetter(($oneOfFields = ['fixedScale', 'autoScale'])),
         set: $util.oneOfSetter($oneOfFields)
       });
       ScalePolicy.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.fixedScale != null && m.hasOwnProperty('fixedScale')) $root.api.compute.v1.instancegroup.ScalePolicy.FixedScale.encode(m.fixedScale, w.uint32(10).fork()).ldelim();
+        if (m.autoScale != null && m.hasOwnProperty('autoScale')) $root.api.compute.v1.instancegroup.ScalePolicy.AutoScale.encode(m.autoScale, w.uint32(18).fork()).ldelim();
         return w;
       };
       ScalePolicy.decode = function decode(r, l) {
@@ -307,6 +309,9 @@ module.exports = (function() {
             case 1:
               m.fixedScale = $root.api.compute.v1.instancegroup.ScalePolicy.FixedScale.decode(r, r.uint32());
               break;
+            case 2:
+              m.autoScale = $root.api.compute.v1.instancegroup.ScalePolicy.AutoScale.decode(r, r.uint32());
+              break;
             default:
               r.skipType(t & 7);
               break;
@@ -314,6 +319,94 @@ module.exports = (function() {
         }
         return m;
       };
+      ScalePolicy.AutoScale = (function() {
+        function AutoScale(p) {
+          if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+        }
+        AutoScale.prototype.minZoneSize = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+        AutoScale.prototype.maxSize = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+        AutoScale.prototype.measurementDuration = null;
+        AutoScale.prototype.warmupDuration = null;
+        AutoScale.prototype.stabilizationDuration = null;
+        AutoScale.prototype.initialSize = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+        AutoScale.prototype.cpuUtilizationRule = null;
+        AutoScale.encode = function encode(m, w) {
+          if (!w) w = $Writer.create();
+          if (m.minZoneSize != null && m.hasOwnProperty('minZoneSize')) w.uint32(8).int64(m.minZoneSize);
+          if (m.maxSize != null && m.hasOwnProperty('maxSize')) w.uint32(16).int64(m.maxSize);
+          if (m.measurementDuration != null && m.hasOwnProperty('measurementDuration')) $root.contrib.google.protobuf.Duration.encode(m.measurementDuration, w.uint32(26).fork()).ldelim();
+          if (m.warmupDuration != null && m.hasOwnProperty('warmupDuration')) $root.contrib.google.protobuf.Duration.encode(m.warmupDuration, w.uint32(34).fork()).ldelim();
+          if (m.stabilizationDuration != null && m.hasOwnProperty('stabilizationDuration')) $root.contrib.google.protobuf.Duration.encode(m.stabilizationDuration, w.uint32(42).fork()).ldelim();
+          if (m.initialSize != null && m.hasOwnProperty('initialSize')) w.uint32(48).int64(m.initialSize);
+          if (m.cpuUtilizationRule != null && m.hasOwnProperty('cpuUtilizationRule')) $root.api.compute.v1.instancegroup.ScalePolicy.CpuUtilizationRule.encode(m.cpuUtilizationRule, w.uint32(58).fork()).ldelim();
+          return w;
+        };
+        AutoScale.decode = function decode(r, l) {
+          if (!(r instanceof $Reader)) r = $Reader.create(r);
+          let c = l === undefined ? r.len : r.pos + l,
+            m = new $root.api.compute.v1.instancegroup.ScalePolicy.AutoScale();
+          while (r.pos < c) {
+            let t = r.uint32();
+            switch (t >>> 3) {
+              case 1:
+                m.minZoneSize = r.int64();
+                break;
+              case 2:
+                m.maxSize = r.int64();
+                break;
+              case 3:
+                m.measurementDuration = $root.contrib.google.protobuf.Duration.decode(r, r.uint32());
+                break;
+              case 4:
+                m.warmupDuration = $root.contrib.google.protobuf.Duration.decode(r, r.uint32());
+                break;
+              case 5:
+                m.stabilizationDuration = $root.contrib.google.protobuf.Duration.decode(r, r.uint32());
+                break;
+              case 6:
+                m.initialSize = r.int64();
+                break;
+              case 7:
+                m.cpuUtilizationRule = $root.api.compute.v1.instancegroup.ScalePolicy.CpuUtilizationRule.decode(r, r.uint32());
+                break;
+              default:
+                r.skipType(t & 7);
+                break;
+            }
+          }
+          return m;
+        };
+        return AutoScale;
+      })();
+      ScalePolicy.CpuUtilizationRule = (function() {
+        function CpuUtilizationRule(p) {
+          if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+        }
+        CpuUtilizationRule.prototype.utilizationTarget = 0;
+        CpuUtilizationRule.encode = function encode(m, w) {
+          if (!w) w = $Writer.create();
+          if (m.utilizationTarget != null && m.hasOwnProperty('utilizationTarget')) w.uint32(9).double(m.utilizationTarget);
+          return w;
+        };
+        CpuUtilizationRule.decode = function decode(r, l) {
+          if (!(r instanceof $Reader)) r = $Reader.create(r);
+          let c = l === undefined ? r.len : r.pos + l,
+            m = new $root.api.compute.v1.instancegroup.ScalePolicy.CpuUtilizationRule();
+          while (r.pos < c) {
+            let t = r.uint32();
+            switch (t >>> 3) {
+              case 1:
+                m.utilizationTarget = r.double();
+                break;
+              default:
+                r.skipType(t & 7);
+                break;
+            }
+          }
+          return m;
+        };
+        return CpuUtilizationRule;
+      })();
       ScalePolicy.FixedScale = (function() {
         function FixedScale(p) {
           if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
@@ -584,11 +677,13 @@ module.exports = (function() {
       ResourcesSpec.prototype.memory = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
       ResourcesSpec.prototype.cores = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
       ResourcesSpec.prototype.coreFraction = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+      ResourcesSpec.prototype.gpus = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
       ResourcesSpec.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.memory != null && m.hasOwnProperty('memory')) w.uint32(8).int64(m.memory);
         if (m.cores != null && m.hasOwnProperty('cores')) w.uint32(16).int64(m.cores);
         if (m.coreFraction != null && m.hasOwnProperty('coreFraction')) w.uint32(24).int64(m.coreFraction);
+        if (m.gpus != null && m.hasOwnProperty('gpus')) w.uint32(32).int64(m.gpus);
         return w;
       };
       ResourcesSpec.decode = function decode(r, l) {
@@ -606,6 +701,9 @@ module.exports = (function() {
               break;
             case 3:
               m.coreFraction = r.int64();
+              break;
+            case 4:
+              m.gpus = r.int64();
               break;
             default:
               r.skipType(t & 7);

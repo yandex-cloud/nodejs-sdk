@@ -695,7 +695,7 @@ export interface FileOptions {
    */
   'uninterpretedOption'?: UninterpretedOption[];
 
-  '.yandex.api.tools.file'?: FileOptions;
+  '.yandex.cloud.api.tools.file'?: FileOptions;
 }
 
 export namespace FileOptions {
@@ -790,7 +790,7 @@ export interface MessageOptions {
    */
   'uninterpretedOption'?: UninterpretedOption[];
 
-  '.yandex.api.tools.message'?: MessageOptions;
+  '.yandex.cloud.api.tools.message'?: MessageOptions;
 }
 
 export interface FieldOptions {
@@ -874,7 +874,7 @@ export interface FieldOptions {
    */
   'uninterpretedOption'?: UninterpretedOption[];
 
-  '.yandex.api.tools.field'?: FieldOptions;
+  '.yandex.cloud.api.tools.field'?: FieldOptions;
 
   '.yandex.cloud.required'?: boolean;
 
@@ -948,7 +948,7 @@ export interface EnumOptions {
    */
   'uninterpretedOption'?: UninterpretedOption[];
 
-  '.yandex.api.tools.enumeration'?: EnumOptions;
+  '.yandex.cloud.api.tools.enumeration'?: EnumOptions;
 }
 
 export interface EnumValueOptions {
@@ -965,7 +965,7 @@ export interface EnumValueOptions {
    */
   'uninterpretedOption'?: UninterpretedOption[];
 
-  '.yandex.api.tools.value'?: EnumValueOptions;
+  '.yandex.cloud.api.tools.value'?: EnumValueOptions;
 }
 
 export interface ServiceOptions {
@@ -982,7 +982,7 @@ export interface ServiceOptions {
    */
   'uninterpretedOption'?: UninterpretedOption[];
 
-  '.yandex.api.tools.service'?: ServiceOptions;
+  '.yandex.cloud.api.tools.service'?: ServiceOptions;
 }
 
 export interface MethodOptions {
@@ -999,9 +999,9 @@ export interface MethodOptions {
    */
   'uninterpretedOption'?: UninterpretedOption[];
 
-  '.yandex.api.operation'?: Operation;
+  '.yandex.cloud.api.operation'?: Operation;
 
-  '.yandex.api.tools.method'?: MethodOptions;
+  '.yandex.cloud.api.tools.method'?: MethodOptions;
 
   '.google.api.http'?: HttpRule;
 }

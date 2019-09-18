@@ -535,6 +535,7 @@ module.exports = (function() {
       }
       AnalyzeSpec.prototype.content = $util.newBuffer([]);
       AnalyzeSpec.prototype.features = $util.emptyArray;
+      AnalyzeSpec.prototype.mimeType = '';
       let $oneOfFields;
       Object.defineProperty(AnalyzeSpec.prototype, 'source', {
         get: $util.oneOfGetter(($oneOfFields = ['content'])),
@@ -546,6 +547,7 @@ module.exports = (function() {
         if (m.features != null && m.features.length) {
           for (let i = 0; i < m.features.length; ++i) $root.api.ai.vision.v1.Feature.encode(m.features[i], w.uint32(26).fork()).ldelim();
         }
+        if (m.mimeType != null && m.hasOwnProperty('mimeType')) w.uint32(34).string(m.mimeType);
         return w;
       };
       AnalyzeSpec.decode = function decode(r, l) {
@@ -561,6 +563,9 @@ module.exports = (function() {
             case 3:
               if (!(m.features && m.features.length)) m.features = [];
               m.features.push($root.api.ai.vision.v1.Feature.decode(r, r.uint32()));
+              break;
+            case 4:
+              m.mimeType = r.string();
               break;
             default:
               r.skipType(t & 7);

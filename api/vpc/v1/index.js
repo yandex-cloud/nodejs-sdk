@@ -1774,7 +1774,6 @@ module.exports = (function() {
       function CreateSubnetRequest(p) {
         this.labels = {};
         this.v4CidrBlocks = [];
-        this.v6CidrBlocks = [];
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       CreateSubnetRequest.prototype.folderId = '';
@@ -1784,7 +1783,6 @@ module.exports = (function() {
       CreateSubnetRequest.prototype.networkId = '';
       CreateSubnetRequest.prototype.zoneId = '';
       CreateSubnetRequest.prototype.v4CidrBlocks = $util.emptyArray;
-      CreateSubnetRequest.prototype.v6CidrBlocks = $util.emptyArray;
       CreateSubnetRequest.prototype.routeTableId = '';
       CreateSubnetRequest.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
@@ -1806,9 +1804,6 @@ module.exports = (function() {
         if (m.zoneId != null && m.hasOwnProperty('zoneId')) w.uint32(50).string(m.zoneId);
         if (m.v4CidrBlocks != null && m.v4CidrBlocks.length) {
           for (let i = 0; i < m.v4CidrBlocks.length; ++i) w.uint32(58).string(m.v4CidrBlocks[i]);
-        }
-        if (m.v6CidrBlocks != null && m.v6CidrBlocks.length) {
-          for (let i = 0; i < m.v6CidrBlocks.length; ++i) w.uint32(66).string(m.v6CidrBlocks[i]);
         }
         if (m.routeTableId != null && m.hasOwnProperty('routeTableId')) w.uint32(74).string(m.routeTableId);
         return w;
@@ -1846,10 +1841,6 @@ module.exports = (function() {
             case 7:
               if (!(m.v4CidrBlocks && m.v4CidrBlocks.length)) m.v4CidrBlocks = [];
               m.v4CidrBlocks.push(r.string());
-              break;
-            case 8:
-              if (!(m.v6CidrBlocks && m.v6CidrBlocks.length)) m.v6CidrBlocks = [];
-              m.v6CidrBlocks.push(r.string());
               break;
             case 9:
               m.routeTableId = r.string();

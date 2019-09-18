@@ -8,19 +8,25 @@ module.exports = (function() {
   const $util = $protobuf.util;
   let root = {};
   require('../../../api/operation');
+  require('../../../api/access');
   (function($root) {
     $root.Blob = (function() {
       function Blob(p) {
+        this.urls = [];
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       Blob.prototype.id = '';
       Blob.prototype.digest = '';
       Blob.prototype.size = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+      Blob.prototype.urls = $util.emptyArray;
       Blob.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.id != null && m.hasOwnProperty('id')) w.uint32(10).string(m.id);
         if (m.digest != null && m.hasOwnProperty('digest')) w.uint32(18).string(m.digest);
         if (m.size != null && m.hasOwnProperty('size')) w.uint32(24).int64(m.size);
+        if (m.urls != null && m.urls.length) {
+          for (let i = 0; i < m.urls.length; ++i) w.uint32(34).string(m.urls[i]);
+        }
         return w;
       };
       Blob.decode = function decode(r, l) {
@@ -38,6 +44,10 @@ module.exports = (function() {
               break;
             case 3:
               m.size = r.int64();
+              break;
+            case 4:
+              if (!(m.urls && m.urls.length)) m.urls = [];
+              m.urls.push(r.string());
               break;
             default:
               r.skipType(t & 7);
@@ -529,6 +539,51 @@ module.exports = (function() {
             return $root.api.operation.Operation.encode(r).finish();
           },
           responseDeserialize: $root.api.operation.Operation.decode
+        },
+        listAccessBindings: {
+          path: '/yandex.cloud.containerregistry.v1.RegistryService/ListAccessBindings',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.access.ListAccessBindingsRequest,
+          responseType: $root.api.access.ListAccessBindingsResponse,
+          requestSerialize: r => {
+            return $root.api.access.ListAccessBindingsRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.access.ListAccessBindingsRequest.decode,
+          responseSerialize: r => {
+            return $root.api.access.ListAccessBindingsResponse.encode(r).finish();
+          },
+          responseDeserialize: $root.api.access.ListAccessBindingsResponse.decode
+        },
+        setAccessBindings: {
+          path: '/yandex.cloud.containerregistry.v1.RegistryService/SetAccessBindings',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.access.SetAccessBindingsRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.access.SetAccessBindingsRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.access.SetAccessBindingsRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        updateAccessBindings: {
+          path: '/yandex.cloud.containerregistry.v1.RegistryService/UpdateAccessBindings',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.access.UpdateAccessBindingsRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.access.UpdateAccessBindingsRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.access.UpdateAccessBindingsRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
         }
       });
       ctor.__endpointId = 'container-registry';
@@ -901,9 +956,11 @@ module.exports = (function() {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       Repository.prototype.name = '';
+      Repository.prototype.id = '';
       Repository.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.name != null && m.hasOwnProperty('name')) w.uint32(10).string(m.name);
+        if (m.id != null && m.hasOwnProperty('id')) w.uint32(18).string(m.id);
         return w;
       };
       Repository.decode = function decode(r, l) {
@@ -915,6 +972,9 @@ module.exports = (function() {
           switch (t >>> 3) {
             case 1:
               m.name = r.string();
+              break;
+            case 2:
+              m.id = r.string();
               break;
             default:
               r.skipType(t & 7);
@@ -929,6 +989,36 @@ module.exports = (function() {
   (function($root) {
     $root.RepositoryService = function() {
       let ctor = grpc.makeGenericClientConstructor({
+        get: {
+          path: '/yandex.cloud.containerregistry.v1.RepositoryService/Get',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.containerregistry.v1.GetRepositoryRequest,
+          responseType: $root.api.containerregistry.v1.Repository,
+          requestSerialize: r => {
+            return $root.api.containerregistry.v1.GetRepositoryRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.containerregistry.v1.GetRepositoryRequest.decode,
+          responseSerialize: r => {
+            return $root.api.containerregistry.v1.Repository.encode(r).finish();
+          },
+          responseDeserialize: $root.api.containerregistry.v1.Repository.decode
+        },
+        getByName: {
+          path: '/yandex.cloud.containerregistry.v1.RepositoryService/GetByName',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.containerregistry.v1.GetRepositoryByNameRequest,
+          responseType: $root.api.containerregistry.v1.Repository,
+          requestSerialize: r => {
+            return $root.api.containerregistry.v1.GetRepositoryByNameRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.containerregistry.v1.GetRepositoryByNameRequest.decode,
+          responseSerialize: r => {
+            return $root.api.containerregistry.v1.Repository.encode(r).finish();
+          },
+          responseDeserialize: $root.api.containerregistry.v1.Repository.decode
+        },
         list: {
           path: '/yandex.cloud.containerregistry.v1.RepositoryService/List',
           requestStream: false,
@@ -943,11 +1033,118 @@ module.exports = (function() {
             return $root.api.containerregistry.v1.ListRepositoriesResponse.encode(r).finish();
           },
           responseDeserialize: $root.api.containerregistry.v1.ListRepositoriesResponse.decode
+        },
+        listAccessBindings: {
+          path: '/yandex.cloud.containerregistry.v1.RepositoryService/ListAccessBindings',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.access.ListAccessBindingsRequest,
+          responseType: $root.api.access.ListAccessBindingsResponse,
+          requestSerialize: r => {
+            return $root.api.access.ListAccessBindingsRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.access.ListAccessBindingsRequest.decode,
+          responseSerialize: r => {
+            return $root.api.access.ListAccessBindingsResponse.encode(r).finish();
+          },
+          responseDeserialize: $root.api.access.ListAccessBindingsResponse.decode
+        },
+        setAccessBindings: {
+          path: '/yandex.cloud.containerregistry.v1.RepositoryService/SetAccessBindings',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.access.SetAccessBindingsRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.access.SetAccessBindingsRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.access.SetAccessBindingsRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        updateAccessBindings: {
+          path: '/yandex.cloud.containerregistry.v1.RepositoryService/UpdateAccessBindings',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.access.UpdateAccessBindingsRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.access.UpdateAccessBindingsRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.access.UpdateAccessBindingsRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
         }
       });
       ctor.__endpointId = 'container-registry';
       return ctor;
     };
+  })(root);
+  (function($root) {
+    $root.GetRepositoryRequest = (function() {
+      function GetRepositoryRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      GetRepositoryRequest.prototype.repositoryId = '';
+      GetRepositoryRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.repositoryId != null && m.hasOwnProperty('repositoryId')) w.uint32(10).string(m.repositoryId);
+        return w;
+      };
+      GetRepositoryRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.containerregistry.v1.GetRepositoryRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.repositoryId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return GetRepositoryRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.GetRepositoryByNameRequest = (function() {
+      function GetRepositoryByNameRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      GetRepositoryByNameRequest.prototype.repositoryName = '';
+      GetRepositoryByNameRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.repositoryName != null && m.hasOwnProperty('repositoryName')) w.uint32(10).string(m.repositoryName);
+        return w;
+      };
+      GetRepositoryByNameRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.containerregistry.v1.GetRepositoryByNameRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.repositoryName = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return GetRepositoryByNameRequest;
+    })();
   })(root);
   (function($root) {
     $root.ListRepositoriesRequest = (function() {

@@ -8,6 +8,7 @@ module.exports = (function() {
   const $util = $protobuf.util;
   let root = {};
   require('../../../../api/operation');
+  require('../../../../api/access');
   (function($root) {
     $root.Function = (function() {
       function Function(p) {
@@ -22,6 +23,7 @@ module.exports = (function() {
       Function.prototype.labels = $util.emptyObject;
       Function.prototype.logGroupId = '';
       Function.prototype.httpInvokeUrl = '';
+      Function.prototype.status = 0;
       Function.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.id != null && m.hasOwnProperty('id')) w.uint32(10).string(m.id);
@@ -42,6 +44,7 @@ module.exports = (function() {
         }
         if (m.logGroupId != null && m.hasOwnProperty('logGroupId')) w.uint32(58).string(m.logGroupId);
         if (m.httpInvokeUrl != null && m.hasOwnProperty('httpInvokeUrl')) w.uint32(66).string(m.httpInvokeUrl);
+        if (m.status != null && m.hasOwnProperty('status')) w.uint32(72).int32(m.status);
         return w;
       };
       Function.decode = function decode(r, l) {
@@ -80,6 +83,9 @@ module.exports = (function() {
             case 8:
               m.httpInvokeUrl = r.string();
               break;
+            case 9:
+              m.status = r.int32();
+              break;
             default:
               r.skipType(t & 7);
               break;
@@ -87,6 +93,17 @@ module.exports = (function() {
         }
         return m;
       };
+      let Status = (function() {
+        let valuesById = {},
+          values = Object.create(valuesById);
+        values[(valuesById[0] = 'STATUS_UNSPECIFIED')] = 0;
+        values[(valuesById[1] = 'CREATING')] = 1;
+        values[(valuesById[2] = 'ACTIVE')] = 2;
+        values[(valuesById[3] = 'DELETING')] = 3;
+        values[(valuesById[4] = 'ERROR')] = 4;
+        return values;
+      })();
+      Function.Status = Status;
       return Function;
     })();
   })(root);
@@ -499,6 +516,51 @@ module.exports = (function() {
             return $root.api.serverless.functions.v1.ListFunctionOperationsResponse.encode(r).finish();
           },
           responseDeserialize: $root.api.serverless.functions.v1.ListFunctionOperationsResponse.decode
+        },
+        listAccessBindings: {
+          path: '/yandex.cloud.serverless.functions.v1.FunctionService/ListAccessBindings',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.access.ListAccessBindingsRequest,
+          responseType: $root.api.access.ListAccessBindingsResponse,
+          requestSerialize: r => {
+            return $root.api.access.ListAccessBindingsRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.access.ListAccessBindingsRequest.decode,
+          responseSerialize: r => {
+            return $root.api.access.ListAccessBindingsResponse.encode(r).finish();
+          },
+          responseDeserialize: $root.api.access.ListAccessBindingsResponse.decode
+        },
+        setAccessBindings: {
+          path: '/yandex.cloud.serverless.functions.v1.FunctionService/SetAccessBindings',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.access.SetAccessBindingsRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.access.SetAccessBindingsRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.access.SetAccessBindingsRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        updateAccessBindings: {
+          path: '/yandex.cloud.serverless.functions.v1.FunctionService/UpdateAccessBindings',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.access.UpdateAccessBindingsRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.access.UpdateAccessBindingsRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.access.UpdateAccessBindingsRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
         }
       });
       ctor.__endpointId = 'serverless-functions';
