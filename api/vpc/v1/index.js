@@ -86,7 +86,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.NetworkService.makeGrpcConstructor());
     };
     $root.NetworkService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
@@ -889,7 +889,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.RouteTableService.makeGrpcConstructor());
     };
     $root.RouteTableService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
@@ -1572,7 +1572,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.SubnetService.makeGrpcConstructor());
     };
     $root.SubnetService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({

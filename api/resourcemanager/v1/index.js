@@ -536,7 +536,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.FolderService.makeGrpcConstructor());
     };
     $root.FolderService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({

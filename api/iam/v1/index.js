@@ -62,7 +62,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.ApiKeyService.makeGrpcConstructor());
     };
     $root.ApiKeyService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
@@ -351,7 +351,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.IamTokenService.makeGrpcConstructor());
     };
     $root.IamTokenService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
@@ -532,7 +532,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.KeyService.makeGrpcConstructor());
     };
     $root.KeyService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
@@ -888,7 +888,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.RoleService.makeGrpcConstructor());
     };
     $root.RoleService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
@@ -1095,7 +1095,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.ServiceAccountService.makeGrpcConstructor());
     };
     $root.ServiceAccountService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
@@ -1730,7 +1730,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.UserAccountService.makeGrpcConstructor());
     };
     $root.UserAccountService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
@@ -1790,7 +1790,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.YandexPassportUserAccountService.makeGrpcConstructor());
     };
     $root.YandexPassportUserAccountService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({

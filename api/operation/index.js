@@ -89,7 +89,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.OperationService.makeGrpcConstructor());
     };
     $root.OperationService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({

@@ -448,7 +448,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.NetworkLoadBalancerService.makeGrpcConstructor());
     };
     $root.NetworkLoadBalancerService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
@@ -1841,7 +1841,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.TargetGroupService.makeGrpcConstructor());
     };
     $root.TargetGroupService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({

@@ -150,7 +150,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.DiskService.makeGrpcConstructor());
     };
     $root.DiskService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
@@ -785,7 +785,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.DiskTypeService.makeGrpcConstructor());
     };
     $root.DiskTypeService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
@@ -1093,7 +1093,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.ImageService.makeGrpcConstructor());
     };
     $root.ImageService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
@@ -2188,7 +2188,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.InstanceService.makeGrpcConstructor());
     };
     $root.InstanceService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
@@ -3862,7 +3862,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.SnapshotService.makeGrpcConstructor());
     };
     $root.SnapshotService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
@@ -4477,7 +4477,7 @@ module.exports = (function() {
       if (session === undefined) {
         session = new yc.Session();
       }
-      return session.client($root.CloudService.makeGrpcConstructor());
+      return session.client($root.ZoneService.makeGrpcConstructor());
     };
     $root.ZoneService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
