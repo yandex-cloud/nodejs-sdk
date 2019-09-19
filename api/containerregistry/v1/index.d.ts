@@ -4,6 +4,7 @@ import * as grpc from 'grpc';
 import { util } from 'protobufjs';
 import Long = util.Long;
 import * as events from 'events';
+import { Session } from '../../../index.js';
 
 import * as protobuf from '../../../contrib/google/protobuf';
 import * as operation from '../../../api/operation';
@@ -83,7 +84,7 @@ export interface Image {
  * A set of methods for managing Image resources.
  */
 export class ImageService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Retrieves the list of Image resources in the specified registry or repository.
    */
@@ -257,7 +258,7 @@ export namespace Registry {
  * A set of methods for managing Registry resources.
  */
 export class RegistryService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified Registry resource.
    *
@@ -457,7 +458,7 @@ export interface Repository {
  * A set of methods for managing Repository resources.
  */
 export class RepositoryService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified Repository resource.
    *

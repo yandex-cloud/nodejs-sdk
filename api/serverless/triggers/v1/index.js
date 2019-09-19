@@ -3,6 +3,7 @@ module.exports = (function() {
   const grpc = require('grpc');
   const registar = require('../../../../lib/registar.js');
   const util = require('../../../../lib/util.js');
+  const yc = require('../../../../index.js');
   const $Reader = $protobuf.Reader;
   const $Writer = $protobuf.Writer;
   const $util = $protobuf.util;
@@ -525,7 +526,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.TriggerService = function() {
+    $root.TriggerService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.TriggerService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.serverless.triggers.v1.TriggerService/Get',

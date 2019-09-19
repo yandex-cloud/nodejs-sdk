@@ -21,11 +21,13 @@ function readCliConfig() {
 }
 function run(fn) {
   const config = readCliConfig();
-  const session = new yc.Session({
-    endpoint: config['endpoint'],
-    oauthToken: config['token']
-  });
-  fn(session, config['cloud-id'], config['folder-id'])
+  const session = new yc.Session({ oauthToken: config['token'] });
+  (async () => {
+    if (config['endpoint']) {
+      await session.setEndpoint(config[endpoint]);
+    }
+    await fn(session, config['cloud-id'], config['folder-id']);
+  })
     .then(() => {})
     .catch(e => {
       console.error(e);

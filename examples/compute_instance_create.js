@@ -1,11 +1,11 @@
 const run = require('./').run;
-const compute = require('yandex-cloud/api/compute/v1');
-const vpc = require('yandex-cloud/api/vpc/v1');
+const { ImageService, InstanceService, IpVersion } = require('yandex-cloud/api/compute/v1');
+const { NetworkService } = require('yandex-cloud/api/vpc/v1');
 const TARGET_ZONE_ID = 'ru-central1-a';
 run(async (session, cloudId, folderId) => {
-  const imageService = await session.client(compute.ImageService);
-  const instanceService = await session.client(compute.InstanceService);
-  const networkService = await session.client(vpc.NetworkService);
+  const imageService = new ImageService(session);
+  const instanceService = new InstanceService(session);
+  const networkService = new NetworkService(session);
   const networksResponse = await networkService.list({ folderId });
   const network = networksResponse.networks.pop();
   if (!network) {
@@ -39,7 +39,7 @@ run(async (session, cloudId, folderId) => {
     networkInterfaceSpecs: [
       {
         subnetId: subNetwork.id,
-        primaryV4AddressSpec: { oneToOneNatSpec: { ipVersion: compute.IpVersion.IPV4 } }
+        primaryV4AddressSpec: { oneToOneNatSpec: { ipVersion: IpVersion.IPV4 } }
       }
     ]
   });

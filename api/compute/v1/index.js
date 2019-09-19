@@ -3,6 +3,7 @@ module.exports = (function() {
   const grpc = require('grpc');
   const registar = require('../../../lib/registar.js');
   const util = require('../../../lib/util.js');
+  const yc = require('../../../index.js');
   const $Reader = $protobuf.Reader;
   const $Writer = $protobuf.Writer;
   const $util = $protobuf.util;
@@ -145,7 +146,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.DiskService = function() {
+    $root.DiskService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.DiskService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.compute.v1.DiskService/Get',
@@ -774,7 +781,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.DiskTypeService = function() {
+    $root.DiskTypeService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.DiskTypeService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.compute.v1.DiskTypeService/Get',
@@ -1076,7 +1089,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.ImageService = function() {
+    $root.ImageService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.ImageService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.compute.v1.ImageService/Get',
@@ -2165,7 +2184,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.InstanceService = function() {
+    $root.InstanceService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.InstanceService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.compute.v1.InstanceService/Get',
@@ -3833,7 +3858,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.SnapshotService = function() {
+    $root.SnapshotService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.SnapshotService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.compute.v1.SnapshotService/Get',
@@ -4442,7 +4473,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.ZoneService = function() {
+    $root.ZoneService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.ZoneService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.compute.v1.ZoneService/Get',

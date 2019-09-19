@@ -1,7 +1,7 @@
 const run = require('./').run;
-const translate = require('yandex-cloud/api/ai/translate/v2');
+const { TranslationService } = require('yandex-cloud/api/ai/translate/v2');
 run(async (session, _, folderId) => {
-  const translationService = await session.client(translate.TranslationService);
+  const translationService = new TranslationService(session);
   const texts = ['NodeJS SDK examples', 'Powerful, but easy to use library'];
   const response = await translationService.translate({
     targetLanguageCode: 'ru',

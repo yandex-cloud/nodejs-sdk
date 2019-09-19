@@ -4,6 +4,7 @@ import * as grpc from 'grpc';
 import { util } from 'protobufjs';
 import Long = util.Long;
 import * as events from 'events';
+import { Session } from '../../../index.js';
 
 import * as protobuf from '../../../contrib/google/protobuf';
 import * as operation from '../../../api/operation';
@@ -344,7 +345,7 @@ export namespace TargetState {
  * A set of methods for managing NetworkLoadBalancer resources.
  */
 export class NetworkLoadBalancerService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified NetworkLoadBalancer resource.
    *
@@ -876,7 +877,7 @@ export interface Target {
  * A set of methods for managing TargetGroup resources.
  */
 export class TargetGroupService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified TargetGroup resource.
    */

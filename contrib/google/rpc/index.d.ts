@@ -4,6 +4,7 @@ import * as grpc from 'grpc';
 import { util } from 'protobufjs';
 import Long = util.Long;
 import * as events from 'events';
+import { Session } from '../../../index.js';
 
 import * as protobuf from '../../../contrib/google/protobuf';
 

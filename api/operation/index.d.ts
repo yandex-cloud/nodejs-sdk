@@ -4,6 +4,7 @@ import * as grpc from 'grpc';
 import { util } from 'protobufjs';
 import Long = util.Long;
 import * as events from 'events';
+import { Session } from '../../index.js';
 
 import * as protobuf from '../../contrib/google/protobuf';
 import * as rpc from '../../contrib/google/rpc';
@@ -70,7 +71,7 @@ export interface Operation {
  * A set of methods for managing operations for asynchronous API requests.
  */
 export class OperationService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified Operation resource.
    */

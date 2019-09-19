@@ -3,6 +3,7 @@ module.exports = (function() {
   const grpc = require('grpc');
   const registar = require('../../../lib/registar.js');
   const util = require('../../../lib/util.js');
+  const yc = require('../../../index.js');
   const $Reader = $protobuf.Reader;
   const $Writer = $protobuf.Writer;
   const $util = $protobuf.util;
@@ -57,7 +58,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.ApiKeyService = function() {
+    $root.ApiKeyService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.ApiKeyService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         list: {
           path: '/yandex.cloud.iam.v1.ApiKeyService/List',
@@ -340,7 +347,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.IamTokenService = function() {
+    $root.IamTokenService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.IamTokenService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         create: {
           path: '/yandex.cloud.iam.v1.IamTokenService/Create',
@@ -515,7 +528,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.KeyService = function() {
+    $root.KeyService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.KeyService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.iam.v1.KeyService/Get',
@@ -865,7 +884,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.RoleService = function() {
+    $root.RoleService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.RoleService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.iam.v1.RoleService/Get',
@@ -1066,7 +1091,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.ServiceAccountService = function() {
+    $root.ServiceAccountService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.ServiceAccountService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.iam.v1.ServiceAccountService/Get',
@@ -1695,7 +1726,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.UserAccountService = function() {
+    $root.UserAccountService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.UserAccountService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.iam.v1.UserAccountService/Get',
@@ -1749,7 +1786,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.YandexPassportUserAccountService = function() {
+    $root.YandexPassportUserAccountService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.YandexPassportUserAccountService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         getByLogin: {
           path: '/yandex.cloud.iam.v1.YandexPassportUserAccountService/GetByLogin',

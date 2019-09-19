@@ -3,6 +3,7 @@ module.exports = (function() {
   const grpc = require('grpc');
   const registar = require('../../../lib/registar.js');
   const util = require('../../../lib/util.js');
+  const yc = require('../../../index.js');
   const $Reader = $protobuf.Reader;
   const $Writer = $protobuf.Writer;
   const $util = $protobuf.util;
@@ -81,7 +82,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.NetworkService = function() {
+    $root.NetworkService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.NetworkService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.vpc.v1.NetworkService/Get',
@@ -878,7 +885,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.RouteTableService = function() {
+    $root.RouteTableService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.RouteTableService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.vpc.v1.RouteTableService/Get',
@@ -1555,7 +1568,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.SubnetService = function() {
+    $root.SubnetService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.SubnetService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.vpc.v1.SubnetService/Get',

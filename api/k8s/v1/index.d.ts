@@ -4,6 +4,7 @@ import * as grpc from 'grpc';
 import { util } from 'protobufjs';
 import Long = util.Long;
 import * as events from 'events';
+import { Session } from '../../../index.js';
 
 import * as protobuf from '../../../contrib/google/protobuf';
 import * as operation from '../../../api/operation';
@@ -236,7 +237,7 @@ export interface MasterMaintenancePolicy {
  * A set of methods for managing Kubernetes cluster.
  */
 export class ClusterService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified Kubernetes cluster.
    *
@@ -868,7 +869,7 @@ export interface NodeGroupMaintenancePolicy {
  * A set of methods for managing node groups.
  */
 export class NodeGroupService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified node group.
    *
@@ -1163,7 +1164,7 @@ export interface UpdateVersionSpec {
 }
 
 export class VersionService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   list(request: ListVersionsRequest): Promise<ListVersionsResponse>;
 }
 

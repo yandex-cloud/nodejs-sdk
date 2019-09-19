@@ -3,6 +3,7 @@ module.exports = (function() {
   const grpc = require('grpc');
   const registar = require('../../../lib/registar.js');
   const util = require('../../../lib/util.js');
+  const yc = require('../../../index.js');
   const $Reader = $protobuf.Reader;
   const $Writer = $protobuf.Writer;
   const $util = $protobuf.util;
@@ -134,7 +135,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.ImageService = function() {
+    $root.ImageService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.ImageService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         list: {
           path: '/yandex.cloud.containerregistry.v1.ImageService/List',
@@ -463,7 +470,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.RegistryService = function() {
+    $root.RegistryService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.RegistryService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.containerregistry.v1.RegistryService/Get',
@@ -987,7 +1000,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.RepositoryService = function() {
+    $root.RepositoryService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.RepositoryService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.containerregistry.v1.RepositoryService/Get',

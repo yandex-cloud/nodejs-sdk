@@ -4,6 +4,7 @@ import * as grpc from 'grpc';
 import { util } from 'protobufjs';
 import Long = util.Long;
 import * as events from 'events';
+import { Session } from '../../../index.js';
 
 import * as protobuf from '../../../contrib/google/protobuf';
 import * as operation from '../../../api/operation';
@@ -38,7 +39,7 @@ export interface Cloud {
  * A set of methods for managing Cloud resources.
  */
 export class CloudService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified Cloud resource.
    *
@@ -257,7 +258,7 @@ export namespace Folder {
  * A set of methods for managing Folder resources.
  */
 export class FolderService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified Folder resource.
    *

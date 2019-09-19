@@ -1,37 +1,29 @@
-let grpc = require('grpc');
-let iam = require('./api/iam/v1');
-let endpoints = require('./api/endpoint');
-let util = require('./lib/util');
-let metadata = require('./lib/metadata');
+const grpc = require('grpc');
+const util = require('./lib/util');
+const { EndpointResolver } = require('./lib/endpoint');
+const metadata = require('./lib/metadata');
+const iam = require('./api/iam/v1');
 require('./lib/operation');
 async function createIamToken(iamEndpoint, req) {
-  const ctor = iam.IamTokenService();
+  const ctor = iam.IamTokenService.makeGrpcConstructor();
   let client = new ctor(iamEndpoint, grpc.credentials.createSsl());
   client = util.pimpServiceInstance(client);
   const resp = await client.create(req);
   return resp.iamToken;
 }
-async function getEndpointAddress(cloudEndpoint, apiEndpointId) {
-  const ctor = endpoints.ApiEndpointService();
-  let client = new ctor(cloudEndpoint, grpc.credentials.createSsl());
-  client = util.pimpServiceInstance(client);
-  const resp = await client.get({ apiEndpointId });
-  return resp.address;
-}
-async function newTokenCreator(config) {
+function newTokenCreator(config, iamEndpoint) {
   if (config.metadataToken === true || !config.oauthToken) {
     const tokenService = new metadata.TokenService();
-    await tokenService.initialize();
     return async () => {
+      await tokenService.initialize();
       return tokenService.getToken();
     };
   }
-  const address = await getEndpointAddress(config.endpoint, 'iam');
   return () => {
-    return createIamToken(address, { yandexPassportOauthToken: config.oauthToken });
+    return createIamToken(iamEndpoint, { yandexPassportOauthToken: config.oauthToken });
   };
 }
-async function newChannelCredentials(tokenCreator) {
+function newChannelCredentials(tokenCreator) {
   return grpc.credentials.combineChannelCredentials(
     grpc.credentials.createSsl(),
     grpc.credentials.createFromMetadataGenerator((params, callback) => {
@@ -48,7 +40,6 @@ async function newChannelCredentials(tokenCreator) {
   );
 }
 const defaultConfig = {
-  endpoint: 'api.cloud.yandex.net:443',
   pollInterval: 1000,
   metadataToken: false
 };
@@ -58,14 +49,15 @@ class Session {
       ...defaultConfig,
       ...config
     };
+    this.__endpointResolver = new EndpointResolver();
+    this.__tokenCreator = newTokenCreator(this.__config, this.__endpointResolver.resolve('iam'));
+    this.__channelCredentials = newChannelCredentials(this.__tokenCreator);
   }
-  async client(clazz) {
-    const ctor = clazz();
-    const srvEndpoint = await getEndpointAddress(this.__config.endpoint, ctor.__endpointId);
-    const tokenCreator = await newTokenCreator(this.__config);
-    const channelCredentials = await newChannelCredentials(tokenCreator);
-    const client = new ctor(srvEndpoint, channelCredentials, undefined, tokenCreator);
-    return util.pimpServiceInstance(client);
+  async setEndpoint(newEndpoint) {
+    await this.__endpointResolver.updateEndpointList(newEndpoint);
+  }
+  client(clazz) {
+    return util.pimpServiceInstance(new clazz(this.__endpointResolver.resolve(clazz.__endpointId), this.__channelCredentials, undefined, this.__tokenCreator));
   }
 }
 module.exports = { Session };

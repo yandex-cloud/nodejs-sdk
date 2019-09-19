@@ -1,9 +1,10 @@
 import { ChannelCredentials } from 'grpc';
+import { Session } from '../../../index';
 
 export class StorageObject {
   bucketName: string;
   objectName: string;
-  bufferPromise: Promise<Buffer>;
+  private bufferPromise: Promise<Buffer>;
 
   constructor(bucketName: string, objectName: string, bufferPromise: Promise<Buffer>);
 
@@ -15,7 +16,7 @@ export class StorageObject {
 }
 
 export class StorageService {
-  constructor(address: string, credentials: ChannelCredentials, options?: object);
+  constructor(session?: Session);
 
   getObject(bucketName: string, objectName: string): Promise<StorageObject>;
   putObject(object: StorageObject): Promise<void>;

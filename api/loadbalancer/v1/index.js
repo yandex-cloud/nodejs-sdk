@@ -3,6 +3,7 @@ module.exports = (function() {
   const grpc = require('grpc');
   const registar = require('../../../lib/registar.js');
   const util = require('../../../lib/util.js');
+  const yc = require('../../../index.js');
   const $Reader = $protobuf.Reader;
   const $Writer = $protobuf.Writer;
   const $util = $protobuf.util;
@@ -443,7 +444,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.NetworkLoadBalancerService = function() {
+    $root.NetworkLoadBalancerService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.NetworkLoadBalancerService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.loadbalancer.v1.NetworkLoadBalancerService/Get',
@@ -1830,7 +1837,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.TargetGroupService = function() {
+    $root.TargetGroupService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.TargetGroupService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.loadbalancer.v1.TargetGroupService/Get',

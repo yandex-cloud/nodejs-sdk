@@ -4,6 +4,7 @@ import * as grpc from 'grpc';
 import { util } from 'protobufjs';
 import Long = util.Long;
 import * as events from 'events';
+import { Session } from '../../../index.js';
 
 import * as protobuf from '../../../contrib/google/protobuf';
 import * as Key from '../../../Key';
@@ -39,7 +40,7 @@ export interface ApiKey {
  * A set of methods for managing API keys.
  */
 export class ApiKeyService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Retrieves the list of API keys for the specified service account.
    */
@@ -151,7 +152,7 @@ export interface DeleteApiKeyRequest {
  * A set of methods for managing IAM tokens.
  */
 export class IamTokenService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Creates an IAM token for the specified identity.
    */
@@ -247,7 +248,7 @@ export namespace Key {
  * A set of methods for managing Key resources.
  */
 export class KeyService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified Key resource.
    *
@@ -401,7 +402,7 @@ export interface Role {
  * A set of methods for managing Role resources.
  */
 export class RoleService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified Role resource.
    *
@@ -498,7 +499,7 @@ export interface ServiceAccount {
  * A set of methods for managing ServiceAccount resources.
  */
 export class ServiceAccountService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified ServiceAccount resource.
    *
@@ -748,7 +749,7 @@ export interface YandexPassportUserAccount {
  * A set of methods for managing user accounts. Currently applicable only for [Yandex.Passport accounts](/docs/iam/concepts/#passport).
  */
 export class UserAccountService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified UserAccount resource.
    */
@@ -766,7 +767,7 @@ export interface GetUserAccountRequest {
  * A set of methods for managing YandexPassportUserAccount resources.
  */
 export class YandexPassportUserAccountService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified YandexPassportUserAccount resource.
    */

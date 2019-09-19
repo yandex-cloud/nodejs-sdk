@@ -3,6 +3,7 @@ module.exports = (function() {
   const grpc = require('grpc');
   const registar = require('../../../lib/registar.js');
   const util = require('../../../lib/util.js');
+  const yc = require('../../../index.js');
   const $Reader = $protobuf.Reader;
   const $Writer = $protobuf.Writer;
   const $util = $protobuf.util;
@@ -408,7 +409,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.ClusterService = function() {
+    $root.ClusterService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.ClusterService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.k8s.v1.ClusterService/Get',
@@ -2048,7 +2055,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.NodeGroupService = function() {
+    $root.NodeGroupService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.NodeGroupService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         get: {
           path: '/yandex.cloud.k8s.v1.NodeGroupService/Get',
@@ -2739,7 +2752,13 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.VersionService = function() {
+    $root.VersionService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.CloudService.makeGrpcConstructor());
+    };
+    $root.VersionService.makeGrpcConstructor = () => {
       let ctor = grpc.makeGenericClientConstructor({
         list: {
           path: '/yandex.cloud.k8s.v1.VersionService/List',

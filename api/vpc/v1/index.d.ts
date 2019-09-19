@@ -4,6 +4,7 @@ import * as grpc from 'grpc';
 import { util } from 'protobufjs';
 import Long = util.Long;
 import * as events from 'events';
+import { Session } from '../../../index.js';
 
 import * as protobuf from '../../../contrib/google/protobuf';
 import * as operation from '../../../api/operation';
@@ -48,7 +49,7 @@ export interface Network {
  * A set of methods for managing Network resources.
  */
 export class NetworkService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified Network resource.
    *
@@ -370,7 +371,7 @@ export interface StaticRoute {
  * A set of methods for managing RouteTable resources.
  */
 export class RouteTableService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified RouteTable resource.
    *
@@ -661,7 +662,7 @@ export interface Subnet {
  * A set of methods for managing Subnet resources.
  */
 export class SubnetService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified Subnet resource.
    *

@@ -4,6 +4,7 @@ import * as grpc from 'grpc';
 import { util } from 'protobufjs';
 import Long = util.Long;
 import * as events from 'events';
+import { Session } from '../../index.js';
 
 export interface ApiEndpoint {
   id?: string;
@@ -12,7 +13,7 @@ export interface ApiEndpoint {
 }
 
 export class ApiEndpointService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   get(request: GetApiEndpointRequest): Promise<ApiEndpoint>;
 
   list(request: ListApiEndpointsRequest): Promise<ListApiEndpointsResponse>;

@@ -4,6 +4,7 @@ import * as grpc from 'grpc';
 import { util } from 'protobufjs';
 import Long = util.Long;
 import * as events from 'events';
+import { Session } from '../../../../index.js';
 
 export interface TranslatedText {
   /**
@@ -35,7 +36,7 @@ export interface Language {
  * A set of methods for the Yandex Translate service.
  */
 export class TranslationService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Translates the text to the specified language.
    */

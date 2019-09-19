@@ -4,6 +4,7 @@ import * as grpc from 'grpc';
 import { util } from 'protobufjs';
 import Long = util.Long;
 import * as events from 'events';
+import { Session } from '../../../../index.js';
 
 import * as rpc from '../../../../contrib/google/rpc';
 
@@ -157,7 +158,7 @@ export namespace Word {
  * A set of methods for the Yandex Vision service.
  */
 export class VisionService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Analyzes a batch of images and returns results with annotations.
    */

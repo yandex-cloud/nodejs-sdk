@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const fs = require('fs');
+const yc = require('../../../index.js');
 class StorageObject {
   constructor(bucketName, objectName, bufferPromise) {
     this.bucketName = bucketName;
@@ -72,8 +73,11 @@ class StorageServiceImpl {
   }
 }
 StorageServiceImpl.__endpointId = 'storage';
-function StorageService() {
-  return StorageServiceImpl;
+function StorageService(session) {
+  if (session === undefined) {
+    session = new yc.Session();
+  }
+  return session.client(StorageServiceImpl);
 }
 module.exports = {
   StorageObject,

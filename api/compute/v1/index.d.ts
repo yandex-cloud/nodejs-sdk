@@ -4,6 +4,7 @@ import * as grpc from 'grpc';
 import { util } from 'protobufjs';
 import Long = util.Long;
 import * as events from 'events';
+import { Session } from '../../../index.js';
 
 import * as protobuf from '../../../contrib/google/protobuf';
 import * as operation from '../../../api/operation';
@@ -117,7 +118,7 @@ export namespace Disk {
  * A set of methods for managing Disk resources.
  */
 export class DiskService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified Disk resource.
    *
@@ -387,7 +388,7 @@ export interface DiskType {
  * A set of methods to retrieve information about disk types.
  */
 export class DiskTypeService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the information about specified disk type.
    *
@@ -570,7 +571,7 @@ export namespace Os {
  * A set of methods for managing Image resources.
  */
 export class ImageService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified Image resource.
    *
@@ -1150,7 +1151,7 @@ export interface SchedulingPolicy {
  * A set of methods for managing Instance resources.
  */
 export class InstanceService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified Instance resource.
    *
@@ -1903,7 +1904,7 @@ export namespace Snapshot {
  * A set of methods for managing Snapshot resources.
  */
 export class SnapshotService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the specified Snapshot resource.
    *
@@ -2165,7 +2166,7 @@ export namespace Zone {
  * A set of methods to retrieve information about availability zones.
  */
 export class ZoneService {
-  constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+  constructor(session?: Session);
   /**
    * Returns the information about the specified availability zone.
    *
