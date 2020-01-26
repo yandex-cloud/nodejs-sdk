@@ -39,8 +39,9 @@ function newChannelCredentials(tokenCreator) {
     })
   );
 }
+const ONE_HOUR = 1000 * 60 * 60;
 const defaultConfig = {
-  pollInterval: 1000,
+  pollInterval: ONE_HOUR,
   metadataToken: false
 };
 class Session {
