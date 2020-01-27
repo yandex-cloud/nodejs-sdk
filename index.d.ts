@@ -1,7 +1,7 @@
 import { ChannelCredentials } from 'grpc';
 
 interface GenericConfig {
-  pollInterval: number;
+  pollInterval?: number;
 }
 
 export interface OAuthCredentialsConfig extends GenericConfig {
