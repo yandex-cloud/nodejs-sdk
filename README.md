@@ -1,10 +1,10 @@
-# Yandex Cloud SDK (node.js)
+# Yandex.Cloud SDK (node.js)
 
 [![npm](https://img.shields.io/npm/v/yandex-cloud.svg)](https://www.npmjs.com/package/yandex-cloud)
 [![CircleCI](https://img.shields.io/circleci/build/gh/yandex-cloud/nodejs-sdk/master)](https://circleci.com/gh/yandex-cloud/nodejs-sdk/tree/master)
 [![License](https://img.shields.io/github/license/yandex-cloud/nodejs-sdk.svg)](https://github.com/yandex-cloud/nodejs-sdk/blob/master/LICENSE)
 
-Need to automate your infrastructure or use services provided by Yandex Cloud? We've got you covered.
+Need to automate your infrastructure or use services provided by Yandex.Cloud? We've got you covered.
 
 Installation:
 
@@ -16,7 +16,7 @@ Library requires at least node.js 10 and provides TypeScript declarations.
 
 There are two options for authorization your requests - OAuth Token
 and Metadata Service (if you're executing code inside VMs or Functions
-running in Yandex Cloud)
+running in Yandex.Cloud)
 
 ### OAuth Token
 
@@ -48,6 +48,22 @@ const cloudService = new CloudService();
 let response = await cloudService.list({});
 ```
 
+### IAM Token
+
+```javascript
+const {Session}      = require('yandex-cloud');
+const {CloudService} = require('yandex-cloud/api/resourcemanager/v1');
+
+// Initialize SDK with your token
+const session = new Session({ iamToken: 'YOUR_TOKEN' });
+
+// Create service client
+const cloudService = new CloudService(session);
+
+// Issue request (returns Promise)
+let response = await cloudService.list({});
+```
+
 Check `examples` directory for more examples.
 
 ## Services
@@ -57,10 +73,11 @@ Check `examples` directory for more examples.
 * Compute Cloud;
 * Container Registry;
 * Managed Services for Kubernetes;
+* Key Management Service (KMS);
 * Load Balancer;
 * Cloud Functions;
 * Virtual Private Cloud (VPC);
 * AI Translate;
 * AI Vision.
 
-If you need generated client for other Yandex Cloud services, just open an issue.
+If you need generated client for other Yandex.Cloud services, just open an issue.

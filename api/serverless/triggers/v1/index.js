@@ -142,7 +142,10 @@ module.exports = (function() {
         let valuesById = {},
           values = Object.create(valuesById);
         values[(valuesById[0] = 'TRIGGER_TYPE_UNSPECIFIED')] = 0;
+        values[(valuesById[2] = 'TIMER')] = 2;
         values[(valuesById[3] = 'MESSAGE_QUEUE')] = 3;
+        values[(valuesById[4] = 'IOT_MESSAGE')] = 4;
+        values[(valuesById[5] = 'OBJECT_STORAGE')] = 5;
         return values;
       })();
       return TriggerType;
@@ -226,17 +229,21 @@ module.exports = (function() {
         function Rule(p) {
           if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
         }
+        Rule.prototype.timer = null;
         Rule.prototype.messageQueue = null;
         Rule.prototype.iotMessage = null;
+        Rule.prototype.objectStorage = null;
         let $oneOfFields;
         Object.defineProperty(Rule.prototype, 'rule', {
-          get: $util.oneOfGetter(($oneOfFields = ['messageQueue', 'iotMessage'])),
+          get: $util.oneOfGetter(($oneOfFields = ['timer', 'messageQueue', 'iotMessage', 'objectStorage'])),
           set: $util.oneOfSetter($oneOfFields)
         });
         Rule.encode = function encode(m, w) {
           if (!w) w = $Writer.create();
+          if (m.timer != null && m.hasOwnProperty('timer')) $root.api.serverless.triggers.v1.Trigger.Timer.encode(m.timer, w.uint32(18).fork()).ldelim();
           if (m.messageQueue != null && m.hasOwnProperty('messageQueue')) $root.api.serverless.triggers.v1.Trigger.MessageQueue.encode(m.messageQueue, w.uint32(26).fork()).ldelim();
           if (m.iotMessage != null && m.hasOwnProperty('iotMessage')) $root.api.serverless.triggers.v1.Trigger.IoTMessage.encode(m.iotMessage, w.uint32(34).fork()).ldelim();
+          if (m.objectStorage != null && m.hasOwnProperty('objectStorage')) $root.api.serverless.triggers.v1.Trigger.ObjectStorage.encode(m.objectStorage, w.uint32(42).fork()).ldelim();
           return w;
         };
         Rule.decode = function decode(r, l) {
@@ -246,11 +253,17 @@ module.exports = (function() {
           while (r.pos < c) {
             let t = r.uint32();
             switch (t >>> 3) {
+              case 2:
+                m.timer = $root.api.serverless.triggers.v1.Trigger.Timer.decode(r, r.uint32());
+                break;
               case 3:
                 m.messageQueue = $root.api.serverless.triggers.v1.Trigger.MessageQueue.decode(r, r.uint32());
                 break;
               case 4:
                 m.iotMessage = $root.api.serverless.triggers.v1.Trigger.IoTMessage.decode(r, r.uint32());
+                break;
+              case 5:
+                m.objectStorage = $root.api.serverless.triggers.v1.Trigger.ObjectStorage.decode(r, r.uint32());
                 break;
               default:
                 r.skipType(t & 7);
@@ -261,19 +274,60 @@ module.exports = (function() {
         };
         return Rule;
       })();
+      Trigger.Timer = (function() {
+        function Timer(p) {
+          if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+        }
+        Timer.prototype.cronExpression = '';
+        Timer.prototype.invokeFunction = null;
+        Timer.prototype.invokeFunctionWithRetry = null;
+        let $oneOfFields;
+        Object.defineProperty(Timer.prototype, 'action', {
+          get: $util.oneOfGetter(($oneOfFields = ['invokeFunction', 'invokeFunctionWithRetry'])),
+          set: $util.oneOfSetter($oneOfFields)
+        });
+        Timer.encode = function encode(m, w) {
+          if (!w) w = $Writer.create();
+          if (m.cronExpression != null && m.hasOwnProperty('cronExpression')) w.uint32(10).string(m.cronExpression);
+          if (m.invokeFunction != null && m.hasOwnProperty('invokeFunction')) $root.api.serverless.triggers.v1.InvokeFunctionOnce.encode(m.invokeFunction, w.uint32(810).fork()).ldelim();
+          if (m.invokeFunctionWithRetry != null && m.hasOwnProperty('invokeFunctionWithRetry')) $root.api.serverless.triggers.v1.InvokeFunctionWithRetry.encode(m.invokeFunctionWithRetry, w.uint32(826).fork()).ldelim();
+          return w;
+        };
+        Timer.decode = function decode(r, l) {
+          if (!(r instanceof $Reader)) r = $Reader.create(r);
+          let c = l === undefined ? r.len : r.pos + l,
+            m = new $root.api.serverless.triggers.v1.Trigger.Timer();
+          while (r.pos < c) {
+            let t = r.uint32();
+            switch (t >>> 3) {
+              case 1:
+                m.cronExpression = r.string();
+                break;
+              case 101:
+                m.invokeFunction = $root.api.serverless.triggers.v1.InvokeFunctionOnce.decode(r, r.uint32());
+                break;
+              case 103:
+                m.invokeFunctionWithRetry = $root.api.serverless.triggers.v1.InvokeFunctionWithRetry.decode(r, r.uint32());
+                break;
+              default:
+                r.skipType(t & 7);
+                break;
+            }
+          }
+          return m;
+        };
+        return Timer;
+      })();
       Trigger.MessageQueue = (function() {
         function MessageQueue(p) {
           if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
         }
-        MessageQueue.prototype.arn = '';
+        MessageQueue.prototype.queueId = '';
         MessageQueue.prototype.serviceAccountId = '';
         MessageQueue.prototype.batchSettings = null;
+        MessageQueue.prototype.visibilityTimeout = null;
         MessageQueue.prototype.invokeFunction = null;
         let $oneOfFields;
-        Object.defineProperty(MessageQueue.prototype, 'queue', {
-          get: $util.oneOfGetter(($oneOfFields = ['arn'])),
-          set: $util.oneOfSetter($oneOfFields)
-        });
         Object.defineProperty(MessageQueue.prototype, 'action', {
           get: $util.oneOfGetter(($oneOfFields = ['invokeFunction'])),
           set: $util.oneOfSetter($oneOfFields)
@@ -282,7 +336,8 @@ module.exports = (function() {
           if (!w) w = $Writer.create();
           if (m.serviceAccountId != null && m.hasOwnProperty('serviceAccountId')) w.uint32(26).string(m.serviceAccountId);
           if (m.batchSettings != null && m.hasOwnProperty('batchSettings')) $root.api.serverless.triggers.v1.BatchSettings.encode(m.batchSettings, w.uint32(34).fork()).ldelim();
-          if (m.arn != null && m.hasOwnProperty('arn')) w.uint32(90).string(m.arn);
+          if (m.visibilityTimeout != null && m.hasOwnProperty('visibilityTimeout')) $root.contrib.google.protobuf.Duration.encode(m.visibilityTimeout, w.uint32(42).fork()).ldelim();
+          if (m.queueId != null && m.hasOwnProperty('queueId')) w.uint32(90).string(m.queueId);
           if (m.invokeFunction != null && m.hasOwnProperty('invokeFunction')) $root.api.serverless.triggers.v1.InvokeFunctionOnce.encode(m.invokeFunction, w.uint32(810).fork()).ldelim();
           return w;
         };
@@ -294,13 +349,16 @@ module.exports = (function() {
             let t = r.uint32();
             switch (t >>> 3) {
               case 11:
-                m.arn = r.string();
+                m.queueId = r.string();
                 break;
               case 3:
                 m.serviceAccountId = r.string();
                 break;
               case 4:
                 m.batchSettings = $root.api.serverless.triggers.v1.BatchSettings.decode(r, r.uint32());
+                break;
+              case 5:
+                m.visibilityTimeout = $root.contrib.google.protobuf.Duration.decode(r, r.uint32());
                 break;
               case 101:
                 m.invokeFunction = $root.api.serverless.triggers.v1.InvokeFunctionOnce.decode(r, r.uint32());
@@ -363,6 +421,79 @@ module.exports = (function() {
         };
         return IoTMessage;
       })();
+      let ObjectStorageEventType = (function() {
+        let valuesById = {},
+          values = Object.create(valuesById);
+        values[(valuesById[0] = 'OBJECT_STORAGE_EVENT_TYPE_UNSPECIFIED')] = 0;
+        values[(valuesById[1] = 'OBJECT_STORAGE_EVENT_TYPE_CREATE_OBJECT')] = 1;
+        values[(valuesById[2] = 'OBJECT_STORAGE_EVENT_TYPE_UPDATE_OBJECT')] = 2;
+        values[(valuesById[3] = 'OBJECT_STORAGE_EVENT_TYPE_DELETE_OBJECT')] = 3;
+        return values;
+      })();
+      Trigger.ObjectStorageEventType = ObjectStorageEventType;
+      Trigger.ObjectStorage = (function() {
+        function ObjectStorage(p) {
+          this.eventType = [];
+          if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+        }
+        ObjectStorage.prototype.eventType = $util.emptyArray;
+        ObjectStorage.prototype.bucketId = '';
+        ObjectStorage.prototype.prefix = '';
+        ObjectStorage.prototype.suffix = '';
+        ObjectStorage.prototype.invokeFunction = null;
+        let $oneOfFields;
+        Object.defineProperty(ObjectStorage.prototype, 'action', {
+          get: $util.oneOfGetter(($oneOfFields = ['invokeFunction'])),
+          set: $util.oneOfSetter($oneOfFields)
+        });
+        ObjectStorage.encode = function encode(m, w) {
+          if (!w) w = $Writer.create();
+          if (m.eventType != null && m.eventType.length) {
+            w.uint32(26).fork();
+            for (let i = 0; i < m.eventType.length; ++i) w.int32(m.eventType[i]);
+            w.ldelim();
+          }
+          if (m.bucketId != null && m.hasOwnProperty('bucketId')) w.uint32(34).string(m.bucketId);
+          if (m.prefix != null && m.hasOwnProperty('prefix')) w.uint32(50).string(m.prefix);
+          if (m.suffix != null && m.hasOwnProperty('suffix')) w.uint32(58).string(m.suffix);
+          if (m.invokeFunction != null && m.hasOwnProperty('invokeFunction')) $root.api.serverless.triggers.v1.InvokeFunctionWithRetry.encode(m.invokeFunction, w.uint32(810).fork()).ldelim();
+          return w;
+        };
+        ObjectStorage.decode = function decode(r, l) {
+          if (!(r instanceof $Reader)) r = $Reader.create(r);
+          let c = l === undefined ? r.len : r.pos + l,
+            m = new $root.api.serverless.triggers.v1.Trigger.ObjectStorage();
+          while (r.pos < c) {
+            let t = r.uint32();
+            switch (t >>> 3) {
+              case 3:
+                if (!(m.eventType && m.eventType.length)) m.eventType = [];
+                if ((t & 7) === 2) {
+                  let c2 = r.uint32() + r.pos;
+                  while (r.pos < c2) m.eventType.push(r.int32());
+                } else m.eventType.push(r.int32());
+                break;
+              case 4:
+                m.bucketId = r.string();
+                break;
+              case 6:
+                m.prefix = r.string();
+                break;
+              case 7:
+                m.suffix = r.string();
+                break;
+              case 101:
+                m.invokeFunction = $root.api.serverless.triggers.v1.InvokeFunctionWithRetry.decode(r, r.uint32());
+                break;
+              default:
+                r.skipType(t & 7);
+                break;
+            }
+          }
+          return m;
+        };
+        return ObjectStorage;
+      })();
       return Trigger;
     })();
   })(root);
@@ -416,12 +547,14 @@ module.exports = (function() {
       InvokeFunctionWithRetry.prototype.functionTag = '';
       InvokeFunctionWithRetry.prototype.serviceAccountId = '';
       InvokeFunctionWithRetry.prototype.retrySettings = null;
+      InvokeFunctionWithRetry.prototype.deadLetterQueue = null;
       InvokeFunctionWithRetry.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.functionId != null && m.hasOwnProperty('functionId')) w.uint32(10).string(m.functionId);
         if (m.functionTag != null && m.hasOwnProperty('functionTag')) w.uint32(18).string(m.functionTag);
         if (m.serviceAccountId != null && m.hasOwnProperty('serviceAccountId')) w.uint32(26).string(m.serviceAccountId);
         if (m.retrySettings != null && m.hasOwnProperty('retrySettings')) $root.api.serverless.triggers.v1.RetrySettings.encode(m.retrySettings, w.uint32(34).fork()).ldelim();
+        if (m.deadLetterQueue != null && m.hasOwnProperty('deadLetterQueue')) $root.api.serverless.triggers.v1.PutQueueMessage.encode(m.deadLetterQueue, w.uint32(42).fork()).ldelim();
         return w;
       };
       InvokeFunctionWithRetry.decode = function decode(r, l) {
@@ -443,6 +576,9 @@ module.exports = (function() {
             case 4:
               m.retrySettings = $root.api.serverless.triggers.v1.RetrySettings.decode(r, r.uint32());
               break;
+            case 5:
+              m.deadLetterQueue = $root.api.serverless.triggers.v1.PutQueueMessage.decode(r, r.uint32());
+              break;
             default:
               r.skipType(t & 7);
               break;
@@ -451,6 +587,42 @@ module.exports = (function() {
         return m;
       };
       return InvokeFunctionWithRetry;
+    })();
+  })(root);
+  (function($root) {
+    $root.PutQueueMessage = (function() {
+      function PutQueueMessage(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      PutQueueMessage.prototype.queueId = '';
+      PutQueueMessage.prototype.serviceAccountId = '';
+      PutQueueMessage.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.serviceAccountId != null && m.hasOwnProperty('serviceAccountId')) w.uint32(18).string(m.serviceAccountId);
+        if (m.queueId != null && m.hasOwnProperty('queueId')) w.uint32(90).string(m.queueId);
+        return w;
+      };
+      PutQueueMessage.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.serverless.triggers.v1.PutQueueMessage();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 11:
+              m.queueId = r.string();
+              break;
+            case 2:
+              m.serviceAccountId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return PutQueueMessage;
     })();
   })(root);
   (function($root) {

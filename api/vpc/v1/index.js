@@ -194,6 +194,21 @@ module.exports = (function() {
             return $root.api.vpc.v1.ListNetworkOperationsResponse.encode(r).finish();
           },
           responseDeserialize: $root.api.vpc.v1.ListNetworkOperationsResponse.decode
+        },
+        move: {
+          path: '/yandex.cloud.vpc.v1.NetworkService/Move',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.vpc.v1.MoveNetworkRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.vpc.v1.MoveNetworkRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.vpc.v1.MoveNetworkRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
         }
       });
       ctor.__endpointId = 'vpc';
@@ -733,6 +748,73 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
+    $root.MoveNetworkRequest = (function() {
+      function MoveNetworkRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      MoveNetworkRequest.prototype.networkId = '';
+      MoveNetworkRequest.prototype.destinationFolderId = '';
+      MoveNetworkRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.networkId != null && m.hasOwnProperty('networkId')) w.uint32(10).string(m.networkId);
+        if (m.destinationFolderId != null && m.hasOwnProperty('destinationFolderId')) w.uint32(18).string(m.destinationFolderId);
+        return w;
+      };
+      MoveNetworkRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.MoveNetworkRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.networkId = r.string();
+              break;
+            case 2:
+              m.destinationFolderId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return MoveNetworkRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.MoveNetworkMetadata = (function() {
+      function MoveNetworkMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      MoveNetworkMetadata.prototype.networkId = '';
+      MoveNetworkMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.networkId != null && m.hasOwnProperty('networkId')) w.uint32(10).string(m.networkId);
+        return w;
+      };
+      MoveNetworkMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.MoveNetworkMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.networkId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return MoveNetworkMetadata;
+    })();
+  })(root);
+  (function($root) {
     $root.RouteTable = (function() {
       function RouteTable(p) {
         this.labels = {};
@@ -982,6 +1064,21 @@ module.exports = (function() {
             return $root.api.vpc.v1.ListRouteTableOperationsResponse.encode(r).finish();
           },
           responseDeserialize: $root.api.vpc.v1.ListRouteTableOperationsResponse.decode
+        },
+        move: {
+          path: '/yandex.cloud.vpc.v1.RouteTableService/Move',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.vpc.v1.MoveRouteTableRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.vpc.v1.MoveRouteTableRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.vpc.v1.MoveRouteTableRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
         }
       });
       ctor.__endpointId = 'vpc';
@@ -1463,6 +1560,73 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
+    $root.MoveRouteTableRequest = (function() {
+      function MoveRouteTableRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      MoveRouteTableRequest.prototype.routeTableId = '';
+      MoveRouteTableRequest.prototype.destinationFolderId = '';
+      MoveRouteTableRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.routeTableId != null && m.hasOwnProperty('routeTableId')) w.uint32(10).string(m.routeTableId);
+        if (m.destinationFolderId != null && m.hasOwnProperty('destinationFolderId')) w.uint32(18).string(m.destinationFolderId);
+        return w;
+      };
+      MoveRouteTableRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.MoveRouteTableRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.routeTableId = r.string();
+              break;
+            case 2:
+              m.destinationFolderId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return MoveRouteTableRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.MoveRouteTableMetadata = (function() {
+      function MoveRouteTableMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      MoveRouteTableMetadata.prototype.routeTableId = '';
+      MoveRouteTableMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.routeTableId != null && m.hasOwnProperty('routeTableId')) w.uint32(10).string(m.routeTableId);
+        return w;
+      };
+      MoveRouteTableMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.MoveRouteTableMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.routeTableId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return MoveRouteTableMetadata;
+    })();
+  })(root);
+  (function($root) {
     $root.Subnet = (function() {
       function Subnet(p) {
         this.labels = {};
@@ -1665,6 +1829,21 @@ module.exports = (function() {
             return $root.api.vpc.v1.ListSubnetOperationsResponse.encode(r).finish();
           },
           responseDeserialize: $root.api.vpc.v1.ListSubnetOperationsResponse.decode
+        },
+        move: {
+          path: '/yandex.cloud.vpc.v1.SubnetService/Move',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.vpc.v1.MoveSubnetRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.vpc.v1.MoveSubnetRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.vpc.v1.MoveSubnetRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
         }
       });
       ctor.__endpointId = 'vpc';
@@ -2149,6 +2328,73 @@ module.exports = (function() {
         return m;
       };
       return ListSubnetOperationsResponse;
+    })();
+  })(root);
+  (function($root) {
+    $root.MoveSubnetRequest = (function() {
+      function MoveSubnetRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      MoveSubnetRequest.prototype.subnetId = '';
+      MoveSubnetRequest.prototype.destinationFolderId = '';
+      MoveSubnetRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.subnetId != null && m.hasOwnProperty('subnetId')) w.uint32(10).string(m.subnetId);
+        if (m.destinationFolderId != null && m.hasOwnProperty('destinationFolderId')) w.uint32(18).string(m.destinationFolderId);
+        return w;
+      };
+      MoveSubnetRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.MoveSubnetRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.subnetId = r.string();
+              break;
+            case 2:
+              m.destinationFolderId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return MoveSubnetRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.MoveSubnetMetadata = (function() {
+      function MoveSubnetMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      MoveSubnetMetadata.prototype.subnetId = '';
+      MoveSubnetMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.subnetId != null && m.hasOwnProperty('subnetId')) w.uint32(10).string(m.subnetId);
+        return w;
+      };
+      MoveSubnetMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.MoveSubnetMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.subnetId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return MoveSubnetMetadata;
     })();
   })(root);
   registar.register('api.vpc.v1', root);

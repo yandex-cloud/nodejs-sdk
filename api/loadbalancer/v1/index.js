@@ -277,6 +277,7 @@ module.exports = (function() {
           values = Object.create(valuesById);
         values[(valuesById[0] = 'TYPE_UNSPECIFIED')] = 0;
         values[(valuesById[1] = 'EXTERNAL')] = 1;
+        values[(valuesById[2] = 'INTERNAL')] = 2;
         return values;
       })();
       NetworkLoadBalancer.Type = Type;
@@ -341,6 +342,7 @@ module.exports = (function() {
       Listener.prototype.port = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
       Listener.prototype.protocol = 0;
       Listener.prototype.targetPort = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+      Listener.prototype.subnetId = '';
       Listener.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.name != null && m.hasOwnProperty('name')) w.uint32(10).string(m.name);
@@ -348,6 +350,7 @@ module.exports = (function() {
         if (m.port != null && m.hasOwnProperty('port')) w.uint32(24).int64(m.port);
         if (m.protocol != null && m.hasOwnProperty('protocol')) w.uint32(32).int32(m.protocol);
         if (m.targetPort != null && m.hasOwnProperty('targetPort')) w.uint32(40).int64(m.targetPort);
+        if (m.subnetId != null && m.hasOwnProperty('subnetId')) w.uint32(50).string(m.subnetId);
         return w;
       };
       Listener.decode = function decode(r, l) {
@@ -372,6 +375,9 @@ module.exports = (function() {
             case 5:
               m.targetPort = r.int64();
               break;
+            case 6:
+              m.subnetId = r.string();
+              break;
             default:
               r.skipType(t & 7);
               break;
@@ -384,6 +390,7 @@ module.exports = (function() {
           values = Object.create(valuesById);
         values[(valuesById[0] = 'PROTOCOL_UNSPECIFIED')] = 0;
         values[(valuesById[1] = 'TCP')] = 1;
+        values[(valuesById[2] = 'UDP')] = 2;
         return values;
       })();
       Listener.Protocol = Protocol;
@@ -1659,6 +1666,47 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
+    $root.InternalAddressSpec = (function() {
+      function InternalAddressSpec(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      InternalAddressSpec.prototype.address = '';
+      InternalAddressSpec.prototype.subnetId = '';
+      InternalAddressSpec.prototype.ipVersion = 0;
+      InternalAddressSpec.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.address != null && m.hasOwnProperty('address')) w.uint32(10).string(m.address);
+        if (m.subnetId != null && m.hasOwnProperty('subnetId')) w.uint32(18).string(m.subnetId);
+        if (m.ipVersion != null && m.hasOwnProperty('ipVersion')) w.uint32(24).int32(m.ipVersion);
+        return w;
+      };
+      InternalAddressSpec.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.loadbalancer.v1.InternalAddressSpec();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.address = r.string();
+              break;
+            case 2:
+              m.subnetId = r.string();
+              break;
+            case 3:
+              m.ipVersion = r.int32();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return InternalAddressSpec;
+    })();
+  })(root);
+  (function($root) {
     $root.ListenerSpec = (function() {
       function ListenerSpec(p) {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
@@ -1667,10 +1715,11 @@ module.exports = (function() {
       ListenerSpec.prototype.port = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
       ListenerSpec.prototype.protocol = 0;
       ListenerSpec.prototype.externalAddressSpec = null;
+      ListenerSpec.prototype.internalAddressSpec = null;
       ListenerSpec.prototype.targetPort = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
       let $oneOfFields;
       Object.defineProperty(ListenerSpec.prototype, 'address', {
-        get: $util.oneOfGetter(($oneOfFields = ['externalAddressSpec'])),
+        get: $util.oneOfGetter(($oneOfFields = ['externalAddressSpec', 'internalAddressSpec'])),
         set: $util.oneOfSetter($oneOfFields)
       });
       ListenerSpec.encode = function encode(m, w) {
@@ -1680,6 +1729,7 @@ module.exports = (function() {
         if (m.protocol != null && m.hasOwnProperty('protocol')) w.uint32(24).int32(m.protocol);
         if (m.externalAddressSpec != null && m.hasOwnProperty('externalAddressSpec')) $root.api.loadbalancer.v1.ExternalAddressSpec.encode(m.externalAddressSpec, w.uint32(34).fork()).ldelim();
         if (m.targetPort != null && m.hasOwnProperty('targetPort')) w.uint32(40).int64(m.targetPort);
+        if (m.internalAddressSpec != null && m.hasOwnProperty('internalAddressSpec')) $root.api.loadbalancer.v1.InternalAddressSpec.encode(m.internalAddressSpec, w.uint32(50).fork()).ldelim();
         return w;
       };
       ListenerSpec.decode = function decode(r, l) {
@@ -1700,6 +1750,9 @@ module.exports = (function() {
               break;
             case 4:
               m.externalAddressSpec = $root.api.loadbalancer.v1.ExternalAddressSpec.decode(r, r.uint32());
+              break;
+            case 6:
+              m.internalAddressSpec = $root.api.loadbalancer.v1.InternalAddressSpec.decode(r, r.uint32());
               break;
             case 5:
               m.targetPort = r.int64();

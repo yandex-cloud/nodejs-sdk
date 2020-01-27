@@ -152,32 +152,6 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.Empty = (function() {
-      function Empty(p) {
-        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
-      }
-      Empty.encode = function encode(m, w) {
-        if (!w) w = $Writer.create();
-        return w;
-      };
-      Empty.decode = function decode(r, l) {
-        if (!(r instanceof $Reader)) r = $Reader.create(r);
-        let c = l === undefined ? r.len : r.pos + l,
-          m = new $root.contrib.google.protobuf.Empty();
-        while (r.pos < c) {
-          let t = r.uint32();
-          switch (t >>> 3) {
-            default:
-              r.skipType(t & 7);
-              break;
-          }
-        }
-        return m;
-      };
-      return Empty;
-    })();
-  })(root);
-  (function($root) {
     $root.DoubleValue = (function() {
       function DoubleValue(p) {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
@@ -1491,6 +1465,7 @@ module.exports = (function() {
       FieldOptions.prototype['.yandex.cloud.value'] = '';
       FieldOptions.prototype['.yandex.cloud.size'] = '';
       FieldOptions.prototype['.yandex.cloud.length'] = '';
+      FieldOptions.prototype['.yandex.cloud.unique'] = false;
       FieldOptions.prototype['.yandex.cloud.mapKey'] = null;
       FieldOptions.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
@@ -1509,6 +1484,7 @@ module.exports = (function() {
         if (m['.yandex.cloud.value'] != null && m.hasOwnProperty('.yandex.cloud.value')) w.uint32(812026).string(m['.yandex.cloud.value']);
         if (m['.yandex.cloud.size'] != null && m.hasOwnProperty('.yandex.cloud.size')) w.uint32(812034).string(m['.yandex.cloud.size']);
         if (m['.yandex.cloud.length'] != null && m.hasOwnProperty('.yandex.cloud.length')) w.uint32(812042).string(m['.yandex.cloud.length']);
+        if (m['.yandex.cloud.unique'] != null && m.hasOwnProperty('.yandex.cloud.unique')) w.uint32(812048).bool(m['.yandex.cloud.unique']);
         if (m['.yandex.cloud.mapKey'] != null && m.hasOwnProperty('.yandex.cloud.mapKey')) $root.api.MapKeySpec.encode(m['.yandex.cloud.mapKey'], w.uint32(812082).fork()).ldelim();
         return w;
       };
@@ -1558,6 +1534,9 @@ module.exports = (function() {
               break;
             case 101505:
               m['.yandex.cloud.length'] = r.string();
+              break;
+            case 101506:
+              m['.yandex.cloud.unique'] = r.bool();
               break;
             case 101510:
               m['.yandex.cloud.mapKey'] = $root.api.MapKeySpec.decode(r, r.uint32());
@@ -2118,6 +2097,32 @@ module.exports = (function() {
         return Annotation;
       })();
       return GeneratedCodeInfo;
+    })();
+  })(root);
+  (function($root) {
+    $root.Empty = (function() {
+      function Empty(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      Empty.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        return w;
+      };
+      Empty.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.contrib.google.protobuf.Empty();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return Empty;
     })();
   })(root);
   (function($root) {

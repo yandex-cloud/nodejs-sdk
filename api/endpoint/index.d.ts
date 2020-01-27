@@ -7,30 +7,30 @@ import * as events from 'events';
 import { Session } from '../../index.js';
 
 export interface ApiEndpoint {
-  id?: string;
+    id?: string;
 
-  address?: string;
+    address?: string;
 }
 
 export class ApiEndpointService {
-  constructor(session?: Session);
-  get(request: GetApiEndpointRequest): Promise<ApiEndpoint>;
+    constructor(session?: Session);
+    get(request: GetApiEndpointRequest): Promise<ApiEndpoint>;
 
-  list(request: ListApiEndpointsRequest): Promise<ListApiEndpointsResponse>;
+    list(request: ListApiEndpointsRequest): Promise<ListApiEndpointsResponse>;
 }
 
 export interface GetApiEndpointRequest {
-  apiEndpointId?: string;
+    apiEndpointId?: string;
 }
 
 export interface ListApiEndpointsRequest {
-  pageSize?: Long;
+    pageSize?: Long;
 
-  pageToken?: string;
+    pageToken?: string;
 }
 
 export interface ListApiEndpointsResponse {
-  endpoints?: ApiEndpoint[];
+    endpoints?: ApiEndpoint[];
 
-  nextPageToken?: string;
+    nextPageToken?: string;
 }

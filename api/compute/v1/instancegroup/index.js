@@ -30,6 +30,7 @@ module.exports = (function() {
       InstanceGroup.prototype.loadBalancerSpec = null;
       InstanceGroup.prototype.healthChecksSpec = null;
       InstanceGroup.prototype.serviceAccountId = '';
+      InstanceGroup.prototype.status = 0;
       InstanceGroup.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.id != null && m.hasOwnProperty('id')) w.uint32(10).string(m.id);
@@ -57,6 +58,7 @@ module.exports = (function() {
         if (m.loadBalancerSpec != null && m.hasOwnProperty('loadBalancerSpec')) $root.api.compute.v1.instancegroup.LoadBalancerSpec.encode(m.loadBalancerSpec, w.uint32(114).fork()).ldelim();
         if (m.healthChecksSpec != null && m.hasOwnProperty('healthChecksSpec')) $root.api.compute.v1.instancegroup.HealthChecksSpec.encode(m.healthChecksSpec, w.uint32(122).fork()).ldelim();
         if (m.serviceAccountId != null && m.hasOwnProperty('serviceAccountId')) w.uint32(130).string(m.serviceAccountId);
+        if (m.status != null && m.hasOwnProperty('status')) w.uint32(136).int32(m.status);
         return w;
       };
       InstanceGroup.decode = function decode(r, l) {
@@ -116,6 +118,9 @@ module.exports = (function() {
             case 16:
               m.serviceAccountId = r.string();
               break;
+            case 17:
+              m.status = r.int32();
+              break;
             default:
               r.skipType(t & 7);
               break;
@@ -123,6 +128,18 @@ module.exports = (function() {
         }
         return m;
       };
+      let Status = (function() {
+        let valuesById = {},
+          values = Object.create(valuesById);
+        values[(valuesById[0] = 'STATUS_UNSPECIFIED')] = 0;
+        values[(valuesById[1] = 'STARTING')] = 1;
+        values[(valuesById[2] = 'ACTIVE')] = 2;
+        values[(valuesById[3] = 'STOPPING')] = 3;
+        values[(valuesById[4] = 'STOPPED')] = 4;
+        values[(valuesById[5] = 'DELETING')] = 5;
+        return values;
+      })();
+      InstanceGroup.Status = Status;
       return InstanceGroup;
     })();
   })(root);
@@ -322,6 +339,7 @@ module.exports = (function() {
       };
       ScalePolicy.AutoScale = (function() {
         function AutoScale(p) {
+          this.customRules = [];
           if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
         }
         AutoScale.prototype.minZoneSize = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
@@ -331,6 +349,7 @@ module.exports = (function() {
         AutoScale.prototype.stabilizationDuration = null;
         AutoScale.prototype.initialSize = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
         AutoScale.prototype.cpuUtilizationRule = null;
+        AutoScale.prototype.customRules = $util.emptyArray;
         AutoScale.encode = function encode(m, w) {
           if (!w) w = $Writer.create();
           if (m.minZoneSize != null && m.hasOwnProperty('minZoneSize')) w.uint32(8).int64(m.minZoneSize);
@@ -340,6 +359,9 @@ module.exports = (function() {
           if (m.stabilizationDuration != null && m.hasOwnProperty('stabilizationDuration')) $root.contrib.google.protobuf.Duration.encode(m.stabilizationDuration, w.uint32(42).fork()).ldelim();
           if (m.initialSize != null && m.hasOwnProperty('initialSize')) w.uint32(48).int64(m.initialSize);
           if (m.cpuUtilizationRule != null && m.hasOwnProperty('cpuUtilizationRule')) $root.api.compute.v1.instancegroup.ScalePolicy.CpuUtilizationRule.encode(m.cpuUtilizationRule, w.uint32(58).fork()).ldelim();
+          if (m.customRules != null && m.customRules.length) {
+            for (let i = 0; i < m.customRules.length; ++i) $root.api.compute.v1.instancegroup.ScalePolicy.CustomRule.encode(m.customRules[i], w.uint32(66).fork()).ldelim();
+          }
           return w;
         };
         AutoScale.decode = function decode(r, l) {
@@ -369,6 +391,10 @@ module.exports = (function() {
                 break;
               case 7:
                 m.cpuUtilizationRule = $root.api.compute.v1.instancegroup.ScalePolicy.CpuUtilizationRule.decode(r, r.uint32());
+                break;
+              case 8:
+                if (!(m.customRules && m.customRules.length)) m.customRules = [];
+                m.customRules.push($root.api.compute.v1.instancegroup.ScalePolicy.CustomRule.decode(r, r.uint32()));
                 break;
               default:
                 r.skipType(t & 7);
@@ -407,6 +433,68 @@ module.exports = (function() {
           return m;
         };
         return CpuUtilizationRule;
+      })();
+      ScalePolicy.CustomRule = (function() {
+        function CustomRule(p) {
+          if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+        }
+        CustomRule.prototype.ruleType = 0;
+        CustomRule.prototype.metricType = 0;
+        CustomRule.prototype.metricName = '';
+        CustomRule.prototype.target = 0;
+        CustomRule.encode = function encode(m, w) {
+          if (!w) w = $Writer.create();
+          if (m.ruleType != null && m.hasOwnProperty('ruleType')) w.uint32(8).int32(m.ruleType);
+          if (m.metricType != null && m.hasOwnProperty('metricType')) w.uint32(16).int32(m.metricType);
+          if (m.metricName != null && m.hasOwnProperty('metricName')) w.uint32(26).string(m.metricName);
+          if (m.target != null && m.hasOwnProperty('target')) w.uint32(33).double(m.target);
+          return w;
+        };
+        CustomRule.decode = function decode(r, l) {
+          if (!(r instanceof $Reader)) r = $Reader.create(r);
+          let c = l === undefined ? r.len : r.pos + l,
+            m = new $root.api.compute.v1.instancegroup.ScalePolicy.CustomRule();
+          while (r.pos < c) {
+            let t = r.uint32();
+            switch (t >>> 3) {
+              case 1:
+                m.ruleType = r.int32();
+                break;
+              case 2:
+                m.metricType = r.int32();
+                break;
+              case 3:
+                m.metricName = r.string();
+                break;
+              case 4:
+                m.target = r.double();
+                break;
+              default:
+                r.skipType(t & 7);
+                break;
+            }
+          }
+          return m;
+        };
+        let RuleType = (function() {
+          let valuesById = {},
+            values = Object.create(valuesById);
+          values[(valuesById[0] = 'RULE_TYPE_UNSPECIFIED')] = 0;
+          values[(valuesById[1] = 'UTILIZATION')] = 1;
+          values[(valuesById[2] = 'WORKLOAD')] = 2;
+          return values;
+        })();
+        CustomRule.RuleType = RuleType;
+        let MetricType = (function() {
+          let valuesById = {},
+            values = Object.create(valuesById);
+          values[(valuesById[0] = 'METRIC_TYPE_UNSPECIFIED')] = 0;
+          values[(valuesById[1] = 'GAUGE')] = 1;
+          values[(valuesById[2] = 'COUNTER')] = 2;
+          return values;
+        })();
+        CustomRule.MetricType = MetricType;
+        return CustomRule;
       })();
       ScalePolicy.FixedScale = (function() {
         function FixedScale(p) {
@@ -574,6 +662,7 @@ module.exports = (function() {
       InstanceTemplate.prototype.networkInterfaceSpecs = $util.emptyArray;
       InstanceTemplate.prototype.schedulingPolicy = null;
       InstanceTemplate.prototype.serviceAccountId = '';
+      InstanceTemplate.prototype.networkSettings = null;
       InstanceTemplate.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.description != null && m.hasOwnProperty('description')) w.uint32(10).string(m.description);
@@ -610,6 +699,7 @@ module.exports = (function() {
         }
         if (m.schedulingPolicy != null && m.hasOwnProperty('schedulingPolicy')) $root.api.compute.v1.instancegroup.SchedulingPolicy.encode(m.schedulingPolicy, w.uint32(74).fork()).ldelim();
         if (m.serviceAccountId != null && m.hasOwnProperty('serviceAccountId')) w.uint32(82).string(m.serviceAccountId);
+        if (m.networkSettings != null && m.hasOwnProperty('networkSettings')) $root.api.compute.v1.instancegroup.NetworkSettings.encode(m.networkSettings, w.uint32(90).fork()).ldelim();
         return w;
       };
       InstanceTemplate.decode = function decode(r, l) {
@@ -659,6 +749,9 @@ module.exports = (function() {
               break;
             case 10:
               m.serviceAccountId = r.string();
+              break;
+            case 11:
+              m.networkSettings = $root.api.compute.v1.instancegroup.NetworkSettings.decode(r, r.uint32());
               break;
             default:
               r.skipType(t & 7);
@@ -974,6 +1067,47 @@ module.exports = (function() {
         return m;
       };
       return SchedulingPolicy;
+    })();
+  })(root);
+  (function($root) {
+    $root.NetworkSettings = (function() {
+      function NetworkSettings(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      NetworkSettings.prototype.type = 0;
+      NetworkSettings.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.type != null && m.hasOwnProperty('type')) w.uint32(8).int32(m.type);
+        return w;
+      };
+      NetworkSettings.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.instancegroup.NetworkSettings();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.type = r.int32();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      let Type = (function() {
+        let valuesById = {},
+          values = Object.create(valuesById);
+        values[(valuesById[0] = 'TYPE_UNSPECIFIED')] = 0;
+        values[(valuesById[1] = 'STANDARD')] = 1;
+        values[(valuesById[2] = 'SOFTWARE_ACCELERATED')] = 2;
+        values[(valuesById[3] = 'HARDWARE_ACCELERATED')] = 3;
+        return values;
+      })();
+      NetworkSettings.Type = Type;
+      return NetworkSettings;
     })();
   })(root);
   (function($root) {
@@ -1577,6 +1711,36 @@ module.exports = (function() {
           },
           responseDeserialize: $root.api.operation.Operation.decode
         },
+        stop: {
+          path: '/yandex.cloud.compute.v1.instancegroup.InstanceGroupService/Stop',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.compute.v1.instancegroup.StopInstanceGroupRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.compute.v1.instancegroup.StopInstanceGroupRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.compute.v1.instancegroup.StopInstanceGroupRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        start: {
+          path: '/yandex.cloud.compute.v1.instancegroup.InstanceGroupService/Start',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.compute.v1.instancegroup.StartInstanceGroupRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.compute.v1.instancegroup.StartInstanceGroupRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.compute.v1.instancegroup.StartInstanceGroupRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
         delete: {
           path: '/yandex.cloud.compute.v1.instancegroup.InstanceGroupService/Delete',
           requestStream: false,
@@ -2021,6 +2185,130 @@ module.exports = (function() {
         return m;
       };
       return UpdateInstanceGroupMetadata;
+    })();
+  })(root);
+  (function($root) {
+    $root.StartInstanceGroupRequest = (function() {
+      function StartInstanceGroupRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      StartInstanceGroupRequest.prototype.instanceGroupId = '';
+      StartInstanceGroupRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.instanceGroupId != null && m.hasOwnProperty('instanceGroupId')) w.uint32(10).string(m.instanceGroupId);
+        return w;
+      };
+      StartInstanceGroupRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.instancegroup.StartInstanceGroupRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.instanceGroupId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return StartInstanceGroupRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.StartInstanceGroupMetadata = (function() {
+      function StartInstanceGroupMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      StartInstanceGroupMetadata.prototype.instanceGroupId = '';
+      StartInstanceGroupMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.instanceGroupId != null && m.hasOwnProperty('instanceGroupId')) w.uint32(10).string(m.instanceGroupId);
+        return w;
+      };
+      StartInstanceGroupMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.instancegroup.StartInstanceGroupMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.instanceGroupId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return StartInstanceGroupMetadata;
+    })();
+  })(root);
+  (function($root) {
+    $root.StopInstanceGroupRequest = (function() {
+      function StopInstanceGroupRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      StopInstanceGroupRequest.prototype.instanceGroupId = '';
+      StopInstanceGroupRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.instanceGroupId != null && m.hasOwnProperty('instanceGroupId')) w.uint32(10).string(m.instanceGroupId);
+        return w;
+      };
+      StopInstanceGroupRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.instancegroup.StopInstanceGroupRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.instanceGroupId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return StopInstanceGroupRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.StopInstanceGroupMetadata = (function() {
+      function StopInstanceGroupMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      StopInstanceGroupMetadata.prototype.instanceGroupId = '';
+      StopInstanceGroupMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.instanceGroupId != null && m.hasOwnProperty('instanceGroupId')) w.uint32(10).string(m.instanceGroupId);
+        return w;
+      };
+      StopInstanceGroupMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.instancegroup.StopInstanceGroupMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.instanceGroupId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return StopInstanceGroupMetadata;
     })();
   })(root);
   (function($root) {

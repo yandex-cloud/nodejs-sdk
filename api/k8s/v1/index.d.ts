@@ -14,1168 +14,1295 @@ import * as type from '../../../contrib/google/type';
  * A Kubernetes cluster.
  */
 export interface Cluster {
-  /**
-   * ID of the Kubernetes cluster.
-   */
-  id?: string;
+    /**
+     * ID of the Kubernetes cluster.
+     */
+    id?: string;
 
-  /**
-   * ID of the folder that the Kubernetes cluster belongs to.
-   */
-  folderId?: string;
+    /**
+     * ID of the folder that the Kubernetes cluster belongs to.
+     */
+    folderId?: string;
 
-  /**
-   * Creation timestamp.
-   */
-  createdAt?: protobuf.Timestamp;
+    /**
+     * Creation timestamp.
+     */
+    createdAt?: protobuf.Timestamp;
 
-  /**
-   * Name of the Kubernetes cluster.
-   */
-  name?: string;
+    /**
+     * Name of the Kubernetes cluster.
+     */
+    name?: string;
 
-  /**
-   * Description of the Kubernetes cluster. 0-256 characters long.
-   */
-  description?: string;
+    /**
+     * Description of the Kubernetes cluster. 0-256 characters long.
+     */
+    description?: string;
 
-  /**
-   * Resource labels as `key:value` pairs. Мaximum of 64 per resource.
-   */
-  labels?: { [s: string]: string };
+    /**
+     * Resource labels as `key:value` pairs. Мaximum of 64 per resource.
+     */
+    labels?: { [s: string]: string };
 
-  /**
-   * Status of the Kubernetes cluster.
-   */
-  status?: Cluster.Status;
+    /**
+     * Status of the Kubernetes cluster.
+     */
+    status?: Cluster.Status;
 
-  /**
-   * Health of the Kubernetes cluster.
-   */
-  health?: Cluster.Health;
+    /**
+     * Health of the Kubernetes cluster.
+     */
+    health?: Cluster.Health;
 
-  /**
-   * ID of the network the Kubernetes cluster belongs to.
-   */
-  networkId?: string;
+    /**
+     * ID of the network the Kubernetes cluster belongs to.
+     */
+    networkId?: string;
 
-  /**
-   * Properties of the master for the Kubernetes cluster.
-   */
-  master?: Master;
+    /**
+     * Properties of the master for the Kubernetes cluster.
+     */
+    master?: Master;
 
-  /**
-   * Allocation policy for IP addresses of services and pods inside the Kubernetes cluster in different availability zones.
-   */
-  ipAllocationPolicy?: IPAllocationPolicy;
+    /**
+     * Allocation policy for IP addresses of services and pods inside the Kubernetes cluster in different availability zones.
+     */
+    ipAllocationPolicy?: IPAllocationPolicy;
 
-  /**
-   * Gateway IPv4 address.
-   */
-  gatewayIpv4Address?: string;
+    /**
+     * Gateway IPv4 address.
+     */
+    gatewayIpv4Address?: string;
 
-  /**
-   * Service account to be used for provisioning Compute Cloud and VPC resources for Kubernetes cluster.
-   */
-  serviceAccountId?: string;
+    /**
+     * Service account to be used for provisioning Compute Cloud and VPC resources for Kubernetes cluster.
+     */
+    serviceAccountId?: string;
 
-  /**
-   * Service account to be used by the worker nodes of the Kubernetes cluster to access Container Registry or to push node logs and metrics.
-   */
-  nodeServiceAccountId?: string;
+    /**
+     * Service account to be used by the worker nodes of the Kubernetes cluster to access Container Registry or to push node logs and metrics.
+     */
+    nodeServiceAccountId?: string;
 
-  releaseChannel?: ReleaseChannel;
+    releaseChannel?: ReleaseChannel;
 }
 
 export namespace Cluster {
-  export enum Status {
-    STATUS_UNSPECIFIED = 0,
+    export enum Status {
+        STATUS_UNSPECIFIED = 0,
 
-    /**
-     * Kubernetes cluster is waiting for resources to be allocated.
-     */
-    PROVISIONING = 1,
+        /**
+         * Kubernetes cluster is waiting for resources to be allocated.
+         */
+        PROVISIONING = 1,
 
-    /**
-     * Kubernetes cluster is running.
-     */
-    RUNNING = 2,
+        /**
+         * Kubernetes cluster is running.
+         */
+        RUNNING = 2,
 
-    /**
-     * Kubernetes cluster is being reconciled.
-     */
-    RECONCILING = 3,
+        /**
+         * Kubernetes cluster is being reconciled.
+         */
+        RECONCILING = 3,
 
-    /**
-     * Kubernetes cluster is being stopped.
-     */
-    STOPPING = 4,
+        /**
+         * Kubernetes cluster is being stopped.
+         */
+        STOPPING = 4,
 
-    /**
-     * Kubernetes cluster stopped.
-     */
-    STOPPED = 5,
+        /**
+         * Kubernetes cluster stopped.
+         */
+        STOPPED = 5,
 
-    /**
-     * Kubernetes cluster is being deleted.
-     */
-    DELETING = 6
-  }
+        /**
+         * Kubernetes cluster is being deleted.
+         */
+        DELETING = 6,
 
-  export enum Health {
-    HEALTH_UNSPECIFIED = 0,
+        /**
+         * Kubernetes cluster is being started.
+         */
+        STARTING = 7,
+    }
 
-    /**
-     * Kubernetes cluster is alive and well.
-     */
-    HEALTHY = 1,
+    export enum Health {
+        HEALTH_UNSPECIFIED = 0,
 
-    /**
-     * Kubernetes cluster is inoperable.
-     */
-    UNHEALTHY = 2
-  }
+        /**
+         * Kubernetes cluster is alive and well.
+         */
+        HEALTHY = 1,
+
+        /**
+         * Kubernetes cluster is inoperable.
+         */
+        UNHEALTHY = 2,
+    }
 }
 
 export enum ReleaseChannel {
-  RELEASE_CHANNEL_UNSPECIFIED = 0,
+    RELEASE_CHANNEL_UNSPECIFIED = 0,
 
-  RAPID = 1,
+    RAPID = 1,
 
-  REGULAR = 2,
+    REGULAR = 2,
 
-  STABLE = 3
+    STABLE = 3,
 }
 
 export interface Master {
-  /**
-   * Parameters of the availability zone for the master.
-   */
-  zonalMaster?: ZonalMaster;
+    /**
+     * Parameters of the availability zone for the master.
+     */
+    zonalMaster?: ZonalMaster;
 
-  /**
-   * Version of Kubernetes components that runs on the master.
-   */
-  version?: string;
+    /**
+     * Parameters of the region for the master.
+     */
+    regionalMaster?: RegionalMaster;
 
-  /**
-   * Endpoints of the master. Endpoints constitute of scheme and port (i.e. `https://ip-address:port`)
-   * and can be used by the clients to communicate with the Kubernetes API of the Kubernetes cluster.
-   */
-  endpoints?: MasterEndpoints;
+    /**
+     * Version of Kubernetes components that runs on the master.
+     */
+    version?: string;
 
-  /**
-   * Master authentication parameters are used to establish trust between the master and a client.
-   */
-  masterAuth?: MasterAuth;
+    /**
+     * Endpoints of the master. Endpoints constitute of scheme and port (i.e. `https://ip-address:port`)
+     * and can be used by the clients to communicate with the Kubernetes API of the Kubernetes cluster.
+     */
+    endpoints?: MasterEndpoints;
 
-  versionInfo?: VersionInfo;
+    /**
+     * Master authentication parameters are used to establish trust between the master and a client.
+     */
+    masterAuth?: MasterAuth;
 
-  maintenancePolicy?: MasterMaintenancePolicy;
+    versionInfo?: VersionInfo;
+
+    maintenancePolicy?: MasterMaintenancePolicy;
 }
 
 export interface MasterAuth {
-  /**
-   * PEM-encoded public certificate that is the root of trust for the Kubernetes cluster.
-   */
-  clusterCaCertificate?: string;
+    /**
+     * PEM-encoded public certificate that is the root of trust for the Kubernetes cluster.
+     */
+    clusterCaCertificate?: string;
 }
 
 export interface ZonalMaster {
-  /**
-   * ID of the availability zone where the master resides.
-   */
-  zoneId?: string;
+    /**
+     * ID of the availability zone where the master resides.
+     */
+    zoneId?: string;
 
-  /**
-   * An IPv4 internal network address that is assigned to the master.
-   */
-  internalV4Address?: string;
+    /**
+     * An IPv4 internal network address that is assigned to the master.
+     */
+    internalV4Address?: string;
 
-  /**
-   * An IPv4 external network address that is assigned to the master.
-   */
-  externalV4Address?: string;
+    /**
+     * An IPv4 external network address that is assigned to the master.
+     */
+    externalV4Address?: string;
+}
+
+export interface RegionalMaster {
+    /**
+     * ID of the region where the master resides.
+     */
+    regionId?: string;
+
+    /**
+     * An IPv4 internal network address that is assigned to the master.
+     */
+    internalV4Address?: string;
+
+    /**
+     * An IPv4 external network address that is assigned to the master.
+     */
+    externalV4Address?: string;
 }
 
 export interface MasterEndpoints {
-  /**
-   * Internal endpoint that can be used to connect to the master from cloud networks.
-   */
-  internalV4Endpoint?: string;
+    /**
+     * Internal endpoint that can be used to connect to the master from cloud networks.
+     */
+    internalV4Endpoint?: string;
 
-  /**
-   * External endpoint that can be used to access Kubernetes cluster API from the internet (outside of the cloud).
-   */
-  externalV4Endpoint?: string;
+    /**
+     * External endpoint that can be used to access Kubernetes cluster API from the internet (outside of the cloud).
+     */
+    externalV4Endpoint?: string;
 }
 
 export interface IPAllocationPolicy {
-  /**
-   * CIDR block. IP range for allocating pod addresses.
-   *
-   * It should not overlap with any subnet in the network the Kubernetes cluster located in. Static routes will be
-   * set up for this CIDR blocks in node subnets.
-   */
-  clusterIpv4CidrBlock?: string;
+    /**
+     * CIDR block. IP range for allocating pod addresses.
+     *
+     * It should not overlap with any subnet in the network the Kubernetes cluster located in. Static routes will be
+     * set up for this CIDR blocks in node subnets.
+     */
+    clusterIpv4CidrBlock?: string;
 
-  /**
-   * CIDR block. IP range Kubernetes service Kubernetes cluster IP addresses will be allocated from.
-   *
-   * It should not overlap with any subnet in the network the Kubernetes cluster located in.
-   */
-  serviceIpv4CidrBlock?: string;
+    /**
+     * CIDR block. IP range Kubernetes service Kubernetes cluster IP addresses will be allocated from.
+     *
+     * It should not overlap with any subnet in the network the Kubernetes cluster located in.
+     */
+    serviceIpv4CidrBlock?: string;
 }
 
 export interface MasterMaintenancePolicy {
-  autoUpgrade?: boolean;
+    autoUpgrade?: boolean;
 
-  maintenanceWindow?: MaintenanceWindow;
+    maintenanceWindow?: MaintenanceWindow;
 }
 
 /**
  * A set of methods for managing Kubernetes cluster.
  */
 export class ClusterService {
-  constructor(session?: Session);
-  /**
-   * Returns the specified Kubernetes cluster.
-   *
-   * To get the list of available Kubernetes cluster, make a [List] request.
-   */
-  get(request: GetClusterRequest): Promise<Cluster>;
+    constructor(session?: Session);
+    /**
+     * Returns the specified Kubernetes cluster.
+     *
+     * To get the list of available Kubernetes cluster, make a [List] request.
+     */
+    get(request: GetClusterRequest): Promise<Cluster>;
 
-  /**
-   * Retrieves the list of Kubernetes cluster in the specified folder.
-   */
-  list(request: ListClustersRequest): Promise<ListClustersResponse>;
+    /**
+     * Retrieves the list of Kubernetes cluster in the specified folder.
+     */
+    list(request: ListClustersRequest): Promise<ListClustersResponse>;
 
-  /**
-   * Creates a Kubernetes cluster in the specified folder.
-   */
-  create(request: CreateClusterRequest): Promise<operation.Operation>;
+    /**
+     * Creates a Kubernetes cluster in the specified folder.
+     */
+    create(request: CreateClusterRequest): Promise<operation.Operation>;
 
-  /**
-   * Updates the specified Kubernetes cluster.
-   */
-  update(request: UpdateClusterRequest): Promise<operation.Operation>;
+    /**
+     * Updates the specified Kubernetes cluster.
+     */
+    update(request: UpdateClusterRequest): Promise<operation.Operation>;
 
-  /**
-   * Deletes the specified Kubernetes cluster.
-   */
-  delete(request: DeleteClusterRequest): Promise<operation.Operation>;
+    /**
+     * Deletes the specified Kubernetes cluster.
+     */
+    delete(request: DeleteClusterRequest): Promise<operation.Operation>;
 
-  /**
-   * Lists nodegroup for the specified Kubernetes cluster.
-   */
-  listNodeGroups(request: ListClusterNodeGroupsRequest): Promise<ListClusterNodeGroupsResponse>;
+    stop(request: StopClusterRequest): Promise<operation.Operation>;
 
-  /**
-   * Lists operations for the specified Kubernetes cluster.
-   */
-  listOperations(request: ListClusterOperationsRequest): Promise<ListClusterOperationsResponse>;
+    start(request: StartClusterRequest): Promise<operation.Operation>;
+
+    /**
+     * Lists nodegroup for the specified Kubernetes cluster.
+     */
+    listNodeGroups(
+        request: ListClusterNodeGroupsRequest
+    ): Promise<ListClusterNodeGroupsResponse>;
+
+    /**
+     * Lists operations for the specified Kubernetes cluster.
+     */
+    listOperations(
+        request: ListClusterOperationsRequest
+    ): Promise<ListClusterOperationsResponse>;
 }
 
 export interface GetClusterRequest {
-  /**
-   * ID of the Kubernetes cluster to return.
-   */
-  clusterId: string;
+    /**
+     * ID of the Kubernetes cluster to return.
+     */
+    clusterId: string;
 }
 
 export interface ListClustersRequest {
-  /**
-   * ID of the folder to list Kubernetes cluster in.
-   * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
-   */
-  folderId: string;
+    /**
+     * ID of the folder to list Kubernetes cluster in.
+     * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+     */
+    folderId: string;
 
-  /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size],
-   * the service returns a [ListClustersResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
-   * Default value: 100.
-   */
-  pageSize?: Long;
+    /**
+     * The maximum number of results per page to return. If the number of available
+     * results is larger than [page_size],
+     * the service returns a [ListClustersResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     * Default value: 100.
+     */
+    pageSize?: Long;
 
-  /**
-   * Page token. To get the next page of results, set [page_token] to the
-   * [ListClustersResponse.next_page_token] returned by a previous list request.
-   */
-  pageToken?: string;
+    /**
+     * Page token. To get the next page of results, set [page_token] to the
+     * [ListClustersResponse.next_page_token] returned by a previous list request.
+     */
+    pageToken?: string;
 
-  /**
-   * A filter expression that filters resources listed in the response.
-   * The expression must specify:
-   * 1. The field name. Currently you can use filtering only on [Cluster.name] field.
-   * 2. An operator. Can be either `=` or `!=` for single values, `IN` or `NOT IN` for lists of values.
-   * 3. The value. Must be 1-61 characters long and match the regular expression `|[a-z][-a-z0-9]{1,61}[a-z0-9]`.
-   */
-  filter?: string;
+    /**
+     * A filter expression that filters resources listed in the response.
+     * The expression must specify:
+     * 1. The field name. Currently you can use filtering only on [Cluster.name] field.
+     * 2. An operator. Can be either `=` or `!=` for single values, `IN` or `NOT IN` for lists of values.
+     * 3. The value. Must be 1-61 characters long and match the regular expression `|[a-z][-a-z0-9]{1,61}[a-z0-9]`.
+     */
+    filter?: string;
 }
 
 export interface ListClustersResponse {
-  /**
-   * List of Kubernetes cluster.
-   */
-  clusters?: Cluster[];
+    /**
+     * List of Kubernetes cluster.
+     */
+    clusters?: Cluster[];
 
-  /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListClustersRequest.page_size], use
-   * the [next_page_token] as the value
-   * for the [ListClustersRequest.page_token] query parameter
-   * in the next list request. Each subsequent list request will have its own
-   * [next_page_token] to continue paging through the results.
-   */
-  nextPageToken?: string;
+    /**
+     * This token allows you to get the next page of results for list requests. If the number of results
+     * is larger than [ListClustersRequest.page_size], use
+     * the [next_page_token] as the value
+     * for the [ListClustersRequest.page_token] query parameter
+     * in the next list request. Each subsequent list request will have its own
+     * [next_page_token] to continue paging through the results.
+     */
+    nextPageToken?: string;
 }
 
 export interface DeleteClusterRequest {
-  /**
-   * ID of the Kubernetes cluster to delete.
-   * To get Kubernetes cluster ID use a [ClusterService.List] request.
-   */
-  clusterId: string;
+    /**
+     * ID of the Kubernetes cluster to delete.
+     * To get Kubernetes cluster ID use a [ClusterService.List] request.
+     */
+    clusterId: string;
 }
 
 export interface DeleteClusterMetadata {
-  /**
-   * ID of the Kubernetes cluster that is being deleted.
-   */
-  clusterId?: string;
+    /**
+     * ID of the Kubernetes cluster that is being deleted.
+     */
+    clusterId?: string;
+}
+
+export interface StopClusterRequest {
+    clusterId: string;
+
+    serviceAccountId?: string;
+}
+
+export interface StopClusterMetadata {
+    clusterId?: string;
+}
+
+export interface StartClusterRequest {
+    clusterId: string;
+}
+
+export interface StartClusterMetadata {
+    clusterId?: string;
 }
 
 export interface UpdateClusterRequest {
-  /**
-   * ID of the Kubernetes cluster to update.
-   * To get the Kubernetes cluster ID use a [ClusterService.List] request.
-   */
-  clusterId: string;
+    /**
+     * ID of the Kubernetes cluster to update.
+     * To get the Kubernetes cluster ID use a [ClusterService.List] request.
+     */
+    clusterId: string;
 
-  updateMask?: protobuf.FieldMask;
+    updateMask?: protobuf.FieldMask;
 
-  /**
-   * Name of the Kubernetes cluster.
-   * The name must be unique within the folder.
-   */
-  name?: string;
+    /**
+     * Name of the Kubernetes cluster.
+     * The name must be unique within the folder.
+     */
+    name?: string;
 
-  /**
-   * Description of the Kubernetes cluster.
-   */
-  description?: string;
+    /**
+     * Description of the Kubernetes cluster.
+     */
+    description?: string;
 
-  /**
-   * Resource labels as `key:value` pairs.
-   *
-   * Existing set of `labels` is completely replaced by the provided set.
-   */
-  labels?: { [s: string]: string };
+    /**
+     * Resource labels as `key:value` pairs.
+     *
+     * Existing set of `labels` is completely replaced by the provided set.
+     */
+    labels?: { [s: string]: string };
 
-  gatewayIpv4Address?: string;
+    gatewayIpv4Address?: string;
 
-  masterSpec?: MasterUpdateSpec;
+    masterSpec?: MasterUpdateSpec;
 
-  /**
-   * Service account to be used for provisioning Compute Cloud and VPC resources for Kubernetes cluster.
-   * Selected service account should have `edit` role on the folder where the Kubernetes cluster will be
-   * located and on the folder where selected network resides.
-   */
-  serviceAccountId?: string;
+    /**
+     * Service account to be used for provisioning Compute Cloud and VPC resources for Kubernetes cluster.
+     * Selected service account should have `edit` role on the folder where the Kubernetes cluster will be
+     * located and on the folder where selected network resides.
+     */
+    serviceAccountId?: string;
 
-  /**
-   * Service account to be used by the worker nodes of the Kubernetes cluster to access Container Registry
-   * or to push node logs and metrics.
-   */
-  nodeServiceAccountId?: string;
+    /**
+     * Service account to be used by the worker nodes of the Kubernetes cluster to access Container Registry
+     * or to push node logs and metrics.
+     */
+    nodeServiceAccountId?: string;
 }
 
 export interface MasterUpdateSpec {
-  version?: UpdateVersionSpec;
+    version?: UpdateVersionSpec;
 
-  maintenancePolicy?: MasterMaintenancePolicy;
+    maintenancePolicy?: MasterMaintenancePolicy;
 }
 
 export interface UpdateClusterMetadata {
-  /**
-   * ID of the Kubernetes cluster that is being updated.
-   */
-  clusterId?: string;
+    /**
+     * ID of the Kubernetes cluster that is being updated.
+     */
+    clusterId?: string;
 }
 
 export interface CreateClusterRequest {
-  /**
-   * ID of the folder to create a Kubernetes cluster in.
-   * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
-   */
-  folderId: string;
+    /**
+     * ID of the folder to create a Kubernetes cluster in.
+     * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+     */
+    folderId: string;
 
-  /**
-   * Name of the Kubernetes cluster.
-   * The name must be unique within the folder.
-   */
-  name?: string;
+    /**
+     * Name of the Kubernetes cluster.
+     * The name must be unique within the folder.
+     */
+    name?: string;
 
-  /**
-   * Description of the Kubernetes cluster.
-   */
-  description?: string;
+    /**
+     * Description of the Kubernetes cluster.
+     */
+    description?: string;
 
-  /**
-   * Resource labels as `key:value` pairs.
-   */
-  labels?: { [s: string]: string };
+    /**
+     * Resource labels as `key:value` pairs.
+     */
+    labels?: { [s: string]: string };
 
-  /**
-   * ID of the network.
-   */
-  networkId: string;
+    /**
+     * ID of the network.
+     */
+    networkId: string;
 
-  /**
-   * IP allocation policy of the Kubernetes cluster.
-   */
-  masterSpec: MasterSpec;
+    /**
+     * IP allocation policy of the Kubernetes cluster.
+     */
+    masterSpec: MasterSpec;
 
-  /**
-   * IP allocation policy of the Kubernetes cluster.
-   */
-  ipAllocationPolicy?: IPAllocationPolicy;
+    /**
+     * IP allocation policy of the Kubernetes cluster.
+     */
+    ipAllocationPolicy?: IPAllocationPolicy;
 
-  /**
-   * Gateway IPv4 address.
-   */
-  gatewayIpv4Address?: string;
+    /**
+     * Gateway IPv4 address.
+     */
+    gatewayIpv4Address?: string;
 
-  /**
-   * Service account to be used for provisioning Compute Cloud and VPC resources for Kubernetes cluster.
-   * Selected service account should have `edit` role on the folder where the Kubernetes cluster will be
-   * located and on the folder where selected network resides.
-   */
-  serviceAccountId: string;
+    /**
+     * Service account to be used for provisioning Compute Cloud and VPC resources for Kubernetes cluster.
+     * Selected service account should have `edit` role on the folder where the Kubernetes cluster will be
+     * located and on the folder where selected network resides.
+     */
+    serviceAccountId: string;
 
-  /**
-   * Service account to be used by the worker nodes of the Kubernetes cluster to access Container Registry or to push node logs and metrics.
-   */
-  nodeServiceAccountId: string;
+    /**
+     * Service account to be used by the worker nodes of the Kubernetes cluster to access Container Registry or to push node logs and metrics.
+     */
+    nodeServiceAccountId: string;
 
-  releaseChannel?: ReleaseChannel;
+    releaseChannel?: ReleaseChannel;
 }
 
 export interface CreateClusterMetadata {
-  /**
-   * ID of the Kubernetes cluster that is being created.
-   */
-  clusterId?: string;
+    /**
+     * ID of the Kubernetes cluster that is being created.
+     */
+    clusterId?: string;
+}
+
+export interface AutoUpgradeMasterMetadata {
+    /**
+     * ID of the Kubernetes cluster that is being auto upgraded.
+     */
+    clusterId?: string;
 }
 
 export interface ListClusterOperationsRequest {
-  /**
-   * ID of the Kubernetes cluster to list operations for.
-   */
-  clusterId: string;
+    /**
+     * ID of the Kubernetes cluster to list operations for.
+     */
+    clusterId: string;
 
-  /**
-   * The maximum number of results per page that should be returned. If the number of available
-   * results is larger than [page_size], the service returns a [ListClusterOperationsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
-   * Default value: 100.
-   */
-  pageSize?: Long;
+    /**
+     * The maximum number of results per page that should be returned. If the number of available
+     * results is larger than [page_size], the service returns a [ListClusterOperationsResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     * Default value: 100.
+     */
+    pageSize?: Long;
 
-  /**
-   * Page token. To get the next page of results, set [page_token] to the
-   * [ListClusterOperationsResponse.next_page_token] returned by a previous list request.
-   */
-  pageToken?: string;
+    /**
+     * Page token. To get the next page of results, set [page_token] to the
+     * [ListClusterOperationsResponse.next_page_token] returned by a previous list request.
+     */
+    pageToken?: string;
 
-  /**
-   * A filter expression that filters resources listed in the response.
-   * Currently you can use filtering only on [Cluster.name] field.
-   */
-  filter?: string;
+    /**
+     * A filter expression that filters resources listed in the response.
+     * Currently you can use filtering only on [Cluster.name] field.
+     */
+    filter?: string;
 }
 
 export interface ListClusterOperationsResponse {
-  /**
-   * List of operations for the specified Kubernetes cluster.
-   */
-  operations?: operation.Operation[];
+    /**
+     * List of operations for the specified Kubernetes cluster.
+     */
+    operations?: operation.Operation[];
 
-  /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListClusterOperationsRequest.page_size], use the [next_page_token] as the value
-   * for the [ListClusterOperationsRequest.page_token] query parameter in the next list request.
-   * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
-   */
-  nextPageToken?: string;
+    /**
+     * This token allows you to get the next page of results for list requests. If the number of results
+     * is larger than [ListClusterOperationsRequest.page_size], use the [next_page_token] as the value
+     * for the [ListClusterOperationsRequest.page_token] query parameter in the next list request.
+     * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
+     */
+    nextPageToken?: string;
 }
 
 export interface ListClusterNodeGroupsRequest {
-  /**
-   * ID of the Kubernetes cluster to list node groups in.
-   * To get the Kubernetes cluster ID use a [ClusterService.List] request.
-   */
-  clusterId: string;
+    /**
+     * ID of the Kubernetes cluster to list node groups in.
+     * To get the Kubernetes cluster ID use a [ClusterService.List] request.
+     */
+    clusterId: string;
 
-  /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size],
-   * the service returns a [ListClusterNodeGroupsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
-   * Default value: 100.
-   */
-  pageSize?: Long;
+    /**
+     * The maximum number of results per page to return. If the number of available
+     * results is larger than [page_size],
+     * the service returns a [ListClusterNodeGroupsResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     * Default value: 100.
+     */
+    pageSize?: Long;
 
-  /**
-   * Page token. To get the next page of results, set [page_token] to the
-   * [ListClusterNodeGroupsResponse.next_page_token] returned by a previous list request.
-   */
-  pageToken?: string;
+    /**
+     * Page token. To get the next page of results, set [page_token] to the
+     * [ListClusterNodeGroupsResponse.next_page_token] returned by a previous list request.
+     */
+    pageToken?: string;
 
-  /**
-   * A filter expression that filters resources listed in the response.
-   * Currently you can use filtering only on [Cluster.name] field.
-   */
-  filter?: string;
+    /**
+     * A filter expression that filters resources listed in the response.
+     * Currently you can use filtering only on [Cluster.name] field.
+     */
+    filter?: string;
 }
 
 export interface ListClusterNodeGroupsResponse {
-  /**
-   * List of node groups for the specified Kubernetes cluster.
-   */
-  nodeGroups?: NodeGroup[];
+    /**
+     * List of node groups for the specified Kubernetes cluster.
+     */
+    nodeGroups?: NodeGroup[];
 
-  /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListClusterNodeGroupsRequest.page_size], use
-   * the [next_page_token] as the value
-   * for the [ListClusterNodeGroupsRequest.page_token] query parameter
-   * in the next list request. Each subsequent list request will have its own
-   * [next_page_token] to continue paging through the results.
-   */
-  nextPageToken?: string;
+    /**
+     * This token allows you to get the next page of results for list requests. If the number of results
+     * is larger than [ListClusterNodeGroupsRequest.page_size], use
+     * the [next_page_token] as the value
+     * for the [ListClusterNodeGroupsRequest.page_token] query parameter
+     * in the next list request. Each subsequent list request will have its own
+     * [next_page_token] to continue paging through the results.
+     */
+    nextPageToken?: string;
 }
 
 export interface MasterSpec {
-  /**
-   * Specification of the master availability zone.
-   */
-  zonalMasterSpec?: ZonalMasterSpec;
+    /**
+     * Specification of the master availability zone.
+     */
+    zonalMasterSpec?: ZonalMasterSpec;
+
+    regionalMasterSpec?: RegionalMasterSpec;
+
+    version?: string;
+
+    maintenancePolicy?: MasterMaintenancePolicy;
 }
 
 export interface ZonalMasterSpec {
-  /**
-   * ID of the availability zone.
-   */
-  zoneId: string;
+    /**
+     * ID of the availability zone.
+     */
+    zoneId: string;
 
-  /**
-   * Specification of parameters for internal IPv4 networking.
-   */
-  internalV4AddressSpec?: InternalAddressSpec;
+    /**
+     * Specification of parameters for internal IPv4 networking.
+     */
+    internalV4AddressSpec?: InternalAddressSpec;
 
-  /**
-   * Specification of parameters for external IPv4 networking.
-   */
-  externalV4AddressSpec?: ExternalAddressSpec;
+    /**
+     * Specification of parameters for external IPv4 networking.
+     */
+    externalV4AddressSpec?: ExternalAddressSpec;
+}
+
+export interface RegionalMasterSpec {
+    regionId: string;
+
+    locations?: MasterLocation[];
+
+    /**
+     * Specify to allocate a static public IP for the master
+     */
+    externalV4AddressSpec?: ExternalAddressSpec;
 }
 
 export interface InternalAddressSpec {
-  /**
-   * ID of the subnet. If no ID is specified, and there only one subnet in specified zone, an address in this subnet will be allocated.
-   */
-  subnetId?: string;
+    /**
+     * ID of the subnet. If no ID is specified, and there only one subnet in specified zone, an address in this subnet will be allocated.
+     */
+    subnetId?: string;
 }
 
 export interface ExternalAddressSpec {}
 
+export interface MasterLocation {
+    zoneId: string;
+
+    /**
+     * If not specified and there is a single subnet in specified zone, address
+     * in this subnet will be allocated.
+     */
+    internalV4AddressSpec?: InternalAddressSpec;
+}
+
 export interface MaintenanceWindow {
-  anytime?: AnytimeMaintenanceWindow;
+    anytime?: AnytimeMaintenanceWindow;
 
-  dailyMaintenanceWindow?: DailyMaintenanceWindow;
+    dailyMaintenanceWindow?: DailyMaintenanceWindow;
 
-  weeklyMaintenanceWindow?: WeeklyMaintenanceWindow;
+    weeklyMaintenanceWindow?: WeeklyMaintenanceWindow;
 }
 
 export interface AnytimeMaintenanceWindow {}
 
 export interface DailyMaintenanceWindow {
-  startTime: type.TimeOfDay;
+    startTime: type.TimeOfDay;
 
-  duration?: protobuf.Duration;
+    duration?: protobuf.Duration;
 }
 
 export interface DaysOfWeekMaintenanceWindow {
-  days?: type.DayOfWeek[];
+    days?: type.DayOfWeek[];
 
-  startTime: type.TimeOfDay;
+    startTime: type.TimeOfDay;
 
-  duration?: protobuf.Duration;
+    duration?: protobuf.Duration;
 }
 
 export interface WeeklyMaintenanceWindow {
-  daysOfWeek?: DaysOfWeekMaintenanceWindow[];
+    daysOfWeek?: DaysOfWeekMaintenanceWindow[];
 }
 
 export interface NodeGroup {
-  /**
-   * ID of the node group.
-   */
-  id?: string;
+    /**
+     * ID of the node group.
+     */
+    id?: string;
 
-  /**
-   * ID of the cluster that the node group belongs to.
-   */
-  clusterId?: string;
+    /**
+     * ID of the cluster that the node group belongs to.
+     */
+    clusterId?: string;
 
-  /**
-   * Creation timestamp.
-   */
-  createdAt?: protobuf.Timestamp;
+    /**
+     * Creation timestamp.
+     */
+    createdAt?: protobuf.Timestamp;
 
-  /**
-   * Name of the node group.
-   * The name is unique within the folder.
-   */
-  name?: string;
+    /**
+     * Name of the node group.
+     * The name is unique within the folder.
+     */
+    name?: string;
 
-  /**
-   * Description of the node group. 0-256 characters long.
-   */
-  description?: string;
+    /**
+     * Description of the node group. 0-256 characters long.
+     */
+    description?: string;
 
-  /**
-   * Resource labels as `key:value` pairs. Мaximum of 64 per resource.
-   */
-  labels?: { [s: string]: string };
+    /**
+     * Resource labels as `key:value` pairs. Мaximum of 64 per resource.
+     */
+    labels?: { [s: string]: string };
 
-  /**
-   * Status of the node group.
-   */
-  status?: NodeGroup.Status;
+    /**
+     * Status of the node group.
+     */
+    status?: NodeGroup.Status;
 
-  /**
-   * Node template that specifies parameters of the compute instances for the node group.
-   */
-  nodeTemplate?: NodeTemplate;
+    /**
+     * Node template that specifies parameters of the compute instances for the node group.
+     */
+    nodeTemplate?: NodeTemplate;
 
-  /**
-   * Scale policy of the node group.  For more information, see [Scaling policy](/docs/compute/concepts/instance-groups/policies#scale-policy).
-   */
-  scalePolicy?: ScalePolicy;
+    /**
+     * Scale policy of the node group.  For more information, see [Scaling policy](/docs/compute/concepts/instance-groups/policies#scale-policy).
+     */
+    scalePolicy?: ScalePolicy;
 
-  /**
-   * Allocation policy by which resources for node group are allocated to zones and regions.
-   */
-  allocationPolicy?: NodeGroupAllocationPolicy;
+    /**
+     * Allocation policy by which resources for node group are allocated to zones and regions.
+     */
+    allocationPolicy?: NodeGroupAllocationPolicy;
 
-  /**
-   * ID of the managed instance group associated with this node group.
-   */
-  instanceGroupId?: string;
+    /**
+     * ID of the managed instance group associated with this node group.
+     */
+    instanceGroupId?: string;
 
-  /**
-   * Version of Kubernetes components that runs on the nodes.
-   * Deprecated. Use version_info.current_version.
-   */
-  nodeVersion?: string;
+    /**
+     * Version of Kubernetes components that runs on the nodes.
+     * Deprecated. Use version_info.current_version.
+     */
+    nodeVersion?: string;
 
-  versionInfo?: VersionInfo;
+    versionInfo?: VersionInfo;
 
-  maintenancePolicy?: NodeGroupMaintenancePolicy;
+    maintenancePolicy?: NodeGroupMaintenancePolicy;
 }
 
 export namespace NodeGroup {
-  export enum Status {
-    STATUS_UNSPECIFIED = 0,
+    export enum Status {
+        STATUS_UNSPECIFIED = 0,
 
-    /**
-     * Node group is waiting for resources to be allocated.
-     */
-    PROVISIONING = 1,
+        /**
+         * Node group is waiting for resources to be allocated.
+         */
+        PROVISIONING = 1,
 
-    /**
-     * Node group is running.
-     */
-    RUNNING = 2,
+        /**
+         * Node group is running.
+         */
+        RUNNING = 2,
 
-    /**
-     * Node group is waiting for some work to be done, such as upgrading node software.
-     */
-    RECONCILING = 3,
+        /**
+         * Node group is waiting for some work to be done, such as upgrading node software.
+         */
+        RECONCILING = 3,
 
-    /**
-     * Node group is being stopped.
-     */
-    STOPPING = 4,
+        /**
+         * Node group is being stopped.
+         */
+        STOPPING = 4,
 
-    /**
-     * Node group stopped.
-     */
-    STOPPED = 5,
+        /**
+         * Node group stopped.
+         */
+        STOPPED = 5,
 
-    /**
-     * Node group is being deleted.
-     */
-    DELETING = 6
-  }
+        /**
+         * Node group is being deleted.
+         */
+        DELETING = 6,
+
+        /**
+         * Node group is being started.
+         */
+        STARTING = 7,
+    }
 }
 
 export interface NodeTemplate {
-  /**
-   * ID of the hardware platform configuration for the node.
-   */
-  platformId?: string;
+    /**
+     * ID of the hardware platform configuration for the node.
+     */
+    platformId?: string;
 
-  /**
-   * Computing resources of the node such as the amount of memory and number of cores.
-   */
-  resourcesSpec?: ResourcesSpec;
+    /**
+     * Computing resources of the node such as the amount of memory and number of cores.
+     */
+    resourcesSpec?: ResourcesSpec;
 
-  /**
-   * The metadata as `key:value` pairs assigned to this instance template. This includes custom metadata and predefined keys.
-   *
-   * For example, you may use the metadata in order to provide your public SSH key to the node.
-   * For more information, see [Metadata](/docs/compute/concepts/vm-metadata).
-   */
-  bootDiskSpec?: DiskSpec;
+    /**
+     * The metadata as `key:value` pairs assigned to this instance template. This includes custom metadata and predefined keys.
+     *
+     * For example, you may use the metadata in order to provide your public SSH key to the node.
+     * For more information, see [Metadata](/docs/compute/concepts/vm-metadata).
+     */
+    bootDiskSpec?: DiskSpec;
 
-  metadata?: { [s: string]: string };
+    metadata?: { [s: string]: string };
 
-  /**
-   * Specification for the create network interfaces for the node group compute instances.
-   */
-  v4AddressSpec?: NodeAddressSpec;
+    /**
+     * Specification for the create network interfaces for the node group compute instances.
+     */
+    v4AddressSpec?: NodeAddressSpec;
 
-  /**
-   * Scheduling policy configuration.
-   */
-  schedulingPolicy?: SchedulingPolicy;
+    /**
+     * Scheduling policy configuration.
+     */
+    schedulingPolicy?: SchedulingPolicy;
 }
 
 export interface NodeAddressSpec {
-  /**
-   * One-to-one NAT configuration. Setting up one-to-one NAT ensures that public IP addresses are assigned to nodes, and therefore internet is accessible for all nodes of the node group. If the field is not set, NAT will not be set up.
-   */
-  oneToOneNatSpec?: OneToOneNatSpec;
+    /**
+     * One-to-one NAT configuration. Setting up one-to-one NAT ensures that public IP addresses are assigned to nodes, and therefore internet is accessible for all nodes of the node group. If the field is not set, NAT will not be set up.
+     */
+    oneToOneNatSpec?: OneToOneNatSpec;
 }
 
 export interface OneToOneNatSpec {
-  /**
-   * IP version for the public IP address.
-   */
-  ipVersion?: IpVersion;
+    /**
+     * IP version for the public IP address.
+     */
+    ipVersion?: IpVersion;
 }
 
 export enum IpVersion {
-  IP_VERSION_UNSPECIFIED = 0,
+    IP_VERSION_UNSPECIFIED = 0,
 
-  /**
-   * IPv4 address, for example 192.168.0.0.
-   */
-  IPV4 = 1,
+    /**
+     * IPv4 address, for example 192.168.0.0.
+     */
+    IPV4 = 1,
 
-  /**
-   * IPv6 address, not available yet.
-   */
-  IPV6 = 2
+    /**
+     * IPv6 address, not available yet.
+     */
+    IPV6 = 2,
 }
 
 export interface ResourcesSpec {
-  /**
-   * Amount of memory available to the node, specified in bytes.
-   */
-  memory?: Long;
+    /**
+     * Amount of memory available to the node, specified in bytes.
+     */
+    memory?: Long;
 
-  /**
-   * Number of cores available to the node.
-   */
-  cores?: Long;
+    /**
+     * Number of cores available to the node.
+     */
+    cores?: Long;
 
-  /**
-   * Baseline level of CPU performance with the possibility to burst performance above that baseline level.
-   * This field sets baseline performance for each core.
-   */
-  coreFraction?: Long;
+    /**
+     * Baseline level of CPU performance with the possibility to burst performance above that baseline level.
+     * This field sets baseline performance for each core.
+     */
+    coreFraction?: Long;
 }
 
 export interface DiskSpec {
-  /**
-   * ID of the disk type.
-   */
-  diskTypeId?: string;
+    /**
+     * ID of the disk type.
+     */
+    diskTypeId?: string;
 
-  /**
-   * Size of the disk, specified in bytes.
-   */
-  diskSize?: Long;
+    /**
+     * Size of the disk, specified in bytes.
+     */
+    diskSize?: Long;
 }
 
 export interface ScalePolicy {
-  /**
-   * Fixed scale policy of the node group.
-   */
-  fixedScale?: ScalePolicy.FixedScale;
+    /**
+     * Fixed scale policy of the node group.
+     */
+    fixedScale?: ScalePolicy.FixedScale;
+
+    /**
+     * Auto scale policy of the node group.
+     */
+    autoScale?: ScalePolicy.AutoScale;
 }
 
 export namespace ScalePolicy {
-  export interface FixedScale {
-    /**
-     * Number of nodes in the node group.
-     */
-    size?: Long;
-  }
+    export interface FixedScale {
+        /**
+         * Number of nodes in the node group.
+         */
+        size?: Long;
+    }
+
+    export interface AutoScale {
+        /**
+         * Minimum number of nodes in the node group.
+         */
+        minSize?: Long;
+
+        /**
+         * Maximum number of nodes in the node group.
+         */
+        maxSize?: Long;
+
+        /**
+         * Initial number of nodes in the node group.
+         */
+        initialSize?: Long;
+    }
 }
 
 export interface NodeGroupAllocationPolicy {
-  /**
-   * List of locations where resources for the node group will be allocated.
-   */
-  locations?: NodeGroupLocation[];
+    /**
+     * List of locations where resources for the node group will be allocated.
+     */
+    locations?: NodeGroupLocation[];
 }
 
 export interface NodeGroupLocation {
-  /**
-   * ID of the availability zone where the nodes may reside.
-   */
-  zoneId: string;
+    /**
+     * ID of the availability zone where the nodes may reside.
+     */
+    zoneId: string;
 
-  /**
-   * ID of the subnet. If a network chosen for the Kubernetes cluster has only one subnet in the specified zone, subnet ID may be omitted.
-   */
-  subnetId?: string;
+    /**
+     * ID of the subnet. If a network chosen for the Kubernetes cluster has only one subnet in the specified zone, subnet ID may be omitted.
+     */
+    subnetId?: string;
 }
 
 export interface SchedulingPolicy {
-  /**
-   * True for preemptible compute instances. Default value is false. Preemptible compute instances are stopped at least once every 24 hours, and can be stopped at any time
-   * if their resources are needed by Compute.
-   * For more information, see [Preemptible Virtual Machines](/docs/compute/concepts/preemptible-vm).
-   */
-  preemptible?: boolean;
+    /**
+     * True for preemptible compute instances. Default value is false. Preemptible compute instances are stopped at least once every 24 hours, and can be stopped at any time
+     * if their resources are needed by Compute.
+     * For more information, see [Preemptible Virtual Machines](/docs/compute/concepts/preemptible-vm).
+     */
+    preemptible?: boolean;
 }
 
 export interface NodeGroupMaintenancePolicy {
-  autoUpgrade?: boolean;
+    autoUpgrade?: boolean;
 
-  autoRepair?: boolean;
+    autoRepair?: boolean;
 
-  maintenanceWindow?: MaintenanceWindow;
+    maintenanceWindow?: MaintenanceWindow;
 }
 
 /**
  * A set of methods for managing node groups.
  */
 export class NodeGroupService {
-  constructor(session?: Session);
-  /**
-   * Returns the specified node group.
-   *
-   * To get the list of available node group, make a [List] request.
-   */
-  get(request: GetNodeGroupRequest): Promise<NodeGroup>;
+    constructor(session?: Session);
+    /**
+     * Returns the specified node group.
+     *
+     * To get the list of available node group, make a [List] request.
+     */
+    get(request: GetNodeGroupRequest): Promise<NodeGroup>;
 
-  /**
-   * Retrieves the list of node group in the specified Kubernetes cluster.
-   */
-  list(request: ListNodeGroupsRequest): Promise<ListNodeGroupsResponse>;
+    /**
+     * Retrieves the list of node group in the specified Kubernetes cluster.
+     */
+    list(request: ListNodeGroupsRequest): Promise<ListNodeGroupsResponse>;
 
-  /**
-   * Creates a node group in the specified Kubernetes cluster.
-   */
-  create(request: CreateNodeGroupRequest): Promise<operation.Operation>;
+    /**
+     * Creates a node group in the specified Kubernetes cluster.
+     */
+    create(request: CreateNodeGroupRequest): Promise<operation.Operation>;
 
-  /**
-   * Updates the specified node group.
-   */
-  update(request: UpdateNodeGroupRequest): Promise<operation.Operation>;
+    /**
+     * Updates the specified node group.
+     */
+    update(request: UpdateNodeGroupRequest): Promise<operation.Operation>;
 
-  /**
-   * Deletes the specified node group.
-   */
-  delete(request: DeleteNodeGroupRequest): Promise<operation.Operation>;
+    /**
+     * Deletes the specified node group.
+     */
+    delete(request: DeleteNodeGroupRequest): Promise<operation.Operation>;
 
-  /**
-   * Lists operations for the specified node group.
-   */
-  listOperations(request: ListNodeGroupOperationsRequest): Promise<ListNodeGroupOperationsResponse>;
+    /**
+     * Lists operations for the specified node group.
+     */
+    listOperations(
+        request: ListNodeGroupOperationsRequest
+    ): Promise<ListNodeGroupOperationsResponse>;
 }
 
 export interface GetNodeGroupRequest {
-  /**
-   * ID of the node group to return.
-   * To get the node group ID use a [NodeGroupService.List] request.
-   */
-  nodeGroupId: string;
+    /**
+     * ID of the node group to return.
+     * To get the node group ID use a [NodeGroupService.List] request.
+     */
+    nodeGroupId: string;
 }
 
 export interface ListNodeGroupsRequest {
-  /**
-   * ID of the folder to list node groups in.
-   * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
-   */
-  folderId: string;
+    /**
+     * ID of the folder to list node groups in.
+     * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+     */
+    folderId: string;
 
-  /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size],
-   * the service returns a [ListNodeGroupsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
-   * Default value: 100.
-   */
-  pageSize?: Long;
+    /**
+     * The maximum number of results per page to return. If the number of available
+     * results is larger than [page_size],
+     * the service returns a [ListNodeGroupsResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     * Default value: 100.
+     */
+    pageSize?: Long;
 
-  /**
-   * Page token. To get the next page of results, set [page_token] to the
-   * [ListNodeGroupsResponse.next_page_token] returned by a previous list request.
-   */
-  pageToken?: string;
+    /**
+     * Page token. To get the next page of results, set [page_token] to the
+     * [ListNodeGroupsResponse.next_page_token] returned by a previous list request.
+     */
+    pageToken?: string;
 
-  /**
-   * A filter expression that filters resources listed in the response.
-   * The expression must specify:
-   * 1. The field name. Currently you can use filtering only on [NodeGroup.name] field.
-   * 2. An operator. Can be either `=` or `!=` for single values, `IN` or `NOT IN` for lists of values.
-   * 3. The value. Must be 1-61 characters long and match the regular expression `|[a-z][-a-z0-9]{1,61}[a-z0-9]`.
-   */
-  filter?: string;
+    /**
+     * A filter expression that filters resources listed in the response.
+     * The expression must specify:
+     * 1. The field name. Currently you can use filtering only on [NodeGroup.name] field.
+     * 2. An operator. Can be either `=` or `!=` for single values, `IN` or `NOT IN` for lists of values.
+     * 3. The value. Must be 1-61 characters long and match the regular expression `|[a-z][-a-z0-9]{1,61}[a-z0-9]`.
+     */
+    filter?: string;
 }
 
 export interface ListNodeGroupsResponse {
-  /**
-   * List of node groups.
-   */
-  nodeGroups?: NodeGroup[];
+    /**
+     * List of node groups.
+     */
+    nodeGroups?: NodeGroup[];
 
-  /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListNodeGroupsRequest.page_size], use
-   * the [next_page_token] as the value
-   * for the [ListNodeGroupsRequest.page_token] query parameter
-   * in the next list request. Each subsequent list request will have its own
-   * [next_page_token] to continue paging through the results.
-   */
-  nextPageToken?: string;
+    /**
+     * This token allows you to get the next page of results for list requests. If the number of results
+     * is larger than [ListNodeGroupsRequest.page_size], use
+     * the [next_page_token] as the value
+     * for the [ListNodeGroupsRequest.page_token] query parameter
+     * in the next list request. Each subsequent list request will have its own
+     * [next_page_token] to continue paging through the results.
+     */
+    nextPageToken?: string;
 }
 
 export interface DeleteNodeGroupRequest {
-  /**
-   * ID of the node group to delete.
-   * To get node group ID use a [NodeGroupService.List] request.
-   */
-  nodeGroupId: string;
+    /**
+     * ID of the node group to delete.
+     * To get node group ID use a [NodeGroupService.List] request.
+     */
+    nodeGroupId: string;
 }
 
 export interface DeleteNodeGroupMetadata {
-  /**
-   * ID of the node group that is being deleted.
-   */
-  nodeGroupId?: string;
+    /**
+     * ID of the node group that is being deleted.
+     */
+    nodeGroupId?: string;
 }
 
 export interface UpdateNodeGroupRequest {
-  /**
-   * ID of the node group to update.
-   * To get the node group ID use a [NodeGroupService.List] request.
-   */
-  nodeGroupId: string;
+    /**
+     * ID of the node group to update.
+     * To get the node group ID use a [NodeGroupService.List] request.
+     */
+    nodeGroupId: string;
 
-  /**
-   * Field mask that specifies which fields of the node group are going to be updated.
-   */
-  updateMask?: protobuf.FieldMask;
+    /**
+     * Field mask that specifies which fields of the node group are going to be updated.
+     */
+    updateMask?: protobuf.FieldMask;
 
-  /**
-   * Name of the node group.
-   * The name must be unique within the folder.
-   */
-  name?: string;
+    /**
+     * Name of the node group.
+     * The name must be unique within the folder.
+     */
+    name?: string;
 
-  /**
-   * Description of the node group.
-   */
-  description?: string;
+    /**
+     * Description of the node group.
+     */
+    description?: string;
 
-  /**
-   * Resource labels as `key:value` pairs.
-   *
-   * Existing set of `labels` is completely replaced by the provided set.
-   */
-  labels?: { [s: string]: string };
+    /**
+     * Resource labels as `key:value` pairs.
+     *
+     * Existing set of `labels` is completely replaced by the provided set.
+     */
+    labels?: { [s: string]: string };
 
-  /**
-   * Node template for the node group.
-   * Change may trigger nodes rolling reboot or recreate.
-   */
-  nodeTemplate?: NodeTemplate;
+    /**
+     * Node template for the node group.
+     * Change may trigger nodes rolling reboot or recreate.
+     */
+    nodeTemplate?: NodeTemplate;
 
-  /**
-   * Scale policy of the node group.
-   */
-  scalePolicy?: ScalePolicy;
+    /**
+     * Scale policy of the node group.
+     */
+    scalePolicy?: ScalePolicy;
 
-  /**
-   * Allocation policy of the node group by the zones and regions.
-   */
-  allocationPolicy?: NodeGroupAllocationPolicy;
+    /**
+     * Allocation policy of the node group by the zones and regions.
+     */
+    allocationPolicy?: NodeGroupAllocationPolicy;
 
-  version?: UpdateVersionSpec;
+    version?: UpdateVersionSpec;
 
-  maintenancePolicy?: NodeGroupMaintenancePolicy;
+    maintenancePolicy?: NodeGroupMaintenancePolicy;
+
+    allowedUnsafeSysctls?: string[];
 }
 
 export interface UpdateNodeGroupMetadata {
-  /**
-   * ID of the Node group that is being updated.
-   */
-  nodeGroupId: string;
+    /**
+     * ID of the Node group that is being updated.
+     */
+    nodeGroupId: string;
 }
 
 export interface CreateNodeGroupRequest {
-  /**
-   * ID of the Kubernetes cluster to create a node group in.
-   * To get the Kubernetes cluster ID, use a [ClusterService.List] request.
-   */
-  clusterId: string;
+    /**
+     * ID of the Kubernetes cluster to create a node group in.
+     * To get the Kubernetes cluster ID, use a [ClusterService.List] request.
+     */
+    clusterId: string;
 
-  /**
-   * Name of the node group.
-   * The name must be unique within the folder.
-   */
-  name?: string;
+    /**
+     * Name of the node group.
+     * The name must be unique within the folder.
+     */
+    name?: string;
 
-  /**
-   * Description of the node group.
-   */
-  description?: string;
+    /**
+     * Description of the node group.
+     */
+    description?: string;
 
-  /**
-   * Resource labels as `key:value` pairs.
-   */
-  labels?: { [s: string]: string };
+    /**
+     * Resource labels as `key:value` pairs.
+     */
+    labels?: { [s: string]: string };
 
-  /**
-   * Node template for creating the node group.
-   */
-  nodeTemplate: NodeTemplate;
+    /**
+     * Node template for creating the node group.
+     */
+    nodeTemplate: NodeTemplate;
 
-  /**
-   * Scale policy of the node group.
-   */
-  scalePolicy: ScalePolicy;
+    /**
+     * Scale policy of the node group.
+     */
+    scalePolicy: ScalePolicy;
 
-  /**
-   * Allocation policy of the node group by the zones and regions.
-   */
-  allocationPolicy?: NodeGroupAllocationPolicy;
+    /**
+     * Allocation policy of the node group by the zones and regions.
+     */
+    allocationPolicy?: NodeGroupAllocationPolicy;
 
-  version?: string;
+    version?: string;
 
-  maintenancePolicy?: NodeGroupMaintenancePolicy;
+    maintenancePolicy?: NodeGroupMaintenancePolicy;
+
+    allowedUnsafeSysctls?: string[];
 }
 
 export interface CreateNodeGroupMetadata {
-  /**
-   * ID of the node group that is being created.
-   */
-  nodeGroupId?: string;
+    /**
+     * ID of the node group that is being created.
+     */
+    nodeGroupId?: string;
+}
+
+export interface AutoUpgradeNodeGroupMetadata {
+    /**
+     * ID of the node group that is being auto upgraded.
+     */
+    nodeGroupId?: string;
 }
 
 export interface ListNodeGroupOperationsRequest {
-  /**
-   * ID of the node group to list operations for.
-   */
-  nodeGroupId: string;
+    /**
+     * ID of the node group to list operations for.
+     */
+    nodeGroupId: string;
 
-  /**
-   * The maximum number of results per page that should be returned. If the number of available
-   * results is larger than [page_size], the service returns a [ListNodeGroupOperationsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
-   * Default value: 100.
-   */
-  pageSize?: Long;
+    /**
+     * The maximum number of results per page that should be returned. If the number of available
+     * results is larger than [page_size], the service returns a [ListNodeGroupOperationsResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     * Default value: 100.
+     */
+    pageSize?: Long;
 
-  /**
-   * Page token. To get the next page of results, set [page_token] to the
-   * [ListNodeGroupOperationsResponse.next_page_token] returned by a previous list request.
-   */
-  pageToken?: string;
+    /**
+     * Page token. To get the next page of results, set [page_token] to the
+     * [ListNodeGroupOperationsResponse.next_page_token] returned by a previous list request.
+     */
+    pageToken?: string;
 
-  /**
-   * A filter expression that filters resources listed in the response.
-   * Currently you can use filtering only on [NodeGroup.name] field.
-   */
-  filter?: string;
+    /**
+     * A filter expression that filters resources listed in the response.
+     * Currently you can use filtering only on [NodeGroup.name] field.
+     */
+    filter?: string;
 }
 
 export interface ListNodeGroupOperationsResponse {
-  /**
-   * List of operations for the specified node group.
-   */
-  operations?: operation.Operation[];
+    /**
+     * List of operations for the specified node group.
+     */
+    operations?: operation.Operation[];
 
-  /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListNodeGroupOperationsRequest.page_size], use the [next_page_token] as the value
-   * for the [ListNodeGroupOperationsRequest.page_token] query parameter in the next list request.
-   * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
-   */
-  nextPageToken?: string;
+    /**
+     * This token allows you to get the next page of results for list requests. If the number of results
+     * is larger than [ListNodeGroupOperationsRequest.page_size], use the [next_page_token] as the value
+     * for the [ListNodeGroupOperationsRequest.page_token] query parameter in the next list request.
+     * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
+     */
+    nextPageToken?: string;
 }
 
 export interface VersionInfo {
-  /**
-   * Current kubernetes version, major.minor (e.g. 1.15).
-   */
-  currentVersion?: string;
+    /**
+     * Current kubernetes version, major.minor (e.g. 1.15).
+     */
+    currentVersion?: string;
 
-  /**
-   * Newer revisions may include kubernetes patches (e.g 1.15.1 -> 1.15.2) as well
-   * as some internal component updates - new features or bug fixes in yandex-specific
-   * components either on the master or nodes.
-   */
-  newRevisionAvailable?: boolean;
+    /**
+     * Newer revisions may include kubernetes patches (e.g 1.15.1 -> 1.15.2) as well
+     * as some internal component updates - new features or bug fixes in yandex-specific
+     * components either on the master or nodes.
+     */
+    newRevisionAvailable?: boolean;
 
-  /**
-   * Human readable description of the changes to be applied when updating to the latest
-   * revision. Empty if new_revision_available is false.
-   */
-  newRevisionSummary?: string;
+    /**
+     * Human readable description of the changes to be applied when updating to the latest
+     * revision. Empty if new_revision_available is false.
+     */
+    newRevisionSummary?: string;
 
-  /**
-   * The current version is on the deprecation schedule, component (master or node group)
-   * should be upgraded.
-   */
-  versionDeprecated?: boolean;
+    /**
+     * The current version is on the deprecation schedule, component (master or node group)
+     * should be upgraded.
+     */
+    versionDeprecated?: boolean;
 }
 
 export interface UpdateVersionSpec {
-  /**
-   * Request update to a newer version of kubernetes (1.x -> 1.y).
-   */
-  version?: string;
+    /**
+     * Request update to a newer version of kubernetes (1.x -> 1.y).
+     */
+    version?: string;
 
-  /**
-   * Request update to the latest revision for the current version.
-   */
-  latestRevision?: boolean;
+    /**
+     * Request update to the latest revision for the current version.
+     */
+    latestRevision?: boolean;
 }
 
 export class VersionService {
-  constructor(session?: Session);
-  list(request: ListVersionsRequest): Promise<ListVersionsResponse>;
+    constructor(session?: Session);
+    list(request: ListVersionsRequest): Promise<ListVersionsResponse>;
 }
 
 export interface ListVersionsRequest {}
 
 export interface ListVersionsResponse {
-  availableVersions?: AvailableVersions[];
+    availableVersions?: AvailableVersions[];
 }
 
 export interface AvailableVersions {
-  releaseChannel?: ReleaseChannel;
+    releaseChannel?: ReleaseChannel;
 
-  versions?: string[];
+    versions?: string[];
 }

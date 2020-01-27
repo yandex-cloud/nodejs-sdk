@@ -10,311 +10,799 @@ import * as protobuf from '../../../../contrib/google/protobuf';
 import * as operation from '../../../../api/operation';
 import * as access from '../../../../api/access';
 
+/**
+ * A serverless function. For details about the concept, see [Functions](/docs/functions/concepts/function).
+ */
 export interface Function {
-  id?: string;
+    /**
+     * ID of the function. Generated at creation time.
+     */
+    id?: string;
 
-  folderId?: string;
+    /**
+     * ID of the folder that the function belongs to.
+     */
+    folderId?: string;
 
-  createdAt?: protobuf.Timestamp;
+    /**
+     * Creation timestamp for the function.
+     */
+    createdAt?: protobuf.Timestamp;
 
-  name?: string;
+    /**
+     * Name of the function. The name is unique within the folder.
+     */
+    name?: string;
 
-  description?: string;
+    /**
+     * Description of the function.
+     */
+    description?: string;
 
-  labels?: { [s: string]: string };
+    /**
+     * Function labels as `key:value` pairs.
+     */
+    labels?: { [s: string]: string };
 
-  logGroupId?: string;
+    /**
+     * ID of the log group for the function.
+     */
+    logGroupId?: string;
 
-  httpInvokeUrl?: string;
+    /**
+     * URL that needs to be requested to invoke the function.
+     */
+    httpInvokeUrl?: string;
 
-  status?: Function.Status;
+    /**
+     * Status of the function.
+     */
+    status?: Function.Status;
 }
 
 export namespace Function {
-  export enum Status {
-    STATUS_UNSPECIFIED = 0,
+    export enum Status {
+        STATUS_UNSPECIFIED = 0,
 
-    CREATING = 1,
+        /**
+         * Function is being created.
+         */
+        CREATING = 1,
 
-    ACTIVE = 2,
+        /**
+         * Function is ready to be invoked.
+         */
+        ACTIVE = 2,
 
-    DELETING = 3,
+        /**
+         * Function is being deleted.
+         */
+        DELETING = 3,
 
-    ERROR = 4
-  }
+        /**
+         * Function failed.
+         */
+        ERROR = 4,
+    }
 }
 
+/**
+ * Version of a function. For details about the concept, see [Function versions](/docs/functions/concepts/function#version).
+ */
 export interface Version {
-  id?: string;
+    /**
+     * ID of the version.
+     */
+    id?: string;
 
-  functionId?: string;
+    /**
+     * ID of the function that the version belongs to.
+     */
+    functionId?: string;
 
-  description?: string;
+    /**
+     * Description of the version.
+     */
+    description?: string;
 
-  createdAt?: protobuf.Timestamp;
+    /**
+     * Creation timestamp for the version.
+     */
+    createdAt?: protobuf.Timestamp;
 
-  runtime?: string;
+    /**
+     * ID of the runtime environment for the function.
+     *
+     * Supported environments and their identifiers are listed in the [Runtime environments](/docs/functions/concepts/runtime).
+     */
+    runtime?: string;
 
-  entrypoint?: string;
+    /**
+     * Entrypoint for the function: the name of the function to be called as the handler.
+     *
+     * Specified in the format `<function file name>.<handler name>`, for example, `index.myFunction`.
+     */
+    entrypoint?: string;
 
-  resources?: Resources;
+    /**
+     * Resources allocated to the version.
+     */
+    resources?: Resources;
 
-  executionTimeout?: protobuf.Duration;
+    /**
+     * Timeout for the execution of the version.
+     *
+     * If the timeout is exceeded, Cloud Functions responds with a 504 HTTP code.
+     */
+    executionTimeout?: protobuf.Duration;
 
-  serviceAccountId?: string;
+    /**
+     * ID of the service account associated with the version.
+     */
+    serviceAccountId?: string;
 
-  imageSize?: Long;
+    /**
+     * Final size of the deployment package after unpacking.
+     */
+    imageSize?: Long;
 
-  status?: Version.Status;
+    /**
+     * Status of the version.
+     */
+    status?: Version.Status;
 
-  tags?: string[];
+    /**
+     * Version tags. For details, see [Version tag](/docs/functions/concepts/function#tag).
+     */
+    tags?: string[];
 
-  logGroupId?: string;
+    /**
+     * ID of the log group for the version.
+     */
+    logGroupId?: string;
 
-  environment?: { [s: string]: string };
+    /**
+     * Environment settings for the version.
+     */
+    environment?: { [s: string]: string };
 }
 
 export namespace Version {
-  export enum Status {
-    STATUS_UNSPECIFIED = 0,
+    export enum Status {
+        STATUS_UNSPECIFIED = 0,
 
-    CREATING = 1,
+        /**
+         * Version is being created.
+         */
+        CREATING = 1,
 
-    ACTIVE = 2
-  }
+        /**
+         * Version is ready to use.
+         */
+        ACTIVE = 2,
+    }
 }
 
+/**
+ * Resources allocated to a version.
+ */
 export interface Resources {
-  memory?: Long;
+    /**
+     * Amount of memory available to the version, specified in bytes.
+     */
+    memory?: Long;
 }
 
+/**
+ * Version deployment package.
+ */
 export interface Package {
-  bucketName: string;
+    /**
+     * Name of the bucket that stores the code for the version.
+     */
+    bucketName: string;
 
-  objectName: string;
+    /**
+     * Name of the object in the bucket that stores the code for the version.
+     */
+    objectName: string;
 
-  sha256?: string;
+    /**
+     * SHA256 hash of the version deployment package.
+     */
+    sha256?: string;
 }
 
+/**
+ * A set of methods for managing serverless functions.
+ */
 export class FunctionService {
-  constructor(session?: Session);
-  get(request: GetFunctionRequest): Promise<Function>;
+    constructor(session?: Session);
+    /**
+     * Returns the specified function.
+     *
+     * To get the list of all available functions, make a [List] request.
+     */
+    get(request: GetFunctionRequest): Promise<Function>;
 
-  list(request: ListFunctionsRequest): Promise<ListFunctionsResponse>;
+    /**
+     * Retrieves the list of functions in the specified folder.
+     */
+    list(request: ListFunctionsRequest): Promise<ListFunctionsResponse>;
 
-  create(request: CreateFunctionRequest): Promise<operation.Operation>;
+    /**
+     * Creates a function in the specified folder.
+     */
+    create(request: CreateFunctionRequest): Promise<operation.Operation>;
 
-  update(request: UpdateFunctionRequest): Promise<operation.Operation>;
+    /**
+     * Updates the specified function.
+     */
+    update(request: UpdateFunctionRequest): Promise<operation.Operation>;
 
-  delete(request: DeleteFunctionRequest): Promise<operation.Operation>;
+    /**
+     * Deletes the specified function.
+     */
+    delete(request: DeleteFunctionRequest): Promise<operation.Operation>;
 
-  getFunctionVersion(request: GetFunctionVersionRequest): Promise<Version>;
+    /**
+     * Returns the specified version of a function.
+     *
+     * To get the list of available version, make a [ListVersions] request.
+     */
+    getVersion(request: GetFunctionVersionRequest): Promise<Version>;
 
-  getFunctionVersionByTag(request: GetFunctionVersionByTagRequest): Promise<Version>;
+    /**
+     * Returns all versions with the specified tag.
+     *
+     * To get the list of all available versions, make a [ListVersions] request.
+     */
+    getVersionByTag(request: GetFunctionVersionByTagRequest): Promise<Version>;
 
-  listFunctionVersions(request: ListFunctionsVersionsRequest): Promise<ListFunctionsVersionsResponse>;
+    /**
+     * Retrieves the list of versions for the specified function, or of all function versions
+     * in the specified folder.
+     */
+    listVersions(
+        request: ListFunctionsVersionsRequest
+    ): Promise<ListFunctionsVersionsResponse>;
 
-  setTag(request: SetFunctionTagRequest): Promise<operation.Operation>;
+    /**
+     * Set a tag for the specified version of a function.
+     */
+    setTag(request: SetFunctionTagRequest): Promise<operation.Operation>;
 
-  removeTag(request: RemoveFunctionTagRequest): Promise<operation.Operation>;
+    /**
+     * Remove a tag from the specified version of a function.
+     */
+    removeTag(request: RemoveFunctionTagRequest): Promise<operation.Operation>;
 
-  listFunctionTagHistory(request: ListFunctionTagHistoryRequest): Promise<ListFunctionTagHistoryResponse>;
+    /**
+     * Returns the log of tags assigned to versions of the specified function.
+     */
+    listTagHistory(
+        request: ListFunctionTagHistoryRequest
+    ): Promise<ListFunctionTagHistoryResponse>;
 
-  createFunctionVersion(request: CreateFunctionVersionRequest): Promise<operation.Operation>;
+    /**
+     * Creates a version for the specified function.
+     */
+    createVersion(
+        request: CreateFunctionVersionRequest
+    ): Promise<operation.Operation>;
 
-  listRuntimes(request: ListRuntimesRequest): Promise<ListRuntimesResponse>;
+    /**
+     * Lists available runtime environments for the specified function.
+     */
+    listRuntimes(request: ListRuntimesRequest): Promise<ListRuntimesResponse>;
 
-  listOperations(request: ListFunctionOperationsRequest): Promise<ListFunctionOperationsResponse>;
+    /**
+     * Lists operations for the specified function.
+     */
+    listOperations(
+        request: ListFunctionOperationsRequest
+    ): Promise<ListFunctionOperationsResponse>;
 
-  listAccessBindings(request: access.ListAccessBindingsRequest): Promise<access.ListAccessBindingsResponse>;
+    /**
+     * Lists existing access bindings for the specified function.
+     */
+    listAccessBindings(
+        request: access.ListAccessBindingsRequest
+    ): Promise<access.ListAccessBindingsResponse>;
 
-  setAccessBindings(request: access.SetAccessBindingsRequest): Promise<operation.Operation>;
+    /**
+     * Sets access bindings for the function.
+     */
+    setAccessBindings(
+        request: access.SetAccessBindingsRequest
+    ): Promise<operation.Operation>;
 
-  updateAccessBindings(request: access.UpdateAccessBindingsRequest): Promise<operation.Operation>;
+    /**
+     * Updates access bindings for the specified function.
+     */
+    updateAccessBindings(
+        request: access.UpdateAccessBindingsRequest
+    ): Promise<operation.Operation>;
 }
 
 export interface GetFunctionRequest {
-  functionId: string;
+    /**
+     * ID of the function to return.
+     *
+     * To get a function ID make a [FunctionService.List] request.
+     */
+    functionId: string;
 }
 
 export interface GetFunctionVersionRequest {
-  functionVersionId: string;
+    /**
+     * ID of the version to return.
+     *
+     * To get a version ID make a [FunctionService.ListVersions] request.
+     */
+    functionVersionId: string;
 }
 
 export interface GetFunctionVersionByTagRequest {
-  functionId: string;
+    /**
+     * ID of the function whose versions should be listed.
+     *
+     * To get a function ID use a [FunctionService.List] request.
+     */
+    functionId: string;
 
-  tag?: string;
+    /**
+     * Version tag.
+     *
+     * To get the history of version tags make a [FunctionService.ListTagHistory] request.
+     */
+    tag?: string;
 }
 
 export interface ListFunctionsRequest {
-  folderId: string;
+    /**
+     * ID of the folder to list functions in.
+     *
+     * To get a folder ID make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+     */
+    folderId: string;
 
-  pageSize?: Long;
+    /**
+     * The maximum number of results per page to return. If the number of available
+     * results is larger than `pageSize`, the service returns a [ListFunctionsResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     *
+     * Default value: 100.
+     */
+    pageSize?: Long;
 
-  pageToken?: string;
+    /**
+     * Page token. To get the next page of results, set `pageToken` to the
+     * [ListFunctionsResponse.next_page_token] returned by a previous list request.
+     */
+    pageToken?: string;
 
-  filter?: string;
+    /**
+     * A filter expression that filters functions listed in the response.
+     *
+     * The expression must specify:
+     * 1. The field name. Currently filtering can only be applied to the [Function.name] field.
+     * 2. A conditional operator. Can be either `=` or `!=` for single values, `IN` or `NOT IN`
+     * for lists of values.
+     * 3. The value. Must be 3-63 characters long and match the regular expression `^[a-z][-a-z0-9]{1,61}[a-z0-9]$`.
+     * Example of a filter: `name=my-function`.
+     */
+    filter?: string;
 }
 
 export interface ListFunctionsResponse {
-  functions?: Function[];
+    /**
+     * List of functions in the specified folder.
+     */
+    functions?: Function[];
 
-  nextPageToken?: string;
+    /**
+     * Token for getting the next page of the list. If the number of results is greater than
+     * the specified [ListFunctionsRequest.page_size], use `nextPageToken` as the value
+     * for the [ListFunctionsRequest.page_token] parameter in the next list request.
+     *
+     * Each subsequent page will have its own `nextPageToken` to continue paging through the results.
+     */
+    nextPageToken?: string;
 }
 
 export interface CreateFunctionRequest {
-  folderId: string;
+    /**
+     * ID of the folder to create a function in.
+     *
+     * To get a folder ID make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+     */
+    folderId: string;
 
-  name?: string;
+    /**
+     * Name of the function.
+     * The name must be unique within the folder.
+     */
+    name?: string;
 
-  description?: string;
+    /**
+     * Description of the function.
+     */
+    description?: string;
 
-  labels?: { [s: string]: string };
+    /**
+     * Resource labels as `key:value` pairs.
+     */
+    labels?: { [s: string]: string };
 }
 
 export interface CreateFunctionMetadata {
-  functionId?: string;
+    /**
+     * ID of the function that is being created.
+     */
+    functionId?: string;
 }
 
 export interface UpdateFunctionRequest {
-  functionId: string;
+    /**
+     * ID of the function to update.
+     *
+     * To get a function ID make a [FunctionService.List] request.
+     */
+    functionId: string;
 
-  updateMask?: protobuf.FieldMask;
+    /**
+     * Field mask that specifies which attributes of the function should be updated.
+     */
+    updateMask?: protobuf.FieldMask;
 
-  name?: string;
+    /**
+     * New name for the function.
+     * The name must be unique within the folder.
+     */
+    name?: string;
 
-  description?: string;
+    /**
+     * New description for the function.
+     */
+    description?: string;
 
-  labels?: { [s: string]: string };
+    /**
+     * Function labels as `key:value` pairs.
+     *
+     * Existing set of labels is completely replaced by the provided set, so if you just want
+     * to add or remove a label, request the current set of labels with a [FunctionService.Get] request.
+     */
+    labels?: { [s: string]: string };
 }
 
 export interface UpdateFunctionMetadata {
-  functionId?: string;
+    /**
+     * ID of the function that is being updated.
+     */
+    functionId?: string;
 }
 
 export interface DeleteFunctionRequest {
-  functionId: string;
+    /**
+     * ID of the function to delete.
+     * To get a function ID make a [FunctionService.List] request.
+     */
+    functionId: string;
 }
 
 export interface DeleteFunctionMetadata {
-  functionId?: string;
+    /**
+     * ID of the function that is being deleted.
+     */
+    functionId?: string;
 }
 
 export interface ListRuntimesRequest {}
 
 export interface ListRuntimesResponse {
-  runtimes?: string[];
+    /**
+     * Runtime environments available for the specified function.
+     */
+    runtimes?: string[];
 }
 
 export interface ListFunctionsVersionsRequest {
-  folderId?: string;
+    /**
+     * ID of the folder to list function versions for.
+     * To get a folder ID make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+     */
+    folderId?: string;
 
-  functionId?: string;
+    /**
+     * ID of the function to list versions for.
+     * To get a function ID use a [FunctionService.List] request.
+     */
+    functionId?: string;
 
-  pageSize?: Long;
+    /**
+     * The maximum number of results per page to return. If the number of available results
+     * is larger than `pageSize`, the service returns a [ListFunctionsVersionsResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     *
+     * Default value: 100.
+     */
+    pageSize?: Long;
 
-  pageToken?: string;
+    /**
+     * Page token. To get the next page of results, set `pageToken` to the
+     * [ListFunctionsVersionsResponse.next_page_token] returned by a previous list request.
+     */
+    pageToken?: string;
 
-  filter?: string;
+    /**
+     * A filter expression that filters resources listed in the response.
+     *
+     * The expression must specify:
+     * 1. The field name. Currently filtering can only be applied to the [Function.name] field.
+     * 2. A conditional operator. Can be either `=` or `!=` for single values, `IN` or `NOT IN`
+     * for lists of values.
+     * 3. The value. Must be 3-63 characters long and match the regular expression `^[a-z][-a-z0-9]{1,61}[a-z0-9]$`.
+     * Example of a filter: `name=my-function`.
+     */
+    filter?: string;
 }
 
 export interface ListFunctionsVersionsResponse {
-  versions?: Version[];
+    /**
+     * List of versions for the specified folder or function.
+     */
+    versions?: Version[];
 
-  nextPageToken?: string;
+    /**
+     * Token for getting the next page of the list. If the number of results is greater than
+     * the specified [ListFunctionsVersionsRequest.page_size], use `nextPageToken` as the value
+     * for the [ListFunctionsVersionsRequest.page_token] parameter in the next list request.
+     *
+     * Each subsequent page will have its own `nextPageToken` to continue paging through the results.
+     */
+    nextPageToken?: string;
 }
 
 export interface ListFunctionOperationsRequest {
-  functionId: string;
+    /**
+     * ID of the function to list operations for.
+     */
+    functionId: string;
 
-  pageSize?: Long;
+    /**
+     * The maximum number of results per page that should be returned. If the number of available
+     * results is larger than `pageSize`, the service returns a [ListFunctionOperationsResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     *
+     * Default value: 100.
+     */
+    pageSize?: Long;
 
-  pageToken?: string;
+    /**
+     * Page token. To get the next page of results, set `pageToken` to the
+     * [ListFunctionOperationsResponse.next_page_token] returned by a previous list request.
+     */
+    pageToken?: string;
 
-  filter?: string;
+    /**
+     * A filter expression that filters resources listed in the response.
+     *
+     * The expression must specify:
+     * 1. The field name. Currently filtering can only be applied to the [Function.name] field.
+     * 2. A conditional operator. Can be either `=` or `!=` for single values, `IN` or `NOT IN`
+     * for lists of values.
+     * 3. The value. Must be 3-63 characters long and match the regular expression `^[a-z][-a-z0-9]{1,61}[a-z0-9]$`.
+     * Example of a filter: `name=my-function`.
+     */
+    filter?: string;
 }
 
 export interface ListFunctionOperationsResponse {
-  operations?: operation.Operation[];
+    /**
+     * List of operations for the specified function.
+     */
+    operations?: operation.Operation[];
 
-  nextPageToken?: string;
+    /**
+     * Token for getting the next page of the list. If the number of results is greater than
+     * the specified [ListFunctionOperationsRequest.page_size], use `nextPageToken` as the value
+     * for the [ListFunctionOperationsRequest.page_token] parameter in the next list request.
+     *
+     * Each subsequent page will have its own `nextPageToken` to continue paging through the results.
+     */
+    nextPageToken?: string;
 }
 
 export interface CreateFunctionVersionRequest {
-  functionId: string;
+    /**
+     * ID of the function to create a version for.
+     *
+     * To get a function ID, make a [FunctionService.List] request.
+     */
+    functionId: string;
 
-  runtime: string;
+    /**
+     * Runtime environment for the version.
+     */
+    runtime: string;
 
-  description?: string;
+    /**
+     * Description of the version
+     */
+    description?: string;
 
-  entrypoint: string;
+    /**
+     * Entrypoint of the version.
+     */
+    entrypoint: string;
 
-  resources: Resources;
+    /**
+     * Resources allocated to the version.
+     */
+    resources: Resources;
 
-  executionTimeout: protobuf.Duration;
+    /**
+     * Timeout for the execution of the version.
+     *
+     * If the timeout is exceeded, Cloud Functions responds with a 504 HTTP code.
+     */
+    executionTimeout: protobuf.Duration;
 
-  serviceAccountId?: string;
+    /**
+     * ID of the service account to associate with the version.
+     */
+    serviceAccountId?: string;
 
-  package?: Package;
+    /**
+     * Functions deployment package.
+     */
+    package?: Package;
 
-  content?: Buffer;
+    /**
+     * Content of the deployment package.
+     */
+    content?: Buffer;
 
-  environment?: { [s: string]: string };
+    /**
+     * Environment settings for the version.
+     */
+    environment?: { [s: string]: string };
 }
 
 export interface CreateFunctionVersionMetadata {
-  functionVersionId?: string;
+    /**
+     * ID of the version that is being created.
+     */
+    functionVersionId?: string;
 }
 
 export interface SetFunctionTagRequest {
-  functionVersionId: string;
+    /**
+     * ID of the version to set the tag for.
+     *
+     * To get a version ID make a [FunctionService.ListVersions] request.
+     */
+    functionVersionId: string;
 
-  tag?: string;
+    /**
+     * Tag to set for the version.
+     */
+    tag?: string;
 }
 
 export interface RemoveFunctionTagRequest {
-  functionVersionId: string;
+    /**
+     * ID of the version to remove a tag from.
+     *
+     * To get the a version ID make a [FunctionService.ListVersions] request.
+     */
+    functionVersionId: string;
 
-  tag?: string;
+    /**
+     * Tag to remove from the specified version.
+     */
+    tag?: string;
 }
 
 export interface SetFunctionTagMetadata {
-  functionVersionId?: string;
+    /**
+     * ID of the function versions that is being tagged.
+     */
+    functionVersionId?: string;
 }
 
 export interface RemoveFunctionTagMetadata {
-  functionVersionId?: string;
+    /**
+     * ID of the function versions that is being untagged.
+     */
+    functionVersionId?: string;
 }
 
 export interface ListFunctionTagHistoryRequest {
-  functionId: string;
+    /**
+     * ID of the function to retrieve tag history for.
+     *
+     * To get a function ID, make a [FunctionService.List] request.
+     */
+    functionId: string;
 
-  tag?: string;
+    /**
+     * Specific tag that history should be limited to.
+     */
+    tag?: string;
 
-  pageSize?: Long;
+    /**
+     * The maximum number of results per page that should be returned. If the number of available
+     * results is larger than `pageSize`, the service returns a [ListFunctionOperationsResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     * Default value: 100.
+     */
+    pageSize?: Long;
 
-  pageToken?: string;
+    /**
+     * Page token. To get the next page of results, set `pageToken` to the
+     * [ListFunctionOperationsResponse.next_page_token] returned by a previous list request.
+     */
+    pageToken?: string;
 
-  filter?: string;
+    /**
+     * A filter expression that filters resources listed in the response.
+     *
+     * The expression must specify:
+     * 1. The field name. Currently filtering can only be applied to the [Function.name] field.
+     * 2. A conditional operator. Can be either `=` or `!=` for single values, `IN` or `NOT IN`
+     * for lists of values.
+     * 3. The value. Must be 3-63 characters long and match the regular expression `^[a-z][-a-z0-9]{1,61}[a-z0-9]$`.
+     * For example, `name=my-function`.
+     */
+    filter?: string;
 }
 
 export interface ListFunctionTagHistoryResponse {
-  functionTagHistoryRecord?: ListFunctionTagHistoryResponse.FunctionTagHistoryRecord[];
+    /**
+     * Set of relevant tag history records.
+     */
+    functionTagHistoryRecord?: ListFunctionTagHistoryResponse.FunctionTagHistoryRecord[];
 
-  nextPageToken?: string;
+    /**
+     * Token for getting the next page of the list. If the number of results is greater than
+     * the specified [ListFunctionTagHistoryRequest.page_size], use `nextPageToken` as the value
+     * for the [ListFunctionTagHistoryRequest.page_token] parameter in the next list request.
+     *
+     * Each subsequent page will have its own `nextPageToken` to continue paging through the results.
+     */
+    nextPageToken?: string;
 }
 
 export namespace ListFunctionTagHistoryResponse {
-  export interface FunctionTagHistoryRecord {
-    functionId?: string;
+    /**
+     * A record in the tag history.
+     */
+    export interface FunctionTagHistoryRecord {
+        /**
+         * ID of the function that the record is about.
+         */
+        functionId?: string;
 
-    functionVersionId?: string;
+        /**
+         * ID of the function version that the record is about.
+         */
+        functionVersionId?: string;
 
-    tag?: string;
+        /**
+         * Tag that was set for the version at some point.
+         */
+        tag?: string;
 
-    effectiveFrom?: protobuf.Timestamp;
+        /**
+         * Timestamp when the tag started being active for the function.
+         */
+        effectiveFrom?: protobuf.Timestamp;
 
-    effectiveTo?: protobuf.Timestamp;
-  }
+        /**
+         * Timestamp when the tag stopped being active for the function.
+         */
+        effectiveTo?: protobuf.Timestamp;
+    }
 }

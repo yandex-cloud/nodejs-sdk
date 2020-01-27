@@ -1774,6 +1774,8 @@ module.exports = (function() {
       Instance.prototype.fqdn = '';
       Instance.prototype.schedulingPolicy = null;
       Instance.prototype.serviceAccountId = '';
+      Instance.prototype.networkSettings = null;
+      Instance.prototype.placementPolicy = null;
       Instance.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.id != null && m.hasOwnProperty('id')) w.uint32(10).string(m.id);
@@ -1817,6 +1819,8 @@ module.exports = (function() {
         if (m.fqdn != null && m.hasOwnProperty('fqdn')) w.uint32(130).string(m.fqdn);
         if (m.schedulingPolicy != null && m.hasOwnProperty('schedulingPolicy')) $root.api.compute.v1.SchedulingPolicy.encode(m.schedulingPolicy, w.uint32(138).fork()).ldelim();
         if (m.serviceAccountId != null && m.hasOwnProperty('serviceAccountId')) w.uint32(146).string(m.serviceAccountId);
+        if (m.networkSettings != null && m.hasOwnProperty('networkSettings')) $root.api.compute.v1.NetworkSettings.encode(m.networkSettings, w.uint32(154).fork()).ldelim();
+        if (m.placementPolicy != null && m.hasOwnProperty('placementPolicy')) $root.api.compute.v1.PlacementPolicy.encode(m.placementPolicy, w.uint32(162).fork()).ldelim();
         return w;
       };
       Instance.decode = function decode(r, l) {
@@ -1887,6 +1891,12 @@ module.exports = (function() {
               break;
             case 18:
               m.serviceAccountId = r.string();
+              break;
+            case 19:
+              m.networkSettings = $root.api.compute.v1.NetworkSettings.decode(r, r.uint32());
+              break;
+            case 20:
+              m.placementPolicy = $root.api.compute.v1.PlacementPolicy.decode(r, r.uint32());
               break;
             default:
               r.skipType(t & 7);
@@ -2181,6 +2191,78 @@ module.exports = (function() {
         return m;
       };
       return SchedulingPolicy;
+    })();
+  })(root);
+  (function($root) {
+    $root.NetworkSettings = (function() {
+      function NetworkSettings(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      NetworkSettings.prototype.type = 0;
+      NetworkSettings.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.type != null && m.hasOwnProperty('type')) w.uint32(8).int32(m.type);
+        return w;
+      };
+      NetworkSettings.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.NetworkSettings();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.type = r.int32();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      let Type = (function() {
+        let valuesById = {},
+          values = Object.create(valuesById);
+        values[(valuesById[0] = 'TYPE_UNSPECIFIED')] = 0;
+        values[(valuesById[1] = 'STANDARD')] = 1;
+        values[(valuesById[2] = 'SOFTWARE_ACCELERATED')] = 2;
+        values[(valuesById[3] = 'HARDWARE_ACCELERATED')] = 3;
+        return values;
+      })();
+      NetworkSettings.Type = Type;
+      return NetworkSettings;
+    })();
+  })(root);
+  (function($root) {
+    $root.PlacementPolicy = (function() {
+      function PlacementPolicy(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      PlacementPolicy.prototype.placementGroupId = '';
+      PlacementPolicy.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.placementGroupId != null && m.hasOwnProperty('placementGroupId')) w.uint32(10).string(m.placementGroupId);
+        return w;
+      };
+      PlacementPolicy.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.PlacementPolicy();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.placementGroupId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return PlacementPolicy;
     })();
   })(root);
   (function($root) {
@@ -2549,6 +2631,8 @@ module.exports = (function() {
       CreateInstanceRequest.prototype.hostname = '';
       CreateInstanceRequest.prototype.schedulingPolicy = null;
       CreateInstanceRequest.prototype.serviceAccountId = '';
+      CreateInstanceRequest.prototype.networkSettings = null;
+      CreateInstanceRequest.prototype.placementPolicy = null;
       CreateInstanceRequest.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.folderId != null && m.hasOwnProperty('folderId')) w.uint32(10).string(m.folderId);
@@ -2589,6 +2673,8 @@ module.exports = (function() {
         if (m.hostname != null && m.hasOwnProperty('hostname')) w.uint32(98).string(m.hostname);
         if (m.schedulingPolicy != null && m.hasOwnProperty('schedulingPolicy')) $root.api.compute.v1.SchedulingPolicy.encode(m.schedulingPolicy, w.uint32(106).fork()).ldelim();
         if (m.serviceAccountId != null && m.hasOwnProperty('serviceAccountId')) w.uint32(114).string(m.serviceAccountId);
+        if (m.networkSettings != null && m.hasOwnProperty('networkSettings')) $root.api.compute.v1.NetworkSettings.encode(m.networkSettings, w.uint32(122).fork()).ldelim();
+        if (m.placementPolicy != null && m.hasOwnProperty('placementPolicy')) $root.api.compute.v1.PlacementPolicy.encode(m.placementPolicy, w.uint32(130).fork()).ldelim();
         return w;
       };
       CreateInstanceRequest.decode = function decode(r, l) {
@@ -2651,6 +2737,12 @@ module.exports = (function() {
             case 14:
               m.serviceAccountId = r.string();
               break;
+            case 15:
+              m.networkSettings = $root.api.compute.v1.NetworkSettings.decode(r, r.uint32());
+              break;
+            case 16:
+              m.placementPolicy = $root.api.compute.v1.PlacementPolicy.decode(r, r.uint32());
+              break;
             default:
               r.skipType(t & 7);
               break;
@@ -2708,6 +2800,8 @@ module.exports = (function() {
       UpdateInstanceRequest.prototype.resourcesSpec = null;
       UpdateInstanceRequest.prototype.metadata = $util.emptyObject;
       UpdateInstanceRequest.prototype.serviceAccountId = '';
+      UpdateInstanceRequest.prototype.networkSettings = null;
+      UpdateInstanceRequest.prototype.placementPolicy = null;
       UpdateInstanceRequest.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.instanceId != null && m.hasOwnProperty('instanceId')) w.uint32(10).string(m.instanceId);
@@ -2739,6 +2833,8 @@ module.exports = (function() {
           }
         }
         if (m.serviceAccountId != null && m.hasOwnProperty('serviceAccountId')) w.uint32(74).string(m.serviceAccountId);
+        if (m.networkSettings != null && m.hasOwnProperty('networkSettings')) $root.api.compute.v1.NetworkSettings.encode(m.networkSettings, w.uint32(82).fork()).ldelim();
+        if (m.placementPolicy != null && m.hasOwnProperty('placementPolicy')) $root.api.compute.v1.PlacementPolicy.encode(m.placementPolicy, w.uint32(90).fork()).ldelim();
         return w;
       };
       UpdateInstanceRequest.decode = function decode(r, l) {
@@ -2783,6 +2879,12 @@ module.exports = (function() {
               break;
             case 9:
               m.serviceAccountId = r.string();
+              break;
+            case 10:
+              m.networkSettings = $root.api.compute.v1.NetworkSettings.decode(r, r.uint32());
+              break;
+            case 11:
+              m.placementPolicy = $root.api.compute.v1.PlacementPolicy.decode(r, r.uint32());
               break;
             default:
               r.skipType(t & 7);
@@ -3743,6 +3845,775 @@ module.exports = (function() {
         return m;
       };
       return OneToOneNatSpec;
+    })();
+  })(root);
+  (function($root) {
+    $root.PlacementGroup = (function() {
+      function PlacementGroup(p) {
+        this.labels = {};
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      PlacementGroup.prototype.id = '';
+      PlacementGroup.prototype.folderId = '';
+      PlacementGroup.prototype.createdAt = null;
+      PlacementGroup.prototype.name = '';
+      PlacementGroup.prototype.description = '';
+      PlacementGroup.prototype.labels = $util.emptyObject;
+      PlacementGroup.prototype.spreadPlacementStrategy = null;
+      let $oneOfFields;
+      Object.defineProperty(PlacementGroup.prototype, 'placementStrategy', {
+        get: $util.oneOfGetter(($oneOfFields = ['spreadPlacementStrategy'])),
+        set: $util.oneOfSetter($oneOfFields)
+      });
+      PlacementGroup.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.id != null && m.hasOwnProperty('id')) w.uint32(10).string(m.id);
+        if (m.folderId != null && m.hasOwnProperty('folderId')) w.uint32(18).string(m.folderId);
+        if (m.createdAt != null && m.hasOwnProperty('createdAt')) $root.contrib.google.protobuf.Timestamp.encode(m.createdAt, w.uint32(26).fork()).ldelim();
+        if (m.name != null && m.hasOwnProperty('name')) w.uint32(34).string(m.name);
+        if (m.description != null && m.hasOwnProperty('description')) w.uint32(42).string(m.description);
+        if (m.labels != null && m.hasOwnProperty('labels')) {
+          for (let ks = Object.keys(m.labels), i = 0; i < ks.length; ++i) {
+            w.uint32(50)
+              .fork()
+              .uint32(10)
+              .string(ks[i])
+              .uint32(18)
+              .string(m.labels[ks[i]])
+              .ldelim();
+          }
+        }
+        if (m.spreadPlacementStrategy != null && m.hasOwnProperty('spreadPlacementStrategy')) $root.api.compute.v1.SpreadPlacementStrategy.encode(m.spreadPlacementStrategy, w.uint32(58).fork()).ldelim();
+        return w;
+      };
+      PlacementGroup.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.PlacementGroup(),
+          k;
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.id = r.string();
+              break;
+            case 2:
+              m.folderId = r.string();
+              break;
+            case 3:
+              m.createdAt = $root.contrib.google.protobuf.Timestamp.decode(r, r.uint32());
+              break;
+            case 4:
+              m.name = r.string();
+              break;
+            case 5:
+              m.description = r.string();
+              break;
+            case 6:
+              r.skip().pos++;
+              if (m.labels === $util.emptyObject) m.labels = {};
+              k = r.string();
+              r.pos++;
+              m.labels[k] = r.string();
+              break;
+            case 7:
+              m.spreadPlacementStrategy = $root.api.compute.v1.SpreadPlacementStrategy.decode(r, r.uint32());
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return PlacementGroup;
+    })();
+  })(root);
+  (function($root) {
+    $root.SpreadPlacementStrategy = (function() {
+      function SpreadPlacementStrategy(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      SpreadPlacementStrategy.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        return w;
+      };
+      SpreadPlacementStrategy.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.SpreadPlacementStrategy();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return SpreadPlacementStrategy;
+    })();
+  })(root);
+  (function($root) {
+    $root.PlacementGroupService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.PlacementGroupService.makeGrpcConstructor());
+    };
+    $root.PlacementGroupService.makeGrpcConstructor = () => {
+      let ctor = grpc.makeGenericClientConstructor({
+        get: {
+          path: '/yandex.cloud.compute.v1.PlacementGroupService/Get',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.compute.v1.GetPlacementGroupRequest,
+          responseType: $root.api.compute.v1.PlacementGroup,
+          requestSerialize: r => {
+            return $root.api.compute.v1.GetPlacementGroupRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.compute.v1.GetPlacementGroupRequest.decode,
+          responseSerialize: r => {
+            return $root.api.compute.v1.PlacementGroup.encode(r).finish();
+          },
+          responseDeserialize: $root.api.compute.v1.PlacementGroup.decode
+        },
+        list: {
+          path: '/yandex.cloud.compute.v1.PlacementGroupService/List',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.compute.v1.ListPlacementGroupsRequest,
+          responseType: $root.api.compute.v1.ListPlacementGroupsResponse,
+          requestSerialize: r => {
+            return $root.api.compute.v1.ListPlacementGroupsRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.compute.v1.ListPlacementGroupsRequest.decode,
+          responseSerialize: r => {
+            return $root.api.compute.v1.ListPlacementGroupsResponse.encode(r).finish();
+          },
+          responseDeserialize: $root.api.compute.v1.ListPlacementGroupsResponse.decode
+        },
+        create: {
+          path: '/yandex.cloud.compute.v1.PlacementGroupService/Create',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.compute.v1.CreatePlacementGroupRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.compute.v1.CreatePlacementGroupRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.compute.v1.CreatePlacementGroupRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        update: {
+          path: '/yandex.cloud.compute.v1.PlacementGroupService/Update',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.compute.v1.UpdatePlacementGroupRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.compute.v1.UpdatePlacementGroupRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.compute.v1.UpdatePlacementGroupRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        delete: {
+          path: '/yandex.cloud.compute.v1.PlacementGroupService/Delete',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.compute.v1.DeletePlacementGroupRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.compute.v1.DeletePlacementGroupRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.compute.v1.DeletePlacementGroupRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        listInstances: {
+          path: '/yandex.cloud.compute.v1.PlacementGroupService/ListInstances',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.compute.v1.ListPlacementGroupInstancesRequest,
+          responseType: $root.api.compute.v1.ListPlacementGroupInstancesResponse,
+          requestSerialize: r => {
+            return $root.api.compute.v1.ListPlacementGroupInstancesRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.compute.v1.ListPlacementGroupInstancesRequest.decode,
+          responseSerialize: r => {
+            return $root.api.compute.v1.ListPlacementGroupInstancesResponse.encode(r).finish();
+          },
+          responseDeserialize: $root.api.compute.v1.ListPlacementGroupInstancesResponse.decode
+        },
+        listOperations: {
+          path: '/yandex.cloud.compute.v1.PlacementGroupService/ListOperations',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.compute.v1.ListPlacementGroupOperationsRequest,
+          responseType: $root.api.compute.v1.ListPlacementGroupOperationsResponse,
+          requestSerialize: r => {
+            return $root.api.compute.v1.ListPlacementGroupOperationsRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.compute.v1.ListPlacementGroupOperationsRequest.decode,
+          responseSerialize: r => {
+            return $root.api.compute.v1.ListPlacementGroupOperationsResponse.encode(r).finish();
+          },
+          responseDeserialize: $root.api.compute.v1.ListPlacementGroupOperationsResponse.decode
+        }
+      });
+      ctor.__endpointId = 'compute';
+      return ctor;
+    };
+  })(root);
+  (function($root) {
+    $root.GetPlacementGroupRequest = (function() {
+      function GetPlacementGroupRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      GetPlacementGroupRequest.prototype.placementGroupId = '';
+      GetPlacementGroupRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.placementGroupId != null && m.hasOwnProperty('placementGroupId')) w.uint32(10).string(m.placementGroupId);
+        return w;
+      };
+      GetPlacementGroupRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.GetPlacementGroupRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.placementGroupId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return GetPlacementGroupRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.ListPlacementGroupsRequest = (function() {
+      function ListPlacementGroupsRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListPlacementGroupsRequest.prototype.folderId = '';
+      ListPlacementGroupsRequest.prototype.pageSize = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+      ListPlacementGroupsRequest.prototype.pageToken = '';
+      ListPlacementGroupsRequest.prototype.filter = '';
+      ListPlacementGroupsRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.folderId != null && m.hasOwnProperty('folderId')) w.uint32(10).string(m.folderId);
+        if (m.pageSize != null && m.hasOwnProperty('pageSize')) w.uint32(16).int64(m.pageSize);
+        if (m.pageToken != null && m.hasOwnProperty('pageToken')) w.uint32(26).string(m.pageToken);
+        if (m.filter != null && m.hasOwnProperty('filter')) w.uint32(34).string(m.filter);
+        return w;
+      };
+      ListPlacementGroupsRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.ListPlacementGroupsRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.folderId = r.string();
+              break;
+            case 2:
+              m.pageSize = r.int64();
+              break;
+            case 3:
+              m.pageToken = r.string();
+              break;
+            case 4:
+              m.filter = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListPlacementGroupsRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.ListPlacementGroupsResponse = (function() {
+      function ListPlacementGroupsResponse(p) {
+        this.placementGroups = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListPlacementGroupsResponse.prototype.placementGroups = $util.emptyArray;
+      ListPlacementGroupsResponse.prototype.nextPageToken = '';
+      ListPlacementGroupsResponse.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.placementGroups != null && m.placementGroups.length) {
+          for (let i = 0; i < m.placementGroups.length; ++i) $root.api.compute.v1.PlacementGroup.encode(m.placementGroups[i], w.uint32(10).fork()).ldelim();
+        }
+        if (m.nextPageToken != null && m.hasOwnProperty('nextPageToken')) w.uint32(18).string(m.nextPageToken);
+        return w;
+      };
+      ListPlacementGroupsResponse.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.ListPlacementGroupsResponse();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              if (!(m.placementGroups && m.placementGroups.length)) m.placementGroups = [];
+              m.placementGroups.push($root.api.compute.v1.PlacementGroup.decode(r, r.uint32()));
+              break;
+            case 2:
+              m.nextPageToken = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListPlacementGroupsResponse;
+    })();
+  })(root);
+  (function($root) {
+    $root.CreatePlacementGroupRequest = (function() {
+      function CreatePlacementGroupRequest(p) {
+        this.labels = {};
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      CreatePlacementGroupRequest.prototype.folderId = '';
+      CreatePlacementGroupRequest.prototype.name = '';
+      CreatePlacementGroupRequest.prototype.description = '';
+      CreatePlacementGroupRequest.prototype.labels = $util.emptyObject;
+      CreatePlacementGroupRequest.prototype.spreadPlacementStrategy = null;
+      let $oneOfFields;
+      Object.defineProperty(CreatePlacementGroupRequest.prototype, 'placementStrategy', {
+        get: $util.oneOfGetter(($oneOfFields = ['spreadPlacementStrategy'])),
+        set: $util.oneOfSetter($oneOfFields)
+      });
+      CreatePlacementGroupRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.folderId != null && m.hasOwnProperty('folderId')) w.uint32(10).string(m.folderId);
+        if (m.name != null && m.hasOwnProperty('name')) w.uint32(18).string(m.name);
+        if (m.description != null && m.hasOwnProperty('description')) w.uint32(26).string(m.description);
+        if (m.labels != null && m.hasOwnProperty('labels')) {
+          for (let ks = Object.keys(m.labels), i = 0; i < ks.length; ++i) {
+            w.uint32(34)
+              .fork()
+              .uint32(10)
+              .string(ks[i])
+              .uint32(18)
+              .string(m.labels[ks[i]])
+              .ldelim();
+          }
+        }
+        if (m.spreadPlacementStrategy != null && m.hasOwnProperty('spreadPlacementStrategy')) $root.api.compute.v1.SpreadPlacementStrategy.encode(m.spreadPlacementStrategy, w.uint32(42).fork()).ldelim();
+        return w;
+      };
+      CreatePlacementGroupRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.CreatePlacementGroupRequest(),
+          k;
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.folderId = r.string();
+              break;
+            case 2:
+              m.name = r.string();
+              break;
+            case 3:
+              m.description = r.string();
+              break;
+            case 4:
+              r.skip().pos++;
+              if (m.labels === $util.emptyObject) m.labels = {};
+              k = r.string();
+              r.pos++;
+              m.labels[k] = r.string();
+              break;
+            case 5:
+              m.spreadPlacementStrategy = $root.api.compute.v1.SpreadPlacementStrategy.decode(r, r.uint32());
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return CreatePlacementGroupRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.CreatePlacementGroupMetadata = (function() {
+      function CreatePlacementGroupMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      CreatePlacementGroupMetadata.prototype.placementGroupId = '';
+      CreatePlacementGroupMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.placementGroupId != null && m.hasOwnProperty('placementGroupId')) w.uint32(10).string(m.placementGroupId);
+        return w;
+      };
+      CreatePlacementGroupMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.CreatePlacementGroupMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.placementGroupId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return CreatePlacementGroupMetadata;
+    })();
+  })(root);
+  (function($root) {
+    $root.UpdatePlacementGroupRequest = (function() {
+      function UpdatePlacementGroupRequest(p) {
+        this.labels = {};
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      UpdatePlacementGroupRequest.prototype.placementGroupId = '';
+      UpdatePlacementGroupRequest.prototype.updateMask = null;
+      UpdatePlacementGroupRequest.prototype.name = '';
+      UpdatePlacementGroupRequest.prototype.description = '';
+      UpdatePlacementGroupRequest.prototype.labels = $util.emptyObject;
+      UpdatePlacementGroupRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.placementGroupId != null && m.hasOwnProperty('placementGroupId')) w.uint32(10).string(m.placementGroupId);
+        if (m.updateMask != null && m.hasOwnProperty('updateMask')) $root.contrib.google.protobuf.FieldMask.encode(m.updateMask, w.uint32(18).fork()).ldelim();
+        if (m.name != null && m.hasOwnProperty('name')) w.uint32(26).string(m.name);
+        if (m.description != null && m.hasOwnProperty('description')) w.uint32(34).string(m.description);
+        if (m.labels != null && m.hasOwnProperty('labels')) {
+          for (let ks = Object.keys(m.labels), i = 0; i < ks.length; ++i) {
+            w.uint32(42)
+              .fork()
+              .uint32(10)
+              .string(ks[i])
+              .uint32(18)
+              .string(m.labels[ks[i]])
+              .ldelim();
+          }
+        }
+        return w;
+      };
+      UpdatePlacementGroupRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.UpdatePlacementGroupRequest(),
+          k;
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.placementGroupId = r.string();
+              break;
+            case 2:
+              m.updateMask = $root.contrib.google.protobuf.FieldMask.decode(r, r.uint32());
+              break;
+            case 3:
+              m.name = r.string();
+              break;
+            case 4:
+              m.description = r.string();
+              break;
+            case 5:
+              r.skip().pos++;
+              if (m.labels === $util.emptyObject) m.labels = {};
+              k = r.string();
+              r.pos++;
+              m.labels[k] = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return UpdatePlacementGroupRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.UpdatePlacementGroupMetadata = (function() {
+      function UpdatePlacementGroupMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      UpdatePlacementGroupMetadata.prototype.placementGroupId = '';
+      UpdatePlacementGroupMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.placementGroupId != null && m.hasOwnProperty('placementGroupId')) w.uint32(10).string(m.placementGroupId);
+        return w;
+      };
+      UpdatePlacementGroupMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.UpdatePlacementGroupMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.placementGroupId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return UpdatePlacementGroupMetadata;
+    })();
+  })(root);
+  (function($root) {
+    $root.DeletePlacementGroupRequest = (function() {
+      function DeletePlacementGroupRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      DeletePlacementGroupRequest.prototype.placementGroupId = '';
+      DeletePlacementGroupRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.placementGroupId != null && m.hasOwnProperty('placementGroupId')) w.uint32(10).string(m.placementGroupId);
+        return w;
+      };
+      DeletePlacementGroupRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.DeletePlacementGroupRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.placementGroupId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return DeletePlacementGroupRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.DeletePlacementGroupMetadata = (function() {
+      function DeletePlacementGroupMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      DeletePlacementGroupMetadata.prototype.placementGroupId = '';
+      DeletePlacementGroupMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.placementGroupId != null && m.hasOwnProperty('placementGroupId')) w.uint32(10).string(m.placementGroupId);
+        return w;
+      };
+      DeletePlacementGroupMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.DeletePlacementGroupMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.placementGroupId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return DeletePlacementGroupMetadata;
+    })();
+  })(root);
+  (function($root) {
+    $root.ListPlacementGroupInstancesRequest = (function() {
+      function ListPlacementGroupInstancesRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListPlacementGroupInstancesRequest.prototype.placementGroupId = '';
+      ListPlacementGroupInstancesRequest.prototype.pageSize = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+      ListPlacementGroupInstancesRequest.prototype.pageToken = '';
+      ListPlacementGroupInstancesRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.placementGroupId != null && m.hasOwnProperty('placementGroupId')) w.uint32(10).string(m.placementGroupId);
+        if (m.pageSize != null && m.hasOwnProperty('pageSize')) w.uint32(16).int64(m.pageSize);
+        if (m.pageToken != null && m.hasOwnProperty('pageToken')) w.uint32(26).string(m.pageToken);
+        return w;
+      };
+      ListPlacementGroupInstancesRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.ListPlacementGroupInstancesRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.placementGroupId = r.string();
+              break;
+            case 2:
+              m.pageSize = r.int64();
+              break;
+            case 3:
+              m.pageToken = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListPlacementGroupInstancesRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.ListPlacementGroupInstancesResponse = (function() {
+      function ListPlacementGroupInstancesResponse(p) {
+        this.instances = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListPlacementGroupInstancesResponse.prototype.instances = $util.emptyArray;
+      ListPlacementGroupInstancesResponse.prototype.nextPageToken = '';
+      ListPlacementGroupInstancesResponse.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.instances != null && m.instances.length) {
+          for (let i = 0; i < m.instances.length; ++i) $root.api.compute.v1.Instance.encode(m.instances[i], w.uint32(10).fork()).ldelim();
+        }
+        if (m.nextPageToken != null && m.hasOwnProperty('nextPageToken')) w.uint32(18).string(m.nextPageToken);
+        return w;
+      };
+      ListPlacementGroupInstancesResponse.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.ListPlacementGroupInstancesResponse();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              if (!(m.instances && m.instances.length)) m.instances = [];
+              m.instances.push($root.api.compute.v1.Instance.decode(r, r.uint32()));
+              break;
+            case 2:
+              m.nextPageToken = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListPlacementGroupInstancesResponse;
+    })();
+  })(root);
+  (function($root) {
+    $root.ListPlacementGroupOperationsRequest = (function() {
+      function ListPlacementGroupOperationsRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListPlacementGroupOperationsRequest.prototype.placementGroupId = '';
+      ListPlacementGroupOperationsRequest.prototype.pageSize = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+      ListPlacementGroupOperationsRequest.prototype.pageToken = '';
+      ListPlacementGroupOperationsRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.placementGroupId != null && m.hasOwnProperty('placementGroupId')) w.uint32(10).string(m.placementGroupId);
+        if (m.pageSize != null && m.hasOwnProperty('pageSize')) w.uint32(16).int64(m.pageSize);
+        if (m.pageToken != null && m.hasOwnProperty('pageToken')) w.uint32(26).string(m.pageToken);
+        return w;
+      };
+      ListPlacementGroupOperationsRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.ListPlacementGroupOperationsRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.placementGroupId = r.string();
+              break;
+            case 2:
+              m.pageSize = r.int64();
+              break;
+            case 3:
+              m.pageToken = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListPlacementGroupOperationsRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.ListPlacementGroupOperationsResponse = (function() {
+      function ListPlacementGroupOperationsResponse(p) {
+        this.operations = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListPlacementGroupOperationsResponse.prototype.operations = $util.emptyArray;
+      ListPlacementGroupOperationsResponse.prototype.nextPageToken = '';
+      ListPlacementGroupOperationsResponse.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.operations != null && m.operations.length) {
+          for (let i = 0; i < m.operations.length; ++i) $root.api.operation.Operation.encode(m.operations[i], w.uint32(10).fork()).ldelim();
+        }
+        if (m.nextPageToken != null && m.hasOwnProperty('nextPageToken')) w.uint32(18).string(m.nextPageToken);
+        return w;
+      };
+      ListPlacementGroupOperationsResponse.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.ListPlacementGroupOperationsResponse();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              if (!(m.operations && m.operations.length)) m.operations = [];
+              m.operations.push($root.api.operation.Operation.decode(r, r.uint32()));
+              break;
+            case 2:
+              m.nextPageToken = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListPlacementGroupOperationsResponse;
     })();
   })(root);
   (function($root) {

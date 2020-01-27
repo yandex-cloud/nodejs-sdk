@@ -1,6 +1,6 @@
 {
   "name": "yandex-cloud",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Yandex Cloud SDK",
   "keywords": [
     "yandex-cloud",
@@ -25,10 +25,12 @@
   },
   "devDependencies": {
     "@types/node": "^10.14.13",
-    "yaml": "^1.6.0"
+    "yaml": "^1.6.0",
+    "prettier": "^1.18.2"
   },
   "scripts": {
-    "test": "node test/test.js"
+    "test": "node test/test.js",
+    "format": "prettier --config .prettierrc.json --write ./**/*.ts ./**/*.js"
   },
   "engines": {
     "node": ">=10.0.0"

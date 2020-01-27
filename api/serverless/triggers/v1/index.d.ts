@@ -11,254 +11,555 @@ import * as operation from '../../../../api/operation';
 import * as Trigger from '../../../../Trigger';
 
 export interface Predicate {
-  andPredicate?: AndPredicate;
+    andPredicate?: AndPredicate;
 
-  fieldValuePredicate?: FieldValuePredicate;
+    fieldValuePredicate?: FieldValuePredicate;
 }
 
 export interface AndPredicate {
-  predicate?: Predicate[];
+    predicate?: Predicate[];
 }
 
 export interface FieldValuePredicate {
-  fieldPath: string;
+    fieldPath: string;
 
-  /**
-   * string representation of the value matches exactly to the given string
-   */
-  exact?: string;
+    /**
+     * string representation of the value matches exactly to the given string
+     */
+    exact?: string;
 
-  /**
-   * string representation of the value matches exactly to the given string
-   */
-  prefix?: string;
+    /**
+     * string representation of the value matches exactly to the given string
+     */
+    prefix?: string;
 
-  /**
-   * value has given prefix
-   */
-  suffix?: string;
+    /**
+     * value has given prefix
+     */
+    suffix?: string;
 }
 
 export enum TriggerType {
-  TRIGGER_TYPE_UNSPECIFIED = 0,
+    TRIGGER_TYPE_UNSPECIFIED = 0,
 
-  MESSAGE_QUEUE = 3
+    /**
+     * The trigger is activated on a timer.
+     */
+    TIMER = 2,
+
+    /**
+     * The trigger is activated by messages from a message queue.
+     *
+     * Only Yandex Message Queue is currently supported.
+     */
+    MESSAGE_QUEUE = 3,
+
+    /**
+     * The trigger is activated by messages from Yandex IoT Core.
+     */
+    IOT_MESSAGE = 4,
+
+    OBJECT_STORAGE = 5,
 }
 
+/**
+ * A trigger to invoke a serverless function. For more information, see [Triggers](/docs/functions/concepts/trigger).
+ */
 export interface Trigger {
-  /**
-   * ID of the trigger.
-   */
-  id?: string;
+    /**
+     * ID of the trigger. Generated at creation time.
+     */
+    id?: string;
 
-  /**
-   * ID of the folder that the trigger belongs to.
-   */
-  folderId: string;
+    /**
+     * ID of the folder that the trigger belongs to.
+     */
+    folderId: string;
 
-  /**
-   * Timestamp when the trigger was created.
-   */
-  createdAt?: protobuf.Timestamp;
+    /**
+     * Creation timestamp for the trigger.
+     */
+    createdAt?: protobuf.Timestamp;
 
-  /**
-   * Name of the trigger.
-   */
-  name: string;
+    /**
+     * Name of the trigger.
+     */
+    name?: string;
 
-  /**
-   * Description of the trigger.
-   */
-  description?: string;
+    /**
+     * Description of the trigger.
+     */
+    description?: string;
 
-  /**
-   * Resource labels as `key:value` pairs.
-   */
-  labels?: { [s: string]: string };
+    /**
+     * Trigger labels as `key:value` pairs.
+     */
+    labels?: { [s: string]: string };
 
-  /**
-   * Defines trigger rule (is always consistent with type filed)
-   */
-  rule: Trigger.Rule;
+    /**
+     * Rule for trigger activation (always consistent with the trigger type).
+     */
+    rule: Trigger.Rule;
 }
 
 export namespace Trigger {
-  export interface Rule {
-    messageQueue?: MessageQueue;
-
-    iotMessage?: IoTMessage;
-  }
-
-  export interface MessageQueue {
     /**
-     * ARN stands for Amazon Resource ID. ARN is the only way to uniquely
-     * identify a queue in the YMQ. One is expected to use it as a reference
-     * to a queue when creating a trigger.
+     * Description of a rule for trigger activation.
      */
-    arn?: string;
+    export interface Rule {
+        /**
+         * Rule for a timed trigger.
+         */
+        timer?: Timer;
+
+        /**
+         * Rule for a message queue trigger.
+         */
+        messageQueue?: MessageQueue;
+
+        /**
+         * Rule for a Yandex IoT Core trigger.
+         */
+        iotMessage?: IoTMessage;
+
+        objectStorage?: ObjectStorage;
+    }
 
     /**
-     * SA which has read access to the queue.
+     * Rule for activating a timed trigger.
+     */
+    export interface Timer {
+        /**
+         * Description of a schedule as a [cron expression](/docs/functions/concepts/trigger/timer).
+         */
+        cronExpression: string;
+
+        /**
+         * Instructions for invoking a function once.
+         */
+        invokeFunction?: InvokeFunctionOnce;
+
+        invokeFunctionWithRetry?: InvokeFunctionWithRetry;
+    }
+
+    /**
+     * Rule for activating a message queue trigger.
+     */
+    export interface MessageQueue {
+        /**
+         * ID of the message queue in Yandex Message Queue.
+         */
+        queueId: string;
+
+        /**
+         * ID of the service account which has read access to the message queue.
+         */
+        serviceAccountId: string;
+
+        /**
+         * Batch settings for processing messages in the queue.
+         */
+        batchSettings: BatchSettings;
+
+        /**
+         * Queue visibility timeout override.
+         */
+        visibilityTimeout?: protobuf.Duration;
+
+        /**
+         * Instructions for invoking a function once.
+         */
+        invokeFunction?: InvokeFunctionOnce;
+    }
+
+    /**
+     * Rule for activating a Yandex IoT Core trigger.
+     */
+    export interface IoTMessage {
+        /**
+         * ID of the Yandex IoT Core registry.
+         */
+        registryId: string;
+
+        /**
+         * ID of the Yandex IoT Core device in the registry.
+         */
+        deviceId?: string;
+
+        /**
+         * MQTT topic whose messages activate the trigger.
+         */
+        mqttTopic?: string;
+
+        /**
+         * Instructions for invoking a function with retries as needed.
+         */
+        invokeFunction?: InvokeFunctionWithRetry;
+    }
+
+    export enum ObjectStorageEventType {
+        OBJECT_STORAGE_EVENT_TYPE_UNSPECIFIED = 0,
+
+        OBJECT_STORAGE_EVENT_TYPE_CREATE_OBJECT = 1,
+
+        OBJECT_STORAGE_EVENT_TYPE_UPDATE_OBJECT = 2,
+
+        OBJECT_STORAGE_EVENT_TYPE_DELETE_OBJECT = 3,
+    }
+
+    export interface ObjectStorage {
+        /**
+         * Type (name) of events, at least one value is required.
+         */
+        eventType?: ObjectStorageEventType[];
+
+        bucketId?: string;
+
+        /**
+         * Filter, optional.
+         */
+        prefix?: string;
+
+        suffix?: string;
+
+        invokeFunction?: InvokeFunctionWithRetry;
+    }
+}
+
+/**
+ * A single function invocation.
+ */
+export interface InvokeFunctionOnce {
+    /**
+     * ID of the function to invoke.
+     */
+    functionId: string;
+
+    /**
+     * Tag of the function version to execute.
+     */
+    functionTag?: string;
+
+    /**
+     * ID of the service account that should be used to invoke the function.
+     */
+    serviceAccountId?: string;
+}
+
+/**
+ * A function invocation with retries.
+ */
+export interface InvokeFunctionWithRetry {
+    /**
+     * ID of the function to invoke.
+     */
+    functionId: string;
+
+    /**
+     * Tag of the function version to execute.
+     */
+    functionTag?: string;
+
+    /**
+     * ID of the service account which has permission to invoke the function.
+     */
+    serviceAccountId?: string;
+
+    /**
+     * Retry policy. If the field is not specified, or the value is empty, no retries will be attempted.
+     */
+    retrySettings?: RetrySettings;
+
+    /**
+     * DLQ policy (no value means discarding a message)
+     */
+    deadLetterQueue?: PutQueueMessage;
+}
+
+export interface PutQueueMessage {
+    /**
+     * ID of the queue.
+     */
+    queueId?: string;
+
+    /**
+     * SA which has write permission on the queue.
      */
     serviceAccountId: string;
+}
+
+/**
+ * Settings for batch processing of messages in a queue.
+ */
+export interface BatchSettings {
+    /**
+     * Batch size. Trigger will send the batch of messages to the associated function
+     * when the number of messages in the queue reaches this value, or the [cutoff] time has passed.
+     */
+    size?: Long;
 
     /**
-     * Batch settings for YMQ client.
+     * Maximum wait time. Trigger will send the batch of messages the time since the last batch
+     * exceeds the `cutoff` value, regardless of the amount of messages in the queue.
      */
-    batchSettings: BatchSettings;
-
-    invokeFunction?: InvokeFunctionOnce;
-  }
-
-  export interface IoTMessage {
-    registryId: string;
-
-    deviceId?: string;
-
-    mqttTopic?: string;
-
-    invokeFunction?: InvokeFunctionWithRetry;
-  }
+    cutoff: protobuf.Duration;
 }
 
-export interface InvokeFunctionOnce {
-  functionId: string;
-
-  functionTag?: string;
-
-  /**
-   * SA which should be used to call a function, optional.
-   */
-  serviceAccountId?: string;
-}
-
-export interface InvokeFunctionWithRetry {
-  functionId: string;
-
-  functionTag?: string;
-
-  /**
-   * SA which has call permission on the function, optional.
-   */
-  serviceAccountId?: string;
-
-  /**
-   * Retry policy, optional (no value means no retry).
-   */
-  retrySettings?: RetrySettings;
-}
-
-export interface BatchSettings {
-  /**
-   * Maximum batch size: trigger will send a batch if number of events exceeds this value.
-   */
-  size?: Long;
-
-  /**
-   * Maximum batch size: trigger will send a batch if its lifetime exceeds this value.
-   */
-  cutoff: protobuf.Duration;
-}
-
+/**
+ * Settings for retrying to invoke a function.
+ */
 export interface RetrySettings {
-  /**
-   * Maximum number of retries (extra calls) before an action fails.
-   */
-  retryAttempts?: Long;
+    /**
+     * Maximum number of retries (extra invokes) before the action is considered failed.
+     */
+    retryAttempts?: Long;
 
-  /**
-   * Interval between tries.
-   */
-  interval: protobuf.Duration;
+    /**
+     * Time in seconds to wait between individual retries.
+     */
+    interval: protobuf.Duration;
 }
 
+/**
+ * A set of methods for managing triggers for serverless functions.
+ */
 export class TriggerService {
-  constructor(session?: Session);
-  get(request: GetTriggerRequest): Promise<Trigger>;
+    constructor(session?: Session);
+    /**
+     * Returns the specified trigger.
+     *
+     * To get the list of all available triggers, make a [List] request.
+     */
+    get(request: GetTriggerRequest): Promise<Trigger>;
 
-  list(request: ListTriggersRequest): Promise<ListTriggersResponse>;
+    /**
+     * Retrieves the list of triggers in the specified folder.
+     */
+    list(request: ListTriggersRequest): Promise<ListTriggersResponse>;
 
-  create(request: CreateTriggerRequest): Promise<operation.Operation>;
+    /**
+     * Creates a trigger in the specified folder.
+     */
+    create(request: CreateTriggerRequest): Promise<operation.Operation>;
 
-  update(request: UpdateTriggerRequest): Promise<operation.Operation>;
+    /**
+     * Updates the specified trigger.
+     */
+    update(request: UpdateTriggerRequest): Promise<operation.Operation>;
 
-  delete(request: DeleteTriggerRequest): Promise<operation.Operation>;
+    /**
+     * Deletes the specified trigger.
+     */
+    delete(request: DeleteTriggerRequest): Promise<operation.Operation>;
 
-  listOperations(request: ListTriggerOperationsRequest): Promise<ListTriggerOperationsResponse>;
+    /**
+     * Lists operations for the specified trigger.
+     */
+    listOperations(
+        request: ListTriggerOperationsRequest
+    ): Promise<ListTriggerOperationsResponse>;
 }
 
 export interface GetTriggerRequest {
-  triggerId: string;
+    /**
+     * ID of the trigger to return.
+     *
+     * To get a trigger ID make a [TriggerService.List] request.
+     */
+    triggerId: string;
 }
 
 export interface ListTriggersRequest {
-  folderId: string;
+    /**
+     * ID of the folder to list triggers in.
+     *
+     * To get a folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+     */
+    folderId: string;
 
-  pageSize?: Long;
+    /**
+     * The maximum number of results per page to return. If the number of available
+     * results is larger than `pageSize`, the service returns a [ListTriggersResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     *
+     * Default value: 100.
+     */
+    pageSize?: Long;
 
-  pageToken?: string;
+    /**
+     * Page token. To get the next page of results, set `pageToken` to the
+     * [ListTriggersResponse.next_page_token] returned by a previous list request.
+     */
+    pageToken?: string;
 
-  filter?: string;
+    /**
+     * A filter expression that filters triggers listed in the response.
+     *
+     * The expression must specify:
+     * 1. The field name. Currently filtering can only be applied to the [Trigger.name] field.
+     * 2. A conditional operator. Can be either `=` or `!=` for single values, `IN` or `NOT IN`
+     * for lists of values.
+     * 3. The value. Must be 3-63 characters long and match the regular expression `^[a-z][-a-z0-9]{1,61}[a-z0-9]$`.
+     * Example of a filter: `name=my-trigger`.
+     */
+    filter?: string;
 }
 
 export interface ListTriggersResponse {
-  triggers?: Trigger[];
+    /**
+     * List of triggers in the specified folder.
+     */
+    triggers?: Trigger[];
 
-  nextPageToken?: string;
+    /**
+     * Token for getting the next page of the list. If the number of results is greater than
+     * the specified [ListTriggersRequest.page_size], use `nextPageToken` as the value
+     * for the [ListTriggersRequest.page_token] parameter in the next list request.
+     *
+     * Each subsequent page will have its own `nextPageToken` to continue paging through the results.
+     */
+    nextPageToken?: string;
 }
 
 export interface CreateTriggerRequest {
-  folderId: string;
+    /**
+     * ID of the folder to create a trigger in.
+     *
+     * To get a folder ID make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+     */
+    folderId: string;
 
-  name?: string;
+    /**
+     * Name of the trigger.
+     * The name must be unique within the folder.
+     */
+    name?: string;
 
-  description?: string;
+    /**
+     * Description of the trigger.
+     */
+    description?: string;
 
-  labels?: { [s: string]: string };
+    /**
+     * Resource labels as `key:value` pairs.
+     */
+    labels?: { [s: string]: string };
 
-  rule: Trigger.Rule;
+    /**
+     * Trigger type.
+     */
+    rule: Trigger.Rule;
 }
 
 export interface CreateTriggerMetadata {
-  triggerId?: string;
+    /**
+     * ID of the trigger that is being created.
+     */
+    triggerId?: string;
 }
 
 export interface UpdateTriggerRequest {
-  triggerId: string;
+    /**
+     * ID of the trigger to update.
+     *
+     * To get a trigger ID make a [TriggerService.List] request.
+     */
+    triggerId: string;
 
-  updateMask?: protobuf.FieldMask;
+    /**
+     * Field mask that specifies which attributes of the trigger should be updated.
+     */
+    updateMask?: protobuf.FieldMask;
 
-  name?: string;
+    /**
+     * New name for the trigger.
+     * The name must be unique within the folder.
+     */
+    name?: string;
 
-  description?: string;
+    /**
+     * New description of the trigger.
+     */
+    description?: string;
 
-  labels?: { [s: string]: string };
+    /**
+     * Trigger labels as `key:value` pairs.
+     *
+     * Existing set of labels is completely replaced by the provided set, so if you just want
+     * to add or remove a label, request the current set of labels with a [TriggerService.Get] request.
+     */
+    labels?: { [s: string]: string };
 }
 
 export interface UpdateTriggerMetadata {
-  triggerId: string;
+    /**
+     * ID of the trigger that is being updated.
+     */
+    triggerId: string;
 }
 
 export interface DeleteTriggerRequest {
-  triggerId: string;
+    /**
+     * ID of the trigger to delete.
+     *
+     * To get a trigger ID make a [TriggerService.List] request.
+     */
+    triggerId: string;
 }
 
 export interface DeleteTriggerMetadata {
-  triggerId: string;
+    /**
+     * ID of the trigger that is being deleted.
+     */
+    triggerId: string;
 }
 
 export interface ListTriggerOperationsRequest {
-  triggerId: string;
+    /**
+     * ID of the trigger to list operations for.
+     */
+    triggerId: string;
 
-  pageSize?: Long;
+    /**
+     * The maximum number of results per page that should be returned. If the number of available
+     * results is larger than `pageSize`, the service returns a [ListTriggerOperationsResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     *
+     * Default value: 100.
+     */
+    pageSize?: Long;
 
-  pageToken?: string;
+    /**
+     * Page token. To get the next page of results, set `pageToken` to the
+     * [ListTriggerOperationsResponse.next_page_token] returned by a previous list request.
+     */
+    pageToken?: string;
 
-  filter?: string;
+    /**
+     * A filter expression that filters resources listed in the response.
+     *
+     * The expression must specify:
+     * 1. The field name. Currently filtering can only be applied to the [Trigger.name] field.
+     * 2. A conditional operator. Can be either `=` or `!=` for single values, `IN` or `NOT IN`
+     * for lists of values.
+     * 3. The value. Must be 3-63 characters long and match the regular expression `^[a-z][-a-z0-9]{1,61}[a-z0-9]$`.
+     * Example of a filter: `name=my-function`.
+     */
+    filter?: string;
 }
 
 export interface ListTriggerOperationsResponse {
-  operations?: operation.Operation[];
+    /**
+     * List of operations for the specified trigger.
+     */
+    operations?: operation.Operation[];
 
-  nextPageToken?: string;
+    /**
+     * Token for getting the next page of the list. If the number of results is greater than
+     * the specified [ListTriggerOperationsRequest.page_size], use `nextPageToken` as the value
+     * for the [ListTriggerOperationsRequest.page_token] parameter in the next list request.
+     *
+     * Each subsequent page will have its own `nextPageToken` to continue paging through the results.
+     */
+    nextPageToken?: string;
 }

@@ -8,7 +8,6 @@ module.exports = (function() {
   const $Writer = $protobuf.Writer;
   const $util = $protobuf.util;
   let root = {};
-  require('../../../contrib/google/protobuf');
   require('../../../api/operation');
   require('../../../api/access');
   (function($root) {
@@ -111,20 +110,50 @@ module.exports = (function() {
           },
           responseDeserialize: $root.api.iam.v1.CreateApiKeyResponse.decode
         },
+        update: {
+          path: '/yandex.cloud.iam.v1.ApiKeyService/Update',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.iam.v1.UpdateApiKeyRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.iam.v1.UpdateApiKeyRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.iam.v1.UpdateApiKeyRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
         delete: {
           path: '/yandex.cloud.iam.v1.ApiKeyService/Delete',
           requestStream: false,
           responseStream: false,
           requestType: $root.api.iam.v1.DeleteApiKeyRequest,
-          responseType: $root.contrib.google.protobuf.Empty,
+          responseType: $root.api.operation.Operation,
           requestSerialize: r => {
             return $root.api.iam.v1.DeleteApiKeyRequest.encode(r).finish();
           },
           requestDeserialize: $root.api.iam.v1.DeleteApiKeyRequest.decode,
           responseSerialize: r => {
-            return $root.contrib.google.protobuf.Empty.encode(r).finish();
+            return $root.api.operation.Operation.encode(r).finish();
           },
-          responseDeserialize: $root.contrib.google.protobuf.Empty.decode
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        listOperations: {
+          path: '/yandex.cloud.iam.v1.ApiKeyService/ListOperations',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.iam.v1.ListApiKeyOperationsRequest,
+          responseType: $root.api.iam.v1.ListApiKeyOperationsResponse,
+          requestSerialize: r => {
+            return $root.api.iam.v1.ListApiKeyOperationsRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.iam.v1.ListApiKeyOperationsRequest.decode,
+          responseSerialize: r => {
+            return $root.api.iam.v1.ListApiKeyOperationsResponse.encode(r).finish();
+          },
+          responseDeserialize: $root.api.iam.v1.ListApiKeyOperationsResponse.decode
         }
       });
       ctor.__endpointId = 'iam';
@@ -316,6 +345,78 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
+    $root.UpdateApiKeyRequest = (function() {
+      function UpdateApiKeyRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      UpdateApiKeyRequest.prototype.apiKeyId = '';
+      UpdateApiKeyRequest.prototype.updateMask = null;
+      UpdateApiKeyRequest.prototype.description = '';
+      UpdateApiKeyRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.apiKeyId != null && m.hasOwnProperty('apiKeyId')) w.uint32(10).string(m.apiKeyId);
+        if (m.updateMask != null && m.hasOwnProperty('updateMask')) $root.contrib.google.protobuf.FieldMask.encode(m.updateMask, w.uint32(18).fork()).ldelim();
+        if (m.description != null && m.hasOwnProperty('description')) w.uint32(26).string(m.description);
+        return w;
+      };
+      UpdateApiKeyRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.iam.v1.UpdateApiKeyRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.apiKeyId = r.string();
+              break;
+            case 2:
+              m.updateMask = $root.contrib.google.protobuf.FieldMask.decode(r, r.uint32());
+              break;
+            case 3:
+              m.description = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return UpdateApiKeyRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.UpdateApiKeyMetadata = (function() {
+      function UpdateApiKeyMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      UpdateApiKeyMetadata.prototype.apiKeyId = '';
+      UpdateApiKeyMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.apiKeyId != null && m.hasOwnProperty('apiKeyId')) w.uint32(10).string(m.apiKeyId);
+        return w;
+      };
+      UpdateApiKeyMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.iam.v1.UpdateApiKeyMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.apiKeyId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return UpdateApiKeyMetadata;
+    })();
+  })(root);
+  (function($root) {
     $root.DeleteApiKeyRequest = (function() {
       function DeleteApiKeyRequest(p) {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
@@ -344,6 +445,118 @@ module.exports = (function() {
         return m;
       };
       return DeleteApiKeyRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.DeleteApiKeyMetadata = (function() {
+      function DeleteApiKeyMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      DeleteApiKeyMetadata.prototype.apiKeyId = '';
+      DeleteApiKeyMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.apiKeyId != null && m.hasOwnProperty('apiKeyId')) w.uint32(10).string(m.apiKeyId);
+        return w;
+      };
+      DeleteApiKeyMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.iam.v1.DeleteApiKeyMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.apiKeyId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return DeleteApiKeyMetadata;
+    })();
+  })(root);
+  (function($root) {
+    $root.ListApiKeyOperationsRequest = (function() {
+      function ListApiKeyOperationsRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListApiKeyOperationsRequest.prototype.apiKeyId = '';
+      ListApiKeyOperationsRequest.prototype.pageSize = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+      ListApiKeyOperationsRequest.prototype.pageToken = '';
+      ListApiKeyOperationsRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.apiKeyId != null && m.hasOwnProperty('apiKeyId')) w.uint32(10).string(m.apiKeyId);
+        if (m.pageSize != null && m.hasOwnProperty('pageSize')) w.uint32(16).int64(m.pageSize);
+        if (m.pageToken != null && m.hasOwnProperty('pageToken')) w.uint32(26).string(m.pageToken);
+        return w;
+      };
+      ListApiKeyOperationsRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.iam.v1.ListApiKeyOperationsRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.apiKeyId = r.string();
+              break;
+            case 2:
+              m.pageSize = r.int64();
+              break;
+            case 3:
+              m.pageToken = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListApiKeyOperationsRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.ListApiKeyOperationsResponse = (function() {
+      function ListApiKeyOperationsResponse(p) {
+        this.operations = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListApiKeyOperationsResponse.prototype.operations = $util.emptyArray;
+      ListApiKeyOperationsResponse.prototype.nextPageToken = '';
+      ListApiKeyOperationsResponse.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.operations != null && m.operations.length) {
+          for (let i = 0; i < m.operations.length; ++i) $root.api.operation.Operation.encode(m.operations[i], w.uint32(10).fork()).ldelim();
+        }
+        if (m.nextPageToken != null && m.hasOwnProperty('nextPageToken')) w.uint32(18).string(m.nextPageToken);
+        return w;
+      };
+      ListApiKeyOperationsResponse.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.iam.v1.ListApiKeyOperationsResponse();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              if (!(m.operations && m.operations.length)) m.operations = [];
+              m.operations.push($root.api.operation.Operation.decode(r, r.uint32()));
+              break;
+            case 2:
+              m.nextPageToken = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListApiKeyOperationsResponse;
     })();
   })(root);
   (function($root) {
@@ -581,20 +794,50 @@ module.exports = (function() {
           },
           responseDeserialize: $root.api.iam.v1.CreateKeyResponse.decode
         },
+        update: {
+          path: '/yandex.cloud.iam.v1.KeyService/Update',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.iam.v1.UpdateKeyRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.iam.v1.UpdateKeyRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.iam.v1.UpdateKeyRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
         delete: {
           path: '/yandex.cloud.iam.v1.KeyService/Delete',
           requestStream: false,
           responseStream: false,
           requestType: $root.api.iam.v1.DeleteKeyRequest,
-          responseType: $root.contrib.google.protobuf.Empty,
+          responseType: $root.api.operation.Operation,
           requestSerialize: r => {
             return $root.api.iam.v1.DeleteKeyRequest.encode(r).finish();
           },
           requestDeserialize: $root.api.iam.v1.DeleteKeyRequest.decode,
           responseSerialize: r => {
-            return $root.contrib.google.protobuf.Empty.encode(r).finish();
+            return $root.api.operation.Operation.encode(r).finish();
           },
-          responseDeserialize: $root.contrib.google.protobuf.Empty.decode
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        listOperations: {
+          path: '/yandex.cloud.iam.v1.KeyService/ListOperations',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.iam.v1.ListKeyOperationsRequest,
+          responseType: $root.api.iam.v1.ListKeyOperationsResponse,
+          requestSerialize: r => {
+            return $root.api.iam.v1.ListKeyOperationsRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.iam.v1.ListKeyOperationsRequest.decode,
+          responseSerialize: r => {
+            return $root.api.iam.v1.ListKeyOperationsResponse.encode(r).finish();
+          },
+          responseDeserialize: $root.api.iam.v1.ListKeyOperationsResponse.decode
         }
       });
       ctor.__endpointId = 'iam';
@@ -806,6 +1049,78 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
+    $root.UpdateKeyRequest = (function() {
+      function UpdateKeyRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      UpdateKeyRequest.prototype.keyId = '';
+      UpdateKeyRequest.prototype.updateMask = null;
+      UpdateKeyRequest.prototype.description = '';
+      UpdateKeyRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.keyId != null && m.hasOwnProperty('keyId')) w.uint32(10).string(m.keyId);
+        if (m.updateMask != null && m.hasOwnProperty('updateMask')) $root.contrib.google.protobuf.FieldMask.encode(m.updateMask, w.uint32(18).fork()).ldelim();
+        if (m.description != null && m.hasOwnProperty('description')) w.uint32(26).string(m.description);
+        return w;
+      };
+      UpdateKeyRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.iam.v1.UpdateKeyRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.keyId = r.string();
+              break;
+            case 2:
+              m.updateMask = $root.contrib.google.protobuf.FieldMask.decode(r, r.uint32());
+              break;
+            case 3:
+              m.description = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return UpdateKeyRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.UpdateKeyMetadata = (function() {
+      function UpdateKeyMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      UpdateKeyMetadata.prototype.keyId = '';
+      UpdateKeyMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.keyId != null && m.hasOwnProperty('keyId')) w.uint32(10).string(m.keyId);
+        return w;
+      };
+      UpdateKeyMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.iam.v1.UpdateKeyMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.keyId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return UpdateKeyMetadata;
+    })();
+  })(root);
+  (function($root) {
     $root.DeleteKeyRequest = (function() {
       function DeleteKeyRequest(p) {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
@@ -834,6 +1149,118 @@ module.exports = (function() {
         return m;
       };
       return DeleteKeyRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.DeleteKeyMetadata = (function() {
+      function DeleteKeyMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      DeleteKeyMetadata.prototype.keyId = '';
+      DeleteKeyMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.keyId != null && m.hasOwnProperty('keyId')) w.uint32(10).string(m.keyId);
+        return w;
+      };
+      DeleteKeyMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.iam.v1.DeleteKeyMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.keyId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return DeleteKeyMetadata;
+    })();
+  })(root);
+  (function($root) {
+    $root.ListKeyOperationsRequest = (function() {
+      function ListKeyOperationsRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListKeyOperationsRequest.prototype.keyId = '';
+      ListKeyOperationsRequest.prototype.pageSize = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+      ListKeyOperationsRequest.prototype.pageToken = '';
+      ListKeyOperationsRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.keyId != null && m.hasOwnProperty('keyId')) w.uint32(10).string(m.keyId);
+        if (m.pageSize != null && m.hasOwnProperty('pageSize')) w.uint32(16).int64(m.pageSize);
+        if (m.pageToken != null && m.hasOwnProperty('pageToken')) w.uint32(26).string(m.pageToken);
+        return w;
+      };
+      ListKeyOperationsRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.iam.v1.ListKeyOperationsRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.keyId = r.string();
+              break;
+            case 2:
+              m.pageSize = r.int64();
+              break;
+            case 3:
+              m.pageToken = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListKeyOperationsRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.ListKeyOperationsResponse = (function() {
+      function ListKeyOperationsResponse(p) {
+        this.operations = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListKeyOperationsResponse.prototype.operations = $util.emptyArray;
+      ListKeyOperationsResponse.prototype.nextPageToken = '';
+      ListKeyOperationsResponse.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.operations != null && m.operations.length) {
+          for (let i = 0; i < m.operations.length; ++i) $root.api.operation.Operation.encode(m.operations[i], w.uint32(10).fork()).ldelim();
+        }
+        if (m.nextPageToken != null && m.hasOwnProperty('nextPageToken')) w.uint32(18).string(m.nextPageToken);
+        return w;
+      };
+      ListKeyOperationsResponse.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.iam.v1.ListKeyOperationsResponse();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              if (!(m.operations && m.operations.length)) m.operations = [];
+              m.operations.push($root.api.operation.Operation.decode(r, r.uint32()));
+              break;
+            case 2:
+              m.nextPageToken = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListKeyOperationsResponse;
     })();
   })(root);
   (function($root) {
@@ -1655,15 +2082,17 @@ module.exports = (function() {
       }
       UserAccount.prototype.id = '';
       UserAccount.prototype.yandexPassportUserAccount = null;
+      UserAccount.prototype.samlUserAccount = null;
       let $oneOfFields;
       Object.defineProperty(UserAccount.prototype, 'userAccount', {
-        get: $util.oneOfGetter(($oneOfFields = ['yandexPassportUserAccount'])),
+        get: $util.oneOfGetter(($oneOfFields = ['yandexPassportUserAccount', 'samlUserAccount'])),
         set: $util.oneOfSetter($oneOfFields)
       });
       UserAccount.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.id != null && m.hasOwnProperty('id')) w.uint32(10).string(m.id);
         if (m.yandexPassportUserAccount != null && m.hasOwnProperty('yandexPassportUserAccount')) $root.api.iam.v1.YandexPassportUserAccount.encode(m.yandexPassportUserAccount, w.uint32(18).fork()).ldelim();
+        if (m.samlUserAccount != null && m.hasOwnProperty('samlUserAccount')) $root.api.iam.v1.SamlUserAccount.encode(m.samlUserAccount, w.uint32(26).fork()).ldelim();
         return w;
       };
       UserAccount.decode = function decode(r, l) {
@@ -1678,6 +2107,9 @@ module.exports = (function() {
               break;
             case 2:
               m.yandexPassportUserAccount = $root.api.iam.v1.YandexPassportUserAccount.decode(r, r.uint32());
+              break;
+            case 3:
+              m.samlUserAccount = $root.api.iam.v1.SamlUserAccount.decode(r, r.uint32());
               break;
             default:
               r.skipType(t & 7);
@@ -1723,6 +2155,42 @@ module.exports = (function() {
         return m;
       };
       return YandexPassportUserAccount;
+    })();
+  })(root);
+  (function($root) {
+    $root.SamlUserAccount = (function() {
+      function SamlUserAccount(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      SamlUserAccount.prototype.federationId = '';
+      SamlUserAccount.prototype.nameId = '';
+      SamlUserAccount.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.federationId != null && m.hasOwnProperty('federationId')) w.uint32(10).string(m.federationId);
+        if (m.nameId != null && m.hasOwnProperty('nameId')) w.uint32(18).string(m.nameId);
+        return w;
+      };
+      SamlUserAccount.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.iam.v1.SamlUserAccount();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.federationId = r.string();
+              break;
+            case 2:
+              m.nameId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return SamlUserAccount;
     })();
   })(root);
   (function($root) {

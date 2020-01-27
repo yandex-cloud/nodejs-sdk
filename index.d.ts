@@ -1,17 +1,32 @@
 import { ChannelCredentials } from 'grpc';
 
 interface GenericConfig {
-  pollInterval?: number;
+    pollInterval?: number;
 }
 
 export interface OAuthCredentialsConfig extends GenericConfig {
-  oauthToken: string;
+    oauthToken: string;
+}
+
+export interface IamTokenCredentialsConfig extends GenericConfig {
+    iamToken: string;
 }
 
 export class Session {
-  constructor(config: OAuthCredentialsConfig | GenericConfig);
+    constructor(
+        config:
+            | OAuthCredentialsConfig
+            | IamTokenCredentialsConfig
+            | GenericConfig
+    );
 
-  setEndpoint(newEndpointAddress: string);
+    setEndpoint(newEndpointAddress: string);
 
-  client<T>(cls: { new (address: string, credentials: ChannelCredentials, options?: object): T }): T;
+    client<T>(cls: {
+        new (
+            address: string,
+            credentials: ChannelCredentials,
+            options?: object
+        ): T;
+    }): T;
 }

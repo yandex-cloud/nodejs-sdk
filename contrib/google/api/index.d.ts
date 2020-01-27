@@ -12,12 +12,12 @@ import { Session } from '../../../index.js';
  * to one or more HTTP REST API methods.
  */
 export interface Http {
-  /**
-   * A list of HTTP configuration rules that apply to individual API methods.
-   *
-   * **NOTE:** All service configuration rules follow "last one wins" order.
-   */
-  rules?: HttpRule[];
+    /**
+     * A list of HTTP configuration rules that apply to individual API methods.
+     *
+     * **NOTE:** All service configuration rules follow "last one wins" order.
+     */
+    rules?: HttpRule[];
 }
 
 /**
@@ -229,70 +229,70 @@ export interface Http {
  * content to Web (HTML) clients.
  */
 export interface HttpRule {
-  /**
-   * Selects methods to which this rule applies.
-   *
-   * Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
-   */
-  selector?: string;
+    /**
+     * Selects methods to which this rule applies.
+     *
+     * Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+     */
+    selector?: string;
 
-  /**
-   * Used for listing and getting information about resources.
-   */
-  get?: string;
+    /**
+     * Used for listing and getting information about resources.
+     */
+    get?: string;
 
-  /**
-   * Used for updating a resource.
-   */
-  put?: string;
+    /**
+     * Used for updating a resource.
+     */
+    put?: string;
 
-  /**
-   * Used for creating a resource.
-   */
-  post?: string;
+    /**
+     * Used for creating a resource.
+     */
+    post?: string;
 
-  /**
-   * Used for deleting a resource.
-   */
-  delete?: string;
+    /**
+     * Used for deleting a resource.
+     */
+    delete?: string;
 
-  /**
-   * Used for updating a resource.
-   */
-  patch?: string;
+    /**
+     * Used for updating a resource.
+     */
+    patch?: string;
 
-  /**
-   * Custom pattern is used for defining custom verbs.
-   */
-  custom?: CustomHttpPattern;
+    /**
+     * Custom pattern is used for defining custom verbs.
+     */
+    custom?: CustomHttpPattern;
 
-  /**
-   * The name of the request field whose value is mapped to the HTTP body, or
-   * `*` for mapping all fields not captured by the path pattern to the HTTP
-   * body. NOTE: the referred field must not be a repeated field and must be
-   * present at the top-level of request message type.
-   */
-  body?: string;
+    /**
+     * The name of the request field whose value is mapped to the HTTP body, or
+     * `*` for mapping all fields not captured by the path pattern to the HTTP
+     * body. NOTE: the referred field must not be a repeated field and must be
+     * present at the top-level of request message type.
+     */
+    body?: string;
 
-  /**
-   * Additional HTTP bindings for the selector. Nested bindings must
-   * not contain an `additional_bindings` field themselves (that is,
-   * the nesting may only be one level deep).
-   */
-  additionalBindings?: HttpRule[];
+    /**
+     * Additional HTTP bindings for the selector. Nested bindings must
+     * not contain an `additional_bindings` field themselves (that is,
+     * the nesting may only be one level deep).
+     */
+    additionalBindings?: HttpRule[];
 }
 
 /**
  * A custom pattern is used for defining custom HTTP verb.
  */
 export interface CustomHttpPattern {
-  /**
-   * The name of this custom HTTP verb.
-   */
-  kind?: string;
+    /**
+     * The name of this custom HTTP verb.
+     */
+    kind?: string;
 
-  /**
-   * The path matched by this custom verb.
-   */
-  path?: string;
+    /**
+     * The path matched by this custom verb.
+     */
+    path?: string;
 }

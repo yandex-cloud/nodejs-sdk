@@ -389,8 +389,8 @@ module.exports = (function() {
           },
           responseDeserialize: $root.api.operation.Operation.decode
         },
-        getFunctionVersion: {
-          path: '/yandex.cloud.serverless.functions.v1.FunctionService/GetFunctionVersion',
+        getVersion: {
+          path: '/yandex.cloud.serverless.functions.v1.FunctionService/GetVersion',
           requestStream: false,
           responseStream: false,
           requestType: $root.api.serverless.functions.v1.GetFunctionVersionRequest,
@@ -404,8 +404,8 @@ module.exports = (function() {
           },
           responseDeserialize: $root.api.serverless.functions.v1.Version.decode
         },
-        getFunctionVersionByTag: {
-          path: '/yandex.cloud.serverless.functions.v1.FunctionService/GetFunctionVersionByTag',
+        getVersionByTag: {
+          path: '/yandex.cloud.serverless.functions.v1.FunctionService/GetVersionByTag',
           requestStream: false,
           responseStream: false,
           requestType: $root.api.serverless.functions.v1.GetFunctionVersionByTagRequest,
@@ -419,8 +419,8 @@ module.exports = (function() {
           },
           responseDeserialize: $root.api.serverless.functions.v1.Version.decode
         },
-        listFunctionVersions: {
-          path: '/yandex.cloud.serverless.functions.v1.FunctionService/ListFunctionVersions',
+        listVersions: {
+          path: '/yandex.cloud.serverless.functions.v1.FunctionService/ListVersions',
           requestStream: false,
           responseStream: false,
           requestType: $root.api.serverless.functions.v1.ListFunctionsVersionsRequest,
@@ -464,8 +464,8 @@ module.exports = (function() {
           },
           responseDeserialize: $root.api.operation.Operation.decode
         },
-        listFunctionTagHistory: {
-          path: '/yandex.cloud.serverless.functions.v1.FunctionService/ListFunctionTagHistory',
+        listTagHistory: {
+          path: '/yandex.cloud.serverless.functions.v1.FunctionService/ListTagHistory',
           requestStream: false,
           responseStream: false,
           requestType: $root.api.serverless.functions.v1.ListFunctionTagHistoryRequest,
@@ -479,8 +479,8 @@ module.exports = (function() {
           },
           responseDeserialize: $root.api.serverless.functions.v1.ListFunctionTagHistoryResponse.decode
         },
-        createFunctionVersion: {
-          path: '/yandex.cloud.serverless.functions.v1.FunctionService/CreateFunctionVersion',
+        createVersion: {
+          path: '/yandex.cloud.serverless.functions.v1.FunctionService/CreateVersion',
           requestStream: false,
           responseStream: false,
           requestType: $root.api.serverless.functions.v1.CreateFunctionVersionRequest,

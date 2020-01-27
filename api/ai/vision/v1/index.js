@@ -146,6 +146,92 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
+    $root.ImageCopySearchAnnotation = (function() {
+      function ImageCopySearchAnnotation(p) {
+        this.topResults = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ImageCopySearchAnnotation.prototype.copyCount = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+      ImageCopySearchAnnotation.prototype.topResults = $util.emptyArray;
+      ImageCopySearchAnnotation.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.copyCount != null && m.hasOwnProperty('copyCount')) w.uint32(8).int64(m.copyCount);
+        if (m.topResults != null && m.topResults.length) {
+          for (let i = 0; i < m.topResults.length; ++i) $root.api.ai.vision.v1.CopyMatch.encode(m.topResults[i], w.uint32(18).fork()).ldelim();
+        }
+        return w;
+      };
+      ImageCopySearchAnnotation.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.ai.vision.v1.ImageCopySearchAnnotation();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.copyCount = r.int64();
+              break;
+            case 2:
+              if (!(m.topResults && m.topResults.length)) m.topResults = [];
+              m.topResults.push($root.api.ai.vision.v1.CopyMatch.decode(r, r.uint32()));
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ImageCopySearchAnnotation;
+    })();
+  })(root);
+  (function($root) {
+    $root.CopyMatch = (function() {
+      function CopyMatch(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      CopyMatch.prototype.imageUrl = '';
+      CopyMatch.prototype.pageUrl = '';
+      CopyMatch.prototype.title = '';
+      CopyMatch.prototype.description = '';
+      CopyMatch.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.imageUrl != null && m.hasOwnProperty('imageUrl')) w.uint32(10).string(m.imageUrl);
+        if (m.pageUrl != null && m.hasOwnProperty('pageUrl')) w.uint32(18).string(m.pageUrl);
+        if (m.title != null && m.hasOwnProperty('title')) w.uint32(26).string(m.title);
+        if (m.description != null && m.hasOwnProperty('description')) w.uint32(34).string(m.description);
+        return w;
+      };
+      CopyMatch.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.ai.vision.v1.CopyMatch();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.imageUrl = r.string();
+              break;
+            case 2:
+              m.pageUrl = r.string();
+              break;
+            case 3:
+              m.title = r.string();
+              break;
+            case 4:
+              m.description = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return CopyMatch;
+    })();
+  })(root);
+  (function($root) {
     $root.Polygon = (function() {
       function Polygon(p) {
         this.vertices = [];
@@ -541,11 +627,12 @@ module.exports = (function() {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       AnalyzeSpec.prototype.content = $util.newBuffer([]);
+      AnalyzeSpec.prototype.signature = '';
       AnalyzeSpec.prototype.features = $util.emptyArray;
       AnalyzeSpec.prototype.mimeType = '';
       let $oneOfFields;
       Object.defineProperty(AnalyzeSpec.prototype, 'source', {
-        get: $util.oneOfGetter(($oneOfFields = ['content'])),
+        get: $util.oneOfGetter(($oneOfFields = ['content', 'signature'])),
         set: $util.oneOfSetter($oneOfFields)
       });
       AnalyzeSpec.encode = function encode(m, w) {
@@ -555,6 +642,7 @@ module.exports = (function() {
           for (let i = 0; i < m.features.length; ++i) $root.api.ai.vision.v1.Feature.encode(m.features[i], w.uint32(26).fork()).ldelim();
         }
         if (m.mimeType != null && m.hasOwnProperty('mimeType')) w.uint32(34).string(m.mimeType);
+        if (m.signature != null && m.hasOwnProperty('signature')) w.uint32(42).string(m.signature);
         return w;
       };
       AnalyzeSpec.decode = function decode(r, l) {
@@ -566,6 +654,9 @@ module.exports = (function() {
           switch (t >>> 3) {
             case 1:
               m.content = r.bytes();
+              break;
+            case 5:
+              m.signature = r.string();
               break;
             case 3:
               if (!(m.features && m.features.length)) m.features = [];
@@ -634,6 +725,7 @@ module.exports = (function() {
         values[(valuesById[1] = 'TEXT_DETECTION')] = 1;
         values[(valuesById[2] = 'CLASSIFICATION')] = 2;
         values[(valuesById[3] = 'FACE_DETECTION')] = 3;
+        values[(valuesById[4] = 'IMAGE_COPY_SEARCH')] = 4;
         return values;
       })();
       Feature.Type = Type;
@@ -794,10 +886,11 @@ module.exports = (function() {
       FeatureResult.prototype.textDetection = null;
       FeatureResult.prototype.classification = null;
       FeatureResult.prototype.faceDetection = null;
+      FeatureResult.prototype.imageCopySearch = null;
       FeatureResult.prototype.error = null;
       let $oneOfFields;
       Object.defineProperty(FeatureResult.prototype, 'feature', {
-        get: $util.oneOfGetter(($oneOfFields = ['textDetection', 'classification', 'faceDetection'])),
+        get: $util.oneOfGetter(($oneOfFields = ['textDetection', 'classification', 'faceDetection', 'imageCopySearch'])),
         set: $util.oneOfSetter($oneOfFields)
       });
       FeatureResult.encode = function encode(m, w) {
@@ -806,6 +899,7 @@ module.exports = (function() {
         if (m.textDetection != null && m.hasOwnProperty('textDetection')) $root.api.ai.vision.v1.TextAnnotation.encode(m.textDetection, w.uint32(18).fork()).ldelim();
         if (m.classification != null && m.hasOwnProperty('classification')) $root.api.ai.vision.v1.ClassAnnotation.encode(m.classification, w.uint32(26).fork()).ldelim();
         if (m.faceDetection != null && m.hasOwnProperty('faceDetection')) $root.api.ai.vision.v1.FaceAnnotation.encode(m.faceDetection, w.uint32(34).fork()).ldelim();
+        if (m.imageCopySearch != null && m.hasOwnProperty('imageCopySearch')) $root.api.ai.vision.v1.ImageCopySearchAnnotation.encode(m.imageCopySearch, w.uint32(42).fork()).ldelim();
         return w;
       };
       FeatureResult.decode = function decode(r, l) {
@@ -823,6 +917,9 @@ module.exports = (function() {
               break;
             case 4:
               m.faceDetection = $root.api.ai.vision.v1.FaceAnnotation.decode(r, r.uint32());
+              break;
+            case 5:
+              m.imageCopySearch = $root.api.ai.vision.v1.ImageCopySearchAnnotation.decode(r, r.uint32());
               break;
             case 1:
               m.error = $root.contrib.google.rpc.Status.decode(r, r.uint32());

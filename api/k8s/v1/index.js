@@ -138,6 +138,7 @@ module.exports = (function() {
         values[(valuesById[4] = 'STOPPING')] = 4;
         values[(valuesById[5] = 'STOPPED')] = 5;
         values[(valuesById[6] = 'DELETING')] = 6;
+        values[(valuesById[7] = 'STARTING')] = 7;
         return values;
       })();
       Cluster.Status = Status;
@@ -173,6 +174,7 @@ module.exports = (function() {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       Master.prototype.zonalMaster = null;
+      Master.prototype.regionalMaster = null;
       Master.prototype.version = '';
       Master.prototype.endpoints = null;
       Master.prototype.masterAuth = null;
@@ -180,7 +182,7 @@ module.exports = (function() {
       Master.prototype.maintenancePolicy = null;
       let $oneOfFields;
       Object.defineProperty(Master.prototype, 'masterType', {
-        get: $util.oneOfGetter(($oneOfFields = ['zonalMaster'])),
+        get: $util.oneOfGetter(($oneOfFields = ['zonalMaster', 'regionalMaster'])),
         set: $util.oneOfSetter($oneOfFields)
       });
       Master.encode = function encode(m, w) {
@@ -191,6 +193,7 @@ module.exports = (function() {
         if (m.masterAuth != null && m.hasOwnProperty('masterAuth')) $root.api.k8s.v1.MasterAuth.encode(m.masterAuth, w.uint32(34).fork()).ldelim();
         if (m.versionInfo != null && m.hasOwnProperty('versionInfo')) $root.api.k8s.v1.VersionInfo.encode(m.versionInfo, w.uint32(42).fork()).ldelim();
         if (m.maintenancePolicy != null && m.hasOwnProperty('maintenancePolicy')) $root.api.k8s.v1.MasterMaintenancePolicy.encode(m.maintenancePolicy, w.uint32(50).fork()).ldelim();
+        if (m.regionalMaster != null && m.hasOwnProperty('regionalMaster')) $root.api.k8s.v1.RegionalMaster.encode(m.regionalMaster, w.uint32(58).fork()).ldelim();
         return w;
       };
       Master.decode = function decode(r, l) {
@@ -202,6 +205,9 @@ module.exports = (function() {
           switch (t >>> 3) {
             case 1:
               m.zonalMaster = $root.api.k8s.v1.ZonalMaster.decode(r, r.uint32());
+              break;
+            case 7:
+              m.regionalMaster = $root.api.k8s.v1.RegionalMaster.decode(r, r.uint32());
               break;
             case 2:
               m.version = r.string();
@@ -298,6 +304,47 @@ module.exports = (function() {
         return m;
       };
       return ZonalMaster;
+    })();
+  })(root);
+  (function($root) {
+    $root.RegionalMaster = (function() {
+      function RegionalMaster(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      RegionalMaster.prototype.regionId = '';
+      RegionalMaster.prototype.internalV4Address = '';
+      RegionalMaster.prototype.externalV4Address = '';
+      RegionalMaster.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.regionId != null && m.hasOwnProperty('regionId')) w.uint32(10).string(m.regionId);
+        if (m.internalV4Address != null && m.hasOwnProperty('internalV4Address')) w.uint32(18).string(m.internalV4Address);
+        if (m.externalV4Address != null && m.hasOwnProperty('externalV4Address')) w.uint32(26).string(m.externalV4Address);
+        return w;
+      };
+      RegionalMaster.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.RegionalMaster();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.regionId = r.string();
+              break;
+            case 2:
+              m.internalV4Address = r.string();
+              break;
+            case 3:
+              m.externalV4Address = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return RegionalMaster;
     })();
   })(root);
   (function($root) {
@@ -487,6 +534,36 @@ module.exports = (function() {
             return $root.api.k8s.v1.DeleteClusterRequest.encode(r).finish();
           },
           requestDeserialize: $root.api.k8s.v1.DeleteClusterRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        stop: {
+          path: '/yandex.cloud.k8s.v1.ClusterService/Stop',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.k8s.v1.StopClusterRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.k8s.v1.StopClusterRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.k8s.v1.StopClusterRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        start: {
+          path: '/yandex.cloud.k8s.v1.ClusterService/Start',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.k8s.v1.StartClusterRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.k8s.v1.StartClusterRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.k8s.v1.StartClusterRequest.decode,
           responseSerialize: r => {
             return $root.api.operation.Operation.encode(r).finish();
           },
@@ -704,6 +781,135 @@ module.exports = (function() {
         return m;
       };
       return DeleteClusterMetadata;
+    })();
+  })(root);
+  (function($root) {
+    $root.StopClusterRequest = (function() {
+      function StopClusterRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      StopClusterRequest.prototype.clusterId = '';
+      StopClusterRequest.prototype.serviceAccountId = '';
+      StopClusterRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.clusterId != null && m.hasOwnProperty('clusterId')) w.uint32(10).string(m.clusterId);
+        if (m.serviceAccountId != null && m.hasOwnProperty('serviceAccountId')) w.uint32(18).string(m.serviceAccountId);
+        return w;
+      };
+      StopClusterRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.StopClusterRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.clusterId = r.string();
+              break;
+            case 2:
+              m.serviceAccountId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return StopClusterRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.StopClusterMetadata = (function() {
+      function StopClusterMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      StopClusterMetadata.prototype.clusterId = '';
+      StopClusterMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.clusterId != null && m.hasOwnProperty('clusterId')) w.uint32(10).string(m.clusterId);
+        return w;
+      };
+      StopClusterMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.StopClusterMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.clusterId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return StopClusterMetadata;
+    })();
+  })(root);
+  (function($root) {
+    $root.StartClusterRequest = (function() {
+      function StartClusterRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      StartClusterRequest.prototype.clusterId = '';
+      StartClusterRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.clusterId != null && m.hasOwnProperty('clusterId')) w.uint32(10).string(m.clusterId);
+        return w;
+      };
+      StartClusterRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.StartClusterRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.clusterId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return StartClusterRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.StartClusterMetadata = (function() {
+      function StartClusterMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      StartClusterMetadata.prototype.clusterId = '';
+      StartClusterMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.clusterId != null && m.hasOwnProperty('clusterId')) w.uint32(10).string(m.clusterId);
+        return w;
+      };
+      StartClusterMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.StartClusterMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.clusterId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return StartClusterMetadata;
     })();
   })(root);
   (function($root) {
@@ -999,6 +1205,37 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
+    $root.AutoUpgradeMasterMetadata = (function() {
+      function AutoUpgradeMasterMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      AutoUpgradeMasterMetadata.prototype.clusterId = '';
+      AutoUpgradeMasterMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.clusterId != null && m.hasOwnProperty('clusterId')) w.uint32(10).string(m.clusterId);
+        return w;
+      };
+      AutoUpgradeMasterMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.AutoUpgradeMasterMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.clusterId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return AutoUpgradeMasterMetadata;
+    })();
+  })(root);
+  (function($root) {
     $root.ListClusterOperationsRequest = (function() {
       function ListClusterOperationsRequest(p) {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
@@ -1176,14 +1413,20 @@ module.exports = (function() {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       MasterSpec.prototype.zonalMasterSpec = null;
+      MasterSpec.prototype.regionalMasterSpec = null;
+      MasterSpec.prototype.version = '';
+      MasterSpec.prototype.maintenancePolicy = null;
       let $oneOfFields;
       Object.defineProperty(MasterSpec.prototype, 'masterType', {
-        get: $util.oneOfGetter(($oneOfFields = ['zonalMasterSpec'])),
+        get: $util.oneOfGetter(($oneOfFields = ['zonalMasterSpec', 'regionalMasterSpec'])),
         set: $util.oneOfSetter($oneOfFields)
       });
       MasterSpec.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.zonalMasterSpec != null && m.hasOwnProperty('zonalMasterSpec')) $root.api.k8s.v1.ZonalMasterSpec.encode(m.zonalMasterSpec, w.uint32(10).fork()).ldelim();
+        if (m.regionalMasterSpec != null && m.hasOwnProperty('regionalMasterSpec')) $root.api.k8s.v1.RegionalMasterSpec.encode(m.regionalMasterSpec, w.uint32(18).fork()).ldelim();
+        if (m.version != null && m.hasOwnProperty('version')) w.uint32(26).string(m.version);
+        if (m.maintenancePolicy != null && m.hasOwnProperty('maintenancePolicy')) $root.api.k8s.v1.MasterMaintenancePolicy.encode(m.maintenancePolicy, w.uint32(34).fork()).ldelim();
         return w;
       };
       MasterSpec.decode = function decode(r, l) {
@@ -1195,6 +1438,15 @@ module.exports = (function() {
           switch (t >>> 3) {
             case 1:
               m.zonalMasterSpec = $root.api.k8s.v1.ZonalMasterSpec.decode(r, r.uint32());
+              break;
+            case 2:
+              m.regionalMasterSpec = $root.api.k8s.v1.RegionalMasterSpec.decode(r, r.uint32());
+              break;
+            case 3:
+              m.version = r.string();
+              break;
+            case 4:
+              m.maintenancePolicy = $root.api.k8s.v1.MasterMaintenancePolicy.decode(r, r.uint32());
               break;
             default:
               r.skipType(t & 7);
@@ -1245,6 +1497,51 @@ module.exports = (function() {
         return m;
       };
       return ZonalMasterSpec;
+    })();
+  })(root);
+  (function($root) {
+    $root.RegionalMasterSpec = (function() {
+      function RegionalMasterSpec(p) {
+        this.locations = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      RegionalMasterSpec.prototype.regionId = '';
+      RegionalMasterSpec.prototype.locations = $util.emptyArray;
+      RegionalMasterSpec.prototype.externalV4AddressSpec = null;
+      RegionalMasterSpec.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.regionId != null && m.hasOwnProperty('regionId')) w.uint32(10).string(m.regionId);
+        if (m.locations != null && m.locations.length) {
+          for (let i = 0; i < m.locations.length; ++i) $root.api.k8s.v1.MasterLocation.encode(m.locations[i], w.uint32(18).fork()).ldelim();
+        }
+        if (m.externalV4AddressSpec != null && m.hasOwnProperty('externalV4AddressSpec')) $root.api.k8s.v1.ExternalAddressSpec.encode(m.externalV4AddressSpec, w.uint32(26).fork()).ldelim();
+        return w;
+      };
+      RegionalMasterSpec.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.RegionalMasterSpec();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.regionId = r.string();
+              break;
+            case 2:
+              if (!(m.locations && m.locations.length)) m.locations = [];
+              m.locations.push($root.api.k8s.v1.MasterLocation.decode(r, r.uint32()));
+              break;
+            case 3:
+              m.externalV4AddressSpec = $root.api.k8s.v1.ExternalAddressSpec.decode(r, r.uint32());
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return RegionalMasterSpec;
     })();
   })(root);
   (function($root) {
@@ -1302,6 +1599,42 @@ module.exports = (function() {
         return m;
       };
       return ExternalAddressSpec;
+    })();
+  })(root);
+  (function($root) {
+    $root.MasterLocation = (function() {
+      function MasterLocation(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      MasterLocation.prototype.zoneId = '';
+      MasterLocation.prototype.internalV4AddressSpec = null;
+      MasterLocation.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.zoneId != null && m.hasOwnProperty('zoneId')) w.uint32(10).string(m.zoneId);
+        if (m.internalV4AddressSpec != null && m.hasOwnProperty('internalV4AddressSpec')) $root.api.k8s.v1.InternalAddressSpec.encode(m.internalV4AddressSpec, w.uint32(18).fork()).ldelim();
+        return w;
+      };
+      MasterLocation.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.MasterLocation();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.zoneId = r.string();
+              break;
+            case 2:
+              m.internalV4AddressSpec = $root.api.k8s.v1.InternalAddressSpec.decode(r, r.uint32());
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return MasterLocation;
     })();
   })(root);
   (function($root) {
@@ -1616,6 +1949,7 @@ module.exports = (function() {
         values[(valuesById[4] = 'STOPPING')] = 4;
         values[(valuesById[5] = 'STOPPED')] = 5;
         values[(valuesById[6] = 'DELETING')] = 6;
+        values[(valuesById[7] = 'STARTING')] = 7;
         return values;
       })();
       NodeGroup.Status = Status;
@@ -1852,14 +2186,16 @@ module.exports = (function() {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       ScalePolicy.prototype.fixedScale = null;
+      ScalePolicy.prototype.autoScale = null;
       let $oneOfFields;
       Object.defineProperty(ScalePolicy.prototype, 'scaleType', {
-        get: $util.oneOfGetter(($oneOfFields = ['fixedScale'])),
+        get: $util.oneOfGetter(($oneOfFields = ['fixedScale', 'autoScale'])),
         set: $util.oneOfSetter($oneOfFields)
       });
       ScalePolicy.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.fixedScale != null && m.hasOwnProperty('fixedScale')) $root.api.k8s.v1.ScalePolicy.FixedScale.encode(m.fixedScale, w.uint32(10).fork()).ldelim();
+        if (m.autoScale != null && m.hasOwnProperty('autoScale')) $root.api.k8s.v1.ScalePolicy.AutoScale.encode(m.autoScale, w.uint32(18).fork()).ldelim();
         return w;
       };
       ScalePolicy.decode = function decode(r, l) {
@@ -1871,6 +2207,9 @@ module.exports = (function() {
           switch (t >>> 3) {
             case 1:
               m.fixedScale = $root.api.k8s.v1.ScalePolicy.FixedScale.decode(r, r.uint32());
+              break;
+            case 2:
+              m.autoScale = $root.api.k8s.v1.ScalePolicy.AutoScale.decode(r, r.uint32());
               break;
             default:
               r.skipType(t & 7);
@@ -1907,6 +2246,45 @@ module.exports = (function() {
           return m;
         };
         return FixedScale;
+      })();
+      ScalePolicy.AutoScale = (function() {
+        function AutoScale(p) {
+          if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+        }
+        AutoScale.prototype.minSize = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+        AutoScale.prototype.maxSize = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+        AutoScale.prototype.initialSize = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+        AutoScale.encode = function encode(m, w) {
+          if (!w) w = $Writer.create();
+          if (m.minSize != null && m.hasOwnProperty('minSize')) w.uint32(8).int64(m.minSize);
+          if (m.maxSize != null && m.hasOwnProperty('maxSize')) w.uint32(16).int64(m.maxSize);
+          if (m.initialSize != null && m.hasOwnProperty('initialSize')) w.uint32(24).int64(m.initialSize);
+          return w;
+        };
+        AutoScale.decode = function decode(r, l) {
+          if (!(r instanceof $Reader)) r = $Reader.create(r);
+          let c = l === undefined ? r.len : r.pos + l,
+            m = new $root.api.k8s.v1.ScalePolicy.AutoScale();
+          while (r.pos < c) {
+            let t = r.uint32();
+            switch (t >>> 3) {
+              case 1:
+                m.minSize = r.int64();
+                break;
+              case 2:
+                m.maxSize = r.int64();
+                break;
+              case 3:
+                m.initialSize = r.int64();
+                break;
+              default:
+                r.skipType(t & 7);
+                break;
+            }
+          }
+          return m;
+        };
+        return AutoScale;
       })();
       return ScalePolicy;
     })();
@@ -2341,6 +2719,7 @@ module.exports = (function() {
     $root.UpdateNodeGroupRequest = (function() {
       function UpdateNodeGroupRequest(p) {
         this.labels = {};
+        this.allowedUnsafeSysctls = [];
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       UpdateNodeGroupRequest.prototype.nodeGroupId = '';
@@ -2353,6 +2732,7 @@ module.exports = (function() {
       UpdateNodeGroupRequest.prototype.allocationPolicy = null;
       UpdateNodeGroupRequest.prototype.version = null;
       UpdateNodeGroupRequest.prototype.maintenancePolicy = null;
+      UpdateNodeGroupRequest.prototype.allowedUnsafeSysctls = $util.emptyArray;
       UpdateNodeGroupRequest.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.nodeGroupId != null && m.hasOwnProperty('nodeGroupId')) w.uint32(10).string(m.nodeGroupId);
@@ -2375,6 +2755,9 @@ module.exports = (function() {
         if (m.allocationPolicy != null && m.hasOwnProperty('allocationPolicy')) $root.api.k8s.v1.NodeGroupAllocationPolicy.encode(m.allocationPolicy, w.uint32(74).fork()).ldelim();
         if (m.version != null && m.hasOwnProperty('version')) $root.api.k8s.v1.UpdateVersionSpec.encode(m.version, w.uint32(82).fork()).ldelim();
         if (m.maintenancePolicy != null && m.hasOwnProperty('maintenancePolicy')) $root.api.k8s.v1.NodeGroupMaintenancePolicy.encode(m.maintenancePolicy, w.uint32(90).fork()).ldelim();
+        if (m.allowedUnsafeSysctls != null && m.allowedUnsafeSysctls.length) {
+          for (let i = 0; i < m.allowedUnsafeSysctls.length; ++i) w.uint32(98).string(m.allowedUnsafeSysctls[i]);
+        }
         return w;
       };
       UpdateNodeGroupRequest.decode = function decode(r, l) {
@@ -2418,6 +2801,10 @@ module.exports = (function() {
               break;
             case 11:
               m.maintenancePolicy = $root.api.k8s.v1.NodeGroupMaintenancePolicy.decode(r, r.uint32());
+              break;
+            case 12:
+              if (!(m.allowedUnsafeSysctls && m.allowedUnsafeSysctls.length)) m.allowedUnsafeSysctls = [];
+              m.allowedUnsafeSysctls.push(r.string());
               break;
             default:
               r.skipType(t & 7);
@@ -2464,6 +2851,7 @@ module.exports = (function() {
     $root.CreateNodeGroupRequest = (function() {
       function CreateNodeGroupRequest(p) {
         this.labels = {};
+        this.allowedUnsafeSysctls = [];
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       CreateNodeGroupRequest.prototype.clusterId = '';
@@ -2475,6 +2863,7 @@ module.exports = (function() {
       CreateNodeGroupRequest.prototype.allocationPolicy = null;
       CreateNodeGroupRequest.prototype.version = '';
       CreateNodeGroupRequest.prototype.maintenancePolicy = null;
+      CreateNodeGroupRequest.prototype.allowedUnsafeSysctls = $util.emptyArray;
       CreateNodeGroupRequest.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.clusterId != null && m.hasOwnProperty('clusterId')) w.uint32(10).string(m.clusterId);
@@ -2496,6 +2885,9 @@ module.exports = (function() {
         if (m.allocationPolicy != null && m.hasOwnProperty('allocationPolicy')) $root.api.k8s.v1.NodeGroupAllocationPolicy.encode(m.allocationPolicy, w.uint32(58).fork()).ldelim();
         if (m.version != null && m.hasOwnProperty('version')) w.uint32(66).string(m.version);
         if (m.maintenancePolicy != null && m.hasOwnProperty('maintenancePolicy')) $root.api.k8s.v1.NodeGroupMaintenancePolicy.encode(m.maintenancePolicy, w.uint32(74).fork()).ldelim();
+        if (m.allowedUnsafeSysctls != null && m.allowedUnsafeSysctls.length) {
+          for (let i = 0; i < m.allowedUnsafeSysctls.length; ++i) w.uint32(82).string(m.allowedUnsafeSysctls[i]);
+        }
         return w;
       };
       CreateNodeGroupRequest.decode = function decode(r, l) {
@@ -2537,6 +2929,10 @@ module.exports = (function() {
             case 9:
               m.maintenancePolicy = $root.api.k8s.v1.NodeGroupMaintenancePolicy.decode(r, r.uint32());
               break;
+            case 10:
+              if (!(m.allowedUnsafeSysctls && m.allowedUnsafeSysctls.length)) m.allowedUnsafeSysctls = [];
+              m.allowedUnsafeSysctls.push(r.string());
+              break;
             default:
               r.skipType(t & 7);
               break;
@@ -2576,6 +2972,37 @@ module.exports = (function() {
         return m;
       };
       return CreateNodeGroupMetadata;
+    })();
+  })(root);
+  (function($root) {
+    $root.AutoUpgradeNodeGroupMetadata = (function() {
+      function AutoUpgradeNodeGroupMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      AutoUpgradeNodeGroupMetadata.prototype.nodeGroupId = '';
+      AutoUpgradeNodeGroupMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.nodeGroupId != null && m.hasOwnProperty('nodeGroupId')) w.uint32(10).string(m.nodeGroupId);
+        return w;
+      };
+      AutoUpgradeNodeGroupMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.AutoUpgradeNodeGroupMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.nodeGroupId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return AutoUpgradeNodeGroupMetadata;
     })();
   })(root);
   (function($root) {

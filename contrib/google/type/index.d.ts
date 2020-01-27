@@ -10,45 +10,45 @@ import { Session } from '../../../index.js';
  * Represents a day of week.
  */
 export enum DayOfWeek {
-  /**
-   * The unspecified day-of-week.
-   */
-  DAY_OF_WEEK_UNSPECIFIED = 0,
+    /**
+     * The unspecified day-of-week.
+     */
+    DAY_OF_WEEK_UNSPECIFIED = 0,
 
-  /**
-   * The day-of-week of Monday.
-   */
-  MONDAY = 1,
+    /**
+     * The day-of-week of Monday.
+     */
+    MONDAY = 1,
 
-  /**
-   * The day-of-week of Tuesday.
-   */
-  TUESDAY = 2,
+    /**
+     * The day-of-week of Tuesday.
+     */
+    TUESDAY = 2,
 
-  /**
-   * The day-of-week of Wednesday.
-   */
-  WEDNESDAY = 3,
+    /**
+     * The day-of-week of Wednesday.
+     */
+    WEDNESDAY = 3,
 
-  /**
-   * The day-of-week of Thursday.
-   */
-  THURSDAY = 4,
+    /**
+     * The day-of-week of Thursday.
+     */
+    THURSDAY = 4,
 
-  /**
-   * The day-of-week of Friday.
-   */
-  FRIDAY = 5,
+    /**
+     * The day-of-week of Friday.
+     */
+    FRIDAY = 5,
 
-  /**
-   * The day-of-week of Saturday.
-   */
-  SATURDAY = 6,
+    /**
+     * The day-of-week of Saturday.
+     */
+    SATURDAY = 6,
 
-  /**
-   * The day-of-week of Sunday.
-   */
-  SUNDAY = 7
+    /**
+     * The day-of-week of Sunday.
+     */
+    SUNDAY = 7,
 }
 
 /**
@@ -57,25 +57,25 @@ export enum DayOfWeek {
  * types are [google.type.Date](https://github.com/googleapis/googleapis/blob/master/google/type/date.proto) and [google.protobuf.Timestamp](https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/timestamp.proto).
  */
 export interface TimeOfDay {
-  /**
-   * Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
-   * to allow the value "24:00:00" for scenarios like business closing time.
-   */
-  hours?: Long;
+    /**
+     * Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
+     * to allow the value "24:00:00" for scenarios like business closing time.
+     */
+    hours?: Long;
 
-  /**
-   * Minutes of hour of day. Must be from 0 to 59.
-   */
-  minutes?: Long;
+    /**
+     * Minutes of hour of day. Must be from 0 to 59.
+     */
+    minutes?: Long;
 
-  /**
-   * Seconds of minutes of the time. Must normally be from 0 to 59. An API may
-   * allow the value 60 if it allows leap-seconds.
-   */
-  seconds?: Long;
+    /**
+     * Seconds of minutes of the time. Must normally be from 0 to 59. An API may
+     * allow the value 60 if it allows leap-seconds.
+     */
+    seconds?: Long;
 
-  /**
-   * Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
-   */
-  nanos?: Long;
+    /**
+     * Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
+     */
+    nanos?: Long;
 }
