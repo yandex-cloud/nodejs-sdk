@@ -2,6 +2,7 @@ const grpc = require('grpc');
 const util = require('./lib/util');
 const { EndpointResolver } = require('./lib/endpoint');
 const metadata = require('./lib/metadata');
+const fetch = require('node-fetch');
 const iam = require('./api/iam/v1');
 require('./lib/operation');
 async function createIamToken(iamEndpoint, req) {
@@ -12,12 +13,27 @@ async function createIamToken(iamEndpoint, req) {
   return resp.iamToken;
 }
 function newTokenCreator(config, iamEndpoint) {
-  if (config.metadataToken === true || !config.oauthToken) {
+  if (config.metadataToken === true) {
     const tokenService = new metadata.TokenService();
     return async () => {
       await tokenService.initialize();
       return tokenService.getToken();
     };
+  }
+  if(config.jwt) {
+    return async (jwt) => {
+      const { data } = await fetch('https://iam.api.cloud.yandex.net/iam/v1/tokens',{
+        method: 'POST',
+        body: JSON.stringify({ jwt:jwt }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      return data.iamToken;
+    }
+  }
+  if(config.iam) {
+    return async () => {
+      return config.iam;
+    }
   }
   return () => {
     return createIamToken(iamEndpoint, { yandexPassportOauthToken: config.oauthToken });
