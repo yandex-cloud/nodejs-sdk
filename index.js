@@ -23,7 +23,7 @@ function newTokenCreator(config, iamEndpoint) {
     }
 
     if (config.iamToken) {
-        return () => {
+        return async () => {
             return config.iamToken;
         };
     }
