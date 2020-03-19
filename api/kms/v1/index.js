@@ -9,6 +9,7 @@ module.exports = (function() {
   const $util = $protobuf.util;
   let root = {};
   require('../../../api/operation');
+  require('../../../api/access');
   (function($root) {
     $root.SymmetricCryptoService = function(session) {
       if (session === undefined) {
@@ -821,6 +822,51 @@ module.exports = (function() {
             return $root.api.kms.v1.ListSymmetricKeyOperationsResponse.encode(r).finish();
           },
           responseDeserialize: $root.api.kms.v1.ListSymmetricKeyOperationsResponse.decode
+        },
+        listAccessBindings: {
+          path: '/yandex.cloud.kms.v1.SymmetricKeyService/ListAccessBindings',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.access.ListAccessBindingsRequest,
+          responseType: $root.api.access.ListAccessBindingsResponse,
+          requestSerialize: r => {
+            return $root.api.access.ListAccessBindingsRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.access.ListAccessBindingsRequest.decode,
+          responseSerialize: r => {
+            return $root.api.access.ListAccessBindingsResponse.encode(r).finish();
+          },
+          responseDeserialize: $root.api.access.ListAccessBindingsResponse.decode
+        },
+        setAccessBindings: {
+          path: '/yandex.cloud.kms.v1.SymmetricKeyService/SetAccessBindings',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.access.SetAccessBindingsRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.access.SetAccessBindingsRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.access.SetAccessBindingsRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        updateAccessBindings: {
+          path: '/yandex.cloud.kms.v1.SymmetricKeyService/UpdateAccessBindings',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.access.UpdateAccessBindingsRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.access.UpdateAccessBindingsRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.access.UpdateAccessBindingsRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
         }
       });
       ctor.__endpointId = 'kms';

@@ -84,7 +84,15 @@ export interface Cluster {
      */
     nodeServiceAccountId?: string;
 
+    /**
+     * When creating a Kubernetes cluster, you should specify one of three release channels. The release channel contains several Kubernetes versions.
+     * Channels differ in the set of available versions, the management of auto-updates, and the updates received.
+     * You can't change the channel once the Kubernetes cluster is created, you can only recreate the Kubernetes cluster and specify a new release channel.
+     * For more details see [documentation](https://cloud.yandex.com/docs/managed-kubernetes/concepts/release-channels-and-updates).
+     */
     releaseChannel?: ReleaseChannel;
+
+    networkPolicy?: NetworkPolicy;
 }
 
 export namespace Cluster {
@@ -145,10 +153,20 @@ export namespace Cluster {
 export enum ReleaseChannel {
     RELEASE_CHANNEL_UNSPECIFIED = 0,
 
+    /**
+     * Minor updates with new functions and improvements are often added.
+     * You can't disable automatic updates in this channel, but you can specify a time period for automatic updates.
+     */
     RAPID = 1,
 
+    /**
+     * New functions and improvements are added in chunks shortly after they appear on `RAPID`.
+     */
     REGULAR = 2,
 
+    /**
+     * Only updates related to bug fixes or security improvements are added.
+     */
     STABLE = 3,
 }
 
@@ -179,8 +197,14 @@ export interface Master {
      */
     masterAuth?: MasterAuth;
 
+    /**
+     * Detailed information about the Kubernetes version that is running on the master.
+     */
     versionInfo?: VersionInfo;
 
+    /**
+     * Maintenance policy of the master.
+     */
     maintenancePolicy?: MasterMaintenancePolicy;
 }
 
@@ -198,12 +222,12 @@ export interface ZonalMaster {
     zoneId?: string;
 
     /**
-     * An IPv4 internal network address that is assigned to the master.
+     * IPv4 internal network address that is assigned to the master.
      */
     internalV4Address?: string;
 
     /**
-     * An IPv4 external network address that is assigned to the master.
+     * IPv4 external network address that is assigned to the master.
      */
     externalV4Address?: string;
 }
@@ -215,12 +239,12 @@ export interface RegionalMaster {
     regionId?: string;
 
     /**
-     * An IPv4 internal network address that is assigned to the master.
+     * IPv4 internal network address that is assigned to the master.
      */
     internalV4Address?: string;
 
     /**
-     * An IPv4 external network address that is assigned to the master.
+     * IPv4 external network address that is assigned to the master.
      */
     externalV4Address?: string;
 }
@@ -247,6 +271,13 @@ export interface IPAllocationPolicy {
     clusterIpv4CidrBlock?: string;
 
     /**
+     * Size of the masks that are assigned for each node in the cluster.
+     *
+     * If not specified, 24 is used.
+     */
+    nodeIpv4CidrMaskSize?: Long;
+
+    /**
      * CIDR block. IP range Kubernetes service Kubernetes cluster IP addresses will be allocated from.
      *
      * It should not overlap with any subnet in the network the Kubernetes cluster located in.
@@ -255,9 +286,29 @@ export interface IPAllocationPolicy {
 }
 
 export interface MasterMaintenancePolicy {
+    /**
+     * If set to true, automatic updates are installed in the specified period of time with no interaction from the user.
+     * If set to false, automatic upgrades are disabled.
+     */
     autoUpgrade?: boolean;
 
+    /**
+     * Maintenance window settings. Update will start at the specified time and last no more than the specified duration.
+     * The time is set in UTC.
+     */
     maintenanceWindow?: MaintenanceWindow;
+}
+
+export interface NetworkPolicy {
+    provider?: NetworkPolicy.Provider;
+}
+
+export namespace NetworkPolicy {
+    export enum Provider {
+        PROVIDER_UNSPECIFIED = 0,
+
+        CALICO = 1,
+    }
 }
 
 /**
@@ -292,8 +343,14 @@ export class ClusterService {
      */
     delete(request: DeleteClusterRequest): Promise<operation.Operation>;
 
+    /**
+     * Stops the specified Kubernetes cluster.
+     */
     stop(request: StopClusterRequest): Promise<operation.Operation>;
 
+    /**
+     * Starts the specified Kubernetes cluster.
+     */
     start(request: StartClusterRequest): Promise<operation.Operation>;
 
     /**
@@ -309,6 +366,13 @@ export class ClusterService {
     listOperations(
         request: ListClusterOperationsRequest
     ): Promise<ListClusterOperationsResponse>;
+
+    /**
+     * Lists cluster's nodes.
+     */
+    listNodes(
+        request: ListClusterNodesRequest
+    ): Promise<ListClusterNodesResponse>;
 }
 
 export interface GetClusterRequest {
@@ -335,7 +399,7 @@ export interface ListClustersRequest {
     pageSize?: Long;
 
     /**
-     * Page token. To get the next page of results, set [page_token] to the
+     * Page token. To get the next page of results, set `page_token` to the
      * [ListClustersResponse.next_page_token] returned by a previous list request.
      */
     pageToken?: string;
@@ -359,10 +423,10 @@ export interface ListClustersResponse {
     /**
      * This token allows you to get the next page of results for list requests. If the number of results
      * is larger than [ListClustersRequest.page_size], use
-     * the [next_page_token] as the value
+     * the `next_page_token` as the value
      * for the [ListClustersRequest.page_token] query parameter
      * in the next list request. Each subsequent list request will have its own
-     * [next_page_token] to continue paging through the results.
+     * `next_page_token` to continue paging through the results.
      */
     nextPageToken?: string;
 }
@@ -383,20 +447,37 @@ export interface DeleteClusterMetadata {
 }
 
 export interface StopClusterRequest {
+    /**
+     * ID of the Kubernetes cluster to stop.
+     * To get Kubernetes cluster ID use a [ClusterService.List] request.
+     */
     clusterId: string;
 
+    /**
+     * ID of the service account which has permission to stop the Kubernetes cluster.
+     */
     serviceAccountId?: string;
 }
 
 export interface StopClusterMetadata {
+    /**
+     * ID of the Kubernetes cluster that is being stopped.
+     */
     clusterId?: string;
 }
 
 export interface StartClusterRequest {
+    /**
+     * ID of the Kubernetes cluster to start.
+     * To get Kubernetes cluster ID use a [ClusterService.List] request.
+     */
     clusterId: string;
 }
 
 export interface StartClusterMetadata {
+    /**
+     * ID of the Kubernetes cluster that is being started.
+     */
     clusterId?: string;
 }
 
@@ -427,8 +508,14 @@ export interface UpdateClusterRequest {
      */
     labels?: { [s: string]: string };
 
+    /**
+     * Gateway IPv4 address.
+     */
     gatewayIpv4Address?: string;
 
+    /**
+     * Specification of the master update.
+     */
     masterSpec?: MasterUpdateSpec;
 
     /**
@@ -443,11 +530,19 @@ export interface UpdateClusterRequest {
      * or to push node logs and metrics.
      */
     nodeServiceAccountId?: string;
+
+    networkPolicy?: NetworkPolicy;
 }
 
 export interface MasterUpdateSpec {
+    /**
+     * Specification of the master update.
+     */
     version?: UpdateVersionSpec;
 
+    /**
+     * Maintenance policy of the master.
+     */
     maintenancePolicy?: MasterMaintenancePolicy;
 }
 
@@ -513,7 +608,12 @@ export interface CreateClusterRequest {
      */
     nodeServiceAccountId: string;
 
+    /**
+     * Release channel for the master.
+     */
     releaseChannel?: ReleaseChannel;
+
+    networkPolicy?: NetworkPolicy;
 }
 
 export interface CreateClusterMetadata {
@@ -545,7 +645,7 @@ export interface ListClusterOperationsRequest {
     pageSize?: Long;
 
     /**
-     * Page token. To get the next page of results, set [page_token] to the
+     * Page token. To get the next page of results, set `page_token` to the
      * [ListClusterOperationsResponse.next_page_token] returned by a previous list request.
      */
     pageToken?: string;
@@ -565,9 +665,9 @@ export interface ListClusterOperationsResponse {
 
     /**
      * This token allows you to get the next page of results for list requests. If the number of results
-     * is larger than [ListClusterOperationsRequest.page_size], use the [next_page_token] as the value
+     * is larger than [ListClusterOperationsRequest.page_size], use the `next_page_token` as the value
      * for the [ListClusterOperationsRequest.page_token] query parameter in the next list request.
-     * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
+     * Each subsequent list request will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken?: string;
 }
@@ -589,7 +689,7 @@ export interface ListClusterNodeGroupsRequest {
     pageSize?: Long;
 
     /**
-     * Page token. To get the next page of results, set [page_token] to the
+     * Page token. To get the next page of results, set `page_token` to the
      * [ListClusterNodeGroupsResponse.next_page_token] returned by a previous list request.
      */
     pageToken?: string;
@@ -610,24 +710,73 @@ export interface ListClusterNodeGroupsResponse {
     /**
      * This token allows you to get the next page of results for list requests. If the number of results
      * is larger than [ListClusterNodeGroupsRequest.page_size], use
-     * the [next_page_token] as the value
+     * the `next_page_token` as the value
      * for the [ListClusterNodeGroupsRequest.page_token] query parameter
      * in the next list request. Each subsequent list request will have its own
-     * [next_page_token] to continue paging through the results.
+     * `next_page_token` to continue paging through the results.
+     */
+    nextPageToken?: string;
+}
+
+export interface ListClusterNodesRequest {
+    /**
+     * ID of the Kubernetes cluster to list nodes in.
+     * To get the Kubernetes cluster ID use a [ClusterService.List] request.
+     */
+    clusterId: string;
+
+    /**
+     * The maximum number of results per page to return. If the number of available
+     * results is larger than [page_size],
+     * the service returns a [ListClusterNodesResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     * Default value: 100.
+     */
+    pageSize?: Long;
+
+    /**
+     * Page token. To get the next page of results, set `page_token` to the
+     * [ListClusterNodeGroupsResponse.next_page_token] returned by a previous list request.
+     */
+    pageToken?: string;
+}
+
+export interface ListClusterNodesResponse {
+    /**
+     * List of nodes for the specified Kubernetes cluster.
+     */
+    nodes?: Node[];
+
+    /**
+     * This token allows you to get the next page of results for list requests. If the number of results
+     * is larger than [ListClusterNodesRequest.page_size], use
+     * the `next_page_token` as the value
+     * for the [ListClusterNodesRequest.page_token] query parameter
+     * in the next list request. Each subsequent list request will have its own
+     * `next_page_token` to continue paging through the results.
      */
     nextPageToken?: string;
 }
 
 export interface MasterSpec {
     /**
-     * Specification of the master availability zone.
+     * Specification of the zonal master.
      */
     zonalMasterSpec?: ZonalMasterSpec;
 
+    /**
+     * Specification of the regional master.
+     */
     regionalMasterSpec?: RegionalMasterSpec;
 
+    /**
+     * Version of Kubernetes components that runs on the master.
+     */
     version?: string;
 
+    /**
+     * Maintenance policy of the master.
+     */
     maintenancePolicy?: MasterMaintenancePolicy;
 }
 
@@ -649,12 +798,18 @@ export interface ZonalMasterSpec {
 }
 
 export interface RegionalMasterSpec {
+    /**
+     * ID of the availability zone where the master resides.
+     */
     regionId: string;
 
+    /**
+     * List of locations where the master will be allocated.
+     */
     locations?: MasterLocation[];
 
     /**
-     * Specify to allocate a static public IP for the master
+     * Specify to allocate a static public IP for the master.
      */
     externalV4AddressSpec?: ExternalAddressSpec;
 }
@@ -669,6 +824,9 @@ export interface InternalAddressSpec {
 export interface ExternalAddressSpec {}
 
 export interface MasterLocation {
+    /**
+     * ID of the availability zone.
+     */
     zoneId: string;
 
     /**
@@ -679,140 +837,264 @@ export interface MasterLocation {
 }
 
 export interface MaintenanceWindow {
+    /**
+     * Updating the master at any time.
+     */
     anytime?: AnytimeMaintenanceWindow;
 
+    /**
+     * Updating the master on any day during the specified time window.
+     */
     dailyMaintenanceWindow?: DailyMaintenanceWindow;
 
+    /**
+     * Updating the master on selected days during the specified time window.
+     */
     weeklyMaintenanceWindow?: WeeklyMaintenanceWindow;
 }
 
 export interface AnytimeMaintenanceWindow {}
 
 export interface DailyMaintenanceWindow {
+    /**
+     * Window start time, in the UTC timezone.
+     */
     startTime: type.TimeOfDay;
 
+    /**
+     * Window duration.
+     */
     duration?: protobuf.Duration;
 }
 
 export interface DaysOfWeekMaintenanceWindow {
+    /**
+     * Days of the week when automatic updates are allowed.
+     */
     days?: type.DayOfWeek[];
 
+    /**
+     * Window start time, in the UTC timezone.
+     */
     startTime: type.TimeOfDay;
 
+    /**
+     * Window duration.
+     */
     duration?: protobuf.Duration;
 }
 
 export interface WeeklyMaintenanceWindow {
+    /**
+     * Days of the week and the maintenance window for these days when automatic updates are allowed.
+     */
     daysOfWeek?: DaysOfWeekMaintenanceWindow[];
 }
 
-export interface NodeGroup {
+export interface Node {
     /**
-     * ID of the node group.
+     * Computed node status.
      */
-    id?: string;
-
-    /**
-     * ID of the cluster that the node group belongs to.
-     */
-    clusterId?: string;
+    status?: Node.Status;
 
     /**
-     * Creation timestamp.
+     * Node specificaion.
      */
-    createdAt?: protobuf.Timestamp;
+    spec?: Node.Spec;
 
     /**
-     * Name of the node group.
-     * The name is unique within the folder.
+     * Cloud instance status.
+     * Not available in `MISSING` status.
      */
-    name?: string;
+    cloudStatus?: Node.CloudStatus;
 
     /**
-     * Description of the node group. 0-256 characters long.
+     * Kubernetes node status.
+     * Not available in `PROVISIONING` and `NOT_CONNECTED` states.
      */
-    description?: string;
-
-    /**
-     * Resource labels as `key:value` pairs. Мaximum of 64 per resource.
-     */
-    labels?: { [s: string]: string };
-
-    /**
-     * Status of the node group.
-     */
-    status?: NodeGroup.Status;
-
-    /**
-     * Node template that specifies parameters of the compute instances for the node group.
-     */
-    nodeTemplate?: NodeTemplate;
-
-    /**
-     * Scale policy of the node group.  For more information, see [Scaling policy](/docs/compute/concepts/instance-groups/policies#scale-policy).
-     */
-    scalePolicy?: ScalePolicy;
-
-    /**
-     * Allocation policy by which resources for node group are allocated to zones and regions.
-     */
-    allocationPolicy?: NodeGroupAllocationPolicy;
-
-    /**
-     * ID of the managed instance group associated with this node group.
-     */
-    instanceGroupId?: string;
-
-    /**
-     * Version of Kubernetes components that runs on the nodes.
-     * Deprecated. Use version_info.current_version.
-     */
-    nodeVersion?: string;
-
-    versionInfo?: VersionInfo;
-
-    maintenancePolicy?: NodeGroupMaintenancePolicy;
+    kubernetesStatus?: Node.KubernetesStatus;
 }
 
-export namespace NodeGroup {
+export namespace Node {
+    /**
+     * Kubernetes node info
+     */
+    export interface KubernetesStatus {
+        /**
+         * Node id (and instance name)
+         */
+        id?: string;
+
+        /**
+         * Conditions is an array of current observed node conditions.
+         * More info: https://kubernetes.io/docs/concepts/nodes/node/#condition
+         */
+        conditions?: Condition[];
+
+        /**
+         * If specified, the node's taints.
+         */
+        taints?: Taint[];
+
+        /**
+         * List of volumes that are attached to the node.
+         */
+        attachedVolumes?: AttachedVolume[];
+    }
+
+    /**
+     * Cloud instance info
+     */
+    export interface CloudStatus {
+        /**
+         * Compute instance id
+         */
+        id?: string;
+
+        /**
+         * IG instance status
+         */
+        status?: string;
+
+        /**
+         * IG instance status message
+         */
+        statusMessage?: string;
+    }
+
+    /**
+     * Computed node status.
+     */
     export enum Status {
         STATUS_UNSPECIFIED = 0,
 
         /**
-         * Node group is waiting for resources to be allocated.
+         * Node instance is not yet created (e.g. in progress).
          */
         PROVISIONING = 1,
 
         /**
-         * Node group is running.
+         * Node instance is created but not registered
+         * (e.g. is still initializing).
          */
-        RUNNING = 2,
+        NOT_CONNECTED = 2,
 
         /**
-         * Node group is waiting for some work to be done, such as upgrading node software.
+         * Node has connected but is not ready for
+         * workload (see conditions for details).
          */
-        RECONCILING = 3,
+        NOT_READY = 3,
 
         /**
-         * Node group is being stopped.
+         * Node has connected and ready for workload.
          */
-        STOPPING = 4,
+        READY = 4,
 
         /**
-         * Node group stopped.
+         * Node is still registered but its instance
+         * is deleted (this is our bug).
          */
-        STOPPED = 5,
-
-        /**
-         * Node group is being deleted.
-         */
-        DELETING = 6,
-
-        /**
-         * Node group is being started.
-         */
-        STARTING = 7,
+        MISSING = 5,
     }
+
+    /**
+     * Node specification.
+     */
+    export interface Spec {
+        /**
+         * Node group specified resources.
+         */
+        resources?: ResourcesSpec;
+
+        /**
+         * Node group specified disk.
+         */
+        disk?: DiskSpec;
+    }
+}
+
+export interface Condition {
+    /**
+     * Type of node condition.
+     */
+    type?: string;
+
+    /**
+     * Status is the status of the condition.
+     */
+    status?: string;
+
+    /**
+     * Human-readable message indicating details about last transition.
+     */
+    message?: string;
+
+    /**
+     * Last time we got an update on a given condition.
+     */
+    lastHeartbeatTime?: protobuf.Timestamp;
+
+    /**
+     * Last time the condition transit from one status to another.
+     */
+    lastTransitionTime?: protobuf.Timestamp;
+}
+
+export interface Taint {
+    /**
+     * The taint key to be applied to a node.
+     */
+    key?: string;
+
+    /**
+     * The taint value corresponding to the taint key.
+     */
+    value?: string;
+
+    /**
+     * The effect of the taint on pods that do not tolerate the taint.
+     */
+    effect?: Taint.Effect;
+}
+
+export namespace Taint {
+    export enum Effect {
+        EFFECT_UNSPECIFIED = 0,
+
+        /**
+         * Do not allow new pods to schedule onto the node unless they tolerate the taint,
+         * but allow all pods submitted to Kubelet without going through the scheduler
+         * to start, and allow all already-running pods to continue running.
+         */
+        NO_SCHEDULE = 1,
+
+        /**
+         * Like NO_SCHEDULE, but the scheduler tries not to schedule
+         * new pods onto the node, rather than prohibiting new pods from scheduling
+         * onto the node entirely. Enforced by the scheduler.
+         */
+        PREFER_NO_SCHEDULE = 2,
+
+        /**
+         * Evict any already-running pods that do not tolerate the taint.
+         */
+        NO_EXECUTE = 3,
+    }
+}
+
+/**
+ * AttachedVolume describes a volume attached to a node
+ */
+export interface AttachedVolume {
+    /**
+     * Name of the driver which has attached the volume
+     */
+    driverName?: string;
+
+    /**
+     * Volume handle (cloud disk id)
+     */
+    volumeHandle?: string;
 }
 
 export interface NodeTemplate {
@@ -827,13 +1109,16 @@ export interface NodeTemplate {
     resourcesSpec?: ResourcesSpec;
 
     /**
+     * Specification for the boot disk that will be attached to the node.
+     */
+    bootDiskSpec?: DiskSpec;
+
+    /**
      * The metadata as `key:value` pairs assigned to this instance template. This includes custom metadata and predefined keys.
      *
      * For example, you may use the metadata in order to provide your public SSH key to the node.
      * For more information, see [Metadata](/docs/compute/concepts/vm-metadata).
      */
-    bootDiskSpec?: DiskSpec;
-
     metadata?: { [s: string]: string };
 
     /**
@@ -905,6 +1190,145 @@ export interface DiskSpec {
     diskSize?: Long;
 }
 
+export interface SchedulingPolicy {
+    /**
+     * True for preemptible compute instances. Default value is false. Preemptible compute instances are stopped at least once every 24 hours, and can be stopped at any time
+     * if their resources are needed by Compute.
+     * For more information, see [Preemptible Virtual Machines](/docs/compute/concepts/preemptible-vm).
+     */
+    preemptible?: boolean;
+}
+
+export interface NodeGroup {
+    /**
+     * ID of the node group.
+     */
+    id?: string;
+
+    /**
+     * ID of the cluster that the node group belongs to.
+     */
+    clusterId?: string;
+
+    /**
+     * Creation timestamp.
+     */
+    createdAt?: protobuf.Timestamp;
+
+    /**
+     * Name of the node group.
+     * The name is unique within the folder.
+     */
+    name?: string;
+
+    /**
+     * Description of the node group. 0-256 characters long.
+     */
+    description?: string;
+
+    /**
+     * Resource labels as `key:value` pairs. Мaximum of 64 per resource.
+     */
+    labels?: { [s: string]: string };
+
+    /**
+     * Status of the node group.
+     */
+    status?: NodeGroup.Status;
+
+    /**
+     * Node template that specifies parameters of the compute instances for the node group.
+     */
+    nodeTemplate?: NodeTemplate;
+
+    /**
+     * Scale policy of the node group.  For more information, see [Scaling policy](/docs/compute/concepts/instance-groups/policies#scale-policy).
+     */
+    scalePolicy?: ScalePolicy;
+
+    /**
+     * Allocation policy by which resources for node group are allocated to zones and regions.
+     */
+    allocationPolicy?: NodeGroupAllocationPolicy;
+
+    /**
+     * ID of the managed instance group associated with this node group.
+     */
+    instanceGroupId?: string;
+
+    /**
+     * Version of Kubernetes components that runs on the nodes.
+     * Deprecated. Use version_info.current_version.
+     */
+    nodeVersion?: string;
+
+    /**
+     * Detailed information about the Kubernetes version that is running on the node.
+     */
+    versionInfo?: VersionInfo;
+
+    /**
+     * Maintenance policy of the node group.
+     */
+    maintenancePolicy?: NodeGroupMaintenancePolicy;
+
+    /**
+     * Support for unsafe sysctl parameters. For more details see [documentation](https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/).
+     */
+    allowedUnsafeSysctls?: string[];
+
+    /**
+     * Taints that are applied to the nodes of the node group at creation time.
+     */
+    nodeTaints?: Taint[];
+
+    /**
+     * Labels that are assigned to the nodes of the node group at creation time.
+     */
+    nodeLabels?: { [s: string]: string };
+}
+
+export namespace NodeGroup {
+    export enum Status {
+        STATUS_UNSPECIFIED = 0,
+
+        /**
+         * Node group is waiting for resources to be allocated.
+         */
+        PROVISIONING = 1,
+
+        /**
+         * Node group is running.
+         */
+        RUNNING = 2,
+
+        /**
+         * Node group is waiting for some work to be done, such as upgrading node software.
+         */
+        RECONCILING = 3,
+
+        /**
+         * Node group is being stopped.
+         */
+        STOPPING = 4,
+
+        /**
+         * Node group stopped.
+         */
+        STOPPED = 5,
+
+        /**
+         * Node group is being deleted.
+         */
+        DELETING = 6,
+
+        /**
+         * Node group is being started.
+         */
+        STARTING = 7,
+    }
+}
+
 export interface ScalePolicy {
     /**
      * Fixed scale policy of the node group.
@@ -962,20 +1386,22 @@ export interface NodeGroupLocation {
     subnetId?: string;
 }
 
-export interface SchedulingPolicy {
-    /**
-     * True for preemptible compute instances. Default value is false. Preemptible compute instances are stopped at least once every 24 hours, and can be stopped at any time
-     * if their resources are needed by Compute.
-     * For more information, see [Preemptible Virtual Machines](/docs/compute/concepts/preemptible-vm).
-     */
-    preemptible?: boolean;
-}
-
 export interface NodeGroupMaintenancePolicy {
+    /**
+     * If set to true, automatic updates are installed in the specified period of time with no interaction from the user.
+     * If set to false, automatic upgrades are disabled.
+     */
     autoUpgrade?: boolean;
 
+    /**
+     * If set to true, automatic repairs are enabled. Default value is false.
+     */
     autoRepair?: boolean;
 
+    /**
+     * Maintenance window settings. Update will start at the specified time and last no more than the specified duration.
+     * The time is set in UTC.
+     */
     maintenanceWindow?: MaintenanceWindow;
 }
 
@@ -1017,6 +1443,13 @@ export class NodeGroupService {
     listOperations(
         request: ListNodeGroupOperationsRequest
     ): Promise<ListNodeGroupOperationsResponse>;
+
+    /**
+     * Retrieves the list of nodes in the specified Kubernetes cluster.
+     */
+    listNodes(
+        request: ListNodeGroupNodesRequest
+    ): Promise<ListNodeGroupNodesResponse>;
 }
 
 export interface GetNodeGroupRequest {
@@ -1044,7 +1477,7 @@ export interface ListNodeGroupsRequest {
     pageSize?: Long;
 
     /**
-     * Page token. To get the next page of results, set [page_token] to the
+     * Page token. To get the next page of results, set `page_token` to the
      * [ListNodeGroupsResponse.next_page_token] returned by a previous list request.
      */
     pageToken?: string;
@@ -1068,10 +1501,50 @@ export interface ListNodeGroupsResponse {
     /**
      * This token allows you to get the next page of results for list requests. If the number of results
      * is larger than [ListNodeGroupsRequest.page_size], use
-     * the [next_page_token] as the value
+     * the `next_page_token` as the value
      * for the [ListNodeGroupsRequest.page_token] query parameter
      * in the next list request. Each subsequent list request will have its own
-     * [next_page_token] to continue paging through the results.
+     * `next_page_token` to continue paging through the results.
+     */
+    nextPageToken?: string;
+}
+
+export interface ListNodeGroupNodesRequest {
+    /**
+     * ID of the node group to list.
+     * To get the node group ID use a [NodeGroupService.List] request.
+     */
+    nodeGroupId: string;
+
+    /**
+     * The maximum number of results per page to return. If the number of available
+     * results is larger than [page_size],
+     * the service returns a [ListNodeGroupsResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     * Default value: 100.
+     */
+    pageSize?: Long;
+
+    /**
+     * Page token. To get the next page of results, set `page_token` to the
+     * [ListNodeGroupNodessResponse.next_page_token] returned by a previous list request.
+     */
+    pageToken?: string;
+}
+
+export interface ListNodeGroupNodesResponse {
+    /**
+     * List of nodes.
+     */
+    nodes?: Node[];
+
+    /**
+     * This token allows you to get the next page of results for list requests. If the number of results
+     * is larger than [ListNodeGroupNodesRequest.page_size], use
+     * the `next_page_token` as the value
+     * for the [ListNodeGroupNodesRequest.page_token] query parameter
+     * in the next list request. Each subsequent list request will have its own
+     * `next_page_token` to continue paging through the results.
      */
     nextPageToken?: string;
 }
@@ -1137,11 +1610,30 @@ export interface UpdateNodeGroupRequest {
      */
     allocationPolicy?: NodeGroupAllocationPolicy;
 
+    /**
+     * Version of Kubernetes components that runs on the nodes.
+     */
     version?: UpdateVersionSpec;
 
+    /**
+     * Maintenance policy of the node group.
+     */
     maintenancePolicy?: NodeGroupMaintenancePolicy;
 
+    /**
+     * Support for unsafe sysctl parameters. For more details see [documentation](https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/).
+     */
     allowedUnsafeSysctls?: string[];
+
+    /**
+     * Taints that are applied to the nodes of the node group at creation time.
+     */
+    nodeTaints?: Taint[];
+
+    /**
+     * Labels that are assigned to the nodes of the node group at creation time.
+     */
+    nodeLabels?: { [s: string]: string };
 }
 
 export interface UpdateNodeGroupMetadata {
@@ -1189,11 +1681,30 @@ export interface CreateNodeGroupRequest {
      */
     allocationPolicy?: NodeGroupAllocationPolicy;
 
+    /**
+     * Version of Kubernetes components that runs on the nodes.
+     */
     version?: string;
 
+    /**
+     * Maintenance policy of the node group.
+     */
     maintenancePolicy?: NodeGroupMaintenancePolicy;
 
+    /**
+     * Support for unsafe sysctl parameters. For more details see [documentation](https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/).
+     */
     allowedUnsafeSysctls?: string[];
+
+    /**
+     * Taints that are applied to the nodes of the node group at creation time.
+     */
+    nodeTaints?: Taint[];
+
+    /**
+     * Labels that are assigned to the nodes of the node group at creation time.
+     */
+    nodeLabels?: { [s: string]: string };
 }
 
 export interface CreateNodeGroupMetadata {
@@ -1225,7 +1736,7 @@ export interface ListNodeGroupOperationsRequest {
     pageSize?: Long;
 
     /**
-     * Page token. To get the next page of results, set [page_token] to the
+     * Page token. To get the next page of results, set `page_token` to the
      * [ListNodeGroupOperationsResponse.next_page_token] returned by a previous list request.
      */
     pageToken?: string;
@@ -1245,28 +1756,28 @@ export interface ListNodeGroupOperationsResponse {
 
     /**
      * This token allows you to get the next page of results for list requests. If the number of results
-     * is larger than [ListNodeGroupOperationsRequest.page_size], use the [next_page_token] as the value
+     * is larger than [ListNodeGroupOperationsRequest.page_size], use the `next_page_token` as the value
      * for the [ListNodeGroupOperationsRequest.page_token] query parameter in the next list request.
-     * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
+     * Each subsequent list request will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken?: string;
 }
 
 export interface VersionInfo {
     /**
-     * Current kubernetes version, major.minor (e.g. 1.15).
+     * Current Kubernetes version, format: major.minor (e.g. 1.15).
      */
     currentVersion?: string;
 
     /**
-     * Newer revisions may include kubernetes patches (e.g 1.15.1 -> 1.15.2) as well
-     * as some internal component updates - new features or bug fixes in yandex-specific
+     * Newer revisions may include Kubernetes patches (e.g 1.15.1 -> 1.15.2) as well
+     * as some internal component updates — new features or bug fixes in Yandex specific
      * components either on the master or nodes.
      */
     newRevisionAvailable?: boolean;
 
     /**
-     * Human readable description of the changes to be applied when updating to the latest
+     * Description of the changes to be applied when updating to the latest
      * revision. Empty if new_revision_available is false.
      */
     newRevisionSummary?: string;
@@ -1280,7 +1791,7 @@ export interface VersionInfo {
 
 export interface UpdateVersionSpec {
     /**
-     * Request update to a newer version of kubernetes (1.x -> 1.y).
+     * Request update to a newer version of Kubernetes (1.x -> 1.y).
      */
     version?: string;
 
@@ -1290,19 +1801,34 @@ export interface UpdateVersionSpec {
     latestRevision?: boolean;
 }
 
+/**
+ * A set of methods for managing Kubernetes versions.
+ */
 export class VersionService {
     constructor(session?: Session);
+    /**
+     * Retrieves the list of versions in the specified release channel.
+     */
     list(request: ListVersionsRequest): Promise<ListVersionsResponse>;
 }
 
 export interface ListVersionsRequest {}
 
 export interface ListVersionsResponse {
+    /**
+     * Versions available in the specified release channel.
+     */
     availableVersions?: AvailableVersions[];
 }
 
 export interface AvailableVersions {
+    /**
+     * Release channel: `RAPID`, `REGULAR` or `STABLE`. For more details see [documentation](https://cloud.yandex.ru/docs/managed-kubernetes/concepts/release-channels-and-updates).
+     */
     releaseChannel?: ReleaseChannel;
 
+    /**
+     * Version of Kubernetes components.
+     */
     versions?: string[];
 }

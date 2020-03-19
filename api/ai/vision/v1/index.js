@@ -341,17 +341,22 @@ module.exports = (function() {
     $root.Page = (function() {
       function Page(p) {
         this.blocks = [];
+        this.entities = [];
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       Page.prototype.width = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
       Page.prototype.height = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
       Page.prototype.blocks = $util.emptyArray;
+      Page.prototype.entities = $util.emptyArray;
       Page.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.width != null && m.hasOwnProperty('width')) w.uint32(8).int64(m.width);
         if (m.height != null && m.hasOwnProperty('height')) w.uint32(16).int64(m.height);
         if (m.blocks != null && m.blocks.length) {
           for (let i = 0; i < m.blocks.length; ++i) $root.api.ai.vision.v1.Block.encode(m.blocks[i], w.uint32(26).fork()).ldelim();
+        }
+        if (m.entities != null && m.entities.length) {
+          for (let i = 0; i < m.entities.length; ++i) $root.api.ai.vision.v1.Entity.encode(m.entities[i], w.uint32(34).fork()).ldelim();
         }
         return w;
       };
@@ -372,6 +377,10 @@ module.exports = (function() {
               if (!(m.blocks && m.blocks.length)) m.blocks = [];
               m.blocks.push($root.api.ai.vision.v1.Block.decode(r, r.uint32()));
               break;
+            case 4:
+              if (!(m.entities && m.entities.length)) m.entities = [];
+              m.entities.push($root.api.ai.vision.v1.Entity.decode(r, r.uint32()));
+              break;
             default:
               r.skipType(t & 7);
               break;
@@ -380,6 +389,42 @@ module.exports = (function() {
         return m;
       };
       return Page;
+    })();
+  })(root);
+  (function($root) {
+    $root.Entity = (function() {
+      function Entity(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      Entity.prototype.name = '';
+      Entity.prototype.text = '';
+      Entity.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.name != null && m.hasOwnProperty('name')) w.uint32(10).string(m.name);
+        if (m.text != null && m.hasOwnProperty('text')) w.uint32(18).string(m.text);
+        return w;
+      };
+      Entity.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.ai.vision.v1.Entity();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.name = r.string();
+              break;
+            case 2:
+              m.text = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return Entity;
     })();
   })(root);
   (function($root) {
@@ -477,6 +522,7 @@ module.exports = (function() {
       Word.prototype.text = '';
       Word.prototype.confidence = 0;
       Word.prototype.languages = $util.emptyArray;
+      Word.prototype.entityIndex = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
       Word.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.boundingBox != null && m.hasOwnProperty('boundingBox')) $root.api.ai.vision.v1.Polygon.encode(m.boundingBox, w.uint32(10).fork()).ldelim();
@@ -485,6 +531,7 @@ module.exports = (function() {
         if (m.languages != null && m.languages.length) {
           for (let i = 0; i < m.languages.length; ++i) $root.api.ai.vision.v1.Word.DetectedLanguage.encode(m.languages[i], w.uint32(34).fork()).ldelim();
         }
+        if (m.entityIndex != null && m.hasOwnProperty('entityIndex')) w.uint32(40).int64(m.entityIndex);
         return w;
       };
       Word.decode = function decode(r, l) {
@@ -506,6 +553,9 @@ module.exports = (function() {
             case 4:
               if (!(m.languages && m.languages.length)) m.languages = [];
               m.languages.push($root.api.ai.vision.v1.Word.DetectedLanguage.decode(r, r.uint32()));
+              break;
+            case 5:
+              m.entityIndex = r.int64();
               break;
             default:
               r.skipType(t & 7);

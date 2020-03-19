@@ -938,6 +938,17 @@ export interface SamlUserAccount {
      * The name is unique within the federation. 1-256 characters long.
      */
     nameId: string;
+
+    /**
+     * Additional attributes of the SAML federated user.
+     */
+    attributes?: { [s: string]: SamlUserAccount.Attribute };
+}
+
+export namespace SamlUserAccount {
+    export interface Attribute {
+        value?: string[];
+    }
 }
 
 /**

@@ -1258,6 +1258,7 @@ module.exports = (function() {
     $root.CreateFunctionVersionRequest = (function() {
       function CreateFunctionVersionRequest(p) {
         this.environment = {};
+        this.tag = [];
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       CreateFunctionVersionRequest.prototype.functionId = '';
@@ -1270,6 +1271,7 @@ module.exports = (function() {
       CreateFunctionVersionRequest.prototype['package'] = null;
       CreateFunctionVersionRequest.prototype.content = $util.newBuffer([]);
       CreateFunctionVersionRequest.prototype.environment = $util.emptyObject;
+      CreateFunctionVersionRequest.prototype.tag = $util.emptyArray;
       let $oneOfFields;
       Object.defineProperty(CreateFunctionVersionRequest.prototype, 'packageSource', {
         get: $util.oneOfGetter(($oneOfFields = ['package', 'content'])),
@@ -1296,6 +1298,9 @@ module.exports = (function() {
               .string(m.environment[ks[i]])
               .ldelim();
           }
+        }
+        if (m.tag != null && m.tag.length) {
+          for (let i = 0; i < m.tag.length; ++i) w.uint32(106).string(m.tag[i]);
         }
         return w;
       };
@@ -1340,6 +1345,10 @@ module.exports = (function() {
               k = r.string();
               r.pos++;
               m.environment[k] = r.string();
+              break;
+            case 13:
+              if (!(m.tag && m.tag.length)) m.tag = [];
+              m.tag.push(r.string());
               break;
             default:
               r.skipType(t & 7);

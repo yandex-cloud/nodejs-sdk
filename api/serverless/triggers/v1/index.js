@@ -146,6 +146,7 @@ module.exports = (function() {
         values[(valuesById[3] = 'MESSAGE_QUEUE')] = 3;
         values[(valuesById[4] = 'IOT_MESSAGE')] = 4;
         values[(valuesById[5] = 'OBJECT_STORAGE')] = 5;
+        values[(valuesById[6] = 'CONTAINER_REGISTRY')] = 6;
         return values;
       })();
       return TriggerType;
@@ -233,9 +234,10 @@ module.exports = (function() {
         Rule.prototype.messageQueue = null;
         Rule.prototype.iotMessage = null;
         Rule.prototype.objectStorage = null;
+        Rule.prototype.containerRegistry = null;
         let $oneOfFields;
         Object.defineProperty(Rule.prototype, 'rule', {
-          get: $util.oneOfGetter(($oneOfFields = ['timer', 'messageQueue', 'iotMessage', 'objectStorage'])),
+          get: $util.oneOfGetter(($oneOfFields = ['timer', 'messageQueue', 'iotMessage', 'objectStorage', 'containerRegistry'])),
           set: $util.oneOfSetter($oneOfFields)
         });
         Rule.encode = function encode(m, w) {
@@ -244,6 +246,7 @@ module.exports = (function() {
           if (m.messageQueue != null && m.hasOwnProperty('messageQueue')) $root.api.serverless.triggers.v1.Trigger.MessageQueue.encode(m.messageQueue, w.uint32(26).fork()).ldelim();
           if (m.iotMessage != null && m.hasOwnProperty('iotMessage')) $root.api.serverless.triggers.v1.Trigger.IoTMessage.encode(m.iotMessage, w.uint32(34).fork()).ldelim();
           if (m.objectStorage != null && m.hasOwnProperty('objectStorage')) $root.api.serverless.triggers.v1.Trigger.ObjectStorage.encode(m.objectStorage, w.uint32(42).fork()).ldelim();
+          if (m.containerRegistry != null && m.hasOwnProperty('containerRegistry')) $root.api.serverless.triggers.v1.Trigger.ContainerRegistry.encode(m.containerRegistry, w.uint32(50).fork()).ldelim();
           return w;
         };
         Rule.decode = function decode(r, l) {
@@ -264,6 +267,9 @@ module.exports = (function() {
                 break;
               case 5:
                 m.objectStorage = $root.api.serverless.triggers.v1.Trigger.ObjectStorage.decode(r, r.uint32());
+                break;
+              case 6:
+                m.containerRegistry = $root.api.serverless.triggers.v1.Trigger.ContainerRegistry.decode(r, r.uint32());
                 break;
               default:
                 r.skipType(t & 7);
@@ -493,6 +499,80 @@ module.exports = (function() {
           return m;
         };
         return ObjectStorage;
+      })();
+      let ContainerRegistryEventType = (function() {
+        let valuesById = {},
+          values = Object.create(valuesById);
+        values[(valuesById[0] = 'CONTAINER_REGISTRY_EVENT_TYPE_UNSPECIFIED')] = 0;
+        values[(valuesById[1] = 'CONTAINER_REGISTRY_EVENT_TYPE_CREATE_IMAGE')] = 1;
+        values[(valuesById[2] = 'CONTAINER_REGISTRY_EVENT_TYPE_DELETE_IMAGE')] = 2;
+        values[(valuesById[3] = 'CONTAINER_REGISTRY_EVENT_TYPE_CREATE_IMAGE_TAG')] = 3;
+        values[(valuesById[4] = 'CONTAINER_REGISTRY_EVENT_TYPE_DELETE_IMAGE_TAG')] = 4;
+        return values;
+      })();
+      Trigger.ContainerRegistryEventType = ContainerRegistryEventType;
+      Trigger.ContainerRegistry = (function() {
+        function ContainerRegistry(p) {
+          this.eventType = [];
+          if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+        }
+        ContainerRegistry.prototype.eventType = $util.emptyArray;
+        ContainerRegistry.prototype.registryId = '';
+        ContainerRegistry.prototype.imageName = '';
+        ContainerRegistry.prototype.tag = '';
+        ContainerRegistry.prototype.invokeFunction = null;
+        let $oneOfFields;
+        Object.defineProperty(ContainerRegistry.prototype, 'action', {
+          get: $util.oneOfGetter(($oneOfFields = ['invokeFunction'])),
+          set: $util.oneOfSetter($oneOfFields)
+        });
+        ContainerRegistry.encode = function encode(m, w) {
+          if (!w) w = $Writer.create();
+          if (m.eventType != null && m.eventType.length) {
+            w.uint32(26).fork();
+            for (let i = 0; i < m.eventType.length; ++i) w.int32(m.eventType[i]);
+            w.ldelim();
+          }
+          if (m.registryId != null && m.hasOwnProperty('registryId')) w.uint32(34).string(m.registryId);
+          if (m.imageName != null && m.hasOwnProperty('imageName')) w.uint32(42).string(m.imageName);
+          if (m.tag != null && m.hasOwnProperty('tag')) w.uint32(50).string(m.tag);
+          if (m.invokeFunction != null && m.hasOwnProperty('invokeFunction')) $root.api.serverless.triggers.v1.InvokeFunctionWithRetry.encode(m.invokeFunction, w.uint32(810).fork()).ldelim();
+          return w;
+        };
+        ContainerRegistry.decode = function decode(r, l) {
+          if (!(r instanceof $Reader)) r = $Reader.create(r);
+          let c = l === undefined ? r.len : r.pos + l,
+            m = new $root.api.serverless.triggers.v1.Trigger.ContainerRegistry();
+          while (r.pos < c) {
+            let t = r.uint32();
+            switch (t >>> 3) {
+              case 3:
+                if (!(m.eventType && m.eventType.length)) m.eventType = [];
+                if ((t & 7) === 2) {
+                  let c2 = r.uint32() + r.pos;
+                  while (r.pos < c2) m.eventType.push(r.int32());
+                } else m.eventType.push(r.int32());
+                break;
+              case 4:
+                m.registryId = r.string();
+                break;
+              case 5:
+                m.imageName = r.string();
+                break;
+              case 6:
+                m.tag = r.string();
+                break;
+              case 101:
+                m.invokeFunction = $root.api.serverless.triggers.v1.InvokeFunctionWithRetry.decode(r, r.uint32());
+                break;
+              default:
+                r.skipType(t & 7);
+                break;
+            }
+          }
+          return m;
+        };
+        return ContainerRegistry;
       })();
       return Trigger;
     })();

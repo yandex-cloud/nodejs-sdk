@@ -1114,6 +1114,11 @@ export interface NetworkInterface {
      * Primary IPv6 address that is assigned to the instance for this network interface. IPv6 not available yet.
      */
     primaryV6Address?: PrimaryAddress;
+
+    /**
+     * ID's of security groups attached to the interface
+     */
+    securityGroupIds?: string[];
 }
 
 export interface PrimaryAddress {
@@ -1272,6 +1277,18 @@ export class InstanceService {
      */
     detachDisk(
         request: DetachInstanceDiskRequest
+    ): Promise<operation.Operation>;
+
+    addOneToOneNat(
+        request: AddInstanceOneToOneNatRequest
+    ): Promise<operation.Operation>;
+
+    removeOneToOneNat(
+        request: RemoveInstanceOneToOneNatRequest
+    ): Promise<operation.Operation>;
+
+    updateNetworkInterface(
+        request: UpdateNetworkInterfaceRequest
     ): Promise<operation.Operation>;
 
     /**
@@ -1710,6 +1727,57 @@ export interface DetachInstanceDiskMetadata {
     diskId?: string;
 }
 
+export interface AddInstanceOneToOneNatRequest {
+    instanceId?: string;
+
+    networkInterfaceIndex?: string;
+
+    /**
+     * optional
+     */
+    internalAddress?: string;
+
+    /**
+     * optional
+     */
+    oneToOneNatSpec?: OneToOneNatSpec;
+}
+
+export interface AddInstanceOneToOneNatMetadata {
+    instanceId?: string;
+}
+
+export interface RemoveInstanceOneToOneNatRequest {
+    instanceId?: string;
+
+    networkInterfaceIndex?: string;
+
+    /**
+     * optional
+     */
+    internalAddress?: string;
+}
+
+export interface RemoveInstanceOneToOneNatMetadata {
+    instanceId?: string;
+}
+
+export interface UpdateNetworkInterfaceRequest {
+    instanceId: string;
+
+    networkInterfaceIndex: string;
+
+    updateMask?: protobuf.FieldMask;
+
+    securityGroupIds?: string[];
+}
+
+export interface UpdateNetworkInterfaceMetadata {
+    instanceId?: string;
+
+    networkInterfaceIndex?: string;
+}
+
 export interface ListInstanceOperationsRequest {
     /**
      * ID of the Instance resource to list operations for.
@@ -1866,6 +1934,11 @@ export interface NetworkInterfaceSpec {
      * Primary IPv6 address that will be assigned to the instance for this network interface. IPv6 not available yet.
      */
     primaryV6AddressSpec?: PrimaryAddressSpec;
+
+    /**
+     * ID's of security groups attached to the interface
+     */
+    securityGroupIds?: string[];
 }
 
 export interface PrimaryAddressSpec {
@@ -1886,7 +1959,12 @@ export interface OneToOneNatSpec {
     /**
      * External IP address version.
      */
-    ipVersion: IpVersion;
+    ipVersion?: IpVersion;
+
+    /**
+     * only if address unspecified
+     */
+    address?: string;
 }
 
 export interface PlacementGroup {

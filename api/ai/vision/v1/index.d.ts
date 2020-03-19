@@ -121,6 +121,23 @@ export interface Page {
      * Recognized text blocks in this page.
      */
     blocks?: Block[];
+
+    /**
+     * Recognized entities
+     */
+    entities?: Entity[];
+}
+
+export interface Entity {
+    /**
+     * Entity name
+     */
+    name?: string;
+
+    /**
+     * Recognized entity text
+     */
+    text?: string;
 }
 
 export interface Block {
@@ -172,6 +189,11 @@ export interface Word {
      * A list of detected languages together with confidence.
      */
     languages?: Word.DetectedLanguage[];
+
+    /**
+     * Id of recognized word in entities array
+     */
+    entityIndex?: Long;
 }
 
 export namespace Word {

@@ -2160,20 +2160,34 @@ module.exports = (function() {
   (function($root) {
     $root.SamlUserAccount = (function() {
       function SamlUserAccount(p) {
+        this.attributes = {};
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       SamlUserAccount.prototype.federationId = '';
       SamlUserAccount.prototype.nameId = '';
+      SamlUserAccount.prototype.attributes = $util.emptyObject;
       SamlUserAccount.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.federationId != null && m.hasOwnProperty('federationId')) w.uint32(10).string(m.federationId);
         if (m.nameId != null && m.hasOwnProperty('nameId')) w.uint32(18).string(m.nameId);
+        if (m.attributes != null && m.hasOwnProperty('attributes')) {
+          for (let ks = Object.keys(m.attributes), i = 0; i < ks.length; ++i) {
+            w.uint32(26)
+              .fork()
+              .uint32(10)
+              .string(ks[i]);
+            $root.api.iam.v1.SamlUserAccount.Attribute.encode(m.attributes[ks[i]], w.uint32(18).fork())
+              .ldelim()
+              .ldelim();
+          }
+        }
         return w;
       };
       SamlUserAccount.decode = function decode(r, l) {
         if (!(r instanceof $Reader)) r = $Reader.create(r);
         let c = l === undefined ? r.len : r.pos + l,
-          m = new $root.api.iam.v1.SamlUserAccount();
+          m = new $root.api.iam.v1.SamlUserAccount(),
+          k;
         while (r.pos < c) {
           let t = r.uint32();
           switch (t >>> 3) {
@@ -2183,6 +2197,13 @@ module.exports = (function() {
             case 2:
               m.nameId = r.string();
               break;
+            case 3:
+              r.skip().pos++;
+              if (m.attributes === $util.emptyObject) m.attributes = {};
+              k = r.string();
+              r.pos++;
+              m.attributes[k] = $root.api.iam.v1.SamlUserAccount.Attribute.decode(r, r.uint32());
+              break;
             default:
               r.skipType(t & 7);
               break;
@@ -2190,6 +2211,39 @@ module.exports = (function() {
         }
         return m;
       };
+      SamlUserAccount.Attribute = (function() {
+        function Attribute(p) {
+          this.value = [];
+          if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+        }
+        Attribute.prototype.value = $util.emptyArray;
+        Attribute.encode = function encode(m, w) {
+          if (!w) w = $Writer.create();
+          if (m.value != null && m.value.length) {
+            for (let i = 0; i < m.value.length; ++i) w.uint32(10).string(m.value[i]);
+          }
+          return w;
+        };
+        Attribute.decode = function decode(r, l) {
+          if (!(r instanceof $Reader)) r = $Reader.create(r);
+          let c = l === undefined ? r.len : r.pos + l,
+            m = new $root.api.iam.v1.SamlUserAccount.Attribute();
+          while (r.pos < c) {
+            let t = r.uint32();
+            switch (t >>> 3) {
+              case 1:
+                if (!(m.value && m.value.length)) m.value = [];
+                m.value.push(r.string());
+                break;
+              default:
+                r.skipType(t & 7);
+                break;
+            }
+          }
+          return m;
+        };
+        return Attribute;
+      })();
       return SamlUserAccount;
     })();
   })(root);

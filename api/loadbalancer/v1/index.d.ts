@@ -546,7 +546,7 @@ export interface CreateNetworkLoadBalancerRequest {
     listenerSpecs?: ListenerSpec[];
 
     /**
-     * List of attached target groups for the network load balancer. For now, we accept only one target_group per NetworkLoadBalancer resource.
+     * List of attached target groups for the network load balancer.
      */
     attachedTargetGroups?: AttachedTargetGroup[];
 }
@@ -594,7 +594,7 @@ export interface UpdateNetworkLoadBalancerRequest {
     listenerSpecs?: ListenerSpec[];
 
     /**
-     * A list of attached target groups for the network load balancer. For now, we accept only one target_group per NetworkLoadBalancer resource.
+     * A list of attached target groups for the network load balancer.
      */
     attachedTargetGroups?: AttachedTargetGroup[];
 }
