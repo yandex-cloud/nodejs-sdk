@@ -60,6 +60,8 @@ export enum TriggerType {
     IOT_MESSAGE = 4,
 
     OBJECT_STORAGE = 5,
+
+    CONTAINER_REGISTRY = 6,
 }
 
 /**
@@ -123,6 +125,8 @@ export namespace Trigger {
         iotMessage?: IoTMessage;
 
         objectStorage?: ObjectStorage;
+
+        containerRegistry?: ContainerRegistry;
     }
 
     /**
@@ -221,6 +225,36 @@ export namespace Trigger {
         prefix?: string;
 
         suffix?: string;
+
+        invokeFunction?: InvokeFunctionWithRetry;
+    }
+
+    export enum ContainerRegistryEventType {
+        CONTAINER_REGISTRY_EVENT_TYPE_UNSPECIFIED = 0,
+
+        CONTAINER_REGISTRY_EVENT_TYPE_CREATE_IMAGE = 1,
+
+        CONTAINER_REGISTRY_EVENT_TYPE_DELETE_IMAGE = 2,
+
+        CONTAINER_REGISTRY_EVENT_TYPE_CREATE_IMAGE_TAG = 3,
+
+        CONTAINER_REGISTRY_EVENT_TYPE_DELETE_IMAGE_TAG = 4,
+    }
+
+    export interface ContainerRegistry {
+        /**
+         * Type (name) of events, at least one value is required.
+         */
+        eventType?: ContainerRegistryEventType[];
+
+        registryId?: string;
+
+        /**
+         * Filter, optional.
+         */
+        imageName?: string;
+
+        tag?: string;
 
         invokeFunction?: InvokeFunctionWithRetry;
     }

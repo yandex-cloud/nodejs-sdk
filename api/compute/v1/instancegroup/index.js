@@ -13,6 +13,7 @@ module.exports = (function() {
     $root.InstanceGroup = (function() {
       function InstanceGroup(p) {
         this.labels = {};
+        this.variables = [];
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       InstanceGroup.prototype.id = '';
@@ -31,6 +32,7 @@ module.exports = (function() {
       InstanceGroup.prototype.healthChecksSpec = null;
       InstanceGroup.prototype.serviceAccountId = '';
       InstanceGroup.prototype.status = 0;
+      InstanceGroup.prototype.variables = $util.emptyArray;
       InstanceGroup.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.id != null && m.hasOwnProperty('id')) w.uint32(10).string(m.id);
@@ -59,6 +61,9 @@ module.exports = (function() {
         if (m.healthChecksSpec != null && m.hasOwnProperty('healthChecksSpec')) $root.api.compute.v1.instancegroup.HealthChecksSpec.encode(m.healthChecksSpec, w.uint32(122).fork()).ldelim();
         if (m.serviceAccountId != null && m.hasOwnProperty('serviceAccountId')) w.uint32(130).string(m.serviceAccountId);
         if (m.status != null && m.hasOwnProperty('status')) w.uint32(136).int32(m.status);
+        if (m.variables != null && m.variables.length) {
+          for (let i = 0; i < m.variables.length; ++i) $root.api.compute.v1.instancegroup.Variable.encode(m.variables[i], w.uint32(146).fork()).ldelim();
+        }
         return w;
       };
       InstanceGroup.decode = function decode(r, l) {
@@ -121,6 +126,10 @@ module.exports = (function() {
             case 17:
               m.status = r.int32();
               break;
+            case 18:
+              if (!(m.variables && m.variables.length)) m.variables = [];
+              m.variables.push($root.api.compute.v1.instancegroup.Variable.decode(r, r.uint32()));
+              break;
             default:
               r.skipType(t & 7);
               break;
@@ -141,6 +150,42 @@ module.exports = (function() {
       })();
       InstanceGroup.Status = Status;
       return InstanceGroup;
+    })();
+  })(root);
+  (function($root) {
+    $root.Variable = (function() {
+      function Variable(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      Variable.prototype.key = '';
+      Variable.prototype.value = '';
+      Variable.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.key != null && m.hasOwnProperty('key')) w.uint32(10).string(m.key);
+        if (m.value != null && m.hasOwnProperty('value')) w.uint32(18).string(m.value);
+        return w;
+      };
+      Variable.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.instancegroup.Variable();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.key = r.string();
+              break;
+            case 2:
+              m.value = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return Variable;
     })();
   })(root);
   (function($root) {
@@ -436,11 +481,13 @@ module.exports = (function() {
       })();
       ScalePolicy.CustomRule = (function() {
         function CustomRule(p) {
+          this.labels = {};
           if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
         }
         CustomRule.prototype.ruleType = 0;
         CustomRule.prototype.metricType = 0;
         CustomRule.prototype.metricName = '';
+        CustomRule.prototype.labels = $util.emptyObject;
         CustomRule.prototype.target = 0;
         CustomRule.encode = function encode(m, w) {
           if (!w) w = $Writer.create();
@@ -448,12 +495,24 @@ module.exports = (function() {
           if (m.metricType != null && m.hasOwnProperty('metricType')) w.uint32(16).int32(m.metricType);
           if (m.metricName != null && m.hasOwnProperty('metricName')) w.uint32(26).string(m.metricName);
           if (m.target != null && m.hasOwnProperty('target')) w.uint32(33).double(m.target);
+          if (m.labels != null && m.hasOwnProperty('labels')) {
+            for (let ks = Object.keys(m.labels), i = 0; i < ks.length; ++i) {
+              w.uint32(42)
+                .fork()
+                .uint32(10)
+                .string(ks[i])
+                .uint32(18)
+                .string(m.labels[ks[i]])
+                .ldelim();
+            }
+          }
           return w;
         };
         CustomRule.decode = function decode(r, l) {
           if (!(r instanceof $Reader)) r = $Reader.create(r);
           let c = l === undefined ? r.len : r.pos + l,
-            m = new $root.api.compute.v1.instancegroup.ScalePolicy.CustomRule();
+            m = new $root.api.compute.v1.instancegroup.ScalePolicy.CustomRule(),
+            k;
           while (r.pos < c) {
             let t = r.uint32();
             switch (t >>> 3) {
@@ -465,6 +524,13 @@ module.exports = (function() {
                 break;
               case 3:
                 m.metricName = r.string();
+                break;
+              case 5:
+                r.skip().pos++;
+                if (m.labels === $util.emptyObject) m.labels = {};
+                k = r.string();
+                r.pos++;
+                m.labels[k] = r.string();
                 break;
               case 4:
                 m.target = r.double();
@@ -663,6 +729,8 @@ module.exports = (function() {
       InstanceTemplate.prototype.schedulingPolicy = null;
       InstanceTemplate.prototype.serviceAccountId = '';
       InstanceTemplate.prototype.networkSettings = null;
+      InstanceTemplate.prototype.name = '';
+      InstanceTemplate.prototype.hostname = '';
       InstanceTemplate.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.description != null && m.hasOwnProperty('description')) w.uint32(10).string(m.description);
@@ -700,6 +768,8 @@ module.exports = (function() {
         if (m.schedulingPolicy != null && m.hasOwnProperty('schedulingPolicy')) $root.api.compute.v1.instancegroup.SchedulingPolicy.encode(m.schedulingPolicy, w.uint32(74).fork()).ldelim();
         if (m.serviceAccountId != null && m.hasOwnProperty('serviceAccountId')) w.uint32(82).string(m.serviceAccountId);
         if (m.networkSettings != null && m.hasOwnProperty('networkSettings')) $root.api.compute.v1.instancegroup.NetworkSettings.encode(m.networkSettings, w.uint32(90).fork()).ldelim();
+        if (m.name != null && m.hasOwnProperty('name')) w.uint32(98).string(m.name);
+        if (m.hostname != null && m.hasOwnProperty('hostname')) w.uint32(106).string(m.hostname);
         return w;
       };
       InstanceTemplate.decode = function decode(r, l) {
@@ -752,6 +822,12 @@ module.exports = (function() {
               break;
             case 11:
               m.networkSettings = $root.api.compute.v1.instancegroup.NetworkSettings.decode(r, r.uint32());
+              break;
+            case 12:
+              m.name = r.string();
+              break;
+            case 13:
+              m.hostname = r.string();
               break;
             default:
               r.skipType(t & 7);
@@ -1858,6 +1934,7 @@ module.exports = (function() {
     $root.CreateInstanceGroupRequest = (function() {
       function CreateInstanceGroupRequest(p) {
         this.labels = {};
+        this.variables = [];
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       CreateInstanceGroupRequest.prototype.folderId = '';
@@ -1871,6 +1948,7 @@ module.exports = (function() {
       CreateInstanceGroupRequest.prototype.loadBalancerSpec = null;
       CreateInstanceGroupRequest.prototype.healthChecksSpec = null;
       CreateInstanceGroupRequest.prototype.serviceAccountId = '';
+      CreateInstanceGroupRequest.prototype.variables = $util.emptyArray;
       CreateInstanceGroupRequest.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.folderId != null && m.hasOwnProperty('folderId')) w.uint32(10).string(m.folderId);
@@ -1894,6 +1972,9 @@ module.exports = (function() {
         if (m.loadBalancerSpec != null && m.hasOwnProperty('loadBalancerSpec')) $root.api.compute.v1.instancegroup.LoadBalancerSpec.encode(m.loadBalancerSpec, w.uint32(82).fork()).ldelim();
         if (m.healthChecksSpec != null && m.hasOwnProperty('healthChecksSpec')) $root.api.compute.v1.instancegroup.HealthChecksSpec.encode(m.healthChecksSpec, w.uint32(90).fork()).ldelim();
         if (m.serviceAccountId != null && m.hasOwnProperty('serviceAccountId')) w.uint32(98).string(m.serviceAccountId);
+        if (m.variables != null && m.variables.length) {
+          for (let i = 0; i < m.variables.length; ++i) $root.api.compute.v1.instancegroup.Variable.encode(m.variables[i], w.uint32(106).fork()).ldelim();
+        }
         return w;
       };
       CreateInstanceGroupRequest.decode = function decode(r, l) {
@@ -1940,6 +2021,10 @@ module.exports = (function() {
               break;
             case 12:
               m.serviceAccountId = r.string();
+              break;
+            case 13:
+              if (!(m.variables && m.variables.length)) m.variables = [];
+              m.variables.push($root.api.compute.v1.instancegroup.Variable.decode(r, r.uint32()));
               break;
             default:
               r.skipType(t & 7);
@@ -2022,6 +2107,7 @@ module.exports = (function() {
     $root.UpdateInstanceGroupRequest = (function() {
       function UpdateInstanceGroupRequest(p) {
         this.labels = {};
+        this.variables = [];
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       UpdateInstanceGroupRequest.prototype.instanceGroupId = '';
@@ -2036,6 +2122,7 @@ module.exports = (function() {
       UpdateInstanceGroupRequest.prototype.healthChecksSpec = null;
       UpdateInstanceGroupRequest.prototype.serviceAccountId = '';
       UpdateInstanceGroupRequest.prototype.loadBalancerSpec = null;
+      UpdateInstanceGroupRequest.prototype.variables = $util.emptyArray;
       UpdateInstanceGroupRequest.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.instanceGroupId != null && m.hasOwnProperty('instanceGroupId')) w.uint32(10).string(m.instanceGroupId);
@@ -2060,6 +2147,9 @@ module.exports = (function() {
         if (m.healthChecksSpec != null && m.hasOwnProperty('healthChecksSpec')) $root.api.compute.v1.instancegroup.HealthChecksSpec.encode(m.healthChecksSpec, w.uint32(90).fork()).ldelim();
         if (m.serviceAccountId != null && m.hasOwnProperty('serviceAccountId')) w.uint32(98).string(m.serviceAccountId);
         if (m.loadBalancerSpec != null && m.hasOwnProperty('loadBalancerSpec')) $root.api.compute.v1.instancegroup.LoadBalancerSpec.encode(m.loadBalancerSpec, w.uint32(114).fork()).ldelim();
+        if (m.variables != null && m.variables.length) {
+          for (let i = 0; i < m.variables.length; ++i) $root.api.compute.v1.instancegroup.Variable.encode(m.variables[i], w.uint32(122).fork()).ldelim();
+        }
         return w;
       };
       UpdateInstanceGroupRequest.decode = function decode(r, l) {
@@ -2109,6 +2199,10 @@ module.exports = (function() {
               break;
             case 14:
               m.loadBalancerSpec = $root.api.compute.v1.instancegroup.LoadBalancerSpec.decode(r, r.uint32());
+              break;
+            case 15:
+              if (!(m.variables && m.variables.length)) m.variables = [];
+              m.variables.push($root.api.compute.v1.instancegroup.Variable.decode(r, r.uint32()));
               break;
             default:
               r.skipType(t & 7);

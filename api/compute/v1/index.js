@@ -2029,6 +2029,7 @@ module.exports = (function() {
   (function($root) {
     $root.NetworkInterface = (function() {
       function NetworkInterface(p) {
+        this.securityGroupIds = [];
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       NetworkInterface.prototype.index = '';
@@ -2036,6 +2037,7 @@ module.exports = (function() {
       NetworkInterface.prototype.subnetId = '';
       NetworkInterface.prototype.primaryV4Address = null;
       NetworkInterface.prototype.primaryV6Address = null;
+      NetworkInterface.prototype.securityGroupIds = $util.emptyArray;
       NetworkInterface.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.index != null && m.hasOwnProperty('index')) w.uint32(10).string(m.index);
@@ -2043,6 +2045,9 @@ module.exports = (function() {
         if (m.subnetId != null && m.hasOwnProperty('subnetId')) w.uint32(26).string(m.subnetId);
         if (m.primaryV4Address != null && m.hasOwnProperty('primaryV4Address')) $root.api.compute.v1.PrimaryAddress.encode(m.primaryV4Address, w.uint32(34).fork()).ldelim();
         if (m.primaryV6Address != null && m.hasOwnProperty('primaryV6Address')) $root.api.compute.v1.PrimaryAddress.encode(m.primaryV6Address, w.uint32(42).fork()).ldelim();
+        if (m.securityGroupIds != null && m.securityGroupIds.length) {
+          for (let i = 0; i < m.securityGroupIds.length; ++i) w.uint32(50).string(m.securityGroupIds[i]);
+        }
         return w;
       };
       NetworkInterface.decode = function decode(r, l) {
@@ -2066,6 +2071,10 @@ module.exports = (function() {
               break;
             case 5:
               m.primaryV6Address = $root.api.compute.v1.PrimaryAddress.decode(r, r.uint32());
+              break;
+            case 6:
+              if (!(m.securityGroupIds && m.securityGroupIds.length)) m.securityGroupIds = [];
+              m.securityGroupIds.push(r.string());
               break;
             default:
               r.skipType(t & 7);
@@ -2449,6 +2458,51 @@ module.exports = (function() {
             return $root.api.compute.v1.DetachInstanceDiskRequest.encode(r).finish();
           },
           requestDeserialize: $root.api.compute.v1.DetachInstanceDiskRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        addOneToOneNat: {
+          path: '/yandex.cloud.compute.v1.InstanceService/AddOneToOneNat',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.compute.v1.AddInstanceOneToOneNatRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.compute.v1.AddInstanceOneToOneNatRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.compute.v1.AddInstanceOneToOneNatRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        removeOneToOneNat: {
+          path: '/yandex.cloud.compute.v1.InstanceService/RemoveOneToOneNat',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.compute.v1.RemoveInstanceOneToOneNatRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.compute.v1.RemoveInstanceOneToOneNatRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.compute.v1.RemoveInstanceOneToOneNatRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        updateNetworkInterface: {
+          path: '/yandex.cloud.compute.v1.InstanceService/UpdateNetworkInterface',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.compute.v1.UpdateNetworkInterfaceRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.compute.v1.UpdateNetworkInterfaceRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.compute.v1.UpdateNetworkInterfaceRequest.decode,
           responseSerialize: r => {
             return $root.api.operation.Operation.encode(r).finish();
           },
@@ -3489,6 +3543,241 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
+    $root.AddInstanceOneToOneNatRequest = (function() {
+      function AddInstanceOneToOneNatRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      AddInstanceOneToOneNatRequest.prototype.instanceId = '';
+      AddInstanceOneToOneNatRequest.prototype.networkInterfaceIndex = '';
+      AddInstanceOneToOneNatRequest.prototype.internalAddress = '';
+      AddInstanceOneToOneNatRequest.prototype.oneToOneNatSpec = null;
+      AddInstanceOneToOneNatRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.instanceId != null && m.hasOwnProperty('instanceId')) w.uint32(10).string(m.instanceId);
+        if (m.networkInterfaceIndex != null && m.hasOwnProperty('networkInterfaceIndex')) w.uint32(18).string(m.networkInterfaceIndex);
+        if (m.internalAddress != null && m.hasOwnProperty('internalAddress')) w.uint32(26).string(m.internalAddress);
+        if (m.oneToOneNatSpec != null && m.hasOwnProperty('oneToOneNatSpec')) $root.api.compute.v1.OneToOneNatSpec.encode(m.oneToOneNatSpec, w.uint32(34).fork()).ldelim();
+        return w;
+      };
+      AddInstanceOneToOneNatRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.AddInstanceOneToOneNatRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.instanceId = r.string();
+              break;
+            case 2:
+              m.networkInterfaceIndex = r.string();
+              break;
+            case 3:
+              m.internalAddress = r.string();
+              break;
+            case 4:
+              m.oneToOneNatSpec = $root.api.compute.v1.OneToOneNatSpec.decode(r, r.uint32());
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return AddInstanceOneToOneNatRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.AddInstanceOneToOneNatMetadata = (function() {
+      function AddInstanceOneToOneNatMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      AddInstanceOneToOneNatMetadata.prototype.instanceId = '';
+      AddInstanceOneToOneNatMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.instanceId != null && m.hasOwnProperty('instanceId')) w.uint32(10).string(m.instanceId);
+        return w;
+      };
+      AddInstanceOneToOneNatMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.AddInstanceOneToOneNatMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.instanceId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return AddInstanceOneToOneNatMetadata;
+    })();
+  })(root);
+  (function($root) {
+    $root.RemoveInstanceOneToOneNatRequest = (function() {
+      function RemoveInstanceOneToOneNatRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      RemoveInstanceOneToOneNatRequest.prototype.instanceId = '';
+      RemoveInstanceOneToOneNatRequest.prototype.networkInterfaceIndex = '';
+      RemoveInstanceOneToOneNatRequest.prototype.internalAddress = '';
+      RemoveInstanceOneToOneNatRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.instanceId != null && m.hasOwnProperty('instanceId')) w.uint32(10).string(m.instanceId);
+        if (m.networkInterfaceIndex != null && m.hasOwnProperty('networkInterfaceIndex')) w.uint32(18).string(m.networkInterfaceIndex);
+        if (m.internalAddress != null && m.hasOwnProperty('internalAddress')) w.uint32(26).string(m.internalAddress);
+        return w;
+      };
+      RemoveInstanceOneToOneNatRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.RemoveInstanceOneToOneNatRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.instanceId = r.string();
+              break;
+            case 2:
+              m.networkInterfaceIndex = r.string();
+              break;
+            case 3:
+              m.internalAddress = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return RemoveInstanceOneToOneNatRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.RemoveInstanceOneToOneNatMetadata = (function() {
+      function RemoveInstanceOneToOneNatMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      RemoveInstanceOneToOneNatMetadata.prototype.instanceId = '';
+      RemoveInstanceOneToOneNatMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.instanceId != null && m.hasOwnProperty('instanceId')) w.uint32(10).string(m.instanceId);
+        return w;
+      };
+      RemoveInstanceOneToOneNatMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.RemoveInstanceOneToOneNatMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.instanceId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return RemoveInstanceOneToOneNatMetadata;
+    })();
+  })(root);
+  (function($root) {
+    $root.UpdateNetworkInterfaceRequest = (function() {
+      function UpdateNetworkInterfaceRequest(p) {
+        this.securityGroupIds = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      UpdateNetworkInterfaceRequest.prototype.instanceId = '';
+      UpdateNetworkInterfaceRequest.prototype.networkInterfaceIndex = '';
+      UpdateNetworkInterfaceRequest.prototype.updateMask = null;
+      UpdateNetworkInterfaceRequest.prototype.securityGroupIds = $util.emptyArray;
+      UpdateNetworkInterfaceRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.instanceId != null && m.hasOwnProperty('instanceId')) w.uint32(10).string(m.instanceId);
+        if (m.networkInterfaceIndex != null && m.hasOwnProperty('networkInterfaceIndex')) w.uint32(18).string(m.networkInterfaceIndex);
+        if (m.updateMask != null && m.hasOwnProperty('updateMask')) $root.contrib.google.protobuf.FieldMask.encode(m.updateMask, w.uint32(26).fork()).ldelim();
+        if (m.securityGroupIds != null && m.securityGroupIds.length) {
+          for (let i = 0; i < m.securityGroupIds.length; ++i) w.uint32(34).string(m.securityGroupIds[i]);
+        }
+        return w;
+      };
+      UpdateNetworkInterfaceRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.UpdateNetworkInterfaceRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.instanceId = r.string();
+              break;
+            case 2:
+              m.networkInterfaceIndex = r.string();
+              break;
+            case 3:
+              m.updateMask = $root.contrib.google.protobuf.FieldMask.decode(r, r.uint32());
+              break;
+            case 4:
+              if (!(m.securityGroupIds && m.securityGroupIds.length)) m.securityGroupIds = [];
+              m.securityGroupIds.push(r.string());
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return UpdateNetworkInterfaceRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.UpdateNetworkInterfaceMetadata = (function() {
+      function UpdateNetworkInterfaceMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      UpdateNetworkInterfaceMetadata.prototype.instanceId = '';
+      UpdateNetworkInterfaceMetadata.prototype.networkInterfaceIndex = '';
+      UpdateNetworkInterfaceMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.instanceId != null && m.hasOwnProperty('instanceId')) w.uint32(10).string(m.instanceId);
+        if (m.networkInterfaceIndex != null && m.hasOwnProperty('networkInterfaceIndex')) w.uint32(18).string(m.networkInterfaceIndex);
+        return w;
+      };
+      UpdateNetworkInterfaceMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.compute.v1.UpdateNetworkInterfaceMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.instanceId = r.string();
+              break;
+            case 2:
+              m.networkInterfaceIndex = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return UpdateNetworkInterfaceMetadata;
+    })();
+  })(root);
+  (function($root) {
     $root.ListInstanceOperationsRequest = (function() {
       function ListInstanceOperationsRequest(p) {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
@@ -3742,16 +4031,21 @@ module.exports = (function() {
   (function($root) {
     $root.NetworkInterfaceSpec = (function() {
       function NetworkInterfaceSpec(p) {
+        this.securityGroupIds = [];
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       NetworkInterfaceSpec.prototype.subnetId = '';
       NetworkInterfaceSpec.prototype.primaryV4AddressSpec = null;
       NetworkInterfaceSpec.prototype.primaryV6AddressSpec = null;
+      NetworkInterfaceSpec.prototype.securityGroupIds = $util.emptyArray;
       NetworkInterfaceSpec.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.subnetId != null && m.hasOwnProperty('subnetId')) w.uint32(10).string(m.subnetId);
         if (m.primaryV4AddressSpec != null && m.hasOwnProperty('primaryV4AddressSpec')) $root.api.compute.v1.PrimaryAddressSpec.encode(m.primaryV4AddressSpec, w.uint32(18).fork()).ldelim();
         if (m.primaryV6AddressSpec != null && m.hasOwnProperty('primaryV6AddressSpec')) $root.api.compute.v1.PrimaryAddressSpec.encode(m.primaryV6AddressSpec, w.uint32(26).fork()).ldelim();
+        if (m.securityGroupIds != null && m.securityGroupIds.length) {
+          for (let i = 0; i < m.securityGroupIds.length; ++i) w.uint32(50).string(m.securityGroupIds[i]);
+        }
         return w;
       };
       NetworkInterfaceSpec.decode = function decode(r, l) {
@@ -3769,6 +4063,10 @@ module.exports = (function() {
               break;
             case 3:
               m.primaryV6AddressSpec = $root.api.compute.v1.PrimaryAddressSpec.decode(r, r.uint32());
+              break;
+            case 6:
+              if (!(m.securityGroupIds && m.securityGroupIds.length)) m.securityGroupIds = [];
+              m.securityGroupIds.push(r.string());
               break;
             default:
               r.skipType(t & 7);
@@ -3822,9 +4120,11 @@ module.exports = (function() {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       OneToOneNatSpec.prototype.ipVersion = 0;
+      OneToOneNatSpec.prototype.address = '';
       OneToOneNatSpec.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.ipVersion != null && m.hasOwnProperty('ipVersion')) w.uint32(8).int32(m.ipVersion);
+        if (m.address != null && m.hasOwnProperty('address')) w.uint32(18).string(m.address);
         return w;
       };
       OneToOneNatSpec.decode = function decode(r, l) {
@@ -3836,6 +4136,9 @@ module.exports = (function() {
           switch (t >>> 3) {
             case 1:
               m.ipVersion = r.int32();
+              break;
+            case 2:
+              m.address = r.string();
               break;
             default:
               r.skipType(t & 7);

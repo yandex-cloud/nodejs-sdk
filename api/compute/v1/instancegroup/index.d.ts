@@ -93,6 +93,8 @@ export interface InstanceGroup {
      * Status of the instance group.
      */
     status?: InstanceGroup.Status;
+
+    variables?: Variable[];
 }
 
 export namespace InstanceGroup {
@@ -130,6 +132,12 @@ export namespace InstanceGroup {
          */
         DELETING = 5,
     }
+}
+
+export interface Variable {
+    key?: string;
+
+    value?: string;
 }
 
 export interface LoadBalancerState {
@@ -305,6 +313,11 @@ export namespace ScalePolicy {
         metricName: string;
 
         /**
+         * Labels of custom metric in Yandex Monitoring that should be used for scaling.
+         */
+        labels?: { [s: string]: string };
+
+        /**
          * Target value for the custom metric. Instance Groups maintains this level for each availability zone.
          */
         target?: number;
@@ -427,7 +440,7 @@ export interface InstanceTemplate {
      * with a large number of cores, with a burstable performance.
      * For more information, see [Platforms](/docs/compute/concepts/vm-platforms).
      */
-    platformId?: string;
+    platformId: string;
 
     /**
      * Computing resources of the instance such as the amount of memory and number of cores.
@@ -436,6 +449,19 @@ export interface InstanceTemplate {
 
     /**
      * The metadata `key:value` pairs assigned to this instance template. This includes custom metadata and predefined keys.
+     *
+     * Metadata values may contain one of the supported placeholders:
+     * {instance_group.id}
+     * {instance.short_id}
+     * {instance.index}
+     * {instance.index_in_zone}
+     * {instance.zone_id}
+     * InstanceGroup and Instance labels may be copied to metadata following way:
+     * {instance_group.labels.some_label_key}
+     * {instance.labels.another_label_key}
+     * These placeholders will be substituted for each created instance anywhere in the value text.
+     * In the rare case the value requires to contain this placeholder explicitly,
+     * it must be escaped with double brackets, in example {instance.index}.
      *
      * For example, you may use the metadata in order to provide your public SSH key to the instance.
      * For more information, see [Metadata](/docs/compute/concepts/vm-metadata).
@@ -471,6 +497,35 @@ export interface InstanceTemplate {
      * Network settings for the instance.
      */
     networkSettings?: NetworkSettings;
+
+    /**
+     * Name of the instance.
+     * In order to be unique it must contain at least on of instance unique placeholders:
+     * {instance.short_id}
+     * {instance.index}
+     * combination of {instance.zone_id} and {instance.index_in_zone}
+     * Example: my-instance-{instance.index}
+     * If not set, default is used: {instance_group.id}-{instance.short_id}
+     * It may also contain another placeholders, see metadata doc for full list.
+     */
+    name?: string;
+
+    /**
+     * Host name for the instance.
+     * This field is used to generate the [yandex.cloud.compute.v1.Instance.fqdn] value.
+     * The host name must be unique within the network and region.
+     * If not specified, the host name will be equal to [yandex.cloud.compute.v1.Instance.id] of the instance
+     * and FQDN will be `<id>.auto.internal`. Otherwise FQDN will be `<hostname>.<region_id>.internal`.
+     *
+     * In order to be unique it must contain at least on of instance unique placeholders:
+     * {instance.short_id}
+     * {instance.index}
+     * combination of {instance.zone_id} and {instance.index_in_zone}
+     * Example: my-instance-{instance.index}
+     * If not set, `name` value will be used
+     * It may also contain another placeholders, see metadata doc for full list.
+     */
+    hostname?: string;
 }
 
 export interface ResourcesSpec {
@@ -1081,6 +1136,8 @@ export interface CreateInstanceGroupRequest {
      * To get the service account ID, use a [yandex.cloud.iam.v1.ServiceAccountService.List] request.
      */
     serviceAccountId?: string;
+
+    variables?: Variable[];
 }
 
 export interface CreateInstanceGroupFromYamlRequest {
@@ -1168,6 +1225,8 @@ export interface UpdateInstanceGroupRequest {
      * Load Balancer specification for load balancing support.
      */
     loadBalancerSpec?: LoadBalancerSpec;
+
+    variables?: Variable[];
 }
 
 export interface UpdateInstanceGroupFromYamlRequest {

@@ -8,6 +8,7 @@ import { Session } from '../../../index.js';
 
 import * as protobuf from '../../../contrib/google/protobuf';
 import * as operation from '../../../api/operation';
+import * as access from '../../../api/access';
 import * as SymmetricKey from '../../../SymmetricKey';
 
 /**
@@ -496,6 +497,27 @@ export class SymmetricKeyService {
     listOperations(
         request: ListSymmetricKeyOperationsRequest
     ): Promise<ListSymmetricKeyOperationsResponse>;
+
+    /**
+     * Lists existing access bindings for the specified key.
+     */
+    listAccessBindings(
+        request: access.ListAccessBindingsRequest
+    ): Promise<access.ListAccessBindingsResponse>;
+
+    /**
+     * Sets access bindings for the key.
+     */
+    setAccessBindings(
+        request: access.SetAccessBindingsRequest
+    ): Promise<operation.Operation>;
+
+    /**
+     * Updates access bindings for the specified key.
+     */
+    updateAccessBindings(
+        request: access.UpdateAccessBindingsRequest
+    ): Promise<operation.Operation>;
 }
 
 export interface CreateSymmetricKeyRequest {

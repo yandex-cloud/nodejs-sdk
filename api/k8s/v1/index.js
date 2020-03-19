@@ -30,6 +30,7 @@ module.exports = (function() {
       Cluster.prototype.serviceAccountId = '';
       Cluster.prototype.nodeServiceAccountId = '';
       Cluster.prototype.releaseChannel = 0;
+      Cluster.prototype.networkPolicy = null;
       let $oneOfFields;
       Object.defineProperty(Cluster.prototype, 'internetGateway', {
         get: $util.oneOfGetter(($oneOfFields = ['gatewayIpv4Address'])),
@@ -62,6 +63,7 @@ module.exports = (function() {
         if (m.serviceAccountId != null && m.hasOwnProperty('serviceAccountId')) w.uint32(106).string(m.serviceAccountId);
         if (m.nodeServiceAccountId != null && m.hasOwnProperty('nodeServiceAccountId')) w.uint32(114).string(m.nodeServiceAccountId);
         if (m.releaseChannel != null && m.hasOwnProperty('releaseChannel')) w.uint32(120).int32(m.releaseChannel);
+        if (m.networkPolicy != null && m.hasOwnProperty('networkPolicy')) $root.api.k8s.v1.NetworkPolicy.encode(m.networkPolicy, w.uint32(130).fork()).ldelim();
         return w;
       };
       Cluster.decode = function decode(r, l) {
@@ -120,6 +122,9 @@ module.exports = (function() {
               break;
             case 15:
               m.releaseChannel = r.int32();
+              break;
+            case 16:
+              m.networkPolicy = $root.api.k8s.v1.NetworkPolicy.decode(r, r.uint32());
               break;
             default:
               r.skipType(t & 7);
@@ -389,11 +394,13 @@ module.exports = (function() {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       IPAllocationPolicy.prototype.clusterIpv4CidrBlock = '';
+      IPAllocationPolicy.prototype.nodeIpv4CidrMaskSize = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
       IPAllocationPolicy.prototype.serviceIpv4CidrBlock = '';
       IPAllocationPolicy.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.clusterIpv4CidrBlock != null && m.hasOwnProperty('clusterIpv4CidrBlock')) w.uint32(10).string(m.clusterIpv4CidrBlock);
         if (m.serviceIpv4CidrBlock != null && m.hasOwnProperty('serviceIpv4CidrBlock')) w.uint32(18).string(m.serviceIpv4CidrBlock);
+        if (m.nodeIpv4CidrMaskSize != null && m.hasOwnProperty('nodeIpv4CidrMaskSize')) w.uint32(40).int64(m.nodeIpv4CidrMaskSize);
         return w;
       };
       IPAllocationPolicy.decode = function decode(r, l) {
@@ -405,6 +412,9 @@ module.exports = (function() {
           switch (t >>> 3) {
             case 1:
               m.clusterIpv4CidrBlock = r.string();
+              break;
+            case 5:
+              m.nodeIpv4CidrMaskSize = r.int64();
               break;
             case 2:
               m.serviceIpv4CidrBlock = r.string();
@@ -453,6 +463,45 @@ module.exports = (function() {
         return m;
       };
       return MasterMaintenancePolicy;
+    })();
+  })(root);
+  (function($root) {
+    $root.NetworkPolicy = (function() {
+      function NetworkPolicy(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      NetworkPolicy.prototype.provider = 0;
+      NetworkPolicy.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.provider != null && m.hasOwnProperty('provider')) w.uint32(8).int32(m.provider);
+        return w;
+      };
+      NetworkPolicy.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.NetworkPolicy();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.provider = r.int32();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      let Provider = (function() {
+        let valuesById = {},
+          values = Object.create(valuesById);
+        values[(valuesById[0] = 'PROVIDER_UNSPECIFIED')] = 0;
+        values[(valuesById[1] = 'CALICO')] = 1;
+        return values;
+      })();
+      NetworkPolicy.Provider = Provider;
+      return NetworkPolicy;
     })();
   })(root);
   (function($root) {
@@ -598,6 +647,21 @@ module.exports = (function() {
             return $root.api.k8s.v1.ListClusterOperationsResponse.encode(r).finish();
           },
           responseDeserialize: $root.api.k8s.v1.ListClusterOperationsResponse.decode
+        },
+        listNodes: {
+          path: '/yandex.cloud.k8s.v1.ClusterService/ListNodes',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.k8s.v1.ListClusterNodesRequest,
+          responseType: $root.api.k8s.v1.ListClusterNodesResponse,
+          requestSerialize: r => {
+            return $root.api.k8s.v1.ListClusterNodesRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.k8s.v1.ListClusterNodesRequest.decode,
+          responseSerialize: r => {
+            return $root.api.k8s.v1.ListClusterNodesResponse.encode(r).finish();
+          },
+          responseDeserialize: $root.api.k8s.v1.ListClusterNodesResponse.decode
         }
       });
       ctor.__endpointId = 'managed-kubernetes';
@@ -927,6 +991,7 @@ module.exports = (function() {
       UpdateClusterRequest.prototype.masterSpec = null;
       UpdateClusterRequest.prototype.serviceAccountId = '';
       UpdateClusterRequest.prototype.nodeServiceAccountId = '';
+      UpdateClusterRequest.prototype.networkPolicy = null;
       let $oneOfFields;
       Object.defineProperty(UpdateClusterRequest.prototype, 'internetGateway', {
         get: $util.oneOfGetter(($oneOfFields = ['gatewayIpv4Address'])),
@@ -953,6 +1018,7 @@ module.exports = (function() {
         if (m.masterSpec != null && m.hasOwnProperty('masterSpec')) $root.api.k8s.v1.MasterUpdateSpec.encode(m.masterSpec, w.uint32(58).fork()).ldelim();
         if (m.nodeServiceAccountId != null && m.hasOwnProperty('nodeServiceAccountId')) w.uint32(66).string(m.nodeServiceAccountId);
         if (m.serviceAccountId != null && m.hasOwnProperty('serviceAccountId')) w.uint32(74).string(m.serviceAccountId);
+        if (m.networkPolicy != null && m.hasOwnProperty('networkPolicy')) $root.api.k8s.v1.NetworkPolicy.encode(m.networkPolicy, w.uint32(82).fork()).ldelim();
         return w;
       };
       UpdateClusterRequest.decode = function decode(r, l) {
@@ -993,6 +1059,9 @@ module.exports = (function() {
               break;
             case 8:
               m.nodeServiceAccountId = r.string();
+              break;
+            case 10:
+              m.networkPolicy = $root.api.k8s.v1.NetworkPolicy.decode(r, r.uint32());
               break;
             default:
               r.skipType(t & 7);
@@ -1088,6 +1157,7 @@ module.exports = (function() {
       CreateClusterRequest.prototype.serviceAccountId = '';
       CreateClusterRequest.prototype.nodeServiceAccountId = '';
       CreateClusterRequest.prototype.releaseChannel = 0;
+      CreateClusterRequest.prototype.networkPolicy = null;
       let $oneOfFields;
       Object.defineProperty(CreateClusterRequest.prototype, 'internetGateway', {
         get: $util.oneOfGetter(($oneOfFields = ['gatewayIpv4Address'])),
@@ -1116,6 +1186,7 @@ module.exports = (function() {
         if (m.serviceAccountId != null && m.hasOwnProperty('serviceAccountId')) w.uint32(74).string(m.serviceAccountId);
         if (m.nodeServiceAccountId != null && m.hasOwnProperty('nodeServiceAccountId')) w.uint32(82).string(m.nodeServiceAccountId);
         if (m.releaseChannel != null && m.hasOwnProperty('releaseChannel')) w.uint32(88).int32(m.releaseChannel);
+        if (m.networkPolicy != null && m.hasOwnProperty('networkPolicy')) $root.api.k8s.v1.NetworkPolicy.encode(m.networkPolicy, w.uint32(98).fork()).ldelim();
         return w;
       };
       CreateClusterRequest.decode = function decode(r, l) {
@@ -1162,6 +1233,9 @@ module.exports = (function() {
               break;
             case 11:
               m.releaseChannel = r.int32();
+              break;
+            case 12:
+              m.networkPolicy = $root.api.k8s.v1.NetworkPolicy.decode(r, r.uint32());
               break;
             default:
               r.skipType(t & 7);
@@ -1405,6 +1479,87 @@ module.exports = (function() {
         return m;
       };
       return ListClusterNodeGroupsResponse;
+    })();
+  })(root);
+  (function($root) {
+    $root.ListClusterNodesRequest = (function() {
+      function ListClusterNodesRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListClusterNodesRequest.prototype.clusterId = '';
+      ListClusterNodesRequest.prototype.pageSize = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+      ListClusterNodesRequest.prototype.pageToken = '';
+      ListClusterNodesRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.clusterId != null && m.hasOwnProperty('clusterId')) w.uint32(10).string(m.clusterId);
+        if (m.pageSize != null && m.hasOwnProperty('pageSize')) w.uint32(16).int64(m.pageSize);
+        if (m.pageToken != null && m.hasOwnProperty('pageToken')) w.uint32(26).string(m.pageToken);
+        return w;
+      };
+      ListClusterNodesRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.ListClusterNodesRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.clusterId = r.string();
+              break;
+            case 2:
+              m.pageSize = r.int64();
+              break;
+            case 3:
+              m.pageToken = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListClusterNodesRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.ListClusterNodesResponse = (function() {
+      function ListClusterNodesResponse(p) {
+        this.nodes = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListClusterNodesResponse.prototype.nodes = $util.emptyArray;
+      ListClusterNodesResponse.prototype.nextPageToken = '';
+      ListClusterNodesResponse.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.nodes != null && m.nodes.length) {
+          for (let i = 0; i < m.nodes.length; ++i) $root.api.k8s.v1.Node.encode(m.nodes[i], w.uint32(10).fork()).ldelim();
+        }
+        if (m.nextPageToken != null && m.hasOwnProperty('nextPageToken')) w.uint32(18).string(m.nextPageToken);
+        return w;
+      };
+      ListClusterNodesResponse.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.ListClusterNodesResponse();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              if (!(m.nodes && m.nodes.length)) m.nodes = [];
+              m.nodes.push($root.api.k8s.v1.Node.decode(r, r.uint32()));
+              break;
+            case 2:
+              m.nextPageToken = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListClusterNodesResponse;
     })();
   })(root);
   (function($root) {
@@ -1831,106 +1986,40 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.NodeGroup = (function() {
-      function NodeGroup(p) {
-        this.labels = {};
+    $root.Node = (function() {
+      function Node(p) {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
-      NodeGroup.prototype.id = '';
-      NodeGroup.prototype.clusterId = '';
-      NodeGroup.prototype.createdAt = null;
-      NodeGroup.prototype.name = '';
-      NodeGroup.prototype.description = '';
-      NodeGroup.prototype.labels = $util.emptyObject;
-      NodeGroup.prototype.status = 0;
-      NodeGroup.prototype.nodeTemplate = null;
-      NodeGroup.prototype.scalePolicy = null;
-      NodeGroup.prototype.allocationPolicy = null;
-      NodeGroup.prototype.instanceGroupId = '';
-      NodeGroup.prototype.nodeVersion = '';
-      NodeGroup.prototype.versionInfo = null;
-      NodeGroup.prototype.maintenancePolicy = null;
-      NodeGroup.encode = function encode(m, w) {
+      Node.prototype.status = 0;
+      Node.prototype.spec = null;
+      Node.prototype.cloudStatus = null;
+      Node.prototype.kubernetesStatus = null;
+      Node.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
-        if (m.id != null && m.hasOwnProperty('id')) w.uint32(10).string(m.id);
-        if (m.clusterId != null && m.hasOwnProperty('clusterId')) w.uint32(18).string(m.clusterId);
-        if (m.createdAt != null && m.hasOwnProperty('createdAt')) $root.contrib.google.protobuf.Timestamp.encode(m.createdAt, w.uint32(26).fork()).ldelim();
-        if (m.name != null && m.hasOwnProperty('name')) w.uint32(34).string(m.name);
-        if (m.description != null && m.hasOwnProperty('description')) w.uint32(42).string(m.description);
-        if (m.labels != null && m.hasOwnProperty('labels')) {
-          for (let ks = Object.keys(m.labels), i = 0; i < ks.length; ++i) {
-            w.uint32(50)
-              .fork()
-              .uint32(10)
-              .string(ks[i])
-              .uint32(18)
-              .string(m.labels[ks[i]])
-              .ldelim();
-          }
-        }
-        if (m.status != null && m.hasOwnProperty('status')) w.uint32(56).int32(m.status);
-        if (m.nodeTemplate != null && m.hasOwnProperty('nodeTemplate')) $root.api.k8s.v1.NodeTemplate.encode(m.nodeTemplate, w.uint32(66).fork()).ldelim();
-        if (m.scalePolicy != null && m.hasOwnProperty('scalePolicy')) $root.api.k8s.v1.ScalePolicy.encode(m.scalePolicy, w.uint32(74).fork()).ldelim();
-        if (m.allocationPolicy != null && m.hasOwnProperty('allocationPolicy')) $root.api.k8s.v1.NodeGroupAllocationPolicy.encode(m.allocationPolicy, w.uint32(82).fork()).ldelim();
-        if (m.instanceGroupId != null && m.hasOwnProperty('instanceGroupId')) w.uint32(90).string(m.instanceGroupId);
-        if (m.nodeVersion != null && m.hasOwnProperty('nodeVersion')) w.uint32(98).string(m.nodeVersion);
-        if (m.versionInfo != null && m.hasOwnProperty('versionInfo')) $root.api.k8s.v1.VersionInfo.encode(m.versionInfo, w.uint32(106).fork()).ldelim();
-        if (m.maintenancePolicy != null && m.hasOwnProperty('maintenancePolicy')) $root.api.k8s.v1.NodeGroupMaintenancePolicy.encode(m.maintenancePolicy, w.uint32(114).fork()).ldelim();
+        if (m.status != null && m.hasOwnProperty('status')) w.uint32(8).int32(m.status);
+        if (m.spec != null && m.hasOwnProperty('spec')) $root.api.k8s.v1.Node.Spec.encode(m.spec, w.uint32(18).fork()).ldelim();
+        if (m.cloudStatus != null && m.hasOwnProperty('cloudStatus')) $root.api.k8s.v1.Node.CloudStatus.encode(m.cloudStatus, w.uint32(26).fork()).ldelim();
+        if (m.kubernetesStatus != null && m.hasOwnProperty('kubernetesStatus')) $root.api.k8s.v1.Node.KubernetesStatus.encode(m.kubernetesStatus, w.uint32(34).fork()).ldelim();
         return w;
       };
-      NodeGroup.decode = function decode(r, l) {
+      Node.decode = function decode(r, l) {
         if (!(r instanceof $Reader)) r = $Reader.create(r);
         let c = l === undefined ? r.len : r.pos + l,
-          m = new $root.api.k8s.v1.NodeGroup(),
-          k;
+          m = new $root.api.k8s.v1.Node();
         while (r.pos < c) {
           let t = r.uint32();
           switch (t >>> 3) {
             case 1:
-              m.id = r.string();
-              break;
-            case 2:
-              m.clusterId = r.string();
-              break;
-            case 3:
-              m.createdAt = $root.contrib.google.protobuf.Timestamp.decode(r, r.uint32());
-              break;
-            case 4:
-              m.name = r.string();
-              break;
-            case 5:
-              m.description = r.string();
-              break;
-            case 6:
-              r.skip().pos++;
-              if (m.labels === $util.emptyObject) m.labels = {};
-              k = r.string();
-              r.pos++;
-              m.labels[k] = r.string();
-              break;
-            case 7:
               m.status = r.int32();
               break;
-            case 8:
-              m.nodeTemplate = $root.api.k8s.v1.NodeTemplate.decode(r, r.uint32());
+            case 2:
+              m.spec = $root.api.k8s.v1.Node.Spec.decode(r, r.uint32());
               break;
-            case 9:
-              m.scalePolicy = $root.api.k8s.v1.ScalePolicy.decode(r, r.uint32());
+            case 3:
+              m.cloudStatus = $root.api.k8s.v1.Node.CloudStatus.decode(r, r.uint32());
               break;
-            case 10:
-              m.allocationPolicy = $root.api.k8s.v1.NodeGroupAllocationPolicy.decode(r, r.uint32());
-              break;
-            case 11:
-              m.instanceGroupId = r.string();
-              break;
-            case 12:
-              m.nodeVersion = r.string();
-              break;
-            case 13:
-              m.versionInfo = $root.api.k8s.v1.VersionInfo.decode(r, r.uint32());
-              break;
-            case 14:
-              m.maintenancePolicy = $root.api.k8s.v1.NodeGroupMaintenancePolicy.decode(r, r.uint32());
+            case 4:
+              m.kubernetesStatus = $root.api.k8s.v1.Node.KubernetesStatus.decode(r, r.uint32());
               break;
             default:
               r.skipType(t & 7);
@@ -1939,21 +2028,286 @@ module.exports = (function() {
         }
         return m;
       };
+      Node.KubernetesStatus = (function() {
+        function KubernetesStatus(p) {
+          this.conditions = [];
+          this.taints = [];
+          this.attachedVolumes = [];
+          if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+        }
+        KubernetesStatus.prototype.id = '';
+        KubernetesStatus.prototype.conditions = $util.emptyArray;
+        KubernetesStatus.prototype.taints = $util.emptyArray;
+        KubernetesStatus.prototype.attachedVolumes = $util.emptyArray;
+        KubernetesStatus.encode = function encode(m, w) {
+          if (!w) w = $Writer.create();
+          if (m.id != null && m.hasOwnProperty('id')) w.uint32(10).string(m.id);
+          if (m.conditions != null && m.conditions.length) {
+            for (let i = 0; i < m.conditions.length; ++i) $root.api.k8s.v1.Condition.encode(m.conditions[i], w.uint32(18).fork()).ldelim();
+          }
+          if (m.taints != null && m.taints.length) {
+            for (let i = 0; i < m.taints.length; ++i) $root.api.k8s.v1.Taint.encode(m.taints[i], w.uint32(26).fork()).ldelim();
+          }
+          if (m.attachedVolumes != null && m.attachedVolumes.length) {
+            for (let i = 0; i < m.attachedVolumes.length; ++i) $root.api.k8s.v1.AttachedVolume.encode(m.attachedVolumes[i], w.uint32(34).fork()).ldelim();
+          }
+          return w;
+        };
+        KubernetesStatus.decode = function decode(r, l) {
+          if (!(r instanceof $Reader)) r = $Reader.create(r);
+          let c = l === undefined ? r.len : r.pos + l,
+            m = new $root.api.k8s.v1.Node.KubernetesStatus();
+          while (r.pos < c) {
+            let t = r.uint32();
+            switch (t >>> 3) {
+              case 1:
+                m.id = r.string();
+                break;
+              case 2:
+                if (!(m.conditions && m.conditions.length)) m.conditions = [];
+                m.conditions.push($root.api.k8s.v1.Condition.decode(r, r.uint32()));
+                break;
+              case 3:
+                if (!(m.taints && m.taints.length)) m.taints = [];
+                m.taints.push($root.api.k8s.v1.Taint.decode(r, r.uint32()));
+                break;
+              case 4:
+                if (!(m.attachedVolumes && m.attachedVolumes.length)) m.attachedVolumes = [];
+                m.attachedVolumes.push($root.api.k8s.v1.AttachedVolume.decode(r, r.uint32()));
+                break;
+              default:
+                r.skipType(t & 7);
+                break;
+            }
+          }
+          return m;
+        };
+        return KubernetesStatus;
+      })();
+      Node.CloudStatus = (function() {
+        function CloudStatus(p) {
+          if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+        }
+        CloudStatus.prototype.id = '';
+        CloudStatus.prototype.status = '';
+        CloudStatus.prototype.statusMessage = '';
+        CloudStatus.encode = function encode(m, w) {
+          if (!w) w = $Writer.create();
+          if (m.id != null && m.hasOwnProperty('id')) w.uint32(10).string(m.id);
+          if (m.status != null && m.hasOwnProperty('status')) w.uint32(18).string(m.status);
+          if (m.statusMessage != null && m.hasOwnProperty('statusMessage')) w.uint32(26).string(m.statusMessage);
+          return w;
+        };
+        CloudStatus.decode = function decode(r, l) {
+          if (!(r instanceof $Reader)) r = $Reader.create(r);
+          let c = l === undefined ? r.len : r.pos + l,
+            m = new $root.api.k8s.v1.Node.CloudStatus();
+          while (r.pos < c) {
+            let t = r.uint32();
+            switch (t >>> 3) {
+              case 1:
+                m.id = r.string();
+                break;
+              case 2:
+                m.status = r.string();
+                break;
+              case 3:
+                m.statusMessage = r.string();
+                break;
+              default:
+                r.skipType(t & 7);
+                break;
+            }
+          }
+          return m;
+        };
+        return CloudStatus;
+      })();
       let Status = (function() {
         let valuesById = {},
           values = Object.create(valuesById);
         values[(valuesById[0] = 'STATUS_UNSPECIFIED')] = 0;
         values[(valuesById[1] = 'PROVISIONING')] = 1;
-        values[(valuesById[2] = 'RUNNING')] = 2;
-        values[(valuesById[3] = 'RECONCILING')] = 3;
-        values[(valuesById[4] = 'STOPPING')] = 4;
-        values[(valuesById[5] = 'STOPPED')] = 5;
-        values[(valuesById[6] = 'DELETING')] = 6;
-        values[(valuesById[7] = 'STARTING')] = 7;
+        values[(valuesById[2] = 'NOT_CONNECTED')] = 2;
+        values[(valuesById[3] = 'NOT_READY')] = 3;
+        values[(valuesById[4] = 'READY')] = 4;
+        values[(valuesById[5] = 'MISSING')] = 5;
         return values;
       })();
-      NodeGroup.Status = Status;
-      return NodeGroup;
+      Node.Status = Status;
+      Node.Spec = (function() {
+        function Spec(p) {
+          if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+        }
+        Spec.prototype.resources = null;
+        Spec.prototype.disk = null;
+        Spec.encode = function encode(m, w) {
+          if (!w) w = $Writer.create();
+          if (m.resources != null && m.hasOwnProperty('resources')) $root.api.k8s.v1.ResourcesSpec.encode(m.resources, w.uint32(10).fork()).ldelim();
+          if (m.disk != null && m.hasOwnProperty('disk')) $root.api.k8s.v1.DiskSpec.encode(m.disk, w.uint32(18).fork()).ldelim();
+          return w;
+        };
+        Spec.decode = function decode(r, l) {
+          if (!(r instanceof $Reader)) r = $Reader.create(r);
+          let c = l === undefined ? r.len : r.pos + l,
+            m = new $root.api.k8s.v1.Node.Spec();
+          while (r.pos < c) {
+            let t = r.uint32();
+            switch (t >>> 3) {
+              case 1:
+                m.resources = $root.api.k8s.v1.ResourcesSpec.decode(r, r.uint32());
+                break;
+              case 2:
+                m.disk = $root.api.k8s.v1.DiskSpec.decode(r, r.uint32());
+                break;
+              default:
+                r.skipType(t & 7);
+                break;
+            }
+          }
+          return m;
+        };
+        return Spec;
+      })();
+      return Node;
+    })();
+  })(root);
+  (function($root) {
+    $root.Condition = (function() {
+      function Condition(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      Condition.prototype.type = '';
+      Condition.prototype.status = '';
+      Condition.prototype.message = '';
+      Condition.prototype.lastHeartbeatTime = null;
+      Condition.prototype.lastTransitionTime = null;
+      Condition.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.type != null && m.hasOwnProperty('type')) w.uint32(10).string(m.type);
+        if (m.status != null && m.hasOwnProperty('status')) w.uint32(18).string(m.status);
+        if (m.message != null && m.hasOwnProperty('message')) w.uint32(26).string(m.message);
+        if (m.lastHeartbeatTime != null && m.hasOwnProperty('lastHeartbeatTime')) $root.contrib.google.protobuf.Timestamp.encode(m.lastHeartbeatTime, w.uint32(34).fork()).ldelim();
+        if (m.lastTransitionTime != null && m.hasOwnProperty('lastTransitionTime')) $root.contrib.google.protobuf.Timestamp.encode(m.lastTransitionTime, w.uint32(42).fork()).ldelim();
+        return w;
+      };
+      Condition.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.Condition();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.type = r.string();
+              break;
+            case 2:
+              m.status = r.string();
+              break;
+            case 3:
+              m.message = r.string();
+              break;
+            case 4:
+              m.lastHeartbeatTime = $root.contrib.google.protobuf.Timestamp.decode(r, r.uint32());
+              break;
+            case 5:
+              m.lastTransitionTime = $root.contrib.google.protobuf.Timestamp.decode(r, r.uint32());
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return Condition;
+    })();
+  })(root);
+  (function($root) {
+    $root.Taint = (function() {
+      function Taint(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      Taint.prototype.key = '';
+      Taint.prototype.value = '';
+      Taint.prototype.effect = 0;
+      Taint.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.key != null && m.hasOwnProperty('key')) w.uint32(10).string(m.key);
+        if (m.value != null && m.hasOwnProperty('value')) w.uint32(18).string(m.value);
+        if (m.effect != null && m.hasOwnProperty('effect')) w.uint32(24).int32(m.effect);
+        return w;
+      };
+      Taint.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.Taint();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.key = r.string();
+              break;
+            case 2:
+              m.value = r.string();
+              break;
+            case 3:
+              m.effect = r.int32();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      let Effect = (function() {
+        let valuesById = {},
+          values = Object.create(valuesById);
+        values[(valuesById[0] = 'EFFECT_UNSPECIFIED')] = 0;
+        values[(valuesById[1] = 'NO_SCHEDULE')] = 1;
+        values[(valuesById[2] = 'PREFER_NO_SCHEDULE')] = 2;
+        values[(valuesById[3] = 'NO_EXECUTE')] = 3;
+        return values;
+      })();
+      Taint.Effect = Effect;
+      return Taint;
+    })();
+  })(root);
+  (function($root) {
+    $root.AttachedVolume = (function() {
+      function AttachedVolume(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      AttachedVolume.prototype.driverName = '';
+      AttachedVolume.prototype.volumeHandle = '';
+      AttachedVolume.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.driverName != null && m.hasOwnProperty('driverName')) w.uint32(10).string(m.driverName);
+        if (m.volumeHandle != null && m.hasOwnProperty('volumeHandle')) w.uint32(18).string(m.volumeHandle);
+        return w;
+      };
+      AttachedVolume.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.AttachedVolume();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.driverName = r.string();
+              break;
+            case 2:
+              m.volumeHandle = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return AttachedVolume;
     })();
   })(root);
   (function($root) {
@@ -2181,6 +2535,201 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
+    $root.SchedulingPolicy = (function() {
+      function SchedulingPolicy(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      SchedulingPolicy.prototype.preemptible = false;
+      SchedulingPolicy.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.preemptible != null && m.hasOwnProperty('preemptible')) w.uint32(8).bool(m.preemptible);
+        return w;
+      };
+      SchedulingPolicy.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.SchedulingPolicy();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.preemptible = r.bool();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return SchedulingPolicy;
+    })();
+  })(root);
+  (function($root) {
+    $root.NodeGroup = (function() {
+      function NodeGroup(p) {
+        this.labels = {};
+        this.allowedUnsafeSysctls = [];
+        this.nodeTaints = [];
+        this.nodeLabels = {};
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      NodeGroup.prototype.id = '';
+      NodeGroup.prototype.clusterId = '';
+      NodeGroup.prototype.createdAt = null;
+      NodeGroup.prototype.name = '';
+      NodeGroup.prototype.description = '';
+      NodeGroup.prototype.labels = $util.emptyObject;
+      NodeGroup.prototype.status = 0;
+      NodeGroup.prototype.nodeTemplate = null;
+      NodeGroup.prototype.scalePolicy = null;
+      NodeGroup.prototype.allocationPolicy = null;
+      NodeGroup.prototype.instanceGroupId = '';
+      NodeGroup.prototype.nodeVersion = '';
+      NodeGroup.prototype.versionInfo = null;
+      NodeGroup.prototype.maintenancePolicy = null;
+      NodeGroup.prototype.allowedUnsafeSysctls = $util.emptyArray;
+      NodeGroup.prototype.nodeTaints = $util.emptyArray;
+      NodeGroup.prototype.nodeLabels = $util.emptyObject;
+      NodeGroup.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.id != null && m.hasOwnProperty('id')) w.uint32(10).string(m.id);
+        if (m.clusterId != null && m.hasOwnProperty('clusterId')) w.uint32(18).string(m.clusterId);
+        if (m.createdAt != null && m.hasOwnProperty('createdAt')) $root.contrib.google.protobuf.Timestamp.encode(m.createdAt, w.uint32(26).fork()).ldelim();
+        if (m.name != null && m.hasOwnProperty('name')) w.uint32(34).string(m.name);
+        if (m.description != null && m.hasOwnProperty('description')) w.uint32(42).string(m.description);
+        if (m.labels != null && m.hasOwnProperty('labels')) {
+          for (let ks = Object.keys(m.labels), i = 0; i < ks.length; ++i) {
+            w.uint32(50)
+              .fork()
+              .uint32(10)
+              .string(ks[i])
+              .uint32(18)
+              .string(m.labels[ks[i]])
+              .ldelim();
+          }
+        }
+        if (m.status != null && m.hasOwnProperty('status')) w.uint32(56).int32(m.status);
+        if (m.nodeTemplate != null && m.hasOwnProperty('nodeTemplate')) $root.api.k8s.v1.NodeTemplate.encode(m.nodeTemplate, w.uint32(66).fork()).ldelim();
+        if (m.scalePolicy != null && m.hasOwnProperty('scalePolicy')) $root.api.k8s.v1.ScalePolicy.encode(m.scalePolicy, w.uint32(74).fork()).ldelim();
+        if (m.allocationPolicy != null && m.hasOwnProperty('allocationPolicy')) $root.api.k8s.v1.NodeGroupAllocationPolicy.encode(m.allocationPolicy, w.uint32(82).fork()).ldelim();
+        if (m.instanceGroupId != null && m.hasOwnProperty('instanceGroupId')) w.uint32(90).string(m.instanceGroupId);
+        if (m.nodeVersion != null && m.hasOwnProperty('nodeVersion')) w.uint32(98).string(m.nodeVersion);
+        if (m.versionInfo != null && m.hasOwnProperty('versionInfo')) $root.api.k8s.v1.VersionInfo.encode(m.versionInfo, w.uint32(106).fork()).ldelim();
+        if (m.maintenancePolicy != null && m.hasOwnProperty('maintenancePolicy')) $root.api.k8s.v1.NodeGroupMaintenancePolicy.encode(m.maintenancePolicy, w.uint32(114).fork()).ldelim();
+        if (m.allowedUnsafeSysctls != null && m.allowedUnsafeSysctls.length) {
+          for (let i = 0; i < m.allowedUnsafeSysctls.length; ++i) w.uint32(122).string(m.allowedUnsafeSysctls[i]);
+        }
+        if (m.nodeTaints != null && m.nodeTaints.length) {
+          for (let i = 0; i < m.nodeTaints.length; ++i) $root.api.k8s.v1.Taint.encode(m.nodeTaints[i], w.uint32(130).fork()).ldelim();
+        }
+        if (m.nodeLabels != null && m.hasOwnProperty('nodeLabels')) {
+          for (let ks = Object.keys(m.nodeLabels), i = 0; i < ks.length; ++i) {
+            w.uint32(138)
+              .fork()
+              .uint32(10)
+              .string(ks[i])
+              .uint32(18)
+              .string(m.nodeLabels[ks[i]])
+              .ldelim();
+          }
+        }
+        return w;
+      };
+      NodeGroup.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.NodeGroup(),
+          k;
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.id = r.string();
+              break;
+            case 2:
+              m.clusterId = r.string();
+              break;
+            case 3:
+              m.createdAt = $root.contrib.google.protobuf.Timestamp.decode(r, r.uint32());
+              break;
+            case 4:
+              m.name = r.string();
+              break;
+            case 5:
+              m.description = r.string();
+              break;
+            case 6:
+              r.skip().pos++;
+              if (m.labels === $util.emptyObject) m.labels = {};
+              k = r.string();
+              r.pos++;
+              m.labels[k] = r.string();
+              break;
+            case 7:
+              m.status = r.int32();
+              break;
+            case 8:
+              m.nodeTemplate = $root.api.k8s.v1.NodeTemplate.decode(r, r.uint32());
+              break;
+            case 9:
+              m.scalePolicy = $root.api.k8s.v1.ScalePolicy.decode(r, r.uint32());
+              break;
+            case 10:
+              m.allocationPolicy = $root.api.k8s.v1.NodeGroupAllocationPolicy.decode(r, r.uint32());
+              break;
+            case 11:
+              m.instanceGroupId = r.string();
+              break;
+            case 12:
+              m.nodeVersion = r.string();
+              break;
+            case 13:
+              m.versionInfo = $root.api.k8s.v1.VersionInfo.decode(r, r.uint32());
+              break;
+            case 14:
+              m.maintenancePolicy = $root.api.k8s.v1.NodeGroupMaintenancePolicy.decode(r, r.uint32());
+              break;
+            case 15:
+              if (!(m.allowedUnsafeSysctls && m.allowedUnsafeSysctls.length)) m.allowedUnsafeSysctls = [];
+              m.allowedUnsafeSysctls.push(r.string());
+              break;
+            case 16:
+              if (!(m.nodeTaints && m.nodeTaints.length)) m.nodeTaints = [];
+              m.nodeTaints.push($root.api.k8s.v1.Taint.decode(r, r.uint32()));
+              break;
+            case 17:
+              r.skip().pos++;
+              if (m.nodeLabels === $util.emptyObject) m.nodeLabels = {};
+              k = r.string();
+              r.pos++;
+              m.nodeLabels[k] = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      let Status = (function() {
+        let valuesById = {},
+          values = Object.create(valuesById);
+        values[(valuesById[0] = 'STATUS_UNSPECIFIED')] = 0;
+        values[(valuesById[1] = 'PROVISIONING')] = 1;
+        values[(valuesById[2] = 'RUNNING')] = 2;
+        values[(valuesById[3] = 'RECONCILING')] = 3;
+        values[(valuesById[4] = 'STOPPING')] = 4;
+        values[(valuesById[5] = 'STOPPED')] = 5;
+        values[(valuesById[6] = 'DELETING')] = 6;
+        values[(valuesById[7] = 'STARTING')] = 7;
+        return values;
+      })();
+      NodeGroup.Status = Status;
+      return NodeGroup;
+    })();
+  })(root);
+  (function($root) {
     $root.ScalePolicy = (function() {
       function ScalePolicy(p) {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
@@ -2361,37 +2910,6 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
-    $root.SchedulingPolicy = (function() {
-      function SchedulingPolicy(p) {
-        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
-      }
-      SchedulingPolicy.prototype.preemptible = false;
-      SchedulingPolicy.encode = function encode(m, w) {
-        if (!w) w = $Writer.create();
-        if (m.preemptible != null && m.hasOwnProperty('preemptible')) w.uint32(8).bool(m.preemptible);
-        return w;
-      };
-      SchedulingPolicy.decode = function decode(r, l) {
-        if (!(r instanceof $Reader)) r = $Reader.create(r);
-        let c = l === undefined ? r.len : r.pos + l,
-          m = new $root.api.k8s.v1.SchedulingPolicy();
-        while (r.pos < c) {
-          let t = r.uint32();
-          switch (t >>> 3) {
-            case 1:
-              m.preemptible = r.bool();
-              break;
-            default:
-              r.skipType(t & 7);
-              break;
-          }
-        }
-        return m;
-      };
-      return SchedulingPolicy;
-    })();
-  })(root);
-  (function($root) {
     $root.NodeGroupMaintenancePolicy = (function() {
       function NodeGroupMaintenancePolicy(p) {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
@@ -2530,6 +3048,21 @@ module.exports = (function() {
             return $root.api.k8s.v1.ListNodeGroupOperationsResponse.encode(r).finish();
           },
           responseDeserialize: $root.api.k8s.v1.ListNodeGroupOperationsResponse.decode
+        },
+        listNodes: {
+          path: '/yandex.cloud.k8s.v1.NodeGroupService/ListNodes',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.k8s.v1.ListNodeGroupNodesRequest,
+          responseType: $root.api.k8s.v1.ListNodeGroupNodesResponse,
+          requestSerialize: r => {
+            return $root.api.k8s.v1.ListNodeGroupNodesRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.k8s.v1.ListNodeGroupNodesRequest.decode,
+          responseSerialize: r => {
+            return $root.api.k8s.v1.ListNodeGroupNodesResponse.encode(r).finish();
+          },
+          responseDeserialize: $root.api.k8s.v1.ListNodeGroupNodesResponse.decode
         }
       });
       ctor.__endpointId = 'managed-kubernetes';
@@ -2654,6 +3187,87 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
+    $root.ListNodeGroupNodesRequest = (function() {
+      function ListNodeGroupNodesRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListNodeGroupNodesRequest.prototype.nodeGroupId = '';
+      ListNodeGroupNodesRequest.prototype.pageSize = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+      ListNodeGroupNodesRequest.prototype.pageToken = '';
+      ListNodeGroupNodesRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.nodeGroupId != null && m.hasOwnProperty('nodeGroupId')) w.uint32(10).string(m.nodeGroupId);
+        if (m.pageSize != null && m.hasOwnProperty('pageSize')) w.uint32(16).int64(m.pageSize);
+        if (m.pageToken != null && m.hasOwnProperty('pageToken')) w.uint32(26).string(m.pageToken);
+        return w;
+      };
+      ListNodeGroupNodesRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.ListNodeGroupNodesRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.nodeGroupId = r.string();
+              break;
+            case 2:
+              m.pageSize = r.int64();
+              break;
+            case 3:
+              m.pageToken = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListNodeGroupNodesRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.ListNodeGroupNodesResponse = (function() {
+      function ListNodeGroupNodesResponse(p) {
+        this.nodes = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListNodeGroupNodesResponse.prototype.nodes = $util.emptyArray;
+      ListNodeGroupNodesResponse.prototype.nextPageToken = '';
+      ListNodeGroupNodesResponse.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.nodes != null && m.nodes.length) {
+          for (let i = 0; i < m.nodes.length; ++i) $root.api.k8s.v1.Node.encode(m.nodes[i], w.uint32(10).fork()).ldelim();
+        }
+        if (m.nextPageToken != null && m.hasOwnProperty('nextPageToken')) w.uint32(18).string(m.nextPageToken);
+        return w;
+      };
+      ListNodeGroupNodesResponse.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.k8s.v1.ListNodeGroupNodesResponse();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              if (!(m.nodes && m.nodes.length)) m.nodes = [];
+              m.nodes.push($root.api.k8s.v1.Node.decode(r, r.uint32()));
+              break;
+            case 2:
+              m.nextPageToken = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListNodeGroupNodesResponse;
+    })();
+  })(root);
+  (function($root) {
     $root.DeleteNodeGroupRequest = (function() {
       function DeleteNodeGroupRequest(p) {
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
@@ -2720,6 +3334,8 @@ module.exports = (function() {
       function UpdateNodeGroupRequest(p) {
         this.labels = {};
         this.allowedUnsafeSysctls = [];
+        this.nodeTaints = [];
+        this.nodeLabels = {};
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       UpdateNodeGroupRequest.prototype.nodeGroupId = '';
@@ -2733,6 +3349,8 @@ module.exports = (function() {
       UpdateNodeGroupRequest.prototype.version = null;
       UpdateNodeGroupRequest.prototype.maintenancePolicy = null;
       UpdateNodeGroupRequest.prototype.allowedUnsafeSysctls = $util.emptyArray;
+      UpdateNodeGroupRequest.prototype.nodeTaints = $util.emptyArray;
+      UpdateNodeGroupRequest.prototype.nodeLabels = $util.emptyObject;
       UpdateNodeGroupRequest.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.nodeGroupId != null && m.hasOwnProperty('nodeGroupId')) w.uint32(10).string(m.nodeGroupId);
@@ -2757,6 +3375,20 @@ module.exports = (function() {
         if (m.maintenancePolicy != null && m.hasOwnProperty('maintenancePolicy')) $root.api.k8s.v1.NodeGroupMaintenancePolicy.encode(m.maintenancePolicy, w.uint32(90).fork()).ldelim();
         if (m.allowedUnsafeSysctls != null && m.allowedUnsafeSysctls.length) {
           for (let i = 0; i < m.allowedUnsafeSysctls.length; ++i) w.uint32(98).string(m.allowedUnsafeSysctls[i]);
+        }
+        if (m.nodeTaints != null && m.nodeTaints.length) {
+          for (let i = 0; i < m.nodeTaints.length; ++i) $root.api.k8s.v1.Taint.encode(m.nodeTaints[i], w.uint32(106).fork()).ldelim();
+        }
+        if (m.nodeLabels != null && m.hasOwnProperty('nodeLabels')) {
+          for (let ks = Object.keys(m.nodeLabels), i = 0; i < ks.length; ++i) {
+            w.uint32(114)
+              .fork()
+              .uint32(10)
+              .string(ks[i])
+              .uint32(18)
+              .string(m.nodeLabels[ks[i]])
+              .ldelim();
+          }
         }
         return w;
       };
@@ -2806,6 +3438,17 @@ module.exports = (function() {
               if (!(m.allowedUnsafeSysctls && m.allowedUnsafeSysctls.length)) m.allowedUnsafeSysctls = [];
               m.allowedUnsafeSysctls.push(r.string());
               break;
+            case 13:
+              if (!(m.nodeTaints && m.nodeTaints.length)) m.nodeTaints = [];
+              m.nodeTaints.push($root.api.k8s.v1.Taint.decode(r, r.uint32()));
+              break;
+            case 14:
+              r.skip().pos++;
+              if (m.nodeLabels === $util.emptyObject) m.nodeLabels = {};
+              k = r.string();
+              r.pos++;
+              m.nodeLabels[k] = r.string();
+              break;
             default:
               r.skipType(t & 7);
               break;
@@ -2852,6 +3495,8 @@ module.exports = (function() {
       function CreateNodeGroupRequest(p) {
         this.labels = {};
         this.allowedUnsafeSysctls = [];
+        this.nodeTaints = [];
+        this.nodeLabels = {};
         if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
       }
       CreateNodeGroupRequest.prototype.clusterId = '';
@@ -2864,6 +3509,8 @@ module.exports = (function() {
       CreateNodeGroupRequest.prototype.version = '';
       CreateNodeGroupRequest.prototype.maintenancePolicy = null;
       CreateNodeGroupRequest.prototype.allowedUnsafeSysctls = $util.emptyArray;
+      CreateNodeGroupRequest.prototype.nodeTaints = $util.emptyArray;
+      CreateNodeGroupRequest.prototype.nodeLabels = $util.emptyObject;
       CreateNodeGroupRequest.encode = function encode(m, w) {
         if (!w) w = $Writer.create();
         if (m.clusterId != null && m.hasOwnProperty('clusterId')) w.uint32(10).string(m.clusterId);
@@ -2887,6 +3534,20 @@ module.exports = (function() {
         if (m.maintenancePolicy != null && m.hasOwnProperty('maintenancePolicy')) $root.api.k8s.v1.NodeGroupMaintenancePolicy.encode(m.maintenancePolicy, w.uint32(74).fork()).ldelim();
         if (m.allowedUnsafeSysctls != null && m.allowedUnsafeSysctls.length) {
           for (let i = 0; i < m.allowedUnsafeSysctls.length; ++i) w.uint32(82).string(m.allowedUnsafeSysctls[i]);
+        }
+        if (m.nodeTaints != null && m.nodeTaints.length) {
+          for (let i = 0; i < m.nodeTaints.length; ++i) $root.api.k8s.v1.Taint.encode(m.nodeTaints[i], w.uint32(90).fork()).ldelim();
+        }
+        if (m.nodeLabels != null && m.hasOwnProperty('nodeLabels')) {
+          for (let ks = Object.keys(m.nodeLabels), i = 0; i < ks.length; ++i) {
+            w.uint32(98)
+              .fork()
+              .uint32(10)
+              .string(ks[i])
+              .uint32(18)
+              .string(m.nodeLabels[ks[i]])
+              .ldelim();
+          }
         }
         return w;
       };
@@ -2932,6 +3593,17 @@ module.exports = (function() {
             case 10:
               if (!(m.allowedUnsafeSysctls && m.allowedUnsafeSysctls.length)) m.allowedUnsafeSysctls = [];
               m.allowedUnsafeSysctls.push(r.string());
+              break;
+            case 11:
+              if (!(m.nodeTaints && m.nodeTaints.length)) m.nodeTaints = [];
+              m.nodeTaints.push($root.api.k8s.v1.Taint.decode(r, r.uint32()));
+              break;
+            case 12:
+              r.skip().pos++;
+              if (m.nodeLabels === $util.emptyObject) m.nodeLabels = {};
+              k = r.string();
+              r.pos++;
+              m.nodeLabels[k] = r.string();
               break;
             default:
               r.skipType(t & 7);

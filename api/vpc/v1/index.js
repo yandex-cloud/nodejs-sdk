@@ -1627,6 +1627,1212 @@ module.exports = (function() {
     })();
   })(root);
   (function($root) {
+    $root.SecurityGroup = (function() {
+      function SecurityGroup(p) {
+        this.labels = {};
+        this.rules = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      SecurityGroup.prototype.id = '';
+      SecurityGroup.prototype.folderId = '';
+      SecurityGroup.prototype.createdAt = null;
+      SecurityGroup.prototype.name = '';
+      SecurityGroup.prototype.description = '';
+      SecurityGroup.prototype.labels = $util.emptyObject;
+      SecurityGroup.prototype.networkId = '';
+      SecurityGroup.prototype.status = 0;
+      SecurityGroup.prototype.rules = $util.emptyArray;
+      SecurityGroup.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.id != null && m.hasOwnProperty('id')) w.uint32(10).string(m.id);
+        if (m.folderId != null && m.hasOwnProperty('folderId')) w.uint32(18).string(m.folderId);
+        if (m.createdAt != null && m.hasOwnProperty('createdAt')) $root.contrib.google.protobuf.Timestamp.encode(m.createdAt, w.uint32(26).fork()).ldelim();
+        if (m.name != null && m.hasOwnProperty('name')) w.uint32(34).string(m.name);
+        if (m.description != null && m.hasOwnProperty('description')) w.uint32(42).string(m.description);
+        if (m.labels != null && m.hasOwnProperty('labels')) {
+          for (let ks = Object.keys(m.labels), i = 0; i < ks.length; ++i) {
+            w.uint32(50)
+              .fork()
+              .uint32(10)
+              .string(ks[i])
+              .uint32(18)
+              .string(m.labels[ks[i]])
+              .ldelim();
+          }
+        }
+        if (m.networkId != null && m.hasOwnProperty('networkId')) w.uint32(58).string(m.networkId);
+        if (m.status != null && m.hasOwnProperty('status')) w.uint32(64).int32(m.status);
+        if (m.rules != null && m.rules.length) {
+          for (let i = 0; i < m.rules.length; ++i) $root.api.vpc.v1.SecurityGroupRule.encode(m.rules[i], w.uint32(74).fork()).ldelim();
+        }
+        return w;
+      };
+      SecurityGroup.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.SecurityGroup(),
+          k;
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.id = r.string();
+              break;
+            case 2:
+              m.folderId = r.string();
+              break;
+            case 3:
+              m.createdAt = $root.contrib.google.protobuf.Timestamp.decode(r, r.uint32());
+              break;
+            case 4:
+              m.name = r.string();
+              break;
+            case 5:
+              m.description = r.string();
+              break;
+            case 6:
+              r.skip().pos++;
+              if (m.labels === $util.emptyObject) m.labels = {};
+              k = r.string();
+              r.pos++;
+              m.labels[k] = r.string();
+              break;
+            case 7:
+              m.networkId = r.string();
+              break;
+            case 8:
+              m.status = r.int32();
+              break;
+            case 9:
+              if (!(m.rules && m.rules.length)) m.rules = [];
+              m.rules.push($root.api.vpc.v1.SecurityGroupRule.decode(r, r.uint32()));
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      let Status = (function() {
+        let valuesById = {},
+          values = Object.create(valuesById);
+        values[(valuesById[0] = 'STATUS_UNSPECIFIED')] = 0;
+        values[(valuesById[1] = 'CREATING')] = 1;
+        values[(valuesById[2] = 'ACTIVE')] = 2;
+        values[(valuesById[3] = 'UPDATING')] = 3;
+        values[(valuesById[4] = 'DELETING')] = 4;
+        return values;
+      })();
+      SecurityGroup.Status = Status;
+      return SecurityGroup;
+    })();
+  })(root);
+  (function($root) {
+    $root.SecurityGroupRule = (function() {
+      function SecurityGroupRule(p) {
+        this.labels = {};
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      SecurityGroupRule.prototype.id = '';
+      SecurityGroupRule.prototype.description = '';
+      SecurityGroupRule.prototype.labels = $util.emptyObject;
+      SecurityGroupRule.prototype.direction = 0;
+      SecurityGroupRule.prototype.ports = null;
+      SecurityGroupRule.prototype.protocolName = '';
+      SecurityGroupRule.prototype.protocolNumber = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+      SecurityGroupRule.prototype.cidrBlocks = null;
+      let $oneOfFields;
+      Object.defineProperty(SecurityGroupRule.prototype, 'target', {
+        get: $util.oneOfGetter(($oneOfFields = ['cidrBlocks'])),
+        set: $util.oneOfSetter($oneOfFields)
+      });
+      SecurityGroupRule.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.id != null && m.hasOwnProperty('id')) w.uint32(10).string(m.id);
+        if (m.description != null && m.hasOwnProperty('description')) w.uint32(18).string(m.description);
+        if (m.labels != null && m.hasOwnProperty('labels')) {
+          for (let ks = Object.keys(m.labels), i = 0; i < ks.length; ++i) {
+            w.uint32(26)
+              .fork()
+              .uint32(10)
+              .string(ks[i])
+              .uint32(18)
+              .string(m.labels[ks[i]])
+              .ldelim();
+          }
+        }
+        if (m.direction != null && m.hasOwnProperty('direction')) w.uint32(32).int32(m.direction);
+        if (m.ports != null && m.hasOwnProperty('ports')) $root.api.vpc.v1.PortRange.encode(m.ports, w.uint32(42).fork()).ldelim();
+        if (m.protocolName != null && m.hasOwnProperty('protocolName')) w.uint32(50).string(m.protocolName);
+        if (m.protocolNumber != null && m.hasOwnProperty('protocolNumber')) w.uint32(56).int64(m.protocolNumber);
+        if (m.cidrBlocks != null && m.hasOwnProperty('cidrBlocks')) $root.api.vpc.v1.CidrBlocks.encode(m.cidrBlocks, w.uint32(66).fork()).ldelim();
+        return w;
+      };
+      SecurityGroupRule.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.SecurityGroupRule(),
+          k;
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.id = r.string();
+              break;
+            case 2:
+              m.description = r.string();
+              break;
+            case 3:
+              r.skip().pos++;
+              if (m.labels === $util.emptyObject) m.labels = {};
+              k = r.string();
+              r.pos++;
+              m.labels[k] = r.string();
+              break;
+            case 4:
+              m.direction = r.int32();
+              break;
+            case 5:
+              m.ports = $root.api.vpc.v1.PortRange.decode(r, r.uint32());
+              break;
+            case 6:
+              m.protocolName = r.string();
+              break;
+            case 7:
+              m.protocolNumber = r.int64();
+              break;
+            case 8:
+              m.cidrBlocks = $root.api.vpc.v1.CidrBlocks.decode(r, r.uint32());
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      let Direction = (function() {
+        let valuesById = {},
+          values = Object.create(valuesById);
+        values[(valuesById[0] = 'DIRECTION_UNSPECIFIED')] = 0;
+        values[(valuesById[1] = 'INGRESS')] = 1;
+        values[(valuesById[2] = 'EGRESS')] = 2;
+        return values;
+      })();
+      SecurityGroupRule.Direction = Direction;
+      return SecurityGroupRule;
+    })();
+  })(root);
+  (function($root) {
+    $root.PortRange = (function() {
+      function PortRange(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      PortRange.prototype.fromPort = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+      PortRange.prototype.toPort = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+      PortRange.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.fromPort != null && m.hasOwnProperty('fromPort')) w.uint32(8).int64(m.fromPort);
+        if (m.toPort != null && m.hasOwnProperty('toPort')) w.uint32(16).int64(m.toPort);
+        return w;
+      };
+      PortRange.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.PortRange();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.fromPort = r.int64();
+              break;
+            case 2:
+              m.toPort = r.int64();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return PortRange;
+    })();
+  })(root);
+  (function($root) {
+    $root.CidrBlocks = (function() {
+      function CidrBlocks(p) {
+        this.v4CidrBlocks = [];
+        this.v6CidrBlocks = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      CidrBlocks.prototype.v4CidrBlocks = $util.emptyArray;
+      CidrBlocks.prototype.v6CidrBlocks = $util.emptyArray;
+      CidrBlocks.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.v4CidrBlocks != null && m.v4CidrBlocks.length) {
+          for (let i = 0; i < m.v4CidrBlocks.length; ++i) w.uint32(10).string(m.v4CidrBlocks[i]);
+        }
+        if (m.v6CidrBlocks != null && m.v6CidrBlocks.length) {
+          for (let i = 0; i < m.v6CidrBlocks.length; ++i) w.uint32(18).string(m.v6CidrBlocks[i]);
+        }
+        return w;
+      };
+      CidrBlocks.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.CidrBlocks();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              if (!(m.v4CidrBlocks && m.v4CidrBlocks.length)) m.v4CidrBlocks = [];
+              m.v4CidrBlocks.push(r.string());
+              break;
+            case 2:
+              if (!(m.v6CidrBlocks && m.v6CidrBlocks.length)) m.v6CidrBlocks = [];
+              m.v6CidrBlocks.push(r.string());
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return CidrBlocks;
+    })();
+  })(root);
+  (function($root) {
+    $root.SecurityGroupService = function(session) {
+      if (session === undefined) {
+        session = new yc.Session();
+      }
+      return session.client($root.SecurityGroupService.makeGrpcConstructor());
+    };
+    $root.SecurityGroupService.makeGrpcConstructor = () => {
+      let ctor = grpc.makeGenericClientConstructor({
+        get: {
+          path: '/yandex.cloud.vpc.v1.SecurityGroupService/Get',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.vpc.v1.GetSecurityGroupRequest,
+          responseType: $root.api.vpc.v1.SecurityGroup,
+          requestSerialize: r => {
+            return $root.api.vpc.v1.GetSecurityGroupRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.vpc.v1.GetSecurityGroupRequest.decode,
+          responseSerialize: r => {
+            return $root.api.vpc.v1.SecurityGroup.encode(r).finish();
+          },
+          responseDeserialize: $root.api.vpc.v1.SecurityGroup.decode
+        },
+        list: {
+          path: '/yandex.cloud.vpc.v1.SecurityGroupService/List',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.vpc.v1.ListSecurityGroupsRequest,
+          responseType: $root.api.vpc.v1.ListSecurityGroupsResponse,
+          requestSerialize: r => {
+            return $root.api.vpc.v1.ListSecurityGroupsRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.vpc.v1.ListSecurityGroupsRequest.decode,
+          responseSerialize: r => {
+            return $root.api.vpc.v1.ListSecurityGroupsResponse.encode(r).finish();
+          },
+          responseDeserialize: $root.api.vpc.v1.ListSecurityGroupsResponse.decode
+        },
+        create: {
+          path: '/yandex.cloud.vpc.v1.SecurityGroupService/Create',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.vpc.v1.CreateSecurityGroupRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.vpc.v1.CreateSecurityGroupRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.vpc.v1.CreateSecurityGroupRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        update: {
+          path: '/yandex.cloud.vpc.v1.SecurityGroupService/Update',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.vpc.v1.UpdateSecurityGroupRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.vpc.v1.UpdateSecurityGroupRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.vpc.v1.UpdateSecurityGroupRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        updateRules: {
+          path: '/yandex.cloud.vpc.v1.SecurityGroupService/UpdateRules',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.vpc.v1.UpdateSecurityGroupRulesRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.vpc.v1.UpdateSecurityGroupRulesRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.vpc.v1.UpdateSecurityGroupRulesRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        updateRule: {
+          path: '/yandex.cloud.vpc.v1.SecurityGroupService/UpdateRule',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.vpc.v1.UpdateSecurityGroupRuleRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.vpc.v1.UpdateSecurityGroupRuleRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.vpc.v1.UpdateSecurityGroupRuleRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        delete: {
+          path: '/yandex.cloud.vpc.v1.SecurityGroupService/Delete',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.vpc.v1.DeleteSecurityGroupRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.vpc.v1.DeleteSecurityGroupRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.vpc.v1.DeleteSecurityGroupRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        move: {
+          path: '/yandex.cloud.vpc.v1.SecurityGroupService/Move',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.vpc.v1.MoveSecurityGroupRequest,
+          responseType: $root.api.operation.Operation,
+          requestSerialize: r => {
+            return $root.api.vpc.v1.MoveSecurityGroupRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.vpc.v1.MoveSecurityGroupRequest.decode,
+          responseSerialize: r => {
+            return $root.api.operation.Operation.encode(r).finish();
+          },
+          responseDeserialize: $root.api.operation.Operation.decode
+        },
+        listOperations: {
+          path: '/yandex.cloud.vpc.v1.SecurityGroupService/ListOperations',
+          requestStream: false,
+          responseStream: false,
+          requestType: $root.api.vpc.v1.ListSecurityGroupOperationsRequest,
+          responseType: $root.api.vpc.v1.ListSecurityGroupOperationsResponse,
+          requestSerialize: r => {
+            return $root.api.vpc.v1.ListSecurityGroupOperationsRequest.encode(r).finish();
+          },
+          requestDeserialize: $root.api.vpc.v1.ListSecurityGroupOperationsRequest.decode,
+          responseSerialize: r => {
+            return $root.api.vpc.v1.ListSecurityGroupOperationsResponse.encode(r).finish();
+          },
+          responseDeserialize: $root.api.vpc.v1.ListSecurityGroupOperationsResponse.decode
+        }
+      });
+      ctor.__endpointId = 'vpc';
+      return ctor;
+    };
+  })(root);
+  (function($root) {
+    $root.GetSecurityGroupRequest = (function() {
+      function GetSecurityGroupRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      GetSecurityGroupRequest.prototype.securityGroupId = '';
+      GetSecurityGroupRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.securityGroupId != null && m.hasOwnProperty('securityGroupId')) w.uint32(10).string(m.securityGroupId);
+        return w;
+      };
+      GetSecurityGroupRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.GetSecurityGroupRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.securityGroupId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return GetSecurityGroupRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.ListSecurityGroupsRequest = (function() {
+      function ListSecurityGroupsRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListSecurityGroupsRequest.prototype.folderId = '';
+      ListSecurityGroupsRequest.prototype.pageSize = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+      ListSecurityGroupsRequest.prototype.pageToken = '';
+      ListSecurityGroupsRequest.prototype.filter = '';
+      ListSecurityGroupsRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.folderId != null && m.hasOwnProperty('folderId')) w.uint32(10).string(m.folderId);
+        if (m.pageSize != null && m.hasOwnProperty('pageSize')) w.uint32(16).int64(m.pageSize);
+        if (m.pageToken != null && m.hasOwnProperty('pageToken')) w.uint32(26).string(m.pageToken);
+        if (m.filter != null && m.hasOwnProperty('filter')) w.uint32(34).string(m.filter);
+        return w;
+      };
+      ListSecurityGroupsRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.ListSecurityGroupsRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.folderId = r.string();
+              break;
+            case 2:
+              m.pageSize = r.int64();
+              break;
+            case 3:
+              m.pageToken = r.string();
+              break;
+            case 4:
+              m.filter = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListSecurityGroupsRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.ListSecurityGroupsResponse = (function() {
+      function ListSecurityGroupsResponse(p) {
+        this.securityGroups = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListSecurityGroupsResponse.prototype.securityGroups = $util.emptyArray;
+      ListSecurityGroupsResponse.prototype.nextPageToken = '';
+      ListSecurityGroupsResponse.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.securityGroups != null && m.securityGroups.length) {
+          for (let i = 0; i < m.securityGroups.length; ++i) $root.api.vpc.v1.SecurityGroup.encode(m.securityGroups[i], w.uint32(10).fork()).ldelim();
+        }
+        if (m.nextPageToken != null && m.hasOwnProperty('nextPageToken')) w.uint32(18).string(m.nextPageToken);
+        return w;
+      };
+      ListSecurityGroupsResponse.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.ListSecurityGroupsResponse();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              if (!(m.securityGroups && m.securityGroups.length)) m.securityGroups = [];
+              m.securityGroups.push($root.api.vpc.v1.SecurityGroup.decode(r, r.uint32()));
+              break;
+            case 2:
+              m.nextPageToken = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListSecurityGroupsResponse;
+    })();
+  })(root);
+  (function($root) {
+    $root.CreateSecurityGroupRequest = (function() {
+      function CreateSecurityGroupRequest(p) {
+        this.labels = {};
+        this.ruleSpecs = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      CreateSecurityGroupRequest.prototype.folderId = '';
+      CreateSecurityGroupRequest.prototype.name = '';
+      CreateSecurityGroupRequest.prototype.description = '';
+      CreateSecurityGroupRequest.prototype.labels = $util.emptyObject;
+      CreateSecurityGroupRequest.prototype.networkId = '';
+      CreateSecurityGroupRequest.prototype.ruleSpecs = $util.emptyArray;
+      CreateSecurityGroupRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.folderId != null && m.hasOwnProperty('folderId')) w.uint32(10).string(m.folderId);
+        if (m.name != null && m.hasOwnProperty('name')) w.uint32(18).string(m.name);
+        if (m.description != null && m.hasOwnProperty('description')) w.uint32(26).string(m.description);
+        if (m.labels != null && m.hasOwnProperty('labels')) {
+          for (let ks = Object.keys(m.labels), i = 0; i < ks.length; ++i) {
+            w.uint32(34)
+              .fork()
+              .uint32(10)
+              .string(ks[i])
+              .uint32(18)
+              .string(m.labels[ks[i]])
+              .ldelim();
+          }
+        }
+        if (m.networkId != null && m.hasOwnProperty('networkId')) w.uint32(42).string(m.networkId);
+        if (m.ruleSpecs != null && m.ruleSpecs.length) {
+          for (let i = 0; i < m.ruleSpecs.length; ++i) $root.api.vpc.v1.SecurityGroupRuleSpec.encode(m.ruleSpecs[i], w.uint32(50).fork()).ldelim();
+        }
+        return w;
+      };
+      CreateSecurityGroupRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.CreateSecurityGroupRequest(),
+          k;
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.folderId = r.string();
+              break;
+            case 2:
+              m.name = r.string();
+              break;
+            case 3:
+              m.description = r.string();
+              break;
+            case 4:
+              r.skip().pos++;
+              if (m.labels === $util.emptyObject) m.labels = {};
+              k = r.string();
+              r.pos++;
+              m.labels[k] = r.string();
+              break;
+            case 5:
+              m.networkId = r.string();
+              break;
+            case 6:
+              if (!(m.ruleSpecs && m.ruleSpecs.length)) m.ruleSpecs = [];
+              m.ruleSpecs.push($root.api.vpc.v1.SecurityGroupRuleSpec.decode(r, r.uint32()));
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return CreateSecurityGroupRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.SecurityGroupRuleSpec = (function() {
+      function SecurityGroupRuleSpec(p) {
+        this.labels = {};
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      SecurityGroupRuleSpec.prototype.description = '';
+      SecurityGroupRuleSpec.prototype.labels = $util.emptyObject;
+      SecurityGroupRuleSpec.prototype.direction = 0;
+      SecurityGroupRuleSpec.prototype.ports = null;
+      SecurityGroupRuleSpec.prototype.protocolName = '';
+      SecurityGroupRuleSpec.prototype.protocolNumber = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+      SecurityGroupRuleSpec.prototype.cidrBlocks = null;
+      let $oneOfFields;
+      Object.defineProperty(SecurityGroupRuleSpec.prototype, 'protocol', {
+        get: $util.oneOfGetter(($oneOfFields = ['protocolName', 'protocolNumber'])),
+        set: $util.oneOfSetter($oneOfFields)
+      });
+      Object.defineProperty(SecurityGroupRuleSpec.prototype, 'target', {
+        get: $util.oneOfGetter(($oneOfFields = ['cidrBlocks'])),
+        set: $util.oneOfSetter($oneOfFields)
+      });
+      SecurityGroupRuleSpec.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.description != null && m.hasOwnProperty('description')) w.uint32(10).string(m.description);
+        if (m.labels != null && m.hasOwnProperty('labels')) {
+          for (let ks = Object.keys(m.labels), i = 0; i < ks.length; ++i) {
+            w.uint32(18)
+              .fork()
+              .uint32(10)
+              .string(ks[i])
+              .uint32(18)
+              .string(m.labels[ks[i]])
+              .ldelim();
+          }
+        }
+        if (m.direction != null && m.hasOwnProperty('direction')) w.uint32(24).int32(m.direction);
+        if (m.ports != null && m.hasOwnProperty('ports')) $root.api.vpc.v1.PortRange.encode(m.ports, w.uint32(34).fork()).ldelim();
+        if (m.protocolName != null && m.hasOwnProperty('protocolName')) w.uint32(42).string(m.protocolName);
+        if (m.protocolNumber != null && m.hasOwnProperty('protocolNumber')) w.uint32(48).int64(m.protocolNumber);
+        if (m.cidrBlocks != null && m.hasOwnProperty('cidrBlocks')) $root.api.vpc.v1.CidrBlocks.encode(m.cidrBlocks, w.uint32(58).fork()).ldelim();
+        return w;
+      };
+      SecurityGroupRuleSpec.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.SecurityGroupRuleSpec(),
+          k;
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.description = r.string();
+              break;
+            case 2:
+              r.skip().pos++;
+              if (m.labels === $util.emptyObject) m.labels = {};
+              k = r.string();
+              r.pos++;
+              m.labels[k] = r.string();
+              break;
+            case 3:
+              m.direction = r.int32();
+              break;
+            case 4:
+              m.ports = $root.api.vpc.v1.PortRange.decode(r, r.uint32());
+              break;
+            case 5:
+              m.protocolName = r.string();
+              break;
+            case 6:
+              m.protocolNumber = r.int64();
+              break;
+            case 7:
+              m.cidrBlocks = $root.api.vpc.v1.CidrBlocks.decode(r, r.uint32());
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return SecurityGroupRuleSpec;
+    })();
+  })(root);
+  (function($root) {
+    $root.CreateSecurityGroupMetadata = (function() {
+      function CreateSecurityGroupMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      CreateSecurityGroupMetadata.prototype.securityGroupId = '';
+      CreateSecurityGroupMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.securityGroupId != null && m.hasOwnProperty('securityGroupId')) w.uint32(10).string(m.securityGroupId);
+        return w;
+      };
+      CreateSecurityGroupMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.CreateSecurityGroupMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.securityGroupId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return CreateSecurityGroupMetadata;
+    })();
+  })(root);
+  (function($root) {
+    $root.UpdateSecurityGroupRequest = (function() {
+      function UpdateSecurityGroupRequest(p) {
+        this.labels = {};
+        this.ruleSpecs = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      UpdateSecurityGroupRequest.prototype.securityGroupId = '';
+      UpdateSecurityGroupRequest.prototype.updateMask = null;
+      UpdateSecurityGroupRequest.prototype.name = '';
+      UpdateSecurityGroupRequest.prototype.description = '';
+      UpdateSecurityGroupRequest.prototype.labels = $util.emptyObject;
+      UpdateSecurityGroupRequest.prototype.ruleSpecs = $util.emptyArray;
+      UpdateSecurityGroupRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.securityGroupId != null && m.hasOwnProperty('securityGroupId')) w.uint32(10).string(m.securityGroupId);
+        if (m.updateMask != null && m.hasOwnProperty('updateMask')) $root.contrib.google.protobuf.FieldMask.encode(m.updateMask, w.uint32(18).fork()).ldelim();
+        if (m.name != null && m.hasOwnProperty('name')) w.uint32(26).string(m.name);
+        if (m.description != null && m.hasOwnProperty('description')) w.uint32(34).string(m.description);
+        if (m.labels != null && m.hasOwnProperty('labels')) {
+          for (let ks = Object.keys(m.labels), i = 0; i < ks.length; ++i) {
+            w.uint32(42)
+              .fork()
+              .uint32(10)
+              .string(ks[i])
+              .uint32(18)
+              .string(m.labels[ks[i]])
+              .ldelim();
+          }
+        }
+        if (m.ruleSpecs != null && m.ruleSpecs.length) {
+          for (let i = 0; i < m.ruleSpecs.length; ++i) $root.api.vpc.v1.SecurityGroupRuleSpec.encode(m.ruleSpecs[i], w.uint32(50).fork()).ldelim();
+        }
+        return w;
+      };
+      UpdateSecurityGroupRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.UpdateSecurityGroupRequest(),
+          k;
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.securityGroupId = r.string();
+              break;
+            case 2:
+              m.updateMask = $root.contrib.google.protobuf.FieldMask.decode(r, r.uint32());
+              break;
+            case 3:
+              m.name = r.string();
+              break;
+            case 4:
+              m.description = r.string();
+              break;
+            case 5:
+              r.skip().pos++;
+              if (m.labels === $util.emptyObject) m.labels = {};
+              k = r.string();
+              r.pos++;
+              m.labels[k] = r.string();
+              break;
+            case 6:
+              if (!(m.ruleSpecs && m.ruleSpecs.length)) m.ruleSpecs = [];
+              m.ruleSpecs.push($root.api.vpc.v1.SecurityGroupRuleSpec.decode(r, r.uint32()));
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return UpdateSecurityGroupRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.UpdateSecurityGroupMetadata = (function() {
+      function UpdateSecurityGroupMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      UpdateSecurityGroupMetadata.prototype.securityGroupId = '';
+      UpdateSecurityGroupMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.securityGroupId != null && m.hasOwnProperty('securityGroupId')) w.uint32(10).string(m.securityGroupId);
+        return w;
+      };
+      UpdateSecurityGroupMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.UpdateSecurityGroupMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.securityGroupId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return UpdateSecurityGroupMetadata;
+    })();
+  })(root);
+  (function($root) {
+    $root.UpdateSecurityGroupRulesRequest = (function() {
+      function UpdateSecurityGroupRulesRequest(p) {
+        this.deletionRuleIds = [];
+        this.additionRuleSpecs = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      UpdateSecurityGroupRulesRequest.prototype.securityGroupId = '';
+      UpdateSecurityGroupRulesRequest.prototype.deletionRuleIds = $util.emptyArray;
+      UpdateSecurityGroupRulesRequest.prototype.additionRuleSpecs = $util.emptyArray;
+      UpdateSecurityGroupRulesRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.securityGroupId != null && m.hasOwnProperty('securityGroupId')) w.uint32(10).string(m.securityGroupId);
+        if (m.deletionRuleIds != null && m.deletionRuleIds.length) {
+          for (let i = 0; i < m.deletionRuleIds.length; ++i) w.uint32(18).string(m.deletionRuleIds[i]);
+        }
+        if (m.additionRuleSpecs != null && m.additionRuleSpecs.length) {
+          for (let i = 0; i < m.additionRuleSpecs.length; ++i) $root.api.vpc.v1.SecurityGroupRuleSpec.encode(m.additionRuleSpecs[i], w.uint32(26).fork()).ldelim();
+        }
+        return w;
+      };
+      UpdateSecurityGroupRulesRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.UpdateSecurityGroupRulesRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.securityGroupId = r.string();
+              break;
+            case 2:
+              if (!(m.deletionRuleIds && m.deletionRuleIds.length)) m.deletionRuleIds = [];
+              m.deletionRuleIds.push(r.string());
+              break;
+            case 3:
+              if (!(m.additionRuleSpecs && m.additionRuleSpecs.length)) m.additionRuleSpecs = [];
+              m.additionRuleSpecs.push($root.api.vpc.v1.SecurityGroupRuleSpec.decode(r, r.uint32()));
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return UpdateSecurityGroupRulesRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.UpdateSecurityGroupRuleRequest = (function() {
+      function UpdateSecurityGroupRuleRequest(p) {
+        this.labels = {};
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      UpdateSecurityGroupRuleRequest.prototype.securityGroupId = '';
+      UpdateSecurityGroupRuleRequest.prototype.ruleId = '';
+      UpdateSecurityGroupRuleRequest.prototype.updateMask = null;
+      UpdateSecurityGroupRuleRequest.prototype.description = '';
+      UpdateSecurityGroupRuleRequest.prototype.labels = $util.emptyObject;
+      UpdateSecurityGroupRuleRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.securityGroupId != null && m.hasOwnProperty('securityGroupId')) w.uint32(10).string(m.securityGroupId);
+        if (m.ruleId != null && m.hasOwnProperty('ruleId')) w.uint32(18).string(m.ruleId);
+        if (m.updateMask != null && m.hasOwnProperty('updateMask')) $root.contrib.google.protobuf.FieldMask.encode(m.updateMask, w.uint32(26).fork()).ldelim();
+        if (m.description != null && m.hasOwnProperty('description')) w.uint32(34).string(m.description);
+        if (m.labels != null && m.hasOwnProperty('labels')) {
+          for (let ks = Object.keys(m.labels), i = 0; i < ks.length; ++i) {
+            w.uint32(42)
+              .fork()
+              .uint32(10)
+              .string(ks[i])
+              .uint32(18)
+              .string(m.labels[ks[i]])
+              .ldelim();
+          }
+        }
+        return w;
+      };
+      UpdateSecurityGroupRuleRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.UpdateSecurityGroupRuleRequest(),
+          k;
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.securityGroupId = r.string();
+              break;
+            case 2:
+              m.ruleId = r.string();
+              break;
+            case 3:
+              m.updateMask = $root.contrib.google.protobuf.FieldMask.decode(r, r.uint32());
+              break;
+            case 4:
+              m.description = r.string();
+              break;
+            case 5:
+              r.skip().pos++;
+              if (m.labels === $util.emptyObject) m.labels = {};
+              k = r.string();
+              r.pos++;
+              m.labels[k] = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return UpdateSecurityGroupRuleRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.UpdateSecurityGroupRuleMetadata = (function() {
+      function UpdateSecurityGroupRuleMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      UpdateSecurityGroupRuleMetadata.prototype.securityGroupId = '';
+      UpdateSecurityGroupRuleMetadata.prototype.ruleId = '';
+      UpdateSecurityGroupRuleMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.securityGroupId != null && m.hasOwnProperty('securityGroupId')) w.uint32(10).string(m.securityGroupId);
+        if (m.ruleId != null && m.hasOwnProperty('ruleId')) w.uint32(18).string(m.ruleId);
+        return w;
+      };
+      UpdateSecurityGroupRuleMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.UpdateSecurityGroupRuleMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.securityGroupId = r.string();
+              break;
+            case 2:
+              m.ruleId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return UpdateSecurityGroupRuleMetadata;
+    })();
+  })(root);
+  (function($root) {
+    $root.DeleteSecurityGroupRequest = (function() {
+      function DeleteSecurityGroupRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      DeleteSecurityGroupRequest.prototype.securityGroupId = '';
+      DeleteSecurityGroupRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.securityGroupId != null && m.hasOwnProperty('securityGroupId')) w.uint32(10).string(m.securityGroupId);
+        return w;
+      };
+      DeleteSecurityGroupRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.DeleteSecurityGroupRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.securityGroupId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return DeleteSecurityGroupRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.DeleteSecurityGroupMetadata = (function() {
+      function DeleteSecurityGroupMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      DeleteSecurityGroupMetadata.prototype.securityGroupId = '';
+      DeleteSecurityGroupMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.securityGroupId != null && m.hasOwnProperty('securityGroupId')) w.uint32(10).string(m.securityGroupId);
+        return w;
+      };
+      DeleteSecurityGroupMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.DeleteSecurityGroupMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.securityGroupId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return DeleteSecurityGroupMetadata;
+    })();
+  })(root);
+  (function($root) {
+    $root.ListSecurityGroupOperationsRequest = (function() {
+      function ListSecurityGroupOperationsRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListSecurityGroupOperationsRequest.prototype.securityGroupId = '';
+      ListSecurityGroupOperationsRequest.prototype.pageSize = $util.Long ? $util.Long.fromBits(0, 0, false) : 0;
+      ListSecurityGroupOperationsRequest.prototype.pageToken = '';
+      ListSecurityGroupOperationsRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.securityGroupId != null && m.hasOwnProperty('securityGroupId')) w.uint32(10).string(m.securityGroupId);
+        if (m.pageSize != null && m.hasOwnProperty('pageSize')) w.uint32(16).int64(m.pageSize);
+        if (m.pageToken != null && m.hasOwnProperty('pageToken')) w.uint32(26).string(m.pageToken);
+        return w;
+      };
+      ListSecurityGroupOperationsRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.ListSecurityGroupOperationsRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.securityGroupId = r.string();
+              break;
+            case 2:
+              m.pageSize = r.int64();
+              break;
+            case 3:
+              m.pageToken = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListSecurityGroupOperationsRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.ListSecurityGroupOperationsResponse = (function() {
+      function ListSecurityGroupOperationsResponse(p) {
+        this.operations = [];
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      ListSecurityGroupOperationsResponse.prototype.operations = $util.emptyArray;
+      ListSecurityGroupOperationsResponse.prototype.nextPageToken = '';
+      ListSecurityGroupOperationsResponse.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.operations != null && m.operations.length) {
+          for (let i = 0; i < m.operations.length; ++i) $root.api.operation.Operation.encode(m.operations[i], w.uint32(10).fork()).ldelim();
+        }
+        if (m.nextPageToken != null && m.hasOwnProperty('nextPageToken')) w.uint32(18).string(m.nextPageToken);
+        return w;
+      };
+      ListSecurityGroupOperationsResponse.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.ListSecurityGroupOperationsResponse();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              if (!(m.operations && m.operations.length)) m.operations = [];
+              m.operations.push($root.api.operation.Operation.decode(r, r.uint32()));
+              break;
+            case 2:
+              m.nextPageToken = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return ListSecurityGroupOperationsResponse;
+    })();
+  })(root);
+  (function($root) {
+    $root.MoveSecurityGroupRequest = (function() {
+      function MoveSecurityGroupRequest(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      MoveSecurityGroupRequest.prototype.securityGroupId = '';
+      MoveSecurityGroupRequest.prototype.destinationFolderId = '';
+      MoveSecurityGroupRequest.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.securityGroupId != null && m.hasOwnProperty('securityGroupId')) w.uint32(10).string(m.securityGroupId);
+        if (m.destinationFolderId != null && m.hasOwnProperty('destinationFolderId')) w.uint32(18).string(m.destinationFolderId);
+        return w;
+      };
+      MoveSecurityGroupRequest.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.MoveSecurityGroupRequest();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.securityGroupId = r.string();
+              break;
+            case 2:
+              m.destinationFolderId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return MoveSecurityGroupRequest;
+    })();
+  })(root);
+  (function($root) {
+    $root.MoveSecurityGroupMetadata = (function() {
+      function MoveSecurityGroupMetadata(p) {
+        if (p) for (let ks = Object.keys(p), i = 0; i < ks.length; ++i) if (p[ks[i]] != null) this[ks[i]] = p[ks[i]];
+      }
+      MoveSecurityGroupMetadata.prototype.securityGroupId = '';
+      MoveSecurityGroupMetadata.encode = function encode(m, w) {
+        if (!w) w = $Writer.create();
+        if (m.securityGroupId != null && m.hasOwnProperty('securityGroupId')) w.uint32(10).string(m.securityGroupId);
+        return w;
+      };
+      MoveSecurityGroupMetadata.decode = function decode(r, l) {
+        if (!(r instanceof $Reader)) r = $Reader.create(r);
+        let c = l === undefined ? r.len : r.pos + l,
+          m = new $root.api.vpc.v1.MoveSecurityGroupMetadata();
+        while (r.pos < c) {
+          let t = r.uint32();
+          switch (t >>> 3) {
+            case 1:
+              m.securityGroupId = r.string();
+              break;
+            default:
+              r.skipType(t & 7);
+              break;
+          }
+        }
+        return m;
+      };
+      return MoveSecurityGroupMetadata;
+    })();
+  })(root);
+  (function($root) {
     $root.Subnet = (function() {
       function Subnet(p) {
         this.labels = {};
