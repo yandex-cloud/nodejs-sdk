@@ -37,7 +37,7 @@ function run(fn) {
     const session = new yc.Session({ oauthToken: config['token'] });
     (async () => {
         if (config['endpoint']) {
-            await session.setEndpoint(config[endpoint]);
+            await session.setEndpoint(config['endpoint']);
         }
         await fn(session, config['cloud-id'], config['folder-id']);
     })()
