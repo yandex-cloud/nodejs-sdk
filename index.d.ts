@@ -30,3 +30,7 @@ export class Session {
         ): T;
     }): T;
 }
+
+export class TokenService {
+    getToken(): string;
+}
