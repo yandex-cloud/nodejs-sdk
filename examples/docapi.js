@@ -1,9 +1,9 @@
 const run = require('./').run;
-const { DocapiService } = require('../lib/slydb/docapi/docapi.js')
+const { DocAPIService } = require('../lib/slydb/docapi/docapi.js')
 
 run(async (session, _, folderId) => {
-    var endpoint = 'https://docapi.serverless.yandexcloud.net/ru-central1/b1gu1hg8lo2a8n3cl8gg/etn03hg22ajs8gmbl0s6';
-    var docapi = new DocapiService(endpoint, session)
+    var endpoint = 'https://docapi.serverless.yandexcloud.net/ru-central1/b1g11111111111111111/etn22222222222222222';
+    var docapi = new DocAPIService(endpoint, session)
     var params = {
         TableName: "scale/pets",
         Key:{
@@ -11,5 +11,5 @@ run(async (session, _, folderId) => {
             "name": "Tom"
         }
     };
-    docapi.getItem(params).then(res => { console.log(JSON.stringify(res)); }).catch(err => console.log(err));
+    docapi.getItem(params).then(res => { console.log(res); }).catch(err => console.log(err));
 });

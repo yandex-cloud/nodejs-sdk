@@ -1,7 +1,7 @@
 import { Session } from '../../../index';
 import {DynamoDB} from "aws-sdk";
 
-export class DocapiService {
+export class DocAPIService {
     constructor(endpoint: string, session?: Session);
     createTable(params: DynamoDB.DocumentClient.CreateTableInput): Promise<DynamoDB.DocumentClient.CreateTableOutput>;
     deleteTable(params: DynamoDB.DocumentClient.DeleteTableInput): Promise<DynamoDB.DocumentClient.DeleteTableOutput>;
