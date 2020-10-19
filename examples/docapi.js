@@ -11,5 +11,5 @@ run(async (session, _, folderId) => {
             "name": "Tom"
         }
     };
-    docapi.getItem(params).then(res => { console.log(res); }).catch(err => console.log(err));
+    docapi.getItem(params).then(res => { console.log(res); }).catch(err => { console.log(err) });
 });
