@@ -32,5 +32,6 @@ export class Session {
 }
 
 export class TokenService {
+    initialize(): Promise<void>;
     getToken(): string;
 }
