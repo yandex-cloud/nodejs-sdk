@@ -17,4 +17,5 @@ export class DocAPIService {
     scan(params: DynamoDB.DocumentClient.ScanInput): Promise<DynamoDB.DocumentClient.ScanOutput>;
     transactGetItems(params: DynamoDB.DocumentClient.TransactGetItemsInput): Promise<DynamoDB.DocumentClient.TransactGetItemsOutput>;
     transactWriteItems(params: DynamoDB.DocumentClient.TransactWriteItemsInput): Promise<DynamoDB.DocumentClient.TransactWriteItemsOutput>;
+    updateItem(params: DynamoDB.DocumentClient.UpdateItemInput): Promise<DynamoDB.UpdateItemOutput>;
 }
