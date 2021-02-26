@@ -9,7 +9,9 @@ run(async (session, cloudId, folderId) => {
     const dataService = new RegistryDataService(session);
 
     const registries = await registryService.list({ folderId });
-    console.log(`found ${registries.registries.length} registries in folder ${folderId}`);
+    console.log(
+        `found ${registries.registries.length} registries in folder ${folderId}`
+    );
 
     await Promise.all(
         registries.registries.map((registry) => {
