@@ -1,4 +1,4 @@
-const grpc = require('grpc');
+const grpc = require('@grpc/grpc-js');
 const util = require('./lib/util');
 const { EndpointResolver } = require('./lib/endpoint');
 const metadata = require('./lib/metadata');
