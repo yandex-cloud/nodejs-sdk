@@ -1,4 +1,4 @@
-import { ChannelCredentials } from 'grpc';
+import { ChannelCredentials } from '@grpc/grpc-js';
 import { Session } from '../../../index';
 
 export class StorageObject {

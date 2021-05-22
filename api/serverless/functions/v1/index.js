@@ -1,6 +1,6 @@
 module.exports = (function() {
   const $protobuf = require('protobufjs');
-  const grpc = require('grpc');
+  const grpc = require('@grpc/grpc-js');
   const registar = require('../../../../lib/registar.js');
   const util = require('../../../../lib/util.js');
   const yc = require('../../../../index.js');
