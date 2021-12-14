@@ -1,0 +1,16 @@
+name: Pull Request Automated Checks
+on:
+  pull_request:
+    branches: [ $default-branch ]
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v2
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - run: npm ci
