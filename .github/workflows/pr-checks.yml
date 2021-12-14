@@ -1,7 +1,8 @@
 name: Pull Request Automated Checks
 on:
   pull_request:
-    branches: [ $default-branch ]
+    branches:
+      - master
 jobs:
   install:
     runs-on: ubuntu-latest
