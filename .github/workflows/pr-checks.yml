@@ -5,13 +5,25 @@ on:
       - master
 jobs:
   install:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@4a0dbbde6b45cce08566abb9accace703f2a7a5d
       - run: npm ci
   tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: install
     steps:
       - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@4a0dbbde6b45cce08566abb9accace703f2a7a5d
       - run: npm run test
+  lint:
+    runs-on: ubuntu-20.04
+    needs: install
+    steps:
+      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@4a0dbbde6b45cce08566abb9accace703f2a7a5d
+      - run: npm run lint
+  build:
+    runs-on: ubuntu-20.04
+    needs: install
+    steps:
+      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@4a0dbbde6b45cce08566abb9accace703f2a7a5d
+      - run: npm run build

@@ -45,7 +45,8 @@
   },
   "scripts": {
     "test": "jest -c config/jest.ts --passWithNoTests",
-    "lint": "eslint src config"
+    "lint": "eslint src config",
+    "build": "tsc -p ."
   },
   "engines": {
     "node": ">=10.0.0"
