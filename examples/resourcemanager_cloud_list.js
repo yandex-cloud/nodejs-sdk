@@ -1,5 +1,5 @@
 const run = require('./').run;
-const { CloudService } = require('../api/resourcemanager/v1');
+const { CloudService } = require('../src/api/resourcemanager/v1');
 
 run(async (session) => {
     const cloudService = new CloudService(session);

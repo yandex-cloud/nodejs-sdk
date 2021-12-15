@@ -3,7 +3,7 @@ const {
     SymmetricKeyService,
     SymmetricCryptoService,
     SymmetricAlgorithm,
-} = require('../api/kms/v1');
+} = require('../src/api/kms/v1');
 
 run(async (session, cloudId, folderId) => {
     const keyService = new SymmetricKeyService(session);

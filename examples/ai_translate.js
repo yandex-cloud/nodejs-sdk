@@ -2,7 +2,7 @@ const run = require('./').run;
 const {
     TranslationService,
     TranslateRequest,
-} = require('../api/ai/translate/v2');
+} = require('../src/api/ai/translate/v2');
 
 run(async (session, _, folderId) => {
     const translationService = new TranslationService(session);

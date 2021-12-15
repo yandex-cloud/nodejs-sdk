@@ -13,7 +13,7 @@
   },
   "author": "Yandex LLC",
   "license": "MIT",
-  "main": "index.js",
+  "main": "dist/index.js",
   "bugs": {
     "url": "https://github.com/yandex-cloud/nodejs-sdk/issues"
   },

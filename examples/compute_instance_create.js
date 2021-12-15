@@ -1,10 +1,10 @@
 const run = require('./').run;
-const { NetworkService } = require('../api/vpc/v1');
+const { NetworkService } = require('../src/api/vpc/v1');
 const {
     ImageService,
     InstanceService,
     IpVersion,
-} = require('../api/compute/v1');
+} = require('../src/api/compute/v1');
 
 const TARGET_ZONE_ID = 'ru-central1-a';
 

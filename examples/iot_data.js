@@ -2,7 +2,7 @@ const run = require('./').run;
 const {
     RegistryService,
     RegistryDataService,
-} = require('../api/iot/devices/v1');
+} = require('../src/api/iot/devices/v1');
 
 run(async (session, cloudId, folderId) => {
     const registryService = new RegistryService(session);

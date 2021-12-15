@@ -1,5 +1,5 @@
 const run = require('./').run;
-const { InvokeService } = require('../lib/serverless/functions/v1/invoke');
+const { InvokeService } = require('../src/lib/serverless/functions/v1/invoke');
 
 run(async (session, _, folderId) => {
     const invokeService = new InvokeService(session);

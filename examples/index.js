@@ -1,7 +1,7 @@
 const yaml = require('yaml');
 const fs = require('fs');
 const path = require('path');
-const yc = require('../index');
+const yc = require('../src');
 
 function readCliConfig() {
     const configFile = path.join(
