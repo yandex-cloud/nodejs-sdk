@@ -238,6 +238,8 @@ export class IamTokenService {
      * Creates an IAM token for the specified identity.
      */
     create(request: CreateIamTokenRequest): Promise<CreateIamTokenResponse>;
+
+    static makeGrpcConstructor(): any;
 }
 
 export interface CreateIamTokenRequest {

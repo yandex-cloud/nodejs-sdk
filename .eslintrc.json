@@ -41,6 +41,12 @@
     "newline-after-var": "error",
     "newline-before-return": "error",
     "no-plusplus": "off",
-    "unicorn/import-style": "off"
+    "unicorn/import-style": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "no-underscore-dangle": ["error", {
+      "allowAfterThis": true,
+      "allowAfterSuper": false
+    }],
+    "unicorn/no-null": "off"
   }
 }
