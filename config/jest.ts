@@ -14,5 +14,5 @@ export default {
     rootDir: path.resolve('./src/'),
     transform: {
         '^.+\\.[tj]s$': 'ts-jest',
-    }
+    },
 };

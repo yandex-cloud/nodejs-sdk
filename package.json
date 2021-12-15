@@ -27,8 +27,16 @@
   "devDependencies": {
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.3",
+    "@typescript-eslint/eslint-plugin": "^5.7.0",
+    "@typescript-eslint/parser": "^5.7.0",
+    "eslint": "^8.4.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^16.1.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prefer-arrow-functions": "^3.1.4",
+    "eslint-plugin-unicorn": "^39.0.0",
     "jest": "^27.4.5",
-    "prettier": "^1.18.2",
     "ts-jest": "^27.1.1",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4",
@@ -37,7 +45,8 @@
   },
   "scripts": {
     "test": "jest -c config/jest.ts --passWithNoTests",
-    "format": "prettier --config .prettierrc.json --write ./**/*.ts ./**/*.js"
+    "lint": "eslint src config",
+    "build": "tsc -p ."
   },
   "engines": {
     "node": ">=10.0.0"
