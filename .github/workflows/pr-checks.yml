@@ -1,16 +1,17 @@
 name: Pull Request Automated Checks
 on:
   pull_request:
-    branches: [ $default-branch ]
+    branches:
+      - master
 jobs:
   install:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v2
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
+      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@4a0dbbde6b45cce08566abb9accace703f2a7a5d
       - run: npm ci
+  tests:
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@4a0dbbde6b45cce08566abb9accace703f2a7a5d
+      - run: npm run test
