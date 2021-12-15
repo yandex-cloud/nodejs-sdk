@@ -7,11 +7,11 @@ jobs:
   install:
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/actions/checkout-and-install-node
+      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@8937d1cb6d350912b3e13724b8ae259a1f18a546
       - run: npm ci
   tests:
     runs-on: ubuntu-latest
     needs: install
     steps:
-      - uses: ./.github/actions/checkout-and-install-node
+      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@8937d1cb6d350912b3e13724b8ae259a1f18a546
       - run: npm run test
