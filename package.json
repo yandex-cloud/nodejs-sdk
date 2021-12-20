@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/yandex-cloud/nodejs-sdk#readme",
   "dependencies": {
-    "@grpc/grpc-js": "^1.4.4",
+    "@grpc/grpc-js": "https://gitpkg.now.sh/DavyJohnes/grpc-node/packages/grpc-js?fix-class-options-issue-with-dist",
     "aws-sdk": ">= 2.0.9",
     "lodash": "^4.17.21",
     "log4js": "^6.3.0",
