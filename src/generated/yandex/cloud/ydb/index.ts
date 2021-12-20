@@ -1,0 +1,5 @@
+export * as backup from './v1/backup_service'
+export * as database from './v1/database_service'
+export * as location from './v1/location_service'
+export * as resource_preset from './v1/resource_preset_service'
+export * as storage_type from './v1/storage_type_service'
