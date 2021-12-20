@@ -28,7 +28,6 @@
     "unicorn/prefer-node-protocol": "off",
     "class-methods-use-this": "off",
     "@typescript-eslint/no-unused-vars": "off",
-    "import/no-extraneous-dependencies": "off",
     "import/prefer-default-export": "off",
     "comma-dangle": ["error", "always-multiline"],
     "indent": "off",
@@ -47,6 +46,9 @@
       "allowAfterThis": true,
       "allowAfterSuper": false
     }],
-    "unicorn/no-null": "off"
+    "unicorn/no-null": "off",
+    "import/no-extraneous-dependencies": ["error", {
+      "devDependencies": true
+    }]
   }
 }
