@@ -1311,6 +1311,7 @@ export const SymmetricCryptoServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): SymmetricCryptoServiceClient;
+  service: typeof SymmetricCryptoServiceService;
 };
 
 declare var self: any | undefined;

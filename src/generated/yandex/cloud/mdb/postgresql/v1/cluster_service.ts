@@ -1048,7 +1048,7 @@ const baseListClustersResponse: object = {
   nextPageToken: "",
 };
 
-export const ListClustersResponse: MessageType<ListClustersResponse> = {
+export const ListClustersResponse: MessageType = {
   $type: "yandex.cloud.mdb.postgresql.v1.ListClustersResponse" as const,
 
   encode(
@@ -6853,6 +6853,7 @@ export const ClusterServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): ClusterServiceClient;
+  service: typeof ClusterServiceService;
 };
 
 declare var self: any | undefined;

@@ -2506,6 +2506,7 @@ export const BackendGroupServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): BackendGroupServiceClient;
+  service: typeof BackendGroupServiceService;
 };
 
 declare var self: any | undefined;

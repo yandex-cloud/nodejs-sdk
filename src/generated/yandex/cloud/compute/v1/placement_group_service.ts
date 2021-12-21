@@ -1995,6 +1995,7 @@ export const PlacementGroupServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): PlacementGroupServiceClient;
+  service: typeof PlacementGroupServiceService;
 };
 
 declare var self: any | undefined;

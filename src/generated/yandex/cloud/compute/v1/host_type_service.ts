@@ -373,6 +373,7 @@ export const HostTypeServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): HostTypeServiceClient;
+  service: typeof HostTypeServiceService;
 };
 
 declare var self: any | undefined;

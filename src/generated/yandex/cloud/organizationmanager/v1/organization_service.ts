@@ -1226,6 +1226,7 @@ export const OrganizationServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): OrganizationServiceClient;
+  service: typeof OrganizationServiceService;
 };
 
 declare var self: any | undefined;

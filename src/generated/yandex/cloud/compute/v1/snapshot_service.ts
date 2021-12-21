@@ -1628,6 +1628,7 @@ export const SnapshotServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): SnapshotServiceClient;
+  service: typeof SnapshotServiceService;
 };
 
 declare var self: any | undefined;

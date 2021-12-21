@@ -1757,6 +1757,7 @@ export const FilesystemServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): FilesystemServiceClient;
+  service: typeof FilesystemServiceService;
 };
 
 declare var self: any | undefined;

@@ -453,6 +453,7 @@ export const SkuServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): SkuServiceClient;
+  service: typeof SkuServiceService;
 };
 
 declare var self: any | undefined;

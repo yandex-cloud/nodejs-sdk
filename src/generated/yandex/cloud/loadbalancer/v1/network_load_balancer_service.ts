@@ -3814,6 +3814,7 @@ export const NetworkLoadBalancerServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): NetworkLoadBalancerServiceClient;
+  service: typeof NetworkLoadBalancerServiceService;
 };
 
 declare var self: any | undefined;

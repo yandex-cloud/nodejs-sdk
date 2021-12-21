@@ -4531,6 +4531,7 @@ export const InstanceGroupServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): InstanceGroupServiceClient;
+  service: typeof InstanceGroupServiceService;
 };
 
 declare var self: any | undefined;

@@ -255,6 +255,7 @@ export const DeviceDataServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): DeviceDataServiceClient;
+  service: typeof DeviceDataServiceService;
 };
 
 declare var self: any | undefined;

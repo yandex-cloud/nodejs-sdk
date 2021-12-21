@@ -1984,6 +1984,7 @@ export const TriggerServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): TriggerServiceClient;
+  service: typeof TriggerServiceService;
 };
 
 declare var self: any | undefined;

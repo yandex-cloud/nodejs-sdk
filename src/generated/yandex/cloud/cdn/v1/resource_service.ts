@@ -1643,6 +1643,7 @@ export const ResourceServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): ResourceServiceClient;
+  service: typeof ResourceServiceService;
 };
 
 declare var self: any | undefined;

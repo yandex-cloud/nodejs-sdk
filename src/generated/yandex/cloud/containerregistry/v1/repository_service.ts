@@ -1107,6 +1107,7 @@ export const RepositoryServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): RepositoryServiceClient;
+  service: typeof RepositoryServiceService;
 };
 
 declare var self: any | undefined;

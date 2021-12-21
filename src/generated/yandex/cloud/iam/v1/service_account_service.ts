@@ -1792,6 +1792,7 @@ export const ServiceAccountServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): ServiceAccountServiceClient;
+  service: typeof ServiceAccountServiceService;
 };
 
 declare var self: any | undefined;

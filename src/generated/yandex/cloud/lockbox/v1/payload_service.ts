@@ -162,6 +162,7 @@ export const PayloadServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): PayloadServiceClient;
+  service: typeof PayloadServiceService;
 };
 
 type Builtin =

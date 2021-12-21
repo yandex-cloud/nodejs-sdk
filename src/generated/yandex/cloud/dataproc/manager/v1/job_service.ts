@@ -518,6 +518,7 @@ export const JobServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): JobServiceClient;
+  service: typeof JobServiceService;
 };
 
 declare var self: any | undefined;

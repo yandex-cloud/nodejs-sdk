@@ -1719,6 +1719,7 @@ export const ProxyServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): ProxyServiceClient;
+  service: typeof ProxyServiceService;
 };
 
 declare var self: any | undefined;
