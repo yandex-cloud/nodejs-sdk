@@ -21,14 +21,18 @@
   "dependencies": {
     "@grpc/grpc-js": "https://gitpkg.now.sh/DavyJohnes/grpc-node/packages/grpc-js?fix-class-options-issue-with-dist",
     "aws-sdk": ">= 2.0.9",
+    "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "log4js": "^6.3.0",
-    "node-fetch": "^2.6.0",
+    "luxon": "^2.2.0",
+    "node-fetch": "^3.1.0",
     "protobufjs": "^6.8.8"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",
+    "@types/jsonwebtoken": "^8.5.6",
     "@types/lodash": "^4.14.178",
+    "@types/luxon": "^2.0.8",
     "@types/node": "^16.11.3",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
     "@typescript-eslint/parser": "^5.7.0",
