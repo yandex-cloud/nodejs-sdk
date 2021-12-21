@@ -1441,6 +1441,7 @@ export const CertificateServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): CertificateServiceClient;
+  service: typeof CertificateServiceService;
 };
 
 declare var self: any | undefined;

@@ -4675,6 +4675,7 @@ export const LoadBalancerServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): LoadBalancerServiceClient;
+  service: typeof LoadBalancerServiceService;
 };
 
 declare var self: any | undefined;

@@ -1728,6 +1728,7 @@ export const HttpRouterServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): HttpRouterServiceClient;
+  service: typeof HttpRouterServiceService;
 };
 
 declare var self: any | undefined;

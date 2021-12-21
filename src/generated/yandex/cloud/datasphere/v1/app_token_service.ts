@@ -145,6 +145,7 @@ export const AppTokenServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): AppTokenServiceClient;
+  service: typeof AppTokenServiceService;
 };
 
 type Builtin =

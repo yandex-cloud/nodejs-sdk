@@ -1321,6 +1321,7 @@ export const AccessKeyServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): AccessKeyServiceClient;
+  service: typeof AccessKeyServiceService;
 };
 
 declare var self: any | undefined;

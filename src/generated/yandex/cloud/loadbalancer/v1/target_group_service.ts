@@ -2108,6 +2108,7 @@ export const TargetGroupServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): TargetGroupServiceClient;
+  service: typeof TargetGroupServiceService;
 };
 
 declare var self: any | undefined;

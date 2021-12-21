@@ -474,6 +474,7 @@ export const FolderBudgetServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): FolderBudgetServiceClient;
+  service: typeof FolderBudgetServiceService;
 };
 
 type Builtin =

@@ -1362,6 +1362,7 @@ export const SubclusterServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): SubclusterServiceClient;
+  service: typeof SubclusterServiceService;
 };
 
 declare var self: any | undefined;

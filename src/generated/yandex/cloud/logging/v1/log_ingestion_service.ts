@@ -420,6 +420,7 @@ export const LogIngestionServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): LogIngestionServiceClient;
+  service: typeof LogIngestionServiceService;
 };
 
 declare var self: any | undefined;

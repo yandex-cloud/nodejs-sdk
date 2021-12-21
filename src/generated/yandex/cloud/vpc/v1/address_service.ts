@@ -2059,6 +2059,7 @@ export const AddressServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): AddressServiceClient;
+  service: typeof AddressServiceService;
 };
 
 declare var self: any | undefined;

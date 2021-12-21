@@ -2276,6 +2276,7 @@ export const HostGroupServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): HostGroupServiceClient;
+  service: typeof HostGroupServiceService;
 };
 
 declare var self: any | undefined;

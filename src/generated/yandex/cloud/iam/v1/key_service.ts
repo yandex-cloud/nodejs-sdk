@@ -1335,6 +1335,7 @@ export const KeyServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): KeyServiceClient;
+  service: typeof KeyServiceService;
 };
 
 declare var self: any | undefined;

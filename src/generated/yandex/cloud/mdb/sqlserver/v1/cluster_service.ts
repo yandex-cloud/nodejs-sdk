@@ -4623,6 +4623,7 @@ export const ClusterServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): ClusterServiceClient;
+  service: typeof ClusterServiceService;
 };
 
 declare var self: any | undefined;

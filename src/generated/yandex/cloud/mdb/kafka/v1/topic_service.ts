@@ -1062,6 +1062,7 @@ export const TopicServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): TopicServiceClient;
+  service: typeof TopicServiceService;
 };
 
 declare var self: any | undefined;

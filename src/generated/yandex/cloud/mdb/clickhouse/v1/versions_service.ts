@@ -266,6 +266,7 @@ export const VersionsServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): VersionsServiceClient;
+  service: typeof VersionsServiceService;
 };
 
 declare var self: any | undefined;

@@ -849,6 +849,7 @@ export const DatabaseServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): DatabaseServiceClient;
+  service: typeof DatabaseServiceService;
 };
 
 declare var self: any | undefined;

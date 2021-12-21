@@ -299,6 +299,7 @@ export const VersionServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): VersionServiceClient;
+  service: typeof VersionServiceService;
 };
 
 type Builtin =

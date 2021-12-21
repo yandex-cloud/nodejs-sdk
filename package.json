@@ -48,7 +48,7 @@
     "jest": "^27.4.5",
     "ts-jest": "^27.1.1",
     "ts-node": "^10.4.0",
-    "ts-proto": "^1.95.0",
+    "ts-proto": "github:DavyJohnes/ts-proto#add-service-property-with-build",
     "typescript": "^4.5.4",
     "yaml": "^1.6.0",
     "ydb-sdk": "^1.5.1"

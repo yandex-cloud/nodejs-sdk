@@ -6421,6 +6421,7 @@ export const InstanceServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): InstanceServiceClient;
+  service: typeof InstanceServiceService;
 };
 
 declare var self: any | undefined;

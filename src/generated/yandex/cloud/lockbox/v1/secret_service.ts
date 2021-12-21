@@ -3188,6 +3188,7 @@ export const SecretServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): SecretServiceClient;
+  service: typeof SecretServiceService;
 };
 
 declare var self: any | undefined;

@@ -998,6 +998,7 @@ export const BillingAccountServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): BillingAccountServiceClient;
+  service: typeof BillingAccountServiceService;
 };
 
 declare var self: any | undefined;

@@ -1269,6 +1269,7 @@ export const ApiKeyServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): ApiKeyServiceClient;
+  service: typeof ApiKeyServiceService;
 };
 
 declare var self: any | undefined;

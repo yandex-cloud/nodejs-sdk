@@ -279,6 +279,7 @@ export const CertificateContentServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): CertificateContentServiceClient;
+  service: typeof CertificateContentServiceService;
 };
 
 type Builtin =

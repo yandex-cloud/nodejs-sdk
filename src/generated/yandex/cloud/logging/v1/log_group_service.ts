@@ -2237,6 +2237,7 @@ export const LogGroupServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): LogGroupServiceClient;
+  service: typeof LogGroupServiceService;
 };
 
 declare var self: any | undefined;

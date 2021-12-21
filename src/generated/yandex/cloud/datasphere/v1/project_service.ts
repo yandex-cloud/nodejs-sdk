@@ -2823,6 +2823,7 @@ export const ProjectServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): ProjectServiceClient;
+  service: typeof ProjectServiceService;
 };
 
 declare var self: any | undefined;

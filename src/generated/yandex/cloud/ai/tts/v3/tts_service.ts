@@ -67,6 +67,7 @@ export const SynthesizerClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): SynthesizerClient;
+  service: typeof SynthesizerService;
 };
 
 if (_m0.util.Long !== Long) {

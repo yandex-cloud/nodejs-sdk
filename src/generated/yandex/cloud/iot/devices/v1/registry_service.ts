@@ -3471,6 +3471,7 @@ export const RegistryServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): RegistryServiceClient;
+  service: typeof RegistryServiceService;
 };
 
 declare var self: any | undefined;

@@ -1908,6 +1908,7 @@ export const RouteTableServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): RouteTableServiceClient;
+  service: typeof RouteTableServiceService;
 };
 
 declare var self: any | undefined;

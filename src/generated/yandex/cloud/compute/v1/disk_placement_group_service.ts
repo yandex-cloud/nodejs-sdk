@@ -2007,6 +2007,7 @@ export const DiskPlacementGroupServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): DiskPlacementGroupServiceClient;
+  service: typeof DiskPlacementGroupServiceService;
 };
 
 declare var self: any | undefined;

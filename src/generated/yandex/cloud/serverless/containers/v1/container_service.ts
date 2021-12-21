@@ -2566,6 +2566,7 @@ export const ContainerServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): ContainerServiceClient;
+  service: typeof ContainerServiceService;
 };
 
 declare var self: any | undefined;
