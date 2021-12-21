@@ -1,4 +1,4 @@
-const jsutil = require('src/lib/util');
+const jsutil = require('legacy/lib/util');
 const events = require('events');
 const util = require('./util');
 const operations = require('../api/operation');

@@ -1,5 +1,5 @@
 const run = require('./').run;
-const { createDriver } = require('../src/lib/slydb');
+const { createDriver } = require('../legacy/lib/slydb');
 
 run(async (session, _, folderId) => {
     const driver = createDriver();
