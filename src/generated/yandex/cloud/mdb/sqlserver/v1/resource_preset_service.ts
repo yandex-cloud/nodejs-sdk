@@ -422,6 +422,7 @@ export const ResourcePresetServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): ResourcePresetServiceClient;
+  service: typeof ResourcePresetServiceService;
 };
 
 declare var self: any | undefined;

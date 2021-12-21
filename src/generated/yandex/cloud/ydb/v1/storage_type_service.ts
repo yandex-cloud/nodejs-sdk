@@ -390,6 +390,7 @@ export const StorageTypeServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): StorageTypeServiceClient;
+  service: typeof StorageTypeServiceService;
 };
 
 declare var self: any | undefined;

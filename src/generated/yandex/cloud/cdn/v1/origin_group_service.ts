@@ -1164,6 +1164,7 @@ export const OriginGroupServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): OriginGroupServiceClient;
+  service: typeof OriginGroupServiceService;
 };
 
 declare var self: any | undefined;

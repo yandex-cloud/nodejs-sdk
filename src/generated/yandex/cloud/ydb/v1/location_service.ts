@@ -367,6 +367,7 @@ export const LocationServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): LocationServiceClient;
+  service: typeof LocationServiceService;
 };
 
 declare var self: any | undefined;

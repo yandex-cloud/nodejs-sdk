@@ -249,6 +249,7 @@ export const NodeServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): NodeServiceClient;
+  service: typeof NodeServiceService;
 };
 
 type Builtin =

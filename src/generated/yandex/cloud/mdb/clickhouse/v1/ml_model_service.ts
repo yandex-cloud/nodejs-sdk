@@ -1103,6 +1103,7 @@ export const MlModelServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): MlModelServiceClient;
+  service: typeof MlModelServiceService;
 };
 
 declare var self: any | undefined;

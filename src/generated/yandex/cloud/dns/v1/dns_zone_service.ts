@@ -2787,6 +2787,7 @@ export const DnsZoneServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): DnsZoneServiceClient;
+  service: typeof DnsZoneServiceService;
 };
 
 declare var self: any | undefined;

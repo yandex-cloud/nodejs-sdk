@@ -1699,6 +1699,7 @@ export const CloudServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): CloudServiceClient;
+  service: typeof CloudServiceService;
 };
 
 declare var self: any | undefined;

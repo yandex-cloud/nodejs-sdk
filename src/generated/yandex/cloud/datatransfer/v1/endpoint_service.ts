@@ -1286,6 +1286,7 @@ export const EndpointServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): EndpointServiceClient;
+  service: typeof EndpointServiceService;
 };
 
 declare var self: any | undefined;

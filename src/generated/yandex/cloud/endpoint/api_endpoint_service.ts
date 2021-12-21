@@ -363,6 +363,7 @@ export const ApiEndpointServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): ApiEndpointServiceClient;
+  service: typeof ApiEndpointServiceService;
 };
 
 declare var self: any | undefined;

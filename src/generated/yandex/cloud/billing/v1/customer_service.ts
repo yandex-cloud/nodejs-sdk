@@ -741,6 +741,7 @@ export const CustomerServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): CustomerServiceClient;
+  service: typeof CustomerServiceService;
 };
 
 declare var self: any | undefined;

@@ -361,6 +361,7 @@ export const ZoneServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): ZoneServiceClient;
+  service: typeof ZoneServiceService;
 };
 
 declare var self: any | undefined;

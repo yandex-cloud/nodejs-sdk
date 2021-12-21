@@ -1055,6 +1055,7 @@ export const TranslationServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): TranslationServiceClient;
+  service: typeof TranslationServiceService;
 };
 
 type Builtin =

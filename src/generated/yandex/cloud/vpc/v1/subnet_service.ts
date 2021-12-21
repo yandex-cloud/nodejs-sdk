@@ -2710,6 +2710,7 @@ export const SubnetServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): SubnetServiceClient;
+  service: typeof SubnetServiceService;
 };
 
 declare var self: any | undefined;

@@ -1538,6 +1538,7 @@ export const ConnectorServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): ConnectorServiceClient;
+  service: typeof ConnectorServiceService;
 };
 
 declare var self: any | undefined;

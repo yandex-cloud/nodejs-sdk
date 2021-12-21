@@ -139,6 +139,7 @@ export const UserAccountServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): UserAccountServiceClient;
+  service: typeof UserAccountServiceService;
 };
 
 type Builtin =

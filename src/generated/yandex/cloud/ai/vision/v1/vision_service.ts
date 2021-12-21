@@ -1022,6 +1022,7 @@ export const VisionServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): VisionServiceClient;
+  service: typeof VisionServiceService;
 };
 
 declare var self: any | undefined;

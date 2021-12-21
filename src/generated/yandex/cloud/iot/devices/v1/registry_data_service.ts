@@ -259,6 +259,7 @@ export const RegistryDataServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): RegistryDataServiceClient;
+  service: typeof RegistryDataServiceService;
 };
 
 declare var self: any | undefined;

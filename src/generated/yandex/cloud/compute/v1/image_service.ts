@@ -1869,6 +1869,7 @@ export const ImageServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): ImageServiceClient;
+  service: typeof ImageServiceService;
 };
 
 declare var self: any | undefined;

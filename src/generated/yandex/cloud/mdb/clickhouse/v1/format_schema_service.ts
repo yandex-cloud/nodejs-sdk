@@ -1110,6 +1110,7 @@ export const FormatSchemaServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): FormatSchemaServiceClient;
+  service: typeof FormatSchemaServiceService;
 };
 
 declare var self: any | undefined;

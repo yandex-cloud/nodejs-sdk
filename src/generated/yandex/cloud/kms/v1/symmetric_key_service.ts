@@ -3162,6 +3162,7 @@ export const SymmetricKeyServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): SymmetricKeyServiceClient;
+  service: typeof SymmetricKeyServiceService;
 };
 
 declare var self: any | undefined;

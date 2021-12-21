@@ -318,6 +318,7 @@ export const ImageProductUsageServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): ImageProductUsageServiceClient;
+  service: typeof ImageProductUsageServiceService;
 };
 
 type Builtin =
