@@ -659,6 +659,7 @@ export const BudgetServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): BudgetServiceClient;
+  service: typeof BudgetServiceService;
 };
 
 declare var self: any | undefined;

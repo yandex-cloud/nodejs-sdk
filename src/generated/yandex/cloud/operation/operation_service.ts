@@ -238,6 +238,7 @@ export const OperationServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): OperationServiceClient;
+  service: typeof OperationServiceService;
 };
 
 type Builtin =

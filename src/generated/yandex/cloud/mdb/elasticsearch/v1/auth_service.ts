@@ -1322,6 +1322,7 @@ export const AuthServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): AuthServiceClient;
+  service: typeof AuthServiceService;
 };
 
 type Builtin =

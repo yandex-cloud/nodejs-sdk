@@ -557,6 +557,7 @@ export const BackupServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): BackupServiceClient;
+  service: typeof BackupServiceService;
 };
 
 declare var self: any | undefined;

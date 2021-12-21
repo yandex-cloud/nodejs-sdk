@@ -150,6 +150,7 @@ export const YandexPassportUserAccountServiceClient =
       credentials: ChannelCredentials,
       options?: Partial<ChannelOptions>
     ): YandexPassportUserAccountServiceClient;
+    service: typeof YandexPassportUserAccountServiceService;
   };
 
 type Builtin =

@@ -1349,6 +1349,7 @@ export const SttServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): SttServiceClient;
+  service: typeof SttServiceService;
 };
 
 declare var self: any | undefined;

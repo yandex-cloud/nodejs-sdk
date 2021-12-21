@@ -2471,6 +2471,7 @@ export const ApiGatewayServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): ApiGatewayServiceClient;
+  service: typeof ApiGatewayServiceService;
 };
 
 declare var self: any | undefined;

@@ -2629,6 +2629,7 @@ export const NodeGroupServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): NodeGroupServiceClient;
+  service: typeof NodeGroupServiceService;
 };
 
 declare var self: any | undefined;

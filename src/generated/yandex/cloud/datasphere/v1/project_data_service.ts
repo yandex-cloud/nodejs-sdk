@@ -536,6 +536,7 @@ export const ProjectDataServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): ProjectDataServiceClient;
+  service: typeof ProjectDataServiceService;
 };
 
 declare var self: any | undefined;

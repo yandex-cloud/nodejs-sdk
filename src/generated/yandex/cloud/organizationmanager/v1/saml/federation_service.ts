@@ -2554,6 +2554,7 @@ export const FederationServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): FederationServiceClient;
+  service: typeof FederationServiceService;
 };
 
 declare var self: any | undefined;

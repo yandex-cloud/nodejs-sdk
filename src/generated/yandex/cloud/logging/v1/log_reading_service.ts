@@ -518,6 +518,7 @@ export const LogReadingServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): LogReadingServiceClient;
+  service: typeof LogReadingServiceService;
 };
 
 declare var self: any | undefined;

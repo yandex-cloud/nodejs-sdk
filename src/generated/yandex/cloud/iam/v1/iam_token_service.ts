@@ -392,6 +392,7 @@ export const IamTokenServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): IamTokenServiceClient;
+  service: typeof IamTokenServiceService;
 };
 
 type Builtin =

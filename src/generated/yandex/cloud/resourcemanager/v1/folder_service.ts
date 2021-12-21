@@ -1726,6 +1726,7 @@ export const FolderServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): FolderServiceClient;
+  service: typeof FolderServiceService;
 };
 
 declare var self: any | undefined;

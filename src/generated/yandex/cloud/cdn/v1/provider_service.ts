@@ -451,6 +451,7 @@ export const ProviderServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): ProviderServiceClient;
+  service: typeof ProviderServiceService;
 };
 
 type Builtin =

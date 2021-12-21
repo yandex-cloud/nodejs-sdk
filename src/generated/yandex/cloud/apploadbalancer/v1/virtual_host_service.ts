@@ -1939,6 +1939,7 @@ export const VirtualHostServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): VirtualHostServiceClient;
+  service: typeof VirtualHostServiceService;
 };
 
 declare var self: any | undefined;

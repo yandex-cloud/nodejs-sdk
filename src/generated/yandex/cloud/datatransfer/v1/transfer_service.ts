@@ -1654,6 +1654,7 @@ export const TransferServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): TransferServiceClient;
+  service: typeof TransferServiceService;
 };
 
 declare var self: any | undefined;

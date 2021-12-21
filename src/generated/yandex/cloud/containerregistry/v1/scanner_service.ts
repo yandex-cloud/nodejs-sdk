@@ -1062,6 +1062,7 @@ export const ScannerServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): ScannerServiceClient;
+  service: typeof ScannerServiceService;
 };
 
 declare var self: any | undefined;

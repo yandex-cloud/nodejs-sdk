@@ -1554,6 +1554,7 @@ export const UserServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): UserServiceClient;
+  service: typeof UserServiceService;
 };
 
 declare var self: any | undefined;

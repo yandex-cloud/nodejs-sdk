@@ -2594,6 +2594,7 @@ export const NetworkServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): NetworkServiceClient;
+  service: typeof NetworkServiceService;
 };
 
 declare var self: any | undefined;

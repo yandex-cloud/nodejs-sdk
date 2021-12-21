@@ -4853,6 +4853,7 @@ export const FunctionServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): FunctionServiceClient;
+  service: typeof FunctionServiceService;
 };
 
 declare var self: any | undefined;

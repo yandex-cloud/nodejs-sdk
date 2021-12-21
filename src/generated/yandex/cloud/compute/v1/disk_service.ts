@@ -1742,6 +1742,7 @@ export const DiskServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): DiskServiceClient;
+  service: typeof DiskServiceService;
 };
 
 declare var self: any | undefined;

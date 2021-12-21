@@ -381,6 +381,7 @@ export const RoleServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): RoleServiceClient;
+  service: typeof RoleServiceService;
 };
 
 declare var self: any | undefined;

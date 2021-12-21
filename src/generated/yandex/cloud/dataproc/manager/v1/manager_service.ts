@@ -1760,6 +1760,7 @@ export const DataprocManagerServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): DataprocManagerServiceClient;
+  service: typeof DataprocManagerServiceService;
 };
 
 declare var self: any | undefined;

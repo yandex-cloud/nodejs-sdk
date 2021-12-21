@@ -2399,6 +2399,7 @@ export const LifecyclePolicyServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): LifecyclePolicyServiceClient;
+  service: typeof LifecyclePolicyServiceService;
 };
 
 declare var self: any | undefined;

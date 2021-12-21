@@ -416,6 +416,7 @@ export const CacheServiceClient = makeGenericClientConstructor(
     credentials: ChannelCredentials,
     options?: Partial<ChannelOptions>
   ): CacheServiceClient;
+  service: typeof CacheServiceService;
 };
 
 type Builtin =
