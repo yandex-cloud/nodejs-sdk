@@ -1,5 +1,5 @@
 var AWS = require('aws-sdk');
-const { Session } = require('../../../index');
+const { Session } = require('../../../../src');
 
 class DocAPIServiceSettings {
     constructor(address, credentials, options, tokenCreator) {

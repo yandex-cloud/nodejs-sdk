@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const yc = require('../../../../index');
+const yc = require('../../../../../src');
 
 function invokeUrl(id) {
     return `https://functions.yandexcloud.net/${id}?integration=raw`;
