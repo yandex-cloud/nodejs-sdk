@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const fs = require('fs');
-const yc = require('../../../index.js');
+const yc = require('../../../../src');
 
 class StorageObject {
     constructor(bucketName, objectName, bufferPromise) {
