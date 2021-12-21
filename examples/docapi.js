@@ -1,5 +1,5 @@
 const run = require('./').run;
-const { DocAPIService } = require('../src/lib/slydb/docapi/docapi.js');
+const { DocAPIService } = require('../legacy/lib/slydb/docapi/docapi.js');
 
 run(async (session, _, folderId) => {
     var endpoint =

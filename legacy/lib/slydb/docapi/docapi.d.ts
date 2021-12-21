@@ -1,4 +1,4 @@
-import { Session } from '../../../index';
+import { Session } from '../../../../src';
 import { DynamoDB } from 'aws-sdk';
 
 export class DocAPIService {

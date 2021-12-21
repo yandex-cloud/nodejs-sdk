@@ -1,5 +1,5 @@
 import { ChannelCredentials } from 'grpc';
-import { Session } from '../../../../index';
+import { Session } from '../../../../../src';
 
 export class InvokeService {
     constructor(session?: Session);
