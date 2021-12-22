@@ -1,8 +1,8 @@
-import fetch, { RequestInit } from 'node-fetch';
+import axios, { AxiosRequestConfig } from 'axios';
 
 import { TokenService } from '../types';
 
-type Options = RequestInit;
+type Options = AxiosRequestConfig;
 
 const DEFAULT_URL = 'http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token';
 const DEFAULT_OPTIONS: Options = {
@@ -36,14 +36,13 @@ export class MetadataTokenService implements TokenService {
     }
 
     private async fetchToken(): Promise<string> {
-        const res = await fetch(this.url, this.opts);
+        const res = await axios.get<{ access_token: string }>(this.url, this.opts);
 
-        if (!res.ok) {
+        if (res.status !== 200) {
             throw new Error(`failed to fetch token from metadata service: ${res.status} ${res.statusText}`);
         }
-        const data = (await res.json()) as { access_token: string };
 
-        return data.access_token;
+        return res.data.access_token;
     }
 
     private async initialize() {
