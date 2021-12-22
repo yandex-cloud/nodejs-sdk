@@ -1,4 +1,4 @@
-import { credentials, Metadata } from '@grpc/grpc-js';
+import { credentials } from '@grpc/grpc-js';
 import * as jwt from 'jsonwebtoken';
 import { DateTime } from 'luxon';
 import { createChannel } from 'nice-grpc';
