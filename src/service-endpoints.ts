@@ -1,4 +1,4 @@
-import { ServiceClientConstructor } from '@grpc/grpc-js';
+import { ServiceClientConstructor, ServiceDefinition } from '@grpc/grpc-js';
 import { GeneratedServiceClientCtor } from './types';
 
 interface ServiceEndpoint {
@@ -305,7 +305,7 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
     },
 ];
 
-export const getServiceClientEndpoint = (generatedClientCtor: GeneratedServiceClientCtor): string => {
+export const getServiceClientEndpoint = <T extends ServiceDefinition>(generatedClientCtor: GeneratedServiceClientCtor<T>): string => {
     const clientCtor = generatedClientCtor as unknown as ServiceClientConstructor;
     // eslint-disable-next-line prefer-destructuring
     const serviceName: string = clientCtor.options.serviceName as string;
