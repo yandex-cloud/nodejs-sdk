@@ -2,6 +2,7 @@ import {
     ChannelCredentials, credentials, Metadata, ServiceDefinition,
 } from '@grpc/grpc-js';
 import { createChannel } from 'nice-grpc';
+import { Required } from 'utility-types';
 import {
     GeneratedServiceClientCtor,
     IamTokenCredentialsConfig,
@@ -72,11 +73,11 @@ const newChannelCredentials = (tokenCreator: TokenCreator) => credentials.combin
 type TokenCreator = () => Promise<string>;
 
 export class Session {
-    private readonly config: SessionConfig;
+    private readonly config: Required<SessionConfig, 'pollInterval'>;
     private readonly channelCredentials: ChannelCredentials;
     private readonly tokenCreator: TokenCreator;
 
-    private static readonly DEFAULT_CONFIG: SessionConfig = {
+    private static readonly DEFAULT_CONFIG = {
         pollInterval: 1000,
     };
 
@@ -89,7 +90,7 @@ export class Session {
         this.channelCredentials = newChannelCredentials(this.tokenCreator);
     }
 
-    get pollInterval() {
+    get pollInterval(): number {
         return this.config.pollInterval;
     }
 
