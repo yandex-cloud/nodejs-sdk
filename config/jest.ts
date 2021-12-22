@@ -5,13 +5,6 @@ import * as path from 'path';
  * https://jestjs.io/docs/configuration
  */
 
-const modulesToTransform = [
-    'node-fetch',
-    'fetch-blob',
-    'data-uri-to-buffer',
-    'formdata-polyfill',
-];
-
 export default {
     moduleFileExtensions: [
         'js',
@@ -22,7 +15,4 @@ export default {
     transform: {
         '^.+\\.[tj]s$': 'ts-jest',
     },
-    transformIgnorePatterns: [
-        `node_modules/(?!(${modulesToTransform.join('|')})/.*)`,
-    ],
 };
