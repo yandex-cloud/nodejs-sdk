@@ -20,7 +20,6 @@
   "homepage": "https://github.com/yandex-cloud/nodejs-sdk#readme",
   "dependencies": {
     "@grpc/grpc-js": "https://gitpkg.now.sh/DavyJohnes/grpc-node/packages/grpc-js?fix-class-options-issue-with-dist",
-    "aws-sdk": ">= 2.0.9",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "log4js": "^6.3.0",
@@ -52,9 +51,7 @@
     "ts-jest": "^27.1.1",
     "ts-node": "^10.4.0",
     "ts-proto": "github:DavyJohnes/ts-proto#add-service-property-with-build",
-    "typescript": "^4.5.4",
-    "yaml": "^1.6.0",
-    "ydb-sdk": "^1.5.1"
+    "typescript": "^4.5.4"
   },
   "scripts": {
     "test": "jest -c config/jest.ts --passWithNoTests",
