@@ -54,14 +54,14 @@ for (const projectDir of projectsDirs) {
     logger.debug(`Processing project directory ${projectDir}`);
 
     const projectName = path.basename(projectDir);
-    const servicesModules = fg
-        .sync('**/*_service.ts', { cwd: projectDir, absolute: true })
+    const projectModules = fg
+        .sync('**/*.ts', { cwd: projectDir, absolute: true })
         // Exclude alpha versions
         .filter((serviceModule) => !/v\d+alpha/.test(serviceModule));
 
-    logger.debug(`Found ${servicesModules.length} service modules`, servicesModules);
+    logger.debug(`Found ${projectModules.length} modules`, projectModules);
 
-    if (servicesModules.length > 0) {
+    if (projectModules.length > 0) {
         logger.debug('Generating export statements');
 
         const indexModulePath = path.join(projectDir, 'index.ts');
@@ -71,30 +71,32 @@ for (const projectDir of projectsDirs) {
             services: [],
         };
 
-        const exportStatements = servicesModules.map((serviceModulePath) => {
-            const relativePath = path.relative(projectDir, serviceModulePath);
+        const exportStatements = projectModules.map((modulePath) => {
+            const relativePath = path.relative(projectDir, modulePath);
             const relativePathSegments = relativePath.split(path.sep);
-            const firstSegment = relativePathSegments[0];
-            const serviceModuleName = path.basename(serviceModulePath);
-            const suffix = serviceModuleName.replace('_service.ts', '');
+            const firstPathSegment = relativePathSegments[0];
+            const moduleName = path.basename(modulePath).replace('.ts', '');
+            const serviceName = moduleName.replace('_service', '');
             // Do not use 'vX' as prefixes
             const usePathSegmentAsPrefix = relativePathSegments.length > 1
-                && firstSegment.length > 2
-                && firstSegment !== suffix;
-            const serviceAlias = [
-                usePathSegmentAsPrefix ? firstSegment : undefined,
-                suffix,
+                && firstPathSegment.length > 2
+                && firstPathSegment !== serviceName;
+            const moduleAlias = [
+                usePathSegmentAsPrefix ? firstPathSegment : undefined,
+                moduleName,
             ].filter(Boolean).join('_');
 
-            const { ext } = path.parse(serviceModulePath);
-            const serviceModuleWithoutExt = relativePath.replace(ext, '');
+            const { ext } = path.parse(modulePath);
+            const moduleWithoutExt = relativePath.replace(ext, '');
 
-            projectsMeta[indexModulePath].services.push({
-                name: suffix,
-                exportAlias: serviceAlias,
-            });
+            if (moduleWithoutExt.endsWith('_service')) {
+                projectsMeta[indexModulePath].services.push({
+                    name: moduleName,
+                    exportAlias: moduleAlias,
+                });
+            }
 
-            return `export * as ${serviceAlias} from './${serviceModuleWithoutExt}'`;
+            return `export * as ${moduleAlias} from './${moduleWithoutExt}'`;
         });
 
         const indexModuleContent = exportStatements.join('\n');
@@ -129,7 +131,7 @@ for (const [indexModulePath, projectMeta] of Object.entries(projectsMeta)) {
                 `export const ${serviceConfig.exportClassName || serviceConfig.importClassName} = cloudApi.${projectMeta.name}.${serviceMeta.exportAlias}.${serviceConfig.importClassName};`,
             );
         } else {
-            logger.warn(`There is no configuration for service ${serviceMeta.name} in project ${projectMeta.name}`);
+            logger.warn(`There is no configuration for service ${serviceMeta.exportAlias} in project ${projectMeta.name}`);
         }
     }
 }

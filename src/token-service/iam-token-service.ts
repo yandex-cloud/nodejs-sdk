@@ -76,11 +76,11 @@ export class IamTokenService implements TokenService {
         }
     }
 
-    private async requestToken(): Promise<cloudApi.iam.iam_token.CreateIamTokenResponse> {
+    private async requestToken(): Promise<cloudApi.iam.iam_token_service.CreateIamTokenResponse> {
         const deadline = DateTime.now().plus({ millisecond: this.tokenRequestTimeout }).toJSDate();
 
         return this.client().create(
-            cloudApi.iam.iam_token.CreateIamTokenRequest.fromPartial({
+            cloudApi.iam.iam_token_service.CreateIamTokenRequest.fromPartial({
                 jwt: this.getJwtRequest(),
             }),
             { deadline },

@@ -2,7 +2,7 @@ import { Session } from '../../session';
 import { Operation } from '../../generated/yandex/cloud/operation/operation';
 import { serviceClients, cloudApi } from '../..';
 
-const { operation: { operation: { GetOperationRequest } } } = cloudApi;
+const { operation: { operation_service: { GetOperationRequest } } } = cloudApi;
 
 const DEFAULT_TIMEOUT_MS = 10 * 60 * 1000; // 10 minutes
 
