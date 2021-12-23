@@ -1,1 +1,2 @@
-export * as operation from './operation_service'
+export * as operation from './operation'
+export * as operation_service from './operation_service'
