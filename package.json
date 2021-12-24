@@ -9,23 +9,38 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yandex-cloud/nodejs-sdk.git"
+    "url": "https://github.com/yandex-cloud/nodejs-sdk.git"
   },
   "author": "Yandex LLC",
   "license": "MIT",
-  "main": "index.js",
+  "main": "dist/index.js",
   "bugs": {
     "url": "https://github.com/yandex-cloud/nodejs-sdk/issues"
   },
+  "files": [
+    "dist"
+  ],
   "homepage": "https://github.com/yandex-cloud/nodejs-sdk#readme",
   "dependencies": {
-    "aws-sdk": ">= 2.0.9",
-    "grpc": "^1.17.0",
-    "node-fetch": "^2.6.0",
-    "protobufjs": "^6.8.8"
+    "@grpc/grpc-js": "https://gitpkg.now.sh/DavyJohnes/grpc-node/packages/grpc-js?fix-class-options-issue-with-dist",
+    "axios": "^0.24.0",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "log4js": "^6.3.0",
+    "luxon": "^2.2.0",
+    "nice-grpc": "^1.0.4",
+    "nice-grpc-client-middleware-deadline": "^1.0.4",
+    "protobufjs": "^6.8.8",
+    "utility-types": "^3.10.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^15.0.0",
+    "@commitlint/config-conventional": "^15.0.0",
+    "@semantic-release/git": "^10.0.1",
     "@types/jest": "^27.0.3",
+    "@types/jsonwebtoken": "^8.5.6",
+    "@types/lodash": "^4.14.178",
+    "@types/luxon": "^2.0.8",
     "@types/node": "^16.11.3",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
     "@typescript-eslint/parser": "^5.7.0",
@@ -36,17 +51,22 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-prefer-arrow-functions": "^3.1.4",
     "eslint-plugin-unicorn": "^39.0.0",
+    "fast-glob": "^3.2.7",
+    "grpc-tools": "^1.11.2",
+    "husky": "^7.0.4",
     "jest": "^27.4.5",
+    "semantic-release": "^18.0.1",
     "ts-jest": "^27.1.1",
     "ts-node": "^10.4.0",
-    "typescript": "^4.5.4",
-    "yaml": "^1.6.0",
-    "ydb-sdk": "^1.5.1"
+    "ts-proto": "^1.95.1",
+    "typescript": "^4.5.4"
   },
   "scripts": {
     "test": "jest -c config/jest.ts --passWithNoTests",
     "lint": "eslint src config",
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "generate-code": "ts-node scripts/generate-code.ts",
+    "prepare": "husky install && npm run build"
   },
   "engines": {
     "node": ">=10.0.0"
