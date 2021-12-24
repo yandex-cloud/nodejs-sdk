@@ -9,7 +9,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yandex-cloud/nodejs-sdk.git"
+    "url": "https://github.com/yandex-cloud/nodejs-sdk.git"
   },
   "author": "Yandex LLC",
   "license": "MIT",
@@ -17,6 +17,9 @@
   "bugs": {
     "url": "https://github.com/yandex-cloud/nodejs-sdk/issues"
   },
+  "files": [
+    "dist"
+  ],
   "homepage": "https://github.com/yandex-cloud/nodejs-sdk#readme",
   "dependencies": {
     "@grpc/grpc-js": "https://gitpkg.now.sh/DavyJohnes/grpc-node/packages/grpc-js?fix-class-options-issue-with-dist",
@@ -33,6 +36,7 @@
   "devDependencies": {
     "@commitlint/cli": "^15.0.0",
     "@commitlint/config-conventional": "^15.0.0",
+    "@semantic-release/git": "^10.0.1",
     "@types/jest": "^27.0.3",
     "@types/jsonwebtoken": "^8.5.6",
     "@types/lodash": "^4.14.178",
@@ -51,6 +55,7 @@
     "grpc-tools": "^1.11.2",
     "husky": "^7.0.4",
     "jest": "^27.4.5",
+    "semantic-release": "^18.0.1",
     "ts-jest": "^27.1.1",
     "ts-node": "^10.4.0",
     "ts-proto": "^1.95.1",
