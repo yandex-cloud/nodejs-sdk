@@ -13,6 +13,6 @@ jobs:
       - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@4a0dbbde6b45cce08566abb9accace703f2a7a5d
       - run: npm ci
       - env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.YANDEX_CLOUD_BOT_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
