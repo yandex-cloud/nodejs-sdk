@@ -3,6 +3,8 @@ on:
   pull_request:
     branches:
       - master
+      - alpha
+      - beta
 jobs:
   install:
     runs-on: ubuntu-20.04
