@@ -14,7 +14,6 @@ jobs:
       - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@90be359d4a53ca9cff03bca199302ed637e45619
         with:
           persist-credentials: false
-      - run: npm ci
       - env:
           GITHUB_TOKEN: ${{ secrets.YANDEX_CLOUD_BOT_TOKEN }}
           GIT_AUTHOR_NAME: yandex-cloud-bot
