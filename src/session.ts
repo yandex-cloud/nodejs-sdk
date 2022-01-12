@@ -7,7 +7,7 @@ import {
     GeneratedServiceClientCtor,
     IamTokenCredentialsConfig,
     OAuthCredentialsConfig,
-    ServiceAccountCredentialsConfig,
+    ServiceAccountCredentialsConfig, WrappedServiceClientType,
     SessionConfig,
 } from './types';
 import { IamTokenService } from './token-service/iam-token-service';
@@ -94,7 +94,7 @@ export class Session {
         return this.config.pollInterval;
     }
 
-    client<S extends ServiceDefinition>(clientClass: GeneratedServiceClientCtor<S>) {
+    client<S extends ServiceDefinition>(clientClass: GeneratedServiceClientCtor<S>): WrappedServiceClientType<S> {
         const endpoint = getServiceClientEndpoint(clientClass);
         const channel = createChannel(endpoint, this.channelCredentials);
 
