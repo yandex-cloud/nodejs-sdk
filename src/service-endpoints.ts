@@ -163,10 +163,20 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
     {
         serviceIds: [
             'yandex.cloud.logging.v1.LogGroupService',
-            'yandex.cloud.logging.v1.LogIngestionService',
+        ],
+        endpoint: 'logging.api.cloud.yandex.net:443',
+    },
+    {
+        serviceIds: [
             'yandex.cloud.logging.v1.LogReadingService',
         ],
-        endpoint: 'logs.api.cloud.yandex.net:443',
+        endpoint: 'reader.logging.yandexcloud.net:443',
+    },
+    {
+        serviceIds: [
+            'yandex.cloud.logging.v1.LogIngestionService',
+        ],
+        endpoint: 'ingester.logging.yandexcloud.net:443',
     },
     {
         serviceIds: [
