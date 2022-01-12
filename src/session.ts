@@ -94,8 +94,8 @@ export class Session {
         return this.config.pollInterval;
     }
 
-    client<S extends ServiceDefinition>(clientClass: GeneratedServiceClientCtor<S>): WrappedServiceClientType<S> {
-        const endpoint = getServiceClientEndpoint(clientClass);
+    client<S extends ServiceDefinition>(clientClass: GeneratedServiceClientCtor<S>, customEndpoint?: string): WrappedServiceClientType<S> {
+        const endpoint = customEndpoint || getServiceClientEndpoint(clientClass);
         const channel = createChannel(endpoint, this.channelCredentials);
 
         return clientFactory.create(clientClass.service, channel);
