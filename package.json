@@ -27,6 +27,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "log4js": "^6.3.0",
+    "long": "^5.2.0",
     "luxon": "^2.2.0",
     "nice-grpc": "^1.0.4",
     "nice-grpc-client-middleware-deadline": "^1.0.4",
