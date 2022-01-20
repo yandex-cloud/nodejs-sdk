@@ -1,4 +1,4 @@
-import { serviceClients, Session, cloudApi } from 'yandex-cloud';
+import { serviceClients, Session, cloudApi } from '@yandex-cloud/nodejs-sdk';
 import { getEnv } from './utils/get-env';
 import { log } from './utils/logger';
 

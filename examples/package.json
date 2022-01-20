@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "yandex-cloud": "file:.."
+    "@yandex-cloud/nodejs-sdk": "^2.0.0-alpha.7"
   }
 }

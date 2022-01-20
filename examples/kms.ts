@@ -1,6 +1,6 @@
 import {
     serviceClients, Session, cloudApi, waitForOperation, decodeMessage,
-} from 'yandex-cloud';
+} from '@yandex-cloud/nodejs-sdk';
 import { getEnv } from './utils/get-env';
 import { log } from './utils/logger';
 
