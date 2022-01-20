@@ -1,83 +1,125 @@
-# Yandex.Cloud SDK (node.js)
+# Yandex.Cloud SDK (nodejs)
 
-[![npm](https://img.shields.io/npm/v/yandex-cloud.svg)](https://www.npmjs.com/package/yandex-cloud)
-[![CircleCI](https://img.shields.io/circleci/build/gh/yandex-cloud/nodejs-sdk/master)](https://circleci.com/gh/yandex-cloud/nodejs-sdk/tree/master)
+[![npm](https://img.shields.io/npm/v/@yandex-cloud/nodejs-sdk.svg)](https://www.npmjs.com/package/@yandex-cloud/nodejs-sdk)
 [![License](https://img.shields.io/github/license/yandex-cloud/nodejs-sdk.svg)](https://github.com/yandex-cloud/nodejs-sdk/blob/master/LICENSE)
 
 Need to automate your infrastructure or use services provided by Yandex.Cloud? We've got you covered.
 
-Installation:
+## Requirements
+- nodejs >= 10
 
-    npm install yandex-cloud
-
-Library requires at least node.js 10 and provides TypeScript declarations.
+## Installation
+`npm install @yandex-cloud/nodejs-sdk`
 
 ## Getting started
 
-There are two options for authorization your requests - OAuth Token
-and Metadata Service (if you're executing code inside VMs or Functions
+There are three options for authorization your requests:
+- [OAuth Token](https://cloud.yandex.com/en-ru/docs/iam/concepts/authorization/oauth-token)
+- [IAM token](https://cloud.yandex.com/en-ru/docs/iam/operations/iam-token/create)
+- [Metadata Service](https://cloud.yandex.com/en-ru/docs/compute/concepts/vm-metadata) (if you're executing code inside VMs or Functions
 running in Yandex.Cloud)
 
 ### OAuth Token
 
-```javascript
-const {Session}      = require('yandex-cloud');
-const {CloudService} = require('yandex-cloud/api/resourcemanager/v1');
+```typescript
+import { Session, cloudApi, serviceClients } from '@yandex-cloud/nodejs-sdk';
+
+const { resourcemanager: { cloud_service: { ListCloudsRequest } } } = cloudApi;
 
 // Initialize SDK with your token
 const session = new Session({ oauthToken: 'YOUR_TOKEN' });
 
 // Create service client
-const cloudService = new CloudService(session);
+const cloudService = session.client(serviceClients.CloudServiceClient);
 
 // Issue request (returns Promise)
-let response = await cloudService.list({});
+const response = await cloudService.list(ListCloudsRequest.fromPartial({
+    pageSize: 100,
+}));
 ```
 
 ### Metadata Service
 
 Don't forget to assign Service Account for your Instance or Function.
 
-```javascript
-const {CloudService} = require('yandex-cloud/api/resourcemanager/v1');
+```typescript
+import { Session, cloudApi, serviceClients } from '@yandex-cloud/nodejs-sdk';
 
-// Create service client (auth token will be fetched from metadata service
-const cloudService = new CloudService();
+const { resourcemanager: { cloud_service: { ListCloudsRequest } } } = cloudApi;
+
+// Initialize SDK with your token
+const session = new Session();
+
+// Create service client
+const cloudService = session.client(serviceClients.CloudServiceClient);
 
 // Issue request (returns Promise)
-let response = await cloudService.list({});
+const response = await cloudService.list(ListCloudsRequest.fromPartial({
+    pageSize: 100,
+}));
 ```
 
 ### IAM Token
 
-```javascript
-const {Session}      = require('yandex-cloud');
-const {CloudService} = require('yandex-cloud/api/resourcemanager/v1');
+```typescript
+import { Session, cloudApi, serviceClients } from '@yandex-cloud/nodejs-sdk';
+
+const { resourcemanager: { cloud_service: { ListCloudsRequest } } } = cloudApi;
 
 // Initialize SDK with your token
 const session = new Session({ iamToken: 'YOUR_TOKEN' });
 
 // Create service client
-const cloudService = new CloudService(session);
+const cloudService = session.client(serviceClients.CloudServiceClient);
 
 // Issue request (returns Promise)
-let response = await cloudService.list({});
+const response = await cloudService.list(ListCloudsRequest.fromPartial({
+    pageSize: 100,
+}));
 ```
 
-Check `examples` directory for more examples.
+Check [examples](./examples) directory for more examples.
 
 ## Services
 
-* Resource Manager;
-* Identity and Access Management (IAM);
-* Compute Cloud;
-* Container Registry;
-* Managed Services for Kubernetes;
-* Key Management Service (KMS);
-* Load Balancer;
-* Cloud Functions;
-* Virtual Private Cloud (VPC);
 * AI Translate;
 * AI Vision.
+* Application Load Balancer
+* Billing
+* Cloud CDN
+* Certificate Manager
+* Compute Cloud
+* Container Registry
+* Data Proc
+* DataSphere
+* Data Transfer
+* DNS
+* Identity and Access Management (IAM)
+* IoT Core
+* Managed Service for Kubernetes
+* Key Management Service (KMS)
+* Load Balancer
+* Lockbox
+* Logging
+* Managed DataBase
+  * ClickHouse
+  * ElasticSearch
+  * Greenplum
+  * Kafka
+  * MongoDB
+  * MySQL
+  * PostgreSQL
+  * Redis
+  * MS SQL Server
+* Organization Manager
+* Resource Manager
+* Serverless
+  * Functions
+  * API Gateway
+  * Containers
+  * Triggers
+  * MDB Proxy
+* Virtual Private Cloud (VPC)
+* Yandex Database (YDB)
 
 If you need generated client for other Yandex.Cloud services, just open an issue.

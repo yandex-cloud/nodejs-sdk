@@ -1,14 +1,26 @@
-name: 'Checkout from VCS and install NodeJS from .nvmrc'
+name: 'checkout-and-install-node'
+description: 'Checkout from VCS and install NodeJS from .nvmrc'
+inputs:
+  persist-credentials:
+    description: 'Whether to configure the token or SSH key with the local git config'
+    required: false
+    default: 'true'
 runs:
   using: 'composite'
   steps:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
+        persist-credentials: ${{ inputs.persist-credentials }}
     - uses: actions/setup-node@v2
       with:
         node-version-file: '.nvmrc'
     - uses: actions/cache@v2
+      id: cache
       with:
         path: node_modules
         key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+    - name: Install Depencendies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm ci
+      shell: bash

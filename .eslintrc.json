@@ -28,7 +28,6 @@
     "unicorn/prefer-node-protocol": "off",
     "class-methods-use-this": "off",
     "@typescript-eslint/no-unused-vars": "off",
-    "import/no-extraneous-dependencies": "off",
     "import/prefer-default-export": "off",
     "comma-dangle": ["error", "always-multiline"],
     "indent": "off",
@@ -41,6 +40,16 @@
     "newline-after-var": "error",
     "newline-before-return": "error",
     "no-plusplus": "off",
-    "unicorn/import-style": "off"
+    "unicorn/import-style": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "no-underscore-dangle": ["error", {
+      "allowAfterThis": true,
+      "allowAfterSuper": false
+    }],
+    "unicorn/no-null": "off",
+    "import/no-extraneous-dependencies": ["error", {
+      "devDependencies": true
+    }],
+    "import/no-cycle": "off"
   }
 }

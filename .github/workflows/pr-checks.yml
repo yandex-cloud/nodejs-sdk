@@ -3,27 +3,21 @@ on:
   pull_request:
     branches:
       - master
+      - alpha
+      - beta
 jobs:
-  install:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@4a0dbbde6b45cce08566abb9accace703f2a7a5d
-      - run: npm ci
   tests:
     runs-on: ubuntu-20.04
-    needs: install
     steps:
-      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@4a0dbbde6b45cce08566abb9accace703f2a7a5d
+      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@f69248b52b7991214847e889f28ba0883ed0ca2c
       - run: npm run test
   lint:
     runs-on: ubuntu-20.04
-    needs: install
     steps:
-      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@4a0dbbde6b45cce08566abb9accace703f2a7a5d
+      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@f69248b52b7991214847e889f28ba0883ed0ca2c
       - run: npm run lint
   build:
     runs-on: ubuntu-20.04
-    needs: install
     steps:
-      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@4a0dbbde6b45cce08566abb9accace703f2a7a5d
+      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@f69248b52b7991214847e889f28ba0883ed0ca2c
       - run: npm run build
