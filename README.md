@@ -1,6 +1,6 @@
 # Yandex.Cloud SDK (nodejs)
 
-[![npm](https://img.shields.io/npm/v/yandex-cloud.svg)](https://www.npmjs.com/package/@yandex-cloud/nodejs-sdk)
+[![npm](https://img.shields.io/npm/v/@yandex-cloud/nodejs-sdk.svg)](https://www.npmjs.com/package/@yandex-cloud/nodejs-sdk)
 [![License](https://img.shields.io/github/license/yandex-cloud/nodejs-sdk.svg)](https://github.com/yandex-cloud/nodejs-sdk/blob/master/LICENSE)
 
 Need to automate your infrastructure or use services provided by Yandex.Cloud? We've got you covered.
