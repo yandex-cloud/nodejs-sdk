@@ -1,6 +1,6 @@
 # Yandex.Cloud SDK (nodejs)
 
-[![npm](https://img.shields.io/npm/v/yandex-cloud.svg)](https://www.npmjs.com/package/yandex-cloud)
+[![npm](https://img.shields.io/npm/v/yandex-cloud.svg)](https://www.npmjs.com/package/@yandex-cloud/nodejs-sdk)
 [![License](https://img.shields.io/github/license/yandex-cloud/nodejs-sdk.svg)](https://github.com/yandex-cloud/nodejs-sdk/blob/master/LICENSE)
 
 Need to automate your infrastructure or use services provided by Yandex.Cloud? We've got you covered.
@@ -9,7 +9,7 @@ Need to automate your infrastructure or use services provided by Yandex.Cloud? W
 - nodejs >= 10
 
 ## Installation
-`npm install yandex-cloud`
+`npm install @yandex-cloud/nodejs-sdk`
 
 ## Getting started
 
@@ -22,7 +22,7 @@ running in Yandex.Cloud)
 ### OAuth Token
 
 ```typescript
-import { Session, cloudApi, serviceClients } from 'yandex-cloud';
+import { Session, cloudApi, serviceClients } from '@yandex-cloud/nodejs-sdk';
 
 const { resourcemanager: { cloud_service: { ListCloudsRequest } } } = cloudApi;
 
@@ -43,7 +43,7 @@ const response = await cloudService.list(ListCloudsRequest.fromPartial({
 Don't forget to assign Service Account for your Instance or Function.
 
 ```typescript
-import { Session, cloudApi, serviceClients } from 'yandex-cloud';
+import { Session, cloudApi, serviceClients } from '@yandex-cloud/nodejs-sdk';
 
 const { resourcemanager: { cloud_service: { ListCloudsRequest } } } = cloudApi;
 
@@ -62,7 +62,7 @@ const response = await cloudService.list(ListCloudsRequest.fromPartial({
 ### IAM Token
 
 ```typescript
-import { Session, cloudApi, serviceClients } from 'yandex-cloud';
+import { Session, cloudApi, serviceClients } from '@yandex-cloud/nodejs-sdk';
 
 const { resourcemanager: { cloud_service: { ListCloudsRequest } } } = cloudApi;
 
