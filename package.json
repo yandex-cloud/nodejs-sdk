@@ -29,8 +29,8 @@
     "log4js": "6.3.0",
     "long": "5.2.0",
     "luxon": "2.2.0",
-    "nice-grpc": "1.0.4",
-    "nice-grpc-client-middleware-deadline": "1.0.4",
+    "nice-grpc": "1.0.6",
+    "nice-grpc-client-middleware-deadline": "1.0.6",
     "protobufjs": "6.8.8",
     "utility-types": "3.10.0"
   },
