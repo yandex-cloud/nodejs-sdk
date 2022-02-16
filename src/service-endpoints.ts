@@ -317,8 +317,7 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
 
 export const getServiceClientEndpoint = <T extends ServiceDefinition>(generatedClientCtor: GeneratedServiceClientCtor<T>): string => {
     const clientCtor = generatedClientCtor as unknown as ServiceClientConstructor;
-    // eslint-disable-next-line prefer-destructuring
-    const serviceName: string = clientCtor.options.serviceName as string;
+    const serviceName: string = clientCtor.serviceName as string;
 
     if (!serviceName) {
         throw new Error('Unable to retrieve serviceName of provided service client class');

@@ -21,13 +21,13 @@ describe('service endpoints', () => {
         const serviceName = 'myCustomService';
 
         expect(() => {
-            getServiceClientEndpoint({ options: { serviceName } } as unknown as MockServiceClientCtor);
+            getServiceClientEndpoint({ serviceName } as unknown as MockServiceClientCtor);
         }).toThrow(`Endpoint for service ${serviceName} is no defined`);
     });
 
     it('should throw exception if client class has no serviceName option', () => {
         expect(() => {
-            getServiceClientEndpoint({ options: {} } as unknown as MockServiceClientCtor);
+            getServiceClientEndpoint({} as unknown as MockServiceClientCtor);
         }).toThrow('Unable to retrieve serviceName of provided service client class');
     });
 });
