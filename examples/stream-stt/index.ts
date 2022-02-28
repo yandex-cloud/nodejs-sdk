@@ -4,12 +4,14 @@ import {
     StreamingRecognitionRequest,
 } from '@yandex-cloud/nodejs-sdk/dist/generated/yandex/cloud/ai/stt/v2/stt_service';
 import * as fs from 'fs';
+import * as path from 'path';
 import * as stream from 'stream';
 import * as wav from 'wav';
 import { getEnv } from '../utils/get-env';
 import { log } from '../utils/logger';
 
-const file = fs.createReadStream('test.wav');
+// eslint-disable-next-line unicorn/prefer-module
+const file = fs.createReadStream(path.join(__dirname, 'test.wav'));
 const reader = new wav.Reader();
 const data = new stream.PassThrough();
 
