@@ -4,17 +4,18 @@ import {
     StreamingRecognitionRequest,
 } from '@yandex-cloud/nodejs-sdk/dist/generated/yandex/cloud/ai/stt/v2/stt_service';
 import * as fs from 'fs';
+import * as stream from 'stream';
 import * as wav from 'wav';
-import { Format } from 'wav';
 import { getEnv } from '../utils/get-env';
 import { log } from '../utils/logger';
 
 const file = fs.createReadStream('test.wav');
 const reader = new wav.Reader();
+const data = new stream.PassThrough();
 
-const formatPromise = new Promise<Format>((resolve) => {
+const formatPromise = new Promise<wav.Format>((resolve) => {
     // the "format" event gets emitted at the end of the WAVE header
-    reader.on('format', (format: Format) => {
+    reader.on('format', (format: wav.Format) => {
         // pass the format object
         resolve(format);
     });
@@ -22,6 +23,7 @@ const formatPromise = new Promise<Format>((resolve) => {
 
 // pipe the WAVE file to the Reader instance
 file.pipe(reader);
+reader.pipe(data);
 
 (async () => {
     const authToken = getEnv('YC_OAUTH_TOKEN');
@@ -32,8 +34,6 @@ file.pipe(reader);
     async function* createRequest(): AsyncIterable<StreamingRecognitionRequest> {
         const format = await formatPromise;
 
-        log(JSON.stringify(format, null, 2));
-        // First message of the stream should be the config message
         yield StreamingRecognitionRequest.fromPartial({
             config: {
                 specification: {
@@ -44,8 +44,7 @@ file.pipe(reader);
                 folderId,
             },
         });
-        // Now we can send the data
-        for await (const chunk of file) {
+        for await (const chunk of data) {
             yield StreamingRecognitionRequest.fromPartial({
                 audioContent: chunk,
             });
