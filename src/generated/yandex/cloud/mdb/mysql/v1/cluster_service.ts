@@ -20,6 +20,7 @@ import {
   Cluster_Environment,
   Resources,
   Access,
+  PerformanceDiagnostics,
   Cluster,
   Host,
   cluster_EnvironmentFromJSON,
@@ -41,8 +42,9 @@ export const protobufPackage = "yandex.cloud.mdb.mysql.v1";
 export interface GetClusterRequest {
   $type: "yandex.cloud.mdb.mysql.v1.GetClusterRequest";
   /**
-   * ID of the MySQL cluster to return.
-   * To get the cluster ID use a [ClusterService.List] request.
+   * ID of the cluster to return information about.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
 }
@@ -50,23 +52,26 @@ export interface GetClusterRequest {
 export interface ListClustersRequest {
   $type: "yandex.cloud.mdb.mysql.v1.ListClustersRequest";
   /**
-   * ID of the folder to list MySQL clusters in.
-   * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+   * ID of the folder to list clusters in.
+   *
+   * To get this ID, make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
    */
   folderId: string;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size], the service returns a [ListClustersResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the API returns a [ListClustersResponse.next_page_token] that can be used to get the next page of results in the subsequent [ClusterService.List] requests.
    */
   pageSize: number;
   /**
-   * Page token. To get the next page of results, set [page_token] to the [ListClustersResponse.next_page_token]
-   * returned by a previous list request.
+   * Page token that can be used to iterate through multiple pages of results.
+   *
+   * To get the next page of results, set [page_token] to the [ListClustersResponse.next_page_token] returned by the previous [ClusterService.List] request.
    */
   pageToken: string;
   /**
-   * A filter expression that filters resources listed in the response.
+   * A filter expression that selects clusters listed in the response.
+   *
    * The expression must specify:
    * 1. The field name. Currently you can only use filtering with the [Cluster.name] field.
    * 2. An `=` operator.
@@ -77,45 +82,47 @@ export interface ListClustersRequest {
 
 export interface ListClustersResponse {
   $type: "yandex.cloud.mdb.mysql.v1.ListClustersResponse";
-  /** List of MySQL clusters. */
+  /** List of clusters. */
   clusters: Cluster[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListClustersRequest.page_size], use the [next_page_token] as the value
-   * for the [ListClustersRequest.page_token] parameter in the next list request. Each subsequent
-   * list request will have its own [next_page_token] to continue paging through the results.
+   * The token that can be used to get the next page of results.
+   *
+   * If the number of results is larger than [ListClustersRequest.page_size], use the [next_page_token] as the value for the [ListClustersRequest.page_token] in the subsequent [ClusterService.List] request to iterate through multiple pages of results.
+   *
+   * Each of the subsequent [ClusterService.List] requests should use the [next_page_token] value returned by the previous request to continue paging through the results.
    */
   nextPageToken: string;
 }
 
 export interface CreateClusterRequest {
   $type: "yandex.cloud.mdb.mysql.v1.CreateClusterRequest";
-  /** ID of the folder to create the MySQL cluster in. */
-  folderId: string;
-  /** Name of the MySQL cluster. The name must be unique within the folder. */
-  name: string;
-  /** Description of the MySQL cluster. */
-  description: string;
   /**
-   * Custom labels for the MySQL cluster as `key:value` pairs. Maximum 64 per resource.
-   * For example, "project": "mvp" or "source": "dictionary".
+   * ID of the folder to create the cluster in.
+   *
+   * To get this ID, make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
    */
+  folderId: string;
+  /** Name of the cluster. The name must be unique within the folder. */
+  name: string;
+  /** Description of the cluster. */
+  description: string;
+  /** Custom labels for the cluster as `key:value` pairs. */
   labels: { [key: string]: string };
-  /** Deployment environment of the MySQL cluster. */
+  /** Deployment environment of the cluster. */
   environment: Cluster_Environment;
-  /** Configuration and resources for hosts that should be created for the MySQL cluster. */
+  /** Configuration of the cluster. */
   configSpec?: ConfigSpec;
-  /** Descriptions of databases to be created in the MySQL cluster. */
+  /** Configuration of databases in the cluster. */
   databaseSpecs: DatabaseSpec[];
-  /** Descriptions of database users to be created in the MySQL cluster. */
+  /** Configuration of database users in the cluster. */
   userSpecs: UserSpec[];
-  /** Individual configurations for hosts that should be created for the MySQL cluster. */
+  /** Configuration of hosts in the cluster. */
   hostSpecs: HostSpec[];
   /** ID of the network to create the cluster in. */
   networkId: string;
-  /** User security groups */
+  /** List of security group IDs to apply to the cluster. */
   securityGroupIds: string[];
-  /** Deletion Protection inhibits deletion of the cluster */
+  /** This option prevents unintended deletion of the cluster. */
   deletionProtection: boolean;
 }
 
@@ -127,38 +134,38 @@ export interface CreateClusterRequest_LabelsEntry {
 
 export interface CreateClusterMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.CreateClusterMetadata";
-  /** ID of the MySQL cluster that is being created. */
+  /** ID of the cluster that is being created. */
   clusterId: string;
 }
 
 export interface UpdateClusterRequest {
   $type: "yandex.cloud.mdb.mysql.v1.UpdateClusterRequest";
   /**
-   * ID of the MySQL cluster to update.
-   * To get the MySQL cluster ID, use a [ClusterService.List] request.
+   * ID of the cluster to update.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
-  /** Field mask that specifies which fields of the MySQL cluster should be updated. */
+  /** Field mask that specifies which settings of the cluster should be updated. */
   updateMask?: FieldMask;
-  /** New description of the MySQL cluster. */
+  /** New description of the cluster. */
   description: string;
   /**
-   * Custom labels for the MySQL cluster as `key:value` pairs. Maximum 64 per resource.
-   * For example, "project": "mvp" or "source": "dictionary".
+   * New set of custom labels for the cluster as `key:value` pairs.
    *
-   * The new set of labels will completely replace the old ones. To add a label, request the current
-   * set with the [ClusterService.Get] method, then send an [ClusterService.Update] request with the new label added to the set.
+   * This set will completely replace the current one.
+   * To add a label, request the current label set with the [ClusterService.Get] request, then send an [ClusterService.Update] request with the new label added to the current set.
    */
   labels: { [key: string]: string };
-  /** New configuration and resources for hosts in the cluster. */
+  /** New configuration of the cluster. */
   configSpec?: ConfigSpec;
-  /** New name for the cluster. */
+  /** New name of the cluster. */
   name: string;
-  /** New maintenance window settings for the cluster. */
+  /** Configuration of a maintenance window in an MySQL cluster. */
   maintenanceWindow?: MaintenanceWindow;
-  /** User security groups */
+  /** New list of security group IDs to apply to the cluster. */
   securityGroupIds: string[];
-  /** Deletion Protection inhibits deletion of the cluster */
+  /** This option prevents unintended deletion of the cluster. */
   deletionProtection: boolean;
 }
 
@@ -170,72 +177,69 @@ export interface UpdateClusterRequest_LabelsEntry {
 
 export interface UpdateClusterMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.UpdateClusterMetadata";
-  /** ID of the MySQL cluster that is being modified. */
+  /** ID of the cluster that is being updated. */
   clusterId: string;
 }
 
 export interface DeleteClusterRequest {
   $type: "yandex.cloud.mdb.mysql.v1.DeleteClusterRequest";
   /**
-   * ID of the MySQL cluster to delete.
-   * To get the MySQL cluster ID, use a [ClusterService.List] request.
+   * ID of the cluster to delete.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
 }
 
 export interface DeleteClusterMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.DeleteClusterMetadata";
-  /** ID of the MySQL cluster that is being deleted. */
+  /** ID of the cluster that is being deleted. */
   clusterId: string;
 }
 
 export interface BackupClusterRequest {
   $type: "yandex.cloud.mdb.mysql.v1.BackupClusterRequest";
   /**
-   * ID of the MySQL cluster to back up.
-   * To get the MySQL cluster ID, use a [ClusterService.List] request.
+   * ID of the cluster to back up.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
 }
 
 export interface BackupClusterMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.BackupClusterMetadata";
-  /** ID of the MySQL cluster that is being backed up. */
+  /** ID of the cluster that is being backed up. */
   clusterId: string;
 }
 
 export interface RestoreClusterRequest {
   $type: "yandex.cloud.mdb.mysql.v1.RestoreClusterRequest";
   /**
-   * ID of the backup to create a cluster from.
-   * To get the backup ID, use a [ClusterService.ListBackups] request.
+   * ID of the backup to restore from.
+   *
+   * To get this ID, make a [BackupService.List] request (lists all backups in a folder) or a [ClusterService.ListBackups] request (lists all backups for an existing cluster).
    */
   backupId: string;
   /** Timestamp of the moment to which the MySQL cluster should be restored. */
   time?: Date;
-  /** Name of the new MySQL cluster. The name must be unique within the folder. */
+  /** Name of the new MySQL cluster the backup will be restored to. The name must be unique within the folder. */
   name: string;
-  /** Description of the new MySQL cluster. */
+  /** Description of the new cluster. */
   description: string;
-  /**
-   * Custom labels for the MySQL cluster as `key:value` pairs. Maximum 64 per resource.
-   * For example, "project": "mvp" or "source": "dictionary".
-   */
+  /** Custom labels for the new cluster as `key:value` pairs. */
   labels: { [key: string]: string };
-  /** Deployment environment of the new MySQL cluster. */
+  /** Deployment environment for the new cluster. */
   environment: Cluster_Environment;
-  /** Configuration for the MySQL cluster to be created. */
+  /** Configuration of the new cluster. */
   configSpec?: ConfigSpec;
-  /**
-   * Configurations for MySQL hosts that should be added
-   * to the cluster that is being created from the backup.
-   */
+  /** Configuration of hosts in the new cluster. */
   hostSpecs: HostSpec[];
-  /** ID of the network to create the MySQL cluster in. */
+  /** ID of the network to create the new cluster in. */
   networkId: string;
-  /** ID of the folder to create the MySQL cluster in. */
+  /** ID of the folder to create the new cluster in. */
   folderId: string;
-  /** User security groups */
+  /** List of security group IDs to apply to the new cluster. */
   securityGroupIds: string[];
 }
 
@@ -247,7 +251,7 @@ export interface RestoreClusterRequest_LabelsEntry {
 
 export interface RestoreClusterMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.RestoreClusterMetadata";
-  /** ID of the new MySQL cluster that is being created from a backup. */
+  /** ID of the new cluster that is being created from a backup. */
   clusterId: string;
   /** ID of the backup that is being used for creating a cluster. */
   backupId: string;
@@ -255,25 +259,42 @@ export interface RestoreClusterMetadata {
 
 export interface StartClusterFailoverRequest {
   $type: "yandex.cloud.mdb.mysql.v1.StartClusterFailoverRequest";
-  /** ID of MySQL cluster. */
+  /**
+   * ID of the cluster to start failover for.
+   *
+   * To get this ID, make a [ClusterService.List] request.
+   */
   clusterId: string;
-  /** New master host. Switch to the most up-to-date replica if not provided. */
+  /**
+   * Host name to switch master role to.
+   * If not provided, then the master role is switched to the most up-to-date replica host.
+   *
+   * To get this name, make a [ClusterService.ListHosts] request.
+   */
   hostName: string;
 }
 
 export interface StartClusterFailoverMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.StartClusterFailoverMetadata";
-  /** ID of the MySQL cluster being failovered. */
+  /** ID of the cluster that is being failovered. */
   clusterId: string;
 }
 
 export interface RescheduleMaintenanceRequest {
   $type: "yandex.cloud.mdb.mysql.v1.RescheduleMaintenanceRequest";
-  /** ID of the MySQL cluster to reschedule the maintenance operation for. */
+  /**
+   * ID of the cluster to reschedule the maintenance operation for.
+   *
+   * To get this ID, make a [ClusterService.List] request.
+   */
   clusterId: string;
   /** The type of reschedule request. */
   rescheduleType: RescheduleMaintenanceRequest_RescheduleType;
-  /** The time until which this maintenance operation should be delayed. The value should be ahead of the first time when the maintenance operation has been scheduled for no more than two weeks. The value can also point to the past moment of time if [reschedule_type.IMMEDIATE] reschedule type is chosen. */
+  /**
+   * The time until which this maintenance operation should be delayed.
+   * The value should be ahead of the first time when the maintenance operation has been scheduled for no more than two weeks.
+   * The value can also point to the past moment of time if `IMMEDIATE` reschedule type is chosen.
+   */
   delayedUntil?: Date;
 }
 
@@ -328,18 +349,18 @@ export function rescheduleMaintenanceRequest_RescheduleTypeToJSON(
   }
 }
 
-/** Rescheduled maintenance operation metadata. */
 export interface RescheduleMaintenanceMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.RescheduleMaintenanceMetadata";
-  /** Required. ID of the MySQL cluster. */
+  /** ID of the cluster the maintenance operation is being rescheduled for. */
   clusterId: string;
-  /** Required. The time until which this maintenance operation is to be delayed. */
+  /** The time until which this maintenance operation is to be delayed. */
   delayedUntil?: Date;
 }
 
+/** A single log record. */
 export interface LogRecord {
   $type: "yandex.cloud.mdb.mysql.v1.LogRecord";
-  /** Log record timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
+  /** Timestamp of the log record. */
   timestamp?: Date;
   /** Contents of the log record. */
   message: { [key: string]: string };
@@ -354,33 +375,44 @@ export interface LogRecord_MessageEntry {
 export interface ListClusterLogsRequest {
   $type: "yandex.cloud.mdb.mysql.v1.ListClusterLogsRequest";
   /**
-   * ID of the MySQL cluster to request logs for.
-   * To get the MySQL cluster ID use a [ClusterService.List] request.
+   * ID of the cluster to request logs for.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
   /**
    * Columns from the logs table to request.
-   * If no columns are specified, entire log records are returned.
+   * If no columns are specified, complete log records are returned.
    */
   columnFilter: string[];
-  /** Type of the service to request logs about. */
+  /** The log type. */
   serviceType: ListClusterLogsRequest_ServiceType;
-  /** Start timestamp for the logs request. */
+  /**
+   * Start timestamp for the logs request.
+   * The logs in the response will be within [from_time] to [to_time] range.
+   */
   fromTime?: Date;
-  /** End timestamp for the logs request. */
+  /**
+   * End timestamp for the logs request.
+   * The logs in the response will be within [from_time] to [to_time] range.
+   */
   toTime?: Date;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size], the service returns a [ListClusterLogsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the API returns a [ListClusterLogsResponse.next_page_token] that can be used to get the next page of results in the subsequent [ClusterService.ListLogs] requests.
    */
   pageSize: number;
   /**
-   * Page token. To get the next page of results, set [page_token] to the
-   * [ListClusterLogsResponse.next_page_token] returned by a previous list request.
+   * Page token that can be used to iterate through multiple pages of results.
+   *
+   * To get the next page of results, set [page_token] to the [ListClusterLogsResponse.next_page_token] returned by the previous [ClusterService.ListLogs] request.
    */
   pageToken: string;
-  /** Always return `next_page_token`, even if current page is empty. */
+  /**
+   * Option that controls the behavior of result pagination.
+   * If it is set to `true`, then [ListClusterLogsResponse.next_page_token] will always be returned, even if the current page is empty.
+   */
   alwaysNextPageToken: boolean;
 }
 
@@ -447,50 +479,64 @@ export interface ListClusterLogsResponse {
   /** Requested log records. */
   logs: LogRecord[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListClusterLogsRequest.page_size], use the [next_page_token] as the value
-   * for the [ListClusterLogsRequest.page_token] query parameter in the next list request.
-   * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
-   * This value is interchangeable with `next_record_token` from StreamLogs method.
+   * The token that can be used to get the next page of results.
+   *
+   * If the number of results is larger than [ListClusterLogsRequest.page_size], use the [next_page_token] as the value for the [ListClusterLogsRequest.page_token] in the subsequent [ClusterService.ListLogs] request to iterate through multiple pages of results.
+   *
+   * Each of the subsequent [ClusterService.ListLogs] requests should use the [next_page_token] value returned by the previous request to continue paging through the results.
+   *
+   * This value is interchangeable with [StreamLogRecord.next_record_token] from [ClusterService.StreamLogs] method.
    */
   nextPageToken: string;
 }
 
+/** A single log record in the logs stream. */
 export interface StreamLogRecord {
   $type: "yandex.cloud.mdb.mysql.v1.StreamLogRecord";
   /** One of the requested log records. */
   record?: LogRecord;
   /**
-   * This token allows you to continue streaming logs starting from the exact
-   * same record. To continue streaming, specify value of `next_record_token`
-   * as value for `record_token` parameter in the next StreamLogs request.
-   * This value is interchangeable with `next_page_token` from ListLogs method.
+   * The token that can be used to continue streaming logs starting from the exact same record.
+   * To continue streaming, specify value of [next_record_token] as the [StreamClusterLogsRequest.record_token] value in the next [ClusterService.StreamLogs] request.
+   *
+   * This value is interchangeable with [ListClusterLogsResponse.next_page_token] from [ClusterService.ListLogs] method.
    */
   nextRecordToken: string;
 }
 
 export interface StreamClusterLogsRequest {
   $type: "yandex.cloud.mdb.mysql.v1.StreamClusterLogsRequest";
-  /** Required. ID of the MySQL cluster. */
+  /**
+   * ID of the cluster to stream logs for.
+   *
+   * To get this ID, make a [ClusterService.List] request.
+   */
   clusterId: string;
-  /** Columns from logs table to get in the response. */
+  /**
+   * Columns from the logs table to request.
+   * If no columns are specified, complete log records are returned.
+   */
   columnFilter: string[];
+  /** The log type. */
   serviceType: StreamClusterLogsRequest_ServiceType;
   /** Start timestamp for the logs request. */
   fromTime?: Date;
   /**
    * End timestamp for the logs request.
-   * If this field is not set, all existing logs will be sent and then the new ones as
-   * they appear. In essence it has 'tail -f' semantics.
+   * If this field is not set, all existing log records beginning from [from_time] will be returned first, and then the new records will be returned as they appear.
+   *
+   * In essence it has `tail -f` command semantics.
    */
   toTime?: Date;
   /**
-   * Record token. Set `record_token` to the `next_record_token` returned by a previous StreamLogs
-   * request to start streaming from next log record.
+   * Record token that can be used to control logs streaming.
+   *
+   * Set [record_token] to the [StreamLogRecord.next_record_token], returned by the previous [ClusterService.StreamLogs] request to start streaming from the next log record.
    */
   recordToken: string;
   /**
-   * A filter expression that filters resources listed in the response.
+   * A filter expression that selects clusters logs listed in the response.
+   *
    * The expression must specify:
    * 1. The field name. Currently filtering can be applied to the [LogRecord.logs.hostname] field.
    * 2. An `=` operator.
@@ -560,30 +606,36 @@ export function streamClusterLogsRequest_ServiceTypeToJSON(
 
 export interface ListClusterOperationsRequest {
   $type: "yandex.cloud.mdb.mysql.v1.ListClusterOperationsRequest";
-  /** ID of the MySQL cluster to list operations for. */
+  /**
+   * ID of the cluster to list operations for.
+   *
+   * To get this ID, make a [ClusterService.List] request.
+   */
   clusterId: string;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size], the service returns a [ListClusterOperationsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the API returns a [ListClusterOperationsResponse.next_page_token] that can be used to get the next page of results in the subsequent [ClusterService.ListOperations] requests.
    */
   pageSize: number;
   /**
-   * Page token.  To get the next page of results, set [page_token] to the [ListClusterOperationsResponse.next_page_token]
-   * returned by a previous list request.
+   * Page token that can be used to iterate through multiple pages of results.
+   *
+   * To get the next page of results, set [page_token] to the [ListClusterOperationsResponse.next_page_token] returned by the previous [ClusterService.ListOperations] request.
    */
   pageToken: string;
 }
 
 export interface ListClusterOperationsResponse {
   $type: "yandex.cloud.mdb.mysql.v1.ListClusterOperationsResponse";
-  /** List of operations for the specified MySQL cluster. */
+  /** List of operations in the cluster. */
   operations: Operation[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListClusterOperationsRequest.page_size], use the [next_page_token] as the value
-   * for the [ListClusterOperationsRequest.page_token] query parameter in the next list request.
-   * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
+   * The token that can be used to get the next page of results.
+   *
+   * If the number of results is larger than [ListClusterOperationsRequest.page_size], use the [next_page_token] as the value for the [ListClusterOperationsRequest.page_token] in the subsequent [ClusterService.ListOperations] request to iterate through multiple pages of results.
+   *
+   * Each of the subsequent [ClusterService.ListOperations] requests should use the [next_page_token] value returned by the previous request to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -591,32 +643,35 @@ export interface ListClusterOperationsResponse {
 export interface ListClusterBackupsRequest {
   $type: "yandex.cloud.mdb.mysql.v1.ListClusterBackupsRequest";
   /**
-   * ID of the MySQL cluster.
-   * To get the MySQL cluster ID use a [ClusterService.List] request.
+   * ID of the cluster to list backups for.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size], the service returns a [ListClusterBackupsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the API returns a [ListClusterBackupsResponse.next_page_token] that can be used to get the next page of results in the subsequent [ClusterService.ListBackups] requests.
    */
   pageSize: number;
   /**
-   * Page token.  To get the next page of results, set [page_token] to the [ListClusterBackupsResponse.next_page_token]
-   * returned by a previous list request.
+   * Page token that can be used to iterate through multiple pages of results.
+   *
+   * To get the next page of results, set [page_token] to the [ListClusterBackupsResponse.next_page_token] returned by the previous [ClusterService.ListBackups] request.
    */
   pageToken: string;
 }
 
 export interface ListClusterBackupsResponse {
   $type: "yandex.cloud.mdb.mysql.v1.ListClusterBackupsResponse";
-  /** List of MySQL backups. */
+  /** List of the cluster backups. */
   backups: Backup[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListClusterBackupsRequest.page_size], use the [next_page_token] as the value
-   * for the [ListClusterBackupsRequest.page_token] query parameter in the next list request.
-   * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
+   * The token that can be used to get the next page of results.
+   *
+   * If the number of results is larger than [ListClusterBackupsRequest.page_size], use the [next_page_token] as the value for the [ListClusterBackupsRequest.page_token] in the subsequent [ClusterService.ListBackups] request to iterate through multiple pages of results.
+   *
+   * Each of the subsequent [ClusterService.ListBackups] requests should use the [next_page_token] value returned by the previous request to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -624,32 +679,35 @@ export interface ListClusterBackupsResponse {
 export interface ListClusterHostsRequest {
   $type: "yandex.cloud.mdb.mysql.v1.ListClusterHostsRequest";
   /**
-   * ID of the MySQL cluster.
-   * To get the MySQL cluster ID use a [ClusterService.List] request.
+   * ID of the cluster to list hosts for.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size], the service returns a [ListClusterHostsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the API returns a [ListClusterHostsResponse.next_page_token] that can be used to get the next page of results in the subsequent [ClusterService.ListHosts] requests.
    */
   pageSize: number;
   /**
-   * Page token.  To get the next page of results, set [page_token] to the [ListClusterHostsResponse.next_page_token]
-   * returned by a previous list request.
+   * Page token that can be used to iterate through multiple pages of results.
+   *
+   * To get the next page of results, set [page_token] to the [ListClusterHostsResponse.next_page_token] returned by the previous [ClusterService.ListHosts] request.
    */
   pageToken: string;
 }
 
 export interface ListClusterHostsResponse {
   $type: "yandex.cloud.mdb.mysql.v1.ListClusterHostsResponse";
-  /** List of MySQL hosts. */
+  /** List of hosts in the cluster. */
   hosts: Host[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListClusterHostsRequest.page_size], use the [next_page_token] as the value
-   * for the [ListClusterHostsRequest.page_token] query parameter in the next list request.
-   * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
+   * The token that can be used to get the next page of results.
+   *
+   * If the number of results is larger than [ListClusterHostsRequest.page_size], use the [next_page_token] as the value for the [ListClusterHostsRequest.page_token] in the subsequent [ClusterService.ListHosts] request to iterate through multiple pages of results.
+   *
+   * Each of the subsequent [ClusterService.ListHosts] requests should use the [next_page_token] value returned by the previous request to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -657,36 +715,42 @@ export interface ListClusterHostsResponse {
 export interface AddClusterHostsRequest {
   $type: "yandex.cloud.mdb.mysql.v1.AddClusterHostsRequest";
   /**
-   * ID of the MySQL cluster to add hosts to.
-   * To get the MySQL cluster ID, use a [ClusterService.List] request.
+   * ID of the cluster to add hosts to.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
-  /** Configurations for MySQL hosts that should be added to the cluster. */
+  /** Configuration of the newly added hosts. */
   hostSpecs: HostSpec[];
 }
 
 export interface AddClusterHostsMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.AddClusterHostsMetadata";
-  /** ID of the MySQL cluster to which the hosts are being added. */
+  /** ID of the cluster to which the hosts are being added. */
   clusterId: string;
-  /** Names of hosts that are being added to the cluster. */
+  /** Names of hosts that are being added. */
   hostNames: string[];
 }
 
 export interface DeleteClusterHostsRequest {
   $type: "yandex.cloud.mdb.mysql.v1.DeleteClusterHostsRequest";
   /**
-   * ID of the MySQL cluster to remove hosts from.
-   * To get the MySQL cluster ID, use a [ClusterService.List] request.
+   * ID of the cluster to delete hosts from.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
-  /** Names of hosts to delete. */
+  /**
+   * Names of hosts to delete.
+   *
+   * To get these names, make a [ClusterService.ListHosts] request.
+   */
   hostNames: string[];
 }
 
 export interface DeleteClusterHostsMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.DeleteClusterHostsMetadata";
-  /** ID of the MySQL cluster to remove hosts from. */
+  /** ID of the cluster from which the hosts are being deleted. */
   clusterId: string;
   /** Names of hosts that are being deleted. */
   hostNames: string[];
@@ -694,43 +758,59 @@ export interface DeleteClusterHostsMetadata {
 
 export interface StartClusterRequest {
   $type: "yandex.cloud.mdb.mysql.v1.StartClusterRequest";
-  /** ID of the MySQL cluster to start. */
+  /**
+   * ID of the cluster to start.
+   *
+   * To get this ID, make a [ClusterService.List] request.
+   */
   clusterId: string;
 }
 
 export interface StartClusterMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.StartClusterMetadata";
-  /** ID of the MySQL cluster being started. */
+  /** ID of the cluster that is being started. */
   clusterId: string;
 }
 
 export interface StopClusterRequest {
   $type: "yandex.cloud.mdb.mysql.v1.StopClusterRequest";
-  /** ID of the MySQL cluster to stop. */
+  /**
+   * ID of the cluster to stop.
+   *
+   * To get this ID, make a [ClusterService.List] request.
+   */
   clusterId: string;
 }
 
 export interface StopClusterMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.StopClusterMetadata";
-  /** ID of the MySQL cluster being stopped. */
+  /** ID of the cluster that is being stopped. */
   clusterId: string;
 }
 
 export interface MoveClusterRequest {
   $type: "yandex.cloud.mdb.mysql.v1.MoveClusterRequest";
-  /** ID of the MySQL cluster to move. */
+  /**
+   * ID of the cluster to move.
+   *
+   * To get this ID, make a [ClusterService.List] request.
+   */
   clusterId: string;
-  /** ID of the destination folder. */
+  /**
+   * ID of the destination folder.
+   *
+   * To get this ID, make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+   */
   destinationFolderId: string;
 }
 
 export interface MoveClusterMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.MoveClusterMetadata";
-  /** ID of the MySQL cluster being moved. */
+  /** ID of the cluster that is being moved. */
   clusterId: string;
   /** ID of the source folder. */
   sourceFolderId: string;
-  /** ID of the destnation folder. */
+  /** ID of the destination folder. */
   destinationFolderId: string;
 }
 
@@ -747,9 +827,9 @@ export interface UpdateClusterHostsRequest {
 
 export interface UpdateClusterHostsMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.UpdateClusterHostsMetadata";
-  /** ID of the MySQL cluster to modify hosts in. */
+  /** ID of the cluster in which the hosts are being updated. */
   clusterId: string;
-  /** Names of hosts that are being modified. */
+  /** Names of hosts that are being updated. */
   hostNames: string[];
 }
 
@@ -757,71 +837,81 @@ export interface UpdateHostSpec {
   $type: "yandex.cloud.mdb.mysql.v1.UpdateHostSpec";
   /**
    * Name of the host to update.
-   * To get the MySQL host name, use a [ClusterService.ListHosts] request.
+   * To get a MySQL host name, use a [ClusterService.ListHosts] request.
    */
   hostName: string;
   /**
    * [Host.name] of the host to be used as the replication source (for cascading replication).
-   * To get the MySQL host name, use a [ClusterService.ListHosts] request.
+   * To get a MySQL host name, use a [ClusterService.ListHosts] request.
    */
   replicationSource: string;
-  /** Field mask that specifies which fields of the MySQL host should be updated. */
+  /** Field mask that specifies which settings of the MySQL host should be updated. */
   updateMask?: FieldMask;
-  /** Host backup priority */
+  /** Host backup priority. */
   backupPriority: number;
   /** Whether the host should get a public IP address on creation. */
   assignPublicIp: boolean;
+  /** Host master promotion priority. */
+  priority: number;
 }
 
 export interface HostSpec {
   $type: "yandex.cloud.mdb.mysql.v1.HostSpec";
   /**
    * ID of the availability zone where the host resides.
-   * To get a list of available zones, use the [yandex.cloud.compute.v1.ZoneService.List] request.
+   *
+   * To get a list of available zones, make the [yandex.cloud.compute.v1.ZoneService.List] request.
    */
   zoneId: string;
   /**
-   * ID of the subnet that the host should belong to. This subnet should be a part
-   * of the network that the cluster belongs to.
-   * The ID of the network is set in the field [Cluster.network_id].
+   * ID of the subnet to assign to the host.
+   *
+   * This subnet should be a part of the cluster network (the network ID is specified in the [ClusterService.CreateClusterRequest.network_id]).
    */
   subnetId: string;
   /**
-   * Whether the host should get a public IP address on creation.
+   * Option that enables public IP address for the host so that the host can be accessed from the internet.
    *
-   * After a host has been created, this setting cannot be changed. To remove an assigned public IP, or to assign
-   * a public IP to a host without one, recreate the host with [assign_public_ip] set as needed.
+   * After a host has been created, this setting cannot be changed.
+   * To remove an assigned public IP address, or to assign a public IP address to a host without one, recreate the host with the appropriate [assign_public_ip] value set.
    *
    * Possible values:
-   * * false - don't assign a public IP to the host.
-   * * true - the host should have a public IP address.
+   * * `false` - don't assign a public IP address to the host.
+   * * `true` - assign a public IP address to the host.
    */
   assignPublicIp: boolean;
   /** [Host.name] of the host to be used as the replication source (for cascading replication). */
   replicationSource: string;
   /** Host backup priority */
   backupPriority: number;
+  /** Host master promotion priority */
+  priority: number;
 }
 
 export interface ConfigSpec {
   $type: "yandex.cloud.mdb.mysql.v1.ConfigSpec";
   /**
    * Version of MySQL used in the cluster.
-   * Possible values:
-   * * 5.7
-   * * 8.0
+   *
+   * Possible values: `5.7`, `8.0`.
    */
   version: string;
   /** Configuration for a MySQL 5.7 cluster. */
   mysqlConfig57?: Mysqlconfig57 | undefined;
   /** Configuration for a MySQL 8.0 cluster. */
   mysqlConfig80?: Mysqlconfig80 | undefined;
-  /** Resources allocated to MySQL hosts. */
+  /** Resource preset for the cluster hosts. */
   resources?: Resources;
   /** Time to start the daily backup, in the UTC timezone. */
   backupWindowStart?: TimeOfDay;
-  /** Access policy to DB */
+  /**
+   * Access policy for external services.
+   *
+   * If the specific services need to access the cluster, then set the necessary values in this policy.
+   */
   access?: Access;
+  /** Configuration of the performance diagnostics service. */
+  performanceDiagnostics?: PerformanceDiagnostics;
 }
 
 const baseGetClusterRequest: object = {
@@ -5118,6 +5208,7 @@ const baseUpdateHostSpec: object = {
   replicationSource: "",
   backupPriority: 0,
   assignPublicIp: false,
+  priority: 0,
 };
 
 export const UpdateHostSpec = {
@@ -5141,6 +5232,9 @@ export const UpdateHostSpec = {
     }
     if (message.assignPublicIp === true) {
       writer.uint32(40).bool(message.assignPublicIp);
+    }
+    if (message.priority !== 0) {
+      writer.uint32(48).int64(message.priority);
     }
     return writer;
   },
@@ -5166,6 +5260,9 @@ export const UpdateHostSpec = {
           break;
         case 5:
           message.assignPublicIp = reader.bool();
+          break;
+        case 6:
+          message.priority = longToNumber(reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -5198,6 +5295,10 @@ export const UpdateHostSpec = {
       object.assignPublicIp !== undefined && object.assignPublicIp !== null
         ? Boolean(object.assignPublicIp)
         : false;
+    message.priority =
+      object.priority !== undefined && object.priority !== null
+        ? Number(object.priority)
+        : 0;
     return message;
   },
 
@@ -5214,6 +5315,8 @@ export const UpdateHostSpec = {
       (obj.backupPriority = Math.round(message.backupPriority));
     message.assignPublicIp !== undefined &&
       (obj.assignPublicIp = message.assignPublicIp);
+    message.priority !== undefined &&
+      (obj.priority = Math.round(message.priority));
     return obj;
   },
 
@@ -5229,6 +5332,7 @@ export const UpdateHostSpec = {
         : undefined;
     message.backupPriority = object.backupPriority ?? 0;
     message.assignPublicIp = object.assignPublicIp ?? false;
+    message.priority = object.priority ?? 0;
     return message;
   },
 };
@@ -5242,6 +5346,7 @@ const baseHostSpec: object = {
   assignPublicIp: false,
   replicationSource: "",
   backupPriority: 0,
+  priority: 0,
 };
 
 export const HostSpec = {
@@ -5265,6 +5370,9 @@ export const HostSpec = {
     }
     if (message.backupPriority !== 0) {
       writer.uint32(40).int64(message.backupPriority);
+    }
+    if (message.priority !== 0) {
+      writer.uint32(48).int64(message.priority);
     }
     return writer;
   },
@@ -5290,6 +5398,9 @@ export const HostSpec = {
           break;
         case 5:
           message.backupPriority = longToNumber(reader.int64() as Long);
+          break;
+        case 6:
+          message.priority = longToNumber(reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -5322,6 +5433,10 @@ export const HostSpec = {
       object.backupPriority !== undefined && object.backupPriority !== null
         ? Number(object.backupPriority)
         : 0;
+    message.priority =
+      object.priority !== undefined && object.priority !== null
+        ? Number(object.priority)
+        : 0;
     return message;
   },
 
@@ -5335,6 +5450,8 @@ export const HostSpec = {
       (obj.replicationSource = message.replicationSource);
     message.backupPriority !== undefined &&
       (obj.backupPriority = Math.round(message.backupPriority));
+    message.priority !== undefined &&
+      (obj.priority = Math.round(message.priority));
     return obj;
   },
 
@@ -5345,6 +5462,7 @@ export const HostSpec = {
     message.assignPublicIp = object.assignPublicIp ?? false;
     message.replicationSource = object.replicationSource ?? "";
     message.backupPriority = object.backupPriority ?? 0;
+    message.priority = object.priority ?? 0;
     return message;
   },
 };
@@ -5390,6 +5508,12 @@ export const ConfigSpec = {
     if (message.access !== undefined) {
       Access.encode(message.access, writer.uint32(42).fork()).ldelim();
     }
+    if (message.performanceDiagnostics !== undefined) {
+      PerformanceDiagnostics.encode(
+        message.performanceDiagnostics,
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -5417,6 +5541,12 @@ export const ConfigSpec = {
           break;
         case 5:
           message.access = Access.decode(reader, reader.uint32());
+          break;
+        case 7:
+          message.performanceDiagnostics = PerformanceDiagnostics.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -5453,6 +5583,11 @@ export const ConfigSpec = {
       object.access !== undefined && object.access !== null
         ? Access.fromJSON(object.access)
         : undefined;
+    message.performanceDiagnostics =
+      object.performanceDiagnostics !== undefined &&
+      object.performanceDiagnostics !== null
+        ? PerformanceDiagnostics.fromJSON(object.performanceDiagnostics)
+        : undefined;
     return message;
   },
 
@@ -5477,6 +5612,10 @@ export const ConfigSpec = {
         : undefined);
     message.access !== undefined &&
       (obj.access = message.access ? Access.toJSON(message.access) : undefined);
+    message.performanceDiagnostics !== undefined &&
+      (obj.performanceDiagnostics = message.performanceDiagnostics
+        ? PerformanceDiagnostics.toJSON(message.performanceDiagnostics)
+        : undefined);
     return obj;
   },
 
@@ -5506,6 +5645,11 @@ export const ConfigSpec = {
       object.access !== undefined && object.access !== null
         ? Access.fromPartial(object.access)
         : undefined;
+    message.performanceDiagnostics =
+      object.performanceDiagnostics !== undefined &&
+      object.performanceDiagnostics !== null
+        ? PerformanceDiagnostics.fromPartial(object.performanceDiagnostics)
+        : undefined;
     return message;
   },
 };
@@ -5514,11 +5658,7 @@ messageTypeRegistry.set(ConfigSpec.$type, ConfigSpec);
 
 /** A set of methods for managing MySQL clusters. */
 export const ClusterServiceService = {
-  /**
-   * Returns the specified MySQL cluster.
-   *
-   * To get the list of available MySQL clusters, make a [List] request.
-   */
+  /** Retrieves information about a cluster. */
   get: {
     path: "/yandex.cloud.mdb.mysql.v1.ClusterService/Get",
     requestStream: false,
@@ -5530,7 +5670,7 @@ export const ClusterServiceService = {
       Buffer.from(Cluster.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Cluster.decode(value),
   },
-  /** Retrieves the list of MySQL clusters that belong to the specified folder. */
+  /** Retrieves the list of clusters in a folder. */
   list: {
     path: "/yandex.cloud.mdb.mysql.v1.ClusterService/List",
     requestStream: false,
@@ -5542,7 +5682,7 @@ export const ClusterServiceService = {
       Buffer.from(ListClustersResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer) => ListClustersResponse.decode(value),
   },
-  /** Creates a MySQL cluster in the specified folder. */
+  /** Creates a cluster in a folder. */
   create: {
     path: "/yandex.cloud.mdb.mysql.v1.ClusterService/Create",
     requestStream: false,
@@ -5554,7 +5694,7 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Modifies the specified MySQL cluster. */
+  /** Updates a cluster. */
   update: {
     path: "/yandex.cloud.mdb.mysql.v1.ClusterService/Update",
     requestStream: false,
@@ -5566,7 +5706,7 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Deletes the specified MySQL cluster. */
+  /** Deletes a cluster. */
   delete: {
     path: "/yandex.cloud.mdb.mysql.v1.ClusterService/Delete",
     requestStream: false,
@@ -5578,7 +5718,7 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Starts the specified MySQL cluster. */
+  /** Starts a cluster. */
   start: {
     path: "/yandex.cloud.mdb.mysql.v1.ClusterService/Start",
     requestStream: false,
@@ -5590,7 +5730,7 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Stops the specified MySQL cluster. */
+  /** Stops a cluster. */
   stop: {
     path: "/yandex.cloud.mdb.mysql.v1.ClusterService/Stop",
     requestStream: false,
@@ -5602,7 +5742,7 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Moves the specified MySQL cluster to the specified folder. */
+  /** Moves a cluster to a folder. */
   move: {
     path: "/yandex.cloud.mdb.mysql.v1.ClusterService/Move",
     requestStream: false,
@@ -5614,7 +5754,11 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Creates a backup for the specified MySQL cluster. */
+  /**
+   * Creates a backup for a cluster.
+   *
+   * To get information about a backup, make a [BackupService.Get] request.
+   */
   backup: {
     path: "/yandex.cloud.mdb.mysql.v1.ClusterService/Backup",
     requestStream: false,
@@ -5626,7 +5770,11 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Creates a new MySQL cluster using the specified backup. */
+  /**
+   * Restores a backup to a new cluster.
+   *
+   * See [the documentation](/docs/managed-mysql/concepts/backup) for details.
+   */
   restore: {
     path: "/yandex.cloud.mdb.mysql.v1.ClusterService/Restore",
     requestStream: false,
@@ -5651,7 +5799,7 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Start a manual failover on the specified MySQL cluster. */
+  /** Starts a manual failover for a cluster. */
   startFailover: {
     path: "/yandex.cloud.mdb.mysql.v1.ClusterService/StartFailover",
     requestStream: false,
@@ -5664,7 +5812,11 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Retrieves logs for the specified MySQL cluster. */
+  /**
+   * Retrieves logs for a cluster.
+   *
+   * Alternatively, logs can be streamed using [StreamLogs].
+   */
   listLogs: {
     path: "/yandex.cloud.mdb.mysql.v1.ClusterService/ListLogs",
     requestStream: false,
@@ -5677,7 +5829,11 @@ export const ClusterServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListClusterLogsResponse.decode(value),
   },
-  /** Same as ListLogs but using server-side streaming. Also allows for 'tail -f' semantics. */
+  /**
+   * Retrieves a log stream for a cluster.
+   *
+   * This method is similar to [ListLogs], but uses server-side streaming, which allows for the `tail -f` command semantics.
+   */
   streamLogs: {
     path: "/yandex.cloud.mdb.mysql.v1.ClusterService/StreamLogs",
     requestStream: false,
@@ -5690,7 +5846,7 @@ export const ClusterServiceService = {
       Buffer.from(StreamLogRecord.encode(value).finish()),
     responseDeserialize: (value: Buffer) => StreamLogRecord.decode(value),
   },
-  /** Retrieves the list of operations for the specified MySQL cluster. */
+  /** Retrieves a list of operations for a cluster. */
   listOperations: {
     path: "/yandex.cloud.mdb.mysql.v1.ClusterService/ListOperations",
     requestStream: false,
@@ -5704,7 +5860,11 @@ export const ClusterServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListClusterOperationsResponse.decode(value),
   },
-  /** Retrieves the list of available backups for the specified MySQL cluster. */
+  /**
+   * Retrieves a list of backups for a cluster.
+   *
+   * To list all backups in a folder, make a [BackupService.List] request.
+   */
   listBackups: {
     path: "/yandex.cloud.mdb.mysql.v1.ClusterService/ListBackups",
     requestStream: false,
@@ -5718,7 +5878,7 @@ export const ClusterServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListClusterBackupsResponse.decode(value),
   },
-  /** Retrieves a list of hosts for the specified MySQL cluster. */
+  /** Retrieves a list of hosts for a cluster. */
   listHosts: {
     path: "/yandex.cloud.mdb.mysql.v1.ClusterService/ListHosts",
     requestStream: false,
@@ -5732,7 +5892,7 @@ export const ClusterServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListClusterHostsResponse.decode(value),
   },
-  /** Creates new hosts for a cluster. */
+  /** Adds new hosts in a cluster. */
   addHosts: {
     path: "/yandex.cloud.mdb.mysql.v1.ClusterService/AddHosts",
     requestStream: false,
@@ -5773,57 +5933,73 @@ export const ClusterServiceService = {
 } as const;
 
 export interface ClusterServiceServer extends UntypedServiceImplementation {
-  /**
-   * Returns the specified MySQL cluster.
-   *
-   * To get the list of available MySQL clusters, make a [List] request.
-   */
+  /** Retrieves information about a cluster. */
   get: handleUnaryCall<GetClusterRequest, Cluster>;
-  /** Retrieves the list of MySQL clusters that belong to the specified folder. */
+  /** Retrieves the list of clusters in a folder. */
   list: handleUnaryCall<ListClustersRequest, ListClustersResponse>;
-  /** Creates a MySQL cluster in the specified folder. */
+  /** Creates a cluster in a folder. */
   create: handleUnaryCall<CreateClusterRequest, Operation>;
-  /** Modifies the specified MySQL cluster. */
+  /** Updates a cluster. */
   update: handleUnaryCall<UpdateClusterRequest, Operation>;
-  /** Deletes the specified MySQL cluster. */
+  /** Deletes a cluster. */
   delete: handleUnaryCall<DeleteClusterRequest, Operation>;
-  /** Starts the specified MySQL cluster. */
+  /** Starts a cluster. */
   start: handleUnaryCall<StartClusterRequest, Operation>;
-  /** Stops the specified MySQL cluster. */
+  /** Stops a cluster. */
   stop: handleUnaryCall<StopClusterRequest, Operation>;
-  /** Moves the specified MySQL cluster to the specified folder. */
+  /** Moves a cluster to a folder. */
   move: handleUnaryCall<MoveClusterRequest, Operation>;
-  /** Creates a backup for the specified MySQL cluster. */
+  /**
+   * Creates a backup for a cluster.
+   *
+   * To get information about a backup, make a [BackupService.Get] request.
+   */
   backup: handleUnaryCall<BackupClusterRequest, Operation>;
-  /** Creates a new MySQL cluster using the specified backup. */
+  /**
+   * Restores a backup to a new cluster.
+   *
+   * See [the documentation](/docs/managed-mysql/concepts/backup) for details.
+   */
   restore: handleUnaryCall<RestoreClusterRequest, Operation>;
   /** Reschedules planned maintenance operation. */
   rescheduleMaintenance: handleUnaryCall<
     RescheduleMaintenanceRequest,
     Operation
   >;
-  /** Start a manual failover on the specified MySQL cluster. */
+  /** Starts a manual failover for a cluster. */
   startFailover: handleUnaryCall<StartClusterFailoverRequest, Operation>;
-  /** Retrieves logs for the specified MySQL cluster. */
+  /**
+   * Retrieves logs for a cluster.
+   *
+   * Alternatively, logs can be streamed using [StreamLogs].
+   */
   listLogs: handleUnaryCall<ListClusterLogsRequest, ListClusterLogsResponse>;
-  /** Same as ListLogs but using server-side streaming. Also allows for 'tail -f' semantics. */
+  /**
+   * Retrieves a log stream for a cluster.
+   *
+   * This method is similar to [ListLogs], but uses server-side streaming, which allows for the `tail -f` command semantics.
+   */
   streamLogs: handleServerStreamingCall<
     StreamClusterLogsRequest,
     StreamLogRecord
   >;
-  /** Retrieves the list of operations for the specified MySQL cluster. */
+  /** Retrieves a list of operations for a cluster. */
   listOperations: handleUnaryCall<
     ListClusterOperationsRequest,
     ListClusterOperationsResponse
   >;
-  /** Retrieves the list of available backups for the specified MySQL cluster. */
+  /**
+   * Retrieves a list of backups for a cluster.
+   *
+   * To list all backups in a folder, make a [BackupService.List] request.
+   */
   listBackups: handleUnaryCall<
     ListClusterBackupsRequest,
     ListClusterBackupsResponse
   >;
-  /** Retrieves a list of hosts for the specified MySQL cluster. */
+  /** Retrieves a list of hosts for a cluster. */
   listHosts: handleUnaryCall<ListClusterHostsRequest, ListClusterHostsResponse>;
-  /** Creates new hosts for a cluster. */
+  /** Adds new hosts in a cluster. */
   addHosts: handleUnaryCall<AddClusterHostsRequest, Operation>;
   /** Updates the specified hosts. */
   updateHosts: handleUnaryCall<UpdateClusterHostsRequest, Operation>;
@@ -5832,148 +6008,148 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
 }
 
 export interface ClusterServiceClient extends Client {
+  /** Retrieves information about a cluster. */
+  get(
+    request: GetClusterRequest,
+    callback: (error: ServiceError | null, response: Cluster) => void
+  ): ClientUnaryCall;
+  get(
+    request: GetClusterRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Cluster) => void
+  ): ClientUnaryCall;
+  get(
+    request: GetClusterRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Cluster) => void
+  ): ClientUnaryCall;
+  /** Retrieves the list of clusters in a folder. */
+  list(
+    request: ListClustersRequest,
+    callback: (
+      error: ServiceError | null,
+      response: ListClustersResponse
+    ) => void
+  ): ClientUnaryCall;
+  list(
+    request: ListClustersRequest,
+    metadata: Metadata,
+    callback: (
+      error: ServiceError | null,
+      response: ListClustersResponse
+    ) => void
+  ): ClientUnaryCall;
+  list(
+    request: ListClustersRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (
+      error: ServiceError | null,
+      response: ListClustersResponse
+    ) => void
+  ): ClientUnaryCall;
+  /** Creates a cluster in a folder. */
+  create(
+    request: CreateClusterRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  create(
+    request: CreateClusterRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  create(
+    request: CreateClusterRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Updates a cluster. */
+  update(
+    request: UpdateClusterRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  update(
+    request: UpdateClusterRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  update(
+    request: UpdateClusterRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Deletes a cluster. */
+  delete(
+    request: DeleteClusterRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  delete(
+    request: DeleteClusterRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  delete(
+    request: DeleteClusterRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Starts a cluster. */
+  start(
+    request: StartClusterRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  start(
+    request: StartClusterRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  start(
+    request: StartClusterRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Stops a cluster. */
+  stop(
+    request: StopClusterRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  stop(
+    request: StopClusterRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  stop(
+    request: StopClusterRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Moves a cluster to a folder. */
+  move(
+    request: MoveClusterRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  move(
+    request: MoveClusterRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  move(
+    request: MoveClusterRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
   /**
-   * Returns the specified MySQL cluster.
+   * Creates a backup for a cluster.
    *
-   * To get the list of available MySQL clusters, make a [List] request.
+   * To get information about a backup, make a [BackupService.Get] request.
    */
-  get(
-    request: GetClusterRequest,
-    callback: (error: ServiceError | null, response: Cluster) => void
-  ): ClientUnaryCall;
-  get(
-    request: GetClusterRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: Cluster) => void
-  ): ClientUnaryCall;
-  get(
-    request: GetClusterRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Cluster) => void
-  ): ClientUnaryCall;
-  /** Retrieves the list of MySQL clusters that belong to the specified folder. */
-  list(
-    request: ListClustersRequest,
-    callback: (
-      error: ServiceError | null,
-      response: ListClustersResponse
-    ) => void
-  ): ClientUnaryCall;
-  list(
-    request: ListClustersRequest,
-    metadata: Metadata,
-    callback: (
-      error: ServiceError | null,
-      response: ListClustersResponse
-    ) => void
-  ): ClientUnaryCall;
-  list(
-    request: ListClustersRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (
-      error: ServiceError | null,
-      response: ListClustersResponse
-    ) => void
-  ): ClientUnaryCall;
-  /** Creates a MySQL cluster in the specified folder. */
-  create(
-    request: CreateClusterRequest,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  create(
-    request: CreateClusterRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  create(
-    request: CreateClusterRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  /** Modifies the specified MySQL cluster. */
-  update(
-    request: UpdateClusterRequest,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  update(
-    request: UpdateClusterRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  update(
-    request: UpdateClusterRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  /** Deletes the specified MySQL cluster. */
-  delete(
-    request: DeleteClusterRequest,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  delete(
-    request: DeleteClusterRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  delete(
-    request: DeleteClusterRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  /** Starts the specified MySQL cluster. */
-  start(
-    request: StartClusterRequest,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  start(
-    request: StartClusterRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  start(
-    request: StartClusterRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  /** Stops the specified MySQL cluster. */
-  stop(
-    request: StopClusterRequest,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  stop(
-    request: StopClusterRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  stop(
-    request: StopClusterRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  /** Moves the specified MySQL cluster to the specified folder. */
-  move(
-    request: MoveClusterRequest,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  move(
-    request: MoveClusterRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  move(
-    request: MoveClusterRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  /** Creates a backup for the specified MySQL cluster. */
   backup(
     request: BackupClusterRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -5989,7 +6165,11 @@ export interface ClusterServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Creates a new MySQL cluster using the specified backup. */
+  /**
+   * Restores a backup to a new cluster.
+   *
+   * See [the documentation](/docs/managed-mysql/concepts/backup) for details.
+   */
   restore(
     request: RestoreClusterRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -6021,7 +6201,7 @@ export interface ClusterServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Start a manual failover on the specified MySQL cluster. */
+  /** Starts a manual failover for a cluster. */
   startFailover(
     request: StartClusterFailoverRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -6037,7 +6217,11 @@ export interface ClusterServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Retrieves logs for the specified MySQL cluster. */
+  /**
+   * Retrieves logs for a cluster.
+   *
+   * Alternatively, logs can be streamed using [StreamLogs].
+   */
   listLogs(
     request: ListClusterLogsRequest,
     callback: (
@@ -6062,7 +6246,11 @@ export interface ClusterServiceClient extends Client {
       response: ListClusterLogsResponse
     ) => void
   ): ClientUnaryCall;
-  /** Same as ListLogs but using server-side streaming. Also allows for 'tail -f' semantics. */
+  /**
+   * Retrieves a log stream for a cluster.
+   *
+   * This method is similar to [ListLogs], but uses server-side streaming, which allows for the `tail -f` command semantics.
+   */
   streamLogs(
     request: StreamClusterLogsRequest,
     options?: Partial<CallOptions>
@@ -6072,7 +6260,7 @@ export interface ClusterServiceClient extends Client {
     metadata?: Metadata,
     options?: Partial<CallOptions>
   ): ClientReadableStream<StreamLogRecord>;
-  /** Retrieves the list of operations for the specified MySQL cluster. */
+  /** Retrieves a list of operations for a cluster. */
   listOperations(
     request: ListClusterOperationsRequest,
     callback: (
@@ -6097,7 +6285,11 @@ export interface ClusterServiceClient extends Client {
       response: ListClusterOperationsResponse
     ) => void
   ): ClientUnaryCall;
-  /** Retrieves the list of available backups for the specified MySQL cluster. */
+  /**
+   * Retrieves a list of backups for a cluster.
+   *
+   * To list all backups in a folder, make a [BackupService.List] request.
+   */
   listBackups(
     request: ListClusterBackupsRequest,
     callback: (
@@ -6122,7 +6314,7 @@ export interface ClusterServiceClient extends Client {
       response: ListClusterBackupsResponse
     ) => void
   ): ClientUnaryCall;
-  /** Retrieves a list of hosts for the specified MySQL cluster. */
+  /** Retrieves a list of hosts for a cluster. */
   listHosts(
     request: ListClusterHostsRequest,
     callback: (
@@ -6147,7 +6339,7 @@ export interface ClusterServiceClient extends Client {
       response: ListClusterHostsResponse
     ) => void
   ): ClientUnaryCall;
-  /** Creates new hosts for a cluster. */
+  /** Adds new hosts in a cluster. */
   addHosts(
     request: AddClusterHostsRequest,
     callback: (error: ServiceError | null, response: Operation) => void

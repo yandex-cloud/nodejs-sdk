@@ -6,8 +6,11 @@ import {
   ObjectTransferStage,
   TLSMode,
   Secret,
+  CleanupPolicy,
   objectTransferStageFromJSON,
   objectTransferStageToJSON,
+  cleanupPolicyFromJSON,
+  cleanupPolicyToJSON,
 } from "../../../../../yandex/cloud/datatransfer/v1/endpoint/common";
 
 export const protobufPackage = "yandex.cloud.datatransfer.v1.endpoint";
@@ -140,7 +143,7 @@ export interface PostgresConnection {
   /**
    * Managed cluster
    *
-   * Yandex.Cloud Managed PostgreSQL cluster ID
+   * Yandex Managed Service for PostgreSQL cluster ID
    */
   mdbClusterId: string | undefined;
   /**
@@ -176,15 +179,15 @@ export interface PostgresSource {
   /**
    * Included tables
    *
-   * If none or empty list is presented, all tables are replicated. Can contain
-   * regular expression.
+   * If none or empty list is presented, all tables are replicated. Full table name
+   * with schema. Can contain schema_name.* patterns.
    */
   includeTables: string[];
   /**
    * Excluded tables
    *
-   * If none or empty list is presented, all tables are replicated. Can contain
-   * regular expression.
+   * If none or empty list is presented, all tables are replicated. Full table name
+   * with schema. Can contain schema_name.* patterns.
    */
   excludeTables: string[];
   /**
@@ -232,6 +235,13 @@ export interface PostgresTarget {
    * Password for database access.
    */
   password?: Secret;
+  /**
+   * Cleanup policy
+   *
+   * Cleanup policy for activate, reactivate and reupload processes. Default is
+   * DISABLED.
+   */
+  cleanupPolicy: CleanupPolicy;
 }
 
 const basePostgresObjectTransferSettings: object = {
@@ -922,6 +932,7 @@ const basePostgresTarget: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.PostgresTarget",
   database: "",
   user: "",
+  cleanupPolicy: 0,
 };
 
 export const PostgresTarget = {
@@ -945,6 +956,9 @@ export const PostgresTarget = {
     }
     if (message.password !== undefined) {
       Secret.encode(message.password, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.cleanupPolicy !== 0) {
+      writer.uint32(40).int32(message.cleanupPolicy);
     }
     return writer;
   },
@@ -970,6 +984,9 @@ export const PostgresTarget = {
           break;
         case 4:
           message.password = Secret.decode(reader, reader.uint32());
+          break;
+        case 5:
+          message.cleanupPolicy = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -997,6 +1014,10 @@ export const PostgresTarget = {
       object.password !== undefined && object.password !== null
         ? Secret.fromJSON(object.password)
         : undefined;
+    message.cleanupPolicy =
+      object.cleanupPolicy !== undefined && object.cleanupPolicy !== null
+        ? cleanupPolicyFromJSON(object.cleanupPolicy)
+        : 0;
     return message;
   },
 
@@ -1012,6 +1033,8 @@ export const PostgresTarget = {
       (obj.password = message.password
         ? Secret.toJSON(message.password)
         : undefined);
+    message.cleanupPolicy !== undefined &&
+      (obj.cleanupPolicy = cleanupPolicyToJSON(message.cleanupPolicy));
     return obj;
   },
 
@@ -1029,6 +1052,7 @@ export const PostgresTarget = {
       object.password !== undefined && object.password !== null
         ? Secret.fromPartial(object.password)
         : undefined;
+    message.cleanupPolicy = object.cleanupPolicy ?? 0;
     return message;
   },
 };

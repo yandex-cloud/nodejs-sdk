@@ -14,8 +14,11 @@ import {
   ServiceError,
 } from "@grpc/grpc-js";
 import _m0 from "protobufjs/minimal";
+import {
+  Connectivity,
+  ApiGateway,
+} from "../../../../../yandex/cloud/serverless/apigateway/v1/apigateway";
 import { FieldMask } from "../../../../../google/protobuf/field_mask";
-import { ApiGateway } from "../../../../../yandex/cloud/serverless/apigateway/v1/apigateway";
 import { Operation } from "../../../../../yandex/cloud/operation/operation";
 import {
   ListAccessBindingsRequest,
@@ -102,6 +105,8 @@ export interface CreateApiGatewayRequest {
   labels: { [key: string]: string };
   /** The text of specification, JSON or YAML. */
   openapiSpec: string | undefined;
+  /** Gateway connectivity. If specified the gateway will be attached to specified network/subnet(s). */
+  connectivity?: Connectivity;
 }
 
 export interface CreateApiGatewayRequest_LabelsEntry {
@@ -136,6 +141,8 @@ export interface UpdateApiGatewayRequest {
   labels: { [key: string]: string };
   /** The text of specification, JSON or YAML. */
   openapiSpec: string | undefined;
+  /** Gateway connectivity. If specified the gateway will be attached to specified network/subnet(s). */
+  connectivity?: Connectivity;
 }
 
 export interface UpdateApiGatewayRequest_LabelsEntry {
@@ -600,6 +607,12 @@ export const CreateApiGatewayRequest = {
     if (message.openapiSpec !== undefined) {
       writer.uint32(42).string(message.openapiSpec);
     }
+    if (message.connectivity !== undefined) {
+      Connectivity.encode(
+        message.connectivity,
+        writer.uint32(50).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -637,6 +650,9 @@ export const CreateApiGatewayRequest = {
         case 5:
           message.openapiSpec = reader.string();
           break;
+        case 6:
+          message.connectivity = Connectivity.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -671,6 +687,10 @@ export const CreateApiGatewayRequest = {
       object.openapiSpec !== undefined && object.openapiSpec !== null
         ? String(object.openapiSpec)
         : undefined;
+    message.connectivity =
+      object.connectivity !== undefined && object.connectivity !== null
+        ? Connectivity.fromJSON(object.connectivity)
+        : undefined;
     return message;
   },
 
@@ -688,6 +708,10 @@ export const CreateApiGatewayRequest = {
     }
     message.openapiSpec !== undefined &&
       (obj.openapiSpec = message.openapiSpec);
+    message.connectivity !== undefined &&
+      (obj.connectivity = message.connectivity
+        ? Connectivity.toJSON(message.connectivity)
+        : undefined);
     return obj;
   },
 
@@ -709,6 +733,10 @@ export const CreateApiGatewayRequest = {
       return acc;
     }, {});
     message.openapiSpec = object.openapiSpec ?? undefined;
+    message.connectivity =
+      object.connectivity !== undefined && object.connectivity !== null
+        ? Connectivity.fromPartial(object.connectivity)
+        : undefined;
     return message;
   },
 };
@@ -843,6 +871,12 @@ export const UpdateApiGatewayRequest = {
     if (message.openapiSpec !== undefined) {
       writer.uint32(50).string(message.openapiSpec);
     }
+    if (message.connectivity !== undefined) {
+      Connectivity.encode(
+        message.connectivity,
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -883,6 +917,9 @@ export const UpdateApiGatewayRequest = {
         case 6:
           message.openapiSpec = reader.string();
           break;
+        case 7:
+          message.connectivity = Connectivity.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -921,6 +958,10 @@ export const UpdateApiGatewayRequest = {
       object.openapiSpec !== undefined && object.openapiSpec !== null
         ? String(object.openapiSpec)
         : undefined;
+    message.connectivity =
+      object.connectivity !== undefined && object.connectivity !== null
+        ? Connectivity.fromJSON(object.connectivity)
+        : undefined;
     return message;
   },
 
@@ -943,6 +984,10 @@ export const UpdateApiGatewayRequest = {
     }
     message.openapiSpec !== undefined &&
       (obj.openapiSpec = message.openapiSpec);
+    message.connectivity !== undefined &&
+      (obj.connectivity = message.connectivity
+        ? Connectivity.toJSON(message.connectivity)
+        : undefined);
     return obj;
   },
 
@@ -968,6 +1013,10 @@ export const UpdateApiGatewayRequest = {
       return acc;
     }, {});
     message.openapiSpec = object.openapiSpec ?? undefined;
+    message.connectivity =
+      object.connectivity !== undefined && object.connectivity !== null
+        ? Connectivity.fromPartial(object.connectivity)
+        : undefined;
     return message;
   },
 };

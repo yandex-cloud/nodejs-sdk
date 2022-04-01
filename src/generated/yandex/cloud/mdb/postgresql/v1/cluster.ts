@@ -16,6 +16,7 @@ import { Postgresqlconfigset111c } from "../../../../../yandex/cloud/mdb/postgre
 import { PostgresqlConfigSet12 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/postgresql12";
 import { Postgresqlconfigset121c } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/postgresql12_1c";
 import { PostgresqlConfigSet13 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/postgresql13";
+import { PostgresqlConfigSet14 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/postgresql14";
 import { Postgresqlhostconfig96 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host9_6";
 import { Postgresqlhostconfig101c } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host10_1c";
 import { PostgresqlHostConfig10 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host10";
@@ -24,6 +25,7 @@ import { Postgresqlhostconfig111c } from "../../../../../yandex/cloud/mdb/postgr
 import { PostgresqlHostConfig12 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host12";
 import { Postgresqlhostconfig121c } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host12_1c";
 import { PostgresqlHostConfig13 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host13";
+import { PostgresqlHostConfig14 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host14";
 import { BoolValue, Int64Value } from "../../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.mdb.postgresql.v1";
@@ -284,6 +286,8 @@ export interface ClusterConfig {
   postgresqlConfig121c?: Postgresqlconfigset121c | undefined;
   /** Configuration of a PostgreSQL 13 server. */
   postgresqlConfig13?: PostgresqlConfigSet13 | undefined;
+  /** Configuration of a PostgreSQL 14 server. */
+  postgresqlConfig14?: PostgresqlConfigSet14 | undefined;
   /** Configuration of the connection pooler. */
   poolerConfig?: ConnectionPoolerConfig;
   /** Resources allocated to PostgreSQL hosts. */
@@ -368,7 +372,7 @@ export interface Host {
    * Name of the PostgreSQL host. The host name is assigned by MDB at creation time, and cannot be changed.
    * 1-63 characters long.
    *
-   * The name is unique across all existing MDB hosts in Yandex.Cloud, as it defines the FQDN of the host.
+   * The name is unique across all existing MDB hosts in Yandex Cloud, as it defines the FQDN of the host.
    */
   name: string;
   /** ID of the PostgreSQL host. The ID is assigned by MDB at creation time. */
@@ -555,6 +559,8 @@ export interface HostConfig {
   postgresqlConfig121c?: Postgresqlhostconfig121c | undefined;
   /** Configuration for a host with PostgreSQL 13 server deployed. */
   postgresqlConfig13?: PostgresqlHostConfig13 | undefined;
+  /** Configuration for a host with PostgreSQL 14 server deployed. */
+  postgresqlConfig14?: PostgresqlHostConfig14 | undefined;
 }
 
 export interface Service {
@@ -670,13 +676,15 @@ export interface Access {
   /** Allow access for DataLens */
   dataLens: boolean;
   /**
-   * Allow SQL queries to the cluster databases from the Yandex.Cloud management console.
+   * Allow SQL queries to the cluster databases from the Yandex Cloud management console.
    *
    * See [SQL queries in the management console](/docs/managed-postgresql/operations/web-sql-query) for more details.
    */
   webSql: boolean;
   /** Allow access for Serverless */
   serverless: boolean;
+  /** Allow access for DataTransfer. */
+  dataTransfer: boolean;
 }
 
 export interface PerformanceDiagnostics {
@@ -1241,6 +1249,12 @@ export const ClusterConfig = {
         writer.uint32(122).fork()
       ).ldelim();
     }
+    if (message.postgresqlConfig14 !== undefined) {
+      PostgresqlConfigSet14.encode(
+        message.postgresqlConfig14,
+        writer.uint32(130).fork()
+      ).ldelim();
+    }
     if (message.poolerConfig !== undefined) {
       ConnectionPoolerConfig.encode(
         message.poolerConfig,
@@ -1341,6 +1355,12 @@ export const ClusterConfig = {
             reader.uint32()
           );
           break;
+        case 16:
+          message.postgresqlConfig14 = PostgresqlConfigSet14.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         case 4:
           message.poolerConfig = ConnectionPoolerConfig.decode(
             reader,
@@ -1428,6 +1448,11 @@ export const ClusterConfig = {
       object.postgresqlConfig_13 !== null
         ? PostgresqlConfigSet13.fromJSON(object.postgresqlConfig_13)
         : undefined;
+    message.postgresqlConfig14 =
+      object.postgresqlConfig_14 !== undefined &&
+      object.postgresqlConfig_14 !== null
+        ? PostgresqlConfigSet14.fromJSON(object.postgresqlConfig_14)
+        : undefined;
     message.poolerConfig =
       object.poolerConfig !== undefined && object.poolerConfig !== null
         ? ConnectionPoolerConfig.fromJSON(object.poolerConfig)
@@ -1496,6 +1521,10 @@ export const ClusterConfig = {
     message.postgresqlConfig13 !== undefined &&
       (obj.postgresqlConfig_13 = message.postgresqlConfig13
         ? PostgresqlConfigSet13.toJSON(message.postgresqlConfig13)
+        : undefined);
+    message.postgresqlConfig14 !== undefined &&
+      (obj.postgresqlConfig_14 = message.postgresqlConfig14
+        ? PostgresqlConfigSet14.toJSON(message.postgresqlConfig14)
         : undefined);
     message.poolerConfig !== undefined &&
       (obj.poolerConfig = message.poolerConfig
@@ -1566,6 +1595,11 @@ export const ClusterConfig = {
       object.postgresqlConfig13 !== undefined &&
       object.postgresqlConfig13 !== null
         ? PostgresqlConfigSet13.fromPartial(object.postgresqlConfig13)
+        : undefined;
+    message.postgresqlConfig14 =
+      object.postgresqlConfig14 !== undefined &&
+      object.postgresqlConfig14 !== null
+        ? PostgresqlConfigSet14.fromPartial(object.postgresqlConfig14)
         : undefined;
     message.poolerConfig =
       object.poolerConfig !== undefined && object.poolerConfig !== null
@@ -1976,6 +2010,12 @@ export const HostConfig = {
         writer.uint32(66).fork()
       ).ldelim();
     }
+    if (message.postgresqlConfig14 !== undefined) {
+      PostgresqlHostConfig14.encode(
+        message.postgresqlConfig14,
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2034,6 +2074,12 @@ export const HostConfig = {
             reader.uint32()
           );
           break;
+        case 9:
+          message.postgresqlConfig14 = PostgresqlHostConfig14.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2084,6 +2130,11 @@ export const HostConfig = {
       object.postgresqlHostConfig_13 !== null
         ? PostgresqlHostConfig13.fromJSON(object.postgresqlHostConfig_13)
         : undefined;
+    message.postgresqlConfig14 =
+      object.postgresqlHostConfig_14 !== undefined &&
+      object.postgresqlHostConfig_14 !== null
+        ? PostgresqlHostConfig14.fromJSON(object.postgresqlHostConfig_14)
+        : undefined;
     return message;
   },
 
@@ -2120,6 +2171,10 @@ export const HostConfig = {
     message.postgresqlConfig13 !== undefined &&
       (obj.postgresqlHostConfig_13 = message.postgresqlConfig13
         ? PostgresqlHostConfig13.toJSON(message.postgresqlConfig13)
+        : undefined);
+    message.postgresqlConfig14 !== undefined &&
+      (obj.postgresqlHostConfig_14 = message.postgresqlConfig14
+        ? PostgresqlHostConfig14.toJSON(message.postgresqlConfig14)
         : undefined);
     return obj;
   },
@@ -2167,6 +2222,11 @@ export const HostConfig = {
       object.postgresqlConfig13 !== undefined &&
       object.postgresqlConfig13 !== null
         ? PostgresqlHostConfig13.fromPartial(object.postgresqlConfig13)
+        : undefined;
+    message.postgresqlConfig14 =
+      object.postgresqlConfig14 !== undefined &&
+      object.postgresqlConfig14 !== null
+        ? PostgresqlHostConfig14.fromPartial(object.postgresqlConfig14)
         : undefined;
     return message;
   },
@@ -2343,6 +2403,7 @@ const baseAccess: object = {
   dataLens: false,
   webSql: false,
   serverless: false,
+  dataTransfer: false,
 };
 
 export const Access = {
@@ -2360,6 +2421,9 @@ export const Access = {
     }
     if (message.serverless === true) {
       writer.uint32(24).bool(message.serverless);
+    }
+    if (message.dataTransfer === true) {
+      writer.uint32(32).bool(message.dataTransfer);
     }
     return writer;
   },
@@ -2379,6 +2443,9 @@ export const Access = {
           break;
         case 3:
           message.serverless = reader.bool();
+          break;
+        case 4:
+          message.dataTransfer = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2402,6 +2469,10 @@ export const Access = {
       object.serverless !== undefined && object.serverless !== null
         ? Boolean(object.serverless)
         : false;
+    message.dataTransfer =
+      object.dataTransfer !== undefined && object.dataTransfer !== null
+        ? Boolean(object.dataTransfer)
+        : false;
     return message;
   },
 
@@ -2410,6 +2481,8 @@ export const Access = {
     message.dataLens !== undefined && (obj.dataLens = message.dataLens);
     message.webSql !== undefined && (obj.webSql = message.webSql);
     message.serverless !== undefined && (obj.serverless = message.serverless);
+    message.dataTransfer !== undefined &&
+      (obj.dataTransfer = message.dataTransfer);
     return obj;
   },
 
@@ -2418,6 +2491,7 @@ export const Access = {
     message.dataLens = object.dataLens ?? false;
     message.webSql = object.webSql ?? false;
     message.serverless = object.serverless ?? false;
+    message.dataTransfer = object.dataTransfer ?? false;
     return message;
   },
 };

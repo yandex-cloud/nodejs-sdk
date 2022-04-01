@@ -28,6 +28,8 @@ export interface ApiGateway {
   logGroupId: string;
   /** List of domains attached to API gateway. */
   attachedDomains: AttachedDomain[];
+  /** Network access. If specified the gateway will be attached to specified network/subnet(s). */
+  connectivity?: Connectivity;
 }
 
 export enum ApiGateway_Status {
@@ -109,6 +111,21 @@ export interface AttachedDomain {
   domain: string;
 }
 
+/** Gateway connectivity specification. */
+export interface Connectivity {
+  $type: "yandex.cloud.serverless.apigateway.v1.Connectivity";
+  /**
+   * Network the gateway will have access to.
+   * It's essential to specify network with subnets in all availability zones.
+   */
+  networkId: string;
+  /**
+   * Complete list of subnets (from the same network) the gateway can be attached to.
+   * It's essential to specify at least one subnet for each availability zones.
+   */
+  subnetId: string[];
+}
+
 const baseApiGateway: object = {
   $type: "yandex.cloud.serverless.apigateway.v1.ApiGateway",
   id: "",
@@ -167,6 +184,12 @@ export const ApiGateway = {
     for (const v of message.attachedDomains) {
       AttachedDomain.encode(v!, writer.uint32(90).fork()).ldelim();
     }
+    if (message.connectivity !== undefined) {
+      Connectivity.encode(
+        message.connectivity,
+        writer.uint32(98).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -215,6 +238,9 @@ export const ApiGateway = {
           message.attachedDomains.push(
             AttachedDomain.decode(reader, reader.uint32())
           );
+          break;
+        case 12:
+          message.connectivity = Connectivity.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -265,6 +291,10 @@ export const ApiGateway = {
     message.attachedDomains = (object.attachedDomains ?? []).map((e: any) =>
       AttachedDomain.fromJSON(e)
     );
+    message.connectivity =
+      object.connectivity !== undefined && object.connectivity !== null
+        ? Connectivity.fromJSON(object.connectivity)
+        : undefined;
     return message;
   },
 
@@ -294,6 +324,10 @@ export const ApiGateway = {
     } else {
       obj.attachedDomains = [];
     }
+    message.connectivity !== undefined &&
+      (obj.connectivity = message.connectivity
+        ? Connectivity.toJSON(message.connectivity)
+        : undefined);
     return obj;
   },
 
@@ -319,6 +353,10 @@ export const ApiGateway = {
     message.logGroupId = object.logGroupId ?? "";
     message.attachedDomains =
       object.attachedDomains?.map((e) => AttachedDomain.fromPartial(e)) || [];
+    message.connectivity =
+      object.connectivity !== undefined && object.connectivity !== null
+        ? Connectivity.fromPartial(object.connectivity)
+        : undefined;
     return message;
   },
 };
@@ -503,6 +541,83 @@ export const AttachedDomain = {
 };
 
 messageTypeRegistry.set(AttachedDomain.$type, AttachedDomain);
+
+const baseConnectivity: object = {
+  $type: "yandex.cloud.serverless.apigateway.v1.Connectivity",
+  networkId: "",
+  subnetId: "",
+};
+
+export const Connectivity = {
+  $type: "yandex.cloud.serverless.apigateway.v1.Connectivity" as const,
+
+  encode(
+    message: Connectivity,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.networkId !== "") {
+      writer.uint32(10).string(message.networkId);
+    }
+    for (const v of message.subnetId) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Connectivity {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseConnectivity } as Connectivity;
+    message.subnetId = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.networkId = reader.string();
+          break;
+        case 2:
+          message.subnetId.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Connectivity {
+    const message = { ...baseConnectivity } as Connectivity;
+    message.networkId =
+      object.networkId !== undefined && object.networkId !== null
+        ? String(object.networkId)
+        : "";
+    message.subnetId = (object.subnetId ?? []).map((e: any) => String(e));
+    return message;
+  },
+
+  toJSON(message: Connectivity): unknown {
+    const obj: any = {};
+    message.networkId !== undefined && (obj.networkId = message.networkId);
+    if (message.subnetId) {
+      obj.subnetId = message.subnetId.map((e) => e);
+    } else {
+      obj.subnetId = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Connectivity>, I>>(
+    object: I
+  ): Connectivity {
+    const message = { ...baseConnectivity } as Connectivity;
+    message.networkId = object.networkId ?? "";
+    message.subnetId = object.subnetId?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Connectivity.$type, Connectivity);
 
 type Builtin =
   | Date

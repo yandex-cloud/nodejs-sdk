@@ -10,9 +10,9 @@ export interface UsageRecord {
   $type: "yandex.cloud.marketplace.v1.metering.UsageRecord";
   /** Unique identifier of the usage record (UUID format). */
   uuid: string;
-  /** Consumed Marketplace SaaS Sku ID, linked to `UsageRecord.product_id`. */
+  /** Consumed Marketplace SKU ID, linked to `UsageRecord.product_id`. */
   skuId: string;
-  /** Quantity of sku consumed, measured in `sku.usage_unit` units (e.g. bytes). */
+  /** Quantity of SKU consumed, measured in `sku.usage_unit` units (e.g. bytes). */
   quantity: number;
   /** Timestamp in UTC for which the usage is being reported. */
   timestamp?: Date;

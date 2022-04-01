@@ -7,8 +7,9 @@ import { Timestamp } from "../../../../../google/protobuf/timestamp";
 export const protobufPackage = "yandex.cloud.mdb.mysql.v1";
 
 /**
- * A MySQL backup. For more information, see
- * the [documentation](/docs/managed-mysql/concepts/backup).
+ * An object that represents MySQL backup.
+ *
+ * See [the documentation](/docs/managed-mysql/concepts/backup) for details.
  */
 export interface Backup {
   $type: "yandex.cloud.mdb.mysql.v1.Backup";
@@ -16,11 +17,11 @@ export interface Backup {
   id: string;
   /** ID of the folder that the backup belongs to. */
   folderId: string;
-  /** Comment for API reference generated automatically. */
+  /** Creation timestamp (the time when the backup operation was completed). */
   createdAt?: Date;
-  /** ID of the MySQL cluster that the backup was created for. */
+  /** ID of the cluster that the backup was created for. */
   sourceClusterId: string;
-  /** Time when the backup operation was started. */
+  /** Start timestamp (the time when the backup operation was started). */
   startedAt?: Date;
 }
 

@@ -14,64 +14,61 @@ import { Mysqlconfigset80 } from "../../../../../yandex/cloud/mdb/mysql/v1/confi
 export const protobufPackage = "yandex.cloud.mdb.mysql.v1";
 
 /**
- * A MySQL cluster. For more information, see
- * the [documentation](/docs/managed-mysql/concepts).
+ * An object that represents MySQL cluster.
+ *
+ * See [the documentation](/docs/managed-mysql/concepts) for details.
  */
 export interface Cluster {
   $type: "yandex.cloud.mdb.mysql.v1.Cluster";
   /**
-   * ID of the MySQL cluster.
-   * This ID is assigned by Managed Service for MySQL at creation time.
+   * ID of the cluster.
+   *
+   * This ID is assigned by Yandex Cloud at the time of creation.
    */
   id: string;
-  /** ID of the folder that the MySQL cluster belongs to. */
+  /** ID of the folder that the cluster belongs to. */
   folderId: string;
+  /** Creation timestamp of the cluster. */
   createdAt?: Date;
-  /**
-   * Name of the MySQL cluster.
-   * The name must be unique within the folder, comply with RFC 1035
-   * and be 1-63 characters long.
-   */
+  /** Name of the cluster. */
   name: string;
-  /** Description of the MySQL cluster. 0-256 characters long. */
+  /** Description of the cluster. */
   description: string;
-  /**
-   * Custom labels for the MySQL cluster as `key:value` pairs.
-   * Maximum 64 per resource.
-   */
+  /** Custom labels for the cluster as `key:value` pairs. */
   labels: { [key: string]: string };
-  /** Deployment environment of the MySQL cluster. */
+  /** Deployment environment of the cluster. */
   environment: Cluster_Environment;
-  /** Description of monitoring systems relevant to the MySQL cluster. */
+  /** Monitoring systems data that is relevant to the cluster. */
   monitoring: Monitoring[];
-  /** Configuration of the MySQL cluster. */
+  /** Configuration of the cluster. */
   config?: ClusterConfig;
   /** ID of the network that the cluster belongs to. */
   networkId: string;
-  /** Aggregated cluster health. */
+  /** Aggregated health of the cluster. */
   health: Cluster_Health;
   /** Current state of the cluster. */
   status: Cluster_Status;
-  /** Maintenance window for the cluster. */
+  /** Maintenance window settings for the cluster. */
   maintenanceWindow?: MaintenanceWindow;
   /** Planned maintenance operation to be started for the cluster within the nearest [maintenance_window]. */
   plannedOperation?: MaintenanceOperation;
-  /** User security groups */
+  /** Effective list of security group IDs applied to the cluster. */
   securityGroupIds: string[];
-  /** Deletion Protection inhibits deletion of the cluster */
+  /** This option prevents unintended deletion of the cluster. */
   deletionProtection: boolean;
 }
 
 export enum Cluster_Environment {
   ENVIRONMENT_UNSPECIFIED = 0,
   /**
-   * PRODUCTION - Stable environment with a conservative update policy:
-   * only hotfixes are applied during regular maintenance.
+   * PRODUCTION - Environment for stable versions of your apps.
+   * A conservative update policy is in effect: only bug fixes are applied during regular maintenance.
    */
   PRODUCTION = 1,
   /**
-   * PRESTABLE - Environment with more aggressive update policy: new versions
-   * are rolled out irrespective of backward compatibility.
+   * PRESTABLE - Environment for testing, including the Managed Service for MySQL itself.
+   * This environment gets new features, improvements, and bug fixes in the first place, compared to the production environment.
+   * However, not every update ensures backward compatibility.
    */
   PRESTABLE = 2,
   UNRECOGNIZED = -1,
@@ -109,13 +106,13 @@ export function cluster_EnvironmentToJSON(object: Cluster_Environment): string {
 }
 
 export enum Cluster_Health {
-  /** HEALTH_UNKNOWN - State of the cluster is unknown ([Host.health] for every host in the cluster is UNKNOWN). */
+  /** HEALTH_UNKNOWN - Health of the cluster is unknown ([Host.health] for every host in the cluster is `UNKNOWN`). */
   HEALTH_UNKNOWN = 0,
-  /** ALIVE - Cluster is alive and well ([Host.health] for every host in the cluster is ALIVE). */
+  /** ALIVE - Cluster is alive and well ([Host.health] for every host in the cluster is `ALIVE`). */
   ALIVE = 1,
-  /** DEAD - Cluster is inoperable ([Host.health] for every host in the cluster is DEAD). */
+  /** DEAD - Cluster is inoperable ([Host.health] for every host in the cluster is `DEAD`). */
   DEAD = 2,
-  /** DEGRADED - Cluster is working below capacity ([Host.health] for at least one host in the cluster is not ALIVE). */
+  /** DEGRADED - Cluster is degraded ([Host.health] for at least one host in the cluster is not `ALIVE`). */
   DEGRADED = 3,
   UNRECOGNIZED = -1,
 }
@@ -169,7 +166,7 @@ export enum Cluster_Status {
   UPDATING = 4,
   /** STOPPING - Cluster is stopping. */
   STOPPING = 5,
-  /** STOPPED - Cluster stopped. */
+  /** STOPPED - Cluster is stopped. */
   STOPPED = 6,
   /** STARTING - Cluster is starting. */
   STARTING = 7,
@@ -238,73 +235,74 @@ export interface Cluster_LabelsEntry {
   value: string;
 }
 
+/** Cluster-related monitoring system data. */
 export interface Monitoring {
   $type: "yandex.cloud.mdb.mysql.v1.Monitoring";
   /** Name of the monitoring system. */
   name: string;
   /** Description of the monitoring system. */
   description: string;
-  /** Link to the monitoring system charts for the MySQL cluster. */
+  /** Link to the monitoring system charts for the cluster. */
   link: string;
 }
 
 export interface ClusterConfig {
   $type: "yandex.cloud.mdb.mysql.v1.ClusterConfig";
-  /** Version of MySQL server software. */
+  /** Version of MySQL used in the cluster. */
   version: string;
   /** Configuration of a MySQL 5.7 server. */
   mysqlConfig57?: Mysqlconfigset57 | undefined;
   /** Configuration of a MySQL 8.0 server. */
   mysqlConfig80?: Mysqlconfigset80 | undefined;
-  /** Resources allocated to MySQL hosts. */
+  /** Resource preset for the cluster hosts. */
   resources?: Resources;
   /** Time to start the daily backup, in the UTC timezone. */
   backupWindowStart?: TimeOfDay;
-  /** Access policy to DB */
+  /** Access policy for external services. */
   access?: Access;
+  /** Configuration of the performance diagnostics service. */
+  performanceDiagnostics?: PerformanceDiagnostics;
 }
 
 export interface Host {
   $type: "yandex.cloud.mdb.mysql.v1.Host";
   /**
-   * Name of the MySQL host. The host name is assigned by Managed Service for MySQL
-   * at creation time, and cannot be changed. 1-63 characters long.
+   * Name of the host.
    *
-   * The name is unique across all existing database hosts in Yandex.Cloud,
-   * as it defines the FQDN of the host.
+   * This name is assigned by Yandex Cloud at the time of creation.
+   * The name is unique across all existing MDB hosts in Yandex Cloud, as it defines the FQDN of the host.
    */
   name: string;
-  /**
-   * ID of the MySQL host. The ID is assigned by Managed Service for MySQL
-   * at creation time.
-   */
+  /** ID of the cluster the host belongs to. */
   clusterId: string;
-  /** ID of the availability zone where the MySQL host resides. */
+  /** ID of the availability zone where the host resides. */
   zoneId: string;
   /** Resources allocated to the host. */
   resources?: Resources;
   /** Role of the host in the cluster. */
   role: Host_Role;
-  /** Status code of the aggregated health of the host. */
+  /** Aggregated health of the host. */
   health: Host_Health;
-  /** Services provided by the host. */
+  /** List of services provided by the host. */
   services: Service[];
   /** ID of the subnet that the host belongs to. */
   subnetId: string;
-  /** Flag showing public IP assignment status to this host. */
+  /** Flag that shows if public IP address is assigned to the host so that the host can be accessed from the internet. */
   assignPublicIp: boolean;
   /** Name of the host to be used as the replication source for cascading replication. */
   replicationSource: string;
-  /** Host backup priority */
+  /** Host backup priority. */
   backupPriority: number;
+  /** Host master promotion priority. */
+  priority: number;
 }
 
 export enum Host_Role {
-  /** ROLE_UNKNOWN - Role of the host in the cluster is unknown. */
+  /** ROLE_UNKNOWN - Role of the host is unknown. */
   ROLE_UNKNOWN = 0,
-  /** MASTER - Host is the master MySQL server in the cluster. */
+  /** MASTER - Host is the master. */
   MASTER = 1,
-  /** REPLICA - Host is a replica MySQL server in the cluster. */
+  /** REPLICA - Host is a replica. */
   REPLICA = 2,
   UNRECOGNIZED = -1,
 }
@@ -343,11 +341,11 @@ export function host_RoleToJSON(object: Host_Role): string {
 export enum Host_Health {
   /** HEALTH_UNKNOWN - Health of the host is unknown. */
   HEALTH_UNKNOWN = 0,
-  /** ALIVE - The host is performing all its functions normally. */
+  /** ALIVE - Host is performing all its functions normally. */
   ALIVE = 1,
-  /** DEAD - The host is inoperable, and cannot perform any of its essential functions. */
+  /** DEAD - Host is inoperable, and cannot perform any of its essential functions. */
   DEAD = 2,
-  /** DEGRADED - The host is degraded, and can perform only some of its essential functions. */
+  /** DEGRADED - Host is degraded, and can perform only some of its essential functions. */
   DEGRADED = 3,
   UNRECOGNIZED = -1,
 }
@@ -392,7 +390,7 @@ export interface Service {
   $type: "yandex.cloud.mdb.mysql.v1.Service";
   /** Type of the service provided by the host. */
   type: Service_Type;
-  /** Status code of server availability. */
+  /** Aggregated health of the service. */
   health: Service_Health;
 }
 
@@ -430,11 +428,11 @@ export function service_TypeToJSON(object: Service_Type): string {
 }
 
 export enum Service_Health {
-  /** HEALTH_UNKNOWN - Health of the server is unknown. */
+  /** HEALTH_UNKNOWN - Health of the service is unknown. */
   HEALTH_UNKNOWN = 0,
-  /** ALIVE - The server is working normally. */
+  /** ALIVE - The service is working normally. */
   ALIVE = 1,
-  /** DEAD - The server is dead or unresponsive. */
+  /** DEAD - The service is dead or unresponsive. */
   DEAD = 2,
   UNRECOGNIZED = -1,
 }
@@ -470,43 +468,56 @@ export function service_HealthToJSON(object: Service_Health): string {
   }
 }
 
+/** Cluster resource preset. */
 export interface Resources {
   $type: "yandex.cloud.mdb.mysql.v1.Resources";
   /**
-   * ID of the preset for computational resources available to a host (CPU, memory etc.).
-   * All available presets are listed in the [documentation](/docs/managed-mysql/concepts/instance-types).
+   * ID of the resource preset that defines available computational resources (vCPU, RAM, etc.) for a cluster host.
+   *
+   * All available presets are listed in [the documentation](/docs/managed-mysql/concepts/instance-types).
    */
   resourcePresetId: string;
-  /** Volume of the storage available to a host. */
+  /** Volume of the storage (for each cluster host, in bytes). */
   diskSize: number;
   /**
-   * Type of the storage environment for the host.
+   * Type of the storage.
+   *
    * Possible values:
-   * * network-ssd - network SSD drive,
-   * * local-ssd - local SSD storage.
+   * * `network-hdd` - standard network storage
+   * * `network-ssd` - fast network storage
+   * * `network-ssd-nonreplicated` - fast network nonreplicated storage
+   * * `local-ssd` - fast local storage.
+   *
+   * See [the documentation](/docs/managed-mysql/concepts/storage) for details.
    */
   diskTypeId: string;
 }
 
 export interface Access {
   $type: "yandex.cloud.mdb.mysql.v1.Access";
-  /** Allow access for DataLens */
+  /**
+   * Allows access from DataLens.
+   *
+   * See [the documentation](/docs/managed-mysql/operations/datalens-connect) for details.
+   */
   dataLens: boolean;
   /**
-   * Allow SQL queries to the cluster databases from the Yandex.Cloud management console.
+   * Allows SQL queries to the cluster databases from Yandex Cloud management console.
    *
-   * See [SQL queries in the management console](/docs/managed-mysql/operations/web-sql-query) for more details.
+   * See [the documentation](/docs/managed-mysql/operations/web-sql-query) for details.
    */
   webSql: boolean;
+  /** Allow access for DataTransfer. */
+  dataTransfer: boolean;
 }
 
 export interface PerformanceDiagnostics {
   $type: "yandex.cloud.mdb.mysql.v1.PerformanceDiagnostics";
-  /** Configuration setting which enables/disables performance diagnostics service in cluster. */
+  /** Flag that shows if performance statistics gathering is enabled for the cluster. */
   enabled: boolean;
-  /** Interval (in seconds) for my_session sampling */
+  /** Interval (in seconds) for `my_session` sampling. */
   sessionsSamplingInterval: number;
-  /** Interval (in seconds) for my_statements sampling */
+  /** Interval (in seconds) for `my_statements` sampling. */
   statementsSamplingInterval: number;
 }
 
@@ -1038,6 +1049,12 @@ export const ClusterConfig = {
     if (message.access !== undefined) {
       Access.encode(message.access, writer.uint32(42).fork()).ldelim();
     }
+    if (message.performanceDiagnostics !== undefined) {
+      PerformanceDiagnostics.encode(
+        message.performanceDiagnostics,
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1071,6 +1088,12 @@ export const ClusterConfig = {
           break;
         case 5:
           message.access = Access.decode(reader, reader.uint32());
+          break;
+        case 7:
+          message.performanceDiagnostics = PerformanceDiagnostics.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -1107,6 +1130,11 @@ export const ClusterConfig = {
       object.access !== undefined && object.access !== null
         ? Access.fromJSON(object.access)
         : undefined;
+    message.performanceDiagnostics =
+      object.performanceDiagnostics !== undefined &&
+      object.performanceDiagnostics !== null
+        ? PerformanceDiagnostics.fromJSON(object.performanceDiagnostics)
+        : undefined;
     return message;
   },
 
@@ -1131,6 +1159,10 @@ export const ClusterConfig = {
         : undefined);
     message.access !== undefined &&
       (obj.access = message.access ? Access.toJSON(message.access) : undefined);
+    message.performanceDiagnostics !== undefined &&
+      (obj.performanceDiagnostics = message.performanceDiagnostics
+        ? PerformanceDiagnostics.toJSON(message.performanceDiagnostics)
+        : undefined);
     return obj;
   },
 
@@ -1160,6 +1192,11 @@ export const ClusterConfig = {
       object.access !== undefined && object.access !== null
         ? Access.fromPartial(object.access)
         : undefined;
+    message.performanceDiagnostics =
+      object.performanceDiagnostics !== undefined &&
+      object.performanceDiagnostics !== null
+        ? PerformanceDiagnostics.fromPartial(object.performanceDiagnostics)
+        : undefined;
     return message;
   },
 };
@@ -1177,6 +1214,7 @@ const baseHost: object = {
   assignPublicIp: false,
   replicationSource: "",
   backupPriority: 0,
+  priority: 0,
 };
 
 export const Host = {
@@ -1215,6 +1253,9 @@ export const Host = {
     }
     if (message.backupPriority !== 0) {
       writer.uint32(88).int64(message.backupPriority);
+    }
+    if (message.priority !== 0) {
+      writer.uint32(96).int64(message.priority);
     }
     return writer;
   },
@@ -1259,6 +1300,9 @@ export const Host = {
           break;
         case 11:
           message.backupPriority = longToNumber(reader.int64() as Long);
+          break;
+        case 12:
+          message.priority = longToNumber(reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -1314,6 +1358,10 @@ export const Host = {
       object.backupPriority !== undefined && object.backupPriority !== null
         ? Number(object.backupPriority)
         : 0;
+    message.priority =
+      object.priority !== undefined && object.priority !== null
+        ? Number(object.priority)
+        : 0;
     return message;
   },
 
@@ -1343,6 +1391,8 @@ export const Host = {
       (obj.replicationSource = message.replicationSource);
     message.backupPriority !== undefined &&
       (obj.backupPriority = Math.round(message.backupPriority));
+    message.priority !== undefined &&
+      (obj.priority = Math.round(message.priority));
     return obj;
   },
 
@@ -1363,6 +1413,7 @@ export const Host = {
     message.assignPublicIp = object.assignPublicIp ?? false;
     message.replicationSource = object.replicationSource ?? "";
     message.backupPriority = object.backupPriority ?? 0;
+    message.priority = object.priority ?? 0;
     return message;
   },
 };
@@ -1537,6 +1588,7 @@ const baseAccess: object = {
   $type: "yandex.cloud.mdb.mysql.v1.Access",
   dataLens: false,
   webSql: false,
+  dataTransfer: false,
 };
 
 export const Access = {
@@ -1551,6 +1603,9 @@ export const Access = {
     }
     if (message.webSql === true) {
       writer.uint32(16).bool(message.webSql);
+    }
+    if (message.dataTransfer === true) {
+      writer.uint32(24).bool(message.dataTransfer);
     }
     return writer;
   },
@@ -1567,6 +1622,9 @@ export const Access = {
           break;
         case 2:
           message.webSql = reader.bool();
+          break;
+        case 3:
+          message.dataTransfer = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1586,6 +1644,10 @@ export const Access = {
       object.webSql !== undefined && object.webSql !== null
         ? Boolean(object.webSql)
         : false;
+    message.dataTransfer =
+      object.dataTransfer !== undefined && object.dataTransfer !== null
+        ? Boolean(object.dataTransfer)
+        : false;
     return message;
   },
 
@@ -1593,6 +1655,8 @@ export const Access = {
     const obj: any = {};
     message.dataLens !== undefined && (obj.dataLens = message.dataLens);
     message.webSql !== undefined && (obj.webSql = message.webSql);
+    message.dataTransfer !== undefined &&
+      (obj.dataTransfer = message.dataTransfer);
     return obj;
   },
 
@@ -1600,6 +1664,7 @@ export const Access = {
     const message = { ...baseAccess } as Access;
     message.dataLens = object.dataLens ?? false;
     message.webSql = object.webSql ?? false;
+    message.dataTransfer = object.dataTransfer ?? false;
     return message;
   },
 };

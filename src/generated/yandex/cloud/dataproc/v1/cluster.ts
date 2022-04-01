@@ -159,6 +159,8 @@ export interface HadoopConfig {
   properties: { [key: string]: string };
   /** List of public SSH keys to access to cluster hosts. */
   sshPublicKeys: string[];
+  /** Set of init-actions */
+  initializationActions: InitializationAction[];
 }
 
 export enum HadoopConfig_Service {
@@ -284,6 +286,16 @@ export interface ClusterConfig {
   versionId: string;
   /** Data Proc specific configuration options. */
   hadoop?: HadoopConfig;
+}
+
+export interface InitializationAction {
+  $type: "yandex.cloud.dataproc.v1.InitializationAction";
+  /** URI of the executable file */
+  uri: string;
+  /** Arguments to the initialization action */
+  args: string[];
+  /** Execution timeout */
+  timeout: number;
 }
 
 const baseCluster: object = {
@@ -811,6 +823,9 @@ export const HadoopConfig = {
     for (const v of message.sshPublicKeys) {
       writer.uint32(26).string(v!);
     }
+    for (const v of message.initializationActions) {
+      InitializationAction.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -821,6 +836,7 @@ export const HadoopConfig = {
     message.services = [];
     message.properties = {};
     message.sshPublicKeys = [];
+    message.initializationActions = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -846,6 +862,11 @@ export const HadoopConfig = {
         case 3:
           message.sshPublicKeys.push(reader.string());
           break;
+        case 4:
+          message.initializationActions.push(
+            InitializationAction.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -868,6 +889,9 @@ export const HadoopConfig = {
     message.sshPublicKeys = (object.sshPublicKeys ?? []).map((e: any) =>
       String(e)
     );
+    message.initializationActions = (object.initializationActions ?? []).map(
+      (e: any) => InitializationAction.fromJSON(e)
+    );
     return message;
   },
 
@@ -889,6 +913,13 @@ export const HadoopConfig = {
     } else {
       obj.sshPublicKeys = [];
     }
+    if (message.initializationActions) {
+      obj.initializationActions = message.initializationActions.map((e) =>
+        e ? InitializationAction.toJSON(e) : undefined
+      );
+    } else {
+      obj.initializationActions = [];
+    }
     return obj;
   },
 
@@ -906,6 +937,10 @@ export const HadoopConfig = {
       return acc;
     }, {});
     message.sshPublicKeys = object.sshPublicKeys?.map((e) => e) || [];
+    message.initializationActions =
+      object.initializationActions?.map((e) =>
+        InitializationAction.fromPartial(e)
+      ) || [];
     return message;
   },
 };
@@ -1077,6 +1112,109 @@ export const ClusterConfig = {
 
 messageTypeRegistry.set(ClusterConfig.$type, ClusterConfig);
 
+const baseInitializationAction: object = {
+  $type: "yandex.cloud.dataproc.v1.InitializationAction",
+  uri: "",
+  args: "",
+  timeout: 0,
+};
+
+export const InitializationAction = {
+  $type: "yandex.cloud.dataproc.v1.InitializationAction" as const,
+
+  encode(
+    message: InitializationAction,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.uri !== "") {
+      writer.uint32(10).string(message.uri);
+    }
+    for (const v of message.args) {
+      writer.uint32(18).string(v!);
+    }
+    if (message.timeout !== 0) {
+      writer.uint32(24).int64(message.timeout);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): InitializationAction {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseInitializationAction } as InitializationAction;
+    message.args = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.uri = reader.string();
+          break;
+        case 2:
+          message.args.push(reader.string());
+          break;
+        case 3:
+          message.timeout = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): InitializationAction {
+    const message = { ...baseInitializationAction } as InitializationAction;
+    message.uri =
+      object.uri !== undefined && object.uri !== null ? String(object.uri) : "";
+    message.args = (object.args ?? []).map((e: any) => String(e));
+    message.timeout =
+      object.timeout !== undefined && object.timeout !== null
+        ? Number(object.timeout)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: InitializationAction): unknown {
+    const obj: any = {};
+    message.uri !== undefined && (obj.uri = message.uri);
+    if (message.args) {
+      obj.args = message.args.map((e) => e);
+    } else {
+      obj.args = [];
+    }
+    message.timeout !== undefined &&
+      (obj.timeout = Math.round(message.timeout));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<InitializationAction>, I>>(
+    object: I
+  ): InitializationAction {
+    const message = { ...baseInitializationAction } as InitializationAction;
+    message.uri = object.uri ?? "";
+    message.args = object.args?.map((e) => e) || [];
+    message.timeout = object.timeout ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(InitializationAction.$type, InitializationAction);
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
+
 type Builtin =
   | Date
   | Function
@@ -1124,6 +1262,13 @@ function fromJsonTimestamp(o: any): Date {
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
+}
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
 }
 
 if (_m0.util.Long !== Long) {

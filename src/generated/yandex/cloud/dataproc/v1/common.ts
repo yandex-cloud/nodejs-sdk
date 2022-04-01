@@ -6,13 +6,13 @@ import _m0 from "protobufjs/minimal";
 export const protobufPackage = "yandex.cloud.dataproc.v1";
 
 export enum Health {
-  /** HEALTH_UNKNOWN - State of the cluster is unknown ([Host.health] for every host in the cluster is UNKNOWN). */
+  /** HEALTH_UNKNOWN - Object is in unknown state (we have no data). */
   HEALTH_UNKNOWN = 0,
-  /** ALIVE - Cluster is alive and well ([Host.health] for every host in the cluster is ALIVE). */
+  /** ALIVE - Object is alive and well (for example, all hosts of the cluster are alive). */
   ALIVE = 1,
-  /** DEAD - Cluster is inoperable ([Host.health] for every host in the cluster is DEAD). */
+  /** DEAD - Object is inoperable (it cannot perform any of its essential functions). */
   DEAD = 2,
-  /** DEGRADED - Cluster is working below capacity ([Host.health] for at least one host in the cluster is not ALIVE). */
+  /** DEGRADED - Object is partially alive (it can perform some of its essential functions). */
   DEGRADED = 3,
   UNRECOGNIZED = -1,
 }

@@ -18,13 +18,16 @@ import {
 import _m0 from "protobufjs/minimal";
 import {
   Cluster_Environment,
+  Cluster_PersistenceMode,
   Resources,
   Access,
   Cluster,
   Host,
   Shard,
   cluster_EnvironmentFromJSON,
+  cluster_PersistenceModeFromJSON,
   cluster_EnvironmentToJSON,
+  cluster_PersistenceModeToJSON,
 } from "../../../../../yandex/cloud/mdb/redis/v1/cluster";
 import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import { MaintenanceWindow } from "../../../../../yandex/cloud/mdb/redis/v1/maintenance";
@@ -35,7 +38,7 @@ import { Backup } from "../../../../../yandex/cloud/mdb/redis/v1/backup";
 import { Redisconfig50 } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis5_0";
 import { Redisconfig60 } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis6_0";
 import { Redisconfig62 } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis6_2";
-import { BoolValue } from "../../../../../google/protobuf/wrappers";
+import { BoolValue, Int64Value } from "../../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.mdb.redis.v1";
 
@@ -118,6 +121,8 @@ export interface CreateClusterRequest {
   tlsEnabled?: boolean;
   /** Deletion Protection inhibits deletion of the cluster */
   deletionProtection: boolean;
+  /** Persistence mode */
+  persistenceMode: Cluster_PersistenceMode;
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -161,6 +166,8 @@ export interface UpdateClusterRequest {
   securityGroupIds: string[];
   /** Deletion Protection inhibits deletion of the cluster */
   deletionProtection: boolean;
+  /** Persistence mode */
+  persistenceMode: Cluster_PersistenceMode;
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
@@ -232,6 +239,25 @@ export interface MoveClusterMetadata {
   destinationFolderId: string;
 }
 
+export interface UpdateClusterHostsRequest {
+  $type: "yandex.cloud.mdb.redis.v1.UpdateClusterHostsRequest";
+  /**
+   * ID of the Redis cluster to update hosts in.
+   * To get the Redis cluster ID, use a [ClusterService.List] request.
+   */
+  clusterId: string;
+  /** New configurations to apply to hosts. */
+  updateHostSpecs: UpdateHostSpec[];
+}
+
+export interface UpdateClusterHostsMetadata {
+  $type: "yandex.cloud.mdb.redis.v1.UpdateClusterHostsMetadata";
+  /** ID of the Redis cluster to update hosts in. */
+  clusterId: string;
+  /** Names of hosts that are being updated. */
+  hostNames: string[];
+}
+
 export interface BackupClusterRequest {
   $type: "yandex.cloud.mdb.redis.v1.BackupClusterRequest";
   /**
@@ -280,6 +306,8 @@ export interface RestoreClusterRequest {
   securityGroupIds: string[];
   /** TLS port and functionality on\off */
   tlsEnabled?: boolean;
+  /** Persistence mode */
+  persistenceMode: Cluster_PersistenceMode;
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
@@ -806,6 +834,25 @@ export interface RebalanceClusterMetadata {
   clusterId: string;
 }
 
+export interface UpdateHostSpec {
+  $type: "yandex.cloud.mdb.redis.v1.UpdateHostSpec";
+  /**
+   * Name of the host to update.
+   * To get the Redis host name, use a [ClusterService.ListHosts] request.
+   */
+  hostName: string;
+  /**
+   * A replica with a low priority number is considered better for promotion.
+   * A replica with priority of 0 will never be selected by Redis Sentinel for promotion.
+   * Works only for non-sharded clusters. Default value is 100.
+   */
+  replicaPriority?: number;
+  /** Whether the host should get a public IP address on update. */
+  assignPublicIp: boolean;
+  /** Field mask that specifies which fields of the Redis host should be updated. */
+  updateMask?: FieldMask;
+}
+
 export interface HostSpec {
   $type: "yandex.cloud.mdb.redis.v1.HostSpec";
   /**
@@ -824,6 +871,20 @@ export interface HostSpec {
    * To get the shard ID use a [ClusterService.ListShards] request.
    */
   shardName: string;
+  /**
+   * A replica with a low priority number is considered better for promotion.
+   * A replica with priority of 0 will never be selected by Redis Sentinel for promotion.
+   * Works only for non-sharded clusters. Default value is 100.
+   */
+  replicaPriority?: number;
+  /**
+   * Whether the host should get a public IP address on creation.
+   *
+   * Possible values:
+   * * false - don't assign a public IP to the host.
+   * * true - the host should have a public IP address.
+   */
+  assignPublicIp: boolean;
 }
 
 export interface ConfigSpec {
@@ -1100,6 +1161,7 @@ const baseCreateClusterRequest: object = {
   sharded: false,
   securityGroupIds: "",
   deletionProtection: false,
+  persistenceMode: 0,
 };
 
 export const CreateClusterRequest = {
@@ -1154,6 +1216,9 @@ export const CreateClusterRequest = {
     }
     if (message.deletionProtection === true) {
       writer.uint32(112).bool(message.deletionProtection);
+    }
+    if (message.persistenceMode !== 0) {
+      writer.uint32(120).int32(message.persistenceMode);
     }
     return writer;
   },
@@ -1212,6 +1277,9 @@ export const CreateClusterRequest = {
           break;
         case 14:
           message.deletionProtection = reader.bool();
+          break;
+        case 15:
+          message.persistenceMode = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -1272,6 +1340,10 @@ export const CreateClusterRequest = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.persistenceMode =
+      object.persistenceMode !== undefined && object.persistenceMode !== null
+        ? cluster_PersistenceModeFromJSON(object.persistenceMode)
+        : 0;
     return message;
   },
 
@@ -1310,6 +1382,10 @@ export const CreateClusterRequest = {
     message.tlsEnabled !== undefined && (obj.tlsEnabled = message.tlsEnabled);
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.persistenceMode !== undefined &&
+      (obj.persistenceMode = cluster_PersistenceModeToJSON(
+        message.persistenceMode
+      ));
     return obj;
   },
 
@@ -1340,6 +1416,7 @@ export const CreateClusterRequest = {
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.tlsEnabled = object.tlsEnabled ?? undefined;
     message.deletionProtection = object.deletionProtection ?? false;
+    message.persistenceMode = object.persistenceMode ?? 0;
     return message;
   },
 };
@@ -1503,6 +1580,7 @@ const baseUpdateClusterRequest: object = {
   name: "",
   securityGroupIds: "",
   deletionProtection: false,
+  persistenceMode: 0,
 };
 
 export const UpdateClusterRequest = {
@@ -1548,6 +1626,9 @@ export const UpdateClusterRequest = {
     }
     if (message.deletionProtection === true) {
       writer.uint32(72).bool(message.deletionProtection);
+    }
+    if (message.persistenceMode !== 0) {
+      writer.uint32(80).int32(message.persistenceMode);
     }
     return writer;
   },
@@ -1600,6 +1681,9 @@ export const UpdateClusterRequest = {
         case 9:
           message.deletionProtection = reader.bool();
           break;
+        case 10:
+          message.persistenceMode = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1649,6 +1733,10 @@ export const UpdateClusterRequest = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.persistenceMode =
+      object.persistenceMode !== undefined && object.persistenceMode !== null
+        ? cluster_PersistenceModeFromJSON(object.persistenceMode)
+        : 0;
     return message;
   },
 
@@ -1683,6 +1771,10 @@ export const UpdateClusterRequest = {
     }
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.persistenceMode !== undefined &&
+      (obj.persistenceMode = cluster_PersistenceModeToJSON(
+        message.persistenceMode
+      ));
     return obj;
   },
 
@@ -1716,6 +1808,7 @@ export const UpdateClusterRequest = {
         : undefined;
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? false;
+    message.persistenceMode = object.persistenceMode ?? 0;
     return message;
   },
 };
@@ -2421,6 +2514,190 @@ export const MoveClusterMetadata = {
 
 messageTypeRegistry.set(MoveClusterMetadata.$type, MoveClusterMetadata);
 
+const baseUpdateClusterHostsRequest: object = {
+  $type: "yandex.cloud.mdb.redis.v1.UpdateClusterHostsRequest",
+  clusterId: "",
+};
+
+export const UpdateClusterHostsRequest = {
+  $type: "yandex.cloud.mdb.redis.v1.UpdateClusterHostsRequest" as const,
+
+  encode(
+    message: UpdateClusterHostsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    for (const v of message.updateHostSpecs) {
+      UpdateHostSpec.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateClusterHostsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateClusterHostsRequest,
+    } as UpdateClusterHostsRequest;
+    message.updateHostSpecs = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.updateHostSpecs.push(
+            UpdateHostSpec.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateClusterHostsRequest {
+    const message = {
+      ...baseUpdateClusterHostsRequest,
+    } as UpdateClusterHostsRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.updateHostSpecs = (object.updateHostSpecs ?? []).map((e: any) =>
+      UpdateHostSpec.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: UpdateClusterHostsRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    if (message.updateHostSpecs) {
+      obj.updateHostSpecs = message.updateHostSpecs.map((e) =>
+        e ? UpdateHostSpec.toJSON(e) : undefined
+      );
+    } else {
+      obj.updateHostSpecs = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UpdateClusterHostsRequest>, I>>(
+    object: I
+  ): UpdateClusterHostsRequest {
+    const message = {
+      ...baseUpdateClusterHostsRequest,
+    } as UpdateClusterHostsRequest;
+    message.clusterId = object.clusterId ?? "";
+    message.updateHostSpecs =
+      object.updateHostSpecs?.map((e) => UpdateHostSpec.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  UpdateClusterHostsRequest.$type,
+  UpdateClusterHostsRequest
+);
+
+const baseUpdateClusterHostsMetadata: object = {
+  $type: "yandex.cloud.mdb.redis.v1.UpdateClusterHostsMetadata",
+  clusterId: "",
+  hostNames: "",
+};
+
+export const UpdateClusterHostsMetadata = {
+  $type: "yandex.cloud.mdb.redis.v1.UpdateClusterHostsMetadata" as const,
+
+  encode(
+    message: UpdateClusterHostsMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    for (const v of message.hostNames) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateClusterHostsMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateClusterHostsMetadata,
+    } as UpdateClusterHostsMetadata;
+    message.hostNames = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.hostNames.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateClusterHostsMetadata {
+    const message = {
+      ...baseUpdateClusterHostsMetadata,
+    } as UpdateClusterHostsMetadata;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.hostNames = (object.hostNames ?? []).map((e: any) => String(e));
+    return message;
+  },
+
+  toJSON(message: UpdateClusterHostsMetadata): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    if (message.hostNames) {
+      obj.hostNames = message.hostNames.map((e) => e);
+    } else {
+      obj.hostNames = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UpdateClusterHostsMetadata>, I>>(
+    object: I
+  ): UpdateClusterHostsMetadata {
+    const message = {
+      ...baseUpdateClusterHostsMetadata,
+    } as UpdateClusterHostsMetadata;
+    message.clusterId = object.clusterId ?? "";
+    message.hostNames = object.hostNames?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  UpdateClusterHostsMetadata.$type,
+  UpdateClusterHostsMetadata
+);
+
 const baseBackupClusterRequest: object = {
   $type: "yandex.cloud.mdb.redis.v1.BackupClusterRequest",
   clusterId: "",
@@ -2560,6 +2837,7 @@ const baseRestoreClusterRequest: object = {
   networkId: "",
   folderId: "",
   securityGroupIds: "",
+  persistenceMode: 0,
 };
 
 export const RestoreClusterRequest = {
@@ -2611,6 +2889,9 @@ export const RestoreClusterRequest = {
         { $type: "google.protobuf.BoolValue", value: message.tlsEnabled! },
         writer.uint32(90).fork()
       ).ldelim();
+    }
+    if (message.persistenceMode !== 0) {
+      writer.uint32(96).int32(message.persistenceMode);
     }
     return writer;
   },
@@ -2667,6 +2948,9 @@ export const RestoreClusterRequest = {
         case 11:
           message.tlsEnabled = BoolValue.decode(reader, reader.uint32()).value;
           break;
+        case 12:
+          message.persistenceMode = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2721,6 +3005,10 @@ export const RestoreClusterRequest = {
       object.tlsEnabled !== undefined && object.tlsEnabled !== null
         ? Boolean(object.tlsEnabled)
         : undefined;
+    message.persistenceMode =
+      object.persistenceMode !== undefined && object.persistenceMode !== null
+        ? cluster_PersistenceModeFromJSON(object.persistenceMode)
+        : 0;
     return message;
   },
 
@@ -2757,6 +3045,10 @@ export const RestoreClusterRequest = {
       obj.securityGroupIds = [];
     }
     message.tlsEnabled !== undefined && (obj.tlsEnabled = message.tlsEnabled);
+    message.persistenceMode !== undefined &&
+      (obj.persistenceMode = cluster_PersistenceModeToJSON(
+        message.persistenceMode
+      ));
     return obj;
   },
 
@@ -2786,6 +3078,7 @@ export const RestoreClusterRequest = {
     message.folderId = object.folderId ?? "";
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.tlsEnabled = object.tlsEnabled ?? undefined;
+    message.persistenceMode = object.persistenceMode ?? 0;
     return message;
   },
 };
@@ -5701,11 +5994,128 @@ messageTypeRegistry.set(
   RebalanceClusterMetadata
 );
 
+const baseUpdateHostSpec: object = {
+  $type: "yandex.cloud.mdb.redis.v1.UpdateHostSpec",
+  hostName: "",
+  assignPublicIp: false,
+};
+
+export const UpdateHostSpec = {
+  $type: "yandex.cloud.mdb.redis.v1.UpdateHostSpec" as const,
+
+  encode(
+    message: UpdateHostSpec,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.hostName !== "") {
+      writer.uint32(10).string(message.hostName);
+    }
+    if (message.replicaPriority !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.replicaPriority!,
+        },
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.assignPublicIp === true) {
+      writer.uint32(24).bool(message.assignPublicIp);
+    }
+    if (message.updateMask !== undefined) {
+      FieldMask.encode(message.updateMask, writer.uint32(34).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): UpdateHostSpec {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseUpdateHostSpec } as UpdateHostSpec;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.hostName = reader.string();
+          break;
+        case 2:
+          message.replicaPriority = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 3:
+          message.assignPublicIp = reader.bool();
+          break;
+        case 4:
+          message.updateMask = FieldMask.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateHostSpec {
+    const message = { ...baseUpdateHostSpec } as UpdateHostSpec;
+    message.hostName =
+      object.hostName !== undefined && object.hostName !== null
+        ? String(object.hostName)
+        : "";
+    message.replicaPriority =
+      object.replicaPriority !== undefined && object.replicaPriority !== null
+        ? Number(object.replicaPriority)
+        : undefined;
+    message.assignPublicIp =
+      object.assignPublicIp !== undefined && object.assignPublicIp !== null
+        ? Boolean(object.assignPublicIp)
+        : false;
+    message.updateMask =
+      object.updateMask !== undefined && object.updateMask !== null
+        ? FieldMask.fromJSON(object.updateMask)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: UpdateHostSpec): unknown {
+    const obj: any = {};
+    message.hostName !== undefined && (obj.hostName = message.hostName);
+    message.replicaPriority !== undefined &&
+      (obj.replicaPriority = message.replicaPriority);
+    message.assignPublicIp !== undefined &&
+      (obj.assignPublicIp = message.assignPublicIp);
+    message.updateMask !== undefined &&
+      (obj.updateMask = message.updateMask
+        ? FieldMask.toJSON(message.updateMask)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UpdateHostSpec>, I>>(
+    object: I
+  ): UpdateHostSpec {
+    const message = { ...baseUpdateHostSpec } as UpdateHostSpec;
+    message.hostName = object.hostName ?? "";
+    message.replicaPriority = object.replicaPriority ?? undefined;
+    message.assignPublicIp = object.assignPublicIp ?? false;
+    message.updateMask =
+      object.updateMask !== undefined && object.updateMask !== null
+        ? FieldMask.fromPartial(object.updateMask)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(UpdateHostSpec.$type, UpdateHostSpec);
+
 const baseHostSpec: object = {
   $type: "yandex.cloud.mdb.redis.v1.HostSpec",
   zoneId: "",
   subnetId: "",
   shardName: "",
+  assignPublicIp: false,
 };
 
 export const HostSpec = {
@@ -5723,6 +6133,18 @@ export const HostSpec = {
     }
     if (message.shardName !== "") {
       writer.uint32(26).string(message.shardName);
+    }
+    if (message.replicaPriority !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.replicaPriority!,
+        },
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    if (message.assignPublicIp === true) {
+      writer.uint32(40).bool(message.assignPublicIp);
     }
     return writer;
   },
@@ -5742,6 +6164,15 @@ export const HostSpec = {
           break;
         case 3:
           message.shardName = reader.string();
+          break;
+        case 4:
+          message.replicaPriority = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 5:
+          message.assignPublicIp = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -5765,6 +6196,14 @@ export const HostSpec = {
       object.shardName !== undefined && object.shardName !== null
         ? String(object.shardName)
         : "";
+    message.replicaPriority =
+      object.replicaPriority !== undefined && object.replicaPriority !== null
+        ? Number(object.replicaPriority)
+        : undefined;
+    message.assignPublicIp =
+      object.assignPublicIp !== undefined && object.assignPublicIp !== null
+        ? Boolean(object.assignPublicIp)
+        : false;
     return message;
   },
 
@@ -5773,6 +6212,10 @@ export const HostSpec = {
     message.zoneId !== undefined && (obj.zoneId = message.zoneId);
     message.subnetId !== undefined && (obj.subnetId = message.subnetId);
     message.shardName !== undefined && (obj.shardName = message.shardName);
+    message.replicaPriority !== undefined &&
+      (obj.replicaPriority = message.replicaPriority);
+    message.assignPublicIp !== undefined &&
+      (obj.assignPublicIp = message.assignPublicIp);
     return obj;
   },
 
@@ -5781,6 +6224,8 @@ export const HostSpec = {
     message.zoneId = object.zoneId ?? "";
     message.subnetId = object.subnetId ?? "";
     message.shardName = object.shardName ?? "";
+    message.replicaPriority = object.replicaPriority ?? undefined;
+    message.assignPublicIp = object.assignPublicIp ?? false;
     return message;
   },
 };
@@ -6217,6 +6662,19 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Updates the specified hosts. */
+  updateHosts: {
+    path: "/yandex.cloud.mdb.redis.v1.ClusterService/UpdateHosts",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: UpdateClusterHostsRequest) =>
+      Buffer.from(UpdateClusterHostsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      UpdateClusterHostsRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /** Returns the specified shard. */
   getShard: {
     path: "/yandex.cloud.mdb.redis.v1.ClusterService/GetShard",
@@ -6341,6 +6799,8 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
   addHosts: handleUnaryCall<AddClusterHostsRequest, Operation>;
   /** Deletes the specified hosts for a cluster. */
   deleteHosts: handleUnaryCall<DeleteClusterHostsRequest, Operation>;
+  /** Updates the specified hosts. */
+  updateHosts: handleUnaryCall<UpdateClusterHostsRequest, Operation>;
   /** Returns the specified shard. */
   getShard: handleUnaryCall<GetClusterShardRequest, Shard>;
   /** Retrieves a list of shards. */
@@ -6703,6 +7163,22 @@ export interface ClusterServiceClient extends Client {
   ): ClientUnaryCall;
   deleteHosts(
     request: DeleteClusterHostsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Updates the specified hosts. */
+  updateHosts(
+    request: UpdateClusterHostsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateHosts(
+    request: UpdateClusterHostsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateHosts(
+    request: UpdateClusterHostsRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

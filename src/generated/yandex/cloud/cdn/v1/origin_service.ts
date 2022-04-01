@@ -967,7 +967,12 @@ export const OriginServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Updates origin from origin group. */
+  /**
+   * Updates the specified origin from the origin group.
+   *
+   * Changes may take up to 15 minutes to apply. Afterwards, it is recommended to purge cache of the resources that
+   * use the origin via a [CacheService.Purge] request.
+   */
   update: {
     path: "/yandex.cloud.cdn.v1.OriginService/Update",
     requestStream: false,
@@ -1000,7 +1005,12 @@ export interface OriginServiceServer extends UntypedServiceImplementation {
   list: handleUnaryCall<ListOriginsRequest, ListOriginsResponse>;
   /** Creates origin inside origin group. */
   create: handleUnaryCall<CreateOriginRequest, Operation>;
-  /** Updates origin from origin group. */
+  /**
+   * Updates the specified origin from the origin group.
+   *
+   * Changes may take up to 15 minutes to apply. Afterwards, it is recommended to purge cache of the resources that
+   * use the origin via a [CacheService.Purge] request.
+   */
   update: handleUnaryCall<UpdateOriginRequest, Operation>;
   /** Deletes origin from origin group. */
   delete: handleUnaryCall<DeleteOriginRequest, Operation>;
@@ -1064,7 +1074,12 @@ export interface OriginServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Updates origin from origin group. */
+  /**
+   * Updates the specified origin from the origin group.
+   *
+   * Changes may take up to 15 minutes to apply. Afterwards, it is recommended to purge cache of the resources that
+   * use the origin via a [CacheService.Purge] request.
+   */
   update(
     request: UpdateOriginRequest,
     callback: (error: ServiceError | null, response: Operation) => void

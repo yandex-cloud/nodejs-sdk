@@ -6,8 +6,11 @@ import {
   TLSMode,
   ObjectTransferStage,
   Secret,
+  CleanupPolicy,
   objectTransferStageFromJSON,
   objectTransferStageToJSON,
+  cleanupPolicyFromJSON,
+  cleanupPolicyToJSON,
 } from "../../../../../yandex/cloud/datatransfer/v1/endpoint/common";
 
 export const protobufPackage = "yandex.cloud.datatransfer.v1.endpoint";
@@ -40,7 +43,7 @@ export interface MysqlConnection {
   /**
    * Managed cluster
    *
-   * Yandex.Cloud Managed MySQL cluster ID
+   * Yandex Managed Service for MySQL cluster ID
    */
   mdbClusterId: string | undefined;
   /**
@@ -166,6 +169,19 @@ export interface MysqlTarget {
    * IANA timezone database. Default: local timezone.
    */
   timezone: string;
+  /**
+   * Cleanup policy
+   *
+   * Cleanup policy for activate, reactivate and reupload processes. Default is
+   * DISABLED.
+   */
+  cleanupPolicy: CleanupPolicy;
+  /**
+   * Database schema for service table
+   *
+   * Default: db name. Here created technical tables (__tm_keeper, __tm_gtid_keeper).
+   */
+  serviceDatabase: string;
 }
 
 const baseOnPremiseMysql: object = {
@@ -657,6 +673,8 @@ const baseMysqlTarget: object = {
   sqlMode: "",
   skipConstraintChecks: false,
   timezone: "",
+  cleanupPolicy: 0,
+  serviceDatabase: "",
 };
 
 export const MysqlTarget = {
@@ -690,6 +708,12 @@ export const MysqlTarget = {
     if (message.timezone !== "") {
       writer.uint32(58).string(message.timezone);
     }
+    if (message.cleanupPolicy !== 0) {
+      writer.uint32(64).int32(message.cleanupPolicy);
+    }
+    if (message.serviceDatabase !== "") {
+      writer.uint32(122).string(message.serviceDatabase);
+    }
     return writer;
   },
 
@@ -720,6 +744,12 @@ export const MysqlTarget = {
           break;
         case 7:
           message.timezone = reader.string();
+          break;
+        case 8:
+          message.cleanupPolicy = reader.int32() as any;
+          break;
+        case 15:
+          message.serviceDatabase = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -760,6 +790,14 @@ export const MysqlTarget = {
       object.timezone !== undefined && object.timezone !== null
         ? String(object.timezone)
         : "";
+    message.cleanupPolicy =
+      object.cleanupPolicy !== undefined && object.cleanupPolicy !== null
+        ? cleanupPolicyFromJSON(object.cleanupPolicy)
+        : 0;
+    message.serviceDatabase =
+      object.serviceDatabase !== undefined && object.serviceDatabase !== null
+        ? String(object.serviceDatabase)
+        : "";
     return message;
   },
 
@@ -779,6 +817,10 @@ export const MysqlTarget = {
     message.skipConstraintChecks !== undefined &&
       (obj.skipConstraintChecks = message.skipConstraintChecks);
     message.timezone !== undefined && (obj.timezone = message.timezone);
+    message.cleanupPolicy !== undefined &&
+      (obj.cleanupPolicy = cleanupPolicyToJSON(message.cleanupPolicy));
+    message.serviceDatabase !== undefined &&
+      (obj.serviceDatabase = message.serviceDatabase);
     return obj;
   },
 
@@ -799,6 +841,8 @@ export const MysqlTarget = {
     message.sqlMode = object.sqlMode ?? "";
     message.skipConstraintChecks = object.skipConstraintChecks ?? false;
     message.timezone = object.timezone ?? "";
+    message.cleanupPolicy = object.cleanupPolicy ?? 0;
+    message.serviceDatabase = object.serviceDatabase ?? "";
     return message;
   },
 };

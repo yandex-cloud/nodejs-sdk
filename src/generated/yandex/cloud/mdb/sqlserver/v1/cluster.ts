@@ -56,6 +56,8 @@ export interface Cluster {
   deletionProtection: boolean;
   /** SQL Server Collation */
   sqlcollation: string;
+  /** Host groups hosting VMs of the cluster. */
+  hostGroupIds: string[];
 }
 
 export enum Cluster_Environment {
@@ -266,7 +268,7 @@ export interface Host {
    * Name of the SQL Server host. The host name is assigned by Managed Service for SQL Server
    * at creation time, and cannot be changed. 1-63 characters long.
    *
-   * The name is unique across all existing database hosts in Yandex.Cloud,
+   * The name is unique across all existing database hosts in Yandex Cloud,
    * as it defines the FQDN of the host.
    */
   name: string;
@@ -486,6 +488,8 @@ export interface Access {
   $type: "yandex.cloud.mdb.sqlserver.v1.Access";
   /** Allow access for DataLens */
   dataLens: boolean;
+  /** Allow access for Web SQL. */
+  webSql: boolean;
 }
 
 const baseCluster: object = {
@@ -501,6 +505,7 @@ const baseCluster: object = {
   securityGroupIds: "",
   deletionProtection: false,
   sqlcollation: "",
+  hostGroupIds: "",
 };
 
 export const Cluster = {
@@ -565,6 +570,9 @@ export const Cluster = {
     if (message.sqlcollation !== "") {
       writer.uint32(122).string(message.sqlcollation);
     }
+    for (const v of message.hostGroupIds) {
+      writer.uint32(130).string(v!);
+    }
     return writer;
   },
 
@@ -575,6 +583,7 @@ export const Cluster = {
     message.labels = {};
     message.monitoring = [];
     message.securityGroupIds = [];
+    message.hostGroupIds = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -627,6 +636,9 @@ export const Cluster = {
           break;
         case 15:
           message.sqlcollation = reader.string();
+          break;
+        case 16:
+          message.hostGroupIds.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -697,6 +709,9 @@ export const Cluster = {
       object.sqlcollation !== undefined && object.sqlcollation !== null
         ? String(object.sqlcollation)
         : "";
+    message.hostGroupIds = (object.hostGroupIds ?? []).map((e: any) =>
+      String(e)
+    );
     return message;
   },
 
@@ -742,6 +757,11 @@ export const Cluster = {
       (obj.deletionProtection = message.deletionProtection);
     message.sqlcollation !== undefined &&
       (obj.sqlcollation = message.sqlcollation);
+    if (message.hostGroupIds) {
+      obj.hostGroupIds = message.hostGroupIds.map((e) => e);
+    } else {
+      obj.hostGroupIds = [];
+    }
     return obj;
   },
 
@@ -773,6 +793,7 @@ export const Cluster = {
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? false;
     message.sqlcollation = object.sqlcollation ?? "";
+    message.hostGroupIds = object.hostGroupIds?.map((e) => e) || [];
     return message;
   },
 };
@@ -1457,6 +1478,7 @@ messageTypeRegistry.set(Resources.$type, Resources);
 const baseAccess: object = {
   $type: "yandex.cloud.mdb.sqlserver.v1.Access",
   dataLens: false,
+  webSql: false,
 };
 
 export const Access = {
@@ -1468,6 +1490,9 @@ export const Access = {
   ): _m0.Writer {
     if (message.dataLens === true) {
       writer.uint32(8).bool(message.dataLens);
+    }
+    if (message.webSql === true) {
+      writer.uint32(16).bool(message.webSql);
     }
     return writer;
   },
@@ -1481,6 +1506,9 @@ export const Access = {
       switch (tag >>> 3) {
         case 1:
           message.dataLens = reader.bool();
+          break;
+        case 2:
+          message.webSql = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1496,18 +1524,24 @@ export const Access = {
       object.dataLens !== undefined && object.dataLens !== null
         ? Boolean(object.dataLens)
         : false;
+    message.webSql =
+      object.webSql !== undefined && object.webSql !== null
+        ? Boolean(object.webSql)
+        : false;
     return message;
   },
 
   toJSON(message: Access): unknown {
     const obj: any = {};
     message.dataLens !== undefined && (obj.dataLens = message.dataLens);
+    message.webSql !== undefined && (obj.webSql = message.webSql);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Access>, I>>(object: I): Access {
     const message = { ...baseAccess } as Access;
     message.dataLens = object.dataLens ?? false;
+    message.webSql = object.webSql ?? false;
     return message;
   },
 };

@@ -33,41 +33,52 @@ export const protobufPackage = "yandex.cloud.mdb.mysql.v1";
 
 export interface GetUserRequest {
   $type: "yandex.cloud.mdb.mysql.v1.GetUserRequest";
-  /** ID of the MySQL cluster. */
+  /**
+   * ID of the cluster the user belongs to.
+   *
+   * To get this ID, make a [ClusterService.List] request.
+   */
   clusterId: string;
-  /** Required. */
+  /**
+   * Name of the user to return information about.
+   *
+   * To get this name, make a [UserService.List] request.
+   */
   userName: string;
 }
 
 export interface ListUsersRequest {
   $type: "yandex.cloud.mdb.mysql.v1.ListUsersRequest";
   /**
-   * ID of the cluster to list MySQL users in.
-   * To get the cluster ID, use a [ClusterService.List] request.
+   * ID of the cluster to list the users in.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size], the service returns a [ListUsersResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the API returns a [ListUsersResponse.next_page_token] that can be used to get the next page of results in the subsequent [UserService.List] requests.
    */
   pageSize: number;
   /**
-   * Page token. To get the next page of results, set [page_token] to the [ListUsersResponse.next_page_token]
-   * returned by a previous list request.
+   * Page token that can be used to iterate through multiple pages of results.
+   *
+   * To get the next page of results, set [page_token] to the [ListUsersResponse.next_page_token] returned by the previous [UserService.List] request.
    */
   pageToken: string;
 }
 
 export interface ListUsersResponse {
   $type: "yandex.cloud.mdb.mysql.v1.ListUsersResponse";
-  /** Requested list of MySQL users. */
+  /** List of users. */
   users: User[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListUsersRequest.page_size], use the [next_page_token] as the value
-   * for the [ListUsersRequest.page_token] parameter in the next list request. Each subsequent
-   * list request will have its own [next_page_token] to continue paging through the results.
+   * The token that can be used to get the next page of results.
+   *
+   * If the number of results is larger than [ListUsersRequest.page_size], use the [next_page_token] as the value for the [ListUsersRequest.page_token] in the subsequent [UserService.List] request to iterate through multiple pages of results.
+   *
+   * Each of the subsequent [UserService.List] requests should use the [next_page_token] value returned by the previous request to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -75,17 +86,18 @@ export interface ListUsersResponse {
 export interface CreateUserRequest {
   $type: "yandex.cloud.mdb.mysql.v1.CreateUserRequest";
   /**
-   * ID of the MySQL cluster to create a user for.
-   * To get the cluster ID, use a [ClusterService.List] request.
+   * ID of the cluster to create the user in.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
-  /** Properties of the user to be created. */
+  /** Configuration of the user. */
   userSpec?: UserSpec;
 }
 
 export interface CreateUserMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.CreateUserMetadata";
-  /** ID of the MySQL cluster the user is being created for. */
+  /** ID of the cluster the user is being created in. */
   clusterId: string;
   /** Name of the user that is being created. */
   userName: string;
@@ -94,20 +106,22 @@ export interface CreateUserMetadata {
 export interface UpdateUserRequest {
   $type: "yandex.cloud.mdb.mysql.v1.UpdateUserRequest";
   /**
-   * ID of the MySQL cluster the user belongs to.
-   * To get the cluster ID use a [ClusterService.List] request.
+   * ID of the cluster to update the user in.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
   /**
-   * Name of the user to be updated.
-   * To get the name of the user use a [UserService.List] request.
+   * Name of the user to update.
+   *
+   * To get this name, make a [UserService.List] request.
    */
   userName: string;
-  /** Field mask that specifies which fields of the MySQL user should be updated. */
+  /** Field mask that specifies which settings of the user should be updated. */
   updateMask?: FieldMask;
   /** New password for the user. */
   password: string;
-  /** New set of permissions for the user. */
+  /** A new set of permissions that should be granted to the user. */
   permissions: Permission[];
   /** New set of global permissions to grant to the user. */
   globalPermissions: GlobalPermission[];
@@ -119,7 +133,7 @@ export interface UpdateUserRequest {
 
 export interface UpdateUserMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.UpdateUserMetadata";
-  /** ID of the MySQL cluster the user belongs to. */
+  /** ID of the cluster the user is being updated in. */
   clusterId: string;
   /** Name of the user that is being updated. */
   userName: string;
@@ -128,20 +142,22 @@ export interface UpdateUserMetadata {
 export interface DeleteUserRequest {
   $type: "yandex.cloud.mdb.mysql.v1.DeleteUserRequest";
   /**
-   * ID of the MySQL cluster the user belongs to.
-   * To get the cluster ID, use a [ClusterService.List] request.
+   * ID of the cluster to delete the user from.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
   /**
    * Name of the user to delete.
-   * To get the name of the user, use a [UserService.List] request.
+   *
+   * To get this name, make a [UserService.List] request.
    */
   userName: string;
 }
 
 export interface DeleteUserMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.DeleteUserMetadata";
-  /** ID of the MySQL cluster the user belongs to. */
+  /** ID of the cluster the user is being deleted from. */
   clusterId: string;
   /** Name of the user that is being deleted. */
   userName: string;
@@ -150,13 +166,15 @@ export interface DeleteUserMetadata {
 export interface GrantUserPermissionRequest {
   $type: "yandex.cloud.mdb.mysql.v1.GrantUserPermissionRequest";
   /**
-   * ID of the MySQL cluster the user belongs to.
-   * To get the cluster ID, use a [ClusterService.List] request.
+   * ID of the cluster to grant permission to the user in.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
   /**
-   * Name of the user to grant the permission to.
-   * To get the name of the user, use a [UserService.List] request.
+   * Name of the user to grant permission to.
+   *
+   * To get this name, make a [UserService.List] request.
    */
   userName: string;
   /** Permission that should be granted to the specified user. */
@@ -165,10 +183,7 @@ export interface GrantUserPermissionRequest {
 
 export interface GrantUserPermissionMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.GrantUserPermissionMetadata";
-  /**
-   * ID of the MySQL cluster the user belongs to.
-   * To get the cluster ID, use a [ClusterService.List] request.
-   */
+  /** ID of the cluster the user is being granted a permission in. */
   clusterId: string;
   /** Name of the user that is being granted a permission. */
   userName: string;
@@ -177,22 +192,24 @@ export interface GrantUserPermissionMetadata {
 export interface RevokeUserPermissionRequest {
   $type: "yandex.cloud.mdb.mysql.v1.RevokeUserPermissionRequest";
   /**
-   * ID of the MySQL cluster the user belongs to.
-   * To get the cluster ID, use a [ClusterService.List] request.
+   * ID of the cluster to revoke permission from the user in.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
   /**
-   * Name of the user to revoke a permission from.
-   * To get the name of the user, use a [UserService.List] request.
+   * Name of the user to revoke permission from.
+   *
+   * To get this name, make a [UserService.List] request.
    */
   userName: string;
-  /** Permission that should be revoked from the specified user. */
+  /** Permission that should be revoked from the user. */
   permission?: Permission;
 }
 
 export interface RevokeUserPermissionMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.RevokeUserPermissionMetadata";
-  /** ID of the MySQL cluster the user belongs to. */
+  /** ID of the cluster the user is being revoked a permission in. */
   clusterId: string;
   /** Name of the user whose permission is being revoked. */
   userName: string;
@@ -1397,13 +1414,13 @@ messageTypeRegistry.set(
   RevokeUserPermissionMetadata
 );
 
-/** A set of methods for managing MySQL users. */
+/**
+ * A set of methods for managing MySQL users.
+ *
+ * See [the documentation](/docs/managed-mysql/operations/cluster-users) for details.
+ */
 export const UserServiceService = {
-  /**
-   * Returns the specified MySQL user.
-   *
-   * To get the list of available MySQL users, make a [List] request.
-   */
+  /** Retrieves information about the specified user. */
   get: {
     path: "/yandex.cloud.mdb.mysql.v1.UserService/Get",
     requestStream: false,
@@ -1415,7 +1432,7 @@ export const UserServiceService = {
       Buffer.from(User.encode(value).finish()),
     responseDeserialize: (value: Buffer) => User.decode(value),
   },
-  /** Retrieves a list of MySQL users in the specified cluster. */
+  /** Retrieves the list of users in a cluster. */
   list: {
     path: "/yandex.cloud.mdb.mysql.v1.UserService/List",
     requestStream: false,
@@ -1427,7 +1444,7 @@ export const UserServiceService = {
       Buffer.from(ListUsersResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer) => ListUsersResponse.decode(value),
   },
-  /** Creates a MySQL user in the specified cluster. */
+  /** Creates a user in a cluster. */
   create: {
     path: "/yandex.cloud.mdb.mysql.v1.UserService/Create",
     requestStream: false,
@@ -1439,7 +1456,7 @@ export const UserServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Modifies the specified MySQL user. */
+  /** Updates a user in a cluster. */
   update: {
     path: "/yandex.cloud.mdb.mysql.v1.UserService/Update",
     requestStream: false,
@@ -1451,7 +1468,7 @@ export const UserServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Deletes the specified MySQL user. */
+  /** Deletes a user in a cluster. */
   delete: {
     path: "/yandex.cloud.mdb.mysql.v1.UserService/Delete",
     requestStream: false,
@@ -1463,7 +1480,7 @@ export const UserServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Grants a permission to the specified MySQL user. */
+  /** Grants permission to access a database to a user in a cluster. */
   grantPermission: {
     path: "/yandex.cloud.mdb.mysql.v1.UserService/GrantPermission",
     requestStream: false,
@@ -1476,7 +1493,7 @@ export const UserServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Revokes a permission from the specified MySQL user. */
+  /** Revokes permission to access a database from a user in a cluster. */
   revokePermission: {
     path: "/yandex.cloud.mdb.mysql.v1.UserService/RevokePermission",
     requestStream: false,
@@ -1492,32 +1509,24 @@ export const UserServiceService = {
 } as const;
 
 export interface UserServiceServer extends UntypedServiceImplementation {
-  /**
-   * Returns the specified MySQL user.
-   *
-   * To get the list of available MySQL users, make a [List] request.
-   */
+  /** Retrieves information about the specified user. */
   get: handleUnaryCall<GetUserRequest, User>;
-  /** Retrieves a list of MySQL users in the specified cluster. */
+  /** Retrieves the list of users in a cluster. */
   list: handleUnaryCall<ListUsersRequest, ListUsersResponse>;
-  /** Creates a MySQL user in the specified cluster. */
+  /** Creates a user in a cluster. */
   create: handleUnaryCall<CreateUserRequest, Operation>;
-  /** Modifies the specified MySQL user. */
+  /** Updates a user in a cluster. */
   update: handleUnaryCall<UpdateUserRequest, Operation>;
-  /** Deletes the specified MySQL user. */
+  /** Deletes a user in a cluster. */
   delete: handleUnaryCall<DeleteUserRequest, Operation>;
-  /** Grants a permission to the specified MySQL user. */
+  /** Grants permission to access a database to a user in a cluster. */
   grantPermission: handleUnaryCall<GrantUserPermissionRequest, Operation>;
-  /** Revokes a permission from the specified MySQL user. */
+  /** Revokes permission to access a database from a user in a cluster. */
   revokePermission: handleUnaryCall<RevokeUserPermissionRequest, Operation>;
 }
 
 export interface UserServiceClient extends Client {
-  /**
-   * Returns the specified MySQL user.
-   *
-   * To get the list of available MySQL users, make a [List] request.
-   */
+  /** Retrieves information about the specified user. */
   get(
     request: GetUserRequest,
     callback: (error: ServiceError | null, response: User) => void
@@ -1533,7 +1542,7 @@ export interface UserServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: User) => void
   ): ClientUnaryCall;
-  /** Retrieves a list of MySQL users in the specified cluster. */
+  /** Retrieves the list of users in a cluster. */
   list(
     request: ListUsersRequest,
     callback: (error: ServiceError | null, response: ListUsersResponse) => void
@@ -1549,7 +1558,7 @@ export interface UserServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: ListUsersResponse) => void
   ): ClientUnaryCall;
-  /** Creates a MySQL user in the specified cluster. */
+  /** Creates a user in a cluster. */
   create(
     request: CreateUserRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -1565,7 +1574,7 @@ export interface UserServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Modifies the specified MySQL user. */
+  /** Updates a user in a cluster. */
   update(
     request: UpdateUserRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -1581,7 +1590,7 @@ export interface UserServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Deletes the specified MySQL user. */
+  /** Deletes a user in a cluster. */
   delete(
     request: DeleteUserRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -1597,7 +1606,7 @@ export interface UserServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Grants a permission to the specified MySQL user. */
+  /** Grants permission to access a database to a user in a cluster. */
   grantPermission(
     request: GrantUserPermissionRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -1613,7 +1622,7 @@ export interface UserServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Revokes a permission from the specified MySQL user. */
+  /** Revokes permission to access a database from a user in a cluster. */
   revokePermission(
     request: RevokeUserPermissionRequest,
     callback: (error: ServiceError | null, response: Operation) => void

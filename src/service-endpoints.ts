@@ -64,7 +64,11 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
             'yandex.cloud.mdb.elasticsearch.v1.ClusterService',
             'yandex.cloud.mdb.elasticsearch.v1.ResourcePresetService',
             'yandex.cloud.mdb.elasticsearch.v1.UserService',
+            'yandex.cloud.mdb.elasticsearch.v1.BackupService',
+            'yandex.cloud.mdb.elasticsearch.v1.ExtensionService',
             'yandex.cloud.mdb.greenplum.v1.ClusterService',
+            'yandex.cloud.mdb.greenplum.v1.BackupService',
+            'yandex.cloud.mdb.greenplum.v1.ResourcePresetService',
             'yandex.cloud.mdb.kafka.v1.ClusterService',
             'yandex.cloud.mdb.kafka.v1.ConnectorService',
             'yandex.cloud.mdb.kafka.v1.ResourcePresetService',
@@ -224,7 +228,10 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
         endpoint: 'translate.api.cloud.yandex.net:443',
     },
     {
-        serviceIds: ['yandex.cloud.ai.vision.v1.VisionService'],
+        serviceIds: [
+            'yandex.cloud.ai.vision.v1.VisionService',
+            'yandex.cloud.ai.vision.v2.ImageClassifierService',
+        ],
         endpoint: 'vision.api.cloud.yandex.net:443',
     },
     {
@@ -258,6 +265,7 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
             'yandex.cloud.cdn.v1.OriginService',
             'yandex.cloud.cdn.v1.ProviderService',
             'yandex.cloud.cdn.v1.ResourceService',
+            'yandex.cloud.cdn.v1.RawLogsService',
         ],
         endpoint: 'cdn.api.cloud.yandex.net:443',
     },

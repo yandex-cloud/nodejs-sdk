@@ -122,7 +122,7 @@ export function rewriteFlagToJSON(object: RewriteFlag): string {
   }
 }
 
-/** A certificate type patameters. */
+/** A certificate type parameters. */
 export enum SSLCertificateType {
   /** SSL_CERTIFICATE_TYPE_UNSPECIFIED - SSL certificate is unspecified. */
   SSL_CERTIFICATE_TYPE_UNSPECIFIED = 0,
@@ -171,7 +171,7 @@ export function sSLCertificateTypeToJSON(object: SSLCertificateType): string {
   }
 }
 
-/** A certificate status patameters. */
+/** A certificate status parameters. */
 export enum SSLCertificateStatus {
   /** SSL_CERTIFICATE_STATUS_UNSPECIFIED - SSL certificate is unspecified. */
   SSL_CERTIFICATE_STATUS_UNSPECIFIED = 0,
@@ -557,19 +557,19 @@ export interface ResourceOptions_RewriteOption {
   flag: RewriteFlag;
 }
 
-/** A set of the personal SSL certificate patameters. */
+/** A set of the personal SSL certificate parameters. */
 export interface SSLTargetCertificate {
   $type: "yandex.cloud.cdn.v1.SSLTargetCertificate";
-  /** Type of the sertificate. */
+  /** Type of the certificate. */
   type: SSLCertificateType;
   /** Certificate data. */
   data?: SSLCertificateData;
 }
 
-/** A SSL sertificate patameters. */
+/** A SSL certificate parameters. */
 export interface SSLCertificate {
   $type: "yandex.cloud.cdn.v1.SSLCertificate";
-  /** Type of the sertificate. */
+  /** Type of the certificate. */
   type: SSLCertificateType;
   /** Active status. */
   status: SSLCertificateStatus;
@@ -577,7 +577,7 @@ export interface SSLCertificate {
   data?: SSLCertificateData;
 }
 
-/** A certificate data patameters. */
+/** A certificate data parameters. */
 export interface SSLCertificateData {
   $type: "yandex.cloud.cdn.v1.SSLCertificateData";
   /**
@@ -587,10 +587,10 @@ export interface SSLCertificateData {
   cm?: SSLCertificateCMData | undefined;
 }
 
-/** A certificate data custom patameters. */
+/** A certificate data custom parameters. */
 export interface SSLCertificateCMData {
   $type: "yandex.cloud.cdn.v1.SSLCertificateCMData";
-  /** ID of the custom sertificate. */
+  /** ID of the custom certificate. */
   id: string;
 }
 

@@ -339,7 +339,11 @@ messageTypeRegistry.set(PrefetchCacheMetadata.$type, PrefetchCacheMetadata);
 
 /** A set of methods for managing Cache Service resources. */
 export const CacheServiceService = {
-  /** Removes specified files from the cache of the specified resource. For details about purging, see [documentation](/docs/cdn/concepts/caching#purge). */
+  /**
+   * Removes specified files from the cache of the specified resource. For details about purging, see [documentation](/docs/cdn/concepts/caching#purge).
+   *
+   * Purging may take up to 15 minutes.
+   */
   purge: {
     path: "/yandex.cloud.cdn.v1.CacheService/Purge",
     requestStream: false,
@@ -366,14 +370,22 @@ export const CacheServiceService = {
 } as const;
 
 export interface CacheServiceServer extends UntypedServiceImplementation {
-  /** Removes specified files from the cache of the specified resource. For details about purging, see [documentation](/docs/cdn/concepts/caching#purge). */
+  /**
+   * Removes specified files from the cache of the specified resource. For details about purging, see [documentation](/docs/cdn/concepts/caching#purge).
+   *
+   * Purging may take up to 15 minutes.
+   */
   purge: handleUnaryCall<PurgeCacheRequest, Operation>;
   /** Uploads specified files from origins to cache of the specified resource. For defails about prefetching, see [documentation](/docs/cdn/concepts/caching#prefetch). */
   prefetch: handleUnaryCall<PrefetchCacheRequest, Operation>;
 }
 
 export interface CacheServiceClient extends Client {
-  /** Removes specified files from the cache of the specified resource. For details about purging, see [documentation](/docs/cdn/concepts/caching#purge). */
+  /**
+   * Removes specified files from the cache of the specified resource. For details about purging, see [documentation](/docs/cdn/concepts/caching#purge).
+   *
+   * Purging may take up to 15 minutes.
+   */
   purge(
     request: PurgeCacheRequest,
     callback: (error: ServiceError | null, response: Operation) => void

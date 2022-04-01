@@ -129,7 +129,7 @@ export interface UpdateClusterRequest {
    * To get the MySQL cluster ID, use a [ClusterService.List] request.
    */
   clusterId: string;
-  /** Field mask that specifies which fields of the MySQL cluster should be updated. */
+  /** Field mask that specifies which settings of the MySQL cluster should be updated. */
   updateMask?: FieldMask;
   /** New description of the MySQL cluster. */
   description: string;

@@ -1710,9 +1710,9 @@ export const ReportReply = {
 
 messageTypeRegistry.set(ReportReply.$type, ReportReply);
 
-/** Data Proc manager service defifnition */
+/** Data Proc manager service definition. */
 export const DataprocManagerServiceService = {
-  /** Sends a status report from a host */
+  /** Sends a status report from a host. */
   report: {
     path: "/yandex.cloud.dataproc.manager.v1.DataprocManagerService/Report",
     requestStream: false,
@@ -1728,12 +1728,12 @@ export const DataprocManagerServiceService = {
 
 export interface DataprocManagerServiceServer
   extends UntypedServiceImplementation {
-  /** Sends a status report from a host */
+  /** Sends a status report from a host. */
   report: handleUnaryCall<ReportRequest, ReportReply>;
 }
 
 export interface DataprocManagerServiceClient extends Client {
-  /** Sends a status report from a host */
+  /** Sends a status report from a host. */
   report(
     request: ReportRequest,
     callback: (error: ServiceError | null, response: ReportReply) => void

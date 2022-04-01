@@ -177,6 +177,11 @@ export interface PostgresqlConfig13 {
   logParameterMaxLength?: number;
   /** in bytes. */
   logParameterMaxLengthOnError?: number;
+  pgQualstatsEnabled?: boolean;
+  pgQualstatsTrackConstants?: boolean;
+  pgQualstatsMax?: number;
+  pgQualstatsResolveOids?: boolean;
+  pgQualstatsSampleRate?: number;
 }
 
 export enum PostgresqlConfig13_WalLevel {
@@ -1995,6 +2000,48 @@ export const PostgresqlConfig13 = {
         writer.uint32(1090).fork()
       ).ldelim();
     }
+    if (message.pgQualstatsEnabled !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.pgQualstatsEnabled!,
+        },
+        writer.uint32(1098).fork()
+      ).ldelim();
+    }
+    if (message.pgQualstatsTrackConstants !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.pgQualstatsTrackConstants!,
+        },
+        writer.uint32(1106).fork()
+      ).ldelim();
+    }
+    if (message.pgQualstatsMax !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.pgQualstatsMax! },
+        writer.uint32(1114).fork()
+      ).ldelim();
+    }
+    if (message.pgQualstatsResolveOids !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.pgQualstatsResolveOids!,
+        },
+        writer.uint32(1122).fork()
+      ).ldelim();
+    }
+    if (message.pgQualstatsSampleRate !== undefined) {
+      DoubleValue.encode(
+        {
+          $type: "google.protobuf.DoubleValue",
+          value: message.pgQualstatsSampleRate!,
+        },
+        writer.uint32(1130).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2724,6 +2771,36 @@ export const PostgresqlConfig13 = {
             reader.uint32()
           ).value;
           break;
+        case 137:
+          message.pgQualstatsEnabled = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 138:
+          message.pgQualstatsTrackConstants = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 139:
+          message.pgQualstatsMax = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 140:
+          message.pgQualstatsResolveOids = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 141:
+          message.pgQualstatsSampleRate = DoubleValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3356,6 +3433,30 @@ export const PostgresqlConfig13 = {
       object.logParameterMaxLengthOnError !== null
         ? Number(object.logParameterMaxLengthOnError)
         : undefined;
+    message.pgQualstatsEnabled =
+      object.pgQualstatsEnabled !== undefined &&
+      object.pgQualstatsEnabled !== null
+        ? Boolean(object.pgQualstatsEnabled)
+        : undefined;
+    message.pgQualstatsTrackConstants =
+      object.pgQualstatsTrackConstants !== undefined &&
+      object.pgQualstatsTrackConstants !== null
+        ? Boolean(object.pgQualstatsTrackConstants)
+        : undefined;
+    message.pgQualstatsMax =
+      object.pgQualstatsMax !== undefined && object.pgQualstatsMax !== null
+        ? Number(object.pgQualstatsMax)
+        : undefined;
+    message.pgQualstatsResolveOids =
+      object.pgQualstatsResolveOids !== undefined &&
+      object.pgQualstatsResolveOids !== null
+        ? Boolean(object.pgQualstatsResolveOids)
+        : undefined;
+    message.pgQualstatsSampleRate =
+      object.pgQualstatsSampleRate !== undefined &&
+      object.pgQualstatsSampleRate !== null
+        ? Number(object.pgQualstatsSampleRate)
+        : undefined;
     return message;
   },
 
@@ -3659,6 +3760,16 @@ export const PostgresqlConfig13 = {
       (obj.logParameterMaxLength = message.logParameterMaxLength);
     message.logParameterMaxLengthOnError !== undefined &&
       (obj.logParameterMaxLengthOnError = message.logParameterMaxLengthOnError);
+    message.pgQualstatsEnabled !== undefined &&
+      (obj.pgQualstatsEnabled = message.pgQualstatsEnabled);
+    message.pgQualstatsTrackConstants !== undefined &&
+      (obj.pgQualstatsTrackConstants = message.pgQualstatsTrackConstants);
+    message.pgQualstatsMax !== undefined &&
+      (obj.pgQualstatsMax = message.pgQualstatsMax);
+    message.pgQualstatsResolveOids !== undefined &&
+      (obj.pgQualstatsResolveOids = message.pgQualstatsResolveOids);
+    message.pgQualstatsSampleRate !== undefined &&
+      (obj.pgQualstatsSampleRate = message.pgQualstatsSampleRate);
     return obj;
   },
 
@@ -3829,6 +3940,12 @@ export const PostgresqlConfig13 = {
     message.logParameterMaxLength = object.logParameterMaxLength ?? undefined;
     message.logParameterMaxLengthOnError =
       object.logParameterMaxLengthOnError ?? undefined;
+    message.pgQualstatsEnabled = object.pgQualstatsEnabled ?? undefined;
+    message.pgQualstatsTrackConstants =
+      object.pgQualstatsTrackConstants ?? undefined;
+    message.pgQualstatsMax = object.pgQualstatsMax ?? undefined;
+    message.pgQualstatsResolveOids = object.pgQualstatsResolveOids ?? undefined;
+    message.pgQualstatsSampleRate = object.pgQualstatsSampleRate ?? undefined;
     return message;
   },
 };

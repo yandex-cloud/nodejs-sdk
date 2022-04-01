@@ -358,7 +358,11 @@ export function grpcStatusResponseAction_StatusToJSON(
 /** An HTTP route action resource. */
 export interface HttpRouteAction {
   $type: "yandex.cloud.apploadbalancer.v1.HttpRouteAction";
-  /** Backend group to forward requests to. */
+  /**
+   * Backend group to forward requests to.
+   *
+   * Stream (TCP) backend groups are not supported.
+   */
   backendGroupId: string;
   /**
    * Overall timeout for an HTTP connection between a load balancer node an a backend from the backend group:

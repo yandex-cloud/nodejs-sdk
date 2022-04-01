@@ -241,6 +241,11 @@ export interface UpdateInstanceGroupRequest {
   variables: Variable[];
   /** Flag that inhibits deletion of the instance group */
   deletionProtection: boolean;
+  /**
+   * Settings for balancing load between instances via [Application Load Balancer](/docs/application-load-balancer/concepts)
+   * (OSI model layer 7).
+   */
+  applicationLoadBalancerSpec?: ApplicationLoadBalancerSpec;
 }
 
 export interface UpdateInstanceGroupRequest_LabelsEntry {
@@ -1623,6 +1628,12 @@ export const UpdateInstanceGroupRequest = {
     if (message.deletionProtection === true) {
       writer.uint32(128).bool(message.deletionProtection);
     }
+    if (message.applicationLoadBalancerSpec !== undefined) {
+      ApplicationLoadBalancerSpec.encode(
+        message.applicationLoadBalancerSpec,
+        writer.uint32(138).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1700,6 +1711,10 @@ export const UpdateInstanceGroupRequest = {
         case 16:
           message.deletionProtection = reader.bool();
           break;
+        case 17:
+          message.applicationLoadBalancerSpec =
+            ApplicationLoadBalancerSpec.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1770,6 +1785,13 @@ export const UpdateInstanceGroupRequest = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.applicationLoadBalancerSpec =
+      object.applicationLoadBalancerSpec !== undefined &&
+      object.applicationLoadBalancerSpec !== null
+        ? ApplicationLoadBalancerSpec.fromJSON(
+            object.applicationLoadBalancerSpec
+          )
+        : undefined;
     return message;
   },
 
@@ -1825,6 +1847,12 @@ export const UpdateInstanceGroupRequest = {
     }
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.applicationLoadBalancerSpec !== undefined &&
+      (obj.applicationLoadBalancerSpec = message.applicationLoadBalancerSpec
+        ? ApplicationLoadBalancerSpec.toJSON(
+            message.applicationLoadBalancerSpec
+          )
+        : undefined);
     return obj;
   },
 
@@ -1877,6 +1905,13 @@ export const UpdateInstanceGroupRequest = {
     message.variables =
       object.variables?.map((e) => Variable.fromPartial(e)) || [];
     message.deletionProtection = object.deletionProtection ?? false;
+    message.applicationLoadBalancerSpec =
+      object.applicationLoadBalancerSpec !== undefined &&
+      object.applicationLoadBalancerSpec !== null
+        ? ApplicationLoadBalancerSpec.fromPartial(
+            object.applicationLoadBalancerSpec
+          )
+        : undefined;
     return message;
   },
 };

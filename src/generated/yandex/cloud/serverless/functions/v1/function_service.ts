@@ -21,6 +21,7 @@ import {
   Function,
   Version,
   Package,
+  Secret,
   ScalingPolicy,
 } from "../../../../../yandex/cloud/serverless/functions/v1/function";
 import { Duration } from "../../../../../google/protobuf/duration";
@@ -347,6 +348,8 @@ export interface CreateFunctionVersionRequest {
   connectivity?: Connectivity;
   /** Additional service accounts to be used by the version. */
   namedServiceAccounts: { [key: string]: string };
+  /** Lockbox secrets to be used by the version */
+  secrets: Secret[];
 }
 
 export interface CreateFunctionVersionRequest_EnvironmentEntry {
@@ -2324,6 +2327,9 @@ export const CreateFunctionVersionRequest = {
         writer.uint32(122).fork()
       ).ldelim();
     });
+    for (const v of message.secrets) {
+      Secret.encode(v!, writer.uint32(146).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -2339,6 +2345,7 @@ export const CreateFunctionVersionRequest = {
     message.environment = {};
     message.tag = [];
     message.namedServiceAccounts = {};
+    message.secrets = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2396,6 +2403,9 @@ export const CreateFunctionVersionRequest = {
           if (entry15.value !== undefined) {
             message.namedServiceAccounts[entry15.key] = entry15.value;
           }
+          break;
+        case 18:
+          message.secrets.push(Secret.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -2466,6 +2476,9 @@ export const CreateFunctionVersionRequest = {
       acc[key] = String(value);
       return acc;
     }, {});
+    message.secrets = (object.secrets ?? []).map((e: any) =>
+      Secret.fromJSON(e)
+    );
     return message;
   },
 
@@ -2517,6 +2530,13 @@ export const CreateFunctionVersionRequest = {
         obj.namedServiceAccounts[k] = v;
       });
     }
+    if (message.secrets) {
+      obj.secrets = message.secrets.map((e) =>
+        e ? Secret.toJSON(e) : undefined
+      );
+    } else {
+      obj.secrets = [];
+    }
     return obj;
   },
 
@@ -2566,6 +2586,7 @@ export const CreateFunctionVersionRequest = {
       }
       return acc;
     }, {});
+    message.secrets = object.secrets?.map((e) => Secret.fromPartial(e)) || [];
     return message;
   },
 };

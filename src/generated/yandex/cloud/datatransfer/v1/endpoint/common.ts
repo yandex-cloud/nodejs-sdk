@@ -50,6 +50,50 @@ export function objectTransferStageToJSON(object: ObjectTransferStage): string {
   }
 }
 
+export enum CleanupPolicy {
+  CLEANUP_POLICY_UNSPECIFIED = 0,
+  DISABLED = 1,
+  DROP = 2,
+  TRUNCATE = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function cleanupPolicyFromJSON(object: any): CleanupPolicy {
+  switch (object) {
+    case 0:
+    case "CLEANUP_POLICY_UNSPECIFIED":
+      return CleanupPolicy.CLEANUP_POLICY_UNSPECIFIED;
+    case 1:
+    case "DISABLED":
+      return CleanupPolicy.DISABLED;
+    case 2:
+    case "DROP":
+      return CleanupPolicy.DROP;
+    case 3:
+    case "TRUNCATE":
+      return CleanupPolicy.TRUNCATE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return CleanupPolicy.UNRECOGNIZED;
+  }
+}
+
+export function cleanupPolicyToJSON(object: CleanupPolicy): string {
+  switch (object) {
+    case CleanupPolicy.CLEANUP_POLICY_UNSPECIFIED:
+      return "CLEANUP_POLICY_UNSPECIFIED";
+    case CleanupPolicy.DISABLED:
+      return "DISABLED";
+    case CleanupPolicy.DROP:
+      return "DROP";
+    case CleanupPolicy.TRUNCATE:
+      return "TRUNCATE";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export interface Secret {
   $type: "yandex.cloud.datatransfer.v1.endpoint.Secret";
   /** Password */

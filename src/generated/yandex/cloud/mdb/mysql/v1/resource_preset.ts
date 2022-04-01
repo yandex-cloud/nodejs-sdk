@@ -5,10 +5,15 @@ import _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "yandex.cloud.mdb.mysql.v1";
 
-/** A preset of resources for hardware configuration of MySQL hosts. */
+/**
+ * An object that represents MySQL resource preset.
+ * A resource preset defines hardware configuration for cluster hosts.
+ *
+ * See [the documentation](/docs/managed-mysql/concepts/instance-types) for details.
+ */
 export interface ResourcePreset {
   $type: "yandex.cloud.mdb.mysql.v1.ResourcePreset";
-  /** ID of the resource preset. */
+  /** ID of the resource preset that defines available computational resources (vCPU, RAM, etc.) for a cluster host. */
   id: string;
   /** IDs of availability zones where the resource preset is available. */
   zoneIds: string[];

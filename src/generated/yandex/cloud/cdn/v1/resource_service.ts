@@ -102,14 +102,14 @@ export interface CreateResourceRequest_Origin {
    * returned in result.
    */
   originSource: string | undefined;
-  /** Set up resourse origin parameters. */
+  /** Set up resource origin parameters. */
   originSourceParams?: ResourceOriginParams | undefined;
 }
 
-/** A set of resourse origin parameters. */
+/** A set of resource origin parameters. */
 export interface ResourceOriginParams {
   $type: "yandex.cloud.cdn.v1.ResourceOriginParams";
-  /** Sourse of the content. */
+  /** Source of the content. */
   source: string;
   /** Set up type of the origin. */
   meta?: OriginMeta;
@@ -1438,7 +1438,11 @@ export const ResourceServiceService = {
       Buffer.from(ListResourcesResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer) => ListResourcesResponse.decode(value),
   },
-  /** Creates client's CDN resource. */
+  /**
+   * Creates a CDN resource in the specified folder.
+   *
+   * Creation may take up to 15 minutes.
+   */
   create: {
     path: "/yandex.cloud.cdn.v1.ResourceService/Create",
     requestStream: false,
@@ -1450,7 +1454,14 @@ export const ResourceServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Updates of client's CDN resource. (PATCH behavior) */
+  /**
+   * Updates the specified CDN resource.
+   *
+   * The method implements patch behaviour, i.e. only the fields specified in the request are updated in the resource.
+   *
+   * Changes may take up to 15 minutes to apply. Afterwards, it is recommended to purge the resource's cache via a
+   * [CacheService.Purge] request.
+   */
   update: {
     path: "/yandex.cloud.cdn.v1.ResourceService/Update",
     requestStream: false,
@@ -1475,7 +1486,7 @@ export const ResourceServiceService = {
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
   /**
-   * Get Provider's CNAME (edge endpoint) binded to specified folder id.
+   * Get Provider's CNAME (edge endpoint) bind to specified folder id.
    * Returns UNIMPLEMENTED error, if provider doesn't support CNAME request.
    */
   getProviderCName: {
@@ -1498,14 +1509,25 @@ export interface ResourceServiceServer extends UntypedServiceImplementation {
   get: handleUnaryCall<GetResourceRequest, Resource>;
   /** Lists CDN resources. */
   list: handleUnaryCall<ListResourcesRequest, ListResourcesResponse>;
-  /** Creates client's CDN resource. */
+  /**
+   * Creates a CDN resource in the specified folder.
+   *
+   * Creation may take up to 15 minutes.
+   */
   create: handleUnaryCall<CreateResourceRequest, Operation>;
-  /** Updates of client's CDN resource. (PATCH behavior) */
+  /**
+   * Updates the specified CDN resource.
+   *
+   * The method implements patch behaviour, i.e. only the fields specified in the request are updated in the resource.
+   *
+   * Changes may take up to 15 minutes to apply. Afterwards, it is recommended to purge the resource's cache via a
+   * [CacheService.Purge] request.
+   */
   update: handleUnaryCall<UpdateResourceRequest, Operation>;
   /** Deletes client's CDN resource. */
   delete: handleUnaryCall<DeleteResourceRequest, Operation>;
   /**
-   * Get Provider's CNAME (edge endpoint) binded to specified folder id.
+   * Get Provider's CNAME (edge endpoint) bind to specified folder id.
    * Returns UNIMPLEMENTED error, if provider doesn't support CNAME request.
    */
   getProviderCName: handleUnaryCall<
@@ -1556,7 +1578,11 @@ export interface ResourceServiceClient extends Client {
       response: ListResourcesResponse
     ) => void
   ): ClientUnaryCall;
-  /** Creates client's CDN resource. */
+  /**
+   * Creates a CDN resource in the specified folder.
+   *
+   * Creation may take up to 15 minutes.
+   */
   create(
     request: CreateResourceRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -1572,7 +1598,14 @@ export interface ResourceServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Updates of client's CDN resource. (PATCH behavior) */
+  /**
+   * Updates the specified CDN resource.
+   *
+   * The method implements patch behaviour, i.e. only the fields specified in the request are updated in the resource.
+   *
+   * Changes may take up to 15 minutes to apply. Afterwards, it is recommended to purge the resource's cache via a
+   * [CacheService.Purge] request.
+   */
   update(
     request: UpdateResourceRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -1605,7 +1638,7 @@ export interface ResourceServiceClient extends Client {
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
   /**
-   * Get Provider's CNAME (edge endpoint) binded to specified folder id.
+   * Get Provider's CNAME (edge endpoint) bind to specified folder id.
    * Returns UNIMPLEMENTED error, if provider doesn't support CNAME request.
    */
   getProviderCName(
