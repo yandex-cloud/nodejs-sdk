@@ -65,7 +65,7 @@
   "scripts": {
     "test": "jest -c config/jest.ts --passWithNoTests",
     "lint": "eslint src config",
-    "build": "tsc -p .",
+    "build": "NODE_OPTIONS=\"--max-old-space-size=2048\" tsc -p .",
     "generate-code": "ts-node scripts/generate-code.ts",
     "prepare": "husky install",
     "prepublishOnly": "npm run build"
