@@ -22,7 +22,7 @@
   ],
   "homepage": "https://github.com/yandex-cloud/nodejs-sdk#readme",
   "dependencies": {
-    "@grpc/grpc-js": "https://gitpkg.now.sh/DavyJohnes/grpc-node/packages/grpc-js?fix-class-options-issue-with-dist",
+    "@grpc/grpc-js": "1.6.0",
     "axios": "0.24.0",
     "jsonwebtoken": "8.5.1",
     "lodash": "4.17.21",
