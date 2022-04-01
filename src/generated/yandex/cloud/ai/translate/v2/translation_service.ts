@@ -52,6 +52,8 @@ export interface TranslateRequest {
   model: string;
   /** Glossary to be applied for the translation. For more information, see [Glossaries](/docs/translate/concepts/glossary). */
   glossaryConfig?: TranslateGlossaryConfig;
+  /** use speller */
+  speller: boolean;
 }
 
 export enum TranslateRequest_Format {
@@ -182,6 +184,7 @@ const baseTranslateRequest: object = {
   texts: "",
   folderId: "",
   model: "",
+  speller: false,
 };
 
 export const TranslateRequest = {
@@ -214,6 +217,9 @@ export const TranslateRequest = {
         message.glossaryConfig,
         writer.uint32(58).fork()
       ).ldelim();
+    }
+    if (message.speller === true) {
+      writer.uint32(64).bool(message.speller);
     }
     return writer;
   },
@@ -249,6 +255,9 @@ export const TranslateRequest = {
             reader,
             reader.uint32()
           );
+          break;
+        case 8:
+          message.speller = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -287,6 +296,10 @@ export const TranslateRequest = {
       object.glossaryConfig !== undefined && object.glossaryConfig !== null
         ? TranslateGlossaryConfig.fromJSON(object.glossaryConfig)
         : undefined;
+    message.speller =
+      object.speller !== undefined && object.speller !== null
+        ? Boolean(object.speller)
+        : false;
     return message;
   },
 
@@ -309,6 +322,7 @@ export const TranslateRequest = {
       (obj.glossaryConfig = message.glossaryConfig
         ? TranslateGlossaryConfig.toJSON(message.glossaryConfig)
         : undefined);
+    message.speller !== undefined && (obj.speller = message.speller);
     return obj;
   },
 
@@ -326,6 +340,7 @@ export const TranslateRequest = {
       object.glossaryConfig !== undefined && object.glossaryConfig !== null
         ? TranslateGlossaryConfig.fromPartial(object.glossaryConfig)
         : undefined;
+    message.speller = object.speller ?? false;
     return message;
   },
 };

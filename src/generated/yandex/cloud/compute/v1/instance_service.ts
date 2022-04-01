@@ -166,6 +166,8 @@ export interface CreateInstanceRequest {
   bootDiskSpec?: AttachedDiskSpec;
   /** Array of secondary disks to attach to the instance. */
   secondaryDiskSpecs: AttachedDiskSpec[];
+  /** Array of local disks to attach to the instance. */
+  localDiskSpecs: AttachedLocalDiskSpec[];
   /**
    * Array of filesystems to attach to the instance.
    *
@@ -275,6 +277,8 @@ export interface UpdateInstanceRequest {
   networkSettings?: NetworkSettings;
   /** Placement policy configuration. */
   placementPolicy?: PlacementPolicy;
+  /** Scheduling policy configuration. */
+  schedulingPolicy?: SchedulingPolicy;
 }
 
 export interface UpdateInstanceRequest_LabelsEntry {
@@ -678,6 +682,12 @@ export interface AttachedDiskSpec_DiskSpec {
   snapshotId: string | undefined;
 }
 
+export interface AttachedLocalDiskSpec {
+  $type: "yandex.cloud.compute.v1.AttachedLocalDiskSpec";
+  /** Size of the disk, specified in bytes. */
+  size: number;
+}
+
 export interface AttachedFilesystemSpec {
   $type: "yandex.cloud.compute.v1.AttachedFilesystemSpec";
   /** Mode of access to the filesystem that should be attached. */
@@ -787,6 +797,32 @@ export interface DnsRecordSpec {
   ttl: number;
   /** When set to true, also create PTR DNS record (optional) */
   ptr: boolean;
+}
+
+export interface MoveInstanceRequest {
+  $type: "yandex.cloud.compute.v1.MoveInstanceRequest";
+  /**
+   * ID of the instance to move.
+   *
+   * To get the instance ID, make a [InstanceService.List] request.
+   */
+  instanceId: string;
+  /**
+   * ID of the folder to move the instance to.
+   *
+   * To get the folder ID, make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+   */
+  destinationFolderId: string;
+}
+
+export interface MoveInstanceMetadata {
+  $type: "yandex.cloud.compute.v1.MoveInstanceMetadata";
+  /** ID of the instance that is being moved. */
+  instanceId: string;
+  /** ID of the folder that the instance is being moved from. */
+  sourceFolderId: string;
+  /** ID of the folder that the instance is being moved to. */
+  destinationFolderId: string;
 }
 
 const baseGetInstanceRequest: object = {
@@ -1122,6 +1158,9 @@ export const CreateInstanceRequest = {
     for (const v of message.secondaryDiskSpecs) {
       AttachedDiskSpec.encode(v!, writer.uint32(82).fork()).ldelim();
     }
+    for (const v of message.localDiskSpecs) {
+      AttachedLocalDiskSpec.encode(v!, writer.uint32(146).fork()).ldelim();
+    }
     for (const v of message.filesystemSpecs) {
       AttachedFilesystemSpec.encode(v!, writer.uint32(138).fork()).ldelim();
     }
@@ -1165,6 +1204,7 @@ export const CreateInstanceRequest = {
     message.labels = {};
     message.metadata = {};
     message.secondaryDiskSpecs = [];
+    message.localDiskSpecs = [];
     message.filesystemSpecs = [];
     message.networkInterfaceSpecs = [];
     while (reader.pos < end) {
@@ -1215,6 +1255,11 @@ export const CreateInstanceRequest = {
         case 10:
           message.secondaryDiskSpecs.push(
             AttachedDiskSpec.decode(reader, reader.uint32())
+          );
+          break;
+        case 18:
+          message.localDiskSpecs.push(
+            AttachedLocalDiskSpec.decode(reader, reader.uint32())
           );
           break;
         case 17:
@@ -1304,6 +1349,9 @@ export const CreateInstanceRequest = {
     message.secondaryDiskSpecs = (object.secondaryDiskSpecs ?? []).map(
       (e: any) => AttachedDiskSpec.fromJSON(e)
     );
+    message.localDiskSpecs = (object.localDiskSpecs ?? []).map((e: any) =>
+      AttachedLocalDiskSpec.fromJSON(e)
+    );
     message.filesystemSpecs = (object.filesystemSpecs ?? []).map((e: any) =>
       AttachedFilesystemSpec.fromJSON(e)
     );
@@ -1367,6 +1415,13 @@ export const CreateInstanceRequest = {
       );
     } else {
       obj.secondaryDiskSpecs = [];
+    }
+    if (message.localDiskSpecs) {
+      obj.localDiskSpecs = message.localDiskSpecs.map((e) =>
+        e ? AttachedLocalDiskSpec.toJSON(e) : undefined
+      );
+    } else {
+      obj.localDiskSpecs = [];
     }
     if (message.filesystemSpecs) {
       obj.filesystemSpecs = message.filesystemSpecs.map((e) =>
@@ -1435,6 +1490,9 @@ export const CreateInstanceRequest = {
         : undefined;
     message.secondaryDiskSpecs =
       object.secondaryDiskSpecs?.map((e) => AttachedDiskSpec.fromPartial(e)) ||
+      [];
+    message.localDiskSpecs =
+      object.localDiskSpecs?.map((e) => AttachedLocalDiskSpec.fromPartial(e)) ||
       [];
     message.filesystemSpecs =
       object.filesystemSpecs?.map((e) =>
@@ -1771,6 +1829,12 @@ export const UpdateInstanceRequest = {
         writer.uint32(90).fork()
       ).ldelim();
     }
+    if (message.schedulingPolicy !== undefined) {
+      SchedulingPolicy.encode(
+        message.schedulingPolicy,
+        writer.uint32(98).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1837,6 +1901,12 @@ export const UpdateInstanceRequest = {
             reader.uint32()
           );
           break;
+        case 12:
+          message.schedulingPolicy = SchedulingPolicy.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1895,6 +1965,10 @@ export const UpdateInstanceRequest = {
       object.placementPolicy !== undefined && object.placementPolicy !== null
         ? PlacementPolicy.fromJSON(object.placementPolicy)
         : undefined;
+    message.schedulingPolicy =
+      object.schedulingPolicy !== undefined && object.schedulingPolicy !== null
+        ? SchedulingPolicy.fromJSON(object.schedulingPolicy)
+        : undefined;
     return message;
   },
 
@@ -1934,6 +2008,10 @@ export const UpdateInstanceRequest = {
     message.placementPolicy !== undefined &&
       (obj.placementPolicy = message.placementPolicy
         ? PlacementPolicy.toJSON(message.placementPolicy)
+        : undefined);
+    message.schedulingPolicy !== undefined &&
+      (obj.schedulingPolicy = message.schedulingPolicy
+        ? SchedulingPolicy.toJSON(message.schedulingPolicy)
         : undefined);
     return obj;
   },
@@ -1978,6 +2056,10 @@ export const UpdateInstanceRequest = {
     message.placementPolicy =
       object.placementPolicy !== undefined && object.placementPolicy !== null
         ? PlacementPolicy.fromPartial(object.placementPolicy)
+        : undefined;
+    message.schedulingPolicy =
+      object.schedulingPolicy !== undefined && object.schedulingPolicy !== null
+        ? SchedulingPolicy.fromPartial(object.schedulingPolicy)
         : undefined;
     return message;
   },
@@ -5197,6 +5279,71 @@ messageTypeRegistry.set(
   AttachedDiskSpec_DiskSpec
 );
 
+const baseAttachedLocalDiskSpec: object = {
+  $type: "yandex.cloud.compute.v1.AttachedLocalDiskSpec",
+  size: 0,
+};
+
+export const AttachedLocalDiskSpec = {
+  $type: "yandex.cloud.compute.v1.AttachedLocalDiskSpec" as const,
+
+  encode(
+    message: AttachedLocalDiskSpec,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.size !== 0) {
+      writer.uint32(8).int64(message.size);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): AttachedLocalDiskSpec {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseAttachedLocalDiskSpec } as AttachedLocalDiskSpec;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.size = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AttachedLocalDiskSpec {
+    const message = { ...baseAttachedLocalDiskSpec } as AttachedLocalDiskSpec;
+    message.size =
+      object.size !== undefined && object.size !== null
+        ? Number(object.size)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: AttachedLocalDiskSpec): unknown {
+    const obj: any = {};
+    message.size !== undefined && (obj.size = Math.round(message.size));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AttachedLocalDiskSpec>, I>>(
+    object: I
+  ): AttachedLocalDiskSpec {
+    const message = { ...baseAttachedLocalDiskSpec } as AttachedLocalDiskSpec;
+    message.size = object.size ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(AttachedLocalDiskSpec.$type, AttachedLocalDiskSpec);
+
 const baseAttachedFilesystemSpec: object = {
   $type: "yandex.cloud.compute.v1.AttachedFilesystemSpec",
   mode: 0,
@@ -5727,6 +5874,177 @@ export const DnsRecordSpec = {
 
 messageTypeRegistry.set(DnsRecordSpec.$type, DnsRecordSpec);
 
+const baseMoveInstanceRequest: object = {
+  $type: "yandex.cloud.compute.v1.MoveInstanceRequest",
+  instanceId: "",
+  destinationFolderId: "",
+};
+
+export const MoveInstanceRequest = {
+  $type: "yandex.cloud.compute.v1.MoveInstanceRequest" as const,
+
+  encode(
+    message: MoveInstanceRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.instanceId !== "") {
+      writer.uint32(10).string(message.instanceId);
+    }
+    if (message.destinationFolderId !== "") {
+      writer.uint32(18).string(message.destinationFolderId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MoveInstanceRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMoveInstanceRequest } as MoveInstanceRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instanceId = reader.string();
+          break;
+        case 2:
+          message.destinationFolderId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MoveInstanceRequest {
+    const message = { ...baseMoveInstanceRequest } as MoveInstanceRequest;
+    message.instanceId =
+      object.instanceId !== undefined && object.instanceId !== null
+        ? String(object.instanceId)
+        : "";
+    message.destinationFolderId =
+      object.destinationFolderId !== undefined &&
+      object.destinationFolderId !== null
+        ? String(object.destinationFolderId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: MoveInstanceRequest): unknown {
+    const obj: any = {};
+    message.instanceId !== undefined && (obj.instanceId = message.instanceId);
+    message.destinationFolderId !== undefined &&
+      (obj.destinationFolderId = message.destinationFolderId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MoveInstanceRequest>, I>>(
+    object: I
+  ): MoveInstanceRequest {
+    const message = { ...baseMoveInstanceRequest } as MoveInstanceRequest;
+    message.instanceId = object.instanceId ?? "";
+    message.destinationFolderId = object.destinationFolderId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(MoveInstanceRequest.$type, MoveInstanceRequest);
+
+const baseMoveInstanceMetadata: object = {
+  $type: "yandex.cloud.compute.v1.MoveInstanceMetadata",
+  instanceId: "",
+  sourceFolderId: "",
+  destinationFolderId: "",
+};
+
+export const MoveInstanceMetadata = {
+  $type: "yandex.cloud.compute.v1.MoveInstanceMetadata" as const,
+
+  encode(
+    message: MoveInstanceMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.instanceId !== "") {
+      writer.uint32(10).string(message.instanceId);
+    }
+    if (message.sourceFolderId !== "") {
+      writer.uint32(18).string(message.sourceFolderId);
+    }
+    if (message.destinationFolderId !== "") {
+      writer.uint32(26).string(message.destinationFolderId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): MoveInstanceMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMoveInstanceMetadata } as MoveInstanceMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instanceId = reader.string();
+          break;
+        case 2:
+          message.sourceFolderId = reader.string();
+          break;
+        case 3:
+          message.destinationFolderId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MoveInstanceMetadata {
+    const message = { ...baseMoveInstanceMetadata } as MoveInstanceMetadata;
+    message.instanceId =
+      object.instanceId !== undefined && object.instanceId !== null
+        ? String(object.instanceId)
+        : "";
+    message.sourceFolderId =
+      object.sourceFolderId !== undefined && object.sourceFolderId !== null
+        ? String(object.sourceFolderId)
+        : "";
+    message.destinationFolderId =
+      object.destinationFolderId !== undefined &&
+      object.destinationFolderId !== null
+        ? String(object.destinationFolderId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: MoveInstanceMetadata): unknown {
+    const obj: any = {};
+    message.instanceId !== undefined && (obj.instanceId = message.instanceId);
+    message.sourceFolderId !== undefined &&
+      (obj.sourceFolderId = message.sourceFolderId);
+    message.destinationFolderId !== undefined &&
+      (obj.destinationFolderId = message.destinationFolderId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MoveInstanceMetadata>, I>>(
+    object: I
+  ): MoveInstanceMetadata {
+    const message = { ...baseMoveInstanceMetadata } as MoveInstanceMetadata;
+    message.instanceId = object.instanceId ?? "";
+    message.sourceFolderId = object.sourceFolderId ?? "";
+    message.destinationFolderId = object.destinationFolderId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(MoveInstanceMetadata.$type, MoveInstanceMetadata);
+
 /** A set of methods for managing Instance resources. */
 export const InstanceServiceService = {
   /**
@@ -5985,6 +6303,25 @@ export const InstanceServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListInstanceOperationsResponse.decode(value),
   },
+  /**
+   * Moves the specified instance to another folder of the same cloud.
+   *
+   * The instance must be stopped before moving. To stop the instance, make a [Stop] request.
+   *
+   * After moving, the instance will start recording its Yandex Monitoring default metrics to its new folder. Metrics
+   * that have been recorded to the source folder prior to moving will be retained.
+   */
+  move: {
+    path: "/yandex.cloud.compute.v1.InstanceService/Move",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: MoveInstanceRequest) =>
+      Buffer.from(MoveInstanceRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => MoveInstanceRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
 } as const;
 
 export interface InstanceServiceServer extends UntypedServiceImplementation {
@@ -6064,6 +6401,15 @@ export interface InstanceServiceServer extends UntypedServiceImplementation {
     ListInstanceOperationsRequest,
     ListInstanceOperationsResponse
   >;
+  /**
+   * Moves the specified instance to another folder of the same cloud.
+   *
+   * The instance must be stopped before moving. To stop the instance, make a [Stop] request.
+   *
+   * After moving, the instance will start recording its Yandex Monitoring default metrics to its new folder. Metrics
+   * that have been recorded to the source folder prior to moving will be retained.
+   */
+  move: handleUnaryCall<MoveInstanceRequest, Operation>;
 }
 
 export interface InstanceServiceClient extends Client {
@@ -6409,6 +6755,29 @@ export interface InstanceServiceClient extends Client {
       error: ServiceError | null,
       response: ListInstanceOperationsResponse
     ) => void
+  ): ClientUnaryCall;
+  /**
+   * Moves the specified instance to another folder of the same cloud.
+   *
+   * The instance must be stopped before moving. To stop the instance, make a [Stop] request.
+   *
+   * After moving, the instance will start recording its Yandex Monitoring default metrics to its new folder. Metrics
+   * that have been recorded to the source folder prior to moving will be retained.
+   */
+  move(
+    request: MoveInstanceRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  move(
+    request: MoveInstanceRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  move(
+    request: MoveInstanceRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
 }
 

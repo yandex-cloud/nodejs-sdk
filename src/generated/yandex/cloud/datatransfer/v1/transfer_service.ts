@@ -96,7 +96,7 @@ export interface ListTransfersRequest {
    * folder contains more transfers than page_size, next_page_token will be included
    * in the response message. Include it into the subsequent ListTransfersRequest to
    * fetch the next page. Defaults to 100 if not specified. The maximum allowed value
-   * for this field is 100.
+   * for this field is 500.
    */
   pageSize: number;
   /**

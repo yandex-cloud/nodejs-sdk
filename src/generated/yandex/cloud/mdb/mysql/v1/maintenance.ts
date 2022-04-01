@@ -6,7 +6,7 @@ import { Timestamp } from "../../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.mdb.mysql.v1";
 
-/** A maintenance window settings. */
+/** Configuration of a maintenance window in a MySQL cluster. */
 export interface MaintenanceWindow {
   $type: "yandex.cloud.mdb.mysql.v1.MaintenanceWindow";
   /** Maintenance operation can be scheduled anytime. */

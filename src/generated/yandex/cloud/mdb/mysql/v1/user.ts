@@ -8,18 +8,18 @@ export const protobufPackage = "yandex.cloud.mdb.mysql.v1";
 
 export enum GlobalPermission {
   GLOBAL_PERMISSION_UNSPECIFIED = 0,
-  /** REPLICATION_CLIENT - Enables use of the SHOW MASTER STATUS, SHOW SLAVE STATUS, and SHOW BINARY LOGS statements. */
+  /** REPLICATION_CLIENT - Enables use of the `SHOW MASTER STATUS`, `SHOW SLAVE STATUS`, and `SHOW BINARY LOGS` statements. */
   REPLICATION_CLIENT = 1,
   /**
    * REPLICATION_SLAVE - Enables the account to request updates that have been made to databases on the master server,
-   * using the SHOW SLAVE HOSTS, SHOW RELAYLOG EVENTS, and SHOW BINLOG EVENTS statements.
+   * using the `SHOW SLAVE HOSTS`, `SHOW RELAYLOG EVENTS` and `SHOW BINLOG EVENTS` statements.
    */
   REPLICATION_SLAVE = 2,
   /**
-   * PROCESS - Enables display of information about the threads executing within the server
-   * (that is, information about the statements being executed by sessions).
-   * The privilege enables use of SHOW PROCESSLIST or mysqladmin processlist to see threads belonging
-   * to other accounts; you can always see your own threads. The PROCESS privilege also enables use of SHOW ENGINE.
+   * PROCESS - Enables display of information about the the statements currently being performed by sessions (the set of threads executing within the server).
+   *
+   * The privilege enables use of `SHOW PROCESSLIST` or `mysqladmin` processlist to see threads belonging to other users.
+   * You can always see your own threads. The `PROCESS` privilege also enables use of `SHOW ENGINE`.
    */
   PROCESS = 3,
   UNRECOGNIZED = -1,
@@ -109,14 +109,15 @@ export function authPluginToJSON(object: AuthPlugin): string {
 }
 
 /**
- * A MySQL user. For more information, see
- * the [documentation](/docs/managed-mysql/concepts).
+ * An object that represents MySQL user.
+ *
+ * See [the documentation](/docs/managed-mysql/operations/cluster-users) for details.
  */
 export interface User {
   $type: "yandex.cloud.mdb.mysql.v1.User";
-  /** Name of the MySQL user. */
+  /** Name of the user. */
   name: string;
-  /** ID of the MySQL cluster the user belongs to. */
+  /** ID of the cluster the user belongs to. */
   clusterId: string;
   /** Set of permissions granted to the user. */
   permissions: Permission[];
@@ -132,7 +133,11 @@ export interface Permission {
   $type: "yandex.cloud.mdb.mysql.v1.Permission";
   /** Name of the database that the permission grants access to. */
   databaseName: string;
-  /** Roles granted to the user within the database. */
+  /**
+   * Roles granted to the user within the database.
+   *
+   * See [the documentation](/docs/managed-mysql/operations/grant) for details.
+   */
   roles: Permission_Privilege[];
 }
 
@@ -142,7 +147,7 @@ export enum Permission_Privilege {
   ALL_PRIVILEGES = 1,
   /** ALTER - Altering tables. */
   ALTER = 2,
-  /** ALTER_ROUTINE - Altering stored routines (stored procedures and functions). */
+  /** ALTER_ROUTINE - Altering stored routines and functions. */
   ALTER_ROUTINE = 3,
   /** CREATE - Creating tables or indexes. */
   CREATE = 4,
@@ -164,17 +169,17 @@ export enum Permission_Privilege {
   INDEX = 12,
   /** INSERT - Inserting rows into the database. */
   INSERT = 13,
-  /** LOCK_TABLES - Using LOCK TABLES statement for tables available with SELECT privilege. */
+  /** LOCK_TABLES - Using `LOCK TABLES` statement for tables available with `SELECT` privilege. */
   LOCK_TABLES = 14,
   /**
    * SELECT - Selecting rows from tables.
    *
-   * Some SELECT statements can be allowed without the SELECT privilege. All
-   * statements that read column values require the SELECT privilege. See
-   * details in [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/privileges-provided.html#priv_select).
+   * Some `SELECT` statements can be allowed without the `SELECT` privilege. All statements that read column values require the `SELECT` privilege.
+   *
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_select) for details.
    */
   SELECT = 15,
-  /** SHOW_VIEW - Using the SHOW CREATE VIEW statement. Also needed for views used with EXPLAIN. */
+  /** SHOW_VIEW - Using the `SHOW CREATE VIEW` statement. Also needed for views used with `EXPLAIN`. */
   SHOW_VIEW = 16,
   /** TRIGGER - Creating, removing, executing, or displaying triggers for a table. */
   TRIGGER = 17,
@@ -319,11 +324,16 @@ export interface ConnectionLimits {
 
 export interface UserSpec {
   $type: "yandex.cloud.mdb.mysql.v1.UserSpec";
-  /** Name of the MySQL user. */
+  /** Name of the user. */
   name: string;
-  /** Password of the MySQL user. */
+  /** Password of the user. */
   password: string;
-  /** Set of permissions to grant to the user. */
+  /**
+   * Set of permissions granted to the user to access specific databases.
+   * One permission per database.
+   *
+   * When a permission for a database is set, the user will have access to the database.
+   */
   permissions: Permission[];
   /** Set of global permissions to grant to the user. */
   globalPermissions: GlobalPermission[];

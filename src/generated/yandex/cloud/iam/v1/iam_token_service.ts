@@ -21,7 +21,7 @@ export const protobufPackage = "yandex.cloud.iam.v1";
 export interface CreateIamTokenRequest {
   $type: "yandex.cloud.iam.v1.CreateIamTokenRequest";
   /**
-   * OAuth token for a Yandex.Passport account.
+   * OAuth token for a Yandex account.
    * For more information, see [OAuth token](/docs/iam/concepts/authorization/oauth-token).
    */
   yandexPassportOauthToken: string | undefined;

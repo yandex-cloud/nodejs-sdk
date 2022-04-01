@@ -90,7 +90,7 @@ export const GetUserAccountRequest = {
 
 messageTypeRegistry.set(GetUserAccountRequest.$type, GetUserAccountRequest);
 
-/** A set of methods for managing user accounts. Currently applicable only for [Yandex.Passport accounts](/docs/iam/concepts/#passport). */
+/** A set of methods for managing user accounts. Currently applicable only for [Yandex accounts](/docs/iam/concepts/#passport). */
 export const UserAccountServiceService = {
   /** Returns the specified UserAccount resource. */
   get: {

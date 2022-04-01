@@ -6,20 +6,21 @@ import _m0 from "protobufjs/minimal";
 export const protobufPackage = "yandex.cloud.mdb.mysql.v1";
 
 /**
- * A MySQL database. For more information, see
- * the [documentation](/docs/managed-mysql/concepts).
+ * An object that represents MySQL database.
+ *
+ * See [the documentation](/docs/managed-mysql/operations/databases) for details.
  */
 export interface Database {
   $type: "yandex.cloud.mdb.mysql.v1.Database";
   /** Name of the database. */
   name: string;
-  /** ID of the MySQL cluster that the database belongs to. */
+  /** ID of the cluster that the database belongs to. */
   clusterId: string;
 }
 
 export interface DatabaseSpec {
   $type: "yandex.cloud.mdb.mysql.v1.DatabaseSpec";
-  /** Name of the MySQL database. */
+  /** Name of the database. */
   name: string;
 }
 

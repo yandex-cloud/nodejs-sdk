@@ -269,6 +269,8 @@ export interface ConfigSpec {
   unmanagedTopics: boolean;
   /** Enables managed schema registry on cluster */
   schemaRegistry: boolean;
+  /** Access policy for external services. */
+  access?: Access;
 }
 
 export interface ConfigSpec_Kafka {
@@ -293,7 +295,7 @@ export interface Resources {
    * All available presets are listed in the [documentation](/docs/managed-kafka/concepts/instance-types).
    */
   resourcePresetId: string;
-  /** Volume of the storage available to a host, in bytes. */
+  /** Volume of the storage available to a host, in bytes. Must be greater than 2 * partition segment size in bytes * partitions count, so each partition can have one active segment file and one closed segment file that can be deleted. */
   diskSize: number;
   /** Type of the storage environment for the host. */
   diskTypeId: string;
@@ -620,6 +622,12 @@ export function host_HealthToJSON(object: Host_Health): string {
     default:
       return "UNKNOWN";
   }
+}
+
+export interface Access {
+  $type: "yandex.cloud.mdb.kafka.v1.Access";
+  /** Allow access for DataTransfer. */
+  dataTransfer: boolean;
 }
 
 const baseCluster: object = {
@@ -1174,6 +1182,9 @@ export const ConfigSpec = {
     if (message.schemaRegistry === true) {
       writer.uint32(64).bool(message.schemaRegistry);
     }
+    if (message.access !== undefined) {
+      Access.encode(message.access, writer.uint32(74).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1215,6 +1226,9 @@ export const ConfigSpec = {
         case 8:
           message.schemaRegistry = reader.bool();
           break;
+        case 9:
+          message.access = Access.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1254,6 +1268,10 @@ export const ConfigSpec = {
       object.schemaRegistry !== undefined && object.schemaRegistry !== null
         ? Boolean(object.schemaRegistry)
         : false;
+    message.access =
+      object.access !== undefined && object.access !== null
+        ? Access.fromJSON(object.access)
+        : undefined;
     return message;
   },
 
@@ -1281,6 +1299,8 @@ export const ConfigSpec = {
       (obj.unmanagedTopics = message.unmanagedTopics);
     message.schemaRegistry !== undefined &&
       (obj.schemaRegistry = message.schemaRegistry);
+    message.access !== undefined &&
+      (obj.access = message.access ? Access.toJSON(message.access) : undefined);
     return obj;
   },
 
@@ -1302,6 +1322,10 @@ export const ConfigSpec = {
     message.assignPublicIp = object.assignPublicIp ?? false;
     message.unmanagedTopics = object.unmanagedTopics ?? false;
     message.schemaRegistry = object.schemaRegistry ?? false;
+    message.access =
+      object.access !== undefined && object.access !== null
+        ? Access.fromPartial(object.access)
+        : undefined;
     return message;
   },
 };
@@ -2880,6 +2904,67 @@ export const Host = {
 };
 
 messageTypeRegistry.set(Host.$type, Host);
+
+const baseAccess: object = {
+  $type: "yandex.cloud.mdb.kafka.v1.Access",
+  dataTransfer: false,
+};
+
+export const Access = {
+  $type: "yandex.cloud.mdb.kafka.v1.Access" as const,
+
+  encode(
+    message: Access,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.dataTransfer === true) {
+      writer.uint32(8).bool(message.dataTransfer);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Access {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseAccess } as Access;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.dataTransfer = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Access {
+    const message = { ...baseAccess } as Access;
+    message.dataTransfer =
+      object.dataTransfer !== undefined && object.dataTransfer !== null
+        ? Boolean(object.dataTransfer)
+        : false;
+    return message;
+  },
+
+  toJSON(message: Access): unknown {
+    const obj: any = {};
+    message.dataTransfer !== undefined &&
+      (obj.dataTransfer = message.dataTransfer);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Access>, I>>(object: I): Access {
+    const message = { ...baseAccess } as Access;
+    message.dataTransfer = object.dataTransfer ?? false;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Access.$type, Access);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

@@ -79,6 +79,8 @@ export interface Instance {
   bootDisk?: AttachedDisk;
   /** Array of secondary disks that are attached to the instance. */
   secondaryDisks: AttachedDisk[];
+  /** Array of local disks that are attached to the instance. */
+  localDisks: AttachedLocalDisk[];
   /** Array of filesystems that are attached to the instance. */
   filesystems: AttachedFilesystem[];
   /** Array of network interfaces that are attached to the instance. */
@@ -280,6 +282,19 @@ export function attachedDisk_ModeToJSON(object: AttachedDisk_Mode): string {
     default:
       return "UNKNOWN";
   }
+}
+
+export interface AttachedLocalDisk {
+  $type: "yandex.cloud.compute.v1.AttachedLocalDisk";
+  /** Size of the disk, specified in bytes. */
+  size: number;
+  /**
+   * Serial number that is reflected into the /dev/disk/by-id/ tree
+   * of a Linux operating system running within the instance.
+   *
+   * This value can be used to reference the device for mounting, resizing, and so on, from within the instance.
+   */
+  deviceName: string;
 }
 
 export interface AttachedFilesystem {
@@ -595,6 +610,9 @@ export const Instance = {
     for (const v of message.secondaryDisks) {
       AttachedDisk.encode(v!, writer.uint32(106).fork()).ldelim();
     }
+    for (const v of message.localDisks) {
+      AttachedLocalDisk.encode(v!, writer.uint32(178).fork()).ldelim();
+    }
     for (const v of message.filesystems) {
       AttachedFilesystem.encode(v!, writer.uint32(170).fork()).ldelim();
     }
@@ -635,6 +653,7 @@ export const Instance = {
     message.labels = {};
     message.metadata = {};
     message.secondaryDisks = [];
+    message.localDisks = [];
     message.filesystems = [];
     message.networkInterfaces = [];
     while (reader.pos < end) {
@@ -690,6 +709,11 @@ export const Instance = {
         case 13:
           message.secondaryDisks.push(
             AttachedDisk.decode(reader, reader.uint32())
+          );
+          break;
+        case 22:
+          message.localDisks.push(
+            AttachedLocalDisk.decode(reader, reader.uint32())
           );
           break;
         case 21:
@@ -789,6 +813,9 @@ export const Instance = {
     message.secondaryDisks = (object.secondaryDisks ?? []).map((e: any) =>
       AttachedDisk.fromJSON(e)
     );
+    message.localDisks = (object.localDisks ?? []).map((e: any) =>
+      AttachedLocalDisk.fromJSON(e)
+    );
     message.filesystems = (object.filesystems ?? []).map((e: any) =>
       AttachedFilesystem.fromJSON(e)
     );
@@ -858,6 +885,13 @@ export const Instance = {
     } else {
       obj.secondaryDisks = [];
     }
+    if (message.localDisks) {
+      obj.localDisks = message.localDisks.map((e) =>
+        e ? AttachedLocalDisk.toJSON(e) : undefined
+      );
+    } else {
+      obj.localDisks = [];
+    }
     if (message.filesystems) {
       obj.filesystems = message.filesystems.map((e) =>
         e ? AttachedFilesystem.toJSON(e) : undefined
@@ -926,6 +960,8 @@ export const Instance = {
         : undefined;
     message.secondaryDisks =
       object.secondaryDisks?.map((e) => AttachedDisk.fromPartial(e)) || [];
+    message.localDisks =
+      object.localDisks?.map((e) => AttachedLocalDisk.fromPartial(e)) || [];
     message.filesystems =
       object.filesystems?.map((e) => AttachedFilesystem.fromPartial(e)) || [];
     message.networkInterfaces =
@@ -1306,6 +1342,81 @@ export const AttachedDisk = {
 };
 
 messageTypeRegistry.set(AttachedDisk.$type, AttachedDisk);
+
+const baseAttachedLocalDisk: object = {
+  $type: "yandex.cloud.compute.v1.AttachedLocalDisk",
+  size: 0,
+  deviceName: "",
+};
+
+export const AttachedLocalDisk = {
+  $type: "yandex.cloud.compute.v1.AttachedLocalDisk" as const,
+
+  encode(
+    message: AttachedLocalDisk,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.size !== 0) {
+      writer.uint32(8).int64(message.size);
+    }
+    if (message.deviceName !== "") {
+      writer.uint32(18).string(message.deviceName);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): AttachedLocalDisk {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseAttachedLocalDisk } as AttachedLocalDisk;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.size = longToNumber(reader.int64() as Long);
+          break;
+        case 2:
+          message.deviceName = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AttachedLocalDisk {
+    const message = { ...baseAttachedLocalDisk } as AttachedLocalDisk;
+    message.size =
+      object.size !== undefined && object.size !== null
+        ? Number(object.size)
+        : 0;
+    message.deviceName =
+      object.deviceName !== undefined && object.deviceName !== null
+        ? String(object.deviceName)
+        : "";
+    return message;
+  },
+
+  toJSON(message: AttachedLocalDisk): unknown {
+    const obj: any = {};
+    message.size !== undefined && (obj.size = Math.round(message.size));
+    message.deviceName !== undefined && (obj.deviceName = message.deviceName);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AttachedLocalDisk>, I>>(
+    object: I
+  ): AttachedLocalDisk {
+    const message = { ...baseAttachedLocalDisk } as AttachedLocalDisk;
+    message.size = object.size ?? 0;
+    message.deviceName = object.deviceName ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(AttachedLocalDisk.$type, AttachedLocalDisk);
 
 const baseAttachedFilesystem: object = {
   $type: "yandex.cloud.compute.v1.AttachedFilesystem",

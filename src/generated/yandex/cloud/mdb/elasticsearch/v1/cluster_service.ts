@@ -31,8 +31,10 @@ import { MaintenanceWindow } from "../../../../../yandex/cloud/mdb/elasticsearch
 import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import { Timestamp } from "../../../../../google/protobuf/timestamp";
 import { UserSpec } from "../../../../../yandex/cloud/mdb/elasticsearch/v1/user";
+import { ExtensionSpec } from "../../../../../yandex/cloud/mdb/elasticsearch/v1/extension";
 import { Operation } from "../../../../../yandex/cloud/operation/operation";
 import { ElasticsearchConfig7 } from "../../../../../yandex/cloud/mdb/elasticsearch/v1/config/elasticsearch";
+import { Backup } from "../../../../../yandex/cloud/mdb/elasticsearch/v1/backup";
 
 export const protobufPackage = "yandex.cloud.mdb.elasticsearch.v1";
 
@@ -123,6 +125,8 @@ export interface CreateClusterRequest {
   deletionProtection: boolean;
   /** Window of maintenance operations. */
   maintenanceWindow?: MaintenanceWindow;
+  /** optional */
+  extensionSpecs: ExtensionSpec[];
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -721,6 +725,97 @@ export interface RescheduleMaintenanceMetadata {
   delayedUntil?: Date;
 }
 
+export interface RestoreClusterRequest {
+  $type: "yandex.cloud.mdb.elasticsearch.v1.RestoreClusterRequest";
+  /** Required. ID of the backup to restore from. */
+  backupId: string;
+  /** Name of the ElasticSearch cluster. The name must be unique within the folder. */
+  name: string;
+  /** Description of the ElasticSearch cluster. */
+  description: string;
+  /**
+   * Custom labels for the ElasticSearch cluster as `` key:value `` pairs. Maximum 64 per resource.
+   * For example, "project": "mvp" or "source": "dictionary".
+   */
+  labels: { [key: string]: string };
+  /** Deployment environment of the ElasticSearch cluster. */
+  environment: Cluster_Environment;
+  /** Configuration and resources for hosts that should be created for the ElasticSearch cluster. */
+  configSpec?: ConfigSpec;
+  /** Required. Configuration of ElasticSearch hosts. */
+  hostSpecs: HostSpec[];
+  /** ID of the network to create the cluster in. */
+  networkId: string;
+  /** User security groups */
+  securityGroupIds: string[];
+  /** ID of the service account used for access to Yandex Object Storage. */
+  serviceAccountId: string;
+  /** Deletion Protection inhibits deletion of the cluster */
+  deletionProtection: boolean;
+  /** ID of the folder to create the ElasticSearch cluster in. */
+  folderId: string;
+  /** optional */
+  extensionSpecs: ExtensionSpec[];
+}
+
+export interface RestoreClusterRequest_LabelsEntry {
+  $type: "yandex.cloud.mdb.elasticsearch.v1.RestoreClusterRequest.LabelsEntry";
+  key: string;
+  value: string;
+}
+
+export interface RestoreClusterMetadata {
+  $type: "yandex.cloud.mdb.elasticsearch.v1.RestoreClusterMetadata";
+  /** Required. ID of the new ElasticSearch cluster. */
+  clusterId: string;
+  /** Required. ID of the backup used for recovery. */
+  backupId: string;
+}
+
+export interface BackupClusterRequest {
+  $type: "yandex.cloud.mdb.elasticsearch.v1.BackupClusterRequest";
+  /** Required. ID of the ElasticSearch cluster to back up. */
+  clusterId: string;
+}
+
+export interface BackupClusterMetadata {
+  $type: "yandex.cloud.mdb.elasticsearch.v1.BackupClusterMetadata";
+  /** ID of the ElasticSearch cluster. */
+  clusterId: string;
+}
+
+export interface ListClusterBackupsRequest {
+  $type: "yandex.cloud.mdb.elasticsearch.v1.ListClusterBackupsRequest";
+  /** Required. ID of the Elasticsearch cluster. */
+  clusterId: string;
+  /**
+   * The maximum number of results per page that should be returned. If the number of available
+   * results is larger than `page_size`, the service returns a `next_page_token` that can be used
+   * to get the next page of results in subsequent ListClusterBackups requests.
+   * Acceptable values are 0 to 1000, inclusive. Default value: 100.
+   */
+  pageSize: number;
+  /**
+   * Page token. Set `page_token` to the `next_page_token` returned by a previous ListClusterBackups
+   * request to get the next page of results.
+   */
+  pageToken: string;
+}
+
+export interface ListClusterBackupsResponse {
+  $type: "yandex.cloud.mdb.elasticsearch.v1.ListClusterBackupsResponse";
+  /** Requested list of backups. */
+  backups: Backup[];
+  /**
+   * This token allows you to get the next page of results for ListClusterBackups requests,
+   * if the number of results is larger than `page_size` specified in the request.
+   * To get the next page, specify the value of `next_page_token` as a value for
+   * the `page_token` parameter in the next ListClusterBackups request. Subsequent ListClusterBackups
+   * requests will have their own `next_page_token` to continue paging through the results.
+   */
+  nextPageToken: string;
+}
+
 const baseGetClusterRequest: object = {
   $type: "yandex.cloud.mdb.elasticsearch.v1.GetClusterRequest",
   clusterId: "",
@@ -1039,6 +1134,9 @@ export const CreateClusterRequest = {
         writer.uint32(114).fork()
       ).ldelim();
     }
+    for (const v of message.extensionSpecs) {
+      ExtensionSpec.encode(v!, writer.uint32(122).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1053,6 +1151,7 @@ export const CreateClusterRequest = {
     message.userSpecs = [];
     message.hostSpecs = [];
     message.securityGroupIds = [];
+    message.extensionSpecs = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1102,6 +1201,11 @@ export const CreateClusterRequest = {
           message.maintenanceWindow = MaintenanceWindow.decode(
             reader,
             reader.uint32()
+          );
+          break;
+        case 15:
+          message.extensionSpecs.push(
+            ExtensionSpec.decode(reader, reader.uint32())
           );
           break;
         default:
@@ -1167,6 +1271,9 @@ export const CreateClusterRequest = {
       object.maintenanceWindow !== null
         ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
         : undefined;
+    message.extensionSpecs = (object.extensionSpecs ?? []).map((e: any) =>
+      ExtensionSpec.fromJSON(e)
+    );
     return message;
   },
 
@@ -1216,6 +1323,13 @@ export const CreateClusterRequest = {
       (obj.maintenanceWindow = message.maintenanceWindow
         ? MaintenanceWindow.toJSON(message.maintenanceWindow)
         : undefined);
+    if (message.extensionSpecs) {
+      obj.extensionSpecs = message.extensionSpecs.map((e) =>
+        e ? ExtensionSpec.toJSON(e) : undefined
+      );
+    } else {
+      obj.extensionSpecs = [];
+    }
     return obj;
   },
 
@@ -1252,6 +1366,8 @@ export const CreateClusterRequest = {
       object.maintenanceWindow !== null
         ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
         : undefined;
+    message.extensionSpecs =
+      object.extensionSpecs?.map((e) => ExtensionSpec.fromPartial(e)) || [];
     return message;
   },
 };
@@ -4635,6 +4751,772 @@ messageTypeRegistry.set(
   RescheduleMaintenanceMetadata
 );
 
+const baseRestoreClusterRequest: object = {
+  $type: "yandex.cloud.mdb.elasticsearch.v1.RestoreClusterRequest",
+  backupId: "",
+  name: "",
+  description: "",
+  environment: 0,
+  networkId: "",
+  securityGroupIds: "",
+  serviceAccountId: "",
+  deletionProtection: false,
+  folderId: "",
+};
+
+export const RestoreClusterRequest = {
+  $type: "yandex.cloud.mdb.elasticsearch.v1.RestoreClusterRequest" as const,
+
+  encode(
+    message: RestoreClusterRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.backupId !== "") {
+      writer.uint32(10).string(message.backupId);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.description !== "") {
+      writer.uint32(26).string(message.description);
+    }
+    Object.entries(message.labels).forEach(([key, value]) => {
+      RestoreClusterRequest_LabelsEntry.encode(
+        {
+          $type:
+            "yandex.cloud.mdb.elasticsearch.v1.RestoreClusterRequest.LabelsEntry",
+          key: key as any,
+          value,
+        },
+        writer.uint32(34).fork()
+      ).ldelim();
+    });
+    if (message.environment !== 0) {
+      writer.uint32(40).int32(message.environment);
+    }
+    if (message.configSpec !== undefined) {
+      ConfigSpec.encode(message.configSpec, writer.uint32(50).fork()).ldelim();
+    }
+    for (const v of message.hostSpecs) {
+      HostSpec.encode(v!, writer.uint32(74).fork()).ldelim();
+    }
+    if (message.networkId !== "") {
+      writer.uint32(82).string(message.networkId);
+    }
+    for (const v of message.securityGroupIds) {
+      writer.uint32(90).string(v!);
+    }
+    if (message.serviceAccountId !== "") {
+      writer.uint32(98).string(message.serviceAccountId);
+    }
+    if (message.deletionProtection === true) {
+      writer.uint32(104).bool(message.deletionProtection);
+    }
+    if (message.folderId !== "") {
+      writer.uint32(114).string(message.folderId);
+    }
+    for (const v of message.extensionSpecs) {
+      ExtensionSpec.encode(v!, writer.uint32(122).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RestoreClusterRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseRestoreClusterRequest } as RestoreClusterRequest;
+    message.labels = {};
+    message.hostSpecs = [];
+    message.securityGroupIds = [];
+    message.extensionSpecs = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.backupId = reader.string();
+          break;
+        case 2:
+          message.name = reader.string();
+          break;
+        case 3:
+          message.description = reader.string();
+          break;
+        case 4:
+          const entry4 = RestoreClusterRequest_LabelsEntry.decode(
+            reader,
+            reader.uint32()
+          );
+          if (entry4.value !== undefined) {
+            message.labels[entry4.key] = entry4.value;
+          }
+          break;
+        case 5:
+          message.environment = reader.int32() as any;
+          break;
+        case 6:
+          message.configSpec = ConfigSpec.decode(reader, reader.uint32());
+          break;
+        case 9:
+          message.hostSpecs.push(HostSpec.decode(reader, reader.uint32()));
+          break;
+        case 10:
+          message.networkId = reader.string();
+          break;
+        case 11:
+          message.securityGroupIds.push(reader.string());
+          break;
+        case 12:
+          message.serviceAccountId = reader.string();
+          break;
+        case 13:
+          message.deletionProtection = reader.bool();
+          break;
+        case 14:
+          message.folderId = reader.string();
+          break;
+        case 15:
+          message.extensionSpecs.push(
+            ExtensionSpec.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RestoreClusterRequest {
+    const message = { ...baseRestoreClusterRequest } as RestoreClusterRequest;
+    message.backupId =
+      object.backupId !== undefined && object.backupId !== null
+        ? String(object.backupId)
+        : "";
+    message.name =
+      object.name !== undefined && object.name !== null
+        ? String(object.name)
+        : "";
+    message.description =
+      object.description !== undefined && object.description !== null
+        ? String(object.description)
+        : "";
+    message.labels = Object.entries(object.labels ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      acc[key] = String(value);
+      return acc;
+    }, {});
+    message.environment =
+      object.environment !== undefined && object.environment !== null
+        ? cluster_EnvironmentFromJSON(object.environment)
+        : 0;
+    message.configSpec =
+      object.configSpec !== undefined && object.configSpec !== null
+        ? ConfigSpec.fromJSON(object.configSpec)
+        : undefined;
+    message.hostSpecs = (object.hostSpecs ?? []).map((e: any) =>
+      HostSpec.fromJSON(e)
+    );
+    message.networkId =
+      object.networkId !== undefined && object.networkId !== null
+        ? String(object.networkId)
+        : "";
+    message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) =>
+      String(e)
+    );
+    message.serviceAccountId =
+      object.serviceAccountId !== undefined && object.serviceAccountId !== null
+        ? String(object.serviceAccountId)
+        : "";
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
+    message.folderId =
+      object.folderId !== undefined && object.folderId !== null
+        ? String(object.folderId)
+        : "";
+    message.extensionSpecs = (object.extensionSpecs ?? []).map((e: any) =>
+      ExtensionSpec.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: RestoreClusterRequest): unknown {
+    const obj: any = {};
+    message.backupId !== undefined && (obj.backupId = message.backupId);
+    message.name !== undefined && (obj.name = message.name);
+    message.description !== undefined &&
+      (obj.description = message.description);
+    obj.labels = {};
+    if (message.labels) {
+      Object.entries(message.labels).forEach(([k, v]) => {
+        obj.labels[k] = v;
+      });
+    }
+    message.environment !== undefined &&
+      (obj.environment = cluster_EnvironmentToJSON(message.environment));
+    message.configSpec !== undefined &&
+      (obj.configSpec = message.configSpec
+        ? ConfigSpec.toJSON(message.configSpec)
+        : undefined);
+    if (message.hostSpecs) {
+      obj.hostSpecs = message.hostSpecs.map((e) =>
+        e ? HostSpec.toJSON(e) : undefined
+      );
+    } else {
+      obj.hostSpecs = [];
+    }
+    message.networkId !== undefined && (obj.networkId = message.networkId);
+    if (message.securityGroupIds) {
+      obj.securityGroupIds = message.securityGroupIds.map((e) => e);
+    } else {
+      obj.securityGroupIds = [];
+    }
+    message.serviceAccountId !== undefined &&
+      (obj.serviceAccountId = message.serviceAccountId);
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
+    message.folderId !== undefined && (obj.folderId = message.folderId);
+    if (message.extensionSpecs) {
+      obj.extensionSpecs = message.extensionSpecs.map((e) =>
+        e ? ExtensionSpec.toJSON(e) : undefined
+      );
+    } else {
+      obj.extensionSpecs = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RestoreClusterRequest>, I>>(
+    object: I
+  ): RestoreClusterRequest {
+    const message = { ...baseRestoreClusterRequest } as RestoreClusterRequest;
+    message.backupId = object.backupId ?? "";
+    message.name = object.name ?? "";
+    message.description = object.description ?? "";
+    message.labels = Object.entries(object.labels ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = String(value);
+      }
+      return acc;
+    }, {});
+    message.environment = object.environment ?? 0;
+    message.configSpec =
+      object.configSpec !== undefined && object.configSpec !== null
+        ? ConfigSpec.fromPartial(object.configSpec)
+        : undefined;
+    message.hostSpecs =
+      object.hostSpecs?.map((e) => HostSpec.fromPartial(e)) || [];
+    message.networkId = object.networkId ?? "";
+    message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
+    message.serviceAccountId = object.serviceAccountId ?? "";
+    message.deletionProtection = object.deletionProtection ?? false;
+    message.folderId = object.folderId ?? "";
+    message.extensionSpecs =
+      object.extensionSpecs?.map((e) => ExtensionSpec.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(RestoreClusterRequest.$type, RestoreClusterRequest);
+
+const baseRestoreClusterRequest_LabelsEntry: object = {
+  $type: "yandex.cloud.mdb.elasticsearch.v1.RestoreClusterRequest.LabelsEntry",
+  key: "",
+  value: "",
+};
+
+export const RestoreClusterRequest_LabelsEntry = {
+  $type:
+    "yandex.cloud.mdb.elasticsearch.v1.RestoreClusterRequest.LabelsEntry" as const,
+
+  encode(
+    message: RestoreClusterRequest_LabelsEntry,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RestoreClusterRequest_LabelsEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseRestoreClusterRequest_LabelsEntry,
+    } as RestoreClusterRequest_LabelsEntry;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RestoreClusterRequest_LabelsEntry {
+    const message = {
+      ...baseRestoreClusterRequest_LabelsEntry,
+    } as RestoreClusterRequest_LabelsEntry;
+    message.key =
+      object.key !== undefined && object.key !== null ? String(object.key) : "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? String(object.value)
+        : "";
+    return message;
+  },
+
+  toJSON(message: RestoreClusterRequest_LabelsEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<RestoreClusterRequest_LabelsEntry>, I>
+  >(object: I): RestoreClusterRequest_LabelsEntry {
+    const message = {
+      ...baseRestoreClusterRequest_LabelsEntry,
+    } as RestoreClusterRequest_LabelsEntry;
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  RestoreClusterRequest_LabelsEntry.$type,
+  RestoreClusterRequest_LabelsEntry
+);
+
+const baseRestoreClusterMetadata: object = {
+  $type: "yandex.cloud.mdb.elasticsearch.v1.RestoreClusterMetadata",
+  clusterId: "",
+  backupId: "",
+};
+
+export const RestoreClusterMetadata = {
+  $type: "yandex.cloud.mdb.elasticsearch.v1.RestoreClusterMetadata" as const,
+
+  encode(
+    message: RestoreClusterMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    if (message.backupId !== "") {
+      writer.uint32(18).string(message.backupId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RestoreClusterMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseRestoreClusterMetadata } as RestoreClusterMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.backupId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RestoreClusterMetadata {
+    const message = { ...baseRestoreClusterMetadata } as RestoreClusterMetadata;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.backupId =
+      object.backupId !== undefined && object.backupId !== null
+        ? String(object.backupId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: RestoreClusterMetadata): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.backupId !== undefined && (obj.backupId = message.backupId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RestoreClusterMetadata>, I>>(
+    object: I
+  ): RestoreClusterMetadata {
+    const message = { ...baseRestoreClusterMetadata } as RestoreClusterMetadata;
+    message.clusterId = object.clusterId ?? "";
+    message.backupId = object.backupId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(RestoreClusterMetadata.$type, RestoreClusterMetadata);
+
+const baseBackupClusterRequest: object = {
+  $type: "yandex.cloud.mdb.elasticsearch.v1.BackupClusterRequest",
+  clusterId: "",
+};
+
+export const BackupClusterRequest = {
+  $type: "yandex.cloud.mdb.elasticsearch.v1.BackupClusterRequest" as const,
+
+  encode(
+    message: BackupClusterRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): BackupClusterRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseBackupClusterRequest } as BackupClusterRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BackupClusterRequest {
+    const message = { ...baseBackupClusterRequest } as BackupClusterRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: BackupClusterRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<BackupClusterRequest>, I>>(
+    object: I
+  ): BackupClusterRequest {
+    const message = { ...baseBackupClusterRequest } as BackupClusterRequest;
+    message.clusterId = object.clusterId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(BackupClusterRequest.$type, BackupClusterRequest);
+
+const baseBackupClusterMetadata: object = {
+  $type: "yandex.cloud.mdb.elasticsearch.v1.BackupClusterMetadata",
+  clusterId: "",
+};
+
+export const BackupClusterMetadata = {
+  $type: "yandex.cloud.mdb.elasticsearch.v1.BackupClusterMetadata" as const,
+
+  encode(
+    message: BackupClusterMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): BackupClusterMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseBackupClusterMetadata } as BackupClusterMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BackupClusterMetadata {
+    const message = { ...baseBackupClusterMetadata } as BackupClusterMetadata;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: BackupClusterMetadata): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<BackupClusterMetadata>, I>>(
+    object: I
+  ): BackupClusterMetadata {
+    const message = { ...baseBackupClusterMetadata } as BackupClusterMetadata;
+    message.clusterId = object.clusterId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(BackupClusterMetadata.$type, BackupClusterMetadata);
+
+const baseListClusterBackupsRequest: object = {
+  $type: "yandex.cloud.mdb.elasticsearch.v1.ListClusterBackupsRequest",
+  clusterId: "",
+  pageSize: 0,
+  pageToken: "",
+};
+
+export const ListClusterBackupsRequest = {
+  $type: "yandex.cloud.mdb.elasticsearch.v1.ListClusterBackupsRequest" as const,
+
+  encode(
+    message: ListClusterBackupsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(16).int64(message.pageSize);
+    }
+    if (message.pageToken !== "") {
+      writer.uint32(26).string(message.pageToken);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ListClusterBackupsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseListClusterBackupsRequest,
+    } as ListClusterBackupsRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.pageSize = longToNumber(reader.int64() as Long);
+          break;
+        case 3:
+          message.pageToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListClusterBackupsRequest {
+    const message = {
+      ...baseListClusterBackupsRequest,
+    } as ListClusterBackupsRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.pageSize =
+      object.pageSize !== undefined && object.pageSize !== null
+        ? Number(object.pageSize)
+        : 0;
+    message.pageToken =
+      object.pageToken !== undefined && object.pageToken !== null
+        ? String(object.pageToken)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ListClusterBackupsRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.pageSize !== undefined &&
+      (obj.pageSize = Math.round(message.pageSize));
+    message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListClusterBackupsRequest>, I>>(
+    object: I
+  ): ListClusterBackupsRequest {
+    const message = {
+      ...baseListClusterBackupsRequest,
+    } as ListClusterBackupsRequest;
+    message.clusterId = object.clusterId ?? "";
+    message.pageSize = object.pageSize ?? 0;
+    message.pageToken = object.pageToken ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ListClusterBackupsRequest.$type,
+  ListClusterBackupsRequest
+);
+
+const baseListClusterBackupsResponse: object = {
+  $type: "yandex.cloud.mdb.elasticsearch.v1.ListClusterBackupsResponse",
+  nextPageToken: "",
+};
+
+export const ListClusterBackupsResponse = {
+  $type:
+    "yandex.cloud.mdb.elasticsearch.v1.ListClusterBackupsResponse" as const,
+
+  encode(
+    message: ListClusterBackupsResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.backups) {
+      Backup.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageToken !== "") {
+      writer.uint32(18).string(message.nextPageToken);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ListClusterBackupsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseListClusterBackupsResponse,
+    } as ListClusterBackupsResponse;
+    message.backups = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.backups.push(Backup.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.nextPageToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListClusterBackupsResponse {
+    const message = {
+      ...baseListClusterBackupsResponse,
+    } as ListClusterBackupsResponse;
+    message.backups = (object.backups ?? []).map((e: any) =>
+      Backup.fromJSON(e)
+    );
+    message.nextPageToken =
+      object.nextPageToken !== undefined && object.nextPageToken !== null
+        ? String(object.nextPageToken)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ListClusterBackupsResponse): unknown {
+    const obj: any = {};
+    if (message.backups) {
+      obj.backups = message.backups.map((e) =>
+        e ? Backup.toJSON(e) : undefined
+      );
+    } else {
+      obj.backups = [];
+    }
+    message.nextPageToken !== undefined &&
+      (obj.nextPageToken = message.nextPageToken);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListClusterBackupsResponse>, I>>(
+    object: I
+  ): ListClusterBackupsResponse {
+    const message = {
+      ...baseListClusterBackupsResponse,
+    } as ListClusterBackupsResponse;
+    message.backups = object.backups?.map((e) => Backup.fromPartial(e)) || [];
+    message.nextPageToken = object.nextPageToken ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ListClusterBackupsResponse.$type,
+  ListClusterBackupsResponse
+);
+
 /** A set of methods for managing Elasticsearch clusters. */
 export const ClusterServiceService = {
   /**
@@ -4733,6 +5615,44 @@ export const ClusterServiceService = {
     requestSerialize: (value: StopClusterRequest) =>
       Buffer.from(StopClusterRequest.encode(value).finish()),
     requestDeserialize: (value: Buffer) => StopClusterRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /** Create a backup for the specified ElasticSearch cluster. */
+  backup: {
+    path: "/yandex.cloud.mdb.elasticsearch.v1.ClusterService/Backup",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: BackupClusterRequest) =>
+      Buffer.from(BackupClusterRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => BackupClusterRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /** Returns the list of available backups for the specified Elasticsearch cluster. */
+  listBackups: {
+    path: "/yandex.cloud.mdb.elasticsearch.v1.ClusterService/ListBackups",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: ListClusterBackupsRequest) =>
+      Buffer.from(ListClusterBackupsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      ListClusterBackupsRequest.decode(value),
+    responseSerialize: (value: ListClusterBackupsResponse) =>
+      Buffer.from(ListClusterBackupsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) =>
+      ListClusterBackupsResponse.decode(value),
+  },
+  /** Creates a new ElasticSearch cluster from the specified backup. */
+  restore: {
+    path: "/yandex.cloud.mdb.elasticsearch.v1.ClusterService/Restore",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: RestoreClusterRequest) =>
+      Buffer.from(RestoreClusterRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => RestoreClusterRequest.decode(value),
     responseSerialize: (value: Operation) =>
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
@@ -4856,6 +5776,15 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
   start: handleUnaryCall<StartClusterRequest, Operation>;
   /** Stops the specified Elasticsearch cluster. */
   stop: handleUnaryCall<StopClusterRequest, Operation>;
+  /** Create a backup for the specified ElasticSearch cluster. */
+  backup: handleUnaryCall<BackupClusterRequest, Operation>;
+  /** Returns the list of available backups for the specified Elasticsearch cluster. */
+  listBackups: handleUnaryCall<
+    ListClusterBackupsRequest,
+    ListClusterBackupsResponse
+  >;
+  /** Creates a new ElasticSearch cluster from the specified backup. */
+  restore: handleUnaryCall<RestoreClusterRequest, Operation>;
   /**
    * Retrieves logs for the specified Elasticsearch cluster.
    *
@@ -5023,6 +5952,63 @@ export interface ClusterServiceClient extends Client {
   ): ClientUnaryCall;
   stop(
     request: StopClusterRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Create a backup for the specified ElasticSearch cluster. */
+  backup(
+    request: BackupClusterRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  backup(
+    request: BackupClusterRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  backup(
+    request: BackupClusterRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Returns the list of available backups for the specified Elasticsearch cluster. */
+  listBackups(
+    request: ListClusterBackupsRequest,
+    callback: (
+      error: ServiceError | null,
+      response: ListClusterBackupsResponse
+    ) => void
+  ): ClientUnaryCall;
+  listBackups(
+    request: ListClusterBackupsRequest,
+    metadata: Metadata,
+    callback: (
+      error: ServiceError | null,
+      response: ListClusterBackupsResponse
+    ) => void
+  ): ClientUnaryCall;
+  listBackups(
+    request: ListClusterBackupsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (
+      error: ServiceError | null,
+      response: ListClusterBackupsResponse
+    ) => void
+  ): ClientUnaryCall;
+  /** Creates a new ElasticSearch cluster from the specified backup. */
+  restore(
+    request: RestoreClusterRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  restore(
+    request: RestoreClusterRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  restore(
+    request: RestoreClusterRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

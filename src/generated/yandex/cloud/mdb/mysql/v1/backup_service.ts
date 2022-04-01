@@ -22,7 +22,8 @@ export interface GetBackupRequest {
   $type: "yandex.cloud.mdb.mysql.v1.GetBackupRequest";
   /**
    * ID of the backup to return information about.
-   * To get the backup ID, use a [ClusterService.ListBackups] request.
+   *
+   * To get this ID, make a [BackupService.List] request (lists all backups in a folder) or a [ClusterService.ListBackups] request (lists all backups for an existing cluster).
    */
   backupId: string;
 }
@@ -31,31 +32,34 @@ export interface ListBackupsRequest {
   $type: "yandex.cloud.mdb.mysql.v1.ListBackupsRequest";
   /**
    * ID of the folder to list backups in.
-   * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+   *
+   * To get this ID, make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
    */
   folderId: string;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size], the service returns a [ListBackupsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the API returns a [ListBackupsResponse.next_page_token] that can be used to get the next page of results in the subsequent [BackupService.List] requests.
    */
   pageSize: number;
   /**
-   * Page token.  To get the next page of results, Set [page_token] to the [ListBackupsResponse.next_page_token]
-   * returned by a previous list request.
+   * Page token that can be used to iterate through multiple pages of results.
+   *
+   * To get the next page of results, set [page_token] to the [ListBackupsResponse.next_page_token] returned by the previous [BackupService.List] request.
    */
   pageToken: string;
 }
 
 export interface ListBackupsResponse {
   $type: "yandex.cloud.mdb.mysql.v1.ListBackupsResponse";
-  /** List of MySQL backups. */
+  /** List of backups. */
   backups: Backup[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListBackupsRequest.page_size], use the [next_page_token] as the value
-   * for the [ListBackupsRequest.page_token] parameter in the next list request. Each subsequent
-   * list request will have its own [next_page_token] to continue paging through the results.
+   * The token that can be used to get the next page of results.
+   *
+   * If the number of results is larger than [ListBackupsRequest.page_size], use the [next_page_token] as the value for the [ListBackupsRequest.page_token] in the subsequent [BackupService.List] request to iterate through multiple pages of results.
+   *
+   * Each of the subsequent [BackupService.List] requests should use the [next_page_token] value returned by the previous request to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -292,13 +296,13 @@ export const ListBackupsResponse = {
 
 messageTypeRegistry.set(ListBackupsResponse.$type, ListBackupsResponse);
 
-/** A set of methods for managing MySQL backups. */
+/**
+ * A set of methods for managing MySQL backups.
+ *
+ * See [the documentation](/docs/managed-mysql/operations/cluster-backups) for details.
+ */
 export const BackupServiceService = {
-  /**
-   * Returns the specified MySQL backup.
-   *
-   * To get the list of available MySQL backups, make a [List] request.
-   */
+  /** Retrieves information about the specified backup. */
   get: {
     path: "/yandex.cloud.mdb.mysql.v1.BackupService/Get",
     requestStream: false,
@@ -310,7 +314,11 @@ export const BackupServiceService = {
       Buffer.from(Backup.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Backup.decode(value),
   },
-  /** Retrieves the list of MySQL backups available for the specified folder. */
+  /**
+   * Retrieves the list of backups in a folder.
+   *
+   * To list backups for an existing cluster, make a [ClusterService.ListBackups] request.
+   */
   list: {
     path: "/yandex.cloud.mdb.mysql.v1.BackupService/List",
     requestStream: false,
@@ -325,22 +333,18 @@ export const BackupServiceService = {
 } as const;
 
 export interface BackupServiceServer extends UntypedServiceImplementation {
-  /**
-   * Returns the specified MySQL backup.
-   *
-   * To get the list of available MySQL backups, make a [List] request.
-   */
+  /** Retrieves information about the specified backup. */
   get: handleUnaryCall<GetBackupRequest, Backup>;
-  /** Retrieves the list of MySQL backups available for the specified folder. */
+  /**
+   * Retrieves the list of backups in a folder.
+   *
+   * To list backups for an existing cluster, make a [ClusterService.ListBackups] request.
+   */
   list: handleUnaryCall<ListBackupsRequest, ListBackupsResponse>;
 }
 
 export interface BackupServiceClient extends Client {
-  /**
-   * Returns the specified MySQL backup.
-   *
-   * To get the list of available MySQL backups, make a [List] request.
-   */
+  /** Retrieves information about the specified backup. */
   get(
     request: GetBackupRequest,
     callback: (error: ServiceError | null, response: Backup) => void
@@ -356,7 +360,11 @@ export interface BackupServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Backup) => void
   ): ClientUnaryCall;
-  /** Retrieves the list of MySQL backups available for the specified folder. */
+  /**
+   * Retrieves the list of backups in a folder.
+   *
+   * To list backups for an existing cluster, make a [ClusterService.ListBackups] request.
+   */
   list(
     request: ListBackupsRequest,
     callback: (

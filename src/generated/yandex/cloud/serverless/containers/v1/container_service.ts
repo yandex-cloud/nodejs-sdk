@@ -17,10 +17,12 @@ import _m0 from "protobufjs/minimal";
 import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import {
   Resources,
+  Connectivity,
   Command,
   Args,
   Container,
   Revision,
+  Secret,
 } from "../../../../../yandex/cloud/serverless/containers/v1/container";
 import { Duration } from "../../../../../google/protobuf/duration";
 import { Operation } from "../../../../../yandex/cloud/operation/operation";
@@ -130,6 +132,8 @@ export interface DeployContainerRevisionRequest {
   serviceAccountId: string;
   imageSpec?: ImageSpec;
   concurrency: number;
+  secrets: Secret[];
+  connectivity?: Connectivity;
 }
 
 export interface ImageSpec {
@@ -1507,6 +1511,15 @@ export const DeployContainerRevisionRequest = {
     if (message.concurrency !== 0) {
       writer.uint32(72).int64(message.concurrency);
     }
+    for (const v of message.secrets) {
+      Secret.encode(v!, writer.uint32(82).fork()).ldelim();
+    }
+    if (message.connectivity !== undefined) {
+      Connectivity.encode(
+        message.connectivity,
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1519,6 +1532,7 @@ export const DeployContainerRevisionRequest = {
     const message = {
       ...baseDeployContainerRevisionRequest,
     } as DeployContainerRevisionRequest;
+    message.secrets = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1542,6 +1556,12 @@ export const DeployContainerRevisionRequest = {
           break;
         case 9:
           message.concurrency = longToNumber(reader.int64() as Long);
+          break;
+        case 10:
+          message.secrets.push(Secret.decode(reader, reader.uint32()));
+          break;
+        case 11:
+          message.connectivity = Connectivity.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1583,6 +1603,13 @@ export const DeployContainerRevisionRequest = {
       object.concurrency !== undefined && object.concurrency !== null
         ? Number(object.concurrency)
         : 0;
+    message.secrets = (object.secrets ?? []).map((e: any) =>
+      Secret.fromJSON(e)
+    );
+    message.connectivity =
+      object.connectivity !== undefined && object.connectivity !== null
+        ? Connectivity.fromJSON(object.connectivity)
+        : undefined;
     return message;
   },
 
@@ -1608,6 +1635,17 @@ export const DeployContainerRevisionRequest = {
         : undefined);
     message.concurrency !== undefined &&
       (obj.concurrency = Math.round(message.concurrency));
+    if (message.secrets) {
+      obj.secrets = message.secrets.map((e) =>
+        e ? Secret.toJSON(e) : undefined
+      );
+    } else {
+      obj.secrets = [];
+    }
+    message.connectivity !== undefined &&
+      (obj.connectivity = message.connectivity
+        ? Connectivity.toJSON(message.connectivity)
+        : undefined);
     return obj;
   },
 
@@ -1633,6 +1671,11 @@ export const DeployContainerRevisionRequest = {
         ? ImageSpec.fromPartial(object.imageSpec)
         : undefined;
     message.concurrency = object.concurrency ?? 0;
+    message.secrets = object.secrets?.map((e) => Secret.fromPartial(e)) || [];
+    message.connectivity =
+      object.connectivity !== undefined && object.connectivity !== null
+        ? Connectivity.fromPartial(object.connectivity)
+        : undefined;
     return message;
   },
 };

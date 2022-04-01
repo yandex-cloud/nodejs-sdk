@@ -37,16 +37,16 @@ export enum LoadBalancingMode {
    */
   LEAST_REQUEST = 2,
   /**
-   * MAGLEV_HASH - Maglev hashing load balancing mode, used only if session affinity is working for the backend group.
+   * MAGLEV_HASH - Maglev hashing load balancing mode.
    *
    * Each endpoint is hashed, and a hash table with 65537 rows is filled accordingly, so that every endpoint occupies
-   * the same amount of rows. An attribute of each request, specified in session affinity configuration of the backend
-   * group, is also hashed by the same function. The row with the same number as the resulting value is looked up in the
-   * table to determine the endpoint that receives the request.
+   * the same amount of rows. An attribute of each request is also hashed by the same function (if session affinity is
+   * enabled for the backend group, the attribute to hash is specified in session affinity configuration). The row
+   * with the same number as the resulting value is looked up in the table to determine the endpoint that receives
+   * the request.
    *
-   * If session affinity is not working for the backend group (i.e. it is not configured or the group contains more
-   * than one backend with positive weight), endpoints for backends with `MAGLEV_HASH` load balancing mode are picked at
-   * `RANDOM` instead.
+   * If the backend group with session affinity enabled contains more than one backend with positive weight, endpoints
+   * for backends with `MAGLEV_HASH` load balancing mode are picked at `RANDOM` instead.
    */
   MAGLEV_HASH = 3,
   UNRECOGNIZED = -1,
@@ -112,7 +112,7 @@ export interface BackendGroup {
   http?: HttpBackendGroup | undefined;
   /** List of gRPC backends that the backend group consists of. */
   grpc?: GrpcBackendGroup | undefined;
-  /** List of stream backends that the backend group consist of. */
+  /** List of stream (TCP) backends that the backend group consists of. */
   stream?: StreamBackendGroup | undefined;
   /** Creation timestamp. */
   createdAt?: Date;
@@ -124,10 +124,16 @@ export interface BackendGroup_LabelsEntry {
   value: string;
 }
 
-/** A Stream backend group resource. */
+/** A stream (TCP) backend group resource. */
 export interface StreamBackendGroup {
   $type: "yandex.cloud.apploadbalancer.v1.StreamBackendGroup";
+  /** List of stream (TCP) backends. */
   backends: StreamBackend[];
+  /**
+   * Connection-based session affinity configuration.
+   *
+   * For now, a connection is defined only by an IP address of the client.
+   */
   connection?: ConnectionSessionAffinity | undefined;
 }
 
@@ -178,10 +184,12 @@ export interface CookieSessionAffinity {
   /** Name of the cookie that is used for session affinity. */
   name: string;
   /**
-   * Maximum age of cookies that are generated for sessions (persistent cookies).
+   * Maximum age of cookies that are generated for sessions.
    *
-   * If not set, session cookies are used, which are stored by clients in temporary memory and are deleted
+   * If set to `0`, session cookies are used, which are stored by clients in temporary memory and are deleted
    * on client restarts.
+   *
+   * If not set, the balancer does not generate cookies and only uses incoming ones for establishing session affinity.
    */
   ttl?: Duration;
 }
@@ -211,7 +219,8 @@ export interface LoadBalancingConfig {
   panicThreshold: number;
   /**
    * Percentage of traffic that a load balancer node sends to healthy backends in its availability zone.
-   * The rest is divided equally between other zones. For details about zone-aware routing, see [documentation](/docs/application-load-balancer/concepts/backend-group#locality).
+   * The rest is divided equally between other zones. For details about zone-aware routing, see
+   * [documentation](/docs/application-load-balancer/concepts/backend-group#locality).
    *
    * If there are no healthy backends in an availability zone, all the traffic is divided between other zones.
    *
@@ -237,24 +246,52 @@ export interface LoadBalancingConfig {
   /**
    * Load balancing mode for the backend.
    *
-   * For detals about load balancing modes, see
+   * For details about load balancing modes, see
    * [documentation](/docs/application-load-balancer/concepts/backend-group#balancing-mode).
    */
   mode: LoadBalancingMode;
 }
 
-/** A stream backend resource. */
+/** A stream (TCP) backend resource. */
 export interface StreamBackend {
   $type: "yandex.cloud.apploadbalancer.v1.StreamBackend";
+  /** Name of the backend. */
   name: string;
-  /** If not set, backend will be disabled. */
+  /**
+   * Backend weight. Traffic is distributed between backends of a backend group according to their weights.
+   *
+   * Weights must be set either for all backends in a group or for none of them.
+   * Setting no weights is the same as setting equal non-zero weights for all backends.
+   *
+   * If the weight is non-positive, traffic is not sent to the backend.
+   */
   backendWeight?: number;
+  /** Load balancing configuration for the backend. */
   loadBalancingConfig?: LoadBalancingConfig;
-  /** Optional alternative port for all targets. */
+  /** Port used by all targets to receive traffic. */
   port: number;
+  /**
+   * Target groups that belong to the backend. For details about target groups, see
+   * [documentation](/docs/application-load-balancer/concepts/target-group).
+   */
   targetGroups?: TargetGroupsBackend | undefined;
+  /**
+   * Health checks to perform on targets from target groups.
+   * For details about health checking, see [documentation](/docs/application-load-balancer/concepts/backend-group#health-checks).
+   *
+   * If no health checks are specified, active health checking is not performed.
+   */
   healthchecks: HealthCheck[];
+  /**
+   * Settings for TLS connections between load balancer nodes and backend targets.
+   *
+   * If specified, the load balancer establishes TLS-encrypted TCP connections with targets and compares received
+   * certificates with the one specified in [BackendTls.validation_context].
+   * If not specified, the load balancer establishes unencrypted TCP connections with targets.
+   */
   tls?: BackendTls;
+  /** If set, proxy protocol will be enabled for this backend. */
+  enableProxyProtocol: boolean;
 }
 
 /** An HTTP backend resource. */
@@ -359,6 +396,20 @@ export interface TargetGroupsBackend {
   targetGroupIds: string[];
 }
 
+/** Transport settings to be used instead of the settings configured per-cluster */
+export interface PlaintextTransportSettings {
+  $type: "yandex.cloud.apploadbalancer.v1.PlaintextTransportSettings";
+}
+
+/** Transport settings to be used instead of the settings configured per-cluster */
+export interface SecureTransportSettings {
+  $type: "yandex.cloud.apploadbalancer.v1.SecureTransportSettings";
+  /** SNI string for TLS connections. */
+  sni: string;
+  /** Validation context for backend TLS connections. */
+  validationContext?: ValidationContext;
+}
+
 /** A resource for backend TLS settings. */
 export interface BackendTls {
   $type: "yandex.cloud.apploadbalancer.v1.BackendTls";
@@ -427,6 +478,8 @@ export interface HealthCheck {
   http?: HealthCheck_HttpHealthCheck | undefined;
   /** gRPC health check settings. */
   grpc?: HealthCheck_GrpcHealthCheck | undefined;
+  plaintext?: PlaintextTransportSettings | undefined;
+  tls?: SecureTransportSettings | undefined;
 }
 
 /** A resource for TCP stream health check settings. */
@@ -1484,6 +1537,7 @@ const baseStreamBackend: object = {
   $type: "yandex.cloud.apploadbalancer.v1.StreamBackend",
   name: "",
   port: 0,
+  enableProxyProtocol: false,
 };
 
 export const StreamBackend = {
@@ -1522,6 +1576,9 @@ export const StreamBackend = {
     }
     if (message.tls !== undefined) {
       BackendTls.encode(message.tls, writer.uint32(58).fork()).ldelim();
+    }
+    if (message.enableProxyProtocol === true) {
+      writer.uint32(64).bool(message.enableProxyProtocol);
     }
     return writer;
   },
@@ -1566,6 +1623,9 @@ export const StreamBackend = {
         case 7:
           message.tls = BackendTls.decode(reader, reader.uint32());
           break;
+        case 8:
+          message.enableProxyProtocol = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1604,6 +1664,11 @@ export const StreamBackend = {
       object.tls !== undefined && object.tls !== null
         ? BackendTls.fromJSON(object.tls)
         : undefined;
+    message.enableProxyProtocol =
+      object.enableProxyProtocol !== undefined &&
+      object.enableProxyProtocol !== null
+        ? Boolean(object.enableProxyProtocol)
+        : false;
     return message;
   },
 
@@ -1630,6 +1695,8 @@ export const StreamBackend = {
     }
     message.tls !== undefined &&
       (obj.tls = message.tls ? BackendTls.toJSON(message.tls) : undefined);
+    message.enableProxyProtocol !== undefined &&
+      (obj.enableProxyProtocol = message.enableProxyProtocol);
     return obj;
   },
 
@@ -1655,6 +1722,7 @@ export const StreamBackend = {
       object.tls !== undefined && object.tls !== null
         ? BackendTls.fromPartial(object.tls)
         : undefined;
+    message.enableProxyProtocol = object.enableProxyProtocol ?? false;
     return message;
   },
 };
@@ -2126,6 +2194,162 @@ export const TargetGroupsBackend = {
 
 messageTypeRegistry.set(TargetGroupsBackend.$type, TargetGroupsBackend);
 
+const basePlaintextTransportSettings: object = {
+  $type: "yandex.cloud.apploadbalancer.v1.PlaintextTransportSettings",
+};
+
+export const PlaintextTransportSettings = {
+  $type: "yandex.cloud.apploadbalancer.v1.PlaintextTransportSettings" as const,
+
+  encode(
+    _: PlaintextTransportSettings,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): PlaintextTransportSettings {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...basePlaintextTransportSettings,
+    } as PlaintextTransportSettings;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): PlaintextTransportSettings {
+    const message = {
+      ...basePlaintextTransportSettings,
+    } as PlaintextTransportSettings;
+    return message;
+  },
+
+  toJSON(_: PlaintextTransportSettings): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<PlaintextTransportSettings>, I>>(
+    _: I
+  ): PlaintextTransportSettings {
+    const message = {
+      ...basePlaintextTransportSettings,
+    } as PlaintextTransportSettings;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  PlaintextTransportSettings.$type,
+  PlaintextTransportSettings
+);
+
+const baseSecureTransportSettings: object = {
+  $type: "yandex.cloud.apploadbalancer.v1.SecureTransportSettings",
+  sni: "",
+};
+
+export const SecureTransportSettings = {
+  $type: "yandex.cloud.apploadbalancer.v1.SecureTransportSettings" as const,
+
+  encode(
+    message: SecureTransportSettings,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.sni !== "") {
+      writer.uint32(10).string(message.sni);
+    }
+    if (message.validationContext !== undefined) {
+      ValidationContext.encode(
+        message.validationContext,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): SecureTransportSettings {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseSecureTransportSettings,
+    } as SecureTransportSettings;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.sni = reader.string();
+          break;
+        case 3:
+          message.validationContext = ValidationContext.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SecureTransportSettings {
+    const message = {
+      ...baseSecureTransportSettings,
+    } as SecureTransportSettings;
+    message.sni =
+      object.sni !== undefined && object.sni !== null ? String(object.sni) : "";
+    message.validationContext =
+      object.validationContext !== undefined &&
+      object.validationContext !== null
+        ? ValidationContext.fromJSON(object.validationContext)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: SecureTransportSettings): unknown {
+    const obj: any = {};
+    message.sni !== undefined && (obj.sni = message.sni);
+    message.validationContext !== undefined &&
+      (obj.validationContext = message.validationContext
+        ? ValidationContext.toJSON(message.validationContext)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SecureTransportSettings>, I>>(
+    object: I
+  ): SecureTransportSettings {
+    const message = {
+      ...baseSecureTransportSettings,
+    } as SecureTransportSettings;
+    message.sni = object.sni ?? "";
+    message.validationContext =
+      object.validationContext !== undefined &&
+      object.validationContext !== null
+        ? ValidationContext.fromPartial(object.validationContext)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(SecureTransportSettings.$type, SecureTransportSettings);
+
 const baseBackendTls: object = {
   $type: "yandex.cloud.apploadbalancer.v1.BackendTls",
   sni: "",
@@ -2328,6 +2552,18 @@ export const HealthCheck = {
         writer.uint32(74).fork()
       ).ldelim();
     }
+    if (message.plaintext !== undefined) {
+      PlaintextTransportSettings.encode(
+        message.plaintext,
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
+    if (message.tls !== undefined) {
+      SecureTransportSettings.encode(
+        message.tls,
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2373,6 +2609,15 @@ export const HealthCheck = {
             reader,
             reader.uint32()
           );
+          break;
+        case 10:
+          message.plaintext = PlaintextTransportSettings.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 11:
+          message.tls = SecureTransportSettings.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -2422,6 +2667,14 @@ export const HealthCheck = {
       object.grpc !== undefined && object.grpc !== null
         ? HealthCheck_GrpcHealthCheck.fromJSON(object.grpc)
         : undefined;
+    message.plaintext =
+      object.plaintext !== undefined && object.plaintext !== null
+        ? PlaintextTransportSettings.fromJSON(object.plaintext)
+        : undefined;
+    message.tls =
+      object.tls !== undefined && object.tls !== null
+        ? SecureTransportSettings.fromJSON(object.tls)
+        : undefined;
     return message;
   },
 
@@ -2455,6 +2708,14 @@ export const HealthCheck = {
       (obj.grpc = message.grpc
         ? HealthCheck_GrpcHealthCheck.toJSON(message.grpc)
         : undefined);
+    message.plaintext !== undefined &&
+      (obj.plaintext = message.plaintext
+        ? PlaintextTransportSettings.toJSON(message.plaintext)
+        : undefined);
+    message.tls !== undefined &&
+      (obj.tls = message.tls
+        ? SecureTransportSettings.toJSON(message.tls)
+        : undefined);
     return obj;
   },
 
@@ -2485,6 +2746,14 @@ export const HealthCheck = {
     message.grpc =
       object.grpc !== undefined && object.grpc !== null
         ? HealthCheck_GrpcHealthCheck.fromPartial(object.grpc)
+        : undefined;
+    message.plaintext =
+      object.plaintext !== undefined && object.plaintext !== null
+        ? PlaintextTransportSettings.fromPartial(object.plaintext)
+        : undefined;
+    message.tls =
+      object.tls !== undefined && object.tls !== null
+        ? SecureTransportSettings.fromPartial(object.tls)
         : undefined;
     return message;
   },

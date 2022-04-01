@@ -137,6 +137,8 @@ export interface Version {
   connectivity?: Connectivity;
   /** Additional service accounts to be used by the version. */
   namedServiceAccounts: { [key: string]: string };
+  /** Lockbox secrets to be used by the version */
+  secrets: Secret[];
 }
 
 export enum Version_Status {
@@ -249,6 +251,19 @@ export interface ScalingPolicy {
    * 0 means no limit.
    */
   zoneRequestsLimit: number;
+}
+
+/** Secret for serverless function */
+export interface Secret {
+  $type: "yandex.cloud.serverless.functions.v1.Secret";
+  /** ID of lockbox secret */
+  id: string;
+  /** ID of secret version */
+  versionId: string;
+  /** Key in secret's payload, which value to be delivered into function environment */
+  key: string;
+  /** environment variable in which secret's value to be delivered */
+  environmentVariable: string | undefined;
 }
 
 const baseFunction: object = {
@@ -615,6 +630,9 @@ export const Version = {
         writer.uint32(146).fork()
       ).ldelim();
     });
+    for (const v of message.secrets) {
+      Secret.encode(v!, writer.uint32(154).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -625,6 +643,7 @@ export const Version = {
     message.tags = [];
     message.environment = {};
     message.namedServiceAccounts = {};
+    message.secrets = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -689,6 +708,9 @@ export const Version = {
           if (entry18.value !== undefined) {
             message.namedServiceAccounts[entry18.key] = entry18.value;
           }
+          break;
+        case 19:
+          message.secrets.push(Secret.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -763,6 +785,9 @@ export const Version = {
       acc[key] = String(value);
       return acc;
     }, {});
+    message.secrets = (object.secrets ?? []).map((e: any) =>
+      Secret.fromJSON(e)
+    );
     return message;
   },
 
@@ -812,6 +837,13 @@ export const Version = {
         obj.namedServiceAccounts[k] = v;
       });
     }
+    if (message.secrets) {
+      obj.secrets = message.secrets.map((e) =>
+        e ? Secret.toJSON(e) : undefined
+      );
+    } else {
+      obj.secrets = [];
+    }
     return obj;
   },
 
@@ -856,6 +888,7 @@ export const Version = {
       }
       return acc;
     }, {});
+    message.secrets = object.secrets?.map((e) => Secret.fromPartial(e)) || [];
     return message;
   },
 };
@@ -1417,6 +1450,102 @@ export const ScalingPolicy = {
 };
 
 messageTypeRegistry.set(ScalingPolicy.$type, ScalingPolicy);
+
+const baseSecret: object = {
+  $type: "yandex.cloud.serverless.functions.v1.Secret",
+  id: "",
+  versionId: "",
+  key: "",
+};
+
+export const Secret = {
+  $type: "yandex.cloud.serverless.functions.v1.Secret" as const,
+
+  encode(
+    message: Secret,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.versionId !== "") {
+      writer.uint32(18).string(message.versionId);
+    }
+    if (message.key !== "") {
+      writer.uint32(26).string(message.key);
+    }
+    if (message.environmentVariable !== undefined) {
+      writer.uint32(34).string(message.environmentVariable);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Secret {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseSecret } as Secret;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+        case 2:
+          message.versionId = reader.string();
+          break;
+        case 3:
+          message.key = reader.string();
+          break;
+        case 4:
+          message.environmentVariable = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Secret {
+    const message = { ...baseSecret } as Secret;
+    message.id =
+      object.id !== undefined && object.id !== null ? String(object.id) : "";
+    message.versionId =
+      object.versionId !== undefined && object.versionId !== null
+        ? String(object.versionId)
+        : "";
+    message.key =
+      object.key !== undefined && object.key !== null ? String(object.key) : "";
+    message.environmentVariable =
+      object.environmentVariable !== undefined &&
+      object.environmentVariable !== null
+        ? String(object.environmentVariable)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Secret): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    message.versionId !== undefined && (obj.versionId = message.versionId);
+    message.key !== undefined && (obj.key = message.key);
+    message.environmentVariable !== undefined &&
+      (obj.environmentVariable = message.environmentVariable);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Secret>, I>>(object: I): Secret {
+    const message = { ...baseSecret } as Secret;
+    message.id = object.id ?? "";
+    message.versionId = object.versionId ?? "";
+    message.key = object.key ?? "";
+    message.environmentVariable = object.environmentVariable ?? undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Secret.$type, Secret);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

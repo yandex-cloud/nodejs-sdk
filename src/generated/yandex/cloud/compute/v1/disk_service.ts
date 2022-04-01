@@ -209,6 +209,32 @@ export interface ListDiskOperationsResponse {
   nextPageToken: string;
 }
 
+export interface MoveDiskRequest {
+  $type: "yandex.cloud.compute.v1.MoveDiskRequest";
+  /**
+   * ID of the disk to move.
+   *
+   * To get the disk ID, make a [DiskService.List] request.
+   */
+  diskId: string;
+  /**
+   * ID of the folder to move the disk to.
+   *
+   * To get the folder ID, make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+   */
+  destinationFolderId: string;
+}
+
+export interface MoveDiskMetadata {
+  $type: "yandex.cloud.compute.v1.MoveDiskMetadata";
+  /** ID of the disk that is being moved. */
+  diskId: string;
+  /** ID of the folder that the disk is being moved from. */
+  sourceFolderId: string;
+  /** ID of the folder that the disk is being moved to. */
+  destinationFolderId: string;
+}
+
 const baseGetDiskRequest: object = {
   $type: "yandex.cloud.compute.v1.GetDiskRequest",
   diskId: "",
@@ -1481,6 +1507,174 @@ messageTypeRegistry.set(
   ListDiskOperationsResponse
 );
 
+const baseMoveDiskRequest: object = {
+  $type: "yandex.cloud.compute.v1.MoveDiskRequest",
+  diskId: "",
+  destinationFolderId: "",
+};
+
+export const MoveDiskRequest = {
+  $type: "yandex.cloud.compute.v1.MoveDiskRequest" as const,
+
+  encode(
+    message: MoveDiskRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.diskId !== "") {
+      writer.uint32(10).string(message.diskId);
+    }
+    if (message.destinationFolderId !== "") {
+      writer.uint32(18).string(message.destinationFolderId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MoveDiskRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMoveDiskRequest } as MoveDiskRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.diskId = reader.string();
+          break;
+        case 2:
+          message.destinationFolderId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MoveDiskRequest {
+    const message = { ...baseMoveDiskRequest } as MoveDiskRequest;
+    message.diskId =
+      object.diskId !== undefined && object.diskId !== null
+        ? String(object.diskId)
+        : "";
+    message.destinationFolderId =
+      object.destinationFolderId !== undefined &&
+      object.destinationFolderId !== null
+        ? String(object.destinationFolderId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: MoveDiskRequest): unknown {
+    const obj: any = {};
+    message.diskId !== undefined && (obj.diskId = message.diskId);
+    message.destinationFolderId !== undefined &&
+      (obj.destinationFolderId = message.destinationFolderId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MoveDiskRequest>, I>>(
+    object: I
+  ): MoveDiskRequest {
+    const message = { ...baseMoveDiskRequest } as MoveDiskRequest;
+    message.diskId = object.diskId ?? "";
+    message.destinationFolderId = object.destinationFolderId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(MoveDiskRequest.$type, MoveDiskRequest);
+
+const baseMoveDiskMetadata: object = {
+  $type: "yandex.cloud.compute.v1.MoveDiskMetadata",
+  diskId: "",
+  sourceFolderId: "",
+  destinationFolderId: "",
+};
+
+export const MoveDiskMetadata = {
+  $type: "yandex.cloud.compute.v1.MoveDiskMetadata" as const,
+
+  encode(
+    message: MoveDiskMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.diskId !== "") {
+      writer.uint32(10).string(message.diskId);
+    }
+    if (message.sourceFolderId !== "") {
+      writer.uint32(18).string(message.sourceFolderId);
+    }
+    if (message.destinationFolderId !== "") {
+      writer.uint32(26).string(message.destinationFolderId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MoveDiskMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMoveDiskMetadata } as MoveDiskMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.diskId = reader.string();
+          break;
+        case 2:
+          message.sourceFolderId = reader.string();
+          break;
+        case 3:
+          message.destinationFolderId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MoveDiskMetadata {
+    const message = { ...baseMoveDiskMetadata } as MoveDiskMetadata;
+    message.diskId =
+      object.diskId !== undefined && object.diskId !== null
+        ? String(object.diskId)
+        : "";
+    message.sourceFolderId =
+      object.sourceFolderId !== undefined && object.sourceFolderId !== null
+        ? String(object.sourceFolderId)
+        : "";
+    message.destinationFolderId =
+      object.destinationFolderId !== undefined &&
+      object.destinationFolderId !== null
+        ? String(object.destinationFolderId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: MoveDiskMetadata): unknown {
+    const obj: any = {};
+    message.diskId !== undefined && (obj.diskId = message.diskId);
+    message.sourceFolderId !== undefined &&
+      (obj.sourceFolderId = message.sourceFolderId);
+    message.destinationFolderId !== undefined &&
+      (obj.destinationFolderId = message.destinationFolderId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MoveDiskMetadata>, I>>(
+    object: I
+  ): MoveDiskMetadata {
+    const message = { ...baseMoveDiskMetadata } as MoveDiskMetadata;
+    message.diskId = object.diskId ?? "";
+    message.sourceFolderId = object.sourceFolderId ?? "";
+    message.destinationFolderId = object.destinationFolderId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(MoveDiskMetadata.$type, MoveDiskMetadata);
+
 /** A set of methods for managing Disk resources. */
 export const DiskServiceService = {
   /**
@@ -1573,6 +1767,18 @@ export const DiskServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListDiskOperationsResponse.decode(value),
   },
+  /** Moves the specified disk to another folder of the same cloud. */
+  move: {
+    path: "/yandex.cloud.compute.v1.DiskService/Move",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: MoveDiskRequest) =>
+      Buffer.from(MoveDiskRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => MoveDiskRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
 } as const;
 
 export interface DiskServiceServer extends UntypedServiceImplementation {
@@ -1607,6 +1813,8 @@ export interface DiskServiceServer extends UntypedServiceImplementation {
     ListDiskOperationsRequest,
     ListDiskOperationsResponse
   >;
+  /** Moves the specified disk to another folder of the same cloud. */
+  move: handleUnaryCall<MoveDiskRequest, Operation>;
 }
 
 export interface DiskServiceClient extends Client {
@@ -1730,6 +1938,22 @@ export interface DiskServiceClient extends Client {
       error: ServiceError | null,
       response: ListDiskOperationsResponse
     ) => void
+  ): ClientUnaryCall;
+  /** Moves the specified disk to another folder of the same cloud. */
+  move(
+    request: MoveDiskRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  move(
+    request: MoveDiskRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  move(
+    request: MoveDiskRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
 }
 

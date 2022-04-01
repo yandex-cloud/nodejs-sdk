@@ -5,6 +5,9 @@ import _m0 from "protobufjs/minimal";
 import {
   MasterSubclusterConfig,
   SegmentSubclusterConfig,
+  ConnectionPoolerConfigSet,
+  Greenplumconfigset617,
+  Greenplumconfigset619,
 } from "../../../../../yandex/cloud/mdb/greenplum/v1/config";
 import {
   MaintenanceWindow,
@@ -15,44 +18,44 @@ import { Timestamp } from "../../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.mdb.greenplum.v1";
 
-/** A Greenplum Cluster resource. For more information, see the */
+/** A Greenplum® cluster resource. */
 export interface Cluster {
   $type: "yandex.cloud.mdb.greenplum.v1.Cluster";
   /**
-   * ID of the Greenplum cluster.
-   * This ID is assigned by MDB at creation time.
+   * ID of the Greenplum® cluster.
+   * This ID is assigned by Yandex Cloud at the time of cluster creation.
    */
   id: string;
-  /** ID of the folder that the Greenplum cluster belongs to. */
+  /** ID of the folder that the Greenplum® cluster belongs to. */
   folderId: string;
-  /** Creation timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
+  /** Cluster creation timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
   createdAt?: Date;
   /**
-   * Name of the Greenplum cluster.
-   * The name is unique within the folder. 1-63 characters long.
+   * Name of the Greenplum® cluster.
+   * The name is unique within the folder and is 1-63 characters long.
    */
   name: string;
-  /** Greenplum cluster config */
+  /** Greenplum® cluster configuration. */
   config?: GreenplumConfig;
-  /** Description of the Greenplum cluster. 0-256 characters long. */
+  /** Description of the Greenplum® cluster. 0-256 characters long. */
   description: string;
-  /** Custom labels for the Greenplum cluster as `key:value` pairs. Maximum 64 per resource. */
+  /** Custom labels for the Greenplum® cluster as `key:value` pairs. Maximum 64 labels per resource. */
   labels: { [key: string]: string };
-  /** Deployment environment of the Greenplum cluster. */
+  /** Deployment environment of the Greenplum® cluster. */
   environment: Cluster_Environment;
-  /** Description of monitoring systems relevant to the Greenplum cluster. */
+  /** Description of monitoring systems relevant to the Greenplum® cluster. */
   monitoring: Monitoring[];
-  /** Configuration of the Greenplum master subcluster. */
+  /** Configuration of the Greenplum® master subcluster. */
   masterConfig?: MasterSubclusterConfig;
-  /** Configuration of the Greenplum segment subcluster. */
+  /** Configuration of the Greenplum® segment subcluster. */
   segmentConfig?: SegmentSubclusterConfig;
-  /** Number of hosts of the master subcluster */
+  /** Number of hosts in the master subcluster. */
   masterHostCount: number;
-  /** Number of hosts of the segment subcluster */
+  /** Number of hosts in the segment subcluster. */
   segmentHostCount: number;
-  /** Number of segments in the host */
+  /** Number of segments per host. */
   segmentInHost: number;
-  /** ID of the network that the cluster belongs to. */
+  /** ID of the cloud network that the cluster belongs to. */
   networkId: string;
   /** Aggregated cluster health. */
   health: Cluster_Health;
@@ -60,19 +63,20 @@ export interface Cluster {
   status: Cluster_Status;
   /** Window of maintenance operations. */
   maintenanceWindow?: MaintenanceWindow;
-  /** Maintenance operation planned at nearest maintenance_window. */
+  /** Maintenance operation planned at nearest [maintenance_window]. */
   plannedOperation?: MaintenanceOperation;
-  /** User security groups */
+  /** User security groups. */
   securityGroupIds: string[];
-  /** Owner user name */
+  /** Owner user name. */
   userName: string;
-  /** Deletion Protection inhibits deletion of the cluster */
+  /** Whether or not cluster is protected from being deleted. */
   deletionProtection: boolean;
   /** Host groups hosting VMs of the cluster. */
   hostGroupIds: string[];
+  /** Greenplum and Odyssey configuration; */
+  clusterConfig?: ClusterConfigSet;
 }
 
-/** Deployment environment. */
 export enum Cluster_Environment {
   ENVIRONMENT_UNSPECIFIED = 0,
   /**
@@ -120,9 +124,9 @@ export function cluster_EnvironmentToJSON(object: Cluster_Environment): string {
 }
 
 export enum Cluster_Health {
-  /** HEALTH_UNKNOWN - State of the cluster is unknown ([Host.health] for every host in the cluster is UNKNOWN). */
+  /** HEALTH_UNKNOWN - Health of the cluster is unknown ([Host.health] for every host in the cluster is UNKNOWN). */
   HEALTH_UNKNOWN = 0,
-  /** ALIVE - Cluster is alive and well ([Host.health] for every host in the cluster is ALIVE). */
+  /** ALIVE - Cluster is working normally ([Host.health] for every host in the cluster is ALIVE). */
   ALIVE = 1,
   /** DEAD - Cluster is inoperable ([Host.health] for every host in the cluster is DEAD). */
   DEAD = 2,
@@ -174,6 +178,7 @@ export function cluster_HealthToJSON(object: Cluster_Health): string {
   }
 }
 
+/** Current state of the cluster. */
 export enum Cluster_Status {
   /** STATUS_UNKNOWN - Cluster state is unknown. */
   STATUS_UNKNOWN = 0,
@@ -181,13 +186,13 @@ export enum Cluster_Status {
   CREATING = 1,
   /** RUNNING - Cluster is running normally. */
   RUNNING = 2,
-  /** ERROR - Cluster encountered a problem and cannot operate. */
+  /** ERROR - Cluster has encountered a problem and cannot operate. */
   ERROR = 3,
   /** UPDATING - Cluster is being updated. */
   UPDATING = 4,
   /** STOPPING - Cluster is stopping. */
   STOPPING = 5,
-  /** STOPPED - Cluster stopped. */
+  /** STOPPED - Cluster has stopped. */
   STOPPED = 6,
   /** STARTING - Cluster is starting. */
   STARTING = 7,
@@ -256,6 +261,14 @@ export interface Cluster_LabelsEntry {
   value: string;
 }
 
+export interface ClusterConfigSet {
+  $type: "yandex.cloud.mdb.greenplum.v1.ClusterConfigSet";
+  greenplumConfigSet617?: Greenplumconfigset617 | undefined;
+  greenplumConfigSet619?: Greenplumconfigset619 | undefined;
+  /** Odyssey pool settings */
+  pool?: ConnectionPoolerConfigSet;
+}
+
 /** Monitoring system metadata. */
 export interface Monitoring {
   $type: "yandex.cloud.mdb.greenplum.v1.Monitoring";
@@ -263,14 +276,50 @@ export interface Monitoring {
   name: string;
   /** Description of the monitoring system. */
   description: string;
-  /** Link to the monitoring system charts for the Greenplum cluster. */
+  /** Link to the monitoring system charts for the Greenplum® cluster. */
   link: string;
 }
 
+/** Greenplum® cluster configuration. */
 export interface GreenplumConfig {
   $type: "yandex.cloud.mdb.greenplum.v1.GreenplumConfig";
-  /** Version of the Greenplum server software. */
+  /** Version of the Greenplum® server software. */
   version: string;
+  /** Time to start the daily backup, in the UTC timezone. */
+  backupWindowStart?: TimeOfDay;
+  /** Access policy for external services. */
+  access?: Access;
+  /**
+   * ID of the availability zone the cluster belongs to.
+   * To get a list of available zones, use the [yandex.cloud.compute.v1.ZoneService.List] request.
+   */
+  zoneId: string;
+  /**
+   * ID of the subnet the cluster belongs to. This subnet should be a part
+   * of the cloud network the cluster belongs to (see [Cluster.network_id]).
+   */
+  subnetId: string;
+  /**
+   * Whether or not the cluster has a public IP address.
+   *
+   * After the cluster has been created, this setting cannot be changed.
+   */
+  assignPublicIp: boolean;
+}
+
+/** Greenplum® cluster access options. */
+export interface Access {
+  $type: "yandex.cloud.mdb.greenplum.v1.Access";
+  /** Allows data export from the cluster to Yandex DataLens. */
+  dataLens: boolean;
+  /** Allows SQL queries to the cluster databases from the Yandex Cloud management console. */
+  webSql: boolean;
+  /** Allow access for DataTransfer. */
+  dataTransfer: boolean;
+}
+
+export interface GreenplumRestoreConfig {
+  $type: "yandex.cloud.mdb.greenplum.v1.GreenplumRestoreConfig";
   /** Time to start the daily backup, in the UTC timezone. */
   backupWindowStart?: TimeOfDay;
   /** Access policy for external services. */
@@ -299,12 +348,12 @@ export interface GreenplumConfig {
   assignPublicIp: boolean;
 }
 
-export interface Access {
-  $type: "yandex.cloud.mdb.greenplum.v1.Access";
-  /** Allow to export data from the cluster to Yandex DataLens. */
-  dataLens: boolean;
-  /** Allow SQL queries to the cluster databases from the Yandex.Cloud management console. */
-  webSql: boolean;
+export interface RestoreResources {
+  $type: "yandex.cloud.mdb.greenplum.v1.RestoreResources";
+  /** ID of the preset for computational resources available to a host (CPU, memory etc.). */
+  resourcePresetId: string;
+  /** Volume of the storage available to a host. */
+  diskSize: number;
 }
 
 const baseCluster: object = {
@@ -424,6 +473,12 @@ export const Cluster = {
     for (const v of message.hostGroupIds) {
       writer.uint32(186).string(v!);
     }
+    if (message.clusterConfig !== undefined) {
+      ClusterConfigSet.encode(
+        message.clusterConfig,
+        writer.uint32(194).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -523,6 +578,12 @@ export const Cluster = {
           break;
         case 23:
           message.hostGroupIds.push(reader.string());
+          break;
+        case 24:
+          message.clusterConfig = ClusterConfigSet.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -625,6 +686,10 @@ export const Cluster = {
     message.hostGroupIds = (object.hostGroupIds ?? []).map((e: any) =>
       String(e)
     );
+    message.clusterConfig =
+      object.clusterConfig !== undefined && object.clusterConfig !== null
+        ? ClusterConfigSet.fromJSON(object.clusterConfig)
+        : undefined;
     return message;
   },
 
@@ -696,6 +761,10 @@ export const Cluster = {
     } else {
       obj.hostGroupIds = [];
     }
+    message.clusterConfig !== undefined &&
+      (obj.clusterConfig = message.clusterConfig
+        ? ClusterConfigSet.toJSON(message.clusterConfig)
+        : undefined);
     return obj;
   },
 
@@ -748,6 +817,10 @@ export const Cluster = {
     message.userName = object.userName ?? "";
     message.deletionProtection = object.deletionProtection ?? false;
     message.hostGroupIds = object.hostGroupIds?.map((e) => e) || [];
+    message.clusterConfig =
+      object.clusterConfig !== undefined && object.clusterConfig !== null
+        ? ClusterConfigSet.fromPartial(object.clusterConfig)
+        : undefined;
     return message;
   },
 };
@@ -826,6 +899,131 @@ export const Cluster_LabelsEntry = {
 };
 
 messageTypeRegistry.set(Cluster_LabelsEntry.$type, Cluster_LabelsEntry);
+
+const baseClusterConfigSet: object = {
+  $type: "yandex.cloud.mdb.greenplum.v1.ClusterConfigSet",
+};
+
+export const ClusterConfigSet = {
+  $type: "yandex.cloud.mdb.greenplum.v1.ClusterConfigSet" as const,
+
+  encode(
+    message: ClusterConfigSet,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.greenplumConfigSet617 !== undefined) {
+      Greenplumconfigset617.encode(
+        message.greenplumConfigSet617,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.greenplumConfigSet619 !== undefined) {
+      Greenplumconfigset619.encode(
+        message.greenplumConfigSet619,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.pool !== undefined) {
+      ConnectionPoolerConfigSet.encode(
+        message.pool,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConfigSet {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseClusterConfigSet } as ClusterConfigSet;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.greenplumConfigSet617 = Greenplumconfigset617.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.greenplumConfigSet619 = Greenplumconfigset619.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 4:
+          message.pool = ConnectionPoolerConfigSet.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ClusterConfigSet {
+    const message = { ...baseClusterConfigSet } as ClusterConfigSet;
+    message.greenplumConfigSet617 =
+      object.greenplumConfigSet_6_17 !== undefined &&
+      object.greenplumConfigSet_6_17 !== null
+        ? Greenplumconfigset617.fromJSON(object.greenplumConfigSet_6_17)
+        : undefined;
+    message.greenplumConfigSet619 =
+      object.greenplumConfigSet_6_19 !== undefined &&
+      object.greenplumConfigSet_6_19 !== null
+        ? Greenplumconfigset619.fromJSON(object.greenplumConfigSet_6_19)
+        : undefined;
+    message.pool =
+      object.pool !== undefined && object.pool !== null
+        ? ConnectionPoolerConfigSet.fromJSON(object.pool)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: ClusterConfigSet): unknown {
+    const obj: any = {};
+    message.greenplumConfigSet617 !== undefined &&
+      (obj.greenplumConfigSet_6_17 = message.greenplumConfigSet617
+        ? Greenplumconfigset617.toJSON(message.greenplumConfigSet617)
+        : undefined);
+    message.greenplumConfigSet619 !== undefined &&
+      (obj.greenplumConfigSet_6_19 = message.greenplumConfigSet619
+        ? Greenplumconfigset619.toJSON(message.greenplumConfigSet619)
+        : undefined);
+    message.pool !== undefined &&
+      (obj.pool = message.pool
+        ? ConnectionPoolerConfigSet.toJSON(message.pool)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ClusterConfigSet>, I>>(
+    object: I
+  ): ClusterConfigSet {
+    const message = { ...baseClusterConfigSet } as ClusterConfigSet;
+    message.greenplumConfigSet617 =
+      object.greenplumConfigSet617 !== undefined &&
+      object.greenplumConfigSet617 !== null
+        ? Greenplumconfigset617.fromPartial(object.greenplumConfigSet617)
+        : undefined;
+    message.greenplumConfigSet619 =
+      object.greenplumConfigSet619 !== undefined &&
+      object.greenplumConfigSet619 !== null
+        ? Greenplumconfigset619.fromPartial(object.greenplumConfigSet619)
+        : undefined;
+    message.pool =
+      object.pool !== undefined && object.pool !== null
+        ? ConnectionPoolerConfigSet.fromPartial(object.pool)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(ClusterConfigSet.$type, ClusterConfigSet);
 
 const baseMonitoring: object = {
   $type: "yandex.cloud.mdb.greenplum.v1.Monitoring",
@@ -1061,6 +1259,7 @@ const baseAccess: object = {
   $type: "yandex.cloud.mdb.greenplum.v1.Access",
   dataLens: false,
   webSql: false,
+  dataTransfer: false,
 };
 
 export const Access = {
@@ -1075,6 +1274,9 @@ export const Access = {
     }
     if (message.webSql === true) {
       writer.uint32(16).bool(message.webSql);
+    }
+    if (message.dataTransfer === true) {
+      writer.uint32(24).bool(message.dataTransfer);
     }
     return writer;
   },
@@ -1091,6 +1293,9 @@ export const Access = {
           break;
         case 2:
           message.webSql = reader.bool();
+          break;
+        case 3:
+          message.dataTransfer = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1110,6 +1315,10 @@ export const Access = {
       object.webSql !== undefined && object.webSql !== null
         ? Boolean(object.webSql)
         : false;
+    message.dataTransfer =
+      object.dataTransfer !== undefined && object.dataTransfer !== null
+        ? Boolean(object.dataTransfer)
+        : false;
     return message;
   },
 
@@ -1117,6 +1326,8 @@ export const Access = {
     const obj: any = {};
     message.dataLens !== undefined && (obj.dataLens = message.dataLens);
     message.webSql !== undefined && (obj.webSql = message.webSql);
+    message.dataTransfer !== undefined &&
+      (obj.dataTransfer = message.dataTransfer);
     return obj;
   },
 
@@ -1124,11 +1335,220 @@ export const Access = {
     const message = { ...baseAccess } as Access;
     message.dataLens = object.dataLens ?? false;
     message.webSql = object.webSql ?? false;
+    message.dataTransfer = object.dataTransfer ?? false;
     return message;
   },
 };
 
 messageTypeRegistry.set(Access.$type, Access);
+
+const baseGreenplumRestoreConfig: object = {
+  $type: "yandex.cloud.mdb.greenplum.v1.GreenplumRestoreConfig",
+  zoneId: "",
+  subnetId: "",
+  assignPublicIp: false,
+};
+
+export const GreenplumRestoreConfig = {
+  $type: "yandex.cloud.mdb.greenplum.v1.GreenplumRestoreConfig" as const,
+
+  encode(
+    message: GreenplumRestoreConfig,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.backupWindowStart !== undefined) {
+      TimeOfDay.encode(
+        message.backupWindowStart,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.access !== undefined) {
+      Access.encode(message.access, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.zoneId !== "") {
+      writer.uint32(26).string(message.zoneId);
+    }
+    if (message.subnetId !== "") {
+      writer.uint32(34).string(message.subnetId);
+    }
+    if (message.assignPublicIp === true) {
+      writer.uint32(40).bool(message.assignPublicIp);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): GreenplumRestoreConfig {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseGreenplumRestoreConfig } as GreenplumRestoreConfig;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.backupWindowStart = TimeOfDay.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.access = Access.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.zoneId = reader.string();
+          break;
+        case 4:
+          message.subnetId = reader.string();
+          break;
+        case 5:
+          message.assignPublicIp = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GreenplumRestoreConfig {
+    const message = { ...baseGreenplumRestoreConfig } as GreenplumRestoreConfig;
+    message.backupWindowStart =
+      object.backupWindowStart !== undefined &&
+      object.backupWindowStart !== null
+        ? TimeOfDay.fromJSON(object.backupWindowStart)
+        : undefined;
+    message.access =
+      object.access !== undefined && object.access !== null
+        ? Access.fromJSON(object.access)
+        : undefined;
+    message.zoneId =
+      object.zoneId !== undefined && object.zoneId !== null
+        ? String(object.zoneId)
+        : "";
+    message.subnetId =
+      object.subnetId !== undefined && object.subnetId !== null
+        ? String(object.subnetId)
+        : "";
+    message.assignPublicIp =
+      object.assignPublicIp !== undefined && object.assignPublicIp !== null
+        ? Boolean(object.assignPublicIp)
+        : false;
+    return message;
+  },
+
+  toJSON(message: GreenplumRestoreConfig): unknown {
+    const obj: any = {};
+    message.backupWindowStart !== undefined &&
+      (obj.backupWindowStart = message.backupWindowStart
+        ? TimeOfDay.toJSON(message.backupWindowStart)
+        : undefined);
+    message.access !== undefined &&
+      (obj.access = message.access ? Access.toJSON(message.access) : undefined);
+    message.zoneId !== undefined && (obj.zoneId = message.zoneId);
+    message.subnetId !== undefined && (obj.subnetId = message.subnetId);
+    message.assignPublicIp !== undefined &&
+      (obj.assignPublicIp = message.assignPublicIp);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GreenplumRestoreConfig>, I>>(
+    object: I
+  ): GreenplumRestoreConfig {
+    const message = { ...baseGreenplumRestoreConfig } as GreenplumRestoreConfig;
+    message.backupWindowStart =
+      object.backupWindowStart !== undefined &&
+      object.backupWindowStart !== null
+        ? TimeOfDay.fromPartial(object.backupWindowStart)
+        : undefined;
+    message.access =
+      object.access !== undefined && object.access !== null
+        ? Access.fromPartial(object.access)
+        : undefined;
+    message.zoneId = object.zoneId ?? "";
+    message.subnetId = object.subnetId ?? "";
+    message.assignPublicIp = object.assignPublicIp ?? false;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(GreenplumRestoreConfig.$type, GreenplumRestoreConfig);
+
+const baseRestoreResources: object = {
+  $type: "yandex.cloud.mdb.greenplum.v1.RestoreResources",
+  resourcePresetId: "",
+  diskSize: 0,
+};
+
+export const RestoreResources = {
+  $type: "yandex.cloud.mdb.greenplum.v1.RestoreResources" as const,
+
+  encode(
+    message: RestoreResources,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.resourcePresetId !== "") {
+      writer.uint32(10).string(message.resourcePresetId);
+    }
+    if (message.diskSize !== 0) {
+      writer.uint32(16).int64(message.diskSize);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): RestoreResources {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseRestoreResources } as RestoreResources;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.resourcePresetId = reader.string();
+          break;
+        case 2:
+          message.diskSize = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RestoreResources {
+    const message = { ...baseRestoreResources } as RestoreResources;
+    message.resourcePresetId =
+      object.resourcePresetId !== undefined && object.resourcePresetId !== null
+        ? String(object.resourcePresetId)
+        : "";
+    message.diskSize =
+      object.diskSize !== undefined && object.diskSize !== null
+        ? Number(object.diskSize)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: RestoreResources): unknown {
+    const obj: any = {};
+    message.resourcePresetId !== undefined &&
+      (obj.resourcePresetId = message.resourcePresetId);
+    message.diskSize !== undefined &&
+      (obj.diskSize = Math.round(message.diskSize));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RestoreResources>, I>>(
+    object: I
+  ): RestoreResources {
+    const message = { ...baseRestoreResources } as RestoreResources;
+    message.resourcePresetId = object.resourcePresetId ?? "";
+    message.diskSize = object.diskSize ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(RestoreResources.$type, RestoreResources);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

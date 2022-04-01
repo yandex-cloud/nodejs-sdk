@@ -5,7 +5,7 @@ import _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "yandex.cloud.organizationmanager.v1";
 
-/** Currently represents only [Yandex.Passport account](/docs/iam/concepts/#passport). */
+/** Currently represents only [Yandex account](/docs/iam/concepts/#passport). */
 export interface UserAccount {
   $type: "yandex.cloud.organizationmanager.v1.UserAccount";
   /** ID of the user account. */
@@ -18,13 +18,13 @@ export interface UserAccount {
 
 /**
  * A YandexPassportUserAccount resource.
- * For more information, see [Yandex.Passport account](/docs/iam/concepts/#passport).
+ * For more information, see [Yandex account](/docs/iam/concepts/#passport).
  */
 export interface YandexPassportUserAccount {
   $type: "yandex.cloud.organizationmanager.v1.YandexPassportUserAccount";
-  /** Login of the Yandex.Passport user account. */
+  /** Login of the Yandex user account. */
   login: string;
-  /** Default email of the Yandex.Passport user account. */
+  /** Default email of the Yandex user account. */
   defaultEmail: string;
 }
 

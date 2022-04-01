@@ -37,7 +37,7 @@ export interface ListEndpointsRequest {
    * folder contains more endpoints than page_size, next_page_token will be included
    * in the response message. Include it into the subsequent ListEndpointRequest to
    * fetch the next page. Defaults to 100 if not specified. The maximum allowed value
-   * for this field is 100.
+   * for this field is 500.
    */
   pageSize: number;
   /**

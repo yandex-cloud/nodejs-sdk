@@ -6,20 +6,26 @@ import { Timestamp } from "../../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.mdb.greenplum.v1";
 
+/** A Greenplum® cluster maintenance window. Should be defined by either one of the two options. */
 export interface MaintenanceWindow {
   $type: "yandex.cloud.mdb.greenplum.v1.MaintenanceWindow";
+  /** An any-time maintenance window. */
   anytime?: AnytimeMaintenanceWindow | undefined;
+  /** A weekly maintenance window. */
   weeklyMaintenanceWindow?: WeeklyMaintenanceWindow | undefined;
 }
 
+/** An any-time maintenance window. */
 export interface AnytimeMaintenanceWindow {
   $type: "yandex.cloud.mdb.greenplum.v1.AnytimeMaintenanceWindow";
 }
 
+/** A weekly maintenance window. */
 export interface WeeklyMaintenanceWindow {
   $type: "yandex.cloud.mdb.greenplum.v1.WeeklyMaintenanceWindow";
+  /** Day of the week. */
   day: WeeklyMaintenanceWindow_WeekDay;
-  /** Hour of the day in UTC. */
+  /** Hour of the day in the UTC timezone. */
   hour: number;
 }
 
@@ -95,9 +101,12 @@ export function weeklyMaintenanceWindow_WeekDayToJSON(
   }
 }
 
+/** The operation to perform during maintenance. */
 export interface MaintenanceOperation {
   $type: "yandex.cloud.mdb.greenplum.v1.MaintenanceOperation";
+  /** The description of the operation, 1-256 characters long. */
   info: string;
+  /** Delay time for the maintenance operation. */
   delayedUntil?: Date;
 }
 

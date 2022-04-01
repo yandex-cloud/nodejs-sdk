@@ -35,6 +35,10 @@ export interface Redisconfig62 {
   slowlogMaxLen?: number;
   /** String setting for pub\sub functionality; subset of KEg$lshzxeAtm. */
   notifyKeyspaceEvents: string;
+  /** Redis connection output buffers limits for pubsub operations. */
+  clientOutputBufferLimitPubsub?: Redisconfig62_ClientOutputBufferLimit;
+  /** Redis connection output buffers limits for clients. */
+  clientOutputBufferLimitNormal?: Redisconfig62_ClientOutputBufferLimit;
 }
 
 export enum Redisconfig62_MaxmemoryPolicy {
@@ -129,6 +133,16 @@ export function redisconfig62_MaxmemoryPolicyToJSON(
   }
 }
 
+export interface Redisconfig62_ClientOutputBufferLimit {
+  $type: "yandex.cloud.mdb.redis.v1.config.RedisConfig6_2.ClientOutputBufferLimit";
+  /** Total limit in bytes. */
+  hardLimit?: number;
+  /** Limit in bytes during certain time period. */
+  softLimit?: number;
+  /** Seconds for soft limit. */
+  softSeconds?: number;
+}
+
 export interface Redisconfigset62 {
   $type: "yandex.cloud.mdb.redis.v1.config.RedisConfigSet6_2";
   /**
@@ -192,6 +206,18 @@ export const Redisconfig62 = {
     if (message.notifyKeyspaceEvents !== "") {
       writer.uint32(58).string(message.notifyKeyspaceEvents);
     }
+    if (message.clientOutputBufferLimitPubsub !== undefined) {
+      Redisconfig62_ClientOutputBufferLimit.encode(
+        message.clientOutputBufferLimitPubsub,
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
+    if (message.clientOutputBufferLimitNormal !== undefined) {
+      Redisconfig62_ClientOutputBufferLimit.encode(
+        message.clientOutputBufferLimitNormal,
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -228,6 +254,20 @@ export const Redisconfig62 = {
           break;
         case 7:
           message.notifyKeyspaceEvents = reader.string();
+          break;
+        case 8:
+          message.clientOutputBufferLimitPubsub =
+            Redisconfig62_ClientOutputBufferLimit.decode(
+              reader,
+              reader.uint32()
+            );
+          break;
+        case 9:
+          message.clientOutputBufferLimitNormal =
+            Redisconfig62_ClientOutputBufferLimit.decode(
+              reader,
+              reader.uint32()
+            );
           break;
         default:
           reader.skipType(tag & 7);
@@ -269,6 +309,20 @@ export const Redisconfig62 = {
       object.notifyKeyspaceEvents !== null
         ? String(object.notifyKeyspaceEvents)
         : "";
+    message.clientOutputBufferLimitPubsub =
+      object.clientOutputBufferLimitPubsub !== undefined &&
+      object.clientOutputBufferLimitPubsub !== null
+        ? Redisconfig62_ClientOutputBufferLimit.fromJSON(
+            object.clientOutputBufferLimitPubsub
+          )
+        : undefined;
+    message.clientOutputBufferLimitNormal =
+      object.clientOutputBufferLimitNormal !== undefined &&
+      object.clientOutputBufferLimitNormal !== null
+        ? Redisconfig62_ClientOutputBufferLimit.fromJSON(
+            object.clientOutputBufferLimitNormal
+          )
+        : undefined;
     return message;
   },
 
@@ -287,6 +341,18 @@ export const Redisconfig62 = {
       (obj.slowlogMaxLen = message.slowlogMaxLen);
     message.notifyKeyspaceEvents !== undefined &&
       (obj.notifyKeyspaceEvents = message.notifyKeyspaceEvents);
+    message.clientOutputBufferLimitPubsub !== undefined &&
+      (obj.clientOutputBufferLimitPubsub = message.clientOutputBufferLimitPubsub
+        ? Redisconfig62_ClientOutputBufferLimit.toJSON(
+            message.clientOutputBufferLimitPubsub
+          )
+        : undefined);
+    message.clientOutputBufferLimitNormal !== undefined &&
+      (obj.clientOutputBufferLimitNormal = message.clientOutputBufferLimitNormal
+        ? Redisconfig62_ClientOutputBufferLimit.toJSON(
+            message.clientOutputBufferLimitNormal
+          )
+        : undefined);
     return obj;
   },
 
@@ -301,11 +367,137 @@ export const Redisconfig62 = {
     message.slowlogLogSlowerThan = object.slowlogLogSlowerThan ?? undefined;
     message.slowlogMaxLen = object.slowlogMaxLen ?? undefined;
     message.notifyKeyspaceEvents = object.notifyKeyspaceEvents ?? "";
+    message.clientOutputBufferLimitPubsub =
+      object.clientOutputBufferLimitPubsub !== undefined &&
+      object.clientOutputBufferLimitPubsub !== null
+        ? Redisconfig62_ClientOutputBufferLimit.fromPartial(
+            object.clientOutputBufferLimitPubsub
+          )
+        : undefined;
+    message.clientOutputBufferLimitNormal =
+      object.clientOutputBufferLimitNormal !== undefined &&
+      object.clientOutputBufferLimitNormal !== null
+        ? Redisconfig62_ClientOutputBufferLimit.fromPartial(
+            object.clientOutputBufferLimitNormal
+          )
+        : undefined;
     return message;
   },
 };
 
 messageTypeRegistry.set(Redisconfig62.$type, Redisconfig62);
+
+const baseRedisconfig62_ClientOutputBufferLimit: object = {
+  $type:
+    "yandex.cloud.mdb.redis.v1.config.RedisConfig6_2.ClientOutputBufferLimit",
+};
+
+export const Redisconfig62_ClientOutputBufferLimit = {
+  $type:
+    "yandex.cloud.mdb.redis.v1.config.RedisConfig6_2.ClientOutputBufferLimit" as const,
+
+  encode(
+    message: Redisconfig62_ClientOutputBufferLimit,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.hardLimit !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.hardLimit! },
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.softLimit !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.softLimit! },
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.softSeconds !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.softSeconds! },
+        writer.uint32(42).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Redisconfig62_ClientOutputBufferLimit {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseRedisconfig62_ClientOutputBufferLimit,
+    } as Redisconfig62_ClientOutputBufferLimit;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.hardLimit = Int64Value.decode(reader, reader.uint32()).value;
+          break;
+        case 3:
+          message.softLimit = Int64Value.decode(reader, reader.uint32()).value;
+          break;
+        case 5:
+          message.softSeconds = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Redisconfig62_ClientOutputBufferLimit {
+    const message = {
+      ...baseRedisconfig62_ClientOutputBufferLimit,
+    } as Redisconfig62_ClientOutputBufferLimit;
+    message.hardLimit =
+      object.hardLimit !== undefined && object.hardLimit !== null
+        ? Number(object.hardLimit)
+        : undefined;
+    message.softLimit =
+      object.softLimit !== undefined && object.softLimit !== null
+        ? Number(object.softLimit)
+        : undefined;
+    message.softSeconds =
+      object.softSeconds !== undefined && object.softSeconds !== null
+        ? Number(object.softSeconds)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Redisconfig62_ClientOutputBufferLimit): unknown {
+    const obj: any = {};
+    message.hardLimit !== undefined && (obj.hardLimit = message.hardLimit);
+    message.softLimit !== undefined && (obj.softLimit = message.softLimit);
+    message.softSeconds !== undefined &&
+      (obj.softSeconds = message.softSeconds);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<Redisconfig62_ClientOutputBufferLimit>, I>
+  >(object: I): Redisconfig62_ClientOutputBufferLimit {
+    const message = {
+      ...baseRedisconfig62_ClientOutputBufferLimit,
+    } as Redisconfig62_ClientOutputBufferLimit;
+    message.hardLimit = object.hardLimit ?? undefined;
+    message.softLimit = object.softLimit ?? undefined;
+    message.softSeconds = object.softSeconds ?? undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Redisconfig62_ClientOutputBufferLimit.$type,
+  Redisconfig62_ClientOutputBufferLimit
+);
 
 const baseRedisconfigset62: object = {
   $type: "yandex.cloud.mdb.redis.v1.config.RedisConfigSet6_2",

@@ -149,6 +149,11 @@ export interface PostgresqlConfig10 {
   pgHintPlanEnableHintTable?: boolean;
   pgHintPlanDebugPrint: PostgresqlConfig10_PgHintPlanDebugPrint;
   pgHintPlanMessageLevel: PostgresqlConfig10_LogLevel;
+  pgQualstatsEnabled?: boolean;
+  pgQualstatsTrackConstants?: boolean;
+  pgQualstatsMax?: number;
+  pgQualstatsResolveOids?: boolean;
+  pgQualstatsSampleRate?: number;
 }
 
 export enum PostgresqlConfig10_WalLevel {
@@ -1732,6 +1737,48 @@ export const PostgresqlConfig10 = {
     if (message.pgHintPlanMessageLevel !== 0) {
       writer.uint32(896).int32(message.pgHintPlanMessageLevel);
     }
+    if (message.pgQualstatsEnabled !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.pgQualstatsEnabled!,
+        },
+        writer.uint32(906).fork()
+      ).ldelim();
+    }
+    if (message.pgQualstatsTrackConstants !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.pgQualstatsTrackConstants!,
+        },
+        writer.uint32(914).fork()
+      ).ldelim();
+    }
+    if (message.pgQualstatsMax !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.pgQualstatsMax! },
+        writer.uint32(922).fork()
+      ).ldelim();
+    }
+    if (message.pgQualstatsResolveOids !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.pgQualstatsResolveOids!,
+        },
+        writer.uint32(930).fork()
+      ).ldelim();
+    }
+    if (message.pgQualstatsSampleRate !== undefined) {
+      DoubleValue.encode(
+        {
+          $type: "google.protobuf.DoubleValue",
+          value: message.pgQualstatsSampleRate!,
+        },
+        writer.uint32(938).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2335,6 +2382,36 @@ export const PostgresqlConfig10 = {
         case 112:
           message.pgHintPlanMessageLevel = reader.int32() as any;
           break;
+        case 113:
+          message.pgQualstatsEnabled = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 114:
+          message.pgQualstatsTrackConstants = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 115:
+          message.pgQualstatsMax = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 116:
+          message.pgQualstatsResolveOids = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 117:
+          message.pgQualstatsSampleRate = DoubleValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2860,6 +2937,30 @@ export const PostgresqlConfig10 = {
       object.pgHintPlanMessageLevel !== null
         ? postgresqlConfig10_LogLevelFromJSON(object.pgHintPlanMessageLevel)
         : 0;
+    message.pgQualstatsEnabled =
+      object.pgQualstatsEnabled !== undefined &&
+      object.pgQualstatsEnabled !== null
+        ? Boolean(object.pgQualstatsEnabled)
+        : undefined;
+    message.pgQualstatsTrackConstants =
+      object.pgQualstatsTrackConstants !== undefined &&
+      object.pgQualstatsTrackConstants !== null
+        ? Boolean(object.pgQualstatsTrackConstants)
+        : undefined;
+    message.pgQualstatsMax =
+      object.pgQualstatsMax !== undefined && object.pgQualstatsMax !== null
+        ? Number(object.pgQualstatsMax)
+        : undefined;
+    message.pgQualstatsResolveOids =
+      object.pgQualstatsResolveOids !== undefined &&
+      object.pgQualstatsResolveOids !== null
+        ? Boolean(object.pgQualstatsResolveOids)
+        : undefined;
+    message.pgQualstatsSampleRate =
+      object.pgQualstatsSampleRate !== undefined &&
+      object.pgQualstatsSampleRate !== null
+        ? Number(object.pgQualstatsSampleRate)
+        : undefined;
     return message;
   },
 
@@ -3114,6 +3215,16 @@ export const PostgresqlConfig10 = {
       (obj.pgHintPlanMessageLevel = postgresqlConfig10_LogLevelToJSON(
         message.pgHintPlanMessageLevel
       ));
+    message.pgQualstatsEnabled !== undefined &&
+      (obj.pgQualstatsEnabled = message.pgQualstatsEnabled);
+    message.pgQualstatsTrackConstants !== undefined &&
+      (obj.pgQualstatsTrackConstants = message.pgQualstatsTrackConstants);
+    message.pgQualstatsMax !== undefined &&
+      (obj.pgQualstatsMax = message.pgQualstatsMax);
+    message.pgQualstatsResolveOids !== undefined &&
+      (obj.pgQualstatsResolveOids = message.pgQualstatsResolveOids);
+    message.pgQualstatsSampleRate !== undefined &&
+      (obj.pgQualstatsSampleRate = message.pgQualstatsSampleRate);
     return obj;
   },
 
@@ -3252,6 +3363,12 @@ export const PostgresqlConfig10 = {
       object.pgHintPlanEnableHintTable ?? undefined;
     message.pgHintPlanDebugPrint = object.pgHintPlanDebugPrint ?? 0;
     message.pgHintPlanMessageLevel = object.pgHintPlanMessageLevel ?? 0;
+    message.pgQualstatsEnabled = object.pgQualstatsEnabled ?? undefined;
+    message.pgQualstatsTrackConstants =
+      object.pgQualstatsTrackConstants ?? undefined;
+    message.pgQualstatsMax = object.pgQualstatsMax ?? undefined;
+    message.pgQualstatsResolveOids = object.pgQualstatsResolveOids ?? undefined;
+    message.pgQualstatsSampleRate = object.pgQualstatsSampleRate ?? undefined;
     return message;
   },
 };

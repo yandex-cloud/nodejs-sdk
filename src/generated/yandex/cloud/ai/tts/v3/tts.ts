@@ -76,6 +76,7 @@ export enum ContainerAudio_ContainerAudioType {
   /** WAV - Audio bit depth 16-bit signed little-endian (Linear PCM). */
   WAV = 1,
   OGG_OPUS = 2,
+  MP3 = 3,
   UNRECOGNIZED = -1,
 }
 
@@ -92,6 +93,9 @@ export function containerAudio_ContainerAudioTypeFromJSON(
     case 2:
     case "OGG_OPUS":
       return ContainerAudio_ContainerAudioType.OGG_OPUS;
+    case 3:
+    case "MP3":
+      return ContainerAudio_ContainerAudioType.MP3;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -109,6 +113,8 @@ export function containerAudio_ContainerAudioTypeToJSON(
       return "WAV";
     case ContainerAudio_ContainerAudioType.OGG_OPUS:
       return "OGG_OPUS";
+    case ContainerAudio_ContainerAudioType.MP3:
+      return "MP3";
     default:
       return "UNKNOWN";
   }
@@ -180,16 +186,11 @@ export interface Hints {
   speed: number | undefined;
   /** hint to regulate volume. For LOUDNESS_NORMALIZATION_TYPE_UNSPECIFIED normalization will use MAX_PEAK, if volume in (0, 1], LUFS if volume in [-145, 0). */
   volume: number | undefined;
+  role: string | undefined;
 }
 
 export interface UtteranceSynthesisRequest {
   $type: "speechkit.tts.v3.UtteranceSynthesisRequest";
-  /**
-   * The name of the model.
-   *
-   * Specifies basic synthesis functionality. Currently should be empty.
-   */
-  model: string;
   /** Raw text (e.g. "Hello, Alice"). */
   text: string | undefined;
   /** Text template instance, e.g. `{"Hello, {username}" with username="Alice"}`. */
@@ -1084,6 +1085,9 @@ export const Hints = {
     if (message.volume !== undefined) {
       writer.uint32(33).double(message.volume);
     }
+    if (message.role !== undefined) {
+      writer.uint32(42).string(message.role);
+    }
     return writer;
   },
 
@@ -1105,6 +1109,9 @@ export const Hints = {
           break;
         case 4:
           message.volume = reader.double();
+          break;
+        case 5:
+          message.role = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1132,6 +1139,10 @@ export const Hints = {
       object.volume !== undefined && object.volume !== null
         ? Number(object.volume)
         : undefined;
+    message.role =
+      object.role !== undefined && object.role !== null
+        ? String(object.role)
+        : undefined;
     return message;
   },
 
@@ -1144,6 +1155,7 @@ export const Hints = {
         : undefined);
     message.speed !== undefined && (obj.speed = message.speed);
     message.volume !== undefined && (obj.volume = message.volume);
+    message.role !== undefined && (obj.role = message.role);
     return obj;
   },
 
@@ -1156,6 +1168,7 @@ export const Hints = {
         : undefined;
     message.speed = object.speed ?? undefined;
     message.volume = object.volume ?? undefined;
+    message.role = object.role ?? undefined;
     return message;
   },
 };
@@ -1164,7 +1177,6 @@ messageTypeRegistry.set(Hints.$type, Hints);
 
 const baseUtteranceSynthesisRequest: object = {
   $type: "speechkit.tts.v3.UtteranceSynthesisRequest",
-  model: "",
   loudnessNormalizationType: 0,
   unsafeMode: false,
 };
@@ -1176,9 +1188,6 @@ export const UtteranceSynthesisRequest = {
     message: UtteranceSynthesisRequest,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.model !== "") {
-      writer.uint32(10).string(message.model);
-    }
     if (message.text !== undefined) {
       writer.uint32(18).string(message.text);
     }
@@ -1219,9 +1228,6 @@ export const UtteranceSynthesisRequest = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
-          message.model = reader.string();
-          break;
         case 2:
           message.text = reader.string();
           break;
@@ -1255,10 +1261,6 @@ export const UtteranceSynthesisRequest = {
     const message = {
       ...baseUtteranceSynthesisRequest,
     } as UtteranceSynthesisRequest;
-    message.model =
-      object.model !== undefined && object.model !== null
-        ? String(object.model)
-        : "";
     message.text =
       object.text !== undefined && object.text !== null
         ? String(object.text)
@@ -1288,7 +1290,6 @@ export const UtteranceSynthesisRequest = {
 
   toJSON(message: UtteranceSynthesisRequest): unknown {
     const obj: any = {};
-    message.model !== undefined && (obj.model = message.model);
     message.text !== undefined && (obj.text = message.text);
     message.textTemplate !== undefined &&
       (obj.textTemplate = message.textTemplate
@@ -1318,7 +1319,6 @@ export const UtteranceSynthesisRequest = {
     const message = {
       ...baseUtteranceSynthesisRequest,
     } as UtteranceSynthesisRequest;
-    message.model = object.model ?? "";
     message.text = object.text ?? undefined;
     message.textTemplate =
       object.textTemplate !== undefined && object.textTemplate !== null

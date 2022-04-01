@@ -61,7 +61,6 @@ export interface Cluster {
   deletionProtection: boolean;
 }
 
-/** Deployment environment. */
 export enum Cluster_Environment {
   ENVIRONMENT_UNSPECIFIED = 0,
   /**
@@ -331,7 +330,7 @@ export interface Host {
    * Name of the ClickHouse host. The host name is assigned by MDB at creation time, and cannot be changed.
    * 1-63 characters long.
    *
-   * The name is unique across all existing MDB hosts in Yandex.Cloud, as it defines the FQDN of the host.
+   * The name is unique across all existing MDB hosts in Yandex Cloud, as it defines the FQDN of the host.
    */
   name: string;
   /** ID of the ClickHouse host. The ID is assigned by MDB at creation time. */
@@ -554,19 +553,23 @@ export interface Access {
   /** Allow to export data from the cluster to Yandex DataLens. */
   dataLens: boolean;
   /**
-   * Allow SQL queries to the cluster databases from the Yandex.Cloud management console.
+   * Allow SQL queries to the cluster databases from the Yandex Cloud management console.
    *
    * See [SQL queries in the management console](/docs/managed-clickhouse/operations/web-sql-query) for more details.
    */
   webSql: boolean;
   /**
-   * Allow to import data from Yandex.Metrica and AppMetrica to the cluster.
+   * Allow to import data from Yandex Metrica and AppMetrica to the cluster.
    *
-   * See [Export data to Yandex.Cloud](https://appmetrica.yandex.com/docs/cloud/index.html) for more details.
+   * See [Export data to Yandex Cloud](https://appmetrica.yandex.com/docs/cloud/index.html) for more details.
    */
   metrika: boolean;
   /** Allow access to cluster for Serverless. */
   serverless: boolean;
+  /** Allow access for DataTransfer */
+  dataTransfer: boolean;
+  /** Allow access for YandexQuery */
+  yandexQuery: boolean;
 }
 
 export interface CloudStorage {
@@ -2217,6 +2220,8 @@ const baseAccess: object = {
   webSql: false,
   metrika: false,
   serverless: false,
+  dataTransfer: false,
+  yandexQuery: false,
 };
 
 export const Access = {
@@ -2237,6 +2242,12 @@ export const Access = {
     }
     if (message.serverless === true) {
       writer.uint32(32).bool(message.serverless);
+    }
+    if (message.dataTransfer === true) {
+      writer.uint32(40).bool(message.dataTransfer);
+    }
+    if (message.yandexQuery === true) {
+      writer.uint32(48).bool(message.yandexQuery);
     }
     return writer;
   },
@@ -2259,6 +2270,12 @@ export const Access = {
           break;
         case 4:
           message.serverless = reader.bool();
+          break;
+        case 5:
+          message.dataTransfer = reader.bool();
+          break;
+        case 6:
+          message.yandexQuery = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2286,6 +2303,14 @@ export const Access = {
       object.serverless !== undefined && object.serverless !== null
         ? Boolean(object.serverless)
         : false;
+    message.dataTransfer =
+      object.dataTransfer !== undefined && object.dataTransfer !== null
+        ? Boolean(object.dataTransfer)
+        : false;
+    message.yandexQuery =
+      object.yandexQuery !== undefined && object.yandexQuery !== null
+        ? Boolean(object.yandexQuery)
+        : false;
     return message;
   },
 
@@ -2295,6 +2320,10 @@ export const Access = {
     message.webSql !== undefined && (obj.webSql = message.webSql);
     message.metrika !== undefined && (obj.metrika = message.metrika);
     message.serverless !== undefined && (obj.serverless = message.serverless);
+    message.dataTransfer !== undefined &&
+      (obj.dataTransfer = message.dataTransfer);
+    message.yandexQuery !== undefined &&
+      (obj.yandexQuery = message.yandexQuery);
     return obj;
   },
 
@@ -2304,6 +2333,8 @@ export const Access = {
     message.webSql = object.webSql ?? false;
     message.metrika = object.metrika ?? false;
     message.serverless = object.serverless ?? false;
+    message.dataTransfer = object.dataTransfer ?? false;
+    message.yandexQuery = object.yandexQuery ?? false;
     return message;
   },
 };
