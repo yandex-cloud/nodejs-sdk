@@ -1,0 +1,24 @@
+name: Release
+on:
+  push:
+    branches:
+      - master
+      - alpha
+      - beta
+jobs:
+  release:
+    if: github.actor != 'yandex-cloud-bot'
+    name: Release
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@f69248b52b7991214847e889f28ba0883ed0ca2c
+        with:
+          persist-credentials: false
+      - env:
+          GITHUB_TOKEN: ${{ secrets.YANDEX_CLOUD_BOT_TOKEN }}
+          GIT_AUTHOR_NAME: yandex-cloud-bot
+          GIT_AUTHOR_EMAIL: ycloud-bot@yandex.ru
+          GIT_COMMITTER_NAME: yandex-cloud-bot
+          GIT_COMMITTER_EMAIL: ycloud-bot@yandex.ru
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx --no-install semantic-release
