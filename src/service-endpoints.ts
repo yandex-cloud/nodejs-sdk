@@ -301,10 +301,15 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
     },
     {
         serviceIds: [
-            'yandex.cloud.lockbox.v1.PayloadService',
             'yandex.cloud.lockbox.v1.SecretService',
         ],
         endpoint: 'lockbox.api.cloud.yandex.net:443',
+    },
+    {
+        serviceIds: [
+            'yandex.cloud.lockbox.v1.PayloadService',
+        ],
+        endpoint: 'payload.lockbox.api.cloud.yandex.net:443',
     },
     {
         serviceIds: [
