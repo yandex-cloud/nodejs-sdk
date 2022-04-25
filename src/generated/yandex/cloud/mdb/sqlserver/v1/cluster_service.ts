@@ -128,6 +128,8 @@ export interface CreateClusterRequest {
   sqlcollation: string;
   /** Host groups hosting VMs of the cluster. */
   hostGroupIds: string[];
+  /** ID of the service account used for access to Yandex Object Storage. */
+  serviceAccountId: string;
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -171,6 +173,8 @@ export interface UpdateClusterRequest {
   securityGroupIds: string[];
   /** Deletion Protection inhibits deletion of the cluster */
   deletionProtection: boolean;
+  /** ID of the service account used for access to Yandex Object Storage. */
+  serviceAccountId: string;
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
@@ -256,6 +260,8 @@ export interface RestoreClusterRequest {
   deletionProtection: boolean;
   /** Host groups hosting VMs of the cluster. */
   hostGroupIds: string[];
+  /** ID of the service account used for access to Yandex Object Storage. */
+  serviceAccountId: string;
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
@@ -270,6 +276,24 @@ export interface RestoreClusterMetadata {
   clusterId: string;
   /** ID of the backup being used for creating a cluster. */
   backupId: string;
+}
+
+export interface StartClusterFailoverRequest {
+  $type: "yandex.cloud.mdb.sqlserver.v1.StartClusterFailoverRequest";
+  /** ID of sqlserver cluster. */
+  clusterId: string;
+  /**
+   * Host name to switch master role to.
+   *
+   * To get this name, make a [ClusterService.ListHosts] request.
+   */
+  hostName: string;
+}
+
+export interface StartClusterFailoverMetadata {
+  $type: "yandex.cloud.mdb.sqlserver.v1.StartClusterFailoverMetadata";
+  /** ID of the sqlserver cluster being failovered. */
+  clusterId: string;
 }
 
 export interface LogRecord {
@@ -865,6 +889,7 @@ const baseCreateClusterRequest: object = {
   deletionProtection: false,
   sqlcollation: "",
   hostGroupIds: "",
+  serviceAccountId: "",
 };
 
 export const CreateClusterRequest = {
@@ -923,6 +948,9 @@ export const CreateClusterRequest = {
     }
     for (const v of message.hostGroupIds) {
       writer.uint32(114).string(v!);
+    }
+    if (message.serviceAccountId !== "") {
+      writer.uint32(122).string(message.serviceAccountId);
     }
     return writer;
   },
@@ -993,6 +1021,9 @@ export const CreateClusterRequest = {
         case 14:
           message.hostGroupIds.push(reader.string());
           break;
+        case 15:
+          message.serviceAccountId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1057,6 +1088,10 @@ export const CreateClusterRequest = {
     message.hostGroupIds = (object.hostGroupIds ?? []).map((e: any) =>
       String(e)
     );
+    message.serviceAccountId =
+      object.serviceAccountId !== undefined && object.serviceAccountId !== null
+        ? String(object.serviceAccountId)
+        : "";
     return message;
   },
 
@@ -1114,6 +1149,8 @@ export const CreateClusterRequest = {
     } else {
       obj.hostGroupIds = [];
     }
+    message.serviceAccountId !== undefined &&
+      (obj.serviceAccountId = message.serviceAccountId);
     return obj;
   },
 
@@ -1148,6 +1185,7 @@ export const CreateClusterRequest = {
     message.deletionProtection = object.deletionProtection ?? false;
     message.sqlcollation = object.sqlcollation ?? "";
     message.hostGroupIds = object.hostGroupIds?.map((e) => e) || [];
+    message.serviceAccountId = object.serviceAccountId ?? "";
     return message;
   },
 };
@@ -1312,6 +1350,7 @@ const baseUpdateClusterRequest: object = {
   name: "",
   securityGroupIds: "",
   deletionProtection: false,
+  serviceAccountId: "",
 };
 
 export const UpdateClusterRequest = {
@@ -1352,6 +1391,9 @@ export const UpdateClusterRequest = {
     }
     if (message.deletionProtection === true) {
       writer.uint32(64).bool(message.deletionProtection);
+    }
+    if (message.serviceAccountId !== "") {
+      writer.uint32(74).string(message.serviceAccountId);
     }
     return writer;
   },
@@ -1398,6 +1440,9 @@ export const UpdateClusterRequest = {
         case 8:
           message.deletionProtection = reader.bool();
           break;
+        case 9:
+          message.serviceAccountId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1442,6 +1487,10 @@ export const UpdateClusterRequest = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.serviceAccountId =
+      object.serviceAccountId !== undefined && object.serviceAccountId !== null
+        ? String(object.serviceAccountId)
+        : "";
     return message;
   },
 
@@ -1472,6 +1521,8 @@ export const UpdateClusterRequest = {
     }
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.serviceAccountId !== undefined &&
+      (obj.serviceAccountId = message.serviceAccountId);
     return obj;
   },
 
@@ -1500,6 +1551,7 @@ export const UpdateClusterRequest = {
     message.name = object.name ?? "";
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? false;
+    message.serviceAccountId = object.serviceAccountId ?? "";
     return message;
   },
 };
@@ -1928,6 +1980,7 @@ const baseRestoreClusterRequest: object = {
   securityGroupIds: "",
   deletionProtection: false,
   hostGroupIds: "",
+  serviceAccountId: "",
 };
 
 export const RestoreClusterRequest = {
@@ -1986,6 +2039,9 @@ export const RestoreClusterRequest = {
     }
     for (const v of message.hostGroupIds) {
       writer.uint32(114).string(v!);
+    }
+    if (message.serviceAccountId !== "") {
+      writer.uint32(122).string(message.serviceAccountId);
     }
     return writer;
   },
@@ -2051,6 +2107,9 @@ export const RestoreClusterRequest = {
         case 14:
           message.hostGroupIds.push(reader.string());
           break;
+        case 15:
+          message.serviceAccountId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2113,6 +2172,10 @@ export const RestoreClusterRequest = {
     message.hostGroupIds = (object.hostGroupIds ?? []).map((e: any) =>
       String(e)
     );
+    message.serviceAccountId =
+      object.serviceAccountId !== undefined && object.serviceAccountId !== null
+        ? String(object.serviceAccountId)
+        : "";
     return message;
   },
 
@@ -2156,6 +2219,8 @@ export const RestoreClusterRequest = {
     } else {
       obj.hostGroupIds = [];
     }
+    message.serviceAccountId !== undefined &&
+      (obj.serviceAccountId = message.serviceAccountId);
     return obj;
   },
 
@@ -2187,6 +2252,7 @@ export const RestoreClusterRequest = {
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? false;
     message.hostGroupIds = object.hostGroupIds?.map((e) => e) || [];
+    message.serviceAccountId = object.serviceAccountId ?? "";
     return message;
   },
 };
@@ -2356,6 +2422,167 @@ export const RestoreClusterMetadata = {
 };
 
 messageTypeRegistry.set(RestoreClusterMetadata.$type, RestoreClusterMetadata);
+
+const baseStartClusterFailoverRequest: object = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.StartClusterFailoverRequest",
+  clusterId: "",
+  hostName: "",
+};
+
+export const StartClusterFailoverRequest = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.StartClusterFailoverRequest" as const,
+
+  encode(
+    message: StartClusterFailoverRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    if (message.hostName !== "") {
+      writer.uint32(18).string(message.hostName);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): StartClusterFailoverRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseStartClusterFailoverRequest,
+    } as StartClusterFailoverRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.hostName = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StartClusterFailoverRequest {
+    const message = {
+      ...baseStartClusterFailoverRequest,
+    } as StartClusterFailoverRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.hostName =
+      object.hostName !== undefined && object.hostName !== null
+        ? String(object.hostName)
+        : "";
+    return message;
+  },
+
+  toJSON(message: StartClusterFailoverRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.hostName !== undefined && (obj.hostName = message.hostName);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<StartClusterFailoverRequest>, I>>(
+    object: I
+  ): StartClusterFailoverRequest {
+    const message = {
+      ...baseStartClusterFailoverRequest,
+    } as StartClusterFailoverRequest;
+    message.clusterId = object.clusterId ?? "";
+    message.hostName = object.hostName ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  StartClusterFailoverRequest.$type,
+  StartClusterFailoverRequest
+);
+
+const baseStartClusterFailoverMetadata: object = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.StartClusterFailoverMetadata",
+  clusterId: "",
+};
+
+export const StartClusterFailoverMetadata = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.StartClusterFailoverMetadata" as const,
+
+  encode(
+    message: StartClusterFailoverMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): StartClusterFailoverMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseStartClusterFailoverMetadata,
+    } as StartClusterFailoverMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StartClusterFailoverMetadata {
+    const message = {
+      ...baseStartClusterFailoverMetadata,
+    } as StartClusterFailoverMetadata;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: StartClusterFailoverMetadata): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<StartClusterFailoverMetadata>, I>>(
+    object: I
+  ): StartClusterFailoverMetadata {
+    const message = {
+      ...baseStartClusterFailoverMetadata,
+    } as StartClusterFailoverMetadata;
+    message.clusterId = object.clusterId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  StartClusterFailoverMetadata.$type,
+  StartClusterFailoverMetadata
+);
 
 const baseLogRecord: object = {
   $type: "yandex.cloud.mdb.sqlserver.v1.LogRecord",
@@ -4283,6 +4510,19 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Starts a manual failover for a cluster. */
+  startFailover: {
+    path: "/yandex.cloud.mdb.sqlserver.v1.ClusterService/StartFailover",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: StartClusterFailoverRequest) =>
+      Buffer.from(StartClusterFailoverRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      StartClusterFailoverRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /**
    * Retrieves logs for the specified SQL Server cluster.
    *
@@ -4369,6 +4609,8 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
   backup: handleUnaryCall<BackupClusterRequest, Operation>;
   /** Creates a new SQL Server cluster using the specified backup. */
   restore: handleUnaryCall<RestoreClusterRequest, Operation>;
+  /** Starts a manual failover for a cluster. */
+  startFailover: handleUnaryCall<StartClusterFailoverRequest, Operation>;
   /**
    * Retrieves logs for the specified SQL Server cluster.
    *
@@ -4559,6 +4801,22 @@ export interface ClusterServiceClient extends Client {
   ): ClientUnaryCall;
   restore(
     request: RestoreClusterRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Starts a manual failover for a cluster. */
+  startFailover(
+    request: StartClusterFailoverRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  startFailover(
+    request: StartClusterFailoverRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  startFailover(
+    request: StartClusterFailoverRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

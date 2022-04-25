@@ -43,7 +43,7 @@ export interface MysqlConnection {
   /**
    * Managed cluster
    *
-   * Yandex Managed Service for MySQL cluster ID
+   * Yandex.Cloud Managed MySQL cluster ID
    */
   mdbClusterId: string | undefined;
   /**
@@ -84,6 +84,8 @@ export interface MysqlSource {
    * Database connection settings
    */
   connection?: MysqlConnection;
+  /** Security groups */
+  securityGroups: string[];
   /**
    * Database name
    *
@@ -91,6 +93,13 @@ export interface MysqlSource {
    * databases at the same time from this source.
    */
   database: string;
+  /**
+   * Database for service tables
+   *
+   * Default: data source database. Here created technical tables (__tm_keeper,
+   * __tm_gtid_keeper).
+   */
+  serviceDatabase: string;
   /**
    * Username
    *
@@ -128,6 +137,8 @@ export interface MysqlTarget {
    * Database connection settings
    */
   connection?: MysqlConnection;
+  /** Security groups */
+  securityGroups: string[];
   /**
    * Database name
    *
@@ -481,7 +492,9 @@ messageTypeRegistry.set(
 
 const baseMysqlSource: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.MysqlSource",
+  securityGroups: "",
   database: "",
+  serviceDatabase: "",
   user: "",
   includeTablesRegex: "",
   excludeTablesRegex: "",
@@ -501,8 +514,14 @@ export const MysqlSource = {
         writer.uint32(10).fork()
       ).ldelim();
     }
+    for (const v of message.securityGroups) {
+      writer.uint32(114).string(v!);
+    }
     if (message.database !== "") {
       writer.uint32(18).string(message.database);
+    }
+    if (message.serviceDatabase !== "") {
+      writer.uint32(122).string(message.serviceDatabase);
     }
     if (message.user !== "") {
       writer.uint32(26).string(message.user);
@@ -532,6 +551,7 @@ export const MysqlSource = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseMysqlSource } as MysqlSource;
+    message.securityGroups = [];
     message.includeTablesRegex = [];
     message.excludeTablesRegex = [];
     while (reader.pos < end) {
@@ -540,8 +560,14 @@ export const MysqlSource = {
         case 1:
           message.connection = MysqlConnection.decode(reader, reader.uint32());
           break;
+        case 14:
+          message.securityGroups.push(reader.string());
+          break;
         case 2:
           message.database = reader.string();
+          break;
+        case 15:
+          message.serviceDatabase = reader.string();
           break;
         case 3:
           message.user = reader.string();
@@ -578,9 +604,16 @@ export const MysqlSource = {
       object.connection !== undefined && object.connection !== null
         ? MysqlConnection.fromJSON(object.connection)
         : undefined;
+    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
+      String(e)
+    );
     message.database =
       object.database !== undefined && object.database !== null
         ? String(object.database)
+        : "";
+    message.serviceDatabase =
+      object.serviceDatabase !== undefined && object.serviceDatabase !== null
+        ? String(object.serviceDatabase)
         : "";
     message.user =
       object.user !== undefined && object.user !== null
@@ -614,7 +647,14 @@ export const MysqlSource = {
       (obj.connection = message.connection
         ? MysqlConnection.toJSON(message.connection)
         : undefined);
+    if (message.securityGroups) {
+      obj.securityGroups = message.securityGroups.map((e) => e);
+    } else {
+      obj.securityGroups = [];
+    }
     message.database !== undefined && (obj.database = message.database);
+    message.serviceDatabase !== undefined &&
+      (obj.serviceDatabase = message.serviceDatabase);
     message.user !== undefined && (obj.user = message.user);
     message.password !== undefined &&
       (obj.password = message.password
@@ -646,7 +686,9 @@ export const MysqlSource = {
       object.connection !== undefined && object.connection !== null
         ? MysqlConnection.fromPartial(object.connection)
         : undefined;
+    message.securityGroups = object.securityGroups?.map((e) => e) || [];
     message.database = object.database ?? "";
+    message.serviceDatabase = object.serviceDatabase ?? "";
     message.user = object.user ?? "";
     message.password =
       object.password !== undefined && object.password !== null
@@ -668,6 +710,7 @@ messageTypeRegistry.set(MysqlSource.$type, MysqlSource);
 
 const baseMysqlTarget: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.MysqlTarget",
+  securityGroups: "",
   database: "",
   user: "",
   sqlMode: "",
@@ -689,6 +732,9 @@ export const MysqlTarget = {
         message.connection,
         writer.uint32(10).fork()
       ).ldelim();
+    }
+    for (const v of message.securityGroups) {
+      writer.uint32(130).string(v!);
     }
     if (message.database !== "") {
       writer.uint32(18).string(message.database);
@@ -721,11 +767,15 @@ export const MysqlTarget = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseMysqlTarget } as MysqlTarget;
+    message.securityGroups = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
           message.connection = MysqlConnection.decode(reader, reader.uint32());
+          break;
+        case 16:
+          message.securityGroups.push(reader.string());
           break;
         case 2:
           message.database = reader.string();
@@ -765,6 +815,9 @@ export const MysqlTarget = {
       object.connection !== undefined && object.connection !== null
         ? MysqlConnection.fromJSON(object.connection)
         : undefined;
+    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
+      String(e)
+    );
     message.database =
       object.database !== undefined && object.database !== null
         ? String(object.database)
@@ -807,6 +860,11 @@ export const MysqlTarget = {
       (obj.connection = message.connection
         ? MysqlConnection.toJSON(message.connection)
         : undefined);
+    if (message.securityGroups) {
+      obj.securityGroups = message.securityGroups.map((e) => e);
+    } else {
+      obj.securityGroups = [];
+    }
     message.database !== undefined && (obj.database = message.database);
     message.user !== undefined && (obj.user = message.user);
     message.password !== undefined &&
@@ -832,6 +890,7 @@ export const MysqlTarget = {
       object.connection !== undefined && object.connection !== null
         ? MysqlConnection.fromPartial(object.connection)
         : undefined;
+    message.securityGroups = object.securityGroups?.map((e) => e) || [];
     message.database = object.database ?? "";
     message.user = object.user ?? "";
     message.password =

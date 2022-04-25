@@ -411,6 +411,12 @@ export interface Mysqlconfig57 {
    * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_show_compatibility_56).
    */
   showCompatibility56?: boolean;
+  /**
+   * The number of times that any given stored procedure may be called recursively.
+   *
+   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_max_sp_recursion_depth).
+   */
+  maxSpRecursionDepth?: number;
 }
 
 export enum Mysqlconfig57_SQLMode {
@@ -1474,6 +1480,15 @@ export const Mysqlconfig57 = {
         writer.uint32(546).fork()
       ).ldelim();
     }
+    if (message.maxSpRecursionDepth !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.maxSpRecursionDepth!,
+        },
+        writer.uint32(554).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1869,6 +1884,12 @@ export const Mysqlconfig57 = {
             reader.uint32()
           ).value;
           break;
+        case 69:
+          message.maxSpRecursionDepth = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2192,6 +2213,11 @@ export const Mysqlconfig57 = {
       object.showCompatibility_56 !== null
         ? Boolean(object.showCompatibility_56)
         : undefined;
+    message.maxSpRecursionDepth =
+      object.maxSpRecursionDepth !== undefined &&
+      object.maxSpRecursionDepth !== null
+        ? Number(object.maxSpRecursionDepth)
+        : undefined;
     return message;
   },
 
@@ -2349,6 +2375,8 @@ export const Mysqlconfig57 = {
       (obj.lowerCaseTableNames = message.lowerCaseTableNames);
     message.showCompatibility56 !== undefined &&
       (obj.showCompatibility_56 = message.showCompatibility56);
+    message.maxSpRecursionDepth !== undefined &&
+      (obj.maxSpRecursionDepth = message.maxSpRecursionDepth);
     return obj;
   },
 
@@ -2441,6 +2469,7 @@ export const Mysqlconfig57 = {
     message.innodbFtMaxTokenSize = object.innodbFtMaxTokenSize ?? undefined;
     message.lowerCaseTableNames = object.lowerCaseTableNames ?? undefined;
     message.showCompatibility56 = object.showCompatibility56 ?? undefined;
+    message.maxSpRecursionDepth = object.maxSpRecursionDepth ?? undefined;
     return message;
   },
 };

@@ -77,6 +77,8 @@ export interface Cluster {
   securityGroupIds: string[];
   /** Deletion Protection inhibits deletion of the cluster */
   deletionProtection: boolean;
+  /** Host groups hosting VMs of the cluster. */
+  hostGroupIds: string[];
 }
 
 export enum Cluster_Environment {
@@ -709,6 +711,7 @@ const baseCluster: object = {
   status: 0,
   securityGroupIds: "",
   deletionProtection: false,
+  hostGroupIds: "",
 };
 
 export const Cluster = {
@@ -782,6 +785,9 @@ export const Cluster = {
     if (message.deletionProtection === true) {
       writer.uint32(128).bool(message.deletionProtection);
     }
+    for (const v of message.hostGroupIds) {
+      writer.uint32(138).string(v!);
+    }
     return writer;
   },
 
@@ -792,6 +798,7 @@ export const Cluster = {
     message.labels = {};
     message.monitoring = [];
     message.securityGroupIds = [];
+    message.hostGroupIds = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -853,6 +860,9 @@ export const Cluster = {
           break;
         case 16:
           message.deletionProtection = reader.bool();
+          break;
+        case 17:
+          message.hostGroupIds.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -928,6 +938,9 @@ export const Cluster = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.hostGroupIds = (object.hostGroupIds ?? []).map((e: any) =>
+      String(e)
+    );
     return message;
   },
 
@@ -979,6 +992,11 @@ export const Cluster = {
     }
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    if (message.hostGroupIds) {
+      obj.hostGroupIds = message.hostGroupIds.map((e) => e);
+    } else {
+      obj.hostGroupIds = [];
+    }
     return obj;
   },
 
@@ -1018,6 +1036,7 @@ export const Cluster = {
         : undefined;
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? false;
+    message.hostGroupIds = object.hostGroupIds?.map((e) => e) || [];
     return message;
   },
 };

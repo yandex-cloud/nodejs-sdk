@@ -94,6 +94,14 @@ export function cleanupPolicyToJSON(object: CleanupPolicy): string {
   }
 }
 
+export interface AltName {
+  $type: "yandex.cloud.datatransfer.v1.endpoint.AltName";
+  /** From table name */
+  fromName: string;
+  /** To table name */
+  toName: string;
+}
+
 export interface Secret {
   $type: "yandex.cloud.datatransfer.v1.endpoint.Secret";
   /** Password */
@@ -117,6 +125,84 @@ export interface TLSConfig {
    */
   caCertificate: string;
 }
+
+export interface ColumnValue {
+  $type: "yandex.cloud.datatransfer.v1.endpoint.ColumnValue";
+  stringValue: string | undefined;
+}
+
+const baseAltName: object = {
+  $type: "yandex.cloud.datatransfer.v1.endpoint.AltName",
+  fromName: "",
+  toName: "",
+};
+
+export const AltName = {
+  $type: "yandex.cloud.datatransfer.v1.endpoint.AltName" as const,
+
+  encode(
+    message: AltName,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.fromName !== "") {
+      writer.uint32(10).string(message.fromName);
+    }
+    if (message.toName !== "") {
+      writer.uint32(18).string(message.toName);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): AltName {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseAltName } as AltName;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.fromName = reader.string();
+          break;
+        case 2:
+          message.toName = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AltName {
+    const message = { ...baseAltName } as AltName;
+    message.fromName =
+      object.fromName !== undefined && object.fromName !== null
+        ? String(object.fromName)
+        : "";
+    message.toName =
+      object.toName !== undefined && object.toName !== null
+        ? String(object.toName)
+        : "";
+    return message;
+  },
+
+  toJSON(message: AltName): unknown {
+    const obj: any = {};
+    message.fromName !== undefined && (obj.fromName = message.fromName);
+    message.toName !== undefined && (obj.toName = message.toName);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AltName>, I>>(object: I): AltName {
+    const message = { ...baseAltName } as AltName;
+    message.fromName = object.fromName ?? "";
+    message.toName = object.toName ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(AltName.$type, AltName);
 
 const baseSecret: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.Secret",
@@ -322,6 +408,68 @@ export const TLSConfig = {
 };
 
 messageTypeRegistry.set(TLSConfig.$type, TLSConfig);
+
+const baseColumnValue: object = {
+  $type: "yandex.cloud.datatransfer.v1.endpoint.ColumnValue",
+};
+
+export const ColumnValue = {
+  $type: "yandex.cloud.datatransfer.v1.endpoint.ColumnValue" as const,
+
+  encode(
+    message: ColumnValue,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.stringValue !== undefined) {
+      writer.uint32(10).string(message.stringValue);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ColumnValue {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseColumnValue } as ColumnValue;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.stringValue = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ColumnValue {
+    const message = { ...baseColumnValue } as ColumnValue;
+    message.stringValue =
+      object.stringValue !== undefined && object.stringValue !== null
+        ? String(object.stringValue)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: ColumnValue): unknown {
+    const obj: any = {};
+    message.stringValue !== undefined &&
+      (obj.stringValue = message.stringValue);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ColumnValue>, I>>(
+    object: I
+  ): ColumnValue {
+    const message = { ...baseColumnValue } as ColumnValue;
+    message.stringValue = object.stringValue ?? undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(ColumnValue.$type, ColumnValue);
 
 type Builtin =
   | Date

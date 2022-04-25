@@ -93,18 +93,6 @@ export interface CreateDatabaseMetadata {
   databaseName: string;
 }
 
-export interface RestoreDatabaseMetadata {
-  $type: "yandex.cloud.mdb.sqlserver.v1.RestoreDatabaseMetadata";
-  /** ID of the SQLServer cluster where a database is being created. */
-  clusterId: string;
-  /** Name of the SQLServer database that is being created. */
-  databaseName: string;
-  /** name of the database which backup will be used to restore the database */
-  fromDatabase: string;
-  /** ID of a backup to be used */
-  backupId: string;
-}
-
 export interface DeleteDatabaseRequest {
   $type: "yandex.cloud.mdb.sqlserver.v1.DeleteDatabaseRequest";
   /**
@@ -144,6 +132,76 @@ export interface RestoreDatabaseRequest {
   backupId: string;
   /** Timestamp which is used for Point-in-Time recovery */
   time?: Date;
+}
+
+export interface RestoreDatabaseMetadata {
+  $type: "yandex.cloud.mdb.sqlserver.v1.RestoreDatabaseMetadata";
+  /** ID of the SQLServer cluster where a database is being created. */
+  clusterId: string;
+  /** Name of the SQLServer database that is being created. */
+  databaseName: string;
+  /** name of the database which backup will be used to restore the database */
+  fromDatabase: string;
+  /** ID of a backup to be used */
+  backupId: string;
+}
+
+export interface ImportDatabaseBackupRequest {
+  $type: "yandex.cloud.mdb.sqlserver.v1.ImportDatabaseBackupRequest";
+  /**
+   * Required. ID of the SQL Server cluster to import a database in.
+   * To get the cluster ID, use a [ClusterService.List] request
+   */
+  clusterId: string;
+  /** Name of the SQLServer database that is being imported. */
+  databaseName: string;
+  /** Name of object storage bucket to import backups from. */
+  s3Bucket: string;
+  /** Path in object storage bucket to import backups from. */
+  s3Path: string;
+  /** List of .bak files in bucket containing database backup */
+  files: string[];
+}
+
+export interface ImportDatabaseBackupMetadata {
+  $type: "yandex.cloud.mdb.sqlserver.v1.ImportDatabaseBackupMetadata";
+  /** ID of the SQLServer cluster where a database is being imported. */
+  clusterId: string;
+  /** Name of the SQLServer database that is being imported. */
+  databaseName: string;
+  /** Name of object storage bucket to import backups from. */
+  s3Bucket: string;
+  /** Path in object storage bucket to import backups from. */
+  s3Path: string;
+}
+
+export interface ExportDatabaseBackupRequest {
+  $type: "yandex.cloud.mdb.sqlserver.v1.ExportDatabaseBackupRequest";
+  /**
+   * Required. ID of the SQL Server cluster to export a database from.
+   * To get the cluster ID, use a [ClusterService.List] request
+   */
+  clusterId: string;
+  /** Name of the SQLServer database that is being exported. */
+  databaseName: string;
+  /** Name of object storage bucket to export backups to */
+  s3Bucket: string;
+  /** Path in object storage bucket to export backups to. */
+  s3Path: string;
+  /** Prefix for .bak files to */
+  prefix: string;
+}
+
+export interface ExportDatabaseBackupMetadata {
+  $type: "yandex.cloud.mdb.sqlserver.v1.ExportDatabaseBackupMetadata";
+  /** ID of the SQLServer cluster where a database is being exported. */
+  clusterId: string;
+  /** Name of the SQLServer database that is being exported. */
+  databaseName: string;
+  /** Name of object storage bucket to import backups from. */
+  s3Bucket: string;
+  /** Path in object storage bucket to import backups from. */
+  s3Path: string;
 }
 
 const baseGetDatabaseRequest: object = {
@@ -564,118 +622,6 @@ export const CreateDatabaseMetadata = {
 
 messageTypeRegistry.set(CreateDatabaseMetadata.$type, CreateDatabaseMetadata);
 
-const baseRestoreDatabaseMetadata: object = {
-  $type: "yandex.cloud.mdb.sqlserver.v1.RestoreDatabaseMetadata",
-  clusterId: "",
-  databaseName: "",
-  fromDatabase: "",
-  backupId: "",
-};
-
-export const RestoreDatabaseMetadata = {
-  $type: "yandex.cloud.mdb.sqlserver.v1.RestoreDatabaseMetadata" as const,
-
-  encode(
-    message: RestoreDatabaseMetadata,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.clusterId !== "") {
-      writer.uint32(10).string(message.clusterId);
-    }
-    if (message.databaseName !== "") {
-      writer.uint32(18).string(message.databaseName);
-    }
-    if (message.fromDatabase !== "") {
-      writer.uint32(26).string(message.fromDatabase);
-    }
-    if (message.backupId !== "") {
-      writer.uint32(34).string(message.backupId);
-    }
-    return writer;
-  },
-
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): RestoreDatabaseMetadata {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseRestoreDatabaseMetadata,
-    } as RestoreDatabaseMetadata;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.clusterId = reader.string();
-          break;
-        case 2:
-          message.databaseName = reader.string();
-          break;
-        case 3:
-          message.fromDatabase = reader.string();
-          break;
-        case 4:
-          message.backupId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): RestoreDatabaseMetadata {
-    const message = {
-      ...baseRestoreDatabaseMetadata,
-    } as RestoreDatabaseMetadata;
-    message.clusterId =
-      object.clusterId !== undefined && object.clusterId !== null
-        ? String(object.clusterId)
-        : "";
-    message.databaseName =
-      object.databaseName !== undefined && object.databaseName !== null
-        ? String(object.databaseName)
-        : "";
-    message.fromDatabase =
-      object.fromDatabase !== undefined && object.fromDatabase !== null
-        ? String(object.fromDatabase)
-        : "";
-    message.backupId =
-      object.backupId !== undefined && object.backupId !== null
-        ? String(object.backupId)
-        : "";
-    return message;
-  },
-
-  toJSON(message: RestoreDatabaseMetadata): unknown {
-    const obj: any = {};
-    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
-    message.databaseName !== undefined &&
-      (obj.databaseName = message.databaseName);
-    message.fromDatabase !== undefined &&
-      (obj.fromDatabase = message.fromDatabase);
-    message.backupId !== undefined && (obj.backupId = message.backupId);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<RestoreDatabaseMetadata>, I>>(
-    object: I
-  ): RestoreDatabaseMetadata {
-    const message = {
-      ...baseRestoreDatabaseMetadata,
-    } as RestoreDatabaseMetadata;
-    message.clusterId = object.clusterId ?? "";
-    message.databaseName = object.databaseName ?? "";
-    message.fromDatabase = object.fromDatabase ?? "";
-    message.backupId = object.backupId ?? "";
-    return message;
-  },
-};
-
-messageTypeRegistry.set(RestoreDatabaseMetadata.$type, RestoreDatabaseMetadata);
-
 const baseDeleteDatabaseRequest: object = {
   $type: "yandex.cloud.mdb.sqlserver.v1.DeleteDatabaseRequest",
   clusterId: "",
@@ -957,6 +903,602 @@ export const RestoreDatabaseRequest = {
 
 messageTypeRegistry.set(RestoreDatabaseRequest.$type, RestoreDatabaseRequest);
 
+const baseRestoreDatabaseMetadata: object = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.RestoreDatabaseMetadata",
+  clusterId: "",
+  databaseName: "",
+  fromDatabase: "",
+  backupId: "",
+};
+
+export const RestoreDatabaseMetadata = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.RestoreDatabaseMetadata" as const,
+
+  encode(
+    message: RestoreDatabaseMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    if (message.databaseName !== "") {
+      writer.uint32(18).string(message.databaseName);
+    }
+    if (message.fromDatabase !== "") {
+      writer.uint32(26).string(message.fromDatabase);
+    }
+    if (message.backupId !== "") {
+      writer.uint32(34).string(message.backupId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RestoreDatabaseMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseRestoreDatabaseMetadata,
+    } as RestoreDatabaseMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.databaseName = reader.string();
+          break;
+        case 3:
+          message.fromDatabase = reader.string();
+          break;
+        case 4:
+          message.backupId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RestoreDatabaseMetadata {
+    const message = {
+      ...baseRestoreDatabaseMetadata,
+    } as RestoreDatabaseMetadata;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.databaseName =
+      object.databaseName !== undefined && object.databaseName !== null
+        ? String(object.databaseName)
+        : "";
+    message.fromDatabase =
+      object.fromDatabase !== undefined && object.fromDatabase !== null
+        ? String(object.fromDatabase)
+        : "";
+    message.backupId =
+      object.backupId !== undefined && object.backupId !== null
+        ? String(object.backupId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: RestoreDatabaseMetadata): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.databaseName !== undefined &&
+      (obj.databaseName = message.databaseName);
+    message.fromDatabase !== undefined &&
+      (obj.fromDatabase = message.fromDatabase);
+    message.backupId !== undefined && (obj.backupId = message.backupId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RestoreDatabaseMetadata>, I>>(
+    object: I
+  ): RestoreDatabaseMetadata {
+    const message = {
+      ...baseRestoreDatabaseMetadata,
+    } as RestoreDatabaseMetadata;
+    message.clusterId = object.clusterId ?? "";
+    message.databaseName = object.databaseName ?? "";
+    message.fromDatabase = object.fromDatabase ?? "";
+    message.backupId = object.backupId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(RestoreDatabaseMetadata.$type, RestoreDatabaseMetadata);
+
+const baseImportDatabaseBackupRequest: object = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.ImportDatabaseBackupRequest",
+  clusterId: "",
+  databaseName: "",
+  s3Bucket: "",
+  s3Path: "",
+  files: "",
+};
+
+export const ImportDatabaseBackupRequest = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.ImportDatabaseBackupRequest" as const,
+
+  encode(
+    message: ImportDatabaseBackupRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    if (message.databaseName !== "") {
+      writer.uint32(18).string(message.databaseName);
+    }
+    if (message.s3Bucket !== "") {
+      writer.uint32(26).string(message.s3Bucket);
+    }
+    if (message.s3Path !== "") {
+      writer.uint32(34).string(message.s3Path);
+    }
+    for (const v of message.files) {
+      writer.uint32(42).string(v!);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ImportDatabaseBackupRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseImportDatabaseBackupRequest,
+    } as ImportDatabaseBackupRequest;
+    message.files = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.databaseName = reader.string();
+          break;
+        case 3:
+          message.s3Bucket = reader.string();
+          break;
+        case 4:
+          message.s3Path = reader.string();
+          break;
+        case 5:
+          message.files.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ImportDatabaseBackupRequest {
+    const message = {
+      ...baseImportDatabaseBackupRequest,
+    } as ImportDatabaseBackupRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.databaseName =
+      object.databaseName !== undefined && object.databaseName !== null
+        ? String(object.databaseName)
+        : "";
+    message.s3Bucket =
+      object.s3Bucket !== undefined && object.s3Bucket !== null
+        ? String(object.s3Bucket)
+        : "";
+    message.s3Path =
+      object.s3Path !== undefined && object.s3Path !== null
+        ? String(object.s3Path)
+        : "";
+    message.files = (object.files ?? []).map((e: any) => String(e));
+    return message;
+  },
+
+  toJSON(message: ImportDatabaseBackupRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.databaseName !== undefined &&
+      (obj.databaseName = message.databaseName);
+    message.s3Bucket !== undefined && (obj.s3Bucket = message.s3Bucket);
+    message.s3Path !== undefined && (obj.s3Path = message.s3Path);
+    if (message.files) {
+      obj.files = message.files.map((e) => e);
+    } else {
+      obj.files = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ImportDatabaseBackupRequest>, I>>(
+    object: I
+  ): ImportDatabaseBackupRequest {
+    const message = {
+      ...baseImportDatabaseBackupRequest,
+    } as ImportDatabaseBackupRequest;
+    message.clusterId = object.clusterId ?? "";
+    message.databaseName = object.databaseName ?? "";
+    message.s3Bucket = object.s3Bucket ?? "";
+    message.s3Path = object.s3Path ?? "";
+    message.files = object.files?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ImportDatabaseBackupRequest.$type,
+  ImportDatabaseBackupRequest
+);
+
+const baseImportDatabaseBackupMetadata: object = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.ImportDatabaseBackupMetadata",
+  clusterId: "",
+  databaseName: "",
+  s3Bucket: "",
+  s3Path: "",
+};
+
+export const ImportDatabaseBackupMetadata = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.ImportDatabaseBackupMetadata" as const,
+
+  encode(
+    message: ImportDatabaseBackupMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    if (message.databaseName !== "") {
+      writer.uint32(18).string(message.databaseName);
+    }
+    if (message.s3Bucket !== "") {
+      writer.uint32(26).string(message.s3Bucket);
+    }
+    if (message.s3Path !== "") {
+      writer.uint32(34).string(message.s3Path);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ImportDatabaseBackupMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseImportDatabaseBackupMetadata,
+    } as ImportDatabaseBackupMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.databaseName = reader.string();
+          break;
+        case 3:
+          message.s3Bucket = reader.string();
+          break;
+        case 4:
+          message.s3Path = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ImportDatabaseBackupMetadata {
+    const message = {
+      ...baseImportDatabaseBackupMetadata,
+    } as ImportDatabaseBackupMetadata;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.databaseName =
+      object.databaseName !== undefined && object.databaseName !== null
+        ? String(object.databaseName)
+        : "";
+    message.s3Bucket =
+      object.s3Bucket !== undefined && object.s3Bucket !== null
+        ? String(object.s3Bucket)
+        : "";
+    message.s3Path =
+      object.s3Path !== undefined && object.s3Path !== null
+        ? String(object.s3Path)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ImportDatabaseBackupMetadata): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.databaseName !== undefined &&
+      (obj.databaseName = message.databaseName);
+    message.s3Bucket !== undefined && (obj.s3Bucket = message.s3Bucket);
+    message.s3Path !== undefined && (obj.s3Path = message.s3Path);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ImportDatabaseBackupMetadata>, I>>(
+    object: I
+  ): ImportDatabaseBackupMetadata {
+    const message = {
+      ...baseImportDatabaseBackupMetadata,
+    } as ImportDatabaseBackupMetadata;
+    message.clusterId = object.clusterId ?? "";
+    message.databaseName = object.databaseName ?? "";
+    message.s3Bucket = object.s3Bucket ?? "";
+    message.s3Path = object.s3Path ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ImportDatabaseBackupMetadata.$type,
+  ImportDatabaseBackupMetadata
+);
+
+const baseExportDatabaseBackupRequest: object = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.ExportDatabaseBackupRequest",
+  clusterId: "",
+  databaseName: "",
+  s3Bucket: "",
+  s3Path: "",
+  prefix: "",
+};
+
+export const ExportDatabaseBackupRequest = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.ExportDatabaseBackupRequest" as const,
+
+  encode(
+    message: ExportDatabaseBackupRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    if (message.databaseName !== "") {
+      writer.uint32(18).string(message.databaseName);
+    }
+    if (message.s3Bucket !== "") {
+      writer.uint32(26).string(message.s3Bucket);
+    }
+    if (message.s3Path !== "") {
+      writer.uint32(34).string(message.s3Path);
+    }
+    if (message.prefix !== "") {
+      writer.uint32(42).string(message.prefix);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ExportDatabaseBackupRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseExportDatabaseBackupRequest,
+    } as ExportDatabaseBackupRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.databaseName = reader.string();
+          break;
+        case 3:
+          message.s3Bucket = reader.string();
+          break;
+        case 4:
+          message.s3Path = reader.string();
+          break;
+        case 5:
+          message.prefix = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ExportDatabaseBackupRequest {
+    const message = {
+      ...baseExportDatabaseBackupRequest,
+    } as ExportDatabaseBackupRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.databaseName =
+      object.databaseName !== undefined && object.databaseName !== null
+        ? String(object.databaseName)
+        : "";
+    message.s3Bucket =
+      object.s3Bucket !== undefined && object.s3Bucket !== null
+        ? String(object.s3Bucket)
+        : "";
+    message.s3Path =
+      object.s3Path !== undefined && object.s3Path !== null
+        ? String(object.s3Path)
+        : "";
+    message.prefix =
+      object.prefix !== undefined && object.prefix !== null
+        ? String(object.prefix)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ExportDatabaseBackupRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.databaseName !== undefined &&
+      (obj.databaseName = message.databaseName);
+    message.s3Bucket !== undefined && (obj.s3Bucket = message.s3Bucket);
+    message.s3Path !== undefined && (obj.s3Path = message.s3Path);
+    message.prefix !== undefined && (obj.prefix = message.prefix);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ExportDatabaseBackupRequest>, I>>(
+    object: I
+  ): ExportDatabaseBackupRequest {
+    const message = {
+      ...baseExportDatabaseBackupRequest,
+    } as ExportDatabaseBackupRequest;
+    message.clusterId = object.clusterId ?? "";
+    message.databaseName = object.databaseName ?? "";
+    message.s3Bucket = object.s3Bucket ?? "";
+    message.s3Path = object.s3Path ?? "";
+    message.prefix = object.prefix ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ExportDatabaseBackupRequest.$type,
+  ExportDatabaseBackupRequest
+);
+
+const baseExportDatabaseBackupMetadata: object = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.ExportDatabaseBackupMetadata",
+  clusterId: "",
+  databaseName: "",
+  s3Bucket: "",
+  s3Path: "",
+};
+
+export const ExportDatabaseBackupMetadata = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.ExportDatabaseBackupMetadata" as const,
+
+  encode(
+    message: ExportDatabaseBackupMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    if (message.databaseName !== "") {
+      writer.uint32(18).string(message.databaseName);
+    }
+    if (message.s3Bucket !== "") {
+      writer.uint32(26).string(message.s3Bucket);
+    }
+    if (message.s3Path !== "") {
+      writer.uint32(34).string(message.s3Path);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ExportDatabaseBackupMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseExportDatabaseBackupMetadata,
+    } as ExportDatabaseBackupMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.databaseName = reader.string();
+          break;
+        case 3:
+          message.s3Bucket = reader.string();
+          break;
+        case 4:
+          message.s3Path = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ExportDatabaseBackupMetadata {
+    const message = {
+      ...baseExportDatabaseBackupMetadata,
+    } as ExportDatabaseBackupMetadata;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.databaseName =
+      object.databaseName !== undefined && object.databaseName !== null
+        ? String(object.databaseName)
+        : "";
+    message.s3Bucket =
+      object.s3Bucket !== undefined && object.s3Bucket !== null
+        ? String(object.s3Bucket)
+        : "";
+    message.s3Path =
+      object.s3Path !== undefined && object.s3Path !== null
+        ? String(object.s3Path)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ExportDatabaseBackupMetadata): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.databaseName !== undefined &&
+      (obj.databaseName = message.databaseName);
+    message.s3Bucket !== undefined && (obj.s3Bucket = message.s3Bucket);
+    message.s3Path !== undefined && (obj.s3Path = message.s3Path);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ExportDatabaseBackupMetadata>, I>>(
+    object: I
+  ): ExportDatabaseBackupMetadata {
+    const message = {
+      ...baseExportDatabaseBackupMetadata,
+    } as ExportDatabaseBackupMetadata;
+    message.clusterId = object.clusterId ?? "";
+    message.databaseName = object.databaseName ?? "";
+    message.s3Bucket = object.s3Bucket ?? "";
+    message.s3Path = object.s3Path ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ExportDatabaseBackupMetadata.$type,
+  ExportDatabaseBackupMetadata
+);
+
 /** A set of methods for managing SQL Server databases. */
 export const DatabaseServiceService = {
   /**
@@ -1011,6 +1553,32 @@ export const DatabaseServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Imports a new SQL Server database from external backup */
+  importBackup: {
+    path: "/yandex.cloud.mdb.sqlserver.v1.DatabaseService/ImportBackup",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: ImportDatabaseBackupRequest) =>
+      Buffer.from(ImportDatabaseBackupRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      ImportDatabaseBackupRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /** Exports database backup to external backup */
+  exportBackup: {
+    path: "/yandex.cloud.mdb.sqlserver.v1.DatabaseService/ExportBackup",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: ExportDatabaseBackupRequest) =>
+      Buffer.from(ExportDatabaseBackupRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      ExportDatabaseBackupRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /** Deletes the specified SQL Server database. */
   delete: {
     path: "/yandex.cloud.mdb.sqlserver.v1.DatabaseService/Delete",
@@ -1038,6 +1606,10 @@ export interface DatabaseServiceServer extends UntypedServiceImplementation {
   create: handleUnaryCall<CreateDatabaseRequest, Operation>;
   /** Creates a new SQL Server database in the specified cluster from a backup */
   restore: handleUnaryCall<RestoreDatabaseRequest, Operation>;
+  /** Imports a new SQL Server database from external backup */
+  importBackup: handleUnaryCall<ImportDatabaseBackupRequest, Operation>;
+  /** Exports database backup to external backup */
+  exportBackup: handleUnaryCall<ExportDatabaseBackupRequest, Operation>;
   /** Deletes the specified SQL Server database. */
   delete: handleUnaryCall<DeleteDatabaseRequest, Operation>;
 }
@@ -1116,6 +1688,38 @@ export interface DatabaseServiceClient extends Client {
   ): ClientUnaryCall;
   restore(
     request: RestoreDatabaseRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Imports a new SQL Server database from external backup */
+  importBackup(
+    request: ImportDatabaseBackupRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  importBackup(
+    request: ImportDatabaseBackupRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  importBackup(
+    request: ImportDatabaseBackupRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Exports database backup to external backup */
+  exportBackup(
+    request: ExportDatabaseBackupRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  exportBackup(
+    request: ExportDatabaseBackupRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  exportBackup(
+    request: ExportDatabaseBackupRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

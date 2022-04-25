@@ -116,6 +116,7 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
             'yandex.cloud.vpc.v1.RouteTableService',
             'yandex.cloud.vpc.v1.SecurityGroupService',
             'yandex.cloud.vpc.v1.SubnetService',
+            'yandex.cloud.vpc.v1.GatewayService',
         ],
         endpoint: 'vpc.api.cloud.yandex.net:443',
     },
@@ -325,6 +326,12 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
             'yandex.cloud.organizationmanager.v1.saml.FederationService',
         ],
         endpoint: 'organization-manager.api.cloud.yandex.net:443',
+    },
+    {
+        serviceIds: [
+            'yandex.cloud.storage.v1.BucketService',
+        ],
+        endpoint: 'storage.api.cloud.yandex.net:443',
     },
 ];
 
