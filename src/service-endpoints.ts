@@ -331,7 +331,7 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
         serviceIds: [
             'yandex.cloud.storage.v1.BucketService',
         ],
-        endpoint: 'storage.yandexcloud.net',
+        endpoint: 'storage.api.cloud.yandex.net:443',
     },
 ];
 
