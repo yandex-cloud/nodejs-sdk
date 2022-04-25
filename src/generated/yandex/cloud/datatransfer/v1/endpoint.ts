@@ -10,6 +10,14 @@ import {
   PostgresSource,
   PostgresTarget,
 } from "../../../../yandex/cloud/datatransfer/v1/endpoint/postgres";
+import {
+  MongoSource,
+  MongoTarget,
+} from "../../../../yandex/cloud/datatransfer/v1/endpoint/mongo";
+import {
+  ClickhouseSource,
+  ClickhouseTarget,
+} from "../../../../yandex/cloud/datatransfer/v1/endpoint/clickhouse";
 
 export const protobufPackage = "yandex.cloud.datatransfer.v1";
 
@@ -33,8 +41,12 @@ export interface EndpointSettings {
   $type: "yandex.cloud.datatransfer.v1.EndpointSettings";
   mysqlSource?: MysqlSource | undefined;
   postgresSource?: PostgresSource | undefined;
+  mongoSource?: MongoSource | undefined;
+  clickhouseSource?: ClickhouseSource | undefined;
   mysqlTarget?: MysqlTarget | undefined;
   postgresTarget?: PostgresTarget | undefined;
+  clickhouseTarget?: ClickhouseTarget | undefined;
+  mongoTarget?: MongoTarget | undefined;
 }
 
 const baseEndpoint: object = {
@@ -292,6 +304,18 @@ export const EndpointSettings = {
         writer.uint32(18).fork()
       ).ldelim();
     }
+    if (message.mongoSource !== undefined) {
+      MongoSource.encode(
+        message.mongoSource,
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
+    if (message.clickhouseSource !== undefined) {
+      ClickhouseSource.encode(
+        message.clickhouseSource,
+        writer.uint32(130).fork()
+      ).ldelim();
+    }
     if (message.mysqlTarget !== undefined) {
       MysqlTarget.encode(
         message.mysqlTarget,
@@ -302,6 +326,18 @@ export const EndpointSettings = {
       PostgresTarget.encode(
         message.postgresTarget,
         writer.uint32(818).fork()
+      ).ldelim();
+    }
+    if (message.clickhouseTarget !== undefined) {
+      ClickhouseTarget.encode(
+        message.clickhouseTarget,
+        writer.uint32(834).fork()
+      ).ldelim();
+    }
+    if (message.mongoTarget !== undefined) {
+      MongoTarget.encode(
+        message.mongoTarget,
+        writer.uint32(890).fork()
       ).ldelim();
     }
     return writer;
@@ -323,6 +359,15 @@ export const EndpointSettings = {
             reader.uint32()
           );
           break;
+        case 9:
+          message.mongoSource = MongoSource.decode(reader, reader.uint32());
+          break;
+        case 16:
+          message.clickhouseSource = ClickhouseSource.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         case 101:
           message.mysqlTarget = MysqlTarget.decode(reader, reader.uint32());
           break;
@@ -331,6 +376,15 @@ export const EndpointSettings = {
             reader,
             reader.uint32()
           );
+          break;
+        case 104:
+          message.clickhouseTarget = ClickhouseTarget.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 111:
+          message.mongoTarget = MongoTarget.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -350,6 +404,14 @@ export const EndpointSettings = {
       object.postgresSource !== undefined && object.postgresSource !== null
         ? PostgresSource.fromJSON(object.postgresSource)
         : undefined;
+    message.mongoSource =
+      object.mongoSource !== undefined && object.mongoSource !== null
+        ? MongoSource.fromJSON(object.mongoSource)
+        : undefined;
+    message.clickhouseSource =
+      object.clickhouseSource !== undefined && object.clickhouseSource !== null
+        ? ClickhouseSource.fromJSON(object.clickhouseSource)
+        : undefined;
     message.mysqlTarget =
       object.mysqlTarget !== undefined && object.mysqlTarget !== null
         ? MysqlTarget.fromJSON(object.mysqlTarget)
@@ -357,6 +419,14 @@ export const EndpointSettings = {
     message.postgresTarget =
       object.postgresTarget !== undefined && object.postgresTarget !== null
         ? PostgresTarget.fromJSON(object.postgresTarget)
+        : undefined;
+    message.clickhouseTarget =
+      object.clickhouseTarget !== undefined && object.clickhouseTarget !== null
+        ? ClickhouseTarget.fromJSON(object.clickhouseTarget)
+        : undefined;
+    message.mongoTarget =
+      object.mongoTarget !== undefined && object.mongoTarget !== null
+        ? MongoTarget.fromJSON(object.mongoTarget)
         : undefined;
     return message;
   },
@@ -371,6 +441,14 @@ export const EndpointSettings = {
       (obj.postgresSource = message.postgresSource
         ? PostgresSource.toJSON(message.postgresSource)
         : undefined);
+    message.mongoSource !== undefined &&
+      (obj.mongoSource = message.mongoSource
+        ? MongoSource.toJSON(message.mongoSource)
+        : undefined);
+    message.clickhouseSource !== undefined &&
+      (obj.clickhouseSource = message.clickhouseSource
+        ? ClickhouseSource.toJSON(message.clickhouseSource)
+        : undefined);
     message.mysqlTarget !== undefined &&
       (obj.mysqlTarget = message.mysqlTarget
         ? MysqlTarget.toJSON(message.mysqlTarget)
@@ -378,6 +456,14 @@ export const EndpointSettings = {
     message.postgresTarget !== undefined &&
       (obj.postgresTarget = message.postgresTarget
         ? PostgresTarget.toJSON(message.postgresTarget)
+        : undefined);
+    message.clickhouseTarget !== undefined &&
+      (obj.clickhouseTarget = message.clickhouseTarget
+        ? ClickhouseTarget.toJSON(message.clickhouseTarget)
+        : undefined);
+    message.mongoTarget !== undefined &&
+      (obj.mongoTarget = message.mongoTarget
+        ? MongoTarget.toJSON(message.mongoTarget)
         : undefined);
     return obj;
   },
@@ -394,6 +480,14 @@ export const EndpointSettings = {
       object.postgresSource !== undefined && object.postgresSource !== null
         ? PostgresSource.fromPartial(object.postgresSource)
         : undefined;
+    message.mongoSource =
+      object.mongoSource !== undefined && object.mongoSource !== null
+        ? MongoSource.fromPartial(object.mongoSource)
+        : undefined;
+    message.clickhouseSource =
+      object.clickhouseSource !== undefined && object.clickhouseSource !== null
+        ? ClickhouseSource.fromPartial(object.clickhouseSource)
+        : undefined;
     message.mysqlTarget =
       object.mysqlTarget !== undefined && object.mysqlTarget !== null
         ? MysqlTarget.fromPartial(object.mysqlTarget)
@@ -401,6 +495,14 @@ export const EndpointSettings = {
     message.postgresTarget =
       object.postgresTarget !== undefined && object.postgresTarget !== null
         ? PostgresTarget.fromPartial(object.postgresTarget)
+        : undefined;
+    message.clickhouseTarget =
+      object.clickhouseTarget !== undefined && object.clickhouseTarget !== null
+        ? ClickhouseTarget.fromPartial(object.clickhouseTarget)
+        : undefined;
+    message.mongoTarget =
+      object.mongoTarget !== undefined && object.mongoTarget !== null
+        ? MongoTarget.fromPartial(object.mongoTarget)
         : undefined;
     return message;
   },

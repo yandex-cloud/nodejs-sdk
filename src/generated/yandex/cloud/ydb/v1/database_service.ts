@@ -30,6 +30,12 @@ import {
 } from "../../../../yandex/cloud/ydb/v1/database";
 import { FieldMask } from "../../../../google/protobuf/field_mask";
 import { Operation } from "../../../../yandex/cloud/operation/operation";
+import {
+  ListAccessBindingsRequest,
+  ListAccessBindingsResponse,
+  SetAccessBindingsRequest,
+  UpdateAccessBindingsRequest,
+} from "../../../../yandex/cloud/access/access";
 
 export const protobufPackage = "yandex.cloud.ydb.v1";
 
@@ -2432,6 +2438,43 @@ export const DatabaseServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  listAccessBindings: {
+    path: "/yandex.cloud.ydb.v1.DatabaseService/ListAccessBindings",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: ListAccessBindingsRequest) =>
+      Buffer.from(ListAccessBindingsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      ListAccessBindingsRequest.decode(value),
+    responseSerialize: (value: ListAccessBindingsResponse) =>
+      Buffer.from(ListAccessBindingsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) =>
+      ListAccessBindingsResponse.decode(value),
+  },
+  setAccessBindings: {
+    path: "/yandex.cloud.ydb.v1.DatabaseService/SetAccessBindings",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: SetAccessBindingsRequest) =>
+      Buffer.from(SetAccessBindingsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      SetAccessBindingsRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  updateAccessBindings: {
+    path: "/yandex.cloud.ydb.v1.DatabaseService/UpdateAccessBindings",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: UpdateAccessBindingsRequest) =>
+      Buffer.from(UpdateAccessBindingsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      UpdateAccessBindingsRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /** Deletes the specified database. */
   delete: {
     path: "/yandex.cloud.ydb.v1.DatabaseService/Delete",
@@ -2482,6 +2525,12 @@ export interface DatabaseServiceServer extends UntypedServiceImplementation {
   start: handleUnaryCall<StartDatabaseRequest, Operation>;
   /** Stops the specified database. */
   stop: handleUnaryCall<StopDatabaseRequest, Operation>;
+  listAccessBindings: handleUnaryCall<
+    ListAccessBindingsRequest,
+    ListAccessBindingsResponse
+  >;
+  setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
+  updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
   /** Deletes the specified database. */
   delete: handleUnaryCall<DeleteDatabaseRequest, Operation>;
   /** Restores the specified backup */
@@ -2591,6 +2640,60 @@ export interface DatabaseServiceClient extends Client {
   ): ClientUnaryCall;
   stop(
     request: StopDatabaseRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  listAccessBindings(
+    request: ListAccessBindingsRequest,
+    callback: (
+      error: ServiceError | null,
+      response: ListAccessBindingsResponse
+    ) => void
+  ): ClientUnaryCall;
+  listAccessBindings(
+    request: ListAccessBindingsRequest,
+    metadata: Metadata,
+    callback: (
+      error: ServiceError | null,
+      response: ListAccessBindingsResponse
+    ) => void
+  ): ClientUnaryCall;
+  listAccessBindings(
+    request: ListAccessBindingsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (
+      error: ServiceError | null,
+      response: ListAccessBindingsResponse
+    ) => void
+  ): ClientUnaryCall;
+  setAccessBindings(
+    request: SetAccessBindingsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  setAccessBindings(
+    request: SetAccessBindingsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  setAccessBindings(
+    request: SetAccessBindingsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateAccessBindings(
+    request: UpdateAccessBindingsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateAccessBindings(
+    request: UpdateAccessBindingsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateAccessBindings(
+    request: UpdateAccessBindingsRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

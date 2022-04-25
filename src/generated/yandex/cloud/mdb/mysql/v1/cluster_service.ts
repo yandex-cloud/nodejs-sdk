@@ -124,6 +124,8 @@ export interface CreateClusterRequest {
   securityGroupIds: string[];
   /** This option prevents unintended deletion of the cluster. */
   deletionProtection: boolean;
+  /** Host groups hosting VMs of the cluster. */
+  hostGroupIds: string[];
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -241,6 +243,10 @@ export interface RestoreClusterRequest {
   folderId: string;
   /** List of security group IDs to apply to the new cluster. */
   securityGroupIds: string[];
+  /** Deletion Protection inhibits deletion of the cluster */
+  deletionProtection: boolean;
+  /** Host groups hosting VMs of the cluster. */
+  hostGroupIds: string[];
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
@@ -1172,6 +1178,7 @@ const baseCreateClusterRequest: object = {
   networkId: "",
   securityGroupIds: "",
   deletionProtection: false,
+  hostGroupIds: "",
 };
 
 export const CreateClusterRequest = {
@@ -1224,6 +1231,9 @@ export const CreateClusterRequest = {
     if (message.deletionProtection === true) {
       writer.uint32(96).bool(message.deletionProtection);
     }
+    for (const v of message.hostGroupIds) {
+      writer.uint32(106).string(v!);
+    }
     return writer;
   },
 
@@ -1239,6 +1249,7 @@ export const CreateClusterRequest = {
     message.userSpecs = [];
     message.hostSpecs = [];
     message.securityGroupIds = [];
+    message.hostGroupIds = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1285,6 +1296,9 @@ export const CreateClusterRequest = {
           break;
         case 12:
           message.deletionProtection = reader.bool();
+          break;
+        case 13:
+          message.hostGroupIds.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1343,6 +1357,9 @@ export const CreateClusterRequest = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.hostGroupIds = (object.hostGroupIds ?? []).map((e: any) =>
+      String(e)
+    );
     return message;
   },
 
@@ -1393,6 +1410,11 @@ export const CreateClusterRequest = {
     }
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    if (message.hostGroupIds) {
+      obj.hostGroupIds = message.hostGroupIds.map((e) => e);
+    } else {
+      obj.hostGroupIds = [];
+    }
     return obj;
   },
 
@@ -1425,6 +1447,7 @@ export const CreateClusterRequest = {
     message.networkId = object.networkId ?? "";
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? false;
+    message.hostGroupIds = object.hostGroupIds?.map((e) => e) || [];
     return message;
   },
 };
@@ -2226,6 +2249,8 @@ const baseRestoreClusterRequest: object = {
   networkId: "",
   folderId: "",
   securityGroupIds: "",
+  deletionProtection: false,
+  hostGroupIds: "",
 };
 
 export const RestoreClusterRequest = {
@@ -2278,6 +2303,12 @@ export const RestoreClusterRequest = {
     for (const v of message.securityGroupIds) {
       writer.uint32(98).string(v!);
     }
+    if (message.deletionProtection === true) {
+      writer.uint32(104).bool(message.deletionProtection);
+    }
+    for (const v of message.hostGroupIds) {
+      writer.uint32(114).string(v!);
+    }
     return writer;
   },
 
@@ -2291,6 +2322,7 @@ export const RestoreClusterRequest = {
     message.labels = {};
     message.hostSpecs = [];
     message.securityGroupIds = [];
+    message.hostGroupIds = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2334,6 +2366,12 @@ export const RestoreClusterRequest = {
           break;
         case 12:
           message.securityGroupIds.push(reader.string());
+          break;
+        case 13:
+          message.deletionProtection = reader.bool();
+          break;
+        case 14:
+          message.hostGroupIds.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -2389,6 +2427,14 @@ export const RestoreClusterRequest = {
     message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) =>
       String(e)
     );
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
+    message.hostGroupIds = (object.hostGroupIds ?? []).map((e: any) =>
+      String(e)
+    );
     return message;
   },
 
@@ -2425,6 +2471,13 @@ export const RestoreClusterRequest = {
     } else {
       obj.securityGroupIds = [];
     }
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
+    if (message.hostGroupIds) {
+      obj.hostGroupIds = message.hostGroupIds.map((e) => e);
+    } else {
+      obj.hostGroupIds = [];
+    }
     return obj;
   },
 
@@ -2454,6 +2507,8 @@ export const RestoreClusterRequest = {
     message.networkId = object.networkId ?? "";
     message.folderId = object.folderId ?? "";
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
+    message.deletionProtection = object.deletionProtection ?? false;
+    message.hostGroupIds = object.hostGroupIds?.map((e) => e) || [];
     return message;
   },
 };

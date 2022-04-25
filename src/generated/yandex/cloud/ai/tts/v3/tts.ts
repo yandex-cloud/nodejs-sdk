@@ -191,6 +191,11 @@ export interface Hints {
 
 export interface UtteranceSynthesisRequest {
   $type: "speechkit.tts.v3.UtteranceSynthesisRequest";
+  /**
+   * The name of the model.
+   * Specifies basic synthesis functionality. Currently should be empty. Do not use it
+   */
+  model: string;
   /** Raw text (e.g. "Hello, Alice"). */
   text: string | undefined;
   /** Text template instance, e.g. `{"Hello, {username}" with username="Alice"}`. */
@@ -1177,6 +1182,7 @@ messageTypeRegistry.set(Hints.$type, Hints);
 
 const baseUtteranceSynthesisRequest: object = {
   $type: "speechkit.tts.v3.UtteranceSynthesisRequest",
+  model: "",
   loudnessNormalizationType: 0,
   unsafeMode: false,
 };
@@ -1188,6 +1194,9 @@ export const UtteranceSynthesisRequest = {
     message: UtteranceSynthesisRequest,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
+    if (message.model !== "") {
+      writer.uint32(10).string(message.model);
+    }
     if (message.text !== undefined) {
       writer.uint32(18).string(message.text);
     }
@@ -1228,6 +1237,9 @@ export const UtteranceSynthesisRequest = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.model = reader.string();
+          break;
         case 2:
           message.text = reader.string();
           break;
@@ -1261,6 +1273,10 @@ export const UtteranceSynthesisRequest = {
     const message = {
       ...baseUtteranceSynthesisRequest,
     } as UtteranceSynthesisRequest;
+    message.model =
+      object.model !== undefined && object.model !== null
+        ? String(object.model)
+        : "";
     message.text =
       object.text !== undefined && object.text !== null
         ? String(object.text)
@@ -1290,6 +1306,7 @@ export const UtteranceSynthesisRequest = {
 
   toJSON(message: UtteranceSynthesisRequest): unknown {
     const obj: any = {};
+    message.model !== undefined && (obj.model = message.model);
     message.text !== undefined && (obj.text = message.text);
     message.textTemplate !== undefined &&
       (obj.textTemplate = message.textTemplate
@@ -1319,6 +1336,7 @@ export const UtteranceSynthesisRequest = {
     const message = {
       ...baseUtteranceSynthesisRequest,
     } as UtteranceSynthesisRequest;
+    message.model = object.model ?? "";
     message.text = object.text ?? undefined;
     message.textTemplate =
       object.textTemplate !== undefined && object.textTemplate !== null

@@ -7,10 +7,12 @@ import {
   ChannelOptions,
   UntypedServiceImplementation,
   handleUnaryCall,
+  handleServerStreamingCall,
   Client,
   ClientUnaryCall,
   Metadata,
   CallOptions,
+  ClientReadableStream,
   ServiceError,
 } from "@grpc/grpc-js";
 import _m0 from "protobufjs/minimal";
@@ -458,6 +460,98 @@ export interface ListClusterBackupsRequest {
    * returned by a previous list request.
    */
   pageToken: string;
+}
+
+export interface StreamLogRecord {
+  $type: "yandex.cloud.mdb.greenplum.v1.StreamLogRecord";
+  /** One of the requested log records. */
+  record?: LogRecord;
+  /**
+   * This token allows you to continue streaming logs starting from the exact
+   * same record. To continue streaming, specify value of `next_record_token`
+   * as value for `record_token` parameter in the next StreamLogs request.
+   * This value is interchangeable with `next_page_token` from ListLogs method.
+   */
+  nextRecordToken: string;
+}
+
+export interface StreamClusterLogsRequest {
+  $type: "yandex.cloud.mdb.greenplum.v1.StreamClusterLogsRequest";
+  /** Required. ID of the Greenplum cluster. */
+  clusterId: string;
+  /** Columns from logs table to get in the response. */
+  columnFilter: string[];
+  serviceType: StreamClusterLogsRequest_ServiceType;
+  /** Start timestamp for the logs request. */
+  fromTime?: Date;
+  /**
+   * End timestamp for the logs request.
+   * If this field is not set, all existing logs will be sent and then the new ones as
+   * they appear. In essence it has 'tail -f' semantics.
+   */
+  toTime?: Date;
+  /**
+   * Record token. Set `record_token` to the `next_record_token` returned by a previous StreamLogs
+   * request to start streaming from next log record.
+   */
+  recordToken: string;
+  /**
+   * A filter expression that filters resources listed in the response.
+   * The expression must specify:
+   * 1. The field name. Currently filtering can be applied to the [LogRecord.logs.message.hostname],
+   * [LogRecord.logs.message.error_severity] (for GREENPLUM service), [LogRecord.logs.message.level] (for POOLER service) fields.
+   * 2. An `=` operator.
+   * 3. The value in double quotes (`"`). Must be 1-63 characters long and match the regular expression `[a-z0-9.-]{1,61}`.
+   * Examples of a filter:
+   * `message.hostname='node1.db.cloud.yandex.net'`
+   * `message.error_severity IN ("ERROR", "FATAL", "PANIC") AND message.hostname = "node1.db.cloud.yandex.net"`
+   */
+  filter: string;
+}
+
+export enum StreamClusterLogsRequest_ServiceType {
+  /** SERVICE_TYPE_UNSPECIFIED - Type is not specified. */
+  SERVICE_TYPE_UNSPECIFIED = 0,
+  /** GREENPLUM - Greenplum® activity logs. */
+  GREENPLUM = 1,
+  /** GREENPLUM_POOLER - Greenplum® pooler logs. */
+  GREENPLUM_POOLER = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function streamClusterLogsRequest_ServiceTypeFromJSON(
+  object: any
+): StreamClusterLogsRequest_ServiceType {
+  switch (object) {
+    case 0:
+    case "SERVICE_TYPE_UNSPECIFIED":
+      return StreamClusterLogsRequest_ServiceType.SERVICE_TYPE_UNSPECIFIED;
+    case 1:
+    case "GREENPLUM":
+      return StreamClusterLogsRequest_ServiceType.GREENPLUM;
+    case 2:
+    case "GREENPLUM_POOLER":
+      return StreamClusterLogsRequest_ServiceType.GREENPLUM_POOLER;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return StreamClusterLogsRequest_ServiceType.UNRECOGNIZED;
+  }
+}
+
+export function streamClusterLogsRequest_ServiceTypeToJSON(
+  object: StreamClusterLogsRequest_ServiceType
+): string {
+  switch (object) {
+    case StreamClusterLogsRequest_ServiceType.SERVICE_TYPE_UNSPECIFIED:
+      return "SERVICE_TYPE_UNSPECIFIED";
+    case StreamClusterLogsRequest_ServiceType.GREENPLUM:
+      return "GREENPLUM";
+    case StreamClusterLogsRequest_ServiceType.GREENPLUM_POOLER:
+      return "GREENPLUM_POOLER";
+    default:
+      return "UNKNOWN";
+  }
 }
 
 export interface ListClusterBackupsResponse {
@@ -3339,6 +3433,256 @@ messageTypeRegistry.set(
   ListClusterBackupsRequest
 );
 
+const baseStreamLogRecord: object = {
+  $type: "yandex.cloud.mdb.greenplum.v1.StreamLogRecord",
+  nextRecordToken: "",
+};
+
+export const StreamLogRecord = {
+  $type: "yandex.cloud.mdb.greenplum.v1.StreamLogRecord" as const,
+
+  encode(
+    message: StreamLogRecord,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.record !== undefined) {
+      LogRecord.encode(message.record, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextRecordToken !== "") {
+      writer.uint32(18).string(message.nextRecordToken);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): StreamLogRecord {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseStreamLogRecord } as StreamLogRecord;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.record = LogRecord.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.nextRecordToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StreamLogRecord {
+    const message = { ...baseStreamLogRecord } as StreamLogRecord;
+    message.record =
+      object.record !== undefined && object.record !== null
+        ? LogRecord.fromJSON(object.record)
+        : undefined;
+    message.nextRecordToken =
+      object.nextRecordToken !== undefined && object.nextRecordToken !== null
+        ? String(object.nextRecordToken)
+        : "";
+    return message;
+  },
+
+  toJSON(message: StreamLogRecord): unknown {
+    const obj: any = {};
+    message.record !== undefined &&
+      (obj.record = message.record
+        ? LogRecord.toJSON(message.record)
+        : undefined);
+    message.nextRecordToken !== undefined &&
+      (obj.nextRecordToken = message.nextRecordToken);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<StreamLogRecord>, I>>(
+    object: I
+  ): StreamLogRecord {
+    const message = { ...baseStreamLogRecord } as StreamLogRecord;
+    message.record =
+      object.record !== undefined && object.record !== null
+        ? LogRecord.fromPartial(object.record)
+        : undefined;
+    message.nextRecordToken = object.nextRecordToken ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(StreamLogRecord.$type, StreamLogRecord);
+
+const baseStreamClusterLogsRequest: object = {
+  $type: "yandex.cloud.mdb.greenplum.v1.StreamClusterLogsRequest",
+  clusterId: "",
+  columnFilter: "",
+  serviceType: 0,
+  recordToken: "",
+  filter: "",
+};
+
+export const StreamClusterLogsRequest = {
+  $type: "yandex.cloud.mdb.greenplum.v1.StreamClusterLogsRequest" as const,
+
+  encode(
+    message: StreamClusterLogsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    for (const v of message.columnFilter) {
+      writer.uint32(18).string(v!);
+    }
+    if (message.serviceType !== 0) {
+      writer.uint32(24).int32(message.serviceType);
+    }
+    if (message.fromTime !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.fromTime),
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    if (message.toTime !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.toTime),
+        writer.uint32(42).fork()
+      ).ldelim();
+    }
+    if (message.recordToken !== "") {
+      writer.uint32(50).string(message.recordToken);
+    }
+    if (message.filter !== "") {
+      writer.uint32(58).string(message.filter);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): StreamClusterLogsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseStreamClusterLogsRequest,
+    } as StreamClusterLogsRequest;
+    message.columnFilter = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.columnFilter.push(reader.string());
+          break;
+        case 3:
+          message.serviceType = reader.int32() as any;
+          break;
+        case 4:
+          message.fromTime = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 5:
+          message.toTime = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 6:
+          message.recordToken = reader.string();
+          break;
+        case 7:
+          message.filter = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StreamClusterLogsRequest {
+    const message = {
+      ...baseStreamClusterLogsRequest,
+    } as StreamClusterLogsRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.columnFilter = (object.columnFilter ?? []).map((e: any) =>
+      String(e)
+    );
+    message.serviceType =
+      object.serviceType !== undefined && object.serviceType !== null
+        ? streamClusterLogsRequest_ServiceTypeFromJSON(object.serviceType)
+        : 0;
+    message.fromTime =
+      object.fromTime !== undefined && object.fromTime !== null
+        ? fromJsonTimestamp(object.fromTime)
+        : undefined;
+    message.toTime =
+      object.toTime !== undefined && object.toTime !== null
+        ? fromJsonTimestamp(object.toTime)
+        : undefined;
+    message.recordToken =
+      object.recordToken !== undefined && object.recordToken !== null
+        ? String(object.recordToken)
+        : "";
+    message.filter =
+      object.filter !== undefined && object.filter !== null
+        ? String(object.filter)
+        : "";
+    return message;
+  },
+
+  toJSON(message: StreamClusterLogsRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    if (message.columnFilter) {
+      obj.columnFilter = message.columnFilter.map((e) => e);
+    } else {
+      obj.columnFilter = [];
+    }
+    message.serviceType !== undefined &&
+      (obj.serviceType = streamClusterLogsRequest_ServiceTypeToJSON(
+        message.serviceType
+      ));
+    message.fromTime !== undefined &&
+      (obj.fromTime = message.fromTime.toISOString());
+    message.toTime !== undefined && (obj.toTime = message.toTime.toISOString());
+    message.recordToken !== undefined &&
+      (obj.recordToken = message.recordToken);
+    message.filter !== undefined && (obj.filter = message.filter);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<StreamClusterLogsRequest>, I>>(
+    object: I
+  ): StreamClusterLogsRequest {
+    const message = {
+      ...baseStreamClusterLogsRequest,
+    } as StreamClusterLogsRequest;
+    message.clusterId = object.clusterId ?? "";
+    message.columnFilter = object.columnFilter?.map((e) => e) || [];
+    message.serviceType = object.serviceType ?? 0;
+    message.fromTime = object.fromTime ?? undefined;
+    message.toTime = object.toTime ?? undefined;
+    message.recordToken = object.recordToken ?? "";
+    message.filter = object.filter ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  StreamClusterLogsRequest.$type,
+  StreamClusterLogsRequest
+);
+
 const baseListClusterBackupsResponse: object = {
   $type: "yandex.cloud.mdb.greenplum.v1.ListClusterBackupsResponse",
   nextPageToken: "",
@@ -4069,6 +4413,19 @@ export const ClusterServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListClusterLogsResponse.decode(value),
   },
+  /** Same as ListLogs but using server-side streaming. Also allows for 'tail -f' semantics. */
+  streamLogs: {
+    path: "/yandex.cloud.mdb.greenplum.v1.ClusterService/StreamLogs",
+    requestStream: false,
+    responseStream: true,
+    requestSerialize: (value: StreamClusterLogsRequest) =>
+      Buffer.from(StreamClusterLogsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      StreamClusterLogsRequest.decode(value),
+    responseSerialize: (value: StreamLogRecord) =>
+      Buffer.from(StreamLogRecord.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => StreamLogRecord.decode(value),
+  },
   /** Retrieves the list of available backups for the specified Greenplum cluster. */
   listBackups: {
     path: "/yandex.cloud.mdb.greenplum.v1.ClusterService/ListBackups",
@@ -4133,6 +4490,11 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
   >;
   /** Retrieves logs for the specified Greenplum® cluster. */
   listLogs: handleUnaryCall<ListClusterLogsRequest, ListClusterLogsResponse>;
+  /** Same as ListLogs but using server-side streaming. Also allows for 'tail -f' semantics. */
+  streamLogs: handleServerStreamingCall<
+    StreamClusterLogsRequest,
+    StreamLogRecord
+  >;
   /** Retrieves the list of available backups for the specified Greenplum cluster. */
   listBackups: handleUnaryCall<
     ListClusterBackupsRequest,
@@ -4368,6 +4730,16 @@ export interface ClusterServiceClient extends Client {
       response: ListClusterLogsResponse
     ) => void
   ): ClientUnaryCall;
+  /** Same as ListLogs but using server-side streaming. Also allows for 'tail -f' semantics. */
+  streamLogs(
+    request: StreamClusterLogsRequest,
+    options?: Partial<CallOptions>
+  ): ClientReadableStream<StreamLogRecord>;
+  streamLogs(
+    request: StreamClusterLogsRequest,
+    metadata?: Metadata,
+    options?: Partial<CallOptions>
+  ): ClientReadableStream<StreamLogRecord>;
   /** Retrieves the list of available backups for the specified Greenplum cluster. */
   listBackups(
     request: ListClusterBackupsRequest,

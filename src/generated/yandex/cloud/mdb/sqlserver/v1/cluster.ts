@@ -58,6 +58,8 @@ export interface Cluster {
   sqlcollation: string;
   /** Host groups hosting VMs of the cluster. */
   hostGroupIds: string[];
+  /** ID of the service account used for access to Yandex Object Storage. */
+  serviceAccountId: string;
 }
 
 export enum Cluster_Environment {
@@ -506,6 +508,7 @@ const baseCluster: object = {
   deletionProtection: false,
   sqlcollation: "",
   hostGroupIds: "",
+  serviceAccountId: "",
 };
 
 export const Cluster = {
@@ -573,6 +576,9 @@ export const Cluster = {
     for (const v of message.hostGroupIds) {
       writer.uint32(130).string(v!);
     }
+    if (message.serviceAccountId !== "") {
+      writer.uint32(138).string(message.serviceAccountId);
+    }
     return writer;
   },
 
@@ -639,6 +645,9 @@ export const Cluster = {
           break;
         case 16:
           message.hostGroupIds.push(reader.string());
+          break;
+        case 17:
+          message.serviceAccountId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -712,6 +721,10 @@ export const Cluster = {
     message.hostGroupIds = (object.hostGroupIds ?? []).map((e: any) =>
       String(e)
     );
+    message.serviceAccountId =
+      object.serviceAccountId !== undefined && object.serviceAccountId !== null
+        ? String(object.serviceAccountId)
+        : "";
     return message;
   },
 
@@ -762,6 +775,8 @@ export const Cluster = {
     } else {
       obj.hostGroupIds = [];
     }
+    message.serviceAccountId !== undefined &&
+      (obj.serviceAccountId = message.serviceAccountId);
     return obj;
   },
 
@@ -794,6 +809,7 @@ export const Cluster = {
     message.deletionProtection = object.deletionProtection ?? false;
     message.sqlcollation = object.sqlcollation ?? "";
     message.hostGroupIds = object.hostGroupIds?.map((e) => e) || [];
+    message.serviceAccountId = object.serviceAccountId ?? "";
     return message;
   },
 };

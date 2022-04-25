@@ -156,6 +156,18 @@ export interface DeployContainerRevisionMetadata {
   containerRevisionId: string;
 }
 
+export interface RollbackContainerRequest {
+  $type: "yandex.cloud.serverless.containers.v1.RollbackContainerRequest";
+  containerId: string;
+  revisionId: string;
+}
+
+export interface RollbackContainerMetadata {
+  $type: "yandex.cloud.serverless.containers.v1.RollbackContainerMetadata";
+  containerId: string;
+  revisionId: string;
+}
+
 export interface ListContainerOperationsRequest {
   $type: "yandex.cloud.serverless.containers.v1.ListContainerOperationsRequest";
   containerId: string;
@@ -1999,6 +2011,184 @@ messageTypeRegistry.set(
   DeployContainerRevisionMetadata
 );
 
+const baseRollbackContainerRequest: object = {
+  $type: "yandex.cloud.serverless.containers.v1.RollbackContainerRequest",
+  containerId: "",
+  revisionId: "",
+};
+
+export const RollbackContainerRequest = {
+  $type:
+    "yandex.cloud.serverless.containers.v1.RollbackContainerRequest" as const,
+
+  encode(
+    message: RollbackContainerRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.containerId !== "") {
+      writer.uint32(10).string(message.containerId);
+    }
+    if (message.revisionId !== "") {
+      writer.uint32(18).string(message.revisionId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RollbackContainerRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseRollbackContainerRequest,
+    } as RollbackContainerRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.containerId = reader.string();
+          break;
+        case 2:
+          message.revisionId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RollbackContainerRequest {
+    const message = {
+      ...baseRollbackContainerRequest,
+    } as RollbackContainerRequest;
+    message.containerId =
+      object.containerId !== undefined && object.containerId !== null
+        ? String(object.containerId)
+        : "";
+    message.revisionId =
+      object.revisionId !== undefined && object.revisionId !== null
+        ? String(object.revisionId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: RollbackContainerRequest): unknown {
+    const obj: any = {};
+    message.containerId !== undefined &&
+      (obj.containerId = message.containerId);
+    message.revisionId !== undefined && (obj.revisionId = message.revisionId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RollbackContainerRequest>, I>>(
+    object: I
+  ): RollbackContainerRequest {
+    const message = {
+      ...baseRollbackContainerRequest,
+    } as RollbackContainerRequest;
+    message.containerId = object.containerId ?? "";
+    message.revisionId = object.revisionId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  RollbackContainerRequest.$type,
+  RollbackContainerRequest
+);
+
+const baseRollbackContainerMetadata: object = {
+  $type: "yandex.cloud.serverless.containers.v1.RollbackContainerMetadata",
+  containerId: "",
+  revisionId: "",
+};
+
+export const RollbackContainerMetadata = {
+  $type:
+    "yandex.cloud.serverless.containers.v1.RollbackContainerMetadata" as const,
+
+  encode(
+    message: RollbackContainerMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.containerId !== "") {
+      writer.uint32(10).string(message.containerId);
+    }
+    if (message.revisionId !== "") {
+      writer.uint32(18).string(message.revisionId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RollbackContainerMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseRollbackContainerMetadata,
+    } as RollbackContainerMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.containerId = reader.string();
+          break;
+        case 2:
+          message.revisionId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RollbackContainerMetadata {
+    const message = {
+      ...baseRollbackContainerMetadata,
+    } as RollbackContainerMetadata;
+    message.containerId =
+      object.containerId !== undefined && object.containerId !== null
+        ? String(object.containerId)
+        : "";
+    message.revisionId =
+      object.revisionId !== undefined && object.revisionId !== null
+        ? String(object.revisionId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: RollbackContainerMetadata): unknown {
+    const obj: any = {};
+    message.containerId !== undefined &&
+      (obj.containerId = message.containerId);
+    message.revisionId !== undefined && (obj.revisionId = message.revisionId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RollbackContainerMetadata>, I>>(
+    object: I
+  ): RollbackContainerMetadata {
+    const message = {
+      ...baseRollbackContainerMetadata,
+    } as RollbackContainerMetadata;
+    message.containerId = object.containerId ?? "";
+    message.revisionId = object.revisionId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  RollbackContainerMetadata.$type,
+  RollbackContainerMetadata
+);
+
 const baseListContainerOperationsRequest: object = {
   $type: "yandex.cloud.serverless.containers.v1.ListContainerOperationsRequest",
   containerId: "",
@@ -2280,6 +2470,18 @@ export const ContainerServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  rollback: {
+    path: "/yandex.cloud.serverless.containers.v1.ContainerService/Rollback",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: RollbackContainerRequest) =>
+      Buffer.from(RollbackContainerRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      RollbackContainerRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   getRevision: {
     path: "/yandex.cloud.serverless.containers.v1.ContainerService/GetRevision",
     requestStream: false,
@@ -2364,6 +2566,7 @@ export interface ContainerServiceServer extends UntypedServiceImplementation {
   update: handleUnaryCall<UpdateContainerRequest, Operation>;
   delete: handleUnaryCall<DeleteContainerRequest, Operation>;
   deployRevision: handleUnaryCall<DeployContainerRevisionRequest, Operation>;
+  rollback: handleUnaryCall<RollbackContainerRequest, Operation>;
   getRevision: handleUnaryCall<GetContainerRevisionRequest, Revision>;
   listRevisions: handleUnaryCall<
     ListContainersRevisionsRequest,
@@ -2477,6 +2680,21 @@ export interface ContainerServiceClient extends Client {
   ): ClientUnaryCall;
   deployRevision(
     request: DeployContainerRevisionRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  rollback(
+    request: RollbackContainerRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  rollback(
+    request: RollbackContainerRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  rollback(
+    request: RollbackContainerRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

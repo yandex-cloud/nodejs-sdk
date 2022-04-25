@@ -187,12 +187,16 @@ export const servicesConfig: ServicesConfig = {
         mdbproxy_proxy_service: { importClassName: 'ProxyServiceClient' },
         triggers_trigger_service: { importClassName: 'TriggerServiceClient' },
     },
+    storage: {
+        bucket_service: { importClassName: 'BucketServiceClient' },
+    },
     vpc: {
         address_service: { importClassName: 'AddressServiceClient' },
         network_service: { importClassName: 'NetworkServiceClient' },
         route_table_service: { importClassName: 'RouteTableServiceClient' },
         security_group_service: { importClassName: 'SecurityGroupServiceClient' },
         subnet_service: { importClassName: 'SubnetServiceClient' },
+        gateway_service: { importClassName: 'GatewayServiceClient' },
     },
     ydb: {
         backup_service: { importClassName: 'BackupServiceClient', exportClassName: 'YdbBackupServiceClient' },
