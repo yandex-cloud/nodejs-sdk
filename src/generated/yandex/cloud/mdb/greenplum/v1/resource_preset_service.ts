@@ -14,32 +14,39 @@ import {
   ServiceError,
 } from "@grpc/grpc-js";
 import _m0 from "protobufjs/minimal";
-import { ResourcePreset } from "../../../../../yandex/cloud/mdb/greenplum/v1/resource_preset";
+import {
+  ResourcePreset_Type,
+  ResourcePreset,
+  resourcePreset_TypeFromJSON,
+  resourcePreset_TypeToJSON,
+} from "../../../../../yandex/cloud/mdb/greenplum/v1/resource_preset";
 
 export const protobufPackage = "yandex.cloud.mdb.greenplum.v1";
 
 export interface GetResourcePresetRequest {
   $type: "yandex.cloud.mdb.greenplum.v1.GetResourcePresetRequest";
   /**
-   * Required. ID of the resource preset to return.
+   * ID of the resource preset to return.
+   *
    * To get the resource preset ID, use a [ResourcePresetService.List] request.
    */
   resourcePresetId: string;
+  /** Required. ResourcePreset type - master or segment. */
+  type: ResourcePreset_Type;
 }
 
 export interface ListResourcePresetsRequest {
   $type: "yandex.cloud.mdb.greenplum.v1.ListResourcePresetsRequest";
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size], the service returns a [ListResourcePresetsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the service returns a [ListResourcePresetsResponse.next_page_token] that can be used to get the next page of results in subsequent list requests.
    */
   pageSize: number;
-  /**
-   * Page token. To get the next page of results, set [page_token] to the [ListResourcePresetsResponse.next_page_token]
-   * returned by a previous list request.
-   */
+  /** Page token. To get the next page of results, set [page_token] to the [ListResourcePresetsResponse.next_page_token] returned by the previous list request. */
   pageToken: string;
+  /** Required. ResourcePreset type - master or segment. */
+  type: ResourcePreset_Type;
 }
 
 export interface ListResourcePresetsResponse {
@@ -47,10 +54,11 @@ export interface ListResourcePresetsResponse {
   /** List of resource presets. */
   resourcePresets: ResourcePreset[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListResourcePresetsRequest.page_size], use the [next_page_token] as the value
-   * for the [ListResourcePresetsRequest.page_token] parameter in the next list request. Each subsequent
-   * list request will have its own [next_page_token] to continue paging through the results.
+   * This token allows you to get the next page of results for list requests.
+   *
+   * If the number of results is larger than [ListResourcePresetsRequest.page_size], use the [next_page_token] as the value for the [ListResourcePresetsRequest.page_token] parameter in the next list request.
+   *
+   * Each subsequent list request has its own [next_page_token] to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -58,6 +66,7 @@ export interface ListResourcePresetsResponse {
 const baseGetResourcePresetRequest: object = {
   $type: "yandex.cloud.mdb.greenplum.v1.GetResourcePresetRequest",
   resourcePresetId: "",
+  type: 0,
 };
 
 export const GetResourcePresetRequest = {
@@ -69,6 +78,9 @@ export const GetResourcePresetRequest = {
   ): _m0.Writer {
     if (message.resourcePresetId !== "") {
       writer.uint32(10).string(message.resourcePresetId);
+    }
+    if (message.type !== 0) {
+      writer.uint32(16).int32(message.type);
     }
     return writer;
   },
@@ -88,6 +100,9 @@ export const GetResourcePresetRequest = {
         case 1:
           message.resourcePresetId = reader.string();
           break;
+        case 2:
+          message.type = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -104,6 +119,10 @@ export const GetResourcePresetRequest = {
       object.resourcePresetId !== undefined && object.resourcePresetId !== null
         ? String(object.resourcePresetId)
         : "";
+    message.type =
+      object.type !== undefined && object.type !== null
+        ? resourcePreset_TypeFromJSON(object.type)
+        : 0;
     return message;
   },
 
@@ -111,6 +130,8 @@ export const GetResourcePresetRequest = {
     const obj: any = {};
     message.resourcePresetId !== undefined &&
       (obj.resourcePresetId = message.resourcePresetId);
+    message.type !== undefined &&
+      (obj.type = resourcePreset_TypeToJSON(message.type));
     return obj;
   },
 
@@ -121,6 +142,7 @@ export const GetResourcePresetRequest = {
       ...baseGetResourcePresetRequest,
     } as GetResourcePresetRequest;
     message.resourcePresetId = object.resourcePresetId ?? "";
+    message.type = object.type ?? 0;
     return message;
   },
 };
@@ -134,6 +156,7 @@ const baseListResourcePresetsRequest: object = {
   $type: "yandex.cloud.mdb.greenplum.v1.ListResourcePresetsRequest",
   pageSize: 0,
   pageToken: "",
+  type: 0,
 };
 
 export const ListResourcePresetsRequest = {
@@ -148,6 +171,9 @@ export const ListResourcePresetsRequest = {
     }
     if (message.pageToken !== "") {
       writer.uint32(26).string(message.pageToken);
+    }
+    if (message.type !== 0) {
+      writer.uint32(32).int32(message.type);
     }
     return writer;
   },
@@ -170,6 +196,9 @@ export const ListResourcePresetsRequest = {
         case 3:
           message.pageToken = reader.string();
           break;
+        case 4:
+          message.type = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -190,6 +219,10 @@ export const ListResourcePresetsRequest = {
       object.pageToken !== undefined && object.pageToken !== null
         ? String(object.pageToken)
         : "";
+    message.type =
+      object.type !== undefined && object.type !== null
+        ? resourcePreset_TypeFromJSON(object.type)
+        : 0;
     return message;
   },
 
@@ -198,6 +231,8 @@ export const ListResourcePresetsRequest = {
     message.pageSize !== undefined &&
       (obj.pageSize = Math.round(message.pageSize));
     message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+    message.type !== undefined &&
+      (obj.type = resourcePreset_TypeToJSON(message.type));
     return obj;
   },
 
@@ -209,6 +244,7 @@ export const ListResourcePresetsRequest = {
     } as ListResourcePresetsRequest;
     message.pageSize = object.pageSize ?? 0;
     message.pageToken = object.pageToken ?? "";
+    message.type = object.type ?? 0;
     return message;
   },
 };

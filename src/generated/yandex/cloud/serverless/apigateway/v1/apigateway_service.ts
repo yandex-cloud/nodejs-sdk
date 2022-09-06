@@ -165,8 +165,16 @@ export interface AddDomainRequest {
   $type: "yandex.cloud.serverless.apigateway.v1.AddDomainRequest";
   /** ID of the API gateway that the domain is attached to. */
   apiGatewayId: string;
-  /** ID of the attaching domain. */
+  /**
+   * ID of the attaching domain.
+   *
+   * @deprecated
+   */
   domainId: string;
+  /** Name of the attaching domain. */
+  domainName: string;
+  /** ID of certificate for the attaching domain. */
+  certificateId: string;
 }
 
 export interface RemoveDomainRequest {
@@ -201,6 +209,8 @@ export interface AddDomainMetadata {
   apiGatewayId: string;
   /** ID of the attaching domain. */
   domainId: string;
+  /** Name of the attaching domain. */
+  domainName: string;
 }
 
 export interface RemoveDomainMetadata {
@@ -1187,6 +1197,8 @@ const baseAddDomainRequest: object = {
   $type: "yandex.cloud.serverless.apigateway.v1.AddDomainRequest",
   apiGatewayId: "",
   domainId: "",
+  domainName: "",
+  certificateId: "",
 };
 
 export const AddDomainRequest = {
@@ -1201,6 +1213,12 @@ export const AddDomainRequest = {
     }
     if (message.domainId !== "") {
       writer.uint32(18).string(message.domainId);
+    }
+    if (message.domainName !== "") {
+      writer.uint32(26).string(message.domainName);
+    }
+    if (message.certificateId !== "") {
+      writer.uint32(34).string(message.certificateId);
     }
     return writer;
   },
@@ -1217,6 +1235,12 @@ export const AddDomainRequest = {
           break;
         case 2:
           message.domainId = reader.string();
+          break;
+        case 3:
+          message.domainName = reader.string();
+          break;
+        case 4:
+          message.certificateId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1236,6 +1260,14 @@ export const AddDomainRequest = {
       object.domainId !== undefined && object.domainId !== null
         ? String(object.domainId)
         : "";
+    message.domainName =
+      object.domainName !== undefined && object.domainName !== null
+        ? String(object.domainName)
+        : "";
+    message.certificateId =
+      object.certificateId !== undefined && object.certificateId !== null
+        ? String(object.certificateId)
+        : "";
     return message;
   },
 
@@ -1244,6 +1276,9 @@ export const AddDomainRequest = {
     message.apiGatewayId !== undefined &&
       (obj.apiGatewayId = message.apiGatewayId);
     message.domainId !== undefined && (obj.domainId = message.domainId);
+    message.domainName !== undefined && (obj.domainName = message.domainName);
+    message.certificateId !== undefined &&
+      (obj.certificateId = message.certificateId);
     return obj;
   },
 
@@ -1253,6 +1288,8 @@ export const AddDomainRequest = {
     const message = { ...baseAddDomainRequest } as AddDomainRequest;
     message.apiGatewayId = object.apiGatewayId ?? "";
     message.domainId = object.domainId ?? "";
+    message.domainName = object.domainName ?? "";
+    message.certificateId = object.certificateId ?? "";
     return message;
   },
 };
@@ -1567,6 +1604,7 @@ const baseAddDomainMetadata: object = {
   $type: "yandex.cloud.serverless.apigateway.v1.AddDomainMetadata",
   apiGatewayId: "",
   domainId: "",
+  domainName: "",
 };
 
 export const AddDomainMetadata = {
@@ -1581,6 +1619,9 @@ export const AddDomainMetadata = {
     }
     if (message.domainId !== "") {
       writer.uint32(18).string(message.domainId);
+    }
+    if (message.domainName !== "") {
+      writer.uint32(26).string(message.domainName);
     }
     return writer;
   },
@@ -1597,6 +1638,9 @@ export const AddDomainMetadata = {
           break;
         case 2:
           message.domainId = reader.string();
+          break;
+        case 3:
+          message.domainName = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1616,6 +1660,10 @@ export const AddDomainMetadata = {
       object.domainId !== undefined && object.domainId !== null
         ? String(object.domainId)
         : "";
+    message.domainName =
+      object.domainName !== undefined && object.domainName !== null
+        ? String(object.domainName)
+        : "";
     return message;
   },
 
@@ -1624,6 +1672,7 @@ export const AddDomainMetadata = {
     message.apiGatewayId !== undefined &&
       (obj.apiGatewayId = message.apiGatewayId);
     message.domainId !== undefined && (obj.domainId = message.domainId);
+    message.domainName !== undefined && (obj.domainName = message.domainName);
     return obj;
   },
 
@@ -1633,6 +1682,7 @@ export const AddDomainMetadata = {
     const message = { ...baseAddDomainMetadata } as AddDomainMetadata;
     message.apiGatewayId = object.apiGatewayId ?? "";
     message.domainId = object.domainId ?? "";
+    message.domainName = object.domainName ?? "";
     return message;
   },
 };

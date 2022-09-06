@@ -1,3 +1,5 @@
+export * as group from './v1/group'
+export * as group_service from './v1/group_service'
 export * as organization from './v1/organization'
 export * as organization_service from './v1/organization_service'
 export * as user_account from './v1/user_account'

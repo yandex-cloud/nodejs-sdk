@@ -37,7 +37,7 @@ export interface ListResourcePresetsRequest {
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the [ListResourcePresetsResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }

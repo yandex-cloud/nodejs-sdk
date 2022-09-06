@@ -224,13 +224,16 @@ export interface ListDnsZoneRecordSetsRequest {
    */
   pageToken: string;
   /**
-   * A filter expression that filters record sets listed in the response.
+   * A filter expression that filters record sets listed in the response. The expression consists of one or more conditions united by `AND` operator: `<condition1> [AND <condition2> [<...> AND <conditionN>]]`.
    *
-   * The expression must specify:
-   * 1. The field name. Currently you can use filtering only on the [RecordSet.name] and [RecordSet.type] fields.
-   * 2. An `=` operator.
-   * 3. The value in double quotes (`"`). Must be 3-63 characters long and match the regular expression `[a-z][-a-z0-9]{1,61}[a-z0-9]`.
-   * Example of a filter: `name=my-record-set`.
+   * Each condition has the form `<field> <operator> <value>`, where:
+   * 1. `<field>` is the field name. Currently you can use filtering only on the [RecordSet.name] and [RecordSet.type] fields.
+   * 2. `<operator>` is a logical operator, one of `=`, `!=`, `IN`, `NOT IN`.
+   * 3. `<value>` represents a value.
+   * 3.1. In case of single value condition (`=` or `!=`), the value is a string in double (`"`) or single (`'`) quotes. C-style escape sequences are supported (`\"` turns to `"`, `\'` to `'`, `\\` to backslash).
+   * 3.2. In case of a list of values condition (`IN` or `NOT IN`), the value is `(<string1>, <string2>, .., <stringN>)`, where `<string>` is a string in double (`"`) or single (`'`) quotes.
+   *
+   * Examples of a filter: `name="my-record-set"`, `type IN ("MX","A") AND name="works.on.my.machine."`.
    */
   filter: string;
 }
@@ -285,6 +288,14 @@ export interface UpsertRecordSetsRequest {
 
 export interface UpsertRecordSetsMetadata {
   $type: "yandex.cloud.dns.v1.UpsertRecordSetsMetadata";
+}
+
+export interface RecordSetDiff {
+  $type: "yandex.cloud.dns.v1.RecordSetDiff";
+  /** List of record sets that were added */
+  additions: RecordSet[];
+  /** List of record sets that were deleted */
+  deletions: RecordSet[];
 }
 
 export interface ListDnsZoneOperationsRequest {
@@ -2071,6 +2082,93 @@ messageTypeRegistry.set(
   UpsertRecordSetsMetadata.$type,
   UpsertRecordSetsMetadata
 );
+
+const baseRecordSetDiff: object = {
+  $type: "yandex.cloud.dns.v1.RecordSetDiff",
+};
+
+export const RecordSetDiff = {
+  $type: "yandex.cloud.dns.v1.RecordSetDiff" as const,
+
+  encode(
+    message: RecordSetDiff,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.additions) {
+      RecordSet.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    for (const v of message.deletions) {
+      RecordSet.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): RecordSetDiff {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseRecordSetDiff } as RecordSetDiff;
+    message.additions = [];
+    message.deletions = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.additions.push(RecordSet.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.deletions.push(RecordSet.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RecordSetDiff {
+    const message = { ...baseRecordSetDiff } as RecordSetDiff;
+    message.additions = (object.additions ?? []).map((e: any) =>
+      RecordSet.fromJSON(e)
+    );
+    message.deletions = (object.deletions ?? []).map((e: any) =>
+      RecordSet.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: RecordSetDiff): unknown {
+    const obj: any = {};
+    if (message.additions) {
+      obj.additions = message.additions.map((e) =>
+        e ? RecordSet.toJSON(e) : undefined
+      );
+    } else {
+      obj.additions = [];
+    }
+    if (message.deletions) {
+      obj.deletions = message.deletions.map((e) =>
+        e ? RecordSet.toJSON(e) : undefined
+      );
+    } else {
+      obj.deletions = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RecordSetDiff>, I>>(
+    object: I
+  ): RecordSetDiff {
+    const message = { ...baseRecordSetDiff } as RecordSetDiff;
+    message.additions =
+      object.additions?.map((e) => RecordSet.fromPartial(e)) || [];
+    message.deletions =
+      object.deletions?.map((e) => RecordSet.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(RecordSetDiff.$type, RecordSetDiff);
 
 const baseListDnsZoneOperationsRequest: object = {
   $type: "yandex.cloud.dns.v1.ListDnsZoneOperationsRequest",

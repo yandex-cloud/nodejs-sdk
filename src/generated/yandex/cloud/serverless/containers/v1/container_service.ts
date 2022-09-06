@@ -18,6 +18,7 @@ import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import {
   Resources,
   Connectivity,
+  ProvisionPolicy,
   Command,
   Args,
   Container,
@@ -134,6 +135,7 @@ export interface DeployContainerRevisionRequest {
   concurrency: number;
   secrets: Secret[];
   connectivity?: Connectivity;
+  provisionPolicy?: ProvisionPolicy;
 }
 
 export interface ImageSpec {
@@ -1532,6 +1534,12 @@ export const DeployContainerRevisionRequest = {
         writer.uint32(90).fork()
       ).ldelim();
     }
+    if (message.provisionPolicy !== undefined) {
+      ProvisionPolicy.encode(
+        message.provisionPolicy,
+        writer.uint32(98).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1574,6 +1582,12 @@ export const DeployContainerRevisionRequest = {
           break;
         case 11:
           message.connectivity = Connectivity.decode(reader, reader.uint32());
+          break;
+        case 12:
+          message.provisionPolicy = ProvisionPolicy.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -1622,6 +1636,10 @@ export const DeployContainerRevisionRequest = {
       object.connectivity !== undefined && object.connectivity !== null
         ? Connectivity.fromJSON(object.connectivity)
         : undefined;
+    message.provisionPolicy =
+      object.provisionPolicy !== undefined && object.provisionPolicy !== null
+        ? ProvisionPolicy.fromJSON(object.provisionPolicy)
+        : undefined;
     return message;
   },
 
@@ -1658,6 +1676,10 @@ export const DeployContainerRevisionRequest = {
       (obj.connectivity = message.connectivity
         ? Connectivity.toJSON(message.connectivity)
         : undefined);
+    message.provisionPolicy !== undefined &&
+      (obj.provisionPolicy = message.provisionPolicy
+        ? ProvisionPolicy.toJSON(message.provisionPolicy)
+        : undefined);
     return obj;
   },
 
@@ -1687,6 +1709,10 @@ export const DeployContainerRevisionRequest = {
     message.connectivity =
       object.connectivity !== undefined && object.connectivity !== null
         ? Connectivity.fromPartial(object.connectivity)
+        : undefined;
+    message.provisionPolicy =
+      object.provisionPolicy !== undefined && object.provisionPolicy !== null
+        ? ProvisionPolicy.fromPartial(object.provisionPolicy)
         : undefined;
     return message;
   },

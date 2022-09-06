@@ -89,7 +89,7 @@ export interface Bucket {
   /**
    * Name of the bucket.
    *
-   * The name is unique within Yandex Cloud. For naming limitations and rules, see
+   * The name is unique within the platform. For naming limitations and rules, see
    * [documentation](/docs/storage/concepts/bucket#naming).
    */
   name: string;
@@ -101,8 +101,8 @@ export interface Bucket {
    */
   anonymousAccessFlags?: AnonymousAccessFlags;
   /**
-   * Default storage class for objects in the bucket. Supported classes are standard storage (`STANDARD`) and
-   * cold storage (`COLD`, `STANDARD_IA`, `NEARLINE` all synonyms).
+   * Default storage class for objects in the bucket. Supported classes are standard storage (`STANDARD`), cold storage
+   * (`COLD`, `STANDARD_IA`, `NEARLINE` all synonyms), and ice storage (`ICE` and `GLACIER` are synonyms).
    * For details, see [documentation](/docs/storage/concepts/storage-class).
    */
   defaultStorageClass: string;
@@ -158,7 +158,7 @@ export interface ACL_Grant {
   permission: ACL_Grant_Permission;
   /** The grantee type for the grant. */
   grantType: ACL_Grant_GrantType;
-  /** ID of the Yandex Cloud user who is a grantee. Required when the [grant_type] is `GRANT_TYPE_ACCOUNT`. */
+  /** ID of the account who is a grantee. Required when the [grant_type] is `GRANT_TYPE_ACCOUNT`. */
   granteeId: string;
 }
 
@@ -257,7 +257,7 @@ export function aCL_Grant_PermissionToJSON(
 export enum ACL_Grant_GrantType {
   GRANT_TYPE_UNSPECIFIED = 0,
   /**
-   * GRANT_TYPE_ACCOUNT - A grantee is a [Yandex Cloud account](/docs/iam/concepts/#accounts).
+   * GRANT_TYPE_ACCOUNT - A grantee is an [account on the platform](/docs/iam/concepts/#accounts).
    *
    * For this grantee type, you need to specify the user ID in [Bucket.acl.grants.grantee_id] field. To get user ID, see
    * [instruction](/docs/iam/operations/users/get).
@@ -267,8 +267,8 @@ export enum ACL_Grant_GrantType {
    */
   GRANT_TYPE_ACCOUNT = 1,
   /**
-   * GRANT_TYPE_ALL_AUTHENTICATED_USERS - Grantees are all authenticated Yandex Cloud users, both from your clouds and other users' clouds. Access
-   * permission to this group allows any Yandex Cloud account to access the resource via a signed (authenticated)
+   * GRANT_TYPE_ALL_AUTHENTICATED_USERS - Grantees are all authenticated users, both from your clouds and other users' clouds. Access
+   * permission to this group allows any account on the platform to access the resource via a signed (authenticated)
    * request.
    *
    * Maps to using `uri="http://acs.amazonaws.com/groups/global/AuthenticatedUsers"` value for `x-amz-grant-*`
@@ -664,10 +664,10 @@ export interface LifecycleRule_NoncurrentTransition {
    */
   noncurrentDays?: number;
   /**
-   * Storage class to which a non-current version of an object is transitioned.
+   * Storage class to which a non-current version of an object is transitioned from standard storage.
    *
    * The only supported class is cold storage (`COLD`, `STANDARD_IA`, `NEARLINE` all synonyms). Transitions from cold
-   * to standard storage are not allowed.
+   * to standard storage and transitions to or from ice storage are not allowed.
    */
   storageClass: string;
 }
@@ -702,10 +702,10 @@ export interface LifecycleRule_Transition {
    */
   days?: number;
   /**
-   * Storage class to which an object is transitioned.
+   * Storage class to which an object is transitioned from standard storage.
    *
    * The only supported class is cold storage (`COLD`, `STANDARD_IA`, `NEARLINE` all synonyms). Transitions from cold
-   * to standard storage are not allowed.
+   * to standard storage and transitions to or from ice storage are not allowed.
    */
   storageClass: string;
 }
@@ -764,8 +764,8 @@ export interface Counters {
 export interface OptionalSizeByClass {
   $type: "yandex.cloud.storage.v1.OptionalSizeByClass";
   /**
-   * Storage class. Supported classes are standard storage (`STANDARD`) and cold storage (`COLD`, `STANDARD_IA`,
-   * `NEARLINE` all synonyms).
+   * Storage class. Supported classes are standard storage (`STANDARD`), cold storage (`COLD`, `STANDARD_IA`, `NEARLINE`
+   * all synonyms), and ice storage (`ICE` and `GLACIER` are synonyms).
    * For details, see [documentation](/docs/storage/concepts/storage-class).
    */
   storageClass: string;
@@ -777,8 +777,8 @@ export interface OptionalSizeByClass {
 export interface SizeByClass {
   $type: "yandex.cloud.storage.v1.SizeByClass";
   /**
-   * Storage class. Supported classes are standard storage (`STANDARD`) and cold storage (`COLD`, `STANDARD_IA`,
-   * `NEARLINE` all synonyms).
+   * Storage class. Supported classes are standard storage (`STANDARD`), cold storage (`COLD`, `STANDARD_IA`, `NEARLINE`
+   * all synonyms), and ice storage (`ICE` and `GLACIER` are synonyms).
    * For details, see [documentation](/docs/storage/concepts/storage-class).
    */
   storageClass: string;
@@ -790,8 +790,8 @@ export interface SizeByClass {
 export interface CountersByClass {
   $type: "yandex.cloud.storage.v1.CountersByClass";
   /**
-   * Storage class. Supported classes are standard storage (`STANDARD`) and cold storage (`COLD`, `STANDARD_IA`,
-   * `NEARLINE` all synonyms).
+   * Storage class. Supported classes are standard storage (`STANDARD`), cold storage (`COLD`, `STANDARD_IA`, `NEARLINE`
+   * all synonyms), and ice storage (`ice` and `GLACIER` are synonyms).
    * For details, see [documentation](/docs/storage/concepts/storage-class).
    */
   storageClass: string;
@@ -815,8 +815,8 @@ export interface BucketStats {
   /** Object-related statistics by storage class and type of upload (simple vs. multipart), in bytes. */
   storageClassCounters: CountersByClass[];
   /**
-   * Default storage class for objects in the bucket. Supported classes are standard storage (`STANDARD`) and
-   * cold storage (`COLD`, `STANDARD_IA`, `NEARLINE` all synonyms).
+   * Default storage class for objects in the bucket. Supported classes are standard storage (`STANDARD`), cold storage
+   * (`COLD`, `STANDARD_IA`, `NEARLINE` all synonyms), and ice storage (`ICE` and `GLACIER` are synonyms).
    * For details, see [documentation](/docs/storage/concepts/storage-class).
    */
   defaultStorageClass?: string;
@@ -849,7 +849,7 @@ export interface HTTPSConfig {
   /** End of the TLS certificate validity period (Not After field) */
   notAfter?: Date;
   /**
-   * ID of the TLS certificate in Yandex Certificate Manager.
+   * ID of the TLS certificate in Certificate Manager.
    *
    * To get information about the certificate from Certificate Manager, make a
    * [yandex.cloud.certificatemanager.v1.CertificateService.Get] request.
@@ -862,7 +862,7 @@ export enum HTTPSConfig_SourceType {
   SOURCE_TYPE_UNSPECIFIED = 0,
   /** SOURCE_TYPE_SELF_MANAGED - Your certificate, uploaded directly. */
   SOURCE_TYPE_SELF_MANAGED = 1,
-  /** SOURCE_TYPE_MANAGED_BY_CERTIFICATE_MANAGER - Certificate managed by Yandex Certificate Manager. */
+  /** SOURCE_TYPE_MANAGED_BY_CERTIFICATE_MANAGER - Certificate managed by Certificate Manager. */
   SOURCE_TYPE_MANAGED_BY_CERTIFICATE_MANAGER = 2,
   UNRECOGNIZED = -1,
 }

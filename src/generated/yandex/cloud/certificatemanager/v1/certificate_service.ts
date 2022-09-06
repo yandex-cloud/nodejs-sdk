@@ -18,6 +18,7 @@ import { FieldMask } from "../../../../google/protobuf/field_mask";
 import {
   ChallengeType,
   Certificate,
+  Version,
   challengeTypeFromJSON,
   challengeTypeToJSON,
 } from "../../../../yandex/cloud/certificatemanager/v1/certificate";
@@ -111,6 +112,36 @@ export interface ListCertificatesResponse {
   nextPageToken: string;
 }
 
+export interface ListVersionsRequest {
+  $type: "yandex.cloud.certificatemanager.v1.ListVersionsRequest";
+  /** ID of the certificate to list versions for. */
+  certificateId: string;
+  /**
+   * Page token. To get the next page of results, set `page_token` to the
+   * [ListCertificatesResponse.next_page_token] returned by a previous list request.
+   */
+  pageSize: number;
+  /**
+   * Page token. To get the next page of results, set `page_token` to the
+   * [ListCertificatesResponse.next_page_token] returned by a previous list request.
+   */
+  pageToken: string;
+}
+
+export interface ListVersionsResponse {
+  $type: "yandex.cloud.certificatemanager.v1.ListVersionsResponse";
+  /** List of versions for the specified certificate. */
+  versions: Version[];
+  /**
+   * This token allows you to get the next page of results for list requests. If the number
+   * of results is greater than the specified [ListCertificatesRequest.page_size], use
+   * the `next_page_token` as the value for the [ListCertificatesRequest.page_token] query parameter
+   * in the next list request. Each subsequent list request will have its own
+   * [next_page_token] to continue paging through the results.
+   */
+  nextPageToken: string;
+}
+
 export interface CreateCertificateRequest {
   $type: "yandex.cloud.certificatemanager.v1.CreateCertificateRequest";
   /** ID of the folder to create a certificate in. */
@@ -130,6 +161,8 @@ export interface CreateCertificateRequest {
   chain: string;
   /** PEM-encoded private key content of the certificate. */
   privateKey: string;
+  /** Flag that protects deletion of the certificate */
+  deletionProtection: boolean;
 }
 
 export interface CreateCertificateRequest_LabelsEntry {
@@ -165,6 +198,8 @@ export interface UpdateCertificateRequest {
   chain: string;
   /** New PEM-encoded private key content for the certificate. Used only for imported certificates. */
   privateKey: string;
+  /** Flag that protects deletion of the certificate */
+  deletionProtection: boolean;
 }
 
 export interface UpdateCertificateRequest_LabelsEntry {
@@ -205,6 +240,8 @@ export interface RequestNewCertificateRequest {
   domains: string[];
   /** Type of the domain validation challenge. */
   challengeType: ChallengeType;
+  /** Flag that protects deletion of the certificate */
+  deletionProtection: boolean;
 }
 
 export interface RequestNewCertificateRequest_LabelsEntry {
@@ -542,6 +579,181 @@ messageTypeRegistry.set(
   ListCertificatesResponse
 );
 
+const baseListVersionsRequest: object = {
+  $type: "yandex.cloud.certificatemanager.v1.ListVersionsRequest",
+  certificateId: "",
+  pageSize: 0,
+  pageToken: "",
+};
+
+export const ListVersionsRequest = {
+  $type: "yandex.cloud.certificatemanager.v1.ListVersionsRequest" as const,
+
+  encode(
+    message: ListVersionsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.certificateId !== "") {
+      writer.uint32(10).string(message.certificateId);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(16).int64(message.pageSize);
+    }
+    if (message.pageToken !== "") {
+      writer.uint32(26).string(message.pageToken);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListVersionsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseListVersionsRequest } as ListVersionsRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.certificateId = reader.string();
+          break;
+        case 2:
+          message.pageSize = longToNumber(reader.int64() as Long);
+          break;
+        case 3:
+          message.pageToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListVersionsRequest {
+    const message = { ...baseListVersionsRequest } as ListVersionsRequest;
+    message.certificateId =
+      object.certificateId !== undefined && object.certificateId !== null
+        ? String(object.certificateId)
+        : "";
+    message.pageSize =
+      object.pageSize !== undefined && object.pageSize !== null
+        ? Number(object.pageSize)
+        : 0;
+    message.pageToken =
+      object.pageToken !== undefined && object.pageToken !== null
+        ? String(object.pageToken)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ListVersionsRequest): unknown {
+    const obj: any = {};
+    message.certificateId !== undefined &&
+      (obj.certificateId = message.certificateId);
+    message.pageSize !== undefined &&
+      (obj.pageSize = Math.round(message.pageSize));
+    message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListVersionsRequest>, I>>(
+    object: I
+  ): ListVersionsRequest {
+    const message = { ...baseListVersionsRequest } as ListVersionsRequest;
+    message.certificateId = object.certificateId ?? "";
+    message.pageSize = object.pageSize ?? 0;
+    message.pageToken = object.pageToken ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(ListVersionsRequest.$type, ListVersionsRequest);
+
+const baseListVersionsResponse: object = {
+  $type: "yandex.cloud.certificatemanager.v1.ListVersionsResponse",
+  nextPageToken: "",
+};
+
+export const ListVersionsResponse = {
+  $type: "yandex.cloud.certificatemanager.v1.ListVersionsResponse" as const,
+
+  encode(
+    message: ListVersionsResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.versions) {
+      Version.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageToken !== "") {
+      writer.uint32(18).string(message.nextPageToken);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ListVersionsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseListVersionsResponse } as ListVersionsResponse;
+    message.versions = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.versions.push(Version.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.nextPageToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListVersionsResponse {
+    const message = { ...baseListVersionsResponse } as ListVersionsResponse;
+    message.versions = (object.versions ?? []).map((e: any) =>
+      Version.fromJSON(e)
+    );
+    message.nextPageToken =
+      object.nextPageToken !== undefined && object.nextPageToken !== null
+        ? String(object.nextPageToken)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ListVersionsResponse): unknown {
+    const obj: any = {};
+    if (message.versions) {
+      obj.versions = message.versions.map((e) =>
+        e ? Version.toJSON(e) : undefined
+      );
+    } else {
+      obj.versions = [];
+    }
+    message.nextPageToken !== undefined &&
+      (obj.nextPageToken = message.nextPageToken);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListVersionsResponse>, I>>(
+    object: I
+  ): ListVersionsResponse {
+    const message = { ...baseListVersionsResponse } as ListVersionsResponse;
+    message.versions =
+      object.versions?.map((e) => Version.fromPartial(e)) || [];
+    message.nextPageToken = object.nextPageToken ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(ListVersionsResponse.$type, ListVersionsResponse);
+
 const baseCreateCertificateRequest: object = {
   $type: "yandex.cloud.certificatemanager.v1.CreateCertificateRequest",
   folderId: "",
@@ -550,6 +762,7 @@ const baseCreateCertificateRequest: object = {
   certificate: "",
   chain: "",
   privateKey: "",
+  deletionProtection: false,
 };
 
 export const CreateCertificateRequest = {
@@ -587,6 +800,9 @@ export const CreateCertificateRequest = {
     }
     if (message.privateKey !== "") {
       writer.uint32(58).string(message.privateKey);
+    }
+    if (message.deletionProtection === true) {
+      writer.uint32(64).bool(message.deletionProtection);
     }
     return writer;
   },
@@ -631,6 +847,9 @@ export const CreateCertificateRequest = {
         case 7:
           message.privateKey = reader.string();
           break;
+        case 8:
+          message.deletionProtection = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -673,6 +892,11 @@ export const CreateCertificateRequest = {
       object.privateKey !== undefined && object.privateKey !== null
         ? String(object.privateKey)
         : "";
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
     return message;
   },
 
@@ -692,6 +916,8 @@ export const CreateCertificateRequest = {
       (obj.certificate = message.certificate);
     message.chain !== undefined && (obj.chain = message.chain);
     message.privateKey !== undefined && (obj.privateKey = message.privateKey);
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -715,6 +941,7 @@ export const CreateCertificateRequest = {
     message.certificate = object.certificate ?? "";
     message.chain = object.chain ?? "";
     message.privateKey = object.privateKey ?? "";
+    message.deletionProtection = object.deletionProtection ?? false;
     return message;
   },
 };
@@ -895,6 +1122,7 @@ const baseUpdateCertificateRequest: object = {
   certificate: "",
   chain: "",
   privateKey: "",
+  deletionProtection: false,
 };
 
 export const UpdateCertificateRequest = {
@@ -935,6 +1163,9 @@ export const UpdateCertificateRequest = {
     }
     if (message.privateKey !== "") {
       writer.uint32(66).string(message.privateKey);
+    }
+    if (message.deletionProtection === true) {
+      writer.uint32(72).bool(message.deletionProtection);
     }
     return writer;
   },
@@ -982,6 +1213,9 @@ export const UpdateCertificateRequest = {
         case 8:
           message.privateKey = reader.string();
           break;
+        case 9:
+          message.deletionProtection = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1028,6 +1262,11 @@ export const UpdateCertificateRequest = {
       object.privateKey !== undefined && object.privateKey !== null
         ? String(object.privateKey)
         : "";
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
     return message;
   },
 
@@ -1052,6 +1291,8 @@ export const UpdateCertificateRequest = {
       (obj.certificate = message.certificate);
     message.chain !== undefined && (obj.chain = message.chain);
     message.privateKey !== undefined && (obj.privateKey = message.privateKey);
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -1079,6 +1320,7 @@ export const UpdateCertificateRequest = {
     message.certificate = object.certificate ?? "";
     message.chain = object.chain ?? "";
     message.privateKey = object.privateKey ?? "";
+    message.deletionProtection = object.deletionProtection ?? false;
     return message;
   },
 };
@@ -1409,6 +1651,7 @@ const baseRequestNewCertificateRequest: object = {
   description: "",
   domains: "",
   challengeType: 0,
+  deletionProtection: false,
 };
 
 export const RequestNewCertificateRequest = {
@@ -1444,6 +1687,9 @@ export const RequestNewCertificateRequest = {
     }
     if (message.challengeType !== 0) {
       writer.uint32(48).int32(message.challengeType);
+    }
+    if (message.deletionProtection === true) {
+      writer.uint32(56).bool(message.deletionProtection);
     }
     return writer;
   },
@@ -1486,6 +1732,9 @@ export const RequestNewCertificateRequest = {
         case 6:
           message.challengeType = reader.int32() as any;
           break;
+        case 7:
+          message.deletionProtection = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1521,6 +1770,11 @@ export const RequestNewCertificateRequest = {
       object.challengeType !== undefined && object.challengeType !== null
         ? challengeTypeFromJSON(object.challengeType)
         : 0;
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
     return message;
   },
 
@@ -1543,6 +1797,8 @@ export const RequestNewCertificateRequest = {
     }
     message.challengeType !== undefined &&
       (obj.challengeType = challengeTypeToJSON(message.challengeType));
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -1565,6 +1821,7 @@ export const RequestNewCertificateRequest = {
     }, {});
     message.domains = object.domains?.map((e) => e) || [];
     message.challengeType = object.challengeType ?? 0;
+    message.deletionProtection = object.deletionProtection ?? false;
     return message;
   },
 };
@@ -1967,6 +2224,17 @@ export const CertificateServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListCertificatesResponse.decode(value),
   },
+  listVersions: {
+    path: "/yandex.cloud.certificatemanager.v1.CertificateService/ListVersions",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: ListVersionsRequest) =>
+      Buffer.from(ListVersionsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => ListVersionsRequest.decode(value),
+    responseSerialize: (value: ListVersionsResponse) =>
+      Buffer.from(ListVersionsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => ListVersionsResponse.decode(value),
+  },
   /** Creates a certificate in the specified folder. */
   create: {
     path: "/yandex.cloud.certificatemanager.v1.CertificateService/Create",
@@ -2084,6 +2352,7 @@ export interface CertificateServiceServer extends UntypedServiceImplementation {
   get: handleUnaryCall<GetCertificateRequest, Certificate>;
   /** Returns the list of certificates in the specified folder. */
   list: handleUnaryCall<ListCertificatesRequest, ListCertificatesResponse>;
+  listVersions: handleUnaryCall<ListVersionsRequest, ListVersionsResponse>;
   /** Creates a certificate in the specified folder. */
   create: handleUnaryCall<CreateCertificateRequest, Operation>;
   /** Updates the specified certificate. */
@@ -2152,6 +2421,30 @@ export interface CertificateServiceClient extends Client {
     callback: (
       error: ServiceError | null,
       response: ListCertificatesResponse
+    ) => void
+  ): ClientUnaryCall;
+  listVersions(
+    request: ListVersionsRequest,
+    callback: (
+      error: ServiceError | null,
+      response: ListVersionsResponse
+    ) => void
+  ): ClientUnaryCall;
+  listVersions(
+    request: ListVersionsRequest,
+    metadata: Metadata,
+    callback: (
+      error: ServiceError | null,
+      response: ListVersionsResponse
+    ) => void
+  ): ClientUnaryCall;
+  listVersions(
+    request: ListVersionsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (
+      error: ServiceError | null,
+      response: ListVersionsResponse
     ) => void
   ): ClientUnaryCall;
   /** Creates a certificate in the specified folder. */

@@ -5,6 +5,46 @@ import _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "yandex.cloud.mdb.sqlserver.v1";
 
+/** Set of server roles. */
+export enum ServerRole {
+  SERVER_ROLE_UNSPECIFIED = 0,
+  /**
+   * MDB_MONITOR - Effectively grants VIEW SERVER STATE to the login.
+   *
+   * That gives an ability to use various dynamic management views to monitor server state, including Activity Monitor tool that is built-in into SSMS.
+   *
+   * No intrusive actions are allowed, so this is pretty safe to grant.
+   */
+  MDB_MONITOR = 1,
+  UNRECOGNIZED = -1,
+}
+
+export function serverRoleFromJSON(object: any): ServerRole {
+  switch (object) {
+    case 0:
+    case "SERVER_ROLE_UNSPECIFIED":
+      return ServerRole.SERVER_ROLE_UNSPECIFIED;
+    case 1:
+    case "MDB_MONITOR":
+      return ServerRole.MDB_MONITOR;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ServerRole.UNRECOGNIZED;
+  }
+}
+
+export function serverRoleToJSON(object: ServerRole): string {
+  switch (object) {
+    case ServerRole.SERVER_ROLE_UNSPECIFIED:
+      return "SERVER_ROLE_UNSPECIFIED";
+    case ServerRole.MDB_MONITOR:
+      return "MDB_MONITOR";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 /** An SQL Server user. */
 export interface User {
   $type: "yandex.cloud.mdb.sqlserver.v1.User";
@@ -14,6 +54,8 @@ export interface User {
   clusterId: string;
   /** Set of permissions granted to the user. */
   permissions: Permission[];
+  /** Set of server roles granted to the login. */
+  serverRoles: ServerRole[];
 }
 
 export interface Permission {
@@ -24,13 +66,14 @@ export interface Permission {
   roles: Permission_Role[];
 }
 
+/** Role granted to the user within the database. */
 export enum Permission_Role {
   ROLE_UNSPECIFIED = 0,
-  /** DB_OWNER - Members of this fixed database role can perform all configuration and maintenance activities on the database, and can also drop the database in SQL Server. */
+  /** DB_OWNER - Members of this fixed database role can perform all configuration and maintenance activities on a database and can also drop a database in SQL Server. */
   DB_OWNER = 1,
   /** DB_SECURITYADMIN - Members of this fixed database role can modify role membership for custom roles only and manage permissions. They can potentially elevate their privileges and their actions should be monitored. */
   DB_SECURITYADMIN = 2,
-  /** DB_ACCESSADMIN - Members of this fixed database role can add or remove access to the database for Windows logins, Windows groups, and SQL Server logins. */
+  /** DB_ACCESSADMIN - Members of this fixed database role can add or remove access to a database for Windows logins, Windows groups, and SQL Server logins. */
   DB_ACCESSADMIN = 3,
   /** DB_BACKUPOPERATOR - Members of this fixed database role can back up the database. */
   DB_BACKUPOPERATOR = 4,
@@ -40,9 +83,9 @@ export enum Permission_Role {
   DB_DATAWRITER = 6,
   /** DB_DATAREADER - Members of this fixed database role can read all data from all user tables. */
   DB_DATAREADER = 7,
-  /** DB_DENYDATAWRITER - Members of this fixed database role cannot add, modify, or delete any data in the user tables within a database. Denial has a higher priority than a grant, so you can use this role to quickly restrict one's privileges without explicitly revoking permissions or roles. */
+  /** DB_DENYDATAWRITER - Members of this fixed database role cannot add, modify, or delete any data in the user tables within a database. A denial has a higher priority than a grant, so you can use this role to quickly restrict one's privileges without explicitly revoking permissions or roles. */
   DB_DENYDATAWRITER = 8,
-  /** DB_DENYDATAREADER - Members of this fixed database role cannot read any data in the user tables within a database. Denial has a higher priority than a grant, so you can use this role to quickly restrict one's privileges without explicitly revoking permissions or roles. */
+  /** DB_DENYDATAREADER - Members of this fixed database role cannot read any data in the user tables within a database. A denial has a higher priority than a grant, so you can use this role to quickly restrict one's privileges without explicitly revoking permissions or roles. */
   DB_DENYDATAREADER = 9,
   UNRECOGNIZED = -1,
 }
@@ -121,12 +164,15 @@ export interface UserSpec {
   password: string;
   /** Set of permissions to grant to the user. */
   permissions: Permission[];
+  /** Set of server roles. */
+  serverRoles: ServerRole[];
 }
 
 const baseUser: object = {
   $type: "yandex.cloud.mdb.sqlserver.v1.User",
   name: "",
   clusterId: "",
+  serverRoles: 0,
 };
 
 export const User = {
@@ -142,6 +188,11 @@ export const User = {
     for (const v of message.permissions) {
       Permission.encode(v!, writer.uint32(26).fork()).ldelim();
     }
+    writer.uint32(34).fork();
+    for (const v of message.serverRoles) {
+      writer.int32(v);
+    }
+    writer.ldelim();
     return writer;
   },
 
@@ -150,6 +201,7 @@ export const User = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseUser } as User;
     message.permissions = [];
+    message.serverRoles = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -161,6 +213,16 @@ export const User = {
           break;
         case 3:
           message.permissions.push(Permission.decode(reader, reader.uint32()));
+          break;
+        case 4:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.serverRoles.push(reader.int32() as any);
+            }
+          } else {
+            message.serverRoles.push(reader.int32() as any);
+          }
           break;
         default:
           reader.skipType(tag & 7);
@@ -183,6 +245,9 @@ export const User = {
     message.permissions = (object.permissions ?? []).map((e: any) =>
       Permission.fromJSON(e)
     );
+    message.serverRoles = (object.serverRoles ?? []).map((e: any) =>
+      serverRoleFromJSON(e)
+    );
     return message;
   },
 
@@ -197,6 +262,11 @@ export const User = {
     } else {
       obj.permissions = [];
     }
+    if (message.serverRoles) {
+      obj.serverRoles = message.serverRoles.map((e) => serverRoleToJSON(e));
+    } else {
+      obj.serverRoles = [];
+    }
     return obj;
   },
 
@@ -206,6 +276,7 @@ export const User = {
     message.clusterId = object.clusterId ?? "";
     message.permissions =
       object.permissions?.map((e) => Permission.fromPartial(e)) || [];
+    message.serverRoles = object.serverRoles?.map((e) => e) || [];
     return message;
   },
 };
@@ -305,6 +376,7 @@ const baseUserSpec: object = {
   $type: "yandex.cloud.mdb.sqlserver.v1.UserSpec",
   name: "",
   password: "",
+  serverRoles: 0,
 };
 
 export const UserSpec = {
@@ -323,6 +395,11 @@ export const UserSpec = {
     for (const v of message.permissions) {
       Permission.encode(v!, writer.uint32(26).fork()).ldelim();
     }
+    writer.uint32(34).fork();
+    for (const v of message.serverRoles) {
+      writer.int32(v);
+    }
+    writer.ldelim();
     return writer;
   },
 
@@ -331,6 +408,7 @@ export const UserSpec = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseUserSpec } as UserSpec;
     message.permissions = [];
+    message.serverRoles = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -342,6 +420,16 @@ export const UserSpec = {
           break;
         case 3:
           message.permissions.push(Permission.decode(reader, reader.uint32()));
+          break;
+        case 4:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.serverRoles.push(reader.int32() as any);
+            }
+          } else {
+            message.serverRoles.push(reader.int32() as any);
+          }
           break;
         default:
           reader.skipType(tag & 7);
@@ -364,6 +452,9 @@ export const UserSpec = {
     message.permissions = (object.permissions ?? []).map((e: any) =>
       Permission.fromJSON(e)
     );
+    message.serverRoles = (object.serverRoles ?? []).map((e: any) =>
+      serverRoleFromJSON(e)
+    );
     return message;
   },
 
@@ -378,6 +469,11 @@ export const UserSpec = {
     } else {
       obj.permissions = [];
     }
+    if (message.serverRoles) {
+      obj.serverRoles = message.serverRoles.map((e) => serverRoleToJSON(e));
+    } else {
+      obj.serverRoles = [];
+    }
     return obj;
   },
 
@@ -387,6 +483,7 @@ export const UserSpec = {
     message.password = object.password ?? "";
     message.permissions =
       object.permissions?.map((e) => Permission.fromPartial(e)) || [];
+    message.serverRoles = object.serverRoles?.map((e) => e) || [];
     return message;
   },
 };

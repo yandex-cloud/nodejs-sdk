@@ -43,7 +43,7 @@ export interface MysqlConnection {
   /**
    * Managed cluster
    *
-   * Yandex.Cloud Managed MySQL cluster ID
+   * Managed Service for MySQL cluster ID
    */
   mdbClusterId: string | undefined;
   /**

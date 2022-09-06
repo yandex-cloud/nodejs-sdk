@@ -417,6 +417,18 @@ export interface Mysqlconfig80 {
    * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_sp_recursion_depth).
    */
   maxSpRecursionDepth?: number;
+  /**
+   * The level of zlib compression to use for InnoDB compressed tables and indexes.
+   *
+   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_compression_level).
+   */
+  innodbCompressionLevel?: number;
+  /**
+   * Specifies how the source mysqld generates the dependency information that it writes in the binary log to help replicas determine which transactions can be executed in parallel.
+   *
+   * For details, see [MySQL documentation for the variabl](https://dev.mysql.com/doc/refman/8.0/en/replication-options-binary-log.html#sysvar_binlog_transaction_dependency_tracking).
+   */
+  binlogTransactionDependencyTracking: Mysqlconfig80_BinlogTransactionDependencyTracking;
 }
 
 export enum Mysqlconfig80_SQLMode {
@@ -872,6 +884,54 @@ export function mysqlconfig80_LogSlowFilterTypeToJSON(
   }
 }
 
+export enum Mysqlconfig80_BinlogTransactionDependencyTracking {
+  BINLOG_TRANSACTION_DEPENDENCY_TRACKING_UNSPECIFIED = 0,
+  COMMIT_ORDER = 1,
+  WRITESET = 2,
+  WRITESET_SESSION = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function mysqlconfig80_BinlogTransactionDependencyTrackingFromJSON(
+  object: any
+): Mysqlconfig80_BinlogTransactionDependencyTracking {
+  switch (object) {
+    case 0:
+    case "BINLOG_TRANSACTION_DEPENDENCY_TRACKING_UNSPECIFIED":
+      return Mysqlconfig80_BinlogTransactionDependencyTracking.BINLOG_TRANSACTION_DEPENDENCY_TRACKING_UNSPECIFIED;
+    case 1:
+    case "COMMIT_ORDER":
+      return Mysqlconfig80_BinlogTransactionDependencyTracking.COMMIT_ORDER;
+    case 2:
+    case "WRITESET":
+      return Mysqlconfig80_BinlogTransactionDependencyTracking.WRITESET;
+    case 3:
+    case "WRITESET_SESSION":
+      return Mysqlconfig80_BinlogTransactionDependencyTracking.WRITESET_SESSION;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Mysqlconfig80_BinlogTransactionDependencyTracking.UNRECOGNIZED;
+  }
+}
+
+export function mysqlconfig80_BinlogTransactionDependencyTrackingToJSON(
+  object: Mysqlconfig80_BinlogTransactionDependencyTracking
+): string {
+  switch (object) {
+    case Mysqlconfig80_BinlogTransactionDependencyTracking.BINLOG_TRANSACTION_DEPENDENCY_TRACKING_UNSPECIFIED:
+      return "BINLOG_TRANSACTION_DEPENDENCY_TRACKING_UNSPECIFIED";
+    case Mysqlconfig80_BinlogTransactionDependencyTracking.COMMIT_ORDER:
+      return "COMMIT_ORDER";
+    case Mysqlconfig80_BinlogTransactionDependencyTracking.WRITESET:
+      return "WRITESET";
+    case Mysqlconfig80_BinlogTransactionDependencyTracking.WRITESET_SESSION:
+      return "WRITESET_SESSION";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export interface Mysqlconfigset80 {
   $type: "yandex.cloud.mdb.mysql.v1.config.MysqlConfigSet8_0";
   /**
@@ -897,6 +957,7 @@ const baseMysqlconfig80: object = {
   slaveParallelType: 0,
   logSlowRateType: 0,
   logSlowFilter: 0,
+  binlogTransactionDependencyTracking: 0,
 };
 
 export const Mysqlconfig80 = {
@@ -1429,6 +1490,18 @@ export const Mysqlconfig80 = {
         writer.uint32(554).fork()
       ).ldelim();
     }
+    if (message.innodbCompressionLevel !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.innodbCompressionLevel!,
+        },
+        writer.uint32(562).fork()
+      ).ldelim();
+    }
+    if (message.binlogTransactionDependencyTracking !== 0) {
+      writer.uint32(568).int32(message.binlogTransactionDependencyTracking);
+    }
     return writer;
   },
 
@@ -1830,6 +1903,15 @@ export const Mysqlconfig80 = {
             reader.uint32()
           ).value;
           break;
+        case 70:
+          message.innodbCompressionLevel = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 71:
+          message.binlogTransactionDependencyTracking = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2157,6 +2239,18 @@ export const Mysqlconfig80 = {
       object.maxSpRecursionDepth !== null
         ? Number(object.maxSpRecursionDepth)
         : undefined;
+    message.innodbCompressionLevel =
+      object.innodbCompressionLevel !== undefined &&
+      object.innodbCompressionLevel !== null
+        ? Number(object.innodbCompressionLevel)
+        : undefined;
+    message.binlogTransactionDependencyTracking =
+      object.binlogTransactionDependencyTracking !== undefined &&
+      object.binlogTransactionDependencyTracking !== null
+        ? mysqlconfig80_BinlogTransactionDependencyTrackingFromJSON(
+            object.binlogTransactionDependencyTracking
+          )
+        : 0;
     return message;
   },
 
@@ -2316,6 +2410,13 @@ export const Mysqlconfig80 = {
       (obj.lowerCaseTableNames = message.lowerCaseTableNames);
     message.maxSpRecursionDepth !== undefined &&
       (obj.maxSpRecursionDepth = message.maxSpRecursionDepth);
+    message.innodbCompressionLevel !== undefined &&
+      (obj.innodbCompressionLevel = message.innodbCompressionLevel);
+    message.binlogTransactionDependencyTracking !== undefined &&
+      (obj.binlogTransactionDependencyTracking =
+        mysqlconfig80_BinlogTransactionDependencyTrackingToJSON(
+          message.binlogTransactionDependencyTracking
+        ));
     return obj;
   },
 
@@ -2409,6 +2510,9 @@ export const Mysqlconfig80 = {
     message.innodbFtMaxTokenSize = object.innodbFtMaxTokenSize ?? undefined;
     message.lowerCaseTableNames = object.lowerCaseTableNames ?? undefined;
     message.maxSpRecursionDepth = object.maxSpRecursionDepth ?? undefined;
+    message.innodbCompressionLevel = object.innodbCompressionLevel ?? undefined;
+    message.binlogTransactionDependencyTracking =
+      object.binlogTransactionDependencyTracking ?? 0;
     return message;
   },
 };

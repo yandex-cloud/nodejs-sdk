@@ -156,6 +156,8 @@ export interface StringMatch {
   exactMatch: string | undefined;
   /** Prefix match string. */
   prefixMatch: string | undefined;
+  /** Regular expression match string. */
+  regexMatch: string | undefined;
 }
 
 /** A redirect action resource. */
@@ -1312,6 +1314,9 @@ export const StringMatch = {
     if (message.prefixMatch !== undefined) {
       writer.uint32(18).string(message.prefixMatch);
     }
+    if (message.regexMatch !== undefined) {
+      writer.uint32(26).string(message.regexMatch);
+    }
     return writer;
   },
 
@@ -1327,6 +1332,9 @@ export const StringMatch = {
           break;
         case 2:
           message.prefixMatch = reader.string();
+          break;
+        case 3:
+          message.regexMatch = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1346,6 +1354,10 @@ export const StringMatch = {
       object.prefixMatch !== undefined && object.prefixMatch !== null
         ? String(object.prefixMatch)
         : undefined;
+    message.regexMatch =
+      object.regexMatch !== undefined && object.regexMatch !== null
+        ? String(object.regexMatch)
+        : undefined;
     return message;
   },
 
@@ -1354,6 +1366,7 @@ export const StringMatch = {
     message.exactMatch !== undefined && (obj.exactMatch = message.exactMatch);
     message.prefixMatch !== undefined &&
       (obj.prefixMatch = message.prefixMatch);
+    message.regexMatch !== undefined && (obj.regexMatch = message.regexMatch);
     return obj;
   },
 
@@ -1363,6 +1376,7 @@ export const StringMatch = {
     const message = { ...baseStringMatch } as StringMatch;
     message.exactMatch = object.exactMatch ?? undefined;
     message.prefixMatch = object.prefixMatch ?? undefined;
+    message.regexMatch = object.regexMatch ?? undefined;
     return message;
   },
 };

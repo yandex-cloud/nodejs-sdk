@@ -8,6 +8,7 @@ interface ServiceEndpoint {
 
 type ServiceEndpointsList = ServiceEndpoint[];
 
+// @see https://api.cloud.yandex.net/endpoints
 const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
     {
         serviceIds: ['yandex.cloud.operation.OperationService'],
@@ -27,6 +28,7 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
             'yandex.cloud.compute.v1.SnapshotService',
             'yandex.cloud.compute.v1.ZoneService',
             'yandex.cloud.compute.v1.instancegroup.InstanceGroupService',
+            'yandex.cloud.compute.v1.SnapshotScheduleService',
         ],
         endpoint: 'compute.api.cloud.yandex.net:443',
     },
@@ -158,6 +160,10 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
         endpoint: 'mdbproxy.api.cloud.yandex.net:443',
     },
     {
+        serviceIds: ['yandex.cloud.serverless.apigateway.websocket.v1.ConnectionService'],
+        endpoint: 'apigateway-connections.api.cloud-preprod.yandex.net:443',
+    },
+    {
         serviceIds: [
             'yandex.cloud.k8s.v1.ClusterService',
             'yandex.cloud.k8s.v1.NodeGroupService',
@@ -194,7 +200,9 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
         endpoint: 'ydb.api.cloud.yandex.net:443',
     },
     {
-        serviceIds: ['yandex.cloud.iot.devices.v1.RegistryService'],
+        serviceIds: [
+            'yandex.cloud.iot.devices.v1.RegistryService',
+        ],
         endpoint: 'iot-devices.api.cloud.yandex.net:443',
     },
     {
@@ -204,6 +212,19 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
             'yandex.cloud.iot.devices.v1.DeviceDataService',
         ],
         endpoint: 'iot-data.api.cloud.yandex.net:443',
+    },
+    {
+        serviceIds: [
+            'yandex.cloud.iot.broker.v1.BrokerDataService',
+            'yandex.cloud.iot.broker.v1.BrokerService',
+        ],
+        endpoint: 'iot-broker.api.cloud.yandex.net:443',
+    },
+    {
+        serviceIds: [
+            'yandex.cloud.monitoring.v3.DashboardService',
+        ],
+        endpoint: 'monitoring.api.cloud.yandex.net:443',
     },
     {
         serviceIds: [
@@ -324,6 +345,7 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
             'yandex.cloud.organizationmanager.v1.UserService',
             'yandex.cloud.organizationmanager.v1.saml.CertificateService',
             'yandex.cloud.organizationmanager.v1.saml.FederationService',
+            'yandex.cloud.organizationmanager.v1.GroupService',
         ],
         endpoint: 'organization-manager.api.cloud.yandex.net:443',
     },

@@ -28,11 +28,7 @@ export interface LoadBalancer {
   labels: { [key: string]: string };
   /** Status of the application load balancer. */
   status: LoadBalancer_Status;
-  /**
-   * ID of the region that the application load balancer is located at.
-   *
-   * Currently Yandex Cloud supports only `ru-central1` region.
-   */
+  /** ID of the region that the application load balancer is located at. */
   regionId: string;
   /** ID of the network that the application load balancer belongs to. */
   networkId: string;
@@ -187,7 +183,7 @@ export interface Location {
   /**
    * ID of the availability zone where the application load balancer resides.
    *
-   * Each Yandex Cloud availability zone can only be specified once.
+   * Each availability zone can only be specified once.
    */
   zoneId: string;
   /** ID of the subnet that the application load balancer belongs to. */

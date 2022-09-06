@@ -98,6 +98,12 @@ export interface Criteria {
   levels: LogLevel_Level[];
   /** Filter expression. For details about filtering, see [documentation](/docs/logging/concepts/filter). */
   filter: string;
+  /**
+   * List of stream names to limit log entries to.
+   *
+   * Empty list disables filter.
+   */
+  streamNames: string[];
   /** The maximum number of results per page to return. */
   pageSize: number;
   /**
@@ -303,6 +309,7 @@ const baseCriteria: object = {
   resourceIds: "",
   levels: 0,
   filter: "",
+  streamNames: "",
   pageSize: 0,
   maxResponseSize: 0,
 };
@@ -343,6 +350,9 @@ export const Criteria = {
     if (message.filter !== "") {
       writer.uint32(58).string(message.filter);
     }
+    for (const v of message.streamNames) {
+      writer.uint32(82).string(v!);
+    }
     if (message.pageSize !== 0) {
       writer.uint32(64).int64(message.pageSize);
     }
@@ -359,6 +369,7 @@ export const Criteria = {
     message.resourceTypes = [];
     message.resourceIds = [];
     message.levels = [];
+    message.streamNames = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -393,6 +404,9 @@ export const Criteria = {
           break;
         case 7:
           message.filter = reader.string();
+          break;
+        case 10:
+          message.streamNames.push(reader.string());
           break;
         case 8:
           message.pageSize = longToNumber(reader.int64() as Long);
@@ -433,6 +447,7 @@ export const Criteria = {
       object.filter !== undefined && object.filter !== null
         ? String(object.filter)
         : "";
+    message.streamNames = (object.streamNames ?? []).map((e: any) => String(e));
     message.pageSize =
       object.pageSize !== undefined && object.pageSize !== null
         ? Number(object.pageSize)
@@ -465,6 +480,11 @@ export const Criteria = {
       obj.levels = [];
     }
     message.filter !== undefined && (obj.filter = message.filter);
+    if (message.streamNames) {
+      obj.streamNames = message.streamNames.map((e) => e);
+    } else {
+      obj.streamNames = [];
+    }
     message.pageSize !== undefined &&
       (obj.pageSize = Math.round(message.pageSize));
     message.maxResponseSize !== undefined &&
@@ -481,6 +501,7 @@ export const Criteria = {
     message.until = object.until ?? undefined;
     message.levels = object.levels?.map((e) => e) || [];
     message.filter = object.filter ?? "";
+    message.streamNames = object.streamNames?.map((e) => e) || [];
     message.pageSize = object.pageSize ?? 0;
     message.maxResponseSize = object.maxResponseSize ?? 0;
     return message;

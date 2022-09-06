@@ -27,13 +27,15 @@ export const protobufPackage = "yandex.cloud.mdb.kafka.v1";
 export interface GetConnectorRequest {
   $type: "yandex.cloud.mdb.kafka.v1.GetConnectorRequest";
   /**
-   * ID of the Apache Kafka Cluster resource to return.
-   * To get the cluster ID use a [ClusterService.List] request.
+   * ID of the Apache Kafka® cluster the connector belongs to.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
   /**
-   * Name of the Apache Kafka Connector resource to return.
-   * To get the name of the connector use a [ConnectorService.List] request.
+   * Name of the Apache Kafka® connector to return information about.
+   *
+   * To get this name, make a [ConnectorService.List] request.
    */
   connectorName: string;
 }
@@ -41,27 +43,33 @@ export interface GetConnectorRequest {
 export interface ListConnectorsRequest {
   $type: "yandex.cloud.mdb.kafka.v1.ListConnectorsRequest";
   /**
-   * ID of the Apache Kafka cluster to list connectors in.
-   * To get the cluster ID use a [ClusterService.List] request.
+   * ID of the Apache Kafka® cluster to list connectors in.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
+  /**
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the API returns a [ListConnectorsResponse.next_page_token] that can be used to get the next page of results in the subsequent [ConnectorService.List] requests.
+   */
   pageSize: number;
   /**
-   * Page token. To get the next page of results, Set [page_token] to the [ListConnectorsResponse.next_page_token]
-   * returned by a previous list request.
+   * Page token that can be used to iterate through multiple pages of results.
+   *
+   * To get the next page of results, set [page_token] to the [ListConnectorsResponse.next_page_token] returned by the previous [ConnectorService.List] request.
    */
   pageToken: string;
 }
 
 export interface ListConnectorsResponse {
   $type: "yandex.cloud.mdb.kafka.v1.ListConnectorsResponse";
-  /** List of Apache Kafka Connector resources. */
+  /** List of Apache Kafka® Connectors. */
   connectors: Connector[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListConnectorsRequest.page_size], use the [next_page_token] as the value
-   * for the [ListConnectorsRequest.page_token] parameter in the next list request. Each subsequent
-   * list request will have its own [next_page_token] to continue paging through the results.
+   * The token that can be used to get the next page of results.
+   *
+   * If the number of results is larger than [ListConnectorsRequest.page_size], use the [next_page_token] as the value for the [ListConnectorsRequest.page_token] in the subsequent [ConnectorService.List] request to iterate through multiple pages of results.
    */
   nextPageToken: string;
 }
@@ -69,105 +77,120 @@ export interface ListConnectorsResponse {
 export interface CreateConnectorRequest {
   $type: "yandex.cloud.mdb.kafka.v1.CreateConnectorRequest";
   /**
-   * Required. ID of the Apache Kafka cluster to create a connector in.
-   * To get the cluster ID use a [ClusterService.List] request.
+   * ID of the Apache Kafka® cluster to create the connector in.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
-  /** Required. Configuration of the connector to create. */
+  /** Configuration of the connector to create. */
   connectorSpec?: ConnectorSpec;
 }
 
 export interface CreateConnectorMetadata {
   $type: "yandex.cloud.mdb.kafka.v1.CreateConnectorMetadata";
-  /** ID of the Apache Kafka cluster where a connector is being created. */
+  /** ID of the Apache Kafka® cluster the connector is being created in. */
   clusterId: string;
-  /** Name of the Apache Kafka connector that is being created. */
+  /** Name of the Apache Kafka® connector that is being created. */
   connectorName: string;
 }
 
 export interface UpdateConnectorRequest {
   $type: "yandex.cloud.mdb.kafka.v1.UpdateConnectorRequest";
   /**
-   * Required. ID of the Apache Kafka cluster to update a connector in.
-   * To get the cluster ID use a [ClusterService.List] request.
+   * ID of the Apache Kafka® cluster to update the connector in.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
   /**
-   * Required. Name of the connector to update.
-   * To get the name of the connector, use a [ConnectorService.List] request.
+   * Name of the connector to update.
+   *
+   * To get this name, make a [ConnectorService.List] request.
    */
   connectorName: string;
-  /** Field mask that specifies which fields of the Connector resource should be updated. */
+  /** Field mask that specifies which settings of the connector should be updated. */
   updateMask?: FieldMask;
-  /** Required. Configuration of the connector to update. */
+  /** Configuration of the connector to update. */
   connectorSpec?: UpdateConnectorSpec;
 }
 
 export interface UpdateConnectorMetadata {
   $type: "yandex.cloud.mdb.kafka.v1.UpdateConnectorMetadata";
-  /** ID of the Apache Kafka cluster where a connector is being updated. */
+  /** ID of the Apache Kafka® cluster the connector is being updated in. */
   clusterId: string;
-  /** Name of the Apache Kafka connector that is being updated. */
+  /** Name of the Apache Kafka® connector that is being updated. */
   connectorName: string;
 }
 
 export interface DeleteConnectorRequest {
   $type: "yandex.cloud.mdb.kafka.v1.DeleteConnectorRequest";
   /**
-   * Required. ID of the Apache Kafka cluster to delete a connector in.
-   * To get the cluster ID, use a [ClusterService.List] request.
+   * ID of the Apache Kafka® cluster to delete the connector from.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
   /**
-   * Required. Name of the connector to delete.
-   * To get the name of the connector, use a [ConnectorService.List] request.
+   * Name of the connector to delete.
+   *
+   * To get this name, make a [ConnectorService.List] request.
    */
   connectorName: string;
 }
 
 export interface DeleteConnectorMetadata {
   $type: "yandex.cloud.mdb.kafka.v1.DeleteConnectorMetadata";
-  /** ID of the Apache Kafka cluster where a connector is being deleted. */
+  /** ID of the Apache Kafka® cluster the connector is being deleted from. */
   clusterId: string;
-  /** Name of the Apache Kafka connector that is being deleted. */
+  /** Name of the Apache Kafka® connector that is being deleted. */
   connectorName: string;
 }
 
 export interface ResumeConnectorRequest {
   $type: "yandex.cloud.mdb.kafka.v1.ResumeConnectorRequest";
-  /** Required. ID of the Apache Kafka cluster to resume connector in. */
+  /**
+   * ID of the Apache Kafka® cluster to resume the connector in.
+   *
+   * To get this ID, make a [ClusterService.List] request.
+   */
   clusterId: string;
   /**
-   * Name of the Apache Kafka Connector resource to resume.
-   * To get the name of the connector use a [ConnectorService.List] request.
+   * Name of the Apache Kafka® connector to resume.
+   *
+   * To get this name, make a [ConnectorService.List] request.
    */
   connectorName: string;
 }
 
 export interface ResumeConnectorMetadata {
   $type: "yandex.cloud.mdb.kafka.v1.ResumeConnectorMetadata";
-  /** Required. ID of the Apache Kafka cluster. */
+  /** ID of the Apache Kafka® cluster the connector is being resumed in. */
   clusterId: string;
-  /** Name of the Apache Kafka Connector resource that is beign resumed. */
+  /** Name of the Apache Kafka® connector that is beign resumed. */
   connectorName: string;
 }
 
 export interface PauseConnectorRequest {
   $type: "yandex.cloud.mdb.kafka.v1.PauseConnectorRequest";
-  /** Required. ID of the Apache Kafka cluster to pause connector in. */
+  /**
+   * ID of the Apache Kafka® cluster to pause the connector in.
+   *
+   * To get this ID, make a [ClusterService.List] request.
+   */
   clusterId: string;
   /**
-   * Name of the Apache Kafka Connector resource to pause.
-   * To get the name of the connector use a [ConnectorService.List] request.
+   * Name of the Apache Kafka® connector to pause.
+   *
+   * To get this name, make a [ConnectorService.List] request.
    */
   connectorName: string;
 }
 
 export interface PauseConnectorMetadata {
   $type: "yandex.cloud.mdb.kafka.v1.PauseConnectorMetadata";
-  /** Required. ID of the Apache Kafka cluster. */
+  /** ID of the Apache Kafka® cluster the connector is being paused in. */
   clusterId: string;
-  /** Name of the Apache Kafka Connector resource that is being paused. */
+  /** Name of the Apache Kafka® connector that is being paused. */
   connectorName: string;
 }
 
@@ -1287,13 +1310,9 @@ export const PauseConnectorMetadata = {
 
 messageTypeRegistry.set(PauseConnectorMetadata.$type, PauseConnectorMetadata);
 
-/** A set of methods for managing Apache Kafka Connectors resources. */
+/** A set of methods for managing Apache Kafka® connectors. */
 export const ConnectorServiceService = {
-  /**
-   * Returns the specified Apache Kafka Connector resource.
-   *
-   * To get the list of available Apache Kafka Connector resources, make a [List] request.
-   */
+  /** Returns information about an Apache Kafka® connector. */
   get: {
     path: "/yandex.cloud.mdb.kafka.v1.ConnectorService/Get",
     requestStream: false,
@@ -1305,7 +1324,7 @@ export const ConnectorServiceService = {
       Buffer.from(Connector.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Connector.decode(value),
   },
-  /** Retrieves the list of Apache Kafka Connector resources in the specified cluster. */
+  /** Retrieves the list of Apache Kafka® connectors in a cluster. */
   list: {
     path: "/yandex.cloud.mdb.kafka.v1.ConnectorService/List",
     requestStream: false,
@@ -1318,7 +1337,7 @@ export const ConnectorServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListConnectorsResponse.decode(value),
   },
-  /** Creates a new Apache Kafka connector in the specified cluster. */
+  /** Creates a new Apache Kafka® connector in a cluster. */
   create: {
     path: "/yandex.cloud.mdb.kafka.v1.ConnectorService/Create",
     requestStream: false,
@@ -1330,7 +1349,7 @@ export const ConnectorServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Updates an Apache Kafka connector in the specified cluster. */
+  /** Updates an Apache Kafka® connector. */
   update: {
     path: "/yandex.cloud.mdb.kafka.v1.ConnectorService/Update",
     requestStream: false,
@@ -1342,7 +1361,7 @@ export const ConnectorServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Deletes the specified Apache Kafka connector. */
+  /** Deletes an Apache Kafka® connector. */
   delete: {
     path: "/yandex.cloud.mdb.kafka.v1.ConnectorService/Delete",
     requestStream: false,
@@ -1354,7 +1373,7 @@ export const ConnectorServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Resume the specified Apache Kafka connector. */
+  /** Resumes an Apache Kafka® connector. */
   resume: {
     path: "/yandex.cloud.mdb.kafka.v1.ConnectorService/Resume",
     requestStream: false,
@@ -1366,7 +1385,7 @@ export const ConnectorServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Pause the specified Apache Kafka connector. */
+  /** Pauses an Apache Kafka® connector. */
   pause: {
     path: "/yandex.cloud.mdb.kafka.v1.ConnectorService/Pause",
     requestStream: false,
@@ -1381,32 +1400,24 @@ export const ConnectorServiceService = {
 } as const;
 
 export interface ConnectorServiceServer extends UntypedServiceImplementation {
-  /**
-   * Returns the specified Apache Kafka Connector resource.
-   *
-   * To get the list of available Apache Kafka Connector resources, make a [List] request.
-   */
+  /** Returns information about an Apache Kafka® connector. */
   get: handleUnaryCall<GetConnectorRequest, Connector>;
-  /** Retrieves the list of Apache Kafka Connector resources in the specified cluster. */
+  /** Retrieves the list of Apache Kafka® connectors in a cluster. */
   list: handleUnaryCall<ListConnectorsRequest, ListConnectorsResponse>;
-  /** Creates a new Apache Kafka connector in the specified cluster. */
+  /** Creates a new Apache Kafka® connector in a cluster. */
   create: handleUnaryCall<CreateConnectorRequest, Operation>;
-  /** Updates an Apache Kafka connector in the specified cluster. */
+  /** Updates an Apache Kafka® connector. */
   update: handleUnaryCall<UpdateConnectorRequest, Operation>;
-  /** Deletes the specified Apache Kafka connector. */
+  /** Deletes an Apache Kafka® connector. */
   delete: handleUnaryCall<DeleteConnectorRequest, Operation>;
-  /** Resume the specified Apache Kafka connector. */
+  /** Resumes an Apache Kafka® connector. */
   resume: handleUnaryCall<ResumeConnectorRequest, Operation>;
-  /** Pause the specified Apache Kafka connector. */
+  /** Pauses an Apache Kafka® connector. */
   pause: handleUnaryCall<PauseConnectorRequest, Operation>;
 }
 
 export interface ConnectorServiceClient extends Client {
-  /**
-   * Returns the specified Apache Kafka Connector resource.
-   *
-   * To get the list of available Apache Kafka Connector resources, make a [List] request.
-   */
+  /** Returns information about an Apache Kafka® connector. */
   get(
     request: GetConnectorRequest,
     callback: (error: ServiceError | null, response: Connector) => void
@@ -1422,7 +1433,7 @@ export interface ConnectorServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Connector) => void
   ): ClientUnaryCall;
-  /** Retrieves the list of Apache Kafka Connector resources in the specified cluster. */
+  /** Retrieves the list of Apache Kafka® connectors in a cluster. */
   list(
     request: ListConnectorsRequest,
     callback: (
@@ -1447,7 +1458,7 @@ export interface ConnectorServiceClient extends Client {
       response: ListConnectorsResponse
     ) => void
   ): ClientUnaryCall;
-  /** Creates a new Apache Kafka connector in the specified cluster. */
+  /** Creates a new Apache Kafka® connector in a cluster. */
   create(
     request: CreateConnectorRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -1463,7 +1474,7 @@ export interface ConnectorServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Updates an Apache Kafka connector in the specified cluster. */
+  /** Updates an Apache Kafka® connector. */
   update(
     request: UpdateConnectorRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -1479,7 +1490,7 @@ export interface ConnectorServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Deletes the specified Apache Kafka connector. */
+  /** Deletes an Apache Kafka® connector. */
   delete(
     request: DeleteConnectorRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -1495,7 +1506,7 @@ export interface ConnectorServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Resume the specified Apache Kafka connector. */
+  /** Resumes an Apache Kafka® connector. */
   resume(
     request: ResumeConnectorRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -1511,7 +1522,7 @@ export interface ConnectorServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Pause the specified Apache Kafka connector. */
+  /** Pauses an Apache Kafka® connector. */
   pause(
     request: PauseConnectorRequest,
     callback: (error: ServiceError | null, response: Operation) => void

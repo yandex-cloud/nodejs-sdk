@@ -43,6 +43,8 @@ export interface LogEntry {
   message: string;
   /** Entry annotation. */
   jsonPayload?: { [key: string]: any };
+  /** Entry stream name. */
+  streamName: string;
 }
 
 export interface IncomingLogEntry {
@@ -59,6 +61,8 @@ export interface IncomingLogEntry {
   message: string;
   /** Entry annotation. */
   jsonPayload?: { [key: string]: any };
+  /** Entry stream name. */
+  streamName: string;
 }
 
 export interface LogEntryDefaults {
@@ -76,6 +80,8 @@ export interface LogEntryDefaults {
    * Any conflict will be resolved in favor of entry own annotation.
    */
   jsonPayload?: { [key: string]: any };
+  /** Entry stream name. */
+  streamName: string;
 }
 
 export interface Destination {
@@ -199,6 +205,7 @@ const baseLogEntry: object = {
   uid: "",
   level: 0,
   message: "",
+  streamName: "",
 };
 
 export const LogEntry = {
@@ -247,6 +254,9 @@ export const LogEntry = {
         writer.uint32(66).fork()
       ).ldelim();
     }
+    if (message.streamName !== "") {
+      writer.uint32(74).string(message.streamName);
+    }
     return writer;
   },
 
@@ -289,6 +299,9 @@ export const LogEntry = {
             Struct.decode(reader, reader.uint32())
           );
           break;
+        case 9:
+          message.streamName = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -327,6 +340,10 @@ export const LogEntry = {
         : "";
     message.jsonPayload =
       typeof object.jsonPayload === "object" ? object.jsonPayload : undefined;
+    message.streamName =
+      object.streamName !== undefined && object.streamName !== null
+        ? String(object.streamName)
+        : "";
     return message;
   },
 
@@ -348,6 +365,7 @@ export const LogEntry = {
     message.message !== undefined && (obj.message = message.message);
     message.jsonPayload !== undefined &&
       (obj.jsonPayload = message.jsonPayload);
+    message.streamName !== undefined && (obj.streamName = message.streamName);
     return obj;
   },
 
@@ -364,6 +382,7 @@ export const LogEntry = {
     message.level = object.level ?? 0;
     message.message = object.message ?? "";
     message.jsonPayload = object.jsonPayload ?? undefined;
+    message.streamName = object.streamName ?? "";
     return message;
   },
 };
@@ -374,6 +393,7 @@ const baseIncomingLogEntry: object = {
   $type: "yandex.cloud.logging.v1.IncomingLogEntry",
   level: 0,
   message: "",
+  streamName: "",
 };
 
 export const IncomingLogEntry = {
@@ -401,6 +421,9 @@ export const IncomingLogEntry = {
         writer.uint32(34).fork()
       ).ldelim();
     }
+    if (message.streamName !== "") {
+      writer.uint32(42).string(message.streamName);
+    }
     return writer;
   },
 
@@ -427,6 +450,9 @@ export const IncomingLogEntry = {
             Struct.decode(reader, reader.uint32())
           );
           break;
+        case 5:
+          message.streamName = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -451,6 +477,10 @@ export const IncomingLogEntry = {
         : "";
     message.jsonPayload =
       typeof object.jsonPayload === "object" ? object.jsonPayload : undefined;
+    message.streamName =
+      object.streamName !== undefined && object.streamName !== null
+        ? String(object.streamName)
+        : "";
     return message;
   },
 
@@ -463,6 +493,7 @@ export const IncomingLogEntry = {
     message.message !== undefined && (obj.message = message.message);
     message.jsonPayload !== undefined &&
       (obj.jsonPayload = message.jsonPayload);
+    message.streamName !== undefined && (obj.streamName = message.streamName);
     return obj;
   },
 
@@ -474,6 +505,7 @@ export const IncomingLogEntry = {
     message.level = object.level ?? 0;
     message.message = object.message ?? "";
     message.jsonPayload = object.jsonPayload ?? undefined;
+    message.streamName = object.streamName ?? "";
     return message;
   },
 };
@@ -483,6 +515,7 @@ messageTypeRegistry.set(IncomingLogEntry.$type, IncomingLogEntry);
 const baseLogEntryDefaults: object = {
   $type: "yandex.cloud.logging.v1.LogEntryDefaults",
   level: 0,
+  streamName: "",
 };
 
 export const LogEntryDefaults = {
@@ -500,6 +533,9 @@ export const LogEntryDefaults = {
         Struct.wrap(message.jsonPayload),
         writer.uint32(34).fork()
       ).ldelim();
+    }
+    if (message.streamName !== "") {
+      writer.uint32(42).string(message.streamName);
     }
     return writer;
   },
@@ -519,6 +555,9 @@ export const LogEntryDefaults = {
             Struct.decode(reader, reader.uint32())
           );
           break;
+        case 5:
+          message.streamName = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -535,6 +574,10 @@ export const LogEntryDefaults = {
         : 0;
     message.jsonPayload =
       typeof object.jsonPayload === "object" ? object.jsonPayload : undefined;
+    message.streamName =
+      object.streamName !== undefined && object.streamName !== null
+        ? String(object.streamName)
+        : "";
     return message;
   },
 
@@ -544,6 +587,7 @@ export const LogEntryDefaults = {
       (obj.level = logLevel_LevelToJSON(message.level));
     message.jsonPayload !== undefined &&
       (obj.jsonPayload = message.jsonPayload);
+    message.streamName !== undefined && (obj.streamName = message.streamName);
     return obj;
   },
 
@@ -553,6 +597,7 @@ export const LogEntryDefaults = {
     const message = { ...baseLogEntryDefaults } as LogEntryDefaults;
     message.level = object.level ?? 0;
     message.jsonPayload = object.jsonPayload ?? undefined;
+    message.streamName = object.streamName ?? "";
     return message;
   },
 };

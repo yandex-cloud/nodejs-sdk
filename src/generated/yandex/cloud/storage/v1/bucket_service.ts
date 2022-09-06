@@ -131,7 +131,7 @@ export interface CreateBucketRequest {
   /**
    * Name of the bucket.
    *
-   * The name must be unique within Yandex Cloud. For naming limitations and rules, see
+   * The name must be unique within the platform. For naming limitations and rules, see
    * [documentation](/docs/storage/concepts/bucket#naming).
    */
   name: string;
@@ -142,8 +142,8 @@ export interface CreateBucketRequest {
    */
   folderId: string;
   /**
-   * Default storage class for objects in the bucket. Supported classes are standard storage (`STANDARD`) and
-   * cold storage (`COLD`, `STANDARD_IA`, `NEARLINE` all synonyms).
+   * Default storage class for objects in the bucket. Supported classes are standard storage (`STANDARD`), cold storage
+   * (`COLD`, `STANDARD_IA`, `NEARLINE` all synonyms), and ice storage (`ICE` and `GLACIER` are synonyms).
    * For details, see [documentation](/docs/storage/concepts/storage-class).
    */
   defaultStorageClass: string;
@@ -188,8 +188,8 @@ export interface UpdateBucketRequest {
    */
   anonymousAccessFlags?: AnonymousAccessFlags;
   /**
-   * Default storage class for objects in the bucket. Supported classes are standard storage (`STANDARD`) and
-   * cold storage (`COLD`, `STANDARD_IA`, `NEARLINE` all synonyms).
+   * Default storage class for objects in the bucket. Supported classes are standard storage (`STANDARD`), cold storage
+   * (`COLD`, `STANDARD_IA`, `NEARLINE` all synonyms), and ice storage (`ICE` and `GLACIER` are synonyms).
    * For details, see [documentation](/docs/storage/concepts/storage-class).
    */
   defaultStorageClass: string;
@@ -273,7 +273,7 @@ export interface SelfManagedHTTPSConfigParams {
   privateKeyPem: string;
 }
 
-/** A resource for a TLS certificate from Yandex Certificate Manager. */
+/** A resource for a TLS certificate from Certificate Manager. */
 export interface CertificateManagerHTTPSConfigParams {
   $type: "yandex.cloud.storage.v1.CertificateManagerHTTPSConfigParams";
   /**
@@ -296,7 +296,7 @@ export interface SetBucketHTTPSConfigRequest {
    */
   selfManaged?: SelfManagedHTTPSConfigParams | undefined;
   /**
-   * TLS certificate from Yandex Certificate Manager.
+   * TLS certificate from Certificate Manager.
    *
    * To create a certificate in Certificate Manager, make a
    * [yandex.cloud.certificatemanager.v1.CertificateService.Create] request.

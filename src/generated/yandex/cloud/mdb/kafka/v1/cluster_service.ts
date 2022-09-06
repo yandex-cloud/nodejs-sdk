@@ -60,7 +60,7 @@ export interface ListClustersRequest {
   /**
    * Page token.
    *
-   * To get the next page of results, set [page_token] to the [ListClustersResponse.next_page_token] returned by a previous list request.
+   * To get the next page of results, set [page_token] to the [ListClustersResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
   /** Filter support is not currently implemented. Any filters are ignored. */
@@ -223,7 +223,7 @@ export interface ListClusterLogsRequest {
   /**
    * Page token.
    *
-   * To get the next page of results, set [page_token] to the [ListClusterLogsResponse.next_page_token] returned by a previous list request.
+   * To get the next page of results, set [page_token] to the [ListClusterLogsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
   /**
@@ -343,7 +343,7 @@ export interface ListClusterOperationsRequest {
   /**
    * Page token.
    *
-   * To get the next page of results, set [page_token] to the [ListClusterOperationsResponse.next_page_token] returned by a previous list request.
+   * To get the next page of results, set [page_token] to the [ListClusterOperationsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
 }
@@ -378,7 +378,7 @@ export interface ListClusterHostsRequest {
   /**
    * Page token.
    *
-   * To get the next page of results, set [page_token] to the [ListClusterHostsResponse.next_page_token] returned by a previous list request.
+   * To get the next page of results, set [page_token] to the [ListClusterHostsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
 }

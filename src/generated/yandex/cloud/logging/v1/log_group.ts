@@ -31,6 +31,7 @@ export interface LogGroup {
    * Entries will be present in group during this period.
    */
   retentionPeriod?: Duration;
+  /** Data stream name */
   dataStream: string;
 }
 

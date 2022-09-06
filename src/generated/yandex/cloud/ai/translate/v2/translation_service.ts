@@ -953,7 +953,7 @@ export const ListLanguagesResponse = {
 
 messageTypeRegistry.set(ListLanguagesResponse.$type, ListLanguagesResponse);
 
-/** A set of methods for the Yandex Translate service. */
+/** A set of methods for the Translate service. */
 export const TranslationServiceService = {
   /** Translates the text to the specified language. */
   translate: {

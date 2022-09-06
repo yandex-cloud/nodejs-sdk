@@ -10,6 +10,7 @@ import { TimeOfDay } from "../../../../../google/type/timeofday";
 import { Timestamp } from "../../../../../google/protobuf/timestamp";
 import { Mysqlconfigset57 } from "../../../../../yandex/cloud/mdb/mysql/v1/config/mysql5_7";
 import { Mysqlconfigset80 } from "../../../../../yandex/cloud/mdb/mysql/v1/config/mysql8_0";
+import { Int64Value } from "../../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.mdb.mysql.v1";
 
@@ -23,7 +24,7 @@ export interface Cluster {
   /**
    * ID of the cluster.
    *
-   * This ID is assigned by Yandex Cloud at the time of creation.
+   * This ID is assigned by the platform at the time of creation.
    */
   id: string;
   /** ID of the folder that the cluster belongs to. */
@@ -264,6 +265,8 @@ export interface ClusterConfig {
   access?: Access;
   /** Configuration of the performance diagnostics service. */
   performanceDiagnostics?: PerformanceDiagnostics;
+  /** Retention policy of automated backups. */
+  backupRetainPeriodDays?: number;
 }
 
 export interface Host {
@@ -271,8 +274,8 @@ export interface Host {
   /**
    * Name of the host.
    *
-   * This name is assigned by Yandex Cloud at the time of creation.
-   * The name is unique across all existing MDB hosts in Yandex Cloud, as it defines the FQDN of the host.
+   * This name is assigned by the platform at the time of creation.
+   * The name is unique across all MDB hosts that exist on the platform, as it defines the FQDN of the host.
    */
   name: string;
   /** ID of the cluster the host belongs to. */
@@ -504,7 +507,7 @@ export interface Access {
    */
   dataLens: boolean;
   /**
-   * Allows SQL queries to the cluster databases from Yandex Cloud management console.
+   * Allows SQL queries to the cluster databases from management console.
    *
    * See [the documentation](/docs/managed-mysql/operations/web-sql-query) for details.
    */
@@ -1074,6 +1077,15 @@ export const ClusterConfig = {
         writer.uint32(58).fork()
       ).ldelim();
     }
+    if (message.backupRetainPeriodDays !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.backupRetainPeriodDays!,
+        },
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1113,6 +1125,12 @@ export const ClusterConfig = {
             reader,
             reader.uint32()
           );
+          break;
+        case 8:
+          message.backupRetainPeriodDays = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
           break;
         default:
           reader.skipType(tag & 7);
@@ -1154,6 +1172,11 @@ export const ClusterConfig = {
       object.performanceDiagnostics !== null
         ? PerformanceDiagnostics.fromJSON(object.performanceDiagnostics)
         : undefined;
+    message.backupRetainPeriodDays =
+      object.backupRetainPeriodDays !== undefined &&
+      object.backupRetainPeriodDays !== null
+        ? Number(object.backupRetainPeriodDays)
+        : undefined;
     return message;
   },
 
@@ -1182,6 +1205,8 @@ export const ClusterConfig = {
       (obj.performanceDiagnostics = message.performanceDiagnostics
         ? PerformanceDiagnostics.toJSON(message.performanceDiagnostics)
         : undefined);
+    message.backupRetainPeriodDays !== undefined &&
+      (obj.backupRetainPeriodDays = message.backupRetainPeriodDays);
     return obj;
   },
 
@@ -1216,6 +1241,7 @@ export const ClusterConfig = {
       object.performanceDiagnostics !== null
         ? PerformanceDiagnostics.fromPartial(object.performanceDiagnostics)
         : undefined;
+    message.backupRetainPeriodDays = object.backupRetainPeriodDays ?? undefined;
     return message;
   },
 };

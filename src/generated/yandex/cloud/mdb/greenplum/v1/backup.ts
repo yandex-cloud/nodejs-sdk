@@ -12,16 +12,13 @@ export interface Backup {
   id: string;
   /** ID of the folder that the backup belongs to. */
   folderId: string;
-  /**
-   * Creation timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format
-   * (i.e. when the backup operation was completed).
-   */
+  /** Time when the backup operation was completed. */
   createdAt?: Date;
-  /** ID of the PostgreSQL cluster that the backup was created for. */
+  /** ID of the Greenplum® cluster that the backup was created for. */
   sourceClusterId: string;
   /** Time when the backup operation was started. */
   startedAt?: Date;
-  /** Size of backup in bytes */
+  /** Size of the backup in bytes. */
   size: number;
 }
 

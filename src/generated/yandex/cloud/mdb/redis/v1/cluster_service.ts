@@ -38,6 +38,7 @@ import { Backup } from "../../../../../yandex/cloud/mdb/redis/v1/backup";
 import { Redisconfig50 } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis5_0";
 import { Redisconfig60 } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis6_0";
 import { Redisconfig62 } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis6_2";
+import { Redisconfig70 } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis7_0";
 import { BoolValue, Int64Value } from "../../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.mdb.redis.v1";
@@ -66,7 +67,7 @@ export interface ListClustersRequest {
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the [ListClustersResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
   /**
@@ -308,6 +309,8 @@ export interface RestoreClusterRequest {
   tlsEnabled?: boolean;
   /** Persistence mode */
   persistenceMode: Cluster_PersistenceMode;
+  /** Deletion Protection inhibits deletion of the cluster */
+  deletionProtection: boolean;
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
@@ -448,7 +451,7 @@ export interface ListClusterLogsRequest {
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the
-   * [ListClusterLogsResponse.next_page_token] returned by a previous list request.
+   * [ListClusterLogsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
 }
@@ -597,7 +600,7 @@ export interface ListClusterOperationsRequest {
   pageSize: number;
   /**
    * Page token.  To get the next page of results, set [page_token] to the [ListClusterOperationsResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }
@@ -630,7 +633,7 @@ export interface ListClusterBackupsRequest {
   pageSize: number;
   /**
    * Page token.  To get the next page of results, set [page_token] to the [ListClusterBackupsResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }
@@ -663,7 +666,7 @@ export interface ListClusterHostsRequest {
   pageSize: number;
   /**
    * Page token.  To get the next page of results, set [page_token] to the [ListClusterHostsResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }
@@ -750,7 +753,7 @@ export interface ListClusterShardsRequest {
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the
-   * [ListClusterShardsResponse.next_page_token] returned by a previous list request.
+   * [ListClusterShardsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
 }
@@ -894,6 +897,7 @@ export interface ConfigSpec {
   redisConfig50?: Redisconfig50 | undefined;
   redisConfig60?: Redisconfig60 | undefined;
   redisConfig62?: Redisconfig62 | undefined;
+  redisConfig70?: Redisconfig70 | undefined;
   /** Resources allocated to Redis hosts. */
   resources?: Resources;
   /** Time to start the daily backup, in the UTC timezone. */
@@ -2838,6 +2842,7 @@ const baseRestoreClusterRequest: object = {
   folderId: "",
   securityGroupIds: "",
   persistenceMode: 0,
+  deletionProtection: false,
 };
 
 export const RestoreClusterRequest = {
@@ -2892,6 +2897,9 @@ export const RestoreClusterRequest = {
     }
     if (message.persistenceMode !== 0) {
       writer.uint32(96).int32(message.persistenceMode);
+    }
+    if (message.deletionProtection === true) {
+      writer.uint32(104).bool(message.deletionProtection);
     }
     return writer;
   },
@@ -2951,6 +2959,9 @@ export const RestoreClusterRequest = {
         case 12:
           message.persistenceMode = reader.int32() as any;
           break;
+        case 13:
+          message.deletionProtection = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3009,6 +3020,11 @@ export const RestoreClusterRequest = {
       object.persistenceMode !== undefined && object.persistenceMode !== null
         ? cluster_PersistenceModeFromJSON(object.persistenceMode)
         : 0;
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
     return message;
   },
 
@@ -3049,6 +3065,8 @@ export const RestoreClusterRequest = {
       (obj.persistenceMode = cluster_PersistenceModeToJSON(
         message.persistenceMode
       ));
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -3079,6 +3097,7 @@ export const RestoreClusterRequest = {
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.tlsEnabled = object.tlsEnabled ?? undefined;
     message.persistenceMode = object.persistenceMode ?? 0;
+    message.deletionProtection = object.deletionProtection ?? false;
     return message;
   },
 };
@@ -6265,6 +6284,12 @@ export const ConfigSpec = {
         writer.uint32(58).fork()
       ).ldelim();
     }
+    if (message.redisConfig70 !== undefined) {
+      Redisconfig70.encode(
+        message.redisConfig70,
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
@@ -6298,6 +6323,9 @@ export const ConfigSpec = {
           break;
         case 7:
           message.redisConfig62 = Redisconfig62.decode(reader, reader.uint32());
+          break;
+        case 8:
+          message.redisConfig70 = Redisconfig70.decode(reader, reader.uint32());
           break;
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
@@ -6334,6 +6362,10 @@ export const ConfigSpec = {
       object.redisConfig_6_2 !== undefined && object.redisConfig_6_2 !== null
         ? Redisconfig62.fromJSON(object.redisConfig_6_2)
         : undefined;
+    message.redisConfig70 =
+      object.redisConfig_7_0 !== undefined && object.redisConfig_7_0 !== null
+        ? Redisconfig70.fromJSON(object.redisConfig_7_0)
+        : undefined;
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
@@ -6365,6 +6397,10 @@ export const ConfigSpec = {
       (obj.redisConfig_6_2 = message.redisConfig62
         ? Redisconfig62.toJSON(message.redisConfig62)
         : undefined);
+    message.redisConfig70 !== undefined &&
+      (obj.redisConfig_7_0 = message.redisConfig70
+        ? Redisconfig70.toJSON(message.redisConfig70)
+        : undefined);
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
@@ -6394,6 +6430,10 @@ export const ConfigSpec = {
     message.redisConfig62 =
       object.redisConfig62 !== undefined && object.redisConfig62 !== null
         ? Redisconfig62.fromPartial(object.redisConfig62)
+        : undefined;
+    message.redisConfig70 =
+      object.redisConfig70 !== undefined && object.redisConfig70 !== null
+        ? Redisconfig70.fromPartial(object.redisConfig70)
         : undefined;
     message.resources =
       object.resources !== undefined && object.resources !== null

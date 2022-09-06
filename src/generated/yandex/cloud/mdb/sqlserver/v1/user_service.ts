@@ -18,6 +18,9 @@ import {
   UserSpec,
   Permission,
   User,
+  ServerRole,
+  serverRoleFromJSON,
+  serverRoleToJSON,
 } from "../../../../../yandex/cloud/mdb/sqlserver/v1/user";
 import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import { Operation } from "../../../../../yandex/cloud/operation/operation";
@@ -49,15 +52,12 @@ export interface ListUsersRequest {
    */
   clusterId: string;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than `page_size`, the service returns a [ListUsersResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the service returns a [ListUsersResponse.next_page_token] that can be used to get the next page of results in subsequent list requests.
    */
   pageSize: number;
-  /**
-   * Page token. To get the next page of results, set `page_token` to the [ListUsersResponse.next_page_token]
-   * returned by a previous list request.
-   */
+  /** Page token. To get the next page of results, set [page_token] to the [ListUsersResponse.next_page_token] returned by the previous list request. */
   pageToken: string;
 }
 
@@ -66,10 +66,11 @@ export interface ListUsersResponse {
   /** Requested list of SQL Server users. */
   users: User[];
   /**
-   * Token that allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListUsersRequest.page_size], use the `next_page_token` as the value
-   * for the [ListUsersRequest.page_token] parameter in the next list request. Each subsequent
-   * list request will have its own `next_page_token` to continue paging through the results.
+   * Token that allows you to get the next page of results for list requests.
+   *
+   * If the number of results is larger than [ListUsersRequest.page_size], use the [next_page_token] as the value for the [ListUsersRequest.page_token] parameter in the next list request.
+   *
+   * Each subsequent list request has its own [next_page_token] to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -114,6 +115,8 @@ export interface UpdateUserRequest {
   password: string;
   /** New set of permissions for the user. */
   permissions: Permission[];
+  /** New set of server roles granted to the login. */
+  serverRoles: ServerRole[];
 }
 
 export interface UpdateUserMetadata {
@@ -158,6 +161,7 @@ export interface GrantUserPermissionRequest {
   clusterId: string;
   /**
    * Name of the user to grant the permission to.
+   *
    * To get the name of the user, use a [UserService.List] request.
    */
   userName: string;
@@ -604,6 +608,7 @@ const baseUpdateUserRequest: object = {
   clusterId: "",
   userName: "",
   password: "",
+  serverRoles: 0,
 };
 
 export const UpdateUserRequest = {
@@ -628,6 +633,11 @@ export const UpdateUserRequest = {
     for (const v of message.permissions) {
       Permission.encode(v!, writer.uint32(42).fork()).ldelim();
     }
+    writer.uint32(50).fork();
+    for (const v of message.serverRoles) {
+      writer.int32(v);
+    }
+    writer.ldelim();
     return writer;
   },
 
@@ -636,6 +646,7 @@ export const UpdateUserRequest = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseUpdateUserRequest } as UpdateUserRequest;
     message.permissions = [];
+    message.serverRoles = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -653,6 +664,16 @@ export const UpdateUserRequest = {
           break;
         case 5:
           message.permissions.push(Permission.decode(reader, reader.uint32()));
+          break;
+        case 6:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.serverRoles.push(reader.int32() as any);
+            }
+          } else {
+            message.serverRoles.push(reader.int32() as any);
+          }
           break;
         default:
           reader.skipType(tag & 7);
@@ -683,6 +704,9 @@ export const UpdateUserRequest = {
     message.permissions = (object.permissions ?? []).map((e: any) =>
       Permission.fromJSON(e)
     );
+    message.serverRoles = (object.serverRoles ?? []).map((e: any) =>
+      serverRoleFromJSON(e)
+    );
     return message;
   },
 
@@ -702,6 +726,11 @@ export const UpdateUserRequest = {
     } else {
       obj.permissions = [];
     }
+    if (message.serverRoles) {
+      obj.serverRoles = message.serverRoles.map((e) => serverRoleToJSON(e));
+    } else {
+      obj.serverRoles = [];
+    }
     return obj;
   },
 
@@ -718,6 +747,7 @@ export const UpdateUserRequest = {
     message.password = object.password ?? "";
     message.permissions =
       object.permissions?.map((e) => Permission.fromPartial(e)) || [];
+    message.serverRoles = object.serverRoles?.map((e) => e) || [];
     return message;
   },
 };

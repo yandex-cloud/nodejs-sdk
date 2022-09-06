@@ -75,7 +75,9 @@ export enum ContainerAudio_ContainerAudioType {
   CONTAINER_AUDIO_TYPE_UNSPECIFIED = 0,
   /** WAV - Audio bit depth 16-bit signed little-endian (Linear PCM). */
   WAV = 1,
+  /** OGG_OPUS - Data is encoded using the OPUS audio codec and compressed using the OGG container format. */
   OGG_OPUS = 2,
+  /** MP3 - Data is encoded using MPEG-1/2 Layer III and compressed using the MP3 container format. */
   MP3 = 3,
   UNRECOGNIZED = -1,
 }
@@ -182,10 +184,15 @@ export interface Hints {
   voice: string | undefined;
   /** Template for synthesizing. */
   audioTemplate?: AudioTemplate | undefined;
-  /** hint to change speed */
+  /** Hint to change speed. */
   speed: number | undefined;
-  /** hint to regulate volume. For LOUDNESS_NORMALIZATION_TYPE_UNSPECIFIED normalization will use MAX_PEAK, if volume in (0, 1], LUFS if volume in [-145, 0). */
+  /**
+   * Hint to regulate normalization level.
+   * * For `MAX_PEAK` loudness_normalization_type: volume changes in a range (0;1], default value is 0.7.
+   * * For `LUFS` loudness_normalization_type: volume changes in a range [-145;0), default value is -19.
+   */
   volume: number | undefined;
+  /** Hint to specify pronunciation character for the speaker. */
   role: string | undefined;
 }
 
@@ -193,7 +200,7 @@ export interface UtteranceSynthesisRequest {
   $type: "speechkit.tts.v3.UtteranceSynthesisRequest";
   /**
    * The name of the model.
-   * Specifies basic synthesis functionality. Currently should be empty. Do not use it
+   * Specifies basic synthesis functionality. Currently should be empty. Do not use it.
    */
   model: string;
   /** Raw text (e.g. "Hello, Alice"). */
@@ -204,16 +211,20 @@ export interface UtteranceSynthesisRequest {
   hints: Hints[];
   /** Optional. Default: 22050 Hz, linear 16-bit signed little-endian PCM, with WAV header */
   outputAudioSpec?: AudioFormatOptions;
-  /** Optional. Default: LUFS, type of loudness normalization, default value -19. */
+  /**
+   * Specifies type of loudness normalization.
+   * Optional. Default: `LUFS`.
+   */
   loudnessNormalizationType: UtteranceSynthesisRequest_LoudnessNormalizationType;
   /** Optional. Automatically split long text to several utterances and bill accordingly. Some degradation in service quality is possible. */
   unsafeMode: boolean;
 }
 
-/** Normalization type */
 export enum UtteranceSynthesisRequest_LoudnessNormalizationType {
   LOUDNESS_NORMALIZATION_TYPE_UNSPECIFIED = 0,
+  /** MAX_PEAK - The type of normalization, wherein the gain is changed to bring the highest PCM sample value or analog signal peak to a given level. */
   MAX_PEAK = 1,
+  /** LUFS - The type of normalization based on EBU R 128 recommendation. */
   LUFS = 2,
   UNRECOGNIZED = -1,
 }

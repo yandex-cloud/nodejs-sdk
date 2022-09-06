@@ -20,25 +20,23 @@ export const protobufPackage = "yandex.cloud.mdb.greenplum.v1";
 
 export interface GetBackupRequest {
   $type: "yandex.cloud.mdb.greenplum.v1.GetBackupRequest";
-  /** Required. ID of the backup to return. */
+  /** ID of the backup to return. */
   backupId: string;
 }
 
 export interface ListBackupsRequest {
   $type: "yandex.cloud.mdb.greenplum.v1.ListBackupsRequest";
-  /** Required. ID of the folder to list backups in. */
+  /** ID of the folder to list backups in. */
   folderId: string;
   /**
-   * The maximum number of results per page that should be returned. If the number of available
-   * results is larger than `page_size`, the service returns a `next_page_token` that can be used
-   * to get the next page of results in subsequent ListBackups requests.
-   * Acceptable values are 0 to 1000, inclusive. Default value: 100.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the service returns a [ListBackupsResponse.next_page_token] that can be used to get the next page of results in subsequent list requests.
+   *
+   * Default value is 100.
    */
   pageSize: number;
-  /**
-   * Page token. Set `page_token` to the `next_page_token` returned by a previous ListBackups
-   * request to get the next page of results.
-   */
+  /** The page token. To get the next page of results, set [page_token] to the [ListBackupsResponse.next_page_token] returned by the previous list request. */
   pageToken: string;
 }
 
@@ -47,11 +45,11 @@ export interface ListBackupsResponse {
   /** Requested list of backups. */
   backups: Backup[];
   /**
-   * This token allows you to get the next page of results for ListBackups requests,
-   * if the number of results is larger than `page_size` specified in the request.
-   * To get the next page, specify the value of `next_page_token` as a value for
-   * the `page_token` parameter in the next ListBackups request. Subsequent ListBackups
-   * requests will have their own `next_page_token` to continue paging through the results.
+   * This token allows you to get the next page of results for a list request.
+   *
+   * If the number of results is larger than [ListBackupsRequest.page_size] specified in the request, use the [next_page_token] as the value for the [ListBackupsRequest.page_token] parameter in the next list request.
+   *
+   * Each subsequent ListBackups request has its own [next_page_token] to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -288,6 +286,7 @@ export const ListBackupsResponse = {
 
 messageTypeRegistry.set(ListBackupsResponse.$type, ListBackupsResponse);
 
+/** A set of methods for managing backups. */
 export const BackupServiceService = {
   /** Returns the specified backup of Greenplum® cluster. */
   get: {

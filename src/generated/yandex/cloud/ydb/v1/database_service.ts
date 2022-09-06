@@ -39,6 +39,20 @@ import {
 
 export const protobufPackage = "yandex.cloud.ydb.v1";
 
+export interface MoveDatabaseRequest {
+  $type: "yandex.cloud.ydb.v1.MoveDatabaseRequest";
+  /** ID of the YDB instance to move. */
+  databaseId: string;
+  /** ID of the destination folder. */
+  destinationFolderId: string;
+}
+
+export interface MoveDatabaseMetadata {
+  $type: "yandex.cloud.ydb.v1.MoveDatabaseMetadata";
+  databaseId: string;
+  databaseName: string;
+}
+
 export interface RestoreBackupRequest {
   $type: "yandex.cloud.ydb.v1.RestoreBackupRequest";
   /** Required. ID of the YDB backup. */
@@ -152,6 +166,7 @@ export interface CreateDatabaseRequest {
   labels: { [key: string]: string };
   backupConfig?: BackupConfig;
   monitoringConfig?: MonitoringConfig;
+  deletionProtection: boolean;
 }
 
 export interface CreateDatabaseRequest_LabelsEntry {
@@ -189,6 +204,7 @@ export interface UpdateDatabaseRequest {
   labels: { [key: string]: string };
   backupConfig?: BackupConfig;
   monitoringConfig?: MonitoringConfig;
+  deletionProtection: boolean;
 }
 
 export interface UpdateDatabaseRequest_LabelsEntry {
@@ -213,6 +229,162 @@ export interface DeleteDatabaseMetadata {
   databaseId: string;
   databaseName: string;
 }
+
+const baseMoveDatabaseRequest: object = {
+  $type: "yandex.cloud.ydb.v1.MoveDatabaseRequest",
+  databaseId: "",
+  destinationFolderId: "",
+};
+
+export const MoveDatabaseRequest = {
+  $type: "yandex.cloud.ydb.v1.MoveDatabaseRequest" as const,
+
+  encode(
+    message: MoveDatabaseRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.databaseId !== "") {
+      writer.uint32(10).string(message.databaseId);
+    }
+    if (message.destinationFolderId !== "") {
+      writer.uint32(18).string(message.destinationFolderId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MoveDatabaseRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMoveDatabaseRequest } as MoveDatabaseRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.databaseId = reader.string();
+          break;
+        case 2:
+          message.destinationFolderId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MoveDatabaseRequest {
+    const message = { ...baseMoveDatabaseRequest } as MoveDatabaseRequest;
+    message.databaseId =
+      object.databaseId !== undefined && object.databaseId !== null
+        ? String(object.databaseId)
+        : "";
+    message.destinationFolderId =
+      object.destinationFolderId !== undefined &&
+      object.destinationFolderId !== null
+        ? String(object.destinationFolderId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: MoveDatabaseRequest): unknown {
+    const obj: any = {};
+    message.databaseId !== undefined && (obj.databaseId = message.databaseId);
+    message.destinationFolderId !== undefined &&
+      (obj.destinationFolderId = message.destinationFolderId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MoveDatabaseRequest>, I>>(
+    object: I
+  ): MoveDatabaseRequest {
+    const message = { ...baseMoveDatabaseRequest } as MoveDatabaseRequest;
+    message.databaseId = object.databaseId ?? "";
+    message.destinationFolderId = object.destinationFolderId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(MoveDatabaseRequest.$type, MoveDatabaseRequest);
+
+const baseMoveDatabaseMetadata: object = {
+  $type: "yandex.cloud.ydb.v1.MoveDatabaseMetadata",
+  databaseId: "",
+  databaseName: "",
+};
+
+export const MoveDatabaseMetadata = {
+  $type: "yandex.cloud.ydb.v1.MoveDatabaseMetadata" as const,
+
+  encode(
+    message: MoveDatabaseMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.databaseId !== "") {
+      writer.uint32(10).string(message.databaseId);
+    }
+    if (message.databaseName !== "") {
+      writer.uint32(18).string(message.databaseName);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): MoveDatabaseMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMoveDatabaseMetadata } as MoveDatabaseMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.databaseId = reader.string();
+          break;
+        case 2:
+          message.databaseName = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MoveDatabaseMetadata {
+    const message = { ...baseMoveDatabaseMetadata } as MoveDatabaseMetadata;
+    message.databaseId =
+      object.databaseId !== undefined && object.databaseId !== null
+        ? String(object.databaseId)
+        : "";
+    message.databaseName =
+      object.databaseName !== undefined && object.databaseName !== null
+        ? String(object.databaseName)
+        : "";
+    return message;
+  },
+
+  toJSON(message: MoveDatabaseMetadata): unknown {
+    const obj: any = {};
+    message.databaseId !== undefined && (obj.databaseId = message.databaseId);
+    message.databaseName !== undefined &&
+      (obj.databaseName = message.databaseName);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MoveDatabaseMetadata>, I>>(
+    object: I
+  ): MoveDatabaseMetadata {
+    const message = { ...baseMoveDatabaseMetadata } as MoveDatabaseMetadata;
+    message.databaseId = object.databaseId ?? "";
+    message.databaseName = object.databaseName ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(MoveDatabaseMetadata.$type, MoveDatabaseMetadata);
 
 const baseRestoreBackupRequest: object = {
   $type: "yandex.cloud.ydb.v1.RestoreBackupRequest",
@@ -1101,6 +1273,7 @@ const baseCreateDatabaseRequest: object = {
   subnetIds: "",
   assignPublicIps: false,
   locationId: "",
+  deletionProtection: false,
 };
 
 export const CreateDatabaseRequest = {
@@ -1192,6 +1365,9 @@ export const CreateDatabaseRequest = {
         writer.uint32(138).fork()
       ).ldelim();
     }
+    if (message.deletionProtection === true) {
+      writer.uint32(144).bool(message.deletionProtection);
+    }
     return writer;
   },
 
@@ -1276,6 +1452,9 @@ export const CreateDatabaseRequest = {
             reader.uint32()
           );
           break;
+        case 18:
+          message.deletionProtection = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1355,6 +1534,11 @@ export const CreateDatabaseRequest = {
       object.monitoringConfig !== undefined && object.monitoringConfig !== null
         ? MonitoringConfig.fromJSON(object.monitoringConfig)
         : undefined;
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
     return message;
   },
 
@@ -1413,6 +1597,8 @@ export const CreateDatabaseRequest = {
       (obj.monitoringConfig = message.monitoringConfig
         ? MonitoringConfig.toJSON(message.monitoringConfig)
         : undefined);
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -1470,6 +1656,7 @@ export const CreateDatabaseRequest = {
       object.monitoringConfig !== undefined && object.monitoringConfig !== null
         ? MonitoringConfig.fromPartial(object.monitoringConfig)
         : undefined;
+    message.deletionProtection = object.deletionProtection ?? false;
     return message;
   },
 };
@@ -1651,6 +1838,7 @@ const baseUpdateDatabaseRequest: object = {
   subnetIds: "",
   assignPublicIps: false,
   locationId: "",
+  deletionProtection: false,
 };
 
 export const UpdateDatabaseRequest = {
@@ -1748,6 +1936,9 @@ export const UpdateDatabaseRequest = {
         writer.uint32(154).fork()
       ).ldelim();
     }
+    if (message.deletionProtection === true) {
+      writer.uint32(160).bool(message.deletionProtection);
+    }
     return writer;
   },
 
@@ -1838,6 +2029,9 @@ export const UpdateDatabaseRequest = {
             reader.uint32()
           );
           break;
+        case 20:
+          message.deletionProtection = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1925,6 +2119,11 @@ export const UpdateDatabaseRequest = {
       object.monitoringConfig !== undefined && object.monitoringConfig !== null
         ? MonitoringConfig.fromJSON(object.monitoringConfig)
         : undefined;
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
     return message;
   },
 
@@ -1988,6 +2187,8 @@ export const UpdateDatabaseRequest = {
       (obj.monitoringConfig = message.monitoringConfig
         ? MonitoringConfig.toJSON(message.monitoringConfig)
         : undefined);
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -2050,6 +2251,7 @@ export const UpdateDatabaseRequest = {
       object.monitoringConfig !== undefined && object.monitoringConfig !== null
         ? MonitoringConfig.fromPartial(object.monitoringConfig)
         : undefined;
+    message.deletionProtection = object.deletionProtection ?? false;
     return message;
   },
 };
@@ -2438,6 +2640,17 @@ export const DatabaseServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  move: {
+    path: "/yandex.cloud.ydb.v1.DatabaseService/Move",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: MoveDatabaseRequest) =>
+      Buffer.from(MoveDatabaseRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => MoveDatabaseRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   listAccessBindings: {
     path: "/yandex.cloud.ydb.v1.DatabaseService/ListAccessBindings",
     requestStream: false,
@@ -2525,6 +2738,7 @@ export interface DatabaseServiceServer extends UntypedServiceImplementation {
   start: handleUnaryCall<StartDatabaseRequest, Operation>;
   /** Stops the specified database. */
   stop: handleUnaryCall<StopDatabaseRequest, Operation>;
+  move: handleUnaryCall<MoveDatabaseRequest, Operation>;
   listAccessBindings: handleUnaryCall<
     ListAccessBindingsRequest,
     ListAccessBindingsResponse
@@ -2640,6 +2854,21 @@ export interface DatabaseServiceClient extends Client {
   ): ClientUnaryCall;
   stop(
     request: StopDatabaseRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  move(
+    request: MoveDatabaseRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  move(
+    request: MoveDatabaseRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  move(
+    request: MoveDatabaseRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

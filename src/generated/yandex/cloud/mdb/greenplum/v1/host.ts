@@ -10,13 +10,14 @@ export const protobufPackage = "yandex.cloud.mdb.greenplum.v1";
 export interface Host {
   $type: "yandex.cloud.mdb.greenplum.v1.Host";
   /**
-   * Name of the Greenplum® host. The host name is assigned by Yandex Cloud at creation time and cannot be changed.
-   * 1-63 characters long.
+   * Name of the Greenplum® host.
    *
-   * The name is unique across all existing MDB hosts in Yandex Cloud, as it defines the FQDN of the host.
+   * The host name is assigned by the platform at creation time and cannot be changed.
+   *
+   * The name is unique across all MDB hosts that exist on the platform, as it defines the FQDN of the host.
    */
   name: string;
-  /** ID of the Greenplum® cluster. The ID is assigned by Yandex Cloud at creation time. */
+  /** ID of the Greenplum® cluster. The ID is assigned by the platform at creation time. */
   clusterId: string;
   /** ID of the availability zone the Greenplum® host belongs to. */
   zoneId: string;
@@ -28,7 +29,7 @@ export interface Host {
   health: Host_Health;
   /** ID of the subnet that the host belongs to. */
   subnetId: string;
-  /** Whether or not a public IP is assigned to the host. */
+  /** Determines whether a public IP is assigned to the host. */
   assignPublicIp: boolean;
 }
 
@@ -89,7 +90,7 @@ export enum Host_Health {
   DEAD = 2,
   /** DEGRADED - The host is working below capacity or not fully functional. */
   DEGRADED = 3,
-  /** UNBALANCED - One or more segments are not in preferred role. */
+  /** UNBALANCED - One or more segments are not in the preferred role. */
   UNBALANCED = 4,
   UNRECOGNIZED = -1,
 }

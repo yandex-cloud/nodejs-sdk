@@ -95,6 +95,7 @@ export interface Database {
   documentApiEndpoint: string;
   kinesisApiEndpoint: string;
   monitoringConfig?: MonitoringConfig;
+  deletionProtection: boolean;
 }
 
 export enum Database_Status {
@@ -280,6 +281,8 @@ export interface ServerlessDatabase {
    * You will be charged for the on-demand consumption only if provisioned capacity is consumed.
    */
   provisionedRcuLimit: number;
+  /** write quota for topic service, defined in bytes per second. */
+  topicWriteQuota: number;
 }
 
 export interface ZonalDatabase {
@@ -330,6 +333,7 @@ const baseDatabase: object = {
   locationId: "",
   documentApiEndpoint: "",
   kinesisApiEndpoint: "",
+  deletionProtection: false,
 };
 
 export const Database = {
@@ -442,6 +446,9 @@ export const Database = {
         writer.uint32(194).fork()
       ).ldelim();
     }
+    if (message.deletionProtection === true) {
+      writer.uint32(200).bool(message.deletionProtection);
+    }
     return writer;
   },
 
@@ -539,6 +546,9 @@ export const Database = {
             reader,
             reader.uint32()
           );
+          break;
+        case 25:
+          message.deletionProtection = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -643,6 +653,11 @@ export const Database = {
       object.monitoringConfig !== undefined && object.monitoringConfig !== null
         ? MonitoringConfig.fromJSON(object.monitoringConfig)
         : undefined;
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
     return message;
   },
 
@@ -711,6 +726,8 @@ export const Database = {
       (obj.monitoringConfig = message.monitoringConfig
         ? MonitoringConfig.toJSON(message.monitoringConfig)
         : undefined);
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -772,6 +789,7 @@ export const Database = {
       object.monitoringConfig !== undefined && object.monitoringConfig !== null
         ? MonitoringConfig.fromPartial(object.monitoringConfig)
         : undefined;
+    message.deletionProtection = object.deletionProtection ?? false;
     return message;
   },
 };
@@ -1986,6 +2004,7 @@ const baseServerlessDatabase: object = {
   storageSizeLimit: 0,
   enableThrottlingRcuLimit: false,
   provisionedRcuLimit: 0,
+  topicWriteQuota: 0,
 };
 
 export const ServerlessDatabase = {
@@ -2006,6 +2025,9 @@ export const ServerlessDatabase = {
     }
     if (message.provisionedRcuLimit !== 0) {
       writer.uint32(32).int64(message.provisionedRcuLimit);
+    }
+    if (message.topicWriteQuota !== 0) {
+      writer.uint32(40).int64(message.topicWriteQuota);
     }
     return writer;
   },
@@ -2028,6 +2050,9 @@ export const ServerlessDatabase = {
           break;
         case 4:
           message.provisionedRcuLimit = longToNumber(reader.int64() as Long);
+          break;
+        case 5:
+          message.topicWriteQuota = longToNumber(reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -2058,6 +2083,10 @@ export const ServerlessDatabase = {
       object.provisionedRcuLimit !== null
         ? Number(object.provisionedRcuLimit)
         : 0;
+    message.topicWriteQuota =
+      object.topicWriteQuota !== undefined && object.topicWriteQuota !== null
+        ? Number(object.topicWriteQuota)
+        : 0;
     return message;
   },
 
@@ -2071,6 +2100,8 @@ export const ServerlessDatabase = {
       (obj.enableThrottlingRcuLimit = message.enableThrottlingRcuLimit);
     message.provisionedRcuLimit !== undefined &&
       (obj.provisionedRcuLimit = Math.round(message.provisionedRcuLimit));
+    message.topicWriteQuota !== undefined &&
+      (obj.topicWriteQuota = Math.round(message.topicWriteQuota));
     return obj;
   },
 
@@ -2082,6 +2113,7 @@ export const ServerlessDatabase = {
     message.storageSizeLimit = object.storageSizeLimit ?? 0;
     message.enableThrottlingRcuLimit = object.enableThrottlingRcuLimit ?? false;
     message.provisionedRcuLimit = object.provisionedRcuLimit ?? 0;
+    message.topicWriteQuota = object.topicWriteQuota ?? 0;
     return message;
   },
 };

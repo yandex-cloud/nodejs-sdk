@@ -149,7 +149,7 @@ export interface PostgresConnection {
   /**
    * Managed cluster
    *
-   * Yandex.Cloud Managed PostgreSQL cluster ID
+   * Managed Service for PostgreSQL cluster ID
    */
   mdbClusterId: string | undefined;
   /**

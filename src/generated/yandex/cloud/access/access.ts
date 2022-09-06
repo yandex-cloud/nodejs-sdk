@@ -164,6 +164,12 @@ export interface AccessBindingDelta {
   accessBinding?: AccessBinding;
 }
 
+export interface AccessBindingsOperationResult {
+  $type: "yandex.cloud.access.AccessBindingsOperationResult";
+  /** Result access binding deltas. */
+  effectiveDeltas: AccessBindingDelta[];
+}
+
 const baseSubject: object = {
   $type: "yandex.cloud.access.Subject",
   id: "",
@@ -935,6 +941,89 @@ export const AccessBindingDelta = {
 };
 
 messageTypeRegistry.set(AccessBindingDelta.$type, AccessBindingDelta);
+
+const baseAccessBindingsOperationResult: object = {
+  $type: "yandex.cloud.access.AccessBindingsOperationResult",
+};
+
+export const AccessBindingsOperationResult = {
+  $type: "yandex.cloud.access.AccessBindingsOperationResult" as const,
+
+  encode(
+    message: AccessBindingsOperationResult,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.effectiveDeltas) {
+      AccessBindingDelta.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): AccessBindingsOperationResult {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseAccessBindingsOperationResult,
+    } as AccessBindingsOperationResult;
+    message.effectiveDeltas = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.effectiveDeltas.push(
+            AccessBindingDelta.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AccessBindingsOperationResult {
+    const message = {
+      ...baseAccessBindingsOperationResult,
+    } as AccessBindingsOperationResult;
+    message.effectiveDeltas = (object.effectiveDeltas ?? []).map((e: any) =>
+      AccessBindingDelta.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: AccessBindingsOperationResult): unknown {
+    const obj: any = {};
+    if (message.effectiveDeltas) {
+      obj.effectiveDeltas = message.effectiveDeltas.map((e) =>
+        e ? AccessBindingDelta.toJSON(e) : undefined
+      );
+    } else {
+      obj.effectiveDeltas = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AccessBindingsOperationResult>, I>>(
+    object: I
+  ): AccessBindingsOperationResult {
+    const message = {
+      ...baseAccessBindingsOperationResult,
+    } as AccessBindingsOperationResult;
+    message.effectiveDeltas =
+      object.effectiveDeltas?.map((e) => AccessBindingDelta.fromPartial(e)) ||
+      [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  AccessBindingsOperationResult.$type,
+  AccessBindingsOperationResult
+);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

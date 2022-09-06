@@ -5,34 +5,32 @@ import _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "yandex.cloud.mdb.greenplum.v1";
 
-/** A preset of resources for hardware configuration of Greenplum hosts. */
+/** A preset of resources for hardware configuration of Greenplum® hosts. */
 export interface ResourcePreset {
   $type: "yandex.cloud.mdb.greenplum.v1.ResourcePreset";
   /** ID of the resource preset. */
   id: string;
   /** IDs of availability zones where the resource preset is available. */
   zoneIds: string[];
-  /** Number of CPU cores for a Greenplum host created with the preset. */
+  /** IDs of availability disk types available in the resource preset. */
+  diskTypeIds: string[];
+  /** Number of CPU cores for a Greenplum® host created with the preset. */
   cores: number;
-  /** RAM volume for a Greenplum host created with the preset, in bytes. */
+  /** RAM volume for a Greenplum® host created with the preset, in bytes. */
   memory: number;
-  /** Host type */
+  /** Host type. */
   type: ResourcePreset_Type;
-  /** Min host count */
-  minHostCount: number;
-  /** Max host count */
-  maxHostCount: number;
-  /** The number of hosts must be divisible by host_count_divider */
+  /** The number of hosts must be divisible by [host_count_divider]. */
   hostCountDivider: number;
-  /** Max segment count in host (actual only for segment host) */
+  /** Maximum number of segments in segment host. */
   maxSegmentInHostCount: number;
 }
 
 export enum ResourcePreset_Type {
   TYPE_UNSPECIFIED = 0,
-  /** MASTER - Greenplum master host. */
+  /** MASTER - Greenplum® master host. */
   MASTER = 1,
-  /** SEGMENT - Greenplum segment host. */
+  /** SEGMENT - Greenplum® segment host. */
   SEGMENT = 2,
   UNRECOGNIZED = -1,
 }
@@ -72,11 +70,10 @@ const baseResourcePreset: object = {
   $type: "yandex.cloud.mdb.greenplum.v1.ResourcePreset",
   id: "",
   zoneIds: "",
+  diskTypeIds: "",
   cores: 0,
   memory: 0,
   type: 0,
-  minHostCount: 0,
-  maxHostCount: 0,
   hostCountDivider: 0,
   maxSegmentInHostCount: 0,
 };
@@ -94,6 +91,9 @@ export const ResourcePreset = {
     for (const v of message.zoneIds) {
       writer.uint32(18).string(v!);
     }
+    for (const v of message.diskTypeIds) {
+      writer.uint32(82).string(v!);
+    }
     if (message.cores !== 0) {
       writer.uint32(24).int64(message.cores);
     }
@@ -102,12 +102,6 @@ export const ResourcePreset = {
     }
     if (message.type !== 0) {
       writer.uint32(40).int32(message.type);
-    }
-    if (message.minHostCount !== 0) {
-      writer.uint32(48).int64(message.minHostCount);
-    }
-    if (message.maxHostCount !== 0) {
-      writer.uint32(56).int64(message.maxHostCount);
     }
     if (message.hostCountDivider !== 0) {
       writer.uint32(64).int64(message.hostCountDivider);
@@ -123,6 +117,7 @@ export const ResourcePreset = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseResourcePreset } as ResourcePreset;
     message.zoneIds = [];
+    message.diskTypeIds = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -132,6 +127,9 @@ export const ResourcePreset = {
         case 2:
           message.zoneIds.push(reader.string());
           break;
+        case 10:
+          message.diskTypeIds.push(reader.string());
+          break;
         case 3:
           message.cores = longToNumber(reader.int64() as Long);
           break;
@@ -140,12 +138,6 @@ export const ResourcePreset = {
           break;
         case 5:
           message.type = reader.int32() as any;
-          break;
-        case 6:
-          message.minHostCount = longToNumber(reader.int64() as Long);
-          break;
-        case 7:
-          message.maxHostCount = longToNumber(reader.int64() as Long);
           break;
         case 8:
           message.hostCountDivider = longToNumber(reader.int64() as Long);
@@ -166,6 +158,7 @@ export const ResourcePreset = {
     message.id =
       object.id !== undefined && object.id !== null ? String(object.id) : "";
     message.zoneIds = (object.zoneIds ?? []).map((e: any) => String(e));
+    message.diskTypeIds = (object.diskTypeIds ?? []).map((e: any) => String(e));
     message.cores =
       object.cores !== undefined && object.cores !== null
         ? Number(object.cores)
@@ -177,14 +170,6 @@ export const ResourcePreset = {
     message.type =
       object.type !== undefined && object.type !== null
         ? resourcePreset_TypeFromJSON(object.type)
-        : 0;
-    message.minHostCount =
-      object.minHostCount !== undefined && object.minHostCount !== null
-        ? Number(object.minHostCount)
-        : 0;
-    message.maxHostCount =
-      object.maxHostCount !== undefined && object.maxHostCount !== null
-        ? Number(object.maxHostCount)
         : 0;
     message.hostCountDivider =
       object.hostCountDivider !== undefined && object.hostCountDivider !== null
@@ -206,14 +191,15 @@ export const ResourcePreset = {
     } else {
       obj.zoneIds = [];
     }
+    if (message.diskTypeIds) {
+      obj.diskTypeIds = message.diskTypeIds.map((e) => e);
+    } else {
+      obj.diskTypeIds = [];
+    }
     message.cores !== undefined && (obj.cores = Math.round(message.cores));
     message.memory !== undefined && (obj.memory = Math.round(message.memory));
     message.type !== undefined &&
       (obj.type = resourcePreset_TypeToJSON(message.type));
-    message.minHostCount !== undefined &&
-      (obj.minHostCount = Math.round(message.minHostCount));
-    message.maxHostCount !== undefined &&
-      (obj.maxHostCount = Math.round(message.maxHostCount));
     message.hostCountDivider !== undefined &&
       (obj.hostCountDivider = Math.round(message.hostCountDivider));
     message.maxSegmentInHostCount !== undefined &&
@@ -227,11 +213,10 @@ export const ResourcePreset = {
     const message = { ...baseResourcePreset } as ResourcePreset;
     message.id = object.id ?? "";
     message.zoneIds = object.zoneIds?.map((e) => e) || [];
+    message.diskTypeIds = object.diskTypeIds?.map((e) => e) || [];
     message.cores = object.cores ?? 0;
     message.memory = object.memory ?? 0;
     message.type = object.type ?? 0;
-    message.minHostCount = object.minHostCount ?? 0;
-    message.maxHostCount = object.maxHostCount ?? 0;
     message.hostCountDivider = object.hostCountDivider ?? 0;
     message.maxSegmentInHostCount = object.maxSegmentInHostCount ?? 0;
     return message;
