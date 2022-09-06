@@ -43,7 +43,9 @@ import { Postgresqlconfig111c } from "../../../../../yandex/cloud/mdb/postgresql
 import { PostgresqlConfig12 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/postgresql12";
 import { Postgresqlconfig121c } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/postgresql12_1c";
 import { PostgresqlConfig13 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/postgresql13";
+import { Postgresqlconfig131c } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/postgresql13_1c";
 import { PostgresqlConfig14 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/postgresql14";
+import { Postgresqlconfig141c } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/postgresql14_1c";
 import { Postgresqlhostconfig96 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host9_6";
 import { Postgresqlhostconfig101c } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host10_1c";
 import { PostgresqlHostConfig10 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host10";
@@ -52,7 +54,9 @@ import { Postgresqlhostconfig111c } from "../../../../../yandex/cloud/mdb/postgr
 import { PostgresqlHostConfig12 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host12";
 import { Postgresqlhostconfig121c } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host12_1c";
 import { PostgresqlHostConfig13 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host13";
+import { Postgresqlhostconfig131c } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host13_1c";
 import { PostgresqlHostConfig14 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host14";
+import { Postgresqlhostconfig141c } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host14_1c";
 import { Int64Value, BoolValue } from "../../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.mdb.postgresql.v1";
@@ -81,7 +85,7 @@ export interface ListClustersRequest {
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the [ListClustersResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
   /**
@@ -453,7 +457,7 @@ export interface ListClusterLogsRequest {
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the
-   * [ListClusterLogsResponse.next_page_token] returned by a previous list request.
+   * [ListClusterLogsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
   /** Always return `next_page_token`, even if current page is empty. */
@@ -621,7 +625,7 @@ export interface ListClusterOperationsRequest {
   pageSize: number;
   /**
    * Page token.  To get the next page of results, set [page_token] to the [ListClusterOperationsResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }
@@ -654,7 +658,7 @@ export interface ListClusterBackupsRequest {
   pageSize: number;
   /**
    * Page token.  To get the next page of results, set [page_token] to the [ListClusterBackupsResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }
@@ -687,7 +691,7 @@ export interface ListClusterHostsRequest {
   pageSize: number;
   /**
    * Page token.  To get the next page of results, set [page_token] to the [ListClusterHostsResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }
@@ -851,8 +855,12 @@ export interface ConfigSpec {
   postgresqlConfig121c?: Postgresqlconfig121c | undefined;
   /** Configuration for a PostgreSQL 13 cluster. */
   postgresqlConfig13?: PostgresqlConfig13 | undefined;
+  /** Configuration for a PostgreSQL 13 1C cluster. */
+  postgresqlConfig131c?: Postgresqlconfig131c | undefined;
   /** Configuration for a PostgreSQL 14 cluster. */
   postgresqlConfig14?: PostgresqlConfig14 | undefined;
+  /** Configuration for a PostgreSQL 14 1C cluster. */
+  postgresqlConfig141c?: Postgresqlconfig141c | undefined;
   /** Configuration of the connection pooler. */
   poolerConfig?: ConnectionPoolerConfig;
   /** Resources allocated to PostgreSQL hosts. */
@@ -887,8 +895,12 @@ export interface ConfigHostSpec {
   postgresqlConfig121c?: Postgresqlhostconfig121c | undefined;
   /** Configuration for a host with PostgreSQL 13 server deployed. */
   postgresqlConfig13?: PostgresqlHostConfig13 | undefined;
+  /** Configuration for a host with PostgreSQL 13 1C server deployed. */
+  postgresqlConfig131c?: Postgresqlhostconfig131c | undefined;
   /** Configuration for a host with PostgreSQL 14 server deployed. */
   postgresqlConfig14?: PostgresqlHostConfig14 | undefined;
+  /** Configuration for a host with PostgreSQL 14 1C server deployed. */
+  postgresqlConfig141c?: Postgresqlhostconfig141c | undefined;
 }
 
 const baseGetClusterRequest: object = {
@@ -1060,7 +1072,7 @@ const baseListClustersResponse: object = {
   nextPageToken: "",
 };
 
-export const ListClustersResponse: MessageType = {
+export const ListClustersResponse: MessageType<ListClustersResponse> = {
   $type: "yandex.cloud.mdb.postgresql.v1.ListClustersResponse" as const,
 
   encode(
@@ -5598,10 +5610,22 @@ export const ConfigSpec = {
         writer.uint32(122).fork()
       ).ldelim();
     }
+    if (message.postgresqlConfig131c !== undefined) {
+      Postgresqlconfig131c.encode(
+        message.postgresqlConfig131c,
+        writer.uint32(146).fork()
+      ).ldelim();
+    }
     if (message.postgresqlConfig14 !== undefined) {
       PostgresqlConfig14.encode(
         message.postgresqlConfig14,
         writer.uint32(130).fork()
+      ).ldelim();
+    }
+    if (message.postgresqlConfig141c !== undefined) {
+      Postgresqlconfig141c.encode(
+        message.postgresqlConfig141c,
+        writer.uint32(154).fork()
       ).ldelim();
     }
     if (message.poolerConfig !== undefined) {
@@ -5704,8 +5728,20 @@ export const ConfigSpec = {
             reader.uint32()
           );
           break;
+        case 18:
+          message.postgresqlConfig131c = Postgresqlconfig131c.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         case 16:
           message.postgresqlConfig14 = PostgresqlConfig14.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 19:
+          message.postgresqlConfig141c = Postgresqlconfig141c.decode(
             reader,
             reader.uint32()
           );
@@ -5797,10 +5833,20 @@ export const ConfigSpec = {
       object.postgresqlConfig_13 !== null
         ? PostgresqlConfig13.fromJSON(object.postgresqlConfig_13)
         : undefined;
+    message.postgresqlConfig131c =
+      object.postgresqlConfig_13_1c !== undefined &&
+      object.postgresqlConfig_13_1c !== null
+        ? Postgresqlconfig131c.fromJSON(object.postgresqlConfig_13_1c)
+        : undefined;
     message.postgresqlConfig14 =
       object.postgresqlConfig_14 !== undefined &&
       object.postgresqlConfig_14 !== null
         ? PostgresqlConfig14.fromJSON(object.postgresqlConfig_14)
+        : undefined;
+    message.postgresqlConfig141c =
+      object.postgresqlConfig_14_1c !== undefined &&
+      object.postgresqlConfig_14_1c !== null
+        ? Postgresqlconfig141c.fromJSON(object.postgresqlConfig_14_1c)
         : undefined;
     message.poolerConfig =
       object.poolerConfig !== undefined && object.poolerConfig !== null
@@ -5871,9 +5917,17 @@ export const ConfigSpec = {
       (obj.postgresqlConfig_13 = message.postgresqlConfig13
         ? PostgresqlConfig13.toJSON(message.postgresqlConfig13)
         : undefined);
+    message.postgresqlConfig131c !== undefined &&
+      (obj.postgresqlConfig_13_1c = message.postgresqlConfig131c
+        ? Postgresqlconfig131c.toJSON(message.postgresqlConfig131c)
+        : undefined);
     message.postgresqlConfig14 !== undefined &&
       (obj.postgresqlConfig_14 = message.postgresqlConfig14
         ? PostgresqlConfig14.toJSON(message.postgresqlConfig14)
+        : undefined);
+    message.postgresqlConfig141c !== undefined &&
+      (obj.postgresqlConfig_14_1c = message.postgresqlConfig141c
+        ? Postgresqlconfig141c.toJSON(message.postgresqlConfig141c)
         : undefined);
     message.poolerConfig !== undefined &&
       (obj.poolerConfig = message.poolerConfig
@@ -5945,10 +5999,20 @@ export const ConfigSpec = {
       object.postgresqlConfig13 !== null
         ? PostgresqlConfig13.fromPartial(object.postgresqlConfig13)
         : undefined;
+    message.postgresqlConfig131c =
+      object.postgresqlConfig131c !== undefined &&
+      object.postgresqlConfig131c !== null
+        ? Postgresqlconfig131c.fromPartial(object.postgresqlConfig131c)
+        : undefined;
     message.postgresqlConfig14 =
       object.postgresqlConfig14 !== undefined &&
       object.postgresqlConfig14 !== null
         ? PostgresqlConfig14.fromPartial(object.postgresqlConfig14)
+        : undefined;
+    message.postgresqlConfig141c =
+      object.postgresqlConfig141c !== undefined &&
+      object.postgresqlConfig141c !== null
+        ? Postgresqlconfig141c.fromPartial(object.postgresqlConfig141c)
         : undefined;
     message.poolerConfig =
       object.poolerConfig !== undefined && object.poolerConfig !== null
@@ -6039,10 +6103,22 @@ export const ConfigHostSpec = {
         writer.uint32(66).fork()
       ).ldelim();
     }
+    if (message.postgresqlConfig131c !== undefined) {
+      Postgresqlhostconfig131c.encode(
+        message.postgresqlConfig131c,
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
     if (message.postgresqlConfig14 !== undefined) {
       PostgresqlHostConfig14.encode(
         message.postgresqlConfig14,
         writer.uint32(74).fork()
+      ).ldelim();
+    }
+    if (message.postgresqlConfig141c !== undefined) {
+      Postgresqlhostconfig141c.encode(
+        message.postgresqlConfig141c,
+        writer.uint32(90).fork()
       ).ldelim();
     }
     return writer;
@@ -6103,8 +6179,20 @@ export const ConfigHostSpec = {
             reader.uint32()
           );
           break;
+        case 10:
+          message.postgresqlConfig131c = Postgresqlhostconfig131c.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         case 9:
           message.postgresqlConfig14 = PostgresqlHostConfig14.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 11:
+          message.postgresqlConfig141c = Postgresqlhostconfig141c.decode(
             reader,
             reader.uint32()
           );
@@ -6159,10 +6247,20 @@ export const ConfigHostSpec = {
       object.postgresqlHostConfig_13 !== null
         ? PostgresqlHostConfig13.fromJSON(object.postgresqlHostConfig_13)
         : undefined;
+    message.postgresqlConfig131c =
+      object.postgresqlHostConfig_13_1c !== undefined &&
+      object.postgresqlHostConfig_13_1c !== null
+        ? Postgresqlhostconfig131c.fromJSON(object.postgresqlHostConfig_13_1c)
+        : undefined;
     message.postgresqlConfig14 =
       object.postgresqlHostConfig_14 !== undefined &&
       object.postgresqlHostConfig_14 !== null
         ? PostgresqlHostConfig14.fromJSON(object.postgresqlHostConfig_14)
+        : undefined;
+    message.postgresqlConfig141c =
+      object.postgresqlHostConfig_14_1c !== undefined &&
+      object.postgresqlHostConfig_14_1c !== null
+        ? Postgresqlhostconfig141c.fromJSON(object.postgresqlHostConfig_14_1c)
         : undefined;
     return message;
   },
@@ -6201,9 +6299,17 @@ export const ConfigHostSpec = {
       (obj.postgresqlHostConfig_13 = message.postgresqlConfig13
         ? PostgresqlHostConfig13.toJSON(message.postgresqlConfig13)
         : undefined);
+    message.postgresqlConfig131c !== undefined &&
+      (obj.postgresqlHostConfig_13_1c = message.postgresqlConfig131c
+        ? Postgresqlhostconfig131c.toJSON(message.postgresqlConfig131c)
+        : undefined);
     message.postgresqlConfig14 !== undefined &&
       (obj.postgresqlHostConfig_14 = message.postgresqlConfig14
         ? PostgresqlHostConfig14.toJSON(message.postgresqlConfig14)
+        : undefined);
+    message.postgresqlConfig141c !== undefined &&
+      (obj.postgresqlHostConfig_14_1c = message.postgresqlConfig141c
+        ? Postgresqlhostconfig141c.toJSON(message.postgresqlConfig141c)
         : undefined);
     return obj;
   },
@@ -6252,10 +6358,20 @@ export const ConfigHostSpec = {
       object.postgresqlConfig13 !== null
         ? PostgresqlHostConfig13.fromPartial(object.postgresqlConfig13)
         : undefined;
+    message.postgresqlConfig131c =
+      object.postgresqlConfig131c !== undefined &&
+      object.postgresqlConfig131c !== null
+        ? Postgresqlhostconfig131c.fromPartial(object.postgresqlConfig131c)
+        : undefined;
     message.postgresqlConfig14 =
       object.postgresqlConfig14 !== undefined &&
       object.postgresqlConfig14 !== null
         ? PostgresqlHostConfig14.fromPartial(object.postgresqlConfig14)
+        : undefined;
+    message.postgresqlConfig141c =
+      object.postgresqlConfig141c !== undefined &&
+      object.postgresqlConfig141c !== null
+        ? Postgresqlhostconfig141c.fromPartial(object.postgresqlConfig141c)
         : undefined;
     return message;
   },

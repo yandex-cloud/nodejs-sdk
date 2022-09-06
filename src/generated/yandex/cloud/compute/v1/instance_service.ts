@@ -15,6 +15,7 @@ import {
 } from "@grpc/grpc-js";
 import _m0 from "protobufjs/minimal";
 import {
+  MetadataOptions,
   SchedulingPolicy,
   NetworkSettings,
   PlacementPolicy,
@@ -162,6 +163,8 @@ export interface CreateInstanceRequest {
    * For more information, see [Metadata](/docs/compute/concepts/vm-metadata).
    */
   metadata: { [key: string]: string };
+  /** Options allow user to configure access to instance's metadata */
+  metadataOptions?: MetadataOptions;
   /** Boot disk to attach to the instance. */
   bootDiskSpec?: AttachedDiskSpec;
   /** Array of secondary disks to attach to the instance. */
@@ -268,6 +271,8 @@ export interface UpdateInstanceRequest {
    * For more information, see [Metadata](/docs/compute/concepts/vm-metadata).
    */
   metadata: { [key: string]: string };
+  /** Options allow user to configure access to instance's metadata */
+  metadataOptions?: MetadataOptions;
   /**
    * ID of the service account to use for [authentication inside the instance](/docs/compute/operations/vm-connect/auth-inside-vm).
    * To get the service account ID, use a [yandex.cloud.iam.v1.ServiceAccountService.List] request.
@@ -825,6 +830,24 @@ export interface MoveInstanceMetadata {
   destinationFolderId: string;
 }
 
+export interface GuestStopInstanceMetadata {
+  $type: "yandex.cloud.compute.v1.GuestStopInstanceMetadata";
+  /** ID of the instance that was stopped from guest OS. */
+  instanceId: string;
+}
+
+export interface PreemptInstanceMetadata {
+  $type: "yandex.cloud.compute.v1.PreemptInstanceMetadata";
+  /** ID of the instance that is being preempted. */
+  instanceId: string;
+}
+
+export interface CrashInstanceMetadata {
+  $type: "yandex.cloud.compute.v1.CrashInstanceMetadata";
+  /** ID of the instance that was crashed. */
+  instanceId: string;
+}
+
 const baseGetInstanceRequest: object = {
   $type: "yandex.cloud.compute.v1.GetInstanceRequest",
   instanceId: "",
@@ -1149,6 +1172,12 @@ export const CreateInstanceRequest = {
         writer.uint32(66).fork()
       ).ldelim();
     });
+    if (message.metadataOptions !== undefined) {
+      MetadataOptions.encode(
+        message.metadataOptions,
+        writer.uint32(154).fork()
+      ).ldelim();
+    }
     if (message.bootDiskSpec !== undefined) {
       AttachedDiskSpec.encode(
         message.bootDiskSpec,
@@ -1246,6 +1275,12 @@ export const CreateInstanceRequest = {
             message.metadata[entry8.key] = entry8.value;
           }
           break;
+        case 19:
+          message.metadataOptions = MetadataOptions.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         case 9:
           message.bootDiskSpec = AttachedDiskSpec.decode(
             reader,
@@ -1342,6 +1377,10 @@ export const CreateInstanceRequest = {
       acc[key] = String(value);
       return acc;
     }, {});
+    message.metadataOptions =
+      object.metadataOptions !== undefined && object.metadataOptions !== null
+        ? MetadataOptions.fromJSON(object.metadataOptions)
+        : undefined;
     message.bootDiskSpec =
       object.bootDiskSpec !== undefined && object.bootDiskSpec !== null
         ? AttachedDiskSpec.fromJSON(object.bootDiskSpec)
@@ -1405,6 +1444,10 @@ export const CreateInstanceRequest = {
         obj.metadata[k] = v;
       });
     }
+    message.metadataOptions !== undefined &&
+      (obj.metadataOptions = message.metadataOptions
+        ? MetadataOptions.toJSON(message.metadataOptions)
+        : undefined);
     message.bootDiskSpec !== undefined &&
       (obj.bootDiskSpec = message.bootDiskSpec
         ? AttachedDiskSpec.toJSON(message.bootDiskSpec)
@@ -1484,6 +1527,10 @@ export const CreateInstanceRequest = {
       }
       return acc;
     }, {});
+    message.metadataOptions =
+      object.metadataOptions !== undefined && object.metadataOptions !== null
+        ? MetadataOptions.fromPartial(object.metadataOptions)
+        : undefined;
     message.bootDiskSpec =
       object.bootDiskSpec !== undefined && object.bootDiskSpec !== null
         ? AttachedDiskSpec.fromPartial(object.bootDiskSpec)
@@ -1814,6 +1861,12 @@ export const UpdateInstanceRequest = {
         writer.uint32(66).fork()
       ).ldelim();
     });
+    if (message.metadataOptions !== undefined) {
+      MetadataOptions.encode(
+        message.metadataOptions,
+        writer.uint32(106).fork()
+      ).ldelim();
+    }
     if (message.serviceAccountId !== "") {
       writer.uint32(74).string(message.serviceAccountId);
     }
@@ -1886,6 +1939,12 @@ export const UpdateInstanceRequest = {
             message.metadata[entry8.key] = entry8.value;
           }
           break;
+        case 13:
+          message.metadataOptions = MetadataOptions.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         case 9:
           message.serviceAccountId = reader.string();
           break;
@@ -1953,6 +2012,10 @@ export const UpdateInstanceRequest = {
       acc[key] = String(value);
       return acc;
     }, {});
+    message.metadataOptions =
+      object.metadataOptions !== undefined && object.metadataOptions !== null
+        ? MetadataOptions.fromJSON(object.metadataOptions)
+        : undefined;
     message.serviceAccountId =
       object.serviceAccountId !== undefined && object.serviceAccountId !== null
         ? String(object.serviceAccountId)
@@ -1999,6 +2062,10 @@ export const UpdateInstanceRequest = {
         obj.metadata[k] = v;
       });
     }
+    message.metadataOptions !== undefined &&
+      (obj.metadataOptions = message.metadataOptions
+        ? MetadataOptions.toJSON(message.metadataOptions)
+        : undefined);
     message.serviceAccountId !== undefined &&
       (obj.serviceAccountId = message.serviceAccountId);
     message.networkSettings !== undefined &&
@@ -2048,6 +2115,10 @@ export const UpdateInstanceRequest = {
       }
       return acc;
     }, {});
+    message.metadataOptions =
+      object.metadataOptions !== undefined && object.metadataOptions !== null
+        ? MetadataOptions.fromPartial(object.metadataOptions)
+        : undefined;
     message.serviceAccountId = object.serviceAccountId ?? "";
     message.networkSettings =
       object.networkSettings !== undefined && object.networkSettings !== null
@@ -6045,6 +6116,216 @@ export const MoveInstanceMetadata = {
 
 messageTypeRegistry.set(MoveInstanceMetadata.$type, MoveInstanceMetadata);
 
+const baseGuestStopInstanceMetadata: object = {
+  $type: "yandex.cloud.compute.v1.GuestStopInstanceMetadata",
+  instanceId: "",
+};
+
+export const GuestStopInstanceMetadata = {
+  $type: "yandex.cloud.compute.v1.GuestStopInstanceMetadata" as const,
+
+  encode(
+    message: GuestStopInstanceMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.instanceId !== "") {
+      writer.uint32(10).string(message.instanceId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): GuestStopInstanceMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseGuestStopInstanceMetadata,
+    } as GuestStopInstanceMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instanceId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GuestStopInstanceMetadata {
+    const message = {
+      ...baseGuestStopInstanceMetadata,
+    } as GuestStopInstanceMetadata;
+    message.instanceId =
+      object.instanceId !== undefined && object.instanceId !== null
+        ? String(object.instanceId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: GuestStopInstanceMetadata): unknown {
+    const obj: any = {};
+    message.instanceId !== undefined && (obj.instanceId = message.instanceId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GuestStopInstanceMetadata>, I>>(
+    object: I
+  ): GuestStopInstanceMetadata {
+    const message = {
+      ...baseGuestStopInstanceMetadata,
+    } as GuestStopInstanceMetadata;
+    message.instanceId = object.instanceId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  GuestStopInstanceMetadata.$type,
+  GuestStopInstanceMetadata
+);
+
+const basePreemptInstanceMetadata: object = {
+  $type: "yandex.cloud.compute.v1.PreemptInstanceMetadata",
+  instanceId: "",
+};
+
+export const PreemptInstanceMetadata = {
+  $type: "yandex.cloud.compute.v1.PreemptInstanceMetadata" as const,
+
+  encode(
+    message: PreemptInstanceMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.instanceId !== "") {
+      writer.uint32(10).string(message.instanceId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): PreemptInstanceMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...basePreemptInstanceMetadata,
+    } as PreemptInstanceMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instanceId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PreemptInstanceMetadata {
+    const message = {
+      ...basePreemptInstanceMetadata,
+    } as PreemptInstanceMetadata;
+    message.instanceId =
+      object.instanceId !== undefined && object.instanceId !== null
+        ? String(object.instanceId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: PreemptInstanceMetadata): unknown {
+    const obj: any = {};
+    message.instanceId !== undefined && (obj.instanceId = message.instanceId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<PreemptInstanceMetadata>, I>>(
+    object: I
+  ): PreemptInstanceMetadata {
+    const message = {
+      ...basePreemptInstanceMetadata,
+    } as PreemptInstanceMetadata;
+    message.instanceId = object.instanceId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(PreemptInstanceMetadata.$type, PreemptInstanceMetadata);
+
+const baseCrashInstanceMetadata: object = {
+  $type: "yandex.cloud.compute.v1.CrashInstanceMetadata",
+  instanceId: "",
+};
+
+export const CrashInstanceMetadata = {
+  $type: "yandex.cloud.compute.v1.CrashInstanceMetadata" as const,
+
+  encode(
+    message: CrashInstanceMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.instanceId !== "") {
+      writer.uint32(10).string(message.instanceId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): CrashInstanceMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseCrashInstanceMetadata } as CrashInstanceMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instanceId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CrashInstanceMetadata {
+    const message = { ...baseCrashInstanceMetadata } as CrashInstanceMetadata;
+    message.instanceId =
+      object.instanceId !== undefined && object.instanceId !== null
+        ? String(object.instanceId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: CrashInstanceMetadata): unknown {
+    const obj: any = {};
+    message.instanceId !== undefined && (obj.instanceId = message.instanceId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CrashInstanceMetadata>, I>>(
+    object: I
+  ): CrashInstanceMetadata {
+    const message = { ...baseCrashInstanceMetadata } as CrashInstanceMetadata;
+    message.instanceId = object.instanceId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(CrashInstanceMetadata.$type, CrashInstanceMetadata);
+
 /** A set of methods for managing Instance resources. */
 export const InstanceServiceService = {
   /**
@@ -6308,7 +6589,7 @@ export const InstanceServiceService = {
    *
    * The instance must be stopped before moving. To stop the instance, make a [Stop] request.
    *
-   * After moving, the instance will start recording its Yandex Monitoring default metrics to its new folder. Metrics
+   * After moving, the instance will start recording its Monitoring default metrics to its new folder. Metrics
    * that have been recorded to the source folder prior to moving will be retained.
    */
   move: {
@@ -6406,7 +6687,7 @@ export interface InstanceServiceServer extends UntypedServiceImplementation {
    *
    * The instance must be stopped before moving. To stop the instance, make a [Stop] request.
    *
-   * After moving, the instance will start recording its Yandex Monitoring default metrics to its new folder. Metrics
+   * After moving, the instance will start recording its Monitoring default metrics to its new folder. Metrics
    * that have been recorded to the source folder prior to moving will be retained.
    */
   move: handleUnaryCall<MoveInstanceRequest, Operation>;
@@ -6761,7 +7042,7 @@ export interface InstanceServiceClient extends Client {
    *
    * The instance must be stopped before moving. To stop the instance, make a [Stop] request.
    *
-   * After moving, the instance will start recording its Yandex Monitoring default metrics to its new folder. Metrics
+   * After moving, the instance will start recording its Monitoring default metrics to its new folder. Metrics
    * that have been recorded to the source folder prior to moving will be retained.
    */
   move(

@@ -23,21 +23,21 @@ export interface Cluster {
   $type: "yandex.cloud.mdb.greenplum.v1.Cluster";
   /**
    * ID of the Greenplum® cluster.
-   * This ID is assigned by Yandex Cloud at the time of cluster creation.
+   * This ID is assigned by the platform at the moment of cluster creation.
    */
   id: string;
   /** ID of the folder that the Greenplum® cluster belongs to. */
   folderId: string;
-  /** Cluster creation timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
+  /** Time when the cluster was created. */
   createdAt?: Date;
   /**
    * Name of the Greenplum® cluster.
-   * The name is unique within the folder and is 1-63 characters long.
+   * The name is unique within the folder.
    */
   name: string;
   /** Greenplum® cluster configuration. */
   config?: GreenplumConfig;
-  /** Description of the Greenplum® cluster. 0-256 characters long. */
+  /** Description of the Greenplum® cluster. */
   description: string;
   /** Custom labels for the Greenplum® cluster as `key:value` pairs. Maximum 64 labels per resource. */
   labels: { [key: string]: string };
@@ -61,7 +61,7 @@ export interface Cluster {
   health: Cluster_Health;
   /** Current state of the cluster. */
   status: Cluster_Status;
-  /** Window of maintenance operations. */
+  /** A Greenplum® cluster maintenance window. Should be defined by either one of the two options. */
   maintenanceWindow?: MaintenanceWindow;
   /** Maintenance operation planned at nearest [maintenance_window]. */
   plannedOperation?: MaintenanceOperation;
@@ -69,25 +69,19 @@ export interface Cluster {
   securityGroupIds: string[];
   /** Owner user name. */
   userName: string;
-  /** Whether or not cluster is protected from being deleted. */
+  /** Determines whether the cluster is protected from being deleted. */
   deletionProtection: boolean;
   /** Host groups hosting VMs of the cluster. */
   hostGroupIds: string[];
-  /** Greenplum and Odyssey configuration; */
+  /** Greenplum® and Odyssey® configuration. */
   clusterConfig?: ClusterConfigSet;
 }
 
 export enum Cluster_Environment {
   ENVIRONMENT_UNSPECIFIED = 0,
-  /**
-   * PRODUCTION - Stable environment with a conservative update policy:
-   * only hotfixes are applied during regular maintenance.
-   */
+  /** PRODUCTION - Stable environment with a conservative update policy: only hotfixes are applied during regular maintenance. */
   PRODUCTION = 1,
-  /**
-   * PRESTABLE - Environment with more aggressive update policy: new versions
-   * are rolled out irrespective of backward compatibility.
-   */
+  /** PRESTABLE - Environment with more aggressive update policy: new versions are rolled out irrespective of backward compatibility. */
   PRESTABLE = 2,
   UNRECOGNIZED = -1,
 }
@@ -178,7 +172,6 @@ export function cluster_HealthToJSON(object: Cluster_Health): string {
   }
 }
 
-/** Current state of the cluster. */
 export enum Cluster_Status {
   /** STATUS_UNKNOWN - Cluster state is unknown. */
   STATUS_UNKNOWN = 0,
@@ -265,7 +258,7 @@ export interface ClusterConfigSet {
   $type: "yandex.cloud.mdb.greenplum.v1.ClusterConfigSet";
   greenplumConfigSet617?: Greenplumconfigset617 | undefined;
   greenplumConfigSet619?: Greenplumconfigset619 | undefined;
-  /** Odyssey pool settings */
+  /** Odyssey® pool settings. */
   pool?: ConnectionPoolerConfigSet;
 }
 
@@ -280,7 +273,6 @@ export interface Monitoring {
   link: string;
 }
 
-/** Greenplum® cluster configuration. */
 export interface GreenplumConfig {
   $type: "yandex.cloud.mdb.greenplum.v1.GreenplumConfig";
   /** Version of the Greenplum® server software. */
@@ -294,27 +286,23 @@ export interface GreenplumConfig {
    * To get a list of available zones, use the [yandex.cloud.compute.v1.ZoneService.List] request.
    */
   zoneId: string;
-  /**
-   * ID of the subnet the cluster belongs to. This subnet should be a part
-   * of the cloud network the cluster belongs to (see [Cluster.network_id]).
-   */
+  /** ID of the subnet the cluster belongs to. This subnet should be a part of the cloud network the cluster belongs to (see [Cluster.network_id]). */
   subnetId: string;
   /**
-   * Whether or not the cluster has a public IP address.
+   * Determines whether the cluster has a public IP address.
    *
    * After the cluster has been created, this setting cannot be changed.
    */
   assignPublicIp: boolean;
 }
 
-/** Greenplum® cluster access options. */
 export interface Access {
   $type: "yandex.cloud.mdb.greenplum.v1.Access";
-  /** Allows data export from the cluster to Yandex DataLens. */
+  /** Allows data export from the cluster to DataLens. */
   dataLens: boolean;
-  /** Allows SQL queries to the cluster databases from the Yandex Cloud management console. */
+  /** Allows SQL queries to the cluster databases from the management console. */
   webSql: boolean;
-  /** Allow access for DataTransfer. */
+  /** Allows access for DataTransfer. */
   dataTransfer: boolean;
 }
 
@@ -326,31 +314,32 @@ export interface GreenplumRestoreConfig {
   access?: Access;
   /**
    * ID of the availability zone where the host resides.
+   *
    * To get a list of available zones, use the [yandex.cloud.compute.v1.ZoneService.List] request.
    */
   zoneId: string;
   /**
-   * ID of the subnet that the host should belong to. This subnet should be a part
-   * of the network that the cluster belongs to.
+   * ID of the subnet that the host should belong to. This subnet should be a part of the network that the cluster belongs to.
    * The ID of the network is set in the field [Cluster.network_id].
    */
   subnetId: string;
   /**
-   * Whether the host should get a public IP address on creation.
+   * Determines whether the host should get a public IP address on creation.
    *
-   * After a host has been created, this setting cannot be changed. To remove an assigned public IP, or to assign
-   * a public IP to a host without one, recreate the host with [assign_public_ip] set as needed.
+   * After a host has been created, this setting cannot be changed.
+   *
+   * To remove an assigned public IP, or to assign a public IP to a host without one, recreate the host with [assign_public_ip] set as needed.
    *
    * Possible values:
-   * * false - don't assign a public IP to the master hosts.
-   * * true - the master hosts should have a public IP address.
+   * * `false` - do not assign a public IP to the master host.
+   * * `true` - assign a public IP to the master host.
    */
   assignPublicIp: boolean;
 }
 
 export interface RestoreResources {
   $type: "yandex.cloud.mdb.greenplum.v1.RestoreResources";
-  /** ID of the preset for computational resources available to a host (CPU, memory etc.). */
+  /** ID of the preset for computational resources available to a host (CPU, memory, etc.). */
   resourcePresetId: string;
   /** Volume of the storage available to a host. */
   diskSize: number;
@@ -926,7 +915,7 @@ export const ClusterConfigSet = {
     if (message.pool !== undefined) {
       ConnectionPoolerConfigSet.encode(
         message.pool,
-        writer.uint32(34).fork()
+        writer.uint32(26).fork()
       ).ldelim();
     }
     return writer;
@@ -951,7 +940,7 @@ export const ClusterConfigSet = {
             reader.uint32()
           );
           break;
-        case 4:
+        case 3:
           message.pool = ConnectionPoolerConfigSet.decode(
             reader,
             reader.uint32()

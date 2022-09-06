@@ -12,7 +12,7 @@ export const protobufPackage = "yandex.cloud.mdb.mongodb.v1";
  */
 export interface Backup {
   $type: "yandex.cloud.mdb.mongodb.v1.Backup";
-  /** ID of the backup. */
+  /** ID of the backup. Required. */
   id: string;
   /** ID of the folder that the backup belongs to. */
   folderId: string;

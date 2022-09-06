@@ -60,6 +60,8 @@ export enum Mongodconfig42_Storage_WiredTiger_CollectionConfig_Compressor {
   SNAPPY = 2,
   /** ZLIB - The [zlib](https://docs.mongodb.com/v4.2/reference/glossary/#term-zlib) compression. */
   ZLIB = 3,
+  /** ZSTD - The [zstd](https://docs.mongodb.com/v4.2/reference/glossary/#term-zstd) compression. */
+  ZSTD = 4,
   UNRECOGNIZED = -1,
 }
 
@@ -79,6 +81,9 @@ export function mongodconfig42_Storage_WiredTiger_CollectionConfig_CompressorFro
     case 3:
     case "ZLIB":
       return Mongodconfig42_Storage_WiredTiger_CollectionConfig_Compressor.ZLIB;
+    case 4:
+    case "ZSTD":
+      return Mongodconfig42_Storage_WiredTiger_CollectionConfig_Compressor.ZSTD;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -98,6 +103,8 @@ export function mongodconfig42_Storage_WiredTiger_CollectionConfig_CompressorToJ
       return "SNAPPY";
     case Mongodconfig42_Storage_WiredTiger_CollectionConfig_Compressor.ZLIB:
       return "ZLIB";
+    case Mongodconfig42_Storage_WiredTiger_CollectionConfig_Compressor.ZSTD:
+      return "ZSTD";
     default:
       return "UNKNOWN";
   }

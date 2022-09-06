@@ -46,7 +46,7 @@ export interface MlModel {
   clusterId: string;
   /** Type of the model. */
   type: MlModelType;
-  /** Model file URL. You can only use models stored in Yandex Object Storage. */
+  /** Model file URL. You can only use models stored in Object Storage. */
   uri: string;
 }
 

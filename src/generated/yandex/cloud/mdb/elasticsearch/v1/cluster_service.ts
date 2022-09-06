@@ -63,7 +63,7 @@ export interface ListClustersRequest {
   pageSize: number;
   /**
    * Page token.
-   * To get the next page of results, set `page_token` to the [ListClustersResponse.next_page_token] returned by a previous list request.
+   * To get the next page of results, set `page_token` to the [ListClustersResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
   /**
@@ -119,7 +119,7 @@ export interface CreateClusterRequest {
   networkId: string;
   /** User security groups */
   securityGroupIds: string[];
-  /** ID of the service account used for access to Yandex Object Storage. */
+  /** ID of the service account used for access to Object Storage. */
   serviceAccountId: string;
   /** Deletion Protection inhibits deletion of the cluster */
   deletionProtection: boolean;
@@ -171,7 +171,7 @@ export interface UpdateClusterRequest {
   name: string;
   /** User security groups */
   securityGroupIds: string[];
-  /** ID of the service account used for access to Yandex Object Storage. */
+  /** ID of the service account used for access to Object Storage. */
   serviceAccountId: string;
   /** Deletion Protection inhibits deletion of the cluster */
   deletionProtection: boolean;
@@ -234,7 +234,7 @@ export interface ListClusterLogsRequest {
   /**
    * Page token.
    *
-   * To get the next page of results, set `page_token` to the [ListClusterLogsResponse.next_page_token] returned by a previous list request.
+   * To get the next page of results, set `page_token` to the [ListClusterLogsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
   /**
@@ -447,7 +447,7 @@ export interface ListClusterOperationsRequest {
   /**
    * Page token.
    *
-   * To get the next page of results, set `page_token` to the [ListClusterOperationsResponse.next_page_token] returned by a previous list request.
+   * To get the next page of results, set `page_token` to the [ListClusterOperationsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
 }
@@ -482,7 +482,7 @@ export interface ListClusterHostsRequest {
   /**
    * Page token.
    *
-   * To get the next page of results, set `page_token` to the [ListClusterHostsResponse.next_page_token] returned by a previous list request.
+   * To get the next page of results, set `page_token` to the [ListClusterHostsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
 }
@@ -748,7 +748,7 @@ export interface RestoreClusterRequest {
   networkId: string;
   /** User security groups */
   securityGroupIds: string[];
-  /** ID of the service account used for access to Yandex Object Storage. */
+  /** ID of the service account used for access to Object Storage. */
   serviceAccountId: string;
   /** Deletion Protection inhibits deletion of the cluster */
   deletionProtection: boolean;

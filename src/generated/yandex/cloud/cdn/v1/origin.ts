@@ -68,12 +68,12 @@ export interface OriginMeta {
   $type: "yandex.cloud.cdn.v1.OriginMeta";
   /** A server with a domain name linked to it */
   common?: OriginNamedMeta | undefined;
-  /** A Yandex Object Storage bucket not configured as a static site hosting. */
+  /** An Object Storage bucket not configured as a static site hosting. */
   bucket?: OriginNamedMeta | undefined;
-  /** A Yandex Object Storage bucket configured as a static site hosting. */
+  /** An Object Storage bucket configured as a static site hosting. */
   website?: OriginNamedMeta | undefined;
   /**
-   * An L7 load balancer from Yandex Application Load Balancer.
+   * An L7 load balancer from Application Load Balancer.
    * CDN servers will access the load balancer at one of its IP addresses that must be selected in the origin settings.
    */
   balancer?: OriginBalancerMeta | undefined;
@@ -86,7 +86,7 @@ export interface OriginNamedMeta {
   name: string;
 }
 
-/** Yandex Application Load Balancer origin info. For details about the concept, see [documentation](/docs/cdn/concepts/origins). */
+/** Application Load Balancer origin info. For details about the concept, see [documentation](/docs/cdn/concepts/origins). */
 export interface OriginBalancerMeta {
   $type: "yandex.cloud.cdn.v1.OriginBalancerMeta";
   /** ID of the origin. */

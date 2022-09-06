@@ -20,6 +20,7 @@ import {
 } from "../../../../yandex/cloud/compute/v1/disk";
 import { FieldMask } from "../../../../google/protobuf/field_mask";
 import { Operation } from "../../../../yandex/cloud/operation/operation";
+import { SnapshotSchedule } from "../../../../yandex/cloud/compute/v1/snapshot_schedule";
 
 export const protobufPackage = "yandex.cloud.compute.v1";
 
@@ -113,6 +114,8 @@ export interface CreateDiskRequest {
   blockSize: number;
   /** Placement policy configuration. */
   diskPlacementPolicy?: DiskPlacementPolicy;
+  /** Snapshot schedules */
+  snapshotScheduleIds: string[];
 }
 
 export interface CreateDiskRequest_LabelsEntry {
@@ -233,6 +236,36 @@ export interface MoveDiskMetadata {
   sourceFolderId: string;
   /** ID of the folder that the disk is being moved to. */
   destinationFolderId: string;
+}
+
+export interface ListDiskSnapshotSchedulesRequest {
+  $type: "yandex.cloud.compute.v1.ListDiskSnapshotSchedulesRequest";
+  /** ID of the Disk resource to list snapshot schedules for. */
+  diskId: string;
+  /**
+   * The maximum number of results per page to return. If the number of available
+   * results is larger than [page_size], the service returns a [ListDiskOperationsResponse.next_page_token]
+   * that can be used to get the next page of results in subsequent list requests.
+   */
+  pageSize: number;
+  /**
+   * Page token. To get the next page of results, set [page_token] to the
+   * [ListDiskSnapshotSchedulesResponse.next_page_token] returned by a previous list request.
+   */
+  pageToken: string;
+}
+
+export interface ListDiskSnapshotSchedulesResponse {
+  $type: "yandex.cloud.compute.v1.ListDiskSnapshotSchedulesResponse";
+  /** List of snapshot schedules for the specified disk. */
+  snapshotSchedules: SnapshotSchedule[];
+  /**
+   * This token allows you to get the next page of results for list requests. If the number of results
+   * is larger than [ListDiskSnapshotSchedulesRequest.page_size], use the [next_page_token] as the value
+   * for the [ListDiskSnapshotSchedulesRequest.page_token] query parameter in the next list request.
+   * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
+   */
+  nextPageToken: string;
 }
 
 const baseGetDiskRequest: object = {
@@ -485,6 +518,7 @@ const baseCreateDiskRequest: object = {
   zoneId: "",
   size: 0,
   blockSize: 0,
+  snapshotScheduleIds: "",
 };
 
 export const CreateDiskRequest = {
@@ -537,6 +571,9 @@ export const CreateDiskRequest = {
         writer.uint32(90).fork()
       ).ldelim();
     }
+    for (const v of message.snapshotScheduleIds) {
+      writer.uint32(98).string(v!);
+    }
     return writer;
   },
 
@@ -545,6 +582,7 @@ export const CreateDiskRequest = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseCreateDiskRequest } as CreateDiskRequest;
     message.labels = {};
+    message.snapshotScheduleIds = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -589,6 +627,9 @@ export const CreateDiskRequest = {
             reader,
             reader.uint32()
           );
+          break;
+        case 12:
+          message.snapshotScheduleIds.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -647,6 +688,9 @@ export const CreateDiskRequest = {
       object.diskPlacementPolicy !== null
         ? DiskPlacementPolicy.fromJSON(object.diskPlacementPolicy)
         : undefined;
+    message.snapshotScheduleIds = (object.snapshotScheduleIds ?? []).map(
+      (e: any) => String(e)
+    );
     return message;
   },
 
@@ -673,6 +717,11 @@ export const CreateDiskRequest = {
       (obj.diskPlacementPolicy = message.diskPlacementPolicy
         ? DiskPlacementPolicy.toJSON(message.diskPlacementPolicy)
         : undefined);
+    if (message.snapshotScheduleIds) {
+      obj.snapshotScheduleIds = message.snapshotScheduleIds.map((e) => e);
+    } else {
+      obj.snapshotScheduleIds = [];
+    }
     return obj;
   },
 
@@ -702,6 +751,8 @@ export const CreateDiskRequest = {
       object.diskPlacementPolicy !== null
         ? DiskPlacementPolicy.fromPartial(object.diskPlacementPolicy)
         : undefined;
+    message.snapshotScheduleIds =
+      object.snapshotScheduleIds?.map((e) => e) || [];
     return message;
   },
 };
@@ -1675,6 +1726,204 @@ export const MoveDiskMetadata = {
 
 messageTypeRegistry.set(MoveDiskMetadata.$type, MoveDiskMetadata);
 
+const baseListDiskSnapshotSchedulesRequest: object = {
+  $type: "yandex.cloud.compute.v1.ListDiskSnapshotSchedulesRequest",
+  diskId: "",
+  pageSize: 0,
+  pageToken: "",
+};
+
+export const ListDiskSnapshotSchedulesRequest = {
+  $type: "yandex.cloud.compute.v1.ListDiskSnapshotSchedulesRequest" as const,
+
+  encode(
+    message: ListDiskSnapshotSchedulesRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.diskId !== "") {
+      writer.uint32(10).string(message.diskId);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(16).int64(message.pageSize);
+    }
+    if (message.pageToken !== "") {
+      writer.uint32(26).string(message.pageToken);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ListDiskSnapshotSchedulesRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseListDiskSnapshotSchedulesRequest,
+    } as ListDiskSnapshotSchedulesRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.diskId = reader.string();
+          break;
+        case 2:
+          message.pageSize = longToNumber(reader.int64() as Long);
+          break;
+        case 3:
+          message.pageToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListDiskSnapshotSchedulesRequest {
+    const message = {
+      ...baseListDiskSnapshotSchedulesRequest,
+    } as ListDiskSnapshotSchedulesRequest;
+    message.diskId =
+      object.diskId !== undefined && object.diskId !== null
+        ? String(object.diskId)
+        : "";
+    message.pageSize =
+      object.pageSize !== undefined && object.pageSize !== null
+        ? Number(object.pageSize)
+        : 0;
+    message.pageToken =
+      object.pageToken !== undefined && object.pageToken !== null
+        ? String(object.pageToken)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ListDiskSnapshotSchedulesRequest): unknown {
+    const obj: any = {};
+    message.diskId !== undefined && (obj.diskId = message.diskId);
+    message.pageSize !== undefined &&
+      (obj.pageSize = Math.round(message.pageSize));
+    message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<ListDiskSnapshotSchedulesRequest>, I>
+  >(object: I): ListDiskSnapshotSchedulesRequest {
+    const message = {
+      ...baseListDiskSnapshotSchedulesRequest,
+    } as ListDiskSnapshotSchedulesRequest;
+    message.diskId = object.diskId ?? "";
+    message.pageSize = object.pageSize ?? 0;
+    message.pageToken = object.pageToken ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ListDiskSnapshotSchedulesRequest.$type,
+  ListDiskSnapshotSchedulesRequest
+);
+
+const baseListDiskSnapshotSchedulesResponse: object = {
+  $type: "yandex.cloud.compute.v1.ListDiskSnapshotSchedulesResponse",
+  nextPageToken: "",
+};
+
+export const ListDiskSnapshotSchedulesResponse = {
+  $type: "yandex.cloud.compute.v1.ListDiskSnapshotSchedulesResponse" as const,
+
+  encode(
+    message: ListDiskSnapshotSchedulesResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.snapshotSchedules) {
+      SnapshotSchedule.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageToken !== "") {
+      writer.uint32(18).string(message.nextPageToken);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ListDiskSnapshotSchedulesResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseListDiskSnapshotSchedulesResponse,
+    } as ListDiskSnapshotSchedulesResponse;
+    message.snapshotSchedules = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.snapshotSchedules.push(
+            SnapshotSchedule.decode(reader, reader.uint32())
+          );
+          break;
+        case 2:
+          message.nextPageToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListDiskSnapshotSchedulesResponse {
+    const message = {
+      ...baseListDiskSnapshotSchedulesResponse,
+    } as ListDiskSnapshotSchedulesResponse;
+    message.snapshotSchedules = (object.snapshotSchedules ?? []).map((e: any) =>
+      SnapshotSchedule.fromJSON(e)
+    );
+    message.nextPageToken =
+      object.nextPageToken !== undefined && object.nextPageToken !== null
+        ? String(object.nextPageToken)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ListDiskSnapshotSchedulesResponse): unknown {
+    const obj: any = {};
+    if (message.snapshotSchedules) {
+      obj.snapshotSchedules = message.snapshotSchedules.map((e) =>
+        e ? SnapshotSchedule.toJSON(e) : undefined
+      );
+    } else {
+      obj.snapshotSchedules = [];
+    }
+    message.nextPageToken !== undefined &&
+      (obj.nextPageToken = message.nextPageToken);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<ListDiskSnapshotSchedulesResponse>, I>
+  >(object: I): ListDiskSnapshotSchedulesResponse {
+    const message = {
+      ...baseListDiskSnapshotSchedulesResponse,
+    } as ListDiskSnapshotSchedulesResponse;
+    message.snapshotSchedules =
+      object.snapshotSchedules?.map((e) => SnapshotSchedule.fromPartial(e)) ||
+      [];
+    message.nextPageToken = object.nextPageToken ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ListDiskSnapshotSchedulesResponse.$type,
+  ListDiskSnapshotSchedulesResponse
+);
+
 /** A set of methods for managing Disk resources. */
 export const DiskServiceService = {
   /**
@@ -1779,6 +2028,20 @@ export const DiskServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** List snapshot schedules containing the disk */
+  listSnapshotSchedules: {
+    path: "/yandex.cloud.compute.v1.DiskService/ListSnapshotSchedules",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: ListDiskSnapshotSchedulesRequest) =>
+      Buffer.from(ListDiskSnapshotSchedulesRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      ListDiskSnapshotSchedulesRequest.decode(value),
+    responseSerialize: (value: ListDiskSnapshotSchedulesResponse) =>
+      Buffer.from(ListDiskSnapshotSchedulesResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) =>
+      ListDiskSnapshotSchedulesResponse.decode(value),
+  },
 } as const;
 
 export interface DiskServiceServer extends UntypedServiceImplementation {
@@ -1815,6 +2078,11 @@ export interface DiskServiceServer extends UntypedServiceImplementation {
   >;
   /** Moves the specified disk to another folder of the same cloud. */
   move: handleUnaryCall<MoveDiskRequest, Operation>;
+  /** List snapshot schedules containing the disk */
+  listSnapshotSchedules: handleUnaryCall<
+    ListDiskSnapshotSchedulesRequest,
+    ListDiskSnapshotSchedulesResponse
+  >;
 }
 
 export interface DiskServiceClient extends Client {
@@ -1954,6 +2222,31 @@ export interface DiskServiceClient extends Client {
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** List snapshot schedules containing the disk */
+  listSnapshotSchedules(
+    request: ListDiskSnapshotSchedulesRequest,
+    callback: (
+      error: ServiceError | null,
+      response: ListDiskSnapshotSchedulesResponse
+    ) => void
+  ): ClientUnaryCall;
+  listSnapshotSchedules(
+    request: ListDiskSnapshotSchedulesRequest,
+    metadata: Metadata,
+    callback: (
+      error: ServiceError | null,
+      response: ListDiskSnapshotSchedulesResponse
+    ) => void
+  ): ClientUnaryCall;
+  listSnapshotSchedules(
+    request: ListDiskSnapshotSchedulesRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (
+      error: ServiceError | null,
+      response: ListDiskSnapshotSchedulesResponse
+    ) => void
   ): ClientUnaryCall;
 }
 

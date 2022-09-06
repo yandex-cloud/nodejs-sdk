@@ -9,13 +9,13 @@ export interface Extension {
   $type: "yandex.cloud.mdb.elasticsearch.v1.Extension";
   /** Name of the extension. */
   name: string;
-  /** Extension unique ID */
+  /** Unique ID of the extension. */
   id: string;
   /** ID of the Elasticsearch cluster the extension belongs to. */
   clusterId: string;
-  /** Extension version */
+  /** Version of the extension. */
   version: number;
-  /** Flag is extension active now */
+  /** The flag shows whether the extension is active. */
   active: boolean;
 }
 
@@ -23,11 +23,9 @@ export interface ExtensionSpec {
   $type: "yandex.cloud.mdb.elasticsearch.v1.ExtensionSpec";
   /** Name of the extension. */
   name: string;
-  /**
-   * URI of the zip arhive to create the new extension from.
-   * Currently only supports links that are stored in Yandex Object Storage.
-   */
+  /** URI of the zip archive to create the new extension from. Currently only supports links that are stored in Object Storage. */
   uri: string;
+  /** The flag shows whether to create the extension in disabled state. */
   disabled: boolean;
 }
 

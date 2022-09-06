@@ -37,6 +37,18 @@ export interface ElasticsearchConfig7 {
    * See in-depth description in [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-fielddata.html).
    */
   fielddataCacheSize: string;
+  /**
+   * Remote hosts for reindex have to be explicitly allowed in elasticsearch.yml using the reindex.remote.whitelist property.
+   * It can be set to a comma delimited list of allowed remote host and port combinations.
+   * Scheme is ignored, only the host and port are used.
+   */
+  reindexRemoteWhitelist: string;
+  /**
+   * List of paths to PEM encoded certificate files that should be trusted.
+   *
+   * See in-depth description in [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html#reindex-ssl)
+   */
+  reindexSslCaPath: string;
 }
 
 /** Elasticsearch 7.x data node configuration. */
@@ -53,6 +65,8 @@ export interface ElasticsearchConfigSet7 {
 const baseElasticsearchConfig7: object = {
   $type: "yandex.cloud.mdb.elasticsearch.v1.config.ElasticsearchConfig7",
   fielddataCacheSize: "",
+  reindexRemoteWhitelist: "",
+  reindexSslCaPath: "",
 };
 
 export const ElasticsearchConfig7 = {
@@ -71,6 +85,12 @@ export const ElasticsearchConfig7 = {
     }
     if (message.fielddataCacheSize !== "") {
       writer.uint32(34).string(message.fielddataCacheSize);
+    }
+    if (message.reindexRemoteWhitelist !== "") {
+      writer.uint32(50).string(message.reindexRemoteWhitelist);
+    }
+    if (message.reindexSslCaPath !== "") {
+      writer.uint32(58).string(message.reindexSslCaPath);
     }
     return writer;
   },
@@ -94,6 +114,12 @@ export const ElasticsearchConfig7 = {
         case 4:
           message.fielddataCacheSize = reader.string();
           break;
+        case 6:
+          message.reindexRemoteWhitelist = reader.string();
+          break;
+        case 7:
+          message.reindexSslCaPath = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -113,6 +139,15 @@ export const ElasticsearchConfig7 = {
       object.fielddataCacheSize !== null
         ? String(object.fielddataCacheSize)
         : "";
+    message.reindexRemoteWhitelist =
+      object.reindexRemoteWhitelist !== undefined &&
+      object.reindexRemoteWhitelist !== null
+        ? String(object.reindexRemoteWhitelist)
+        : "";
+    message.reindexSslCaPath =
+      object.reindexSslCaPath !== undefined && object.reindexSslCaPath !== null
+        ? String(object.reindexSslCaPath)
+        : "";
     return message;
   },
 
@@ -122,6 +157,10 @@ export const ElasticsearchConfig7 = {
       (obj.maxClauseCount = message.maxClauseCount);
     message.fielddataCacheSize !== undefined &&
       (obj.fielddataCacheSize = message.fielddataCacheSize);
+    message.reindexRemoteWhitelist !== undefined &&
+      (obj.reindexRemoteWhitelist = message.reindexRemoteWhitelist);
+    message.reindexSslCaPath !== undefined &&
+      (obj.reindexSslCaPath = message.reindexSslCaPath);
     return obj;
   },
 
@@ -131,6 +170,8 @@ export const ElasticsearchConfig7 = {
     const message = { ...baseElasticsearchConfig7 } as ElasticsearchConfig7;
     message.maxClauseCount = object.maxClauseCount ?? undefined;
     message.fielddataCacheSize = object.fielddataCacheSize ?? "";
+    message.reindexRemoteWhitelist = object.reindexRemoteWhitelist ?? "";
+    message.reindexSslCaPath = object.reindexSslCaPath ?? "";
     return message;
   },
 };

@@ -45,10 +45,15 @@ export interface ListUsersRequest {
    * To get the cluster ID, use a [ClusterService.List] request.
    */
   clusterId: string;
+  /**
+   * The maximum number of results per page to return. If the number of available
+   * results is larger than [page_size], the service returns a [ListUsersResponse.next_page_token]
+   * that can be used to get the next page of results in subsequent list requests.
+   */
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the
-   * [ListUsersResponse.next_page_token] returned by a previous list request.
+   * [ListUsersResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
 }

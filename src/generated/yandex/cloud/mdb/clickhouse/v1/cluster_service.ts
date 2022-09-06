@@ -71,7 +71,7 @@ export interface ListClustersRequest {
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the [ListClustersResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
   /**
@@ -124,7 +124,7 @@ export interface CreateClusterRequest {
   networkId: string;
   /** Name of the first shard in cluster. If not set, defaults to the value 'shard1'. */
   shardName: string;
-  /** ID of the service account used for access to Yandex Object Storage. */
+  /** ID of the service account used for access to Object Storage. */
   serviceAccountId: string;
   /** User security groups */
   securityGroupIds: string[];
@@ -167,7 +167,7 @@ export interface UpdateClusterRequest {
   configSpec?: ConfigSpec;
   /** New name for the cluster. */
   name: string;
-  /** ID of the service account used for access to Yandex Object Storage. */
+  /** ID of the service account used for access to Object Storage. */
   serviceAccountId: string;
   /** New maintenance window settings for the cluster. */
   maintenanceWindow?: MaintenanceWindow;
@@ -313,7 +313,7 @@ export interface RestoreClusterRequest {
   networkId: string;
   /** ID of the folder to create the ClickHouse cluster in. */
   folderId: string;
-  /** ID of the service account used for access to Yandex Object Storage. */
+  /** ID of the service account used for access to Object Storage. */
   serviceAccountId: string;
   /** User security groups */
   securityGroupIds: string[];
@@ -443,7 +443,7 @@ export interface ListClusterLogsRequest {
   pageSize: number;
   /**
    * Page token.  To get the next page of results, set [page_token] to the [ListClusterLogsResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }
@@ -594,7 +594,7 @@ export interface ListClusterOperationsRequest {
   pageSize: number;
   /**
    * Page token.  To get the next page of results, set [page_token] to the [ListClusterOperationsResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }
@@ -627,7 +627,7 @@ export interface ListClusterBackupsRequest {
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the
-   * [ListClusterBackupsResponse.next_page_token] returned by a previous list request.
+   * [ListClusterBackupsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
 }
@@ -660,7 +660,7 @@ export interface ListClusterHostsRequest {
   pageSize: number;
   /**
    * Page token.  To get the next page of results, set [page_token] to the [ListClusterHostsResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }
@@ -780,7 +780,7 @@ export interface ListClusterShardsRequest {
   pageSize: number;
   /**
    * Page token.  to get the next page of results, set [page_token] to the [ListClusterShardsResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }
@@ -904,7 +904,7 @@ export interface ListClusterShardGroupsRequest {
   /**
    * Page token.
    *
-   * To get the next page of results, set [page_token] to the [ListClusterShardGroupsResponse.next_page_token] returned by a previous list request.
+   * To get the next page of results, set [page_token] to the [ListClusterShardGroupsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
 }
@@ -1020,6 +1020,27 @@ export interface CreateClusterExternalDictionaryMetadata {
   clusterId: string;
 }
 
+export interface UpdateClusterExternalDictionaryRequest {
+  $type: "yandex.cloud.mdb.clickhouse.v1.UpdateClusterExternalDictionaryRequest";
+  /**
+   * ID of the ClickHouse cluster to update the external dictionary for.
+   * To get the cluster ID, use a [List] request.
+   */
+  clusterId: string;
+  /** Configuration of the external dictionary. */
+  externalDictionary?: ClickhouseConfig_ExternalDictionary;
+  /** Field mask that specifies which fields of the External Dictionary should be updated. */
+  updateMask?: FieldMask;
+}
+
+export interface UpdateClusterExternalDictionaryMetadata {
+  $type: "yandex.cloud.mdb.clickhouse.v1.UpdateClusterExternalDictionaryMetadata";
+  /** ID of the cluster for which an external dictionary is being updated. */
+  clusterId: string;
+  /** Name of the external dictionary. */
+  externalDictionaryName: string;
+}
+
 export interface DeleteClusterExternalDictionaryRequest {
   $type: "yandex.cloud.mdb.clickhouse.v1.DeleteClusterExternalDictionaryRequest";
   /**
@@ -1125,7 +1146,7 @@ export interface ShardConfigSpec_Clickhouse {
   resources?: Resources;
   /**
    * Relative weight of the shard considered when writing data to the cluster.
-   * For details, see [ClickHouse documentation](https://clickhouse.yandex/docs/en/operations/table_engines/distributed/).
+   * For details, see [ClickHouse documentation](https://clickhouse.com/docs/en/operations/table_engines/distributed/).
    */
   weight?: number;
 }
@@ -7554,6 +7575,219 @@ messageTypeRegistry.set(
   CreateClusterExternalDictionaryMetadata
 );
 
+const baseUpdateClusterExternalDictionaryRequest: object = {
+  $type:
+    "yandex.cloud.mdb.clickhouse.v1.UpdateClusterExternalDictionaryRequest",
+  clusterId: "",
+};
+
+export const UpdateClusterExternalDictionaryRequest = {
+  $type:
+    "yandex.cloud.mdb.clickhouse.v1.UpdateClusterExternalDictionaryRequest" as const,
+
+  encode(
+    message: UpdateClusterExternalDictionaryRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    if (message.externalDictionary !== undefined) {
+      ClickhouseConfig_ExternalDictionary.encode(
+        message.externalDictionary,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.updateMask !== undefined) {
+      FieldMask.encode(message.updateMask, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateClusterExternalDictionaryRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateClusterExternalDictionaryRequest,
+    } as UpdateClusterExternalDictionaryRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.externalDictionary =
+            ClickhouseConfig_ExternalDictionary.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.updateMask = FieldMask.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateClusterExternalDictionaryRequest {
+    const message = {
+      ...baseUpdateClusterExternalDictionaryRequest,
+    } as UpdateClusterExternalDictionaryRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.externalDictionary =
+      object.externalDictionary !== undefined &&
+      object.externalDictionary !== null
+        ? ClickhouseConfig_ExternalDictionary.fromJSON(
+            object.externalDictionary
+          )
+        : undefined;
+    message.updateMask =
+      object.updateMask !== undefined && object.updateMask !== null
+        ? FieldMask.fromJSON(object.updateMask)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: UpdateClusterExternalDictionaryRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.externalDictionary !== undefined &&
+      (obj.externalDictionary = message.externalDictionary
+        ? ClickhouseConfig_ExternalDictionary.toJSON(message.externalDictionary)
+        : undefined);
+    message.updateMask !== undefined &&
+      (obj.updateMask = message.updateMask
+        ? FieldMask.toJSON(message.updateMask)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<UpdateClusterExternalDictionaryRequest>, I>
+  >(object: I): UpdateClusterExternalDictionaryRequest {
+    const message = {
+      ...baseUpdateClusterExternalDictionaryRequest,
+    } as UpdateClusterExternalDictionaryRequest;
+    message.clusterId = object.clusterId ?? "";
+    message.externalDictionary =
+      object.externalDictionary !== undefined &&
+      object.externalDictionary !== null
+        ? ClickhouseConfig_ExternalDictionary.fromPartial(
+            object.externalDictionary
+          )
+        : undefined;
+    message.updateMask =
+      object.updateMask !== undefined && object.updateMask !== null
+        ? FieldMask.fromPartial(object.updateMask)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  UpdateClusterExternalDictionaryRequest.$type,
+  UpdateClusterExternalDictionaryRequest
+);
+
+const baseUpdateClusterExternalDictionaryMetadata: object = {
+  $type:
+    "yandex.cloud.mdb.clickhouse.v1.UpdateClusterExternalDictionaryMetadata",
+  clusterId: "",
+  externalDictionaryName: "",
+};
+
+export const UpdateClusterExternalDictionaryMetadata = {
+  $type:
+    "yandex.cloud.mdb.clickhouse.v1.UpdateClusterExternalDictionaryMetadata" as const,
+
+  encode(
+    message: UpdateClusterExternalDictionaryMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    if (message.externalDictionaryName !== "") {
+      writer.uint32(18).string(message.externalDictionaryName);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateClusterExternalDictionaryMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateClusterExternalDictionaryMetadata,
+    } as UpdateClusterExternalDictionaryMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.externalDictionaryName = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateClusterExternalDictionaryMetadata {
+    const message = {
+      ...baseUpdateClusterExternalDictionaryMetadata,
+    } as UpdateClusterExternalDictionaryMetadata;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.externalDictionaryName =
+      object.externalDictionaryName !== undefined &&
+      object.externalDictionaryName !== null
+        ? String(object.externalDictionaryName)
+        : "";
+    return message;
+  },
+
+  toJSON(message: UpdateClusterExternalDictionaryMetadata): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.externalDictionaryName !== undefined &&
+      (obj.externalDictionaryName = message.externalDictionaryName);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<UpdateClusterExternalDictionaryMetadata>, I>
+  >(object: I): UpdateClusterExternalDictionaryMetadata {
+    const message = {
+      ...baseUpdateClusterExternalDictionaryMetadata,
+    } as UpdateClusterExternalDictionaryMetadata;
+    message.clusterId = object.clusterId ?? "";
+    message.externalDictionaryName = object.externalDictionaryName ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  UpdateClusterExternalDictionaryMetadata.$type,
+  UpdateClusterExternalDictionaryMetadata
+);
+
 const baseDeleteClusterExternalDictionaryRequest: object = {
   $type:
     "yandex.cloud.mdb.clickhouse.v1.DeleteClusterExternalDictionaryRequest",
@@ -8838,6 +9072,21 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Updates an external dictionary for the specified ClickHouse cluster. */
+  updateExternalDictionary: {
+    path: "/yandex.cloud.mdb.clickhouse.v1.ClusterService/UpdateExternalDictionary",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: UpdateClusterExternalDictionaryRequest) =>
+      Buffer.from(
+        UpdateClusterExternalDictionaryRequest.encode(value).finish()
+      ),
+    requestDeserialize: (value: Buffer) =>
+      UpdateClusterExternalDictionaryRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /** Deletes the specified external dictionary. */
   deleteExternalDictionary: {
     path: "/yandex.cloud.mdb.clickhouse.v1.ClusterService/DeleteExternalDictionary",
@@ -8944,6 +9193,11 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
   /** Creates an external dictionary for the specified ClickHouse cluster. */
   createExternalDictionary: handleUnaryCall<
     CreateClusterExternalDictionaryRequest,
+    Operation
+  >;
+  /** Updates an external dictionary for the specified ClickHouse cluster. */
+  updateExternalDictionary: handleUnaryCall<
+    UpdateClusterExternalDictionaryRequest,
     Operation
   >;
   /** Deletes the specified external dictionary. */
@@ -9510,6 +9764,22 @@ export interface ClusterServiceClient extends Client {
   ): ClientUnaryCall;
   createExternalDictionary(
     request: CreateClusterExternalDictionaryRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Updates an external dictionary for the specified ClickHouse cluster. */
+  updateExternalDictionary(
+    request: UpdateClusterExternalDictionaryRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateExternalDictionary(
+    request: UpdateClusterExternalDictionaryRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateExternalDictionary(
+    request: UpdateClusterExternalDictionaryRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

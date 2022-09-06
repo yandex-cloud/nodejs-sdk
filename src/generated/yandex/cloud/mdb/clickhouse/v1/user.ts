@@ -44,7 +44,7 @@ export interface UserSpec {
 
 /**
  * ClickHouse user settings. Supported settings are a limited subset of all settings
- * described in [ClickHouse documentation](https://clickhouse.yandex/docs/en/operations/settings/).
+ * described in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/).
  */
 export interface UserSettings {
   $type: "yandex.cloud.mdb.clickhouse.v1.UserSettings";
@@ -54,7 +54,7 @@ export interface UserSettings {
    * * **1**-only read data queries are allowed.
    * * **2**-read data and change settings queries are allowed.
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/permissions-for-queries/#settings_readonly).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/permissions-for-queries/#settings_readonly).
    */
   readonly?: number;
   /**
@@ -62,7 +62,7 @@ export interface UserSettings {
    *
    * Default value: **true**.
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/permissions-for-queries/#settings_allow_ddl).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/permissions-for-queries/#settings_allow_ddl).
    */
   allowDdl?: boolean;
   /**
@@ -75,7 +75,7 @@ export interface UserSettings {
    *
    * You can use [select_sequential_consistency] setting to read the data written with write quorum.
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/settings/#settings-insert_quorum).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#settings-insert_quorum).
    */
   insertQuorum?: number;
   /**
@@ -116,7 +116,7 @@ export interface UserSettings {
    *
    * Minimum value: **1000**, 1 second (default: **300000**, 300 seconds or 5 minutes).
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/settings/#settings-max_replica_delay_for_distributed_queries).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#settings-max_replica_delay_for_distributed_queries).
    */
   maxReplicaDelayForDistributedQueries?: number;
   /**
@@ -126,7 +126,7 @@ export interface UserSettings {
    *
    * Default value: **true** (query forcing is enabled).
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/settings/#settings-fallback_to_stale_replicas_for_distributed_queries).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#settings-fallback_to_stale_replicas_for_distributed_queries).
    */
   fallbackToStaleReplicasForDistributedQueries?: boolean;
   /**
@@ -136,13 +136,13 @@ export interface UserSettings {
    * * **1**-only wait for own execution (default).
    * * **2**-wait for all replicas.
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/sql-reference/statements/alter/#synchronicity-of-alter-queries).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/sql-reference/statements/alter/#synchronicity-of-alter-queries).
    */
   replicationAlterPartitionsSync?: number;
   /**
    * Determine the behavior of distributed subqueries.
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/settings/#distributed-product-mode).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#distributed-product-mode).
    */
   distributedProductMode: UserSettings_DistributedProductMode;
   /**
@@ -153,7 +153,7 @@ export interface UserSettings {
    *
    * Default value: **false** (memory saving mode is disabled).
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/sql-reference/statements/select/group-by/#select-group-by-in-external-memory).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/sql-reference/statements/select/group-by/#select-group-by-in-external-memory).
    */
   distributedAggregationMemoryEfficient?: boolean;
   /** Timeout for DDL queries, in milliseconds. */
@@ -165,7 +165,7 @@ export interface UserSettings {
    *
    * Default value: **false** (silent skipping is disabled).
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/settings/#settings-skip_unavailable_shards).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#settings-skip_unavailable_shards).
    */
   skipUnavailableShards?: boolean;
   /**
@@ -177,7 +177,7 @@ export interface UserSettings {
    *
    * Default value: **false** (compilation is disabled).
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/settings/#compile).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#compile).
    */
   compile?: boolean;
   /**
@@ -191,7 +191,7 @@ export interface UserSettings {
    * For all other values, compilation is asynchronous: the compilation process executes in a separate thread.
    * When a compiled part of query is ready, it will be used by ClickHouse for eligible queries, including the ones that are currently running.
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/settings/#min-count-to-compile).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#min-count-to-compile).
    */
   minCountToCompile?: number;
   /**
@@ -226,7 +226,7 @@ export interface UserSettings {
    *
    * Value must be greater than **0** (default: **65536**).
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/settings/#setting-max_block_size).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#setting-max_block_size).
    */
   maxBlockSize?: number;
   /**
@@ -249,7 +249,7 @@ export interface UserSettings {
    *
    * Value must be greater than **0** (default: **1048576**).
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/settings/#settings-max_insert_block_size).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#settings-max_insert_block_size).
    */
   maxInsertBlockSize?: number;
   /**
@@ -273,7 +273,7 @@ export interface UserSettings {
    *
    * Default value: **false** (uncompressed cache is disabled).
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/settings/#setting-use_uncompressed_cache).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#setting-use_uncompressed_cache).
    */
   useUncompressedCache?: boolean;
   /**
@@ -323,7 +323,7 @@ export interface UserSettings {
    *
    * When using aggregation in external memory, it is recommended to set the value of this setting twice as low as the [max_memory_usage] setting value (by default, the maximum memory usage is limited to ten gigabytes).
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/sql-reference/statements/select/group-by/#select-group-by-in-external-memory).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/sql-reference/statements/select/group-by/#select-group-by-in-external-memory).
    *
    * See also: the [distributed_aggregation_memory_efficient] setting.
    */
@@ -363,7 +363,7 @@ export interface UserSettings {
    *
    * Minimal value and default value: **0** (the thread number is calculated automatically based on the number of physical CPU cores, no HyperThreading cores are taken into account).
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/settings/#settings-max_threads).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#settings-max_threads).
    */
   maxThreads?: number;
   /**
@@ -377,7 +377,7 @@ export interface UserSettings {
    *
    * If you use [max_bytes_before_external_group_by] or [max_bytes_before_external_sort] setting, then it is recommended to set their values twice as low as [max_memory_usage] setting value.
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/query-complexity/#settings_max_memory_usage).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/query-complexity/#settings_max_memory_usage).
    */
   maxMemoryUsage?: number;
   /**
@@ -407,7 +407,7 @@ export interface UserSettings {
    *
    * Default value: **false** (setting is disabled, query executes even if ClickHouse can't use index by date).
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/settings/#settings-force_index_by_date).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#settings-force_index_by_date).
    */
   forceIndexByDate?: boolean;
   /**
@@ -416,7 +416,7 @@ export interface UserSettings {
    *
    * Default value: **false** (setting is disabled, query executes even if ClickHouse can't use index by primary key).
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/settings/#force-primary-key).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#force-primary-key).
    */
   forcePrimaryKey?: boolean;
   /**
@@ -424,7 +424,7 @@ export interface UserSettings {
    *
    * Minimal value and default value: **0**, no limitation is set.
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/query-complexity/#max-rows-to-read).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/query-complexity/#max-rows-to-read).
    */
   maxRowsToRead?: number;
   /**
@@ -434,7 +434,7 @@ export interface UserSettings {
    */
   maxBytesToRead?: number;
   /**
-   * Determines the behavior on exceeding [limits](https://clickhouse.tech/docs/en/operations/settings/query-complexity/#restrictions-on-query-complexity) while reading the data.
+   * Determines the behavior on exceeding [limits](https://clickhouse.com/docs/en/operations/settings/query-complexity/#restrictions-on-query-complexity) while reading the data.
    *
    * * **throw**-abort query execution, return an error.
    * * **break**-stop query execution, return partial result.
@@ -448,7 +448,7 @@ export interface UserSettings {
    */
   maxRowsToGroupBy?: number;
   /**
-   * Determines the behavior on exceeding [limits](https://clickhouse.tech/docs/en/operations/settings/query-complexity/#restrictions-on-query-complexity) while doing aggregation.
+   * Determines the behavior on exceeding [limits](https://clickhouse.com/docs/en/operations/settings/query-complexity/#restrictions-on-query-complexity) while doing aggregation.
    *
    * * **throw**-abort query execution, return an error.
    * * **break**-stop query execution, return partial result.
@@ -470,7 +470,7 @@ export interface UserSettings {
    */
   maxBytesToSort?: number;
   /**
-   * Determines the behavior on exceeding [limits](https://clickhouse.tech/docs/en/operations/settings/query-complexity/#restrictions-on-query-complexity) while sorting.
+   * Determines the behavior on exceeding [limits](https://clickhouse.com/docs/en/operations/settings/query-complexity/#restrictions-on-query-complexity) while sorting.
    *
    * * **throw**-abort query execution, return an error.
    * * **break**-stop query execution, return partial result.
@@ -491,7 +491,7 @@ export interface UserSettings {
    */
   maxResultBytes?: number;
   /**
-   * Determines the behavior on exceeding [limits](https://clickhouse.tech/docs/en/operations/settings/query-complexity/#restrictions-on-query-complexity) while forming result.
+   * Determines the behavior on exceeding [limits](https://clickhouse.com/docs/en/operations/settings/query-complexity/#restrictions-on-query-complexity) while forming result.
    *
    * * **throw**-abort query execution, return an error.
    * * **break**-stop query execution, return partial result.
@@ -506,7 +506,7 @@ export interface UserSettings {
   /** Limits the maximum size of a hash table in bytes (uncompressed data) when using **DISTINCT**. */
   maxBytesInDistinct?: number;
   /**
-   * Determines the behavior on exceeding [limits](https://clickhouse.tech/docs/en/operations/settings/query-complexity/#restrictions-on-query-complexity) while doing **DISCTINCT**.
+   * Determines the behavior on exceeding [limits](https://clickhouse.com/docs/en/operations/settings/query-complexity/#restrictions-on-query-complexity) while doing **DISCTINCT**.
    *
    * * **throw**-abort query execution, return an error.
    * * **break**-stop query execution, return partial result.
@@ -526,7 +526,7 @@ export interface UserSettings {
    */
   maxBytesToTransfer?: number;
   /**
-   * Determines the behavior on exceeding [limits](https://clickhouse.tech/docs/en/operations/settings/query-complexity/#restrictions-on-query-complexity) while doing transfers.
+   * Determines the behavior on exceeding [limits](https://clickhouse.com/docs/en/operations/settings/query-complexity/#restrictions-on-query-complexity) while doing transfers.
    *
    * * **throw**-abort query execution, return an error.
    * * **break**-stop query execution, return partial result.
@@ -540,7 +540,7 @@ export interface UserSettings {
    */
   maxExecutionTime?: number;
   /**
-   * Determines the behavior on exceeding [limits](https://clickhouse.tech/docs/en/operations/settings/query-complexity/#restrictions-on-query-complexity) of execution time.
+   * Determines the behavior on exceeding [limits](https://clickhouse.com/docs/en/operations/settings/query-complexity/#restrictions-on-query-complexity) of execution time.
    *
    * * **throw**-abort query execution, return an error.
    * * **break**-stop query execution, return partial result.
@@ -588,7 +588,7 @@ export interface UserSettings {
    *
    * Value must be greater than **0** (default: **262144**).
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/settings/#settings-max_query_size).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#settings-max_query_size).
    */
   maxQuerySize?: number;
   /**
@@ -603,7 +603,7 @@ export interface UserSettings {
    * Value must be greater than **0** (default: **1000**).
    * If a too small value is set, it may render ClickHouse unable to execute even simple queries.
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/query-complexity/#max-ast-depth).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/query-complexity/#max-ast-depth).
    */
   maxAstDepth?: number;
   /**
@@ -615,7 +615,7 @@ export interface UserSettings {
    * Value must be greater than **0** (default: **50000**).
    * If a too small value is set, it may render ClickHouse unable to execute even simple queries.
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/query-complexity/#max-ast-elements).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/query-complexity/#max-ast-elements).
    */
   maxAstElements?: number;
   /**
@@ -642,11 +642,11 @@ export interface UserSettings {
    * For example, the stream parser is unable to parse a value that contains **now()** expression; therefore an **INSERT** query for this value will fail and no data will be inserted into a table.
    * With enabled SQL parser, this expression is parsed correctly: the **now()** expression will be parsed as SQL function, interpreted, and the current date and time will be inserted into the table as a result.
    *
-   * This setting has effect only if you use [Values](https://clickhouse.tech/docs/en/interfaces/formats/#data-format-values) format when inserting data.
+   * This setting has effect only if you use [Values](https://clickhouse.com/docs/en/interfaces/formats/#data-format-values) format when inserting data.
    *
    * Default value: **true** (SQL parser is enabled).
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/operations/settings/settings/#settings-input_format_values_interpret_expressions).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#settings-input_format_values_interpret_expressions).
    */
   inputFormatValuesInterpretExpressions?: boolean;
   /**
@@ -727,7 +727,7 @@ export interface UserSettings {
    *
    * Default value: **false** (compression is disabled).
    *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.tech/docs/en/interfaces/http/).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/interfaces/http/).
    */
   enableHttpCompression?: boolean;
   /**
@@ -1010,7 +1010,7 @@ export function userSettings_CountDistinctImplementationToJSON(
 
 /**
  * ClickHouse quota representation. Each quota associated with an user and limits it resource usage for an interval.
- * See in-depth description [ClickHouse documentation](https://clickhouse.yandex/docs/en/operations/quotas/).
+ * See in-depth description [ClickHouse documentation](https://clickhouse.com/docs/en/operations/quotas/).
  */
 export interface UserQuota {
   $type: "yandex.cloud.mdb.clickhouse.v1.UserQuota";

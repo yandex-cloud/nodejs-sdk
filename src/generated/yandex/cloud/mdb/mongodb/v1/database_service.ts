@@ -51,7 +51,7 @@ export interface ListDatabasesRequest {
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the
-   * [ListDatabasesResponse.next_page_token] returned by a previous list request.
+   * [ListDatabasesResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
 }

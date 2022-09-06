@@ -36,6 +36,7 @@ import { Operation } from "../../../../../yandex/cloud/operation/operation";
 import { Backup } from "../../../../../yandex/cloud/mdb/mysql/v1/backup";
 import { Mysqlconfig57 } from "../../../../../yandex/cloud/mdb/mysql/v1/config/mysql5_7";
 import { Mysqlconfig80 } from "../../../../../yandex/cloud/mdb/mysql/v1/config/mysql8_0";
+import { Int64Value } from "../../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.mdb.mysql.v1";
 
@@ -918,6 +919,8 @@ export interface ConfigSpec {
   access?: Access;
   /** Configuration of the performance diagnostics service. */
   performanceDiagnostics?: PerformanceDiagnostics;
+  /** Retention policy of automated backups. */
+  backupRetainPeriodDays?: number;
 }
 
 const baseGetClusterRequest: object = {
@@ -5569,6 +5572,15 @@ export const ConfigSpec = {
         writer.uint32(58).fork()
       ).ldelim();
     }
+    if (message.backupRetainPeriodDays !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.backupRetainPeriodDays!,
+        },
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -5602,6 +5614,12 @@ export const ConfigSpec = {
             reader,
             reader.uint32()
           );
+          break;
+        case 8:
+          message.backupRetainPeriodDays = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
           break;
         default:
           reader.skipType(tag & 7);
@@ -5643,6 +5661,11 @@ export const ConfigSpec = {
       object.performanceDiagnostics !== null
         ? PerformanceDiagnostics.fromJSON(object.performanceDiagnostics)
         : undefined;
+    message.backupRetainPeriodDays =
+      object.backupRetainPeriodDays !== undefined &&
+      object.backupRetainPeriodDays !== null
+        ? Number(object.backupRetainPeriodDays)
+        : undefined;
     return message;
   },
 
@@ -5671,6 +5694,8 @@ export const ConfigSpec = {
       (obj.performanceDiagnostics = message.performanceDiagnostics
         ? PerformanceDiagnostics.toJSON(message.performanceDiagnostics)
         : undefined);
+    message.backupRetainPeriodDays !== undefined &&
+      (obj.backupRetainPeriodDays = message.backupRetainPeriodDays);
     return obj;
   },
 
@@ -5705,6 +5730,7 @@ export const ConfigSpec = {
       object.performanceDiagnostics !== null
         ? PerformanceDiagnostics.fromPartial(object.performanceDiagnostics)
         : undefined;
+    message.backupRetainPeriodDays = object.backupRetainPeriodDays ?? undefined;
     return message;
   },
 };

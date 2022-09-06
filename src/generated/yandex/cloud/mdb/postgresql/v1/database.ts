@@ -29,6 +29,8 @@ export interface Database {
   lcCtype: string;
   /** PostgreSQL extensions enabled for the database. */
   extensions: Extension[];
+  /** Name of the database template. */
+  templateDb: string;
 }
 
 export interface Extension {
@@ -63,6 +65,8 @@ export interface DatabaseSpec {
   lcCtype: string;
   /** PostgreSQL extensions to be enabled for the database. */
   extensions: Extension[];
+  /** Name of the PostgreSQL database template. */
+  templateDb: string;
 }
 
 const baseDatabase: object = {
@@ -72,6 +76,7 @@ const baseDatabase: object = {
   owner: "",
   lcCollate: "",
   lcCtype: "",
+  templateDb: "",
 };
 
 export const Database = {
@@ -98,6 +103,9 @@ export const Database = {
     }
     for (const v of message.extensions) {
       Extension.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.templateDb !== "") {
+      writer.uint32(58).string(message.templateDb);
     }
     return writer;
   },
@@ -127,6 +135,9 @@ export const Database = {
           break;
         case 6:
           message.extensions.push(Extension.decode(reader, reader.uint32()));
+          break;
+        case 7:
+          message.templateDb = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -161,6 +172,10 @@ export const Database = {
     message.extensions = (object.extensions ?? []).map((e: any) =>
       Extension.fromJSON(e)
     );
+    message.templateDb =
+      object.templateDb !== undefined && object.templateDb !== null
+        ? String(object.templateDb)
+        : "";
     return message;
   },
 
@@ -178,6 +193,7 @@ export const Database = {
     } else {
       obj.extensions = [];
     }
+    message.templateDb !== undefined && (obj.templateDb = message.templateDb);
     return obj;
   },
 
@@ -190,6 +206,7 @@ export const Database = {
     message.lcCtype = object.lcCtype ?? "";
     message.extensions =
       object.extensions?.map((e) => Extension.fromPartial(e)) || [];
+    message.templateDb = object.templateDb ?? "";
     return message;
   },
 };
@@ -277,6 +294,7 @@ const baseDatabaseSpec: object = {
   owner: "",
   lcCollate: "",
   lcCtype: "",
+  templateDb: "",
 };
 
 export const DatabaseSpec = {
@@ -300,6 +318,9 @@ export const DatabaseSpec = {
     }
     for (const v of message.extensions) {
       Extension.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.templateDb !== "") {
+      writer.uint32(50).string(message.templateDb);
     }
     return writer;
   },
@@ -326,6 +347,9 @@ export const DatabaseSpec = {
           break;
         case 5:
           message.extensions.push(Extension.decode(reader, reader.uint32()));
+          break;
+        case 6:
+          message.templateDb = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -356,6 +380,10 @@ export const DatabaseSpec = {
     message.extensions = (object.extensions ?? []).map((e: any) =>
       Extension.fromJSON(e)
     );
+    message.templateDb =
+      object.templateDb !== undefined && object.templateDb !== null
+        ? String(object.templateDb)
+        : "";
     return message;
   },
 
@@ -372,6 +400,7 @@ export const DatabaseSpec = {
     } else {
       obj.extensions = [];
     }
+    message.templateDb !== undefined && (obj.templateDb = message.templateDb);
     return obj;
   },
 
@@ -385,6 +414,7 @@ export const DatabaseSpec = {
     message.lcCtype = object.lcCtype ?? "";
     message.extensions =
       object.extensions?.map((e) => Extension.fromPartial(e)) || [];
+    message.templateDb = object.templateDb ?? "";
     return message;
   },
 };

@@ -21,26 +21,26 @@ export const protobufPackage = "yandex.cloud.mdb.elasticsearch.v1";
 
 export interface GetExtensionRequest {
   $type: "yandex.cloud.mdb.elasticsearch.v1.GetExtensionRequest";
-  /** Required. ID of the cluster. */
+  /** ID of the cluster. */
   clusterId: string;
-  /** Required. ID of the extension to return. */
+  /** ID of the extension to return. */
   extensionId: string;
 }
 
 export interface ListExtensionsRequest {
   $type: "yandex.cloud.mdb.elasticsearch.v1.ListExtensionsRequest";
-  /** Required. ID of the cluster to list extensions in. */
+  /** ID of the cluster to list extensions in. */
   clusterId: string;
   /**
-   * The maximum number of results per page that should be returned. If the number of available
-   * results is larger than `page_size`, the service returns a `next_page_token` that can be used
-   * to get the next page of results in subsequent ListBackups requests.
-   * Acceptable values are 0 to 1000, inclusive. Default value: 100.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the API returns a [ListExtensionsResponse.next_page_token] that can be used to get the next page of results in subsequent [ExtensionService.List] requests.
    */
   pageSize: number;
   /**
-   * Page token. Set `page_token` to the `next_page_token` returned by a previous ListBackups
-   * request to get the next page of results.
+   * Page token that can be used to iterate through multiple pages of results.
+   *
+   * To get the next page of results, set [page_token] to the [ListExtensionsResponse.next_page_token] returned by the previous [ExtensionService.List] request.
    */
   pageToken: string;
 }
@@ -50,67 +50,66 @@ export interface ListExtensionsResponse {
   /** Requested list of extensions. */
   extensions: Extension[];
   /**
-   * This token allows you to get the next page of results for ListBackups requests,
-   * if the number of results is larger than `page_size` specified in the request.
-   * To get the next page, specify the value of `next_page_token` as a value for
-   * the `page_token` parameter in the next ListBackups request. Subsequent ListBackups
-   * requests will have their own `next_page_token` to continue paging through the results.
+   * The token that can be used to get the next page of results.
+   *
+   * If the number of results is larger than [ListExtensionsRequest.page_size], use the [next_page_token] as the value for the [ListExtensionsRequest.page_token] in the subsequent [ExtensionService.List] request to iterate through multiple pages of results.
+   *
+   * Each of the subsequent [ExtensionService.List] requests should use the [next_page_token] value returned in the previous request to continue paging through the results.
    */
   nextPageToken: string;
 }
 
 export interface DeleteExtensionRequest {
   $type: "yandex.cloud.mdb.elasticsearch.v1.DeleteExtensionRequest";
-  /** Required. ID of the cluster. */
+  /** ID of the cluster. */
   clusterId: string;
-  /** Required. ID of the extension to delete. */
+  /** ID of the extension to delete. */
   extensionId: string;
 }
 
 export interface DeleteExtensionMetadata {
   $type: "yandex.cloud.mdb.elasticsearch.v1.DeleteExtensionMetadata";
-  /** Required. ID of the cluster. */
+  /** ID of the cluster. */
   clusterId: string;
-  /** Required. ID of the extension to delete. */
+  /** ID of the extension to delete. */
   extensionId: string;
 }
 
 export interface UpdateExtensionRequest {
   $type: "yandex.cloud.mdb.elasticsearch.v1.UpdateExtensionRequest";
-  /** Required. ID of the cluster. */
+  /** ID of the cluster. */
   clusterId: string;
-  /** Required. ID of the extension to delete. */
+  /** ID of the extension to update. */
   extensionId: string;
+  /** The flag shows whether to make the extension active. */
   active: boolean;
 }
 
 export interface UpdateExtensionMetadata {
   $type: "yandex.cloud.mdb.elasticsearch.v1.UpdateExtensionMetadata";
-  /** Required. ID of the cluster. */
+  /** ID of the cluster. */
   clusterId: string;
-  /** Required. ID of the extension. */
+  /** ID of the extension. */
   extensionId: string;
 }
 
 export interface CreateExtensionRequest {
   $type: "yandex.cloud.mdb.elasticsearch.v1.CreateExtensionRequest";
-  /** Required. ID of the cluster. */
+  /** ID of the cluster. */
   clusterId: string;
   /** Name of the extension. */
   name: string;
-  /**
-   * URI of the zip arhive to create the new extension from.
-   * Currently only supports links that are stored in Yandex Object Storage.
-   */
+  /** URI of the zip archive to create the new extension from. Currently only supports links that are stored in Object Storage. */
   uri: string;
+  /** The flag that disables the extension. */
   disabled: boolean;
 }
 
 export interface CreateExtensionMetadata {
   $type: "yandex.cloud.mdb.elasticsearch.v1.CreateExtensionMetadata";
-  /** Required. ID of the cluster. */
+  /** ID of the cluster. */
   clusterId: string;
-  /** Required. ID of the extension. */
+  /** ID of the extension. */
   extensionId: string;
 }
 

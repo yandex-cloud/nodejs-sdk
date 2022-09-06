@@ -128,6 +128,8 @@ export interface Certificate {
   notBefore?: Date;
   /** Domains validation challenges of the certificate. Used only for managed certificates. */
   challenges: Challenge[];
+  /** Flag that protects deletion of the certificate */
+  deletionProtection: boolean;
 }
 
 export enum Certificate_Status {
@@ -299,6 +301,17 @@ export interface Challenge_HttpFile {
   content: string;
 }
 
+/** A certificate version */
+export interface Version {
+  $type: "yandex.cloud.certificatemanager.v1.Version";
+  /** ID of the version. */
+  id: string;
+  /** ID of the certificate that the version belongs to. */
+  certificateId: string;
+  /** Time when the version was created. */
+  createdAt?: Date;
+}
+
 const baseCertificate: object = {
   $type: "yandex.cloud.certificatemanager.v1.Certificate",
   id: "",
@@ -311,6 +324,7 @@ const baseCertificate: object = {
   issuer: "",
   subject: "",
   serial: "",
+  deletionProtection: false,
 };
 
 export const Certificate = {
@@ -393,6 +407,9 @@ export const Certificate = {
     for (const v of message.challenges) {
       Challenge.encode(v!, writer.uint32(138).fork()).ldelim();
     }
+    if (message.deletionProtection === true) {
+      writer.uint32(144).bool(message.deletionProtection);
+    }
     return writer;
   },
 
@@ -473,6 +490,9 @@ export const Certificate = {
         case 17:
           message.challenges.push(Challenge.decode(reader, reader.uint32()));
           break;
+        case 18:
+          message.deletionProtection = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -547,6 +567,11 @@ export const Certificate = {
     message.challenges = (object.challenges ?? []).map((e: any) =>
       Challenge.fromJSON(e)
     );
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
     return message;
   },
 
@@ -592,6 +617,8 @@ export const Certificate = {
     } else {
       obj.challenges = [];
     }
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -624,6 +651,7 @@ export const Certificate = {
     message.notBefore = object.notBefore ?? undefined;
     message.challenges =
       object.challenges?.map((e) => Challenge.fromPartial(e)) || [];
+    message.deletionProtection = object.deletionProtection ?? false;
     return message;
   },
 };
@@ -1072,6 +1100,96 @@ export const Challenge_HttpFile = {
 };
 
 messageTypeRegistry.set(Challenge_HttpFile.$type, Challenge_HttpFile);
+
+const baseVersion: object = {
+  $type: "yandex.cloud.certificatemanager.v1.Version",
+  id: "",
+  certificateId: "",
+};
+
+export const Version = {
+  $type: "yandex.cloud.certificatemanager.v1.Version" as const,
+
+  encode(
+    message: Version,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.certificateId !== "") {
+      writer.uint32(18).string(message.certificateId);
+    }
+    if (message.createdAt !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.createdAt),
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Version {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseVersion } as Version;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+        case 2:
+          message.certificateId = reader.string();
+          break;
+        case 3:
+          message.createdAt = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Version {
+    const message = { ...baseVersion } as Version;
+    message.id =
+      object.id !== undefined && object.id !== null ? String(object.id) : "";
+    message.certificateId =
+      object.certificateId !== undefined && object.certificateId !== null
+        ? String(object.certificateId)
+        : "";
+    message.createdAt =
+      object.createdAt !== undefined && object.createdAt !== null
+        ? fromJsonTimestamp(object.createdAt)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Version): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    message.certificateId !== undefined &&
+      (obj.certificateId = message.certificateId);
+    message.createdAt !== undefined &&
+      (obj.createdAt = message.createdAt.toISOString());
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Version>, I>>(object: I): Version {
+    const message = { ...baseVersion } as Version;
+    message.id = object.id ?? "";
+    message.certificateId = object.certificateId ?? "";
+    message.createdAt = object.createdAt ?? undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Version.$type, Version);
 
 type Builtin =
   | Date

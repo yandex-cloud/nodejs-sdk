@@ -114,6 +114,7 @@ export interface Postgresqlconfig121c {
   /** in milliseconds. */
   archiveTimeout?: number;
   trackActivityQuerySize?: number;
+  onlineAnalyzeEnable?: boolean;
   enableBitmapscan?: boolean;
   enableHashagg?: boolean;
   enableHashjoin?: boolean;
@@ -164,105 +165,110 @@ export interface Postgresqlconfig121c {
   pgQualstatsMax?: number;
   pgQualstatsResolveOids?: boolean;
   pgQualstatsSampleRate?: number;
+  plantunerFixEmptyTable?: boolean;
+  /** in bytes. */
+  maxStackDepth?: number;
+  /** enable Genetic Query Optimizer, by default is on */
+  geqo?: boolean;
+  /** The number of tables to use geqo, default is 12 */
+  geqoThreshold?: number;
+  /** tradeoff between planning time and query plan quality, default is 5 */
+  geqoEffort?: number;
+  /** initial value of the random number generator used by GEQO */
+  geqoSeed?: number;
 }
 
-export enum Postgresqlconfig121c_WalLevel {
-  WAL_LEVEL_UNSPECIFIED = 0,
-  WAL_LEVEL_REPLICA = 1,
-  WAL_LEVEL_LOGICAL = 2,
+export enum Postgresqlconfig121c_BackslashQuote {
+  BACKSLASH_QUOTE_UNSPECIFIED = 0,
+  BACKSLASH_QUOTE = 1,
+  BACKSLASH_QUOTE_ON = 2,
+  BACKSLASH_QUOTE_OFF = 3,
+  BACKSLASH_QUOTE_SAFE_ENCODING = 4,
   UNRECOGNIZED = -1,
 }
 
-export function postgresqlconfig121c_WalLevelFromJSON(
+export function postgresqlconfig121c_BackslashQuoteFromJSON(
   object: any
-): Postgresqlconfig121c_WalLevel {
+): Postgresqlconfig121c_BackslashQuote {
   switch (object) {
     case 0:
-    case "WAL_LEVEL_UNSPECIFIED":
-      return Postgresqlconfig121c_WalLevel.WAL_LEVEL_UNSPECIFIED;
+    case "BACKSLASH_QUOTE_UNSPECIFIED":
+      return Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE_UNSPECIFIED;
     case 1:
-    case "WAL_LEVEL_REPLICA":
-      return Postgresqlconfig121c_WalLevel.WAL_LEVEL_REPLICA;
+    case "BACKSLASH_QUOTE":
+      return Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE;
     case 2:
-    case "WAL_LEVEL_LOGICAL":
-      return Postgresqlconfig121c_WalLevel.WAL_LEVEL_LOGICAL;
+    case "BACKSLASH_QUOTE_ON":
+      return Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE_ON;
+    case 3:
+    case "BACKSLASH_QUOTE_OFF":
+      return Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE_OFF;
+    case 4:
+    case "BACKSLASH_QUOTE_SAFE_ENCODING":
+      return Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE_SAFE_ENCODING;
     case -1:
     case "UNRECOGNIZED":
     default:
-      return Postgresqlconfig121c_WalLevel.UNRECOGNIZED;
+      return Postgresqlconfig121c_BackslashQuote.UNRECOGNIZED;
   }
 }
 
-export function postgresqlconfig121c_WalLevelToJSON(
-  object: Postgresqlconfig121c_WalLevel
+export function postgresqlconfig121c_BackslashQuoteToJSON(
+  object: Postgresqlconfig121c_BackslashQuote
 ): string {
   switch (object) {
-    case Postgresqlconfig121c_WalLevel.WAL_LEVEL_UNSPECIFIED:
-      return "WAL_LEVEL_UNSPECIFIED";
-    case Postgresqlconfig121c_WalLevel.WAL_LEVEL_REPLICA:
-      return "WAL_LEVEL_REPLICA";
-    case Postgresqlconfig121c_WalLevel.WAL_LEVEL_LOGICAL:
-      return "WAL_LEVEL_LOGICAL";
+    case Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE_UNSPECIFIED:
+      return "BACKSLASH_QUOTE_UNSPECIFIED";
+    case Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE:
+      return "BACKSLASH_QUOTE";
+    case Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE_ON:
+      return "BACKSLASH_QUOTE_ON";
+    case Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE_OFF:
+      return "BACKSLASH_QUOTE_OFF";
+    case Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE_SAFE_ENCODING:
+      return "BACKSLASH_QUOTE_SAFE_ENCODING";
     default:
       return "UNKNOWN";
   }
 }
 
-export enum Postgresqlconfig121c_SynchronousCommit {
-  SYNCHRONOUS_COMMIT_UNSPECIFIED = 0,
-  SYNCHRONOUS_COMMIT_ON = 1,
-  SYNCHRONOUS_COMMIT_OFF = 2,
-  SYNCHRONOUS_COMMIT_LOCAL = 3,
-  SYNCHRONOUS_COMMIT_REMOTE_WRITE = 4,
-  SYNCHRONOUS_COMMIT_REMOTE_APPLY = 5,
+export enum Postgresqlconfig121c_ByteaOutput {
+  BYTEA_OUTPUT_UNSPECIFIED = 0,
+  BYTEA_OUTPUT_HEX = 1,
+  BYTEA_OUTPUT_ESCAPED = 2,
   UNRECOGNIZED = -1,
 }
 
-export function postgresqlconfig121c_SynchronousCommitFromJSON(
+export function postgresqlconfig121c_ByteaOutputFromJSON(
   object: any
-): Postgresqlconfig121c_SynchronousCommit {
+): Postgresqlconfig121c_ByteaOutput {
   switch (object) {
     case 0:
-    case "SYNCHRONOUS_COMMIT_UNSPECIFIED":
-      return Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_UNSPECIFIED;
+    case "BYTEA_OUTPUT_UNSPECIFIED":
+      return Postgresqlconfig121c_ByteaOutput.BYTEA_OUTPUT_UNSPECIFIED;
     case 1:
-    case "SYNCHRONOUS_COMMIT_ON":
-      return Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_ON;
+    case "BYTEA_OUTPUT_HEX":
+      return Postgresqlconfig121c_ByteaOutput.BYTEA_OUTPUT_HEX;
     case 2:
-    case "SYNCHRONOUS_COMMIT_OFF":
-      return Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_OFF;
-    case 3:
-    case "SYNCHRONOUS_COMMIT_LOCAL":
-      return Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_LOCAL;
-    case 4:
-    case "SYNCHRONOUS_COMMIT_REMOTE_WRITE":
-      return Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_REMOTE_WRITE;
-    case 5:
-    case "SYNCHRONOUS_COMMIT_REMOTE_APPLY":
-      return Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_REMOTE_APPLY;
+    case "BYTEA_OUTPUT_ESCAPED":
+      return Postgresqlconfig121c_ByteaOutput.BYTEA_OUTPUT_ESCAPED;
     case -1:
     case "UNRECOGNIZED":
     default:
-      return Postgresqlconfig121c_SynchronousCommit.UNRECOGNIZED;
+      return Postgresqlconfig121c_ByteaOutput.UNRECOGNIZED;
   }
 }
 
-export function postgresqlconfig121c_SynchronousCommitToJSON(
-  object: Postgresqlconfig121c_SynchronousCommit
+export function postgresqlconfig121c_ByteaOutputToJSON(
+  object: Postgresqlconfig121c_ByteaOutput
 ): string {
   switch (object) {
-    case Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_UNSPECIFIED:
-      return "SYNCHRONOUS_COMMIT_UNSPECIFIED";
-    case Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_ON:
-      return "SYNCHRONOUS_COMMIT_ON";
-    case Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_OFF:
-      return "SYNCHRONOUS_COMMIT_OFF";
-    case Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_LOCAL:
-      return "SYNCHRONOUS_COMMIT_LOCAL";
-    case Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_REMOTE_WRITE:
-      return "SYNCHRONOUS_COMMIT_REMOTE_WRITE";
-    case Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_REMOTE_APPLY:
-      return "SYNCHRONOUS_COMMIT_REMOTE_APPLY";
+    case Postgresqlconfig121c_ByteaOutput.BYTEA_OUTPUT_UNSPECIFIED:
+      return "BYTEA_OUTPUT_UNSPECIFIED";
+    case Postgresqlconfig121c_ByteaOutput.BYTEA_OUTPUT_HEX:
+      return "BYTEA_OUTPUT_HEX";
+    case Postgresqlconfig121c_ByteaOutput.BYTEA_OUTPUT_ESCAPED:
+      return "BYTEA_OUTPUT_ESCAPED";
     default:
       return "UNKNOWN";
   }
@@ -364,6 +370,54 @@ export function postgresqlconfig121c_ForceParallelModeToJSON(
   }
 }
 
+export enum Postgresqlconfig121c_LogErrorVerbosity {
+  LOG_ERROR_VERBOSITY_UNSPECIFIED = 0,
+  LOG_ERROR_VERBOSITY_TERSE = 1,
+  LOG_ERROR_VERBOSITY_DEFAULT = 2,
+  LOG_ERROR_VERBOSITY_VERBOSE = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function postgresqlconfig121c_LogErrorVerbosityFromJSON(
+  object: any
+): Postgresqlconfig121c_LogErrorVerbosity {
+  switch (object) {
+    case 0:
+    case "LOG_ERROR_VERBOSITY_UNSPECIFIED":
+      return Postgresqlconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_UNSPECIFIED;
+    case 1:
+    case "LOG_ERROR_VERBOSITY_TERSE":
+      return Postgresqlconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_TERSE;
+    case 2:
+    case "LOG_ERROR_VERBOSITY_DEFAULT":
+      return Postgresqlconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_DEFAULT;
+    case 3:
+    case "LOG_ERROR_VERBOSITY_VERBOSE":
+      return Postgresqlconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_VERBOSE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Postgresqlconfig121c_LogErrorVerbosity.UNRECOGNIZED;
+  }
+}
+
+export function postgresqlconfig121c_LogErrorVerbosityToJSON(
+  object: Postgresqlconfig121c_LogErrorVerbosity
+): string {
+  switch (object) {
+    case Postgresqlconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_UNSPECIFIED:
+      return "LOG_ERROR_VERBOSITY_UNSPECIFIED";
+    case Postgresqlconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_TERSE:
+      return "LOG_ERROR_VERBOSITY_TERSE";
+    case Postgresqlconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_DEFAULT:
+      return "LOG_ERROR_VERBOSITY_DEFAULT";
+    case Postgresqlconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_VERBOSE:
+      return "LOG_ERROR_VERBOSITY_VERBOSE";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export enum Postgresqlconfig121c_LogLevel {
   LOG_LEVEL_UNSPECIFIED = 0,
   LOG_LEVEL_DEBUG5 = 1,
@@ -460,54 +514,6 @@ export function postgresqlconfig121c_LogLevelToJSON(
   }
 }
 
-export enum Postgresqlconfig121c_LogErrorVerbosity {
-  LOG_ERROR_VERBOSITY_UNSPECIFIED = 0,
-  LOG_ERROR_VERBOSITY_TERSE = 1,
-  LOG_ERROR_VERBOSITY_DEFAULT = 2,
-  LOG_ERROR_VERBOSITY_VERBOSE = 3,
-  UNRECOGNIZED = -1,
-}
-
-export function postgresqlconfig121c_LogErrorVerbosityFromJSON(
-  object: any
-): Postgresqlconfig121c_LogErrorVerbosity {
-  switch (object) {
-    case 0:
-    case "LOG_ERROR_VERBOSITY_UNSPECIFIED":
-      return Postgresqlconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_UNSPECIFIED;
-    case 1:
-    case "LOG_ERROR_VERBOSITY_TERSE":
-      return Postgresqlconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_TERSE;
-    case 2:
-    case "LOG_ERROR_VERBOSITY_DEFAULT":
-      return Postgresqlconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_DEFAULT;
-    case 3:
-    case "LOG_ERROR_VERBOSITY_VERBOSE":
-      return Postgresqlconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_VERBOSE;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return Postgresqlconfig121c_LogErrorVerbosity.UNRECOGNIZED;
-  }
-}
-
-export function postgresqlconfig121c_LogErrorVerbosityToJSON(
-  object: Postgresqlconfig121c_LogErrorVerbosity
-): string {
-  switch (object) {
-    case Postgresqlconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_UNSPECIFIED:
-      return "LOG_ERROR_VERBOSITY_UNSPECIFIED";
-    case Postgresqlconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_TERSE:
-      return "LOG_ERROR_VERBOSITY_TERSE";
-    case Postgresqlconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_DEFAULT:
-      return "LOG_ERROR_VERBOSITY_DEFAULT";
-    case Postgresqlconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_VERBOSE:
-      return "LOG_ERROR_VERBOSITY_VERBOSE";
-    default:
-      return "UNKNOWN";
-  }
-}
-
 export enum Postgresqlconfig121c_LogStatement {
   LOG_STATEMENT_UNSPECIFIED = 0,
   LOG_STATEMENT_NONE = 1,
@@ -557,6 +563,234 @@ export function postgresqlconfig121c_LogStatementToJSON(
       return "LOG_STATEMENT_MOD";
     case Postgresqlconfig121c_LogStatement.LOG_STATEMENT_ALL:
       return "LOG_STATEMENT_ALL";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export enum Postgresqlconfig121c_PgHintPlanDebugPrint {
+  PG_HINT_PLAN_DEBUG_PRINT_UNSPECIFIED = 0,
+  PG_HINT_PLAN_DEBUG_PRINT_OFF = 1,
+  PG_HINT_PLAN_DEBUG_PRINT_ON = 2,
+  PG_HINT_PLAN_DEBUG_PRINT_DETAILED = 3,
+  PG_HINT_PLAN_DEBUG_PRINT_VERBOSE = 4,
+  UNRECOGNIZED = -1,
+}
+
+export function postgresqlconfig121c_PgHintPlanDebugPrintFromJSON(
+  object: any
+): Postgresqlconfig121c_PgHintPlanDebugPrint {
+  switch (object) {
+    case 0:
+    case "PG_HINT_PLAN_DEBUG_PRINT_UNSPECIFIED":
+      return Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_UNSPECIFIED;
+    case 1:
+    case "PG_HINT_PLAN_DEBUG_PRINT_OFF":
+      return Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_OFF;
+    case 2:
+    case "PG_HINT_PLAN_DEBUG_PRINT_ON":
+      return Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_ON;
+    case 3:
+    case "PG_HINT_PLAN_DEBUG_PRINT_DETAILED":
+      return Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_DETAILED;
+    case 4:
+    case "PG_HINT_PLAN_DEBUG_PRINT_VERBOSE":
+      return Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_VERBOSE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Postgresqlconfig121c_PgHintPlanDebugPrint.UNRECOGNIZED;
+  }
+}
+
+export function postgresqlconfig121c_PgHintPlanDebugPrintToJSON(
+  object: Postgresqlconfig121c_PgHintPlanDebugPrint
+): string {
+  switch (object) {
+    case Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_UNSPECIFIED:
+      return "PG_HINT_PLAN_DEBUG_PRINT_UNSPECIFIED";
+    case Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_OFF:
+      return "PG_HINT_PLAN_DEBUG_PRINT_OFF";
+    case Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_ON:
+      return "PG_HINT_PLAN_DEBUG_PRINT_ON";
+    case Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_DETAILED:
+      return "PG_HINT_PLAN_DEBUG_PRINT_DETAILED";
+    case Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_VERBOSE:
+      return "PG_HINT_PLAN_DEBUG_PRINT_VERBOSE";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export enum Postgresqlconfig121c_PlanCacheMode {
+  PLAN_CACHE_MODE_UNSPECIFIED = 0,
+  PLAN_CACHE_MODE_AUTO = 1,
+  PLAN_CACHE_MODE_FORCE_CUSTOM_PLAN = 2,
+  PLAN_CACHE_MODE_FORCE_GENERIC_PLAN = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function postgresqlconfig121c_PlanCacheModeFromJSON(
+  object: any
+): Postgresqlconfig121c_PlanCacheMode {
+  switch (object) {
+    case 0:
+    case "PLAN_CACHE_MODE_UNSPECIFIED":
+      return Postgresqlconfig121c_PlanCacheMode.PLAN_CACHE_MODE_UNSPECIFIED;
+    case 1:
+    case "PLAN_CACHE_MODE_AUTO":
+      return Postgresqlconfig121c_PlanCacheMode.PLAN_CACHE_MODE_AUTO;
+    case 2:
+    case "PLAN_CACHE_MODE_FORCE_CUSTOM_PLAN":
+      return Postgresqlconfig121c_PlanCacheMode.PLAN_CACHE_MODE_FORCE_CUSTOM_PLAN;
+    case 3:
+    case "PLAN_CACHE_MODE_FORCE_GENERIC_PLAN":
+      return Postgresqlconfig121c_PlanCacheMode.PLAN_CACHE_MODE_FORCE_GENERIC_PLAN;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Postgresqlconfig121c_PlanCacheMode.UNRECOGNIZED;
+  }
+}
+
+export function postgresqlconfig121c_PlanCacheModeToJSON(
+  object: Postgresqlconfig121c_PlanCacheMode
+): string {
+  switch (object) {
+    case Postgresqlconfig121c_PlanCacheMode.PLAN_CACHE_MODE_UNSPECIFIED:
+      return "PLAN_CACHE_MODE_UNSPECIFIED";
+    case Postgresqlconfig121c_PlanCacheMode.PLAN_CACHE_MODE_AUTO:
+      return "PLAN_CACHE_MODE_AUTO";
+    case Postgresqlconfig121c_PlanCacheMode.PLAN_CACHE_MODE_FORCE_CUSTOM_PLAN:
+      return "PLAN_CACHE_MODE_FORCE_CUSTOM_PLAN";
+    case Postgresqlconfig121c_PlanCacheMode.PLAN_CACHE_MODE_FORCE_GENERIC_PLAN:
+      return "PLAN_CACHE_MODE_FORCE_GENERIC_PLAN";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export enum Postgresqlconfig121c_SharedPreloadLibraries {
+  SHARED_PRELOAD_LIBRARIES_UNSPECIFIED = 0,
+  SHARED_PRELOAD_LIBRARIES_AUTO_EXPLAIN = 1,
+  SHARED_PRELOAD_LIBRARIES_PG_HINT_PLAN = 2,
+  SHARED_PRELOAD_LIBRARIES_TIMESCALEDB = 3,
+  SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS = 4,
+  SHARED_PRELOAD_LIBRARIES_PG_CRON = 5,
+  SHARED_PRELOAD_LIBRARIES_PGLOGICAL = 6,
+  UNRECOGNIZED = -1,
+}
+
+export function postgresqlconfig121c_SharedPreloadLibrariesFromJSON(
+  object: any
+): Postgresqlconfig121c_SharedPreloadLibraries {
+  switch (object) {
+    case 0:
+    case "SHARED_PRELOAD_LIBRARIES_UNSPECIFIED":
+      return Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_UNSPECIFIED;
+    case 1:
+    case "SHARED_PRELOAD_LIBRARIES_AUTO_EXPLAIN":
+      return Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_AUTO_EXPLAIN;
+    case 2:
+    case "SHARED_PRELOAD_LIBRARIES_PG_HINT_PLAN":
+      return Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PG_HINT_PLAN;
+    case 3:
+    case "SHARED_PRELOAD_LIBRARIES_TIMESCALEDB":
+      return Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_TIMESCALEDB;
+    case 4:
+    case "SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS":
+      return Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS;
+    case 5:
+    case "SHARED_PRELOAD_LIBRARIES_PG_CRON":
+      return Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PG_CRON;
+    case 6:
+    case "SHARED_PRELOAD_LIBRARIES_PGLOGICAL":
+      return Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PGLOGICAL;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Postgresqlconfig121c_SharedPreloadLibraries.UNRECOGNIZED;
+  }
+}
+
+export function postgresqlconfig121c_SharedPreloadLibrariesToJSON(
+  object: Postgresqlconfig121c_SharedPreloadLibraries
+): string {
+  switch (object) {
+    case Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_UNSPECIFIED:
+      return "SHARED_PRELOAD_LIBRARIES_UNSPECIFIED";
+    case Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_AUTO_EXPLAIN:
+      return "SHARED_PRELOAD_LIBRARIES_AUTO_EXPLAIN";
+    case Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PG_HINT_PLAN:
+      return "SHARED_PRELOAD_LIBRARIES_PG_HINT_PLAN";
+    case Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_TIMESCALEDB:
+      return "SHARED_PRELOAD_LIBRARIES_TIMESCALEDB";
+    case Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS:
+      return "SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS";
+    case Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PG_CRON:
+      return "SHARED_PRELOAD_LIBRARIES_PG_CRON";
+    case Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PGLOGICAL:
+      return "SHARED_PRELOAD_LIBRARIES_PGLOGICAL";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export enum Postgresqlconfig121c_SynchronousCommit {
+  SYNCHRONOUS_COMMIT_UNSPECIFIED = 0,
+  SYNCHRONOUS_COMMIT_ON = 1,
+  SYNCHRONOUS_COMMIT_OFF = 2,
+  SYNCHRONOUS_COMMIT_LOCAL = 3,
+  SYNCHRONOUS_COMMIT_REMOTE_WRITE = 4,
+  SYNCHRONOUS_COMMIT_REMOTE_APPLY = 5,
+  UNRECOGNIZED = -1,
+}
+
+export function postgresqlconfig121c_SynchronousCommitFromJSON(
+  object: any
+): Postgresqlconfig121c_SynchronousCommit {
+  switch (object) {
+    case 0:
+    case "SYNCHRONOUS_COMMIT_UNSPECIFIED":
+      return Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_UNSPECIFIED;
+    case 1:
+    case "SYNCHRONOUS_COMMIT_ON":
+      return Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_ON;
+    case 2:
+    case "SYNCHRONOUS_COMMIT_OFF":
+      return Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_OFF;
+    case 3:
+    case "SYNCHRONOUS_COMMIT_LOCAL":
+      return Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_LOCAL;
+    case 4:
+    case "SYNCHRONOUS_COMMIT_REMOTE_WRITE":
+      return Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_REMOTE_WRITE;
+    case 5:
+    case "SYNCHRONOUS_COMMIT_REMOTE_APPLY":
+      return Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_REMOTE_APPLY;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Postgresqlconfig121c_SynchronousCommit.UNRECOGNIZED;
+  }
+}
+
+export function postgresqlconfig121c_SynchronousCommitToJSON(
+  object: Postgresqlconfig121c_SynchronousCommit
+): string {
+  switch (object) {
+    case Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_UNSPECIFIED:
+      return "SYNCHRONOUS_COMMIT_UNSPECIFIED";
+    case Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_ON:
+      return "SYNCHRONOUS_COMMIT_ON";
+    case Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_OFF:
+      return "SYNCHRONOUS_COMMIT_OFF";
+    case Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_LOCAL:
+      return "SYNCHRONOUS_COMMIT_LOCAL";
+    case Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_REMOTE_WRITE:
+      return "SYNCHRONOUS_COMMIT_REMOTE_WRITE";
+    case Postgresqlconfig121c_SynchronousCommit.SYNCHRONOUS_COMMIT_REMOTE_APPLY:
+      return "SYNCHRONOUS_COMMIT_REMOTE_APPLY";
     default:
       return "UNKNOWN";
   }
@@ -616,43 +850,43 @@ export function postgresqlconfig121c_TransactionIsolationToJSON(
   }
 }
 
-export enum Postgresqlconfig121c_ByteaOutput {
-  BYTEA_OUTPUT_UNSPECIFIED = 0,
-  BYTEA_OUTPUT_HEX = 1,
-  BYTEA_OUTPUT_ESCAPED = 2,
+export enum Postgresqlconfig121c_WalLevel {
+  WAL_LEVEL_UNSPECIFIED = 0,
+  WAL_LEVEL_REPLICA = 1,
+  WAL_LEVEL_LOGICAL = 2,
   UNRECOGNIZED = -1,
 }
 
-export function postgresqlconfig121c_ByteaOutputFromJSON(
+export function postgresqlconfig121c_WalLevelFromJSON(
   object: any
-): Postgresqlconfig121c_ByteaOutput {
+): Postgresqlconfig121c_WalLevel {
   switch (object) {
     case 0:
-    case "BYTEA_OUTPUT_UNSPECIFIED":
-      return Postgresqlconfig121c_ByteaOutput.BYTEA_OUTPUT_UNSPECIFIED;
+    case "WAL_LEVEL_UNSPECIFIED":
+      return Postgresqlconfig121c_WalLevel.WAL_LEVEL_UNSPECIFIED;
     case 1:
-    case "BYTEA_OUTPUT_HEX":
-      return Postgresqlconfig121c_ByteaOutput.BYTEA_OUTPUT_HEX;
+    case "WAL_LEVEL_REPLICA":
+      return Postgresqlconfig121c_WalLevel.WAL_LEVEL_REPLICA;
     case 2:
-    case "BYTEA_OUTPUT_ESCAPED":
-      return Postgresqlconfig121c_ByteaOutput.BYTEA_OUTPUT_ESCAPED;
+    case "WAL_LEVEL_LOGICAL":
+      return Postgresqlconfig121c_WalLevel.WAL_LEVEL_LOGICAL;
     case -1:
     case "UNRECOGNIZED":
     default:
-      return Postgresqlconfig121c_ByteaOutput.UNRECOGNIZED;
+      return Postgresqlconfig121c_WalLevel.UNRECOGNIZED;
   }
 }
 
-export function postgresqlconfig121c_ByteaOutputToJSON(
-  object: Postgresqlconfig121c_ByteaOutput
+export function postgresqlconfig121c_WalLevelToJSON(
+  object: Postgresqlconfig121c_WalLevel
 ): string {
   switch (object) {
-    case Postgresqlconfig121c_ByteaOutput.BYTEA_OUTPUT_UNSPECIFIED:
-      return "BYTEA_OUTPUT_UNSPECIFIED";
-    case Postgresqlconfig121c_ByteaOutput.BYTEA_OUTPUT_HEX:
-      return "BYTEA_OUTPUT_HEX";
-    case Postgresqlconfig121c_ByteaOutput.BYTEA_OUTPUT_ESCAPED:
-      return "BYTEA_OUTPUT_ESCAPED";
+    case Postgresqlconfig121c_WalLevel.WAL_LEVEL_UNSPECIFIED:
+      return "WAL_LEVEL_UNSPECIFIED";
+    case Postgresqlconfig121c_WalLevel.WAL_LEVEL_REPLICA:
+      return "WAL_LEVEL_REPLICA";
+    case Postgresqlconfig121c_WalLevel.WAL_LEVEL_LOGICAL:
+      return "WAL_LEVEL_LOGICAL";
     default:
       return "UNKNOWN";
   }
@@ -737,216 +971,6 @@ export function postgresqlconfig121c_XmlOptionToJSON(
       return "XML_OPTION_DOCUMENT";
     case Postgresqlconfig121c_XmlOption.XML_OPTION_CONTENT:
       return "XML_OPTION_CONTENT";
-    default:
-      return "UNKNOWN";
-  }
-}
-
-export enum Postgresqlconfig121c_BackslashQuote {
-  BACKSLASH_QUOTE_UNSPECIFIED = 0,
-  BACKSLASH_QUOTE = 1,
-  BACKSLASH_QUOTE_ON = 2,
-  BACKSLASH_QUOTE_OFF = 3,
-  BACKSLASH_QUOTE_SAFE_ENCODING = 4,
-  UNRECOGNIZED = -1,
-}
-
-export function postgresqlconfig121c_BackslashQuoteFromJSON(
-  object: any
-): Postgresqlconfig121c_BackslashQuote {
-  switch (object) {
-    case 0:
-    case "BACKSLASH_QUOTE_UNSPECIFIED":
-      return Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE_UNSPECIFIED;
-    case 1:
-    case "BACKSLASH_QUOTE":
-      return Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE;
-    case 2:
-    case "BACKSLASH_QUOTE_ON":
-      return Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE_ON;
-    case 3:
-    case "BACKSLASH_QUOTE_OFF":
-      return Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE_OFF;
-    case 4:
-    case "BACKSLASH_QUOTE_SAFE_ENCODING":
-      return Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE_SAFE_ENCODING;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return Postgresqlconfig121c_BackslashQuote.UNRECOGNIZED;
-  }
-}
-
-export function postgresqlconfig121c_BackslashQuoteToJSON(
-  object: Postgresqlconfig121c_BackslashQuote
-): string {
-  switch (object) {
-    case Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE_UNSPECIFIED:
-      return "BACKSLASH_QUOTE_UNSPECIFIED";
-    case Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE:
-      return "BACKSLASH_QUOTE";
-    case Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE_ON:
-      return "BACKSLASH_QUOTE_ON";
-    case Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE_OFF:
-      return "BACKSLASH_QUOTE_OFF";
-    case Postgresqlconfig121c_BackslashQuote.BACKSLASH_QUOTE_SAFE_ENCODING:
-      return "BACKSLASH_QUOTE_SAFE_ENCODING";
-    default:
-      return "UNKNOWN";
-  }
-}
-
-export enum Postgresqlconfig121c_PlanCacheMode {
-  PLAN_CACHE_MODE_UNSPECIFIED = 0,
-  PLAN_CACHE_MODE_AUTO = 1,
-  PLAN_CACHE_MODE_FORCE_CUSTOM_PLAN = 2,
-  PLAN_CACHE_MODE_FORCE_GENERIC_PLAN = 3,
-  UNRECOGNIZED = -1,
-}
-
-export function postgresqlconfig121c_PlanCacheModeFromJSON(
-  object: any
-): Postgresqlconfig121c_PlanCacheMode {
-  switch (object) {
-    case 0:
-    case "PLAN_CACHE_MODE_UNSPECIFIED":
-      return Postgresqlconfig121c_PlanCacheMode.PLAN_CACHE_MODE_UNSPECIFIED;
-    case 1:
-    case "PLAN_CACHE_MODE_AUTO":
-      return Postgresqlconfig121c_PlanCacheMode.PLAN_CACHE_MODE_AUTO;
-    case 2:
-    case "PLAN_CACHE_MODE_FORCE_CUSTOM_PLAN":
-      return Postgresqlconfig121c_PlanCacheMode.PLAN_CACHE_MODE_FORCE_CUSTOM_PLAN;
-    case 3:
-    case "PLAN_CACHE_MODE_FORCE_GENERIC_PLAN":
-      return Postgresqlconfig121c_PlanCacheMode.PLAN_CACHE_MODE_FORCE_GENERIC_PLAN;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return Postgresqlconfig121c_PlanCacheMode.UNRECOGNIZED;
-  }
-}
-
-export function postgresqlconfig121c_PlanCacheModeToJSON(
-  object: Postgresqlconfig121c_PlanCacheMode
-): string {
-  switch (object) {
-    case Postgresqlconfig121c_PlanCacheMode.PLAN_CACHE_MODE_UNSPECIFIED:
-      return "PLAN_CACHE_MODE_UNSPECIFIED";
-    case Postgresqlconfig121c_PlanCacheMode.PLAN_CACHE_MODE_AUTO:
-      return "PLAN_CACHE_MODE_AUTO";
-    case Postgresqlconfig121c_PlanCacheMode.PLAN_CACHE_MODE_FORCE_CUSTOM_PLAN:
-      return "PLAN_CACHE_MODE_FORCE_CUSTOM_PLAN";
-    case Postgresqlconfig121c_PlanCacheMode.PLAN_CACHE_MODE_FORCE_GENERIC_PLAN:
-      return "PLAN_CACHE_MODE_FORCE_GENERIC_PLAN";
-    default:
-      return "UNKNOWN";
-  }
-}
-
-export enum Postgresqlconfig121c_PgHintPlanDebugPrint {
-  PG_HINT_PLAN_DEBUG_PRINT_UNSPECIFIED = 0,
-  PG_HINT_PLAN_DEBUG_PRINT_OFF = 1,
-  PG_HINT_PLAN_DEBUG_PRINT_ON = 2,
-  PG_HINT_PLAN_DEBUG_PRINT_DETAILED = 3,
-  PG_HINT_PLAN_DEBUG_PRINT_VERBOSE = 4,
-  UNRECOGNIZED = -1,
-}
-
-export function postgresqlconfig121c_PgHintPlanDebugPrintFromJSON(
-  object: any
-): Postgresqlconfig121c_PgHintPlanDebugPrint {
-  switch (object) {
-    case 0:
-    case "PG_HINT_PLAN_DEBUG_PRINT_UNSPECIFIED":
-      return Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_UNSPECIFIED;
-    case 1:
-    case "PG_HINT_PLAN_DEBUG_PRINT_OFF":
-      return Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_OFF;
-    case 2:
-    case "PG_HINT_PLAN_DEBUG_PRINT_ON":
-      return Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_ON;
-    case 3:
-    case "PG_HINT_PLAN_DEBUG_PRINT_DETAILED":
-      return Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_DETAILED;
-    case 4:
-    case "PG_HINT_PLAN_DEBUG_PRINT_VERBOSE":
-      return Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_VERBOSE;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return Postgresqlconfig121c_PgHintPlanDebugPrint.UNRECOGNIZED;
-  }
-}
-
-export function postgresqlconfig121c_PgHintPlanDebugPrintToJSON(
-  object: Postgresqlconfig121c_PgHintPlanDebugPrint
-): string {
-  switch (object) {
-    case Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_UNSPECIFIED:
-      return "PG_HINT_PLAN_DEBUG_PRINT_UNSPECIFIED";
-    case Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_OFF:
-      return "PG_HINT_PLAN_DEBUG_PRINT_OFF";
-    case Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_ON:
-      return "PG_HINT_PLAN_DEBUG_PRINT_ON";
-    case Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_DETAILED:
-      return "PG_HINT_PLAN_DEBUG_PRINT_DETAILED";
-    case Postgresqlconfig121c_PgHintPlanDebugPrint.PG_HINT_PLAN_DEBUG_PRINT_VERBOSE:
-      return "PG_HINT_PLAN_DEBUG_PRINT_VERBOSE";
-    default:
-      return "UNKNOWN";
-  }
-}
-
-export enum Postgresqlconfig121c_SharedPreloadLibraries {
-  SHARED_PRELOAD_LIBRARIES_UNSPECIFIED = 0,
-  SHARED_PRELOAD_LIBRARIES_AUTO_EXPLAIN = 1,
-  SHARED_PRELOAD_LIBRARIES_PG_HINT_PLAN = 2,
-  SHARED_PRELOAD_LIBRARIES_TIMESCALEDB = 3,
-  SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS = 4,
-  UNRECOGNIZED = -1,
-}
-
-export function postgresqlconfig121c_SharedPreloadLibrariesFromJSON(
-  object: any
-): Postgresqlconfig121c_SharedPreloadLibraries {
-  switch (object) {
-    case 0:
-    case "SHARED_PRELOAD_LIBRARIES_UNSPECIFIED":
-      return Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_UNSPECIFIED;
-    case 1:
-    case "SHARED_PRELOAD_LIBRARIES_AUTO_EXPLAIN":
-      return Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_AUTO_EXPLAIN;
-    case 2:
-    case "SHARED_PRELOAD_LIBRARIES_PG_HINT_PLAN":
-      return Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PG_HINT_PLAN;
-    case 3:
-    case "SHARED_PRELOAD_LIBRARIES_TIMESCALEDB":
-      return Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_TIMESCALEDB;
-    case 4:
-    case "SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS":
-      return Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return Postgresqlconfig121c_SharedPreloadLibraries.UNRECOGNIZED;
-  }
-}
-
-export function postgresqlconfig121c_SharedPreloadLibrariesToJSON(
-  object: Postgresqlconfig121c_SharedPreloadLibraries
-): string {
-  switch (object) {
-    case Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_UNSPECIFIED:
-      return "SHARED_PRELOAD_LIBRARIES_UNSPECIFIED";
-    case Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_AUTO_EXPLAIN:
-      return "SHARED_PRELOAD_LIBRARIES_AUTO_EXPLAIN";
-    case Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PG_HINT_PLAN:
-      return "SHARED_PRELOAD_LIBRARIES_PG_HINT_PLAN";
-    case Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_TIMESCALEDB:
-      return "SHARED_PRELOAD_LIBRARIES_TIMESCALEDB";
-    case Postgresqlconfig121c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS:
-      return "SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS";
     default:
       return "UNKNOWN";
   }
@@ -1539,6 +1563,15 @@ export const Postgresqlconfig121c = {
         writer.uint32(618).fork()
       ).ldelim();
     }
+    if (message.onlineAnalyzeEnable !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.onlineAnalyzeEnable!,
+        },
+        writer.uint32(634).fork()
+      ).ldelim();
+    }
     if (message.enableBitmapscan !== undefined) {
       BoolValue.encode(
         {
@@ -1917,6 +1950,45 @@ export const Postgresqlconfig121c = {
           value: message.pgQualstatsSampleRate!,
         },
         writer.uint32(1026).fork()
+      ).ldelim();
+    }
+    if (message.plantunerFixEmptyTable !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.plantunerFixEmptyTable!,
+        },
+        writer.uint32(1194).fork()
+      ).ldelim();
+    }
+    if (message.maxStackDepth !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.maxStackDepth! },
+        writer.uint32(1202).fork()
+      ).ldelim();
+    }
+    if (message.geqo !== undefined) {
+      BoolValue.encode(
+        { $type: "google.protobuf.BoolValue", value: message.geqo! },
+        writer.uint32(1218).fork()
+      ).ldelim();
+    }
+    if (message.geqoThreshold !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.geqoThreshold! },
+        writer.uint32(1226).fork()
+      ).ldelim();
+    }
+    if (message.geqoEffort !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.geqoEffort! },
+        writer.uint32(1234).fork()
+      ).ldelim();
+    }
+    if (message.geqoSeed !== undefined) {
+      DoubleValue.encode(
+        { $type: "google.protobuf.DoubleValue", value: message.geqoSeed! },
+        writer.uint32(1266).fork()
       ).ldelim();
     }
     return writer;
@@ -2329,6 +2401,12 @@ export const Postgresqlconfig121c = {
             reader.uint32()
           ).value;
           break;
+        case 79:
+          message.onlineAnalyzeEnable = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         case 80:
           message.enableBitmapscan = BoolValue.decode(
             reader,
@@ -2608,6 +2686,33 @@ export const Postgresqlconfig121c = {
             reader,
             reader.uint32()
           ).value;
+          break;
+        case 149:
+          message.plantunerFixEmptyTable = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 150:
+          message.maxStackDepth = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 152:
+          message.geqo = BoolValue.decode(reader, reader.uint32()).value;
+          break;
+        case 153:
+          message.geqoThreshold = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 154:
+          message.geqoEffort = Int64Value.decode(reader, reader.uint32()).value;
+          break;
+        case 158:
+          message.geqoSeed = DoubleValue.decode(reader, reader.uint32()).value;
           break;
         default:
           reader.skipType(tag & 7);
@@ -2981,6 +3086,11 @@ export const Postgresqlconfig121c = {
       object.trackActivityQuerySize !== null
         ? Number(object.trackActivityQuerySize)
         : undefined;
+    message.onlineAnalyzeEnable =
+      object.onlineAnalyzeEnable !== undefined &&
+      object.onlineAnalyzeEnable !== null
+        ? Boolean(object.onlineAnalyzeEnable)
+        : undefined;
     message.enableBitmapscan =
       object.enableBitmapscan !== undefined && object.enableBitmapscan !== null
         ? Boolean(object.enableBitmapscan)
@@ -3212,6 +3322,31 @@ export const Postgresqlconfig121c = {
       object.pgQualstatsSampleRate !== null
         ? Number(object.pgQualstatsSampleRate)
         : undefined;
+    message.plantunerFixEmptyTable =
+      object.plantunerFixEmptyTable !== undefined &&
+      object.plantunerFixEmptyTable !== null
+        ? Boolean(object.plantunerFixEmptyTable)
+        : undefined;
+    message.maxStackDepth =
+      object.maxStackDepth !== undefined && object.maxStackDepth !== null
+        ? Number(object.maxStackDepth)
+        : undefined;
+    message.geqo =
+      object.geqo !== undefined && object.geqo !== null
+        ? Boolean(object.geqo)
+        : undefined;
+    message.geqoThreshold =
+      object.geqoThreshold !== undefined && object.geqoThreshold !== null
+        ? Number(object.geqoThreshold)
+        : undefined;
+    message.geqoEffort =
+      object.geqoEffort !== undefined && object.geqoEffort !== null
+        ? Number(object.geqoEffort)
+        : undefined;
+    message.geqoSeed =
+      object.geqoSeed !== undefined && object.geqoSeed !== null
+        ? Number(object.geqoSeed)
+        : undefined;
     return message;
   },
 
@@ -3390,6 +3525,8 @@ export const Postgresqlconfig121c = {
       (obj.archiveTimeout = message.archiveTimeout);
     message.trackActivityQuerySize !== undefined &&
       (obj.trackActivityQuerySize = message.trackActivityQuerySize);
+    message.onlineAnalyzeEnable !== undefined &&
+      (obj.onlineAnalyzeEnable = message.onlineAnalyzeEnable);
     message.enableBitmapscan !== undefined &&
       (obj.enableBitmapscan = message.enableBitmapscan);
     message.enableHashagg !== undefined &&
@@ -3500,6 +3637,15 @@ export const Postgresqlconfig121c = {
       (obj.pgQualstatsResolveOids = message.pgQualstatsResolveOids);
     message.pgQualstatsSampleRate !== undefined &&
       (obj.pgQualstatsSampleRate = message.pgQualstatsSampleRate);
+    message.plantunerFixEmptyTable !== undefined &&
+      (obj.plantunerFixEmptyTable = message.plantunerFixEmptyTable);
+    message.maxStackDepth !== undefined &&
+      (obj.maxStackDepth = message.maxStackDepth);
+    message.geqo !== undefined && (obj.geqo = message.geqo);
+    message.geqoThreshold !== undefined &&
+      (obj.geqoThreshold = message.geqoThreshold);
+    message.geqoEffort !== undefined && (obj.geqoEffort = message.geqoEffort);
+    message.geqoSeed !== undefined && (obj.geqoSeed = message.geqoSeed);
     return obj;
   },
 
@@ -3596,6 +3742,7 @@ export const Postgresqlconfig121c = {
     message.autovacuumNaptime = object.autovacuumNaptime ?? undefined;
     message.archiveTimeout = object.archiveTimeout ?? undefined;
     message.trackActivityQuerySize = object.trackActivityQuerySize ?? undefined;
+    message.onlineAnalyzeEnable = object.onlineAnalyzeEnable ?? undefined;
     message.enableBitmapscan = object.enableBitmapscan ?? undefined;
     message.enableHashagg = object.enableHashagg ?? undefined;
     message.enableHashjoin = object.enableHashjoin ?? undefined;
@@ -3660,6 +3807,12 @@ export const Postgresqlconfig121c = {
     message.pgQualstatsMax = object.pgQualstatsMax ?? undefined;
     message.pgQualstatsResolveOids = object.pgQualstatsResolveOids ?? undefined;
     message.pgQualstatsSampleRate = object.pgQualstatsSampleRate ?? undefined;
+    message.plantunerFixEmptyTable = object.plantunerFixEmptyTable ?? undefined;
+    message.maxStackDepth = object.maxStackDepth ?? undefined;
+    message.geqo = object.geqo ?? undefined;
+    message.geqoThreshold = object.geqoThreshold ?? undefined;
+    message.geqoEffort = object.geqoEffort ?? undefined;
+    message.geqoSeed = object.geqoSeed ?? undefined;
     return message;
   },
 };

@@ -57,7 +57,7 @@ export interface ListClustersRequest {
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the [ListClustersResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
   /**
@@ -274,7 +274,7 @@ export interface ListClusterLogsRequest {
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the
-   * [ListClusterLogsResponse.next_page_token] returned by a previous list request.
+   * [ListClusterLogsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
   /** Always return `next_page_token`, even if current page is empty. */
@@ -343,7 +343,7 @@ export interface ListClusterOperationsRequest {
   pageSize: number;
   /**
    * Page token.  To get the next page of results, set [page_token] to the [ListClusterOperationsResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }
@@ -376,7 +376,7 @@ export interface ListClusterBackupsRequest {
   pageSize: number;
   /**
    * Page token.  To get the next page of results, set [page_token] to the [ListClusterBackupsResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }
@@ -409,7 +409,7 @@ export interface ListClusterHostsRequest {
   pageSize: number;
   /**
    * Page token.  To get the next page of results, set [page_token] to the [ListClusterHostsResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }

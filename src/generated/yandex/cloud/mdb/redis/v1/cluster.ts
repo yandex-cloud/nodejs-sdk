@@ -11,6 +11,7 @@ import { Timestamp } from "../../../../../google/protobuf/timestamp";
 import { Redisconfigset50 } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis5_0";
 import { Redisconfigset60 } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis6_0";
 import { Redisconfigset62 } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis6_2";
+import { Redisconfigset70 } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis7_0";
 import { Int64Value } from "../../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.mdb.redis.v1";
@@ -303,6 +304,8 @@ export interface ClusterConfig {
   redisConfig60?: Redisconfigset60 | undefined;
   /** Configuration of a Redis 6.2 server. */
   redisConfig62?: Redisconfigset62 | undefined;
+  /** Configuration of a Redis 7.0 server. */
+  redisConfig70?: Redisconfigset70 | undefined;
   /** Resources allocated to Redis hosts. */
   resources?: Resources;
   /** Time to start the daily backup, in the UTC timezone. */
@@ -328,7 +331,7 @@ export interface Host {
    * Name of the Redis host. The host name is assigned by MDB at creation time, and cannot be changed.
    * 1-63 characters long.
    *
-   * The name is unique across all existing MDB hosts in Yandex Cloud, as it defines the FQDN of the host.
+   * The name is unique across all MDB hosts that exist on the platform, as it defines the FQDN of the host.
    */
   name: string;
   /** ID of the Redis cluster. The ID is assigned by MDB at creation time. */
@@ -1129,6 +1132,12 @@ export const ClusterConfig = {
         writer.uint32(58).fork()
       ).ldelim();
     }
+    if (message.redisConfig70 !== undefined) {
+      Redisconfigset70.encode(
+        message.redisConfig70,
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
@@ -1172,6 +1181,12 @@ export const ClusterConfig = {
             reader.uint32()
           );
           break;
+        case 8:
+          message.redisConfig70 = Redisconfigset70.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
@@ -1207,6 +1222,10 @@ export const ClusterConfig = {
       object.redisConfig_6_2 !== undefined && object.redisConfig_6_2 !== null
         ? Redisconfigset62.fromJSON(object.redisConfig_6_2)
         : undefined;
+    message.redisConfig70 =
+      object.redisConfig_7_0 !== undefined && object.redisConfig_7_0 !== null
+        ? Redisconfigset70.fromJSON(object.redisConfig_7_0)
+        : undefined;
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
@@ -1238,6 +1257,10 @@ export const ClusterConfig = {
       (obj.redisConfig_6_2 = message.redisConfig62
         ? Redisconfigset62.toJSON(message.redisConfig62)
         : undefined);
+    message.redisConfig70 !== undefined &&
+      (obj.redisConfig_7_0 = message.redisConfig70
+        ? Redisconfigset70.toJSON(message.redisConfig70)
+        : undefined);
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
@@ -1267,6 +1290,10 @@ export const ClusterConfig = {
     message.redisConfig62 =
       object.redisConfig62 !== undefined && object.redisConfig62 !== null
         ? Redisconfigset62.fromPartial(object.redisConfig62)
+        : undefined;
+    message.redisConfig70 =
+      object.redisConfig70 !== undefined && object.redisConfig70 !== null
+        ? Redisconfigset70.fromPartial(object.redisConfig70)
         : undefined;
     message.resources =
       object.resources !== undefined && object.resources !== null

@@ -11,7 +11,7 @@ export const protobufPackage = "yandex.cloud.mdb.clickhouse.v1.config";
 
 /**
  * ClickHouse configuration options. Detailed description for each set of options
- * is available in [ClickHouse documentation](https://clickhouse.yandex/docs/en/operations/server_settings/settings/).
+ * is available in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/server_settings/settings/).
  *
  * Any options not listed here are not supported.
  */
@@ -21,22 +21,22 @@ export interface ClickhouseConfig {
   logLevel: ClickhouseConfig_LogLevel;
   /**
    * Settings for the MergeTree engine.
-   * See description in [ClickHouse documentation](https://clickhouse.yandex/docs/en/operations/server_settings/settings/#merge_tree).
+   * See description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/server_settings/settings/#merge_tree).
    */
   mergeTree?: ClickhouseConfig_MergeTree;
   /**
    * Compression settings for the ClickHouse cluster.
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.yandex/docs/en/operations/server_settings/settings/#compression).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/server_settings/settings/#compression).
    */
   compression: ClickhouseConfig_Compression[];
   /**
    * Configuration of external dictionaries to be used by the ClickHouse cluster.
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.yandex/docs/en/query_language/dicts/external_dicts/).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/query_language/dicts/external_dicts/).
    */
   dictionaries: ClickhouseConfig_ExternalDictionary[];
   /**
    * Settings for thinning Graphite data.
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.yandex/docs/en/operations/server_settings/settings/#server_settings-graphite_rollup).
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/server_settings/settings/#server_settings-graphite_rollup).
    */
   graphiteRollup: ClickhouseConfig_GraphiteRollup[];
   kafka?: ClickhouseConfig_Kafka;
@@ -414,12 +414,12 @@ export interface ClickhouseConfig_ExternalDictionary {
   name: string;
   /**
    * Set of attributes for the external dictionary.
-   * For in-depth description, see [ClickHouse documentation](https://clickhouse.yandex/docs/en/query_language/dicts/external_dicts_dict_structure/).
+   * For in-depth description, see [ClickHouse documentation](https://clickhouse.com/docs/en/query_language/dicts/external_dicts_dict_structure/).
    */
   structure?: ClickhouseConfig_ExternalDictionary_Structure;
   /**
    * Layout for storing the dictionary in memory.
-   * For in-depth description, see [ClickHouse documentation](https://clickhouse.yandex/docs/en/query_language/dicts/external_dicts_dict_layout/).
+   * For in-depth description, see [ClickHouse documentation](https://clickhouse.com/docs/en/query_language/dicts/external_dicts_dict_layout/).
    */
   layout?: ClickhouseConfig_ExternalDictionary_Layout;
   /** Fixed interval between dictionary updates. */
@@ -468,7 +468,7 @@ export interface ClickhouseConfig_ExternalDictionary_MysqlSource {
   where: string;
   /**
    * Query for checking the dictionary status, to pull only updated data.
-   * For more details, see [ClickHouse documentation on dictionaries](https://clickhouse.yandex/docs/en/query_language/dicts/external_dicts_dict_lifetime/).
+   * For more details, see [ClickHouse documentation on dictionaries](https://clickhouse.com/docs/en/query_language/dicts/external_dicts_dict_lifetime/).
    */
   invalidateQuery: string;
 }
@@ -543,7 +543,7 @@ export interface ClickhouseConfig_ExternalDictionary_PostgresqlSource {
   password: string;
   /**
    * Query for checking the dictionary status, to pull only updated data.
-   * For more details, see [ClickHouse documentation on dictionaries](https://clickhouse.yandex/docs/en/query_language/dicts/external_dicts_dict_lifetime/).
+   * For more details, see [ClickHouse documentation on dictionaries](https://clickhouse.com/docs/en/query_language/dicts/external_dicts_dict_lifetime/).
    */
   invalidateQuery: string;
   /**
@@ -624,22 +624,22 @@ export interface ClickhouseConfig_ExternalDictionary_Structure {
   id?: ClickhouseConfig_ExternalDictionary_Structure_Id;
   /**
    * Composite key for the dictionary, containing of one or more key columns.
-   * For details, see [ClickHouse documentation](https://clickhouse.yandex/docs/en/query_language/dicts/external_dicts_dict_structure/#composite-key).
+   * For details, see [ClickHouse documentation](https://clickhouse.com/docs/en/query_language/dicts/external_dicts_dict_structure/#composite-key).
    */
   key?: ClickhouseConfig_ExternalDictionary_Structure_Key;
   /**
    * Field holding the beginning of the range for dictionaries with `RANGE_HASHED` layout.
-   * For details, see [ClickHouse documentation](https://clickhouse.yandex/docs/en/query_language/dicts/external_dicts_dict_layout/#range-hashed).
+   * For details, see [ClickHouse documentation](https://clickhouse.com/docs/en/query_language/dicts/external_dicts_dict_layout/#range-hashed).
    */
   rangeMin?: ClickhouseConfig_ExternalDictionary_Structure_Attribute;
   /**
    * Field holding the end of the range for dictionaries with `RANGE_HASHED` layout.
-   * For details, see [ClickHouse documentation](https://clickhouse.yandex/docs/en/query_language/dicts/external_dicts_dict_layout/#range-hashed).
+   * For details, see [ClickHouse documentation](https://clickhouse.com/docs/en/query_language/dicts/external_dicts_dict_layout/#range-hashed).
    */
   rangeMax?: ClickhouseConfig_ExternalDictionary_Structure_Attribute;
   /**
    * Description of the fields available for database queries.
-   * For details, see [ClickHouse documentation](https://clickhouse.yandex/docs/en/query_language/dicts/external_dicts_dict_structure/#attributes).
+   * For details, see [ClickHouse documentation](https://clickhouse.com/docs/en/query_language/dicts/external_dicts_dict_structure/#attributes).
    */
   attributes: ClickhouseConfig_ExternalDictionary_Structure_Attribute[];
 }

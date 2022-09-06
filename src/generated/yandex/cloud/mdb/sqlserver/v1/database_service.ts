@@ -48,15 +48,12 @@ export interface ListDatabasesRequest {
    */
   clusterId: string;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than `page_size`, the service returns a [ListDatabasesResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the service returns a [ListDatabasesResponse.next_page_token] that can be used to get the next page of results in subsequent list requests.
    */
   pageSize: number;
-  /**
-   * Page token. To get the next page of results, Set `page_token` to the [ListDatabasesResponse.next_page_token]
-   * returned by a previous list request.
-   */
+  /** Page token. To get the next page of results, set [page_token] to the [ListDatabasesResponse.next_page_token] returned by the previous list request. */
   pageToken: string;
 }
 
@@ -65,10 +62,11 @@ export interface ListDatabasesResponse {
   /** List of SQL Server databases. */
   databases: Database[];
   /**
-   * Token that allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListDatabasesRequest.page_size], use the `next_page_token` as the value
-   * for the [ListDatabasesRequest.page_token] parameter in the next list request. Each subsequent
-   * list request will have its own `next_page_token` to continue paging through the results.
+   * Token that allows you to get the next page of results for list requests.
+   *
+   * If the number of results is larger than [ListDatabasesRequest.page_size], use the [next_page_token] as the value for the [ListDatabasesRequest.page_token] parameter in the next list request.
+   *
+   * Each subsequent list request has its own [next_page_token] to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -120,54 +118,56 @@ export interface DeleteDatabaseMetadata {
 export interface RestoreDatabaseRequest {
   $type: "yandex.cloud.mdb.sqlserver.v1.RestoreDatabaseRequest";
   /**
-   * Required. ID of the SQL Server cluster to restore a database in.
-   * To get the cluster ID, use a [ClusterService.List] request
+   * ID of the SQL Server cluster to restore a database in.
+   *
+   * To get the cluster ID, use a [ClusterService.List] request.
    */
   clusterId: string;
-  /** Name of the SQLServer database that is being restored. */
+  /** Name of the SQL Server database that is being restored. */
   databaseName: string;
-  /** name of the database which backup will be used to restore the database */
+  /** Name of the database which backup is used to restore the database. */
   fromDatabase: string;
-  /** ID of a backup to be used */
+  /** ID of a backup to be used. */
   backupId: string;
-  /** Timestamp which is used for Point-in-Time recovery */
+  /** Timestamp which is used for Point-in-Time recovery. */
   time?: Date;
 }
 
 export interface RestoreDatabaseMetadata {
   $type: "yandex.cloud.mdb.sqlserver.v1.RestoreDatabaseMetadata";
-  /** ID of the SQLServer cluster where a database is being created. */
+  /** ID of the SQL Server cluster where a database is being created. */
   clusterId: string;
-  /** Name of the SQLServer database that is being created. */
+  /** Name of an SQL Server database that is being created. */
   databaseName: string;
-  /** name of the database which backup will be used to restore the database */
+  /** Name of the database which backup is used to restore the database. */
   fromDatabase: string;
-  /** ID of a backup to be used */
+  /** ID of a backup to be used. */
   backupId: string;
 }
 
 export interface ImportDatabaseBackupRequest {
   $type: "yandex.cloud.mdb.sqlserver.v1.ImportDatabaseBackupRequest";
   /**
-   * Required. ID of the SQL Server cluster to import a database in.
-   * To get the cluster ID, use a [ClusterService.List] request
+   * ID of the SQL Server cluster to import a database in.
+   *
+   * To get the cluster ID, use a [ClusterService.List] request.
    */
   clusterId: string;
-  /** Name of the SQLServer database that is being imported. */
+  /** Name of the SQL Server database that is being imported. */
   databaseName: string;
   /** Name of object storage bucket to import backups from. */
   s3Bucket: string;
   /** Path in object storage bucket to import backups from. */
   s3Path: string;
-  /** List of .bak files in bucket containing database backup */
+  /** List of .bak files in bucket containing database backup. */
   files: string[];
 }
 
 export interface ImportDatabaseBackupMetadata {
   $type: "yandex.cloud.mdb.sqlserver.v1.ImportDatabaseBackupMetadata";
-  /** ID of the SQLServer cluster where a database is being imported. */
+  /** ID of the SQL Server cluster where a database is being imported. */
   clusterId: string;
-  /** Name of the SQLServer database that is being imported. */
+  /** Name of the SQL Server database that is being imported. */
   databaseName: string;
   /** Name of object storage bucket to import backups from. */
   s3Bucket: string;
@@ -178,29 +178,30 @@ export interface ImportDatabaseBackupMetadata {
 export interface ExportDatabaseBackupRequest {
   $type: "yandex.cloud.mdb.sqlserver.v1.ExportDatabaseBackupRequest";
   /**
-   * Required. ID of the SQL Server cluster to export a database from.
-   * To get the cluster ID, use a [ClusterService.List] request
+   * ID of the SQL Server cluster to export a database from.
+   *
+   * To get the cluster ID, use a [ClusterService.List] request.
    */
   clusterId: string;
-  /** Name of the SQLServer database that is being exported. */
+  /** Name of the SQL Server database that is being exported. */
   databaseName: string;
-  /** Name of object storage bucket to export backups to */
+  /** Name of object storage bucket to export backups to. */
   s3Bucket: string;
   /** Path in object storage bucket to export backups to. */
   s3Path: string;
-  /** Prefix for .bak files to */
+  /** Prefix for .bak files to export. */
   prefix: string;
 }
 
 export interface ExportDatabaseBackupMetadata {
   $type: "yandex.cloud.mdb.sqlserver.v1.ExportDatabaseBackupMetadata";
-  /** ID of the SQLServer cluster where a database is being exported. */
+  /** ID of the SQL Server cluster where a database is being exported. */
   clusterId: string;
-  /** Name of the SQLServer database that is being exported. */
+  /** Name of the SQL Server database that is being exported. */
   databaseName: string;
-  /** Name of object storage bucket to import backups from. */
+  /** Name of object storage bucket to export backups to. */
   s3Bucket: string;
-  /** Path in object storage bucket to import backups from. */
+  /** Path in object storage bucket to export backups to. */
   s3Path: string;
 }
 
@@ -1541,7 +1542,7 @@ export const DatabaseServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Creates a new SQL Server database in the specified cluster from a backup */
+  /** Creates a new SQL Server database in the specified cluster from a backup. */
   restore: {
     path: "/yandex.cloud.mdb.sqlserver.v1.DatabaseService/Restore",
     requestStream: false,
@@ -1553,7 +1554,7 @@ export const DatabaseServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Imports a new SQL Server database from external backup */
+  /** Imports a new SQL Server database from an external backup. */
   importBackup: {
     path: "/yandex.cloud.mdb.sqlserver.v1.DatabaseService/ImportBackup",
     requestStream: false,
@@ -1566,7 +1567,7 @@ export const DatabaseServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Exports database backup to external backup */
+  /** Exports the last database backup to an external backup. */
   exportBackup: {
     path: "/yandex.cloud.mdb.sqlserver.v1.DatabaseService/ExportBackup",
     requestStream: false,
@@ -1604,11 +1605,11 @@ export interface DatabaseServiceServer extends UntypedServiceImplementation {
   list: handleUnaryCall<ListDatabasesRequest, ListDatabasesResponse>;
   /** Creates a new SQL Server database in the specified cluster. */
   create: handleUnaryCall<CreateDatabaseRequest, Operation>;
-  /** Creates a new SQL Server database in the specified cluster from a backup */
+  /** Creates a new SQL Server database in the specified cluster from a backup. */
   restore: handleUnaryCall<RestoreDatabaseRequest, Operation>;
-  /** Imports a new SQL Server database from external backup */
+  /** Imports a new SQL Server database from an external backup. */
   importBackup: handleUnaryCall<ImportDatabaseBackupRequest, Operation>;
-  /** Exports database backup to external backup */
+  /** Exports the last database backup to an external backup. */
   exportBackup: handleUnaryCall<ExportDatabaseBackupRequest, Operation>;
   /** Deletes the specified SQL Server database. */
   delete: handleUnaryCall<DeleteDatabaseRequest, Operation>;
@@ -1676,7 +1677,7 @@ export interface DatabaseServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Creates a new SQL Server database in the specified cluster from a backup */
+  /** Creates a new SQL Server database in the specified cluster from a backup. */
   restore(
     request: RestoreDatabaseRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -1692,7 +1693,7 @@ export interface DatabaseServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Imports a new SQL Server database from external backup */
+  /** Imports a new SQL Server database from an external backup. */
   importBackup(
     request: ImportDatabaseBackupRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -1708,7 +1709,7 @@ export interface DatabaseServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Exports database backup to external backup */
+  /** Exports the last database backup to an external backup. */
   exportBackup(
     request: ExportDatabaseBackupRequest,
     callback: (error: ServiceError | null, response: Operation) => void
