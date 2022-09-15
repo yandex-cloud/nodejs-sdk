@@ -161,7 +161,7 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
     },
     {
         serviceIds: ['yandex.cloud.serverless.apigateway.websocket.v1.ConnectionService'],
-        endpoint: 'apigateway-connections.api.cloud-preprod.yandex.net:443',
+        endpoint: 'apigateway-connections.api.cloud.yandex.net:443',
     },
     {
         serviceIds: [
