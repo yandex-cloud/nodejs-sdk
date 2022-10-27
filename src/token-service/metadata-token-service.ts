@@ -67,7 +67,7 @@ export class MetadataTokenService implements TokenService {
                 `failed to fetch token from metadata service: ${lastError}`,
             );
         }
-        setTimeout(async () => {
+        setInterval(async () => {
             try {
                 this.token = await this.fetchToken();
             } catch {
