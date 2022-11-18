@@ -89,6 +89,7 @@ export interface Revision {
   status: Revision_Status;
   secrets: Secret[];
   connectivity?: Connectivity;
+  provisionPolicy?: ProvisionPolicy;
 }
 
 export enum Revision_Status {
@@ -166,6 +167,11 @@ export interface Resources {
   memory: number;
   cores: number;
   coreFraction: number;
+}
+
+export interface ProvisionPolicy {
+  $type: "yandex.cloud.serverless.containers.v1.ProvisionPolicy";
+  minInstances: number;
 }
 
 export interface Secret {
@@ -500,6 +506,12 @@ export const Revision = {
         writer.uint32(98).fork()
       ).ldelim();
     }
+    if (message.provisionPolicy !== undefined) {
+      ProvisionPolicy.encode(
+        message.provisionPolicy,
+        writer.uint32(106).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -548,6 +560,12 @@ export const Revision = {
           break;
         case 12:
           message.connectivity = Connectivity.decode(reader, reader.uint32());
+          break;
+        case 13:
+          message.provisionPolicy = ProvisionPolicy.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -604,6 +622,10 @@ export const Revision = {
       object.connectivity !== undefined && object.connectivity !== null
         ? Connectivity.fromJSON(object.connectivity)
         : undefined;
+    message.provisionPolicy =
+      object.provisionPolicy !== undefined && object.provisionPolicy !== null
+        ? ProvisionPolicy.fromJSON(object.provisionPolicy)
+        : undefined;
     return message;
   },
 
@@ -643,6 +665,10 @@ export const Revision = {
       (obj.connectivity = message.connectivity
         ? Connectivity.toJSON(message.connectivity)
         : undefined);
+    message.provisionPolicy !== undefined &&
+      (obj.provisionPolicy = message.provisionPolicy
+        ? ProvisionPolicy.toJSON(message.provisionPolicy)
+        : undefined);
     return obj;
   },
 
@@ -671,6 +697,10 @@ export const Revision = {
     message.connectivity =
       object.connectivity !== undefined && object.connectivity !== null
         ? Connectivity.fromPartial(object.connectivity)
+        : undefined;
+    message.provisionPolicy =
+      object.provisionPolicy !== undefined && object.provisionPolicy !== null
+        ? ProvisionPolicy.fromPartial(object.provisionPolicy)
         : undefined;
     return message;
   },
@@ -1119,6 +1149,69 @@ export const Resources = {
 };
 
 messageTypeRegistry.set(Resources.$type, Resources);
+
+const baseProvisionPolicy: object = {
+  $type: "yandex.cloud.serverless.containers.v1.ProvisionPolicy",
+  minInstances: 0,
+};
+
+export const ProvisionPolicy = {
+  $type: "yandex.cloud.serverless.containers.v1.ProvisionPolicy" as const,
+
+  encode(
+    message: ProvisionPolicy,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.minInstances !== 0) {
+      writer.uint32(8).int64(message.minInstances);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProvisionPolicy {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseProvisionPolicy } as ProvisionPolicy;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.minInstances = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProvisionPolicy {
+    const message = { ...baseProvisionPolicy } as ProvisionPolicy;
+    message.minInstances =
+      object.minInstances !== undefined && object.minInstances !== null
+        ? Number(object.minInstances)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: ProvisionPolicy): unknown {
+    const obj: any = {};
+    message.minInstances !== undefined &&
+      (obj.minInstances = Math.round(message.minInstances));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ProvisionPolicy>, I>>(
+    object: I
+  ): ProvisionPolicy {
+    const message = { ...baseProvisionPolicy } as ProvisionPolicy;
+    message.minInstances = object.minInstances ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(ProvisionPolicy.$type, ProvisionPolicy);
 
 const baseSecret: object = {
   $type: "yandex.cloud.serverless.containers.v1.Secret",

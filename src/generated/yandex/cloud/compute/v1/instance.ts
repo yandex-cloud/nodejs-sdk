@@ -46,6 +46,46 @@ export function ipVersionToJSON(object: IpVersion): string {
   }
 }
 
+export enum MetadataOption {
+  METADATA_OPTION_UNSPECIFIED = 0,
+  /** ENABLED - Option is enabled */
+  ENABLED = 1,
+  /** DISABLED - Option is disabled */
+  DISABLED = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function metadataOptionFromJSON(object: any): MetadataOption {
+  switch (object) {
+    case 0:
+    case "METADATA_OPTION_UNSPECIFIED":
+      return MetadataOption.METADATA_OPTION_UNSPECIFIED;
+    case 1:
+    case "ENABLED":
+      return MetadataOption.ENABLED;
+    case 2:
+    case "DISABLED":
+      return MetadataOption.DISABLED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return MetadataOption.UNRECOGNIZED;
+  }
+}
+
+export function metadataOptionToJSON(object: MetadataOption): string {
+  switch (object) {
+    case MetadataOption.METADATA_OPTION_UNSPECIFIED:
+      return "METADATA_OPTION_UNSPECIFIED";
+    case MetadataOption.ENABLED:
+      return "ENABLED";
+    case MetadataOption.DISABLED:
+      return "DISABLED";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 /** An Instance resource. For more information, see [Instances](/docs/compute/concepts/vm). */
 export interface Instance {
   $type: "yandex.cloud.compute.v1.Instance";
@@ -75,6 +115,8 @@ export interface Instance {
    * For more information, see [Metadata](/docs/compute/concepts/vm-metadata).
    */
   metadata: { [key: string]: string };
+  /** Options allow user to configure access to instance's metadata */
+  metadataOptions?: MetadataOptions;
   /** Boot disk that is attached to the instance. */
   bootDisk?: AttachedDisk;
   /** Array of secondary disks that are attached to the instance. */
@@ -481,7 +523,7 @@ export interface PlacementPolicy {
   hostAffinityRules: PlacementPolicy_HostAffinityRule[];
 }
 
-/** Affinitity definition */
+/** Affinity definition */
 export interface PlacementPolicy_HostAffinityRule {
   $type: "yandex.cloud.compute.v1.PlacementPolicy.HostAffinityRule";
   /** Affinity label or one of reserved values - 'yc.hostId', 'yc.hostGroupId' */
@@ -532,6 +574,18 @@ export function placementPolicy_HostAffinityRule_OperatorToJSON(
     default:
       return "UNKNOWN";
   }
+}
+
+export interface MetadataOptions {
+  $type: "yandex.cloud.compute.v1.MetadataOptions";
+  /** Enabled access to GCE flavored metadata */
+  gceHttpEndpoint: MetadataOption;
+  /** Enabled access to AWS flavored metadata (IMDSv1) */
+  awsV1HttpEndpoint: MetadataOption;
+  /** Enabled access to IAM credentials with GCE flavored metadata */
+  gceHttpToken: MetadataOption;
+  /** Enabled access to IAM credentials with AWS flavored metadata (IMDSv1) */
+  awsV1HttpToken: MetadataOption;
 }
 
 const baseInstance: object = {
@@ -604,6 +658,12 @@ export const Instance = {
         writer.uint32(90).fork()
       ).ldelim();
     });
+    if (message.metadataOptions !== undefined) {
+      MetadataOptions.encode(
+        message.metadataOptions,
+        writer.uint32(186).fork()
+      ).ldelim();
+    }
     if (message.bootDisk !== undefined) {
       AttachedDisk.encode(message.bootDisk, writer.uint32(98).fork()).ldelim();
     }
@@ -702,6 +762,12 @@ export const Instance = {
           if (entry11.value !== undefined) {
             message.metadata[entry11.key] = entry11.value;
           }
+          break;
+        case 23:
+          message.metadataOptions = MetadataOptions.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         case 12:
           message.bootDisk = AttachedDisk.decode(reader, reader.uint32());
@@ -806,6 +872,10 @@ export const Instance = {
       acc[key] = String(value);
       return acc;
     }, {});
+    message.metadataOptions =
+      object.metadataOptions !== undefined && object.metadataOptions !== null
+        ? MetadataOptions.fromJSON(object.metadataOptions)
+        : undefined;
     message.bootDisk =
       object.bootDisk !== undefined && object.bootDisk !== null
         ? AttachedDisk.fromJSON(object.bootDisk)
@@ -874,6 +944,10 @@ export const Instance = {
         obj.metadata[k] = v;
       });
     }
+    message.metadataOptions !== undefined &&
+      (obj.metadataOptions = message.metadataOptions
+        ? MetadataOptions.toJSON(message.metadataOptions)
+        : undefined);
     message.bootDisk !== undefined &&
       (obj.bootDisk = message.bootDisk
         ? AttachedDisk.toJSON(message.bootDisk)
@@ -954,6 +1028,10 @@ export const Instance = {
       }
       return acc;
     }, {});
+    message.metadataOptions =
+      object.metadataOptions !== undefined && object.metadataOptions !== null
+        ? MetadataOptions.fromPartial(object.metadataOptions)
+        : undefined;
     message.bootDisk =
       object.bootDisk !== undefined && object.bootDisk !== null
         ? AttachedDisk.fromPartial(object.bootDisk)
@@ -2272,6 +2350,112 @@ messageTypeRegistry.set(
   PlacementPolicy_HostAffinityRule.$type,
   PlacementPolicy_HostAffinityRule
 );
+
+const baseMetadataOptions: object = {
+  $type: "yandex.cloud.compute.v1.MetadataOptions",
+  gceHttpEndpoint: 0,
+  awsV1HttpEndpoint: 0,
+  gceHttpToken: 0,
+  awsV1HttpToken: 0,
+};
+
+export const MetadataOptions = {
+  $type: "yandex.cloud.compute.v1.MetadataOptions" as const,
+
+  encode(
+    message: MetadataOptions,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.gceHttpEndpoint !== 0) {
+      writer.uint32(8).int32(message.gceHttpEndpoint);
+    }
+    if (message.awsV1HttpEndpoint !== 0) {
+      writer.uint32(16).int32(message.awsV1HttpEndpoint);
+    }
+    if (message.gceHttpToken !== 0) {
+      writer.uint32(24).int32(message.gceHttpToken);
+    }
+    if (message.awsV1HttpToken !== 0) {
+      writer.uint32(32).int32(message.awsV1HttpToken);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MetadataOptions {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMetadataOptions } as MetadataOptions;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.gceHttpEndpoint = reader.int32() as any;
+          break;
+        case 2:
+          message.awsV1HttpEndpoint = reader.int32() as any;
+          break;
+        case 3:
+          message.gceHttpToken = reader.int32() as any;
+          break;
+        case 4:
+          message.awsV1HttpToken = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MetadataOptions {
+    const message = { ...baseMetadataOptions } as MetadataOptions;
+    message.gceHttpEndpoint =
+      object.gceHttpEndpoint !== undefined && object.gceHttpEndpoint !== null
+        ? metadataOptionFromJSON(object.gceHttpEndpoint)
+        : 0;
+    message.awsV1HttpEndpoint =
+      object.awsV1HttpEndpoint !== undefined &&
+      object.awsV1HttpEndpoint !== null
+        ? metadataOptionFromJSON(object.awsV1HttpEndpoint)
+        : 0;
+    message.gceHttpToken =
+      object.gceHttpToken !== undefined && object.gceHttpToken !== null
+        ? metadataOptionFromJSON(object.gceHttpToken)
+        : 0;
+    message.awsV1HttpToken =
+      object.awsV1HttpToken !== undefined && object.awsV1HttpToken !== null
+        ? metadataOptionFromJSON(object.awsV1HttpToken)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: MetadataOptions): unknown {
+    const obj: any = {};
+    message.gceHttpEndpoint !== undefined &&
+      (obj.gceHttpEndpoint = metadataOptionToJSON(message.gceHttpEndpoint));
+    message.awsV1HttpEndpoint !== undefined &&
+      (obj.awsV1HttpEndpoint = metadataOptionToJSON(message.awsV1HttpEndpoint));
+    message.gceHttpToken !== undefined &&
+      (obj.gceHttpToken = metadataOptionToJSON(message.gceHttpToken));
+    message.awsV1HttpToken !== undefined &&
+      (obj.awsV1HttpToken = metadataOptionToJSON(message.awsV1HttpToken));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MetadataOptions>, I>>(
+    object: I
+  ): MetadataOptions {
+    const message = { ...baseMetadataOptions } as MetadataOptions;
+    message.gceHttpEndpoint = object.gceHttpEndpoint ?? 0;
+    message.awsV1HttpEndpoint = object.awsV1HttpEndpoint ?? 0;
+    message.gceHttpToken = object.gceHttpToken ?? 0;
+    message.awsV1HttpToken = object.awsV1HttpToken ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(MetadataOptions.$type, MetadataOptions);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

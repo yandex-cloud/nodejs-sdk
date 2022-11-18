@@ -18,6 +18,10 @@ export interface HostType {
   cores: number;
   /** Ammount of memory available for instances. */
   memory: number;
+  /** Number of local disks available for instances */
+  disks: number;
+  /** Size of each local disk */
+  diskSize: number;
 }
 
 const baseHostType: object = {
@@ -25,6 +29,8 @@ const baseHostType: object = {
   id: "",
   cores: 0,
   memory: 0,
+  disks: 0,
+  diskSize: 0,
 };
 
 export const HostType = {
@@ -42,6 +48,12 @@ export const HostType = {
     }
     if (message.memory !== 0) {
       writer.uint32(24).int64(message.memory);
+    }
+    if (message.disks !== 0) {
+      writer.uint32(32).int64(message.disks);
+    }
+    if (message.diskSize !== 0) {
+      writer.uint32(40).int64(message.diskSize);
     }
     return writer;
   },
@@ -61,6 +73,12 @@ export const HostType = {
           break;
         case 3:
           message.memory = longToNumber(reader.int64() as Long);
+          break;
+        case 4:
+          message.disks = longToNumber(reader.int64() as Long);
+          break;
+        case 5:
+          message.diskSize = longToNumber(reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -82,6 +100,14 @@ export const HostType = {
       object.memory !== undefined && object.memory !== null
         ? Number(object.memory)
         : 0;
+    message.disks =
+      object.disks !== undefined && object.disks !== null
+        ? Number(object.disks)
+        : 0;
+    message.diskSize =
+      object.diskSize !== undefined && object.diskSize !== null
+        ? Number(object.diskSize)
+        : 0;
     return message;
   },
 
@@ -90,6 +116,9 @@ export const HostType = {
     message.id !== undefined && (obj.id = message.id);
     message.cores !== undefined && (obj.cores = Math.round(message.cores));
     message.memory !== undefined && (obj.memory = Math.round(message.memory));
+    message.disks !== undefined && (obj.disks = Math.round(message.disks));
+    message.diskSize !== undefined &&
+      (obj.diskSize = Math.round(message.diskSize));
     return obj;
   },
 
@@ -98,6 +127,8 @@ export const HostType = {
     message.id = object.id ?? "";
     message.cores = object.cores ?? 0;
     message.memory = object.memory ?? 0;
+    message.disks = object.disks ?? 0;
+    message.diskSize = object.diskSize ?? 0;
     return message;
   },
 };

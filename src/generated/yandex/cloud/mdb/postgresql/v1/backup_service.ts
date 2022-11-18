@@ -42,7 +42,7 @@ export interface ListBackupsRequest {
   pageSize: number;
   /**
    * Page token.  To get the next page of results, Set [page_token] to the [ListBackupsResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }

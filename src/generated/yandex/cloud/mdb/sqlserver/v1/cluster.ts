@@ -8,33 +8,49 @@ import {
   SQLServerConfigSet2016sp2std,
   SQLServerConfigSet2016sp2ent,
 } from "../../../../../yandex/cloud/mdb/sqlserver/v1/config/sqlserver2016sp2";
+import {
+  SQLServerConfigSet2017std,
+  SQLServerConfigSet2017ent,
+} from "../../../../../yandex/cloud/mdb/sqlserver/v1/config/sqlserver2017";
+import {
+  SQLServerConfigSet2019std,
+  SQLServerConfigSet2019ent,
+} from "../../../../../yandex/cloud/mdb/sqlserver/v1/config/sqlserver2019";
 
 export const protobufPackage = "yandex.cloud.mdb.sqlserver.v1";
 
 /**
  * An SQL Server cluster.
+ *
  * For more information, see the [Concepts](/docs/managed-sqlserver/concepts) section of the documentation.
  */
 export interface Cluster {
   $type: "yandex.cloud.mdb.sqlserver.v1.Cluster";
   /**
    * ID of the SQL Server cluster.
-   * This ID is assigned by Managed Service for SQL Server at creation time.
+   *
+   * This ID is assigned by Managed Service for SQL Server at the moment of creation.
    */
   id: string;
   /** ID of the folder the SQL Server cluster belongs to. */
   folderId: string;
+  /** Time when SQL Server cluster was created. */
   createdAt?: Date;
   /**
    * Name of the SQL Server cluster.
    *
-   * The name must be unique within the folder, comply with RFC 1035 and be 1-63 characters long.
+   * The name must be unique within the folder, comply with [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt) and be 1-63 characters long.
    */
   name: string;
-  /** Description of the SQL Server cluster. 0-256 characters long. */
+  /**
+   * Description of the SQL Server cluster.
+   *
+   * Must be 0-256 characters long.
+   */
   description: string;
   /**
    * Custom labels for the SQL Server cluster as `key:value` pairs.
+   *
    * Maximum 64 per resource.
    */
   labels: { [key: string]: string };
@@ -44,33 +60,29 @@ export interface Cluster {
   monitoring: Monitoring[];
   /** Configuration of the SQL Server cluster. */
   config?: ClusterConfig;
-  /** ID of the network the cluster belongs to. */
+  /** ID of the network that the cluster belongs to. */
   networkId: string;
   /** Aggregated cluster health. */
   health: Cluster_Health;
   /** Current state of the cluster. */
   status: Cluster_Status;
-  /** User security groups */
+  /** User security groups. */
   securityGroupIds: string[];
-  /** Deletion Protection inhibits deletion of the cluster */
+  /** Determines whether the cluster is protected from being deleted. */
   deletionProtection: boolean;
-  /** SQL Server Collation */
+  /** SQL Server Collation. */
   sqlcollation: string;
   /** Host groups hosting VMs of the cluster. */
   hostGroupIds: string[];
+  /** ID of the service account which is used for access to Object Storage. */
+  serviceAccountId: string;
 }
 
 export enum Cluster_Environment {
   ENVIRONMENT_UNSPECIFIED = 0,
-  /**
-   * PRODUCTION - Stable environment with a conservative update policy:
-   * only hotfixes are applied during regular maintenance.
-   */
+  /** PRODUCTION - Stable environment with a conservative update policy: only hotfixes are applied during regular maintenance. */
   PRODUCTION = 1,
-  /**
-   * PRESTABLE - Environment with more aggressive update policy: new versions
-   * are rolled out irrespective of backward compatibility.
-   */
+  /** PRESTABLE - Environment with more aggressive update policy: new versions are rolled out irrespective of backward compatibility. */
   PRESTABLE = 2,
   UNRECOGNIZED = -1,
 }
@@ -109,7 +121,7 @@ export function cluster_EnvironmentToJSON(object: Cluster_Environment): string {
 export enum Cluster_Health {
   /** HEALTH_UNKNOWN - State of the cluster is unknown ([Host.health] of all hosts in the cluster is `UNKNOWN`). */
   HEALTH_UNKNOWN = 0,
-  /** ALIVE - Cluster is alive and well ([Host.health] of all hosts in the cluster is `ALIVE`). */
+  /** ALIVE - Cluster is alive and works well ([Host.health] of all hosts in the cluster is `ALIVE`). */
   ALIVE = 1,
   /** DEAD - Cluster is inoperable ([Host.health] of all hosts in the cluster is `DEAD`). */
   DEAD = 2,
@@ -254,27 +266,82 @@ export interface ClusterConfig {
   sqlserverConfig2016sp2std?: SQLServerConfigSet2016sp2std | undefined;
   /** Configuration of the SQL Server 2016sp2 enterprise edition instance. */
   sqlserverConfig2016sp2ent?: SQLServerConfigSet2016sp2ent | undefined;
+  /** Configuration of the SQL Server 2017 standard edition instance. */
+  sqlserverConfig2017std?: SQLServerConfigSet2017std | undefined;
+  /** Configuration of the SQL Server 2017 enterprise edition instance. */
+  sqlserverConfig2017ent?: SQLServerConfigSet2017ent | undefined;
+  /** Configuration of the SQL Server 2019 standard edition instance. */
+  sqlserverConfig2019std?: SQLServerConfigSet2019std | undefined;
+  /** Configuration of the SQL Server 2019 enterprise edition instance. */
+  sqlserverConfig2019ent?: SQLServerConfigSet2019ent | undefined;
   /** Resources allocated to SQL Server hosts. */
   resources?: Resources;
-  /** Start time for the daily backup in UTC timezone */
+  /** Start time for the daily backup in UTC timezone. */
   backupWindowStart?: TimeOfDay;
-  /** Access policy to DB */
+  /** Database access policy. */
   access?: Access;
+  /** Secondary replicas connection mode */
+  secondaryConnections: ClusterConfig_SecondaryConnections;
+}
+
+export enum ClusterConfig_SecondaryConnections {
+  SECONDARY_CONNECTIONS_UNSPECIFIED = 0,
+  /** SECONDARY_CONNECTIONS_OFF - Connections to secondary replicas are prohibited */
+  SECONDARY_CONNECTIONS_OFF = 1,
+  /** SECONDARY_CONNECTIONS_READ_ONLY - Secondary replicas are read-only */
+  SECONDARY_CONNECTIONS_READ_ONLY = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function clusterConfig_SecondaryConnectionsFromJSON(
+  object: any
+): ClusterConfig_SecondaryConnections {
+  switch (object) {
+    case 0:
+    case "SECONDARY_CONNECTIONS_UNSPECIFIED":
+      return ClusterConfig_SecondaryConnections.SECONDARY_CONNECTIONS_UNSPECIFIED;
+    case 1:
+    case "SECONDARY_CONNECTIONS_OFF":
+      return ClusterConfig_SecondaryConnections.SECONDARY_CONNECTIONS_OFF;
+    case 2:
+    case "SECONDARY_CONNECTIONS_READ_ONLY":
+      return ClusterConfig_SecondaryConnections.SECONDARY_CONNECTIONS_READ_ONLY;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ClusterConfig_SecondaryConnections.UNRECOGNIZED;
+  }
+}
+
+export function clusterConfig_SecondaryConnectionsToJSON(
+  object: ClusterConfig_SecondaryConnections
+): string {
+  switch (object) {
+    case ClusterConfig_SecondaryConnections.SECONDARY_CONNECTIONS_UNSPECIFIED:
+      return "SECONDARY_CONNECTIONS_UNSPECIFIED";
+    case ClusterConfig_SecondaryConnections.SECONDARY_CONNECTIONS_OFF:
+      return "SECONDARY_CONNECTIONS_OFF";
+    case ClusterConfig_SecondaryConnections.SECONDARY_CONNECTIONS_READ_ONLY:
+      return "SECONDARY_CONNECTIONS_READ_ONLY";
+    default:
+      return "UNKNOWN";
+  }
 }
 
 export interface Host {
   $type: "yandex.cloud.mdb.sqlserver.v1.Host";
   /**
-   * Name of the SQL Server host. The host name is assigned by Managed Service for SQL Server
-   * at creation time, and cannot be changed. 1-63 characters long.
+   * Name of the SQL Server host.
    *
-   * The name is unique across all existing database hosts in Yandex Cloud,
-   * as it defines the FQDN of the host.
+   * The host name is assigned by Managed Service for SQL Server at the moment of creation and cannot be changed. 1-63 characters long.
+   *
+   * The name is unique across all database hosts that exist on the platform as it defines the FQDN of the host.
    */
   name: string;
   /**
-   * ID of the SQL Server host. The ID is assigned by Managed Service for SQL Server
-   * at creation time.
+   * ID of the SQL Server host.
+   *
+   * The ID is assigned by Managed Service for SQL Server at the moment of creation.
    */
   clusterId: string;
   /** ID of the availability zone where the SQL Server host resides. */
@@ -339,9 +406,9 @@ export enum Host_Health {
   HEALTH_UNKNOWN = 0,
   /** ALIVE - The host is performing all its functions normally. */
   ALIVE = 1,
-  /** DEAD - The host is inoperable, and cannot perform any of its essential functions. */
+  /** DEAD - The host is inoperable and cannot perform any of its essential functions. */
   DEAD = 2,
-  /** DEGRADED - The host is degraded, and can perform only some of its essential functions. */
+  /** DEGRADED - The host is degraded and can perform only some of its essential functions. */
   DEGRADED = 3,
   UNRECOGNIZED = -1,
 }
@@ -392,7 +459,7 @@ export interface Service {
 
 export enum Service_Type {
   TYPE_UNSPECIFIED = 0,
-  /** SQLSERVER - SQL Server service */
+  /** SQLSERVER - SQL Server service. */
   SQLSERVER = 1,
   UNRECOGNIZED = -1,
 }
@@ -467,7 +534,8 @@ export function service_HealthToJSON(object: Service_Health): string {
 export interface Resources {
   $type: "yandex.cloud.mdb.sqlserver.v1.Resources";
   /**
-   * ID of the preset for computational resources available to a host (CPU, memory etc.).
+   * ID of the preset for computational resources available to a host (CPU, memory, etc.).
+   *
    * All available presets are listed in the [documentation](/docs/managed-sqlserver/concepts/instance-types).
    */
   resourcePresetId: string;
@@ -477,18 +545,18 @@ export interface Resources {
    * Type of the storage environment for the host.
    *
    * Possible values:
-   * * network-hdd - network HDD drive,
-   * * network-ssd - network SSD drive,
-   * * local-ssd - local SSD storage.
+   * * `network-hdd` - network HDD drive;
+   * * `network-ssd` - network SSD drive;
+   * * `local-ssd` - local SSD storage.
    */
   diskTypeId: string;
 }
 
 export interface Access {
   $type: "yandex.cloud.mdb.sqlserver.v1.Access";
-  /** Allow access for DataLens */
+  /** Allows access for DataLens. */
   dataLens: boolean;
-  /** Allow access for Web SQL. */
+  /** Allows access for Web SQL. */
   webSql: boolean;
 }
 
@@ -506,6 +574,7 @@ const baseCluster: object = {
   deletionProtection: false,
   sqlcollation: "",
   hostGroupIds: "",
+  serviceAccountId: "",
 };
 
 export const Cluster = {
@@ -573,6 +642,9 @@ export const Cluster = {
     for (const v of message.hostGroupIds) {
       writer.uint32(130).string(v!);
     }
+    if (message.serviceAccountId !== "") {
+      writer.uint32(138).string(message.serviceAccountId);
+    }
     return writer;
   },
 
@@ -639,6 +711,9 @@ export const Cluster = {
           break;
         case 16:
           message.hostGroupIds.push(reader.string());
+          break;
+        case 17:
+          message.serviceAccountId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -712,6 +787,10 @@ export const Cluster = {
     message.hostGroupIds = (object.hostGroupIds ?? []).map((e: any) =>
       String(e)
     );
+    message.serviceAccountId =
+      object.serviceAccountId !== undefined && object.serviceAccountId !== null
+        ? String(object.serviceAccountId)
+        : "";
     return message;
   },
 
@@ -762,6 +841,8 @@ export const Cluster = {
     } else {
       obj.hostGroupIds = [];
     }
+    message.serviceAccountId !== undefined &&
+      (obj.serviceAccountId = message.serviceAccountId);
     return obj;
   },
 
@@ -794,6 +875,7 @@ export const Cluster = {
     message.deletionProtection = object.deletionProtection ?? false;
     message.sqlcollation = object.sqlcollation ?? "";
     message.hostGroupIds = object.hostGroupIds?.map((e) => e) || [];
+    message.serviceAccountId = object.serviceAccountId ?? "";
     return message;
   },
 };
@@ -965,6 +1047,7 @@ messageTypeRegistry.set(Monitoring.$type, Monitoring);
 const baseClusterConfig: object = {
   $type: "yandex.cloud.mdb.sqlserver.v1.ClusterConfig",
   version: "",
+  secondaryConnections: 0,
 };
 
 export const ClusterConfig = {
@@ -989,6 +1072,30 @@ export const ClusterConfig = {
         writer.uint32(42).fork()
       ).ldelim();
     }
+    if (message.sqlserverConfig2017std !== undefined) {
+      SQLServerConfigSet2017std.encode(
+        message.sqlserverConfig2017std,
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
+    if (message.sqlserverConfig2017ent !== undefined) {
+      SQLServerConfigSet2017ent.encode(
+        message.sqlserverConfig2017ent,
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
+    if (message.sqlserverConfig2019std !== undefined) {
+      SQLServerConfigSet2019std.encode(
+        message.sqlserverConfig2019std,
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
+    if (message.sqlserverConfig2019ent !== undefined) {
+      SQLServerConfigSet2019ent.encode(
+        message.sqlserverConfig2019ent,
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
@@ -1000,6 +1107,9 @@ export const ClusterConfig = {
     }
     if (message.access !== undefined) {
       Access.encode(message.access, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.secondaryConnections !== 0) {
+      writer.uint32(56).int32(message.secondaryConnections);
     }
     return writer;
   },
@@ -1022,6 +1132,30 @@ export const ClusterConfig = {
           message.sqlserverConfig2016sp2ent =
             SQLServerConfigSet2016sp2ent.decode(reader, reader.uint32());
           break;
+        case 8:
+          message.sqlserverConfig2017std = SQLServerConfigSet2017std.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 9:
+          message.sqlserverConfig2017ent = SQLServerConfigSet2017ent.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 10:
+          message.sqlserverConfig2019std = SQLServerConfigSet2019std.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 11:
+          message.sqlserverConfig2019ent = SQLServerConfigSet2019ent.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
@@ -1030,6 +1164,9 @@ export const ClusterConfig = {
           break;
         case 6:
           message.access = Access.decode(reader, reader.uint32());
+          break;
+        case 7:
+          message.secondaryConnections = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -1059,6 +1196,26 @@ export const ClusterConfig = {
             object.sqlserverConfig_2016sp2ent
           )
         : undefined;
+    message.sqlserverConfig2017std =
+      object.sqlserverConfig_2017std !== undefined &&
+      object.sqlserverConfig_2017std !== null
+        ? SQLServerConfigSet2017std.fromJSON(object.sqlserverConfig_2017std)
+        : undefined;
+    message.sqlserverConfig2017ent =
+      object.sqlserverConfig_2017ent !== undefined &&
+      object.sqlserverConfig_2017ent !== null
+        ? SQLServerConfigSet2017ent.fromJSON(object.sqlserverConfig_2017ent)
+        : undefined;
+    message.sqlserverConfig2019std =
+      object.sqlserverConfig_2019std !== undefined &&
+      object.sqlserverConfig_2019std !== null
+        ? SQLServerConfigSet2019std.fromJSON(object.sqlserverConfig_2019std)
+        : undefined;
+    message.sqlserverConfig2019ent =
+      object.sqlserverConfig_2019ent !== undefined &&
+      object.sqlserverConfig_2019ent !== null
+        ? SQLServerConfigSet2019ent.fromJSON(object.sqlserverConfig_2019ent)
+        : undefined;
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
@@ -1072,6 +1229,13 @@ export const ClusterConfig = {
       object.access !== undefined && object.access !== null
         ? Access.fromJSON(object.access)
         : undefined;
+    message.secondaryConnections =
+      object.secondaryConnections !== undefined &&
+      object.secondaryConnections !== null
+        ? clusterConfig_SecondaryConnectionsFromJSON(
+            object.secondaryConnections
+          )
+        : 0;
     return message;
   },
 
@@ -1086,6 +1250,22 @@ export const ClusterConfig = {
       (obj.sqlserverConfig_2016sp2ent = message.sqlserverConfig2016sp2ent
         ? SQLServerConfigSet2016sp2ent.toJSON(message.sqlserverConfig2016sp2ent)
         : undefined);
+    message.sqlserverConfig2017std !== undefined &&
+      (obj.sqlserverConfig_2017std = message.sqlserverConfig2017std
+        ? SQLServerConfigSet2017std.toJSON(message.sqlserverConfig2017std)
+        : undefined);
+    message.sqlserverConfig2017ent !== undefined &&
+      (obj.sqlserverConfig_2017ent = message.sqlserverConfig2017ent
+        ? SQLServerConfigSet2017ent.toJSON(message.sqlserverConfig2017ent)
+        : undefined);
+    message.sqlserverConfig2019std !== undefined &&
+      (obj.sqlserverConfig_2019std = message.sqlserverConfig2019std
+        ? SQLServerConfigSet2019std.toJSON(message.sqlserverConfig2019std)
+        : undefined);
+    message.sqlserverConfig2019ent !== undefined &&
+      (obj.sqlserverConfig_2019ent = message.sqlserverConfig2019ent
+        ? SQLServerConfigSet2019ent.toJSON(message.sqlserverConfig2019ent)
+        : undefined);
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
@@ -1096,6 +1276,10 @@ export const ClusterConfig = {
         : undefined);
     message.access !== undefined &&
       (obj.access = message.access ? Access.toJSON(message.access) : undefined);
+    message.secondaryConnections !== undefined &&
+      (obj.secondaryConnections = clusterConfig_SecondaryConnectionsToJSON(
+        message.secondaryConnections
+      ));
     return obj;
   },
 
@@ -1118,6 +1302,26 @@ export const ClusterConfig = {
             object.sqlserverConfig2016sp2ent
           )
         : undefined;
+    message.sqlserverConfig2017std =
+      object.sqlserverConfig2017std !== undefined &&
+      object.sqlserverConfig2017std !== null
+        ? SQLServerConfigSet2017std.fromPartial(object.sqlserverConfig2017std)
+        : undefined;
+    message.sqlserverConfig2017ent =
+      object.sqlserverConfig2017ent !== undefined &&
+      object.sqlserverConfig2017ent !== null
+        ? SQLServerConfigSet2017ent.fromPartial(object.sqlserverConfig2017ent)
+        : undefined;
+    message.sqlserverConfig2019std =
+      object.sqlserverConfig2019std !== undefined &&
+      object.sqlserverConfig2019std !== null
+        ? SQLServerConfigSet2019std.fromPartial(object.sqlserverConfig2019std)
+        : undefined;
+    message.sqlserverConfig2019ent =
+      object.sqlserverConfig2019ent !== undefined &&
+      object.sqlserverConfig2019ent !== null
+        ? SQLServerConfigSet2019ent.fromPartial(object.sqlserverConfig2019ent)
+        : undefined;
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
@@ -1131,6 +1335,7 @@ export const ClusterConfig = {
       object.access !== undefined && object.access !== null
         ? Access.fromPartial(object.access)
         : undefined;
+    message.secondaryConnections = object.secondaryConnections ?? 0;
     return message;
   },
 };

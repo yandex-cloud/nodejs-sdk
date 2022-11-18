@@ -48,6 +48,7 @@ export const servicesConfig: ServicesConfig = {
         snapshot_service: { importClassName: 'SnapshotServiceClient' },
         zone_service: { importClassName: 'ZoneServiceClient' },
         instance_group_service: { importClassName: 'InstanceGroupServiceClient' },
+        snapshot_schedule_service: { importClassName: 'SnapshotScheduleServiceClient' },
     },
     containerregistry: {
         image_service: { importClassName: 'ImageServiceClient', exportClassName: 'CrImageServiceClient' },
@@ -90,6 +91,8 @@ export const servicesConfig: ServicesConfig = {
         access_key_service: { importClassName: 'AccessKeyServiceClient' },
     },
     iot: {
+        broker_broker_data_service: { importClassName: 'BrokerDataServiceClient' },
+        broker_service: { importClassName: 'BrokerServiceClient' },
         devices_device_data_service: { importClassName: 'DeviceDataServiceClient' },
         devices_device_service: { importClassName: 'DeviceServiceClient' },
         devices_registry_data_service: { importClassName: 'RegistryDataServiceClient' },
@@ -167,10 +170,14 @@ export const servicesConfig: ServicesConfig = {
         sqlserver_resource_preset_service: { importClassName: 'ResourcePresetServiceClient', exportClassName: 'SqlServerResourcePresetServiceClient' },
         sqlserver_user_service: { importClassName: 'UserServiceClient', exportClassName: 'SqlServerUserServiceClient' },
     },
+    monitoring: {
+        dashboard_service: { importClassName: 'DashboardServiceClient' },
+    },
     operation: {
         operation_service: { importClassName: 'OperationServiceClient' },
     },
     organizationmanager: {
+        group_service: { importClassName: 'GroupServiceClient' },
         organization_service: { importClassName: 'OrganizationServiceClient' },
         user_service: { importClassName: 'UserServiceClient' },
         certificate_service: { importClassName: 'CertificateServiceClient', exportClassName: 'OmCertificateServiceClient' },
@@ -186,6 +193,10 @@ export const servicesConfig: ServicesConfig = {
         functions_function_service: { importClassName: 'FunctionServiceClient' },
         mdbproxy_proxy_service: { importClassName: 'ProxyServiceClient' },
         triggers_trigger_service: { importClassName: 'TriggerServiceClient' },
+        apigateway_connection_service: { importClassName: 'ConnectionServiceClient', exportClassName: 'WebSocketConnectionServiceClient' },
+    },
+    storage: {
+        bucket_service: { importClassName: 'BucketServiceClient' },
     },
     vpc: {
         address_service: { importClassName: 'AddressServiceClient' },
@@ -193,6 +204,7 @@ export const servicesConfig: ServicesConfig = {
         route_table_service: { importClassName: 'RouteTableServiceClient' },
         security_group_service: { importClassName: 'SecurityGroupServiceClient' },
         subnet_service: { importClassName: 'SubnetServiceClient' },
+        gateway_service: { importClassName: 'GatewayServiceClient' },
     },
     ydb: {
         backup_service: { importClassName: 'BackupServiceClient', exportClassName: 'YdbBackupServiceClient' },

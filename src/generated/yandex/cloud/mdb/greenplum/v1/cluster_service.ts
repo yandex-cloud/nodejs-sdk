@@ -7,10 +7,12 @@ import {
   ChannelOptions,
   UntypedServiceImplementation,
   handleUnaryCall,
+  handleServerStreamingCall,
   Client,
   ClientUnaryCall,
   Metadata,
   CallOptions,
+  ClientReadableStream,
   ServiceError,
 } from "@grpc/grpc-js";
 import _m0 from "protobufjs/minimal";
@@ -40,7 +42,8 @@ export const protobufPackage = "yandex.cloud.mdb.greenplum.v1";
 export interface GetClusterRequest {
   $type: "yandex.cloud.mdb.greenplum.v1.GetClusterRequest";
   /**
-   * ID of the Greenplum® Cluster resource to return.
+   * ID of the Greenplum® cluster resource to return.
+   *
    * To get the cluster ID, use a [ClusterService.List] request.
    */
   clusterId: string;
@@ -50,25 +53,27 @@ export interface ListClustersRequest {
   $type: "yandex.cloud.mdb.greenplum.v1.ListClustersRequest";
   /**
    * ID of the folder to list Greenplum® clusters in.
+   *
    * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
    */
   folderId: string;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size], the service returns a [ListClustersResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the service returns a [ListClustersResponse.next_page_token] that can be used to get the next page of results in subsequent list requests.
    */
   pageSize: number;
-  /**
-   * Page token. To get the next page of results, set [page_token] to the [ListClustersResponse.next_page_token]
-   * returned by a previous list request.
-   */
+  /** Page token. To get the next page of results, set [page_token] to the [ListClustersResponse.next_page_token] returned by the previous list request. */
   pageToken: string;
   /**
    * A filter expression that filters resources listed in the response.
+   *
    * The expression must specify:
+   *
    * 1. The field name. Currently you can only use filtering with the [Cluster.name] field.
+   *
    * 2. An `=` operator.
+   *
    * 3. The value in double quotes (`"`). Must be 1-63 characters long and match the regular expression `[a-zA-Z0-9_-]+`.
    */
   filter: string;
@@ -76,13 +81,14 @@ export interface ListClustersRequest {
 
 export interface ListClustersResponse {
   $type: "yandex.cloud.mdb.greenplum.v1.ListClustersResponse";
-  /** List of Greenplum Cluster resources. */
+  /** List of Greenplum® cluster resources. */
   clusters: Cluster[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListClustersRequest.page_size], use the [next_page_token] as the value
-   * for the [ListClustersRequest.page_token] parameter in the next list request. Each subsequent
-   * list request will have its own [next_page_token] to continue paging through the results.
+   * This token allows you to get the next page of results for list requests.
+   *
+   * If the number of results is larger than [ListClustersRequest.page_size], use the [next_page_token] as the value for the [ListClustersRequest.page_token] parameter in the next list request.
+   *
+   * Each subsequent list request has its own [next_page_token] to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -91,13 +97,13 @@ export interface CreateClusterRequest {
   $type: "yandex.cloud.mdb.greenplum.v1.CreateClusterRequest";
   /** ID of the folder to create the Greenplum® cluster in. */
   folderId: string;
-  /** Name of the Greenplum® cluster. The name must be unique within the folder. Maximum 63 characters. */
+  /** Name of the Greenplum® cluster. The name must be unique within the folder. */
   name: string;
   /** Description of the Greenplum® cluster. */
   description: string;
   /**
-   * Custom labels for the Greenplum® cluster as `key:value` pairs. Maximum 64 per resource.
-   * For example, "project":"mvp" or "source":"dictionary".
+   * Custom labels for the Greenplum® cluster as `key:value` pairs.
+   * For example, `"project":"mvp"` or `"source":"dictionary"`.
    */
   labels: { [key: string]: string };
   /** Deployment environment of the Greenplum® cluster. */
@@ -116,18 +122,19 @@ export interface CreateClusterRequest {
   segmentHostCount: number;
   /** Owner user name. */
   userName: string;
-  /** Owner user password. Must be 8-128 characters long */
+  /** Owner user password. */
   userPassword: string;
   /** ID of the network to create the cluster in. */
   networkId: string;
   /** User security groups. */
   securityGroupIds: string[];
-  /** Whether or not cluster is protected from being deleted. */
+  /** Determines whether the cluster is protected from being deleted. */
   deletionProtection: boolean;
   /** Host groups to place VMs of the cluster in. */
   hostGroupIds: string[];
-  /** Window of maintenance operations. */
+  /** A Greenplum® cluster maintenance window. Should be defined by either one of the two options. */
   maintenanceWindow?: MaintenanceWindow;
+  /** Configuration of Greenplum® and Odyssey®. */
   configSpec?: ConfigSpec;
 }
 
@@ -137,12 +144,11 @@ export interface CreateClusterRequest_LabelsEntry {
   value: string;
 }
 
-/** Configuration of greenplum and odyssey */
 export interface ConfigSpec {
   $type: "yandex.cloud.mdb.greenplum.v1.ConfigSpec";
   greenplumConfig617?: Greenplumconfig617 | undefined;
   greenplumConfig619?: Greenplumconfig619 | undefined;
-  /** Odyssey pool settings */
+  /** Odyssey® pool settings. */
   pool?: ConnectionPoolerConfig;
 }
 
@@ -155,36 +161,40 @@ export interface CreateClusterMetadata {
 export interface UpdateClusterRequest {
   $type: "yandex.cloud.mdb.greenplum.v1.UpdateClusterRequest";
   /**
-   * ID of the Greenplum® Cluster resource to update.
+   * ID of the Greenplum® cluster resource to update.
    * To get the Greenplum® cluster ID, use a [ClusterService.List] request.
    */
   clusterId: string;
-  /** Field mask that specifies which fields of the Greenplum® Cluster resource should be updated. */
+  /** Field mask that specifies which fields of the Greenplum® cluster resource should be updated. */
   updateMask?: FieldMask;
   /** New description of the Greenplum® cluster. */
   description: string;
   /**
-   * Custom labels for the Greenplum® cluster as `key:value` pairs. Maximum 64 per resource.
-   * For example, "project":"mvp" or "source":"dictionary".
+   * Custom labels for the Greenplum® cluster as `key:value` pairs.
+   * For example, `"project":"mvp"` or `"source":"dictionary"`.
    *
-   * The new set of labels will completely replace the old ones. To add a label, request the current
-   * set with the [ClusterService.Get] method, then send an [ClusterService.Update] request with the new label added to the set.
+   * The new set of labels completely replaces the old one.
+   * To add a label, request the current set with the [ClusterService.Get] method, then send an [ClusterService.Update] request with the new label added to the set.
    */
   labels: { [key: string]: string };
   /** New name for the cluster. */
   name: string;
-  /** Greenplum® cluster configuration. */
+  /** The Greenplum® cluster configuration. */
   config?: GreenplumConfig;
   /** Configuration of the Greenplum® master subcluster. */
   masterConfig?: MasterSubclusterConfigSpec;
   /** Configuration of the Greenplum® segment subcluster. */
   segmentConfig?: SegmentSubclusterConfigSpec;
-  /** Window of maintenance operations. */
+  /** Owner user password. */
+  userPassword: string;
+  /** The Greenplum® cluster maintenance window. Should be defined by either one of the two options. */
   maintenanceWindow?: MaintenanceWindow;
   /** User security groups. */
   securityGroupIds: string[];
-  /** Whether or not cluster is protected from being deleted. */
+  /** Determines whether the cluster is protected from being deleted. */
   deletionProtection: boolean;
+  /** Settings of the Greenplum® cluster. */
+  configSpec?: ConfigSpec;
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
@@ -195,8 +205,29 @@ export interface UpdateClusterRequest_LabelsEntry {
 
 export interface UpdateClusterMetadata {
   $type: "yandex.cloud.mdb.greenplum.v1.UpdateClusterMetadata";
-  /** ID of the Greenplum® Cluster resource that is being updated. */
+  /** ID of the Greenplum® cluster resource that is being updated. */
   clusterId: string;
+}
+
+export interface AddClusterHostsMetadata {
+  $type: "yandex.cloud.mdb.greenplum.v1.AddClusterHostsMetadata";
+  /** ID of the Greenplum Cluster resource that is being updated. */
+  clusterId: string;
+}
+
+export interface ExpandRequest {
+  $type: "yandex.cloud.mdb.greenplum.v1.ExpandRequest";
+  /**
+   * ID of the Greenplum Cluster resource to update.
+   * To get the Greenplum cluster ID, use a [ClusterService.List] request.
+   */
+  clusterId: string;
+  /** Number of hosts for add to the segment subcluster */
+  segmentHostCount: number;
+  /** Number of segments per host to add */
+  addSegmentsPerHostCount: number;
+  /** Redistribute duration, in seconds */
+  duration: number;
 }
 
 export interface DeleteClusterRequest {
@@ -246,18 +277,15 @@ export interface StopClusterMetadata {
 
 export interface ListClusterOperationsRequest {
   $type: "yandex.cloud.mdb.greenplum.v1.ListClusterOperationsRequest";
-  /** ID of the Greenplum® Cluster resource to list operations for. */
+  /** ID of the Greenplum® cluster resource to list operations for. */
   clusterId: string;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size], the service returns a [ListClusterOperationsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the service returns a [ListClusterOperationsResponse.next_page_token] that can be used to get the next page of results in subsequent list requests.
    */
   pageSize: number;
-  /**
-   * Page token. To get the next page of results, set [page_token] to the [ListClusterOperationsResponse.next_page_token]
-   * returned by a previous list request.
-   */
+  /** Page token. To get the next page of results, set [page_token] to the [ListClusterOperationsResponse.next_page_token] returned by the previous list request. */
   pageToken: string;
 }
 
@@ -266,10 +294,11 @@ export interface ListClusterOperationsResponse {
   /** List of Operation resources for the specified Greenplum® cluster. */
   operations: Operation[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListClusterOperationsRequest.page_size], use the [next_page_token] as the value
-   * for the [ListClusterOperationsRequest.page_token] query parameter in the next list request.
-   * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
+   * This token allows you to get the next page of results for list requests.
+   *
+   * If the number of results is larger than [ListClusterOperationsRequest.page_size], use the [next_page_token] as the value for the [ListClusterOperationsRequest.page_token] query parameter in the next list request.
+   *
+   * Each subsequent list request has its own [next_page_token] to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -278,19 +307,17 @@ export interface ListClusterHostsRequest {
   $type: "yandex.cloud.mdb.greenplum.v1.ListClusterHostsRequest";
   /**
    * ID of the Greenplum® cluster.
+   *
    * To get the Greenplum® cluster ID use a [ClusterService.List] request.
    */
   clusterId: string;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size], the service returns a [ListClusterHostsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the service returns a [ListClusterHostsResponse.next_page_token] that can be used to get the next page of results in subsequent list requests.
    */
   pageSize: number;
-  /**
-   * Page token. To get the next page of results, set [page_token] to the [ListClusterHostsResponse.next_page_token]
-   * returned by a previous list request.
-   */
+  /** Page token. To get the next page of results, set [page_token] to the [ListClusterHostsResponse.next_page_token] returned by the previous list request. */
   pageToken: string;
 }
 
@@ -299,22 +326,21 @@ export interface ListClusterHostsResponse {
   /** Requested list of hosts for the cluster. */
   hosts: Host[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListClusterHostsRequest.page_size], use the [next_page_token] as the value
-   * for the [ListClusterHostsRequest.page_token] query parameter in the next list request.
-   * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
+   * This token allows you to get the next page of results for list requests.
+   *
+   * If the number of results is larger than [ListClusterHostsRequest.page_size], use the [next_page_token] as the value for the [ListClusterHostsRequest.page_token] query parameter in the next list request.
+   *
+   * Each subsequent list request has its own [next_page_token] to continue paging through the results.
    */
   nextPageToken: string;
 }
 
-/** Configuration of the master subcluster. */
 export interface MasterSubclusterConfigSpec {
   $type: "yandex.cloud.mdb.greenplum.v1.MasterSubclusterConfigSpec";
   /** Resources allocated to Greenplum® master subcluster hosts. */
   resources?: Resources;
 }
 
-/** Configuration of the segment subcluster. */
 export interface SegmentSubclusterConfigSpec {
   $type: "yandex.cloud.mdb.greenplum.v1.SegmentSubclusterConfigSpec";
   /** Resources allocated to Greenplum® segment subcluster hosts. */
@@ -326,18 +352,20 @@ export interface ListClusterLogsResponse {
   /** Requested log records. */
   logs: LogRecord[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListClusterLogsRequest.page_size], use the [next_page_token] as the value
-   * for the [ListClusterLogsRequest.page_token] query parameter in the next list request.
-   * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
-   * This value is interchangeable with the [StreamLogRecord.next_record_token] from StreamLogs method.
+   * This token allows you to get the next page of results for list requests.
+   *
+   * If the number of results is larger than [ListClusterLogsRequest.page_size], use the [next_page_token] as the value for the [ListClusterLogsRequest.page_token] query parameter in the next list request.
+   *
+   * Each subsequent list request has its own [next_page_token] to continue paging through the results.
+   *
+   * This value is interchangeable with the [StreamLogRecord.next_record_token] from [StreamLogs] method.
    */
   nextPageToken: string;
 }
 
 export interface LogRecord {
   $type: "yandex.cloud.mdb.greenplum.v1.LogRecord";
-  /** Log record timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
+  /** Time when the log was recorded. */
   timestamp?: Date;
   /** Contents of the log record. */
   message: { [key: string]: string };
@@ -353,48 +381,49 @@ export interface ListClusterLogsRequest {
   $type: "yandex.cloud.mdb.greenplum.v1.ListClusterLogsRequest";
   /**
    * ID of the Greenplum® cluster to request logs for.
+   *
    * To get the Greenplum® cluster ID, use a [ClusterService.List] request.
    */
   clusterId: string;
   /**
-   * Columns from logs table to request.
+   * Columns from log table to request.
    * If no columns are specified, entire log records are returned.
    */
   columnFilter: string[];
   /** Type of the service to request logs about. */
   serviceType: ListClusterLogsRequest_ServiceType;
-  /** Start timestamp for the logs request, in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
+  /** Start timestamp for the logs request. */
   fromTime?: Date;
-  /** End timestamp for the logs request, in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
+  /** End timestamp for the logs request. */
   toTime?: Date;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size], the service returns a [ListClusterLogsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the service returns a [ListClusterLogsResponse.next_page_token] that can be used to get the next page of results in subsequent list requests.
    */
   pageSize: number;
-  /**
-   * Page token. To get the next page of results, set [page_token] to the [ListClusterLogsResponse.next_page_token]
-   * returned by a previous list request.
-   */
+  /** Page token. To get the next page of results, set [page_token] to the [ListClusterLogsResponse.next_page_token] returned by the previous list request. */
   pageToken: string;
-  /** Always return `next_page_token`, even if the current page is empty. */
+  /** The service always returns a [ListClusterLogsResponse.next_page_token], even if the current page is empty. */
   alwaysNextPageToken: boolean;
   /**
    * A filter expression that filters resources listed in the response.
+   *
    * The expression must specify:
-   * 1. The field name. Currently filtering can be applied to the [LogRecord.logs.message.hostname],
-   * [LogRecord.logs.message.error_severity] (for `GREENPLUM` service) and [LogRecord.logs.message.level] (for `GREENPLUM_POOLER` service) fields.
+   *
+   * 1. A field name. Currently filtering can be applied to the [LogRecord.logs.message.hostname], [LogRecord.logs.message.error_severity] (for `GREENPLUM` service) and [LogRecord.logs.message.level] (for `GREENPLUM_POOLER` service) fields.
+   *
    * 2. A conditional operator. Can be either `=` or `!=` for single values, `IN` or `NOT IN` for lists of values.
-   * 3. The value. Must be 1-63 characters long and match the regular expression `^[a-z0-9.-]{1,61}$`.
+   *
+   * 3. A value. Must be 1-63 characters long and match the regular expression `^[a-z0-9.-]{1,61}$`.
+   *
    * Examples of a filter:
-   * * `message.hostname='node1.db.cloud.yandex.net'`
-   * * `message.error_severity IN ("ERROR", "FATAL", "PANIC") AND message.hostname = "node1.db.cloud.yandex.net"`
+   * * `message.hostname='node1.db.cloud.yandex.net'`;
+   * * `message.error_severity IN ("ERROR", "FATAL", "PANIC") AND message.hostname = "node1.db.cloud.yandex.net"`.
    */
   filter: string;
 }
 
-/** Type of the service to request logs about. */
 export enum ListClusterLogsRequest_ServiceType {
   /** SERVICE_TYPE_UNSPECIFIED - Type is not specified. */
   SERVICE_TYPE_UNSPECIFIED = 0,
@@ -444,20 +473,119 @@ export interface ListClusterBackupsRequest {
   $type: "yandex.cloud.mdb.greenplum.v1.ListClusterBackupsRequest";
   /**
    * ID of the Greenplum® cluster.
+   *
    * To get the Greenplum® cluster ID use a [ClusterService.List] request.
    */
   clusterId: string;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size], the service returns a [ListClusterBackupsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the service returns a [ListClusterBackupsResponse.next_page_token] that can be used to get the next page of results in subsequent list requests.
    */
   pageSize: number;
-  /**
-   * Page token.  To get the next page of results, set [page_token] to the [ListClusterBackupsResponse.next_page_token]
-   * returned by a previous list request.
-   */
+  /** Page token. To get the next page of results, set [page_token] to the [ListClusterBackupsResponse.next_page_token] returned by the previous list request. */
   pageToken: string;
+}
+
+export interface StreamLogRecord {
+  $type: "yandex.cloud.mdb.greenplum.v1.StreamLogRecord";
+  /** One of the requested log records. */
+  record?: LogRecord;
+  /**
+   * This token allows you to continue streaming logs starting from the exact same record.
+   *
+   * To do that, specify value of [next_record_token] as the value for [StreamLogs.record_token] parameter in the next [StreamLogs] request.
+   *
+   * This value is interchangeable with [ListLogs.next_page_token] from [ListLogs] method.
+   */
+  nextRecordToken: string;
+}
+
+export interface StreamClusterLogsRequest {
+  $type: "yandex.cloud.mdb.greenplum.v1.StreamClusterLogsRequest";
+  /** ID of the Greenplum® cluster. */
+  clusterId: string;
+  /**
+   * Columns from log table to get in the response.
+   * If no columns are specified, entire log records are returned.
+   */
+  columnFilter: string[];
+  /** Type of the service to request logs about. */
+  serviceType: StreamClusterLogsRequest_ServiceType;
+  /** Start timestamp for the logs request. */
+  fromTime?: Date;
+  /**
+   * End timestamp for the logs request.
+   *
+   * If this field is not set, all existing logs are sent as well as the new ones as they appear.
+   *
+   * In essence it has `tail -f` semantics.
+   */
+  toTime?: Date;
+  /** Record token. Set [record_token] to the [StreamLogs.next_record_token] returned by the previous [StreamLogs] request to start streaming from the next log record. */
+  recordToken: string;
+  /**
+   * A filter expression that filters resources listed in the response.
+   *
+   * The expression must specify:
+   *
+   * 1. A field name. Currently filtering can be applied to the [LogRecord.logs.message.hostname], [LogRecord.logs.message.error_severity] (for GREENPLUM service), [LogRecord.logs.message.level] (for POOLER service) fields.
+   *
+   * 2. An `=` operator.
+   *
+   * 3. A value in double quotes (`"`). Must be 1-63 characters long and match the regular expression `[a-z0-9.-]{1,61}`.
+   *
+   * Examples of a filter:
+   *
+   * * `message.hostname='node1.db.cloud.yandex.net'`;
+   * * `message.error_severity IN ("ERROR", "FATAL", "PANIC") AND message.hostname = "node1.db.cloud.yandex.net"`.
+   */
+  filter: string;
+}
+
+export enum StreamClusterLogsRequest_ServiceType {
+  /** SERVICE_TYPE_UNSPECIFIED - Type is not specified. */
+  SERVICE_TYPE_UNSPECIFIED = 0,
+  /** GREENPLUM - Greenplum® activity logs. */
+  GREENPLUM = 1,
+  /** GREENPLUM_POOLER - Greenplum® pooler logs. */
+  GREENPLUM_POOLER = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function streamClusterLogsRequest_ServiceTypeFromJSON(
+  object: any
+): StreamClusterLogsRequest_ServiceType {
+  switch (object) {
+    case 0:
+    case "SERVICE_TYPE_UNSPECIFIED":
+      return StreamClusterLogsRequest_ServiceType.SERVICE_TYPE_UNSPECIFIED;
+    case 1:
+    case "GREENPLUM":
+      return StreamClusterLogsRequest_ServiceType.GREENPLUM;
+    case 2:
+    case "GREENPLUM_POOLER":
+      return StreamClusterLogsRequest_ServiceType.GREENPLUM_POOLER;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return StreamClusterLogsRequest_ServiceType.UNRECOGNIZED;
+  }
+}
+
+export function streamClusterLogsRequest_ServiceTypeToJSON(
+  object: StreamClusterLogsRequest_ServiceType
+): string {
+  switch (object) {
+    case StreamClusterLogsRequest_ServiceType.SERVICE_TYPE_UNSPECIFIED:
+      return "SERVICE_TYPE_UNSPECIFIED";
+    case StreamClusterLogsRequest_ServiceType.GREENPLUM:
+      return "GREENPLUM";
+    case StreamClusterLogsRequest_ServiceType.GREENPLUM_POOLER:
+      return "GREENPLUM_POOLER";
+    default:
+      return "UNKNOWN";
+  }
 }
 
 export interface ListClusterBackupsResponse {
@@ -465,10 +593,11 @@ export interface ListClusterBackupsResponse {
   /** List of Greenplum® backups. */
   backups: Backup[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListClusterBackupsRequest.page_size], use the [next_page_token] as the value
-   * for the [ListClusterBackupsRequest.page_token] query parameter in the next list request.
-   * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
+   * This token allows you to get the next page of results for list requests.
+   *
+   * If the number of results is larger than [ListClusterBackupsRequest.page_size], use the [next_page_token] as the value for the [ListClusterBackupsRequest.page_token] query parameter in the next list request.
+   *
+   * Each subsequent list request has its own [next_page_token] to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -477,6 +606,7 @@ export interface RestoreClusterRequest {
   $type: "yandex.cloud.mdb.greenplum.v1.RestoreClusterRequest";
   /**
    * ID of the backup to create a cluster from.
+   *
    * To get the backup ID, use a [ClusterService.ListBackups] request.
    */
   backupId: string;
@@ -487,13 +617,13 @@ export interface RestoreClusterRequest {
   /** Description of the Greenplum® cluster. */
   description: string;
   /**
-   * Custom labels for the Greenplum® cluster as `key:value` pairs. Maximum 64 per resource.
-   * For example, "project": "mvp" or "source": "dictionary".
+   * Custom labels for the Greenplum® cluster as `key:value` pairs.
+   * For example, "project":"mvp" or "source":"dictionary".
    */
   labels: { [key: string]: string };
   /** Deployment environment of the Greenplum® cluster. */
   environment: Cluster_Environment;
-  /** Greenplum® cluster config */
+  /** Greenplum® cluster config. */
   config?: GreenplumRestoreConfig;
   /** Resources of the Greenplum® master subcluster. */
   masterResources?: Resources;
@@ -501,15 +631,15 @@ export interface RestoreClusterRequest {
   segmentResources?: Resources;
   /** ID of the network to create the cluster in. */
   networkId: string;
-  /** User security groups */
+  /** User security groups. */
   securityGroupIds: string[];
-  /** Deletion Protection inhibits deletion of the cluster */
+  /** Determines whether the cluster is protected from being deleted. */
   deletionProtection: boolean;
   /** Host groups to place VMs of cluster on. */
   hostGroupIds: string[];
-  /** ID of placement group */
+  /** ID of the placement group. */
   placementGroupId: string;
-  /** Window of maintenance operations. */
+  /** A Greenplum® cluster maintenance window. Should be defined by either one of the two options. */
   maintenanceWindow?: MaintenanceWindow;
 }
 
@@ -1276,7 +1406,7 @@ export const ConfigSpec = {
     if (message.pool !== undefined) {
       ConnectionPoolerConfig.encode(
         message.pool,
-        writer.uint32(34).fork()
+        writer.uint32(26).fork()
       ).ldelim();
     }
     return writer;
@@ -1301,7 +1431,7 @@ export const ConfigSpec = {
             reader.uint32()
           );
           break;
-        case 4:
+        case 3:
           message.pool = ConnectionPoolerConfig.decode(reader, reader.uint32());
           break;
         default:
@@ -1442,6 +1572,7 @@ const baseUpdateClusterRequest: object = {
   clusterId: "",
   description: "",
   name: "",
+  userPassword: "",
   securityGroupIds: "",
   deletionProtection: false,
 };
@@ -1491,6 +1622,9 @@ export const UpdateClusterRequest = {
         writer.uint32(66).fork()
       ).ldelim();
     }
+    if (message.userPassword !== "") {
+      writer.uint32(106).string(message.userPassword);
+    }
     if (message.maintenanceWindow !== undefined) {
       MaintenanceWindow.encode(
         message.maintenanceWindow,
@@ -1502,6 +1636,9 @@ export const UpdateClusterRequest = {
     }
     if (message.deletionProtection === true) {
       writer.uint32(144).bool(message.deletionProtection);
+    }
+    if (message.configSpec !== undefined) {
+      ConfigSpec.encode(message.configSpec, writer.uint32(154).fork()).ldelim();
     }
     return writer;
   },
@@ -1554,6 +1691,9 @@ export const UpdateClusterRequest = {
             reader.uint32()
           );
           break;
+        case 13:
+          message.userPassword = reader.string();
+          break;
         case 15:
           message.maintenanceWindow = MaintenanceWindow.decode(
             reader,
@@ -1565,6 +1705,9 @@ export const UpdateClusterRequest = {
           break;
         case 18:
           message.deletionProtection = reader.bool();
+          break;
+        case 19:
+          message.configSpec = ConfigSpec.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1610,6 +1753,10 @@ export const UpdateClusterRequest = {
       object.segmentConfig !== undefined && object.segmentConfig !== null
         ? SegmentSubclusterConfigSpec.fromJSON(object.segmentConfig)
         : undefined;
+    message.userPassword =
+      object.userPassword !== undefined && object.userPassword !== null
+        ? String(object.userPassword)
+        : "";
     message.maintenanceWindow =
       object.maintenanceWindow !== undefined &&
       object.maintenanceWindow !== null
@@ -1623,6 +1770,10 @@ export const UpdateClusterRequest = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.configSpec =
+      object.configSpec !== undefined && object.configSpec !== null
+        ? ConfigSpec.fromJSON(object.configSpec)
+        : undefined;
     return message;
   },
 
@@ -1654,6 +1805,8 @@ export const UpdateClusterRequest = {
       (obj.segmentConfig = message.segmentConfig
         ? SegmentSubclusterConfigSpec.toJSON(message.segmentConfig)
         : undefined);
+    message.userPassword !== undefined &&
+      (obj.userPassword = message.userPassword);
     message.maintenanceWindow !== undefined &&
       (obj.maintenanceWindow = message.maintenanceWindow
         ? MaintenanceWindow.toJSON(message.maintenanceWindow)
@@ -1665,6 +1818,10 @@ export const UpdateClusterRequest = {
     }
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.configSpec !== undefined &&
+      (obj.configSpec = message.configSpec
+        ? ConfigSpec.toJSON(message.configSpec)
+        : undefined);
     return obj;
   },
 
@@ -1699,6 +1856,7 @@ export const UpdateClusterRequest = {
       object.segmentConfig !== undefined && object.segmentConfig !== null
         ? SegmentSubclusterConfigSpec.fromPartial(object.segmentConfig)
         : undefined;
+    message.userPassword = object.userPassword ?? "";
     message.maintenanceWindow =
       object.maintenanceWindow !== undefined &&
       object.maintenanceWindow !== null
@@ -1706,6 +1864,10 @@ export const UpdateClusterRequest = {
         : undefined;
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? false;
+    message.configSpec =
+      object.configSpec !== undefined && object.configSpec !== null
+        ? ConfigSpec.fromPartial(object.configSpec)
+        : undefined;
     return message;
   },
 };
@@ -1862,6 +2024,186 @@ export const UpdateClusterMetadata = {
 };
 
 messageTypeRegistry.set(UpdateClusterMetadata.$type, UpdateClusterMetadata);
+
+const baseAddClusterHostsMetadata: object = {
+  $type: "yandex.cloud.mdb.greenplum.v1.AddClusterHostsMetadata",
+  clusterId: "",
+};
+
+export const AddClusterHostsMetadata = {
+  $type: "yandex.cloud.mdb.greenplum.v1.AddClusterHostsMetadata" as const,
+
+  encode(
+    message: AddClusterHostsMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): AddClusterHostsMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseAddClusterHostsMetadata,
+    } as AddClusterHostsMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AddClusterHostsMetadata {
+    const message = {
+      ...baseAddClusterHostsMetadata,
+    } as AddClusterHostsMetadata;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: AddClusterHostsMetadata): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AddClusterHostsMetadata>, I>>(
+    object: I
+  ): AddClusterHostsMetadata {
+    const message = {
+      ...baseAddClusterHostsMetadata,
+    } as AddClusterHostsMetadata;
+    message.clusterId = object.clusterId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(AddClusterHostsMetadata.$type, AddClusterHostsMetadata);
+
+const baseExpandRequest: object = {
+  $type: "yandex.cloud.mdb.greenplum.v1.ExpandRequest",
+  clusterId: "",
+  segmentHostCount: 0,
+  addSegmentsPerHostCount: 0,
+  duration: 0,
+};
+
+export const ExpandRequest = {
+  $type: "yandex.cloud.mdb.greenplum.v1.ExpandRequest" as const,
+
+  encode(
+    message: ExpandRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    if (message.segmentHostCount !== 0) {
+      writer.uint32(16).int64(message.segmentHostCount);
+    }
+    if (message.addSegmentsPerHostCount !== 0) {
+      writer.uint32(24).int64(message.addSegmentsPerHostCount);
+    }
+    if (message.duration !== 0) {
+      writer.uint32(32).int64(message.duration);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ExpandRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseExpandRequest } as ExpandRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.segmentHostCount = longToNumber(reader.int64() as Long);
+          break;
+        case 3:
+          message.addSegmentsPerHostCount = longToNumber(
+            reader.int64() as Long
+          );
+          break;
+        case 4:
+          message.duration = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ExpandRequest {
+    const message = { ...baseExpandRequest } as ExpandRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.segmentHostCount =
+      object.segmentHostCount !== undefined && object.segmentHostCount !== null
+        ? Number(object.segmentHostCount)
+        : 0;
+    message.addSegmentsPerHostCount =
+      object.addSegmentsPerHostCount !== undefined &&
+      object.addSegmentsPerHostCount !== null
+        ? Number(object.addSegmentsPerHostCount)
+        : 0;
+    message.duration =
+      object.duration !== undefined && object.duration !== null
+        ? Number(object.duration)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: ExpandRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.segmentHostCount !== undefined &&
+      (obj.segmentHostCount = Math.round(message.segmentHostCount));
+    message.addSegmentsPerHostCount !== undefined &&
+      (obj.addSegmentsPerHostCount = Math.round(
+        message.addSegmentsPerHostCount
+      ));
+    message.duration !== undefined &&
+      (obj.duration = Math.round(message.duration));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ExpandRequest>, I>>(
+    object: I
+  ): ExpandRequest {
+    const message = { ...baseExpandRequest } as ExpandRequest;
+    message.clusterId = object.clusterId ?? "";
+    message.segmentHostCount = object.segmentHostCount ?? 0;
+    message.addSegmentsPerHostCount = object.addSegmentsPerHostCount ?? 0;
+    message.duration = object.duration ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(ExpandRequest.$type, ExpandRequest);
 
 const baseDeleteClusterRequest: object = {
   $type: "yandex.cloud.mdb.greenplum.v1.DeleteClusterRequest",
@@ -3339,6 +3681,256 @@ messageTypeRegistry.set(
   ListClusterBackupsRequest
 );
 
+const baseStreamLogRecord: object = {
+  $type: "yandex.cloud.mdb.greenplum.v1.StreamLogRecord",
+  nextRecordToken: "",
+};
+
+export const StreamLogRecord = {
+  $type: "yandex.cloud.mdb.greenplum.v1.StreamLogRecord" as const,
+
+  encode(
+    message: StreamLogRecord,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.record !== undefined) {
+      LogRecord.encode(message.record, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextRecordToken !== "") {
+      writer.uint32(18).string(message.nextRecordToken);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): StreamLogRecord {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseStreamLogRecord } as StreamLogRecord;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.record = LogRecord.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.nextRecordToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StreamLogRecord {
+    const message = { ...baseStreamLogRecord } as StreamLogRecord;
+    message.record =
+      object.record !== undefined && object.record !== null
+        ? LogRecord.fromJSON(object.record)
+        : undefined;
+    message.nextRecordToken =
+      object.nextRecordToken !== undefined && object.nextRecordToken !== null
+        ? String(object.nextRecordToken)
+        : "";
+    return message;
+  },
+
+  toJSON(message: StreamLogRecord): unknown {
+    const obj: any = {};
+    message.record !== undefined &&
+      (obj.record = message.record
+        ? LogRecord.toJSON(message.record)
+        : undefined);
+    message.nextRecordToken !== undefined &&
+      (obj.nextRecordToken = message.nextRecordToken);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<StreamLogRecord>, I>>(
+    object: I
+  ): StreamLogRecord {
+    const message = { ...baseStreamLogRecord } as StreamLogRecord;
+    message.record =
+      object.record !== undefined && object.record !== null
+        ? LogRecord.fromPartial(object.record)
+        : undefined;
+    message.nextRecordToken = object.nextRecordToken ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(StreamLogRecord.$type, StreamLogRecord);
+
+const baseStreamClusterLogsRequest: object = {
+  $type: "yandex.cloud.mdb.greenplum.v1.StreamClusterLogsRequest",
+  clusterId: "",
+  columnFilter: "",
+  serviceType: 0,
+  recordToken: "",
+  filter: "",
+};
+
+export const StreamClusterLogsRequest = {
+  $type: "yandex.cloud.mdb.greenplum.v1.StreamClusterLogsRequest" as const,
+
+  encode(
+    message: StreamClusterLogsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    for (const v of message.columnFilter) {
+      writer.uint32(18).string(v!);
+    }
+    if (message.serviceType !== 0) {
+      writer.uint32(24).int32(message.serviceType);
+    }
+    if (message.fromTime !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.fromTime),
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    if (message.toTime !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.toTime),
+        writer.uint32(42).fork()
+      ).ldelim();
+    }
+    if (message.recordToken !== "") {
+      writer.uint32(50).string(message.recordToken);
+    }
+    if (message.filter !== "") {
+      writer.uint32(58).string(message.filter);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): StreamClusterLogsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseStreamClusterLogsRequest,
+    } as StreamClusterLogsRequest;
+    message.columnFilter = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.columnFilter.push(reader.string());
+          break;
+        case 3:
+          message.serviceType = reader.int32() as any;
+          break;
+        case 4:
+          message.fromTime = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 5:
+          message.toTime = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 6:
+          message.recordToken = reader.string();
+          break;
+        case 7:
+          message.filter = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StreamClusterLogsRequest {
+    const message = {
+      ...baseStreamClusterLogsRequest,
+    } as StreamClusterLogsRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.columnFilter = (object.columnFilter ?? []).map((e: any) =>
+      String(e)
+    );
+    message.serviceType =
+      object.serviceType !== undefined && object.serviceType !== null
+        ? streamClusterLogsRequest_ServiceTypeFromJSON(object.serviceType)
+        : 0;
+    message.fromTime =
+      object.fromTime !== undefined && object.fromTime !== null
+        ? fromJsonTimestamp(object.fromTime)
+        : undefined;
+    message.toTime =
+      object.toTime !== undefined && object.toTime !== null
+        ? fromJsonTimestamp(object.toTime)
+        : undefined;
+    message.recordToken =
+      object.recordToken !== undefined && object.recordToken !== null
+        ? String(object.recordToken)
+        : "";
+    message.filter =
+      object.filter !== undefined && object.filter !== null
+        ? String(object.filter)
+        : "";
+    return message;
+  },
+
+  toJSON(message: StreamClusterLogsRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    if (message.columnFilter) {
+      obj.columnFilter = message.columnFilter.map((e) => e);
+    } else {
+      obj.columnFilter = [];
+    }
+    message.serviceType !== undefined &&
+      (obj.serviceType = streamClusterLogsRequest_ServiceTypeToJSON(
+        message.serviceType
+      ));
+    message.fromTime !== undefined &&
+      (obj.fromTime = message.fromTime.toISOString());
+    message.toTime !== undefined && (obj.toTime = message.toTime.toISOString());
+    message.recordToken !== undefined &&
+      (obj.recordToken = message.recordToken);
+    message.filter !== undefined && (obj.filter = message.filter);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<StreamClusterLogsRequest>, I>>(
+    object: I
+  ): StreamClusterLogsRequest {
+    const message = {
+      ...baseStreamClusterLogsRequest,
+    } as StreamClusterLogsRequest;
+    message.clusterId = object.clusterId ?? "";
+    message.columnFilter = object.columnFilter?.map((e) => e) || [];
+    message.serviceType = object.serviceType ?? 0;
+    message.fromTime = object.fromTime ?? undefined;
+    message.toTime = object.toTime ?? undefined;
+    message.recordToken = object.recordToken ?? "";
+    message.filter = object.filter ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  StreamClusterLogsRequest.$type,
+  StreamClusterLogsRequest
+);
+
 const baseListClusterBackupsResponse: object = {
   $type: "yandex.cloud.mdb.greenplum.v1.ListClusterBackupsResponse",
   nextPageToken: "",
@@ -3929,7 +4521,7 @@ export const ClusterServiceService = {
   /**
    * Returns the specified Greenplum® cluster.
    *
-   * To get the list of available Greenplum® clusters, make a [List] request.
+   * To get the list of all available Greenplum® clusters, make a [List] request.
    */
   get: {
     path: "/yandex.cloud.mdb.greenplum.v1.ClusterService/Get",
@@ -3974,6 +4566,18 @@ export const ClusterServiceService = {
     requestSerialize: (value: UpdateClusterRequest) =>
       Buffer.from(UpdateClusterRequest.encode(value).finish()),
     requestDeserialize: (value: Buffer) => UpdateClusterRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /** Expands the specified Greenplum® cluster. */
+  expand: {
+    path: "/yandex.cloud.mdb.greenplum.v1.ClusterService/Expand",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: ExpandRequest) =>
+      Buffer.from(ExpandRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => ExpandRequest.decode(value),
     responseSerialize: (value: Operation) =>
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
@@ -4069,7 +4673,20 @@ export const ClusterServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListClusterLogsResponse.decode(value),
   },
-  /** Retrieves the list of available backups for the specified Greenplum cluster. */
+  /** Same as [ListLogs] but using server-side streaming. Also allows for `tail -f` semantics. */
+  streamLogs: {
+    path: "/yandex.cloud.mdb.greenplum.v1.ClusterService/StreamLogs",
+    requestStream: false,
+    responseStream: true,
+    requestSerialize: (value: StreamClusterLogsRequest) =>
+      Buffer.from(StreamClusterLogsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      StreamClusterLogsRequest.decode(value),
+    responseSerialize: (value: StreamLogRecord) =>
+      Buffer.from(StreamLogRecord.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => StreamLogRecord.decode(value),
+  },
+  /** Retrieves a list of available backups for the specified Greenplum® cluster. */
   listBackups: {
     path: "/yandex.cloud.mdb.greenplum.v1.ClusterService/ListBackups",
     requestStream: false,
@@ -4101,7 +4718,7 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
   /**
    * Returns the specified Greenplum® cluster.
    *
-   * To get the list of available Greenplum® clusters, make a [List] request.
+   * To get the list of all available Greenplum® clusters, make a [List] request.
    */
   get: handleUnaryCall<GetClusterRequest, Cluster>;
   /** Retrieves a list of Greenplum® clusters that belong to the specified folder. */
@@ -4110,6 +4727,8 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
   create: handleUnaryCall<CreateClusterRequest, Operation>;
   /** Updates the specified Greenplum® cluster. */
   update: handleUnaryCall<UpdateClusterRequest, Operation>;
+  /** Expands the specified Greenplum® cluster. */
+  expand: handleUnaryCall<ExpandRequest, Operation>;
   /** Deletes the specified Greenplum® cluster. */
   delete: handleUnaryCall<DeleteClusterRequest, Operation>;
   /** Starts the specified Greenplum® cluster. */
@@ -4133,7 +4752,12 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
   >;
   /** Retrieves logs for the specified Greenplum® cluster. */
   listLogs: handleUnaryCall<ListClusterLogsRequest, ListClusterLogsResponse>;
-  /** Retrieves the list of available backups for the specified Greenplum cluster. */
+  /** Same as [ListLogs] but using server-side streaming. Also allows for `tail -f` semantics. */
+  streamLogs: handleServerStreamingCall<
+    StreamClusterLogsRequest,
+    StreamLogRecord
+  >;
+  /** Retrieves a list of available backups for the specified Greenplum® cluster. */
   listBackups: handleUnaryCall<
     ListClusterBackupsRequest,
     ListClusterBackupsResponse
@@ -4146,7 +4770,7 @@ export interface ClusterServiceClient extends Client {
   /**
    * Returns the specified Greenplum® cluster.
    *
-   * To get the list of available Greenplum® clusters, make a [List] request.
+   * To get the list of all available Greenplum® clusters, make a [List] request.
    */
   get(
     request: GetClusterRequest,
@@ -4216,6 +4840,22 @@ export interface ClusterServiceClient extends Client {
   ): ClientUnaryCall;
   update(
     request: UpdateClusterRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Expands the specified Greenplum® cluster. */
+  expand(
+    request: ExpandRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  expand(
+    request: ExpandRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  expand(
+    request: ExpandRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -4368,7 +5008,17 @@ export interface ClusterServiceClient extends Client {
       response: ListClusterLogsResponse
     ) => void
   ): ClientUnaryCall;
-  /** Retrieves the list of available backups for the specified Greenplum cluster. */
+  /** Same as [ListLogs] but using server-side streaming. Also allows for `tail -f` semantics. */
+  streamLogs(
+    request: StreamClusterLogsRequest,
+    options?: Partial<CallOptions>
+  ): ClientReadableStream<StreamLogRecord>;
+  streamLogs(
+    request: StreamClusterLogsRequest,
+    metadata?: Metadata,
+    options?: Partial<CallOptions>
+  ): ClientReadableStream<StreamLogRecord>;
+  /** Retrieves a list of available backups for the specified Greenplum® cluster. */
   listBackups(
     request: ListClusterBackupsRequest,
     callback: (

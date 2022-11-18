@@ -176,7 +176,7 @@ export const OperationServiceService = {
   /**
    * Cancels the specified operation.
    *
-   * Note that currently Yandex Object Storage API does not support cancelling operations.
+   * Note that currently Object Storage API does not support cancelling operations.
    */
   cancel: {
     path: "/yandex.cloud.operation.OperationService/Cancel",
@@ -197,7 +197,7 @@ export interface OperationServiceServer extends UntypedServiceImplementation {
   /**
    * Cancels the specified operation.
    *
-   * Note that currently Yandex Object Storage API does not support cancelling operations.
+   * Note that currently Object Storage API does not support cancelling operations.
    */
   cancel: handleUnaryCall<CancelOperationRequest, Operation>;
 }
@@ -222,7 +222,7 @@ export interface OperationServiceClient extends Client {
   /**
    * Cancels the specified operation.
    *
-   * Note that currently Yandex Object Storage API does not support cancelling operations.
+   * Note that currently Object Storage API does not support cancelling operations.
    */
   cancel(
     request: CancelOperationRequest,

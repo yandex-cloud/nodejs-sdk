@@ -272,6 +272,8 @@ export interface RegionalMaster {
   internalV4Address: string;
   /** IPv4 external network address that is assigned to the master. */
   externalV4Address: string;
+  /** IPv6 external network address that is assigned to the master. */
+  externalV6Address: string;
 }
 
 export interface MasterEndpoints {
@@ -280,6 +282,8 @@ export interface MasterEndpoints {
   internalV4Endpoint: string;
   /** External endpoint that can be used to access Kubernetes cluster API from the internet (outside of the cloud). */
   externalV4Endpoint: string;
+  /** External IPv6 endpoint that can be used to access Kubernetes cluster API from the internet (outside of the cloud). */
+  externalV6Endpoint: string;
 }
 
 export interface IPAllocationPolicy {
@@ -1216,6 +1220,7 @@ const baseRegionalMaster: object = {
   regionId: "",
   internalV4Address: "",
   externalV4Address: "",
+  externalV6Address: "",
 };
 
 export const RegionalMaster = {
@@ -1233,6 +1238,9 @@ export const RegionalMaster = {
     }
     if (message.externalV4Address !== "") {
       writer.uint32(26).string(message.externalV4Address);
+    }
+    if (message.externalV6Address !== "") {
+      writer.uint32(34).string(message.externalV6Address);
     }
     return writer;
   },
@@ -1252,6 +1260,9 @@ export const RegionalMaster = {
           break;
         case 3:
           message.externalV4Address = reader.string();
+          break;
+        case 4:
+          message.externalV6Address = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1277,6 +1288,11 @@ export const RegionalMaster = {
       object.externalV4Address !== null
         ? String(object.externalV4Address)
         : "";
+    message.externalV6Address =
+      object.externalV6Address !== undefined &&
+      object.externalV6Address !== null
+        ? String(object.externalV6Address)
+        : "";
     return message;
   },
 
@@ -1287,6 +1303,8 @@ export const RegionalMaster = {
       (obj.internalV4Address = message.internalV4Address);
     message.externalV4Address !== undefined &&
       (obj.externalV4Address = message.externalV4Address);
+    message.externalV6Address !== undefined &&
+      (obj.externalV6Address = message.externalV6Address);
     return obj;
   },
 
@@ -1297,6 +1315,7 @@ export const RegionalMaster = {
     message.regionId = object.regionId ?? "";
     message.internalV4Address = object.internalV4Address ?? "";
     message.externalV4Address = object.externalV4Address ?? "";
+    message.externalV6Address = object.externalV6Address ?? "";
     return message;
   },
 };
@@ -1307,6 +1326,7 @@ const baseMasterEndpoints: object = {
   $type: "yandex.cloud.k8s.v1.MasterEndpoints",
   internalV4Endpoint: "",
   externalV4Endpoint: "",
+  externalV6Endpoint: "",
 };
 
 export const MasterEndpoints = {
@@ -1321,6 +1341,9 @@ export const MasterEndpoints = {
     }
     if (message.externalV4Endpoint !== "") {
       writer.uint32(18).string(message.externalV4Endpoint);
+    }
+    if (message.externalV6Endpoint !== "") {
+      writer.uint32(26).string(message.externalV6Endpoint);
     }
     return writer;
   },
@@ -1337,6 +1360,9 @@ export const MasterEndpoints = {
           break;
         case 2:
           message.externalV4Endpoint = reader.string();
+          break;
+        case 3:
+          message.externalV6Endpoint = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1358,6 +1384,11 @@ export const MasterEndpoints = {
       object.externalV4Endpoint !== null
         ? String(object.externalV4Endpoint)
         : "";
+    message.externalV6Endpoint =
+      object.externalV6Endpoint !== undefined &&
+      object.externalV6Endpoint !== null
+        ? String(object.externalV6Endpoint)
+        : "";
     return message;
   },
 
@@ -1367,6 +1398,8 @@ export const MasterEndpoints = {
       (obj.internalV4Endpoint = message.internalV4Endpoint);
     message.externalV4Endpoint !== undefined &&
       (obj.externalV4Endpoint = message.externalV4Endpoint);
+    message.externalV6Endpoint !== undefined &&
+      (obj.externalV6Endpoint = message.externalV6Endpoint);
     return obj;
   },
 
@@ -1376,6 +1409,7 @@ export const MasterEndpoints = {
     const message = { ...baseMasterEndpoints } as MasterEndpoints;
     message.internalV4Endpoint = object.internalV4Endpoint ?? "";
     message.externalV4Endpoint = object.externalV4Endpoint ?? "";
+    message.externalV6Endpoint = object.externalV6Endpoint ?? "";
     return message;
   },
 };

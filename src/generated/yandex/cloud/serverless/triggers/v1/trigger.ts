@@ -19,11 +19,12 @@ export enum TriggerType {
   /**
    * MESSAGE_QUEUE - The trigger is activated by messages from a message queue.
    *
-   * Only Yandex Message Queue is currently supported.
+   * Only Message Queue is currently supported.
    */
   MESSAGE_QUEUE = 3,
-  /** IOT_MESSAGE - The trigger is activated by messages from Yandex IoT Core. */
+  /** IOT_MESSAGE - The trigger is activated by messages from IoT Core. */
   IOT_MESSAGE = 4,
+  IOT_BROKER_MESSAGE = 12,
   OBJECT_STORAGE = 5,
   CONTAINER_REGISTRY = 6,
   /** CLOUD_LOGS - The trigger is activated by cloud log group events */
@@ -34,6 +35,8 @@ export enum TriggerType {
   BILLING_BUDGET = 9,
   /** YDS - The trigger is activated by YDS events */
   YDS = 10,
+  /** MAIL - The trigger is activated by email */
+  MAIL = 11,
   UNRECOGNIZED = -1,
 }
 
@@ -51,6 +54,9 @@ export function triggerTypeFromJSON(object: any): TriggerType {
     case 4:
     case "IOT_MESSAGE":
       return TriggerType.IOT_MESSAGE;
+    case 12:
+    case "IOT_BROKER_MESSAGE":
+      return TriggerType.IOT_BROKER_MESSAGE;
     case 5:
     case "OBJECT_STORAGE":
       return TriggerType.OBJECT_STORAGE;
@@ -69,6 +75,9 @@ export function triggerTypeFromJSON(object: any): TriggerType {
     case 10:
     case "YDS":
       return TriggerType.YDS;
+    case 11:
+    case "MAIL":
+      return TriggerType.MAIL;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -86,6 +95,8 @@ export function triggerTypeToJSON(object: TriggerType): string {
       return "MESSAGE_QUEUE";
     case TriggerType.IOT_MESSAGE:
       return "IOT_MESSAGE";
+    case TriggerType.IOT_BROKER_MESSAGE:
+      return "IOT_BROKER_MESSAGE";
     case TriggerType.OBJECT_STORAGE:
       return "OBJECT_STORAGE";
     case TriggerType.CONTAINER_REGISTRY:
@@ -98,6 +109,8 @@ export function triggerTypeToJSON(object: TriggerType): string {
       return "BILLING_BUDGET";
     case TriggerType.YDS:
       return "YDS";
+    case TriggerType.MAIL:
+      return "MAIL";
     default:
       return "UNKNOWN";
   }
@@ -277,14 +290,16 @@ export interface Trigger_Rule {
   timer?: Trigger_Timer | undefined;
   /** Rule for a message queue trigger. */
   messageQueue?: Trigger_MessageQueue | undefined;
-  /** Rule for a Yandex IoT Core trigger. */
+  /** Rule for a IoT Core trigger. */
   iotMessage?: Trigger_IoTMessage | undefined;
+  iotBrokerMessage?: Trigger_IoTBrokerMessage | undefined;
   objectStorage?: Trigger_ObjectStorage | undefined;
   containerRegistry?: Trigger_ContainerRegistry | undefined;
   cloudLogs?: Trigger_CloudLogs | undefined;
   logging?: Trigger_Logging | undefined;
   billingBudget?: BillingBudget | undefined;
   dataStream?: DataStream | undefined;
+  mail?: Mail | undefined;
 }
 
 /** Rule for activating a timed trigger. */
@@ -303,7 +318,7 @@ export interface Trigger_Timer {
 /** Rule for activating a message queue trigger. */
 export interface Trigger_MessageQueue {
   $type: "yandex.cloud.serverless.triggers.v1.Trigger.MessageQueue";
-  /** ID of the message queue in Yandex Message Queue. */
+  /** ID of the message queue in Message Queue. */
   queueId: string;
   /** ID of the service account which has read access to the message queue. */
   serviceAccountId: string;
@@ -317,13 +332,26 @@ export interface Trigger_MessageQueue {
   invokeContainer?: InvokeContainerOnce | undefined;
 }
 
-/** Rule for activating a Yandex IoT Core trigger. */
+/** Rule for activating a IoT Core trigger. */
 export interface Trigger_IoTMessage {
   $type: "yandex.cloud.serverless.triggers.v1.Trigger.IoTMessage";
-  /** ID of the Yandex IoT Core registry. */
+  /** ID of the IoT Core registry. */
   registryId: string;
-  /** ID of the Yandex IoT Core device in the registry. */
+  /** ID of the IoT Core device in the registry. */
   deviceId: string;
+  /** MQTT topic whose messages activate the trigger. */
+  mqttTopic: string;
+  /** Instructions for invoking a function with retries as needed. */
+  invokeFunction?: InvokeFunctionWithRetry | undefined;
+  /** Instructions for invoking a container with retries as needed. */
+  invokeContainer?: InvokeContainerWithRetry | undefined;
+}
+
+/** Rule for activating a IoT Core Broker trigger. */
+export interface Trigger_IoTBrokerMessage {
+  $type: "yandex.cloud.serverless.triggers.v1.Trigger.IoTBrokerMessage";
+  /** ID of the IoT Core broker. */
+  brokerId: string;
   /** MQTT topic whose messages activate the trigger. */
   mqttTopic: string;
   /** Instructions for invoking a function with retries as needed. */
@@ -537,6 +565,17 @@ export interface DataStream {
   serviceAccountId: string;
   /** Batch settings for processing events. */
   batchSettings?: DataStreamBatchSettings;
+  invokeFunction?: InvokeFunctionWithRetry | undefined;
+  invokeContainer?: InvokeContainerWithRetry | undefined;
+}
+
+export interface Mail {
+  $type: "yandex.cloud.serverless.triggers.v1.Mail";
+  /**
+   * Address to receive emails for trigger activation.
+   * Field is ignored for write requests and populated on trigger creation.
+   */
+  email: string;
   invokeFunction?: InvokeFunctionWithRetry | undefined;
   invokeContainer?: InvokeContainerWithRetry | undefined;
 }
@@ -823,6 +862,12 @@ export const Trigger_Rule = {
         writer.uint32(34).fork()
       ).ldelim();
     }
+    if (message.iotBrokerMessage !== undefined) {
+      Trigger_IoTBrokerMessage.encode(
+        message.iotBrokerMessage,
+        writer.uint32(114).fork()
+      ).ldelim();
+    }
     if (message.objectStorage !== undefined) {
       Trigger_ObjectStorage.encode(
         message.objectStorage,
@@ -856,6 +901,9 @@ export const Trigger_Rule = {
     if (message.dataStream !== undefined) {
       DataStream.encode(message.dataStream, writer.uint32(98).fork()).ldelim();
     }
+    if (message.mail !== undefined) {
+      Mail.encode(message.mail, writer.uint32(106).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -877,6 +925,12 @@ export const Trigger_Rule = {
           break;
         case 4:
           message.iotMessage = Trigger_IoTMessage.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 14:
+          message.iotBrokerMessage = Trigger_IoTBrokerMessage.decode(
             reader,
             reader.uint32()
           );
@@ -905,6 +959,9 @@ export const Trigger_Rule = {
         case 12:
           message.dataStream = DataStream.decode(reader, reader.uint32());
           break;
+        case 13:
+          message.mail = Mail.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -926,6 +983,10 @@ export const Trigger_Rule = {
     message.iotMessage =
       object.iotMessage !== undefined && object.iotMessage !== null
         ? Trigger_IoTMessage.fromJSON(object.iotMessage)
+        : undefined;
+    message.iotBrokerMessage =
+      object.iotBrokerMessage !== undefined && object.iotBrokerMessage !== null
+        ? Trigger_IoTBrokerMessage.fromJSON(object.iotBrokerMessage)
         : undefined;
     message.objectStorage =
       object.objectStorage !== undefined && object.objectStorage !== null
@@ -952,6 +1013,10 @@ export const Trigger_Rule = {
       object.dataStream !== undefined && object.dataStream !== null
         ? DataStream.fromJSON(object.dataStream)
         : undefined;
+    message.mail =
+      object.mail !== undefined && object.mail !== null
+        ? Mail.fromJSON(object.mail)
+        : undefined;
     return message;
   },
 
@@ -968,6 +1033,10 @@ export const Trigger_Rule = {
     message.iotMessage !== undefined &&
       (obj.iotMessage = message.iotMessage
         ? Trigger_IoTMessage.toJSON(message.iotMessage)
+        : undefined);
+    message.iotBrokerMessage !== undefined &&
+      (obj.iotBrokerMessage = message.iotBrokerMessage
+        ? Trigger_IoTBrokerMessage.toJSON(message.iotBrokerMessage)
         : undefined);
     message.objectStorage !== undefined &&
       (obj.objectStorage = message.objectStorage
@@ -993,6 +1062,8 @@ export const Trigger_Rule = {
       (obj.dataStream = message.dataStream
         ? DataStream.toJSON(message.dataStream)
         : undefined);
+    message.mail !== undefined &&
+      (obj.mail = message.mail ? Mail.toJSON(message.mail) : undefined);
     return obj;
   },
 
@@ -1011,6 +1082,10 @@ export const Trigger_Rule = {
     message.iotMessage =
       object.iotMessage !== undefined && object.iotMessage !== null
         ? Trigger_IoTMessage.fromPartial(object.iotMessage)
+        : undefined;
+    message.iotBrokerMessage =
+      object.iotBrokerMessage !== undefined && object.iotBrokerMessage !== null
+        ? Trigger_IoTBrokerMessage.fromPartial(object.iotBrokerMessage)
         : undefined;
     message.objectStorage =
       object.objectStorage !== undefined && object.objectStorage !== null
@@ -1036,6 +1111,10 @@ export const Trigger_Rule = {
     message.dataStream =
       object.dataStream !== undefined && object.dataStream !== null
         ? DataStream.fromPartial(object.dataStream)
+        : undefined;
+    message.mail =
+      object.mail !== undefined && object.mail !== null
+        ? Mail.fromPartial(object.mail)
         : undefined;
     return message;
   },
@@ -1488,6 +1567,142 @@ export const Trigger_IoTMessage = {
 };
 
 messageTypeRegistry.set(Trigger_IoTMessage.$type, Trigger_IoTMessage);
+
+const baseTrigger_IoTBrokerMessage: object = {
+  $type: "yandex.cloud.serverless.triggers.v1.Trigger.IoTBrokerMessage",
+  brokerId: "",
+  mqttTopic: "",
+};
+
+export const Trigger_IoTBrokerMessage = {
+  $type:
+    "yandex.cloud.serverless.triggers.v1.Trigger.IoTBrokerMessage" as const,
+
+  encode(
+    message: Trigger_IoTBrokerMessage,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.brokerId !== "") {
+      writer.uint32(10).string(message.brokerId);
+    }
+    if (message.mqttTopic !== "") {
+      writer.uint32(18).string(message.mqttTopic);
+    }
+    if (message.invokeFunction !== undefined) {
+      InvokeFunctionWithRetry.encode(
+        message.invokeFunction,
+        writer.uint32(810).fork()
+      ).ldelim();
+    }
+    if (message.invokeContainer !== undefined) {
+      InvokeContainerWithRetry.encode(
+        message.invokeContainer,
+        writer.uint32(818).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Trigger_IoTBrokerMessage {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseTrigger_IoTBrokerMessage,
+    } as Trigger_IoTBrokerMessage;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.brokerId = reader.string();
+          break;
+        case 2:
+          message.mqttTopic = reader.string();
+          break;
+        case 101:
+          message.invokeFunction = InvokeFunctionWithRetry.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 102:
+          message.invokeContainer = InvokeContainerWithRetry.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Trigger_IoTBrokerMessage {
+    const message = {
+      ...baseTrigger_IoTBrokerMessage,
+    } as Trigger_IoTBrokerMessage;
+    message.brokerId =
+      object.brokerId !== undefined && object.brokerId !== null
+        ? String(object.brokerId)
+        : "";
+    message.mqttTopic =
+      object.mqttTopic !== undefined && object.mqttTopic !== null
+        ? String(object.mqttTopic)
+        : "";
+    message.invokeFunction =
+      object.invokeFunction !== undefined && object.invokeFunction !== null
+        ? InvokeFunctionWithRetry.fromJSON(object.invokeFunction)
+        : undefined;
+    message.invokeContainer =
+      object.invokeContainer !== undefined && object.invokeContainer !== null
+        ? InvokeContainerWithRetry.fromJSON(object.invokeContainer)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Trigger_IoTBrokerMessage): unknown {
+    const obj: any = {};
+    message.brokerId !== undefined && (obj.brokerId = message.brokerId);
+    message.mqttTopic !== undefined && (obj.mqttTopic = message.mqttTopic);
+    message.invokeFunction !== undefined &&
+      (obj.invokeFunction = message.invokeFunction
+        ? InvokeFunctionWithRetry.toJSON(message.invokeFunction)
+        : undefined);
+    message.invokeContainer !== undefined &&
+      (obj.invokeContainer = message.invokeContainer
+        ? InvokeContainerWithRetry.toJSON(message.invokeContainer)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Trigger_IoTBrokerMessage>, I>>(
+    object: I
+  ): Trigger_IoTBrokerMessage {
+    const message = {
+      ...baseTrigger_IoTBrokerMessage,
+    } as Trigger_IoTBrokerMessage;
+    message.brokerId = object.brokerId ?? "";
+    message.mqttTopic = object.mqttTopic ?? "";
+    message.invokeFunction =
+      object.invokeFunction !== undefined && object.invokeFunction !== null
+        ? InvokeFunctionWithRetry.fromPartial(object.invokeFunction)
+        : undefined;
+    message.invokeContainer =
+      object.invokeContainer !== undefined && object.invokeContainer !== null
+        ? InvokeContainerWithRetry.fromPartial(object.invokeContainer)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Trigger_IoTBrokerMessage.$type,
+  Trigger_IoTBrokerMessage
+);
 
 const baseTrigger_ObjectStorage: object = {
   $type: "yandex.cloud.serverless.triggers.v1.Trigger.ObjectStorage",
@@ -3420,6 +3635,111 @@ export const DataStream = {
 };
 
 messageTypeRegistry.set(DataStream.$type, DataStream);
+
+const baseMail: object = {
+  $type: "yandex.cloud.serverless.triggers.v1.Mail",
+  email: "",
+};
+
+export const Mail = {
+  $type: "yandex.cloud.serverless.triggers.v1.Mail" as const,
+
+  encode(message: Mail, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.email !== "") {
+      writer.uint32(18).string(message.email);
+    }
+    if (message.invokeFunction !== undefined) {
+      InvokeFunctionWithRetry.encode(
+        message.invokeFunction,
+        writer.uint32(810).fork()
+      ).ldelim();
+    }
+    if (message.invokeContainer !== undefined) {
+      InvokeContainerWithRetry.encode(
+        message.invokeContainer,
+        writer.uint32(826).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Mail {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMail } as Mail;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 2:
+          message.email = reader.string();
+          break;
+        case 101:
+          message.invokeFunction = InvokeFunctionWithRetry.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 103:
+          message.invokeContainer = InvokeContainerWithRetry.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mail {
+    const message = { ...baseMail } as Mail;
+    message.email =
+      object.email !== undefined && object.email !== null
+        ? String(object.email)
+        : "";
+    message.invokeFunction =
+      object.invokeFunction !== undefined && object.invokeFunction !== null
+        ? InvokeFunctionWithRetry.fromJSON(object.invokeFunction)
+        : undefined;
+    message.invokeContainer =
+      object.invokeContainer !== undefined && object.invokeContainer !== null
+        ? InvokeContainerWithRetry.fromJSON(object.invokeContainer)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mail): unknown {
+    const obj: any = {};
+    message.email !== undefined && (obj.email = message.email);
+    message.invokeFunction !== undefined &&
+      (obj.invokeFunction = message.invokeFunction
+        ? InvokeFunctionWithRetry.toJSON(message.invokeFunction)
+        : undefined);
+    message.invokeContainer !== undefined &&
+      (obj.invokeContainer = message.invokeContainer
+        ? InvokeContainerWithRetry.toJSON(message.invokeContainer)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mail>, I>>(object: I): Mail {
+    const message = { ...baseMail } as Mail;
+    message.email = object.email ?? "";
+    message.invokeFunction =
+      object.invokeFunction !== undefined && object.invokeFunction !== null
+        ? InvokeFunctionWithRetry.fromPartial(object.invokeFunction)
+        : undefined;
+    message.invokeContainer =
+      object.invokeContainer !== undefined && object.invokeContainer !== null
+        ? InvokeContainerWithRetry.fromPartial(object.invokeContainer)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Mail.$type, Mail);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

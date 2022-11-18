@@ -8,7 +8,7 @@ import {
     IamTokenCredentialsConfig,
     OAuthCredentialsConfig,
     ServiceAccountCredentialsConfig, WrappedServiceClientType,
-    SessionConfig,
+    SessionConfig, ChannelSslOptions,
 } from './types';
 import { IamTokenService } from './token-service/iam-token-service';
 import { MetadataTokenService } from './token-service/metadata-token-service';
@@ -50,8 +50,8 @@ const newTokenCreator = (config: SessionConfig): () => Promise<string> => {
     return async () => tokenService.getToken();
 };
 
-const newChannelCredentials = (tokenCreator: TokenCreator) => credentials.combineChannelCredentials(
-    credentials.createSsl(),
+const newChannelCredentials = (tokenCreator: TokenCreator, sslOptions?: ChannelSslOptions) => credentials.combineChannelCredentials(
+    credentials.createSsl(sslOptions?.rootCerts, sslOptions?.privateKey, sslOptions?.certChain),
     credentials.createFromMetadataGenerator(
         (
             params: { service_url: string },
@@ -87,7 +87,7 @@ export class Session {
             ...config,
         };
         this.tokenCreator = newTokenCreator(this.config);
-        this.channelCredentials = newChannelCredentials(this.tokenCreator);
+        this.channelCredentials = newChannelCredentials(this.tokenCreator, this.config.ssl);
     }
 
     get pollInterval(): number {

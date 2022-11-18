@@ -9,9 +9,9 @@ export enum CodeType {
   CODE_TYPE_UNSPECIFIED = 0,
   /** WORKING - all good */
   WORKING = 1,
-  /** WARNING - for example, if speech is sent not in real time. or unknown context (and we've made fallback) */
+  /** WARNING - for example, if speech is sent not in real time. or unknown context (and we've made fallback). */
   WARNING = 2,
-  /** CLOSED - after session was closed */
+  /** CLOSED - after session was closed. */
   CLOSED = 3,
   UNRECOGNIZED = -1,
 }
@@ -56,9 +56,9 @@ export function codeTypeToJSON(object: CodeType): string {
 export interface TextNormalizationOptions {
   $type: "speechkit.stt.v3.TextNormalizationOptions";
   textNormalization: TextNormalizationOptions_TextNormalization;
-  /** Filter profanity (default: false) */
+  /** Filter profanity (default: false). */
   profanityFilter: boolean;
-  /** Rewrite text in literature style (default: false) */
+  /** Rewrite text in literature style (default: false). */
   literatureText: boolean;
 }
 
@@ -109,9 +109,9 @@ export function textNormalizationOptions_TextNormalizationToJSON(
 
 export interface DefaultEouClassifier {
   $type: "speechkit.stt.v3.DefaultEouClassifier";
-  /** EOU sensitivity.  Currently two levels, faster with more error and more conservative (our default) */
+  /** EOU sensitivity. Currently two levels, faster with more error and more conservative (our default). */
   type: DefaultEouClassifier_EouSensitivity;
-  /** hint for max pause between words. Our EoU detector could use this information to distinguish between end of utterance and slow speech (like one <long pause> two <long pause> three, etc) */
+  /** Hint for max pause between words. Our EoU detector could use this information to distinguish between end of utterance and slow speech (like one <long pause> two <long pause> three, etc). */
   maxPauseBetweenWordsHintMs: number;
 }
 
@@ -157,32 +157,33 @@ export function defaultEouClassifier_EouSensitivityToJSON(
   }
 }
 
-/** use EOU provided by user */
+/** Use EOU provided by user */
 export interface ExternalEouClassifier {
   $type: "speechkit.stt.v3.ExternalEouClassifier";
 }
 
 export interface EouClassifierOptions {
   $type: "speechkit.stt.v3.EouClassifierOptions";
-  /** EOU classifier provided by SpeechKit. Default */
+  /** EOU classifier provided by SpeechKit. Default. */
   defaultClassifier?: DefaultEouClassifier | undefined;
-  /** EoU is enforced by external messages from user */
+  /** EoU is enforced by external messages from user. */
   externalClassifier?: ExternalEouClassifier | undefined;
 }
 
-/** RAW Audio format spec (no container to infer type). used in AudioFormat options */
+/** RAW Audio format spec (no container to infer type). Used in AudioFormat options. */
 export interface RawAudio {
   $type: "speechkit.stt.v3.RawAudio";
-  /** type of audio encoding */
+  /** Type of audio encoding */
   audioEncoding: RawAudio_AudioEncoding;
   /** PCM sample rate */
   sampleRateHertz: number;
-  /** PCM channel count. Currently only single channel audio is supported in real-time recognition */
+  /** PCM channel count. Currently only single channel audio is supported in real-time recognition. */
   audioChannelCount: number;
 }
 
 export enum RawAudio_AudioEncoding {
   AUDIO_ENCODING_UNSPECIFIED = 0,
+  /** LINEAR16_PCM - Audio bit depth 16-bit signed little-endian (Linear PCM). */
   LINEAR16_PCM = 1,
   UNRECOGNIZED = -1,
 }
@@ -217,17 +218,20 @@ export function rawAudio_AudioEncodingToJSON(
   }
 }
 
-/** Audio with fixed type in container. used in AudioFormat options */
+/** Audio with fixed type in container. Used in AudioFormat options. */
 export interface ContainerAudio {
   $type: "speechkit.stt.v3.ContainerAudio";
-  /** type of audio container */
+  /** Type of audio container. */
   containerAudioType: ContainerAudio_ContainerAudioType;
 }
 
 export enum ContainerAudio_ContainerAudioType {
   CONTAINER_AUDIO_TYPE_UNSPECIFIED = 0,
+  /** WAV - Audio bit depth 16-bit signed little-endian (Linear PCM). */
   WAV = 1,
+  /** OGG_OPUS - Data is encoded using the OPUS audio codec and compressed using the OGG container format. */
   OGG_OPUS = 2,
+  /** MP3 - Data is encoded using MPEG-1/2 Layer III and compressed using the MP3 container format. */
   MP3 = 3,
   UNRECOGNIZED = -1,
 }
@@ -272,12 +276,12 @@ export function containerAudio_ContainerAudioTypeToJSON(
   }
 }
 
-/** audio format options */
+/** Audio format options. */
 export interface AudioFormatOptions {
   $type: "speechkit.stt.v3.AudioFormatOptions";
-  /** audio without container */
+  /** Audio without container. */
   rawAudio?: RawAudio | undefined;
-  /** audio is wrapped in container */
+  /** Audio is wrapped in container. */
   containerAudio?: ContainerAudio | undefined;
 }
 
@@ -331,15 +335,15 @@ export function languageRestrictionOptions_LanguageRestrictionTypeToJSON(
 
 export interface RecognitionModelOptions {
   $type: "speechkit.stt.v3.RecognitionModelOptions";
-  /** reserved for future, do not use */
+  /** Reserved for future, do not use. */
   model: string;
-  /** config for input audio */
+  /** Specified input audio. */
   audioFormat?: AudioFormatOptions;
-  /** text normalization options */
+  /** Text normalization options. */
   textNormalization?: TextNormalizationOptions;
-  /** possible languages in audio */
+  /** Possible languages in audio. */
   languageRestriction?: LanguageRestrictionOptions;
-  /** how to deal with audio data (in real time, after all data is received, etc). Default is REAL_TIME */
+  /** How to deal with audio data (in real time, after all data is received, etc). Default is REAL_TIME. */
   audioProcessingType: RecognitionModelOptions_AudioProcessingType;
 }
 
@@ -387,176 +391,176 @@ export function recognitionModelOptions_AudioProcessingTypeToJSON(
 
 export interface StreamingOptions {
   $type: "speechkit.stt.v3.StreamingOptions";
-  /** configuration for speech recognition model */
+  /** Configuration for speech recognition model. */
   recognitionModel?: RecognitionModelOptions;
-  /** configuration for end of utterance detection model */
+  /** Configuration for end of utterance detection model. */
   eouClassifier?: EouClassifierOptions;
 }
 
-/** data chunk with audio */
+/** Data chunk with audio. */
 export interface AudioChunk {
   $type: "speechkit.stt.v3.AudioChunk";
-  /** bytes with audio data */
+  /** Bytes with audio data. */
   data: Buffer;
 }
 
 export interface SilenceChunk {
   $type: "speechkit.stt.v3.SilenceChunk";
-  /** duration of silence chunk in ms */
+  /** Duration of silence chunk in ms. */
   durationMs: number;
 }
 
-/** force EOU */
+/** Force EOU */
 export interface Eou {
   $type: "speechkit.stt.v3.Eou";
 }
 
 /**
- * streaming audio request
- * Events are control messages from user
- * first message should be session options
- * the next messages are audio data chunks or control messages
+ * Streaming audio request
+ * Events are control messages from user.
+ * First message should be session options.
+ * The next messages are audio data chunks or control messages.
  */
 export interface StreamingRequest {
   $type: "speechkit.stt.v3.StreamingRequest";
   /** Session options. should be first message from user */
   sessionOptions?: StreamingOptions | undefined;
-  /** chunk with audio data */
+  /** Chunk with audio data. */
   chunk?: AudioChunk | undefined;
-  /** chunk with silence */
+  /** Chunk with silence. */
   silenceChunk?: SilenceChunk | undefined;
-  /** request to end current utterance. Works only with external EoU detector */
+  /** Request to end current utterance. Works only with external EoU detector. */
   eou?: Eou | undefined;
 }
 
-/** recognized word */
+/** Recognized word. */
 export interface Word {
   $type: "speechkit.stt.v3.Word";
-  /** word text */
+  /** Word text. */
   text: string;
-  /** estimation of word start time in ms */
+  /** Estimation of word start time in ms */
   startTimeMs: number;
-  /** estimation of word end time in ms */
+  /** Estimation of word end time in ms */
   endTimeMs: number;
 }
 
-/** recognition of specific time frame */
+/** Recognition of specific time frame. */
 export interface Alternative {
   $type: "speechkit.stt.v3.Alternative";
-  /** words in time frame */
+  /** Words in time frame. */
   words: Word[];
-  /** text in time frame */
+  /** Text in time frame. */
   text: string;
-  /** start of time frame */
+  /** Start of time frame. */
   startTimeMs: number;
-  /** end of time frame */
+  /** End of time frame. */
   endTimeMs: number;
-  /** hypothesis confidence. Currently is not used */
+  /** Hypothesis confidence. Currently is not used. */
   confidence: number;
 }
 
 /** Update information from */
 export interface EouUpdate {
   $type: "speechkit.stt.v3.EouUpdate";
-  /** end of utterance estimated time */
+  /** End of utterance estimated time. */
   timeMs: number;
 }
 
-/** update of hypothesis */
+/** Update of hypothesis. */
 export interface AlternativeUpdate {
   $type: "speechkit.stt.v3.AlternativeUpdate";
-  /** list of hypothesis for timeframes */
+  /** List of hypothesis for timeframes. */
   alternatives: Alternative[];
-  /** tag for distinguish audio channels. */
+  /** Tag for distinguish audio channels. */
   channelTag: string;
 }
 
-/** AudioCursors are state of ASR recognition stream */
+/** AudioCursors are state of ASR recognition stream. */
 export interface AudioCursors {
   $type: "speechkit.stt.v3.AudioCursors";
-  /** amount of audio chunks server received. This cursor is moved after each audio chunk was received by server. */
+  /** Amount of audio chunks server received. This cursor is moved after each audio chunk was received by server. */
   receivedDataMs: number;
-  /** input stream reset data */
+  /** Input stream reset data. */
   resetTimeMs: number;
   /**
-   * how much audio was processed. This time includes trimming silences as well. This cursor is moved after server received enough data
-   *  to update recognition results (includes silence as well)
+   * How much audio was processed. This time includes trimming silences as well. This cursor is moved after server received enough data
+   *  to update recognition results (includes silence as well).
    */
   partialTimeMs: number;
   /**
    * Time of last final. This cursor is moved when server decides that recognition from start of audio until final_time_ms will not change anymore
-   *  usually this even is followed by EOU detection (but this could change in future)
+   *  usually this even is followed by EOU detection (but this could change in future).
    */
   finalTimeMs: number;
   /** This is index of last final server send. Incremented after each new final. */
   finalIndex: number;
   /**
-   * Estimated time of EOU. Cursor is updated after each new EOU is sent
-   *  For external classifier this equals to received_data_ms at the moment EOU event arrives
-   *  For internal classifier this is estimation of time. The time is not exact and has the same guarantees as word timings
+   * Estimated time of EOU. Cursor is updated after each new EOU is sent.
+   *  For external classifier this equals to received_data_ms at the moment EOU event arrives.
+   *  For internal classifier this is estimation of time. The time is not exact and has the same guarantees as word timings.
    */
   eouTimeMs: number;
 }
 
-/** refinement for final hypo. For example, text normalization is refinement. */
+/** Refinement for final hypo. For example, text normalization is refinement. */
 export interface FinalRefinement {
   $type: "speechkit.stt.v3.FinalRefinement";
-  /** index of final for which server sends additional information */
+  /** Index of final for which server sends additional information. */
   finalIndex: number;
-  /** normalized text instead of raw one */
+  /** Normalized text instead of raw one. */
   normalizedText?: AlternativeUpdate | undefined;
 }
 
-/** status message */
+/** Status message */
 export interface StatusCode {
   $type: "speechkit.stt.v3.StatusCode";
-  /** code type */
+  /** Code type. */
   codeType: CodeType;
-  /** human readable message */
+  /** Human readable message. */
   message: string;
 }
 
-/** session identifier */
+/** Session identifier. */
 export interface SessionUuid {
   $type: "speechkit.stt.v3.SessionUuid";
-  /** internal session identifier */
+  /** Internal session identifier. */
   uuid: string;
-  /** user session identifier */
+  /** User session identifier. */
   userRequestId: string;
 }
 
 /**
- * responses from server
- * each response contains session uuid
+ * Responses from server.
+ * Each response contains session uuid
  * AudioCursors
- * plus specific even
+ * plus specific event
  */
 export interface StreamingResponse {
   $type: "speechkit.stt.v3.StreamingResponse";
-  /** session identifier */
+  /** Session identifier */
   sessionUuid?: SessionUuid;
-  /** progress bar for stream session recognition: how many data we obtained; final and partial times; etc */
+  /** Progress bar for stream session recognition: how many data we obtained; final and partial times; etc. */
   audioCursors?: AudioCursors;
-  /** wall clock on server side. This is time when server wrote results to stream */
+  /** Wall clock on server side. This is time when server wrote results to stream */
   responseWallTimeMs: number;
   /**
-   * partial results, server will send them regularly after enough audio data was received from user. This are current text estimation
-   *    from final_time_ms to partial_time_ms. Could change after new data will arrive
+   * Partial results, server will send them regularly after enough audio data was received from user. This are current text estimation
+   *  from final_time_ms to partial_time_ms. Could change after new data will arrive.
    */
   partial?: AlternativeUpdate | undefined;
-  /** final results, the recognition is now fixed until final_time_ms. For now, final is sent only if the EOU event was triggered. This could be change in future releases */
+  /** Final results, the recognition is now fixed until final_time_ms. For now, final is sent only if the EOU event was triggered. This could be change in future releases. */
   final?: AlternativeUpdate | undefined;
   /**
    * After EOU classifier, send the message with final, send the EouUpdate with time of EOU
-   *  before eou_update we send final with the same time. there could be several finals before eou update
+   *  before eou_update we send final with the same time. there could be several finals before eou update.
    */
   eouUpdate?: EouUpdate | undefined;
   /**
    * For each final, if normalization is enabled, sent the normalized text (or some other advanced post-processing).
-   *    Final normalization will introduce additional latency
+   *    Final normalization will introduce additional latency.
    */
   finalRefinement?: FinalRefinement | undefined;
-  /** Status messages, send by server with fixed interval (keep-alive) */
+  /** Status messages, send by server with fixed interval (keep-alive). */
   statusCode?: StatusCode | undefined;
 }
 

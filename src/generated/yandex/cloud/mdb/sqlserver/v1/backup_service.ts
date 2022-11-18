@@ -37,15 +37,12 @@ export interface ListBackupsRequest {
    */
   folderId: string;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than `page_size`, the service returns a [ListBackupsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the service returns a [ListBackupsResponse.next_page_token] that can be used to get the next page of results in subsequent list requests.
    */
   pageSize: number;
-  /**
-   * Page token. To get the next page of results, Set `page_token` to the [ListBackupsResponse.next_page_token]
-   * returned by a previous list request.
-   */
+  /** Page token. To get the next page of results, set [page_token] to the [ListBackupsResponse.next_page_token] returned by the previous list request. */
   pageToken: string;
 }
 
@@ -54,10 +51,11 @@ export interface ListBackupsResponse {
   /** List of SQL Server backups. */
   backups: Backup[];
   /**
-   * Token that allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListBackupsRequest.page_size], use the `next_page_token` as the value
-   * for the [ListBackupsRequest.page_token] parameter in the next list request. Each subsequent
-   * list request will have its own `next_page_token` to continue paging through the results.
+   * This token allows you to get the next page of results for ListBackups requests.
+   *
+   * If the number of results is larger than [ListBackupsRequest.page_size], use the [next_page_token] as the value for the [ListBackupsRequest.page_token] parameter in the next ListBackups request.
+   *
+   * Each subsequent ListBackups request has its own [next_page_token] to continue paging through the results.
    */
   nextPageToken: string;
 }

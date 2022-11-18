@@ -154,6 +154,16 @@ export interface PostgresqlConfig10 {
   pgQualstatsMax?: number;
   pgQualstatsResolveOids?: boolean;
   pgQualstatsSampleRate?: number;
+  /** in bytes. */
+  maxStackDepth?: number;
+  /** enable Genetic Query Optimizer, by default is on */
+  geqo?: boolean;
+  /** The number of tables to use geqo, default is 12 */
+  geqoThreshold?: number;
+  /** tradeoff between planning time and query plan quality, default is 5 */
+  geqoEffort?: number;
+  /** initial value of the random number generator used by GEQO */
+  geqoSeed?: number;
 }
 
 export enum PostgresqlConfig10_WalLevel {
@@ -354,6 +364,54 @@ export function postgresqlConfig10_ForceParallelModeToJSON(
   }
 }
 
+export enum PostgresqlConfig10_LogErrorVerbosity {
+  LOG_ERROR_VERBOSITY_UNSPECIFIED = 0,
+  LOG_ERROR_VERBOSITY_TERSE = 1,
+  LOG_ERROR_VERBOSITY_DEFAULT = 2,
+  LOG_ERROR_VERBOSITY_VERBOSE = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function postgresqlConfig10_LogErrorVerbosityFromJSON(
+  object: any
+): PostgresqlConfig10_LogErrorVerbosity {
+  switch (object) {
+    case 0:
+    case "LOG_ERROR_VERBOSITY_UNSPECIFIED":
+      return PostgresqlConfig10_LogErrorVerbosity.LOG_ERROR_VERBOSITY_UNSPECIFIED;
+    case 1:
+    case "LOG_ERROR_VERBOSITY_TERSE":
+      return PostgresqlConfig10_LogErrorVerbosity.LOG_ERROR_VERBOSITY_TERSE;
+    case 2:
+    case "LOG_ERROR_VERBOSITY_DEFAULT":
+      return PostgresqlConfig10_LogErrorVerbosity.LOG_ERROR_VERBOSITY_DEFAULT;
+    case 3:
+    case "LOG_ERROR_VERBOSITY_VERBOSE":
+      return PostgresqlConfig10_LogErrorVerbosity.LOG_ERROR_VERBOSITY_VERBOSE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return PostgresqlConfig10_LogErrorVerbosity.UNRECOGNIZED;
+  }
+}
+
+export function postgresqlConfig10_LogErrorVerbosityToJSON(
+  object: PostgresqlConfig10_LogErrorVerbosity
+): string {
+  switch (object) {
+    case PostgresqlConfig10_LogErrorVerbosity.LOG_ERROR_VERBOSITY_UNSPECIFIED:
+      return "LOG_ERROR_VERBOSITY_UNSPECIFIED";
+    case PostgresqlConfig10_LogErrorVerbosity.LOG_ERROR_VERBOSITY_TERSE:
+      return "LOG_ERROR_VERBOSITY_TERSE";
+    case PostgresqlConfig10_LogErrorVerbosity.LOG_ERROR_VERBOSITY_DEFAULT:
+      return "LOG_ERROR_VERBOSITY_DEFAULT";
+    case PostgresqlConfig10_LogErrorVerbosity.LOG_ERROR_VERBOSITY_VERBOSE:
+      return "LOG_ERROR_VERBOSITY_VERBOSE";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export enum PostgresqlConfig10_LogLevel {
   LOG_LEVEL_UNSPECIFIED = 0,
   LOG_LEVEL_DEBUG5 = 1,
@@ -445,54 +503,6 @@ export function postgresqlConfig10_LogLevelToJSON(
       return "LOG_LEVEL_FATAL";
     case PostgresqlConfig10_LogLevel.LOG_LEVEL_PANIC:
       return "LOG_LEVEL_PANIC";
-    default:
-      return "UNKNOWN";
-  }
-}
-
-export enum PostgresqlConfig10_LogErrorVerbosity {
-  LOG_ERROR_VERBOSITY_UNSPECIFIED = 0,
-  LOG_ERROR_VERBOSITY_TERSE = 1,
-  LOG_ERROR_VERBOSITY_DEFAULT = 2,
-  LOG_ERROR_VERBOSITY_VERBOSE = 3,
-  UNRECOGNIZED = -1,
-}
-
-export function postgresqlConfig10_LogErrorVerbosityFromJSON(
-  object: any
-): PostgresqlConfig10_LogErrorVerbosity {
-  switch (object) {
-    case 0:
-    case "LOG_ERROR_VERBOSITY_UNSPECIFIED":
-      return PostgresqlConfig10_LogErrorVerbosity.LOG_ERROR_VERBOSITY_UNSPECIFIED;
-    case 1:
-    case "LOG_ERROR_VERBOSITY_TERSE":
-      return PostgresqlConfig10_LogErrorVerbosity.LOG_ERROR_VERBOSITY_TERSE;
-    case 2:
-    case "LOG_ERROR_VERBOSITY_DEFAULT":
-      return PostgresqlConfig10_LogErrorVerbosity.LOG_ERROR_VERBOSITY_DEFAULT;
-    case 3:
-    case "LOG_ERROR_VERBOSITY_VERBOSE":
-      return PostgresqlConfig10_LogErrorVerbosity.LOG_ERROR_VERBOSITY_VERBOSE;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return PostgresqlConfig10_LogErrorVerbosity.UNRECOGNIZED;
-  }
-}
-
-export function postgresqlConfig10_LogErrorVerbosityToJSON(
-  object: PostgresqlConfig10_LogErrorVerbosity
-): string {
-  switch (object) {
-    case PostgresqlConfig10_LogErrorVerbosity.LOG_ERROR_VERBOSITY_UNSPECIFIED:
-      return "LOG_ERROR_VERBOSITY_UNSPECIFIED";
-    case PostgresqlConfig10_LogErrorVerbosity.LOG_ERROR_VERBOSITY_TERSE:
-      return "LOG_ERROR_VERBOSITY_TERSE";
-    case PostgresqlConfig10_LogErrorVerbosity.LOG_ERROR_VERBOSITY_DEFAULT:
-      return "LOG_ERROR_VERBOSITY_DEFAULT";
-    case PostgresqlConfig10_LogErrorVerbosity.LOG_ERROR_VERBOSITY_VERBOSE:
-      return "LOG_ERROR_VERBOSITY_VERBOSE";
     default:
       return "UNKNOWN";
   }
@@ -846,6 +856,8 @@ export enum PostgresqlConfig10_SharedPreloadLibraries {
   SHARED_PRELOAD_LIBRARIES_PG_HINT_PLAN = 2,
   SHARED_PRELOAD_LIBRARIES_TIMESCALEDB = 3,
   SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS = 4,
+  SHARED_PRELOAD_LIBRARIES_PG_CRON = 5,
+  SHARED_PRELOAD_LIBRARIES_PGLOGICAL = 6,
   UNRECOGNIZED = -1,
 }
 
@@ -868,6 +880,12 @@ export function postgresqlConfig10_SharedPreloadLibrariesFromJSON(
     case 4:
     case "SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS":
       return PostgresqlConfig10_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS;
+    case 5:
+    case "SHARED_PRELOAD_LIBRARIES_PG_CRON":
+      return PostgresqlConfig10_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PG_CRON;
+    case 6:
+    case "SHARED_PRELOAD_LIBRARIES_PGLOGICAL":
+      return PostgresqlConfig10_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PGLOGICAL;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -889,6 +907,10 @@ export function postgresqlConfig10_SharedPreloadLibrariesToJSON(
       return "SHARED_PRELOAD_LIBRARIES_TIMESCALEDB";
     case PostgresqlConfig10_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS:
       return "SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS";
+    case PostgresqlConfig10_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PG_CRON:
+      return "SHARED_PRELOAD_LIBRARIES_PG_CRON";
+    case PostgresqlConfig10_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PGLOGICAL:
+      return "SHARED_PRELOAD_LIBRARIES_PGLOGICAL";
     default:
       return "UNKNOWN";
   }
@@ -1779,6 +1801,36 @@ export const PostgresqlConfig10 = {
         writer.uint32(938).fork()
       ).ldelim();
     }
+    if (message.maxStackDepth !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.maxStackDepth! },
+        writer.uint32(1202).fork()
+      ).ldelim();
+    }
+    if (message.geqo !== undefined) {
+      BoolValue.encode(
+        { $type: "google.protobuf.BoolValue", value: message.geqo! },
+        writer.uint32(1218).fork()
+      ).ldelim();
+    }
+    if (message.geqoThreshold !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.geqoThreshold! },
+        writer.uint32(1226).fork()
+      ).ldelim();
+    }
+    if (message.geqoEffort !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.geqoEffort! },
+        writer.uint32(1234).fork()
+      ).ldelim();
+    }
+    if (message.geqoSeed !== undefined) {
+      DoubleValue.encode(
+        { $type: "google.protobuf.DoubleValue", value: message.geqoSeed! },
+        writer.uint32(1266).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2412,6 +2464,27 @@ export const PostgresqlConfig10 = {
             reader.uint32()
           ).value;
           break;
+        case 150:
+          message.maxStackDepth = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 152:
+          message.geqo = BoolValue.decode(reader, reader.uint32()).value;
+          break;
+        case 153:
+          message.geqoThreshold = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 154:
+          message.geqoEffort = Int64Value.decode(reader, reader.uint32()).value;
+          break;
+        case 158:
+          message.geqoSeed = DoubleValue.decode(reader, reader.uint32()).value;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2961,6 +3034,26 @@ export const PostgresqlConfig10 = {
       object.pgQualstatsSampleRate !== null
         ? Number(object.pgQualstatsSampleRate)
         : undefined;
+    message.maxStackDepth =
+      object.maxStackDepth !== undefined && object.maxStackDepth !== null
+        ? Number(object.maxStackDepth)
+        : undefined;
+    message.geqo =
+      object.geqo !== undefined && object.geqo !== null
+        ? Boolean(object.geqo)
+        : undefined;
+    message.geqoThreshold =
+      object.geqoThreshold !== undefined && object.geqoThreshold !== null
+        ? Number(object.geqoThreshold)
+        : undefined;
+    message.geqoEffort =
+      object.geqoEffort !== undefined && object.geqoEffort !== null
+        ? Number(object.geqoEffort)
+        : undefined;
+    message.geqoSeed =
+      object.geqoSeed !== undefined && object.geqoSeed !== null
+        ? Number(object.geqoSeed)
+        : undefined;
     return message;
   },
 
@@ -3225,6 +3318,13 @@ export const PostgresqlConfig10 = {
       (obj.pgQualstatsResolveOids = message.pgQualstatsResolveOids);
     message.pgQualstatsSampleRate !== undefined &&
       (obj.pgQualstatsSampleRate = message.pgQualstatsSampleRate);
+    message.maxStackDepth !== undefined &&
+      (obj.maxStackDepth = message.maxStackDepth);
+    message.geqo !== undefined && (obj.geqo = message.geqo);
+    message.geqoThreshold !== undefined &&
+      (obj.geqoThreshold = message.geqoThreshold);
+    message.geqoEffort !== undefined && (obj.geqoEffort = message.geqoEffort);
+    message.geqoSeed !== undefined && (obj.geqoSeed = message.geqoSeed);
     return obj;
   },
 
@@ -3369,6 +3469,11 @@ export const PostgresqlConfig10 = {
     message.pgQualstatsMax = object.pgQualstatsMax ?? undefined;
     message.pgQualstatsResolveOids = object.pgQualstatsResolveOids ?? undefined;
     message.pgQualstatsSampleRate = object.pgQualstatsSampleRate ?? undefined;
+    message.maxStackDepth = object.maxStackDepth ?? undefined;
+    message.geqo = object.geqo ?? undefined;
+    message.geqoThreshold = object.geqoThreshold ?? undefined;
+    message.geqoEffort = object.geqoEffort ?? undefined;
+    message.geqoSeed = object.geqoSeed ?? undefined;
     return message;
   },
 };

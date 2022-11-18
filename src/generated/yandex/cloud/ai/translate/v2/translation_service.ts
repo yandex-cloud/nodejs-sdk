@@ -123,6 +123,7 @@ export interface GlossaryPair {
   sourceText: string;
   /** Text in the target language. */
   translatedText: string;
+  exact: boolean;
 }
 
 export interface TranslateResponse {
@@ -500,6 +501,7 @@ const baseGlossaryPair: object = {
   $type: "yandex.cloud.ai.translate.v2.GlossaryPair",
   sourceText: "",
   translatedText: "",
+  exact: false,
 };
 
 export const GlossaryPair = {
@@ -514,6 +516,9 @@ export const GlossaryPair = {
     }
     if (message.translatedText !== "") {
       writer.uint32(18).string(message.translatedText);
+    }
+    if (message.exact === true) {
+      writer.uint32(24).bool(message.exact);
     }
     return writer;
   },
@@ -530,6 +535,9 @@ export const GlossaryPair = {
           break;
         case 2:
           message.translatedText = reader.string();
+          break;
+        case 3:
+          message.exact = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -549,6 +557,10 @@ export const GlossaryPair = {
       object.translatedText !== undefined && object.translatedText !== null
         ? String(object.translatedText)
         : "";
+    message.exact =
+      object.exact !== undefined && object.exact !== null
+        ? Boolean(object.exact)
+        : false;
     return message;
   },
 
@@ -557,6 +569,7 @@ export const GlossaryPair = {
     message.sourceText !== undefined && (obj.sourceText = message.sourceText);
     message.translatedText !== undefined &&
       (obj.translatedText = message.translatedText);
+    message.exact !== undefined && (obj.exact = message.exact);
     return obj;
   },
 
@@ -566,6 +579,7 @@ export const GlossaryPair = {
     const message = { ...baseGlossaryPair } as GlossaryPair;
     message.sourceText = object.sourceText ?? "";
     message.translatedText = object.translatedText ?? "";
+    message.exact = object.exact ?? false;
     return message;
   },
 };
@@ -939,7 +953,7 @@ export const ListLanguagesResponse = {
 
 messageTypeRegistry.set(ListLanguagesResponse.$type, ListLanguagesResponse);
 
-/** A set of methods for the Yandex Translate service. */
+/** A set of methods for the Translate service. */
 export const TranslationServiceService = {
   /** Translates the text to the specified language. */
   translate: {

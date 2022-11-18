@@ -30,8 +30,15 @@ export interface ISslCredentials {
     clientCertChain?: Buffer;
 }
 
+export interface ChannelSslOptions {
+    rootCerts?: Buffer,
+    privateKey?: Buffer,
+    certChain?: Buffer,
+}
+
 export interface GenericCredentialsConfig {
     pollInterval?: number;
+    ssl?: ChannelSslOptions
 }
 
 export interface OAuthCredentialsConfig extends GenericCredentialsConfig {

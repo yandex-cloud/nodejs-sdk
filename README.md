@@ -6,7 +6,7 @@
 Need to automate your infrastructure or use services provided by Yandex.Cloud? We've got you covered.
 
 ## Requirements
-- nodejs >= 10
+- nodejs >= 12
 
 ## Installation
 `npm install @yandex-cloud/nodejs-sdk`

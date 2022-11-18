@@ -50,7 +50,7 @@ export interface ListMlModelsRequest {
   pageSize: number;
   /**
    * Page token. To get the next page of results, set `page_token` to the
-   * [ListMlModelsResponse.next_page_token] returned by a previous list request.
+   * [ListMlModelsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
 }
@@ -81,7 +81,7 @@ export interface CreateMlModelRequest {
   mlModelName: string;
   /** Type of the model. */
   type: MlModelType;
-  /** Model file URL. You can only use models stored in Yandex Object Storage. */
+  /** Model file URL. You can only use models stored in Object Storage. */
   uri: string;
 }
 
@@ -104,7 +104,7 @@ export interface UpdateMlModelRequest {
   /** Name of the the model to update. */
   mlModelName: string;
   updateMask?: FieldMask;
-  /** The new model file URL. You can only use models stored in Yandex Object Storage. */
+  /** The new model file URL. You can only use models stored in Object Storage. */
   uri: string;
 }
 
