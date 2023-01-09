@@ -30,7 +30,7 @@
     "long": "^5.2.0",
     "luxon": "^2.2.0",
     "nice-grpc": "^1.0.6",
-    "nice-grpc-client-middleware-deadline": "^1.0.6",
+    "nice-grpc-client-middleware-deadline": "^2.0.1",
     "protobufjs": "^6.11.3",
     "utility-types": "^3.10.0"
   },
