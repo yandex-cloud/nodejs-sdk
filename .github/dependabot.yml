@@ -6,3 +6,4 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "fix(deps):"
+    open-pull-requests-limit: 0
