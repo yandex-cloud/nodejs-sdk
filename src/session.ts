@@ -23,7 +23,9 @@ const isIamToken = (config: SessionConfig): config is IamTokenCredentialsConfig 
 const isServiceAccount = (config: SessionConfig): config is ServiceAccountCredentialsConfig => 'serviceAccountJson' in config;
 
 const createIamToken = async (iamEndpoint: string, req: Partial<cloudApi.iam.iam_token_service.CreateIamTokenRequest>) => {
-    const channel = createChannel(iamEndpoint, credentials.createSsl());
+    const channel = createChannel(iamEndpoint, credentials.createSsl(), {
+        'grpc.service_config_disable_resolution': 1,
+    });
     const client = clientFactory.create(serviceClients.IamTokenServiceClient.service, channel);
     const resp = await client.create(cloudApi.iam.iam_token_service.CreateIamTokenRequest.fromPartial(req));
 
@@ -39,7 +41,8 @@ const newTokenCreator = (config: SessionConfig): () => Promise<string> => {
                 yandexPassportOauthToken: config.oauthToken,
             });
         };
-    } if (isIamToken(config)) {
+    }
+    if (isIamToken(config)) {
         const { iamToken } = config;
 
         return async () => iamToken;
@@ -96,7 +99,13 @@ export class Session {
 
     client<S extends ServiceDefinition>(clientClass: GeneratedServiceClientCtor<S>, customEndpoint?: string): WrappedServiceClientType<S> {
         const endpoint = customEndpoint || getServiceClientEndpoint(clientClass);
-        const channel = createChannel(endpoint, this.channelCredentials);
+        const channel = createChannel(
+            endpoint,
+            this.channelCredentials,
+            {
+                'grpc.service_config_disable_resolution': 1,
+            },
+        );
 
         return clientFactory.create(clientClass.service, channel);
     }
