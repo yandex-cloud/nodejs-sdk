@@ -1,5 +1,9 @@
 import {
-    serviceClients, Session, cloudApi, waitForOperation, decodeMessage,
+    cloudApi,
+    decodeMessage,
+    serviceClients,
+    Session,
+    waitForOperation,
 } from '@yandex-cloud/nodejs-sdk';
 import { getEnv } from './utils/get-env';
 import { log } from './utils/logger';
@@ -31,9 +35,9 @@ const {
 
 (async () => {
     const session = new Session({ oauthToken: AUTH_TOKEN });
-    const imageClient = session.client(serviceClients.ComputeImageServiceClient);
-    const instanceClient = session.client(serviceClients.InstanceServiceClient);
-    const networkClient = session.client(serviceClients.NetworkServiceClient);
+    const imageClient = await session.client(serviceClients.ComputeImageServiceClient);
+    const instanceClient = await session.client(serviceClients.InstanceServiceClient);
+    const networkClient = await session.client(serviceClients.NetworkServiceClient);
 
     const networkResponse = await networkClient.list(ListNetworksRequest.fromPartial({
         folderId: FOLDER_ID,

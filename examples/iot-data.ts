@@ -13,8 +13,8 @@ const FOLDER_ID = getEnv('YC_FOLDER_ID');
 
 (async () => {
     const session = new Session({ oauthToken: AUTH_TOKEN });
-    const registryClient = session.client(serviceClients.IotRegistryServiceClient);
-    const dataClient = session.client(serviceClients.RegistryDataServiceClient);
+    const registryClient = await session.client(serviceClients.IotRegistryServiceClient);
+    const dataClient = await session.client(serviceClients.RegistryDataServiceClient);
 
     const registries = await registryClient.list(ListRegistriesRequest.fromPartial({
         folderId: FOLDER_ID,

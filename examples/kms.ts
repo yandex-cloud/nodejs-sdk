@@ -16,8 +16,8 @@ const {
     const authToken = getEnv('YC_OAUTH_TOKEN');
     const folderId = getEnv('YC_FOLDER_ID');
     const session = new Session({ oauthToken: authToken });
-    const keyClient = session.client(serviceClients.SymmetricKeyServiceClient);
-    const cryptoClient = session.client(serviceClients.SymmetricCryptoServiceClient);
+    const keyClient = await session.client(serviceClients.SymmetricKeyServiceClient);
+    const cryptoClient = await session.client(serviceClients.SymmetricCryptoServiceClient);
 
     const keyCreateOp = await keyClient.create(CreateSymmetricKeyRequest.fromPartial({
         folderId,

@@ -2,9 +2,20 @@ import { credentials } from '@grpc/grpc-js';
 import * as jwt from 'jsonwebtoken';
 import { DateTime } from 'luxon';
 import { createChannel } from 'nice-grpc';
-import { cloudApi, serviceClients } from '..';
-import { getServiceClientEndpoint } from '../service-endpoints';
-import { IIAmCredentials, ISslCredentials, TokenService } from '../types';
+import { URL } from 'url';
+import {
+    cloudApi,
+    serviceClients,
+} from '..';
+import {
+    getServiceClientEndpoint,
+    ServiceEndpointsList,
+} from '../service-endpoints';
+import {
+    IIAmCredentials,
+    ISslCredentials,
+    TokenService,
+} from '../types';
 import { clientFactory } from '../utils/client-factory';
 
 const { IamTokenServiceClient } = serviceClients;
@@ -18,18 +29,22 @@ export class IamTokenService implements TokenService {
     private tokenRequestTimeout = 10 * 1000;
     private token = '';
     private tokenTimestamp: DateTime | null;
+    private endpointResolver: () => Promise<ServiceEndpointsList>;
 
-    constructor(iamCredentials: IIAmCredentials, sslCredentials?: ISslCredentials) {
+    constructor(iamCredentials: IIAmCredentials, endpointResolver: () => Promise<ServiceEndpointsList>, sslCredentials?: ISslCredentials) {
         this.iamCredentials = iamCredentials;
         this.tokenTimestamp = null;
 
         this.sslCredentials = sslCredentials;
+        this.endpointResolver = endpointResolver;
     }
 
     private get expired() {
         return (
             !this.tokenTimestamp
-            || DateTime.utc().diff(this.tokenTimestamp).valueOf() > this.tokenExpirationTimeout
+            || DateTime.utc()
+                .diff(this.tokenTimestamp)
+                .valueOf() > this.tokenExpirationTimeout
         );
     }
 
@@ -41,19 +56,33 @@ export class IamTokenService implements TokenService {
         return this.token;
     }
 
-    private client() {
-        const endpoint = getServiceClientEndpoint(IamTokenServiceClient);
+    private async client() {
+        const endpoint = await getServiceClientEndpoint(IamTokenServiceClient, this.endpointResolver);
         const channel = createChannel(endpoint, credentials.createSsl());
 
         return clientFactory.create(IamTokenServiceClient.service, channel);
     }
 
-    private getJwtRequest() {
+    private async audienceClaim() {
+        const endpointList = await this.endpointResolver();
+        const iamEndpoint = endpointList.find((item) => item.serviceIds.includes('iam'));
+
+        if (!iamEndpoint) {
+            throw new Error('Endpoint for service IAM is no defined');
+        }
+
+        const iamHost = new URL(iamEndpoint.endpoint).hostname;
+
+        return `https://${iamHost}/iam/v1/tokens`;
+    }
+
+    private async getJwtRequest() {
         const now = DateTime.utc();
         const expires = now.plus({ milliseconds: this.jwtExpirationTimeout });
+        const aud = await this.audienceClaim();
         const payload = {
             iss: this.iamCredentials.serviceAccountId,
-            aud: 'https://iam.api.cloud.yandex.net/iam/v1/tokens',
+            aud,
             iat: Math.round(now.toSeconds()),
             exp: Math.round(expires.toSeconds()),
         };
@@ -77,13 +106,18 @@ export class IamTokenService implements TokenService {
     }
 
     private async requestToken(): Promise<cloudApi.iam.iam_token_service.CreateIamTokenResponse> {
-        const deadline = DateTime.now().plus({ millisecond: this.tokenRequestTimeout }).toJSDate();
+        const deadline = DateTime.now()
+            .plus({ millisecond: this.tokenRequestTimeout })
+            .toJSDate();
+        const client = await this.client();
+        const jwtRequest = await this.getJwtRequest();
 
-        return this.client().create(
-            cloudApi.iam.iam_token_service.CreateIamTokenRequest.fromPartial({
-                jwt: this.getJwtRequest(),
-            }),
-            { deadline },
-        );
+        return client
+            .create(
+                cloudApi.iam.iam_token_service.CreateIamTokenRequest.fromPartial({
+                    jwt: jwtRequest,
+                }),
+                { deadline },
+            );
     }
 }

@@ -6,8 +6,8 @@ const { operation: { operation_service: { GetOperationRequest } } } = cloudApi;
 
 const DEFAULT_TIMEOUT_MS = 10 * 60 * 1000; // 10 minutes
 
-export const waitForOperation = (op: Operation, session: Session, timeoutMs: number = DEFAULT_TIMEOUT_MS): Promise<Operation> => {
-    const client = session.client(serviceClients.OperationServiceClient);
+export const waitForOperation = async (op: Operation, session: Session, timeoutMs: number = DEFAULT_TIMEOUT_MS): Promise<Operation> => {
+    const client = await session.client(serviceClients.OperationServiceClient);
     const maxChecksCount = Math.ceil(timeoutMs / session.pollInterval);
 
     let checksCount = 0;

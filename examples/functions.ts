@@ -8,7 +8,7 @@ const FOLDER_ID = getEnv('YC_FOLDER_ID');
 
 (async () => {
     const session = new Session({ oauthToken: AUTH_TOKEN });
-    const client = session.client(serviceClients.FunctionServiceClient);
+    const client = await session.client(serviceClients.FunctionServiceClient);
 
     const response = await client.list(ListFunctionsRequest.fromPartial({ folderId: FOLDER_ID }));
 

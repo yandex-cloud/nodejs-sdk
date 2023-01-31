@@ -31,7 +31,7 @@ reader.pipe(data);
     const authToken = getEnv('YC_OAUTH_TOKEN');
     const folderId = getEnv('YC_FOLDER_ID');
     const session = new Session({ oauthToken: authToken });
-    const client = session.client(serviceClients.SttServiceClient);
+    const client = await session.client(serviceClients.SttServiceClient);
 
     async function* createRequest(): AsyncIterable<StreamingRecognitionRequest> {
         const format = await formatPromise;

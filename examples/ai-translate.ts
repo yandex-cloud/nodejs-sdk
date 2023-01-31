@@ -10,7 +10,7 @@ const FOLDER_ID = getEnv('YC_FOLDER_ID');
 
 (async () => {
     const session = new Session({ oauthToken: AUTH_TOKEN });
-    const client = session.client(serviceClients.TranslationServiceClient);
+    const client = await session.client(serviceClients.TranslationServiceClient);
 
     const response = await client.translate(TranslateRequest.fromPartial({
         targetLanguageCode: 'ru',

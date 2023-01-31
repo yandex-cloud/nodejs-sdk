@@ -7,7 +7,7 @@ const AUTH_TOKEN = getEnv('YC_OAUTH_TOKEN');
 
 (async () => {
     const session = new Session({ oauthToken: AUTH_TOKEN });
-    const client = session.client(serviceClients.CloudServiceClient);
+    const client = await session.client(serviceClients.CloudServiceClient);
 
     const response = await client.list(ListCloudsRequest.fromPartial({ pageSize: 200 }));
 

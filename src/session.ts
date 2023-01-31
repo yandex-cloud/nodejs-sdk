@@ -1,20 +1,35 @@
 import {
-    ChannelCredentials, credentials, Metadata, ServiceDefinition,
+    ChannelCredentials,
+    credentials,
+    Metadata,
+    ServiceDefinition,
 } from '@grpc/grpc-js';
+import axios from 'axios';
 import { createChannel } from 'nice-grpc';
 import { Required } from 'utility-types';
 import {
+    cloudApi,
+    serviceClients,
+} from '.';
+import {
+    DEFAULT_ENDPOINT,
+    EndpointsResponse,
+    getServiceClientEndpoint,
+    SERVICE_ENDPOINTS_LIST,
+    ServiceEndpointsList,
+} from './service-endpoints';
+import { IamTokenService } from './token-service/iam-token-service';
+import { MetadataTokenService } from './token-service/metadata-token-service';
+import {
+    ChannelSslOptions,
     GeneratedServiceClientCtor,
     IamTokenCredentialsConfig,
     OAuthCredentialsConfig,
-    ServiceAccountCredentialsConfig, WrappedServiceClientType,
-    SessionConfig, ChannelSslOptions,
+    ServiceAccountCredentialsConfig,
+    SessionConfig,
+    WrappedServiceClientType,
 } from './types';
-import { IamTokenService } from './token-service/iam-token-service';
-import { MetadataTokenService } from './token-service/metadata-token-service';
 import { clientFactory } from './utils/client-factory';
-import { serviceClients, cloudApi } from '.';
-import { getServiceClientEndpoint } from './service-endpoints';
 
 const isOAuth = (config: SessionConfig): config is OAuthCredentialsConfig => 'oauthToken' in config;
 
@@ -30,22 +45,25 @@ const createIamToken = async (iamEndpoint: string, req: Partial<cloudApi.iam.iam
     return resp.iamToken;
 };
 
-const newTokenCreator = (config: SessionConfig): () => Promise<string> => {
+const newTokenCreator = (config: SessionConfig, endpointResolver: () => Promise<ServiceEndpointsList>): () => Promise<string> => {
     if (isOAuth(config)) {
-        return () => {
-            const iamEndpoint = getServiceClientEndpoint(serviceClients.IamTokenServiceClient);
+        return async () => {
+            const iamEndpoint = await getServiceClientEndpoint(serviceClients.IamTokenServiceClient, endpointResolver);
 
             return createIamToken(iamEndpoint, {
                 yandexPassportOauthToken: config.oauthToken,
             });
         };
-    } if (isIamToken(config)) {
+    }
+    if (isIamToken(config)) {
         const { iamToken } = config;
 
         return async () => iamToken;
     }
 
-    const tokenService = isServiceAccount(config) ? new IamTokenService(config.serviceAccountJson) : new MetadataTokenService();
+    const tokenService = isServiceAccount(config)
+        ? new IamTokenService(config.serviceAccountJson, endpointResolver)
+        : new MetadataTokenService();
 
     return async () => tokenService.getToken();
 };
@@ -73,20 +91,20 @@ const newChannelCredentials = (tokenCreator: TokenCreator, sslOptions?: ChannelS
 type TokenCreator = () => Promise<string>;
 
 export class Session {
-    private readonly config: Required<SessionConfig, 'pollInterval'>;
-    private readonly channelCredentials: ChannelCredentials;
-    private readonly tokenCreator: TokenCreator;
-
     private static readonly DEFAULT_CONFIG = {
         pollInterval: 1000,
     };
+    private readonly config: Required<SessionConfig, 'pollInterval'>;
+    private readonly channelCredentials: ChannelCredentials;
+    private readonly tokenCreator: TokenCreator;
+    private endpoints: ServiceEndpointsList | undefined;
 
     constructor(config?: SessionConfig) {
         this.config = {
             ...Session.DEFAULT_CONFIG,
             ...config,
         };
-        this.tokenCreator = newTokenCreator(this.config);
+        this.tokenCreator = newTokenCreator(this.config, this.endpointResolver);
         this.channelCredentials = newChannelCredentials(this.tokenCreator, this.config.ssl);
     }
 
@@ -94,8 +112,30 @@ export class Session {
         return this.config.pollInterval;
     }
 
-    client<S extends ServiceDefinition>(clientClass: GeneratedServiceClientCtor<S>, customEndpoint?: string): WrappedServiceClientType<S> {
-        const endpoint = customEndpoint || getServiceClientEndpoint(clientClass);
+    endpointResolver = async (): Promise<ServiceEndpointsList> => {
+        if (this.endpoints !== undefined) {
+            return this.endpoints;
+        }
+        if (!this.config.endpoint || this.config.endpoint === DEFAULT_ENDPOINT) {
+            this.endpoints = SERVICE_ENDPOINTS_LIST;
+        } else {
+            const res = await axios.get<EndpointsResponse>(this.config.endpoint);
+            const endpointsMap = Object.fromEntries(res.data.endpoints.map(({ id, address }) => [id, address]));
+
+            this.endpoints = SERVICE_ENDPOINTS_LIST.map((serviceEndpoint) => ({
+                ...serviceEndpoint,
+                endpoint: endpointsMap[serviceEndpoint.id],
+            }));
+        }
+
+        return this.endpoints;
+    };
+
+    async client<S extends ServiceDefinition>(
+        clientClass: GeneratedServiceClientCtor<S>,
+        customEndpoint?: string,
+    ): Promise<WrappedServiceClientType<S>> {
+        const endpoint = customEndpoint || (await getServiceClientEndpoint(clientClass, this.endpointResolver));
         const channel = createChannel(endpoint, this.channelCredentials);
 
         return clientFactory.create(clientClass.service, channel);
