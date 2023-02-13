@@ -1,6 +1,9 @@
-import { Session } from '../../session';
+import {
+    cloudApi,
+    serviceClients,
+} from '../..';
 import { Operation } from '../../generated/yandex/cloud/operation/operation';
-import { serviceClients, cloudApi } from '../..';
+import { Session } from '../../session';
 
 const { operation: { operation_service: { GetOperationRequest } } } = cloudApi;
 
@@ -18,6 +21,10 @@ export const waitForOperation = (op: Operation, session: Session, timeoutMs: num
                 GetOperationRequest.fromPartial({
                     operationId: op.id,
                 }),
+                {
+                    retry: true,
+                    retryMaxAttempts: 3,
+                },
             );
 
             checksCount++;

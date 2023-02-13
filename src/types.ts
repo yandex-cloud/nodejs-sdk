@@ -1,21 +1,26 @@
 import {
-    ChannelCredentials, ChannelOptions, Client, ServiceDefinition,
+    ChannelCredentials,
+    ChannelOptions,
+    Client,
+    ServiceDefinition,
 } from '@grpc/grpc-js';
 import { RawClient } from 'nice-grpc';
-import { NormalizedServiceDefinition } from 'nice-grpc/lib/service-definitions';
 import { DeadlineOptions } from 'nice-grpc-client-middleware-deadline';
+import { RetryOptions } from 'nice-grpc-client-middleware-retry';
+import { NormalizedServiceDefinition } from 'nice-grpc/lib/service-definitions';
 
 export interface TokenService {
     getToken: () => Promise<string>;
 }
 
 export interface GeneratedServiceClientCtor<T extends ServiceDefinition> {
+    service: T
+
     new(
         address: string,
         credentials: ChannelCredentials,
         options?: Partial<ChannelOptions>,
     ): Client;
-    service: T
 }
 
 export interface IIAmCredentials {
@@ -59,4 +64,5 @@ export type SessionConfig =
     | ServiceAccountCredentialsConfig
     | GenericCredentialsConfig;
 
-export type WrappedServiceClientType<S extends ServiceDefinition> = RawClient<NormalizedServiceDefinition<S>, DeadlineOptions>;
+// eslint-disable-next-line max-len
+export type WrappedServiceClientType<S extends ServiceDefinition> = RawClient<NormalizedServiceDefinition<S>, DeadlineOptions & RetryOptions>;
