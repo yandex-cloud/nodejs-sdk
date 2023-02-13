@@ -6,8 +6,8 @@ import {
 } from '@grpc/grpc-js';
 import { RawClient } from 'nice-grpc';
 import { DeadlineOptions } from 'nice-grpc-client-middleware-deadline';
-import { RetryOptions } from 'nice-grpc-client-middleware-retry';
 import { NormalizedServiceDefinition } from 'nice-grpc/lib/service-definitions';
+import { RetryOptions } from './middleware/retry';
 
 export interface TokenService {
     getToken: () => Promise<string>;
