@@ -31,7 +31,8 @@
     "luxon": "^2.2.0",
     "nice-grpc": "^1.0.6",
     "nice-grpc-client-middleware-deadline": "^1.0.6",
-    "nice-grpc-client-middleware-retry": "^1.1.2",
+    "abort-controller-x": "^0.4.1",
+    "node-abort-controller": "^3.1.1",
     "protobufjs": "^6.11.3",
     "utility-types": "^3.10.0"
   },
