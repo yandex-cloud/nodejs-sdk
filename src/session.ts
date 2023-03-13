@@ -14,7 +14,7 @@ import { IamTokenService } from './token-service/iam-token-service';
 import { MetadataTokenService } from './token-service/metadata-token-service';
 import { clientFactory } from './utils/client-factory';
 import { serviceClients, cloudApi } from '.';
-import { getServiceClientEndpoint } from './service-endpoints';
+import { ServiceEndpointResolver } from './service-endpoints';
 
 const isOAuth = (config: SessionConfig): config is OAuthCredentialsConfig => 'oauthToken' in config;
 
@@ -30,10 +30,10 @@ const createIamToken = async (iamEndpoint: string, req: Partial<cloudApi.iam.iam
     return resp.iamToken;
 };
 
-const newTokenCreator = (config: SessionConfig): () => Promise<string> => {
+const newTokenCreator = (config: SessionConfig, serviceEndpointResolver: ServiceEndpointResolver): () => Promise<string> => {
     if (isOAuth(config)) {
         return () => {
-            const iamEndpoint = getServiceClientEndpoint(serviceClients.IamTokenServiceClient);
+            const iamEndpoint = serviceEndpointResolver.resolve(serviceClients.IamTokenServiceClient);
 
             return createIamToken(iamEndpoint, {
                 yandexPassportOauthToken: config.oauthToken,
@@ -45,7 +45,9 @@ const newTokenCreator = (config: SessionConfig): () => Promise<string> => {
         return async () => iamToken;
     }
 
-    const tokenService = isServiceAccount(config) ? new IamTokenService(config.serviceAccountJson) : new MetadataTokenService();
+    const tokenService = isServiceAccount(config)
+        ? new IamTokenService(serviceEndpointResolver, config.serviceAccountJson)
+        : new MetadataTokenService();
 
     return async () => tokenService.getToken();
 };
@@ -76,17 +78,19 @@ export class Session {
     private readonly config: Required<SessionConfig, 'pollInterval'>;
     private readonly channelCredentials: ChannelCredentials;
     private readonly tokenCreator: TokenCreator;
+    private readonly serviceEndpointResolver: ServiceEndpointResolver;
 
     private static readonly DEFAULT_CONFIG = {
         pollInterval: 1000,
     };
 
-    constructor(config?: SessionConfig) {
+    constructor(config?: SessionConfig, customServiceEndpointResolver?: ServiceEndpointResolver) {
         this.config = {
             ...Session.DEFAULT_CONFIG,
             ...config,
         };
-        this.tokenCreator = newTokenCreator(this.config);
+        this.serviceEndpointResolver = customServiceEndpointResolver || new ServiceEndpointResolver();
+        this.tokenCreator = newTokenCreator(this.config, this.serviceEndpointResolver);
         this.channelCredentials = newChannelCredentials(this.tokenCreator, this.config.ssl);
     }
 
@@ -94,8 +98,8 @@ export class Session {
         return this.config.pollInterval;
     }
 
-    client<S extends ServiceDefinition>(clientClass: GeneratedServiceClientCtor<S>, customEndpoint?: string): WrappedServiceClientType<S> {
-        const endpoint = customEndpoint || getServiceClientEndpoint(clientClass);
+    client<S extends ServiceDefinition>(clientClass: GeneratedServiceClientCtor<S>): WrappedServiceClientType<S> {
+        const endpoint = this.serviceEndpointResolver.resolve(clientClass);
         const channel = createChannel(endpoint, this.channelCredentials);
 
         return clientFactory.create(clientClass.service, channel);
