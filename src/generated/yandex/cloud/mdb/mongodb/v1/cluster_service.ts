@@ -20,6 +20,7 @@ import {
   Cluster_Environment,
   Resources,
   Host_Type,
+  PerformanceDiagnosticsConfig,
   Access,
   Cluster,
   Host,
@@ -52,10 +53,30 @@ import {
   Mongosconfig44,
 } from "../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb4_4";
 import {
+  Mongodconfig44Enterprise,
+  Mongocfgconfig44Enterprise,
+  Mongosconfig44Enterprise,
+} from "../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb4_4_enterprise";
+import {
   Mongodconfig50,
   Mongocfgconfig50,
   Mongosconfig50,
 } from "../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb5_0";
+import {
+  Mongodconfig50Enterprise,
+  Mongocfgconfig50Enterprise,
+  Mongosconfig50Enterprise,
+} from "../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb5_0_enterprise";
+import {
+  Mongodconfig60,
+  Mongocfgconfig60,
+  Mongosconfig60,
+} from "../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb6_0";
+import {
+  Mongodconfig60Enterprise,
+  Mongocfgconfig60Enterprise,
+  Mongosconfig60Enterprise,
+} from "../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb6_0_enterprise";
 import { TimeOfDay } from "../../../../../google/type/timeofday";
 import { Timestamp } from "../../../../../google/protobuf/timestamp";
 import { DatabaseSpec } from "../../../../../yandex/cloud/mdb/mongodb/v1/database";
@@ -82,10 +103,16 @@ export interface ListClustersRequest {
    * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
    */
   folderId: string;
+  /**
+   * The maximum number of results per page to return. If the number of available
+   * results is larger than [page_size], the service returns a [ListClustersResponse.next_page_token]
+   * that can be used to get the next page of results in subsequent list requests.
+   * Acceptable values are 0 to 1000, inclusive. Default value: 100.
+   */
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token]
-   * to the [ListClustersResponse.next_page_token] returned by a previous list request.
+   * to the [ListClustersResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
   /**
@@ -276,7 +303,10 @@ export interface RestoreClusterRequest {
    * To get the backup ID, use a [ClusterService.ListBackups] request.
    */
   backupId: string;
-  /** Name of the new MongoDB cluster. The name must be unique within the folder. */
+  /**
+   * Name of the new MongoDB cluster. The name must be unique within the folder.
+   * The name can't be changed after the MongoDB cluster is created.
+   */
   name: string;
   /** Description of the new MongoDB cluster. */
   description: string;
@@ -302,6 +332,8 @@ export interface RestoreClusterRequest {
   recoveryTargetSpec?: RestoreClusterRequest_RecoveryTargetSpec;
   /** User security groups */
   securityGroupIds: string[];
+  /** Deletion Protection inhibits deletion of the cluster */
+  deletionProtection: boolean;
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
@@ -426,10 +458,16 @@ export interface ListClusterLogsRequest {
   fromTime?: Date;
   /** End timestamp for the logs request, in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
   toTime?: Date;
+  /**
+   * The maximum number of results per page to return. If the number of available
+   * results is larger than [page_size], the service returns a [ListClusterLogsResponse.next_page_token]
+   * that can be used to get the next page of results in subsequent list requests.
+   * Acceptable values are 0 to 1000, inclusive. Default value: 100.
+   */
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the
-   * [ListClusterLogsResponse.next_page_token] returned by a previous list request.
+   * [ListClusterLogsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
 }
@@ -440,6 +478,8 @@ export enum ListClusterLogsRequest_ServiceType {
   MONGOD = 1,
   MONGOS = 2,
   MONGOCFG = 3,
+  /** AUDIT - MongoDB Enterprise audit logs */
+  AUDIT = 4,
   UNRECOGNIZED = -1,
 }
 
@@ -459,6 +499,9 @@ export function listClusterLogsRequest_ServiceTypeFromJSON(
     case 3:
     case "MONGOCFG":
       return ListClusterLogsRequest_ServiceType.MONGOCFG;
+    case 4:
+    case "AUDIT":
+      return ListClusterLogsRequest_ServiceType.AUDIT;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -478,6 +521,8 @@ export function listClusterLogsRequest_ServiceTypeToJSON(
       return "MONGOS";
     case ListClusterLogsRequest_ServiceType.MONGOCFG:
       return "MONGOCFG";
+    case ListClusterLogsRequest_ServiceType.AUDIT:
+      return "AUDIT";
     default:
       return "UNKNOWN";
   }
@@ -547,6 +592,8 @@ export enum StreamClusterLogsRequest_ServiceType {
   MONGOD = 1,
   MONGOS = 2,
   MONGOCFG = 3,
+  /** AUDIT - MongoDB Enterprise audit logs */
+  AUDIT = 4,
   UNRECOGNIZED = -1,
 }
 
@@ -566,6 +613,9 @@ export function streamClusterLogsRequest_ServiceTypeFromJSON(
     case 3:
     case "MONGOCFG":
       return StreamClusterLogsRequest_ServiceType.MONGOCFG;
+    case 4:
+    case "AUDIT":
+      return StreamClusterLogsRequest_ServiceType.AUDIT;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -585,6 +635,8 @@ export function streamClusterLogsRequest_ServiceTypeToJSON(
       return "MONGOS";
     case StreamClusterLogsRequest_ServiceType.MONGOCFG:
       return "MONGOCFG";
+    case StreamClusterLogsRequest_ServiceType.AUDIT:
+      return "AUDIT";
     default:
       return "UNKNOWN";
   }
@@ -594,10 +646,16 @@ export interface ListClusterOperationsRequest {
   $type: "yandex.cloud.mdb.mongodb.v1.ListClusterOperationsRequest";
   /** ID of the MongoDB Cluster resource to list operations for. */
   clusterId: string;
+  /**
+   * The maximum number of results per page to return. If the number of available
+   * results is larger than [page_size], the service returns a [ListClusterOperationsResponse.next_page_token]
+   * that can be used to get the next page of results in subsequent list requests.
+   * Acceptable values are 0 to 1000, inclusive. Default value: 100.
+   */
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the
-   * [ListClusterOperationsResponse.next_page_token] returned by a previous list request.
+   * [ListClusterOperationsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
 }
@@ -622,10 +680,16 @@ export interface ListClusterBackupsRequest {
    * To get the MongoDB cluster ID, use a [ClusterService.List] request.
    */
   clusterId: string;
+  /**
+   * The maximum number of results per page to return. If the number of available
+   * results is larger than [page_size], the service returns a [ListClusterBackupsResponse.next_page_token]
+   * that can be used to get the next page of results in subsequent list requests.
+   * Acceptable values are 0 to 1000, inclusive. Default value: 100.
+   */
   pageSize: number;
   /**
    * Page token.  To get the next page of results, set [page_token] to the
-   * [ListClusterBackupsResponse.next_page_token] returned by a previous list request.
+   * [ListClusterBackupsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
 }
@@ -650,10 +714,16 @@ export interface ListClusterHostsRequest {
    * To get the MongoDB cluster ID, use a [ClusterService.List] request.
    */
   clusterId: string;
+  /**
+   * The maximum number of results per page to return. If the number of available
+   * results is larger than [page_size], the service returns a [ListClusterHostsResponse.next_page_token]
+   * that can be used to get the next page of results in subsequent list requests.
+   * Acceptable values are 0 to 1000, inclusive. Default value: 100.
+   */
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the
-   * [ListClusterHostsResponse.next_page_token] returned by a previous list request.
+   * [ListClusterHostsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
 }
@@ -776,7 +846,7 @@ export interface ListClusterShardsRequest {
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the
-   * [ListClusterShardsResponse.next_page_token] returned by a previous list request.
+   * [ListClusterShardsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
 }
@@ -1095,6 +1165,51 @@ export interface Mongodbspec44_MongoInfra {
   resources?: Resources;
 }
 
+export interface Mongodbspec44Enterprise {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec4_4_enterprise";
+  /** Configuration and resource allocation for mongod 4.4 hosts. */
+  mongod?: Mongodbspec44Enterprise_Mongod;
+  /** Configuration and resource allocation for mongocfg 4.4 hosts. */
+  mongocfg?: Mongodbspec44Enterprise_MongoCfg;
+  /** Configuration and resource allocation for mongos 4.4 hosts. */
+  mongos?: Mongodbspec44Enterprise_Mongos;
+  /** Configuration and resource allocation for mongoinfra (mongos+mongocfg) 4.4 hosts. */
+  mongoinfra?: Mongodbspec44Enterprise_MongoInfra;
+}
+
+export interface Mongodbspec44Enterprise_Mongod {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec4_4_enterprise.Mongod";
+  /** Configuration for mongod 4.4 hosts. */
+  config?: Mongodconfig44Enterprise;
+  /** Resources allocated to each mongod host. */
+  resources?: Resources;
+}
+
+export interface Mongodbspec44Enterprise_MongoCfg {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec4_4_enterprise.MongoCfg";
+  /** Configuration for mongocfg 4.4 hosts. */
+  config?: Mongocfgconfig44Enterprise;
+  /** Resources allocated to each mongocfg host. */
+  resources?: Resources;
+}
+
+export interface Mongodbspec44Enterprise_Mongos {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec4_4_enterprise.Mongos";
+  /** Configuration for mongos 4.4 hosts. */
+  config?: Mongosconfig44Enterprise;
+  /** Resources allocated to each mongos host. */
+  resources?: Resources;
+}
+
+export interface Mongodbspec44Enterprise_MongoInfra {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec4_4_enterprise.MongoInfra";
+  /** Configuration for mongoinfra 4.4 hosts. */
+  configMongos?: Mongosconfig44Enterprise;
+  configMongocfg?: Mongocfgconfig44Enterprise;
+  /** Resources allocated to each mongoinfra (mongos+mongocfg) host. */
+  resources?: Resources;
+}
+
 export interface Mongodbspec50 {
   $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec5_0";
   /** Configuration and resource allocation for mongod 5.0 hosts. */
@@ -1140,9 +1255,144 @@ export interface Mongodbspec50_MongoInfra {
   resources?: Resources;
 }
 
+export interface Mongodbspec50Enterprise {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec5_0_enterprise";
+  /** Configuration and resource allocation for mongod 5.0 hosts. */
+  mongod?: Mongodbspec50Enterprise_Mongod;
+  /** Configuration and resource allocation for mongocfg 5.0 hosts. */
+  mongocfg?: Mongodbspec50Enterprise_MongoCfg;
+  /** Configuration and resource allocation for mongos 5.0 hosts. */
+  mongos?: Mongodbspec50Enterprise_Mongos;
+  /** Configuration and resource allocation for mongoinfra (mongos+mongocfg) 5.0 hosts. */
+  mongoinfra?: Mongodbspec50Enterprise_MongoInfra;
+}
+
+export interface Mongodbspec50Enterprise_Mongod {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec5_0_enterprise.Mongod";
+  /** Configuration for mongod 5.0 hosts. */
+  config?: Mongodconfig50Enterprise;
+  /** Resources allocated to each mongod host. */
+  resources?: Resources;
+}
+
+export interface Mongodbspec50Enterprise_MongoCfg {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec5_0_enterprise.MongoCfg";
+  /** Configuration for mongocfg 5.0 hosts. */
+  config?: Mongocfgconfig50Enterprise;
+  /** Resources allocated to each mongocfg host. */
+  resources?: Resources;
+}
+
+export interface Mongodbspec50Enterprise_Mongos {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec5_0_enterprise.Mongos";
+  /** Configuration for mongos 5.0 hosts. */
+  config?: Mongosconfig50Enterprise;
+  /** Resources allocated to each mongos host. */
+  resources?: Resources;
+}
+
+export interface Mongodbspec50Enterprise_MongoInfra {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec5_0_enterprise.MongoInfra";
+  /** Configuration for mongoinfra 5.0 hosts. */
+  configMongos?: Mongosconfig50Enterprise;
+  configMongocfg?: Mongocfgconfig50Enterprise;
+  /** Resources allocated to each mongoinfra (mongos+mongocfg) host. */
+  resources?: Resources;
+}
+
+export interface Mongodbspec60 {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0";
+  /** Configuration and resource allocation for mongod 6.0 hosts. */
+  mongod?: Mongodbspec60_Mongod;
+  /** Configuration and resource allocation for mongocfg 6.0 hosts. */
+  mongocfg?: Mongodbspec60_MongoCfg;
+  /** Configuration and resource allocation for mongos 6.0 hosts. */
+  mongos?: Mongodbspec60_Mongos;
+  /** Configuration and resource allocation for mongoinfra (mongos+mongocfg) 6.0 hosts. */
+  mongoinfra?: Mongodbspec60_MongoInfra;
+}
+
+export interface Mongodbspec60_Mongod {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0.Mongod";
+  /** Configuration for mongod 6.0 hosts. */
+  config?: Mongodconfig60;
+  /** Resources allocated to each mongod host. */
+  resources?: Resources;
+}
+
+export interface Mongodbspec60_MongoCfg {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0.MongoCfg";
+  /** Configuration for mongocfg 6.0 hosts. */
+  config?: Mongocfgconfig60;
+  /** Resources allocated to each mongocfg host. */
+  resources?: Resources;
+}
+
+export interface Mongodbspec60_Mongos {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0.Mongos";
+  /** Configuration for mongos 6.0 hosts. */
+  config?: Mongosconfig60;
+  /** Resources allocated to each mongos host. */
+  resources?: Resources;
+}
+
+export interface Mongodbspec60_MongoInfra {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0.MongoInfra";
+  /** Configuration for mongoinfra 6.0 hosts. */
+  configMongos?: Mongosconfig60;
+  configMongocfg?: Mongocfgconfig60;
+  /** Resources allocated to each mongoinfra (mongos+mongocfg) host. */
+  resources?: Resources;
+}
+
+export interface Mongodbspec60Enterprise {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0_enterprise";
+  /** Configuration and resource allocation for mongod 6.0 hosts. */
+  mongod?: Mongodbspec60Enterprise_Mongod;
+  /** Configuration and resource allocation for mongocfg 6.0 hosts. */
+  mongocfg?: Mongodbspec60Enterprise_MongoCfg;
+  /** Configuration and resource allocation for mongos 6.0 hosts. */
+  mongos?: Mongodbspec60Enterprise_Mongos;
+  /** Configuration and resource allocation for mongoinfra (mongos+mongocfg) 6.0 hosts. */
+  mongoinfra?: Mongodbspec60Enterprise_MongoInfra;
+}
+
+export interface Mongodbspec60Enterprise_Mongod {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0_enterprise.Mongod";
+  /** Configuration for mongod 6.0 hosts. */
+  config?: Mongodconfig60Enterprise;
+  /** Resources allocated to each mongod host. */
+  resources?: Resources;
+}
+
+export interface Mongodbspec60Enterprise_MongoCfg {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0_enterprise.MongoCfg";
+  /** Configuration for mongocfg 6.0 hosts. */
+  config?: Mongocfgconfig60Enterprise;
+  /** Resources allocated to each mongocfg host. */
+  resources?: Resources;
+}
+
+export interface Mongodbspec60Enterprise_Mongos {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0_enterprise.Mongos";
+  /** Configuration for mongos 6.0 hosts. */
+  config?: Mongosconfig60Enterprise;
+  /** Resources allocated to each mongos host. */
+  resources?: Resources;
+}
+
+export interface Mongodbspec60Enterprise_MongoInfra {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0_enterprise.MongoInfra";
+  /** Configuration for mongoinfra 6.0 hosts. */
+  configMongos?: Mongosconfig60Enterprise;
+  configMongocfg?: Mongocfgconfig60Enterprise;
+  /** Resources allocated to each mongoinfra (mongos+mongocfg) host. */
+  resources?: Resources;
+}
+
 export interface ConfigSpec {
   $type: "yandex.cloud.mdb.mongodb.v1.ConfigSpec";
-  /** Version of MongoDB used in the cluster. Possible values: `3.6`, `4.0`, `4.2`, `4.4`, `5.0`. */
+  /** Version of MongoDB used in the cluster. Possible values: `3.6`, `4.0`, `4.2`, `4.4`, `4.4-enterprise`, `5.0`, `5.0-enterprise`, `6.0`, `6.0-enterprise`. */
   version: string;
   /**
    * MongoDB feature compatibility version. See usage details in [MongoDB documentation](https://docs.mongodb.com/manual/reference/command/setFeatureCompatibilityVersion/).
@@ -1153,6 +1403,7 @@ export interface ConfigSpec {
    * * `4.2` - persist data compatibility for version 4.2. After setting this option the data will not be compatible with 4.0 or older.
    * * `4.4` - persist data compatibility for version 4.4. After setting this option the data will not be compatible with 4.2 or older.
    * * `5.0` - persist data compatibility for version 5.0. After setting this option the data will not be compatible with 4.4 or older.
+   * * `6.0` - persist data compatibility for version 6.0. After setting this option the data will not be compatible with 5.0 or older.
    */
   featureCompatibilityVersion: string;
   /** Configuration and resource allocation for a MongoDB 3.6 cluster. */
@@ -1165,10 +1416,20 @@ export interface ConfigSpec {
   mongodbSpec44?: Mongodbspec44 | undefined;
   /** Configuration and resource allocation for a MongoDB 5.0 cluster. */
   mongodbSpec50?: Mongodbspec50 | undefined;
+  /** Configuration and resource allocation for a MongoDB 6.0 cluster. */
+  mongodbSpec60?: Mongodbspec60 | undefined;
+  /** Configuration and resource allocation for a MongoDB 4.4 Enterprise cluster. */
+  mongodbSpec44Enterprise?: Mongodbspec44Enterprise | undefined;
+  /** Configuration and resource allocation for a MongoDB 5.0 Enterprise cluster. */
+  mongodbSpec50Enterprise?: Mongodbspec50Enterprise | undefined;
+  /** Configuration and resource allocation for a MongoDB 6.0 Enterprise cluster. */
+  mongodbSpec60Enterprise?: Mongodbspec60Enterprise | undefined;
   /** Time to start the daily backup, in the UTC timezone. */
   backupWindowStart?: TimeOfDay;
   /** Retain period of automatically created backup in days */
   backupRetainPeriodDays?: number;
+  /** Performance Diagnosics configuration */
+  performanceDiagnostics?: PerformanceDiagnosticsConfig;
   /** Access policy to DB */
   access?: Access;
 }
@@ -2906,6 +3167,7 @@ const baseRestoreClusterRequest: object = {
   networkId: "",
   folderId: "",
   securityGroupIds: "",
+  deletionProtection: false,
 };
 
 export const RestoreClusterRequest = {
@@ -2958,6 +3220,9 @@ export const RestoreClusterRequest = {
     }
     for (const v of message.securityGroupIds) {
       writer.uint32(90).string(v!);
+    }
+    if (message.deletionProtection === true) {
+      writer.uint32(96).bool(message.deletionProtection);
     }
     return writer;
   },
@@ -3018,6 +3283,9 @@ export const RestoreClusterRequest = {
         case 11:
           message.securityGroupIds.push(reader.string());
           break;
+        case 12:
+          message.deletionProtection = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3075,6 +3343,11 @@ export const RestoreClusterRequest = {
     message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) =>
       String(e)
     );
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
     return message;
   },
 
@@ -3116,6 +3389,8 @@ export const RestoreClusterRequest = {
     } else {
       obj.securityGroupIds = [];
     }
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -3151,6 +3426,7 @@ export const RestoreClusterRequest = {
           )
         : undefined;
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
+    message.deletionProtection = object.deletionProtection ?? false;
     return message;
   },
 };
@@ -9008,6 +9284,600 @@ messageTypeRegistry.set(
   Mongodbspec44_MongoInfra
 );
 
+const baseMongodbspec44Enterprise: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec4_4_enterprise",
+};
+
+export const Mongodbspec44Enterprise = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec4_4_enterprise" as const,
+
+  encode(
+    message: Mongodbspec44Enterprise,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.mongod !== undefined) {
+      Mongodbspec44Enterprise_Mongod.encode(
+        message.mongod,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.mongocfg !== undefined) {
+      Mongodbspec44Enterprise_MongoCfg.encode(
+        message.mongocfg,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.mongos !== undefined) {
+      Mongodbspec44Enterprise_Mongos.encode(
+        message.mongos,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.mongoinfra !== undefined) {
+      Mongodbspec44Enterprise_MongoInfra.encode(
+        message.mongoinfra,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodbspec44Enterprise {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongodbspec44Enterprise,
+    } as Mongodbspec44Enterprise;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.mongod = Mongodbspec44Enterprise_Mongod.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.mongocfg = Mongodbspec44Enterprise_MongoCfg.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 3:
+          message.mongos = Mongodbspec44Enterprise_Mongos.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 4:
+          message.mongoinfra = Mongodbspec44Enterprise_MongoInfra.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec44Enterprise {
+    const message = {
+      ...baseMongodbspec44Enterprise,
+    } as Mongodbspec44Enterprise;
+    message.mongod =
+      object.mongod !== undefined && object.mongod !== null
+        ? Mongodbspec44Enterprise_Mongod.fromJSON(object.mongod)
+        : undefined;
+    message.mongocfg =
+      object.mongocfg !== undefined && object.mongocfg !== null
+        ? Mongodbspec44Enterprise_MongoCfg.fromJSON(object.mongocfg)
+        : undefined;
+    message.mongos =
+      object.mongos !== undefined && object.mongos !== null
+        ? Mongodbspec44Enterprise_Mongos.fromJSON(object.mongos)
+        : undefined;
+    message.mongoinfra =
+      object.mongoinfra !== undefined && object.mongoinfra !== null
+        ? Mongodbspec44Enterprise_MongoInfra.fromJSON(object.mongoinfra)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec44Enterprise): unknown {
+    const obj: any = {};
+    message.mongod !== undefined &&
+      (obj.mongod = message.mongod
+        ? Mongodbspec44Enterprise_Mongod.toJSON(message.mongod)
+        : undefined);
+    message.mongocfg !== undefined &&
+      (obj.mongocfg = message.mongocfg
+        ? Mongodbspec44Enterprise_MongoCfg.toJSON(message.mongocfg)
+        : undefined);
+    message.mongos !== undefined &&
+      (obj.mongos = message.mongos
+        ? Mongodbspec44Enterprise_Mongos.toJSON(message.mongos)
+        : undefined);
+    message.mongoinfra !== undefined &&
+      (obj.mongoinfra = message.mongoinfra
+        ? Mongodbspec44Enterprise_MongoInfra.toJSON(message.mongoinfra)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodbspec44Enterprise>, I>>(
+    object: I
+  ): Mongodbspec44Enterprise {
+    const message = {
+      ...baseMongodbspec44Enterprise,
+    } as Mongodbspec44Enterprise;
+    message.mongod =
+      object.mongod !== undefined && object.mongod !== null
+        ? Mongodbspec44Enterprise_Mongod.fromPartial(object.mongod)
+        : undefined;
+    message.mongocfg =
+      object.mongocfg !== undefined && object.mongocfg !== null
+        ? Mongodbspec44Enterprise_MongoCfg.fromPartial(object.mongocfg)
+        : undefined;
+    message.mongos =
+      object.mongos !== undefined && object.mongos !== null
+        ? Mongodbspec44Enterprise_Mongos.fromPartial(object.mongos)
+        : undefined;
+    message.mongoinfra =
+      object.mongoinfra !== undefined && object.mongoinfra !== null
+        ? Mongodbspec44Enterprise_MongoInfra.fromPartial(object.mongoinfra)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Mongodbspec44Enterprise.$type, Mongodbspec44Enterprise);
+
+const baseMongodbspec44Enterprise_Mongod: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec4_4_enterprise.Mongod",
+};
+
+export const Mongodbspec44Enterprise_Mongod = {
+  $type:
+    "yandex.cloud.mdb.mongodb.v1.MongodbSpec4_4_enterprise.Mongod" as const,
+
+  encode(
+    message: Mongodbspec44Enterprise_Mongod,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.config !== undefined) {
+      Mongodconfig44Enterprise.encode(
+        message.config,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodbspec44Enterprise_Mongod {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongodbspec44Enterprise_Mongod,
+    } as Mongodbspec44Enterprise_Mongod;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = Mongodconfig44Enterprise.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec44Enterprise_Mongod {
+    const message = {
+      ...baseMongodbspec44Enterprise_Mongod,
+    } as Mongodbspec44Enterprise_Mongod;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongodconfig44Enterprise.fromJSON(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec44Enterprise_Mongod): unknown {
+    const obj: any = {};
+    message.config !== undefined &&
+      (obj.config = message.config
+        ? Mongodconfig44Enterprise.toJSON(message.config)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodbspec44Enterprise_Mongod>, I>>(
+    object: I
+  ): Mongodbspec44Enterprise_Mongod {
+    const message = {
+      ...baseMongodbspec44Enterprise_Mongod,
+    } as Mongodbspec44Enterprise_Mongod;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongodconfig44Enterprise.fromPartial(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Mongodbspec44Enterprise_Mongod.$type,
+  Mongodbspec44Enterprise_Mongod
+);
+
+const baseMongodbspec44Enterprise_MongoCfg: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec4_4_enterprise.MongoCfg",
+};
+
+export const Mongodbspec44Enterprise_MongoCfg = {
+  $type:
+    "yandex.cloud.mdb.mongodb.v1.MongodbSpec4_4_enterprise.MongoCfg" as const,
+
+  encode(
+    message: Mongodbspec44Enterprise_MongoCfg,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.config !== undefined) {
+      Mongocfgconfig44Enterprise.encode(
+        message.config,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodbspec44Enterprise_MongoCfg {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongodbspec44Enterprise_MongoCfg,
+    } as Mongodbspec44Enterprise_MongoCfg;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = Mongocfgconfig44Enterprise.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec44Enterprise_MongoCfg {
+    const message = {
+      ...baseMongodbspec44Enterprise_MongoCfg,
+    } as Mongodbspec44Enterprise_MongoCfg;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongocfgconfig44Enterprise.fromJSON(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec44Enterprise_MongoCfg): unknown {
+    const obj: any = {};
+    message.config !== undefined &&
+      (obj.config = message.config
+        ? Mongocfgconfig44Enterprise.toJSON(message.config)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<Mongodbspec44Enterprise_MongoCfg>, I>
+  >(object: I): Mongodbspec44Enterprise_MongoCfg {
+    const message = {
+      ...baseMongodbspec44Enterprise_MongoCfg,
+    } as Mongodbspec44Enterprise_MongoCfg;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongocfgconfig44Enterprise.fromPartial(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Mongodbspec44Enterprise_MongoCfg.$type,
+  Mongodbspec44Enterprise_MongoCfg
+);
+
+const baseMongodbspec44Enterprise_Mongos: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec4_4_enterprise.Mongos",
+};
+
+export const Mongodbspec44Enterprise_Mongos = {
+  $type:
+    "yandex.cloud.mdb.mongodb.v1.MongodbSpec4_4_enterprise.Mongos" as const,
+
+  encode(
+    message: Mongodbspec44Enterprise_Mongos,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.config !== undefined) {
+      Mongosconfig44Enterprise.encode(
+        message.config,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodbspec44Enterprise_Mongos {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongodbspec44Enterprise_Mongos,
+    } as Mongodbspec44Enterprise_Mongos;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = Mongosconfig44Enterprise.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec44Enterprise_Mongos {
+    const message = {
+      ...baseMongodbspec44Enterprise_Mongos,
+    } as Mongodbspec44Enterprise_Mongos;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongosconfig44Enterprise.fromJSON(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec44Enterprise_Mongos): unknown {
+    const obj: any = {};
+    message.config !== undefined &&
+      (obj.config = message.config
+        ? Mongosconfig44Enterprise.toJSON(message.config)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodbspec44Enterprise_Mongos>, I>>(
+    object: I
+  ): Mongodbspec44Enterprise_Mongos {
+    const message = {
+      ...baseMongodbspec44Enterprise_Mongos,
+    } as Mongodbspec44Enterprise_Mongos;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongosconfig44Enterprise.fromPartial(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Mongodbspec44Enterprise_Mongos.$type,
+  Mongodbspec44Enterprise_Mongos
+);
+
+const baseMongodbspec44Enterprise_MongoInfra: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec4_4_enterprise.MongoInfra",
+};
+
+export const Mongodbspec44Enterprise_MongoInfra = {
+  $type:
+    "yandex.cloud.mdb.mongodb.v1.MongodbSpec4_4_enterprise.MongoInfra" as const,
+
+  encode(
+    message: Mongodbspec44Enterprise_MongoInfra,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.configMongos !== undefined) {
+      Mongosconfig44Enterprise.encode(
+        message.configMongos,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.configMongocfg !== undefined) {
+      Mongocfgconfig44Enterprise.encode(
+        message.configMongocfg,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodbspec44Enterprise_MongoInfra {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongodbspec44Enterprise_MongoInfra,
+    } as Mongodbspec44Enterprise_MongoInfra;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.configMongos = Mongosconfig44Enterprise.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.configMongocfg = Mongocfgconfig44Enterprise.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 3:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec44Enterprise_MongoInfra {
+    const message = {
+      ...baseMongodbspec44Enterprise_MongoInfra,
+    } as Mongodbspec44Enterprise_MongoInfra;
+    message.configMongos =
+      object.configMongos !== undefined && object.configMongos !== null
+        ? Mongosconfig44Enterprise.fromJSON(object.configMongos)
+        : undefined;
+    message.configMongocfg =
+      object.configMongocfg !== undefined && object.configMongocfg !== null
+        ? Mongocfgconfig44Enterprise.fromJSON(object.configMongocfg)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec44Enterprise_MongoInfra): unknown {
+    const obj: any = {};
+    message.configMongos !== undefined &&
+      (obj.configMongos = message.configMongos
+        ? Mongosconfig44Enterprise.toJSON(message.configMongos)
+        : undefined);
+    message.configMongocfg !== undefined &&
+      (obj.configMongocfg = message.configMongocfg
+        ? Mongocfgconfig44Enterprise.toJSON(message.configMongocfg)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<Mongodbspec44Enterprise_MongoInfra>, I>
+  >(object: I): Mongodbspec44Enterprise_MongoInfra {
+    const message = {
+      ...baseMongodbspec44Enterprise_MongoInfra,
+    } as Mongodbspec44Enterprise_MongoInfra;
+    message.configMongos =
+      object.configMongos !== undefined && object.configMongos !== null
+        ? Mongosconfig44Enterprise.fromPartial(object.configMongos)
+        : undefined;
+    message.configMongocfg =
+      object.configMongocfg !== undefined && object.configMongocfg !== null
+        ? Mongocfgconfig44Enterprise.fromPartial(object.configMongocfg)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Mongodbspec44Enterprise_MongoInfra.$type,
+  Mongodbspec44Enterprise_MongoInfra
+);
+
 const baseMongodbspec50: object = {
   $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec5_0",
 };
@@ -9538,6 +10408,1724 @@ messageTypeRegistry.set(
   Mongodbspec50_MongoInfra
 );
 
+const baseMongodbspec50Enterprise: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec5_0_enterprise",
+};
+
+export const Mongodbspec50Enterprise = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec5_0_enterprise" as const,
+
+  encode(
+    message: Mongodbspec50Enterprise,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.mongod !== undefined) {
+      Mongodbspec50Enterprise_Mongod.encode(
+        message.mongod,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.mongocfg !== undefined) {
+      Mongodbspec50Enterprise_MongoCfg.encode(
+        message.mongocfg,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.mongos !== undefined) {
+      Mongodbspec50Enterprise_Mongos.encode(
+        message.mongos,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.mongoinfra !== undefined) {
+      Mongodbspec50Enterprise_MongoInfra.encode(
+        message.mongoinfra,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodbspec50Enterprise {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongodbspec50Enterprise,
+    } as Mongodbspec50Enterprise;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.mongod = Mongodbspec50Enterprise_Mongod.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.mongocfg = Mongodbspec50Enterprise_MongoCfg.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 3:
+          message.mongos = Mongodbspec50Enterprise_Mongos.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 4:
+          message.mongoinfra = Mongodbspec50Enterprise_MongoInfra.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec50Enterprise {
+    const message = {
+      ...baseMongodbspec50Enterprise,
+    } as Mongodbspec50Enterprise;
+    message.mongod =
+      object.mongod !== undefined && object.mongod !== null
+        ? Mongodbspec50Enterprise_Mongod.fromJSON(object.mongod)
+        : undefined;
+    message.mongocfg =
+      object.mongocfg !== undefined && object.mongocfg !== null
+        ? Mongodbspec50Enterprise_MongoCfg.fromJSON(object.mongocfg)
+        : undefined;
+    message.mongos =
+      object.mongos !== undefined && object.mongos !== null
+        ? Mongodbspec50Enterprise_Mongos.fromJSON(object.mongos)
+        : undefined;
+    message.mongoinfra =
+      object.mongoinfra !== undefined && object.mongoinfra !== null
+        ? Mongodbspec50Enterprise_MongoInfra.fromJSON(object.mongoinfra)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec50Enterprise): unknown {
+    const obj: any = {};
+    message.mongod !== undefined &&
+      (obj.mongod = message.mongod
+        ? Mongodbspec50Enterprise_Mongod.toJSON(message.mongod)
+        : undefined);
+    message.mongocfg !== undefined &&
+      (obj.mongocfg = message.mongocfg
+        ? Mongodbspec50Enterprise_MongoCfg.toJSON(message.mongocfg)
+        : undefined);
+    message.mongos !== undefined &&
+      (obj.mongos = message.mongos
+        ? Mongodbspec50Enterprise_Mongos.toJSON(message.mongos)
+        : undefined);
+    message.mongoinfra !== undefined &&
+      (obj.mongoinfra = message.mongoinfra
+        ? Mongodbspec50Enterprise_MongoInfra.toJSON(message.mongoinfra)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodbspec50Enterprise>, I>>(
+    object: I
+  ): Mongodbspec50Enterprise {
+    const message = {
+      ...baseMongodbspec50Enterprise,
+    } as Mongodbspec50Enterprise;
+    message.mongod =
+      object.mongod !== undefined && object.mongod !== null
+        ? Mongodbspec50Enterprise_Mongod.fromPartial(object.mongod)
+        : undefined;
+    message.mongocfg =
+      object.mongocfg !== undefined && object.mongocfg !== null
+        ? Mongodbspec50Enterprise_MongoCfg.fromPartial(object.mongocfg)
+        : undefined;
+    message.mongos =
+      object.mongos !== undefined && object.mongos !== null
+        ? Mongodbspec50Enterprise_Mongos.fromPartial(object.mongos)
+        : undefined;
+    message.mongoinfra =
+      object.mongoinfra !== undefined && object.mongoinfra !== null
+        ? Mongodbspec50Enterprise_MongoInfra.fromPartial(object.mongoinfra)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Mongodbspec50Enterprise.$type, Mongodbspec50Enterprise);
+
+const baseMongodbspec50Enterprise_Mongod: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec5_0_enterprise.Mongod",
+};
+
+export const Mongodbspec50Enterprise_Mongod = {
+  $type:
+    "yandex.cloud.mdb.mongodb.v1.MongodbSpec5_0_enterprise.Mongod" as const,
+
+  encode(
+    message: Mongodbspec50Enterprise_Mongod,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.config !== undefined) {
+      Mongodconfig50Enterprise.encode(
+        message.config,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodbspec50Enterprise_Mongod {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongodbspec50Enterprise_Mongod,
+    } as Mongodbspec50Enterprise_Mongod;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = Mongodconfig50Enterprise.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec50Enterprise_Mongod {
+    const message = {
+      ...baseMongodbspec50Enterprise_Mongod,
+    } as Mongodbspec50Enterprise_Mongod;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongodconfig50Enterprise.fromJSON(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec50Enterprise_Mongod): unknown {
+    const obj: any = {};
+    message.config !== undefined &&
+      (obj.config = message.config
+        ? Mongodconfig50Enterprise.toJSON(message.config)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodbspec50Enterprise_Mongod>, I>>(
+    object: I
+  ): Mongodbspec50Enterprise_Mongod {
+    const message = {
+      ...baseMongodbspec50Enterprise_Mongod,
+    } as Mongodbspec50Enterprise_Mongod;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongodconfig50Enterprise.fromPartial(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Mongodbspec50Enterprise_Mongod.$type,
+  Mongodbspec50Enterprise_Mongod
+);
+
+const baseMongodbspec50Enterprise_MongoCfg: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec5_0_enterprise.MongoCfg",
+};
+
+export const Mongodbspec50Enterprise_MongoCfg = {
+  $type:
+    "yandex.cloud.mdb.mongodb.v1.MongodbSpec5_0_enterprise.MongoCfg" as const,
+
+  encode(
+    message: Mongodbspec50Enterprise_MongoCfg,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.config !== undefined) {
+      Mongocfgconfig50Enterprise.encode(
+        message.config,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodbspec50Enterprise_MongoCfg {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongodbspec50Enterprise_MongoCfg,
+    } as Mongodbspec50Enterprise_MongoCfg;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = Mongocfgconfig50Enterprise.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec50Enterprise_MongoCfg {
+    const message = {
+      ...baseMongodbspec50Enterprise_MongoCfg,
+    } as Mongodbspec50Enterprise_MongoCfg;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongocfgconfig50Enterprise.fromJSON(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec50Enterprise_MongoCfg): unknown {
+    const obj: any = {};
+    message.config !== undefined &&
+      (obj.config = message.config
+        ? Mongocfgconfig50Enterprise.toJSON(message.config)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<Mongodbspec50Enterprise_MongoCfg>, I>
+  >(object: I): Mongodbspec50Enterprise_MongoCfg {
+    const message = {
+      ...baseMongodbspec50Enterprise_MongoCfg,
+    } as Mongodbspec50Enterprise_MongoCfg;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongocfgconfig50Enterprise.fromPartial(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Mongodbspec50Enterprise_MongoCfg.$type,
+  Mongodbspec50Enterprise_MongoCfg
+);
+
+const baseMongodbspec50Enterprise_Mongos: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec5_0_enterprise.Mongos",
+};
+
+export const Mongodbspec50Enterprise_Mongos = {
+  $type:
+    "yandex.cloud.mdb.mongodb.v1.MongodbSpec5_0_enterprise.Mongos" as const,
+
+  encode(
+    message: Mongodbspec50Enterprise_Mongos,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.config !== undefined) {
+      Mongosconfig50Enterprise.encode(
+        message.config,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodbspec50Enterprise_Mongos {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongodbspec50Enterprise_Mongos,
+    } as Mongodbspec50Enterprise_Mongos;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = Mongosconfig50Enterprise.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec50Enterprise_Mongos {
+    const message = {
+      ...baseMongodbspec50Enterprise_Mongos,
+    } as Mongodbspec50Enterprise_Mongos;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongosconfig50Enterprise.fromJSON(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec50Enterprise_Mongos): unknown {
+    const obj: any = {};
+    message.config !== undefined &&
+      (obj.config = message.config
+        ? Mongosconfig50Enterprise.toJSON(message.config)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodbspec50Enterprise_Mongos>, I>>(
+    object: I
+  ): Mongodbspec50Enterprise_Mongos {
+    const message = {
+      ...baseMongodbspec50Enterprise_Mongos,
+    } as Mongodbspec50Enterprise_Mongos;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongosconfig50Enterprise.fromPartial(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Mongodbspec50Enterprise_Mongos.$type,
+  Mongodbspec50Enterprise_Mongos
+);
+
+const baseMongodbspec50Enterprise_MongoInfra: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec5_0_enterprise.MongoInfra",
+};
+
+export const Mongodbspec50Enterprise_MongoInfra = {
+  $type:
+    "yandex.cloud.mdb.mongodb.v1.MongodbSpec5_0_enterprise.MongoInfra" as const,
+
+  encode(
+    message: Mongodbspec50Enterprise_MongoInfra,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.configMongos !== undefined) {
+      Mongosconfig50Enterprise.encode(
+        message.configMongos,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.configMongocfg !== undefined) {
+      Mongocfgconfig50Enterprise.encode(
+        message.configMongocfg,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodbspec50Enterprise_MongoInfra {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongodbspec50Enterprise_MongoInfra,
+    } as Mongodbspec50Enterprise_MongoInfra;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.configMongos = Mongosconfig50Enterprise.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.configMongocfg = Mongocfgconfig50Enterprise.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 3:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec50Enterprise_MongoInfra {
+    const message = {
+      ...baseMongodbspec50Enterprise_MongoInfra,
+    } as Mongodbspec50Enterprise_MongoInfra;
+    message.configMongos =
+      object.configMongos !== undefined && object.configMongos !== null
+        ? Mongosconfig50Enterprise.fromJSON(object.configMongos)
+        : undefined;
+    message.configMongocfg =
+      object.configMongocfg !== undefined && object.configMongocfg !== null
+        ? Mongocfgconfig50Enterprise.fromJSON(object.configMongocfg)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec50Enterprise_MongoInfra): unknown {
+    const obj: any = {};
+    message.configMongos !== undefined &&
+      (obj.configMongos = message.configMongos
+        ? Mongosconfig50Enterprise.toJSON(message.configMongos)
+        : undefined);
+    message.configMongocfg !== undefined &&
+      (obj.configMongocfg = message.configMongocfg
+        ? Mongocfgconfig50Enterprise.toJSON(message.configMongocfg)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<Mongodbspec50Enterprise_MongoInfra>, I>
+  >(object: I): Mongodbspec50Enterprise_MongoInfra {
+    const message = {
+      ...baseMongodbspec50Enterprise_MongoInfra,
+    } as Mongodbspec50Enterprise_MongoInfra;
+    message.configMongos =
+      object.configMongos !== undefined && object.configMongos !== null
+        ? Mongosconfig50Enterprise.fromPartial(object.configMongos)
+        : undefined;
+    message.configMongocfg =
+      object.configMongocfg !== undefined && object.configMongocfg !== null
+        ? Mongocfgconfig50Enterprise.fromPartial(object.configMongocfg)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Mongodbspec50Enterprise_MongoInfra.$type,
+  Mongodbspec50Enterprise_MongoInfra
+);
+
+const baseMongodbspec60: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0",
+};
+
+export const Mongodbspec60 = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0" as const,
+
+  encode(
+    message: Mongodbspec60,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.mongod !== undefined) {
+      Mongodbspec60_Mongod.encode(
+        message.mongod,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.mongocfg !== undefined) {
+      Mongodbspec60_MongoCfg.encode(
+        message.mongocfg,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.mongos !== undefined) {
+      Mongodbspec60_Mongos.encode(
+        message.mongos,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.mongoinfra !== undefined) {
+      Mongodbspec60_MongoInfra.encode(
+        message.mongoinfra,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Mongodbspec60 {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMongodbspec60 } as Mongodbspec60;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.mongod = Mongodbspec60_Mongod.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.mongocfg = Mongodbspec60_MongoCfg.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 3:
+          message.mongos = Mongodbspec60_Mongos.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.mongoinfra = Mongodbspec60_MongoInfra.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec60 {
+    const message = { ...baseMongodbspec60 } as Mongodbspec60;
+    message.mongod =
+      object.mongod !== undefined && object.mongod !== null
+        ? Mongodbspec60_Mongod.fromJSON(object.mongod)
+        : undefined;
+    message.mongocfg =
+      object.mongocfg !== undefined && object.mongocfg !== null
+        ? Mongodbspec60_MongoCfg.fromJSON(object.mongocfg)
+        : undefined;
+    message.mongos =
+      object.mongos !== undefined && object.mongos !== null
+        ? Mongodbspec60_Mongos.fromJSON(object.mongos)
+        : undefined;
+    message.mongoinfra =
+      object.mongoinfra !== undefined && object.mongoinfra !== null
+        ? Mongodbspec60_MongoInfra.fromJSON(object.mongoinfra)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec60): unknown {
+    const obj: any = {};
+    message.mongod !== undefined &&
+      (obj.mongod = message.mongod
+        ? Mongodbspec60_Mongod.toJSON(message.mongod)
+        : undefined);
+    message.mongocfg !== undefined &&
+      (obj.mongocfg = message.mongocfg
+        ? Mongodbspec60_MongoCfg.toJSON(message.mongocfg)
+        : undefined);
+    message.mongos !== undefined &&
+      (obj.mongos = message.mongos
+        ? Mongodbspec60_Mongos.toJSON(message.mongos)
+        : undefined);
+    message.mongoinfra !== undefined &&
+      (obj.mongoinfra = message.mongoinfra
+        ? Mongodbspec60_MongoInfra.toJSON(message.mongoinfra)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodbspec60>, I>>(
+    object: I
+  ): Mongodbspec60 {
+    const message = { ...baseMongodbspec60 } as Mongodbspec60;
+    message.mongod =
+      object.mongod !== undefined && object.mongod !== null
+        ? Mongodbspec60_Mongod.fromPartial(object.mongod)
+        : undefined;
+    message.mongocfg =
+      object.mongocfg !== undefined && object.mongocfg !== null
+        ? Mongodbspec60_MongoCfg.fromPartial(object.mongocfg)
+        : undefined;
+    message.mongos =
+      object.mongos !== undefined && object.mongos !== null
+        ? Mongodbspec60_Mongos.fromPartial(object.mongos)
+        : undefined;
+    message.mongoinfra =
+      object.mongoinfra !== undefined && object.mongoinfra !== null
+        ? Mongodbspec60_MongoInfra.fromPartial(object.mongoinfra)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Mongodbspec60.$type, Mongodbspec60);
+
+const baseMongodbspec60_Mongod: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0.Mongod",
+};
+
+export const Mongodbspec60_Mongod = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0.Mongod" as const,
+
+  encode(
+    message: Mongodbspec60_Mongod,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.config !== undefined) {
+      Mongodconfig60.encode(message.config, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodbspec60_Mongod {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMongodbspec60_Mongod } as Mongodbspec60_Mongod;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = Mongodconfig60.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec60_Mongod {
+    const message = { ...baseMongodbspec60_Mongod } as Mongodbspec60_Mongod;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongodconfig60.fromJSON(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec60_Mongod): unknown {
+    const obj: any = {};
+    message.config !== undefined &&
+      (obj.config = message.config
+        ? Mongodconfig60.toJSON(message.config)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodbspec60_Mongod>, I>>(
+    object: I
+  ): Mongodbspec60_Mongod {
+    const message = { ...baseMongodbspec60_Mongod } as Mongodbspec60_Mongod;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongodconfig60.fromPartial(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Mongodbspec60_Mongod.$type, Mongodbspec60_Mongod);
+
+const baseMongodbspec60_MongoCfg: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0.MongoCfg",
+};
+
+export const Mongodbspec60_MongoCfg = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0.MongoCfg" as const,
+
+  encode(
+    message: Mongodbspec60_MongoCfg,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.config !== undefined) {
+      Mongocfgconfig60.encode(
+        message.config,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodbspec60_MongoCfg {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMongodbspec60_MongoCfg } as Mongodbspec60_MongoCfg;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = Mongocfgconfig60.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec60_MongoCfg {
+    const message = { ...baseMongodbspec60_MongoCfg } as Mongodbspec60_MongoCfg;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongocfgconfig60.fromJSON(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec60_MongoCfg): unknown {
+    const obj: any = {};
+    message.config !== undefined &&
+      (obj.config = message.config
+        ? Mongocfgconfig60.toJSON(message.config)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodbspec60_MongoCfg>, I>>(
+    object: I
+  ): Mongodbspec60_MongoCfg {
+    const message = { ...baseMongodbspec60_MongoCfg } as Mongodbspec60_MongoCfg;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongocfgconfig60.fromPartial(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Mongodbspec60_MongoCfg.$type, Mongodbspec60_MongoCfg);
+
+const baseMongodbspec60_Mongos: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0.Mongos",
+};
+
+export const Mongodbspec60_Mongos = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0.Mongos" as const,
+
+  encode(
+    message: Mongodbspec60_Mongos,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.config !== undefined) {
+      Mongosconfig60.encode(message.config, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodbspec60_Mongos {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMongodbspec60_Mongos } as Mongodbspec60_Mongos;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = Mongosconfig60.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec60_Mongos {
+    const message = { ...baseMongodbspec60_Mongos } as Mongodbspec60_Mongos;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongosconfig60.fromJSON(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec60_Mongos): unknown {
+    const obj: any = {};
+    message.config !== undefined &&
+      (obj.config = message.config
+        ? Mongosconfig60.toJSON(message.config)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodbspec60_Mongos>, I>>(
+    object: I
+  ): Mongodbspec60_Mongos {
+    const message = { ...baseMongodbspec60_Mongos } as Mongodbspec60_Mongos;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongosconfig60.fromPartial(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Mongodbspec60_Mongos.$type, Mongodbspec60_Mongos);
+
+const baseMongodbspec60_MongoInfra: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0.MongoInfra",
+};
+
+export const Mongodbspec60_MongoInfra = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0.MongoInfra" as const,
+
+  encode(
+    message: Mongodbspec60_MongoInfra,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.configMongos !== undefined) {
+      Mongosconfig60.encode(
+        message.configMongos,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.configMongocfg !== undefined) {
+      Mongocfgconfig60.encode(
+        message.configMongocfg,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodbspec60_MongoInfra {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongodbspec60_MongoInfra,
+    } as Mongodbspec60_MongoInfra;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.configMongos = Mongosconfig60.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.configMongocfg = Mongocfgconfig60.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 3:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec60_MongoInfra {
+    const message = {
+      ...baseMongodbspec60_MongoInfra,
+    } as Mongodbspec60_MongoInfra;
+    message.configMongos =
+      object.configMongos !== undefined && object.configMongos !== null
+        ? Mongosconfig60.fromJSON(object.configMongos)
+        : undefined;
+    message.configMongocfg =
+      object.configMongocfg !== undefined && object.configMongocfg !== null
+        ? Mongocfgconfig60.fromJSON(object.configMongocfg)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec60_MongoInfra): unknown {
+    const obj: any = {};
+    message.configMongos !== undefined &&
+      (obj.configMongos = message.configMongos
+        ? Mongosconfig60.toJSON(message.configMongos)
+        : undefined);
+    message.configMongocfg !== undefined &&
+      (obj.configMongocfg = message.configMongocfg
+        ? Mongocfgconfig60.toJSON(message.configMongocfg)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodbspec60_MongoInfra>, I>>(
+    object: I
+  ): Mongodbspec60_MongoInfra {
+    const message = {
+      ...baseMongodbspec60_MongoInfra,
+    } as Mongodbspec60_MongoInfra;
+    message.configMongos =
+      object.configMongos !== undefined && object.configMongos !== null
+        ? Mongosconfig60.fromPartial(object.configMongos)
+        : undefined;
+    message.configMongocfg =
+      object.configMongocfg !== undefined && object.configMongocfg !== null
+        ? Mongocfgconfig60.fromPartial(object.configMongocfg)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Mongodbspec60_MongoInfra.$type,
+  Mongodbspec60_MongoInfra
+);
+
+const baseMongodbspec60Enterprise: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0_enterprise",
+};
+
+export const Mongodbspec60Enterprise = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0_enterprise" as const,
+
+  encode(
+    message: Mongodbspec60Enterprise,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.mongod !== undefined) {
+      Mongodbspec60Enterprise_Mongod.encode(
+        message.mongod,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.mongocfg !== undefined) {
+      Mongodbspec60Enterprise_MongoCfg.encode(
+        message.mongocfg,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.mongos !== undefined) {
+      Mongodbspec60Enterprise_Mongos.encode(
+        message.mongos,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.mongoinfra !== undefined) {
+      Mongodbspec60Enterprise_MongoInfra.encode(
+        message.mongoinfra,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodbspec60Enterprise {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongodbspec60Enterprise,
+    } as Mongodbspec60Enterprise;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.mongod = Mongodbspec60Enterprise_Mongod.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.mongocfg = Mongodbspec60Enterprise_MongoCfg.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 3:
+          message.mongos = Mongodbspec60Enterprise_Mongos.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 4:
+          message.mongoinfra = Mongodbspec60Enterprise_MongoInfra.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec60Enterprise {
+    const message = {
+      ...baseMongodbspec60Enterprise,
+    } as Mongodbspec60Enterprise;
+    message.mongod =
+      object.mongod !== undefined && object.mongod !== null
+        ? Mongodbspec60Enterprise_Mongod.fromJSON(object.mongod)
+        : undefined;
+    message.mongocfg =
+      object.mongocfg !== undefined && object.mongocfg !== null
+        ? Mongodbspec60Enterprise_MongoCfg.fromJSON(object.mongocfg)
+        : undefined;
+    message.mongos =
+      object.mongos !== undefined && object.mongos !== null
+        ? Mongodbspec60Enterprise_Mongos.fromJSON(object.mongos)
+        : undefined;
+    message.mongoinfra =
+      object.mongoinfra !== undefined && object.mongoinfra !== null
+        ? Mongodbspec60Enterprise_MongoInfra.fromJSON(object.mongoinfra)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec60Enterprise): unknown {
+    const obj: any = {};
+    message.mongod !== undefined &&
+      (obj.mongod = message.mongod
+        ? Mongodbspec60Enterprise_Mongod.toJSON(message.mongod)
+        : undefined);
+    message.mongocfg !== undefined &&
+      (obj.mongocfg = message.mongocfg
+        ? Mongodbspec60Enterprise_MongoCfg.toJSON(message.mongocfg)
+        : undefined);
+    message.mongos !== undefined &&
+      (obj.mongos = message.mongos
+        ? Mongodbspec60Enterprise_Mongos.toJSON(message.mongos)
+        : undefined);
+    message.mongoinfra !== undefined &&
+      (obj.mongoinfra = message.mongoinfra
+        ? Mongodbspec60Enterprise_MongoInfra.toJSON(message.mongoinfra)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodbspec60Enterprise>, I>>(
+    object: I
+  ): Mongodbspec60Enterprise {
+    const message = {
+      ...baseMongodbspec60Enterprise,
+    } as Mongodbspec60Enterprise;
+    message.mongod =
+      object.mongod !== undefined && object.mongod !== null
+        ? Mongodbspec60Enterprise_Mongod.fromPartial(object.mongod)
+        : undefined;
+    message.mongocfg =
+      object.mongocfg !== undefined && object.mongocfg !== null
+        ? Mongodbspec60Enterprise_MongoCfg.fromPartial(object.mongocfg)
+        : undefined;
+    message.mongos =
+      object.mongos !== undefined && object.mongos !== null
+        ? Mongodbspec60Enterprise_Mongos.fromPartial(object.mongos)
+        : undefined;
+    message.mongoinfra =
+      object.mongoinfra !== undefined && object.mongoinfra !== null
+        ? Mongodbspec60Enterprise_MongoInfra.fromPartial(object.mongoinfra)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Mongodbspec60Enterprise.$type, Mongodbspec60Enterprise);
+
+const baseMongodbspec60Enterprise_Mongod: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0_enterprise.Mongod",
+};
+
+export const Mongodbspec60Enterprise_Mongod = {
+  $type:
+    "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0_enterprise.Mongod" as const,
+
+  encode(
+    message: Mongodbspec60Enterprise_Mongod,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.config !== undefined) {
+      Mongodconfig60Enterprise.encode(
+        message.config,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodbspec60Enterprise_Mongod {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongodbspec60Enterprise_Mongod,
+    } as Mongodbspec60Enterprise_Mongod;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = Mongodconfig60Enterprise.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec60Enterprise_Mongod {
+    const message = {
+      ...baseMongodbspec60Enterprise_Mongod,
+    } as Mongodbspec60Enterprise_Mongod;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongodconfig60Enterprise.fromJSON(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec60Enterprise_Mongod): unknown {
+    const obj: any = {};
+    message.config !== undefined &&
+      (obj.config = message.config
+        ? Mongodconfig60Enterprise.toJSON(message.config)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodbspec60Enterprise_Mongod>, I>>(
+    object: I
+  ): Mongodbspec60Enterprise_Mongod {
+    const message = {
+      ...baseMongodbspec60Enterprise_Mongod,
+    } as Mongodbspec60Enterprise_Mongod;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongodconfig60Enterprise.fromPartial(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Mongodbspec60Enterprise_Mongod.$type,
+  Mongodbspec60Enterprise_Mongod
+);
+
+const baseMongodbspec60Enterprise_MongoCfg: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0_enterprise.MongoCfg",
+};
+
+export const Mongodbspec60Enterprise_MongoCfg = {
+  $type:
+    "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0_enterprise.MongoCfg" as const,
+
+  encode(
+    message: Mongodbspec60Enterprise_MongoCfg,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.config !== undefined) {
+      Mongocfgconfig60Enterprise.encode(
+        message.config,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodbspec60Enterprise_MongoCfg {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongodbspec60Enterprise_MongoCfg,
+    } as Mongodbspec60Enterprise_MongoCfg;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = Mongocfgconfig60Enterprise.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec60Enterprise_MongoCfg {
+    const message = {
+      ...baseMongodbspec60Enterprise_MongoCfg,
+    } as Mongodbspec60Enterprise_MongoCfg;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongocfgconfig60Enterprise.fromJSON(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec60Enterprise_MongoCfg): unknown {
+    const obj: any = {};
+    message.config !== undefined &&
+      (obj.config = message.config
+        ? Mongocfgconfig60Enterprise.toJSON(message.config)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<Mongodbspec60Enterprise_MongoCfg>, I>
+  >(object: I): Mongodbspec60Enterprise_MongoCfg {
+    const message = {
+      ...baseMongodbspec60Enterprise_MongoCfg,
+    } as Mongodbspec60Enterprise_MongoCfg;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongocfgconfig60Enterprise.fromPartial(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Mongodbspec60Enterprise_MongoCfg.$type,
+  Mongodbspec60Enterprise_MongoCfg
+);
+
+const baseMongodbspec60Enterprise_Mongos: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0_enterprise.Mongos",
+};
+
+export const Mongodbspec60Enterprise_Mongos = {
+  $type:
+    "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0_enterprise.Mongos" as const,
+
+  encode(
+    message: Mongodbspec60Enterprise_Mongos,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.config !== undefined) {
+      Mongosconfig60Enterprise.encode(
+        message.config,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodbspec60Enterprise_Mongos {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongodbspec60Enterprise_Mongos,
+    } as Mongodbspec60Enterprise_Mongos;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = Mongosconfig60Enterprise.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec60Enterprise_Mongos {
+    const message = {
+      ...baseMongodbspec60Enterprise_Mongos,
+    } as Mongodbspec60Enterprise_Mongos;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongosconfig60Enterprise.fromJSON(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec60Enterprise_Mongos): unknown {
+    const obj: any = {};
+    message.config !== undefined &&
+      (obj.config = message.config
+        ? Mongosconfig60Enterprise.toJSON(message.config)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodbspec60Enterprise_Mongos>, I>>(
+    object: I
+  ): Mongodbspec60Enterprise_Mongos {
+    const message = {
+      ...baseMongodbspec60Enterprise_Mongos,
+    } as Mongodbspec60Enterprise_Mongos;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? Mongosconfig60Enterprise.fromPartial(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Mongodbspec60Enterprise_Mongos.$type,
+  Mongodbspec60Enterprise_Mongos
+);
+
+const baseMongodbspec60Enterprise_MongoInfra: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0_enterprise.MongoInfra",
+};
+
+export const Mongodbspec60Enterprise_MongoInfra = {
+  $type:
+    "yandex.cloud.mdb.mongodb.v1.MongodbSpec6_0_enterprise.MongoInfra" as const,
+
+  encode(
+    message: Mongodbspec60Enterprise_MongoInfra,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.configMongos !== undefined) {
+      Mongosconfig60Enterprise.encode(
+        message.configMongos,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.configMongocfg !== undefined) {
+      Mongocfgconfig60Enterprise.encode(
+        message.configMongocfg,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodbspec60Enterprise_MongoInfra {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongodbspec60Enterprise_MongoInfra,
+    } as Mongodbspec60Enterprise_MongoInfra;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.configMongos = Mongosconfig60Enterprise.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.configMongocfg = Mongocfgconfig60Enterprise.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 3:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodbspec60Enterprise_MongoInfra {
+    const message = {
+      ...baseMongodbspec60Enterprise_MongoInfra,
+    } as Mongodbspec60Enterprise_MongoInfra;
+    message.configMongos =
+      object.configMongos !== undefined && object.configMongos !== null
+        ? Mongosconfig60Enterprise.fromJSON(object.configMongos)
+        : undefined;
+    message.configMongocfg =
+      object.configMongocfg !== undefined && object.configMongocfg !== null
+        ? Mongocfgconfig60Enterprise.fromJSON(object.configMongocfg)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodbspec60Enterprise_MongoInfra): unknown {
+    const obj: any = {};
+    message.configMongos !== undefined &&
+      (obj.configMongos = message.configMongos
+        ? Mongosconfig60Enterprise.toJSON(message.configMongos)
+        : undefined);
+    message.configMongocfg !== undefined &&
+      (obj.configMongocfg = message.configMongocfg
+        ? Mongocfgconfig60Enterprise.toJSON(message.configMongocfg)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<Mongodbspec60Enterprise_MongoInfra>, I>
+  >(object: I): Mongodbspec60Enterprise_MongoInfra {
+    const message = {
+      ...baseMongodbspec60Enterprise_MongoInfra,
+    } as Mongodbspec60Enterprise_MongoInfra;
+    message.configMongos =
+      object.configMongos !== undefined && object.configMongos !== null
+        ? Mongosconfig60Enterprise.fromPartial(object.configMongos)
+        : undefined;
+    message.configMongocfg =
+      object.configMongocfg !== undefined && object.configMongocfg !== null
+        ? Mongocfgconfig60Enterprise.fromPartial(object.configMongocfg)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Mongodbspec60Enterprise_MongoInfra.$type,
+  Mongodbspec60Enterprise_MongoInfra
+);
+
 const baseConfigSpec: object = {
   $type: "yandex.cloud.mdb.mongodb.v1.ConfigSpec",
   version: "",
@@ -9587,6 +12175,30 @@ export const ConfigSpec = {
         writer.uint32(82).fork()
       ).ldelim();
     }
+    if (message.mongodbSpec60 !== undefined) {
+      Mongodbspec60.encode(
+        message.mongodbSpec60,
+        writer.uint32(114).fork()
+      ).ldelim();
+    }
+    if (message.mongodbSpec44Enterprise !== undefined) {
+      Mongodbspec44Enterprise.encode(
+        message.mongodbSpec44Enterprise,
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
+    if (message.mongodbSpec50Enterprise !== undefined) {
+      Mongodbspec50Enterprise.encode(
+        message.mongodbSpec50Enterprise,
+        writer.uint32(98).fork()
+      ).ldelim();
+    }
+    if (message.mongodbSpec60Enterprise !== undefined) {
+      Mongodbspec60Enterprise.encode(
+        message.mongodbSpec60Enterprise,
+        writer.uint32(122).fork()
+      ).ldelim();
+    }
     if (message.backupWindowStart !== undefined) {
       TimeOfDay.encode(
         message.backupWindowStart,
@@ -9600,6 +12212,12 @@ export const ConfigSpec = {
           value: message.backupRetainPeriodDays!,
         },
         writer.uint32(74).fork()
+      ).ldelim();
+    }
+    if (message.performanceDiagnostics !== undefined) {
+      PerformanceDiagnosticsConfig.encode(
+        message.performanceDiagnostics,
+        writer.uint32(106).fork()
       ).ldelim();
     }
     if (message.access !== undefined) {
@@ -9636,6 +12254,27 @@ export const ConfigSpec = {
         case 10:
           message.mongodbSpec50 = Mongodbspec50.decode(reader, reader.uint32());
           break;
+        case 14:
+          message.mongodbSpec60 = Mongodbspec60.decode(reader, reader.uint32());
+          break;
+        case 11:
+          message.mongodbSpec44Enterprise = Mongodbspec44Enterprise.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 12:
+          message.mongodbSpec50Enterprise = Mongodbspec50Enterprise.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 15:
+          message.mongodbSpec60Enterprise = Mongodbspec60Enterprise.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         case 3:
           message.backupWindowStart = TimeOfDay.decode(reader, reader.uint32());
           break;
@@ -9644,6 +12283,12 @@ export const ConfigSpec = {
             reader,
             reader.uint32()
           ).value;
+          break;
+        case 13:
+          message.performanceDiagnostics = PerformanceDiagnosticsConfig.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         case 6:
           message.access = Access.decode(reader, reader.uint32());
@@ -9687,6 +12332,25 @@ export const ConfigSpec = {
       object.mongodbSpec_5_0 !== undefined && object.mongodbSpec_5_0 !== null
         ? Mongodbspec50.fromJSON(object.mongodbSpec_5_0)
         : undefined;
+    message.mongodbSpec60 =
+      object.mongodbSpec_6_0 !== undefined && object.mongodbSpec_6_0 !== null
+        ? Mongodbspec60.fromJSON(object.mongodbSpec_6_0)
+        : undefined;
+    message.mongodbSpec44Enterprise =
+      object.mongodbSpec_4_4_enterprise !== undefined &&
+      object.mongodbSpec_4_4_enterprise !== null
+        ? Mongodbspec44Enterprise.fromJSON(object.mongodbSpec_4_4_enterprise)
+        : undefined;
+    message.mongodbSpec50Enterprise =
+      object.mongodbSpec_5_0_enterprise !== undefined &&
+      object.mongodbSpec_5_0_enterprise !== null
+        ? Mongodbspec50Enterprise.fromJSON(object.mongodbSpec_5_0_enterprise)
+        : undefined;
+    message.mongodbSpec60Enterprise =
+      object.mongodbSpec_6_0_enterprise !== undefined &&
+      object.mongodbSpec_6_0_enterprise !== null
+        ? Mongodbspec60Enterprise.fromJSON(object.mongodbSpec_6_0_enterprise)
+        : undefined;
     message.backupWindowStart =
       object.backupWindowStart !== undefined &&
       object.backupWindowStart !== null
@@ -9696,6 +12360,11 @@ export const ConfigSpec = {
       object.backupRetainPeriodDays !== undefined &&
       object.backupRetainPeriodDays !== null
         ? Number(object.backupRetainPeriodDays)
+        : undefined;
+    message.performanceDiagnostics =
+      object.performanceDiagnostics !== undefined &&
+      object.performanceDiagnostics !== null
+        ? PerformanceDiagnosticsConfig.fromJSON(object.performanceDiagnostics)
         : undefined;
     message.access =
       object.access !== undefined && object.access !== null
@@ -9729,12 +12398,32 @@ export const ConfigSpec = {
       (obj.mongodbSpec_5_0 = message.mongodbSpec50
         ? Mongodbspec50.toJSON(message.mongodbSpec50)
         : undefined);
+    message.mongodbSpec60 !== undefined &&
+      (obj.mongodbSpec_6_0 = message.mongodbSpec60
+        ? Mongodbspec60.toJSON(message.mongodbSpec60)
+        : undefined);
+    message.mongodbSpec44Enterprise !== undefined &&
+      (obj.mongodbSpec_4_4_enterprise = message.mongodbSpec44Enterprise
+        ? Mongodbspec44Enterprise.toJSON(message.mongodbSpec44Enterprise)
+        : undefined);
+    message.mongodbSpec50Enterprise !== undefined &&
+      (obj.mongodbSpec_5_0_enterprise = message.mongodbSpec50Enterprise
+        ? Mongodbspec50Enterprise.toJSON(message.mongodbSpec50Enterprise)
+        : undefined);
+    message.mongodbSpec60Enterprise !== undefined &&
+      (obj.mongodbSpec_6_0_enterprise = message.mongodbSpec60Enterprise
+        ? Mongodbspec60Enterprise.toJSON(message.mongodbSpec60Enterprise)
+        : undefined);
     message.backupWindowStart !== undefined &&
       (obj.backupWindowStart = message.backupWindowStart
         ? TimeOfDay.toJSON(message.backupWindowStart)
         : undefined);
     message.backupRetainPeriodDays !== undefined &&
       (obj.backupRetainPeriodDays = message.backupRetainPeriodDays);
+    message.performanceDiagnostics !== undefined &&
+      (obj.performanceDiagnostics = message.performanceDiagnostics
+        ? PerformanceDiagnosticsConfig.toJSON(message.performanceDiagnostics)
+        : undefined);
     message.access !== undefined &&
       (obj.access = message.access ? Access.toJSON(message.access) : undefined);
     return obj;
@@ -9767,12 +12456,38 @@ export const ConfigSpec = {
       object.mongodbSpec50 !== undefined && object.mongodbSpec50 !== null
         ? Mongodbspec50.fromPartial(object.mongodbSpec50)
         : undefined;
+    message.mongodbSpec60 =
+      object.mongodbSpec60 !== undefined && object.mongodbSpec60 !== null
+        ? Mongodbspec60.fromPartial(object.mongodbSpec60)
+        : undefined;
+    message.mongodbSpec44Enterprise =
+      object.mongodbSpec44Enterprise !== undefined &&
+      object.mongodbSpec44Enterprise !== null
+        ? Mongodbspec44Enterprise.fromPartial(object.mongodbSpec44Enterprise)
+        : undefined;
+    message.mongodbSpec50Enterprise =
+      object.mongodbSpec50Enterprise !== undefined &&
+      object.mongodbSpec50Enterprise !== null
+        ? Mongodbspec50Enterprise.fromPartial(object.mongodbSpec50Enterprise)
+        : undefined;
+    message.mongodbSpec60Enterprise =
+      object.mongodbSpec60Enterprise !== undefined &&
+      object.mongodbSpec60Enterprise !== null
+        ? Mongodbspec60Enterprise.fromPartial(object.mongodbSpec60Enterprise)
+        : undefined;
     message.backupWindowStart =
       object.backupWindowStart !== undefined &&
       object.backupWindowStart !== null
         ? TimeOfDay.fromPartial(object.backupWindowStart)
         : undefined;
     message.backupRetainPeriodDays = object.backupRetainPeriodDays ?? undefined;
+    message.performanceDiagnostics =
+      object.performanceDiagnostics !== undefined &&
+      object.performanceDiagnostics !== null
+        ? PerformanceDiagnosticsConfig.fromPartial(
+            object.performanceDiagnostics
+          )
+        : undefined;
     message.access =
       object.access !== undefined && object.access !== null
         ? Access.fromPartial(object.access)
@@ -9925,7 +12640,10 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Retrieves logs for the specified MongoDB cluster. */
+  /**
+   * Retrieves logs for the specified MongoDB cluster.
+   * See the [Logs](/yandex-mdb-guide/concepts/logs.html) section in the developers guide for detailed logs description.
+   */
   listLogs: {
     path: "/yandex.cloud.mdb.mongodb.v1.ClusterService/ListLogs",
     requestStream: false,
@@ -10019,7 +12737,8 @@ export const ClusterServiceService = {
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
   /**
-   * Enables sharding for the cluster: creates 3 mongoinfra (or 3 mongocfg and 2 mongos) hosts
+   * Enables sharding for the cluster:
+   * creates 3 mongoinfra (or 3 mongocfg and 2 mongos) hosts
    * that would support adding and using shards in the cluster.
    */
   enableSharding: {
@@ -10156,7 +12875,10 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
     RescheduleMaintenanceRequest,
     Operation
   >;
-  /** Retrieves logs for the specified MongoDB cluster. */
+  /**
+   * Retrieves logs for the specified MongoDB cluster.
+   * See the [Logs](/yandex-mdb-guide/concepts/logs.html) section in the developers guide for detailed logs description.
+   */
   listLogs: handleUnaryCall<ListClusterLogsRequest, ListClusterLogsResponse>;
   /** Same as ListLogs but using server-side streaming. Also allows for 'tail -f' semantics. */
   streamLogs: handleServerStreamingCall<
@@ -10180,7 +12902,8 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
   /** Deletes the specified hosts for a cluster. */
   deleteHosts: handleUnaryCall<DeleteClusterHostsRequest, Operation>;
   /**
-   * Enables sharding for the cluster: creates 3 mongoinfra (or 3 mongocfg and 2 mongos) hosts
+   * Enables sharding for the cluster:
+   * creates 3 mongoinfra (or 3 mongocfg and 2 mongos) hosts
    * that would support adding and using shards in the cluster.
    */
   enableSharding: handleUnaryCall<EnableClusterShardingRequest, Operation>;
@@ -10396,7 +13119,10 @@ export interface ClusterServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Retrieves logs for the specified MongoDB cluster. */
+  /**
+   * Retrieves logs for the specified MongoDB cluster.
+   * See the [Logs](/yandex-mdb-guide/concepts/logs.html) section in the developers guide for detailed logs description.
+   */
   listLogs(
     request: ListClusterLogsRequest,
     callback: (
@@ -10539,7 +13265,8 @@ export interface ClusterServiceClient extends Client {
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
   /**
-   * Enables sharding for the cluster: creates 3 mongoinfra (or 3 mongocfg and 2 mongos) hosts
+   * Enables sharding for the cluster:
+   * creates 3 mongoinfra (or 3 mongocfg and 2 mongos) hosts
    * that would support adding and using shards in the cluster.
    */
   enableSharding(

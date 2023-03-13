@@ -209,7 +209,7 @@ export interface CreateClusterRequest {
   labels: { [key: string]: string };
   /** ID of the network. */
   networkId: string;
-  /** IP allocation policy of the Kubernetes cluster. */
+  /** Master specification of the Kubernetes cluster. */
   masterSpec?: MasterSpec;
   /** IP allocation policy of the Kubernetes cluster. */
   ipAllocationPolicy?: IPAllocationPolicy;
@@ -396,6 +396,8 @@ export interface RegionalMasterSpec {
   locations: MasterLocation[];
   /** Specify to allocate a static public IP for the master. */
   externalV4AddressSpec?: ExternalAddressSpec;
+  /** Specification of parameters for external IPv6 networking. */
+  externalV6AddressSpec?: ExternalAddressSpec;
 }
 
 export interface InternalAddressSpec {
@@ -406,6 +408,8 @@ export interface InternalAddressSpec {
 
 export interface ExternalAddressSpec {
   $type: "yandex.cloud.k8s.v1.ExternalAddressSpec";
+  /** IP address. */
+  address: string;
 }
 
 export interface MasterLocation {
@@ -2997,6 +3001,12 @@ export const RegionalMasterSpec = {
         writer.uint32(26).fork()
       ).ldelim();
     }
+    if (message.externalV6AddressSpec !== undefined) {
+      ExternalAddressSpec.encode(
+        message.externalV6AddressSpec,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3018,6 +3028,12 @@ export const RegionalMasterSpec = {
           break;
         case 3:
           message.externalV4AddressSpec = ExternalAddressSpec.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 4:
+          message.externalV6AddressSpec = ExternalAddressSpec.decode(
             reader,
             reader.uint32()
           );
@@ -3044,6 +3060,11 @@ export const RegionalMasterSpec = {
       object.externalV4AddressSpec !== null
         ? ExternalAddressSpec.fromJSON(object.externalV4AddressSpec)
         : undefined;
+    message.externalV6AddressSpec =
+      object.externalV6AddressSpec !== undefined &&
+      object.externalV6AddressSpec !== null
+        ? ExternalAddressSpec.fromJSON(object.externalV6AddressSpec)
+        : undefined;
     return message;
   },
 
@@ -3061,6 +3082,10 @@ export const RegionalMasterSpec = {
       (obj.externalV4AddressSpec = message.externalV4AddressSpec
         ? ExternalAddressSpec.toJSON(message.externalV4AddressSpec)
         : undefined);
+    message.externalV6AddressSpec !== undefined &&
+      (obj.externalV6AddressSpec = message.externalV6AddressSpec
+        ? ExternalAddressSpec.toJSON(message.externalV6AddressSpec)
+        : undefined);
     return obj;
   },
 
@@ -3075,6 +3100,11 @@ export const RegionalMasterSpec = {
       object.externalV4AddressSpec !== undefined &&
       object.externalV4AddressSpec !== null
         ? ExternalAddressSpec.fromPartial(object.externalV4AddressSpec)
+        : undefined;
+    message.externalV6AddressSpec =
+      object.externalV6AddressSpec !== undefined &&
+      object.externalV6AddressSpec !== null
+        ? ExternalAddressSpec.fromPartial(object.externalV6AddressSpec)
         : undefined;
     return message;
   },
@@ -3146,15 +3176,19 @@ messageTypeRegistry.set(InternalAddressSpec.$type, InternalAddressSpec);
 
 const baseExternalAddressSpec: object = {
   $type: "yandex.cloud.k8s.v1.ExternalAddressSpec",
+  address: "",
 };
 
 export const ExternalAddressSpec = {
   $type: "yandex.cloud.k8s.v1.ExternalAddressSpec" as const,
 
   encode(
-    _: ExternalAddressSpec,
+    message: ExternalAddressSpec,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
     return writer;
   },
 
@@ -3165,6 +3199,9 @@ export const ExternalAddressSpec = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3173,20 +3210,26 @@ export const ExternalAddressSpec = {
     return message;
   },
 
-  fromJSON(_: any): ExternalAddressSpec {
+  fromJSON(object: any): ExternalAddressSpec {
     const message = { ...baseExternalAddressSpec } as ExternalAddressSpec;
+    message.address =
+      object.address !== undefined && object.address !== null
+        ? String(object.address)
+        : "";
     return message;
   },
 
-  toJSON(_: ExternalAddressSpec): unknown {
+  toJSON(message: ExternalAddressSpec): unknown {
     const obj: any = {};
+    message.address !== undefined && (obj.address = message.address);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<ExternalAddressSpec>, I>>(
-    _: I
+    object: I
   ): ExternalAddressSpec {
     const message = { ...baseExternalAddressSpec } as ExternalAddressSpec;
+    message.address = object.address ?? "";
     return message;
   },
 };

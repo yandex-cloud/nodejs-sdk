@@ -261,6 +261,19 @@ export interface AttachedVolume {
 
 export interface NodeTemplate {
   $type: "yandex.cloud.k8s.v1.NodeTemplate";
+  /**
+   * Name of the instance.
+   * In order to be unique it must contain at least on of instance unique placeholders:
+   *   {instance.short_id}
+   *   {instance.index}
+   *   combination of {instance.zone_id} and {instance.index_in_zone}
+   * Example: my-instance-{instance.index}
+   * If not set, default is used: {instance_group.id}-{instance.short_id}
+   * It may also contain another placeholders, see metadata doc for full list.
+   */
+  name: string;
+  /** these labels will be assigned to compute nodes (instances), created by the nodegroup */
+  labels: { [key: string]: string };
   /** ID of the hardware platform configuration for the node. */
   platformId: string;
   /** Computing resources of the node such as the amount of memory and number of cores. */
@@ -292,6 +305,12 @@ export interface NodeTemplate {
   /** this parameter allows to specify type of network acceleration used on nodes (instances) */
   networkSettings?: NodeTemplate_NetworkSettings;
   containerRuntimeSettings?: NodeTemplate_ContainerRuntimeSettings;
+}
+
+export interface NodeTemplate_LabelsEntry {
+  $type: "yandex.cloud.k8s.v1.NodeTemplate.LabelsEntry";
+  key: string;
+  value: string;
 }
 
 export interface NodeTemplate_MetadataEntry {
@@ -414,6 +433,20 @@ export interface NodeAddressSpec {
   $type: "yandex.cloud.k8s.v1.NodeAddressSpec";
   /** One-to-one NAT configuration. Setting up one-to-one NAT ensures that public IP addresses are assigned to nodes, and therefore internet is accessible for all nodes of the node group. If the field is not set, NAT will not be set up. */
   oneToOneNatSpec?: OneToOneNatSpec;
+  /** Internal DNS configuration. */
+  dnsRecordSpecs: DnsRecordSpec[];
+}
+
+export interface DnsRecordSpec {
+  $type: "yandex.cloud.k8s.v1.DnsRecordSpec";
+  /** FQDN (required). */
+  fqdn: string;
+  /** DNS zone id (optional, if not set, private zone is used). */
+  dnsZoneId: string;
+  /** DNS record ttl, values in 0-86400 (optional). */
+  ttl: number;
+  /** When set to true, also create PTR DNS record (optional). */
+  ptr: boolean;
 }
 
 export interface OneToOneNatSpec {
@@ -1154,6 +1187,7 @@ messageTypeRegistry.set(AttachedVolume.$type, AttachedVolume);
 
 const baseNodeTemplate: object = {
   $type: "yandex.cloud.k8s.v1.NodeTemplate",
+  name: "",
   platformId: "",
 };
 
@@ -1164,6 +1198,19 @@ export const NodeTemplate = {
     message: NodeTemplate,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(106).string(message.name);
+    }
+    Object.entries(message.labels).forEach(([key, value]) => {
+      NodeTemplate_LabelsEntry.encode(
+        {
+          $type: "yandex.cloud.k8s.v1.NodeTemplate.LabelsEntry",
+          key: key as any,
+          value,
+        },
+        writer.uint32(122).fork()
+      ).ldelim();
+    });
     if (message.platformId !== "") {
       writer.uint32(10).string(message.platformId);
     }
@@ -1226,11 +1273,24 @@ export const NodeTemplate = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseNodeTemplate } as NodeTemplate;
+    message.labels = {};
     message.metadata = {};
     message.networkInterfaceSpecs = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 13:
+          message.name = reader.string();
+          break;
+        case 15:
+          const entry15 = NodeTemplate_LabelsEntry.decode(
+            reader,
+            reader.uint32()
+          );
+          if (entry15.value !== undefined) {
+            message.labels[entry15.key] = entry15.value;
+          }
+          break;
         case 1:
           message.platformId = reader.string();
           break;
@@ -1295,6 +1355,16 @@ export const NodeTemplate = {
 
   fromJSON(object: any): NodeTemplate {
     const message = { ...baseNodeTemplate } as NodeTemplate;
+    message.name =
+      object.name !== undefined && object.name !== null
+        ? String(object.name)
+        : "";
+    message.labels = Object.entries(object.labels ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      acc[key] = String(value);
+      return acc;
+    }, {});
     message.platformId =
       object.platformId !== undefined && object.platformId !== null
         ? String(object.platformId)
@@ -1344,6 +1414,13 @@ export const NodeTemplate = {
 
   toJSON(message: NodeTemplate): unknown {
     const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    obj.labels = {};
+    if (message.labels) {
+      Object.entries(message.labels).forEach(([k, v]) => {
+        obj.labels[k] = v;
+      });
+    }
     message.platformId !== undefined && (obj.platformId = message.platformId);
     message.resourcesSpec !== undefined &&
       (obj.resourcesSpec = message.resourcesSpec
@@ -1395,6 +1472,15 @@ export const NodeTemplate = {
     object: I
   ): NodeTemplate {
     const message = { ...baseNodeTemplate } as NodeTemplate;
+    message.name = object.name ?? "";
+    message.labels = Object.entries(object.labels ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = String(value);
+      }
+      return acc;
+    }, {});
     message.platformId = object.platformId ?? "";
     message.resourcesSpec =
       object.resourcesSpec !== undefined && object.resourcesSpec !== null
@@ -1444,6 +1530,91 @@ export const NodeTemplate = {
 };
 
 messageTypeRegistry.set(NodeTemplate.$type, NodeTemplate);
+
+const baseNodeTemplate_LabelsEntry: object = {
+  $type: "yandex.cloud.k8s.v1.NodeTemplate.LabelsEntry",
+  key: "",
+  value: "",
+};
+
+export const NodeTemplate_LabelsEntry = {
+  $type: "yandex.cloud.k8s.v1.NodeTemplate.LabelsEntry" as const,
+
+  encode(
+    message: NodeTemplate_LabelsEntry,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): NodeTemplate_LabelsEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseNodeTemplate_LabelsEntry,
+    } as NodeTemplate_LabelsEntry;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): NodeTemplate_LabelsEntry {
+    const message = {
+      ...baseNodeTemplate_LabelsEntry,
+    } as NodeTemplate_LabelsEntry;
+    message.key =
+      object.key !== undefined && object.key !== null ? String(object.key) : "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? String(object.value)
+        : "";
+    return message;
+  },
+
+  toJSON(message: NodeTemplate_LabelsEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<NodeTemplate_LabelsEntry>, I>>(
+    object: I
+  ): NodeTemplate_LabelsEntry {
+    const message = {
+      ...baseNodeTemplate_LabelsEntry,
+    } as NodeTemplate_LabelsEntry;
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  NodeTemplate_LabelsEntry.$type,
+  NodeTemplate_LabelsEntry
+);
 
 const baseNodeTemplate_MetadataEntry: object = {
   $type: "yandex.cloud.k8s.v1.NodeTemplate.MetadataEntry",
@@ -1835,6 +2006,9 @@ export const NodeAddressSpec = {
         writer.uint32(10).fork()
       ).ldelim();
     }
+    for (const v of message.dnsRecordSpecs) {
+      DnsRecordSpec.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1842,6 +2016,7 @@ export const NodeAddressSpec = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseNodeAddressSpec } as NodeAddressSpec;
+    message.dnsRecordSpecs = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1849,6 +2024,11 @@ export const NodeAddressSpec = {
           message.oneToOneNatSpec = OneToOneNatSpec.decode(
             reader,
             reader.uint32()
+          );
+          break;
+        case 2:
+          message.dnsRecordSpecs.push(
+            DnsRecordSpec.decode(reader, reader.uint32())
           );
           break;
         default:
@@ -1865,6 +2045,9 @@ export const NodeAddressSpec = {
       object.oneToOneNatSpec !== undefined && object.oneToOneNatSpec !== null
         ? OneToOneNatSpec.fromJSON(object.oneToOneNatSpec)
         : undefined;
+    message.dnsRecordSpecs = (object.dnsRecordSpecs ?? []).map((e: any) =>
+      DnsRecordSpec.fromJSON(e)
+    );
     return message;
   },
 
@@ -1874,6 +2057,13 @@ export const NodeAddressSpec = {
       (obj.oneToOneNatSpec = message.oneToOneNatSpec
         ? OneToOneNatSpec.toJSON(message.oneToOneNatSpec)
         : undefined);
+    if (message.dnsRecordSpecs) {
+      obj.dnsRecordSpecs = message.dnsRecordSpecs.map((e) =>
+        e ? DnsRecordSpec.toJSON(e) : undefined
+      );
+    } else {
+      obj.dnsRecordSpecs = [];
+    }
     return obj;
   },
 
@@ -1885,11 +2075,112 @@ export const NodeAddressSpec = {
       object.oneToOneNatSpec !== undefined && object.oneToOneNatSpec !== null
         ? OneToOneNatSpec.fromPartial(object.oneToOneNatSpec)
         : undefined;
+    message.dnsRecordSpecs =
+      object.dnsRecordSpecs?.map((e) => DnsRecordSpec.fromPartial(e)) || [];
     return message;
   },
 };
 
 messageTypeRegistry.set(NodeAddressSpec.$type, NodeAddressSpec);
+
+const baseDnsRecordSpec: object = {
+  $type: "yandex.cloud.k8s.v1.DnsRecordSpec",
+  fqdn: "",
+  dnsZoneId: "",
+  ttl: 0,
+  ptr: false,
+};
+
+export const DnsRecordSpec = {
+  $type: "yandex.cloud.k8s.v1.DnsRecordSpec" as const,
+
+  encode(
+    message: DnsRecordSpec,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.fqdn !== "") {
+      writer.uint32(10).string(message.fqdn);
+    }
+    if (message.dnsZoneId !== "") {
+      writer.uint32(18).string(message.dnsZoneId);
+    }
+    if (message.ttl !== 0) {
+      writer.uint32(24).int64(message.ttl);
+    }
+    if (message.ptr === true) {
+      writer.uint32(32).bool(message.ptr);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DnsRecordSpec {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseDnsRecordSpec } as DnsRecordSpec;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.fqdn = reader.string();
+          break;
+        case 2:
+          message.dnsZoneId = reader.string();
+          break;
+        case 3:
+          message.ttl = longToNumber(reader.int64() as Long);
+          break;
+        case 4:
+          message.ptr = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DnsRecordSpec {
+    const message = { ...baseDnsRecordSpec } as DnsRecordSpec;
+    message.fqdn =
+      object.fqdn !== undefined && object.fqdn !== null
+        ? String(object.fqdn)
+        : "";
+    message.dnsZoneId =
+      object.dnsZoneId !== undefined && object.dnsZoneId !== null
+        ? String(object.dnsZoneId)
+        : "";
+    message.ttl =
+      object.ttl !== undefined && object.ttl !== null ? Number(object.ttl) : 0;
+    message.ptr =
+      object.ptr !== undefined && object.ptr !== null
+        ? Boolean(object.ptr)
+        : false;
+    return message;
+  },
+
+  toJSON(message: DnsRecordSpec): unknown {
+    const obj: any = {};
+    message.fqdn !== undefined && (obj.fqdn = message.fqdn);
+    message.dnsZoneId !== undefined && (obj.dnsZoneId = message.dnsZoneId);
+    message.ttl !== undefined && (obj.ttl = Math.round(message.ttl));
+    message.ptr !== undefined && (obj.ptr = message.ptr);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DnsRecordSpec>, I>>(
+    object: I
+  ): DnsRecordSpec {
+    const message = { ...baseDnsRecordSpec } as DnsRecordSpec;
+    message.fqdn = object.fqdn ?? "";
+    message.dnsZoneId = object.dnsZoneId ?? "";
+    message.ttl = object.ttl ?? 0;
+    message.ptr = object.ptr ?? false;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(DnsRecordSpec.$type, DnsRecordSpec);
 
 const baseOneToOneNatSpec: object = {
   $type: "yandex.cloud.k8s.v1.OneToOneNatSpec",

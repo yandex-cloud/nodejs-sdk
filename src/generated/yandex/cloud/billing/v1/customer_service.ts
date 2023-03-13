@@ -68,6 +68,16 @@ export interface InviteCustomerRequest {
   person?: CustomerPerson;
 }
 
+export interface CreateResellerServedCustomerRequest {
+  $type: "yandex.cloud.billing.v1.CreateResellerServedCustomerRequest";
+  /** ID of the reseller that customer will be associated with. */
+  resellerId: string;
+  /** Name of the customer. */
+  name: string;
+  /** Person of the customer. */
+  person?: CustomerPerson;
+}
+
 export interface ActivateCustomerRequest {
   $type: "yandex.cloud.billing.v1.ActivateCustomerRequest";
   /**
@@ -381,6 +391,111 @@ export const InviteCustomerRequest = {
 
 messageTypeRegistry.set(InviteCustomerRequest.$type, InviteCustomerRequest);
 
+const baseCreateResellerServedCustomerRequest: object = {
+  $type: "yandex.cloud.billing.v1.CreateResellerServedCustomerRequest",
+  resellerId: "",
+  name: "",
+};
+
+export const CreateResellerServedCustomerRequest = {
+  $type: "yandex.cloud.billing.v1.CreateResellerServedCustomerRequest" as const,
+
+  encode(
+    message: CreateResellerServedCustomerRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.resellerId !== "") {
+      writer.uint32(10).string(message.resellerId);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.person !== undefined) {
+      CustomerPerson.encode(message.person, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): CreateResellerServedCustomerRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseCreateResellerServedCustomerRequest,
+    } as CreateResellerServedCustomerRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.resellerId = reader.string();
+          break;
+        case 2:
+          message.name = reader.string();
+          break;
+        case 3:
+          message.person = CustomerPerson.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateResellerServedCustomerRequest {
+    const message = {
+      ...baseCreateResellerServedCustomerRequest,
+    } as CreateResellerServedCustomerRequest;
+    message.resellerId =
+      object.resellerId !== undefined && object.resellerId !== null
+        ? String(object.resellerId)
+        : "";
+    message.name =
+      object.name !== undefined && object.name !== null
+        ? String(object.name)
+        : "";
+    message.person =
+      object.person !== undefined && object.person !== null
+        ? CustomerPerson.fromJSON(object.person)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: CreateResellerServedCustomerRequest): unknown {
+    const obj: any = {};
+    message.resellerId !== undefined && (obj.resellerId = message.resellerId);
+    message.name !== undefined && (obj.name = message.name);
+    message.person !== undefined &&
+      (obj.person = message.person
+        ? CustomerPerson.toJSON(message.person)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<CreateResellerServedCustomerRequest>, I>
+  >(object: I): CreateResellerServedCustomerRequest {
+    const message = {
+      ...baseCreateResellerServedCustomerRequest,
+    } as CreateResellerServedCustomerRequest;
+    message.resellerId = object.resellerId ?? "";
+    message.name = object.name ?? "";
+    message.person =
+      object.person !== undefined && object.person !== null
+        ? CustomerPerson.fromPartial(object.person)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  CreateResellerServedCustomerRequest.$type,
+  CreateResellerServedCustomerRequest
+);
+
 const baseActivateCustomerRequest: object = {
   $type: "yandex.cloud.billing.v1.ActivateCustomerRequest",
   customerId: "",
@@ -618,6 +733,19 @@ export const CustomerServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Creates new reseller-served customer. */
+  createResellerServed: {
+    path: "/yandex.cloud.billing.v1.CustomerService/CreateResellerServed",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: CreateResellerServedCustomerRequest) =>
+      Buffer.from(CreateResellerServedCustomerRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      CreateResellerServedCustomerRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /** Activates specified customer. After customer is activated, he can use resources associated with his billing account. */
   activate: {
     path: "/yandex.cloud.billing.v1.CustomerService/Activate",
@@ -650,6 +778,11 @@ export interface CustomerServiceServer extends UntypedServiceImplementation {
   list: handleUnaryCall<ListCustomersRequest, ListCustomersResponse>;
   /** Invites customer to the specified reseller. */
   invite: handleUnaryCall<InviteCustomerRequest, Operation>;
+  /** Creates new reseller-served customer. */
+  createResellerServed: handleUnaryCall<
+    CreateResellerServedCustomerRequest,
+    Operation
+  >;
   /** Activates specified customer. After customer is activated, he can use resources associated with his billing account. */
   activate: handleUnaryCall<ActivateCustomerRequest, Operation>;
   /** Suspend specified customer. After customer is suspended, he can't use resources associated with his billing account. */
@@ -694,6 +827,22 @@ export interface CustomerServiceClient extends Client {
   ): ClientUnaryCall;
   invite(
     request: InviteCustomerRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Creates new reseller-served customer. */
+  createResellerServed(
+    request: CreateResellerServedCustomerRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  createResellerServed(
+    request: CreateResellerServedCustomerRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  createResellerServed(
+    request: CreateResellerServedCustomerRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

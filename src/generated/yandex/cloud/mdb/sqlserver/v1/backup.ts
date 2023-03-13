@@ -8,6 +8,7 @@ export const protobufPackage = "yandex.cloud.mdb.sqlserver.v1";
 
 /**
  * An SQL Server backup resource.
+ *
  * For more information, see the [Backup](/docs/managed-sqlserver/concepts/backup) section in the documentation.
  */
 export interface Backup {
@@ -16,13 +17,13 @@ export interface Backup {
   id: string;
   /** ID of the folder that the backup belongs to. */
   folderId: string;
-  /** Creation timestamp (i.e. when the backup operation was completed). */
+  /** Time when the backup operation was completed. */
   createdAt?: Date;
   /** ID of the SQL Server cluster that the backup was created for. */
   sourceClusterId: string;
   /** Time when the backup operation was started. */
   startedAt?: Date;
-  /** List databases included in the backup */
+  /** List of databases included in the backup. */
   databases: string[];
 }
 

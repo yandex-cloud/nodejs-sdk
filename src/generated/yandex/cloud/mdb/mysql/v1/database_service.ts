@@ -25,13 +25,15 @@ export const protobufPackage = "yandex.cloud.mdb.mysql.v1";
 export interface GetDatabaseRequest {
   $type: "yandex.cloud.mdb.mysql.v1.GetDatabaseRequest";
   /**
-   * ID of the MySQL cluster that the database belongs to.
-   * To get the cluster ID use a [ClusterService.List] request.
+   * ID of the cluster that the database belongs to.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
   /**
-   * Name of the MySQL database to return.
-   * To get the name of the database use a [DatabaseService.List] request.
+   * Name of the database to return information about.
+   *
+   * To get this name, make a [DatabaseService.List] request.
    */
   databaseName: string;
 }
@@ -39,32 +41,35 @@ export interface GetDatabaseRequest {
 export interface ListDatabasesRequest {
   $type: "yandex.cloud.mdb.mysql.v1.ListDatabasesRequest";
   /**
-   * ID of the MySQL cluster to list databases in.
-   * To get the cluster ID use a [ClusterService.List] request.
+   * ID of the cluster to list databases in.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size], the service returns a [ListDatabasesResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the API returns a [ListDatabasesResponse.next_page_token] that can be used to get the next page of results in the subsequent [DatabaseService.List] requests.
    */
   pageSize: number;
   /**
-   * Page token. To get the next page of results, Set [page_token] to the [ListDatabasesResponse.next_page_token]
-   * returned by a previous list request.
+   * Page token that can be used to iterate through multiple pages of results.
+   *
+   * To get the next page of results, set [page_token] to the [ListDatabasesResponse.next_page_token] returned by the previous [DatabaseService.List] request.
    */
   pageToken: string;
 }
 
 export interface ListDatabasesResponse {
   $type: "yandex.cloud.mdb.mysql.v1.ListDatabasesResponse";
-  /** List of MySQL databases. */
+  /** List of databases. */
   databases: Database[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListDatabasesRequest.page_size], use the [next_page_token] as the value
-   * for the [ListDatabasesRequest.page_token] parameter in the next list request. Each subsequent
-   * list request will have its own [next_page_token] to continue paging through the results.
+   * The token that can be used to get the next page of results.
+   *
+   * If the number of results is larger than [ListDatabasesRequest.page_size], use the [next_page_token] as the value for the [ListDatabasesRequest.page_token] in the subsequent [DatabaseService.List] request to iterate through multiple pages of results.
+   *
+   * Each of the subsequent [DatabaseService.List] requests should use the [next_page_token] value returned by the previous request to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -72,41 +77,44 @@ export interface ListDatabasesResponse {
 export interface CreateDatabaseRequest {
   $type: "yandex.cloud.mdb.mysql.v1.CreateDatabaseRequest";
   /**
-   * ID of the MySQL cluster to create a database in.
-   * To get the cluster ID use a [ClusterService.List] request.
+   * ID of the cluster to create the database in.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
-  /** Configuration of the database to create. */
+  /** Configuration of the database. */
   databaseSpec?: DatabaseSpec;
 }
 
 export interface CreateDatabaseMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.CreateDatabaseMetadata";
-  /** ID of the MySQL cluster where a database is being created. */
+  /** ID of the cluster the database is being created in. */
   clusterId: string;
-  /** Name of the MySQL database that is being created. */
+  /** Name of the database that is being created. */
   databaseName: string;
 }
 
 export interface DeleteDatabaseRequest {
   $type: "yandex.cloud.mdb.mysql.v1.DeleteDatabaseRequest";
   /**
-   * ID of the MySQL cluster to delete a database in.
-   * To get the cluster ID, use a [ClusterService.List] request.
+   * ID of the cluster to delete the database from.
+   *
+   * To get this ID, make a [ClusterService.List] request.
    */
   clusterId: string;
   /**
    * Name of the database to delete.
-   * To get the name of the database, use a [DatabaseService.List] request.
+   *
+   * To get this name, make a [DatabaseService.List] request.
    */
   databaseName: string;
 }
 
 export interface DeleteDatabaseMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.DeleteDatabaseMetadata";
-  /** ID of the MySQL cluster where a database is being deleted. */
+  /** ID of the cluster the database is being deleted from. */
   clusterId: string;
-  /** Name of the MySQL database that is being deleted. */
+  /** Name of the database that is being deleted. */
   databaseName: string;
 }
 
@@ -686,13 +694,13 @@ export const DeleteDatabaseMetadata = {
 
 messageTypeRegistry.set(DeleteDatabaseMetadata.$type, DeleteDatabaseMetadata);
 
-/** A set of methods for managing MySQL databases. */
+/**
+ * A set of methods for managing MySQL databases in a cluster.
+ *
+ * See [the documentation](/docs/managed-mysql/operations/databases) for details.
+ */
 export const DatabaseServiceService = {
-  /**
-   * Returns the specified MySQL database.
-   *
-   * To get the list of available MySQL databases, make a [List] request.
-   */
+  /** Retrieves information about the specified database. */
   get: {
     path: "/yandex.cloud.mdb.mysql.v1.DatabaseService/Get",
     requestStream: false,
@@ -704,7 +712,7 @@ export const DatabaseServiceService = {
       Buffer.from(Database.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Database.decode(value),
   },
-  /** Retrieves the list of MySQL databases in the specified cluster. */
+  /** Retrieves the list of databases in a cluster. */
   list: {
     path: "/yandex.cloud.mdb.mysql.v1.DatabaseService/List",
     requestStream: false,
@@ -716,7 +724,7 @@ export const DatabaseServiceService = {
       Buffer.from(ListDatabasesResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer) => ListDatabasesResponse.decode(value),
   },
-  /** Creates a new MySQL database in the specified cluster. */
+  /** Creates a new database in a cluster. */
   create: {
     path: "/yandex.cloud.mdb.mysql.v1.DatabaseService/Create",
     requestStream: false,
@@ -728,7 +736,7 @@ export const DatabaseServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Deletes the specified MySQL database. */
+  /** Deletes a database from a cluster. */
   delete: {
     path: "/yandex.cloud.mdb.mysql.v1.DatabaseService/Delete",
     requestStream: false,
@@ -743,26 +751,18 @@ export const DatabaseServiceService = {
 } as const;
 
 export interface DatabaseServiceServer extends UntypedServiceImplementation {
-  /**
-   * Returns the specified MySQL database.
-   *
-   * To get the list of available MySQL databases, make a [List] request.
-   */
+  /** Retrieves information about the specified database. */
   get: handleUnaryCall<GetDatabaseRequest, Database>;
-  /** Retrieves the list of MySQL databases in the specified cluster. */
+  /** Retrieves the list of databases in a cluster. */
   list: handleUnaryCall<ListDatabasesRequest, ListDatabasesResponse>;
-  /** Creates a new MySQL database in the specified cluster. */
+  /** Creates a new database in a cluster. */
   create: handleUnaryCall<CreateDatabaseRequest, Operation>;
-  /** Deletes the specified MySQL database. */
+  /** Deletes a database from a cluster. */
   delete: handleUnaryCall<DeleteDatabaseRequest, Operation>;
 }
 
 export interface DatabaseServiceClient extends Client {
-  /**
-   * Returns the specified MySQL database.
-   *
-   * To get the list of available MySQL databases, make a [List] request.
-   */
+  /** Retrieves information about the specified database. */
   get(
     request: GetDatabaseRequest,
     callback: (error: ServiceError | null, response: Database) => void
@@ -778,7 +778,7 @@ export interface DatabaseServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Database) => void
   ): ClientUnaryCall;
-  /** Retrieves the list of MySQL databases in the specified cluster. */
+  /** Retrieves the list of databases in a cluster. */
   list(
     request: ListDatabasesRequest,
     callback: (
@@ -803,7 +803,7 @@ export interface DatabaseServiceClient extends Client {
       response: ListDatabasesResponse
     ) => void
   ): ClientUnaryCall;
-  /** Creates a new MySQL database in the specified cluster. */
+  /** Creates a new database in a cluster. */
   create(
     request: CreateDatabaseRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -819,7 +819,7 @@ export interface DatabaseServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Deletes the specified MySQL database. */
+  /** Deletes a database from a cluster. */
   delete(
     request: DeleteDatabaseRequest,
     callback: (error: ServiceError | null, response: Operation) => void

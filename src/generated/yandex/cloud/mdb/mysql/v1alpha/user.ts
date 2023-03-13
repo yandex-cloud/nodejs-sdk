@@ -5,10 +5,7 @@ import _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "yandex.cloud.mdb.mysql.v1alpha";
 
-/**
- * A MySQL user. For more information, see
- * the [documentation](/docs/managed-mysql/concepts).
- */
+/** A MySQL user. For more information, see the [documentation](/docs/managed-mysql/concepts). */
 export interface User {
   $type: "yandex.cloud.mdb.mysql.v1alpha.User";
   /** Name of the MySQL user. */
@@ -60,9 +57,7 @@ export enum Permission_Privilege {
   /**
    * SELECT - Selecting rows from tables.
    *
-   * Some SELECT statements can be allowed without the SELECT privilege. All
-   * statements that read column values require the SELECT privilege. See
-   * details in [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/privileges-provided.html#priv_select).
+   * Some SELECT statements can be allowed without the SELECT privilege. All statements that read column values require the SELECT privilege. See details in [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/privileges-provided.html#priv_select).
    */
   SELECT = 15,
   /** SHOW_VIEW - Using the SHOW CREATE VIEW statement. Also needed for views used with EXPLAIN. */

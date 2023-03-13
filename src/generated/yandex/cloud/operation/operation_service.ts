@@ -173,7 +173,11 @@ export const OperationServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Cancels the specified operation. */
+  /**
+   * Cancels the specified operation.
+   *
+   * Note that currently Object Storage API does not support cancelling operations.
+   */
   cancel: {
     path: "/yandex.cloud.operation.OperationService/Cancel",
     requestStream: false,
@@ -190,7 +194,11 @@ export const OperationServiceService = {
 export interface OperationServiceServer extends UntypedServiceImplementation {
   /** Returns the specified Operation resource. */
   get: handleUnaryCall<GetOperationRequest, Operation>;
-  /** Cancels the specified operation. */
+  /**
+   * Cancels the specified operation.
+   *
+   * Note that currently Object Storage API does not support cancelling operations.
+   */
   cancel: handleUnaryCall<CancelOperationRequest, Operation>;
 }
 
@@ -211,7 +219,11 @@ export interface OperationServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Cancels the specified operation. */
+  /**
+   * Cancels the specified operation.
+   *
+   * Note that currently Object Storage API does not support cancelling operations.
+   */
   cancel(
     request: CancelOperationRequest,
     callback: (error: ServiceError | null, response: Operation) => void

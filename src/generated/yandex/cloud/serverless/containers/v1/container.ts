@@ -87,6 +87,9 @@ export interface Revision {
   concurrency: number;
   serviceAccountId: string;
   status: Revision_Status;
+  secrets: Secret[];
+  connectivity?: Connectivity;
+  provisionPolicy?: ProvisionPolicy;
 }
 
 export enum Revision_Status {
@@ -164,6 +167,25 @@ export interface Resources {
   memory: number;
   cores: number;
   coreFraction: number;
+}
+
+export interface ProvisionPolicy {
+  $type: "yandex.cloud.serverless.containers.v1.ProvisionPolicy";
+  minInstances: number;
+}
+
+export interface Secret {
+  $type: "yandex.cloud.serverless.containers.v1.Secret";
+  id: string;
+  versionId: string;
+  key: string;
+  environmentVariable: string | undefined;
+}
+
+export interface Connectivity {
+  $type: "yandex.cloud.serverless.containers.v1.Connectivity";
+  networkId: string;
+  subnetIds: string[];
 }
 
 const baseContainer: object = {
@@ -475,6 +497,21 @@ export const Revision = {
     if (message.status !== 0) {
       writer.uint32(80).int32(message.status);
     }
+    for (const v of message.secrets) {
+      Secret.encode(v!, writer.uint32(90).fork()).ldelim();
+    }
+    if (message.connectivity !== undefined) {
+      Connectivity.encode(
+        message.connectivity,
+        writer.uint32(98).fork()
+      ).ldelim();
+    }
+    if (message.provisionPolicy !== undefined) {
+      ProvisionPolicy.encode(
+        message.provisionPolicy,
+        writer.uint32(106).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -482,6 +519,7 @@ export const Revision = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseRevision } as Revision;
+    message.secrets = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -516,6 +554,18 @@ export const Revision = {
           break;
         case 10:
           message.status = reader.int32() as any;
+          break;
+        case 11:
+          message.secrets.push(Secret.decode(reader, reader.uint32()));
+          break;
+        case 12:
+          message.connectivity = Connectivity.decode(reader, reader.uint32());
+          break;
+        case 13:
+          message.provisionPolicy = ProvisionPolicy.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -565,6 +615,17 @@ export const Revision = {
       object.status !== undefined && object.status !== null
         ? revision_StatusFromJSON(object.status)
         : 0;
+    message.secrets = (object.secrets ?? []).map((e: any) =>
+      Secret.fromJSON(e)
+    );
+    message.connectivity =
+      object.connectivity !== undefined && object.connectivity !== null
+        ? Connectivity.fromJSON(object.connectivity)
+        : undefined;
+    message.provisionPolicy =
+      object.provisionPolicy !== undefined && object.provisionPolicy !== null
+        ? ProvisionPolicy.fromJSON(object.provisionPolicy)
+        : undefined;
     return message;
   },
 
@@ -593,6 +654,21 @@ export const Revision = {
       (obj.serviceAccountId = message.serviceAccountId);
     message.status !== undefined &&
       (obj.status = revision_StatusToJSON(message.status));
+    if (message.secrets) {
+      obj.secrets = message.secrets.map((e) =>
+        e ? Secret.toJSON(e) : undefined
+      );
+    } else {
+      obj.secrets = [];
+    }
+    message.connectivity !== undefined &&
+      (obj.connectivity = message.connectivity
+        ? Connectivity.toJSON(message.connectivity)
+        : undefined);
+    message.provisionPolicy !== undefined &&
+      (obj.provisionPolicy = message.provisionPolicy
+        ? ProvisionPolicy.toJSON(message.provisionPolicy)
+        : undefined);
     return obj;
   },
 
@@ -617,6 +693,15 @@ export const Revision = {
     message.concurrency = object.concurrency ?? 0;
     message.serviceAccountId = object.serviceAccountId ?? "";
     message.status = object.status ?? 0;
+    message.secrets = object.secrets?.map((e) => Secret.fromPartial(e)) || [];
+    message.connectivity =
+      object.connectivity !== undefined && object.connectivity !== null
+        ? Connectivity.fromPartial(object.connectivity)
+        : undefined;
+    message.provisionPolicy =
+      object.provisionPolicy !== undefined && object.provisionPolicy !== null
+        ? ProvisionPolicy.fromPartial(object.provisionPolicy)
+        : undefined;
     return message;
   },
 };
@@ -1064,6 +1149,242 @@ export const Resources = {
 };
 
 messageTypeRegistry.set(Resources.$type, Resources);
+
+const baseProvisionPolicy: object = {
+  $type: "yandex.cloud.serverless.containers.v1.ProvisionPolicy",
+  minInstances: 0,
+};
+
+export const ProvisionPolicy = {
+  $type: "yandex.cloud.serverless.containers.v1.ProvisionPolicy" as const,
+
+  encode(
+    message: ProvisionPolicy,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.minInstances !== 0) {
+      writer.uint32(8).int64(message.minInstances);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProvisionPolicy {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseProvisionPolicy } as ProvisionPolicy;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.minInstances = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProvisionPolicy {
+    const message = { ...baseProvisionPolicy } as ProvisionPolicy;
+    message.minInstances =
+      object.minInstances !== undefined && object.minInstances !== null
+        ? Number(object.minInstances)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: ProvisionPolicy): unknown {
+    const obj: any = {};
+    message.minInstances !== undefined &&
+      (obj.minInstances = Math.round(message.minInstances));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ProvisionPolicy>, I>>(
+    object: I
+  ): ProvisionPolicy {
+    const message = { ...baseProvisionPolicy } as ProvisionPolicy;
+    message.minInstances = object.minInstances ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(ProvisionPolicy.$type, ProvisionPolicy);
+
+const baseSecret: object = {
+  $type: "yandex.cloud.serverless.containers.v1.Secret",
+  id: "",
+  versionId: "",
+  key: "",
+};
+
+export const Secret = {
+  $type: "yandex.cloud.serverless.containers.v1.Secret" as const,
+
+  encode(
+    message: Secret,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.versionId !== "") {
+      writer.uint32(18).string(message.versionId);
+    }
+    if (message.key !== "") {
+      writer.uint32(26).string(message.key);
+    }
+    if (message.environmentVariable !== undefined) {
+      writer.uint32(34).string(message.environmentVariable);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Secret {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseSecret } as Secret;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+        case 2:
+          message.versionId = reader.string();
+          break;
+        case 3:
+          message.key = reader.string();
+          break;
+        case 4:
+          message.environmentVariable = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Secret {
+    const message = { ...baseSecret } as Secret;
+    message.id =
+      object.id !== undefined && object.id !== null ? String(object.id) : "";
+    message.versionId =
+      object.versionId !== undefined && object.versionId !== null
+        ? String(object.versionId)
+        : "";
+    message.key =
+      object.key !== undefined && object.key !== null ? String(object.key) : "";
+    message.environmentVariable =
+      object.environmentVariable !== undefined &&
+      object.environmentVariable !== null
+        ? String(object.environmentVariable)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Secret): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    message.versionId !== undefined && (obj.versionId = message.versionId);
+    message.key !== undefined && (obj.key = message.key);
+    message.environmentVariable !== undefined &&
+      (obj.environmentVariable = message.environmentVariable);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Secret>, I>>(object: I): Secret {
+    const message = { ...baseSecret } as Secret;
+    message.id = object.id ?? "";
+    message.versionId = object.versionId ?? "";
+    message.key = object.key ?? "";
+    message.environmentVariable = object.environmentVariable ?? undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Secret.$type, Secret);
+
+const baseConnectivity: object = {
+  $type: "yandex.cloud.serverless.containers.v1.Connectivity",
+  networkId: "",
+  subnetIds: "",
+};
+
+export const Connectivity = {
+  $type: "yandex.cloud.serverless.containers.v1.Connectivity" as const,
+
+  encode(
+    message: Connectivity,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.networkId !== "") {
+      writer.uint32(10).string(message.networkId);
+    }
+    for (const v of message.subnetIds) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Connectivity {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseConnectivity } as Connectivity;
+    message.subnetIds = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.networkId = reader.string();
+          break;
+        case 2:
+          message.subnetIds.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Connectivity {
+    const message = { ...baseConnectivity } as Connectivity;
+    message.networkId =
+      object.networkId !== undefined && object.networkId !== null
+        ? String(object.networkId)
+        : "";
+    message.subnetIds = (object.subnetIds ?? []).map((e: any) => String(e));
+    return message;
+  },
+
+  toJSON(message: Connectivity): unknown {
+    const obj: any = {};
+    message.networkId !== undefined && (obj.networkId = message.networkId);
+    if (message.subnetIds) {
+      obj.subnetIds = message.subnetIds.map((e) => e);
+    } else {
+      obj.subnetIds = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Connectivity>, I>>(
+    object: I
+  ): Connectivity {
+    const message = { ...baseConnectivity } as Connectivity;
+    message.networkId = object.networkId ?? "";
+    message.subnetIds = object.subnetIds?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Connectivity.$type, Connectivity);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

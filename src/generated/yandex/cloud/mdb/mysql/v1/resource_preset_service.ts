@@ -21,8 +21,9 @@ export const protobufPackage = "yandex.cloud.mdb.mysql.v1";
 export interface GetResourcePresetRequest {
   $type: "yandex.cloud.mdb.mysql.v1.GetResourcePresetRequest";
   /**
-   * ID of the resource preset to return.
-   * To get the resource preset ID, use a [ResourcePresetService.List] request.
+   * ID of the resource preset to return information about.
+   *
+   * To get this ID, make a [ResourcePresetService.List] request.
    */
   resourcePresetId: string;
 }
@@ -30,14 +31,15 @@ export interface GetResourcePresetRequest {
 export interface ListResourcePresetsRequest {
   $type: "yandex.cloud.mdb.mysql.v1.ListResourcePresetsRequest";
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size], the service returns a [ListResourcePresetsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the API returns a [ListResourcePresetsResponse.next_page_token] that can be used to get the next page of results in the subsequent [ResourcePresetService.List] requests.
    */
   pageSize: number;
   /**
-   * Page token. To get the next page of results, set [page_token] to the [ListResourcePresetsResponse.next_page_token]
-   * returned by a previous list request.
+   * Page token that can be used to iterate through multiple pages of results.
+   *
+   * To get the next page of results, set [page_token] to the [ListResourcePresetsResponse.next_page_token] returned by the previous [ResourcePresetService.List] request.
    */
   pageToken: string;
 }
@@ -47,10 +49,11 @@ export interface ListResourcePresetsResponse {
   /** List of resource presets. */
   resourcePresets: ResourcePreset[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListResourcePresetsRequest.page_size], use the [next_page_token] as the value
-   * for the [ListResourcePresetsRequest.page_token] parameter in the next list request. Each subsequent
-   * list request will have its own [next_page_token] to continue paging through the results.
+   * The token that can be used to get the next page of results.
+   *
+   * If the number of results is larger than [ListResourcePresetsRequest.page_size], use the [next_page_token] as the value for the [ListResourcePresetsRequest.page_token] in the subsequent [ResourcePresetService.List] request to iterate through multiple pages of results.
+   *
+   * Each of the subsequent [ResourcePresetService.List] requests should use the [next_page_token] value returned by the previous request to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -314,13 +317,13 @@ messageTypeRegistry.set(
   ListResourcePresetsResponse
 );
 
-/** A set of methods for managing resource presets. */
+/**
+ * A set of methods for managing MySQL resource presets.
+ *
+ * See [the documentation](/docs/managed-mysql/concepts/instance-types) for details.
+ */
 export const ResourcePresetServiceService = {
-  /**
-   * Returns the specified resource preset.
-   *
-   * To get the list of available resource presets, make a [List] request.
-   */
+  /** Retrieves information about a resource preset. */
   get: {
     path: "/yandex.cloud.mdb.mysql.v1.ResourcePresetService/Get",
     requestStream: false,
@@ -351,11 +354,7 @@ export const ResourcePresetServiceService = {
 
 export interface ResourcePresetServiceServer
   extends UntypedServiceImplementation {
-  /**
-   * Returns the specified resource preset.
-   *
-   * To get the list of available resource presets, make a [List] request.
-   */
+  /** Retrieves information about a resource preset. */
   get: handleUnaryCall<GetResourcePresetRequest, ResourcePreset>;
   /** Retrieves the list of available resource presets. */
   list: handleUnaryCall<
@@ -365,11 +364,7 @@ export interface ResourcePresetServiceServer
 }
 
 export interface ResourcePresetServiceClient extends Client {
-  /**
-   * Returns the specified resource preset.
-   *
-   * To get the list of available resource presets, make a [List] request.
-   */
+  /** Retrieves information about a resource preset. */
   get(
     request: GetResourcePresetRequest,
     callback: (error: ServiceError | null, response: ResourcePreset) => void

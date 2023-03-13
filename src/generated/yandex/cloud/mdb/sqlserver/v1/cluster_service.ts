@@ -18,10 +18,13 @@ import {
   Cluster_Environment,
   Resources,
   Access,
+  ClusterConfig_SecondaryConnections,
   Cluster,
   Host,
   cluster_EnvironmentFromJSON,
   cluster_EnvironmentToJSON,
+  clusterConfig_SecondaryConnectionsFromJSON,
+  clusterConfig_SecondaryConnectionsToJSON,
 } from "../../../../../yandex/cloud/mdb/sqlserver/v1/cluster";
 import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import { TimeOfDay } from "../../../../../google/type/timeofday";
@@ -34,6 +37,14 @@ import {
   SQLServerConfig2016sp2std,
   SQLServerConfig2016sp2ent,
 } from "../../../../../yandex/cloud/mdb/sqlserver/v1/config/sqlserver2016sp2";
+import {
+  SQLServerConfig2017std,
+  SQLServerConfig2017ent,
+} from "../../../../../yandex/cloud/mdb/sqlserver/v1/config/sqlserver2017";
+import {
+  SQLServerConfig2019std,
+  SQLServerConfig2019ent,
+} from "../../../../../yandex/cloud/mdb/sqlserver/v1/config/sqlserver2019";
 
 export const protobufPackage = "yandex.cloud.mdb.sqlserver.v1";
 
@@ -56,24 +67,23 @@ export interface ListClustersRequest {
    */
   folderId: string;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than `page_size`, the service returns a [ListClustersResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the service returns a [ListClustersResponse.next_page_token] that can be used to get the next page of results in subsequent list requests.
    */
   pageSize: number;
-  /**
-   * Page token. To get the next page of results, set `page_token` to the [ListClustersResponse.next_page_token]
-   * returned by a previous list request.
-   */
+  /** Page token. To get the next page of results, set [page_token] to the [ListClustersResponse.next_page_token] returned by the previous list request. */
   pageToken: string;
   /**
    * A filter expression that filters resources listed in the response.
-   * The expression must specify:
-   * 1. The field name to filter by. Currently you can only use filtering with the [Cluster.name] field.
-   * 2. An `=` operator.
-   * 3. The value in double quotes (`"`). Must be 1-63 characters long and match the regular expression `[a-zA-Z0-9_-]+`.
    *
-   * Example of a filter: `name NOT IN 'test,beta'`.
+   * The expression must specify:
+   *
+   * 1. A field name to filter by. Currently you can only use filtering with the [Cluster.name] field.
+   * 2. A conditional operator. Can be either `=` or `!=` for single values, `IN` or `NOT IN` for lists of values.
+   * 3. A value. Must be 1-63 characters long and match the regular expression `[a-zA-Z0-9_-]+`.
+   *
+   * Example of a filter expression: `name NOT IN 'test,beta'`.
    */
   filter: string;
 }
@@ -83,10 +93,9 @@ export interface ListClustersResponse {
   /** List of SQL Server clusters. */
   clusters: Cluster[];
   /**
-   * Token that allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListClustersRequest.page_size], use the `next_page_token` as the value
-   * for the [ListClustersRequest.page_token] parameter in the next list request. Each subsequent
-   * list request will have its own `next_page_token` to continue paging through the results.
+   * Token that allows you to get the next page of results for list requests.
+   *
+   * If the number of results is larger than [ListClustersRequest.page_size], use the `next_page_token` as the value for the [ListClustersRequest.page_token] parameter in the next list request. Each subsequent list request has its own `next_page_token` to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -105,12 +114,12 @@ export interface CreateClusterRequest {
   description: string;
   /**
    * Custom labels for the SQL Server cluster as `key:value` pairs.
-   * For example, "project": "mvp" or "source": "dictionary".
+   * For example, "project":"mvp" or "source":"dictionary".
    */
   labels: { [key: string]: string };
   /** Deployment environment of the SQL Server cluster. */
   environment: Cluster_Environment;
-  /** SQL Server and hosts configuration for the cluster. */
+  /** Configurations of SQL Server and hosts of the cluster. */
   configSpec?: ConfigSpec;
   /** One or more configurations of databases to be created in the SQL Server cluster. */
   databaseSpecs: DatabaseSpec[];
@@ -120,12 +129,16 @@ export interface CreateClusterRequest {
   hostSpecs: HostSpec[];
   /** ID of the network to create the SQL Server cluster in. */
   networkId: string;
-  /** User security groups */
+  /** User security groups. */
   securityGroupIds: string[];
-  /** Deletion Protection inhibits deletion of the cluster */
+  /** Determines whether the cluster is protected from being deleted. */
   deletionProtection: boolean;
-  /** name of SQL Collation that cluster will be created with */
+  /** Name of SQL Collation that cluster will be created with. */
   sqlcollation: string;
+  /** Host groups hosting VMs of the cluster. */
+  hostGroupIds: string[];
+  /** ID of the service account used for access to Object Storage. */
+  serviceAccountId: string;
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -153,11 +166,12 @@ export interface UpdateClusterRequest {
   /** New description of the SQL Server cluster. */
   description: string;
   /**
-   * Custom labels for the SQL Server cluster as `key:value` pairs. Maximum 64 per resource.
+   * Custom labels for the SQL Server cluster as `key:value` pairs.
    *
-   * For example, "project": "mvp" or "source": "dictionary".
+   * For example, `"project":"mvp"` or `"source":"dictionary"`.
    *
-   * The new set of labels will completely replace the old ones.
+   * The new set of labels completely replaces the old one.
+   *
    * To add a label, request the current set with the [ClusterService.Get] method, then send an [ClusterService.Update] request with the new label added to the set.
    */
   labels: { [key: string]: string };
@@ -165,10 +179,12 @@ export interface UpdateClusterRequest {
   configSpec?: ConfigSpec;
   /** New name for the SQL Server cluster. */
   name: string;
-  /** User security groups */
+  /** User security groups. */
   securityGroupIds: string[];
-  /** Deletion Protection inhibits deletion of the cluster */
+  /** Determines whether the cluster is protected from being deleted. */
   deletionProtection: boolean;
+  /** ID of the service account used for access to Object Storage. */
+  serviceAccountId: string;
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
@@ -230,8 +246,9 @@ export interface RestoreClusterRequest {
   /** Description of the new SQL Server cluster to be created from the backup. */
   description: string;
   /**
-   * Custom labels for the new SQL Server cluster to be created from the backup as `key:value` pairs. Maximum 64 per resource.
-   * For example, "project": "mvp" or "source": "dictionary".
+   * Custom labels for the new SQL Server cluster to be created from the backup as `key:value` pairs.
+   *
+   * For example, `"project":"mvp"` or `"source":"dictionary"`.
    */
   labels: { [key: string]: string };
   /** Deployment environment of the new SQL Server cluster to be created from the backup. */
@@ -248,8 +265,14 @@ export interface RestoreClusterRequest {
    * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
    */
   folderId: string;
-  /** User security groups */
+  /** User security groups. */
   securityGroupIds: string[];
+  /** Determines whether the cluster is protected from being deleted. */
+  deletionProtection: boolean;
+  /** Host groups hosting VMs of the cluster. */
+  hostGroupIds: string[];
+  /** ID of the service account used for access to Object Storage. */
+  serviceAccountId: string;
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
@@ -264,6 +287,24 @@ export interface RestoreClusterMetadata {
   clusterId: string;
   /** ID of the backup being used for creating a cluster. */
   backupId: string;
+}
+
+export interface StartClusterFailoverRequest {
+  $type: "yandex.cloud.mdb.sqlserver.v1.StartClusterFailoverRequest";
+  /** ID of SQL Server cluster. */
+  clusterId: string;
+  /**
+   * Host name to switch master role to.
+   *
+   * To get this name, make a [ClusterService.ListHosts] request.
+   */
+  hostName: string;
+}
+
+export interface StartClusterFailoverMetadata {
+  $type: "yandex.cloud.mdb.sqlserver.v1.StartClusterFailoverMetadata";
+  /** ID of the SQL Server cluster being failovered. */
+  clusterId: string;
 }
 
 export interface LogRecord {
@@ -296,32 +337,30 @@ export interface ListClusterLogsRequest {
   columnFilter: string[];
   /** Type of the service to request logs about. */
   serviceType: ListClusterLogsRequest_ServiceType;
-  /** Start timestamp for the logs request. */
+  /** Specifies a moment that the logs are requested from. */
   fromTime?: Date;
-  /** End timestamp for the logs request. */
+  /** Specifies a moment that the logs are requested till. */
   toTime?: Date;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than `page_size`, the service returns a [ListClusterLogsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the service returns a [ListClusterLogsResponse.next_page_token] that can be used to get the next page of results in subsequent list requests.
    */
   pageSize: number;
-  /**
-   * Page token. To get the next page of results, set `page_token` to the
-   * [ListClusterLogsResponse.next_page_token] returned by a previous list request.
-   */
+  /** Page token. To get the next page of results, set [page_token] to the [ListClusterLogsResponse.next_page_token] returned by the previous list request. */
   pageToken: string;
-  /** Always return `next_page_token`, even if current page is empty. */
+  /** The service returns [next_page_token] even if the current page is empty. */
   alwaysNextPageToken: boolean;
   /**
    * A filter expression that filters resources listed in the response.
    *
    * The expression must specify:
-   * 1. The field name to filter by. Currently filtering can be applied to the [LogRecord.logs.message.hostname] field.
-   * 2. An `=` operator.
-   * 3. The value in double quotes (`"`). Must be 1-63 characters long and match the regular expression `[a-z0-9.-]{1,61}`.
    *
-   * Examples of a filter: `message.hostname='node1.db.cloud.yandex.net'`
+   * 1. A field name to filter by. Currently filtering can be applied to the [LogRecord.logs.message.hostname] field only.
+   * 2. A conditional operator. Can be either `=` or `!=` for single values, `IN` or `NOT IN` for lists of values.
+   * 3. A value. Must be 1-63 characters long and match the regular expression `[a-z0-9.-]{1,61}`.
+   *
+   * Example of a filter: `message.hostname='node1.db.cloud.yandex.net'`.
    */
   filter: string;
 }
@@ -375,10 +414,11 @@ export interface ListClusterLogsResponse {
   /** Requested log records. */
   logs: LogRecord[];
   /**
-   * Token that allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListClusterLogsRequest.page_size], use the `next_page_token` as the value
-   * for the [ListClusterLogsRequest.page_token] query parameter in the next list request.
-   * Each subsequent list request will have its own `next_page_token` to continue paging through the results.
+   * Token that allows you to get the next page of results for list requests.
+   *
+   * If the number of results is larger than [ListClusterLogsRequest.page_size], use the [next_page_token] as the value for the [ListClusterLogsRequest.page_token] query parameter in the next list request.
+   *
+   * Each subsequent list request has its own [next_page_token] to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -392,15 +432,12 @@ export interface ListClusterOperationsRequest {
    */
   clusterId: string;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than `page_size`, the service returns a [ListClusterOperationsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the service returns a [ListClusterOperationsResponse.next_page_token] that can be used to get the next page of results in subsequent list requests.
    */
   pageSize: number;
-  /**
-   * Page token. To get the next page of results, set `page_token` to the [ListClusterOperationsResponse.next_page_token]
-   * returned by a previous list request.
-   */
+  /** Page token. To get the next page of results, set [page_token] to the [ListClusterOperationsResponse.next_page_token] returned by the previous list request. */
   pageToken: string;
 }
 
@@ -409,10 +446,11 @@ export interface ListClusterOperationsResponse {
   /** List of operations for the specified SQL Server cluster. */
   operations: Operation[];
   /**
-   * Token that allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListClusterOperationsRequest.page_size], use the `next_page_token` as the value
-   * for the [ListClusterOperationsRequest.page_token] query parameter in the next list request.
-   * Each subsequent list request will have its own `next_page_token` to continue paging through the results.
+   * Token that allows you to get the next page of results for list requests.
+   *
+   * If the number of results is larger than [ListClusterOperationsRequest.page_size], use the [next_page_token] as the value for the [ListClusterOperationsRequest.page_token] query parameter in the next list request.
+   *
+   * Each subsequent list request has its own [next_page_token] to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -426,15 +464,12 @@ export interface ListClusterBackupsRequest {
    */
   clusterId: string;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than `page_size`, the service returns a [ListClusterBackupsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the service returns a [ListClusterBackupsResponse.next_page_token] that can be used to get the next page of results in subsequent list requests.
    */
   pageSize: number;
-  /**
-   * Page token. To get the next page of results, set `page_token` to the [ListClusterBackupsResponse.next_page_token]
-   * returned by a previous list request.
-   */
+  /** Page token. To get the next page of results, set [page_token] to the [ListClusterBackupsResponse.next_page_token] returned by the previous list request. */
   pageToken: string;
 }
 
@@ -443,10 +478,11 @@ export interface ListClusterBackupsResponse {
   /** List of SQL Server backups. */
   backups: Backup[];
   /**
-   * Token that allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListClusterBackupsRequest.page_size], use the `next_page_token` as the value
-   * for the [ListClusterBackupsRequest.page_token] query parameter in the next list request.
-   * Each subsequent list request will have its own `next_page_token` to continue paging through the results.
+   * Token that allows you to get the next page of results for list requests.
+   *
+   * If the number of results is larger than [ListClusterBackupsRequest.page_size], use the [next_page_token] as the value for the [ListClusterBackupsRequest.page_token] query parameter in the next list request.
+   *
+   * Each subsequent list request has its own [next_page_token] to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -460,15 +496,12 @@ export interface ListClusterHostsRequest {
    */
   clusterId: string;
   /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than `page_size`, the service returns a [ListClusterHostsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
+   * The maximum number of results per page to return.
+   *
+   * If the number of available results is larger than [page_size], the service returns a [ListClusterHostsResponse.next_page_token] that can be used to get the next page of results in subsequent list requests.
    */
   pageSize: number;
-  /**
-   * Page token. To get the next page of results, set `page_token` to the [ListClusterHostsResponse.next_page_token]
-   * returned by a previous list request.
-   */
+  /** Page token. To get the next page of results, set [page_token] to the [ListClusterHostsResponse.next_page_token] returned by the previous list request. */
   pageToken: string;
 }
 
@@ -477,10 +510,11 @@ export interface ListClusterHostsResponse {
   /** List of SQL Server hosts. */
   hosts: Host[];
   /**
-   * Token that allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListClusterHostsRequest.page_size], use the `next_page_token` as the value
-   * for the [ListClusterHostsRequest.page_token] query parameter in the next list request.
-   * Each subsequent list request will have its own `next_page_token` to continue paging through the results.
+   * Token that allows you to get the next page of results for list requests.
+   *
+   * If the number of results is larger than [ListClusterHostsRequest.page_size], use the [next_page_token] as the value for the [ListClusterHostsRequest.page_token] query parameter in the next list request.
+   *
+   * Each subsequent list request has its own [next_page_token] to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -560,22 +594,46 @@ export interface HostSpec {
    */
   zoneId: string;
   /**
-   * ID of the subnet that the host should belong to. This subnet should be a part
-   * of the network that the cluster belongs to.
+   * ID of the subnet that the host should belong to. This subnet should be a part of the network that the cluster belongs to.
+   *
    * The ID of the network is set in the field [Cluster.network_id].
    */
   subnetId: string;
   /**
-   * Whether the host should get a public IP address on creation.
+   * Determines whether the host gets a public IP address on creation.
    *
-   * After a host has been created, this setting cannot be changed. To remove an assigned public IP, or to assign
-   * a public IP to a host without one, recreate the host with [assign_public_ip] set as needed.
+   * After a host has been created, this setting cannot be changed. To remove an assigned public IP, or to assign a public IP to a host without one, recreate the host with [assign_public_ip] set as needed.
    *
    * Possible values:
-   * * false - don't assign a public IP to the host.
-   * * true - the host should have a public IP address.
+   * * `false` - do not assign a public IP to the host;
+   * * `true` - assign a public IP to the host.
    */
   assignPublicIp: boolean;
+}
+
+export interface UpdateHostSpec {
+  $type: "yandex.cloud.mdb.sqlserver.v1.UpdateHostSpec";
+  /**
+   * Name of the host to update.
+   *
+   * To get the SQL Server host name, use a [ClusterService.ListHosts] request.
+   */
+  hostName: string;
+  /** Field mask that specifies which fields of the SQL Server host should be updated. */
+  updateMask?: FieldMask;
+  /** Determines whether the host gets a public IP address on creation. */
+  assignPublicIp: boolean;
+}
+
+export interface UpdateClusterHostsRequest {
+  $type: "yandex.cloud.mdb.sqlserver.v1.UpdateClusterHostsRequest";
+  /**
+   * ID of the SQL Server cluster to update hosts in.
+   * To get the SQL Server cluster ID, use a [ClusterService.List] request.
+   */
+  clusterId: string;
+  /** New configurations to apply to hosts. */
+  updateHostSpecs: UpdateHostSpec[];
 }
 
 export interface ConfigSpec {
@@ -584,19 +642,34 @@ export interface ConfigSpec {
    * Version of SQL Server used in the cluster.
    *
    * Possible values:
-   * * 2016sp2
+   * * 2016sp2std,
+   * * 2016sp2ent,
+   * * 2017std,
+   * * 2017ent,
+   * * 2019std,
+   * * 2019ent.
    */
   version: string;
   /** Configuration for an SQL Server 2016 SP2 Standard edition cluster. */
   sqlserverConfig2016sp2std?: SQLServerConfig2016sp2std | undefined;
   /** Configuration for an SQL Server 2016 SP2 Enterprise edition cluster. */
   sqlserverConfig2016sp2ent?: SQLServerConfig2016sp2ent | undefined;
+  /** Configuration for an SQL Server 2017 Standard edition cluster. */
+  sqlserverConfig2017std?: SQLServerConfig2017std | undefined;
+  /** Configuration for an SQL Server 2017 Enterprise edition cluster. */
+  sqlserverConfig2017ent?: SQLServerConfig2017ent | undefined;
+  /** Configuration for an SQL Server 2019 Standard edition cluster. */
+  sqlserverConfig2019std?: SQLServerConfig2019std | undefined;
+  /** Configuration for an SQL Server 2019 Enterprise edition cluster. */
+  sqlserverConfig2019ent?: SQLServerConfig2019ent | undefined;
   /** Resources allocated to SQL Server hosts. */
   resources?: Resources;
-  /** Start time for the daily backup in UTC timezone */
+  /** Start time for the daily backup in UTC timezone. */
   backupWindowStart?: TimeOfDay;
-  /** Access policy to DB */
+  /** Database access policy. */
   access?: Access;
+  /** Secondary replicas connection mode */
+  secondaryConnections: ClusterConfig_SecondaryConnections;
 }
 
 const baseGetClusterRequest: object = {
@@ -858,6 +931,8 @@ const baseCreateClusterRequest: object = {
   securityGroupIds: "",
   deletionProtection: false,
   sqlcollation: "",
+  hostGroupIds: "",
+  serviceAccountId: "",
 };
 
 export const CreateClusterRequest = {
@@ -914,6 +989,12 @@ export const CreateClusterRequest = {
     if (message.sqlcollation !== "") {
       writer.uint32(106).string(message.sqlcollation);
     }
+    for (const v of message.hostGroupIds) {
+      writer.uint32(114).string(v!);
+    }
+    if (message.serviceAccountId !== "") {
+      writer.uint32(122).string(message.serviceAccountId);
+    }
     return writer;
   },
 
@@ -929,6 +1010,7 @@ export const CreateClusterRequest = {
     message.userSpecs = [];
     message.hostSpecs = [];
     message.securityGroupIds = [];
+    message.hostGroupIds = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -978,6 +1060,12 @@ export const CreateClusterRequest = {
           break;
         case 13:
           message.sqlcollation = reader.string();
+          break;
+        case 14:
+          message.hostGroupIds.push(reader.string());
+          break;
+        case 15:
+          message.serviceAccountId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1040,6 +1128,13 @@ export const CreateClusterRequest = {
       object.sqlcollation !== undefined && object.sqlcollation !== null
         ? String(object.sqlcollation)
         : "";
+    message.hostGroupIds = (object.hostGroupIds ?? []).map((e: any) =>
+      String(e)
+    );
+    message.serviceAccountId =
+      object.serviceAccountId !== undefined && object.serviceAccountId !== null
+        ? String(object.serviceAccountId)
+        : "";
     return message;
   },
 
@@ -1092,6 +1187,13 @@ export const CreateClusterRequest = {
       (obj.deletionProtection = message.deletionProtection);
     message.sqlcollation !== undefined &&
       (obj.sqlcollation = message.sqlcollation);
+    if (message.hostGroupIds) {
+      obj.hostGroupIds = message.hostGroupIds.map((e) => e);
+    } else {
+      obj.hostGroupIds = [];
+    }
+    message.serviceAccountId !== undefined &&
+      (obj.serviceAccountId = message.serviceAccountId);
     return obj;
   },
 
@@ -1125,6 +1227,8 @@ export const CreateClusterRequest = {
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? false;
     message.sqlcollation = object.sqlcollation ?? "";
+    message.hostGroupIds = object.hostGroupIds?.map((e) => e) || [];
+    message.serviceAccountId = object.serviceAccountId ?? "";
     return message;
   },
 };
@@ -1289,6 +1393,7 @@ const baseUpdateClusterRequest: object = {
   name: "",
   securityGroupIds: "",
   deletionProtection: false,
+  serviceAccountId: "",
 };
 
 export const UpdateClusterRequest = {
@@ -1329,6 +1434,9 @@ export const UpdateClusterRequest = {
     }
     if (message.deletionProtection === true) {
       writer.uint32(64).bool(message.deletionProtection);
+    }
+    if (message.serviceAccountId !== "") {
+      writer.uint32(74).string(message.serviceAccountId);
     }
     return writer;
   },
@@ -1375,6 +1483,9 @@ export const UpdateClusterRequest = {
         case 8:
           message.deletionProtection = reader.bool();
           break;
+        case 9:
+          message.serviceAccountId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1419,6 +1530,10 @@ export const UpdateClusterRequest = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.serviceAccountId =
+      object.serviceAccountId !== undefined && object.serviceAccountId !== null
+        ? String(object.serviceAccountId)
+        : "";
     return message;
   },
 
@@ -1449,6 +1564,8 @@ export const UpdateClusterRequest = {
     }
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.serviceAccountId !== undefined &&
+      (obj.serviceAccountId = message.serviceAccountId);
     return obj;
   },
 
@@ -1477,6 +1594,7 @@ export const UpdateClusterRequest = {
     message.name = object.name ?? "";
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? false;
+    message.serviceAccountId = object.serviceAccountId ?? "";
     return message;
   },
 };
@@ -1903,6 +2021,9 @@ const baseRestoreClusterRequest: object = {
   networkId: "",
   folderId: "",
   securityGroupIds: "",
+  deletionProtection: false,
+  hostGroupIds: "",
+  serviceAccountId: "",
 };
 
 export const RestoreClusterRequest = {
@@ -1956,6 +2077,15 @@ export const RestoreClusterRequest = {
     for (const v of message.securityGroupIds) {
       writer.uint32(98).string(v!);
     }
+    if (message.deletionProtection === true) {
+      writer.uint32(104).bool(message.deletionProtection);
+    }
+    for (const v of message.hostGroupIds) {
+      writer.uint32(114).string(v!);
+    }
+    if (message.serviceAccountId !== "") {
+      writer.uint32(122).string(message.serviceAccountId);
+    }
     return writer;
   },
 
@@ -1969,6 +2099,7 @@ export const RestoreClusterRequest = {
     message.labels = {};
     message.hostSpecs = [];
     message.securityGroupIds = [];
+    message.hostGroupIds = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2012,6 +2143,15 @@ export const RestoreClusterRequest = {
           break;
         case 12:
           message.securityGroupIds.push(reader.string());
+          break;
+        case 13:
+          message.deletionProtection = reader.bool();
+          break;
+        case 14:
+          message.hostGroupIds.push(reader.string());
+          break;
+        case 15:
+          message.serviceAccountId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2067,6 +2207,18 @@ export const RestoreClusterRequest = {
     message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) =>
       String(e)
     );
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
+    message.hostGroupIds = (object.hostGroupIds ?? []).map((e: any) =>
+      String(e)
+    );
+    message.serviceAccountId =
+      object.serviceAccountId !== undefined && object.serviceAccountId !== null
+        ? String(object.serviceAccountId)
+        : "";
     return message;
   },
 
@@ -2103,6 +2255,15 @@ export const RestoreClusterRequest = {
     } else {
       obj.securityGroupIds = [];
     }
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
+    if (message.hostGroupIds) {
+      obj.hostGroupIds = message.hostGroupIds.map((e) => e);
+    } else {
+      obj.hostGroupIds = [];
+    }
+    message.serviceAccountId !== undefined &&
+      (obj.serviceAccountId = message.serviceAccountId);
     return obj;
   },
 
@@ -2132,6 +2293,9 @@ export const RestoreClusterRequest = {
     message.networkId = object.networkId ?? "";
     message.folderId = object.folderId ?? "";
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
+    message.deletionProtection = object.deletionProtection ?? false;
+    message.hostGroupIds = object.hostGroupIds?.map((e) => e) || [];
+    message.serviceAccountId = object.serviceAccountId ?? "";
     return message;
   },
 };
@@ -2301,6 +2465,167 @@ export const RestoreClusterMetadata = {
 };
 
 messageTypeRegistry.set(RestoreClusterMetadata.$type, RestoreClusterMetadata);
+
+const baseStartClusterFailoverRequest: object = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.StartClusterFailoverRequest",
+  clusterId: "",
+  hostName: "",
+};
+
+export const StartClusterFailoverRequest = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.StartClusterFailoverRequest" as const,
+
+  encode(
+    message: StartClusterFailoverRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    if (message.hostName !== "") {
+      writer.uint32(18).string(message.hostName);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): StartClusterFailoverRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseStartClusterFailoverRequest,
+    } as StartClusterFailoverRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.hostName = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StartClusterFailoverRequest {
+    const message = {
+      ...baseStartClusterFailoverRequest,
+    } as StartClusterFailoverRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.hostName =
+      object.hostName !== undefined && object.hostName !== null
+        ? String(object.hostName)
+        : "";
+    return message;
+  },
+
+  toJSON(message: StartClusterFailoverRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.hostName !== undefined && (obj.hostName = message.hostName);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<StartClusterFailoverRequest>, I>>(
+    object: I
+  ): StartClusterFailoverRequest {
+    const message = {
+      ...baseStartClusterFailoverRequest,
+    } as StartClusterFailoverRequest;
+    message.clusterId = object.clusterId ?? "";
+    message.hostName = object.hostName ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  StartClusterFailoverRequest.$type,
+  StartClusterFailoverRequest
+);
+
+const baseStartClusterFailoverMetadata: object = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.StartClusterFailoverMetadata",
+  clusterId: "",
+};
+
+export const StartClusterFailoverMetadata = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.StartClusterFailoverMetadata" as const,
+
+  encode(
+    message: StartClusterFailoverMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): StartClusterFailoverMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseStartClusterFailoverMetadata,
+    } as StartClusterFailoverMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StartClusterFailoverMetadata {
+    const message = {
+      ...baseStartClusterFailoverMetadata,
+    } as StartClusterFailoverMetadata;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: StartClusterFailoverMetadata): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<StartClusterFailoverMetadata>, I>>(
+    object: I
+  ): StartClusterFailoverMetadata {
+    const message = {
+      ...baseStartClusterFailoverMetadata,
+    } as StartClusterFailoverMetadata;
+    message.clusterId = object.clusterId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  StartClusterFailoverMetadata.$type,
+  StartClusterFailoverMetadata
+);
 
 const baseLogRecord: object = {
   $type: "yandex.cloud.mdb.sqlserver.v1.LogRecord",
@@ -3927,9 +4252,199 @@ export const HostSpec = {
 
 messageTypeRegistry.set(HostSpec.$type, HostSpec);
 
+const baseUpdateHostSpec: object = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.UpdateHostSpec",
+  hostName: "",
+  assignPublicIp: false,
+};
+
+export const UpdateHostSpec = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.UpdateHostSpec" as const,
+
+  encode(
+    message: UpdateHostSpec,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.hostName !== "") {
+      writer.uint32(10).string(message.hostName);
+    }
+    if (message.updateMask !== undefined) {
+      FieldMask.encode(message.updateMask, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.assignPublicIp === true) {
+      writer.uint32(24).bool(message.assignPublicIp);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): UpdateHostSpec {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseUpdateHostSpec } as UpdateHostSpec;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.hostName = reader.string();
+          break;
+        case 2:
+          message.updateMask = FieldMask.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.assignPublicIp = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateHostSpec {
+    const message = { ...baseUpdateHostSpec } as UpdateHostSpec;
+    message.hostName =
+      object.hostName !== undefined && object.hostName !== null
+        ? String(object.hostName)
+        : "";
+    message.updateMask =
+      object.updateMask !== undefined && object.updateMask !== null
+        ? FieldMask.fromJSON(object.updateMask)
+        : undefined;
+    message.assignPublicIp =
+      object.assignPublicIp !== undefined && object.assignPublicIp !== null
+        ? Boolean(object.assignPublicIp)
+        : false;
+    return message;
+  },
+
+  toJSON(message: UpdateHostSpec): unknown {
+    const obj: any = {};
+    message.hostName !== undefined && (obj.hostName = message.hostName);
+    message.updateMask !== undefined &&
+      (obj.updateMask = message.updateMask
+        ? FieldMask.toJSON(message.updateMask)
+        : undefined);
+    message.assignPublicIp !== undefined &&
+      (obj.assignPublicIp = message.assignPublicIp);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UpdateHostSpec>, I>>(
+    object: I
+  ): UpdateHostSpec {
+    const message = { ...baseUpdateHostSpec } as UpdateHostSpec;
+    message.hostName = object.hostName ?? "";
+    message.updateMask =
+      object.updateMask !== undefined && object.updateMask !== null
+        ? FieldMask.fromPartial(object.updateMask)
+        : undefined;
+    message.assignPublicIp = object.assignPublicIp ?? false;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(UpdateHostSpec.$type, UpdateHostSpec);
+
+const baseUpdateClusterHostsRequest: object = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.UpdateClusterHostsRequest",
+  clusterId: "",
+};
+
+export const UpdateClusterHostsRequest = {
+  $type: "yandex.cloud.mdb.sqlserver.v1.UpdateClusterHostsRequest" as const,
+
+  encode(
+    message: UpdateClusterHostsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    for (const v of message.updateHostSpecs) {
+      UpdateHostSpec.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateClusterHostsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateClusterHostsRequest,
+    } as UpdateClusterHostsRequest;
+    message.updateHostSpecs = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.updateHostSpecs.push(
+            UpdateHostSpec.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateClusterHostsRequest {
+    const message = {
+      ...baseUpdateClusterHostsRequest,
+    } as UpdateClusterHostsRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.updateHostSpecs = (object.updateHostSpecs ?? []).map((e: any) =>
+      UpdateHostSpec.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: UpdateClusterHostsRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    if (message.updateHostSpecs) {
+      obj.updateHostSpecs = message.updateHostSpecs.map((e) =>
+        e ? UpdateHostSpec.toJSON(e) : undefined
+      );
+    } else {
+      obj.updateHostSpecs = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UpdateClusterHostsRequest>, I>>(
+    object: I
+  ): UpdateClusterHostsRequest {
+    const message = {
+      ...baseUpdateClusterHostsRequest,
+    } as UpdateClusterHostsRequest;
+    message.clusterId = object.clusterId ?? "";
+    message.updateHostSpecs =
+      object.updateHostSpecs?.map((e) => UpdateHostSpec.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  UpdateClusterHostsRequest.$type,
+  UpdateClusterHostsRequest
+);
+
 const baseConfigSpec: object = {
   $type: "yandex.cloud.mdb.sqlserver.v1.ConfigSpec",
   version: "",
+  secondaryConnections: 0,
 };
 
 export const ConfigSpec = {
@@ -3954,6 +4469,30 @@ export const ConfigSpec = {
         writer.uint32(42).fork()
       ).ldelim();
     }
+    if (message.sqlserverConfig2017std !== undefined) {
+      SQLServerConfig2017std.encode(
+        message.sqlserverConfig2017std,
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
+    if (message.sqlserverConfig2017ent !== undefined) {
+      SQLServerConfig2017ent.encode(
+        message.sqlserverConfig2017ent,
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
+    if (message.sqlserverConfig2019std !== undefined) {
+      SQLServerConfig2019std.encode(
+        message.sqlserverConfig2019std,
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
+    if (message.sqlserverConfig2019ent !== undefined) {
+      SQLServerConfig2019ent.encode(
+        message.sqlserverConfig2019ent,
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
@@ -3965,6 +4504,9 @@ export const ConfigSpec = {
     }
     if (message.access !== undefined) {
       Access.encode(message.access, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.secondaryConnections !== 0) {
+      writer.uint32(56).int32(message.secondaryConnections);
     }
     return writer;
   },
@@ -3991,6 +4533,30 @@ export const ConfigSpec = {
             reader.uint32()
           );
           break;
+        case 8:
+          message.sqlserverConfig2017std = SQLServerConfig2017std.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 9:
+          message.sqlserverConfig2017ent = SQLServerConfig2017ent.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 10:
+          message.sqlserverConfig2019std = SQLServerConfig2019std.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 11:
+          message.sqlserverConfig2019ent = SQLServerConfig2019ent.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
@@ -3999,6 +4565,9 @@ export const ConfigSpec = {
           break;
         case 6:
           message.access = Access.decode(reader, reader.uint32());
+          break;
+        case 7:
+          message.secondaryConnections = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -4024,6 +4593,26 @@ export const ConfigSpec = {
       object.sqlserverConfig_2016sp2ent !== null
         ? SQLServerConfig2016sp2ent.fromJSON(object.sqlserverConfig_2016sp2ent)
         : undefined;
+    message.sqlserverConfig2017std =
+      object.sqlserverConfig_2017std !== undefined &&
+      object.sqlserverConfig_2017std !== null
+        ? SQLServerConfig2017std.fromJSON(object.sqlserverConfig_2017std)
+        : undefined;
+    message.sqlserverConfig2017ent =
+      object.sqlserverConfig_2017ent !== undefined &&
+      object.sqlserverConfig_2017ent !== null
+        ? SQLServerConfig2017ent.fromJSON(object.sqlserverConfig_2017ent)
+        : undefined;
+    message.sqlserverConfig2019std =
+      object.sqlserverConfig_2019std !== undefined &&
+      object.sqlserverConfig_2019std !== null
+        ? SQLServerConfig2019std.fromJSON(object.sqlserverConfig_2019std)
+        : undefined;
+    message.sqlserverConfig2019ent =
+      object.sqlserverConfig_2019ent !== undefined &&
+      object.sqlserverConfig_2019ent !== null
+        ? SQLServerConfig2019ent.fromJSON(object.sqlserverConfig_2019ent)
+        : undefined;
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
@@ -4037,6 +4626,13 @@ export const ConfigSpec = {
       object.access !== undefined && object.access !== null
         ? Access.fromJSON(object.access)
         : undefined;
+    message.secondaryConnections =
+      object.secondaryConnections !== undefined &&
+      object.secondaryConnections !== null
+        ? clusterConfig_SecondaryConnectionsFromJSON(
+            object.secondaryConnections
+          )
+        : 0;
     return message;
   },
 
@@ -4051,6 +4647,22 @@ export const ConfigSpec = {
       (obj.sqlserverConfig_2016sp2ent = message.sqlserverConfig2016sp2ent
         ? SQLServerConfig2016sp2ent.toJSON(message.sqlserverConfig2016sp2ent)
         : undefined);
+    message.sqlserverConfig2017std !== undefined &&
+      (obj.sqlserverConfig_2017std = message.sqlserverConfig2017std
+        ? SQLServerConfig2017std.toJSON(message.sqlserverConfig2017std)
+        : undefined);
+    message.sqlserverConfig2017ent !== undefined &&
+      (obj.sqlserverConfig_2017ent = message.sqlserverConfig2017ent
+        ? SQLServerConfig2017ent.toJSON(message.sqlserverConfig2017ent)
+        : undefined);
+    message.sqlserverConfig2019std !== undefined &&
+      (obj.sqlserverConfig_2019std = message.sqlserverConfig2019std
+        ? SQLServerConfig2019std.toJSON(message.sqlserverConfig2019std)
+        : undefined);
+    message.sqlserverConfig2019ent !== undefined &&
+      (obj.sqlserverConfig_2019ent = message.sqlserverConfig2019ent
+        ? SQLServerConfig2019ent.toJSON(message.sqlserverConfig2019ent)
+        : undefined);
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
@@ -4061,6 +4673,10 @@ export const ConfigSpec = {
         : undefined);
     message.access !== undefined &&
       (obj.access = message.access ? Access.toJSON(message.access) : undefined);
+    message.secondaryConnections !== undefined &&
+      (obj.secondaryConnections = clusterConfig_SecondaryConnectionsToJSON(
+        message.secondaryConnections
+      ));
     return obj;
   },
 
@@ -4083,6 +4699,26 @@ export const ConfigSpec = {
             object.sqlserverConfig2016sp2ent
           )
         : undefined;
+    message.sqlserverConfig2017std =
+      object.sqlserverConfig2017std !== undefined &&
+      object.sqlserverConfig2017std !== null
+        ? SQLServerConfig2017std.fromPartial(object.sqlserverConfig2017std)
+        : undefined;
+    message.sqlserverConfig2017ent =
+      object.sqlserverConfig2017ent !== undefined &&
+      object.sqlserverConfig2017ent !== null
+        ? SQLServerConfig2017ent.fromPartial(object.sqlserverConfig2017ent)
+        : undefined;
+    message.sqlserverConfig2019std =
+      object.sqlserverConfig2019std !== undefined &&
+      object.sqlserverConfig2019std !== null
+        ? SQLServerConfig2019std.fromPartial(object.sqlserverConfig2019std)
+        : undefined;
+    message.sqlserverConfig2019ent =
+      object.sqlserverConfig2019ent !== undefined &&
+      object.sqlserverConfig2019ent !== null
+        ? SQLServerConfig2019ent.fromPartial(object.sqlserverConfig2019ent)
+        : undefined;
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
@@ -4096,6 +4732,7 @@ export const ConfigSpec = {
       object.access !== undefined && object.access !== null
         ? Access.fromPartial(object.access)
         : undefined;
+    message.secondaryConnections = object.secondaryConnections ?? 0;
     return message;
   },
 };
@@ -4228,6 +4865,19 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Starts a manual failover for a cluster. */
+  startFailover: {
+    path: "/yandex.cloud.mdb.sqlserver.v1.ClusterService/StartFailover",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: StartClusterFailoverRequest) =>
+      Buffer.from(StartClusterFailoverRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      StartClusterFailoverRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /**
    * Retrieves logs for the specified SQL Server cluster.
    *
@@ -4273,7 +4923,7 @@ export const ClusterServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListClusterBackupsResponse.decode(value),
   },
-  /** Retrieves a list of hosts for the specified SQL Server cluster. */
+  /** Retrieves the list of hosts for the specified SQL Server cluster. */
   listHosts: {
     path: "/yandex.cloud.mdb.sqlserver.v1.ClusterService/ListHosts",
     requestStream: false,
@@ -4286,6 +4936,19 @@ export const ClusterServiceService = {
       Buffer.from(ListClusterHostsResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer) =>
       ListClusterHostsResponse.decode(value),
+  },
+  /** Updates the specified hosts. */
+  updateHosts: {
+    path: "/yandex.cloud.mdb.sqlserver.v1.ClusterService/UpdateHosts",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: UpdateClusterHostsRequest) =>
+      Buffer.from(UpdateClusterHostsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      UpdateClusterHostsRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
 } as const;
 
@@ -4314,6 +4977,8 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
   backup: handleUnaryCall<BackupClusterRequest, Operation>;
   /** Creates a new SQL Server cluster using the specified backup. */
   restore: handleUnaryCall<RestoreClusterRequest, Operation>;
+  /** Starts a manual failover for a cluster. */
+  startFailover: handleUnaryCall<StartClusterFailoverRequest, Operation>;
   /**
    * Retrieves logs for the specified SQL Server cluster.
    *
@@ -4330,8 +4995,10 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
     ListClusterBackupsRequest,
     ListClusterBackupsResponse
   >;
-  /** Retrieves a list of hosts for the specified SQL Server cluster. */
+  /** Retrieves the list of hosts for the specified SQL Server cluster. */
   listHosts: handleUnaryCall<ListClusterHostsRequest, ListClusterHostsResponse>;
+  /** Updates the specified hosts. */
+  updateHosts: handleUnaryCall<UpdateClusterHostsRequest, Operation>;
 }
 
 export interface ClusterServiceClient extends Client {
@@ -4508,6 +5175,22 @@ export interface ClusterServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
+  /** Starts a manual failover for a cluster. */
+  startFailover(
+    request: StartClusterFailoverRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  startFailover(
+    request: StartClusterFailoverRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  startFailover(
+    request: StartClusterFailoverRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
   /**
    * Retrieves logs for the specified SQL Server cluster.
    *
@@ -4587,7 +5270,7 @@ export interface ClusterServiceClient extends Client {
       response: ListClusterBackupsResponse
     ) => void
   ): ClientUnaryCall;
-  /** Retrieves a list of hosts for the specified SQL Server cluster. */
+  /** Retrieves the list of hosts for the specified SQL Server cluster. */
   listHosts(
     request: ListClusterHostsRequest,
     callback: (
@@ -4611,6 +5294,22 @@ export interface ClusterServiceClient extends Client {
       error: ServiceError | null,
       response: ListClusterHostsResponse
     ) => void
+  ): ClientUnaryCall;
+  /** Updates the specified hosts. */
+  updateHosts(
+    request: UpdateClusterHostsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateHosts(
+    request: UpdateClusterHostsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateHosts(
+    request: UpdateClusterHostsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
 }
 

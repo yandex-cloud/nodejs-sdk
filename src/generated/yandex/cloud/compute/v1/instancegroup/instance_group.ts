@@ -318,14 +318,14 @@ export interface ScalePolicy_AutoScale {
   /**
    * Defines an autoscaling rule based on the average CPU utilization of the instance group.
    *
-   * If more than one rule is specified, e.g. CPU utilization and one or more Yandex Monitoring metrics ([custom_rules]),
+   * If more than one rule is specified, e.g. CPU utilization and one or more Monitoring metrics ([custom_rules]),
    * the size of the instance group will be equal to the maximum of sizes calculated according to each metric.
    */
   cpuUtilizationRule?: ScalePolicy_CpuUtilizationRule;
   /**
-   * Defines an autoscaling rule based on a [custom metric](/docs/monitoring/operations/metric/add) from Yandex Monitoring.
+   * Defines an autoscaling rule based on a [custom metric](/docs/monitoring/operations/metric/add) from Monitoring.
    *
-   * If more than one rule is specified, e.g. CPU utilization ([cpu_utilization_rule]) and one or more Yandex Monitoring
+   * If more than one rule is specified, e.g. CPU utilization ([cpu_utilization_rule]) and one or more Monitoring
    * metrics, the size of the instance group will be equal to the maximum of sizes calculated according to each metric.
    */
   customRules: ScalePolicy_CustomRule[];
@@ -392,15 +392,15 @@ export interface ScalePolicy_CustomRule {
   ruleType: ScalePolicy_CustomRule_RuleType;
   /** Type of custom metric. This field affects how Instance Groups calculates the average metric value. */
   metricType: ScalePolicy_CustomRule_MetricType;
-  /** Name of custom metric in Yandex Monitoring that should be used for scaling. */
+  /** Name of custom metric in Monitoring that should be used for scaling. */
   metricName: string;
-  /** Labels of custom metric in Yandex Monitoring that should be used for scaling. */
+  /** Labels of custom metric in Monitoring that should be used for scaling. */
   labels: { [key: string]: string };
   /** Target value for the custom metric. Instance Groups maintains this level for each availability zone. */
   target: number;
-  /** Folder id of custom metric in Yandex Monitoring that should be used for scaling. */
+  /** Folder id of custom metric in Monitoring that should be used for scaling. */
   folderId: string;
-  /** Service of custom metric in Yandex Monitoring that should be used for scaling. */
+  /** Service of custom metric in Monitoring that should be used for scaling. */
   service: string;
 }
 
@@ -718,7 +718,7 @@ export interface PlacementPolicy {
   hostAffinityRules: PlacementPolicy_HostAffinityRule[];
 }
 
-/** Affinitity definition */
+/** Affinity definition */
 export interface PlacementPolicy_HostAffinityRule {
   $type: "yandex.cloud.compute.v1.instancegroup.PlacementPolicy.HostAffinityRule";
   /** Affinity label or one of reserved values - 'yc.hostId', 'yc.hostGroupId' */

@@ -9,7 +9,11 @@ import {
 import { TimeOfDay } from "../../../../../google/type/timeofday";
 import { ClickhouseConfigSet } from "../../../../../yandex/cloud/mdb/clickhouse/v1/config/clickhouse";
 import { Timestamp } from "../../../../../google/protobuf/timestamp";
-import { BoolValue, Int64Value } from "../../../../../google/protobuf/wrappers";
+import {
+  BoolValue,
+  Int64Value,
+  DoubleValue,
+} from "../../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.mdb.clickhouse.v1";
 
@@ -49,7 +53,7 @@ export interface Cluster {
   health: Cluster_Health;
   /** Current state of the cluster. */
   status: Cluster_Status;
-  /** ID of the service account used for access to Yandex Object Storage. */
+  /** ID of the service account used for access to Object Storage. */
   serviceAccountId: string;
   /** Maintenance window for the cluster. */
   maintenanceWindow?: MaintenanceWindow;
@@ -61,7 +65,6 @@ export interface Cluster {
   deletionProtection: boolean;
 }
 
-/** Deployment environment. */
 export enum Cluster_Environment {
   ENVIRONMENT_UNSPECIFIED = 0,
   /**
@@ -320,7 +323,7 @@ export interface ShardConfig_Clickhouse {
   resources?: Resources;
   /**
    * Relative weight of a shard considered when writing data to the cluster.
-   * For details, see [ClickHouse documentation](https://clickhouse.yandex/docs/en/operations/table_engines/distributed/).
+   * For details, see [ClickHouse documentation](https://clickhouse.com/docs/en/operations/table_engines/distributed/).
    */
   weight?: number;
 }
@@ -331,7 +334,7 @@ export interface Host {
    * Name of the ClickHouse host. The host name is assigned by MDB at creation time, and cannot be changed.
    * 1-63 characters long.
    *
-   * The name is unique across all existing MDB hosts in Yandex.Cloud, as it defines the FQDN of the host.
+   * The name is unique across all MDB hosts that exist on the platform, as it defines the FQDN of the host.
    */
   name: string;
   /** ID of the ClickHouse host. The ID is assigned by MDB at creation time. */
@@ -551,28 +554,35 @@ export interface Resources {
 
 export interface Access {
   $type: "yandex.cloud.mdb.clickhouse.v1.Access";
-  /** Allow to export data from the cluster to Yandex DataLens. */
+  /** Allow to export data from the cluster to DataLens. */
   dataLens: boolean;
   /**
-   * Allow SQL queries to the cluster databases from the Yandex.Cloud management console.
+   * Allow SQL queries to the cluster databases from the management console.
    *
    * See [SQL queries in the management console](/docs/managed-clickhouse/operations/web-sql-query) for more details.
    */
   webSql: boolean;
   /**
-   * Allow to import data from Yandex.Metrica and AppMetrica to the cluster.
+   * Allow to import data from Yandex Metrica and AppMetrica to the cluster.
    *
-   * See [Export data to Yandex.Cloud](https://appmetrica.yandex.com/docs/cloud/index.html) for more details.
+   * See [AppMetrica documentation](https://appmetrica.yandex.com/docs/cloud/index.html) for more details.
    */
   metrika: boolean;
   /** Allow access to cluster for Serverless. */
   serverless: boolean;
+  /** Allow access for DataTransfer */
+  dataTransfer: boolean;
+  /** Allow access for Query */
+  yandexQuery: boolean;
 }
 
 export interface CloudStorage {
   $type: "yandex.cloud.mdb.clickhouse.v1.CloudStorage";
-  /** Whether to use Yandex Object Storage for storing ClickHouse data. */
+  /** Whether to use Object Storage for storing ClickHouse data. */
   enabled: boolean;
+  moveFactor?: number;
+  dataCacheEnabled?: boolean;
+  dataCacheMaxSize?: number;
 }
 
 const baseCluster: object = {
@@ -2217,6 +2227,8 @@ const baseAccess: object = {
   webSql: false,
   metrika: false,
   serverless: false,
+  dataTransfer: false,
+  yandexQuery: false,
 };
 
 export const Access = {
@@ -2237,6 +2249,12 @@ export const Access = {
     }
     if (message.serverless === true) {
       writer.uint32(32).bool(message.serverless);
+    }
+    if (message.dataTransfer === true) {
+      writer.uint32(40).bool(message.dataTransfer);
+    }
+    if (message.yandexQuery === true) {
+      writer.uint32(48).bool(message.yandexQuery);
     }
     return writer;
   },
@@ -2259,6 +2277,12 @@ export const Access = {
           break;
         case 4:
           message.serverless = reader.bool();
+          break;
+        case 5:
+          message.dataTransfer = reader.bool();
+          break;
+        case 6:
+          message.yandexQuery = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2286,6 +2310,14 @@ export const Access = {
       object.serverless !== undefined && object.serverless !== null
         ? Boolean(object.serverless)
         : false;
+    message.dataTransfer =
+      object.dataTransfer !== undefined && object.dataTransfer !== null
+        ? Boolean(object.dataTransfer)
+        : false;
+    message.yandexQuery =
+      object.yandexQuery !== undefined && object.yandexQuery !== null
+        ? Boolean(object.yandexQuery)
+        : false;
     return message;
   },
 
@@ -2295,6 +2327,10 @@ export const Access = {
     message.webSql !== undefined && (obj.webSql = message.webSql);
     message.metrika !== undefined && (obj.metrika = message.metrika);
     message.serverless !== undefined && (obj.serverless = message.serverless);
+    message.dataTransfer !== undefined &&
+      (obj.dataTransfer = message.dataTransfer);
+    message.yandexQuery !== undefined &&
+      (obj.yandexQuery = message.yandexQuery);
     return obj;
   },
 
@@ -2304,6 +2340,8 @@ export const Access = {
     message.webSql = object.webSql ?? false;
     message.metrika = object.metrika ?? false;
     message.serverless = object.serverless ?? false;
+    message.dataTransfer = object.dataTransfer ?? false;
+    message.yandexQuery = object.yandexQuery ?? false;
     return message;
   },
 };
@@ -2325,6 +2363,30 @@ export const CloudStorage = {
     if (message.enabled === true) {
       writer.uint32(8).bool(message.enabled);
     }
+    if (message.moveFactor !== undefined) {
+      DoubleValue.encode(
+        { $type: "google.protobuf.DoubleValue", value: message.moveFactor! },
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.dataCacheEnabled !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.dataCacheEnabled!,
+        },
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.dataCacheMaxSize !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.dataCacheMaxSize!,
+        },
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2337,6 +2399,24 @@ export const CloudStorage = {
       switch (tag >>> 3) {
         case 1:
           message.enabled = reader.bool();
+          break;
+        case 2:
+          message.moveFactor = DoubleValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 3:
+          message.dataCacheEnabled = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 4:
+          message.dataCacheMaxSize = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
           break;
         default:
           reader.skipType(tag & 7);
@@ -2352,12 +2432,29 @@ export const CloudStorage = {
       object.enabled !== undefined && object.enabled !== null
         ? Boolean(object.enabled)
         : false;
+    message.moveFactor =
+      object.moveFactor !== undefined && object.moveFactor !== null
+        ? Number(object.moveFactor)
+        : undefined;
+    message.dataCacheEnabled =
+      object.dataCacheEnabled !== undefined && object.dataCacheEnabled !== null
+        ? Boolean(object.dataCacheEnabled)
+        : undefined;
+    message.dataCacheMaxSize =
+      object.dataCacheMaxSize !== undefined && object.dataCacheMaxSize !== null
+        ? Number(object.dataCacheMaxSize)
+        : undefined;
     return message;
   },
 
   toJSON(message: CloudStorage): unknown {
     const obj: any = {};
     message.enabled !== undefined && (obj.enabled = message.enabled);
+    message.moveFactor !== undefined && (obj.moveFactor = message.moveFactor);
+    message.dataCacheEnabled !== undefined &&
+      (obj.dataCacheEnabled = message.dataCacheEnabled);
+    message.dataCacheMaxSize !== undefined &&
+      (obj.dataCacheMaxSize = message.dataCacheMaxSize);
     return obj;
   },
 
@@ -2366,6 +2463,9 @@ export const CloudStorage = {
   ): CloudStorage {
     const message = { ...baseCloudStorage } as CloudStorage;
     message.enabled = object.enabled ?? false;
+    message.moveFactor = object.moveFactor ?? undefined;
+    message.dataCacheEnabled = object.dataCacheEnabled ?? undefined;
+    message.dataCacheMaxSize = object.dataCacheMaxSize ?? undefined;
     return message;
   },
 };

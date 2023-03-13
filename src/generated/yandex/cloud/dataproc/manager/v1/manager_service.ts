@@ -18,6 +18,54 @@ import { Timestamp } from "../../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.dataproc.manager.v1";
 
+export enum InitActsState {
+  /** INIT_ACTS_STATE_UNSPECIFIED - No init acts on cluster */
+  INIT_ACTS_STATE_UNSPECIFIED = 0,
+  /** FAILED - At least one failed init act */
+  FAILED = 1,
+  /** SUCCESSFUL - All init acts succeeded */
+  SUCCESSFUL = 2,
+  /** IN_PROGRESS - Some init acts not finished */
+  IN_PROGRESS = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function initActsStateFromJSON(object: any): InitActsState {
+  switch (object) {
+    case 0:
+    case "INIT_ACTS_STATE_UNSPECIFIED":
+      return InitActsState.INIT_ACTS_STATE_UNSPECIFIED;
+    case 1:
+    case "FAILED":
+      return InitActsState.FAILED;
+    case 2:
+    case "SUCCESSFUL":
+      return InitActsState.SUCCESSFUL;
+    case 3:
+    case "IN_PROGRESS":
+      return InitActsState.IN_PROGRESS;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return InitActsState.UNRECOGNIZED;
+  }
+}
+
+export function initActsStateToJSON(object: InitActsState): string {
+  switch (object) {
+    case InitActsState.INIT_ACTS_STATE_UNSPECIFIED:
+      return "INIT_ACTS_STATE_UNSPECIFIED";
+    case InitActsState.FAILED:
+      return "FAILED";
+    case InitActsState.SUCCESSFUL:
+      return "SUCCESSFUL";
+    case InitActsState.IN_PROGRESS:
+      return "IN_PROGRESS";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export interface HbaseNodeInfo {
   $type: "yandex.cloud.dataproc.manager.v1.HbaseNodeInfo";
   name: string;
@@ -107,6 +155,13 @@ export interface LivyInfo {
   alive: boolean;
 }
 
+export interface InitActs {
+  $type: "yandex.cloud.dataproc.manager.v1.InitActs";
+  state: InitActsState;
+  /** fqdns of nodes for error message */
+  fqdns: string[];
+}
+
 export interface Info {
   $type: "yandex.cloud.dataproc.manager.v1.Info";
   hdfs?: HDFSInfo;
@@ -122,6 +177,7 @@ export interface Info {
    */
   reportCount: number;
   livy?: LivyInfo;
+  initActs?: InitActs;
 }
 
 /** The request message containing the host status report. */
@@ -1323,6 +1379,82 @@ export const LivyInfo = {
 
 messageTypeRegistry.set(LivyInfo.$type, LivyInfo);
 
+const baseInitActs: object = {
+  $type: "yandex.cloud.dataproc.manager.v1.InitActs",
+  state: 0,
+  fqdns: "",
+};
+
+export const InitActs = {
+  $type: "yandex.cloud.dataproc.manager.v1.InitActs" as const,
+
+  encode(
+    message: InitActs,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.state !== 0) {
+      writer.uint32(8).int32(message.state);
+    }
+    for (const v of message.fqdns) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): InitActs {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseInitActs } as InitActs;
+    message.fqdns = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.state = reader.int32() as any;
+          break;
+        case 2:
+          message.fqdns.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): InitActs {
+    const message = { ...baseInitActs } as InitActs;
+    message.state =
+      object.state !== undefined && object.state !== null
+        ? initActsStateFromJSON(object.state)
+        : 0;
+    message.fqdns = (object.fqdns ?? []).map((e: any) => String(e));
+    return message;
+  },
+
+  toJSON(message: InitActs): unknown {
+    const obj: any = {};
+    message.state !== undefined &&
+      (obj.state = initActsStateToJSON(message.state));
+    if (message.fqdns) {
+      obj.fqdns = message.fqdns.map((e) => e);
+    } else {
+      obj.fqdns = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<InitActs>, I>>(object: I): InitActs {
+    const message = { ...baseInitActs } as InitActs;
+    message.state = object.state ?? 0;
+    message.fqdns = object.fqdns?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(InitActs.$type, InitActs);
+
 const baseInfo: object = {
   $type: "yandex.cloud.dataproc.manager.v1.Info",
   reportCount: 0,
@@ -1359,6 +1491,9 @@ export const Info = {
     if (message.livy !== undefined) {
       LivyInfo.encode(message.livy, writer.uint32(66).fork()).ldelim();
     }
+    if (message.initActs !== undefined) {
+      InitActs.encode(message.initActs, writer.uint32(74).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1392,6 +1527,9 @@ export const Info = {
           break;
         case 8:
           message.livy = LivyInfo.decode(reader, reader.uint32());
+          break;
+        case 9:
+          message.initActs = InitActs.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1435,6 +1573,10 @@ export const Info = {
       object.livy !== undefined && object.livy !== null
         ? LivyInfo.fromJSON(object.livy)
         : undefined;
+    message.initActs =
+      object.initActs !== undefined && object.initActs !== null
+        ? InitActs.fromJSON(object.initActs)
+        : undefined;
     return message;
   },
 
@@ -1458,6 +1600,10 @@ export const Info = {
       (obj.reportCount = Math.round(message.reportCount));
     message.livy !== undefined &&
       (obj.livy = message.livy ? LivyInfo.toJSON(message.livy) : undefined);
+    message.initActs !== undefined &&
+      (obj.initActs = message.initActs
+        ? InitActs.toJSON(message.initActs)
+        : undefined);
     return obj;
   },
 
@@ -1491,6 +1637,10 @@ export const Info = {
     message.livy =
       object.livy !== undefined && object.livy !== null
         ? LivyInfo.fromPartial(object.livy)
+        : undefined;
+    message.initActs =
+      object.initActs !== undefined && object.initActs !== null
+        ? InitActs.fromPartial(object.initActs)
         : undefined;
     return message;
   },
@@ -1710,9 +1860,9 @@ export const ReportReply = {
 
 messageTypeRegistry.set(ReportReply.$type, ReportReply);
 
-/** Data Proc manager service defifnition */
+/** Data Proc manager service definition. */
 export const DataprocManagerServiceService = {
-  /** Sends a status report from a host */
+  /** Sends a status report from a host. */
   report: {
     path: "/yandex.cloud.dataproc.manager.v1.DataprocManagerService/Report",
     requestStream: false,
@@ -1728,12 +1878,12 @@ export const DataprocManagerServiceService = {
 
 export interface DataprocManagerServiceServer
   extends UntypedServiceImplementation {
-  /** Sends a status report from a host */
+  /** Sends a status report from a host. */
   report: handleUnaryCall<ReportRequest, ReportReply>;
 }
 
 export interface DataprocManagerServiceClient extends Client {
-  /** Sends a status report from a host */
+  /** Sends a status report from a host. */
   report(
     request: ReportRequest,
     callback: (error: ServiceError | null, response: ReportReply) => void

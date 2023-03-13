@@ -380,11 +380,17 @@ export interface ListenerSpec {
    * Endpoints are defined by their IP addresses and ports.
    */
   endpointSpecs: EndpointSpec[];
-  /** HTTP listener settings. */
+  /** Unencrypted HTTP listener settings. */
   http?: HttpListener | undefined;
-  /** TLS listener settings. */
+  /**
+   * TLS-encrypted HTTP or TCP stream listener settings.
+   *
+   * All handlers within a listener ([TlsListener.default_handler] and [TlsListener.sni_handlers]) must be of one
+   * type, [HttpHandler] or [StreamHandler]. Mixing HTTP and TCP stream traffic in a TLS-encrypted listener is not
+   * supported.
+   */
   tls?: TlsListener | undefined;
-  /** TCP listener settings. */
+  /** Unencrypted stream (TCP) listener settings. */
   stream?: StreamListener | undefined;
 }
 

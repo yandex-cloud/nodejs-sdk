@@ -6,38 +6,41 @@ import { Resources } from "../../../../../yandex/cloud/mdb/greenplum/v1/config";
 
 export const protobufPackage = "yandex.cloud.mdb.greenplum.v1";
 
+/** A Greenplum® cluster host resource. */
 export interface Host {
   $type: "yandex.cloud.mdb.greenplum.v1.Host";
   /**
-   * Name of the Greenplum host. The host name is assigned by MDB at creation time, and cannot be changed.
-   * 1-63 characters long.
+   * Name of the Greenplum® host.
    *
-   * The name is unique across all existing MDB hosts in Yandex.Cloud, as it defines the FQDN of the host.
+   * The host name is assigned by the platform at creation time and cannot be changed.
+   *
+   * The name is unique across all MDB hosts that exist on the platform, as it defines the FQDN of the host.
    */
   name: string;
-  /** ID of the Greenplum cluster. The ID is assigned by MDB at creation time. */
+  /** ID of the Greenplum® cluster. The ID is assigned by the platform at creation time. */
   clusterId: string;
-  /** ID of the availability zone where the Greenplum host resides. */
+  /** ID of the availability zone the Greenplum® host belongs to. */
   zoneId: string;
   /** Type of the host. */
   type: Host_Type;
-  /** Resources allocated to the Greenplum host. */
+  /** Resources allocated to the Greenplum® host. */
   resources?: Resources;
   /** Status code of the aggregated health of the host. */
   health: Host_Health;
   /** ID of the subnet that the host belongs to. */
   subnetId: string;
-  /** Flag showing public IP assignment status to this host. */
+  /** Determines whether a public IP is assigned to the host. */
   assignPublicIp: boolean;
 }
 
 export enum Host_Type {
+  /** TYPE_UNSPECIFIED - The type is not specified. */
   TYPE_UNSPECIFIED = 0,
-  /** MASTER - Greenplum master host. */
+  /** MASTER - A Greenplum® master host. */
   MASTER = 1,
-  /** REPLICA - Greenplum master host. */
+  /** REPLICA - A Greenplum® master replica host. */
   REPLICA = 2,
-  /** SEGMENT - Greenplum segment host. */
+  /** SEGMENT - A Greenplum® segment host. */
   SEGMENT = 3,
   UNRECOGNIZED = -1,
 }
@@ -83,11 +86,11 @@ export enum Host_Health {
   UNKNOWN = 0,
   /** ALIVE - The host is performing all its functions normally. */
   ALIVE = 1,
-  /** DEAD - The host is inoperable, and cannot perform any of its essential functions. */
+  /** DEAD - The host is inoperable and cannot perform any of its essential functions. */
   DEAD = 2,
   /** DEGRADED - The host is working below capacity or not fully functional. */
   DEGRADED = 3,
-  /** UNBALANCED - One or more segments are not in prefer role. */
+  /** UNBALANCED - One or more segments are not in the preferred role. */
   UNBALANCED = 4,
   UNRECOGNIZED = -1,
 }

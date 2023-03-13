@@ -19,6 +19,7 @@ import {
   BackendGroup,
   HttpBackendGroup,
   GrpcBackendGroup,
+  StreamBackendGroup,
   HttpBackend,
   GrpcBackend,
   StreamBackend,
@@ -131,6 +132,8 @@ export interface UpdateBackendGroupRequest {
   http?: HttpBackendGroup | undefined;
   /** New list of gRPC backends that the backend group will consist of. */
   grpc?: GrpcBackendGroup | undefined;
+  /** New list of stream (TCP) backends that the backend group will consist of. */
+  stream?: StreamBackendGroup | undefined;
 }
 
 export interface UpdateBackendGroupRequest_LabelsEntry {
@@ -169,6 +172,8 @@ export interface CreateBackendGroupRequest {
   http?: HttpBackendGroup | undefined;
   /** List of gRPC backends that the backend group consists of. */
   grpc?: GrpcBackendGroup | undefined;
+  /** List of stream (TCP) backends that the backend group consists of. */
+  stream?: StreamBackendGroup | undefined;
 }
 
 export interface CreateBackendGroupRequest_LabelsEntry {
@@ -217,7 +222,7 @@ export interface UpdateBackendRequest {
   http?: HttpBackend | undefined;
   /** New settings for the gRPC backend. */
   grpc?: GrpcBackend | undefined;
-  /** New settings for the Stream backend. */
+  /** New settings for the stream (TCP) backend. */
   stream?: StreamBackend | undefined;
 }
 
@@ -758,6 +763,12 @@ export const UpdateBackendGroupRequest = {
     if (message.grpc !== undefined) {
       GrpcBackendGroup.encode(message.grpc, writer.uint32(58).fork()).ldelim();
     }
+    if (message.stream !== undefined) {
+      StreamBackendGroup.encode(
+        message.stream,
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -801,6 +812,9 @@ export const UpdateBackendGroupRequest = {
         case 7:
           message.grpc = GrpcBackendGroup.decode(reader, reader.uint32());
           break;
+        case 8:
+          message.stream = StreamBackendGroup.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -843,6 +857,10 @@ export const UpdateBackendGroupRequest = {
       object.grpc !== undefined && object.grpc !== null
         ? GrpcBackendGroup.fromJSON(object.grpc)
         : undefined;
+    message.stream =
+      object.stream !== undefined && object.stream !== null
+        ? StreamBackendGroup.fromJSON(object.stream)
+        : undefined;
     return message;
   },
 
@@ -870,6 +888,10 @@ export const UpdateBackendGroupRequest = {
     message.grpc !== undefined &&
       (obj.grpc = message.grpc
         ? GrpcBackendGroup.toJSON(message.grpc)
+        : undefined);
+    message.stream !== undefined &&
+      (obj.stream = message.stream
+        ? StreamBackendGroup.toJSON(message.stream)
         : undefined);
     return obj;
   },
@@ -902,6 +924,10 @@ export const UpdateBackendGroupRequest = {
     message.grpc =
       object.grpc !== undefined && object.grpc !== null
         ? GrpcBackendGroup.fromPartial(object.grpc)
+        : undefined;
+    message.stream =
+      object.stream !== undefined && object.stream !== null
+        ? StreamBackendGroup.fromPartial(object.stream)
         : undefined;
     return message;
   },
@@ -1114,6 +1140,12 @@ export const CreateBackendGroupRequest = {
     if (message.grpc !== undefined) {
       GrpcBackendGroup.encode(message.grpc, writer.uint32(50).fork()).ldelim();
     }
+    if (message.stream !== undefined) {
+      StreamBackendGroup.encode(
+        message.stream,
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1154,6 +1186,9 @@ export const CreateBackendGroupRequest = {
         case 6:
           message.grpc = GrpcBackendGroup.decode(reader, reader.uint32());
           break;
+        case 7:
+          message.stream = StreamBackendGroup.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1192,6 +1227,10 @@ export const CreateBackendGroupRequest = {
       object.grpc !== undefined && object.grpc !== null
         ? GrpcBackendGroup.fromJSON(object.grpc)
         : undefined;
+    message.stream =
+      object.stream !== undefined && object.stream !== null
+        ? StreamBackendGroup.fromJSON(object.stream)
+        : undefined;
     return message;
   },
 
@@ -1214,6 +1253,10 @@ export const CreateBackendGroupRequest = {
     message.grpc !== undefined &&
       (obj.grpc = message.grpc
         ? GrpcBackendGroup.toJSON(message.grpc)
+        : undefined);
+    message.stream !== undefined &&
+      (obj.stream = message.stream
+        ? StreamBackendGroup.toJSON(message.stream)
         : undefined);
     return obj;
   },
@@ -1242,6 +1285,10 @@ export const CreateBackendGroupRequest = {
     message.grpc =
       object.grpc !== undefined && object.grpc !== null
         ? GrpcBackendGroup.fromPartial(object.grpc)
+        : undefined;
+    message.stream =
+      object.stream !== undefined && object.stream !== null
+        ? StreamBackendGroup.fromPartial(object.stream)
         : undefined;
     return message;
   },

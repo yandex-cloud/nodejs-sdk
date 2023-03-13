@@ -71,7 +71,7 @@ export interface ListClustersRequest {
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the [ListClustersResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
   /**
@@ -124,7 +124,7 @@ export interface CreateClusterRequest {
   networkId: string;
   /** Name of the first shard in cluster. If not set, defaults to the value 'shard1'. */
   shardName: string;
-  /** ID of the service account used for access to Yandex Object Storage. */
+  /** ID of the service account used for access to Object Storage. */
   serviceAccountId: string;
   /** User security groups */
   securityGroupIds: string[];
@@ -167,7 +167,7 @@ export interface UpdateClusterRequest {
   configSpec?: ConfigSpec;
   /** New name for the cluster. */
   name: string;
-  /** ID of the service account used for access to Yandex Object Storage. */
+  /** ID of the service account used for access to Object Storage. */
   serviceAccountId: string;
   /** New maintenance window settings for the cluster. */
   maintenanceWindow?: MaintenanceWindow;
@@ -313,7 +313,7 @@ export interface RestoreClusterRequest {
   networkId: string;
   /** ID of the folder to create the ClickHouse cluster in. */
   folderId: string;
-  /** ID of the service account used for access to Yandex Object Storage. */
+  /** ID of the service account used for access to Object Storage. */
   serviceAccountId: string;
   /** User security groups */
   securityGroupIds: string[];
@@ -443,7 +443,7 @@ export interface ListClusterLogsRequest {
   pageSize: number;
   /**
    * Page token.  To get the next page of results, set [page_token] to the [ListClusterLogsResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }
@@ -594,7 +594,7 @@ export interface ListClusterOperationsRequest {
   pageSize: number;
   /**
    * Page token.  To get the next page of results, set [page_token] to the [ListClusterOperationsResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }
@@ -627,7 +627,7 @@ export interface ListClusterBackupsRequest {
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the
-   * [ListClusterBackupsResponse.next_page_token] returned by a previous list request.
+   * [ListClusterBackupsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
 }
@@ -660,7 +660,7 @@ export interface ListClusterHostsRequest {
   pageSize: number;
   /**
    * Page token.  To get the next page of results, set [page_token] to the [ListClusterHostsResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }
@@ -696,6 +696,38 @@ export interface AddClusterHostsMetadata {
   /** ID of the ClickHouse cluster to which the hosts are being added. */
   clusterId: string;
   /** Names of hosts that are being added to the cluster. */
+  hostNames: string[];
+}
+
+export interface UpdateHostSpec {
+  $type: "yandex.cloud.mdb.clickhouse.v1.UpdateHostSpec";
+  /**
+   * Name of the host to update.
+   * To get the ClickHouse host name, use a [ClusterService.ListHosts] request.
+   */
+  hostName: string;
+  /** Field mask that specifies which fields of the ClickHouse host should be updated. */
+  updateMask?: FieldMask;
+  /** Whether the host should get a public IP address on creation. */
+  assignPublicIp?: boolean;
+}
+
+export interface UpdateClusterHostsRequest {
+  $type: "yandex.cloud.mdb.clickhouse.v1.UpdateClusterHostsRequest";
+  /**
+   * ID of the ClickHouse cluster to update hosts in.
+   * To get the ClickHouse cluster ID, use a [ClusterService.List] request.
+   */
+  clusterId: string;
+  /** New configurations to apply to hosts. */
+  updateHostSpecs: UpdateHostSpec[];
+}
+
+export interface UpdateClusterHostsMetadata {
+  $type: "yandex.cloud.mdb.clickhouse.v1.UpdateClusterHostsMetadata";
+  /** ID of the ClickHouse cluster to modify hosts in. */
+  clusterId: string;
+  /** Names of hosts that are being modified. */
   hostNames: string[];
 }
 
@@ -748,7 +780,7 @@ export interface ListClusterShardsRequest {
   pageSize: number;
   /**
    * Page token.  to get the next page of results, set [page_token] to the [ListClusterShardsResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }
@@ -872,7 +904,7 @@ export interface ListClusterShardGroupsRequest {
   /**
    * Page token.
    *
-   * To get the next page of results, set [page_token] to the [ListClusterShardGroupsResponse.next_page_token] returned by a previous list request.
+   * To get the next page of results, set [page_token] to the [ListClusterShardGroupsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
 }
@@ -988,6 +1020,27 @@ export interface CreateClusterExternalDictionaryMetadata {
   clusterId: string;
 }
 
+export interface UpdateClusterExternalDictionaryRequest {
+  $type: "yandex.cloud.mdb.clickhouse.v1.UpdateClusterExternalDictionaryRequest";
+  /**
+   * ID of the ClickHouse cluster to update the external dictionary for.
+   * To get the cluster ID, use a [List] request.
+   */
+  clusterId: string;
+  /** Configuration of the external dictionary. */
+  externalDictionary?: ClickhouseConfig_ExternalDictionary;
+  /** Field mask that specifies which fields of the External Dictionary should be updated. */
+  updateMask?: FieldMask;
+}
+
+export interface UpdateClusterExternalDictionaryMetadata {
+  $type: "yandex.cloud.mdb.clickhouse.v1.UpdateClusterExternalDictionaryMetadata";
+  /** ID of the cluster for which an external dictionary is being updated. */
+  clusterId: string;
+  /** Name of the external dictionary. */
+  externalDictionaryName: string;
+}
+
 export interface DeleteClusterExternalDictionaryRequest {
   $type: "yandex.cloud.mdb.clickhouse.v1.DeleteClusterExternalDictionaryRequest";
   /**
@@ -1093,7 +1146,7 @@ export interface ShardConfigSpec_Clickhouse {
   resources?: Resources;
   /**
    * Relative weight of the shard considered when writing data to the cluster.
-   * For details, see [ClickHouse documentation](https://clickhouse.yandex/docs/en/operations/table_engines/distributed/).
+   * For details, see [ClickHouse documentation](https://clickhouse.com/docs/en/operations/table_engines/distributed/).
    */
   weight?: number;
 }
@@ -5114,6 +5167,289 @@ export const AddClusterHostsMetadata = {
 
 messageTypeRegistry.set(AddClusterHostsMetadata.$type, AddClusterHostsMetadata);
 
+const baseUpdateHostSpec: object = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.UpdateHostSpec",
+  hostName: "",
+};
+
+export const UpdateHostSpec = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.UpdateHostSpec" as const,
+
+  encode(
+    message: UpdateHostSpec,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.hostName !== "") {
+      writer.uint32(10).string(message.hostName);
+    }
+    if (message.updateMask !== undefined) {
+      FieldMask.encode(message.updateMask, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.assignPublicIp !== undefined) {
+      BoolValue.encode(
+        { $type: "google.protobuf.BoolValue", value: message.assignPublicIp! },
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): UpdateHostSpec {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseUpdateHostSpec } as UpdateHostSpec;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.hostName = reader.string();
+          break;
+        case 2:
+          message.updateMask = FieldMask.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.assignPublicIp = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateHostSpec {
+    const message = { ...baseUpdateHostSpec } as UpdateHostSpec;
+    message.hostName =
+      object.hostName !== undefined && object.hostName !== null
+        ? String(object.hostName)
+        : "";
+    message.updateMask =
+      object.updateMask !== undefined && object.updateMask !== null
+        ? FieldMask.fromJSON(object.updateMask)
+        : undefined;
+    message.assignPublicIp =
+      object.assignPublicIp !== undefined && object.assignPublicIp !== null
+        ? Boolean(object.assignPublicIp)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: UpdateHostSpec): unknown {
+    const obj: any = {};
+    message.hostName !== undefined && (obj.hostName = message.hostName);
+    message.updateMask !== undefined &&
+      (obj.updateMask = message.updateMask
+        ? FieldMask.toJSON(message.updateMask)
+        : undefined);
+    message.assignPublicIp !== undefined &&
+      (obj.assignPublicIp = message.assignPublicIp);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UpdateHostSpec>, I>>(
+    object: I
+  ): UpdateHostSpec {
+    const message = { ...baseUpdateHostSpec } as UpdateHostSpec;
+    message.hostName = object.hostName ?? "";
+    message.updateMask =
+      object.updateMask !== undefined && object.updateMask !== null
+        ? FieldMask.fromPartial(object.updateMask)
+        : undefined;
+    message.assignPublicIp = object.assignPublicIp ?? undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(UpdateHostSpec.$type, UpdateHostSpec);
+
+const baseUpdateClusterHostsRequest: object = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.UpdateClusterHostsRequest",
+  clusterId: "",
+};
+
+export const UpdateClusterHostsRequest = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.UpdateClusterHostsRequest" as const,
+
+  encode(
+    message: UpdateClusterHostsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    for (const v of message.updateHostSpecs) {
+      UpdateHostSpec.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateClusterHostsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateClusterHostsRequest,
+    } as UpdateClusterHostsRequest;
+    message.updateHostSpecs = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.updateHostSpecs.push(
+            UpdateHostSpec.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateClusterHostsRequest {
+    const message = {
+      ...baseUpdateClusterHostsRequest,
+    } as UpdateClusterHostsRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.updateHostSpecs = (object.updateHostSpecs ?? []).map((e: any) =>
+      UpdateHostSpec.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: UpdateClusterHostsRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    if (message.updateHostSpecs) {
+      obj.updateHostSpecs = message.updateHostSpecs.map((e) =>
+        e ? UpdateHostSpec.toJSON(e) : undefined
+      );
+    } else {
+      obj.updateHostSpecs = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UpdateClusterHostsRequest>, I>>(
+    object: I
+  ): UpdateClusterHostsRequest {
+    const message = {
+      ...baseUpdateClusterHostsRequest,
+    } as UpdateClusterHostsRequest;
+    message.clusterId = object.clusterId ?? "";
+    message.updateHostSpecs =
+      object.updateHostSpecs?.map((e) => UpdateHostSpec.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  UpdateClusterHostsRequest.$type,
+  UpdateClusterHostsRequest
+);
+
+const baseUpdateClusterHostsMetadata: object = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.UpdateClusterHostsMetadata",
+  clusterId: "",
+  hostNames: "",
+};
+
+export const UpdateClusterHostsMetadata = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.UpdateClusterHostsMetadata" as const,
+
+  encode(
+    message: UpdateClusterHostsMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    for (const v of message.hostNames) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateClusterHostsMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateClusterHostsMetadata,
+    } as UpdateClusterHostsMetadata;
+    message.hostNames = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.hostNames.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateClusterHostsMetadata {
+    const message = {
+      ...baseUpdateClusterHostsMetadata,
+    } as UpdateClusterHostsMetadata;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.hostNames = (object.hostNames ?? []).map((e: any) => String(e));
+    return message;
+  },
+
+  toJSON(message: UpdateClusterHostsMetadata): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    if (message.hostNames) {
+      obj.hostNames = message.hostNames.map((e) => e);
+    } else {
+      obj.hostNames = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UpdateClusterHostsMetadata>, I>>(
+    object: I
+  ): UpdateClusterHostsMetadata {
+    const message = {
+      ...baseUpdateClusterHostsMetadata,
+    } as UpdateClusterHostsMetadata;
+    message.clusterId = object.clusterId ?? "";
+    message.hostNames = object.hostNames?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  UpdateClusterHostsMetadata.$type,
+  UpdateClusterHostsMetadata
+);
+
 const baseDeleteClusterHostsRequest: object = {
   $type: "yandex.cloud.mdb.clickhouse.v1.DeleteClusterHostsRequest",
   clusterId: "",
@@ -7239,6 +7575,219 @@ messageTypeRegistry.set(
   CreateClusterExternalDictionaryMetadata
 );
 
+const baseUpdateClusterExternalDictionaryRequest: object = {
+  $type:
+    "yandex.cloud.mdb.clickhouse.v1.UpdateClusterExternalDictionaryRequest",
+  clusterId: "",
+};
+
+export const UpdateClusterExternalDictionaryRequest = {
+  $type:
+    "yandex.cloud.mdb.clickhouse.v1.UpdateClusterExternalDictionaryRequest" as const,
+
+  encode(
+    message: UpdateClusterExternalDictionaryRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    if (message.externalDictionary !== undefined) {
+      ClickhouseConfig_ExternalDictionary.encode(
+        message.externalDictionary,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.updateMask !== undefined) {
+      FieldMask.encode(message.updateMask, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateClusterExternalDictionaryRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateClusterExternalDictionaryRequest,
+    } as UpdateClusterExternalDictionaryRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.externalDictionary =
+            ClickhouseConfig_ExternalDictionary.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.updateMask = FieldMask.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateClusterExternalDictionaryRequest {
+    const message = {
+      ...baseUpdateClusterExternalDictionaryRequest,
+    } as UpdateClusterExternalDictionaryRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.externalDictionary =
+      object.externalDictionary !== undefined &&
+      object.externalDictionary !== null
+        ? ClickhouseConfig_ExternalDictionary.fromJSON(
+            object.externalDictionary
+          )
+        : undefined;
+    message.updateMask =
+      object.updateMask !== undefined && object.updateMask !== null
+        ? FieldMask.fromJSON(object.updateMask)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: UpdateClusterExternalDictionaryRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.externalDictionary !== undefined &&
+      (obj.externalDictionary = message.externalDictionary
+        ? ClickhouseConfig_ExternalDictionary.toJSON(message.externalDictionary)
+        : undefined);
+    message.updateMask !== undefined &&
+      (obj.updateMask = message.updateMask
+        ? FieldMask.toJSON(message.updateMask)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<UpdateClusterExternalDictionaryRequest>, I>
+  >(object: I): UpdateClusterExternalDictionaryRequest {
+    const message = {
+      ...baseUpdateClusterExternalDictionaryRequest,
+    } as UpdateClusterExternalDictionaryRequest;
+    message.clusterId = object.clusterId ?? "";
+    message.externalDictionary =
+      object.externalDictionary !== undefined &&
+      object.externalDictionary !== null
+        ? ClickhouseConfig_ExternalDictionary.fromPartial(
+            object.externalDictionary
+          )
+        : undefined;
+    message.updateMask =
+      object.updateMask !== undefined && object.updateMask !== null
+        ? FieldMask.fromPartial(object.updateMask)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  UpdateClusterExternalDictionaryRequest.$type,
+  UpdateClusterExternalDictionaryRequest
+);
+
+const baseUpdateClusterExternalDictionaryMetadata: object = {
+  $type:
+    "yandex.cloud.mdb.clickhouse.v1.UpdateClusterExternalDictionaryMetadata",
+  clusterId: "",
+  externalDictionaryName: "",
+};
+
+export const UpdateClusterExternalDictionaryMetadata = {
+  $type:
+    "yandex.cloud.mdb.clickhouse.v1.UpdateClusterExternalDictionaryMetadata" as const,
+
+  encode(
+    message: UpdateClusterExternalDictionaryMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    if (message.externalDictionaryName !== "") {
+      writer.uint32(18).string(message.externalDictionaryName);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateClusterExternalDictionaryMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateClusterExternalDictionaryMetadata,
+    } as UpdateClusterExternalDictionaryMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.externalDictionaryName = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateClusterExternalDictionaryMetadata {
+    const message = {
+      ...baseUpdateClusterExternalDictionaryMetadata,
+    } as UpdateClusterExternalDictionaryMetadata;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.externalDictionaryName =
+      object.externalDictionaryName !== undefined &&
+      object.externalDictionaryName !== null
+        ? String(object.externalDictionaryName)
+        : "";
+    return message;
+  },
+
+  toJSON(message: UpdateClusterExternalDictionaryMetadata): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.externalDictionaryName !== undefined &&
+      (obj.externalDictionaryName = message.externalDictionaryName);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<UpdateClusterExternalDictionaryMetadata>, I>
+  >(object: I): UpdateClusterExternalDictionaryMetadata {
+    const message = {
+      ...baseUpdateClusterExternalDictionaryMetadata,
+    } as UpdateClusterExternalDictionaryMetadata;
+    message.clusterId = object.clusterId ?? "";
+    message.externalDictionaryName = object.externalDictionaryName ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  UpdateClusterExternalDictionaryMetadata.$type,
+  UpdateClusterExternalDictionaryMetadata
+);
+
 const baseDeleteClusterExternalDictionaryRequest: object = {
   $type:
     "yandex.cloud.mdb.clickhouse.v1.DeleteClusterExternalDictionaryRequest",
@@ -8352,6 +8901,19 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Updates the specified hosts. */
+  updateHosts: {
+    path: "/yandex.cloud.mdb.clickhouse.v1.ClusterService/UpdateHosts",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: UpdateClusterHostsRequest) =>
+      Buffer.from(UpdateClusterHostsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      UpdateClusterHostsRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /** Deletes the specified hosts for a cluster. */
   deleteHosts: {
     path: "/yandex.cloud.mdb.clickhouse.v1.ClusterService/DeleteHosts",
@@ -8510,6 +9072,21 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Updates an external dictionary for the specified ClickHouse cluster. */
+  updateExternalDictionary: {
+    path: "/yandex.cloud.mdb.clickhouse.v1.ClusterService/UpdateExternalDictionary",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: UpdateClusterExternalDictionaryRequest) =>
+      Buffer.from(
+        UpdateClusterExternalDictionaryRequest.encode(value).finish()
+      ),
+    requestDeserialize: (value: Buffer) =>
+      UpdateClusterExternalDictionaryRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /** Deletes the specified external dictionary. */
   deleteExternalDictionary: {
     path: "/yandex.cloud.mdb.clickhouse.v1.ClusterService/DeleteExternalDictionary",
@@ -8583,6 +9160,8 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
   listHosts: handleUnaryCall<ListClusterHostsRequest, ListClusterHostsResponse>;
   /** Creates new hosts for a cluster. */
   addHosts: handleUnaryCall<AddClusterHostsRequest, Operation>;
+  /** Updates the specified hosts. */
+  updateHosts: handleUnaryCall<UpdateClusterHostsRequest, Operation>;
   /** Deletes the specified hosts for a cluster. */
   deleteHosts: handleUnaryCall<DeleteClusterHostsRequest, Operation>;
   /** Returns the specified shard. */
@@ -8614,6 +9193,11 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
   /** Creates an external dictionary for the specified ClickHouse cluster. */
   createExternalDictionary: handleUnaryCall<
     CreateClusterExternalDictionaryRequest,
+    Operation
+  >;
+  /** Updates an external dictionary for the specified ClickHouse cluster. */
+  updateExternalDictionary: handleUnaryCall<
+    UpdateClusterExternalDictionaryRequest,
     Operation
   >;
   /** Deletes the specified external dictionary. */
@@ -8958,6 +9542,22 @@ export interface ClusterServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
+  /** Updates the specified hosts. */
+  updateHosts(
+    request: UpdateClusterHostsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateHosts(
+    request: UpdateClusterHostsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateHosts(
+    request: UpdateClusterHostsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
   /** Deletes the specified hosts for a cluster. */
   deleteHosts(
     request: DeleteClusterHostsRequest,
@@ -9164,6 +9764,22 @@ export interface ClusterServiceClient extends Client {
   ): ClientUnaryCall;
   createExternalDictionary(
     request: CreateClusterExternalDictionaryRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Updates an external dictionary for the specified ClickHouse cluster. */
+  updateExternalDictionary(
+    request: UpdateClusterExternalDictionaryRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateExternalDictionary(
+    request: UpdateClusterExternalDictionaryRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateExternalDictionary(
+    request: UpdateClusterExternalDictionaryRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

@@ -964,7 +964,7 @@ export const FeatureResult = {
 
 messageTypeRegistry.set(FeatureResult.$type, FeatureResult);
 
-/** A set of methods for the Yandex Vision service. */
+/** A set of methods for the Vision service. */
 export const VisionServiceService = {
   /** Analyzes a batch of images and returns results with annotations. */
   batchAnalyze: {

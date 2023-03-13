@@ -28,11 +28,7 @@ export interface LoadBalancer {
   labels: { [key: string]: string };
   /** Status of the application load balancer. */
   status: LoadBalancer_Status;
-  /**
-   * ID of the region that the application load balancer is located at.
-   *
-   * Currently Yandex Cloud supports only `ru-central1` region.
-   */
+  /** ID of the region that the application load balancer is located at. */
   regionId: string;
   /** ID of the network that the application load balancer belongs to. */
   networkId: string;
@@ -187,7 +183,7 @@ export interface Location {
   /**
    * ID of the availability zone where the application load balancer resides.
    *
-   * Each Yandex Cloud availability zone can only be specified once.
+   * Each availability zone can only be specified once.
    */
   zoneId: string;
   /** ID of the subnet that the application load balancer belongs to. */
@@ -227,11 +223,17 @@ export interface Listener {
    * Endpoints are defined by their IP addresses and ports.
    */
   endpoints: Endpoint[];
-  /** HTTP listener settings. */
+  /** Unencrypted HTTP listener settings. */
   http?: HttpListener | undefined;
-  /** HTTPS (HTTP over TLS) listener settings. */
+  /**
+   * TLS-encrypted HTTP or TCP stream listener settings.
+   *
+   * All handlers within a listener ([TlsListener.default_handler] and [TlsListener.sni_handlers]) must be of one
+   * type, [HttpHandler] or [StreamHandler]. Mixing HTTP and TCP stream traffic in a TLS-encrypted listener is not
+   * supported.
+   */
   tls?: TlsListener | undefined;
-  /** Stream listener settings. */
+  /** Unencrypted stream (TCP) listener settings. */
   stream?: StreamListener | undefined;
 }
 
@@ -261,7 +263,7 @@ export interface HttpListener {
   redirects?: Redirects;
 }
 
-/** An HTTPS (HTTP over TLS) listener resource. */
+/** TLS-encrypted (HTTP or TCP stream) listener resource. */
 export interface TlsListener {
   $type: "yandex.cloud.apploadbalancer.v1.TlsListener";
   /**
@@ -276,9 +278,10 @@ export interface TlsListener {
   sniHandlers: SniMatch[];
 }
 
-/** A Stream listener resource. */
+/** A stream (TCP) listener resource. */
 export interface StreamListener {
   $type: "yandex.cloud.apploadbalancer.v1.StreamListener";
+  /** Settings for handling stream (TCP) requests. */
   handler?: StreamHandler;
 }
 
@@ -289,9 +292,17 @@ export interface Http2Options {
   maxConcurrentStreams: number;
 }
 
-/** A stream handler resource. */
+/** A stream (TCP) handler resource. */
 export interface StreamHandler {
   $type: "yandex.cloud.apploadbalancer.v1.StreamHandler";
+  /**
+   * ID of the backend group processing requests. For details about the concept, see
+   * [documentation](/docs/application-load-balancer/concepts/backend-group).
+   *
+   * The backend group type, specified via [BackendGroup.backend], must be `stream`.
+   *
+   * To get the list of all available backend groups, make a [BackendGroupService.List] request.
+   */
   backendGroupId: string;
 }
 
@@ -299,9 +310,10 @@ export interface StreamHandler {
 export interface HttpHandler {
   $type: "yandex.cloud.apploadbalancer.v1.HttpHandler";
   /**
-   * ID of the HTTP router processing requests.
+   * ID of the HTTP router processing requests. For details about the concept, see
+   * [documentation](/docs/application-load-balancer/concepts/http-router).
    *
-   * For details about the concept, see [documentation](/docs/application-load-balancer/concepts/http-router).
+   * To get the list of all available HTTP routers, make a [HttpRouterService.List] request.
    */
   httpRouterId: string;
   /**
@@ -337,12 +349,12 @@ export interface SniMatch {
   handler?: TlsHandler;
 }
 
-/** An HTTPS (HTTP over TLS) handler resource. */
+/** A TLS-encrypted (HTTP or TCP stream) handler resource. */
 export interface TlsHandler {
   $type: "yandex.cloud.apploadbalancer.v1.TlsHandler";
   /** HTTP handler. */
   httpHandler?: HttpHandler | undefined;
-  /** Stream handler */
+  /** Stream (TCP) handler. */
   streamHandler?: StreamHandler | undefined;
   /**
    * ID's of the TLS server certificates from [Certificate Manager](/docs/certificate-manager/).

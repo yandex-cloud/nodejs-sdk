@@ -11,6 +11,8 @@ import { Timestamp } from "../../../../../google/protobuf/timestamp";
 import { Redisconfigset50 } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis5_0";
 import { Redisconfigset60 } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis6_0";
 import { Redisconfigset62 } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis6_2";
+import { Redisconfigset70 } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis7_0";
+import { Int64Value } from "../../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.mdb.redis.v1";
 
@@ -64,6 +66,8 @@ export interface Cluster {
   tlsEnabled: boolean;
   /** Deletion Protection inhibits deletion of the cluster */
   deletionProtection: boolean;
+  /** Persistence mode */
+  persistenceMode: Cluster_PersistenceMode;
 }
 
 export enum Cluster_Environment {
@@ -236,6 +240,44 @@ export function cluster_StatusToJSON(object: Cluster_Status): string {
   }
 }
 
+export enum Cluster_PersistenceMode {
+  /** ON - cluster persistence mode on */
+  ON = 0,
+  /** OFF - cluster persistence mode off */
+  OFF = 1,
+  UNRECOGNIZED = -1,
+}
+
+export function cluster_PersistenceModeFromJSON(
+  object: any
+): Cluster_PersistenceMode {
+  switch (object) {
+    case 0:
+    case "ON":
+      return Cluster_PersistenceMode.ON;
+    case 1:
+    case "OFF":
+      return Cluster_PersistenceMode.OFF;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Cluster_PersistenceMode.UNRECOGNIZED;
+  }
+}
+
+export function cluster_PersistenceModeToJSON(
+  object: Cluster_PersistenceMode
+): string {
+  switch (object) {
+    case Cluster_PersistenceMode.ON:
+      return "ON";
+    case Cluster_PersistenceMode.OFF:
+      return "OFF";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export interface Cluster_LabelsEntry {
   $type: "yandex.cloud.mdb.redis.v1.Cluster.LabelsEntry";
   key: string;
@@ -262,6 +304,8 @@ export interface ClusterConfig {
   redisConfig60?: Redisconfigset60 | undefined;
   /** Configuration of a Redis 6.2 server. */
   redisConfig62?: Redisconfigset62 | undefined;
+  /** Configuration of a Redis 7.0 server. */
+  redisConfig70?: Redisconfigset70 | undefined;
   /** Resources allocated to Redis hosts. */
   resources?: Resources;
   /** Time to start the daily backup, in the UTC timezone. */
@@ -287,7 +331,7 @@ export interface Host {
    * Name of the Redis host. The host name is assigned by MDB at creation time, and cannot be changed.
    * 1-63 characters long.
    *
-   * The name is unique across all existing MDB hosts in Yandex.Cloud, as it defines the FQDN of the host.
+   * The name is unique across all MDB hosts that exist on the platform, as it defines the FQDN of the host.
    */
   name: string;
   /** ID of the Redis cluster. The ID is assigned by MDB at creation time. */
@@ -305,6 +349,14 @@ export interface Host {
   /** Services provided by the host. */
   services: Service[];
   shardName: string;
+  /**
+   * A replica with a low priority number is considered better for promotion.
+   * A replica with priority of 0 will never be selected by Redis Sentinel for promotion.
+   * Works only for non-sharded clusters. Default value is 100.
+   */
+  replicaPriority?: number;
+  /** Flag showing public IP assignment status to this host. */
+  assignPublicIp: boolean;
 }
 
 export enum Host_Role {
@@ -530,6 +582,7 @@ const baseCluster: object = {
   securityGroupIds: "",
   tlsEnabled: false,
   deletionProtection: false,
+  persistenceMode: 0,
 };
 
 export const Cluster = {
@@ -609,6 +662,9 @@ export const Cluster = {
     if (message.deletionProtection === true) {
       writer.uint32(144).bool(message.deletionProtection);
     }
+    if (message.persistenceMode !== 0) {
+      writer.uint32(152).int32(message.persistenceMode);
+    }
     return writer;
   },
 
@@ -686,6 +742,9 @@ export const Cluster = {
           break;
         case 18:
           message.deletionProtection = reader.bool();
+          break;
+        case 19:
+          message.persistenceMode = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -769,6 +828,10 @@ export const Cluster = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.persistenceMode =
+      object.persistenceMode !== undefined && object.persistenceMode !== null
+        ? cluster_PersistenceModeFromJSON(object.persistenceMode)
+        : 0;
     return message;
   },
 
@@ -822,6 +885,10 @@ export const Cluster = {
     message.tlsEnabled !== undefined && (obj.tlsEnabled = message.tlsEnabled);
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.persistenceMode !== undefined &&
+      (obj.persistenceMode = cluster_PersistenceModeToJSON(
+        message.persistenceMode
+      ));
     return obj;
   },
 
@@ -863,6 +930,7 @@ export const Cluster = {
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.tlsEnabled = object.tlsEnabled ?? false;
     message.deletionProtection = object.deletionProtection ?? false;
+    message.persistenceMode = object.persistenceMode ?? 0;
     return message;
   },
 };
@@ -1064,6 +1132,12 @@ export const ClusterConfig = {
         writer.uint32(58).fork()
       ).ldelim();
     }
+    if (message.redisConfig70 !== undefined) {
+      Redisconfigset70.encode(
+        message.redisConfig70,
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
@@ -1107,6 +1181,12 @@ export const ClusterConfig = {
             reader.uint32()
           );
           break;
+        case 8:
+          message.redisConfig70 = Redisconfigset70.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
@@ -1142,6 +1222,10 @@ export const ClusterConfig = {
       object.redisConfig_6_2 !== undefined && object.redisConfig_6_2 !== null
         ? Redisconfigset62.fromJSON(object.redisConfig_6_2)
         : undefined;
+    message.redisConfig70 =
+      object.redisConfig_7_0 !== undefined && object.redisConfig_7_0 !== null
+        ? Redisconfigset70.fromJSON(object.redisConfig_7_0)
+        : undefined;
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
@@ -1173,6 +1257,10 @@ export const ClusterConfig = {
       (obj.redisConfig_6_2 = message.redisConfig62
         ? Redisconfigset62.toJSON(message.redisConfig62)
         : undefined);
+    message.redisConfig70 !== undefined &&
+      (obj.redisConfig_7_0 = message.redisConfig70
+        ? Redisconfigset70.toJSON(message.redisConfig70)
+        : undefined);
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
@@ -1202,6 +1290,10 @@ export const ClusterConfig = {
     message.redisConfig62 =
       object.redisConfig62 !== undefined && object.redisConfig62 !== null
         ? Redisconfigset62.fromPartial(object.redisConfig62)
+        : undefined;
+    message.redisConfig70 =
+      object.redisConfig70 !== undefined && object.redisConfig70 !== null
+        ? Redisconfigset70.fromPartial(object.redisConfig70)
         : undefined;
     message.resources =
       object.resources !== undefined && object.resources !== null
@@ -1301,6 +1393,7 @@ const baseHost: object = {
   role: 0,
   health: 0,
   shardName: "",
+  assignPublicIp: false,
 };
 
 export const Host = {
@@ -1333,6 +1426,18 @@ export const Host = {
     }
     if (message.shardName !== "") {
       writer.uint32(74).string(message.shardName);
+    }
+    if (message.replicaPriority !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.replicaPriority!,
+        },
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
+    if (message.assignPublicIp === true) {
+      writer.uint32(88).bool(message.assignPublicIp);
     }
     return writer;
   },
@@ -1371,6 +1476,15 @@ export const Host = {
           break;
         case 9:
           message.shardName = reader.string();
+          break;
+        case 10:
+          message.replicaPriority = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 11:
+          message.assignPublicIp = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1417,6 +1531,14 @@ export const Host = {
       object.shardName !== undefined && object.shardName !== null
         ? String(object.shardName)
         : "";
+    message.replicaPriority =
+      object.replicaPriority !== undefined && object.replicaPriority !== null
+        ? Number(object.replicaPriority)
+        : undefined;
+    message.assignPublicIp =
+      object.assignPublicIp !== undefined && object.assignPublicIp !== null
+        ? Boolean(object.assignPublicIp)
+        : false;
     return message;
   },
 
@@ -1441,6 +1563,10 @@ export const Host = {
       obj.services = [];
     }
     message.shardName !== undefined && (obj.shardName = message.shardName);
+    message.replicaPriority !== undefined &&
+      (obj.replicaPriority = message.replicaPriority);
+    message.assignPublicIp !== undefined &&
+      (obj.assignPublicIp = message.assignPublicIp);
     return obj;
   },
 
@@ -1459,6 +1585,8 @@ export const Host = {
     message.services =
       object.services?.map((e) => Service.fromPartial(e)) || [];
     message.shardName = object.shardName ?? "";
+    message.replicaPriority = object.replicaPriority ?? undefined;
+    message.assignPublicIp = object.assignPublicIp ?? false;
     return message;
   },
 };

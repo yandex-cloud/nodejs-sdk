@@ -4,3 +4,4 @@ export * from './session';
 export * from './utils/operation';
 export * from './utils/decode-message';
 export { WrappedServiceClientType } from './types';
+export * from './service-endpoints';

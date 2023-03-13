@@ -53,7 +53,7 @@ export interface ListMembersResponse {
 
 export interface ListMembersResponse_OrganizationUser {
   $type: "yandex.cloud.organizationmanager.v1.ListMembersResponse.OrganizationUser";
-  /** OpenID standard claims with additional Yandex.Organization claims. */
+  /** OpenID standard claims with additional Cloud Organization claims. */
   subjectClaims?: SubjectClaims;
 }
 

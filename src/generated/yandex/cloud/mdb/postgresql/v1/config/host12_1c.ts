@@ -98,6 +98,102 @@ export interface Postgresqlhostconfig121c {
   effectiveCacheSize?: number;
 }
 
+export enum Postgresqlhostconfig121c_BackslashQuote {
+  BACKSLASH_QUOTE_UNSPECIFIED = 0,
+  BACKSLASH_QUOTE = 1,
+  BACKSLASH_QUOTE_ON = 2,
+  BACKSLASH_QUOTE_OFF = 3,
+  BACKSLASH_QUOTE_SAFE_ENCODING = 4,
+  UNRECOGNIZED = -1,
+}
+
+export function postgresqlhostconfig121c_BackslashQuoteFromJSON(
+  object: any
+): Postgresqlhostconfig121c_BackslashQuote {
+  switch (object) {
+    case 0:
+    case "BACKSLASH_QUOTE_UNSPECIFIED":
+      return Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE_UNSPECIFIED;
+    case 1:
+    case "BACKSLASH_QUOTE":
+      return Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE;
+    case 2:
+    case "BACKSLASH_QUOTE_ON":
+      return Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE_ON;
+    case 3:
+    case "BACKSLASH_QUOTE_OFF":
+      return Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE_OFF;
+    case 4:
+    case "BACKSLASH_QUOTE_SAFE_ENCODING":
+      return Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE_SAFE_ENCODING;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Postgresqlhostconfig121c_BackslashQuote.UNRECOGNIZED;
+  }
+}
+
+export function postgresqlhostconfig121c_BackslashQuoteToJSON(
+  object: Postgresqlhostconfig121c_BackslashQuote
+): string {
+  switch (object) {
+    case Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE_UNSPECIFIED:
+      return "BACKSLASH_QUOTE_UNSPECIFIED";
+    case Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE:
+      return "BACKSLASH_QUOTE";
+    case Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE_ON:
+      return "BACKSLASH_QUOTE_ON";
+    case Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE_OFF:
+      return "BACKSLASH_QUOTE_OFF";
+    case Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE_SAFE_ENCODING:
+      return "BACKSLASH_QUOTE_SAFE_ENCODING";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export enum Postgresqlhostconfig121c_ByteaOutput {
+  BYTEA_OUTPUT_UNSPECIFIED = 0,
+  BYTEA_OUTPUT_HEX = 1,
+  BYTEA_OUTPUT_ESCAPED = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function postgresqlhostconfig121c_ByteaOutputFromJSON(
+  object: any
+): Postgresqlhostconfig121c_ByteaOutput {
+  switch (object) {
+    case 0:
+    case "BYTEA_OUTPUT_UNSPECIFIED":
+      return Postgresqlhostconfig121c_ByteaOutput.BYTEA_OUTPUT_UNSPECIFIED;
+    case 1:
+    case "BYTEA_OUTPUT_HEX":
+      return Postgresqlhostconfig121c_ByteaOutput.BYTEA_OUTPUT_HEX;
+    case 2:
+    case "BYTEA_OUTPUT_ESCAPED":
+      return Postgresqlhostconfig121c_ByteaOutput.BYTEA_OUTPUT_ESCAPED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Postgresqlhostconfig121c_ByteaOutput.UNRECOGNIZED;
+  }
+}
+
+export function postgresqlhostconfig121c_ByteaOutputToJSON(
+  object: Postgresqlhostconfig121c_ByteaOutput
+): string {
+  switch (object) {
+    case Postgresqlhostconfig121c_ByteaOutput.BYTEA_OUTPUT_UNSPECIFIED:
+      return "BYTEA_OUTPUT_UNSPECIFIED";
+    case Postgresqlhostconfig121c_ByteaOutput.BYTEA_OUTPUT_HEX:
+      return "BYTEA_OUTPUT_HEX";
+    case Postgresqlhostconfig121c_ByteaOutput.BYTEA_OUTPUT_ESCAPED:
+      return "BYTEA_OUTPUT_ESCAPED";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export enum Postgresqlhostconfig121c_ConstraintExclusion {
   CONSTRAINT_EXCLUSION_UNSPECIFIED = 0,
   CONSTRAINT_EXCLUSION_ON = 1,
@@ -194,6 +290,54 @@ export function postgresqlhostconfig121c_ForceParallelModeToJSON(
   }
 }
 
+export enum Postgresqlhostconfig121c_LogErrorVerbosity {
+  LOG_ERROR_VERBOSITY_UNSPECIFIED = 0,
+  LOG_ERROR_VERBOSITY_TERSE = 1,
+  LOG_ERROR_VERBOSITY_DEFAULT = 2,
+  LOG_ERROR_VERBOSITY_VERBOSE = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function postgresqlhostconfig121c_LogErrorVerbosityFromJSON(
+  object: any
+): Postgresqlhostconfig121c_LogErrorVerbosity {
+  switch (object) {
+    case 0:
+    case "LOG_ERROR_VERBOSITY_UNSPECIFIED":
+      return Postgresqlhostconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_UNSPECIFIED;
+    case 1:
+    case "LOG_ERROR_VERBOSITY_TERSE":
+      return Postgresqlhostconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_TERSE;
+    case 2:
+    case "LOG_ERROR_VERBOSITY_DEFAULT":
+      return Postgresqlhostconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_DEFAULT;
+    case 3:
+    case "LOG_ERROR_VERBOSITY_VERBOSE":
+      return Postgresqlhostconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_VERBOSE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Postgresqlhostconfig121c_LogErrorVerbosity.UNRECOGNIZED;
+  }
+}
+
+export function postgresqlhostconfig121c_LogErrorVerbosityToJSON(
+  object: Postgresqlhostconfig121c_LogErrorVerbosity
+): string {
+  switch (object) {
+    case Postgresqlhostconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_UNSPECIFIED:
+      return "LOG_ERROR_VERBOSITY_UNSPECIFIED";
+    case Postgresqlhostconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_TERSE:
+      return "LOG_ERROR_VERBOSITY_TERSE";
+    case Postgresqlhostconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_DEFAULT:
+      return "LOG_ERROR_VERBOSITY_DEFAULT";
+    case Postgresqlhostconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_VERBOSE:
+      return "LOG_ERROR_VERBOSITY_VERBOSE";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export enum Postgresqlhostconfig121c_LogLevel {
   LOG_LEVEL_UNSPECIFIED = 0,
   LOG_LEVEL_DEBUG5 = 1,
@@ -285,54 +429,6 @@ export function postgresqlhostconfig121c_LogLevelToJSON(
       return "LOG_LEVEL_FATAL";
     case Postgresqlhostconfig121c_LogLevel.LOG_LEVEL_PANIC:
       return "LOG_LEVEL_PANIC";
-    default:
-      return "UNKNOWN";
-  }
-}
-
-export enum Postgresqlhostconfig121c_LogErrorVerbosity {
-  LOG_ERROR_VERBOSITY_UNSPECIFIED = 0,
-  LOG_ERROR_VERBOSITY_TERSE = 1,
-  LOG_ERROR_VERBOSITY_DEFAULT = 2,
-  LOG_ERROR_VERBOSITY_VERBOSE = 3,
-  UNRECOGNIZED = -1,
-}
-
-export function postgresqlhostconfig121c_LogErrorVerbosityFromJSON(
-  object: any
-): Postgresqlhostconfig121c_LogErrorVerbosity {
-  switch (object) {
-    case 0:
-    case "LOG_ERROR_VERBOSITY_UNSPECIFIED":
-      return Postgresqlhostconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_UNSPECIFIED;
-    case 1:
-    case "LOG_ERROR_VERBOSITY_TERSE":
-      return Postgresqlhostconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_TERSE;
-    case 2:
-    case "LOG_ERROR_VERBOSITY_DEFAULT":
-      return Postgresqlhostconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_DEFAULT;
-    case 3:
-    case "LOG_ERROR_VERBOSITY_VERBOSE":
-      return Postgresqlhostconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_VERBOSE;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return Postgresqlhostconfig121c_LogErrorVerbosity.UNRECOGNIZED;
-  }
-}
-
-export function postgresqlhostconfig121c_LogErrorVerbosityToJSON(
-  object: Postgresqlhostconfig121c_LogErrorVerbosity
-): string {
-  switch (object) {
-    case Postgresqlhostconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_UNSPECIFIED:
-      return "LOG_ERROR_VERBOSITY_UNSPECIFIED";
-    case Postgresqlhostconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_TERSE:
-      return "LOG_ERROR_VERBOSITY_TERSE";
-    case Postgresqlhostconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_DEFAULT:
-      return "LOG_ERROR_VERBOSITY_DEFAULT";
-    case Postgresqlhostconfig121c_LogErrorVerbosity.LOG_ERROR_VERBOSITY_VERBOSE:
-      return "LOG_ERROR_VERBOSITY_VERBOSE";
     default:
       return "UNKNOWN";
   }
@@ -446,48 +542,6 @@ export function postgresqlhostconfig121c_TransactionIsolationToJSON(
   }
 }
 
-export enum Postgresqlhostconfig121c_ByteaOutput {
-  BYTEA_OUTPUT_UNSPECIFIED = 0,
-  BYTEA_OUTPUT_HEX = 1,
-  BYTEA_OUTPUT_ESCAPED = 2,
-  UNRECOGNIZED = -1,
-}
-
-export function postgresqlhostconfig121c_ByteaOutputFromJSON(
-  object: any
-): Postgresqlhostconfig121c_ByteaOutput {
-  switch (object) {
-    case 0:
-    case "BYTEA_OUTPUT_UNSPECIFIED":
-      return Postgresqlhostconfig121c_ByteaOutput.BYTEA_OUTPUT_UNSPECIFIED;
-    case 1:
-    case "BYTEA_OUTPUT_HEX":
-      return Postgresqlhostconfig121c_ByteaOutput.BYTEA_OUTPUT_HEX;
-    case 2:
-    case "BYTEA_OUTPUT_ESCAPED":
-      return Postgresqlhostconfig121c_ByteaOutput.BYTEA_OUTPUT_ESCAPED;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return Postgresqlhostconfig121c_ByteaOutput.UNRECOGNIZED;
-  }
-}
-
-export function postgresqlhostconfig121c_ByteaOutputToJSON(
-  object: Postgresqlhostconfig121c_ByteaOutput
-): string {
-  switch (object) {
-    case Postgresqlhostconfig121c_ByteaOutput.BYTEA_OUTPUT_UNSPECIFIED:
-      return "BYTEA_OUTPUT_UNSPECIFIED";
-    case Postgresqlhostconfig121c_ByteaOutput.BYTEA_OUTPUT_HEX:
-      return "BYTEA_OUTPUT_HEX";
-    case Postgresqlhostconfig121c_ByteaOutput.BYTEA_OUTPUT_ESCAPED:
-      return "BYTEA_OUTPUT_ESCAPED";
-    default:
-      return "UNKNOWN";
-  }
-}
-
 export enum Postgresqlhostconfig121c_XmlBinary {
   XML_BINARY_UNSPECIFIED = 0,
   XML_BINARY_BASE64 = 1,
@@ -567,60 +621,6 @@ export function postgresqlhostconfig121c_XmlOptionToJSON(
       return "XML_OPTION_DOCUMENT";
     case Postgresqlhostconfig121c_XmlOption.XML_OPTION_CONTENT:
       return "XML_OPTION_CONTENT";
-    default:
-      return "UNKNOWN";
-  }
-}
-
-export enum Postgresqlhostconfig121c_BackslashQuote {
-  BACKSLASH_QUOTE_UNSPECIFIED = 0,
-  BACKSLASH_QUOTE = 1,
-  BACKSLASH_QUOTE_ON = 2,
-  BACKSLASH_QUOTE_OFF = 3,
-  BACKSLASH_QUOTE_SAFE_ENCODING = 4,
-  UNRECOGNIZED = -1,
-}
-
-export function postgresqlhostconfig121c_BackslashQuoteFromJSON(
-  object: any
-): Postgresqlhostconfig121c_BackslashQuote {
-  switch (object) {
-    case 0:
-    case "BACKSLASH_QUOTE_UNSPECIFIED":
-      return Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE_UNSPECIFIED;
-    case 1:
-    case "BACKSLASH_QUOTE":
-      return Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE;
-    case 2:
-    case "BACKSLASH_QUOTE_ON":
-      return Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE_ON;
-    case 3:
-    case "BACKSLASH_QUOTE_OFF":
-      return Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE_OFF;
-    case 4:
-    case "BACKSLASH_QUOTE_SAFE_ENCODING":
-      return Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE_SAFE_ENCODING;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return Postgresqlhostconfig121c_BackslashQuote.UNRECOGNIZED;
-  }
-}
-
-export function postgresqlhostconfig121c_BackslashQuoteToJSON(
-  object: Postgresqlhostconfig121c_BackslashQuote
-): string {
-  switch (object) {
-    case Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE_UNSPECIFIED:
-      return "BACKSLASH_QUOTE_UNSPECIFIED";
-    case Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE:
-      return "BACKSLASH_QUOTE";
-    case Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE_ON:
-      return "BACKSLASH_QUOTE_ON";
-    case Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE_OFF:
-      return "BACKSLASH_QUOTE_OFF";
-    case Postgresqlhostconfig121c_BackslashQuote.BACKSLASH_QUOTE_SAFE_ENCODING:
-      return "BACKSLASH_QUOTE_SAFE_ENCODING";
     default:
       return "UNKNOWN";
   }

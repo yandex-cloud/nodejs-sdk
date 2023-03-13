@@ -35,10 +35,15 @@ export interface ListBackupsRequest {
    * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
    */
   folderId: string;
+  /**
+   * The maximum number of results per page to return. If the number of available
+   * results is larger than [page_size], the service returns a [ListBackupsResponse.next_page_token]
+   * that can be used to get the next page of results in subsequent list requests.
+   */
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the
-   * [ListBackupsResponse.next_page_token] returned by a previous list request.
+   * [ListBackupsResponse.next_page_token] returned by the previous list request.
    */
   pageToken: string;
 }

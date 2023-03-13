@@ -28,7 +28,7 @@ export interface WriteImageProductUsageRequest {
   validateOnly: boolean;
   /** Marketplace Product's ID. */
   productId: string;
-  /** List of product usage records (up to 25 pet request). */
+  /** List of product usage records (up to 25 per request). */
   usageRecords: UsageRecord[];
 }
 

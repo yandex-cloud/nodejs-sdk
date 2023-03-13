@@ -17,6 +17,44 @@ import _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "yandex.cloud.certificatemanager.v1";
 
+export enum PrivateKeyFormat {
+  PRIVATE_KEY_FORMAT_UNSPECIFIED = 0,
+  PKCS1 = 1,
+  PKCS8 = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function privateKeyFormatFromJSON(object: any): PrivateKeyFormat {
+  switch (object) {
+    case 0:
+    case "PRIVATE_KEY_FORMAT_UNSPECIFIED":
+      return PrivateKeyFormat.PRIVATE_KEY_FORMAT_UNSPECIFIED;
+    case 1:
+    case "PKCS1":
+      return PrivateKeyFormat.PKCS1;
+    case 2:
+    case "PKCS8":
+      return PrivateKeyFormat.PKCS8;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return PrivateKeyFormat.UNRECOGNIZED;
+  }
+}
+
+export function privateKeyFormatToJSON(object: PrivateKeyFormat): string {
+  switch (object) {
+    case PrivateKeyFormat.PRIVATE_KEY_FORMAT_UNSPECIFIED:
+      return "PRIVATE_KEY_FORMAT_UNSPECIFIED";
+    case PrivateKeyFormat.PKCS1:
+      return "PKCS1";
+    case PrivateKeyFormat.PKCS8:
+      return "PKCS8";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export interface GetCertificateContentResponse {
   $type: "yandex.cloud.certificatemanager.v1.GetCertificateContentResponse";
   /** ID of the certificate. */
@@ -31,6 +69,10 @@ export interface GetCertificateContentRequest {
   $type: "yandex.cloud.certificatemanager.v1.GetCertificateContentRequest";
   /** ID of the certificate to download content. */
   certificateId: string;
+  /** Optional ID of the version. */
+  versionId: string;
+  /** Desired format of private key */
+  privateKeyFormat: PrivateKeyFormat;
 }
 
 const baseGetCertificateContentResponse: object = {
@@ -142,6 +184,8 @@ messageTypeRegistry.set(
 const baseGetCertificateContentRequest: object = {
   $type: "yandex.cloud.certificatemanager.v1.GetCertificateContentRequest",
   certificateId: "",
+  versionId: "",
+  privateKeyFormat: 0,
 };
 
 export const GetCertificateContentRequest = {
@@ -154,6 +198,12 @@ export const GetCertificateContentRequest = {
   ): _m0.Writer {
     if (message.certificateId !== "") {
       writer.uint32(10).string(message.certificateId);
+    }
+    if (message.versionId !== "") {
+      writer.uint32(18).string(message.versionId);
+    }
+    if (message.privateKeyFormat !== 0) {
+      writer.uint32(24).int32(message.privateKeyFormat);
     }
     return writer;
   },
@@ -173,6 +223,12 @@ export const GetCertificateContentRequest = {
         case 1:
           message.certificateId = reader.string();
           break;
+        case 2:
+          message.versionId = reader.string();
+          break;
+        case 3:
+          message.privateKeyFormat = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -189,6 +245,14 @@ export const GetCertificateContentRequest = {
       object.certificateId !== undefined && object.certificateId !== null
         ? String(object.certificateId)
         : "";
+    message.versionId =
+      object.versionId !== undefined && object.versionId !== null
+        ? String(object.versionId)
+        : "";
+    message.privateKeyFormat =
+      object.privateKeyFormat !== undefined && object.privateKeyFormat !== null
+        ? privateKeyFormatFromJSON(object.privateKeyFormat)
+        : 0;
     return message;
   },
 
@@ -196,6 +260,9 @@ export const GetCertificateContentRequest = {
     const obj: any = {};
     message.certificateId !== undefined &&
       (obj.certificateId = message.certificateId);
+    message.versionId !== undefined && (obj.versionId = message.versionId);
+    message.privateKeyFormat !== undefined &&
+      (obj.privateKeyFormat = privateKeyFormatToJSON(message.privateKeyFormat));
     return obj;
   },
 
@@ -206,6 +273,8 @@ export const GetCertificateContentRequest = {
       ...baseGetCertificateContentRequest,
     } as GetCertificateContentRequest;
     message.certificateId = object.certificateId ?? "";
+    message.versionId = object.versionId ?? "";
+    message.privateKeyFormat = object.privateKeyFormat ?? 0;
     return message;
   },
 };

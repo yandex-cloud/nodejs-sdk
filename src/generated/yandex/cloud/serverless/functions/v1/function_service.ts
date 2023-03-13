@@ -21,6 +21,7 @@ import {
   Function,
   Version,
   Package,
+  Secret,
   ScalingPolicy,
 } from "../../../../../yandex/cloud/serverless/functions/v1/function";
 import { Duration } from "../../../../../google/protobuf/duration";
@@ -99,7 +100,7 @@ export interface ListFunctionsRequest {
    * 1. The field name. Currently filtering can only be applied to the [Function.name] field.
    * 2. An `=` operator.
    * 3. The value in double quotes (`"`). Must be 3-63 characters long and match the regular expression `[a-z][-a-z0-9]{1,61}[a-z0-9]`.
-   * Example of a filter: `name=my-function`.
+   * Example of a filter: `name="my-function"`.
    */
   filter: string;
 }
@@ -241,10 +242,10 @@ export interface ListFunctionsVersionsRequest {
    * A filter expression that filters resources listed in the response.
    *
    * The expression must specify:
-   * 1. The field name. Currently filtering can only be applied to the [Function.name] field.
+   * 1. The field name. Currently filtering can only be applied to the [Version.status] and [Version.runtime] fields.
    * 2. An `=` operator.
    * 3. The value in double quotes (`"`). Must be 3-63 characters long and match the regular expression `[a-z][-a-z0-9]{1,61}[a-z0-9]`.
-   * Example of a filter: `name=my-function`.
+   * Example of a filter: `status="ACTIVE"`.
    */
   filter: string;
 }
@@ -347,6 +348,8 @@ export interface CreateFunctionVersionRequest {
   connectivity?: Connectivity;
   /** Additional service accounts to be used by the version. */
   namedServiceAccounts: { [key: string]: string };
+  /** Lockbox secrets to be used by the version */
+  secrets: Secret[];
 }
 
 export interface CreateFunctionVersionRequest_EnvironmentEntry {
@@ -429,10 +432,10 @@ export interface ListFunctionTagHistoryRequest {
    * A filter expression that filters resources listed in the response.
    *
    * The expression must specify:
-   * 1. The field name. Currently filtering can only be applied to the [Function.name] field.
-   * 2. An `=` operator.
+   * 1. The field name. Currently filtering can only be applied to the [FunctionTagHistoryRecord.effective_from] and [FunctionTagHistoryRecord.effective_to] fields.
+   * 2. An `=` or `>` or `<` operator.
    * 3. The value in double quotes (`"`). Must be 3-63 characters long and match the regular expression `[a-z][-a-z0-9]{1,61}[a-z0-9]`.
-   * For example, `name=my-function`.
+   * For example, `effective_to>2021-01-01T12:00:00Z`.
    */
   filter: string;
 }
@@ -2324,6 +2327,9 @@ export const CreateFunctionVersionRequest = {
         writer.uint32(122).fork()
       ).ldelim();
     });
+    for (const v of message.secrets) {
+      Secret.encode(v!, writer.uint32(146).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -2339,6 +2345,7 @@ export const CreateFunctionVersionRequest = {
     message.environment = {};
     message.tag = [];
     message.namedServiceAccounts = {};
+    message.secrets = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2396,6 +2403,9 @@ export const CreateFunctionVersionRequest = {
           if (entry15.value !== undefined) {
             message.namedServiceAccounts[entry15.key] = entry15.value;
           }
+          break;
+        case 18:
+          message.secrets.push(Secret.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -2466,6 +2476,9 @@ export const CreateFunctionVersionRequest = {
       acc[key] = String(value);
       return acc;
     }, {});
+    message.secrets = (object.secrets ?? []).map((e: any) =>
+      Secret.fromJSON(e)
+    );
     return message;
   },
 
@@ -2517,6 +2530,13 @@ export const CreateFunctionVersionRequest = {
         obj.namedServiceAccounts[k] = v;
       });
     }
+    if (message.secrets) {
+      obj.secrets = message.secrets.map((e) =>
+        e ? Secret.toJSON(e) : undefined
+      );
+    } else {
+      obj.secrets = [];
+    }
     return obj;
   },
 
@@ -2566,6 +2586,7 @@ export const CreateFunctionVersionRequest = {
       }
       return acc;
     }, {});
+    message.secrets = object.secrets?.map((e) => Secret.fromPartial(e)) || [];
     return message;
   },
 };

@@ -10,307 +10,307 @@ import {
 
 export const protobufPackage = "yandex.cloud.mdb.mysql.v1.config";
 
-/** Options and structure of `MysqlConfig8_0` reflects MySQL 8.0 configuration file */
+/** Options and structure of `MysqlConfig8_0` reflects MySQL 8.0 configuration file. */
 export interface Mysqlconfig80 {
   $type: "yandex.cloud.mdb.mysql.v1.config.MysqlConfig8_0";
   /**
    * Size of the InnoDB buffer pool used for caching table and index data.
    *
-   * For details, see [MySQL documentation for the parameter](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_buffer_pool_size).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_buffer_pool_size) for details.
    */
   innodbBufferPoolSize?: number;
   /**
    * The maximum permitted number of simultaneous client connections.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_connections).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_connections) for details.
    */
   maxConnections?: number;
   /**
    * Time that it takes to process a query before it is considered slow.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_long_query_time).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_long_query_time) for details.
    */
   longQueryTime?: number;
   /**
    * Enable writing of general query log of MySQL.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_general_log).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_general_log) for details.
    */
   generalLog?: boolean;
   /**
    * Enable writing of audit log of MySQL.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/audit-log-reference.html#audit-log-options-variables).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/audit-log-reference.html#audit-log-options-variables) for details.
    */
   auditLog?: boolean;
   /**
    * Server SQL mode of MySQL.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#sql-mode-setting).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#sql-mode-setting) for details.
    */
   sqlMode: Mysqlconfig80_SQLMode[];
   /**
    * The maximum size in bytes of one packet.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_allowed_packet).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_allowed_packet) for details.
    */
   maxAllowedPacket?: number;
   /**
    * Authentication plugin used in the managed MySQL cluster.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin for details.
    */
   defaultAuthenticationPlugin: Mysqlconfig80_AuthPlugin;
   /**
    * Transaction log flush behaviour.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_flush_log_at_trx_commit)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_flush_log_at_trx_commit for details.
    */
   innodbFlushLogAtTrxCommit?: number;
   /**
-   * Max time in seconds for a transaction to wait for a row lock
+   * Max time in seconds for a transaction to wait for a row lock.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_lock_wait_timeout)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_lock_wait_timeout for details.
    */
   innodbLockWaitTimeout?: number;
   /**
    * Default transaction isolation level.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_transaction_isolation)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_transaction_isolation for details.
    */
   transactionIsolation: Mysqlconfig80_TransactionIsolation;
   /**
-   * Print information about deadlocks in error log
+   * Print information about deadlocks in error log.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_print_all_deadlocks)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_print_all_deadlocks for details.
    */
   innodbPrintAllDeadlocks?: boolean;
   /**
    * The number of seconds to wait for more data from a connection before aborting the read.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_net_read_timeout)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_net_read_timeout for details.
    */
   netReadTimeout?: number;
   /**
    * The number of seconds to wait for a block to be written to a connection before aborting the write.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_net_write_timeout)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_net_write_timeout for details.
    */
   netWriteTimeout?: number;
   /**
    * The maximum permitted result length in bytes for the GROUP_CONCAT() function.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_group_concat_max_len)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_group_concat_max_len for details.
    */
   groupConcatMaxLen?: number;
   /**
    * The maximum size of internal in-memory temporary tables.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_tmp_table_size)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_tmp_table_size for details.
    */
   tmpTableSize?: number;
   /**
    * This variable sets the maximum size to which user-created MEMORY tables are permitted to grow.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_heap_table_size)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_heap_table_size for details.
    */
   maxHeapTableSize?: number;
   /**
    * The servers default time zone.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_default-time-zone)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_default-time-zone for details.
    */
   defaultTimeZone: string;
   /**
    * The servers default character set.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_character_set_server)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_character_set_server for details.
    */
   characterSetServer: string;
   /**
    * The server default collation.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_collation_server)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_collation_server for details.
    */
   collationServer: string;
   /**
-   * Enables Innodb adaptive hash index
+   * Enables InnoDB adaptive hash index.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_adaptive_hash_index)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_adaptive_hash_index for details.
    */
   innodbAdaptiveHashIndex?: boolean;
   /**
    * Enables the NUMA interleave memory policy for allocation of the InnoDB buffer pool.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_numa_interleave)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_numa_interleave for details.
    */
   innodbNumaInterleave?: boolean;
   /**
    * The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_log_buffer_size)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_log_buffer_size for details.
    */
   innodbLogBufferSize?: number;
   /**
-   * The size in bytes of the single Innodb Redo log file.
+   * The size in bytes of the single InnoDB Redo log file.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_log_file_size)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_log_file_size for details.
    */
   innodbLogFileSize?: number;
   /**
-   * Limits IO available for InnoDB background tasks
+   * Limits IO available for InnoDB background tasks.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_io_capacity)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_io_capacity for details.
    */
   innodbIoCapacity?: number;
   /**
-   * Limits IO available for InnoDB background tasks
+   * Limits IO available for InnoDB background tasks.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_io_capacity_max)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_io_capacity_max for details.
    */
   innodbIoCapacityMax?: number;
   /**
    * The number of I/O threads for read operations in InnoDB.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_read_io_threads)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_read_io_threads for details.
    */
   innodbReadIoThreads?: number;
   /**
    * The number of I/O threads for write operations in InnoDB.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_write_io_threads)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_write_io_threads for details.
    */
   innodbWriteIoThreads?: number;
   /**
    * The number of background threads devoted to the InnoDB purge operation.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_purge_threads)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_purge_threads for details.
    */
   innodbPurgeThreads?: number;
   /**
    * Defines the maximum number of threads permitted inside of InnoDB.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_thread_concurrency)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_thread_concurrency for details.
    */
   innodbThreadConcurrency?: number;
   /**
-   * Limits the max size of InnoDB temp tablespace
+   * Limits the max size of InnoDB temp tablespace.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_temp_data_file_path)
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_temp_data_file_path for details.
    */
   innodbTempDataFileMaxSize?: number;
   /**
    * How many threads the server should cache for reuse.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_thread_cache_size).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_thread_cache_size) for details.
    */
   threadCacheSize?: number;
   /**
    * The stack size for each thread. The default is large enough for normal operation.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_thread_stack).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_thread_stack) for details.
    */
   threadStack?: number;
   /**
    * The minimum size of the buffer that is used for plain index scans, range index scans, and joins that do not use indexes and thus perform full table scans.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_join_buffer_size).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_join_buffer_size) for details.
    */
   joinBufferSize?: number;
   /**
    * Each session that must perform a sort allocates a buffer of this size.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_sort_buffer_size).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_sort_buffer_size) for details.
    */
   sortBufferSize?: number;
   /**
    * The number of table definitions that can be stored in the definition cache.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_table_definition_cache).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_table_definition_cache) for details.
    */
   tableDefinitionCache?: number;
   /**
    * The number of open tables for all threads.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_table_open_cache).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_table_open_cache) for details.
    */
   tableOpenCache?: number;
   /**
    * The number of open tables cache instances.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_table_open_cache_instances).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_table_open_cache_instances) for details.
    */
   tableOpenCacheInstances?: number;
   /**
-   * This system variable determines whether the server enables certain nonstandard behaviors for default values and NULL-value handling in TIMESTAMP columns.
+   * Determines whether the server enables certain nonstandard behaviors for default values and NULL-value handling in TIMESTAMP columns.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_explicit_defaults_for_timestamp).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_explicit_defaults_for_timestamp) for details.
    */
   explicitDefaultsForTimestamp?: boolean;
   /**
    * Can be used to control the operation of AUTO_INCREMENT columns.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/replication-options-master.html#sysvar_auto_increment_increment).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/replication-options-master.html#sysvar_auto_increment_increment) for details.
    */
   autoIncrementIncrement?: number;
   /**
    * Can be used to control the operation of AUTO_INCREMENT columns.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/replication-options-master.html#sysvar_auto_increment_offset).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/replication-options-master.html#sysvar_auto_increment_offset) for details.
    */
   autoIncrementOffset?: number;
   /**
    * Controls how often the MySQL server synchronizes the binary log to disk.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/replication-options-binary-log.html#sysvar_sync_binlog).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/replication-options-binary-log.html#sysvar_sync_binlog) for details.
    */
   syncBinlog?: number;
   /**
    * The size of the cache to hold changes to the binary log during a transaction.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/replication-options-binary-log.html#sysvar_binlog_cache_size).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/replication-options-binary-log.html#sysvar_binlog_cache_size) for details.
    */
   binlogCacheSize?: number;
   /**
    * Controls how many microseconds the binary log commit waits before synchronizing the binary log file to disk.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/replication-options-binary-log.html#sysvar_binlog_group_commit_sync_delay).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/replication-options-binary-log.html#sysvar_binlog_group_commit_sync_delay) for details.
    */
   binlogGroupCommitSyncDelay?: number;
   /**
    * For MySQL row-based replication, this variable determines how row images are written to the binary log.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/replication-options-binary-log.html#sysvar_binlog_row_image).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/replication-options-binary-log.html#sysvar_binlog_row_image) for details.
    */
   binlogRowImage: Mysqlconfig80_BinlogRowImage;
   /**
    * When enabled, it causes the server to write informational log events such as row query log events into its binary log.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/replication-options-binary-log.html#sysvar_binlog_rows_query_log_events).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/replication-options-binary-log.html#sysvar_binlog_rows_query_log_events) for details.
    */
   binlogRowsQueryLogEvents?: boolean;
   /**
    * The number of replica acknowledgments the source must receive per transaction before proceeding.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/replication-options-master.html#sysvar_rpl_semi_sync_master_wait_for_slave_count).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/replication-options-master.html#sysvar_rpl_semi_sync_master_wait_for_slave_count) for details.
    */
   rplSemiSyncMasterWaitForSlaveCount?: number;
   /**
-   * When using a multithreaded replica, this variable specifies the policy used to decide which transactions are allowed to execute in parallel on the replica.
+   * When using a multi-threaded replica, this variable specifies the policy used to decide which transactions are allowed to execute in parallel on the replica.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/replication-options-replica.html#sysvar_slave_parallel_type).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/replication-options-replica.html#sysvar_slave_parallel_type) for details.
    */
   slaveParallelType: Mysqlconfig80_SlaveParallelType;
   /**
    * Sets the number of applier threads for executing replication transactions in parallel.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/replication-options-replica.html#sysvar_slave_parallel_workers).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/replication-options-replica.html#sysvar_slave_parallel_workers) for details.
    */
   slaveParallelWorkers?: number;
   /**
-   * The time limit for regular expression matching operations performed by REGEXP_LIKE and similar functions
+   * The time limit for regular expression matching operations performed by REGEXP_LIKE and similar functions.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/replication-options-replica.html#sysvar_regexp_time_limit).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/replication-options-replica.html#sysvar_regexp_time_limit) for details.
    */
   regexpTimeLimit?: number;
   /** The size of the binary log to hold. */
@@ -318,13 +318,13 @@ export interface Mysqlconfig80 {
   /**
    * The number of seconds the server waits for activity on an interactive connection before closing it.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_interactive_timeout).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_interactive_timeout) for details.
    */
   interactiveTimeout?: number;
   /**
    * The number of seconds the server waits for activity on a noninteractive connection before closing it.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_wait_timeout).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_wait_timeout) for details.
    */
   waitTimeout?: number;
   /** Replication lag threshold (seconds) which will switch MySQL to 'offline_mode = ON' to prevent users from reading stale data. */
@@ -337,45 +337,98 @@ export interface Mysqlconfig80 {
   /**
    * The limit on memory consumption for the range optimizer.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_range_optimizer_max_mem_size).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_range_optimizer_max_mem_size) for details.
    */
   rangeOptimizerMaxMemSize?: number;
   /**
-   * Manages slow query log
+   * Manages slow query log.
    *
-   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_slow_query_log).
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_slow_query_log) for details.
    */
   slowQueryLog?: boolean;
   /**
-   * Query execution time, after which query to be logged unconditionally, that is, log_slow_rate_limit will not apply to it
+   * Query execution time, after which query to be logged unconditionally, that is, `log_slow_rate_limit` will not apply to it.
    *
-   * For details, see [Percona documentation for the variable](https://www.percona.com/doc/percona-server/8.0/diagnostics/slow_extended.html#slow_query_log_always_write_time).
+   * See [Percona documentation](https://www.percona.com/doc/percona-server/8.0/diagnostics/slow_extended.html#slow_query_log_always_write_time) for details.
    */
   slowQueryLogAlwaysWriteTime?: number;
   /**
-   * Specifies slow log granularity for log_slow_rate_limit: QUERY or SESSION
+   * Specifies slow log granularity for `log_slow_rate_limit` QUERY or SESSION value.
    *
-   * For details, see [Percona documentation for the variable](https://www.percona.com/doc/percona-server/8.0/diagnostics/slow_extended.html#log_slow_rate_type).
+   * See [Percona documentation](https://www.percona.com/doc/percona-server/8.0/diagnostics/slow_extended.html#log_slow_rate_type) for details.
    */
   logSlowRateType: Mysqlconfig80_LogSlowRateType;
   /**
    * Specifies what fraction of session/query should be logged. Logging is enabled for every nth session/query.
    *
-   * For details, see [Percona documentation for the variable](https://www.percona.com/doc/percona-server/8.0/diagnostics/slow_extended.html#log_slow_rate_limit).
+   * See [Percona documentation](https://www.percona.com/doc/percona-server/8.0/diagnostics/slow_extended.html#log_slow_rate_limit) for details.
    */
   logSlowRateLimit?: number;
   /**
-   * When TRUE, statements executed by stored procedures are logged to the slow log
+   * When TRUE, statements executed by stored procedures are logged to the slow log.
    *
-   * For details, see [Percona documentation for the variable](https://www.percona.com/doc/percona-server/8.0/diagnostics/slow_extended.html#log_slow_sp_statements).
+   * See [Percona documentation](https://www.percona.com/doc/percona-server/8.0/diagnostics/slow_extended.html#log_slow_sp_statements) for details.
    */
   logSlowSpStatements?: boolean;
   /**
-   * Filters the slow log by the query's execution plan
+   * Filters the slow log by the query's execution plan.
    *
-   * For details, see [Percona documentation for the variable](https://www.percona.com/doc/percona-server/8.0/diagnostics/slow_extended.html#log_slow_filter).
+   * See [Percona documentation](https://www.percona.com/doc/percona-server/8.0/diagnostics/slow_extended.html#log_slow_filter) for details.
    */
   logSlowFilter: Mysqlconfig80_LogSlowFilterType[];
+  /**
+   * Replication lag threshold (seconds) which allows replica to be promoted to master while executing "switchover from".
+   * Should be less than mdb_offline_mode_disable_lag.
+   */
+  mdbPriorityChoiceMaxLag?: number;
+  /**
+   * Specifies the page size for InnoDB tablespaces.
+   *
+   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_page_size).
+   */
+  innodbPageSize?: number;
+  /**
+   * The limit in bytes on the size of the temporary log files used during online DDL operations
+   *
+   * See [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_online_alter_log_max_size) for details.
+   */
+  innodbOnlineAlterLogMaxSize?: number;
+  /**
+   * Minimum length of words that are stored in an InnoDB FULLTEXT index
+   *
+   * See [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_ft_min_token_size) for details.
+   */
+  innodbFtMinTokenSize?: number;
+  /**
+   * Maximum length of words that are stored in an InnoDB FULLTEXT index
+   *
+   * See [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_ft_max_token_size) for details.
+   */
+  innodbFtMaxTokenSize?: number;
+  /**
+   * Table names storage and comparison strategy
+   *
+   * See [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_lower_case_table_names) for details.
+   */
+  lowerCaseTableNames?: number;
+  /**
+   * The number of times that any given stored procedure may be called recursively.
+   *
+   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_sp_recursion_depth).
+   */
+  maxSpRecursionDepth?: number;
+  /**
+   * The level of zlib compression to use for InnoDB compressed tables and indexes.
+   *
+   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_compression_level).
+   */
+  innodbCompressionLevel?: number;
+  /**
+   * Specifies how the source mysqld generates the dependency information that it writes in the binary log to help replicas determine which transactions can be executed in parallel.
+   *
+   * For details, see [MySQL documentation for the variabl](https://dev.mysql.com/doc/refman/8.0/en/replication-options-binary-log.html#sysvar_binlog_transaction_dependency_tracking).
+   */
+  binlogTransactionDependencyTracking: Mysqlconfig80_BinlogTransactionDependencyTracking;
 }
 
 export enum Mysqlconfig80_SQLMode {
@@ -831,6 +884,54 @@ export function mysqlconfig80_LogSlowFilterTypeToJSON(
   }
 }
 
+export enum Mysqlconfig80_BinlogTransactionDependencyTracking {
+  BINLOG_TRANSACTION_DEPENDENCY_TRACKING_UNSPECIFIED = 0,
+  COMMIT_ORDER = 1,
+  WRITESET = 2,
+  WRITESET_SESSION = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function mysqlconfig80_BinlogTransactionDependencyTrackingFromJSON(
+  object: any
+): Mysqlconfig80_BinlogTransactionDependencyTracking {
+  switch (object) {
+    case 0:
+    case "BINLOG_TRANSACTION_DEPENDENCY_TRACKING_UNSPECIFIED":
+      return Mysqlconfig80_BinlogTransactionDependencyTracking.BINLOG_TRANSACTION_DEPENDENCY_TRACKING_UNSPECIFIED;
+    case 1:
+    case "COMMIT_ORDER":
+      return Mysqlconfig80_BinlogTransactionDependencyTracking.COMMIT_ORDER;
+    case 2:
+    case "WRITESET":
+      return Mysqlconfig80_BinlogTransactionDependencyTracking.WRITESET;
+    case 3:
+    case "WRITESET_SESSION":
+      return Mysqlconfig80_BinlogTransactionDependencyTracking.WRITESET_SESSION;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Mysqlconfig80_BinlogTransactionDependencyTracking.UNRECOGNIZED;
+  }
+}
+
+export function mysqlconfig80_BinlogTransactionDependencyTrackingToJSON(
+  object: Mysqlconfig80_BinlogTransactionDependencyTracking
+): string {
+  switch (object) {
+    case Mysqlconfig80_BinlogTransactionDependencyTracking.BINLOG_TRANSACTION_DEPENDENCY_TRACKING_UNSPECIFIED:
+      return "BINLOG_TRANSACTION_DEPENDENCY_TRACKING_UNSPECIFIED";
+    case Mysqlconfig80_BinlogTransactionDependencyTracking.COMMIT_ORDER:
+      return "COMMIT_ORDER";
+    case Mysqlconfig80_BinlogTransactionDependencyTracking.WRITESET:
+      return "WRITESET";
+    case Mysqlconfig80_BinlogTransactionDependencyTracking.WRITESET_SESSION:
+      return "WRITESET_SESSION";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export interface Mysqlconfigset80 {
   $type: "yandex.cloud.mdb.mysql.v1.config.MysqlConfigSet8_0";
   /**
@@ -856,6 +957,7 @@ const baseMysqlconfig80: object = {
   slaveParallelType: 0,
   logSlowRateType: 0,
   logSlowFilter: 0,
+  binlogTransactionDependencyTracking: 0,
 };
 
 export const Mysqlconfig80 = {
@@ -1328,6 +1430,78 @@ export const Mysqlconfig80 = {
       writer.int32(v);
     }
     writer.ldelim();
+    if (message.mdbPriorityChoiceMaxLag !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.mdbPriorityChoiceMaxLag!,
+        },
+        writer.uint32(506).fork()
+      ).ldelim();
+    }
+    if (message.innodbPageSize !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.innodbPageSize! },
+        writer.uint32(514).fork()
+      ).ldelim();
+    }
+    if (message.innodbOnlineAlterLogMaxSize !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.innodbOnlineAlterLogMaxSize!,
+        },
+        writer.uint32(522).fork()
+      ).ldelim();
+    }
+    if (message.innodbFtMinTokenSize !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.innodbFtMinTokenSize!,
+        },
+        writer.uint32(530).fork()
+      ).ldelim();
+    }
+    if (message.innodbFtMaxTokenSize !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.innodbFtMaxTokenSize!,
+        },
+        writer.uint32(538).fork()
+      ).ldelim();
+    }
+    if (message.lowerCaseTableNames !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.lowerCaseTableNames!,
+        },
+        writer.uint32(546).fork()
+      ).ldelim();
+    }
+    if (message.maxSpRecursionDepth !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.maxSpRecursionDepth!,
+        },
+        writer.uint32(554).fork()
+      ).ldelim();
+    }
+    if (message.innodbCompressionLevel !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.innodbCompressionLevel!,
+        },
+        writer.uint32(562).fork()
+      ).ldelim();
+    }
+    if (message.binlogTransactionDependencyTracking !== 0) {
+      writer.uint32(568).int32(message.binlogTransactionDependencyTracking);
+    }
     return writer;
   },
 
@@ -1687,6 +1861,57 @@ export const Mysqlconfig80 = {
             message.logSlowFilter.push(reader.int32() as any);
           }
           break;
+        case 63:
+          message.mdbPriorityChoiceMaxLag = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 64:
+          message.innodbPageSize = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 65:
+          message.innodbOnlineAlterLogMaxSize = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 66:
+          message.innodbFtMinTokenSize = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 67:
+          message.innodbFtMaxTokenSize = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 68:
+          message.lowerCaseTableNames = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 69:
+          message.maxSpRecursionDepth = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 70:
+          message.innodbCompressionLevel = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 71:
+          message.binlogTransactionDependencyTracking = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1980,6 +2205,52 @@ export const Mysqlconfig80 = {
     message.logSlowFilter = (object.logSlowFilter ?? []).map((e: any) =>
       mysqlconfig80_LogSlowFilterTypeFromJSON(e)
     );
+    message.mdbPriorityChoiceMaxLag =
+      object.mdbPriorityChoiceMaxLag !== undefined &&
+      object.mdbPriorityChoiceMaxLag !== null
+        ? Number(object.mdbPriorityChoiceMaxLag)
+        : undefined;
+    message.innodbPageSize =
+      object.innodbPageSize !== undefined && object.innodbPageSize !== null
+        ? Number(object.innodbPageSize)
+        : undefined;
+    message.innodbOnlineAlterLogMaxSize =
+      object.innodbOnlineAlterLogMaxSize !== undefined &&
+      object.innodbOnlineAlterLogMaxSize !== null
+        ? Number(object.innodbOnlineAlterLogMaxSize)
+        : undefined;
+    message.innodbFtMinTokenSize =
+      object.innodbFtMinTokenSize !== undefined &&
+      object.innodbFtMinTokenSize !== null
+        ? Number(object.innodbFtMinTokenSize)
+        : undefined;
+    message.innodbFtMaxTokenSize =
+      object.innodbFtMaxTokenSize !== undefined &&
+      object.innodbFtMaxTokenSize !== null
+        ? Number(object.innodbFtMaxTokenSize)
+        : undefined;
+    message.lowerCaseTableNames =
+      object.lowerCaseTableNames !== undefined &&
+      object.lowerCaseTableNames !== null
+        ? Number(object.lowerCaseTableNames)
+        : undefined;
+    message.maxSpRecursionDepth =
+      object.maxSpRecursionDepth !== undefined &&
+      object.maxSpRecursionDepth !== null
+        ? Number(object.maxSpRecursionDepth)
+        : undefined;
+    message.innodbCompressionLevel =
+      object.innodbCompressionLevel !== undefined &&
+      object.innodbCompressionLevel !== null
+        ? Number(object.innodbCompressionLevel)
+        : undefined;
+    message.binlogTransactionDependencyTracking =
+      object.binlogTransactionDependencyTracking !== undefined &&
+      object.binlogTransactionDependencyTracking !== null
+        ? mysqlconfig80_BinlogTransactionDependencyTrackingFromJSON(
+            object.binlogTransactionDependencyTracking
+          )
+        : 0;
     return message;
   },
 
@@ -2125,6 +2396,27 @@ export const Mysqlconfig80 = {
     } else {
       obj.logSlowFilter = [];
     }
+    message.mdbPriorityChoiceMaxLag !== undefined &&
+      (obj.mdbPriorityChoiceMaxLag = message.mdbPriorityChoiceMaxLag);
+    message.innodbPageSize !== undefined &&
+      (obj.innodbPageSize = message.innodbPageSize);
+    message.innodbOnlineAlterLogMaxSize !== undefined &&
+      (obj.innodbOnlineAlterLogMaxSize = message.innodbOnlineAlterLogMaxSize);
+    message.innodbFtMinTokenSize !== undefined &&
+      (obj.innodbFtMinTokenSize = message.innodbFtMinTokenSize);
+    message.innodbFtMaxTokenSize !== undefined &&
+      (obj.innodbFtMaxTokenSize = message.innodbFtMaxTokenSize);
+    message.lowerCaseTableNames !== undefined &&
+      (obj.lowerCaseTableNames = message.lowerCaseTableNames);
+    message.maxSpRecursionDepth !== undefined &&
+      (obj.maxSpRecursionDepth = message.maxSpRecursionDepth);
+    message.innodbCompressionLevel !== undefined &&
+      (obj.innodbCompressionLevel = message.innodbCompressionLevel);
+    message.binlogTransactionDependencyTracking !== undefined &&
+      (obj.binlogTransactionDependencyTracking =
+        mysqlconfig80_BinlogTransactionDependencyTrackingToJSON(
+          message.binlogTransactionDependencyTracking
+        ));
     return obj;
   },
 
@@ -2209,6 +2501,18 @@ export const Mysqlconfig80 = {
     message.logSlowRateLimit = object.logSlowRateLimit ?? undefined;
     message.logSlowSpStatements = object.logSlowSpStatements ?? undefined;
     message.logSlowFilter = object.logSlowFilter?.map((e) => e) || [];
+    message.mdbPriorityChoiceMaxLag =
+      object.mdbPriorityChoiceMaxLag ?? undefined;
+    message.innodbPageSize = object.innodbPageSize ?? undefined;
+    message.innodbOnlineAlterLogMaxSize =
+      object.innodbOnlineAlterLogMaxSize ?? undefined;
+    message.innodbFtMinTokenSize = object.innodbFtMinTokenSize ?? undefined;
+    message.innodbFtMaxTokenSize = object.innodbFtMaxTokenSize ?? undefined;
+    message.lowerCaseTableNames = object.lowerCaseTableNames ?? undefined;
+    message.maxSpRecursionDepth = object.maxSpRecursionDepth ?? undefined;
+    message.innodbCompressionLevel = object.innodbCompressionLevel ?? undefined;
+    message.binlogTransactionDependencyTracking =
+      object.binlogTransactionDependencyTracking ?? 0;
     return message;
   },
 };

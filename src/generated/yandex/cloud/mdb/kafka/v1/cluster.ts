@@ -269,6 +269,8 @@ export interface ConfigSpec {
   unmanagedTopics: boolean;
   /** Enables managed schema registry on cluster */
   schemaRegistry: boolean;
+  /** Access policy for external services. */
+  access?: Access;
 }
 
 export interface ConfigSpec_Kafka {
@@ -278,6 +280,7 @@ export interface ConfigSpec_Kafka {
   kafkaConfig21?: Kafkaconfig21 | undefined;
   kafkaConfig26?: Kafkaconfig26 | undefined;
   kafkaConfig28?: Kafkaconfig28 | undefined;
+  kafkaConfig3?: KafkaConfig3 | undefined;
 }
 
 export interface ConfigSpec_Zookeeper {
@@ -293,7 +296,7 @@ export interface Resources {
    * All available presets are listed in the [documentation](/docs/managed-kafka/concepts/instance-types).
    */
   resourcePresetId: string;
-  /** Volume of the storage available to a host, in bytes. */
+  /** Volume of the storage available to a host, in bytes. Must be greater than 2 * partition segment size in bytes * partitions count, so each partition can have one active segment file and one closed segment file that can be deleted. */
   diskSize: number;
   /** Type of the storage environment for the host. */
   diskTypeId: string;
@@ -367,6 +370,14 @@ export interface Kafkaconfig21 {
   numPartitions?: number;
   /** Default replication factor of the topic on the whole cluster */
   defaultReplicationFactor?: number;
+  /** The largest record batch size allowed by Kafka. Default value: 1048588. */
+  messageMaxBytes?: number;
+  /** The number of bytes of messages to attempt to fetch for each partition. Default value: 1048576. */
+  replicaFetchMaxBytes?: number;
+  /** A list of cipher suites. */
+  sslCipherSuites: string[];
+  /** Offset storage time after a consumer group loses all its consumers. Default: 10080. */
+  offsetsRetentionMinutes?: number;
 }
 
 /** Kafka version 2.6 broker configuration. */
@@ -437,6 +448,14 @@ export interface Kafkaconfig26 {
   numPartitions?: number;
   /** Default replication factor of the topic on the whole cluster */
   defaultReplicationFactor?: number;
+  /** The largest record batch size allowed by Kafka. Default value: 1048588. */
+  messageMaxBytes?: number;
+  /** The number of bytes of messages to attempt to fetch for each partition. Default value: 1048576. */
+  replicaFetchMaxBytes?: number;
+  /** A list of cipher suites. */
+  sslCipherSuites: string[];
+  /** Offset storage time after a consumer group loses all its consumers. Default: 10080. */
+  offsetsRetentionMinutes?: number;
 }
 
 /** Kafka version 2.8 broker configuration. */
@@ -507,6 +526,92 @@ export interface Kafkaconfig28 {
   numPartitions?: number;
   /** Default replication factor of the topic on the whole cluster */
   defaultReplicationFactor?: number;
+  /** The largest record batch size allowed by Kafka. Default value: 1048588. */
+  messageMaxBytes?: number;
+  /** The number of bytes of messages to attempt to fetch for each partition. Default value: 1048576. */
+  replicaFetchMaxBytes?: number;
+  /** A list of cipher suites. */
+  sslCipherSuites: string[];
+  /** Offset storage time after a consumer group loses all its consumers. Default: 10080. */
+  offsetsRetentionMinutes?: number;
+}
+
+/** Kafka version 3.x broker configuration. */
+export interface KafkaConfig3 {
+  $type: "yandex.cloud.mdb.kafka.v1.KafkaConfig3";
+  /** Cluster topics compression type. */
+  compressionType: CompressionType;
+  /**
+   * The number of messages accumulated on a log partition before messages are flushed to disk.
+   *
+   * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig3.flush_messages] setting.
+   */
+  logFlushIntervalMessages?: number;
+  /**
+   * The maximum time (in milliseconds) that a message in any topic is kept in memory before flushed to disk.
+   * If not set, the value of [log_flush_scheduler_interval_ms] is used.
+   *
+   * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig3.flush_ms] setting.
+   */
+  logFlushIntervalMs?: number;
+  /**
+   * The frequency of checks (in milliseconds) for any logs that need to be flushed to disk.
+   * This check is done by the log flusher.
+   */
+  logFlushSchedulerIntervalMs?: number;
+  /**
+   * Partition size limit; Kafka will discard old log segments to free up space if `delete` [TopicConfig3.cleanup_policy] is in effect.
+   * This setting is helpful if you need to control the size of a log due to limited disk space.
+   *
+   * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig3.retention_bytes] setting.
+   */
+  logRetentionBytes?: number;
+  /** The number of hours to keep a log segment file before deleting it. */
+  logRetentionHours?: number;
+  /**
+   * The number of minutes to keep a log segment file before deleting it.
+   *
+   * If not set, the value of [log_retention_hours] is used.
+   */
+  logRetentionMinutes?: number;
+  /**
+   * The number of milliseconds to keep a log segment file before deleting it.
+   *
+   * If not set, the value of [log_retention_minutes] is used.
+   *
+   * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig3.retention_ms] setting.
+   */
+  logRetentionMs?: number;
+  /**
+   * The maximum size of a single log file.
+   *
+   * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig3.segment_bytes] setting.
+   */
+  logSegmentBytes?: number;
+  /**
+   * Should pre allocate file when create new segment?
+   *
+   * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig3.preallocate] setting.
+   */
+  logPreallocate?: boolean;
+  /** The SO_SNDBUF buffer of the socket server sockets. If the value is -1, the OS default will be used. */
+  socketSendBufferBytes?: number;
+  /** The SO_RCVBUF buffer of the socket server sockets. If the value is -1, the OS default will be used. */
+  socketReceiveBufferBytes?: number;
+  /** Enable auto creation of topic on the server */
+  autoCreateTopicsEnable?: boolean;
+  /** Default number of partitions per topic on the whole cluster */
+  numPartitions?: number;
+  /** Default replication factor of the topic on the whole cluster */
+  defaultReplicationFactor?: number;
+  /** The largest record batch size allowed by Kafka. Default value: 1048588. */
+  messageMaxBytes?: number;
+  /** The number of bytes of messages to attempt to fetch for each partition. Default value: 1048576. */
+  replicaFetchMaxBytes?: number;
+  /** A list of cipher suites. */
+  sslCipherSuites: string[];
+  /** Offset storage time after a consumer group loses all its consumers. Default: 10080. */
+  offsetsRetentionMinutes?: number;
 }
 
 /** Cluster host metadata. */
@@ -620,6 +725,12 @@ export function host_HealthToJSON(object: Host_Health): string {
     default:
       return "UNKNOWN";
   }
+}
+
+export interface Access {
+  $type: "yandex.cloud.mdb.kafka.v1.Access";
+  /** Allow access for DataTransfer. */
+  dataTransfer: boolean;
 }
 
 const baseCluster: object = {
@@ -1174,6 +1285,9 @@ export const ConfigSpec = {
     if (message.schemaRegistry === true) {
       writer.uint32(64).bool(message.schemaRegistry);
     }
+    if (message.access !== undefined) {
+      Access.encode(message.access, writer.uint32(74).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1215,6 +1329,9 @@ export const ConfigSpec = {
         case 8:
           message.schemaRegistry = reader.bool();
           break;
+        case 9:
+          message.access = Access.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1254,6 +1371,10 @@ export const ConfigSpec = {
       object.schemaRegistry !== undefined && object.schemaRegistry !== null
         ? Boolean(object.schemaRegistry)
         : false;
+    message.access =
+      object.access !== undefined && object.access !== null
+        ? Access.fromJSON(object.access)
+        : undefined;
     return message;
   },
 
@@ -1281,6 +1402,8 @@ export const ConfigSpec = {
       (obj.unmanagedTopics = message.unmanagedTopics);
     message.schemaRegistry !== undefined &&
       (obj.schemaRegistry = message.schemaRegistry);
+    message.access !== undefined &&
+      (obj.access = message.access ? Access.toJSON(message.access) : undefined);
     return obj;
   },
 
@@ -1302,6 +1425,10 @@ export const ConfigSpec = {
     message.assignPublicIp = object.assignPublicIp ?? false;
     message.unmanagedTopics = object.unmanagedTopics ?? false;
     message.schemaRegistry = object.schemaRegistry ?? false;
+    message.access =
+      object.access !== undefined && object.access !== null
+        ? Access.fromPartial(object.access)
+        : undefined;
     return message;
   },
 };
@@ -1340,6 +1467,12 @@ export const ConfigSpec_Kafka = {
         writer.uint32(34).fork()
       ).ldelim();
     }
+    if (message.kafkaConfig3 !== undefined) {
+      KafkaConfig3.encode(
+        message.kafkaConfig3,
+        writer.uint32(42).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1361,6 +1494,9 @@ export const ConfigSpec_Kafka = {
           break;
         case 4:
           message.kafkaConfig28 = Kafkaconfig28.decode(reader, reader.uint32());
+          break;
+        case 5:
+          message.kafkaConfig3 = KafkaConfig3.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1388,6 +1524,10 @@ export const ConfigSpec_Kafka = {
       object.kafkaConfig_2_8 !== undefined && object.kafkaConfig_2_8 !== null
         ? Kafkaconfig28.fromJSON(object.kafkaConfig_2_8)
         : undefined;
+    message.kafkaConfig3 =
+      object.kafkaConfig_3 !== undefined && object.kafkaConfig_3 !== null
+        ? KafkaConfig3.fromJSON(object.kafkaConfig_3)
+        : undefined;
     return message;
   },
 
@@ -1408,6 +1548,10 @@ export const ConfigSpec_Kafka = {
     message.kafkaConfig28 !== undefined &&
       (obj.kafkaConfig_2_8 = message.kafkaConfig28
         ? Kafkaconfig28.toJSON(message.kafkaConfig28)
+        : undefined);
+    message.kafkaConfig3 !== undefined &&
+      (obj.kafkaConfig_3 = message.kafkaConfig3
+        ? KafkaConfig3.toJSON(message.kafkaConfig3)
         : undefined);
     return obj;
   },
@@ -1431,6 +1575,10 @@ export const ConfigSpec_Kafka = {
     message.kafkaConfig28 =
       object.kafkaConfig28 !== undefined && object.kafkaConfig28 !== null
         ? Kafkaconfig28.fromPartial(object.kafkaConfig28)
+        : undefined;
+    message.kafkaConfig3 =
+      object.kafkaConfig3 !== undefined && object.kafkaConfig3 !== null
+        ? KafkaConfig3.fromPartial(object.kafkaConfig3)
         : undefined;
     return message;
   },
@@ -1601,6 +1749,7 @@ messageTypeRegistry.set(Resources.$type, Resources);
 const baseKafkaconfig21: object = {
   $type: "yandex.cloud.mdb.kafka.v1.KafkaConfig2_1",
   compressionType: 0,
+  sslCipherSuites: "",
 };
 
 export const Kafkaconfig21 = {
@@ -1730,6 +1879,36 @@ export const Kafkaconfig21 = {
         writer.uint32(122).fork()
       ).ldelim();
     }
+    if (message.messageMaxBytes !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.messageMaxBytes!,
+        },
+        writer.uint32(130).fork()
+      ).ldelim();
+    }
+    if (message.replicaFetchMaxBytes !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.replicaFetchMaxBytes!,
+        },
+        writer.uint32(138).fork()
+      ).ldelim();
+    }
+    for (const v of message.sslCipherSuites) {
+      writer.uint32(146).string(v!);
+    }
+    if (message.offsetsRetentionMinutes !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.offsetsRetentionMinutes!,
+        },
+        writer.uint32(154).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1737,6 +1916,7 @@ export const Kafkaconfig21 = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseKafkaconfig21 } as Kafkaconfig21;
+    message.sslCipherSuites = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1827,6 +2007,27 @@ export const Kafkaconfig21 = {
             reader.uint32()
           ).value;
           break;
+        case 16:
+          message.messageMaxBytes = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 17:
+          message.replicaFetchMaxBytes = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 18:
+          message.sslCipherSuites.push(reader.string());
+          break;
+        case 19:
+          message.offsetsRetentionMinutes = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1907,6 +2108,23 @@ export const Kafkaconfig21 = {
       object.defaultReplicationFactor !== null
         ? Number(object.defaultReplicationFactor)
         : undefined;
+    message.messageMaxBytes =
+      object.messageMaxBytes !== undefined && object.messageMaxBytes !== null
+        ? Number(object.messageMaxBytes)
+        : undefined;
+    message.replicaFetchMaxBytes =
+      object.replicaFetchMaxBytes !== undefined &&
+      object.replicaFetchMaxBytes !== null
+        ? Number(object.replicaFetchMaxBytes)
+        : undefined;
+    message.sslCipherSuites = (object.sslCipherSuites ?? []).map((e: any) =>
+      String(e)
+    );
+    message.offsetsRetentionMinutes =
+      object.offsetsRetentionMinutes !== undefined &&
+      object.offsetsRetentionMinutes !== null
+        ? Number(object.offsetsRetentionMinutes)
+        : undefined;
     return message;
   },
 
@@ -1942,6 +2160,17 @@ export const Kafkaconfig21 = {
       (obj.numPartitions = message.numPartitions);
     message.defaultReplicationFactor !== undefined &&
       (obj.defaultReplicationFactor = message.defaultReplicationFactor);
+    message.messageMaxBytes !== undefined &&
+      (obj.messageMaxBytes = message.messageMaxBytes);
+    message.replicaFetchMaxBytes !== undefined &&
+      (obj.replicaFetchMaxBytes = message.replicaFetchMaxBytes);
+    if (message.sslCipherSuites) {
+      obj.sslCipherSuites = message.sslCipherSuites.map((e) => e);
+    } else {
+      obj.sslCipherSuites = [];
+    }
+    message.offsetsRetentionMinutes !== undefined &&
+      (obj.offsetsRetentionMinutes = message.offsetsRetentionMinutes);
     return obj;
   },
 
@@ -1968,6 +2197,11 @@ export const Kafkaconfig21 = {
     message.numPartitions = object.numPartitions ?? undefined;
     message.defaultReplicationFactor =
       object.defaultReplicationFactor ?? undefined;
+    message.messageMaxBytes = object.messageMaxBytes ?? undefined;
+    message.replicaFetchMaxBytes = object.replicaFetchMaxBytes ?? undefined;
+    message.sslCipherSuites = object.sslCipherSuites?.map((e) => e) || [];
+    message.offsetsRetentionMinutes =
+      object.offsetsRetentionMinutes ?? undefined;
     return message;
   },
 };
@@ -1977,6 +2211,7 @@ messageTypeRegistry.set(Kafkaconfig21.$type, Kafkaconfig21);
 const baseKafkaconfig26: object = {
   $type: "yandex.cloud.mdb.kafka.v1.KafkaConfig2_6",
   compressionType: 0,
+  sslCipherSuites: "",
 };
 
 export const Kafkaconfig26 = {
@@ -2106,6 +2341,36 @@ export const Kafkaconfig26 = {
         writer.uint32(122).fork()
       ).ldelim();
     }
+    if (message.messageMaxBytes !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.messageMaxBytes!,
+        },
+        writer.uint32(130).fork()
+      ).ldelim();
+    }
+    if (message.replicaFetchMaxBytes !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.replicaFetchMaxBytes!,
+        },
+        writer.uint32(138).fork()
+      ).ldelim();
+    }
+    for (const v of message.sslCipherSuites) {
+      writer.uint32(146).string(v!);
+    }
+    if (message.offsetsRetentionMinutes !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.offsetsRetentionMinutes!,
+        },
+        writer.uint32(154).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2113,6 +2378,7 @@ export const Kafkaconfig26 = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseKafkaconfig26 } as Kafkaconfig26;
+    message.sslCipherSuites = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2203,6 +2469,27 @@ export const Kafkaconfig26 = {
             reader.uint32()
           ).value;
           break;
+        case 16:
+          message.messageMaxBytes = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 17:
+          message.replicaFetchMaxBytes = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 18:
+          message.sslCipherSuites.push(reader.string());
+          break;
+        case 19:
+          message.offsetsRetentionMinutes = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2283,6 +2570,23 @@ export const Kafkaconfig26 = {
       object.defaultReplicationFactor !== null
         ? Number(object.defaultReplicationFactor)
         : undefined;
+    message.messageMaxBytes =
+      object.messageMaxBytes !== undefined && object.messageMaxBytes !== null
+        ? Number(object.messageMaxBytes)
+        : undefined;
+    message.replicaFetchMaxBytes =
+      object.replicaFetchMaxBytes !== undefined &&
+      object.replicaFetchMaxBytes !== null
+        ? Number(object.replicaFetchMaxBytes)
+        : undefined;
+    message.sslCipherSuites = (object.sslCipherSuites ?? []).map((e: any) =>
+      String(e)
+    );
+    message.offsetsRetentionMinutes =
+      object.offsetsRetentionMinutes !== undefined &&
+      object.offsetsRetentionMinutes !== null
+        ? Number(object.offsetsRetentionMinutes)
+        : undefined;
     return message;
   },
 
@@ -2318,6 +2622,17 @@ export const Kafkaconfig26 = {
       (obj.numPartitions = message.numPartitions);
     message.defaultReplicationFactor !== undefined &&
       (obj.defaultReplicationFactor = message.defaultReplicationFactor);
+    message.messageMaxBytes !== undefined &&
+      (obj.messageMaxBytes = message.messageMaxBytes);
+    message.replicaFetchMaxBytes !== undefined &&
+      (obj.replicaFetchMaxBytes = message.replicaFetchMaxBytes);
+    if (message.sslCipherSuites) {
+      obj.sslCipherSuites = message.sslCipherSuites.map((e) => e);
+    } else {
+      obj.sslCipherSuites = [];
+    }
+    message.offsetsRetentionMinutes !== undefined &&
+      (obj.offsetsRetentionMinutes = message.offsetsRetentionMinutes);
     return obj;
   },
 
@@ -2344,6 +2659,11 @@ export const Kafkaconfig26 = {
     message.numPartitions = object.numPartitions ?? undefined;
     message.defaultReplicationFactor =
       object.defaultReplicationFactor ?? undefined;
+    message.messageMaxBytes = object.messageMaxBytes ?? undefined;
+    message.replicaFetchMaxBytes = object.replicaFetchMaxBytes ?? undefined;
+    message.sslCipherSuites = object.sslCipherSuites?.map((e) => e) || [];
+    message.offsetsRetentionMinutes =
+      object.offsetsRetentionMinutes ?? undefined;
     return message;
   },
 };
@@ -2353,6 +2673,7 @@ messageTypeRegistry.set(Kafkaconfig26.$type, Kafkaconfig26);
 const baseKafkaconfig28: object = {
   $type: "yandex.cloud.mdb.kafka.v1.KafkaConfig2_8",
   compressionType: 0,
+  sslCipherSuites: "",
 };
 
 export const Kafkaconfig28 = {
@@ -2482,6 +2803,36 @@ export const Kafkaconfig28 = {
         writer.uint32(122).fork()
       ).ldelim();
     }
+    if (message.messageMaxBytes !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.messageMaxBytes!,
+        },
+        writer.uint32(130).fork()
+      ).ldelim();
+    }
+    if (message.replicaFetchMaxBytes !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.replicaFetchMaxBytes!,
+        },
+        writer.uint32(138).fork()
+      ).ldelim();
+    }
+    for (const v of message.sslCipherSuites) {
+      writer.uint32(146).string(v!);
+    }
+    if (message.offsetsRetentionMinutes !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.offsetsRetentionMinutes!,
+        },
+        writer.uint32(154).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2489,6 +2840,7 @@ export const Kafkaconfig28 = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseKafkaconfig28 } as Kafkaconfig28;
+    message.sslCipherSuites = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2579,6 +2931,27 @@ export const Kafkaconfig28 = {
             reader.uint32()
           ).value;
           break;
+        case 16:
+          message.messageMaxBytes = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 17:
+          message.replicaFetchMaxBytes = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 18:
+          message.sslCipherSuites.push(reader.string());
+          break;
+        case 19:
+          message.offsetsRetentionMinutes = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2659,6 +3032,23 @@ export const Kafkaconfig28 = {
       object.defaultReplicationFactor !== null
         ? Number(object.defaultReplicationFactor)
         : undefined;
+    message.messageMaxBytes =
+      object.messageMaxBytes !== undefined && object.messageMaxBytes !== null
+        ? Number(object.messageMaxBytes)
+        : undefined;
+    message.replicaFetchMaxBytes =
+      object.replicaFetchMaxBytes !== undefined &&
+      object.replicaFetchMaxBytes !== null
+        ? Number(object.replicaFetchMaxBytes)
+        : undefined;
+    message.sslCipherSuites = (object.sslCipherSuites ?? []).map((e: any) =>
+      String(e)
+    );
+    message.offsetsRetentionMinutes =
+      object.offsetsRetentionMinutes !== undefined &&
+      object.offsetsRetentionMinutes !== null
+        ? Number(object.offsetsRetentionMinutes)
+        : undefined;
     return message;
   },
 
@@ -2694,6 +3084,17 @@ export const Kafkaconfig28 = {
       (obj.numPartitions = message.numPartitions);
     message.defaultReplicationFactor !== undefined &&
       (obj.defaultReplicationFactor = message.defaultReplicationFactor);
+    message.messageMaxBytes !== undefined &&
+      (obj.messageMaxBytes = message.messageMaxBytes);
+    message.replicaFetchMaxBytes !== undefined &&
+      (obj.replicaFetchMaxBytes = message.replicaFetchMaxBytes);
+    if (message.sslCipherSuites) {
+      obj.sslCipherSuites = message.sslCipherSuites.map((e) => e);
+    } else {
+      obj.sslCipherSuites = [];
+    }
+    message.offsetsRetentionMinutes !== undefined &&
+      (obj.offsetsRetentionMinutes = message.offsetsRetentionMinutes);
     return obj;
   },
 
@@ -2720,11 +3121,478 @@ export const Kafkaconfig28 = {
     message.numPartitions = object.numPartitions ?? undefined;
     message.defaultReplicationFactor =
       object.defaultReplicationFactor ?? undefined;
+    message.messageMaxBytes = object.messageMaxBytes ?? undefined;
+    message.replicaFetchMaxBytes = object.replicaFetchMaxBytes ?? undefined;
+    message.sslCipherSuites = object.sslCipherSuites?.map((e) => e) || [];
+    message.offsetsRetentionMinutes =
+      object.offsetsRetentionMinutes ?? undefined;
     return message;
   },
 };
 
 messageTypeRegistry.set(Kafkaconfig28.$type, Kafkaconfig28);
+
+const baseKafkaConfig3: object = {
+  $type: "yandex.cloud.mdb.kafka.v1.KafkaConfig3",
+  compressionType: 0,
+  sslCipherSuites: "",
+};
+
+export const KafkaConfig3 = {
+  $type: "yandex.cloud.mdb.kafka.v1.KafkaConfig3" as const,
+
+  encode(
+    message: KafkaConfig3,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.compressionType !== 0) {
+      writer.uint32(8).int32(message.compressionType);
+    }
+    if (message.logFlushIntervalMessages !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.logFlushIntervalMessages!,
+        },
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.logFlushIntervalMs !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.logFlushIntervalMs!,
+        },
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.logFlushSchedulerIntervalMs !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.logFlushSchedulerIntervalMs!,
+        },
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    if (message.logRetentionBytes !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.logRetentionBytes!,
+        },
+        writer.uint32(42).fork()
+      ).ldelim();
+    }
+    if (message.logRetentionHours !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.logRetentionHours!,
+        },
+        writer.uint32(50).fork()
+      ).ldelim();
+    }
+    if (message.logRetentionMinutes !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.logRetentionMinutes!,
+        },
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
+    if (message.logRetentionMs !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.logRetentionMs! },
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
+    if (message.logSegmentBytes !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.logSegmentBytes!,
+        },
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
+    if (message.logPreallocate !== undefined) {
+      BoolValue.encode(
+        { $type: "google.protobuf.BoolValue", value: message.logPreallocate! },
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
+    if (message.socketSendBufferBytes !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.socketSendBufferBytes!,
+        },
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
+    if (message.socketReceiveBufferBytes !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.socketReceiveBufferBytes!,
+        },
+        writer.uint32(98).fork()
+      ).ldelim();
+    }
+    if (message.autoCreateTopicsEnable !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.autoCreateTopicsEnable!,
+        },
+        writer.uint32(106).fork()
+      ).ldelim();
+    }
+    if (message.numPartitions !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.numPartitions! },
+        writer.uint32(114).fork()
+      ).ldelim();
+    }
+    if (message.defaultReplicationFactor !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.defaultReplicationFactor!,
+        },
+        writer.uint32(122).fork()
+      ).ldelim();
+    }
+    if (message.messageMaxBytes !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.messageMaxBytes!,
+        },
+        writer.uint32(130).fork()
+      ).ldelim();
+    }
+    if (message.replicaFetchMaxBytes !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.replicaFetchMaxBytes!,
+        },
+        writer.uint32(138).fork()
+      ).ldelim();
+    }
+    for (const v of message.sslCipherSuites) {
+      writer.uint32(146).string(v!);
+    }
+    if (message.offsetsRetentionMinutes !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.offsetsRetentionMinutes!,
+        },
+        writer.uint32(154).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): KafkaConfig3 {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseKafkaConfig3 } as KafkaConfig3;
+    message.sslCipherSuites = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.compressionType = reader.int32() as any;
+          break;
+        case 2:
+          message.logFlushIntervalMessages = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 3:
+          message.logFlushIntervalMs = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 4:
+          message.logFlushSchedulerIntervalMs = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 5:
+          message.logRetentionBytes = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 6:
+          message.logRetentionHours = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 7:
+          message.logRetentionMinutes = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 8:
+          message.logRetentionMs = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 9:
+          message.logSegmentBytes = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 10:
+          message.logPreallocate = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 11:
+          message.socketSendBufferBytes = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 12:
+          message.socketReceiveBufferBytes = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 13:
+          message.autoCreateTopicsEnable = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 14:
+          message.numPartitions = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 15:
+          message.defaultReplicationFactor = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 16:
+          message.messageMaxBytes = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 17:
+          message.replicaFetchMaxBytes = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 18:
+          message.sslCipherSuites.push(reader.string());
+          break;
+        case 19:
+          message.offsetsRetentionMinutes = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): KafkaConfig3 {
+    const message = { ...baseKafkaConfig3 } as KafkaConfig3;
+    message.compressionType =
+      object.compressionType !== undefined && object.compressionType !== null
+        ? compressionTypeFromJSON(object.compressionType)
+        : 0;
+    message.logFlushIntervalMessages =
+      object.logFlushIntervalMessages !== undefined &&
+      object.logFlushIntervalMessages !== null
+        ? Number(object.logFlushIntervalMessages)
+        : undefined;
+    message.logFlushIntervalMs =
+      object.logFlushIntervalMs !== undefined &&
+      object.logFlushIntervalMs !== null
+        ? Number(object.logFlushIntervalMs)
+        : undefined;
+    message.logFlushSchedulerIntervalMs =
+      object.logFlushSchedulerIntervalMs !== undefined &&
+      object.logFlushSchedulerIntervalMs !== null
+        ? Number(object.logFlushSchedulerIntervalMs)
+        : undefined;
+    message.logRetentionBytes =
+      object.logRetentionBytes !== undefined &&
+      object.logRetentionBytes !== null
+        ? Number(object.logRetentionBytes)
+        : undefined;
+    message.logRetentionHours =
+      object.logRetentionHours !== undefined &&
+      object.logRetentionHours !== null
+        ? Number(object.logRetentionHours)
+        : undefined;
+    message.logRetentionMinutes =
+      object.logRetentionMinutes !== undefined &&
+      object.logRetentionMinutes !== null
+        ? Number(object.logRetentionMinutes)
+        : undefined;
+    message.logRetentionMs =
+      object.logRetentionMs !== undefined && object.logRetentionMs !== null
+        ? Number(object.logRetentionMs)
+        : undefined;
+    message.logSegmentBytes =
+      object.logSegmentBytes !== undefined && object.logSegmentBytes !== null
+        ? Number(object.logSegmentBytes)
+        : undefined;
+    message.logPreallocate =
+      object.logPreallocate !== undefined && object.logPreallocate !== null
+        ? Boolean(object.logPreallocate)
+        : undefined;
+    message.socketSendBufferBytes =
+      object.socketSendBufferBytes !== undefined &&
+      object.socketSendBufferBytes !== null
+        ? Number(object.socketSendBufferBytes)
+        : undefined;
+    message.socketReceiveBufferBytes =
+      object.socketReceiveBufferBytes !== undefined &&
+      object.socketReceiveBufferBytes !== null
+        ? Number(object.socketReceiveBufferBytes)
+        : undefined;
+    message.autoCreateTopicsEnable =
+      object.autoCreateTopicsEnable !== undefined &&
+      object.autoCreateTopicsEnable !== null
+        ? Boolean(object.autoCreateTopicsEnable)
+        : undefined;
+    message.numPartitions =
+      object.numPartitions !== undefined && object.numPartitions !== null
+        ? Number(object.numPartitions)
+        : undefined;
+    message.defaultReplicationFactor =
+      object.defaultReplicationFactor !== undefined &&
+      object.defaultReplicationFactor !== null
+        ? Number(object.defaultReplicationFactor)
+        : undefined;
+    message.messageMaxBytes =
+      object.messageMaxBytes !== undefined && object.messageMaxBytes !== null
+        ? Number(object.messageMaxBytes)
+        : undefined;
+    message.replicaFetchMaxBytes =
+      object.replicaFetchMaxBytes !== undefined &&
+      object.replicaFetchMaxBytes !== null
+        ? Number(object.replicaFetchMaxBytes)
+        : undefined;
+    message.sslCipherSuites = (object.sslCipherSuites ?? []).map((e: any) =>
+      String(e)
+    );
+    message.offsetsRetentionMinutes =
+      object.offsetsRetentionMinutes !== undefined &&
+      object.offsetsRetentionMinutes !== null
+        ? Number(object.offsetsRetentionMinutes)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: KafkaConfig3): unknown {
+    const obj: any = {};
+    message.compressionType !== undefined &&
+      (obj.compressionType = compressionTypeToJSON(message.compressionType));
+    message.logFlushIntervalMessages !== undefined &&
+      (obj.logFlushIntervalMessages = message.logFlushIntervalMessages);
+    message.logFlushIntervalMs !== undefined &&
+      (obj.logFlushIntervalMs = message.logFlushIntervalMs);
+    message.logFlushSchedulerIntervalMs !== undefined &&
+      (obj.logFlushSchedulerIntervalMs = message.logFlushSchedulerIntervalMs);
+    message.logRetentionBytes !== undefined &&
+      (obj.logRetentionBytes = message.logRetentionBytes);
+    message.logRetentionHours !== undefined &&
+      (obj.logRetentionHours = message.logRetentionHours);
+    message.logRetentionMinutes !== undefined &&
+      (obj.logRetentionMinutes = message.logRetentionMinutes);
+    message.logRetentionMs !== undefined &&
+      (obj.logRetentionMs = message.logRetentionMs);
+    message.logSegmentBytes !== undefined &&
+      (obj.logSegmentBytes = message.logSegmentBytes);
+    message.logPreallocate !== undefined &&
+      (obj.logPreallocate = message.logPreallocate);
+    message.socketSendBufferBytes !== undefined &&
+      (obj.socketSendBufferBytes = message.socketSendBufferBytes);
+    message.socketReceiveBufferBytes !== undefined &&
+      (obj.socketReceiveBufferBytes = message.socketReceiveBufferBytes);
+    message.autoCreateTopicsEnable !== undefined &&
+      (obj.autoCreateTopicsEnable = message.autoCreateTopicsEnable);
+    message.numPartitions !== undefined &&
+      (obj.numPartitions = message.numPartitions);
+    message.defaultReplicationFactor !== undefined &&
+      (obj.defaultReplicationFactor = message.defaultReplicationFactor);
+    message.messageMaxBytes !== undefined &&
+      (obj.messageMaxBytes = message.messageMaxBytes);
+    message.replicaFetchMaxBytes !== undefined &&
+      (obj.replicaFetchMaxBytes = message.replicaFetchMaxBytes);
+    if (message.sslCipherSuites) {
+      obj.sslCipherSuites = message.sslCipherSuites.map((e) => e);
+    } else {
+      obj.sslCipherSuites = [];
+    }
+    message.offsetsRetentionMinutes !== undefined &&
+      (obj.offsetsRetentionMinutes = message.offsetsRetentionMinutes);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<KafkaConfig3>, I>>(
+    object: I
+  ): KafkaConfig3 {
+    const message = { ...baseKafkaConfig3 } as KafkaConfig3;
+    message.compressionType = object.compressionType ?? 0;
+    message.logFlushIntervalMessages =
+      object.logFlushIntervalMessages ?? undefined;
+    message.logFlushIntervalMs = object.logFlushIntervalMs ?? undefined;
+    message.logFlushSchedulerIntervalMs =
+      object.logFlushSchedulerIntervalMs ?? undefined;
+    message.logRetentionBytes = object.logRetentionBytes ?? undefined;
+    message.logRetentionHours = object.logRetentionHours ?? undefined;
+    message.logRetentionMinutes = object.logRetentionMinutes ?? undefined;
+    message.logRetentionMs = object.logRetentionMs ?? undefined;
+    message.logSegmentBytes = object.logSegmentBytes ?? undefined;
+    message.logPreallocate = object.logPreallocate ?? undefined;
+    message.socketSendBufferBytes = object.socketSendBufferBytes ?? undefined;
+    message.socketReceiveBufferBytes =
+      object.socketReceiveBufferBytes ?? undefined;
+    message.autoCreateTopicsEnable = object.autoCreateTopicsEnable ?? undefined;
+    message.numPartitions = object.numPartitions ?? undefined;
+    message.defaultReplicationFactor =
+      object.defaultReplicationFactor ?? undefined;
+    message.messageMaxBytes = object.messageMaxBytes ?? undefined;
+    message.replicaFetchMaxBytes = object.replicaFetchMaxBytes ?? undefined;
+    message.sslCipherSuites = object.sslCipherSuites?.map((e) => e) || [];
+    message.offsetsRetentionMinutes =
+      object.offsetsRetentionMinutes ?? undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(KafkaConfig3.$type, KafkaConfig3);
 
 const baseHost: object = {
   $type: "yandex.cloud.mdb.kafka.v1.Host",
@@ -2880,6 +3748,67 @@ export const Host = {
 };
 
 messageTypeRegistry.set(Host.$type, Host);
+
+const baseAccess: object = {
+  $type: "yandex.cloud.mdb.kafka.v1.Access",
+  dataTransfer: false,
+};
+
+export const Access = {
+  $type: "yandex.cloud.mdb.kafka.v1.Access" as const,
+
+  encode(
+    message: Access,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.dataTransfer === true) {
+      writer.uint32(8).bool(message.dataTransfer);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Access {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseAccess } as Access;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.dataTransfer = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Access {
+    const message = { ...baseAccess } as Access;
+    message.dataTransfer =
+      object.dataTransfer !== undefined && object.dataTransfer !== null
+        ? Boolean(object.dataTransfer)
+        : false;
+    return message;
+  },
+
+  toJSON(message: Access): unknown {
+    const obj: any = {};
+    message.dataTransfer !== undefined &&
+      (obj.dataTransfer = message.dataTransfer);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Access>, I>>(object: I): Access {
+    const message = { ...baseAccess } as Access;
+    message.dataTransfer = object.dataTransfer ?? false;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Access.$type, Access);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

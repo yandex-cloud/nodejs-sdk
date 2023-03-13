@@ -6,7 +6,7 @@ import { Timestamp } from "../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.containerregistry.v1";
 
-/** A Registry resource. For more information, see [Registry](/docs/cloud/containerregistry/registry). */
+/** A Registry resource. For more information, see the [Registry](/docs/container-registry/concepts/registry) section of the documentation. */
 export interface Registry {
   $type: "yandex.cloud.containerregistry.v1.Registry";
   /** Output only. ID of the registry. */

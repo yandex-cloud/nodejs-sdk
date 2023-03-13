@@ -52,7 +52,7 @@ export interface Cluster {
   status: Cluster_Status;
   /** User security groups */
   securityGroupIds: string[];
-  /** ID of the service account used for access to Yandex Object Storage. */
+  /** ID of the service account used for access to Object Storage. */
   serviceAccountId: string;
   /** Deletion Protection inhibits deletion of the cluster */
   deletionProtection: boolean;

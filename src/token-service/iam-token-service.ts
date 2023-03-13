@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 import { DateTime } from 'luxon';
 import { createChannel } from 'nice-grpc';
 import { cloudApi, serviceClients } from '..';
-import { getServiceClientEndpoint } from '../service-endpoints';
+import { ServiceEndpointResolver } from '../service-endpoints';
 import { IIAmCredentials, ISslCredentials, TokenService } from '../types';
 import { clientFactory } from '../utils/client-factory';
 
@@ -13,17 +13,18 @@ export class IamTokenService implements TokenService {
     public readonly sslCredentials?: ISslCredentials;
 
     private readonly iamCredentials: IIAmCredentials;
+    private readonly serviceEndpointResolver: ServiceEndpointResolver;
     private jwtExpirationTimeout = 3600 * 1000;
     private tokenExpirationTimeout = 120 * 1000;
     private tokenRequestTimeout = 10 * 1000;
     private token = '';
     private tokenTimestamp: DateTime | null;
 
-    constructor(iamCredentials: IIAmCredentials, sslCredentials?: ISslCredentials) {
+    constructor(serviceEndpointResolver: ServiceEndpointResolver, iamCredentials: IIAmCredentials, sslCredentials?: ISslCredentials) {
         this.iamCredentials = iamCredentials;
         this.tokenTimestamp = null;
-
         this.sslCredentials = sslCredentials;
+        this.serviceEndpointResolver = serviceEndpointResolver;
     }
 
     private get expired() {
@@ -42,7 +43,7 @@ export class IamTokenService implements TokenService {
     }
 
     private client() {
-        const endpoint = getServiceClientEndpoint(IamTokenServiceClient);
+        const endpoint = this.serviceEndpointResolver.resolve(IamTokenServiceClient);
         const channel = createChannel(endpoint, credentials.createSsl());
 
         return clientFactory.create(IamTokenServiceClient.service, channel);

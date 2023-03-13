@@ -75,6 +75,8 @@ export interface RecognitionSpec {
   audioChannelCount: number;
   /** This mark allows disable normalization text */
   rawResults: boolean;
+  /** Rewrite text in literature style (default: false) */
+  literatureText: boolean;
 }
 
 export enum RecognitionSpec_AudioEncoding {
@@ -82,6 +84,8 @@ export enum RecognitionSpec_AudioEncoding {
   /** LINEAR16_PCM - 16-bit signed little-endian (Linear PCM) */
   LINEAR16_PCM = 1,
   OGG_OPUS = 2,
+  /** MP3 - transcription only */
+  MP3 = 3,
   UNRECOGNIZED = -1,
 }
 
@@ -98,6 +102,9 @@ export function recognitionSpec_AudioEncodingFromJSON(
     case 2:
     case "OGG_OPUS":
       return RecognitionSpec_AudioEncoding.OGG_OPUS;
+    case 3:
+    case "MP3":
+      return RecognitionSpec_AudioEncoding.MP3;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -115,6 +122,8 @@ export function recognitionSpec_AudioEncodingToJSON(
       return "LINEAR16_PCM";
     case RecognitionSpec_AudioEncoding.OGG_OPUS:
       return "OGG_OPUS";
+    case RecognitionSpec_AudioEncoding.MP3:
+      return "MP3";
     default:
       return "UNKNOWN";
   }
@@ -686,6 +695,7 @@ const baseRecognitionSpec: object = {
   singleUtterance: false,
   audioChannelCount: 0,
   rawResults: false,
+  literatureText: false,
 };
 
 export const RecognitionSpec = {
@@ -721,6 +731,9 @@ export const RecognitionSpec = {
     }
     if (message.rawResults === true) {
       writer.uint32(80).bool(message.rawResults);
+    }
+    if (message.literatureText === true) {
+      writer.uint32(88).bool(message.literatureText);
     }
     return writer;
   },
@@ -758,6 +771,9 @@ export const RecognitionSpec = {
           break;
         case 10:
           message.rawResults = reader.bool();
+          break;
+        case 11:
+          message.literatureText = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -806,6 +822,10 @@ export const RecognitionSpec = {
       object.rawResults !== undefined && object.rawResults !== null
         ? Boolean(object.rawResults)
         : false;
+    message.literatureText =
+      object.literatureText !== undefined && object.literatureText !== null
+        ? Boolean(object.literatureText)
+        : false;
     return message;
   },
 
@@ -829,6 +849,8 @@ export const RecognitionSpec = {
     message.audioChannelCount !== undefined &&
       (obj.audioChannelCount = Math.round(message.audioChannelCount));
     message.rawResults !== undefined && (obj.rawResults = message.rawResults);
+    message.literatureText !== undefined &&
+      (obj.literatureText = message.literatureText);
     return obj;
   },
 
@@ -845,6 +867,7 @@ export const RecognitionSpec = {
     message.singleUtterance = object.singleUtterance ?? false;
     message.audioChannelCount = object.audioChannelCount ?? 0;
     message.rawResults = object.rawResults ?? false;
+    message.literatureText = object.literatureText ?? false;
     return message;
   },
 };

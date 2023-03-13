@@ -45,10 +45,15 @@ export interface ListDatabasesRequest {
    * To get the cluster ID use a [ClusterService.List] request.
    */
   clusterId: string;
+  /**
+   * The maximum number of results per page to return. If the number of available
+   * results is larger than [page_size], the service returns a [ListDatabasesResponse.next_page_token]
+   * that can be used to get the next page of results in subsequent list requests.
+   */
   pageSize: number;
   /**
    * Page token. To get the next page of results, Set [page_token] to the [ListDatabasesResponse.next_page_token]
-   * returned by a previous list request.
+   * returned by the previous list request.
    */
   pageToken: string;
 }
@@ -97,6 +102,8 @@ export interface UpdateDatabaseRequest {
    * To get the name of the database use a [DatabaseService.List] request.
    */
   databaseName: string;
+  /** Optional. New name of the database. */
+  newDatabaseName: string;
   /** Field mask that specifies which fields of the Database resource should be updated. */
   updateMask?: FieldMask;
   /**
@@ -560,6 +567,7 @@ const baseUpdateDatabaseRequest: object = {
   $type: "yandex.cloud.mdb.postgresql.v1.UpdateDatabaseRequest",
   clusterId: "",
   databaseName: "",
+  newDatabaseName: "",
 };
 
 export const UpdateDatabaseRequest = {
@@ -574,6 +582,9 @@ export const UpdateDatabaseRequest = {
     }
     if (message.databaseName !== "") {
       writer.uint32(18).string(message.databaseName);
+    }
+    if (message.newDatabaseName !== "") {
+      writer.uint32(42).string(message.newDatabaseName);
     }
     if (message.updateMask !== undefined) {
       FieldMask.encode(message.updateMask, writer.uint32(26).fork()).ldelim();
@@ -601,6 +612,9 @@ export const UpdateDatabaseRequest = {
         case 2:
           message.databaseName = reader.string();
           break;
+        case 5:
+          message.newDatabaseName = reader.string();
+          break;
         case 3:
           message.updateMask = FieldMask.decode(reader, reader.uint32());
           break;
@@ -625,6 +639,10 @@ export const UpdateDatabaseRequest = {
       object.databaseName !== undefined && object.databaseName !== null
         ? String(object.databaseName)
         : "";
+    message.newDatabaseName =
+      object.newDatabaseName !== undefined && object.newDatabaseName !== null
+        ? String(object.newDatabaseName)
+        : "";
     message.updateMask =
       object.updateMask !== undefined && object.updateMask !== null
         ? FieldMask.fromJSON(object.updateMask)
@@ -640,6 +658,8 @@ export const UpdateDatabaseRequest = {
     message.clusterId !== undefined && (obj.clusterId = message.clusterId);
     message.databaseName !== undefined &&
       (obj.databaseName = message.databaseName);
+    message.newDatabaseName !== undefined &&
+      (obj.newDatabaseName = message.newDatabaseName);
     message.updateMask !== undefined &&
       (obj.updateMask = message.updateMask
         ? FieldMask.toJSON(message.updateMask)
@@ -660,6 +680,7 @@ export const UpdateDatabaseRequest = {
     const message = { ...baseUpdateDatabaseRequest } as UpdateDatabaseRequest;
     message.clusterId = object.clusterId ?? "";
     message.databaseName = object.databaseName ?? "";
+    message.newDatabaseName = object.newDatabaseName ?? "";
     message.updateMask =
       object.updateMask !== undefined && object.updateMask !== null
         ? FieldMask.fromPartial(object.updateMask)

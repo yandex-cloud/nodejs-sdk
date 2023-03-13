@@ -52,6 +52,8 @@ export interface TranslateRequest {
   model: string;
   /** Glossary to be applied for the translation. For more information, see [Glossaries](/docs/translate/concepts/glossary). */
   glossaryConfig?: TranslateGlossaryConfig;
+  /** use speller */
+  speller: boolean;
 }
 
 export enum TranslateRequest_Format {
@@ -121,6 +123,7 @@ export interface GlossaryPair {
   sourceText: string;
   /** Text in the target language. */
   translatedText: string;
+  exact: boolean;
 }
 
 export interface TranslateResponse {
@@ -182,6 +185,7 @@ const baseTranslateRequest: object = {
   texts: "",
   folderId: "",
   model: "",
+  speller: false,
 };
 
 export const TranslateRequest = {
@@ -214,6 +218,9 @@ export const TranslateRequest = {
         message.glossaryConfig,
         writer.uint32(58).fork()
       ).ldelim();
+    }
+    if (message.speller === true) {
+      writer.uint32(64).bool(message.speller);
     }
     return writer;
   },
@@ -249,6 +256,9 @@ export const TranslateRequest = {
             reader,
             reader.uint32()
           );
+          break;
+        case 8:
+          message.speller = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -287,6 +297,10 @@ export const TranslateRequest = {
       object.glossaryConfig !== undefined && object.glossaryConfig !== null
         ? TranslateGlossaryConfig.fromJSON(object.glossaryConfig)
         : undefined;
+    message.speller =
+      object.speller !== undefined && object.speller !== null
+        ? Boolean(object.speller)
+        : false;
     return message;
   },
 
@@ -309,6 +323,7 @@ export const TranslateRequest = {
       (obj.glossaryConfig = message.glossaryConfig
         ? TranslateGlossaryConfig.toJSON(message.glossaryConfig)
         : undefined);
+    message.speller !== undefined && (obj.speller = message.speller);
     return obj;
   },
 
@@ -326,6 +341,7 @@ export const TranslateRequest = {
       object.glossaryConfig !== undefined && object.glossaryConfig !== null
         ? TranslateGlossaryConfig.fromPartial(object.glossaryConfig)
         : undefined;
+    message.speller = object.speller ?? false;
     return message;
   },
 };
@@ -485,6 +501,7 @@ const baseGlossaryPair: object = {
   $type: "yandex.cloud.ai.translate.v2.GlossaryPair",
   sourceText: "",
   translatedText: "",
+  exact: false,
 };
 
 export const GlossaryPair = {
@@ -499,6 +516,9 @@ export const GlossaryPair = {
     }
     if (message.translatedText !== "") {
       writer.uint32(18).string(message.translatedText);
+    }
+    if (message.exact === true) {
+      writer.uint32(24).bool(message.exact);
     }
     return writer;
   },
@@ -515,6 +535,9 @@ export const GlossaryPair = {
           break;
         case 2:
           message.translatedText = reader.string();
+          break;
+        case 3:
+          message.exact = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -534,6 +557,10 @@ export const GlossaryPair = {
       object.translatedText !== undefined && object.translatedText !== null
         ? String(object.translatedText)
         : "";
+    message.exact =
+      object.exact !== undefined && object.exact !== null
+        ? Boolean(object.exact)
+        : false;
     return message;
   },
 
@@ -542,6 +569,7 @@ export const GlossaryPair = {
     message.sourceText !== undefined && (obj.sourceText = message.sourceText);
     message.translatedText !== undefined &&
       (obj.translatedText = message.translatedText);
+    message.exact !== undefined && (obj.exact = message.exact);
     return obj;
   },
 
@@ -551,6 +579,7 @@ export const GlossaryPair = {
     const message = { ...baseGlossaryPair } as GlossaryPair;
     message.sourceText = object.sourceText ?? "";
     message.translatedText = object.translatedText ?? "";
+    message.exact = object.exact ?? false;
     return message;
   },
 };
@@ -924,7 +953,7 @@ export const ListLanguagesResponse = {
 
 messageTypeRegistry.set(ListLanguagesResponse.$type, ListLanguagesResponse);
 
-/** A set of methods for the Yandex Translate service. */
+/** A set of methods for the Translate service. */
 export const TranslationServiceService = {
   /** Translates the text to the specified language. */
   translate: {

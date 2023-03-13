@@ -7,13 +7,14 @@ export const protobufPackage = "yandex.cloud.mdb.sqlserver.v1";
 
 /**
  * An SQL Server database.
+ *
  * For more information, see the [Concepts](/docs/managed-sqlserver/concepts) section of the documentation.
  */
 export interface Database {
   $type: "yandex.cloud.mdb.sqlserver.v1.Database";
   /** Name of the database. */
   name: string;
-  /** ID of the SQL Server cluster the database belongs to. */
+  /** ID of the SQL Server cluster that the database belongs to. */
   clusterId: string;
 }
 

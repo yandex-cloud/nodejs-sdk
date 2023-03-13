@@ -6,23 +6,26 @@ import { Int64Value } from "../../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.mdb.kafka.v1";
 
-/** An Apache Kafka® connector specification */
+/**
+ * An object that represents an Apache Kafka® connector.
+ *
+ * See [the documentation](/docs/managed-kafka/concepts/connectors) for details.
+ */
 export interface ConnectorSpec {
   $type: "yandex.cloud.mdb.kafka.v1.ConnectorSpec";
   /** Name of the connector. */
   name: string;
-  /**
-   * Maximum number of connector tasks.
-   * Default is the number of brokers.
-   */
+  /** Maximum number of connector tasks. Default value is the number of brokers. */
   tasksMax?: number;
   /**
-   * Properties passed with connector config to Connect service.
-   * Example: 'sync.topics.config.enabled: true'.
+   * A set of properties passed to Managed Service for Apache Kafka® with the connector configuration.
+   * Example: `sync.topics.config.enabled: true`.
    */
   properties: { [key: string]: string };
-  /** Configuration of MirrorMaker connector */
+  /** Configuration of the MirrorMaker connector. */
   connectorConfigMirrormaker?: ConnectorConfigMirrorMakerSpec | undefined;
+  /** Configuration of S3-Sink connector. */
+  connectorConfigS3Sink?: ConnectorConfigS3SinkSpec | undefined;
 }
 
 export interface ConnectorSpec_PropertiesEntry {
@@ -31,19 +34,19 @@ export interface ConnectorSpec_PropertiesEntry {
   value: string;
 }
 
-/** An Apache Kafka® connector's update specification. */
 export interface UpdateConnectorSpec {
   $type: "yandex.cloud.mdb.kafka.v1.UpdateConnectorSpec";
-  /** Maximum number of tasks to update. */
+  /** Maximum number of connector tasks to update. */
   tasksMax?: number;
   /**
-   * Properties passed with connector config to Connect service, that
-   * we should change or add in existing Properties-set of connector.
-   * Example: 'sync.topics.config.enabled: false'
+   * A set of new or changed properties to update for the connector. They are passed with the connector configuration to Managed Service for Apache Kafka®.
+   * Example: `sync.topics.config.enabled: false`.
    */
   properties: { [key: string]: string };
-  /** Update specification for MirrorMaker. */
+  /** Configuration of the MirrorMaker connector. */
   connectorConfigMirrormaker?: ConnectorConfigMirrorMakerSpec | undefined;
+  /** Update specification for S3-Sink Connector. */
+  connectorConfigS3Sink?: UpdateConnectorConfigS3SinkSpec | undefined;
 }
 
 export interface UpdateConnectorSpec_PropertiesEntry {
@@ -52,122 +55,132 @@ export interface UpdateConnectorSpec_PropertiesEntry {
   value: string;
 }
 
-/**
- * An An Apache Kafka® MirrorMaker
- * connector specification.
- */
 export interface ConnectorConfigMirrorMakerSpec {
   $type: "yandex.cloud.mdb.kafka.v1.ConnectorConfigMirrorMakerSpec";
-  /** Source cluster configuration. */
+  /** Source cluster configuration for the MirrorMaker connector. */
   sourceCluster?: ClusterConnectionSpec;
-  /** Target cluster configuration. */
+  /** Target cluster configuration for the MirrorMaker connector. */
   targetCluster?: ClusterConnectionSpec;
-  /** List of Kafka topics, separated by ',' */
+  /** List of Kafka topics, separated by `,`. */
   topics: string;
   /** Replication factor for automatically created topics. */
   replicationFactor?: number;
 }
 
-/**
- * Specification of ClusterConnection -
- * connection to clusters, that
- * are source or target of MirrorMaker
- * clusters.
- */
 export interface ClusterConnectionSpec {
   $type: "yandex.cloud.mdb.kafka.v1.ClusterConnectionSpec";
   /**
-   * Alias of ClusterConnection.
-   * For example: 'source', 'target', ...
+   * Alias of cluster connection configuration.
+   * Examples: `source`, `target`.
    */
   alias: string;
-  /**
-   * If type is 'this_cluster' - we connect to
-   * cluster that is handle Kafka Connect Worker,
-   * on which we try to register connector.
-   */
+  /** Connection configuration of the cluster the connector belongs to. As all credentials are already known, leave this parameter empty. */
   thisCluster?: ThisClusterSpec | undefined;
-  /**
-   * If type is 'external_cluster' - we connect
-   * to cluster that is not handle Kafka Connect Worker,
-   * on which we try to register connector.
-   */
+  /** Configuration of connection to an external cluster with all the necessary credentials. */
   externalCluster?: ExternalClusterConnectionSpec | undefined;
 }
 
-/**
- * Specification of cluster_connection
- * type 'this_cluster'. This means
- * that we already have all credentials,
- * so this spec is empty.
- */
 export interface ThisClusterSpec {
   $type: "yandex.cloud.mdb.kafka.v1.ThisClusterSpec";
 }
 
-/**
- * Specification of connection to
- * external cluster. It contains
- * all necessary credentials to
- * connect to external cluster.
- */
 export interface ExternalClusterConnectionSpec {
   $type: "yandex.cloud.mdb.kafka.v1.ExternalClusterConnectionSpec";
-  /**
-   * List bootstrap servers of cluster,
-   * separated by ','.
-   */
+  /** List of bootstrap servers of the cluster, separated by `,`. */
   bootstrapServers: string;
-  /**
-   * Sasl username which
-   * we use to connect to cluster.
-   */
+  /** SASL username to use for connection to the cluster. */
   saslUsername: string;
-  /**
-   * Sasl password which we use
-   * to connect to cluster.
-   */
+  /** SASL password to use for connection to the cluster. */
   saslPassword: string;
-  /**
-   * Sasl mechanism, which we
-   * should use to connect to cluster.
-   */
+  /** SASL mechanism to use for connection to the cluster. */
   saslMechanism: string;
-  /**
-   * Security protocol, which
-   * we should use to connect
-   * to cluster.
-   */
+  /** Security protocol to use for connection to the cluster. */
   securityProtocol: string;
+  /**
+   * CA in PEM format to connect to external cluster.
+   * Lines of certificate separated by '\n' symbol.
+   */
+  sslTruststoreCertificates: string;
 }
 
-/** An Apache Kafka® connector resource. */
+/** Specification for Kafka S3-Sink Connector. */
+export interface ConnectorConfigS3SinkSpec {
+  $type: "yandex.cloud.mdb.kafka.v1.ConnectorConfigS3SinkSpec";
+  /** List of Kafka topics, separated by ','. */
+  topics: string;
+  /**
+   * The compression type used for files put on GCS.
+   * The supported values are: `gzip`, `snappy`, `zstd`, `none`.
+   * Optional, the default is `none`.
+   */
+  fileCompressionType: string;
+  /** Max records per file. */
+  fileMaxRecords?: number;
+  /** Credentials for connecting to S3 storage. */
+  s3Connection?: S3ConnectionSpec;
+}
+
+/** Specification for update Kafka S3-Sink Connector. */
+export interface UpdateConnectorConfigS3SinkSpec {
+  $type: "yandex.cloud.mdb.kafka.v1.UpdateConnectorConfigS3SinkSpec";
+  /** List of Kafka topics, separated by ','. */
+  topics: string;
+  /** Max records per file. */
+  fileMaxRecords?: number;
+  /** Credentials for connecting to S3 storage. */
+  s3Connection?: S3ConnectionSpec;
+}
+
+/**
+ * Specification for S3Connection -
+ * settings of connection to AWS-compatible S3 storage, that
+ * are source or target of Kafka S3-connectors.
+ * YC Object Storage is AWS-compatible.
+ */
+export interface S3ConnectionSpec {
+  $type: "yandex.cloud.mdb.kafka.v1.S3ConnectionSpec";
+  bucketName: string;
+  externalS3?: ExternalS3StorageSpec | undefined;
+}
+
+export interface ExternalS3StorageSpec {
+  $type: "yandex.cloud.mdb.kafka.v1.ExternalS3StorageSpec";
+  accessKeyId: string;
+  secretAccessKey: string;
+  endpoint: string;
+  /** Default is 'us-east-1'. */
+  region: string;
+}
+
 export interface Connector {
   $type: "yandex.cloud.mdb.kafka.v1.Connector";
   /** Name of the connector. */
   name: string;
-  /** Maximum number of tasks. Default is the number of brokers */
+  /** Maximum number of connector tasks. Default value is the number of brokers. */
   tasksMax?: number;
   /**
-   * Properties passed with connector config to Connect service
-   * Example: 'sync.topics.config.enabled: true'
+   * A set of properties passed to Managed Service for Apache Kafka® with the connector configuration.
+   * Example: `sync.topics.config.enabled: true`.
    */
   properties: { [key: string]: string };
   /** Connector health. */
   health: Connector_Health;
   /** Current status of the connector. */
   status: Connector_Status;
-  /** ID of the Apache Kafka cluster that the connector belongs to. */
+  /** ID of the Apache Kafka® cluster that the connector belongs to. */
   clusterId: string;
+  /** Configuration of the MirrorMaker connector. */
   connectorConfigMirrormaker?: ConnectorConfigMirrorMaker | undefined;
+  /** Configuration of S3-Sink connector. */
+  connectorConfigS3Sink?: ConnectorConfigS3Sink | undefined;
 }
 
 export enum Connector_Health {
-  /** HEALTH_UNKNOWN - State of the connector is unknown. */
+  /** HEALTH_UNKNOWN - Health of the connector is unknown. */
   HEALTH_UNKNOWN = 0,
   /** ALIVE - Connector is running. */
   ALIVE = 1,
-  /** DEAD - Connector is failed to start. */
+  /** DEAD - Connector has failed to start. */
   DEAD = 2,
   UNRECOGNIZED = -1,
 }
@@ -208,9 +221,9 @@ export enum Connector_Status {
   STATUS_UNKNOWN = 0,
   /** RUNNING - Connector is running normally. */
   RUNNING = 1,
-  /** ERROR - Connector encountered a problem and cannot operate. */
+  /** ERROR - Connector has encountered a problem and cannot operate. */
   ERROR = 2,
-  /** PAUSED - Connector paused. */
+  /** PAUSED - Connector is paused. */
   PAUSED = 3,
   UNRECOGNIZED = -1,
 }
@@ -257,93 +270,85 @@ export interface Connector_PropertiesEntry {
   value: string;
 }
 
-/**
- * An An Apache Kafka® MirrorMaker
- * connector resource.
- */
 export interface ConnectorConfigMirrorMaker {
   $type: "yandex.cloud.mdb.kafka.v1.ConnectorConfigMirrorMaker";
-  /**
-   * Source cluster resource
-   * settings.
-   */
+  /** Source cluster connection configuration. */
   sourceCluster?: ClusterConnection;
-  /**
-   * Target cluster resource
-   * settings.
-   */
+  /** Target cluster connection configuration. */
   targetCluster?: ClusterConnection;
-  /** List of Kafka topics, separated by ',' */
+  /** List of Kafka topics, separated by `,`. */
   topics: string;
   /** Replication factor for automatically created topics. */
   replicationFactor?: number;
 }
 
-/**
- * Resource ClusterConnection -
- * settings of
- * connection to clusters, that
- * are source or target of MirrorMaker
- * clusters.
- */
 export interface ClusterConnection {
   $type: "yandex.cloud.mdb.kafka.v1.ClusterConnection";
   /**
-   * Alias of ClusterConnection resource.
-   * For example: 'source', 'target', ...
+   * Alias of cluster connection configuration.
+   * Examples: `source`, `target`.
    */
   alias: string;
-  /**
-   * If type is 'this_cluster' - we connect to
-   * cluster that is handle Kafka Connect Worker,
-   * on which we try to register connector.
-   */
+  /** Connection configuration of the cluster the connector belongs to. As all credentials are already known, leave this parameter empty. */
   thisCluster?: ThisCluster | undefined;
-  /**
-   * If type is 'external_cluster' - we connect
-   * to cluster that is not handle Kafka Connect Worker,
-   * on which we try to register connector.
-   */
+  /** Configuration of connection to an external cluster with all the necessary credentials. */
   externalCluster?: ExternalClusterConnection | undefined;
 }
 
-/**
- * Resource of cluster_connection
- * type 'this_cluster'.
- */
 export interface ThisCluster {
   $type: "yandex.cloud.mdb.kafka.v1.ThisCluster";
 }
 
-/**
- * Resource of connection to
- * external cluster. It contains
- * all settings of connection
- * to external cluster.
- */
 export interface ExternalClusterConnection {
   $type: "yandex.cloud.mdb.kafka.v1.ExternalClusterConnection";
-  /**
-   * List bootstrap servers of cluster,
-   * separated by ','
-   */
+  /** List of bootstrap servers of the cluster, separated by `,`. */
   bootstrapServers: string;
-  /**
-   * Sasl username which
-   * we use to connect to cluster.
-   */
+  /** SASL username to use for connection to the cluster. */
   saslUsername: string;
-  /**
-   * Sasl mechanism, which we
-   * should use to connect to cluster.
-   */
+  /** SASL mechanism to use for connection to the cluster. */
   saslMechanism: string;
-  /**
-   * Security protocol, which
-   * we should use to connect
-   * to cluster.
-   */
+  /** Security protocol to use for connection to the cluster. */
   securityProtocol: string;
+}
+
+/**
+ * An Apache Kafka® S3-Sink
+ * connector resource.
+ */
+export interface ConnectorConfigS3Sink {
+  $type: "yandex.cloud.mdb.kafka.v1.ConnectorConfigS3Sink";
+  /** List of Kafka topics, separated by ','. */
+  topics: string;
+  /**
+   * The compression type used for files put on GCS.
+   * The supported values are: `gzip`, `snappy`, `zstd`, `none`.
+   * Optional, the default is `none`.
+   */
+  fileCompressionType: string;
+  /** Max records per file. */
+  fileMaxRecords?: number;
+  /** Credentials for connecting to S3 storage. */
+  s3Connection?: S3Connection;
+}
+
+/**
+ * Resource for S3Connection -
+ * settings of connection to AWS-compatible S3 storage, that
+ * are source or target of Kafka S3-connectors.
+ * YC Object Storage is AWS-compatible.
+ */
+export interface S3Connection {
+  $type: "yandex.cloud.mdb.kafka.v1.S3Connection";
+  bucketName: string;
+  externalS3?: ExternalS3Storage | undefined;
+}
+
+export interface ExternalS3Storage {
+  $type: "yandex.cloud.mdb.kafka.v1.ExternalS3Storage";
+  accessKeyId: string;
+  endpoint: string;
+  /** Default is 'us-east-1' */
+  region: string;
 }
 
 const baseConnectorSpec: object = {
@@ -383,6 +388,12 @@ export const ConnectorSpec = {
         writer.uint32(82).fork()
       ).ldelim();
     }
+    if (message.connectorConfigS3Sink !== undefined) {
+      ConnectorConfigS3SinkSpec.encode(
+        message.connectorConfigS3Sink,
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -412,6 +423,12 @@ export const ConnectorSpec = {
         case 10:
           message.connectorConfigMirrormaker =
             ConnectorConfigMirrorMakerSpec.decode(reader, reader.uint32());
+          break;
+        case 11:
+          message.connectorConfigS3Sink = ConnectorConfigS3SinkSpec.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -444,6 +461,11 @@ export const ConnectorSpec = {
             object.connectorConfigMirrormaker
           )
         : undefined;
+    message.connectorConfigS3Sink =
+      object.connectorConfigS3Sink !== undefined &&
+      object.connectorConfigS3Sink !== null
+        ? ConnectorConfigS3SinkSpec.fromJSON(object.connectorConfigS3Sink)
+        : undefined;
     return message;
   },
 
@@ -462,6 +484,10 @@ export const ConnectorSpec = {
         ? ConnectorConfigMirrorMakerSpec.toJSON(
             message.connectorConfigMirrormaker
           )
+        : undefined);
+    message.connectorConfigS3Sink !== undefined &&
+      (obj.connectorConfigS3Sink = message.connectorConfigS3Sink
+        ? ConnectorConfigS3SinkSpec.toJSON(message.connectorConfigS3Sink)
         : undefined);
     return obj;
   },
@@ -486,6 +512,11 @@ export const ConnectorSpec = {
         ? ConnectorConfigMirrorMakerSpec.fromPartial(
             object.connectorConfigMirrormaker
           )
+        : undefined;
+    message.connectorConfigS3Sink =
+      object.connectorConfigS3Sink !== undefined &&
+      object.connectorConfigS3Sink !== null
+        ? ConnectorConfigS3SinkSpec.fromPartial(object.connectorConfigS3Sink)
         : undefined;
     return message;
   },
@@ -612,6 +643,12 @@ export const UpdateConnectorSpec = {
         writer.uint32(82).fork()
       ).ldelim();
     }
+    if (message.connectorConfigS3Sink !== undefined) {
+      UpdateConnectorConfigS3SinkSpec.encode(
+        message.connectorConfigS3Sink,
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -638,6 +675,10 @@ export const UpdateConnectorSpec = {
         case 10:
           message.connectorConfigMirrormaker =
             ConnectorConfigMirrorMakerSpec.decode(reader, reader.uint32());
+          break;
+        case 11:
+          message.connectorConfigS3Sink =
+            UpdateConnectorConfigS3SinkSpec.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -666,6 +707,11 @@ export const UpdateConnectorSpec = {
             object.connectorConfigMirrormaker
           )
         : undefined;
+    message.connectorConfigS3Sink =
+      object.connectorConfigS3Sink !== undefined &&
+      object.connectorConfigS3Sink !== null
+        ? UpdateConnectorConfigS3SinkSpec.fromJSON(object.connectorConfigS3Sink)
+        : undefined;
     return message;
   },
 
@@ -683,6 +729,10 @@ export const UpdateConnectorSpec = {
         ? ConnectorConfigMirrorMakerSpec.toJSON(
             message.connectorConfigMirrormaker
           )
+        : undefined);
+    message.connectorConfigS3Sink !== undefined &&
+      (obj.connectorConfigS3Sink = message.connectorConfigS3Sink
+        ? UpdateConnectorConfigS3SinkSpec.toJSON(message.connectorConfigS3Sink)
         : undefined);
     return obj;
   },
@@ -705,6 +755,13 @@ export const UpdateConnectorSpec = {
       object.connectorConfigMirrormaker !== null
         ? ConnectorConfigMirrorMakerSpec.fromPartial(
             object.connectorConfigMirrormaker
+          )
+        : undefined;
+    message.connectorConfigS3Sink =
+      object.connectorConfigS3Sink !== undefined &&
+      object.connectorConfigS3Sink !== null
+        ? UpdateConnectorConfigS3SinkSpec.fromPartial(
+            object.connectorConfigS3Sink
           )
         : undefined;
     return message;
@@ -1110,6 +1167,7 @@ const baseExternalClusterConnectionSpec: object = {
   saslPassword: "",
   saslMechanism: "",
   securityProtocol: "",
+  sslTruststoreCertificates: "",
 };
 
 export const ExternalClusterConnectionSpec = {
@@ -1133,6 +1191,9 @@ export const ExternalClusterConnectionSpec = {
     }
     if (message.securityProtocol !== "") {
       writer.uint32(42).string(message.securityProtocol);
+    }
+    if (message.sslTruststoreCertificates !== "") {
+      writer.uint32(50).string(message.sslTruststoreCertificates);
     }
     return writer;
   },
@@ -1163,6 +1224,9 @@ export const ExternalClusterConnectionSpec = {
           break;
         case 5:
           message.securityProtocol = reader.string();
+          break;
+        case 6:
+          message.sslTruststoreCertificates = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1196,6 +1260,11 @@ export const ExternalClusterConnectionSpec = {
       object.securityProtocol !== undefined && object.securityProtocol !== null
         ? String(object.securityProtocol)
         : "";
+    message.sslTruststoreCertificates =
+      object.sslTruststoreCertificates !== undefined &&
+      object.sslTruststoreCertificates !== null
+        ? String(object.sslTruststoreCertificates)
+        : "";
     return message;
   },
 
@@ -1211,6 +1280,8 @@ export const ExternalClusterConnectionSpec = {
       (obj.saslMechanism = message.saslMechanism);
     message.securityProtocol !== undefined &&
       (obj.securityProtocol = message.securityProtocol);
+    message.sslTruststoreCertificates !== undefined &&
+      (obj.sslTruststoreCertificates = message.sslTruststoreCertificates);
     return obj;
   },
 
@@ -1225,6 +1296,7 @@ export const ExternalClusterConnectionSpec = {
     message.saslPassword = object.saslPassword ?? "";
     message.saslMechanism = object.saslMechanism ?? "";
     message.securityProtocol = object.securityProtocol ?? "";
+    message.sslTruststoreCertificates = object.sslTruststoreCertificates ?? "";
     return message;
   },
 };
@@ -1233,6 +1305,447 @@ messageTypeRegistry.set(
   ExternalClusterConnectionSpec.$type,
   ExternalClusterConnectionSpec
 );
+
+const baseConnectorConfigS3SinkSpec: object = {
+  $type: "yandex.cloud.mdb.kafka.v1.ConnectorConfigS3SinkSpec",
+  topics: "",
+  fileCompressionType: "",
+};
+
+export const ConnectorConfigS3SinkSpec = {
+  $type: "yandex.cloud.mdb.kafka.v1.ConnectorConfigS3SinkSpec" as const,
+
+  encode(
+    message: ConnectorConfigS3SinkSpec,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.topics !== "") {
+      writer.uint32(10).string(message.topics);
+    }
+    if (message.fileCompressionType !== "") {
+      writer.uint32(18).string(message.fileCompressionType);
+    }
+    if (message.fileMaxRecords !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.fileMaxRecords! },
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.s3Connection !== undefined) {
+      S3ConnectionSpec.encode(
+        message.s3Connection,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ConnectorConfigS3SinkSpec {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseConnectorConfigS3SinkSpec,
+    } as ConnectorConfigS3SinkSpec;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.topics = reader.string();
+          break;
+        case 2:
+          message.fileCompressionType = reader.string();
+          break;
+        case 3:
+          message.fileMaxRecords = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 4:
+          message.s3Connection = S3ConnectionSpec.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ConnectorConfigS3SinkSpec {
+    const message = {
+      ...baseConnectorConfigS3SinkSpec,
+    } as ConnectorConfigS3SinkSpec;
+    message.topics =
+      object.topics !== undefined && object.topics !== null
+        ? String(object.topics)
+        : "";
+    message.fileCompressionType =
+      object.fileCompressionType !== undefined &&
+      object.fileCompressionType !== null
+        ? String(object.fileCompressionType)
+        : "";
+    message.fileMaxRecords =
+      object.fileMaxRecords !== undefined && object.fileMaxRecords !== null
+        ? Number(object.fileMaxRecords)
+        : undefined;
+    message.s3Connection =
+      object.s3Connection !== undefined && object.s3Connection !== null
+        ? S3ConnectionSpec.fromJSON(object.s3Connection)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: ConnectorConfigS3SinkSpec): unknown {
+    const obj: any = {};
+    message.topics !== undefined && (obj.topics = message.topics);
+    message.fileCompressionType !== undefined &&
+      (obj.fileCompressionType = message.fileCompressionType);
+    message.fileMaxRecords !== undefined &&
+      (obj.fileMaxRecords = message.fileMaxRecords);
+    message.s3Connection !== undefined &&
+      (obj.s3Connection = message.s3Connection
+        ? S3ConnectionSpec.toJSON(message.s3Connection)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ConnectorConfigS3SinkSpec>, I>>(
+    object: I
+  ): ConnectorConfigS3SinkSpec {
+    const message = {
+      ...baseConnectorConfigS3SinkSpec,
+    } as ConnectorConfigS3SinkSpec;
+    message.topics = object.topics ?? "";
+    message.fileCompressionType = object.fileCompressionType ?? "";
+    message.fileMaxRecords = object.fileMaxRecords ?? undefined;
+    message.s3Connection =
+      object.s3Connection !== undefined && object.s3Connection !== null
+        ? S3ConnectionSpec.fromPartial(object.s3Connection)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ConnectorConfigS3SinkSpec.$type,
+  ConnectorConfigS3SinkSpec
+);
+
+const baseUpdateConnectorConfigS3SinkSpec: object = {
+  $type: "yandex.cloud.mdb.kafka.v1.UpdateConnectorConfigS3SinkSpec",
+  topics: "",
+};
+
+export const UpdateConnectorConfigS3SinkSpec = {
+  $type: "yandex.cloud.mdb.kafka.v1.UpdateConnectorConfigS3SinkSpec" as const,
+
+  encode(
+    message: UpdateConnectorConfigS3SinkSpec,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.topics !== "") {
+      writer.uint32(10).string(message.topics);
+    }
+    if (message.fileMaxRecords !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.fileMaxRecords! },
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.s3Connection !== undefined) {
+      S3ConnectionSpec.encode(
+        message.s3Connection,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateConnectorConfigS3SinkSpec {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateConnectorConfigS3SinkSpec,
+    } as UpdateConnectorConfigS3SinkSpec;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.topics = reader.string();
+          break;
+        case 2:
+          message.fileMaxRecords = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 3:
+          message.s3Connection = S3ConnectionSpec.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateConnectorConfigS3SinkSpec {
+    const message = {
+      ...baseUpdateConnectorConfigS3SinkSpec,
+    } as UpdateConnectorConfigS3SinkSpec;
+    message.topics =
+      object.topics !== undefined && object.topics !== null
+        ? String(object.topics)
+        : "";
+    message.fileMaxRecords =
+      object.fileMaxRecords !== undefined && object.fileMaxRecords !== null
+        ? Number(object.fileMaxRecords)
+        : undefined;
+    message.s3Connection =
+      object.s3Connection !== undefined && object.s3Connection !== null
+        ? S3ConnectionSpec.fromJSON(object.s3Connection)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: UpdateConnectorConfigS3SinkSpec): unknown {
+    const obj: any = {};
+    message.topics !== undefined && (obj.topics = message.topics);
+    message.fileMaxRecords !== undefined &&
+      (obj.fileMaxRecords = message.fileMaxRecords);
+    message.s3Connection !== undefined &&
+      (obj.s3Connection = message.s3Connection
+        ? S3ConnectionSpec.toJSON(message.s3Connection)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UpdateConnectorConfigS3SinkSpec>, I>>(
+    object: I
+  ): UpdateConnectorConfigS3SinkSpec {
+    const message = {
+      ...baseUpdateConnectorConfigS3SinkSpec,
+    } as UpdateConnectorConfigS3SinkSpec;
+    message.topics = object.topics ?? "";
+    message.fileMaxRecords = object.fileMaxRecords ?? undefined;
+    message.s3Connection =
+      object.s3Connection !== undefined && object.s3Connection !== null
+        ? S3ConnectionSpec.fromPartial(object.s3Connection)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  UpdateConnectorConfigS3SinkSpec.$type,
+  UpdateConnectorConfigS3SinkSpec
+);
+
+const baseS3ConnectionSpec: object = {
+  $type: "yandex.cloud.mdb.kafka.v1.S3ConnectionSpec",
+  bucketName: "",
+};
+
+export const S3ConnectionSpec = {
+  $type: "yandex.cloud.mdb.kafka.v1.S3ConnectionSpec" as const,
+
+  encode(
+    message: S3ConnectionSpec,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.bucketName !== "") {
+      writer.uint32(10).string(message.bucketName);
+    }
+    if (message.externalS3 !== undefined) {
+      ExternalS3StorageSpec.encode(
+        message.externalS3,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): S3ConnectionSpec {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseS3ConnectionSpec } as S3ConnectionSpec;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.bucketName = reader.string();
+          break;
+        case 2:
+          message.externalS3 = ExternalS3StorageSpec.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): S3ConnectionSpec {
+    const message = { ...baseS3ConnectionSpec } as S3ConnectionSpec;
+    message.bucketName =
+      object.bucketName !== undefined && object.bucketName !== null
+        ? String(object.bucketName)
+        : "";
+    message.externalS3 =
+      object.externalS3 !== undefined && object.externalS3 !== null
+        ? ExternalS3StorageSpec.fromJSON(object.externalS3)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: S3ConnectionSpec): unknown {
+    const obj: any = {};
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.externalS3 !== undefined &&
+      (obj.externalS3 = message.externalS3
+        ? ExternalS3StorageSpec.toJSON(message.externalS3)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<S3ConnectionSpec>, I>>(
+    object: I
+  ): S3ConnectionSpec {
+    const message = { ...baseS3ConnectionSpec } as S3ConnectionSpec;
+    message.bucketName = object.bucketName ?? "";
+    message.externalS3 =
+      object.externalS3 !== undefined && object.externalS3 !== null
+        ? ExternalS3StorageSpec.fromPartial(object.externalS3)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(S3ConnectionSpec.$type, S3ConnectionSpec);
+
+const baseExternalS3StorageSpec: object = {
+  $type: "yandex.cloud.mdb.kafka.v1.ExternalS3StorageSpec",
+  accessKeyId: "",
+  secretAccessKey: "",
+  endpoint: "",
+  region: "",
+};
+
+export const ExternalS3StorageSpec = {
+  $type: "yandex.cloud.mdb.kafka.v1.ExternalS3StorageSpec" as const,
+
+  encode(
+    message: ExternalS3StorageSpec,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.accessKeyId !== "") {
+      writer.uint32(10).string(message.accessKeyId);
+    }
+    if (message.secretAccessKey !== "") {
+      writer.uint32(18).string(message.secretAccessKey);
+    }
+    if (message.endpoint !== "") {
+      writer.uint32(26).string(message.endpoint);
+    }
+    if (message.region !== "") {
+      writer.uint32(34).string(message.region);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ExternalS3StorageSpec {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseExternalS3StorageSpec } as ExternalS3StorageSpec;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.accessKeyId = reader.string();
+          break;
+        case 2:
+          message.secretAccessKey = reader.string();
+          break;
+        case 3:
+          message.endpoint = reader.string();
+          break;
+        case 4:
+          message.region = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ExternalS3StorageSpec {
+    const message = { ...baseExternalS3StorageSpec } as ExternalS3StorageSpec;
+    message.accessKeyId =
+      object.accessKeyId !== undefined && object.accessKeyId !== null
+        ? String(object.accessKeyId)
+        : "";
+    message.secretAccessKey =
+      object.secretAccessKey !== undefined && object.secretAccessKey !== null
+        ? String(object.secretAccessKey)
+        : "";
+    message.endpoint =
+      object.endpoint !== undefined && object.endpoint !== null
+        ? String(object.endpoint)
+        : "";
+    message.region =
+      object.region !== undefined && object.region !== null
+        ? String(object.region)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ExternalS3StorageSpec): unknown {
+    const obj: any = {};
+    message.accessKeyId !== undefined &&
+      (obj.accessKeyId = message.accessKeyId);
+    message.secretAccessKey !== undefined &&
+      (obj.secretAccessKey = message.secretAccessKey);
+    message.endpoint !== undefined && (obj.endpoint = message.endpoint);
+    message.region !== undefined && (obj.region = message.region);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ExternalS3StorageSpec>, I>>(
+    object: I
+  ): ExternalS3StorageSpec {
+    const message = { ...baseExternalS3StorageSpec } as ExternalS3StorageSpec;
+    message.accessKeyId = object.accessKeyId ?? "";
+    message.secretAccessKey = object.secretAccessKey ?? "";
+    message.endpoint = object.endpoint ?? "";
+    message.region = object.region ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(ExternalS3StorageSpec.$type, ExternalS3StorageSpec);
 
 const baseConnector: object = {
   $type: "yandex.cloud.mdb.kafka.v1.Connector",
@@ -1283,6 +1796,12 @@ export const Connector = {
         writer.uint32(82).fork()
       ).ldelim();
     }
+    if (message.connectorConfigS3Sink !== undefined) {
+      ConnectorConfigS3Sink.encode(
+        message.connectorConfigS3Sink,
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1321,6 +1840,12 @@ export const Connector = {
         case 10:
           message.connectorConfigMirrormaker =
             ConnectorConfigMirrorMaker.decode(reader, reader.uint32());
+          break;
+        case 11:
+          message.connectorConfigS3Sink = ConnectorConfigS3Sink.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -1363,6 +1888,11 @@ export const Connector = {
       object.connectorConfigMirrormaker !== null
         ? ConnectorConfigMirrorMaker.fromJSON(object.connectorConfigMirrormaker)
         : undefined;
+    message.connectorConfigS3Sink =
+      object.connectorConfigS3Sink !== undefined &&
+      object.connectorConfigS3Sink !== null
+        ? ConnectorConfigS3Sink.fromJSON(object.connectorConfigS3Sink)
+        : undefined;
     return message;
   },
 
@@ -1384,6 +1914,10 @@ export const Connector = {
     message.connectorConfigMirrormaker !== undefined &&
       (obj.connectorConfigMirrormaker = message.connectorConfigMirrormaker
         ? ConnectorConfigMirrorMaker.toJSON(message.connectorConfigMirrormaker)
+        : undefined);
+    message.connectorConfigS3Sink !== undefined &&
+      (obj.connectorConfigS3Sink = message.connectorConfigS3Sink
+        ? ConnectorConfigS3Sink.toJSON(message.connectorConfigS3Sink)
         : undefined);
     return obj;
   },
@@ -1411,6 +1945,11 @@ export const Connector = {
         ? ConnectorConfigMirrorMaker.fromPartial(
             object.connectorConfigMirrormaker
           )
+        : undefined;
+    message.connectorConfigS3Sink =
+      object.connectorConfigS3Sink !== undefined &&
+      object.connectorConfigS3Sink !== null
+        ? ConnectorConfigS3Sink.fromPartial(object.connectorConfigS3Sink)
         : undefined;
     return message;
   },
@@ -1915,6 +2454,301 @@ messageTypeRegistry.set(
   ExternalClusterConnection.$type,
   ExternalClusterConnection
 );
+
+const baseConnectorConfigS3Sink: object = {
+  $type: "yandex.cloud.mdb.kafka.v1.ConnectorConfigS3Sink",
+  topics: "",
+  fileCompressionType: "",
+};
+
+export const ConnectorConfigS3Sink = {
+  $type: "yandex.cloud.mdb.kafka.v1.ConnectorConfigS3Sink" as const,
+
+  encode(
+    message: ConnectorConfigS3Sink,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.topics !== "") {
+      writer.uint32(10).string(message.topics);
+    }
+    if (message.fileCompressionType !== "") {
+      writer.uint32(18).string(message.fileCompressionType);
+    }
+    if (message.fileMaxRecords !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.fileMaxRecords! },
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.s3Connection !== undefined) {
+      S3Connection.encode(
+        message.s3Connection,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ConnectorConfigS3Sink {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseConnectorConfigS3Sink } as ConnectorConfigS3Sink;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.topics = reader.string();
+          break;
+        case 2:
+          message.fileCompressionType = reader.string();
+          break;
+        case 3:
+          message.fileMaxRecords = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 4:
+          message.s3Connection = S3Connection.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ConnectorConfigS3Sink {
+    const message = { ...baseConnectorConfigS3Sink } as ConnectorConfigS3Sink;
+    message.topics =
+      object.topics !== undefined && object.topics !== null
+        ? String(object.topics)
+        : "";
+    message.fileCompressionType =
+      object.fileCompressionType !== undefined &&
+      object.fileCompressionType !== null
+        ? String(object.fileCompressionType)
+        : "";
+    message.fileMaxRecords =
+      object.fileMaxRecords !== undefined && object.fileMaxRecords !== null
+        ? Number(object.fileMaxRecords)
+        : undefined;
+    message.s3Connection =
+      object.s3Connection !== undefined && object.s3Connection !== null
+        ? S3Connection.fromJSON(object.s3Connection)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: ConnectorConfigS3Sink): unknown {
+    const obj: any = {};
+    message.topics !== undefined && (obj.topics = message.topics);
+    message.fileCompressionType !== undefined &&
+      (obj.fileCompressionType = message.fileCompressionType);
+    message.fileMaxRecords !== undefined &&
+      (obj.fileMaxRecords = message.fileMaxRecords);
+    message.s3Connection !== undefined &&
+      (obj.s3Connection = message.s3Connection
+        ? S3Connection.toJSON(message.s3Connection)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ConnectorConfigS3Sink>, I>>(
+    object: I
+  ): ConnectorConfigS3Sink {
+    const message = { ...baseConnectorConfigS3Sink } as ConnectorConfigS3Sink;
+    message.topics = object.topics ?? "";
+    message.fileCompressionType = object.fileCompressionType ?? "";
+    message.fileMaxRecords = object.fileMaxRecords ?? undefined;
+    message.s3Connection =
+      object.s3Connection !== undefined && object.s3Connection !== null
+        ? S3Connection.fromPartial(object.s3Connection)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(ConnectorConfigS3Sink.$type, ConnectorConfigS3Sink);
+
+const baseS3Connection: object = {
+  $type: "yandex.cloud.mdb.kafka.v1.S3Connection",
+  bucketName: "",
+};
+
+export const S3Connection = {
+  $type: "yandex.cloud.mdb.kafka.v1.S3Connection" as const,
+
+  encode(
+    message: S3Connection,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.bucketName !== "") {
+      writer.uint32(10).string(message.bucketName);
+    }
+    if (message.externalS3 !== undefined) {
+      ExternalS3Storage.encode(
+        message.externalS3,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): S3Connection {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseS3Connection } as S3Connection;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.bucketName = reader.string();
+          break;
+        case 2:
+          message.externalS3 = ExternalS3Storage.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): S3Connection {
+    const message = { ...baseS3Connection } as S3Connection;
+    message.bucketName =
+      object.bucketName !== undefined && object.bucketName !== null
+        ? String(object.bucketName)
+        : "";
+    message.externalS3 =
+      object.externalS3 !== undefined && object.externalS3 !== null
+        ? ExternalS3Storage.fromJSON(object.externalS3)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: S3Connection): unknown {
+    const obj: any = {};
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.externalS3 !== undefined &&
+      (obj.externalS3 = message.externalS3
+        ? ExternalS3Storage.toJSON(message.externalS3)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<S3Connection>, I>>(
+    object: I
+  ): S3Connection {
+    const message = { ...baseS3Connection } as S3Connection;
+    message.bucketName = object.bucketName ?? "";
+    message.externalS3 =
+      object.externalS3 !== undefined && object.externalS3 !== null
+        ? ExternalS3Storage.fromPartial(object.externalS3)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(S3Connection.$type, S3Connection);
+
+const baseExternalS3Storage: object = {
+  $type: "yandex.cloud.mdb.kafka.v1.ExternalS3Storage",
+  accessKeyId: "",
+  endpoint: "",
+  region: "",
+};
+
+export const ExternalS3Storage = {
+  $type: "yandex.cloud.mdb.kafka.v1.ExternalS3Storage" as const,
+
+  encode(
+    message: ExternalS3Storage,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.accessKeyId !== "") {
+      writer.uint32(10).string(message.accessKeyId);
+    }
+    if (message.endpoint !== "") {
+      writer.uint32(18).string(message.endpoint);
+    }
+    if (message.region !== "") {
+      writer.uint32(26).string(message.region);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ExternalS3Storage {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseExternalS3Storage } as ExternalS3Storage;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.accessKeyId = reader.string();
+          break;
+        case 2:
+          message.endpoint = reader.string();
+          break;
+        case 3:
+          message.region = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ExternalS3Storage {
+    const message = { ...baseExternalS3Storage } as ExternalS3Storage;
+    message.accessKeyId =
+      object.accessKeyId !== undefined && object.accessKeyId !== null
+        ? String(object.accessKeyId)
+        : "";
+    message.endpoint =
+      object.endpoint !== undefined && object.endpoint !== null
+        ? String(object.endpoint)
+        : "";
+    message.region =
+      object.region !== undefined && object.region !== null
+        ? String(object.region)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ExternalS3Storage): unknown {
+    const obj: any = {};
+    message.accessKeyId !== undefined &&
+      (obj.accessKeyId = message.accessKeyId);
+    message.endpoint !== undefined && (obj.endpoint = message.endpoint);
+    message.region !== undefined && (obj.region = message.region);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ExternalS3Storage>, I>>(
+    object: I
+  ): ExternalS3Storage {
+    const message = { ...baseExternalS3Storage } as ExternalS3Storage;
+    message.accessKeyId = object.accessKeyId ?? "";
+    message.endpoint = object.endpoint ?? "";
+    message.region = object.region ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(ExternalS3Storage.$type, ExternalS3Storage);
 
 type Builtin =
   | Date

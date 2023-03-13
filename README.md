@@ -6,7 +6,7 @@
 Need to automate your infrastructure or use services provided by Yandex.Cloud? We've got you covered.
 
 ## Requirements
-- nodejs >= 10
+- nodejs >= 12
 
 ## Installation
 `npm install @yandex-cloud/nodejs-sdk`
@@ -79,6 +79,13 @@ const response = await cloudService.list(ListCloudsRequest.fromPartial({
 ```
 
 Check [examples](./examples) directory for more examples.
+
+To run example scripts, you should execute the following commands:
+```bash
+cd examples
+npm i
+YC_OAUTH_TOKEN=... YC_FOLDER_ID=... npm run start path/to/example.ts
+```
 
 ## Services
 

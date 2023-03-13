@@ -163,6 +163,8 @@ export interface UpdateFilesystemRequest {
    * 3. Send the new set in this field.
    */
   labels: { [key: string]: string };
+  /** Size of the filesystem, specified in bytes. */
+  size: number;
 }
 
 export interface UpdateFilesystemRequest_LabelsEntry {
@@ -846,6 +848,7 @@ const baseUpdateFilesystemRequest: object = {
   filesystemId: "",
   name: "",
   description: "",
+  size: 0,
 };
 
 export const UpdateFilesystemRequest = {
@@ -877,6 +880,9 @@ export const UpdateFilesystemRequest = {
         writer.uint32(42).fork()
       ).ldelim();
     });
+    if (message.size !== 0) {
+      writer.uint32(48).int64(message.size);
+    }
     return writer;
   },
 
@@ -914,6 +920,9 @@ export const UpdateFilesystemRequest = {
             message.labels[entry5.key] = entry5.value;
           }
           break;
+        case 6:
+          message.size = longToNumber(reader.int64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -948,6 +957,10 @@ export const UpdateFilesystemRequest = {
       acc[key] = String(value);
       return acc;
     }, {});
+    message.size =
+      object.size !== undefined && object.size !== null
+        ? Number(object.size)
+        : 0;
     return message;
   },
 
@@ -968,6 +981,7 @@ export const UpdateFilesystemRequest = {
         obj.labels[k] = v;
       });
     }
+    message.size !== undefined && (obj.size = Math.round(message.size));
     return obj;
   },
 
@@ -992,6 +1006,7 @@ export const UpdateFilesystemRequest = {
       }
       return acc;
     }, {});
+    message.size = object.size ?? 0;
     return message;
   },
 };

@@ -34,21 +34,11 @@ export interface GetUserRequest {
 
 export interface ListUsersRequest {
   $type: "yandex.cloud.mdb.mysql.v1alpha.ListUsersRequest";
-  /**
-   * ID of the cluster to list MySQL users in.
-   * To get the cluster ID, use a [ClusterService.List] request.
-   */
+  /** ID of the cluster to list MySQL users in. To get the cluster ID, use a [ClusterService.List] request. */
   clusterId: string;
-  /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size], the service returns a [ListUsersResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
-   */
+  /** The maximum number of results per page to return. If the number of available results is larger than [page_size], the service returns a [ListUsersResponse.next_page_token] that can be used to get the next page of results in subsequent list requests. */
   pageSize: number;
-  /**
-   * Page token. To get the next page of results, set [page_token] to the [ListUsersResponse.next_page_token]
-   * returned by a previous list request.
-   */
+  /** Page token. To get the next page of results, set [page_token] to the [ListUsersResponse.next_page_token] returned by the previous list request. */
   pageToken: string;
 }
 
@@ -56,21 +46,13 @@ export interface ListUsersResponse {
   $type: "yandex.cloud.mdb.mysql.v1alpha.ListUsersResponse";
   /** Requested list of MySQL users. */
   users: User[];
-  /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListUsersRequest.page_size], use the [next_page_token] as the value
-   * for the [ListUsersRequest.page_token] parameter in the next list request. Each subsequent
-   * list request will have its own [next_page_token] to continue paging through the results.
-   */
+  /** This token allows you to get the next page of results for list requests. If the number of results is larger than [ListUsersRequest.page_size], use the [next_page_token] as the value for the [ListUsersRequest.page_token] parameter in the next list request. Each subsequent list request will have its own [next_page_token] to continue paging through the results. */
   nextPageToken: string;
 }
 
 export interface CreateUserRequest {
   $type: "yandex.cloud.mdb.mysql.v1alpha.CreateUserRequest";
-  /**
-   * ID of the MySQL cluster to create a user for.
-   * To get the cluster ID, use a [ClusterService.List] request.
-   */
+  /** ID of the MySQL cluster to create a user for. To get the cluster ID, use a [ClusterService.List] request. */
   clusterId: string;
   /** Properties of the user to be created. */
   userSpec?: UserSpec;
@@ -86,17 +68,11 @@ export interface CreateUserMetadata {
 
 export interface UpdateUserRequest {
   $type: "yandex.cloud.mdb.mysql.v1alpha.UpdateUserRequest";
-  /**
-   * ID of the MySQL cluster the user belongs to.
-   * To get the cluster ID use a [ClusterService.List] request.
-   */
+  /** ID of the MySQL cluster the user belongs to. To get the cluster ID, use a [ClusterService.List] request. */
   clusterId: string;
-  /**
-   * Name of the user to be updated.
-   * To get the name of the user use a [UserService.List] request.
-   */
+  /** Name of the user to be updated. To get the name of the user, use a [UserService.List] request. */
   userName: string;
-  /** Field mask that specifies which fields of the MySQL user should be updated. */
+  /** Field mask that specifies which settings of the MySQL user should be updated. */
   updateMask?: FieldMask;
   /** New password for the user. */
   password: string;
@@ -108,21 +84,15 @@ export interface UpdateUserMetadata {
   $type: "yandex.cloud.mdb.mysql.v1alpha.UpdateUserMetadata";
   /** ID of the MySQL cluster the user belongs to. */
   clusterId: string;
-  /** Name of the user that is being updated. */
+  /** Name of a user that is being updated. */
   userName: string;
 }
 
 export interface DeleteUserRequest {
   $type: "yandex.cloud.mdb.mysql.v1alpha.DeleteUserRequest";
-  /**
-   * ID of the MySQL cluster the user belongs to.
-   * To get the cluster ID, use a [ClusterService.List] request.
-   */
+  /** ID of the MySQL cluster the user belongs to. To get the cluster ID, use a [ClusterService.List] request. */
   clusterId: string;
-  /**
-   * Name of the user to delete.
-   * To get the name of the user, use a [UserService.List] request.
-   */
+  /** Name of the user to delete. To get the name of the user, use a [UserService.List] request. */
   userName: string;
 }
 
@@ -136,15 +106,9 @@ export interface DeleteUserMetadata {
 
 export interface GrantUserPermissionRequest {
   $type: "yandex.cloud.mdb.mysql.v1alpha.GrantUserPermissionRequest";
-  /**
-   * ID of the MySQL cluster the user belongs to.
-   * To get the cluster ID, use a [ClusterService.List] request.
-   */
+  /** ID of the MySQL cluster the user belongs to. To get the cluster ID, use a [ClusterService.List] request. */
   clusterId: string;
-  /**
-   * Name of the user to grant the permission to.
-   * To get the name of the user, use a [UserService.List] request.
-   */
+  /** Name of the user to grant the permission to. To get the name of the user, use a [UserService.List] request. */
   userName: string;
   /** Permission that should be granted to the specified user. */
   permission?: Permission;
@@ -152,10 +116,7 @@ export interface GrantUserPermissionRequest {
 
 export interface GrantUserPermissionMetadata {
   $type: "yandex.cloud.mdb.mysql.v1alpha.GrantUserPermissionMetadata";
-  /**
-   * ID of the MySQL cluster the user belongs to.
-   * To get the cluster ID, use a [ClusterService.List] request.
-   */
+  /** ID of the MySQL cluster the user belongs to. To get the cluster ID, use a [ClusterService.List] request. */
   clusterId: string;
   /** Name of the user that is being granted a permission. */
   userName: string;
@@ -163,15 +124,9 @@ export interface GrantUserPermissionMetadata {
 
 export interface RevokeUserPermissionRequest {
   $type: "yandex.cloud.mdb.mysql.v1alpha.RevokeUserPermissionRequest";
-  /**
-   * ID of the MySQL cluster the user belongs to.
-   * To get the cluster ID, use a [ClusterService.List] request.
-   */
+  /** ID of the MySQL cluster the user belongs to. To get the cluster ID, use a [ClusterService.List] request. */
   clusterId: string;
-  /**
-   * Name of the user to revoke a permission from.
-   * To get the name of the user, use a [UserService.List] request.
-   */
+  /** Name of the user to revoke a permission from. To get the name of the user, use a [UserService.List] request. */
   userName: string;
   /** Name of the database that the user should lose access to. */
   databaseName: string;

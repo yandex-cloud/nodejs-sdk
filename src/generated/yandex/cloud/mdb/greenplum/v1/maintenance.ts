@@ -8,29 +8,41 @@ export const protobufPackage = "yandex.cloud.mdb.greenplum.v1";
 
 export interface MaintenanceWindow {
   $type: "yandex.cloud.mdb.greenplum.v1.MaintenanceWindow";
+  /** An any-time maintenance window. */
   anytime?: AnytimeMaintenanceWindow | undefined;
+  /** A weekly maintenance window. */
   weeklyMaintenanceWindow?: WeeklyMaintenanceWindow | undefined;
 }
 
+/** An any-time maintenance window. */
 export interface AnytimeMaintenanceWindow {
   $type: "yandex.cloud.mdb.greenplum.v1.AnytimeMaintenanceWindow";
 }
 
+/** A weekly maintenance window. */
 export interface WeeklyMaintenanceWindow {
   $type: "yandex.cloud.mdb.greenplum.v1.WeeklyMaintenanceWindow";
+  /** Day of the week. */
   day: WeeklyMaintenanceWindow_WeekDay;
-  /** Hour of the day in UTC. */
+  /** Hour of the day in the UTC timezone. */
   hour: number;
 }
 
 export enum WeeklyMaintenanceWindow_WeekDay {
   WEEK_DAY_UNSPECIFIED = 0,
+  /** MON - Monday */
   MON = 1,
+  /** TUE - Tuesday */
   TUE = 2,
+  /** WED - Wednesday */
   WED = 3,
+  /** THU - Thursday */
   THU = 4,
+  /** FRI - Friday */
   FRI = 5,
+  /** SAT - Saturday */
   SAT = 6,
+  /** SUN - Sunday */
   SUN = 7,
   UNRECOGNIZED = -1,
 }
@@ -97,7 +109,9 @@ export function weeklyMaintenanceWindow_WeekDayToJSON(
 
 export interface MaintenanceOperation {
   $type: "yandex.cloud.mdb.greenplum.v1.MaintenanceOperation";
+  /** The description of the operation. */
   info: string;
+  /** Delay time for the maintenance operation. */
   delayedUntil?: Date;
 }
 

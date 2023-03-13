@@ -40,6 +40,8 @@ export interface StaticRoute {
   destinationPrefix: string | undefined;
   /** Next hop IP address */
   nextHopAddress: string | undefined;
+  /** Next hop gateway id */
+  gatewayId: string | undefined;
   /** Resource labels as `` key:value `` pairs. Maximum of 64 per resource. */
   labels: { [key: string]: string };
 }
@@ -330,6 +332,9 @@ export const StaticRoute = {
     if (message.nextHopAddress !== undefined) {
       writer.uint32(18).string(message.nextHopAddress);
     }
+    if (message.gatewayId !== undefined) {
+      writer.uint32(34).string(message.gatewayId);
+    }
     Object.entries(message.labels).forEach(([key, value]) => {
       StaticRoute_LabelsEntry.encode(
         {
@@ -356,6 +361,9 @@ export const StaticRoute = {
           break;
         case 2:
           message.nextHopAddress = reader.string();
+          break;
+        case 4:
+          message.gatewayId = reader.string();
           break;
         case 3:
           const entry3 = StaticRoute_LabelsEntry.decode(
@@ -385,6 +393,10 @@ export const StaticRoute = {
       object.nextHopAddress !== undefined && object.nextHopAddress !== null
         ? String(object.nextHopAddress)
         : undefined;
+    message.gatewayId =
+      object.gatewayId !== undefined && object.gatewayId !== null
+        ? String(object.gatewayId)
+        : undefined;
     message.labels = Object.entries(object.labels ?? {}).reduce<{
       [key: string]: string;
     }>((acc, [key, value]) => {
@@ -400,6 +412,7 @@ export const StaticRoute = {
       (obj.destinationPrefix = message.destinationPrefix);
     message.nextHopAddress !== undefined &&
       (obj.nextHopAddress = message.nextHopAddress);
+    message.gatewayId !== undefined && (obj.gatewayId = message.gatewayId);
     obj.labels = {};
     if (message.labels) {
       Object.entries(message.labels).forEach(([k, v]) => {
@@ -415,6 +428,7 @@ export const StaticRoute = {
     const message = { ...baseStaticRoute } as StaticRoute;
     message.destinationPrefix = object.destinationPrefix ?? undefined;
     message.nextHopAddress = object.nextHopAddress ?? undefined;
+    message.gatewayId = object.gatewayId ?? undefined;
     message.labels = Object.entries(object.labels ?? {}).reduce<{
       [key: string]: string;
     }>((acc, [key, value]) => {
