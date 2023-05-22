@@ -1,4 +1,7 @@
-import { ServiceClientConstructor, ServiceDefinition } from '@grpc/grpc-js';
+import {
+    ServiceClientConstructor,
+    ServiceDefinition,
+} from '@grpc/grpc-js';
 import { GeneratedServiceClientCtor } from './types';
 
 interface ServiceEndpoint {
@@ -257,8 +260,12 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
         endpoint: 'vision.api.cloud.yandex.net:443',
     },
     {
-        serviceIds: ['yandex.cloud.ai.stt.v2.SttService', 'speechkit.tts.v3.Synthesizer'],
+        serviceIds: ['yandex.cloud.ai.stt.v2.SttService'],
         endpoint: 'transcribe.api.cloud.yandex.net:443',
+    },
+    {
+        serviceIds: ['speechkit.tts.v3.Synthesizer'],
+        endpoint: 'tts.api.cloud.yandex.net:443',
     },
     {
         serviceIds: [
