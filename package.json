@@ -33,7 +33,7 @@
     "nice-grpc-client-middleware-deadline": "^1.0.6",
     "abort-controller-x": "^0.4.1",
     "node-abort-controller": "^3.1.1",
-    "protobufjs": "^6.11.3",
+    "protobufjs": "^7.2.4",
     "utility-types": "^3.10.0"
   },
   "devDependencies": {
