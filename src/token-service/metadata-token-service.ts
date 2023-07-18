@@ -35,14 +35,14 @@ export class MetadataTokenService implements TokenService {
         return this.token;
     }
 
-    private async fetchToken(): Promise<string> {
+    public async fetchToken(): Promise<string> {
         const res = await axios.get<{ access_token: string }>(this.url, this.opts);
 
         if (res.status !== 200) {
             throw new Error(`failed to fetch token from metadata service: ${res.status} ${res.statusText}`);
         }
 
-        return res.data.access_token;
+        return this.token = res.data.access_token;
     }
 
     private async initialize() {
@@ -55,7 +55,7 @@ export class MetadataTokenService implements TokenService {
         for (let i = 0; i < 5; i++) {
             try {
                 // eslint-disable-next-line no-await-in-loop
-                this.token = await this.fetchToken();
+                await this.fetchToken();
                 break;
             } catch (error) {
                 lastError = error;
@@ -67,12 +67,12 @@ export class MetadataTokenService implements TokenService {
                 `failed to fetch token from metadata service: ${lastError}`,
             );
         }
-        setTimeout(async () => {
+        setInterval(async () => {
             try {
-                this.token = await this.fetchToken();
+                await this.fetchToken();
             } catch {
                 // TBD
             }
-        }, 30_000);
+        }, 1 * 60 * 60 * 1000); // Since the Iam token expires approx in 12 hours, and the recommended token update after 10% of the time spent - one hour interval looks good
     }
 }
