@@ -50,6 +50,7 @@
     "import/no-extraneous-dependencies": ["error", {
       "devDependencies": true
     }],
-    "import/no-cycle": "off"
+    "import/no-cycle": "off",
+    "linebreak-style": "off"
   }
 }

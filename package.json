@@ -23,6 +23,7 @@
   "homepage": "https://github.com/yandex-cloud/nodejs-sdk#readme",
   "dependencies": {
     "@grpc/grpc-js": "^1.6.12",
+    "abort-controller-x": "^0.4.1",
     "axios": "^0.24.0",
     "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
@@ -31,7 +32,6 @@
     "luxon": "^2.2.0",
     "nice-grpc": "^1.0.6",
     "nice-grpc-client-middleware-deadline": "^1.0.6",
-    "abort-controller-x": "^0.4.1",
     "node-abort-controller": "^3.1.1",
     "protobufjs": "^7.2.4",
     "utility-types": "^3.10.0"
@@ -47,6 +47,7 @@
     "@types/node": "^16.11.3",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
     "@typescript-eslint/parser": "^5.7.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.4.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^16.1.0",
@@ -66,8 +67,9 @@
   },
   "scripts": {
     "test": "jest -c config/jest.ts --passWithNoTests",
+    "coverage": "jest -c config/jest.coverage.ts --passWithNoTests",
     "lint": "eslint src config",
-    "build": "NODE_OPTIONS=\"--max-old-space-size=4096\" tsc -p .",
+    "build": "cross-env NODE_OPTIONS=\"--max-old-space-size=4096\" tsc -p .",
     "generate-code": "ts-node scripts/generate-code.ts",
     "prepare": "husky install",
     "prepublishOnly": "npm run build"
