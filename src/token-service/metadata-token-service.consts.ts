@@ -1,30 +1,21 @@
-/*
+export const INITIALIZE_MAX_ATTEMPTS_OF_GET_TOKEN = 5;
 
-Issuance of tokens shall be in accordance with the following rules
+export const INITIALIZE_BACKOFF_SLOT_DURATION = 5; // ms
 
-When accessing APIs of other Cloud services (including the database), services should follow the standard rules of
-working with tokens recommended by the documentation:
+export const INITIALIZE_BACKOFF_CEILING = 3; // up to 5 * (2 ** 3) = 40 ms
 
-- a token is issued in the way most appropriate for this service: for example, it can be a metadata service for SVM, Token Agent
-  for iron hosts or JWT for services hosted outside the Cloud perimeter
+export const INITIALIZE_BACKOFF_UNCERTAIN_RATIO = 0.5;
 
-- the application does not start (does not start accepting requests) until its system SA token has been successfully issued;
-  the application does not start if the token issued at the moment of start is valid for less than 15 minutes;
+export const GET_TOKEN_BACKOFF_SLOT_DURATION = 1 * 30 * 1000; // every 30 mins
 
-- the token issued at start time is used for a time equal to at least 10% of the difference between expires_at and the time the token was issued;
+export const GET_TOKEN_BACKOFF_CEILING = 1; // up to 30 * (2 ** 1) = 60 min
 
-- a token that has been used within the time specified in the previous paragraph is subject to update: the application starts
-  a background process that reissues the token of its system SA, while all current requests continue to be made with the
-  cached token (thus, in case of any problems with token reissue, 90% of the token's lifetime will be left to notice and
-  correct the situation);
-
-- it is recommended that applications have a system SA token usage time monitor, which should be lit if the token lifetime
-  approaches 20% of the difference between expires_at and the token's expiration time.
-
-*/
-
-export const MAX_ATTEMPTS_NUMBER_TO_GET_TOKEN_IN_INITIALIZE = 5;
+export const GET_TOKEN_BACKOFF_UNCERTAIN_RATIO = 0.3;
 
 export const TOKEN_MINIMUM_LIFETIME_MARGIN_MS = 15 * 60 * 1000;
 
 export const TOKEN_LIFETIME_LEFT_TO_REFRESH_PCT = 90;
+
+export const TOKEN_LIFETIME_LEFT_TO_REPORT_ERROR_PCT = 80;
+
+export const ERROR_REPORT_INTERVAL_MS = 1 * 60 * 1000;

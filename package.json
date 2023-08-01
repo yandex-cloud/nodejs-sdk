@@ -68,7 +68,7 @@
   "scripts": {
     "test": "jest -c config/jest.ts --passWithNoTests",
     "coverage": "jest -c config/jest.coverage.ts --passWithNoTests",
-    "lint": "eslint src config",
+    "lint": "eslint src config --fix",
     "build": "cross-env NODE_OPTIONS=\"--max-old-space-size=4096\" tsc -p .",
     "generate-code": "ts-node scripts/generate-code.ts",
     "prepare": "husky install",
