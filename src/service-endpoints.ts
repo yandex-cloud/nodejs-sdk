@@ -2,7 +2,7 @@ import {
     ServiceClientConstructor,
     ServiceDefinition,
 } from '@grpc/grpc-js';
-import {GeneratedServiceClientCtor} from './types';
+import { GeneratedServiceClientCtor } from './types';
 
 interface ServiceEndpoint {
     serviceIds: string[];
