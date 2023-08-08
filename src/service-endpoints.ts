@@ -204,21 +204,21 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
     },
     {
         serviceIds: [
+            'yandex.cloud.iot.devices.v1.DeviceService',
             'yandex.cloud.iot.devices.v1.RegistryService',
         ],
         endpoint: 'iot-devices.api.cloud.yandex.net:443',
     },
     {
         serviceIds: [
-            'yandex.cloud.iot.devices.v1.RegistryDataService',
-            'yandex.cloud.iot.devices.v1.DeviceService',
+            'yandex.cloud.iot.broker.v1.BrokerDataService',
             'yandex.cloud.iot.devices.v1.DeviceDataService',
+            'yandex.cloud.iot.devices.v1.RegistryDataService',
         ],
         endpoint: 'iot-data.api.cloud.yandex.net:443',
     },
     {
         serviceIds: [
-            'yandex.cloud.iot.broker.v1.BrokerDataService',
             'yandex.cloud.iot.broker.v1.BrokerService',
         ],
         endpoint: 'iot-broker.api.cloud.yandex.net:443',
