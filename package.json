@@ -4,8 +4,8 @@
   "description": "Yandex.Cloud NodeJS SDK",
   "keywords": [
     "yandex-cloud",
-    "cloud",
-    "sdk"
+    "sdk",
+    "cloud"
   ],
   "repository": {
     "type": "git",
