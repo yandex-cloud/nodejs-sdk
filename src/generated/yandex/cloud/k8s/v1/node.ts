@@ -86,6 +86,10 @@ export enum Node_Status {
    * is deleted (this is our bug).
    */
   MISSING = 5,
+  /** STOPPED - Node is stopped */
+  STOPPED = 6,
+  /** UNKNOWN - Backend request to kubernetes api was unsuccessful. */
+  UNKNOWN = 7,
   UNRECOGNIZED = -1,
 }
 
@@ -109,6 +113,12 @@ export function node_StatusFromJSON(object: any): Node_Status {
     case 5:
     case "MISSING":
       return Node_Status.MISSING;
+    case 6:
+    case "STOPPED":
+      return Node_Status.STOPPED;
+    case 7:
+    case "UNKNOWN":
+      return Node_Status.UNKNOWN;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -130,6 +140,10 @@ export function node_StatusToJSON(object: Node_Status): string {
       return "READY";
     case Node_Status.MISSING:
       return "MISSING";
+    case Node_Status.STOPPED:
+      return "STOPPED";
+    case Node_Status.UNKNOWN:
+      return "UNKNOWN";
     default:
       return "UNKNOWN";
   }
@@ -281,10 +295,9 @@ export interface NodeTemplate {
   /** Specification for the boot disk that will be attached to the node. */
   bootDiskSpec?: DiskSpec;
   /**
-   * The metadata as `key:value` pairs assigned to this instance template. This includes custom metadata and predefined keys.
+   * The metadata as `key:value` pairs assigned to this instance template. Only SSH keys are supported as metadata.
    *
-   * For example, you may use the metadata in order to provide your public SSH key to the node.
-   * For more information, see [Metadata](/docs/compute/concepts/vm-metadata).
+   * For more information, see [Connecting to a node over SSH](/docs/managed-kubernetes/operations/node-connect-ssh).
    */
   metadata: { [key: string]: string };
   /**
@@ -305,6 +318,9 @@ export interface NodeTemplate {
   /** this parameter allows to specify type of network acceleration used on nodes (instances) */
   networkSettings?: NodeTemplate_NetworkSettings;
   containerRuntimeSettings?: NodeTemplate_ContainerRuntimeSettings;
+  containerNetworkSettings?: NodeTemplate_ContainerNetworkSettings;
+  /** GPU settings */
+  gpuSettings?: GpuSettings;
 }
 
 export interface NodeTemplate_LabelsEntry {
@@ -412,6 +428,68 @@ export function nodeTemplate_ContainerRuntimeSettings_TypeToJSON(
       return "DOCKER";
     case NodeTemplate_ContainerRuntimeSettings_Type.CONTAINERD:
       return "CONTAINERD";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export interface NodeTemplate_ContainerNetworkSettings {
+  $type: "yandex.cloud.k8s.v1.NodeTemplate.ContainerNetworkSettings";
+  podMtu: number;
+}
+
+export interface GpuSettings {
+  $type: "yandex.cloud.k8s.v1.GpuSettings";
+  /** GPU cluster id, that mk8s node will join. */
+  gpuClusterId: string;
+  /** GPU environment configured on node. */
+  gpuEnvironment: GpuSettings_GpuEnvironment;
+}
+
+export enum GpuSettings_GpuEnvironment {
+  /** GPU_ENVIRONMENT_UNSPECIFIED - Use one of the values below, depending on the default for the specific Cloud installation. */
+  GPU_ENVIRONMENT_UNSPECIFIED = 0,
+  /** RUNC_DRIVERS_CUDA - Use a node image with the pre-installed GPU toolkit, drivers and CUDA. */
+  RUNC_DRIVERS_CUDA = 1,
+  /**
+   * RUNC - Use a node image with the pre-installed GPU toolkit but without drivers.
+   * You should install drivers on a node yourself in that case.
+   * There are tools to help you to do that, for example gpu-operator.
+   */
+  RUNC = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function gpuSettings_GpuEnvironmentFromJSON(
+  object: any
+): GpuSettings_GpuEnvironment {
+  switch (object) {
+    case 0:
+    case "GPU_ENVIRONMENT_UNSPECIFIED":
+      return GpuSettings_GpuEnvironment.GPU_ENVIRONMENT_UNSPECIFIED;
+    case 1:
+    case "RUNC_DRIVERS_CUDA":
+      return GpuSettings_GpuEnvironment.RUNC_DRIVERS_CUDA;
+    case 2:
+    case "RUNC":
+      return GpuSettings_GpuEnvironment.RUNC;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return GpuSettings_GpuEnvironment.UNRECOGNIZED;
+  }
+}
+
+export function gpuSettings_GpuEnvironmentToJSON(
+  object: GpuSettings_GpuEnvironment
+): string {
+  switch (object) {
+    case GpuSettings_GpuEnvironment.GPU_ENVIRONMENT_UNSPECIFIED:
+      return "GPU_ENVIRONMENT_UNSPECIFIED";
+    case GpuSettings_GpuEnvironment.RUNC_DRIVERS_CUDA:
+      return "RUNC_DRIVERS_CUDA";
+    case GpuSettings_GpuEnvironment.RUNC:
+      return "RUNC";
     default:
       return "UNKNOWN";
   }
@@ -1266,6 +1344,18 @@ export const NodeTemplate = {
         writer.uint32(98).fork()
       ).ldelim();
     }
+    if (message.containerNetworkSettings !== undefined) {
+      NodeTemplate_ContainerNetworkSettings.encode(
+        message.containerNetworkSettings,
+        writer.uint32(130).fork()
+      ).ldelim();
+    }
+    if (message.gpuSettings !== undefined) {
+      GpuSettings.encode(
+        message.gpuSettings,
+        writer.uint32(146).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1345,6 +1435,16 @@ export const NodeTemplate = {
               reader.uint32()
             );
           break;
+        case 16:
+          message.containerNetworkSettings =
+            NodeTemplate_ContainerNetworkSettings.decode(
+              reader,
+              reader.uint32()
+            );
+          break;
+        case 18:
+          message.gpuSettings = GpuSettings.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1409,6 +1509,17 @@ export const NodeTemplate = {
             object.containerRuntimeSettings
           )
         : undefined;
+    message.containerNetworkSettings =
+      object.containerNetworkSettings !== undefined &&
+      object.containerNetworkSettings !== null
+        ? NodeTemplate_ContainerNetworkSettings.fromJSON(
+            object.containerNetworkSettings
+          )
+        : undefined;
+    message.gpuSettings =
+      object.gpuSettings !== undefined && object.gpuSettings !== null
+        ? GpuSettings.fromJSON(object.gpuSettings)
+        : undefined;
     return message;
   },
 
@@ -1464,6 +1575,16 @@ export const NodeTemplate = {
         ? NodeTemplate_ContainerRuntimeSettings.toJSON(
             message.containerRuntimeSettings
           )
+        : undefined);
+    message.containerNetworkSettings !== undefined &&
+      (obj.containerNetworkSettings = message.containerNetworkSettings
+        ? NodeTemplate_ContainerNetworkSettings.toJSON(
+            message.containerNetworkSettings
+          )
+        : undefined);
+    message.gpuSettings !== undefined &&
+      (obj.gpuSettings = message.gpuSettings
+        ? GpuSettings.toJSON(message.gpuSettings)
         : undefined);
     return obj;
   },
@@ -1524,6 +1645,17 @@ export const NodeTemplate = {
         ? NodeTemplate_ContainerRuntimeSettings.fromPartial(
             object.containerRuntimeSettings
           )
+        : undefined;
+    message.containerNetworkSettings =
+      object.containerNetworkSettings !== undefined &&
+      object.containerNetworkSettings !== null
+        ? NodeTemplate_ContainerNetworkSettings.fromPartial(
+            object.containerNetworkSettings
+          )
+        : undefined;
+    message.gpuSettings =
+      object.gpuSettings !== undefined && object.gpuSettings !== null
+        ? GpuSettings.fromPartial(object.gpuSettings)
         : undefined;
     return message;
   },
@@ -1852,6 +1984,159 @@ messageTypeRegistry.set(
   NodeTemplate_ContainerRuntimeSettings.$type,
   NodeTemplate_ContainerRuntimeSettings
 );
+
+const baseNodeTemplate_ContainerNetworkSettings: object = {
+  $type: "yandex.cloud.k8s.v1.NodeTemplate.ContainerNetworkSettings",
+  podMtu: 0,
+};
+
+export const NodeTemplate_ContainerNetworkSettings = {
+  $type: "yandex.cloud.k8s.v1.NodeTemplate.ContainerNetworkSettings" as const,
+
+  encode(
+    message: NodeTemplate_ContainerNetworkSettings,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.podMtu !== 0) {
+      writer.uint32(8).int64(message.podMtu);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): NodeTemplate_ContainerNetworkSettings {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseNodeTemplate_ContainerNetworkSettings,
+    } as NodeTemplate_ContainerNetworkSettings;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.podMtu = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): NodeTemplate_ContainerNetworkSettings {
+    const message = {
+      ...baseNodeTemplate_ContainerNetworkSettings,
+    } as NodeTemplate_ContainerNetworkSettings;
+    message.podMtu =
+      object.podMtu !== undefined && object.podMtu !== null
+        ? Number(object.podMtu)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: NodeTemplate_ContainerNetworkSettings): unknown {
+    const obj: any = {};
+    message.podMtu !== undefined && (obj.podMtu = Math.round(message.podMtu));
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<NodeTemplate_ContainerNetworkSettings>, I>
+  >(object: I): NodeTemplate_ContainerNetworkSettings {
+    const message = {
+      ...baseNodeTemplate_ContainerNetworkSettings,
+    } as NodeTemplate_ContainerNetworkSettings;
+    message.podMtu = object.podMtu ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  NodeTemplate_ContainerNetworkSettings.$type,
+  NodeTemplate_ContainerNetworkSettings
+);
+
+const baseGpuSettings: object = {
+  $type: "yandex.cloud.k8s.v1.GpuSettings",
+  gpuClusterId: "",
+  gpuEnvironment: 0,
+};
+
+export const GpuSettings = {
+  $type: "yandex.cloud.k8s.v1.GpuSettings" as const,
+
+  encode(
+    message: GpuSettings,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.gpuClusterId !== "") {
+      writer.uint32(10).string(message.gpuClusterId);
+    }
+    if (message.gpuEnvironment !== 0) {
+      writer.uint32(16).int32(message.gpuEnvironment);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GpuSettings {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseGpuSettings } as GpuSettings;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.gpuClusterId = reader.string();
+          break;
+        case 2:
+          message.gpuEnvironment = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GpuSettings {
+    const message = { ...baseGpuSettings } as GpuSettings;
+    message.gpuClusterId =
+      object.gpuClusterId !== undefined && object.gpuClusterId !== null
+        ? String(object.gpuClusterId)
+        : "";
+    message.gpuEnvironment =
+      object.gpuEnvironment !== undefined && object.gpuEnvironment !== null
+        ? gpuSettings_GpuEnvironmentFromJSON(object.gpuEnvironment)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: GpuSettings): unknown {
+    const obj: any = {};
+    message.gpuClusterId !== undefined &&
+      (obj.gpuClusterId = message.gpuClusterId);
+    message.gpuEnvironment !== undefined &&
+      (obj.gpuEnvironment = gpuSettings_GpuEnvironmentToJSON(
+        message.gpuEnvironment
+      ));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GpuSettings>, I>>(
+    object: I
+  ): GpuSettings {
+    const message = { ...baseGpuSettings } as GpuSettings;
+    message.gpuClusterId = object.gpuClusterId ?? "";
+    message.gpuEnvironment = object.gpuEnvironment ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(GpuSettings.$type, GpuSettings);
 
 const baseNetworkInterfaceSpec: object = {
   $type: "yandex.cloud.k8s.v1.NetworkInterfaceSpec",

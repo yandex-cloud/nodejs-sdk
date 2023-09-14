@@ -14,14 +14,15 @@ import {
   ServiceError,
 } from "@grpc/grpc-js";
 import _m0 from "protobufjs/minimal";
-import { FieldMask } from "../../../../google/protobuf/field_mask";
 import {
+  RouteOptions,
   VirtualHost,
   Route,
   HeaderModification,
   HttpRoute,
   GrpcRoute,
 } from "../../../../yandex/cloud/apploadbalancer/v1/virtual_host";
+import { FieldMask } from "../../../../google/protobuf/field_mask";
 import { Operation } from "../../../../yandex/cloud/operation/operation";
 
 export const protobufPackage = "yandex.cloud.apploadbalancer.v1";
@@ -121,6 +122,8 @@ export interface CreateVirtualHostRequest {
    * before responses are forwarded to clients.
    */
   modifyResponseHeaders: HeaderModification[];
+  /** Route options for the virtual host. */
+  routeOptions?: RouteOptions;
 }
 
 export interface CreateVirtualHostMetadata {
@@ -194,6 +197,8 @@ export interface UpdateVirtualHostRequest {
    * Existing list of modifications is completely replaced by the specified list.
    */
   modifyResponseHeaders: HeaderModification[];
+  /** New route options for the virtual host. */
+  routeOptions?: RouteOptions;
 }
 
 export interface UpdateVirtualHostMetadata {
@@ -286,6 +291,8 @@ export interface UpdateRouteRequest {
   http?: HttpRoute | undefined;
   /** New settings of the gRPC route. */
   grpc?: GrpcRoute | undefined;
+  /** New route options for the route. */
+  routeOptions?: RouteOptions;
 }
 
 export interface UpdateRouteMetadata {
@@ -605,6 +612,12 @@ export const CreateVirtualHostRequest = {
     for (const v of message.modifyResponseHeaders) {
       HeaderModification.encode(v!, writer.uint32(58).fork()).ldelim();
     }
+    if (message.routeOptions !== undefined) {
+      RouteOptions.encode(
+        message.routeOptions,
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -646,6 +659,9 @@ export const CreateVirtualHostRequest = {
             HeaderModification.decode(reader, reader.uint32())
           );
           break;
+        case 8:
+          message.routeOptions = RouteOptions.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -674,6 +690,10 @@ export const CreateVirtualHostRequest = {
     message.modifyResponseHeaders = (object.modifyResponseHeaders ?? []).map(
       (e: any) => HeaderModification.fromJSON(e)
     );
+    message.routeOptions =
+      object.routeOptions !== undefined && object.routeOptions !== null
+        ? RouteOptions.fromJSON(object.routeOptions)
+        : undefined;
     return message;
   },
 
@@ -706,6 +726,10 @@ export const CreateVirtualHostRequest = {
     } else {
       obj.modifyResponseHeaders = [];
     }
+    message.routeOptions !== undefined &&
+      (obj.routeOptions = message.routeOptions
+        ? RouteOptions.toJSON(message.routeOptions)
+        : undefined);
     return obj;
   },
 
@@ -727,6 +751,10 @@ export const CreateVirtualHostRequest = {
       object.modifyResponseHeaders?.map((e) =>
         HeaderModification.fromPartial(e)
       ) || [];
+    message.routeOptions =
+      object.routeOptions !== undefined && object.routeOptions !== null
+        ? RouteOptions.fromPartial(object.routeOptions)
+        : undefined;
     return message;
   },
 };
@@ -860,6 +888,12 @@ export const UpdateVirtualHostRequest = {
     for (const v of message.modifyResponseHeaders) {
       HeaderModification.encode(v!, writer.uint32(66).fork()).ldelim();
     }
+    if (message.routeOptions !== undefined) {
+      RouteOptions.encode(
+        message.routeOptions,
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -904,6 +938,9 @@ export const UpdateVirtualHostRequest = {
             HeaderModification.decode(reader, reader.uint32())
           );
           break;
+        case 9:
+          message.routeOptions = RouteOptions.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -936,6 +973,10 @@ export const UpdateVirtualHostRequest = {
     message.modifyResponseHeaders = (object.modifyResponseHeaders ?? []).map(
       (e: any) => HeaderModification.fromJSON(e)
     );
+    message.routeOptions =
+      object.routeOptions !== undefined && object.routeOptions !== null
+        ? RouteOptions.fromJSON(object.routeOptions)
+        : undefined;
     return message;
   },
 
@@ -973,6 +1014,10 @@ export const UpdateVirtualHostRequest = {
     } else {
       obj.modifyResponseHeaders = [];
     }
+    message.routeOptions !== undefined &&
+      (obj.routeOptions = message.routeOptions
+        ? RouteOptions.toJSON(message.routeOptions)
+        : undefined);
     return obj;
   },
 
@@ -998,6 +1043,10 @@ export const UpdateVirtualHostRequest = {
       object.modifyResponseHeaders?.map((e) =>
         HeaderModification.fromPartial(e)
       ) || [];
+    message.routeOptions =
+      object.routeOptions !== undefined && object.routeOptions !== null
+        ? RouteOptions.fromPartial(object.routeOptions)
+        : undefined;
     return message;
   },
 };
@@ -1486,6 +1535,12 @@ export const UpdateRouteRequest = {
     if (message.grpc !== undefined) {
       GrpcRoute.encode(message.grpc, writer.uint32(50).fork()).ldelim();
     }
+    if (message.routeOptions !== undefined) {
+      RouteOptions.encode(
+        message.routeOptions,
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1513,6 +1568,9 @@ export const UpdateRouteRequest = {
           break;
         case 6:
           message.grpc = GrpcRoute.decode(reader, reader.uint32());
+          break;
+        case 7:
+          message.routeOptions = RouteOptions.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1548,6 +1606,10 @@ export const UpdateRouteRequest = {
       object.grpc !== undefined && object.grpc !== null
         ? GrpcRoute.fromJSON(object.grpc)
         : undefined;
+    message.routeOptions =
+      object.routeOptions !== undefined && object.routeOptions !== null
+        ? RouteOptions.fromJSON(object.routeOptions)
+        : undefined;
     return message;
   },
 
@@ -1566,6 +1628,10 @@ export const UpdateRouteRequest = {
       (obj.http = message.http ? HttpRoute.toJSON(message.http) : undefined);
     message.grpc !== undefined &&
       (obj.grpc = message.grpc ? GrpcRoute.toJSON(message.grpc) : undefined);
+    message.routeOptions !== undefined &&
+      (obj.routeOptions = message.routeOptions
+        ? RouteOptions.toJSON(message.routeOptions)
+        : undefined);
     return obj;
   },
 
@@ -1587,6 +1653,10 @@ export const UpdateRouteRequest = {
     message.grpc =
       object.grpc !== undefined && object.grpc !== null
         ? GrpcRoute.fromPartial(object.grpc)
+        : undefined;
+    message.routeOptions =
+      object.routeOptions !== undefined && object.routeOptions !== null
+        ? RouteOptions.fromPartial(object.routeOptions)
         : undefined;
     return message;
   },

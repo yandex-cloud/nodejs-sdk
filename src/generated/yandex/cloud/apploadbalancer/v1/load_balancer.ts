@@ -2,6 +2,7 @@
 import { messageTypeRegistry } from "../../../../typeRegistry";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import { LogOptions } from "../../../../yandex/cloud/apploadbalancer/v1/logging";
 import { Target } from "../../../../yandex/cloud/apploadbalancer/v1/target_group";
 import { Timestamp } from "../../../../google/protobuf/timestamp";
 
@@ -59,6 +60,19 @@ export interface LoadBalancer {
   securityGroupIds: string[];
   /** Creation timestamp. */
   createdAt?: Date;
+  /**
+   * Scaling settings of the application load balancer.
+   *
+   * The scaling settings relate to a special internal instance group which facilitates the balancer's work.
+   * Instances in this group are called _resource units_. The group is scaled automatically based on incoming load
+   * and within limitations specified in these settings.
+   *
+   * For details about the concept,
+   * see [documentation](/docs/application-load-balancer/concepts/application-load-balancer#lcu-scaling).
+   */
+  autoScalePolicy?: AutoScalePolicy;
+  /** Cloud logging settings of the application load balancer. */
+  logOptions?: LogOptions;
 }
 
 export enum LoadBalancer_Status {
@@ -324,6 +338,8 @@ export interface HttpHandler {
   http2Options?: Http2Options | undefined;
   /** Enables support for incoming HTTP/1.0 and HTTP/1.1 requests and disables it for HTTP/2 requests. */
   allowHttp10: boolean | undefined;
+  /** When unset, will preserve the incoming x-request-id header, otherwise would rewrite it with a new value. */
+  rewriteRequestId: boolean;
 }
 
 /** A listener redirects resource. */
@@ -470,6 +486,29 @@ export interface TargetState_ZoneHealthcheckStatus {
   failedActiveHc: boolean;
 }
 
+/** A resource for scaling settings of an application load balancer. */
+export interface AutoScalePolicy {
+  $type: "yandex.cloud.apploadbalancer.v1.AutoScalePolicy";
+  /**
+   * Lower limit for the number of resource units in each availability zone.
+   *
+   * If not specified previously (using other instruments such as management console), the default value is 2.
+   * To revert to it, specify it explicitly.
+   *
+   * The minimum value is 2.
+   */
+  minZoneSize: number;
+  /**
+   * Upper limit for the total number of resource units across all availability zones.
+   *
+   * If a positive value is specified, it must be at least [min_zone_size] multiplied by the size of
+   * [AllocationPolicy.locations].
+   *
+   * If the value is 0, there is no upper limit.
+   */
+  maxSize: number;
+}
+
 const baseLoadBalancer: object = {
   $type: "yandex.cloud.apploadbalancer.v1.LoadBalancer",
   id: "",
@@ -542,6 +581,15 @@ export const LoadBalancer = {
         writer.uint32(106).fork()
       ).ldelim();
     }
+    if (message.autoScalePolicy !== undefined) {
+      AutoScalePolicy.encode(
+        message.autoScalePolicy,
+        writer.uint32(114).fork()
+      ).ldelim();
+    }
+    if (message.logOptions !== undefined) {
+      LogOptions.encode(message.logOptions, writer.uint32(122).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -605,6 +653,15 @@ export const LoadBalancer = {
             Timestamp.decode(reader, reader.uint32())
           );
           break;
+        case 14:
+          message.autoScalePolicy = AutoScalePolicy.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 15:
+          message.logOptions = LogOptions.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -665,6 +722,14 @@ export const LoadBalancer = {
       object.createdAt !== undefined && object.createdAt !== null
         ? fromJsonTimestamp(object.createdAt)
         : undefined;
+    message.autoScalePolicy =
+      object.autoScalePolicy !== undefined && object.autoScalePolicy !== null
+        ? AutoScalePolicy.fromJSON(object.autoScalePolicy)
+        : undefined;
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromJSON(object.logOptions)
+        : undefined;
     return message;
   },
 
@@ -704,6 +769,14 @@ export const LoadBalancer = {
     }
     message.createdAt !== undefined &&
       (obj.createdAt = message.createdAt.toISOString());
+    message.autoScalePolicy !== undefined &&
+      (obj.autoScalePolicy = message.autoScalePolicy
+        ? AutoScalePolicy.toJSON(message.autoScalePolicy)
+        : undefined);
+    message.logOptions !== undefined &&
+      (obj.logOptions = message.logOptions
+        ? LogOptions.toJSON(message.logOptions)
+        : undefined);
     return obj;
   },
 
@@ -735,6 +808,14 @@ export const LoadBalancer = {
     message.logGroupId = object.logGroupId ?? "";
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.createdAt = object.createdAt ?? undefined;
+    message.autoScalePolicy =
+      object.autoScalePolicy !== undefined && object.autoScalePolicy !== null
+        ? AutoScalePolicy.fromPartial(object.autoScalePolicy)
+        : undefined;
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromPartial(object.logOptions)
+        : undefined;
     return message;
   },
 };
@@ -1895,6 +1976,7 @@ messageTypeRegistry.set(StreamHandler.$type, StreamHandler);
 const baseHttpHandler: object = {
   $type: "yandex.cloud.apploadbalancer.v1.HttpHandler",
   httpRouterId: "",
+  rewriteRequestId: false,
 };
 
 export const HttpHandler = {
@@ -1916,6 +1998,9 @@ export const HttpHandler = {
     if (message.allowHttp10 !== undefined) {
       writer.uint32(24).bool(message.allowHttp10);
     }
+    if (message.rewriteRequestId === true) {
+      writer.uint32(32).bool(message.rewriteRequestId);
+    }
     return writer;
   },
 
@@ -1934,6 +2019,9 @@ export const HttpHandler = {
           break;
         case 3:
           message.allowHttp10 = reader.bool();
+          break;
+        case 4:
+          message.rewriteRequestId = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1957,6 +2045,10 @@ export const HttpHandler = {
       object.allowHttp10 !== undefined && object.allowHttp10 !== null
         ? Boolean(object.allowHttp10)
         : undefined;
+    message.rewriteRequestId =
+      object.rewriteRequestId !== undefined && object.rewriteRequestId !== null
+        ? Boolean(object.rewriteRequestId)
+        : false;
     return message;
   },
 
@@ -1970,6 +2062,8 @@ export const HttpHandler = {
         : undefined);
     message.allowHttp10 !== undefined &&
       (obj.allowHttp10 = message.allowHttp10);
+    message.rewriteRequestId !== undefined &&
+      (obj.rewriteRequestId = message.rewriteRequestId);
     return obj;
   },
 
@@ -1983,6 +2077,7 @@ export const HttpHandler = {
         ? Http2Options.fromPartial(object.http2Options)
         : undefined;
     message.allowHttp10 = object.allowHttp10 ?? undefined;
+    message.rewriteRequestId = object.rewriteRequestId ?? false;
     return message;
   },
 };
@@ -2532,6 +2627,83 @@ messageTypeRegistry.set(
   TargetState_ZoneHealthcheckStatus.$type,
   TargetState_ZoneHealthcheckStatus
 );
+
+const baseAutoScalePolicy: object = {
+  $type: "yandex.cloud.apploadbalancer.v1.AutoScalePolicy",
+  minZoneSize: 0,
+  maxSize: 0,
+};
+
+export const AutoScalePolicy = {
+  $type: "yandex.cloud.apploadbalancer.v1.AutoScalePolicy" as const,
+
+  encode(
+    message: AutoScalePolicy,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.minZoneSize !== 0) {
+      writer.uint32(8).int64(message.minZoneSize);
+    }
+    if (message.maxSize !== 0) {
+      writer.uint32(16).int64(message.maxSize);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): AutoScalePolicy {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseAutoScalePolicy } as AutoScalePolicy;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.minZoneSize = longToNumber(reader.int64() as Long);
+          break;
+        case 2:
+          message.maxSize = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AutoScalePolicy {
+    const message = { ...baseAutoScalePolicy } as AutoScalePolicy;
+    message.minZoneSize =
+      object.minZoneSize !== undefined && object.minZoneSize !== null
+        ? Number(object.minZoneSize)
+        : 0;
+    message.maxSize =
+      object.maxSize !== undefined && object.maxSize !== null
+        ? Number(object.maxSize)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: AutoScalePolicy): unknown {
+    const obj: any = {};
+    message.minZoneSize !== undefined &&
+      (obj.minZoneSize = Math.round(message.minZoneSize));
+    message.maxSize !== undefined &&
+      (obj.maxSize = Math.round(message.maxSize));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AutoScalePolicy>, I>>(
+    object: I
+  ): AutoScalePolicy {
+    const message = { ...baseAutoScalePolicy } as AutoScalePolicy;
+    message.minZoneSize = object.minZoneSize ?? 0;
+    message.maxSize = object.maxSize ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(AutoScalePolicy.$type, AutoScalePolicy);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

@@ -36,11 +36,17 @@ export interface User {
    */
   login?: boolean;
   /**
-   * Roles and privileges that are granted to the user (`GRANT <role> TO <user>`).
+   * A set of roles and privileges that are granted to the user.
    *
    * For more information, see [the documentation](/docs/managed-postgresql/operations/grant).
    */
   grants: string[];
+  /**
+   * Deletion Protection inhibits deletion of the user
+   *
+   * Default value: `unspecified` (inherits cluster's deletion_protection)
+   */
+  deletionProtection?: boolean;
 }
 
 export interface Permission {
@@ -76,11 +82,17 @@ export interface UserSpec {
    */
   login?: boolean;
   /**
-   * Roles and privileges that are granted to the user (`GRANT <role> TO <user>`).
+   * A set of roles and privileges that are granted to the user.
    *
    * For more information, see [the documentation](/docs/managed-postgresql/operations/grant).
    */
   grants: string[];
+  /**
+   * Deletion Protection inhibits deletion of the user
+   *
+   * Default value: `unspecified` (inherits cluster's deletion_protection)
+   */
+  deletionProtection?: boolean;
 }
 
 /** PostgreSQL user settings. */
@@ -135,6 +147,58 @@ export interface UserSettings {
    * See in-depth description in [PostgreSQL documentation](https://www.postgresql.org/docs/current/runtime-config-logging.html).
    */
   logStatement: UserSettings_LogStatement;
+  /**
+   * Mode that the connection pooler is working in with specified user.
+   *
+   * See in-depth description in [Odyssey documentation](https://github.com/yandex/odyssey/blob/master/documentation/configuration.md#pool-string)
+   */
+  poolMode: UserSettings_PoolingMode;
+  /**
+   * User can use prepared statements with transaction pooling.
+   *
+   * See in-depth description in [PostgreSQL documentation](https://www.postgresql.org/docs/current/sql-prepare.html)
+   */
+  preparedStatementsPooling?: boolean;
+  /**
+   * The connection pooler setting. It determines the maximum allowed replication lag (in seconds).
+   * Pooler will reject connections to the replica with a lag above this threshold.
+   * It can be useful to prevent application from reading stale data.
+   *
+   * Default value: 0
+   *
+   * Value of `0` disables this mechanism
+   */
+  catchupTimeout?: number;
+  /**
+   * The maximum time (in milliseconds) to wait for WAL replication (can be set only for PostgreSQL 12+)
+   * Terminate replication connections that are inactive for longer than this amount of time.
+   *
+   * Default value: `60000` (60 seconds).
+   *
+   * Value of `0` disables the timeout mechanism.
+   *
+   * See in-depth description in [PostgreSQL documentation](https://www.postgresql.org/docs/current/runtime-config-replication.html)
+   */
+  walSenderTimeout?: number;
+  /**
+   * Sets the maximum allowed idle time (in milliseconds) between queries, when in a transaction.
+   *
+   * Values of `0` (default) disables the timeout.
+   *
+   * See in-depth description in [PostgreSQL documentation](https://www.postgresql.org/docs/current/runtime-config-client.html)
+   */
+  idleInTransactionSessionTimeout?: number;
+  /**
+   * The maximum time (in milliseconds) to wait for statement
+   * The timeout is measured from the time a command arrives at the server until it is completed by the server.
+   *
+   * If `log_min_error_statement` is set to ERROR or lower, the statement that timed out will also be logged.
+   *
+   * Value of `0` (default) disables the timeout
+   *
+   * See in-depth description in [PostgreSQL documentation](https://www.postgresql.org/docs/current/runtime-config-client.html)
+   */
+  statementTimeout?: number;
 }
 
 export enum UserSettings_SynchronousCommit {
@@ -334,6 +398,57 @@ export function userSettings_TransactionIsolationToJSON(
   }
 }
 
+export enum UserSettings_PoolingMode {
+  POOLING_MODE_UNSPECIFIED = 0,
+  /** SESSION - (default) server connection will be assigned to it for the whole duration the client stays connected */
+  SESSION = 1,
+  /** TRANSACTION - server connection is assigned to a client only during a transaction */
+  TRANSACTION = 2,
+  /** STATEMENT - server connection will be put back into the pool immediately after a query completes */
+  STATEMENT = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function userSettings_PoolingModeFromJSON(
+  object: any
+): UserSettings_PoolingMode {
+  switch (object) {
+    case 0:
+    case "POOLING_MODE_UNSPECIFIED":
+      return UserSettings_PoolingMode.POOLING_MODE_UNSPECIFIED;
+    case 1:
+    case "SESSION":
+      return UserSettings_PoolingMode.SESSION;
+    case 2:
+    case "TRANSACTION":
+      return UserSettings_PoolingMode.TRANSACTION;
+    case 3:
+    case "STATEMENT":
+      return UserSettings_PoolingMode.STATEMENT;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return UserSettings_PoolingMode.UNRECOGNIZED;
+  }
+}
+
+export function userSettings_PoolingModeToJSON(
+  object: UserSettings_PoolingMode
+): string {
+  switch (object) {
+    case UserSettings_PoolingMode.POOLING_MODE_UNSPECIFIED:
+      return "POOLING_MODE_UNSPECIFIED";
+    case UserSettings_PoolingMode.SESSION:
+      return "SESSION";
+    case UserSettings_PoolingMode.TRANSACTION:
+      return "TRANSACTION";
+    case UserSettings_PoolingMode.STATEMENT:
+      return "STATEMENT";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 const baseUser: object = {
   $type: "yandex.cloud.mdb.postgresql.v1.User",
   name: "",
@@ -370,6 +485,15 @@ export const User = {
     for (const v of message.grants) {
       writer.uint32(58).string(v!);
     }
+    if (message.deletionProtection !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.deletionProtection!,
+        },
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -402,6 +526,12 @@ export const User = {
           break;
         case 7:
           message.grants.push(reader.string());
+          break;
+        case 8:
+          message.deletionProtection = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
           break;
         default:
           reader.skipType(tag & 7);
@@ -437,6 +567,11 @@ export const User = {
         ? Boolean(object.login)
         : undefined;
     message.grants = (object.grants ?? []).map((e: any) => String(e));
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : undefined;
     return message;
   },
 
@@ -463,6 +598,8 @@ export const User = {
     } else {
       obj.grants = [];
     }
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -479,6 +616,7 @@ export const User = {
         : undefined;
     message.login = object.login ?? undefined;
     message.grants = object.grants?.map((e) => e) || [];
+    message.deletionProtection = object.deletionProtection ?? undefined;
     return message;
   },
 };
@@ -589,6 +727,15 @@ export const UserSpec = {
     for (const v of message.grants) {
       writer.uint32(58).string(v!);
     }
+    if (message.deletionProtection !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.deletionProtection!,
+        },
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -621,6 +768,12 @@ export const UserSpec = {
           break;
         case 7:
           message.grants.push(reader.string());
+          break;
+        case 8:
+          message.deletionProtection = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
           break;
         default:
           reader.skipType(tag & 7);
@@ -656,6 +809,11 @@ export const UserSpec = {
         ? Boolean(object.login)
         : undefined;
     message.grants = (object.grants ?? []).map((e: any) => String(e));
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : undefined;
     return message;
   },
 
@@ -681,6 +839,8 @@ export const UserSpec = {
     } else {
       obj.grants = [];
     }
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -697,6 +857,7 @@ export const UserSpec = {
         : undefined;
     message.login = object.login ?? undefined;
     message.grants = object.grants?.map((e) => e) || [];
+    message.deletionProtection = object.deletionProtection ?? undefined;
     return message;
   },
 };
@@ -708,6 +869,7 @@ const baseUserSettings: object = {
   defaultTransactionIsolation: 0,
   synchronousCommit: 0,
   logStatement: 0,
+  poolMode: 0,
 };
 
 export const UserSettings = {
@@ -747,6 +909,51 @@ export const UserSettings = {
     if (message.logStatement !== 0) {
       writer.uint32(48).int32(message.logStatement);
     }
+    if (message.poolMode !== 0) {
+      writer.uint32(56).int32(message.poolMode);
+    }
+    if (message.preparedStatementsPooling !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.preparedStatementsPooling!,
+        },
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
+    if (message.catchupTimeout !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.catchupTimeout! },
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
+    if (message.walSenderTimeout !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.walSenderTimeout!,
+        },
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
+    if (message.idleInTransactionSessionTimeout !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.idleInTransactionSessionTimeout!,
+        },
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
+    if (message.statementTimeout !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.statementTimeout!,
+        },
+        writer.uint32(98).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -783,6 +990,39 @@ export const UserSettings = {
           break;
         case 6:
           message.logStatement = reader.int32() as any;
+          break;
+        case 7:
+          message.poolMode = reader.int32() as any;
+          break;
+        case 8:
+          message.preparedStatementsPooling = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 9:
+          message.catchupTimeout = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 10:
+          message.walSenderTimeout = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 11:
+          message.idleInTransactionSessionTimeout = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 12:
+          message.statementTimeout = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
           break;
         default:
           reader.skipType(tag & 7);
@@ -823,6 +1063,32 @@ export const UserSettings = {
       object.logStatement !== undefined && object.logStatement !== null
         ? userSettings_LogStatementFromJSON(object.logStatement)
         : 0;
+    message.poolMode =
+      object.poolMode !== undefined && object.poolMode !== null
+        ? userSettings_PoolingModeFromJSON(object.poolMode)
+        : 0;
+    message.preparedStatementsPooling =
+      object.preparedStatementsPooling !== undefined &&
+      object.preparedStatementsPooling !== null
+        ? Boolean(object.preparedStatementsPooling)
+        : undefined;
+    message.catchupTimeout =
+      object.catchupTimeout !== undefined && object.catchupTimeout !== null
+        ? Number(object.catchupTimeout)
+        : undefined;
+    message.walSenderTimeout =
+      object.walSenderTimeout !== undefined && object.walSenderTimeout !== null
+        ? Number(object.walSenderTimeout)
+        : undefined;
+    message.idleInTransactionSessionTimeout =
+      object.idleInTransactionSessionTimeout !== undefined &&
+      object.idleInTransactionSessionTimeout !== null
+        ? Number(object.idleInTransactionSessionTimeout)
+        : undefined;
+    message.statementTimeout =
+      object.statementTimeout !== undefined && object.statementTimeout !== null
+        ? Number(object.statementTimeout)
+        : undefined;
     return message;
   },
 
@@ -847,6 +1113,19 @@ export const UserSettings = {
       (obj.logStatement = userSettings_LogStatementToJSON(
         message.logStatement
       ));
+    message.poolMode !== undefined &&
+      (obj.poolMode = userSettings_PoolingModeToJSON(message.poolMode));
+    message.preparedStatementsPooling !== undefined &&
+      (obj.preparedStatementsPooling = message.preparedStatementsPooling);
+    message.catchupTimeout !== undefined &&
+      (obj.catchupTimeout = message.catchupTimeout);
+    message.walSenderTimeout !== undefined &&
+      (obj.walSenderTimeout = message.walSenderTimeout);
+    message.idleInTransactionSessionTimeout !== undefined &&
+      (obj.idleInTransactionSessionTimeout =
+        message.idleInTransactionSessionTimeout);
+    message.statementTimeout !== undefined &&
+      (obj.statementTimeout = message.statementTimeout);
     return obj;
   },
 
@@ -862,6 +1141,14 @@ export const UserSettings = {
     message.synchronousCommit = object.synchronousCommit ?? 0;
     message.tempFileLimit = object.tempFileLimit ?? undefined;
     message.logStatement = object.logStatement ?? 0;
+    message.poolMode = object.poolMode ?? 0;
+    message.preparedStatementsPooling =
+      object.preparedStatementsPooling ?? undefined;
+    message.catchupTimeout = object.catchupTimeout ?? undefined;
+    message.walSenderTimeout = object.walSenderTimeout ?? undefined;
+    message.idleInTransactionSessionTimeout =
+      object.idleInTransactionSessionTimeout ?? undefined;
+    message.statementTimeout = object.statementTimeout ?? undefined;
     return message;
   },
 };

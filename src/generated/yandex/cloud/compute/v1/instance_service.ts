@@ -18,6 +18,7 @@ import {
   MetadataOptions,
   SchedulingPolicy,
   NetworkSettings,
+  GpuSettings,
   PlacementPolicy,
   IpVersion,
   Instance,
@@ -27,6 +28,12 @@ import {
 import { FieldMask } from "../../../../google/protobuf/field_mask";
 import { DiskPlacementPolicy } from "../../../../yandex/cloud/compute/v1/disk";
 import { Operation } from "../../../../yandex/cloud/operation/operation";
+import {
+  ListAccessBindingsRequest,
+  ListAccessBindingsResponse,
+  SetAccessBindingsRequest,
+  UpdateAccessBindingsRequest,
+} from "../../../../yandex/cloud/access/access";
 
 export const protobufPackage = "yandex.cloud.compute.v1";
 
@@ -97,12 +104,21 @@ export interface ListInstancesRequest {
   pageToken: string;
   /**
    * A filter expression that filters resources listed in the response.
-   * The expression must specify:
-   * 1. The field name. Currently you can use filtering only on the [Instance.name] field.
-   * 2. An `=` operator.
-   * 3. The value in double quotes (`"`). Must be 3-63 characters long and match the regular expression `[a-z]([-a-z0-9]{,61}[a-z0-9])?`.
+   * The expression consists of one or more conditions united by `AND` operator: `<condition1> [AND <condition2> [<...> AND <conditionN>]]`.
+   *
+   * Each condition has the form `<field> <operator> <value>`, where:
+   * 1. `<field>` is the field name. Currently you can use filtering only on the limited number of fields.
+   * 2. `<operator>` is a logical operator, one of `=`, `!=`, `IN`, `NOT IN`.
+   * 3. `<value>` represents a value.
+   * String values should be written in double (`"`) or single (`'`) quotes. C-style escape sequences are supported (`\"` turns to `"`, `\'` to `'`, `\\` to backslash).
    */
   filter: string;
+  /**
+   * By which column the listing should be ordered and in which direction,
+   * format is "createdAt desc". "id asc" if omitted.
+   * The default sorting order is ascending
+   */
+  orderBy: string;
 }
 
 export interface ListInstancesResponse {
@@ -203,6 +219,8 @@ export interface CreateInstanceRequest {
   serviceAccountId: string;
   /** Network settings. */
   networkSettings?: NetworkSettings;
+  /** GPU settings. */
+  gpuSettings?: GpuSettings;
   /** Placement policy configuration. */
   placementPolicy?: PlacementPolicy;
 }
@@ -830,6 +848,32 @@ export interface MoveInstanceMetadata {
   destinationFolderId: string;
 }
 
+export interface RelocateInstanceRequest {
+  $type: "yandex.cloud.compute.v1.RelocateInstanceRequest";
+  /**
+   * ID of the instance to move.
+   *
+   * To get the instance ID, make a [InstanceService.List] request.
+   */
+  instanceId: string;
+  /**
+   * ID of the availability zone to move the instance to.
+   *
+   * To get the zone ID, make a [ZoneService.List] request.
+   */
+  destinationZoneId: string;
+}
+
+export interface RelocateInstanceMetadata {
+  $type: "yandex.cloud.compute.v1.RelocateInstanceMetadata";
+  /** ID of the instance that is being moved. */
+  instanceId: string;
+  /** ID of the availability zone that the instance is being moved from. */
+  sourceZoneId: string;
+  /** ID of the availability zone that the instance is being moved to. */
+  destinationZoneId: string;
+}
+
 export interface GuestStopInstanceMetadata {
   $type: "yandex.cloud.compute.v1.GuestStopInstanceMetadata";
   /** ID of the instance that was stopped from guest OS. */
@@ -929,6 +973,7 @@ const baseListInstancesRequest: object = {
   pageSize: 0,
   pageToken: "",
   filter: "",
+  orderBy: "",
 };
 
 export const ListInstancesRequest = {
@@ -949,6 +994,9 @@ export const ListInstancesRequest = {
     }
     if (message.filter !== "") {
       writer.uint32(34).string(message.filter);
+    }
+    if (message.orderBy !== "") {
+      writer.uint32(42).string(message.orderBy);
     }
     return writer;
   },
@@ -974,6 +1022,9 @@ export const ListInstancesRequest = {
           break;
         case 4:
           message.filter = reader.string();
+          break;
+        case 5:
+          message.orderBy = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1001,6 +1052,10 @@ export const ListInstancesRequest = {
       object.filter !== undefined && object.filter !== null
         ? String(object.filter)
         : "";
+    message.orderBy =
+      object.orderBy !== undefined && object.orderBy !== null
+        ? String(object.orderBy)
+        : "";
     return message;
   },
 
@@ -1011,6 +1066,7 @@ export const ListInstancesRequest = {
       (obj.pageSize = Math.round(message.pageSize));
     message.pageToken !== undefined && (obj.pageToken = message.pageToken);
     message.filter !== undefined && (obj.filter = message.filter);
+    message.orderBy !== undefined && (obj.orderBy = message.orderBy);
     return obj;
   },
 
@@ -1022,6 +1078,7 @@ export const ListInstancesRequest = {
     message.pageSize = object.pageSize ?? 0;
     message.pageToken = object.pageToken ?? "";
     message.filter = object.filter ?? "";
+    message.orderBy = object.orderBy ?? "";
     return message;
   },
 };
@@ -1214,6 +1271,12 @@ export const CreateInstanceRequest = {
         writer.uint32(122).fork()
       ).ldelim();
     }
+    if (message.gpuSettings !== undefined) {
+      GpuSettings.encode(
+        message.gpuSettings,
+        writer.uint32(162).fork()
+      ).ldelim();
+    }
     if (message.placementPolicy !== undefined) {
       PlacementPolicy.encode(
         message.placementPolicy,
@@ -1325,6 +1388,9 @@ export const CreateInstanceRequest = {
             reader.uint32()
           );
           break;
+        case 20:
+          message.gpuSettings = GpuSettings.decode(reader, reader.uint32());
+          break;
         case 16:
           message.placementPolicy = PlacementPolicy.decode(
             reader,
@@ -1413,6 +1479,10 @@ export const CreateInstanceRequest = {
       object.networkSettings !== undefined && object.networkSettings !== null
         ? NetworkSettings.fromJSON(object.networkSettings)
         : undefined;
+    message.gpuSettings =
+      object.gpuSettings !== undefined && object.gpuSettings !== null
+        ? GpuSettings.fromJSON(object.gpuSettings)
+        : undefined;
     message.placementPolicy =
       object.placementPolicy !== undefined && object.placementPolicy !== null
         ? PlacementPolicy.fromJSON(object.placementPolicy)
@@ -1491,6 +1561,10 @@ export const CreateInstanceRequest = {
       (obj.networkSettings = message.networkSettings
         ? NetworkSettings.toJSON(message.networkSettings)
         : undefined);
+    message.gpuSettings !== undefined &&
+      (obj.gpuSettings = message.gpuSettings
+        ? GpuSettings.toJSON(message.gpuSettings)
+        : undefined);
     message.placementPolicy !== undefined &&
       (obj.placementPolicy = message.placementPolicy
         ? PlacementPolicy.toJSON(message.placementPolicy)
@@ -1558,6 +1632,10 @@ export const CreateInstanceRequest = {
     message.networkSettings =
       object.networkSettings !== undefined && object.networkSettings !== null
         ? NetworkSettings.fromPartial(object.networkSettings)
+        : undefined;
+    message.gpuSettings =
+      object.gpuSettings !== undefined && object.gpuSettings !== null
+        ? GpuSettings.fromPartial(object.gpuSettings)
         : undefined;
     message.placementPolicy =
       object.placementPolicy !== undefined && object.placementPolicy !== null
@@ -6116,6 +6194,195 @@ export const MoveInstanceMetadata = {
 
 messageTypeRegistry.set(MoveInstanceMetadata.$type, MoveInstanceMetadata);
 
+const baseRelocateInstanceRequest: object = {
+  $type: "yandex.cloud.compute.v1.RelocateInstanceRequest",
+  instanceId: "",
+  destinationZoneId: "",
+};
+
+export const RelocateInstanceRequest = {
+  $type: "yandex.cloud.compute.v1.RelocateInstanceRequest" as const,
+
+  encode(
+    message: RelocateInstanceRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.instanceId !== "") {
+      writer.uint32(10).string(message.instanceId);
+    }
+    if (message.destinationZoneId !== "") {
+      writer.uint32(18).string(message.destinationZoneId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RelocateInstanceRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseRelocateInstanceRequest,
+    } as RelocateInstanceRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instanceId = reader.string();
+          break;
+        case 2:
+          message.destinationZoneId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RelocateInstanceRequest {
+    const message = {
+      ...baseRelocateInstanceRequest,
+    } as RelocateInstanceRequest;
+    message.instanceId =
+      object.instanceId !== undefined && object.instanceId !== null
+        ? String(object.instanceId)
+        : "";
+    message.destinationZoneId =
+      object.destinationZoneId !== undefined &&
+      object.destinationZoneId !== null
+        ? String(object.destinationZoneId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: RelocateInstanceRequest): unknown {
+    const obj: any = {};
+    message.instanceId !== undefined && (obj.instanceId = message.instanceId);
+    message.destinationZoneId !== undefined &&
+      (obj.destinationZoneId = message.destinationZoneId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RelocateInstanceRequest>, I>>(
+    object: I
+  ): RelocateInstanceRequest {
+    const message = {
+      ...baseRelocateInstanceRequest,
+    } as RelocateInstanceRequest;
+    message.instanceId = object.instanceId ?? "";
+    message.destinationZoneId = object.destinationZoneId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(RelocateInstanceRequest.$type, RelocateInstanceRequest);
+
+const baseRelocateInstanceMetadata: object = {
+  $type: "yandex.cloud.compute.v1.RelocateInstanceMetadata",
+  instanceId: "",
+  sourceZoneId: "",
+  destinationZoneId: "",
+};
+
+export const RelocateInstanceMetadata = {
+  $type: "yandex.cloud.compute.v1.RelocateInstanceMetadata" as const,
+
+  encode(
+    message: RelocateInstanceMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.instanceId !== "") {
+      writer.uint32(10).string(message.instanceId);
+    }
+    if (message.sourceZoneId !== "") {
+      writer.uint32(18).string(message.sourceZoneId);
+    }
+    if (message.destinationZoneId !== "") {
+      writer.uint32(26).string(message.destinationZoneId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RelocateInstanceMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseRelocateInstanceMetadata,
+    } as RelocateInstanceMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instanceId = reader.string();
+          break;
+        case 2:
+          message.sourceZoneId = reader.string();
+          break;
+        case 3:
+          message.destinationZoneId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RelocateInstanceMetadata {
+    const message = {
+      ...baseRelocateInstanceMetadata,
+    } as RelocateInstanceMetadata;
+    message.instanceId =
+      object.instanceId !== undefined && object.instanceId !== null
+        ? String(object.instanceId)
+        : "";
+    message.sourceZoneId =
+      object.sourceZoneId !== undefined && object.sourceZoneId !== null
+        ? String(object.sourceZoneId)
+        : "";
+    message.destinationZoneId =
+      object.destinationZoneId !== undefined &&
+      object.destinationZoneId !== null
+        ? String(object.destinationZoneId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: RelocateInstanceMetadata): unknown {
+    const obj: any = {};
+    message.instanceId !== undefined && (obj.instanceId = message.instanceId);
+    message.sourceZoneId !== undefined &&
+      (obj.sourceZoneId = message.sourceZoneId);
+    message.destinationZoneId !== undefined &&
+      (obj.destinationZoneId = message.destinationZoneId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RelocateInstanceMetadata>, I>>(
+    object: I
+  ): RelocateInstanceMetadata {
+    const message = {
+      ...baseRelocateInstanceMetadata,
+    } as RelocateInstanceMetadata;
+    message.instanceId = object.instanceId ?? "";
+    message.sourceZoneId = object.sourceZoneId ?? "";
+    message.destinationZoneId = object.destinationZoneId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  RelocateInstanceMetadata.$type,
+  RelocateInstanceMetadata
+);
+
 const baseGuestStopInstanceMetadata: object = {
   $type: "yandex.cloud.compute.v1.GuestStopInstanceMetadata",
   instanceId: "",
@@ -6603,6 +6870,63 @@ export const InstanceServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /**
+   * Moves the specified instance to another availability zone
+   *
+   * Running instance will be restarted during this operation.
+   */
+  relocate: {
+    path: "/yandex.cloud.compute.v1.InstanceService/Relocate",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: RelocateInstanceRequest) =>
+      Buffer.from(RelocateInstanceRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      RelocateInstanceRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /** Lists access bindings for the instance. */
+  listAccessBindings: {
+    path: "/yandex.cloud.compute.v1.InstanceService/ListAccessBindings",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: ListAccessBindingsRequest) =>
+      Buffer.from(ListAccessBindingsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      ListAccessBindingsRequest.decode(value),
+    responseSerialize: (value: ListAccessBindingsResponse) =>
+      Buffer.from(ListAccessBindingsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) =>
+      ListAccessBindingsResponse.decode(value),
+  },
+  /** Sets access bindings for the instance. */
+  setAccessBindings: {
+    path: "/yandex.cloud.compute.v1.InstanceService/SetAccessBindings",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: SetAccessBindingsRequest) =>
+      Buffer.from(SetAccessBindingsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      SetAccessBindingsRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /** Updates access bindings for the instance. */
+  updateAccessBindings: {
+    path: "/yandex.cloud.compute.v1.InstanceService/UpdateAccessBindings",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: UpdateAccessBindingsRequest) =>
+      Buffer.from(UpdateAccessBindingsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      UpdateAccessBindingsRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
 } as const;
 
 export interface InstanceServiceServer extends UntypedServiceImplementation {
@@ -6691,6 +7015,21 @@ export interface InstanceServiceServer extends UntypedServiceImplementation {
    * that have been recorded to the source folder prior to moving will be retained.
    */
   move: handleUnaryCall<MoveInstanceRequest, Operation>;
+  /**
+   * Moves the specified instance to another availability zone
+   *
+   * Running instance will be restarted during this operation.
+   */
+  relocate: handleUnaryCall<RelocateInstanceRequest, Operation>;
+  /** Lists access bindings for the instance. */
+  listAccessBindings: handleUnaryCall<
+    ListAccessBindingsRequest,
+    ListAccessBindingsResponse
+  >;
+  /** Sets access bindings for the instance. */
+  setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
+  /** Updates access bindings for the instance. */
+  updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
 }
 
 export interface InstanceServiceClient extends Client {
@@ -7056,6 +7395,83 @@ export interface InstanceServiceClient extends Client {
   ): ClientUnaryCall;
   move(
     request: MoveInstanceRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /**
+   * Moves the specified instance to another availability zone
+   *
+   * Running instance will be restarted during this operation.
+   */
+  relocate(
+    request: RelocateInstanceRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  relocate(
+    request: RelocateInstanceRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  relocate(
+    request: RelocateInstanceRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Lists access bindings for the instance. */
+  listAccessBindings(
+    request: ListAccessBindingsRequest,
+    callback: (
+      error: ServiceError | null,
+      response: ListAccessBindingsResponse
+    ) => void
+  ): ClientUnaryCall;
+  listAccessBindings(
+    request: ListAccessBindingsRequest,
+    metadata: Metadata,
+    callback: (
+      error: ServiceError | null,
+      response: ListAccessBindingsResponse
+    ) => void
+  ): ClientUnaryCall;
+  listAccessBindings(
+    request: ListAccessBindingsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (
+      error: ServiceError | null,
+      response: ListAccessBindingsResponse
+    ) => void
+  ): ClientUnaryCall;
+  /** Sets access bindings for the instance. */
+  setAccessBindings(
+    request: SetAccessBindingsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  setAccessBindings(
+    request: SetAccessBindingsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  setAccessBindings(
+    request: SetAccessBindingsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Updates access bindings for the instance. */
+  updateAccessBindings(
+    request: UpdateAccessBindingsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateAccessBindings(
+    request: UpdateAccessBindingsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateAccessBindings(
+    request: UpdateAccessBindingsRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

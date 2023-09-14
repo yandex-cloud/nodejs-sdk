@@ -15,6 +15,7 @@ import {
 } from "@grpc/grpc-js";
 import _m0 from "protobufjs/minimal";
 import { Backup } from "../../../../../yandex/cloud/mdb/postgresql/v1/backup";
+import { Operation } from "../../../../../yandex/cloud/operation/operation";
 
 export const protobufPackage = "yandex.cloud.mdb.postgresql.v1";
 
@@ -58,6 +59,20 @@ export interface ListBackupsResponse {
    * list request will have its own [next_page_token] to continue paging through the results.
    */
   nextPageToken: string;
+}
+
+export interface DeleteBackupRequest {
+  $type: "yandex.cloud.mdb.postgresql.v1.DeleteBackupRequest";
+  /** Required. ID of the backup to delete. */
+  backupId: string;
+}
+
+export interface DeleteBackupMetadata {
+  $type: "yandex.cloud.mdb.postgresql.v1.DeleteBackupMetadata";
+  /** Required. ID of the PostgreSQL backup that is currently being deleted. */
+  backupId: string;
+  /** ID of the cluster which backup belonged to. */
+  clusterId: string;
 }
 
 const baseGetBackupRequest: object = {
@@ -292,6 +307,146 @@ export const ListBackupsResponse = {
 
 messageTypeRegistry.set(ListBackupsResponse.$type, ListBackupsResponse);
 
+const baseDeleteBackupRequest: object = {
+  $type: "yandex.cloud.mdb.postgresql.v1.DeleteBackupRequest",
+  backupId: "",
+};
+
+export const DeleteBackupRequest = {
+  $type: "yandex.cloud.mdb.postgresql.v1.DeleteBackupRequest" as const,
+
+  encode(
+    message: DeleteBackupRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.backupId !== "") {
+      writer.uint32(10).string(message.backupId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBackupRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseDeleteBackupRequest } as DeleteBackupRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.backupId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteBackupRequest {
+    const message = { ...baseDeleteBackupRequest } as DeleteBackupRequest;
+    message.backupId =
+      object.backupId !== undefined && object.backupId !== null
+        ? String(object.backupId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: DeleteBackupRequest): unknown {
+    const obj: any = {};
+    message.backupId !== undefined && (obj.backupId = message.backupId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteBackupRequest>, I>>(
+    object: I
+  ): DeleteBackupRequest {
+    const message = { ...baseDeleteBackupRequest } as DeleteBackupRequest;
+    message.backupId = object.backupId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(DeleteBackupRequest.$type, DeleteBackupRequest);
+
+const baseDeleteBackupMetadata: object = {
+  $type: "yandex.cloud.mdb.postgresql.v1.DeleteBackupMetadata",
+  backupId: "",
+  clusterId: "",
+};
+
+export const DeleteBackupMetadata = {
+  $type: "yandex.cloud.mdb.postgresql.v1.DeleteBackupMetadata" as const,
+
+  encode(
+    message: DeleteBackupMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.backupId !== "") {
+      writer.uint32(10).string(message.backupId);
+    }
+    if (message.clusterId !== "") {
+      writer.uint32(18).string(message.clusterId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DeleteBackupMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseDeleteBackupMetadata } as DeleteBackupMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.backupId = reader.string();
+          break;
+        case 2:
+          message.clusterId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteBackupMetadata {
+    const message = { ...baseDeleteBackupMetadata } as DeleteBackupMetadata;
+    message.backupId =
+      object.backupId !== undefined && object.backupId !== null
+        ? String(object.backupId)
+        : "";
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: DeleteBackupMetadata): unknown {
+    const obj: any = {};
+    message.backupId !== undefined && (obj.backupId = message.backupId);
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteBackupMetadata>, I>>(
+    object: I
+  ): DeleteBackupMetadata {
+    const message = { ...baseDeleteBackupMetadata } as DeleteBackupMetadata;
+    message.backupId = object.backupId ?? "";
+    message.clusterId = object.clusterId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(DeleteBackupMetadata.$type, DeleteBackupMetadata);
+
 /** A set of methods for managing PostgreSQL Backup resources. */
 export const BackupServiceService = {
   /**
@@ -322,6 +477,18 @@ export const BackupServiceService = {
       Buffer.from(ListBackupsResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer) => ListBackupsResponse.decode(value),
   },
+  /** Deletes the specified PostgreSQL cluster backup. */
+  delete: {
+    path: "/yandex.cloud.mdb.postgresql.v1.BackupService/Delete",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: DeleteBackupRequest) =>
+      Buffer.from(DeleteBackupRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => DeleteBackupRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
 } as const;
 
 export interface BackupServiceServer extends UntypedServiceImplementation {
@@ -333,6 +500,8 @@ export interface BackupServiceServer extends UntypedServiceImplementation {
   get: handleUnaryCall<GetBackupRequest, Backup>;
   /** Retrieves the list of Backup resources available for the specified folder. */
   list: handleUnaryCall<ListBackupsRequest, ListBackupsResponse>;
+  /** Deletes the specified PostgreSQL cluster backup. */
+  delete: handleUnaryCall<DeleteBackupRequest, Operation>;
 }
 
 export interface BackupServiceClient extends Client {
@@ -380,6 +549,22 @@ export interface BackupServiceClient extends Client {
       error: ServiceError | null,
       response: ListBackupsResponse
     ) => void
+  ): ClientUnaryCall;
+  /** Deletes the specified PostgreSQL cluster backup. */
+  delete(
+    request: DeleteBackupRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  delete(
+    request: DeleteBackupRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  delete(
+    request: DeleteBackupRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
 }
 

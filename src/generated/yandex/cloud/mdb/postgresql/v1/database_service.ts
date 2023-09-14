@@ -21,6 +21,7 @@ import {
 } from "../../../../../yandex/cloud/mdb/postgresql/v1/database";
 import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import { Operation } from "../../../../../yandex/cloud/operation/operation";
+import { BoolValue } from "../../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.mdb.postgresql.v1";
 
@@ -113,6 +114,12 @@ export interface UpdateDatabaseRequest {
    * Therefore, to disable an active extension you should simply send the list omitting this extension.
    */
   extensions: Extension[];
+  /**
+   * Deletion Protection inhibits deletion of the database
+   *
+   * Default value: `unspecified` (inherits cluster's deletion_protection)
+   */
+  deletionProtection?: boolean;
 }
 
 export interface UpdateDatabaseMetadata {
@@ -592,6 +599,15 @@ export const UpdateDatabaseRequest = {
     for (const v of message.extensions) {
       Extension.encode(v!, writer.uint32(34).fork()).ldelim();
     }
+    if (message.deletionProtection !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.deletionProtection!,
+        },
+        writer.uint32(50).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -620,6 +636,12 @@ export const UpdateDatabaseRequest = {
           break;
         case 4:
           message.extensions.push(Extension.decode(reader, reader.uint32()));
+          break;
+        case 6:
+          message.deletionProtection = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
           break;
         default:
           reader.skipType(tag & 7);
@@ -650,6 +672,11 @@ export const UpdateDatabaseRequest = {
     message.extensions = (object.extensions ?? []).map((e: any) =>
       Extension.fromJSON(e)
     );
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : undefined;
     return message;
   },
 
@@ -671,6 +698,8 @@ export const UpdateDatabaseRequest = {
     } else {
       obj.extensions = [];
     }
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -687,6 +716,7 @@ export const UpdateDatabaseRequest = {
         : undefined;
     message.extensions =
       object.extensions?.map((e) => Extension.fromPartial(e)) || [];
+    message.deletionProtection = object.deletionProtection ?? undefined;
     return message;
   },
 };

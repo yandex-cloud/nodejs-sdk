@@ -11,6 +11,14 @@ import {
   PostgresTarget,
 } from "../../../../yandex/cloud/datatransfer/v1/endpoint/postgres";
 import {
+  YdbSource,
+  YdbTarget,
+} from "../../../../yandex/cloud/datatransfer/v1/endpoint/ydb";
+import {
+  KafkaSource,
+  KafkaTarget,
+} from "../../../../yandex/cloud/datatransfer/v1/endpoint/kafka";
+import {
   MongoSource,
   MongoTarget,
 } from "../../../../yandex/cloud/datatransfer/v1/endpoint/mongo";
@@ -41,11 +49,15 @@ export interface EndpointSettings {
   $type: "yandex.cloud.datatransfer.v1.EndpointSettings";
   mysqlSource?: MysqlSource | undefined;
   postgresSource?: PostgresSource | undefined;
+  ydbSource?: YdbSource | undefined;
+  kafkaSource?: KafkaSource | undefined;
   mongoSource?: MongoSource | undefined;
   clickhouseSource?: ClickhouseSource | undefined;
   mysqlTarget?: MysqlTarget | undefined;
   postgresTarget?: PostgresTarget | undefined;
   clickhouseTarget?: ClickhouseTarget | undefined;
+  ydbTarget?: YdbTarget | undefined;
+  kafkaTarget?: KafkaTarget | undefined;
   mongoTarget?: MongoTarget | undefined;
 }
 
@@ -304,6 +316,15 @@ export const EndpointSettings = {
         writer.uint32(18).fork()
       ).ldelim();
     }
+    if (message.ydbSource !== undefined) {
+      YdbSource.encode(message.ydbSource, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.kafkaSource !== undefined) {
+      KafkaSource.encode(
+        message.kafkaSource,
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
     if (message.mongoSource !== undefined) {
       MongoSource.encode(
         message.mongoSource,
@@ -334,6 +355,15 @@ export const EndpointSettings = {
         writer.uint32(834).fork()
       ).ldelim();
     }
+    if (message.ydbTarget !== undefined) {
+      YdbTarget.encode(message.ydbTarget, writer.uint32(842).fork()).ldelim();
+    }
+    if (message.kafkaTarget !== undefined) {
+      KafkaTarget.encode(
+        message.kafkaTarget,
+        writer.uint32(882).fork()
+      ).ldelim();
+    }
     if (message.mongoTarget !== undefined) {
       MongoTarget.encode(
         message.mongoTarget,
@@ -359,6 +389,12 @@ export const EndpointSettings = {
             reader.uint32()
           );
           break;
+        case 3:
+          message.ydbSource = YdbSource.decode(reader, reader.uint32());
+          break;
+        case 8:
+          message.kafkaSource = KafkaSource.decode(reader, reader.uint32());
+          break;
         case 9:
           message.mongoSource = MongoSource.decode(reader, reader.uint32());
           break;
@@ -383,6 +419,12 @@ export const EndpointSettings = {
             reader.uint32()
           );
           break;
+        case 105:
+          message.ydbTarget = YdbTarget.decode(reader, reader.uint32());
+          break;
+        case 110:
+          message.kafkaTarget = KafkaTarget.decode(reader, reader.uint32());
+          break;
         case 111:
           message.mongoTarget = MongoTarget.decode(reader, reader.uint32());
           break;
@@ -404,6 +446,14 @@ export const EndpointSettings = {
       object.postgresSource !== undefined && object.postgresSource !== null
         ? PostgresSource.fromJSON(object.postgresSource)
         : undefined;
+    message.ydbSource =
+      object.ydbSource !== undefined && object.ydbSource !== null
+        ? YdbSource.fromJSON(object.ydbSource)
+        : undefined;
+    message.kafkaSource =
+      object.kafkaSource !== undefined && object.kafkaSource !== null
+        ? KafkaSource.fromJSON(object.kafkaSource)
+        : undefined;
     message.mongoSource =
       object.mongoSource !== undefined && object.mongoSource !== null
         ? MongoSource.fromJSON(object.mongoSource)
@@ -424,6 +474,14 @@ export const EndpointSettings = {
       object.clickhouseTarget !== undefined && object.clickhouseTarget !== null
         ? ClickhouseTarget.fromJSON(object.clickhouseTarget)
         : undefined;
+    message.ydbTarget =
+      object.ydbTarget !== undefined && object.ydbTarget !== null
+        ? YdbTarget.fromJSON(object.ydbTarget)
+        : undefined;
+    message.kafkaTarget =
+      object.kafkaTarget !== undefined && object.kafkaTarget !== null
+        ? KafkaTarget.fromJSON(object.kafkaTarget)
+        : undefined;
     message.mongoTarget =
       object.mongoTarget !== undefined && object.mongoTarget !== null
         ? MongoTarget.fromJSON(object.mongoTarget)
@@ -440,6 +498,14 @@ export const EndpointSettings = {
     message.postgresSource !== undefined &&
       (obj.postgresSource = message.postgresSource
         ? PostgresSource.toJSON(message.postgresSource)
+        : undefined);
+    message.ydbSource !== undefined &&
+      (obj.ydbSource = message.ydbSource
+        ? YdbSource.toJSON(message.ydbSource)
+        : undefined);
+    message.kafkaSource !== undefined &&
+      (obj.kafkaSource = message.kafkaSource
+        ? KafkaSource.toJSON(message.kafkaSource)
         : undefined);
     message.mongoSource !== undefined &&
       (obj.mongoSource = message.mongoSource
@@ -461,6 +527,14 @@ export const EndpointSettings = {
       (obj.clickhouseTarget = message.clickhouseTarget
         ? ClickhouseTarget.toJSON(message.clickhouseTarget)
         : undefined);
+    message.ydbTarget !== undefined &&
+      (obj.ydbTarget = message.ydbTarget
+        ? YdbTarget.toJSON(message.ydbTarget)
+        : undefined);
+    message.kafkaTarget !== undefined &&
+      (obj.kafkaTarget = message.kafkaTarget
+        ? KafkaTarget.toJSON(message.kafkaTarget)
+        : undefined);
     message.mongoTarget !== undefined &&
       (obj.mongoTarget = message.mongoTarget
         ? MongoTarget.toJSON(message.mongoTarget)
@@ -479,6 +553,14 @@ export const EndpointSettings = {
     message.postgresSource =
       object.postgresSource !== undefined && object.postgresSource !== null
         ? PostgresSource.fromPartial(object.postgresSource)
+        : undefined;
+    message.ydbSource =
+      object.ydbSource !== undefined && object.ydbSource !== null
+        ? YdbSource.fromPartial(object.ydbSource)
+        : undefined;
+    message.kafkaSource =
+      object.kafkaSource !== undefined && object.kafkaSource !== null
+        ? KafkaSource.fromPartial(object.kafkaSource)
         : undefined;
     message.mongoSource =
       object.mongoSource !== undefined && object.mongoSource !== null
@@ -499,6 +581,14 @@ export const EndpointSettings = {
     message.clickhouseTarget =
       object.clickhouseTarget !== undefined && object.clickhouseTarget !== null
         ? ClickhouseTarget.fromPartial(object.clickhouseTarget)
+        : undefined;
+    message.ydbTarget =
+      object.ydbTarget !== undefined && object.ydbTarget !== null
+        ? YdbTarget.fromPartial(object.ydbTarget)
+        : undefined;
+    message.kafkaTarget =
+      object.kafkaTarget !== undefined && object.kafkaTarget !== null
+        ? KafkaTarget.fromPartial(object.kafkaTarget)
         : undefined;
     message.mongoTarget =
       object.mongoTarget !== undefined && object.mongoTarget !== null

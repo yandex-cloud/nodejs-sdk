@@ -16,6 +16,9 @@ import {
 import _m0 from "protobufjs/minimal";
 import {
   Connectivity,
+  LogOptions,
+  Canary,
+  VariableInput,
   ApiGateway,
 } from "../../../../../yandex/cloud/serverless/apigateway/v1/apigateway";
 import { FieldMask } from "../../../../../google/protobuf/field_mask";
@@ -64,7 +67,7 @@ export interface ListApiGatewayRequest {
    * A filter expression that filters functions listed in the response.
    *
    * The expression must specify:
-   * 1. The field name. Currently filtering can only be applied to the [ApiGateway.name] field.
+   * 1. The field name. Currently filtering can only be applied to the [ApiGateway.name](index) field.
    * 2. An `=` operator.
    * 3. The value in double quotes (`"`). Must be 3-63 characters long and match the regular expression `[a-z]([-a-z0-9]{0,61}[a-z0-9])?`.
    * Example of a filter: `name=my-apigw`.
@@ -107,12 +110,24 @@ export interface CreateApiGatewayRequest {
   openapiSpec: string | undefined;
   /** Gateway connectivity. If specified the gateway will be attached to specified network/subnet(s). */
   connectivity?: Connectivity;
+  /** Options for logging from the API gateway. */
+  logOptions?: LogOptions;
+  /** Values of variables defined in the specification. */
+  variables: { [key: string]: VariableInput };
+  /** Canary release of the gateway. */
+  canary?: Canary;
 }
 
 export interface CreateApiGatewayRequest_LabelsEntry {
   $type: "yandex.cloud.serverless.apigateway.v1.CreateApiGatewayRequest.LabelsEntry";
   key: string;
   value: string;
+}
+
+export interface CreateApiGatewayRequest_VariablesEntry {
+  $type: "yandex.cloud.serverless.apigateway.v1.CreateApiGatewayRequest.VariablesEntry";
+  key: string;
+  value?: VariableInput;
 }
 
 export interface UpdateApiGatewayRequest {
@@ -136,19 +151,31 @@ export interface UpdateApiGatewayRequest {
    * API gateway labels as `key:value` pairs.
    *
    * Existing set of labels is completely replaced by the provided set, so if you just want
-   * to add or remove a label, request the current set of labels with a [ApiGatewayService.Get] request.
+   * to add or remove a label, request the current set of labels with a [yandex.cloud.serverless.apigateway.v1.ApiGatewayService.Get] request.
    */
   labels: { [key: string]: string };
   /** The text of specification, JSON or YAML. */
   openapiSpec: string | undefined;
   /** Gateway connectivity. If specified the gateway will be attached to specified network/subnet(s). */
   connectivity?: Connectivity;
+  /** Options for logging from the API gateway. */
+  logOptions?: LogOptions;
+  /** Values of variables defined in the specification. */
+  variables: { [key: string]: VariableInput };
+  /** Canary release of the gateway. */
+  canary?: Canary;
 }
 
 export interface UpdateApiGatewayRequest_LabelsEntry {
   $type: "yandex.cloud.serverless.apigateway.v1.UpdateApiGatewayRequest.LabelsEntry";
   key: string;
   value: string;
+}
+
+export interface UpdateApiGatewayRequest_VariablesEntry {
+  $type: "yandex.cloud.serverless.apigateway.v1.UpdateApiGatewayRequest.VariablesEntry";
+  key: string;
+  value?: VariableInput;
 }
 
 export interface DeleteApiGatewayRequest {
@@ -165,12 +192,6 @@ export interface AddDomainRequest {
   $type: "yandex.cloud.serverless.apigateway.v1.AddDomainRequest";
   /** ID of the API gateway that the domain is attached to. */
   apiGatewayId: string;
-  /**
-   * ID of the attaching domain.
-   *
-   * @deprecated
-   */
-  domainId: string;
   /** Name of the attaching domain. */
   domainName: string;
   /** ID of certificate for the attaching domain. */
@@ -207,10 +228,12 @@ export interface AddDomainMetadata {
   $type: "yandex.cloud.serverless.apigateway.v1.AddDomainMetadata";
   /** ID of the API gateway that the domain is attached to. */
   apiGatewayId: string;
-  /** ID of the attaching domain. */
+  /** ID of the attached domain. */
   domainId: string;
   /** Name of the attaching domain. */
   domainName: string;
+  /** ID of the certificate for provided domain. */
+  certificateId: string;
 }
 
 export interface RemoveDomainMetadata {
@@ -623,6 +646,23 @@ export const CreateApiGatewayRequest = {
         writer.uint32(50).fork()
       ).ldelim();
     }
+    if (message.logOptions !== undefined) {
+      LogOptions.encode(message.logOptions, writer.uint32(58).fork()).ldelim();
+    }
+    Object.entries(message.variables).forEach(([key, value]) => {
+      CreateApiGatewayRequest_VariablesEntry.encode(
+        {
+          $type:
+            "yandex.cloud.serverless.apigateway.v1.CreateApiGatewayRequest.VariablesEntry",
+          key: key as any,
+          value,
+        },
+        writer.uint32(66).fork()
+      ).ldelim();
+    });
+    if (message.canary !== undefined) {
+      Canary.encode(message.canary, writer.uint32(74).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -636,6 +676,7 @@ export const CreateApiGatewayRequest = {
       ...baseCreateApiGatewayRequest,
     } as CreateApiGatewayRequest;
     message.labels = {};
+    message.variables = {};
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -662,6 +703,21 @@ export const CreateApiGatewayRequest = {
           break;
         case 6:
           message.connectivity = Connectivity.decode(reader, reader.uint32());
+          break;
+        case 7:
+          message.logOptions = LogOptions.decode(reader, reader.uint32());
+          break;
+        case 8:
+          const entry8 = CreateApiGatewayRequest_VariablesEntry.decode(
+            reader,
+            reader.uint32()
+          );
+          if (entry8.value !== undefined) {
+            message.variables[entry8.key] = entry8.value;
+          }
+          break;
+        case 9:
+          message.canary = Canary.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -701,6 +757,20 @@ export const CreateApiGatewayRequest = {
       object.connectivity !== undefined && object.connectivity !== null
         ? Connectivity.fromJSON(object.connectivity)
         : undefined;
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromJSON(object.logOptions)
+        : undefined;
+    message.variables = Object.entries(object.variables ?? {}).reduce<{
+      [key: string]: VariableInput;
+    }>((acc, [key, value]) => {
+      acc[key] = VariableInput.fromJSON(value);
+      return acc;
+    }, {});
+    message.canary =
+      object.canary !== undefined && object.canary !== null
+        ? Canary.fromJSON(object.canary)
+        : undefined;
     return message;
   },
 
@@ -722,6 +792,18 @@ export const CreateApiGatewayRequest = {
       (obj.connectivity = message.connectivity
         ? Connectivity.toJSON(message.connectivity)
         : undefined);
+    message.logOptions !== undefined &&
+      (obj.logOptions = message.logOptions
+        ? LogOptions.toJSON(message.logOptions)
+        : undefined);
+    obj.variables = {};
+    if (message.variables) {
+      Object.entries(message.variables).forEach(([k, v]) => {
+        obj.variables[k] = VariableInput.toJSON(v);
+      });
+    }
+    message.canary !== undefined &&
+      (obj.canary = message.canary ? Canary.toJSON(message.canary) : undefined);
     return obj;
   },
 
@@ -746,6 +828,22 @@ export const CreateApiGatewayRequest = {
     message.connectivity =
       object.connectivity !== undefined && object.connectivity !== null
         ? Connectivity.fromPartial(object.connectivity)
+        : undefined;
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromPartial(object.logOptions)
+        : undefined;
+    message.variables = Object.entries(object.variables ?? {}).reduce<{
+      [key: string]: VariableInput;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = VariableInput.fromPartial(value);
+      }
+      return acc;
+    }, {});
+    message.canary =
+      object.canary !== undefined && object.canary !== null
+        ? Canary.fromPartial(object.canary)
         : undefined;
     return message;
   },
@@ -840,6 +938,98 @@ messageTypeRegistry.set(
   CreateApiGatewayRequest_LabelsEntry
 );
 
+const baseCreateApiGatewayRequest_VariablesEntry: object = {
+  $type:
+    "yandex.cloud.serverless.apigateway.v1.CreateApiGatewayRequest.VariablesEntry",
+  key: "",
+};
+
+export const CreateApiGatewayRequest_VariablesEntry = {
+  $type:
+    "yandex.cloud.serverless.apigateway.v1.CreateApiGatewayRequest.VariablesEntry" as const,
+
+  encode(
+    message: CreateApiGatewayRequest_VariablesEntry,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== undefined) {
+      VariableInput.encode(message.value, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): CreateApiGatewayRequest_VariablesEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseCreateApiGatewayRequest_VariablesEntry,
+    } as CreateApiGatewayRequest_VariablesEntry;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = VariableInput.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateApiGatewayRequest_VariablesEntry {
+    const message = {
+      ...baseCreateApiGatewayRequest_VariablesEntry,
+    } as CreateApiGatewayRequest_VariablesEntry;
+    message.key =
+      object.key !== undefined && object.key !== null ? String(object.key) : "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? VariableInput.fromJSON(object.value)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: CreateApiGatewayRequest_VariablesEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined &&
+      (obj.value = message.value
+        ? VariableInput.toJSON(message.value)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<CreateApiGatewayRequest_VariablesEntry>, I>
+  >(object: I): CreateApiGatewayRequest_VariablesEntry {
+    const message = {
+      ...baseCreateApiGatewayRequest_VariablesEntry,
+    } as CreateApiGatewayRequest_VariablesEntry;
+    message.key = object.key ?? "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? VariableInput.fromPartial(object.value)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  CreateApiGatewayRequest_VariablesEntry.$type,
+  CreateApiGatewayRequest_VariablesEntry
+);
+
 const baseUpdateApiGatewayRequest: object = {
   $type: "yandex.cloud.serverless.apigateway.v1.UpdateApiGatewayRequest",
   apiGatewayId: "",
@@ -887,6 +1077,23 @@ export const UpdateApiGatewayRequest = {
         writer.uint32(58).fork()
       ).ldelim();
     }
+    if (message.logOptions !== undefined) {
+      LogOptions.encode(message.logOptions, writer.uint32(66).fork()).ldelim();
+    }
+    Object.entries(message.variables).forEach(([key, value]) => {
+      UpdateApiGatewayRequest_VariablesEntry.encode(
+        {
+          $type:
+            "yandex.cloud.serverless.apigateway.v1.UpdateApiGatewayRequest.VariablesEntry",
+          key: key as any,
+          value,
+        },
+        writer.uint32(74).fork()
+      ).ldelim();
+    });
+    if (message.canary !== undefined) {
+      Canary.encode(message.canary, writer.uint32(82).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -900,6 +1107,7 @@ export const UpdateApiGatewayRequest = {
       ...baseUpdateApiGatewayRequest,
     } as UpdateApiGatewayRequest;
     message.labels = {};
+    message.variables = {};
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -929,6 +1137,21 @@ export const UpdateApiGatewayRequest = {
           break;
         case 7:
           message.connectivity = Connectivity.decode(reader, reader.uint32());
+          break;
+        case 8:
+          message.logOptions = LogOptions.decode(reader, reader.uint32());
+          break;
+        case 9:
+          const entry9 = UpdateApiGatewayRequest_VariablesEntry.decode(
+            reader,
+            reader.uint32()
+          );
+          if (entry9.value !== undefined) {
+            message.variables[entry9.key] = entry9.value;
+          }
+          break;
+        case 10:
+          message.canary = Canary.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -972,6 +1195,20 @@ export const UpdateApiGatewayRequest = {
       object.connectivity !== undefined && object.connectivity !== null
         ? Connectivity.fromJSON(object.connectivity)
         : undefined;
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromJSON(object.logOptions)
+        : undefined;
+    message.variables = Object.entries(object.variables ?? {}).reduce<{
+      [key: string]: VariableInput;
+    }>((acc, [key, value]) => {
+      acc[key] = VariableInput.fromJSON(value);
+      return acc;
+    }, {});
+    message.canary =
+      object.canary !== undefined && object.canary !== null
+        ? Canary.fromJSON(object.canary)
+        : undefined;
     return message;
   },
 
@@ -998,6 +1235,18 @@ export const UpdateApiGatewayRequest = {
       (obj.connectivity = message.connectivity
         ? Connectivity.toJSON(message.connectivity)
         : undefined);
+    message.logOptions !== undefined &&
+      (obj.logOptions = message.logOptions
+        ? LogOptions.toJSON(message.logOptions)
+        : undefined);
+    obj.variables = {};
+    if (message.variables) {
+      Object.entries(message.variables).forEach(([k, v]) => {
+        obj.variables[k] = VariableInput.toJSON(v);
+      });
+    }
+    message.canary !== undefined &&
+      (obj.canary = message.canary ? Canary.toJSON(message.canary) : undefined);
     return obj;
   },
 
@@ -1026,6 +1275,22 @@ export const UpdateApiGatewayRequest = {
     message.connectivity =
       object.connectivity !== undefined && object.connectivity !== null
         ? Connectivity.fromPartial(object.connectivity)
+        : undefined;
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromPartial(object.logOptions)
+        : undefined;
+    message.variables = Object.entries(object.variables ?? {}).reduce<{
+      [key: string]: VariableInput;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = VariableInput.fromPartial(value);
+      }
+      return acc;
+    }, {});
+    message.canary =
+      object.canary !== undefined && object.canary !== null
+        ? Canary.fromPartial(object.canary)
         : undefined;
     return message;
   },
@@ -1120,6 +1385,98 @@ messageTypeRegistry.set(
   UpdateApiGatewayRequest_LabelsEntry
 );
 
+const baseUpdateApiGatewayRequest_VariablesEntry: object = {
+  $type:
+    "yandex.cloud.serverless.apigateway.v1.UpdateApiGatewayRequest.VariablesEntry",
+  key: "",
+};
+
+export const UpdateApiGatewayRequest_VariablesEntry = {
+  $type:
+    "yandex.cloud.serverless.apigateway.v1.UpdateApiGatewayRequest.VariablesEntry" as const,
+
+  encode(
+    message: UpdateApiGatewayRequest_VariablesEntry,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== undefined) {
+      VariableInput.encode(message.value, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateApiGatewayRequest_VariablesEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateApiGatewayRequest_VariablesEntry,
+    } as UpdateApiGatewayRequest_VariablesEntry;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = VariableInput.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateApiGatewayRequest_VariablesEntry {
+    const message = {
+      ...baseUpdateApiGatewayRequest_VariablesEntry,
+    } as UpdateApiGatewayRequest_VariablesEntry;
+    message.key =
+      object.key !== undefined && object.key !== null ? String(object.key) : "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? VariableInput.fromJSON(object.value)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: UpdateApiGatewayRequest_VariablesEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined &&
+      (obj.value = message.value
+        ? VariableInput.toJSON(message.value)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<UpdateApiGatewayRequest_VariablesEntry>, I>
+  >(object: I): UpdateApiGatewayRequest_VariablesEntry {
+    const message = {
+      ...baseUpdateApiGatewayRequest_VariablesEntry,
+    } as UpdateApiGatewayRequest_VariablesEntry;
+    message.key = object.key ?? "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? VariableInput.fromPartial(object.value)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  UpdateApiGatewayRequest_VariablesEntry.$type,
+  UpdateApiGatewayRequest_VariablesEntry
+);
+
 const baseDeleteApiGatewayRequest: object = {
   $type: "yandex.cloud.serverless.apigateway.v1.DeleteApiGatewayRequest",
   apiGatewayId: "",
@@ -1196,7 +1553,6 @@ messageTypeRegistry.set(DeleteApiGatewayRequest.$type, DeleteApiGatewayRequest);
 const baseAddDomainRequest: object = {
   $type: "yandex.cloud.serverless.apigateway.v1.AddDomainRequest",
   apiGatewayId: "",
-  domainId: "",
   domainName: "",
   certificateId: "",
 };
@@ -1210,9 +1566,6 @@ export const AddDomainRequest = {
   ): _m0.Writer {
     if (message.apiGatewayId !== "") {
       writer.uint32(10).string(message.apiGatewayId);
-    }
-    if (message.domainId !== "") {
-      writer.uint32(18).string(message.domainId);
     }
     if (message.domainName !== "") {
       writer.uint32(26).string(message.domainName);
@@ -1232,9 +1585,6 @@ export const AddDomainRequest = {
       switch (tag >>> 3) {
         case 1:
           message.apiGatewayId = reader.string();
-          break;
-        case 2:
-          message.domainId = reader.string();
           break;
         case 3:
           message.domainName = reader.string();
@@ -1256,10 +1606,6 @@ export const AddDomainRequest = {
       object.apiGatewayId !== undefined && object.apiGatewayId !== null
         ? String(object.apiGatewayId)
         : "";
-    message.domainId =
-      object.domainId !== undefined && object.domainId !== null
-        ? String(object.domainId)
-        : "";
     message.domainName =
       object.domainName !== undefined && object.domainName !== null
         ? String(object.domainName)
@@ -1275,7 +1621,6 @@ export const AddDomainRequest = {
     const obj: any = {};
     message.apiGatewayId !== undefined &&
       (obj.apiGatewayId = message.apiGatewayId);
-    message.domainId !== undefined && (obj.domainId = message.domainId);
     message.domainName !== undefined && (obj.domainName = message.domainName);
     message.certificateId !== undefined &&
       (obj.certificateId = message.certificateId);
@@ -1287,7 +1632,6 @@ export const AddDomainRequest = {
   ): AddDomainRequest {
     const message = { ...baseAddDomainRequest } as AddDomainRequest;
     message.apiGatewayId = object.apiGatewayId ?? "";
-    message.domainId = object.domainId ?? "";
     message.domainName = object.domainName ?? "";
     message.certificateId = object.certificateId ?? "";
     return message;
@@ -1605,6 +1949,7 @@ const baseAddDomainMetadata: object = {
   apiGatewayId: "",
   domainId: "",
   domainName: "",
+  certificateId: "",
 };
 
 export const AddDomainMetadata = {
@@ -1622,6 +1967,9 @@ export const AddDomainMetadata = {
     }
     if (message.domainName !== "") {
       writer.uint32(26).string(message.domainName);
+    }
+    if (message.certificateId !== "") {
+      writer.uint32(34).string(message.certificateId);
     }
     return writer;
   },
@@ -1641,6 +1989,9 @@ export const AddDomainMetadata = {
           break;
         case 3:
           message.domainName = reader.string();
+          break;
+        case 4:
+          message.certificateId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1664,6 +2015,10 @@ export const AddDomainMetadata = {
       object.domainName !== undefined && object.domainName !== null
         ? String(object.domainName)
         : "";
+    message.certificateId =
+      object.certificateId !== undefined && object.certificateId !== null
+        ? String(object.certificateId)
+        : "";
     return message;
   },
 
@@ -1673,6 +2028,8 @@ export const AddDomainMetadata = {
       (obj.apiGatewayId = message.apiGatewayId);
     message.domainId !== undefined && (obj.domainId = message.domainId);
     message.domainName !== undefined && (obj.domainName = message.domainName);
+    message.certificateId !== undefined &&
+      (obj.certificateId = message.certificateId);
     return obj;
   },
 
@@ -1683,6 +2040,7 @@ export const AddDomainMetadata = {
     message.apiGatewayId = object.apiGatewayId ?? "";
     message.domainId = object.domainId ?? "";
     message.domainName = object.domainName ?? "";
+    message.certificateId = object.certificateId ?? "";
     return message;
   },
 };
@@ -2125,7 +2483,7 @@ messageTypeRegistry.set(GetOpenapiSpecResponse.$type, GetOpenapiSpecResponse);
 export const ApiGatewayServiceService = {
   /**
    * Returns the specified API gateway. Note that only API gateway basic attributes are returned.
-   * To get associated openapi specification, make a [GetOpenapiSpec] request.
+   * To get associated openapi specification, make a [GetOpenapiSpec](#GetOpenapiSpec) request.
    *
    * To get the list of all available API gateways, make a [List] request.
    */
@@ -2287,7 +2645,7 @@ export const ApiGatewayServiceService = {
 export interface ApiGatewayServiceServer extends UntypedServiceImplementation {
   /**
    * Returns the specified API gateway. Note that only API gateway basic attributes are returned.
-   * To get associated openapi specification, make a [GetOpenapiSpec] request.
+   * To get associated openapi specification, make a [GetOpenapiSpec](#GetOpenapiSpec) request.
    *
    * To get the list of all available API gateways, make a [List] request.
    */
@@ -2328,7 +2686,7 @@ export interface ApiGatewayServiceServer extends UntypedServiceImplementation {
 export interface ApiGatewayServiceClient extends Client {
   /**
    * Returns the specified API gateway. Note that only API gateway basic attributes are returned.
-   * To get associated openapi specification, make a [GetOpenapiSpec] request.
+   * To get associated openapi specification, make a [GetOpenapiSpec](#GetOpenapiSpec) request.
    *
    * To get the list of all available API gateways, make a [List] request.
    */

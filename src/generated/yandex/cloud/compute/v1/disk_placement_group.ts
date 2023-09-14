@@ -27,8 +27,10 @@ export interface DiskPlacementGroup {
   zoneId: string;
   /** Current status of the placement group */
   status: DiskPlacementGroup_Status;
-  /** Distribute instances over distinct failure domains. */
+  /** Distribute disks over distinct failure domains. */
   spreadPlacementStrategy?: DiskSpreadPlacementStrategy | undefined;
+  /** Distribute disks over partitions. */
+  partitionPlacementStrategy?: DiskPartitionPlacementStrategy | undefined;
 }
 
 export enum DiskPlacementGroup_Status {
@@ -89,6 +91,11 @@ export interface DiskSpreadPlacementStrategy {
   $type: "yandex.cloud.compute.v1.DiskSpreadPlacementStrategy";
 }
 
+export interface DiskPartitionPlacementStrategy {
+  $type: "yandex.cloud.compute.v1.DiskPartitionPlacementStrategy";
+  partitions: number;
+}
+
 const baseDiskPlacementGroup: object = {
   $type: "yandex.cloud.compute.v1.DiskPlacementGroup",
   id: "",
@@ -146,6 +153,12 @@ export const DiskPlacementGroup = {
         writer.uint32(66).fork()
       ).ldelim();
     }
+    if (message.partitionPlacementStrategy !== undefined) {
+      DiskPartitionPlacementStrategy.encode(
+        message.partitionPlacementStrategy,
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -195,6 +208,10 @@ export const DiskPlacementGroup = {
             reader.uint32()
           );
           break;
+        case 9:
+          message.partitionPlacementStrategy =
+            DiskPartitionPlacementStrategy.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -242,6 +259,13 @@ export const DiskPlacementGroup = {
       object.spreadPlacementStrategy !== null
         ? DiskSpreadPlacementStrategy.fromJSON(object.spreadPlacementStrategy)
         : undefined;
+    message.partitionPlacementStrategy =
+      object.partitionPlacementStrategy !== undefined &&
+      object.partitionPlacementStrategy !== null
+        ? DiskPartitionPlacementStrategy.fromJSON(
+            object.partitionPlacementStrategy
+          )
+        : undefined;
     return message;
   },
 
@@ -266,6 +290,12 @@ export const DiskPlacementGroup = {
     message.spreadPlacementStrategy !== undefined &&
       (obj.spreadPlacementStrategy = message.spreadPlacementStrategy
         ? DiskSpreadPlacementStrategy.toJSON(message.spreadPlacementStrategy)
+        : undefined);
+    message.partitionPlacementStrategy !== undefined &&
+      (obj.partitionPlacementStrategy = message.partitionPlacementStrategy
+        ? DiskPartitionPlacementStrategy.toJSON(
+            message.partitionPlacementStrategy
+          )
         : undefined);
     return obj;
   },
@@ -294,6 +324,13 @@ export const DiskPlacementGroup = {
       object.spreadPlacementStrategy !== null
         ? DiskSpreadPlacementStrategy.fromPartial(
             object.spreadPlacementStrategy
+          )
+        : undefined;
+    message.partitionPlacementStrategy =
+      object.partitionPlacementStrategy !== undefined &&
+      object.partitionPlacementStrategy !== null
+        ? DiskPartitionPlacementStrategy.fromPartial(
+            object.partitionPlacementStrategy
           )
         : undefined;
     return message;
@@ -448,6 +485,92 @@ messageTypeRegistry.set(
   DiskSpreadPlacementStrategy
 );
 
+const baseDiskPartitionPlacementStrategy: object = {
+  $type: "yandex.cloud.compute.v1.DiskPartitionPlacementStrategy",
+  partitions: 0,
+};
+
+export const DiskPartitionPlacementStrategy = {
+  $type: "yandex.cloud.compute.v1.DiskPartitionPlacementStrategy" as const,
+
+  encode(
+    message: DiskPartitionPlacementStrategy,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.partitions !== 0) {
+      writer.uint32(8).int64(message.partitions);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DiskPartitionPlacementStrategy {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDiskPartitionPlacementStrategy,
+    } as DiskPartitionPlacementStrategy;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.partitions = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DiskPartitionPlacementStrategy {
+    const message = {
+      ...baseDiskPartitionPlacementStrategy,
+    } as DiskPartitionPlacementStrategy;
+    message.partitions =
+      object.partitions !== undefined && object.partitions !== null
+        ? Number(object.partitions)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: DiskPartitionPlacementStrategy): unknown {
+    const obj: any = {};
+    message.partitions !== undefined &&
+      (obj.partitions = Math.round(message.partitions));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DiskPartitionPlacementStrategy>, I>>(
+    object: I
+  ): DiskPartitionPlacementStrategy {
+    const message = {
+      ...baseDiskPartitionPlacementStrategy,
+    } as DiskPartitionPlacementStrategy;
+    message.partitions = object.partitions ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  DiskPartitionPlacementStrategy.$type,
+  DiskPartitionPlacementStrategy
+);
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
+
 type Builtin =
   | Date
   | Function
@@ -495,6 +618,13 @@ function fromJsonTimestamp(o: any): Date {
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
+}
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
 }
 
 if (_m0.util.Long !== Long) {

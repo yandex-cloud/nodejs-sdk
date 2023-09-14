@@ -281,7 +281,7 @@ export interface ClusterConfig {
   $type: "yandex.cloud.dataproc.v1.ClusterConfig";
   /**
    * Image version for cluster provisioning.
-   * All available versions are listed in the [documentation](/docs/managed-hadoop/concepts/image-versions).
+   * All available versions are listed in the [documentation](/docs/data-proc/concepts/environment).
    */
   versionId: string;
   /** Data Proc specific configuration options. */

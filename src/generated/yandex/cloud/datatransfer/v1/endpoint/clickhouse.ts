@@ -16,6 +16,7 @@ export enum ClickhouseCleanupPolicy {
   CLICKHOUSE_CLEANUP_POLICY_UNSPECIFIED = 0,
   CLICKHOUSE_CLEANUP_POLICY_DISABLED = 1,
   CLICKHOUSE_CLEANUP_POLICY_DROP = 2,
+  CLICKHOUSE_CLEANUP_POLICY_TRUNCATE = 3,
   UNRECOGNIZED = -1,
 }
 
@@ -32,6 +33,9 @@ export function clickhouseCleanupPolicyFromJSON(
     case 2:
     case "CLICKHOUSE_CLEANUP_POLICY_DROP":
       return ClickhouseCleanupPolicy.CLICKHOUSE_CLEANUP_POLICY_DROP;
+    case 3:
+    case "CLICKHOUSE_CLEANUP_POLICY_TRUNCATE":
+      return ClickhouseCleanupPolicy.CLICKHOUSE_CLEANUP_POLICY_TRUNCATE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -49,6 +53,8 @@ export function clickhouseCleanupPolicyToJSON(
       return "CLICKHOUSE_CLEANUP_POLICY_DISABLED";
     case ClickhouseCleanupPolicy.CLICKHOUSE_CLEANUP_POLICY_DROP:
       return "CLICKHOUSE_CLEANUP_POLICY_DROP";
+    case ClickhouseCleanupPolicy.CLICKHOUSE_CLEANUP_POLICY_TRUNCATE:
+      return "CLICKHOUSE_CLEANUP_POLICY_TRUNCATE";
     default:
       return "UNKNOWN";
   }
@@ -72,6 +78,7 @@ export interface ClickhouseConnectionOptions {
   $type: "yandex.cloud.datatransfer.v1.endpoint.ClickhouseConnectionOptions";
   mdbClusterId: string | undefined;
   onPremise?: OnPremiseClickhouse | undefined;
+  /** Database */
   database: string;
   user: string;
   password?: Secret;
@@ -111,7 +118,15 @@ export interface ClickhouseSource {
   connection?: ClickhouseConnection;
   subnetId: string;
   securityGroups: string[];
+  /**
+   * While list of tables for replication. If none or empty list is presented - will
+   * replicate all tables. Can contain * patterns.
+   */
   includeTables: string[];
+  /**
+   * Exclude list of tables for replication. If none or empty list is presented -
+   * will replicate all tables. Can contain * patterns.
+   */
   excludeTables: string[];
 }
 
@@ -121,6 +136,7 @@ export interface ClickhouseTarget {
   subnetId: string;
   securityGroups: string[];
   clickhouseClusterName: string;
+  /** Alternative table names in target */
   altNames: AltName[];
   sharding?: ClickhouseSharding;
   cleanupPolicy: ClickhouseCleanupPolicy;

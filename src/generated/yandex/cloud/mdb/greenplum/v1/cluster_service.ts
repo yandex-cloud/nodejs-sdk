@@ -19,6 +19,7 @@ import _m0 from "protobufjs/minimal";
 import {
   Cluster_Environment,
   GreenplumConfig,
+  CloudStorage,
   GreenplumRestoreConfig,
   Cluster,
   cluster_EnvironmentFromJSON,
@@ -27,10 +28,15 @@ import {
 import { MaintenanceWindow } from "../../../../../yandex/cloud/mdb/greenplum/v1/maintenance";
 import {
   ConnectionPoolerConfig,
+  BackgroundActivitiesConfig,
   Resources,
   Greenplumconfig617,
   Greenplumconfig619,
+  Greenplumconfig621,
+  Greenplumconfig622,
+  GreenplumConfig6,
 } from "../../../../../yandex/cloud/mdb/greenplum/v1/config";
+import { PXFConfig } from "../../../../../yandex/cloud/mdb/greenplum/v1/pxf";
 import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import { Timestamp } from "../../../../../google/protobuf/timestamp";
 import { Operation } from "../../../../../yandex/cloud/operation/operation";
@@ -136,6 +142,8 @@ export interface CreateClusterRequest {
   maintenanceWindow?: MaintenanceWindow;
   /** Configuration of Greenplum® and Odyssey®. */
   configSpec?: ConfigSpec;
+  /** Cloud storage settings */
+  cloudStorage?: CloudStorage;
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -148,8 +156,13 @@ export interface ConfigSpec {
   $type: "yandex.cloud.mdb.greenplum.v1.ConfigSpec";
   greenplumConfig617?: Greenplumconfig617 | undefined;
   greenplumConfig619?: Greenplumconfig619 | undefined;
+  greenplumConfig621?: Greenplumconfig621 | undefined;
+  greenplumConfig622?: Greenplumconfig622 | undefined;
+  greenplumConfig6?: GreenplumConfig6 | undefined;
   /** Odyssey® pool settings. */
   pool?: ConnectionPoolerConfig;
+  backgroundActivities?: BackgroundActivitiesConfig;
+  pxfConfig?: PXFConfig;
 }
 
 export interface CreateClusterMetadata {
@@ -195,6 +208,8 @@ export interface UpdateClusterRequest {
   deletionProtection: boolean;
   /** Settings of the Greenplum® cluster. */
   configSpec?: ConfigSpec;
+  /** Cloud storage settings */
+  cloudStorage?: CloudStorage;
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
@@ -431,6 +446,8 @@ export enum ListClusterLogsRequest_ServiceType {
   GREENPLUM = 1,
   /** GREENPLUM_POOLER - Greenplum® pooler logs. */
   GREENPLUM_POOLER = 2,
+  /** GREENPLUM_PXF - Greenplum® PXF service logs. */
+  GREENPLUM_PXF = 3,
   UNRECOGNIZED = -1,
 }
 
@@ -447,6 +464,9 @@ export function listClusterLogsRequest_ServiceTypeFromJSON(
     case 2:
     case "GREENPLUM_POOLER":
       return ListClusterLogsRequest_ServiceType.GREENPLUM_POOLER;
+    case 3:
+    case "GREENPLUM_PXF":
+      return ListClusterLogsRequest_ServiceType.GREENPLUM_PXF;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -464,6 +484,8 @@ export function listClusterLogsRequest_ServiceTypeToJSON(
       return "GREENPLUM";
     case ListClusterLogsRequest_ServiceType.GREENPLUM_POOLER:
       return "GREENPLUM_POOLER";
+    case ListClusterLogsRequest_ServiceType.GREENPLUM_PXF:
+      return "GREENPLUM_PXF";
     default:
       return "UNKNOWN";
   }
@@ -550,6 +572,8 @@ export enum StreamClusterLogsRequest_ServiceType {
   GREENPLUM = 1,
   /** GREENPLUM_POOLER - Greenplum® pooler logs. */
   GREENPLUM_POOLER = 2,
+  /** GREENPLUM_PXF - Greenplum® PXF service logs. */
+  GREENPLUM_PXF = 3,
   UNRECOGNIZED = -1,
 }
 
@@ -566,6 +590,9 @@ export function streamClusterLogsRequest_ServiceTypeFromJSON(
     case 2:
     case "GREENPLUM_POOLER":
       return StreamClusterLogsRequest_ServiceType.GREENPLUM_POOLER;
+    case 3:
+    case "GREENPLUM_PXF":
+      return StreamClusterLogsRequest_ServiceType.GREENPLUM_PXF;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -583,6 +610,8 @@ export function streamClusterLogsRequest_ServiceTypeToJSON(
       return "GREENPLUM";
     case StreamClusterLogsRequest_ServiceType.GREENPLUM_POOLER:
       return "GREENPLUM_POOLER";
+    case StreamClusterLogsRequest_ServiceType.GREENPLUM_PXF:
+      return "GREENPLUM_PXF";
     default:
       return "UNKNOWN";
   }
@@ -610,6 +639,8 @@ export interface RestoreClusterRequest {
    * To get the backup ID, use a [ClusterService.ListBackups] request.
    */
   backupId: string;
+  /** Timestamp of the moment to which the Greenplum cluster should be restored. */
+  time?: Date;
   /** ID of the folder to create the Greenplum® cluster in. */
   folderId: string;
   /** Name of the Greenplum® cluster. The name must be unique within the folder. */
@@ -641,6 +672,10 @@ export interface RestoreClusterRequest {
   placementGroupId: string;
   /** A Greenplum® cluster maintenance window. Should be defined by either one of the two options. */
   maintenanceWindow?: MaintenanceWindow;
+  /** Number of segment hosts */
+  segmentHostCount: number;
+  /** Number of segments on each host */
+  segmentInHost: number;
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
@@ -1004,6 +1039,12 @@ export const CreateClusterRequest = {
     if (message.configSpec !== undefined) {
       ConfigSpec.encode(message.configSpec, writer.uint32(162).fork()).ldelim();
     }
+    if (message.cloudStorage !== undefined) {
+      CloudStorage.encode(
+        message.cloudStorage,
+        writer.uint32(170).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1091,6 +1132,9 @@ export const CreateClusterRequest = {
           break;
         case 20:
           message.configSpec = ConfigSpec.decode(reader, reader.uint32());
+          break;
+        case 21:
+          message.cloudStorage = CloudStorage.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1180,6 +1224,10 @@ export const CreateClusterRequest = {
       object.configSpec !== undefined && object.configSpec !== null
         ? ConfigSpec.fromJSON(object.configSpec)
         : undefined;
+    message.cloudStorage =
+      object.cloudStorage !== undefined && object.cloudStorage !== null
+        ? CloudStorage.fromJSON(object.cloudStorage)
+        : undefined;
     return message;
   },
 
@@ -1239,6 +1287,10 @@ export const CreateClusterRequest = {
       (obj.configSpec = message.configSpec
         ? ConfigSpec.toJSON(message.configSpec)
         : undefined);
+    message.cloudStorage !== undefined &&
+      (obj.cloudStorage = message.cloudStorage
+        ? CloudStorage.toJSON(message.cloudStorage)
+        : undefined);
     return obj;
   },
 
@@ -1287,6 +1339,10 @@ export const CreateClusterRequest = {
     message.configSpec =
       object.configSpec !== undefined && object.configSpec !== null
         ? ConfigSpec.fromPartial(object.configSpec)
+        : undefined;
+    message.cloudStorage =
+      object.cloudStorage !== undefined && object.cloudStorage !== null
+        ? CloudStorage.fromPartial(object.cloudStorage)
         : undefined;
     return message;
   },
@@ -1403,11 +1459,38 @@ export const ConfigSpec = {
         writer.uint32(18).fork()
       ).ldelim();
     }
+    if (message.greenplumConfig621 !== undefined) {
+      Greenplumconfig621.encode(
+        message.greenplumConfig621,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    if (message.greenplumConfig622 !== undefined) {
+      Greenplumconfig622.encode(
+        message.greenplumConfig622,
+        writer.uint32(42).fork()
+      ).ldelim();
+    }
+    if (message.greenplumConfig6 !== undefined) {
+      GreenplumConfig6.encode(
+        message.greenplumConfig6,
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
     if (message.pool !== undefined) {
       ConnectionPoolerConfig.encode(
         message.pool,
         writer.uint32(26).fork()
       ).ldelim();
+    }
+    if (message.backgroundActivities !== undefined) {
+      BackgroundActivitiesConfig.encode(
+        message.backgroundActivities,
+        writer.uint32(50).fork()
+      ).ldelim();
+    }
+    if (message.pxfConfig !== undefined) {
+      PXFConfig.encode(message.pxfConfig, writer.uint32(66).fork()).ldelim();
     }
     return writer;
   },
@@ -1431,8 +1514,35 @@ export const ConfigSpec = {
             reader.uint32()
           );
           break;
+        case 4:
+          message.greenplumConfig621 = Greenplumconfig621.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 5:
+          message.greenplumConfig622 = Greenplumconfig622.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 9:
+          message.greenplumConfig6 = GreenplumConfig6.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         case 3:
           message.pool = ConnectionPoolerConfig.decode(reader, reader.uint32());
+          break;
+        case 6:
+          message.backgroundActivities = BackgroundActivitiesConfig.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 8:
+          message.pxfConfig = PXFConfig.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1454,9 +1564,33 @@ export const ConfigSpec = {
       object.greenplumConfig_6_19 !== null
         ? Greenplumconfig619.fromJSON(object.greenplumConfig_6_19)
         : undefined;
+    message.greenplumConfig621 =
+      object.greenplumConfig_6_21 !== undefined &&
+      object.greenplumConfig_6_21 !== null
+        ? Greenplumconfig621.fromJSON(object.greenplumConfig_6_21)
+        : undefined;
+    message.greenplumConfig622 =
+      object.greenplumConfig_6_22 !== undefined &&
+      object.greenplumConfig_6_22 !== null
+        ? Greenplumconfig622.fromJSON(object.greenplumConfig_6_22)
+        : undefined;
+    message.greenplumConfig6 =
+      object.greenplumConfig_6 !== undefined &&
+      object.greenplumConfig_6 !== null
+        ? GreenplumConfig6.fromJSON(object.greenplumConfig_6)
+        : undefined;
     message.pool =
       object.pool !== undefined && object.pool !== null
         ? ConnectionPoolerConfig.fromJSON(object.pool)
+        : undefined;
+    message.backgroundActivities =
+      object.backgroundActivities !== undefined &&
+      object.backgroundActivities !== null
+        ? BackgroundActivitiesConfig.fromJSON(object.backgroundActivities)
+        : undefined;
+    message.pxfConfig =
+      object.pxfConfig !== undefined && object.pxfConfig !== null
+        ? PXFConfig.fromJSON(object.pxfConfig)
         : undefined;
     return message;
   },
@@ -1471,9 +1605,29 @@ export const ConfigSpec = {
       (obj.greenplumConfig_6_19 = message.greenplumConfig619
         ? Greenplumconfig619.toJSON(message.greenplumConfig619)
         : undefined);
+    message.greenplumConfig621 !== undefined &&
+      (obj.greenplumConfig_6_21 = message.greenplumConfig621
+        ? Greenplumconfig621.toJSON(message.greenplumConfig621)
+        : undefined);
+    message.greenplumConfig622 !== undefined &&
+      (obj.greenplumConfig_6_22 = message.greenplumConfig622
+        ? Greenplumconfig622.toJSON(message.greenplumConfig622)
+        : undefined);
+    message.greenplumConfig6 !== undefined &&
+      (obj.greenplumConfig_6 = message.greenplumConfig6
+        ? GreenplumConfig6.toJSON(message.greenplumConfig6)
+        : undefined);
     message.pool !== undefined &&
       (obj.pool = message.pool
         ? ConnectionPoolerConfig.toJSON(message.pool)
+        : undefined);
+    message.backgroundActivities !== undefined &&
+      (obj.backgroundActivities = message.backgroundActivities
+        ? BackgroundActivitiesConfig.toJSON(message.backgroundActivities)
+        : undefined);
+    message.pxfConfig !== undefined &&
+      (obj.pxfConfig = message.pxfConfig
+        ? PXFConfig.toJSON(message.pxfConfig)
         : undefined);
     return obj;
   },
@@ -1492,9 +1646,32 @@ export const ConfigSpec = {
       object.greenplumConfig619 !== null
         ? Greenplumconfig619.fromPartial(object.greenplumConfig619)
         : undefined;
+    message.greenplumConfig621 =
+      object.greenplumConfig621 !== undefined &&
+      object.greenplumConfig621 !== null
+        ? Greenplumconfig621.fromPartial(object.greenplumConfig621)
+        : undefined;
+    message.greenplumConfig622 =
+      object.greenplumConfig622 !== undefined &&
+      object.greenplumConfig622 !== null
+        ? Greenplumconfig622.fromPartial(object.greenplumConfig622)
+        : undefined;
+    message.greenplumConfig6 =
+      object.greenplumConfig6 !== undefined && object.greenplumConfig6 !== null
+        ? GreenplumConfig6.fromPartial(object.greenplumConfig6)
+        : undefined;
     message.pool =
       object.pool !== undefined && object.pool !== null
         ? ConnectionPoolerConfig.fromPartial(object.pool)
+        : undefined;
+    message.backgroundActivities =
+      object.backgroundActivities !== undefined &&
+      object.backgroundActivities !== null
+        ? BackgroundActivitiesConfig.fromPartial(object.backgroundActivities)
+        : undefined;
+    message.pxfConfig =
+      object.pxfConfig !== undefined && object.pxfConfig !== null
+        ? PXFConfig.fromPartial(object.pxfConfig)
         : undefined;
     return message;
   },
@@ -1640,6 +1817,12 @@ export const UpdateClusterRequest = {
     if (message.configSpec !== undefined) {
       ConfigSpec.encode(message.configSpec, writer.uint32(154).fork()).ldelim();
     }
+    if (message.cloudStorage !== undefined) {
+      CloudStorage.encode(
+        message.cloudStorage,
+        writer.uint32(162).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1709,6 +1892,9 @@ export const UpdateClusterRequest = {
         case 19:
           message.configSpec = ConfigSpec.decode(reader, reader.uint32());
           break;
+        case 20:
+          message.cloudStorage = CloudStorage.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1774,6 +1960,10 @@ export const UpdateClusterRequest = {
       object.configSpec !== undefined && object.configSpec !== null
         ? ConfigSpec.fromJSON(object.configSpec)
         : undefined;
+    message.cloudStorage =
+      object.cloudStorage !== undefined && object.cloudStorage !== null
+        ? CloudStorage.fromJSON(object.cloudStorage)
+        : undefined;
     return message;
   },
 
@@ -1822,6 +2012,10 @@ export const UpdateClusterRequest = {
       (obj.configSpec = message.configSpec
         ? ConfigSpec.toJSON(message.configSpec)
         : undefined);
+    message.cloudStorage !== undefined &&
+      (obj.cloudStorage = message.cloudStorage
+        ? CloudStorage.toJSON(message.cloudStorage)
+        : undefined);
     return obj;
   },
 
@@ -1867,6 +2061,10 @@ export const UpdateClusterRequest = {
     message.configSpec =
       object.configSpec !== undefined && object.configSpec !== null
         ? ConfigSpec.fromPartial(object.configSpec)
+        : undefined;
+    message.cloudStorage =
+      object.cloudStorage !== undefined && object.cloudStorage !== null
+        ? CloudStorage.fromPartial(object.cloudStorage)
         : undefined;
     return message;
   },
@@ -4036,6 +4234,8 @@ const baseRestoreClusterRequest: object = {
   deletionProtection: false,
   hostGroupIds: "",
   placementGroupId: "",
+  segmentHostCount: 0,
+  segmentInHost: 0,
 };
 
 export const RestoreClusterRequest = {
@@ -4047,6 +4247,12 @@ export const RestoreClusterRequest = {
   ): _m0.Writer {
     if (message.backupId !== "") {
       writer.uint32(10).string(message.backupId);
+    }
+    if (message.time !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.time),
+        writer.uint32(130).fork()
+      ).ldelim();
     }
     if (message.folderId !== "") {
       writer.uint32(18).string(message.folderId);
@@ -4110,6 +4316,12 @@ export const RestoreClusterRequest = {
         writer.uint32(122).fork()
       ).ldelim();
     }
+    if (message.segmentHostCount !== 0) {
+      writer.uint32(136).int64(message.segmentHostCount);
+    }
+    if (message.segmentInHost !== 0) {
+      writer.uint32(144).int64(message.segmentInHost);
+    }
     return writer;
   },
 
@@ -4128,6 +4340,11 @@ export const RestoreClusterRequest = {
       switch (tag >>> 3) {
         case 1:
           message.backupId = reader.string();
+          break;
+        case 16:
+          message.time = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
           break;
         case 2:
           message.folderId = reader.string();
@@ -4183,6 +4400,12 @@ export const RestoreClusterRequest = {
             reader.uint32()
           );
           break;
+        case 17:
+          message.segmentHostCount = longToNumber(reader.int64() as Long);
+          break;
+        case 18:
+          message.segmentInHost = longToNumber(reader.int64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -4197,6 +4420,10 @@ export const RestoreClusterRequest = {
       object.backupId !== undefined && object.backupId !== null
         ? String(object.backupId)
         : "";
+    message.time =
+      object.time !== undefined && object.time !== null
+        ? fromJsonTimestamp(object.time)
+        : undefined;
     message.folderId =
       object.folderId !== undefined && object.folderId !== null
         ? String(object.folderId)
@@ -4255,12 +4482,21 @@ export const RestoreClusterRequest = {
       object.maintenanceWindow !== null
         ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
         : undefined;
+    message.segmentHostCount =
+      object.segmentHostCount !== undefined && object.segmentHostCount !== null
+        ? Number(object.segmentHostCount)
+        : 0;
+    message.segmentInHost =
+      object.segmentInHost !== undefined && object.segmentInHost !== null
+        ? Number(object.segmentInHost)
+        : 0;
     return message;
   },
 
   toJSON(message: RestoreClusterRequest): unknown {
     const obj: any = {};
     message.backupId !== undefined && (obj.backupId = message.backupId);
+    message.time !== undefined && (obj.time = message.time.toISOString());
     message.folderId !== undefined && (obj.folderId = message.folderId);
     message.name !== undefined && (obj.name = message.name);
     message.description !== undefined &&
@@ -4304,6 +4540,10 @@ export const RestoreClusterRequest = {
       (obj.maintenanceWindow = message.maintenanceWindow
         ? MaintenanceWindow.toJSON(message.maintenanceWindow)
         : undefined);
+    message.segmentHostCount !== undefined &&
+      (obj.segmentHostCount = Math.round(message.segmentHostCount));
+    message.segmentInHost !== undefined &&
+      (obj.segmentInHost = Math.round(message.segmentInHost));
     return obj;
   },
 
@@ -4312,6 +4552,7 @@ export const RestoreClusterRequest = {
   ): RestoreClusterRequest {
     const message = { ...baseRestoreClusterRequest } as RestoreClusterRequest;
     message.backupId = object.backupId ?? "";
+    message.time = object.time ?? undefined;
     message.folderId = object.folderId ?? "";
     message.name = object.name ?? "";
     message.description = object.description ?? "";
@@ -4346,6 +4587,8 @@ export const RestoreClusterRequest = {
       object.maintenanceWindow !== null
         ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
         : undefined;
+    message.segmentHostCount = object.segmentHostCount ?? 0;
+    message.segmentInHost = object.segmentInHost ?? 0;
     return message;
   },
 };

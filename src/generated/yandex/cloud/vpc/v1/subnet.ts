@@ -44,7 +44,7 @@ export function ipVersionToJSON(object: IpVersion): string {
   }
 }
 
-/** A Subnet resource. For more information, see [Subnets](/docs/vpc/concepts/subnets). */
+/** A Subnet resource. For more information, see [Subnets](/docs/vpc/concepts/network#subnet). */
 export interface Subnet {
   $type: "yandex.cloud.vpc.v1.Subnet";
   /** ID of the subnet. */

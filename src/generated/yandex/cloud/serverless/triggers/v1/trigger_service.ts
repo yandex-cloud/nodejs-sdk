@@ -137,6 +137,8 @@ export interface UpdateTriggerRequest {
    * to add or remove a label, request the current set of labels with a [TriggerService.Get] request.
    */
   labels: { [key: string]: string };
+  /** New parameters for trigger. */
+  rule?: Trigger_Rule;
 }
 
 export interface UpdateTriggerRequest_LabelsEntry {
@@ -828,6 +830,9 @@ export const UpdateTriggerRequest = {
         writer.uint32(42).fork()
       ).ldelim();
     });
+    if (message.rule !== undefined) {
+      Trigger_Rule.encode(message.rule, writer.uint32(50).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -863,6 +868,9 @@ export const UpdateTriggerRequest = {
             message.labels[entry5.key] = entry5.value;
           }
           break;
+        case 6:
+          message.rule = Trigger_Rule.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -895,6 +903,10 @@ export const UpdateTriggerRequest = {
       acc[key] = String(value);
       return acc;
     }, {});
+    message.rule =
+      object.rule !== undefined && object.rule !== null
+        ? Trigger_Rule.fromJSON(object.rule)
+        : undefined;
     return message;
   },
 
@@ -914,6 +926,8 @@ export const UpdateTriggerRequest = {
         obj.labels[k] = v;
       });
     }
+    message.rule !== undefined &&
+      (obj.rule = message.rule ? Trigger_Rule.toJSON(message.rule) : undefined);
     return obj;
   },
 
@@ -936,6 +950,10 @@ export const UpdateTriggerRequest = {
       }
       return acc;
     }, {});
+    message.rule =
+      object.rule !== undefined && object.rule !== null
+        ? Trigger_Rule.fromPartial(object.rule)
+        : undefined;
     return message;
   },
 };

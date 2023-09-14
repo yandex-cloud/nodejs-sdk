@@ -33,6 +33,8 @@ export interface Address {
   type: Address_Type;
   /** Vervion of the IP address. */
   ipVersion: Address_IpVersion;
+  /** Specifies if address protected from deletion. */
+  deletionProtection: boolean;
 }
 
 export enum Address_Type {
@@ -149,6 +151,7 @@ const baseAddress: object = {
   used: false,
   type: 0,
   ipVersion: 0,
+  deletionProtection: false,
 };
 
 export const Address = {
@@ -204,6 +207,9 @@ export const Address = {
     if (message.ipVersion !== 0) {
       writer.uint32(144).int32(message.ipVersion);
     }
+    if (message.deletionProtection === true) {
+      writer.uint32(152).bool(message.deletionProtection);
+    }
     return writer;
   },
 
@@ -255,6 +261,9 @@ export const Address = {
           break;
         case 18:
           message.ipVersion = reader.int32() as any;
+          break;
+        case 19:
+          message.deletionProtection = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -311,6 +320,11 @@ export const Address = {
       object.ipVersion !== undefined && object.ipVersion !== null
         ? address_IpVersionFromJSON(object.ipVersion)
         : 0;
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
     return message;
   },
 
@@ -338,6 +352,8 @@ export const Address = {
     message.type !== undefined && (obj.type = address_TypeToJSON(message.type));
     message.ipVersion !== undefined &&
       (obj.ipVersion = address_IpVersionToJSON(message.ipVersion));
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -365,6 +381,7 @@ export const Address = {
     message.used = object.used ?? false;
     message.type = object.type ?? 0;
     message.ipVersion = object.ipVersion ?? 0;
+    message.deletionProtection = object.deletionProtection ?? false;
     return message;
   },
 };

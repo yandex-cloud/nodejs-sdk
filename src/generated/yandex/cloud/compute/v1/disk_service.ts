@@ -54,12 +54,21 @@ export interface ListDisksRequest {
   pageToken: string;
   /**
    * A filter expression that filters resources listed in the response.
-   * The expression must specify:
-   * 1. The field name. Currently you can use filtering only on the [Disk.name] field.
-   * 2. An `=` operator.
-   * 3. The value in double quotes (`"`). Must be 3-63 characters long and match the regular expression `[a-z]([-a-z0-9]{,61}[a-z0-9])?`.
+   * The expression consists of one or more conditions united by `AND` operator: `<condition1> [AND <condition2> [<...> AND <conditionN>]]`.
+   *
+   * Each condition has the form `<field> <operator> <value>`, where:
+   * 1. `<field>` is the field name. Currently you can use filtering only on the limited number of fields.
+   * 2. `<operator>` is a logical operator, one of `=`, `!=`, `IN`, `NOT IN`.
+   * 3. `<value>` represents a value.
+   * String values should be written in double (`"`) or single (`'`) quotes. C-style escape sequences are supported (`\"` turns to `"`, `\'` to `'`, `\\` to backslash).
    */
   filter: string;
+  /**
+   * By which column the listing should be ordered and in which direction,
+   * format is "createdAt desc". "id asc" if omitted.
+   * The default sorting order is ascending
+   */
+  orderBy: string;
 }
 
 export interface ListDisksResponse {
@@ -114,7 +123,7 @@ export interface CreateDiskRequest {
   blockSize: number;
   /** Placement policy configuration. */
   diskPlacementPolicy?: DiskPlacementPolicy;
-  /** Snapshot schedules */
+  /** List of IDs of the snapshot schedules to attach the disk to. */
   snapshotScheduleIds: string[];
 }
 
@@ -238,18 +247,46 @@ export interface MoveDiskMetadata {
   destinationFolderId: string;
 }
 
+export interface RelocateDiskRequest {
+  $type: "yandex.cloud.compute.v1.RelocateDiskRequest";
+  /**
+   * ID of the disk to move.
+   *
+   * To get the disk ID, make a [DiskService.List] request.
+   */
+  diskId: string;
+  /**
+   * ID of the availability zone to move the disk to.
+   *
+   * To get the zone ID, make a [ZoneService.List] request.
+   */
+  destinationZoneId: string;
+}
+
+export interface RelocateDiskMetadata {
+  $type: "yandex.cloud.compute.v1.RelocateDiskMetadata";
+  /** ID of the disk that is being moved. */
+  diskId: string;
+  /** ID of the availability zone that the disk is being moved from. */
+  sourceZoneId: string;
+  /** ID of the availability zone that the disk is being moved to. */
+  destinationZoneId: string;
+}
+
 export interface ListDiskSnapshotSchedulesRequest {
   $type: "yandex.cloud.compute.v1.ListDiskSnapshotSchedulesRequest";
-  /** ID of the Disk resource to list snapshot schedules for. */
+  /** ID of the disk to list snapshot schedules for. */
   diskId: string;
   /**
    * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size], the service returns a [ListDiskOperationsResponse.next_page_token]
+   * results is larger than `page_size`, the service returns a [ListDiskSnapshotSchedulesResponse.next_page_token]
    * that can be used to get the next page of results in subsequent list requests.
+   *
+   * Default value: 100.
    */
   pageSize: number;
   /**
-   * Page token. To get the next page of results, set [page_token] to the
+   * Page token. To get the next page of results, set `page_token` to the
    * [ListDiskSnapshotSchedulesResponse.next_page_token] returned by a previous list request.
    */
   pageToken: string;
@@ -257,13 +294,14 @@ export interface ListDiskSnapshotSchedulesRequest {
 
 export interface ListDiskSnapshotSchedulesResponse {
   $type: "yandex.cloud.compute.v1.ListDiskSnapshotSchedulesResponse";
-  /** List of snapshot schedules for the specified disk. */
+  /** List of snapshot schedules the specified disk is attached to. */
   snapshotSchedules: SnapshotSchedule[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListDiskSnapshotSchedulesRequest.page_size], use the [next_page_token] as the value
-   * for the [ListDiskSnapshotSchedulesRequest.page_token] query parameter in the next list request.
-   * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
+   * Token for getting the next page of the list. If the number of results is greater than
+   * the specified [ListDiskSnapshotSchedulesRequest.page_size], use `next_page_token` as the value
+   * for the [ListDiskSnapshotSchedulesRequest.page_token] parameter in the next list request.
+   *
+   * Each subsequent page will have its own `next_page_token` to continue paging through the results.
    */
   nextPageToken: string;
 }
@@ -336,6 +374,7 @@ const baseListDisksRequest: object = {
   pageSize: 0,
   pageToken: "",
   filter: "",
+  orderBy: "",
 };
 
 export const ListDisksRequest = {
@@ -356,6 +395,9 @@ export const ListDisksRequest = {
     }
     if (message.filter !== "") {
       writer.uint32(34).string(message.filter);
+    }
+    if (message.orderBy !== "") {
+      writer.uint32(42).string(message.orderBy);
     }
     return writer;
   },
@@ -378,6 +420,9 @@ export const ListDisksRequest = {
           break;
         case 4:
           message.filter = reader.string();
+          break;
+        case 5:
+          message.orderBy = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -405,6 +450,10 @@ export const ListDisksRequest = {
       object.filter !== undefined && object.filter !== null
         ? String(object.filter)
         : "";
+    message.orderBy =
+      object.orderBy !== undefined && object.orderBy !== null
+        ? String(object.orderBy)
+        : "";
     return message;
   },
 
@@ -415,6 +464,7 @@ export const ListDisksRequest = {
       (obj.pageSize = Math.round(message.pageSize));
     message.pageToken !== undefined && (obj.pageToken = message.pageToken);
     message.filter !== undefined && (obj.filter = message.filter);
+    message.orderBy !== undefined && (obj.orderBy = message.orderBy);
     return obj;
   },
 
@@ -426,6 +476,7 @@ export const ListDisksRequest = {
     message.pageSize = object.pageSize ?? 0;
     message.pageToken = object.pageToken ?? "";
     message.filter = object.filter ?? "";
+    message.orderBy = object.orderBy ?? "";
     return message;
   },
 };
@@ -1726,6 +1777,177 @@ export const MoveDiskMetadata = {
 
 messageTypeRegistry.set(MoveDiskMetadata.$type, MoveDiskMetadata);
 
+const baseRelocateDiskRequest: object = {
+  $type: "yandex.cloud.compute.v1.RelocateDiskRequest",
+  diskId: "",
+  destinationZoneId: "",
+};
+
+export const RelocateDiskRequest = {
+  $type: "yandex.cloud.compute.v1.RelocateDiskRequest" as const,
+
+  encode(
+    message: RelocateDiskRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.diskId !== "") {
+      writer.uint32(10).string(message.diskId);
+    }
+    if (message.destinationZoneId !== "") {
+      writer.uint32(18).string(message.destinationZoneId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): RelocateDiskRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseRelocateDiskRequest } as RelocateDiskRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.diskId = reader.string();
+          break;
+        case 2:
+          message.destinationZoneId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RelocateDiskRequest {
+    const message = { ...baseRelocateDiskRequest } as RelocateDiskRequest;
+    message.diskId =
+      object.diskId !== undefined && object.diskId !== null
+        ? String(object.diskId)
+        : "";
+    message.destinationZoneId =
+      object.destinationZoneId !== undefined &&
+      object.destinationZoneId !== null
+        ? String(object.destinationZoneId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: RelocateDiskRequest): unknown {
+    const obj: any = {};
+    message.diskId !== undefined && (obj.diskId = message.diskId);
+    message.destinationZoneId !== undefined &&
+      (obj.destinationZoneId = message.destinationZoneId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RelocateDiskRequest>, I>>(
+    object: I
+  ): RelocateDiskRequest {
+    const message = { ...baseRelocateDiskRequest } as RelocateDiskRequest;
+    message.diskId = object.diskId ?? "";
+    message.destinationZoneId = object.destinationZoneId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(RelocateDiskRequest.$type, RelocateDiskRequest);
+
+const baseRelocateDiskMetadata: object = {
+  $type: "yandex.cloud.compute.v1.RelocateDiskMetadata",
+  diskId: "",
+  sourceZoneId: "",
+  destinationZoneId: "",
+};
+
+export const RelocateDiskMetadata = {
+  $type: "yandex.cloud.compute.v1.RelocateDiskMetadata" as const,
+
+  encode(
+    message: RelocateDiskMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.diskId !== "") {
+      writer.uint32(10).string(message.diskId);
+    }
+    if (message.sourceZoneId !== "") {
+      writer.uint32(18).string(message.sourceZoneId);
+    }
+    if (message.destinationZoneId !== "") {
+      writer.uint32(26).string(message.destinationZoneId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RelocateDiskMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseRelocateDiskMetadata } as RelocateDiskMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.diskId = reader.string();
+          break;
+        case 2:
+          message.sourceZoneId = reader.string();
+          break;
+        case 3:
+          message.destinationZoneId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RelocateDiskMetadata {
+    const message = { ...baseRelocateDiskMetadata } as RelocateDiskMetadata;
+    message.diskId =
+      object.diskId !== undefined && object.diskId !== null
+        ? String(object.diskId)
+        : "";
+    message.sourceZoneId =
+      object.sourceZoneId !== undefined && object.sourceZoneId !== null
+        ? String(object.sourceZoneId)
+        : "";
+    message.destinationZoneId =
+      object.destinationZoneId !== undefined &&
+      object.destinationZoneId !== null
+        ? String(object.destinationZoneId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: RelocateDiskMetadata): unknown {
+    const obj: any = {};
+    message.diskId !== undefined && (obj.diskId = message.diskId);
+    message.sourceZoneId !== undefined &&
+      (obj.sourceZoneId = message.sourceZoneId);
+    message.destinationZoneId !== undefined &&
+      (obj.destinationZoneId = message.destinationZoneId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RelocateDiskMetadata>, I>>(
+    object: I
+  ): RelocateDiskMetadata {
+    const message = { ...baseRelocateDiskMetadata } as RelocateDiskMetadata;
+    message.diskId = object.diskId ?? "";
+    message.sourceZoneId = object.sourceZoneId ?? "";
+    message.destinationZoneId = object.destinationZoneId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(RelocateDiskMetadata.$type, RelocateDiskMetadata);
+
 const baseListDiskSnapshotSchedulesRequest: object = {
   $type: "yandex.cloud.compute.v1.ListDiskSnapshotSchedulesRequest",
   diskId: "",
@@ -2028,7 +2250,24 @@ export const DiskServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** List snapshot schedules containing the disk */
+  /**
+   * Moves the specified disk to another availability zone
+   *
+   * Disk must be detached from instances. To move attached
+   * disk use [InstanceService.Relocate] request.
+   */
+  relocate: {
+    path: "/yandex.cloud.compute.v1.DiskService/Relocate",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: RelocateDiskRequest) =>
+      Buffer.from(RelocateDiskRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => RelocateDiskRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /** Retrieves the list of snapshot schedules the specified disk is attached to. */
   listSnapshotSchedules: {
     path: "/yandex.cloud.compute.v1.DiskService/ListSnapshotSchedules",
     requestStream: false,
@@ -2078,7 +2317,14 @@ export interface DiskServiceServer extends UntypedServiceImplementation {
   >;
   /** Moves the specified disk to another folder of the same cloud. */
   move: handleUnaryCall<MoveDiskRequest, Operation>;
-  /** List snapshot schedules containing the disk */
+  /**
+   * Moves the specified disk to another availability zone
+   *
+   * Disk must be detached from instances. To move attached
+   * disk use [InstanceService.Relocate] request.
+   */
+  relocate: handleUnaryCall<RelocateDiskRequest, Operation>;
+  /** Retrieves the list of snapshot schedules the specified disk is attached to. */
   listSnapshotSchedules: handleUnaryCall<
     ListDiskSnapshotSchedulesRequest,
     ListDiskSnapshotSchedulesResponse
@@ -2223,7 +2469,28 @@ export interface DiskServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** List snapshot schedules containing the disk */
+  /**
+   * Moves the specified disk to another availability zone
+   *
+   * Disk must be detached from instances. To move attached
+   * disk use [InstanceService.Relocate] request.
+   */
+  relocate(
+    request: RelocateDiskRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  relocate(
+    request: RelocateDiskRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  relocate(
+    request: RelocateDiskRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Retrieves the list of snapshot schedules the specified disk is attached to. */
   listSnapshotSchedules(
     request: ListDiskSnapshotSchedulesRequest,
     callback: (

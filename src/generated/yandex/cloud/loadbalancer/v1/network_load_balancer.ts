@@ -78,6 +78,8 @@ export interface NetworkLoadBalancer {
   listeners: Listener[];
   /** List of target groups attached to the network load balancer. */
   attachedTargetGroups: AttachedTargetGroup[];
+  /** Specifies if network load balancer protected from deletion. */
+  deletionProtection: boolean;
 }
 
 export enum NetworkLoadBalancer_Status {
@@ -163,7 +165,6 @@ export function networkLoadBalancer_StatusToJSON(
   }
 }
 
-/** Type of the load balancer. Only external load balancers are currently available. */
 export enum NetworkLoadBalancer_Type {
   TYPE_UNSPECIFIED = 0,
   /** EXTERNAL - External network load balancer. */
@@ -408,6 +409,7 @@ const baseNetworkLoadBalancer: object = {
   status: 0,
   type: 0,
   sessionAffinity: 0,
+  deletionProtection: false,
 };
 
 export const NetworkLoadBalancer = {
@@ -462,6 +464,9 @@ export const NetworkLoadBalancer = {
     }
     for (const v of message.attachedTargetGroups) {
       AttachedTargetGroup.encode(v!, writer.uint32(106).fork()).ldelim();
+    }
+    if (message.deletionProtection === true) {
+      writer.uint32(112).bool(message.deletionProtection);
     }
     return writer;
   },
@@ -522,6 +527,9 @@ export const NetworkLoadBalancer = {
             AttachedTargetGroup.decode(reader, reader.uint32())
           );
           break;
+        case 14:
+          message.deletionProtection = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -578,6 +586,11 @@ export const NetworkLoadBalancer = {
     message.attachedTargetGroups = (object.attachedTargetGroups ?? []).map(
       (e: any) => AttachedTargetGroup.fromJSON(e)
     );
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
     return message;
   },
 
@@ -619,6 +632,8 @@ export const NetworkLoadBalancer = {
     } else {
       obj.attachedTargetGroups = [];
     }
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -649,6 +664,7 @@ export const NetworkLoadBalancer = {
       object.attachedTargetGroups?.map((e) =>
         AttachedTargetGroup.fromPartial(e)
       ) || [];
+    message.deletionProtection = object.deletionProtection ?? false;
     return message;
   },
 };

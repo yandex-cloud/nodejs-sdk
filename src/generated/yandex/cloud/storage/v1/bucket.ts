@@ -143,6 +143,29 @@ export interface Bucket {
    * For details, see [documentation](/docs/storage/concepts/lifecycles).
    */
   lifecycleRules: LifecycleRule[];
+  /**
+   * List of tags for the bucket.
+   * For details, see [documentation](/docs/resource-manager/concepts/labels).
+   */
+  tags: Tag[];
+  /**
+   * Configuration for object lock on the bucket.
+   * For details about the concept, see [documentation](/docs/storage/concepts/object-lock).
+   */
+  objectLock?: ObjectLock;
+  /**
+   * Configuration for bucket's encryption
+   * For detauls, see [documentation](/docs/storage/concepts/encryption)
+   */
+  encryption?: Encryption;
+}
+
+export interface Tag {
+  $type: "yandex.cloud.storage.v1.Tag";
+  /** Key of the bucket tag. */
+  key: string;
+  /** Value of the bucket tag. */
+  value: string;
 }
 
 export interface ACL {
@@ -740,6 +763,10 @@ export interface LifecycleRule_RuleFilter {
   $type: "yandex.cloud.storage.v1.LifecycleRule.RuleFilter";
   /** Key prefix that the object must have in order for the rule to apply. */
   prefix: string;
+  /** Size that the object must be greater. */
+  objectSizeGreaterThan?: number;
+  /** Size that the object must be less t. */
+  objectSizeLessThan?: number;
 }
 
 export interface Counters {
@@ -902,6 +929,123 @@ export function hTTPSConfig_SourceTypeToJSON(
   }
 }
 
+/**
+ * A resource for Object Lock configuration of a bucket.
+ * For details about the concept, see [documentation](/docs/storage/concepts/object-lock).
+ */
+export interface ObjectLock {
+  $type: "yandex.cloud.storage.v1.ObjectLock";
+  status: ObjectLock_ObjectLockStatus;
+  defaultRetention?: ObjectLock_DefaultRetention;
+}
+
+/** Activity status of the object lock settings on the bucket */
+export enum ObjectLock_ObjectLockStatus {
+  OBJECT_LOCK_STATUS_UNSPECIFIED = 0,
+  OBJECT_LOCK_STATUS_DISABLED = 1,
+  OBJECT_LOCK_STATUS_ENABLED = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function objectLock_ObjectLockStatusFromJSON(
+  object: any
+): ObjectLock_ObjectLockStatus {
+  switch (object) {
+    case 0:
+    case "OBJECT_LOCK_STATUS_UNSPECIFIED":
+      return ObjectLock_ObjectLockStatus.OBJECT_LOCK_STATUS_UNSPECIFIED;
+    case 1:
+    case "OBJECT_LOCK_STATUS_DISABLED":
+      return ObjectLock_ObjectLockStatus.OBJECT_LOCK_STATUS_DISABLED;
+    case 2:
+    case "OBJECT_LOCK_STATUS_ENABLED":
+      return ObjectLock_ObjectLockStatus.OBJECT_LOCK_STATUS_ENABLED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ObjectLock_ObjectLockStatus.UNRECOGNIZED;
+  }
+}
+
+export function objectLock_ObjectLockStatusToJSON(
+  object: ObjectLock_ObjectLockStatus
+): string {
+  switch (object) {
+    case ObjectLock_ObjectLockStatus.OBJECT_LOCK_STATUS_UNSPECIFIED:
+      return "OBJECT_LOCK_STATUS_UNSPECIFIED";
+    case ObjectLock_ObjectLockStatus.OBJECT_LOCK_STATUS_DISABLED:
+      return "OBJECT_LOCK_STATUS_DISABLED";
+    case ObjectLock_ObjectLockStatus.OBJECT_LOCK_STATUS_ENABLED:
+      return "OBJECT_LOCK_STATUS_ENABLED";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+/** Default lock configuration for added objects */
+export interface ObjectLock_DefaultRetention {
+  $type: "yandex.cloud.storage.v1.ObjectLock.DefaultRetention";
+  mode: ObjectLock_DefaultRetention_Mode;
+  /** Number of days for locking */
+  days: number | undefined;
+  /** Number of years for locking */
+  years: number | undefined;
+}
+
+/** Lock type */
+export enum ObjectLock_DefaultRetention_Mode {
+  MODE_UNSPECIFIED = 0,
+  MODE_GOVERNANCE = 1,
+  MODE_COMPLIANCE = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function objectLock_DefaultRetention_ModeFromJSON(
+  object: any
+): ObjectLock_DefaultRetention_Mode {
+  switch (object) {
+    case 0:
+    case "MODE_UNSPECIFIED":
+      return ObjectLock_DefaultRetention_Mode.MODE_UNSPECIFIED;
+    case 1:
+    case "MODE_GOVERNANCE":
+      return ObjectLock_DefaultRetention_Mode.MODE_GOVERNANCE;
+    case 2:
+    case "MODE_COMPLIANCE":
+      return ObjectLock_DefaultRetention_Mode.MODE_COMPLIANCE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ObjectLock_DefaultRetention_Mode.UNRECOGNIZED;
+  }
+}
+
+export function objectLock_DefaultRetention_ModeToJSON(
+  object: ObjectLock_DefaultRetention_Mode
+): string {
+  switch (object) {
+    case ObjectLock_DefaultRetention_Mode.MODE_UNSPECIFIED:
+      return "MODE_UNSPECIFIED";
+    case ObjectLock_DefaultRetention_Mode.MODE_GOVERNANCE:
+      return "MODE_GOVERNANCE";
+    case ObjectLock_DefaultRetention_Mode.MODE_COMPLIANCE:
+      return "MODE_COMPLIANCE";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export interface Encryption {
+  $type: "yandex.cloud.storage.v1.Encryption";
+  rules: Encryption_EncryptionRule[];
+}
+
+export interface Encryption_EncryptionRule {
+  $type: "yandex.cloud.storage.v1.Encryption.EncryptionRule";
+  kmsMasterKeyId: string;
+  sseAlgorithm: string;
+}
+
 const baseBucket: object = {
   $type: "yandex.cloud.storage.v1.Bucket",
   id: "",
@@ -970,6 +1114,15 @@ export const Bucket = {
     for (const v of message.lifecycleRules) {
       LifecycleRule.encode(v!, writer.uint32(106).fork()).ldelim();
     }
+    for (const v of message.tags) {
+      Tag.encode(v!, writer.uint32(114).fork()).ldelim();
+    }
+    if (message.objectLock !== undefined) {
+      ObjectLock.encode(message.objectLock, writer.uint32(122).fork()).ldelim();
+    }
+    if (message.encryption !== undefined) {
+      Encryption.encode(message.encryption, writer.uint32(130).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -979,6 +1132,7 @@ export const Bucket = {
     const message = { ...baseBucket } as Bucket;
     message.cors = [];
     message.lifecycleRules = [];
+    message.tags = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1032,6 +1186,15 @@ export const Bucket = {
           message.lifecycleRules.push(
             LifecycleRule.decode(reader, reader.uint32())
           );
+          break;
+        case 14:
+          message.tags.push(Tag.decode(reader, reader.uint32()));
+          break;
+        case 15:
+          message.objectLock = ObjectLock.decode(reader, reader.uint32());
+          break;
+        case 16:
+          message.encryption = Encryption.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1089,6 +1252,15 @@ export const Bucket = {
     message.lifecycleRules = (object.lifecycleRules ?? []).map((e: any) =>
       LifecycleRule.fromJSON(e)
     );
+    message.tags = (object.tags ?? []).map((e: any) => Tag.fromJSON(e));
+    message.objectLock =
+      object.objectLock !== undefined && object.objectLock !== null
+        ? ObjectLock.fromJSON(object.objectLock)
+        : undefined;
+    message.encryption =
+      object.encryption !== undefined && object.encryption !== null
+        ? Encryption.fromJSON(object.encryption)
+        : undefined;
     return message;
   },
 
@@ -1128,6 +1300,19 @@ export const Bucket = {
     } else {
       obj.lifecycleRules = [];
     }
+    if (message.tags) {
+      obj.tags = message.tags.map((e) => (e ? Tag.toJSON(e) : undefined));
+    } else {
+      obj.tags = [];
+    }
+    message.objectLock !== undefined &&
+      (obj.objectLock = message.objectLock
+        ? ObjectLock.toJSON(message.objectLock)
+        : undefined);
+    message.encryption !== undefined &&
+      (obj.encryption = message.encryption
+        ? Encryption.toJSON(message.encryption)
+        : undefined);
     return obj;
   },
 
@@ -1157,11 +1342,88 @@ export const Bucket = {
         : undefined;
     message.lifecycleRules =
       object.lifecycleRules?.map((e) => LifecycleRule.fromPartial(e)) || [];
+    message.tags = object.tags?.map((e) => Tag.fromPartial(e)) || [];
+    message.objectLock =
+      object.objectLock !== undefined && object.objectLock !== null
+        ? ObjectLock.fromPartial(object.objectLock)
+        : undefined;
+    message.encryption =
+      object.encryption !== undefined && object.encryption !== null
+        ? Encryption.fromPartial(object.encryption)
+        : undefined;
     return message;
   },
 };
 
 messageTypeRegistry.set(Bucket.$type, Bucket);
+
+const baseTag: object = {
+  $type: "yandex.cloud.storage.v1.Tag",
+  key: "",
+  value: "",
+};
+
+export const Tag = {
+  $type: "yandex.cloud.storage.v1.Tag" as const,
+
+  encode(message: Tag, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Tag {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseTag } as Tag;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Tag {
+    const message = { ...baseTag } as Tag;
+    message.key =
+      object.key !== undefined && object.key !== null ? String(object.key) : "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? String(object.value)
+        : "";
+    return message;
+  },
+
+  toJSON(message: Tag): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Tag>, I>>(object: I): Tag {
+    const message = { ...baseTag } as Tag;
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Tag.$type, Tag);
 
 const baseACL: object = { $type: "yandex.cloud.storage.v1.ACL" };
 
@@ -2828,6 +3090,24 @@ export const LifecycleRule_RuleFilter = {
     if (message.prefix !== "") {
       writer.uint32(10).string(message.prefix);
     }
+    if (message.objectSizeGreaterThan !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.objectSizeGreaterThan!,
+        },
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.objectSizeLessThan !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.objectSizeLessThan!,
+        },
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2846,6 +3126,18 @@ export const LifecycleRule_RuleFilter = {
         case 1:
           message.prefix = reader.string();
           break;
+        case 2:
+          message.objectSizeGreaterThan = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 3:
+          message.objectSizeLessThan = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2862,12 +3154,26 @@ export const LifecycleRule_RuleFilter = {
       object.prefix !== undefined && object.prefix !== null
         ? String(object.prefix)
         : "";
+    message.objectSizeGreaterThan =
+      object.objectSizeGreaterThan !== undefined &&
+      object.objectSizeGreaterThan !== null
+        ? Number(object.objectSizeGreaterThan)
+        : undefined;
+    message.objectSizeLessThan =
+      object.objectSizeLessThan !== undefined &&
+      object.objectSizeLessThan !== null
+        ? Number(object.objectSizeLessThan)
+        : undefined;
     return message;
   },
 
   toJSON(message: LifecycleRule_RuleFilter): unknown {
     const obj: any = {};
     message.prefix !== undefined && (obj.prefix = message.prefix);
+    message.objectSizeGreaterThan !== undefined &&
+      (obj.objectSizeGreaterThan = message.objectSizeGreaterThan);
+    message.objectSizeLessThan !== undefined &&
+      (obj.objectSizeLessThan = message.objectSizeLessThan);
     return obj;
   },
 
@@ -2878,6 +3184,8 @@ export const LifecycleRule_RuleFilter = {
       ...baseLifecycleRule_RuleFilter,
     } as LifecycleRule_RuleFilter;
     message.prefix = object.prefix ?? "";
+    message.objectSizeGreaterThan = object.objectSizeGreaterThan ?? undefined;
+    message.objectSizeLessThan = object.objectSizeLessThan ?? undefined;
     return message;
   },
 };
@@ -3686,6 +3994,349 @@ export const HTTPSConfig = {
 };
 
 messageTypeRegistry.set(HTTPSConfig.$type, HTTPSConfig);
+
+const baseObjectLock: object = {
+  $type: "yandex.cloud.storage.v1.ObjectLock",
+  status: 0,
+};
+
+export const ObjectLock = {
+  $type: "yandex.cloud.storage.v1.ObjectLock" as const,
+
+  encode(
+    message: ObjectLock,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.status !== 0) {
+      writer.uint32(16).int32(message.status);
+    }
+    if (message.defaultRetention !== undefined) {
+      ObjectLock_DefaultRetention.encode(
+        message.defaultRetention,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ObjectLock {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseObjectLock } as ObjectLock;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 2:
+          message.status = reader.int32() as any;
+          break;
+        case 3:
+          message.defaultRetention = ObjectLock_DefaultRetention.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ObjectLock {
+    const message = { ...baseObjectLock } as ObjectLock;
+    message.status =
+      object.status !== undefined && object.status !== null
+        ? objectLock_ObjectLockStatusFromJSON(object.status)
+        : 0;
+    message.defaultRetention =
+      object.defaultRetention !== undefined && object.defaultRetention !== null
+        ? ObjectLock_DefaultRetention.fromJSON(object.defaultRetention)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: ObjectLock): unknown {
+    const obj: any = {};
+    message.status !== undefined &&
+      (obj.status = objectLock_ObjectLockStatusToJSON(message.status));
+    message.defaultRetention !== undefined &&
+      (obj.defaultRetention = message.defaultRetention
+        ? ObjectLock_DefaultRetention.toJSON(message.defaultRetention)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ObjectLock>, I>>(
+    object: I
+  ): ObjectLock {
+    const message = { ...baseObjectLock } as ObjectLock;
+    message.status = object.status ?? 0;
+    message.defaultRetention =
+      object.defaultRetention !== undefined && object.defaultRetention !== null
+        ? ObjectLock_DefaultRetention.fromPartial(object.defaultRetention)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(ObjectLock.$type, ObjectLock);
+
+const baseObjectLock_DefaultRetention: object = {
+  $type: "yandex.cloud.storage.v1.ObjectLock.DefaultRetention",
+  mode: 0,
+};
+
+export const ObjectLock_DefaultRetention = {
+  $type: "yandex.cloud.storage.v1.ObjectLock.DefaultRetention" as const,
+
+  encode(
+    message: ObjectLock_DefaultRetention,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.mode !== 0) {
+      writer.uint32(8).int32(message.mode);
+    }
+    if (message.days !== undefined) {
+      writer.uint32(16).int64(message.days);
+    }
+    if (message.years !== undefined) {
+      writer.uint32(24).int64(message.years);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ObjectLock_DefaultRetention {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseObjectLock_DefaultRetention,
+    } as ObjectLock_DefaultRetention;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.mode = reader.int32() as any;
+          break;
+        case 2:
+          message.days = longToNumber(reader.int64() as Long);
+          break;
+        case 3:
+          message.years = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ObjectLock_DefaultRetention {
+    const message = {
+      ...baseObjectLock_DefaultRetention,
+    } as ObjectLock_DefaultRetention;
+    message.mode =
+      object.mode !== undefined && object.mode !== null
+        ? objectLock_DefaultRetention_ModeFromJSON(object.mode)
+        : 0;
+    message.days =
+      object.days !== undefined && object.days !== null
+        ? Number(object.days)
+        : undefined;
+    message.years =
+      object.years !== undefined && object.years !== null
+        ? Number(object.years)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: ObjectLock_DefaultRetention): unknown {
+    const obj: any = {};
+    message.mode !== undefined &&
+      (obj.mode = objectLock_DefaultRetention_ModeToJSON(message.mode));
+    message.days !== undefined && (obj.days = Math.round(message.days));
+    message.years !== undefined && (obj.years = Math.round(message.years));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ObjectLock_DefaultRetention>, I>>(
+    object: I
+  ): ObjectLock_DefaultRetention {
+    const message = {
+      ...baseObjectLock_DefaultRetention,
+    } as ObjectLock_DefaultRetention;
+    message.mode = object.mode ?? 0;
+    message.days = object.days ?? undefined;
+    message.years = object.years ?? undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ObjectLock_DefaultRetention.$type,
+  ObjectLock_DefaultRetention
+);
+
+const baseEncryption: object = { $type: "yandex.cloud.storage.v1.Encryption" };
+
+export const Encryption = {
+  $type: "yandex.cloud.storage.v1.Encryption" as const,
+
+  encode(
+    message: Encryption,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.rules) {
+      Encryption_EncryptionRule.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Encryption {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseEncryption } as Encryption;
+    message.rules = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.rules.push(
+            Encryption_EncryptionRule.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Encryption {
+    const message = { ...baseEncryption } as Encryption;
+    message.rules = (object.rules ?? []).map((e: any) =>
+      Encryption_EncryptionRule.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: Encryption): unknown {
+    const obj: any = {};
+    if (message.rules) {
+      obj.rules = message.rules.map((e) =>
+        e ? Encryption_EncryptionRule.toJSON(e) : undefined
+      );
+    } else {
+      obj.rules = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Encryption>, I>>(
+    object: I
+  ): Encryption {
+    const message = { ...baseEncryption } as Encryption;
+    message.rules =
+      object.rules?.map((e) => Encryption_EncryptionRule.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Encryption.$type, Encryption);
+
+const baseEncryption_EncryptionRule: object = {
+  $type: "yandex.cloud.storage.v1.Encryption.EncryptionRule",
+  kmsMasterKeyId: "",
+  sseAlgorithm: "",
+};
+
+export const Encryption_EncryptionRule = {
+  $type: "yandex.cloud.storage.v1.Encryption.EncryptionRule" as const,
+
+  encode(
+    message: Encryption_EncryptionRule,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.kmsMasterKeyId !== "") {
+      writer.uint32(10).string(message.kmsMasterKeyId);
+    }
+    if (message.sseAlgorithm !== "") {
+      writer.uint32(18).string(message.sseAlgorithm);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Encryption_EncryptionRule {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseEncryption_EncryptionRule,
+    } as Encryption_EncryptionRule;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.kmsMasterKeyId = reader.string();
+          break;
+        case 2:
+          message.sseAlgorithm = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Encryption_EncryptionRule {
+    const message = {
+      ...baseEncryption_EncryptionRule,
+    } as Encryption_EncryptionRule;
+    message.kmsMasterKeyId =
+      object.kmsMasterKeyId !== undefined && object.kmsMasterKeyId !== null
+        ? String(object.kmsMasterKeyId)
+        : "";
+    message.sseAlgorithm =
+      object.sseAlgorithm !== undefined && object.sseAlgorithm !== null
+        ? String(object.sseAlgorithm)
+        : "";
+    return message;
+  },
+
+  toJSON(message: Encryption_EncryptionRule): unknown {
+    const obj: any = {};
+    message.kmsMasterKeyId !== undefined &&
+      (obj.kmsMasterKeyId = message.kmsMasterKeyId);
+    message.sseAlgorithm !== undefined &&
+      (obj.sseAlgorithm = message.sseAlgorithm);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Encryption_EncryptionRule>, I>>(
+    object: I
+  ): Encryption_EncryptionRule {
+    const message = {
+      ...baseEncryption_EncryptionRule,
+    } as Encryption_EncryptionRule;
+    message.kmsMasterKeyId = object.kmsMasterKeyId ?? "";
+    message.sseAlgorithm = object.sseAlgorithm ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Encryption_EncryptionRule.$type,
+  Encryption_EncryptionRule
+);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

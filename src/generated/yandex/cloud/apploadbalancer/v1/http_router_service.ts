@@ -15,8 +15,11 @@ import {
 } from "@grpc/grpc-js";
 import _m0 from "protobufjs/minimal";
 import { FieldMask } from "../../../../google/protobuf/field_mask";
+import {
+  RouteOptions,
+  VirtualHost,
+} from "../../../../yandex/cloud/apploadbalancer/v1/virtual_host";
 import { HttpRouter } from "../../../../yandex/cloud/apploadbalancer/v1/http_router";
-import { VirtualHost } from "../../../../yandex/cloud/apploadbalancer/v1/virtual_host";
 import { Operation } from "../../../../yandex/cloud/operation/operation";
 
 export const protobufPackage = "yandex.cloud.apploadbalancer.v1";
@@ -131,6 +134,8 @@ export interface UpdateHttpRouterRequest {
    * a virtual host, make a [VirtualHostService.Create] request or a [VirtualHostService.Delete] request.
    */
   virtualHosts: VirtualHost[];
+  /** New route options for the HTTP router. */
+  routeOptions?: RouteOptions;
 }
 
 export interface UpdateHttpRouterRequest_LabelsEntry {
@@ -172,6 +177,8 @@ export interface CreateHttpRouterRequest {
    * Only one virtual host with no authority (default match) can be specified.
    */
   virtualHosts: VirtualHost[];
+  /** Route options for the HTTP router. */
+  routeOptions?: RouteOptions;
 }
 
 export interface CreateHttpRouterRequest_LabelsEntry {
@@ -671,6 +678,12 @@ export const UpdateHttpRouterRequest = {
     for (const v of message.virtualHosts) {
       VirtualHost.encode(v!, writer.uint32(50).fork()).ldelim();
     }
+    if (message.routeOptions !== undefined) {
+      RouteOptions.encode(
+        message.routeOptions,
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -714,6 +727,9 @@ export const UpdateHttpRouterRequest = {
             VirtualHost.decode(reader, reader.uint32())
           );
           break;
+        case 8:
+          message.routeOptions = RouteOptions.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -751,6 +767,10 @@ export const UpdateHttpRouterRequest = {
     message.virtualHosts = (object.virtualHosts ?? []).map((e: any) =>
       VirtualHost.fromJSON(e)
     );
+    message.routeOptions =
+      object.routeOptions !== undefined && object.routeOptions !== null
+        ? RouteOptions.fromJSON(object.routeOptions)
+        : undefined;
     return message;
   },
 
@@ -778,6 +798,10 @@ export const UpdateHttpRouterRequest = {
     } else {
       obj.virtualHosts = [];
     }
+    message.routeOptions !== undefined &&
+      (obj.routeOptions = message.routeOptions
+        ? RouteOptions.toJSON(message.routeOptions)
+        : undefined);
     return obj;
   },
 
@@ -804,6 +828,10 @@ export const UpdateHttpRouterRequest = {
     }, {});
     message.virtualHosts =
       object.virtualHosts?.map((e) => VirtualHost.fromPartial(e)) || [];
+    message.routeOptions =
+      object.routeOptions !== undefined && object.routeOptions !== null
+        ? RouteOptions.fromPartial(object.routeOptions)
+        : undefined;
     return message;
   },
 };
@@ -1008,6 +1036,12 @@ export const CreateHttpRouterRequest = {
     for (const v of message.virtualHosts) {
       VirtualHost.encode(v!, writer.uint32(42).fork()).ldelim();
     }
+    if (message.routeOptions !== undefined) {
+      RouteOptions.encode(
+        message.routeOptions,
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1048,6 +1082,9 @@ export const CreateHttpRouterRequest = {
             VirtualHost.decode(reader, reader.uint32())
           );
           break;
+        case 7:
+          message.routeOptions = RouteOptions.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1081,6 +1118,10 @@ export const CreateHttpRouterRequest = {
     message.virtualHosts = (object.virtualHosts ?? []).map((e: any) =>
       VirtualHost.fromJSON(e)
     );
+    message.routeOptions =
+      object.routeOptions !== undefined && object.routeOptions !== null
+        ? RouteOptions.fromJSON(object.routeOptions)
+        : undefined;
     return message;
   },
 
@@ -1103,6 +1144,10 @@ export const CreateHttpRouterRequest = {
     } else {
       obj.virtualHosts = [];
     }
+    message.routeOptions !== undefined &&
+      (obj.routeOptions = message.routeOptions
+        ? RouteOptions.toJSON(message.routeOptions)
+        : undefined);
     return obj;
   },
 
@@ -1125,6 +1170,10 @@ export const CreateHttpRouterRequest = {
     }, {});
     message.virtualHosts =
       object.virtualHosts?.map((e) => VirtualHost.fromPartial(e)) || [];
+    message.routeOptions =
+      object.routeOptions !== undefined && object.routeOptions !== null
+        ? RouteOptions.fromPartial(object.routeOptions)
+        : undefined;
     return message;
   },
 };

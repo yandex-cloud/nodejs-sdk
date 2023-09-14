@@ -59,9 +59,21 @@ export interface ListHostGroupsRequest {
   pageToken: string;
   /**
    * A filter expression that filters resources listed in the response.
-   * Currently you can use filtering only on the [HostGroup.name] field.
+   * The expression consists of one or more conditions united by `AND` operator: `<condition1> [AND <condition2> [<...> AND <conditionN>]]`.
+   *
+   * Each condition has the form `<field> <operator> <value>`, where:
+   * 1. `<field>` is the field name. Currently you can use filtering only on the limited number of fields.
+   * 2. `<operator>` is a logical operator, one of `=`, `!=`, `IN`, `NOT IN`.
+   * 3. `<value>` represents a value.
+   * String values should be written in double (`"`) or single (`'`) quotes. C-style escape sequences are supported (`\"` turns to `"`, `\'` to `'`, `\\` to backslash).
    */
   filter: string;
+  /**
+   * By which column the listing should be ordered and in which direction,
+   * format is "createdAt desc". "id asc" if omitted.
+   * The default sorting order is ascending
+   */
+  orderBy: string;
 }
 
 export interface ListHostGroupsResponse {
@@ -186,11 +198,7 @@ export interface ListHostGroupInstancesRequest {
    * returned by a previous list request.
    */
   pageToken: string;
-  /**
-   * A filter expression that filters resources listed in the response.
-   * Currently you can use filtering only on the [Host.id] field.
-   * To get the host ID, use [HostGroupService.ListHosts] request.
-   */
+  /** Filter support is not currently implemented. Any filters are ignored. */
   filter: string;
 }
 
@@ -348,6 +356,7 @@ const baseListHostGroupsRequest: object = {
   pageSize: 0,
   pageToken: "",
   filter: "",
+  orderBy: "",
 };
 
 export const ListHostGroupsRequest = {
@@ -368,6 +377,9 @@ export const ListHostGroupsRequest = {
     }
     if (message.filter !== "") {
       writer.uint32(34).string(message.filter);
+    }
+    if (message.orderBy !== "") {
+      writer.uint32(42).string(message.orderBy);
     }
     return writer;
   },
@@ -393,6 +405,9 @@ export const ListHostGroupsRequest = {
           break;
         case 4:
           message.filter = reader.string();
+          break;
+        case 5:
+          message.orderBy = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -420,6 +435,10 @@ export const ListHostGroupsRequest = {
       object.filter !== undefined && object.filter !== null
         ? String(object.filter)
         : "";
+    message.orderBy =
+      object.orderBy !== undefined && object.orderBy !== null
+        ? String(object.orderBy)
+        : "";
     return message;
   },
 
@@ -430,6 +449,7 @@ export const ListHostGroupsRequest = {
       (obj.pageSize = Math.round(message.pageSize));
     message.pageToken !== undefined && (obj.pageToken = message.pageToken);
     message.filter !== undefined && (obj.filter = message.filter);
+    message.orderBy !== undefined && (obj.orderBy = message.orderBy);
     return obj;
   },
 
@@ -441,6 +461,7 @@ export const ListHostGroupsRequest = {
     message.pageSize = object.pageSize ?? 0;
     message.pageToken = object.pageToken ?? "";
     message.filter = object.filter ?? "";
+    message.orderBy = object.orderBy ?? "";
     return message;
   },
 };

@@ -6,7 +6,7 @@ import { Timestamp } from "../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.dataproc.v1";
 
-/** A Data Proc job. For details about the concept, see [documentation](/docs/dataproc/concepts/jobs). */
+/** A Data Proc job. For details about the concept, see [documentation](/docs/data-proc/concepts/jobs). */
 export interface Job {
   $type: "yandex.cloud.dataproc.v1.Job";
   /** ID of the job. Generated at creation time. */

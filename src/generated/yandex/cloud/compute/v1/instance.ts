@@ -127,6 +127,8 @@ export interface Instance {
   filesystems: AttachedFilesystem[];
   /** Array of network interfaces that are attached to the instance. */
   networkInterfaces: NetworkInterface[];
+  /** GPU settings */
+  gpuSettings?: GpuSettings;
   /**
    * A domain name of the instance. FQDN is defined by the server
    * in the format `<hostname>.<region_id>.internal` when the instance is created.
@@ -144,6 +146,10 @@ export interface Instance {
   networkSettings?: NetworkSettings;
   /** Placement policy configuration. */
   placementPolicy?: PlacementPolicy;
+  /** ID of the dedicated host group that the instance belongs to. */
+  hostGroupId: string;
+  /** ID of the dedicated host that the instance belongs to. */
+  hostId: string;
 }
 
 export enum Instance_Status {
@@ -515,12 +521,20 @@ export function networkSettings_TypeToJSON(
   }
 }
 
+export interface GpuSettings {
+  $type: "yandex.cloud.compute.v1.GpuSettings";
+  /** Attach instance to specified GPU cluster. */
+  gpuClusterId: string;
+}
+
 export interface PlacementPolicy {
   $type: "yandex.cloud.compute.v1.PlacementPolicy";
   /** Placement group ID. */
   placementGroupId: string;
   /** List of affinity rules. Scheduler will attempt to allocate instances according to order of rules. */
   hostAffinityRules: PlacementPolicy_HostAffinityRule[];
+  /** Placement group partition */
+  placementGroupPartition: number;
 }
 
 /** Affinity definition */
@@ -599,6 +613,8 @@ const baseInstance: object = {
   status: 0,
   fqdn: "",
   serviceAccountId: "",
+  hostGroupId: "",
+  hostId: "",
 };
 
 export const Instance = {
@@ -679,6 +695,12 @@ export const Instance = {
     for (const v of message.networkInterfaces) {
       NetworkInterface.encode(v!, writer.uint32(114).fork()).ldelim();
     }
+    if (message.gpuSettings !== undefined) {
+      GpuSettings.encode(
+        message.gpuSettings,
+        writer.uint32(210).fork()
+      ).ldelim();
+    }
     if (message.fqdn !== "") {
       writer.uint32(130).string(message.fqdn);
     }
@@ -702,6 +724,12 @@ export const Instance = {
         message.placementPolicy,
         writer.uint32(162).fork()
       ).ldelim();
+    }
+    if (message.hostGroupId !== "") {
+      writer.uint32(218).string(message.hostGroupId);
+    }
+    if (message.hostId !== "") {
+      writer.uint32(226).string(message.hostId);
     }
     return writer;
   },
@@ -792,6 +820,9 @@ export const Instance = {
             NetworkInterface.decode(reader, reader.uint32())
           );
           break;
+        case 26:
+          message.gpuSettings = GpuSettings.decode(reader, reader.uint32());
+          break;
         case 16:
           message.fqdn = reader.string();
           break;
@@ -815,6 +846,12 @@ export const Instance = {
             reader,
             reader.uint32()
           );
+          break;
+        case 27:
+          message.hostGroupId = reader.string();
+          break;
+        case 28:
+          message.hostId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -892,6 +929,10 @@ export const Instance = {
     message.networkInterfaces = (object.networkInterfaces ?? []).map((e: any) =>
       NetworkInterface.fromJSON(e)
     );
+    message.gpuSettings =
+      object.gpuSettings !== undefined && object.gpuSettings !== null
+        ? GpuSettings.fromJSON(object.gpuSettings)
+        : undefined;
     message.fqdn =
       object.fqdn !== undefined && object.fqdn !== null
         ? String(object.fqdn)
@@ -912,6 +953,14 @@ export const Instance = {
       object.placementPolicy !== undefined && object.placementPolicy !== null
         ? PlacementPolicy.fromJSON(object.placementPolicy)
         : undefined;
+    message.hostGroupId =
+      object.hostGroupId !== undefined && object.hostGroupId !== null
+        ? String(object.hostGroupId)
+        : "";
+    message.hostId =
+      object.hostId !== undefined && object.hostId !== null
+        ? String(object.hostId)
+        : "";
     return message;
   },
 
@@ -980,6 +1029,10 @@ export const Instance = {
     } else {
       obj.networkInterfaces = [];
     }
+    message.gpuSettings !== undefined &&
+      (obj.gpuSettings = message.gpuSettings
+        ? GpuSettings.toJSON(message.gpuSettings)
+        : undefined);
     message.fqdn !== undefined && (obj.fqdn = message.fqdn);
     message.schedulingPolicy !== undefined &&
       (obj.schedulingPolicy = message.schedulingPolicy
@@ -995,6 +1048,9 @@ export const Instance = {
       (obj.placementPolicy = message.placementPolicy
         ? PlacementPolicy.toJSON(message.placementPolicy)
         : undefined);
+    message.hostGroupId !== undefined &&
+      (obj.hostGroupId = message.hostGroupId);
+    message.hostId !== undefined && (obj.hostId = message.hostId);
     return obj;
   },
 
@@ -1045,6 +1101,10 @@ export const Instance = {
     message.networkInterfaces =
       object.networkInterfaces?.map((e) => NetworkInterface.fromPartial(e)) ||
       [];
+    message.gpuSettings =
+      object.gpuSettings !== undefined && object.gpuSettings !== null
+        ? GpuSettings.fromPartial(object.gpuSettings)
+        : undefined;
     message.fqdn = object.fqdn ?? "";
     message.schedulingPolicy =
       object.schedulingPolicy !== undefined && object.schedulingPolicy !== null
@@ -1059,6 +1119,8 @@ export const Instance = {
       object.placementPolicy !== undefined && object.placementPolicy !== null
         ? PlacementPolicy.fromPartial(object.placementPolicy)
         : undefined;
+    message.hostGroupId = object.hostGroupId ?? "";
+    message.hostId = object.hostId ?? "";
     return message;
   },
 };
@@ -2161,9 +2223,73 @@ export const NetworkSettings = {
 
 messageTypeRegistry.set(NetworkSettings.$type, NetworkSettings);
 
+const baseGpuSettings: object = {
+  $type: "yandex.cloud.compute.v1.GpuSettings",
+  gpuClusterId: "",
+};
+
+export const GpuSettings = {
+  $type: "yandex.cloud.compute.v1.GpuSettings" as const,
+
+  encode(
+    message: GpuSettings,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.gpuClusterId !== "") {
+      writer.uint32(10).string(message.gpuClusterId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GpuSettings {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseGpuSettings } as GpuSettings;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.gpuClusterId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GpuSettings {
+    const message = { ...baseGpuSettings } as GpuSettings;
+    message.gpuClusterId =
+      object.gpuClusterId !== undefined && object.gpuClusterId !== null
+        ? String(object.gpuClusterId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: GpuSettings): unknown {
+    const obj: any = {};
+    message.gpuClusterId !== undefined &&
+      (obj.gpuClusterId = message.gpuClusterId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GpuSettings>, I>>(
+    object: I
+  ): GpuSettings {
+    const message = { ...baseGpuSettings } as GpuSettings;
+    message.gpuClusterId = object.gpuClusterId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(GpuSettings.$type, GpuSettings);
+
 const basePlacementPolicy: object = {
   $type: "yandex.cloud.compute.v1.PlacementPolicy",
   placementGroupId: "",
+  placementGroupPartition: 0,
 };
 
 export const PlacementPolicy = {
@@ -2181,6 +2307,9 @@ export const PlacementPolicy = {
         v!,
         writer.uint32(18).fork()
       ).ldelim();
+    }
+    if (message.placementGroupPartition !== 0) {
+      writer.uint32(24).int64(message.placementGroupPartition);
     }
     return writer;
   },
@@ -2201,6 +2330,11 @@ export const PlacementPolicy = {
             PlacementPolicy_HostAffinityRule.decode(reader, reader.uint32())
           );
           break;
+        case 3:
+          message.placementGroupPartition = longToNumber(
+            reader.int64() as Long
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2218,6 +2352,11 @@ export const PlacementPolicy = {
     message.hostAffinityRules = (object.hostAffinityRules ?? []).map((e: any) =>
       PlacementPolicy_HostAffinityRule.fromJSON(e)
     );
+    message.placementGroupPartition =
+      object.placementGroupPartition !== undefined &&
+      object.placementGroupPartition !== null
+        ? Number(object.placementGroupPartition)
+        : 0;
     return message;
   },
 
@@ -2232,6 +2371,10 @@ export const PlacementPolicy = {
     } else {
       obj.hostAffinityRules = [];
     }
+    message.placementGroupPartition !== undefined &&
+      (obj.placementGroupPartition = Math.round(
+        message.placementGroupPartition
+      ));
     return obj;
   },
 
@@ -2244,6 +2387,7 @@ export const PlacementPolicy = {
       object.hostAffinityRules?.map((e) =>
         PlacementPolicy_HostAffinityRule.fromPartial(e)
       ) || [];
+    message.placementGroupPartition = object.placementGroupPartition ?? 0;
     return message;
   },
 };

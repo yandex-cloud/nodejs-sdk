@@ -72,6 +72,44 @@ export function compressionTypeToJSON(object: CompressionType): string {
   }
 }
 
+export enum SaslMechanism {
+  SASL_MECHANISM_UNSPECIFIED = 0,
+  SASL_MECHANISM_SCRAM_SHA_256 = 1,
+  SASL_MECHANISM_SCRAM_SHA_512 = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function saslMechanismFromJSON(object: any): SaslMechanism {
+  switch (object) {
+    case 0:
+    case "SASL_MECHANISM_UNSPECIFIED":
+      return SaslMechanism.SASL_MECHANISM_UNSPECIFIED;
+    case 1:
+    case "SASL_MECHANISM_SCRAM_SHA_256":
+      return SaslMechanism.SASL_MECHANISM_SCRAM_SHA_256;
+    case 2:
+    case "SASL_MECHANISM_SCRAM_SHA_512":
+      return SaslMechanism.SASL_MECHANISM_SCRAM_SHA_512;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SaslMechanism.UNRECOGNIZED;
+  }
+}
+
+export function saslMechanismToJSON(object: SaslMechanism): string {
+  switch (object) {
+    case SaslMechanism.SASL_MECHANISM_UNSPECIFIED:
+      return "SASL_MECHANISM_UNSPECIFIED";
+    case SaslMechanism.SASL_MECHANISM_SCRAM_SHA_256:
+      return "SASL_MECHANISM_SCRAM_SHA_256";
+    case SaslMechanism.SASL_MECHANISM_SCRAM_SHA_512:
+      return "SASL_MECHANISM_SCRAM_SHA_512";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 if (_m0.util.Long !== Long) {
   _m0.util.Long = Long as any;
   _m0.configure();

@@ -5,6 +5,56 @@ import _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "yandex.cloud.oauth";
 
+export enum SubjectType {
+  SUBJECT_TYPE_UNSPECIFIED = 0,
+  USER_ACCOUNT = 1,
+  SERVICE_ACCOUNT = 2,
+  GROUP = 3,
+  INVITEE = 4,
+  UNRECOGNIZED = -1,
+}
+
+export function subjectTypeFromJSON(object: any): SubjectType {
+  switch (object) {
+    case 0:
+    case "SUBJECT_TYPE_UNSPECIFIED":
+      return SubjectType.SUBJECT_TYPE_UNSPECIFIED;
+    case 1:
+    case "USER_ACCOUNT":
+      return SubjectType.USER_ACCOUNT;
+    case 2:
+    case "SERVICE_ACCOUNT":
+      return SubjectType.SERVICE_ACCOUNT;
+    case 3:
+    case "GROUP":
+      return SubjectType.GROUP;
+    case 4:
+    case "INVITEE":
+      return SubjectType.INVITEE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SubjectType.UNRECOGNIZED;
+  }
+}
+
+export function subjectTypeToJSON(object: SubjectType): string {
+  switch (object) {
+    case SubjectType.SUBJECT_TYPE_UNSPECIFIED:
+      return "SUBJECT_TYPE_UNSPECIFIED";
+    case SubjectType.USER_ACCOUNT:
+      return "USER_ACCOUNT";
+    case SubjectType.SERVICE_ACCOUNT:
+      return "SERVICE_ACCOUNT";
+    case SubjectType.GROUP:
+      return "GROUP";
+    case SubjectType.INVITEE:
+      return "INVITEE";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 /** Claims representation, see https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims for details. */
 export interface SubjectClaims {
   $type: "yandex.cloud.oauth.SubjectClaims";
@@ -43,6 +93,8 @@ export interface SubjectClaims {
    * If the phone number contains an extension, it is RECOMMENDED that the extension be represented using the RFC 3966 [RFC3966] extension syntax, for example, +1 (604) 555-1234;ext=5678.
    */
   phoneNumber: string;
+  /** Subject type. */
+  subType: SubjectType;
   /** User federation, non-empty only for federated users. */
   federation?: Federation;
 }
@@ -68,6 +120,7 @@ const baseSubjectClaims: object = {
   zoneinfo: "",
   locale: "",
   phoneNumber: "",
+  subType: 0,
 };
 
 export const SubjectClaims = {
@@ -106,6 +159,9 @@ export const SubjectClaims = {
     }
     if (message.phoneNumber !== "") {
       writer.uint32(138).string(message.phoneNumber);
+    }
+    if (message.subType !== 0) {
+      writer.uint32(792).int32(message.subType);
     }
     if (message.federation !== undefined) {
       Federation.encode(message.federation, writer.uint32(802).fork()).ldelim();
@@ -149,6 +205,9 @@ export const SubjectClaims = {
           break;
         case 17:
           message.phoneNumber = reader.string();
+          break;
+        case 99:
+          message.subType = reader.int32() as any;
           break;
         case 100:
           message.federation = Federation.decode(reader, reader.uint32());
@@ -202,6 +261,10 @@ export const SubjectClaims = {
       object.phoneNumber !== undefined && object.phoneNumber !== null
         ? String(object.phoneNumber)
         : "";
+    message.subType =
+      object.subType !== undefined && object.subType !== null
+        ? subjectTypeFromJSON(object.subType)
+        : 0;
     message.federation =
       object.federation !== undefined && object.federation !== null
         ? Federation.fromJSON(object.federation)
@@ -223,6 +286,8 @@ export const SubjectClaims = {
     message.locale !== undefined && (obj.locale = message.locale);
     message.phoneNumber !== undefined &&
       (obj.phoneNumber = message.phoneNumber);
+    message.subType !== undefined &&
+      (obj.subType = subjectTypeToJSON(message.subType));
     message.federation !== undefined &&
       (obj.federation = message.federation
         ? Federation.toJSON(message.federation)
@@ -244,6 +309,7 @@ export const SubjectClaims = {
     message.zoneinfo = object.zoneinfo ?? "";
     message.locale = object.locale ?? "";
     message.phoneNumber = object.phoneNumber ?? "";
+    message.subType = object.subType ?? 0;
     message.federation =
       object.federation !== undefined && object.federation !== null
         ? Federation.fromPartial(object.federation)

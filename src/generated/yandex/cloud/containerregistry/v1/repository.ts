@@ -5,7 +5,7 @@ import _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "yandex.cloud.containerregistry.v1";
 
-/** A Repository resource. For more information, see [Repository](/docs/cloud/container-registry/repository). */
+/** A Repository resource. For more information, see [Repository](/docs/container-registry/concepts/repository). */
 export interface Repository {
   $type: "yandex.cloud.containerregistry.v1.Repository";
   /**

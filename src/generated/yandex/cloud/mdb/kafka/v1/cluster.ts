@@ -8,8 +8,11 @@ import {
 } from "../../../../../yandex/cloud/mdb/kafka/v1/maintenance";
 import {
   CompressionType,
+  SaslMechanism,
   compressionTypeFromJSON,
+  saslMechanismFromJSON,
   compressionTypeToJSON,
+  saslMechanismToJSON,
 } from "../../../../../yandex/cloud/mdb/kafka/v1/common";
 import { Timestamp } from "../../../../../google/protobuf/timestamp";
 import { Int64Value, BoolValue } from "../../../../../google/protobuf/wrappers";
@@ -271,14 +274,14 @@ export interface ConfigSpec {
   schemaRegistry: boolean;
   /** Access policy for external services. */
   access?: Access;
+  /** Configuration of REST API. */
+  restApiConfig?: ConfigSpec_RestAPIConfig;
 }
 
 export interface ConfigSpec_Kafka {
   $type: "yandex.cloud.mdb.kafka.v1.ConfigSpec.Kafka";
   /** Resources allocated to Kafka brokers. */
   resources?: Resources;
-  kafkaConfig21?: Kafkaconfig21 | undefined;
-  kafkaConfig26?: Kafkaconfig26 | undefined;
   kafkaConfig28?: Kafkaconfig28 | undefined;
   kafkaConfig3?: KafkaConfig3 | undefined;
 }
@@ -287,6 +290,12 @@ export interface ConfigSpec_Zookeeper {
   $type: "yandex.cloud.mdb.kafka.v1.ConfigSpec.Zookeeper";
   /** Resources allocated to ZooKeeper hosts. */
   resources?: Resources;
+}
+
+export interface ConfigSpec_RestAPIConfig {
+  $type: "yandex.cloud.mdb.kafka.v1.ConfigSpec.RestAPIConfig";
+  /** Is REST API enabled for this cluster. */
+  enabled: boolean;
 }
 
 export interface Resources {
@@ -300,162 +309,6 @@ export interface Resources {
   diskSize: number;
   /** Type of the storage environment for the host. */
   diskTypeId: string;
-}
-
-/** Kafka version 2.1 broker configuration. */
-export interface Kafkaconfig21 {
-  $type: "yandex.cloud.mdb.kafka.v1.KafkaConfig2_1";
-  /** Cluster topics compression type. */
-  compressionType: CompressionType;
-  /**
-   * The number of messages accumulated on a log partition before messages are flushed to disk.
-   *
-   * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig2_1.flush_messages] setting.
-   */
-  logFlushIntervalMessages?: number;
-  /**
-   * The maximum time (in milliseconds) that a message in any topic is kept in memory before flushed to disk.
-   * If not set, the value of [log_flush_scheduler_interval_ms] is used.
-   *
-   * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig2_1.flush_ms] setting.
-   */
-  logFlushIntervalMs?: number;
-  /**
-   * The frequency of checks (in milliseconds) for any logs that need to be flushed to disk.
-   * This check is done by the log flusher.
-   */
-  logFlushSchedulerIntervalMs?: number;
-  /**
-   * Partition size limit; Kafka will discard old log segments to free up space if `delete` [TopicConfig2_1.cleanup_policy] is in effect.
-   * This setting is helpful if you need to control the size of a log due to limited disk space.
-   *
-   * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig2_1.retention_bytes] setting.
-   */
-  logRetentionBytes?: number;
-  /** The number of hours to keep a log segment file before deleting it. */
-  logRetentionHours?: number;
-  /**
-   * The number of minutes to keep a log segment file before deleting it.
-   *
-   * If not set, the value of [log_retention_hours] is used.
-   */
-  logRetentionMinutes?: number;
-  /**
-   * The number of milliseconds to keep a log segment file before deleting it.
-   *
-   * If not set, the value of [log_retention_minutes] is used.
-   *
-   * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig2_1.retention_ms] setting.
-   */
-  logRetentionMs?: number;
-  /**
-   * The maximum size of a single log file.
-   *
-   * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig2_1.segment_bytes] setting.
-   */
-  logSegmentBytes?: number;
-  /**
-   * Should pre allocate file when create new segment?
-   *
-   * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig2_1.preallocate] setting.
-   */
-  logPreallocate?: boolean;
-  /** The SO_SNDBUF buffer of the socket server sockets. If the value is -1, the OS default will be used. */
-  socketSendBufferBytes?: number;
-  /** The SO_RCVBUF buffer of the socket server sockets. If the value is -1, the OS default will be used. */
-  socketReceiveBufferBytes?: number;
-  /** Enable auto creation of topic on the server */
-  autoCreateTopicsEnable?: boolean;
-  /** Default number of partitions per topic on the whole cluster */
-  numPartitions?: number;
-  /** Default replication factor of the topic on the whole cluster */
-  defaultReplicationFactor?: number;
-  /** The largest record batch size allowed by Kafka. Default value: 1048588. */
-  messageMaxBytes?: number;
-  /** The number of bytes of messages to attempt to fetch for each partition. Default value: 1048576. */
-  replicaFetchMaxBytes?: number;
-  /** A list of cipher suites. */
-  sslCipherSuites: string[];
-  /** Offset storage time after a consumer group loses all its consumers. Default: 10080. */
-  offsetsRetentionMinutes?: number;
-}
-
-/** Kafka version 2.6 broker configuration. */
-export interface Kafkaconfig26 {
-  $type: "yandex.cloud.mdb.kafka.v1.KafkaConfig2_6";
-  /** Cluster topics compression type. */
-  compressionType: CompressionType;
-  /**
-   * The number of messages accumulated on a log partition before messages are flushed to disk.
-   *
-   * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig2_6.flush_messages] setting.
-   */
-  logFlushIntervalMessages?: number;
-  /**
-   * The maximum time (in milliseconds) that a message in any topic is kept in memory before flushed to disk.
-   * If not set, the value of [log_flush_scheduler_interval_ms] is used.
-   *
-   * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig2_6.flush_ms] setting.
-   */
-  logFlushIntervalMs?: number;
-  /**
-   * The frequency of checks (in milliseconds) for any logs that need to be flushed to disk.
-   * This check is done by the log flusher.
-   */
-  logFlushSchedulerIntervalMs?: number;
-  /**
-   * Partition size limit; Kafka will discard old log segments to free up space if `delete` [TopicConfig2_6.cleanup_policy] is in effect.
-   * This setting is helpful if you need to control the size of a log due to limited disk space.
-   *
-   * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig2_6.retention_bytes] setting.
-   */
-  logRetentionBytes?: number;
-  /** The number of hours to keep a log segment file before deleting it. */
-  logRetentionHours?: number;
-  /**
-   * The number of minutes to keep a log segment file before deleting it.
-   *
-   * If not set, the value of [log_retention_hours] is used.
-   */
-  logRetentionMinutes?: number;
-  /**
-   * The number of milliseconds to keep a log segment file before deleting it.
-   *
-   * If not set, the value of [log_retention_minutes] is used.
-   *
-   * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig2_6.retention_ms] setting.
-   */
-  logRetentionMs?: number;
-  /**
-   * The maximum size of a single log file.
-   *
-   * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig2_6.segment_bytes] setting.
-   */
-  logSegmentBytes?: number;
-  /**
-   * Should pre allocate file when create new segment?
-   *
-   * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig2_6.preallocate] setting.
-   */
-  logPreallocate?: boolean;
-  /** The SO_SNDBUF buffer of the socket server sockets. If the value is -1, the OS default will be used. */
-  socketSendBufferBytes?: number;
-  /** The SO_RCVBUF buffer of the socket server sockets. If the value is -1, the OS default will be used. */
-  socketReceiveBufferBytes?: number;
-  /** Enable auto creation of topic on the server */
-  autoCreateTopicsEnable?: boolean;
-  /** Default number of partitions per topic on the whole cluster */
-  numPartitions?: number;
-  /** Default replication factor of the topic on the whole cluster */
-  defaultReplicationFactor?: number;
-  /** The largest record batch size allowed by Kafka. Default value: 1048588. */
-  messageMaxBytes?: number;
-  /** The number of bytes of messages to attempt to fetch for each partition. Default value: 1048576. */
-  replicaFetchMaxBytes?: number;
-  /** A list of cipher suites. */
-  sslCipherSuites: string[];
-  /** Offset storage time after a consumer group loses all its consumers. Default: 10080. */
-  offsetsRetentionMinutes?: number;
 }
 
 /** Kafka version 2.8 broker configuration. */
@@ -534,6 +387,8 @@ export interface Kafkaconfig28 {
   sslCipherSuites: string[];
   /** Offset storage time after a consumer group loses all its consumers. Default: 10080. */
   offsetsRetentionMinutes?: number;
+  /** The list of SASL mechanisms enabled in the Kafka server. Default: [SCRAM_SHA_512]. */
+  saslEnabledMechanisms: SaslMechanism[];
 }
 
 /** Kafka version 3.x broker configuration. */
@@ -612,6 +467,8 @@ export interface KafkaConfig3 {
   sslCipherSuites: string[];
   /** Offset storage time after a consumer group loses all its consumers. Default: 10080. */
   offsetsRetentionMinutes?: number;
+  /** The list of SASL mechanisms enabled in the Kafka server. Default: [SCRAM_SHA_512]. */
+  saslEnabledMechanisms: SaslMechanism[];
 }
 
 /** Cluster host metadata. */
@@ -1288,6 +1145,12 @@ export const ConfigSpec = {
     if (message.access !== undefined) {
       Access.encode(message.access, writer.uint32(74).fork()).ldelim();
     }
+    if (message.restApiConfig !== undefined) {
+      ConfigSpec_RestAPIConfig.encode(
+        message.restApiConfig,
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1332,6 +1195,12 @@ export const ConfigSpec = {
         case 9:
           message.access = Access.decode(reader, reader.uint32());
           break;
+        case 10:
+          message.restApiConfig = ConfigSpec_RestAPIConfig.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1375,6 +1244,10 @@ export const ConfigSpec = {
       object.access !== undefined && object.access !== null
         ? Access.fromJSON(object.access)
         : undefined;
+    message.restApiConfig =
+      object.restApiConfig !== undefined && object.restApiConfig !== null
+        ? ConfigSpec_RestAPIConfig.fromJSON(object.restApiConfig)
+        : undefined;
     return message;
   },
 
@@ -1404,6 +1277,10 @@ export const ConfigSpec = {
       (obj.schemaRegistry = message.schemaRegistry);
     message.access !== undefined &&
       (obj.access = message.access ? Access.toJSON(message.access) : undefined);
+    message.restApiConfig !== undefined &&
+      (obj.restApiConfig = message.restApiConfig
+        ? ConfigSpec_RestAPIConfig.toJSON(message.restApiConfig)
+        : undefined);
     return obj;
   },
 
@@ -1429,6 +1306,10 @@ export const ConfigSpec = {
       object.access !== undefined && object.access !== null
         ? Access.fromPartial(object.access)
         : undefined;
+    message.restApiConfig =
+      object.restApiConfig !== undefined && object.restApiConfig !== null
+        ? ConfigSpec_RestAPIConfig.fromPartial(object.restApiConfig)
+        : undefined;
     return message;
   },
 };
@@ -1448,18 +1329,6 @@ export const ConfigSpec_Kafka = {
   ): _m0.Writer {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(10).fork()).ldelim();
-    }
-    if (message.kafkaConfig21 !== undefined) {
-      Kafkaconfig21.encode(
-        message.kafkaConfig21,
-        writer.uint32(18).fork()
-      ).ldelim();
-    }
-    if (message.kafkaConfig26 !== undefined) {
-      Kafkaconfig26.encode(
-        message.kafkaConfig26,
-        writer.uint32(26).fork()
-      ).ldelim();
     }
     if (message.kafkaConfig28 !== undefined) {
       Kafkaconfig28.encode(
@@ -1486,12 +1355,6 @@ export const ConfigSpec_Kafka = {
         case 1:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
-        case 2:
-          message.kafkaConfig21 = Kafkaconfig21.decode(reader, reader.uint32());
-          break;
-        case 3:
-          message.kafkaConfig26 = Kafkaconfig26.decode(reader, reader.uint32());
-          break;
         case 4:
           message.kafkaConfig28 = Kafkaconfig28.decode(reader, reader.uint32());
           break;
@@ -1512,14 +1375,6 @@ export const ConfigSpec_Kafka = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
-    message.kafkaConfig21 =
-      object.kafkaConfig_2_1 !== undefined && object.kafkaConfig_2_1 !== null
-        ? Kafkaconfig21.fromJSON(object.kafkaConfig_2_1)
-        : undefined;
-    message.kafkaConfig26 =
-      object.kafkaConfig_2_6 !== undefined && object.kafkaConfig_2_6 !== null
-        ? Kafkaconfig26.fromJSON(object.kafkaConfig_2_6)
-        : undefined;
     message.kafkaConfig28 =
       object.kafkaConfig_2_8 !== undefined && object.kafkaConfig_2_8 !== null
         ? Kafkaconfig28.fromJSON(object.kafkaConfig_2_8)
@@ -1536,14 +1391,6 @@ export const ConfigSpec_Kafka = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
-        : undefined);
-    message.kafkaConfig21 !== undefined &&
-      (obj.kafkaConfig_2_1 = message.kafkaConfig21
-        ? Kafkaconfig21.toJSON(message.kafkaConfig21)
-        : undefined);
-    message.kafkaConfig26 !== undefined &&
-      (obj.kafkaConfig_2_6 = message.kafkaConfig26
-        ? Kafkaconfig26.toJSON(message.kafkaConfig26)
         : undefined);
     message.kafkaConfig28 !== undefined &&
       (obj.kafkaConfig_2_8 = message.kafkaConfig28
@@ -1563,14 +1410,6 @@ export const ConfigSpec_Kafka = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
-        : undefined;
-    message.kafkaConfig21 =
-      object.kafkaConfig21 !== undefined && object.kafkaConfig21 !== null
-        ? Kafkaconfig21.fromPartial(object.kafkaConfig21)
-        : undefined;
-    message.kafkaConfig26 =
-      object.kafkaConfig26 !== undefined && object.kafkaConfig26 !== null
-        ? Kafkaconfig26.fromPartial(object.kafkaConfig26)
         : undefined;
     message.kafkaConfig28 =
       object.kafkaConfig28 !== undefined && object.kafkaConfig28 !== null
@@ -1655,6 +1494,80 @@ export const ConfigSpec_Zookeeper = {
 };
 
 messageTypeRegistry.set(ConfigSpec_Zookeeper.$type, ConfigSpec_Zookeeper);
+
+const baseConfigSpec_RestAPIConfig: object = {
+  $type: "yandex.cloud.mdb.kafka.v1.ConfigSpec.RestAPIConfig",
+  enabled: false,
+};
+
+export const ConfigSpec_RestAPIConfig = {
+  $type: "yandex.cloud.mdb.kafka.v1.ConfigSpec.RestAPIConfig" as const,
+
+  encode(
+    message: ConfigSpec_RestAPIConfig,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.enabled === true) {
+      writer.uint32(8).bool(message.enabled);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ConfigSpec_RestAPIConfig {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseConfigSpec_RestAPIConfig,
+    } as ConfigSpec_RestAPIConfig;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.enabled = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ConfigSpec_RestAPIConfig {
+    const message = {
+      ...baseConfigSpec_RestAPIConfig,
+    } as ConfigSpec_RestAPIConfig;
+    message.enabled =
+      object.enabled !== undefined && object.enabled !== null
+        ? Boolean(object.enabled)
+        : false;
+    return message;
+  },
+
+  toJSON(message: ConfigSpec_RestAPIConfig): unknown {
+    const obj: any = {};
+    message.enabled !== undefined && (obj.enabled = message.enabled);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ConfigSpec_RestAPIConfig>, I>>(
+    object: I
+  ): ConfigSpec_RestAPIConfig {
+    const message = {
+      ...baseConfigSpec_RestAPIConfig,
+    } as ConfigSpec_RestAPIConfig;
+    message.enabled = object.enabled ?? false;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ConfigSpec_RestAPIConfig.$type,
+  ConfigSpec_RestAPIConfig
+);
 
 const baseResources: object = {
   $type: "yandex.cloud.mdb.kafka.v1.Resources",
@@ -1746,934 +1659,11 @@ export const Resources = {
 
 messageTypeRegistry.set(Resources.$type, Resources);
 
-const baseKafkaconfig21: object = {
-  $type: "yandex.cloud.mdb.kafka.v1.KafkaConfig2_1",
-  compressionType: 0,
-  sslCipherSuites: "",
-};
-
-export const Kafkaconfig21 = {
-  $type: "yandex.cloud.mdb.kafka.v1.KafkaConfig2_1" as const,
-
-  encode(
-    message: Kafkaconfig21,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.compressionType !== 0) {
-      writer.uint32(8).int32(message.compressionType);
-    }
-    if (message.logFlushIntervalMessages !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.logFlushIntervalMessages!,
-        },
-        writer.uint32(18).fork()
-      ).ldelim();
-    }
-    if (message.logFlushIntervalMs !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.logFlushIntervalMs!,
-        },
-        writer.uint32(26).fork()
-      ).ldelim();
-    }
-    if (message.logFlushSchedulerIntervalMs !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.logFlushSchedulerIntervalMs!,
-        },
-        writer.uint32(34).fork()
-      ).ldelim();
-    }
-    if (message.logRetentionBytes !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.logRetentionBytes!,
-        },
-        writer.uint32(42).fork()
-      ).ldelim();
-    }
-    if (message.logRetentionHours !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.logRetentionHours!,
-        },
-        writer.uint32(50).fork()
-      ).ldelim();
-    }
-    if (message.logRetentionMinutes !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.logRetentionMinutes!,
-        },
-        writer.uint32(58).fork()
-      ).ldelim();
-    }
-    if (message.logRetentionMs !== undefined) {
-      Int64Value.encode(
-        { $type: "google.protobuf.Int64Value", value: message.logRetentionMs! },
-        writer.uint32(66).fork()
-      ).ldelim();
-    }
-    if (message.logSegmentBytes !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.logSegmentBytes!,
-        },
-        writer.uint32(74).fork()
-      ).ldelim();
-    }
-    if (message.logPreallocate !== undefined) {
-      BoolValue.encode(
-        { $type: "google.protobuf.BoolValue", value: message.logPreallocate! },
-        writer.uint32(82).fork()
-      ).ldelim();
-    }
-    if (message.socketSendBufferBytes !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.socketSendBufferBytes!,
-        },
-        writer.uint32(90).fork()
-      ).ldelim();
-    }
-    if (message.socketReceiveBufferBytes !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.socketReceiveBufferBytes!,
-        },
-        writer.uint32(98).fork()
-      ).ldelim();
-    }
-    if (message.autoCreateTopicsEnable !== undefined) {
-      BoolValue.encode(
-        {
-          $type: "google.protobuf.BoolValue",
-          value: message.autoCreateTopicsEnable!,
-        },
-        writer.uint32(106).fork()
-      ).ldelim();
-    }
-    if (message.numPartitions !== undefined) {
-      Int64Value.encode(
-        { $type: "google.protobuf.Int64Value", value: message.numPartitions! },
-        writer.uint32(114).fork()
-      ).ldelim();
-    }
-    if (message.defaultReplicationFactor !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.defaultReplicationFactor!,
-        },
-        writer.uint32(122).fork()
-      ).ldelim();
-    }
-    if (message.messageMaxBytes !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.messageMaxBytes!,
-        },
-        writer.uint32(130).fork()
-      ).ldelim();
-    }
-    if (message.replicaFetchMaxBytes !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.replicaFetchMaxBytes!,
-        },
-        writer.uint32(138).fork()
-      ).ldelim();
-    }
-    for (const v of message.sslCipherSuites) {
-      writer.uint32(146).string(v!);
-    }
-    if (message.offsetsRetentionMinutes !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.offsetsRetentionMinutes!,
-        },
-        writer.uint32(154).fork()
-      ).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): Kafkaconfig21 {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseKafkaconfig21 } as Kafkaconfig21;
-    message.sslCipherSuites = [];
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.compressionType = reader.int32() as any;
-          break;
-        case 2:
-          message.logFlushIntervalMessages = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 3:
-          message.logFlushIntervalMs = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 4:
-          message.logFlushSchedulerIntervalMs = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 5:
-          message.logRetentionBytes = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 6:
-          message.logRetentionHours = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 7:
-          message.logRetentionMinutes = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 8:
-          message.logRetentionMs = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 9:
-          message.logSegmentBytes = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 10:
-          message.logPreallocate = BoolValue.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 11:
-          message.socketSendBufferBytes = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 12:
-          message.socketReceiveBufferBytes = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 13:
-          message.autoCreateTopicsEnable = BoolValue.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 14:
-          message.numPartitions = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 15:
-          message.defaultReplicationFactor = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 16:
-          message.messageMaxBytes = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 17:
-          message.replicaFetchMaxBytes = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 18:
-          message.sslCipherSuites.push(reader.string());
-          break;
-        case 19:
-          message.offsetsRetentionMinutes = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): Kafkaconfig21 {
-    const message = { ...baseKafkaconfig21 } as Kafkaconfig21;
-    message.compressionType =
-      object.compressionType !== undefined && object.compressionType !== null
-        ? compressionTypeFromJSON(object.compressionType)
-        : 0;
-    message.logFlushIntervalMessages =
-      object.logFlushIntervalMessages !== undefined &&
-      object.logFlushIntervalMessages !== null
-        ? Number(object.logFlushIntervalMessages)
-        : undefined;
-    message.logFlushIntervalMs =
-      object.logFlushIntervalMs !== undefined &&
-      object.logFlushIntervalMs !== null
-        ? Number(object.logFlushIntervalMs)
-        : undefined;
-    message.logFlushSchedulerIntervalMs =
-      object.logFlushSchedulerIntervalMs !== undefined &&
-      object.logFlushSchedulerIntervalMs !== null
-        ? Number(object.logFlushSchedulerIntervalMs)
-        : undefined;
-    message.logRetentionBytes =
-      object.logRetentionBytes !== undefined &&
-      object.logRetentionBytes !== null
-        ? Number(object.logRetentionBytes)
-        : undefined;
-    message.logRetentionHours =
-      object.logRetentionHours !== undefined &&
-      object.logRetentionHours !== null
-        ? Number(object.logRetentionHours)
-        : undefined;
-    message.logRetentionMinutes =
-      object.logRetentionMinutes !== undefined &&
-      object.logRetentionMinutes !== null
-        ? Number(object.logRetentionMinutes)
-        : undefined;
-    message.logRetentionMs =
-      object.logRetentionMs !== undefined && object.logRetentionMs !== null
-        ? Number(object.logRetentionMs)
-        : undefined;
-    message.logSegmentBytes =
-      object.logSegmentBytes !== undefined && object.logSegmentBytes !== null
-        ? Number(object.logSegmentBytes)
-        : undefined;
-    message.logPreallocate =
-      object.logPreallocate !== undefined && object.logPreallocate !== null
-        ? Boolean(object.logPreallocate)
-        : undefined;
-    message.socketSendBufferBytes =
-      object.socketSendBufferBytes !== undefined &&
-      object.socketSendBufferBytes !== null
-        ? Number(object.socketSendBufferBytes)
-        : undefined;
-    message.socketReceiveBufferBytes =
-      object.socketReceiveBufferBytes !== undefined &&
-      object.socketReceiveBufferBytes !== null
-        ? Number(object.socketReceiveBufferBytes)
-        : undefined;
-    message.autoCreateTopicsEnable =
-      object.autoCreateTopicsEnable !== undefined &&
-      object.autoCreateTopicsEnable !== null
-        ? Boolean(object.autoCreateTopicsEnable)
-        : undefined;
-    message.numPartitions =
-      object.numPartitions !== undefined && object.numPartitions !== null
-        ? Number(object.numPartitions)
-        : undefined;
-    message.defaultReplicationFactor =
-      object.defaultReplicationFactor !== undefined &&
-      object.defaultReplicationFactor !== null
-        ? Number(object.defaultReplicationFactor)
-        : undefined;
-    message.messageMaxBytes =
-      object.messageMaxBytes !== undefined && object.messageMaxBytes !== null
-        ? Number(object.messageMaxBytes)
-        : undefined;
-    message.replicaFetchMaxBytes =
-      object.replicaFetchMaxBytes !== undefined &&
-      object.replicaFetchMaxBytes !== null
-        ? Number(object.replicaFetchMaxBytes)
-        : undefined;
-    message.sslCipherSuites = (object.sslCipherSuites ?? []).map((e: any) =>
-      String(e)
-    );
-    message.offsetsRetentionMinutes =
-      object.offsetsRetentionMinutes !== undefined &&
-      object.offsetsRetentionMinutes !== null
-        ? Number(object.offsetsRetentionMinutes)
-        : undefined;
-    return message;
-  },
-
-  toJSON(message: Kafkaconfig21): unknown {
-    const obj: any = {};
-    message.compressionType !== undefined &&
-      (obj.compressionType = compressionTypeToJSON(message.compressionType));
-    message.logFlushIntervalMessages !== undefined &&
-      (obj.logFlushIntervalMessages = message.logFlushIntervalMessages);
-    message.logFlushIntervalMs !== undefined &&
-      (obj.logFlushIntervalMs = message.logFlushIntervalMs);
-    message.logFlushSchedulerIntervalMs !== undefined &&
-      (obj.logFlushSchedulerIntervalMs = message.logFlushSchedulerIntervalMs);
-    message.logRetentionBytes !== undefined &&
-      (obj.logRetentionBytes = message.logRetentionBytes);
-    message.logRetentionHours !== undefined &&
-      (obj.logRetentionHours = message.logRetentionHours);
-    message.logRetentionMinutes !== undefined &&
-      (obj.logRetentionMinutes = message.logRetentionMinutes);
-    message.logRetentionMs !== undefined &&
-      (obj.logRetentionMs = message.logRetentionMs);
-    message.logSegmentBytes !== undefined &&
-      (obj.logSegmentBytes = message.logSegmentBytes);
-    message.logPreallocate !== undefined &&
-      (obj.logPreallocate = message.logPreallocate);
-    message.socketSendBufferBytes !== undefined &&
-      (obj.socketSendBufferBytes = message.socketSendBufferBytes);
-    message.socketReceiveBufferBytes !== undefined &&
-      (obj.socketReceiveBufferBytes = message.socketReceiveBufferBytes);
-    message.autoCreateTopicsEnable !== undefined &&
-      (obj.autoCreateTopicsEnable = message.autoCreateTopicsEnable);
-    message.numPartitions !== undefined &&
-      (obj.numPartitions = message.numPartitions);
-    message.defaultReplicationFactor !== undefined &&
-      (obj.defaultReplicationFactor = message.defaultReplicationFactor);
-    message.messageMaxBytes !== undefined &&
-      (obj.messageMaxBytes = message.messageMaxBytes);
-    message.replicaFetchMaxBytes !== undefined &&
-      (obj.replicaFetchMaxBytes = message.replicaFetchMaxBytes);
-    if (message.sslCipherSuites) {
-      obj.sslCipherSuites = message.sslCipherSuites.map((e) => e);
-    } else {
-      obj.sslCipherSuites = [];
-    }
-    message.offsetsRetentionMinutes !== undefined &&
-      (obj.offsetsRetentionMinutes = message.offsetsRetentionMinutes);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<Kafkaconfig21>, I>>(
-    object: I
-  ): Kafkaconfig21 {
-    const message = { ...baseKafkaconfig21 } as Kafkaconfig21;
-    message.compressionType = object.compressionType ?? 0;
-    message.logFlushIntervalMessages =
-      object.logFlushIntervalMessages ?? undefined;
-    message.logFlushIntervalMs = object.logFlushIntervalMs ?? undefined;
-    message.logFlushSchedulerIntervalMs =
-      object.logFlushSchedulerIntervalMs ?? undefined;
-    message.logRetentionBytes = object.logRetentionBytes ?? undefined;
-    message.logRetentionHours = object.logRetentionHours ?? undefined;
-    message.logRetentionMinutes = object.logRetentionMinutes ?? undefined;
-    message.logRetentionMs = object.logRetentionMs ?? undefined;
-    message.logSegmentBytes = object.logSegmentBytes ?? undefined;
-    message.logPreallocate = object.logPreallocate ?? undefined;
-    message.socketSendBufferBytes = object.socketSendBufferBytes ?? undefined;
-    message.socketReceiveBufferBytes =
-      object.socketReceiveBufferBytes ?? undefined;
-    message.autoCreateTopicsEnable = object.autoCreateTopicsEnable ?? undefined;
-    message.numPartitions = object.numPartitions ?? undefined;
-    message.defaultReplicationFactor =
-      object.defaultReplicationFactor ?? undefined;
-    message.messageMaxBytes = object.messageMaxBytes ?? undefined;
-    message.replicaFetchMaxBytes = object.replicaFetchMaxBytes ?? undefined;
-    message.sslCipherSuites = object.sslCipherSuites?.map((e) => e) || [];
-    message.offsetsRetentionMinutes =
-      object.offsetsRetentionMinutes ?? undefined;
-    return message;
-  },
-};
-
-messageTypeRegistry.set(Kafkaconfig21.$type, Kafkaconfig21);
-
-const baseKafkaconfig26: object = {
-  $type: "yandex.cloud.mdb.kafka.v1.KafkaConfig2_6",
-  compressionType: 0,
-  sslCipherSuites: "",
-};
-
-export const Kafkaconfig26 = {
-  $type: "yandex.cloud.mdb.kafka.v1.KafkaConfig2_6" as const,
-
-  encode(
-    message: Kafkaconfig26,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.compressionType !== 0) {
-      writer.uint32(8).int32(message.compressionType);
-    }
-    if (message.logFlushIntervalMessages !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.logFlushIntervalMessages!,
-        },
-        writer.uint32(18).fork()
-      ).ldelim();
-    }
-    if (message.logFlushIntervalMs !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.logFlushIntervalMs!,
-        },
-        writer.uint32(26).fork()
-      ).ldelim();
-    }
-    if (message.logFlushSchedulerIntervalMs !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.logFlushSchedulerIntervalMs!,
-        },
-        writer.uint32(34).fork()
-      ).ldelim();
-    }
-    if (message.logRetentionBytes !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.logRetentionBytes!,
-        },
-        writer.uint32(42).fork()
-      ).ldelim();
-    }
-    if (message.logRetentionHours !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.logRetentionHours!,
-        },
-        writer.uint32(50).fork()
-      ).ldelim();
-    }
-    if (message.logRetentionMinutes !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.logRetentionMinutes!,
-        },
-        writer.uint32(58).fork()
-      ).ldelim();
-    }
-    if (message.logRetentionMs !== undefined) {
-      Int64Value.encode(
-        { $type: "google.protobuf.Int64Value", value: message.logRetentionMs! },
-        writer.uint32(66).fork()
-      ).ldelim();
-    }
-    if (message.logSegmentBytes !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.logSegmentBytes!,
-        },
-        writer.uint32(74).fork()
-      ).ldelim();
-    }
-    if (message.logPreallocate !== undefined) {
-      BoolValue.encode(
-        { $type: "google.protobuf.BoolValue", value: message.logPreallocate! },
-        writer.uint32(82).fork()
-      ).ldelim();
-    }
-    if (message.socketSendBufferBytes !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.socketSendBufferBytes!,
-        },
-        writer.uint32(90).fork()
-      ).ldelim();
-    }
-    if (message.socketReceiveBufferBytes !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.socketReceiveBufferBytes!,
-        },
-        writer.uint32(98).fork()
-      ).ldelim();
-    }
-    if (message.autoCreateTopicsEnable !== undefined) {
-      BoolValue.encode(
-        {
-          $type: "google.protobuf.BoolValue",
-          value: message.autoCreateTopicsEnable!,
-        },
-        writer.uint32(106).fork()
-      ).ldelim();
-    }
-    if (message.numPartitions !== undefined) {
-      Int64Value.encode(
-        { $type: "google.protobuf.Int64Value", value: message.numPartitions! },
-        writer.uint32(114).fork()
-      ).ldelim();
-    }
-    if (message.defaultReplicationFactor !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.defaultReplicationFactor!,
-        },
-        writer.uint32(122).fork()
-      ).ldelim();
-    }
-    if (message.messageMaxBytes !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.messageMaxBytes!,
-        },
-        writer.uint32(130).fork()
-      ).ldelim();
-    }
-    if (message.replicaFetchMaxBytes !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.replicaFetchMaxBytes!,
-        },
-        writer.uint32(138).fork()
-      ).ldelim();
-    }
-    for (const v of message.sslCipherSuites) {
-      writer.uint32(146).string(v!);
-    }
-    if (message.offsetsRetentionMinutes !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.offsetsRetentionMinutes!,
-        },
-        writer.uint32(154).fork()
-      ).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): Kafkaconfig26 {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseKafkaconfig26 } as Kafkaconfig26;
-    message.sslCipherSuites = [];
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.compressionType = reader.int32() as any;
-          break;
-        case 2:
-          message.logFlushIntervalMessages = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 3:
-          message.logFlushIntervalMs = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 4:
-          message.logFlushSchedulerIntervalMs = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 5:
-          message.logRetentionBytes = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 6:
-          message.logRetentionHours = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 7:
-          message.logRetentionMinutes = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 8:
-          message.logRetentionMs = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 9:
-          message.logSegmentBytes = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 10:
-          message.logPreallocate = BoolValue.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 11:
-          message.socketSendBufferBytes = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 12:
-          message.socketReceiveBufferBytes = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 13:
-          message.autoCreateTopicsEnable = BoolValue.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 14:
-          message.numPartitions = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 15:
-          message.defaultReplicationFactor = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 16:
-          message.messageMaxBytes = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 17:
-          message.replicaFetchMaxBytes = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 18:
-          message.sslCipherSuites.push(reader.string());
-          break;
-        case 19:
-          message.offsetsRetentionMinutes = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): Kafkaconfig26 {
-    const message = { ...baseKafkaconfig26 } as Kafkaconfig26;
-    message.compressionType =
-      object.compressionType !== undefined && object.compressionType !== null
-        ? compressionTypeFromJSON(object.compressionType)
-        : 0;
-    message.logFlushIntervalMessages =
-      object.logFlushIntervalMessages !== undefined &&
-      object.logFlushIntervalMessages !== null
-        ? Number(object.logFlushIntervalMessages)
-        : undefined;
-    message.logFlushIntervalMs =
-      object.logFlushIntervalMs !== undefined &&
-      object.logFlushIntervalMs !== null
-        ? Number(object.logFlushIntervalMs)
-        : undefined;
-    message.logFlushSchedulerIntervalMs =
-      object.logFlushSchedulerIntervalMs !== undefined &&
-      object.logFlushSchedulerIntervalMs !== null
-        ? Number(object.logFlushSchedulerIntervalMs)
-        : undefined;
-    message.logRetentionBytes =
-      object.logRetentionBytes !== undefined &&
-      object.logRetentionBytes !== null
-        ? Number(object.logRetentionBytes)
-        : undefined;
-    message.logRetentionHours =
-      object.logRetentionHours !== undefined &&
-      object.logRetentionHours !== null
-        ? Number(object.logRetentionHours)
-        : undefined;
-    message.logRetentionMinutes =
-      object.logRetentionMinutes !== undefined &&
-      object.logRetentionMinutes !== null
-        ? Number(object.logRetentionMinutes)
-        : undefined;
-    message.logRetentionMs =
-      object.logRetentionMs !== undefined && object.logRetentionMs !== null
-        ? Number(object.logRetentionMs)
-        : undefined;
-    message.logSegmentBytes =
-      object.logSegmentBytes !== undefined && object.logSegmentBytes !== null
-        ? Number(object.logSegmentBytes)
-        : undefined;
-    message.logPreallocate =
-      object.logPreallocate !== undefined && object.logPreallocate !== null
-        ? Boolean(object.logPreallocate)
-        : undefined;
-    message.socketSendBufferBytes =
-      object.socketSendBufferBytes !== undefined &&
-      object.socketSendBufferBytes !== null
-        ? Number(object.socketSendBufferBytes)
-        : undefined;
-    message.socketReceiveBufferBytes =
-      object.socketReceiveBufferBytes !== undefined &&
-      object.socketReceiveBufferBytes !== null
-        ? Number(object.socketReceiveBufferBytes)
-        : undefined;
-    message.autoCreateTopicsEnable =
-      object.autoCreateTopicsEnable !== undefined &&
-      object.autoCreateTopicsEnable !== null
-        ? Boolean(object.autoCreateTopicsEnable)
-        : undefined;
-    message.numPartitions =
-      object.numPartitions !== undefined && object.numPartitions !== null
-        ? Number(object.numPartitions)
-        : undefined;
-    message.defaultReplicationFactor =
-      object.defaultReplicationFactor !== undefined &&
-      object.defaultReplicationFactor !== null
-        ? Number(object.defaultReplicationFactor)
-        : undefined;
-    message.messageMaxBytes =
-      object.messageMaxBytes !== undefined && object.messageMaxBytes !== null
-        ? Number(object.messageMaxBytes)
-        : undefined;
-    message.replicaFetchMaxBytes =
-      object.replicaFetchMaxBytes !== undefined &&
-      object.replicaFetchMaxBytes !== null
-        ? Number(object.replicaFetchMaxBytes)
-        : undefined;
-    message.sslCipherSuites = (object.sslCipherSuites ?? []).map((e: any) =>
-      String(e)
-    );
-    message.offsetsRetentionMinutes =
-      object.offsetsRetentionMinutes !== undefined &&
-      object.offsetsRetentionMinutes !== null
-        ? Number(object.offsetsRetentionMinutes)
-        : undefined;
-    return message;
-  },
-
-  toJSON(message: Kafkaconfig26): unknown {
-    const obj: any = {};
-    message.compressionType !== undefined &&
-      (obj.compressionType = compressionTypeToJSON(message.compressionType));
-    message.logFlushIntervalMessages !== undefined &&
-      (obj.logFlushIntervalMessages = message.logFlushIntervalMessages);
-    message.logFlushIntervalMs !== undefined &&
-      (obj.logFlushIntervalMs = message.logFlushIntervalMs);
-    message.logFlushSchedulerIntervalMs !== undefined &&
-      (obj.logFlushSchedulerIntervalMs = message.logFlushSchedulerIntervalMs);
-    message.logRetentionBytes !== undefined &&
-      (obj.logRetentionBytes = message.logRetentionBytes);
-    message.logRetentionHours !== undefined &&
-      (obj.logRetentionHours = message.logRetentionHours);
-    message.logRetentionMinutes !== undefined &&
-      (obj.logRetentionMinutes = message.logRetentionMinutes);
-    message.logRetentionMs !== undefined &&
-      (obj.logRetentionMs = message.logRetentionMs);
-    message.logSegmentBytes !== undefined &&
-      (obj.logSegmentBytes = message.logSegmentBytes);
-    message.logPreallocate !== undefined &&
-      (obj.logPreallocate = message.logPreallocate);
-    message.socketSendBufferBytes !== undefined &&
-      (obj.socketSendBufferBytes = message.socketSendBufferBytes);
-    message.socketReceiveBufferBytes !== undefined &&
-      (obj.socketReceiveBufferBytes = message.socketReceiveBufferBytes);
-    message.autoCreateTopicsEnable !== undefined &&
-      (obj.autoCreateTopicsEnable = message.autoCreateTopicsEnable);
-    message.numPartitions !== undefined &&
-      (obj.numPartitions = message.numPartitions);
-    message.defaultReplicationFactor !== undefined &&
-      (obj.defaultReplicationFactor = message.defaultReplicationFactor);
-    message.messageMaxBytes !== undefined &&
-      (obj.messageMaxBytes = message.messageMaxBytes);
-    message.replicaFetchMaxBytes !== undefined &&
-      (obj.replicaFetchMaxBytes = message.replicaFetchMaxBytes);
-    if (message.sslCipherSuites) {
-      obj.sslCipherSuites = message.sslCipherSuites.map((e) => e);
-    } else {
-      obj.sslCipherSuites = [];
-    }
-    message.offsetsRetentionMinutes !== undefined &&
-      (obj.offsetsRetentionMinutes = message.offsetsRetentionMinutes);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<Kafkaconfig26>, I>>(
-    object: I
-  ): Kafkaconfig26 {
-    const message = { ...baseKafkaconfig26 } as Kafkaconfig26;
-    message.compressionType = object.compressionType ?? 0;
-    message.logFlushIntervalMessages =
-      object.logFlushIntervalMessages ?? undefined;
-    message.logFlushIntervalMs = object.logFlushIntervalMs ?? undefined;
-    message.logFlushSchedulerIntervalMs =
-      object.logFlushSchedulerIntervalMs ?? undefined;
-    message.logRetentionBytes = object.logRetentionBytes ?? undefined;
-    message.logRetentionHours = object.logRetentionHours ?? undefined;
-    message.logRetentionMinutes = object.logRetentionMinutes ?? undefined;
-    message.logRetentionMs = object.logRetentionMs ?? undefined;
-    message.logSegmentBytes = object.logSegmentBytes ?? undefined;
-    message.logPreallocate = object.logPreallocate ?? undefined;
-    message.socketSendBufferBytes = object.socketSendBufferBytes ?? undefined;
-    message.socketReceiveBufferBytes =
-      object.socketReceiveBufferBytes ?? undefined;
-    message.autoCreateTopicsEnable = object.autoCreateTopicsEnable ?? undefined;
-    message.numPartitions = object.numPartitions ?? undefined;
-    message.defaultReplicationFactor =
-      object.defaultReplicationFactor ?? undefined;
-    message.messageMaxBytes = object.messageMaxBytes ?? undefined;
-    message.replicaFetchMaxBytes = object.replicaFetchMaxBytes ?? undefined;
-    message.sslCipherSuites = object.sslCipherSuites?.map((e) => e) || [];
-    message.offsetsRetentionMinutes =
-      object.offsetsRetentionMinutes ?? undefined;
-    return message;
-  },
-};
-
-messageTypeRegistry.set(Kafkaconfig26.$type, Kafkaconfig26);
-
 const baseKafkaconfig28: object = {
   $type: "yandex.cloud.mdb.kafka.v1.KafkaConfig2_8",
   compressionType: 0,
   sslCipherSuites: "",
+  saslEnabledMechanisms: 0,
 };
 
 export const Kafkaconfig28 = {
@@ -2833,6 +1823,11 @@ export const Kafkaconfig28 = {
         writer.uint32(154).fork()
       ).ldelim();
     }
+    writer.uint32(162).fork();
+    for (const v of message.saslEnabledMechanisms) {
+      writer.int32(v);
+    }
+    writer.ldelim();
     return writer;
   },
 
@@ -2841,6 +1836,7 @@ export const Kafkaconfig28 = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseKafkaconfig28 } as Kafkaconfig28;
     message.sslCipherSuites = [];
+    message.saslEnabledMechanisms = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2952,6 +1948,16 @@ export const Kafkaconfig28 = {
             reader.uint32()
           ).value;
           break;
+        case 20:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.saslEnabledMechanisms.push(reader.int32() as any);
+            }
+          } else {
+            message.saslEnabledMechanisms.push(reader.int32() as any);
+          }
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3049,6 +2055,9 @@ export const Kafkaconfig28 = {
       object.offsetsRetentionMinutes !== null
         ? Number(object.offsetsRetentionMinutes)
         : undefined;
+    message.saslEnabledMechanisms = (object.saslEnabledMechanisms ?? []).map(
+      (e: any) => saslMechanismFromJSON(e)
+    );
     return message;
   },
 
@@ -3095,6 +2104,13 @@ export const Kafkaconfig28 = {
     }
     message.offsetsRetentionMinutes !== undefined &&
       (obj.offsetsRetentionMinutes = message.offsetsRetentionMinutes);
+    if (message.saslEnabledMechanisms) {
+      obj.saslEnabledMechanisms = message.saslEnabledMechanisms.map((e) =>
+        saslMechanismToJSON(e)
+      );
+    } else {
+      obj.saslEnabledMechanisms = [];
+    }
     return obj;
   },
 
@@ -3126,6 +2142,8 @@ export const Kafkaconfig28 = {
     message.sslCipherSuites = object.sslCipherSuites?.map((e) => e) || [];
     message.offsetsRetentionMinutes =
       object.offsetsRetentionMinutes ?? undefined;
+    message.saslEnabledMechanisms =
+      object.saslEnabledMechanisms?.map((e) => e) || [];
     return message;
   },
 };
@@ -3136,6 +2154,7 @@ const baseKafkaConfig3: object = {
   $type: "yandex.cloud.mdb.kafka.v1.KafkaConfig3",
   compressionType: 0,
   sslCipherSuites: "",
+  saslEnabledMechanisms: 0,
 };
 
 export const KafkaConfig3 = {
@@ -3295,6 +2314,11 @@ export const KafkaConfig3 = {
         writer.uint32(154).fork()
       ).ldelim();
     }
+    writer.uint32(162).fork();
+    for (const v of message.saslEnabledMechanisms) {
+      writer.int32(v);
+    }
+    writer.ldelim();
     return writer;
   },
 
@@ -3303,6 +2327,7 @@ export const KafkaConfig3 = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseKafkaConfig3 } as KafkaConfig3;
     message.sslCipherSuites = [];
+    message.saslEnabledMechanisms = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -3414,6 +2439,16 @@ export const KafkaConfig3 = {
             reader.uint32()
           ).value;
           break;
+        case 20:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.saslEnabledMechanisms.push(reader.int32() as any);
+            }
+          } else {
+            message.saslEnabledMechanisms.push(reader.int32() as any);
+          }
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3511,6 +2546,9 @@ export const KafkaConfig3 = {
       object.offsetsRetentionMinutes !== null
         ? Number(object.offsetsRetentionMinutes)
         : undefined;
+    message.saslEnabledMechanisms = (object.saslEnabledMechanisms ?? []).map(
+      (e: any) => saslMechanismFromJSON(e)
+    );
     return message;
   },
 
@@ -3557,6 +2595,13 @@ export const KafkaConfig3 = {
     }
     message.offsetsRetentionMinutes !== undefined &&
       (obj.offsetsRetentionMinutes = message.offsetsRetentionMinutes);
+    if (message.saslEnabledMechanisms) {
+      obj.saslEnabledMechanisms = message.saslEnabledMechanisms.map((e) =>
+        saslMechanismToJSON(e)
+      );
+    } else {
+      obj.saslEnabledMechanisms = [];
+    }
     return obj;
   },
 
@@ -3588,6 +2633,8 @@ export const KafkaConfig3 = {
     message.sslCipherSuites = object.sslCipherSuites?.map((e) => e) || [];
     message.offsetsRetentionMinutes =
       object.offsetsRetentionMinutes ?? undefined;
+    message.saslEnabledMechanisms =
+      object.saslEnabledMechanisms?.map((e) => e) || [];
     return message;
   },
 };

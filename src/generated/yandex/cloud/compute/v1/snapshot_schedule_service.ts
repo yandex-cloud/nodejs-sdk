@@ -29,61 +29,109 @@ export const protobufPackage = "yandex.cloud.compute.v1";
 
 export interface GetSnapshotScheduleRequest {
   $type: "yandex.cloud.compute.v1.GetSnapshotScheduleRequest";
-  /** ID of the SnapshotSchedule resource to return. */
+  /**
+   * ID of the snapshot schedule to return.
+   *
+   * To get a schedule ID, make a [SnapshotScheduleService.List] request.
+   */
   snapshotScheduleId: string;
 }
 
 export interface ListSnapshotSchedulesRequest {
   $type: "yandex.cloud.compute.v1.ListSnapshotSchedulesRequest";
-  /** ID of the folder to list snapshot schedules in. */
+  /**
+   * ID of the folder to list snapshot schedules in.
+   *
+   * To get the folder ID, make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+   */
   folderId: string;
   /**
    * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size],
-   * the service returns a [ListSnapshotSchedulesResponse.next_page_token]
+   * results is larger than `page_size`, the service returns a [ListSnapshotSchedulesResponse.next_page_token]
    * that can be used to get the next page of results in subsequent list requests.
    */
   pageSize: number;
   /**
-   * Page token. To get the next page of results, set [page_token] to the
+   * Page token. To get the next page of results, set `page_token` to the
    * [ListSnapshotSchedulesResponse.next_page_token] returned by a previous list request.
    */
   pageToken: string;
+  /**
+   * A filter expression that filters snapshot schedules listed in the response.
+   *
+   * The expression must specify:
+   * 1. The field name. Currently you can use filtering only on [SnapshotSchedule.name] field.
+   * 2. An operator. Can be either `=` or `!=` for single values, `IN` or `NOT IN` for lists of values.
+   * 3. The value. Must be 3-63 characters long and match the regular expression `^[a-z][-a-z0-9]{1,61}[a-z0-9]`.
+   * Example of a filter: `name=my-schedule`.
+   */
   filter: string;
   /**
-   * By which column the listing should be ordered and in which direction,
-   * format is "createdAt desc". "id asc" if omitted.
+   * A sorting expression that sorts snapshot schedules listed in the response.
+   *
+   * The expression must specify the field name from [SnapshotSchedule] and `asc`ending or `desc`ending order,
+   * e.g. `createdAt desc`.
+   *
+   * Default value: `id asc`.
    */
   orderBy: string;
 }
 
 export interface ListSnapshotSchedulesResponse {
   $type: "yandex.cloud.compute.v1.ListSnapshotSchedulesResponse";
-  /** List of SnapshotSchedule resources. */
+  /** List of snapshot schedules in the specified folder. */
   snapshotSchedules: SnapshotSchedule[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListSnapshotSchedulesRequest.page_size], use
-   * the [next_page_token] as the value
-   * for the [ListSnapshotSchedulesRequest.page_token] query parameter
-   * in the next list request. Each subsequent list request will have its own
-   * [next_page_token] to continue paging through the results.
+   * Token for getting the next page of the list. If the number of results is greater than
+   * the specified [ListSnapshotSchedulesRequest.page_size], use `next_page_token` as the value
+   * for the [ListSnapshotSchedulesRequest.page_token] parameter in the next list request.
+   *
+   * Each subsequent page will have its own `next_page_token` to continue paging through the results.
    */
   nextPageToken: string;
 }
 
 export interface CreateSnapshotScheduleRequest {
   $type: "yandex.cloud.compute.v1.CreateSnapshotScheduleRequest";
-  /** ID of the folder to create a snapshot schedule in. */
+  /**
+   * ID of the folder to create a snapshot schedule in.
+   *
+   * Snapshots are created in the same folder as the schedule, even if disks from other folders are attached
+   * to the schedule.
+   *
+   * To get a folder ID, make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+   */
   folderId: string;
+  /**
+   * Name of the snapshot schedule.
+   *
+   * The name must be unique within the folder.
+   */
   name: string;
+  /** Description of the snapshot schedule. */
   description: string;
+  /** Snapshot schedule labels as `key:value` pairs. */
   labels: { [key: string]: string };
-  /** schedule properties */
+  /** Frequency settings of the snapshot schedule. */
   schedulePolicy?: SchedulePolicy;
+  /**
+   * Retention period of the snapshot schedule. Once a snapshot created by the schedule reaches this age, it is
+   * automatically deleted.
+   */
   retentionPeriod?: Duration | undefined;
+  /**
+   * Retention count of the snapshot schedule. Once the number of snapshots created by the schedule exceeds this
+   * number, the oldest ones are automatically deleted. E.g. if the number is 5, the first snapshot is deleted
+   * after the sixth one is created, the second is deleted after the seventh one is created, and so on.
+   */
   snapshotCount: number | undefined;
+  /** Attributes of snapshots created by the snapshot schedule. */
   snapshotSpec?: SnapshotSpec;
+  /**
+   * List of IDs of the disks attached to the snapshot schedule.
+   *
+   * To get a disk ID, make a [yandex.cloud.compute.v1.DiskService.List] request.
+   */
   diskIds: string[];
 }
 
@@ -95,22 +143,52 @@ export interface CreateSnapshotScheduleRequest_LabelsEntry {
 
 export interface CreateSnapshotScheduleMetadata {
   $type: "yandex.cloud.compute.v1.CreateSnapshotScheduleMetadata";
+  /** ID of the snapshot schedule that is being created. */
   snapshotScheduleId: string;
 }
 
 export interface UpdateSnapshotScheduleRequest {
   $type: "yandex.cloud.compute.v1.UpdateSnapshotScheduleRequest";
-  /** ID of the SnapshotSchedule resource to update. */
+  /**
+   * ID of the snapshot schedule to update.
+   *
+   * To get the snapshot schedule ID, make a [SnapshotScheduleService.List] request.
+   */
   snapshotScheduleId: string;
-  /** Field mask that specifies which fields of the SnapshotSchedule resource are going to be updated. */
+  /** Field mask that specifies which attributes of the snapshot schedule should be updated. */
   updateMask?: FieldMask;
-  /** schedule properties */
+  /**
+   * New name for the snapshot schedule.
+   *
+   * The name must be unique within the folder.
+   */
   name: string;
+  /** New description of the snapshot schedule. */
   description: string;
+  /**
+   * Snapshot schedule labels as `key:value` pairs.
+   *
+   * Existing set of labels is completely replaced by the provided set, so if you just want
+   * to add or remove a label:
+   * 1. Get the current set of labels with a [SnapshotScheduleService.Get] request.
+   * 2. Add or remove a label in this set.
+   * 3. Send the new set in this field.
+   */
   labels: { [key: string]: string };
+  /** New frequency settings of the snapshot schedule. */
   schedulePolicy?: SchedulePolicy;
+  /**
+   * Retention period of the snapshot schedule. Once a snapshot created by the schedule reaches this age, it is
+   * automatically deleted.
+   */
   retentionPeriod?: Duration | undefined;
+  /**
+   * Retention count of the snapshot schedule. Once the number of snapshots created by the schedule exceeds this
+   * number, the oldest ones are automatically deleted. E.g. if the number is 5, the first snapshot is deleted
+   * after the sixth one is created, the second is deleted after the seventh one is created, and so on.
+   */
   snapshotCount: number | undefined;
+  /** New attributes of snapshots created by the snapshot schedule. */
   snapshotSpec?: SnapshotSpec;
 }
 
@@ -122,50 +200,72 @@ export interface UpdateSnapshotScheduleRequest_LabelsEntry {
 
 export interface UpdateSnapshotScheduleMetadata {
   $type: "yandex.cloud.compute.v1.UpdateSnapshotScheduleMetadata";
+  /** ID of the snapshot schedule that is being updated. */
   snapshotScheduleId: string;
 }
 
 export interface DeleteSnapshotScheduleRequest {
   $type: "yandex.cloud.compute.v1.DeleteSnapshotScheduleRequest";
-  /** ID of the snapshot schedule to delete. */
+  /**
+   * ID of the snapshot schedule to delete.
+   *
+   * To get a snapshot schedule ID, make a [SnapshotScheduleService.List] request.
+   */
   snapshotScheduleId: string;
 }
 
 export interface DeleteSnapshotScheduleMetadata {
   $type: "yandex.cloud.compute.v1.DeleteSnapshotScheduleMetadata";
+  /** ID of the snapshot schedule that is being deleted. */
   snapshotScheduleId: string;
 }
 
 export interface DisableSnapshotScheduleRequest {
   $type: "yandex.cloud.compute.v1.DisableSnapshotScheduleRequest";
-  /** ID of the snapshot schedule to disable. */
+  /**
+   * ID of the snapshot schedule to disable.
+   *
+   * To get a snapshot schedule ID, make a [SnapshotScheduleService.List] request.
+   */
   snapshotScheduleId: string;
 }
 
 export interface DisableSnapshotScheduleMetadata {
   $type: "yandex.cloud.compute.v1.DisableSnapshotScheduleMetadata";
+  /** ID of the snapshot schedule that is being disabled. */
   snapshotScheduleId: string;
 }
 
 export interface EnableSnapshotScheduleRequest {
   $type: "yandex.cloud.compute.v1.EnableSnapshotScheduleRequest";
-  /** ID of the snapshot schedule to enable. */
+  /**
+   * ID of the snapshot schedule to enable.
+   *
+   * To get a snapshot schedule ID, make a [SnapshotScheduleService.List] request.
+   */
   snapshotScheduleId: string;
 }
 
 export interface EnableSnapshotScheduleMetadata {
   $type: "yandex.cloud.compute.v1.EnableSnapshotScheduleMetadata";
+  /** ID of the snapshot schedule that is being enabled. */
   snapshotScheduleId: string;
 }
 
 export interface ListSnapshotScheduleOperationsRequest {
   $type: "yandex.cloud.compute.v1.ListSnapshotScheduleOperationsRequest";
-  /** ID of the SnapshotSchedule resource to list operations for. */
+  /**
+   * ID of the snapshot schedule to list operations for.
+   *
+   * To get a snapshot schedule ID, make a [SnapshotScheduleService.List] request.
+   */
   snapshotScheduleId: string;
   /**
    * The maximum number of results per page to return. If the number of available
    * results is larger than [page_size], the service returns a [ListSnapshotScheduleOperationsResponse.next_page_token]
    * that can be used to get the next page of results in subsequent list requests.
+   *
+   * Default value: 100.
    */
   pageSize: number;
   /**
@@ -180,52 +280,66 @@ export interface ListSnapshotScheduleOperationsResponse {
   /** List of operations for the specified snapshot schedule. */
   operations: Operation[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListSnapshotScheduleOperationsRequest.page_size], use the [next_page_token] as the value
-   * for the [ListSnapshotScheduleOperationsRequest.page_token] query parameter in the next list request.
-   * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
+   * Token for getting the next page of the list. If the number of results is greater than
+   * the specified [ListSnapshotScheduleOperationsRequest.page_size], use `next_page_token` as the value
+   * for the [ListSnapshotScheduleOperationsRequest.page_token] parameter in the next list request.
+   *
+   * Each subsequent page will have its own `next_page_token` to continue paging through the results.
    */
   nextPageToken: string;
 }
 
 export interface ListSnapshotScheduleSnapshotsRequest {
   $type: "yandex.cloud.compute.v1.ListSnapshotScheduleSnapshotsRequest";
-  /** ID of the SnapshotSchedule resource to list snapshots for. */
+  /**
+   * ID of the snapshot schedule to list created snapshots for.
+   *
+   * To get a snapshot schedule ID, make a [SnapshotScheduleService.List] request.
+   */
   snapshotScheduleId: string;
   /**
    * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size], the service returns a [ListSnapshotScheduleSnapshotsResponse.next_page_token]
+   * results is larger than [page_size], the service returns a [ListSnapshotScheduleOperationsResponse.next_page_token]
    * that can be used to get the next page of results in subsequent list requests.
+   *
+   * Default value: 100.
    */
   pageSize: number;
   /**
    * Page token. To get the next page of results, set [page_token] to the
-   * [ListSnapshotScheduleSnapshotsResponse.next_page_token] returned by a previous list request.
+   * [ListSnapshotScheduleOperationsResponse.next_page_token] returned by a previous list request.
    */
   pageToken: string;
 }
 
 export interface ListSnapshotScheduleSnapshotsResponse {
   $type: "yandex.cloud.compute.v1.ListSnapshotScheduleSnapshotsResponse";
-  /** List of snapshots for the specified snapshot schedule. */
+  /** List of snapshots created by the specified snapshot schedule. */
   snapshots: Snapshot[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListSnapshotScheduleSnapshotsRequest.page_size], use the [next_page_token] as the value
-   * for the [ListSnapshotScheduleSnapshotsRequest.page_token] query parameter in the next list request.
-   * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
+   * Token for getting the next page of the list. If the number of results is greater than
+   * the specified [ListSnapshotScheduleSnapshotsRequest.page_size], use `next_page_token` as the value
+   * for the [ListSnapshotScheduleSnapshotsRequest.page_token] parameter in the next list request.
+   *
+   * Each subsequent page will have its own `next_page_token` to continue paging through the results.
    */
   nextPageToken: string;
 }
 
 export interface ListSnapshotScheduleDisksRequest {
   $type: "yandex.cloud.compute.v1.ListSnapshotScheduleDisksRequest";
-  /** ID of the SnapshotSchedule resource to list disks for. */
+  /**
+   * ID of the snapshot schedule to list attached disks for.
+   *
+   * To get a snapshot schedule ID, make a [SnapshotScheduleService.List] request.
+   */
   snapshotScheduleId: string;
   /**
    * The maximum number of results per page to return. If the number of available
    * results is larger than [page_size], the service returns a [ListSnapshotScheduleDisksResponse.next_page_token]
    * that can be used to get the next page of results in subsequent list requests.
+   *
+   * Default value: 100.
    */
   pageSize: number;
   /**
@@ -237,29 +351,43 @@ export interface ListSnapshotScheduleDisksRequest {
 
 export interface ListSnapshotScheduleDisksResponse {
   $type: "yandex.cloud.compute.v1.ListSnapshotScheduleDisksResponse";
-  /** List of disks for the specified snapshot schedule. */
+  /** List of disks attached to the specified snapshot schedule. */
   disks: Disk[];
   /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListSnapshotScheduleDisksRequest.page_size], use the [next_page_token] as the value
-   * for the [ListSnapshotScheduleDisksRequest.page_token] query parameter in the next list request.
-   * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
+   * Token for getting the next page of the list. If the number of results is greater than
+   * the specified [ListSnapshotScheduleDisksRequest.page_size], use `next_page_token` as the value
+   * for the [ListSnapshotScheduleDisksRequest.page_token] parameter in the next list request.
+   *
+   * Each subsequent page will have its own `next_page_token` to continue paging through the results.
    */
   nextPageToken: string;
 }
 
 export interface UpdateSnapshotScheduleDisksRequest {
   $type: "yandex.cloud.compute.v1.UpdateSnapshotScheduleDisksRequest";
-  /** ID of the snapshot schedule to update. */
+  /**
+   * ID of the snapshot schedule to update.
+   *
+   * To get a snapshot schedule ID, make a [SnapshotScheduleService.List] request.
+   */
   snapshotScheduleId: string;
-  /** List of disk ids to remove from the specified schedule. */
+  /**
+   * List of IDs of the disks to detach from the specified schedule.
+   *
+   * To get an ID of a disk attached to the schedule, make a [SnapshotScheduleService.ListDisks] request.
+   */
   remove: string[];
-  /** List of disk ids to add to the specified schedule */
+  /**
+   * List of IDs of the disks to attach to the specified schedule.
+   *
+   * To get a disk ID, make a [yandex.cloud.compute.v1.DiskService.List] request.
+   */
   add: string[];
 }
 
 export interface UpdateSnapshotScheduleDisksMetadata {
   $type: "yandex.cloud.compute.v1.UpdateSnapshotScheduleDisksMetadata";
+  /** ID of the snapshot schedule that is being updated. */
   snapshotScheduleId: string;
 }
 
@@ -2592,12 +2720,12 @@ messageTypeRegistry.set(
   UpdateSnapshotScheduleDisksMetadata
 );
 
-/** A set of methods for managing SnapshotSchedule resources. */
+/** A set of methods for managing snapshot schedules. */
 export const SnapshotScheduleServiceService = {
   /**
-   * Returns the specified SnapshotSchedule resource.
+   * Returns the specified snapshot schedule.
    *
-   * To get the list of available SnapshotSchedule resources, make a [List] request.
+   * To get the list of available snapshot schedules, make a [List] request.
    */
   get: {
     path: "/yandex.cloud.compute.v1.SnapshotScheduleService/Get",
@@ -2611,7 +2739,7 @@ export const SnapshotScheduleServiceService = {
       Buffer.from(SnapshotSchedule.encode(value).finish()),
     responseDeserialize: (value: Buffer) => SnapshotSchedule.decode(value),
   },
-  /** Retrieves the list of SnapshotSchedule resources in the specified folder. */
+  /** Retrieves the list of snapshot schedules in the specified folder. */
   list: {
     path: "/yandex.cloud.compute.v1.SnapshotScheduleService/List",
     requestStream: false,
@@ -2638,7 +2766,11 @@ export const SnapshotScheduleServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Updates the specified snapshot schedule. */
+  /**
+   * Updates the specified snapshot schedule.
+   *
+   * The schedule is updated only after all snapshot creations and deletions triggered by the schedule are completed.
+   */
   update: {
     path: "/yandex.cloud.compute.v1.SnapshotScheduleService/Update",
     requestStream: false,
@@ -2654,8 +2786,10 @@ export const SnapshotScheduleServiceService = {
   /**
    * Deletes the specified snapshot schedule.
    *
-   * Deleting a snapshot schedule removes its data permanently and is irreversible. However, deleting a schedule does not delete
-   * any snapshots previously made by the schedule. You must delete snapshots separately.
+   * Deleting a snapshot schedule removes its data permanently and is irreversible. However, deleting a schedule
+   * does not delete any snapshots created by the schedule. You must delete snapshots separately.
+   *
+   * The schedule is deleted only after all snapshot creations and deletions triggered by the schedule are completed.
    */
   delete: {
     path: "/yandex.cloud.compute.v1.SnapshotScheduleService/Delete",
@@ -2669,7 +2803,11 @@ export const SnapshotScheduleServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** UpdateDisks of schedule */
+  /**
+   * Updates the list of disks attached to the specified schedule.
+   *
+   * The schedule is updated only after all snapshot creations and deletions triggered by the schedule are completed.
+   */
   updateDisks: {
     path: "/yandex.cloud.compute.v1.SnapshotScheduleService/UpdateDisks",
     requestStream: false,
@@ -2683,9 +2821,12 @@ export const SnapshotScheduleServiceService = {
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
   /**
-   * Disable schedule sets status InActive.
+   * Disables the specified snapshot schedule.
    *
-   * When schedule os disabled snapshots will not be created or deleted according to retention policy.
+   * The [SnapshotSchedule.status] is changed to `INACTIVE`: the schedule is interrupted, snapshots won't be created
+   * or deleted.
+   *
+   * The schedule is disabled only after all snapshot creations and deletions triggered by the schedule are completed.
    */
   disable: {
     path: "/yandex.cloud.compute.v1.SnapshotScheduleService/Disable",
@@ -2699,7 +2840,12 @@ export const SnapshotScheduleServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Enable schedule sets status Active. */
+  /**
+   * Enables the specified snapshot schedule.
+   *
+   * The [SnapshotSchedule.status] is changed to `ACTIVE`: new disk snapshots will be created, old ones deleted
+   * (if [SnapshotSchedule.retention_policy] is specified).
+   */
   enable: {
     path: "/yandex.cloud.compute.v1.SnapshotScheduleService/Enable",
     requestStream: false,
@@ -2728,7 +2874,7 @@ export const SnapshotScheduleServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListSnapshotScheduleOperationsResponse.decode(value),
   },
-  /** List snapshot created by schedule. */
+  /** Retrieves the list of snapshots created by the specified snapshot schedule. */
   listSnapshots: {
     path: "/yandex.cloud.compute.v1.SnapshotScheduleService/ListSnapshots",
     requestStream: false,
@@ -2742,7 +2888,7 @@ export const SnapshotScheduleServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListSnapshotScheduleSnapshotsResponse.decode(value),
   },
-  /** List disks that belong to schedule. */
+  /** Retrieves the list of disks attached to the specified snapshot schedule. */
   listDisks: {
     path: "/yandex.cloud.compute.v1.SnapshotScheduleService/ListDisks",
     requestStream: false,
@@ -2761,48 +2907,66 @@ export const SnapshotScheduleServiceService = {
 export interface SnapshotScheduleServiceServer
   extends UntypedServiceImplementation {
   /**
-   * Returns the specified SnapshotSchedule resource.
+   * Returns the specified snapshot schedule.
    *
-   * To get the list of available SnapshotSchedule resources, make a [List] request.
+   * To get the list of available snapshot schedules, make a [List] request.
    */
   get: handleUnaryCall<GetSnapshotScheduleRequest, SnapshotSchedule>;
-  /** Retrieves the list of SnapshotSchedule resources in the specified folder. */
+  /** Retrieves the list of snapshot schedules in the specified folder. */
   list: handleUnaryCall<
     ListSnapshotSchedulesRequest,
     ListSnapshotSchedulesResponse
   >;
   /** Creates a snapshot schedule in the specified folder. */
   create: handleUnaryCall<CreateSnapshotScheduleRequest, Operation>;
-  /** Updates the specified snapshot schedule. */
+  /**
+   * Updates the specified snapshot schedule.
+   *
+   * The schedule is updated only after all snapshot creations and deletions triggered by the schedule are completed.
+   */
   update: handleUnaryCall<UpdateSnapshotScheduleRequest, Operation>;
   /**
    * Deletes the specified snapshot schedule.
    *
-   * Deleting a snapshot schedule removes its data permanently and is irreversible. However, deleting a schedule does not delete
-   * any snapshots previously made by the schedule. You must delete snapshots separately.
+   * Deleting a snapshot schedule removes its data permanently and is irreversible. However, deleting a schedule
+   * does not delete any snapshots created by the schedule. You must delete snapshots separately.
+   *
+   * The schedule is deleted only after all snapshot creations and deletions triggered by the schedule are completed.
    */
   delete: handleUnaryCall<DeleteSnapshotScheduleRequest, Operation>;
-  /** UpdateDisks of schedule */
+  /**
+   * Updates the list of disks attached to the specified schedule.
+   *
+   * The schedule is updated only after all snapshot creations and deletions triggered by the schedule are completed.
+   */
   updateDisks: handleUnaryCall<UpdateSnapshotScheduleDisksRequest, Operation>;
   /**
-   * Disable schedule sets status InActive.
+   * Disables the specified snapshot schedule.
    *
-   * When schedule os disabled snapshots will not be created or deleted according to retention policy.
+   * The [SnapshotSchedule.status] is changed to `INACTIVE`: the schedule is interrupted, snapshots won't be created
+   * or deleted.
+   *
+   * The schedule is disabled only after all snapshot creations and deletions triggered by the schedule are completed.
    */
   disable: handleUnaryCall<DisableSnapshotScheduleRequest, Operation>;
-  /** Enable schedule sets status Active. */
+  /**
+   * Enables the specified snapshot schedule.
+   *
+   * The [SnapshotSchedule.status] is changed to `ACTIVE`: new disk snapshots will be created, old ones deleted
+   * (if [SnapshotSchedule.retention_policy] is specified).
+   */
   enable: handleUnaryCall<EnableSnapshotScheduleRequest, Operation>;
   /** Lists operations for the specified snapshot schedule. */
   listOperations: handleUnaryCall<
     ListSnapshotScheduleOperationsRequest,
     ListSnapshotScheduleOperationsResponse
   >;
-  /** List snapshot created by schedule. */
+  /** Retrieves the list of snapshots created by the specified snapshot schedule. */
   listSnapshots: handleUnaryCall<
     ListSnapshotScheduleSnapshotsRequest,
     ListSnapshotScheduleSnapshotsResponse
   >;
-  /** List disks that belong to schedule. */
+  /** Retrieves the list of disks attached to the specified snapshot schedule. */
   listDisks: handleUnaryCall<
     ListSnapshotScheduleDisksRequest,
     ListSnapshotScheduleDisksResponse
@@ -2811,9 +2975,9 @@ export interface SnapshotScheduleServiceServer
 
 export interface SnapshotScheduleServiceClient extends Client {
   /**
-   * Returns the specified SnapshotSchedule resource.
+   * Returns the specified snapshot schedule.
    *
-   * To get the list of available SnapshotSchedule resources, make a [List] request.
+   * To get the list of available snapshot schedules, make a [List] request.
    */
   get(
     request: GetSnapshotScheduleRequest,
@@ -2830,7 +2994,7 @@ export interface SnapshotScheduleServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: SnapshotSchedule) => void
   ): ClientUnaryCall;
-  /** Retrieves the list of SnapshotSchedule resources in the specified folder. */
+  /** Retrieves the list of snapshot schedules in the specified folder. */
   list(
     request: ListSnapshotSchedulesRequest,
     callback: (
@@ -2871,7 +3035,11 @@ export interface SnapshotScheduleServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Updates the specified snapshot schedule. */
+  /**
+   * Updates the specified snapshot schedule.
+   *
+   * The schedule is updated only after all snapshot creations and deletions triggered by the schedule are completed.
+   */
   update(
     request: UpdateSnapshotScheduleRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -2890,8 +3058,10 @@ export interface SnapshotScheduleServiceClient extends Client {
   /**
    * Deletes the specified snapshot schedule.
    *
-   * Deleting a snapshot schedule removes its data permanently and is irreversible. However, deleting a schedule does not delete
-   * any snapshots previously made by the schedule. You must delete snapshots separately.
+   * Deleting a snapshot schedule removes its data permanently and is irreversible. However, deleting a schedule
+   * does not delete any snapshots created by the schedule. You must delete snapshots separately.
+   *
+   * The schedule is deleted only after all snapshot creations and deletions triggered by the schedule are completed.
    */
   delete(
     request: DeleteSnapshotScheduleRequest,
@@ -2908,7 +3078,11 @@ export interface SnapshotScheduleServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** UpdateDisks of schedule */
+  /**
+   * Updates the list of disks attached to the specified schedule.
+   *
+   * The schedule is updated only after all snapshot creations and deletions triggered by the schedule are completed.
+   */
   updateDisks(
     request: UpdateSnapshotScheduleDisksRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -2925,9 +3099,12 @@ export interface SnapshotScheduleServiceClient extends Client {
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
   /**
-   * Disable schedule sets status InActive.
+   * Disables the specified snapshot schedule.
    *
-   * When schedule os disabled snapshots will not be created or deleted according to retention policy.
+   * The [SnapshotSchedule.status] is changed to `INACTIVE`: the schedule is interrupted, snapshots won't be created
+   * or deleted.
+   *
+   * The schedule is disabled only after all snapshot creations and deletions triggered by the schedule are completed.
    */
   disable(
     request: DisableSnapshotScheduleRequest,
@@ -2944,7 +3121,12 @@ export interface SnapshotScheduleServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Enable schedule sets status Active. */
+  /**
+   * Enables the specified snapshot schedule.
+   *
+   * The [SnapshotSchedule.status] is changed to `ACTIVE`: new disk snapshots will be created, old ones deleted
+   * (if [SnapshotSchedule.retention_policy] is specified).
+   */
   enable(
     request: EnableSnapshotScheduleRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -2985,7 +3167,7 @@ export interface SnapshotScheduleServiceClient extends Client {
       response: ListSnapshotScheduleOperationsResponse
     ) => void
   ): ClientUnaryCall;
-  /** List snapshot created by schedule. */
+  /** Retrieves the list of snapshots created by the specified snapshot schedule. */
   listSnapshots(
     request: ListSnapshotScheduleSnapshotsRequest,
     callback: (
@@ -3010,7 +3192,7 @@ export interface SnapshotScheduleServiceClient extends Client {
       response: ListSnapshotScheduleSnapshotsResponse
     ) => void
   ): ClientUnaryCall;
-  /** List disks that belong to schedule. */
+  /** Retrieves the list of disks attached to the specified snapshot schedule. */
   listDisks(
     request: ListSnapshotScheduleDisksRequest,
     callback: (
