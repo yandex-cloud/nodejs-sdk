@@ -30,7 +30,7 @@ export interface YandexPassportUserAccount {
 
 /**
  * A SAML federated user.
- * For more information, see [federations](/docs/iam/concepts/users/saml-federations).
+ * For more information, see [federations](/docs/iam/concepts/federations).
  */
 export interface SamlUserAccount {
   $type: "yandex.cloud.iam.v1.SamlUserAccount";

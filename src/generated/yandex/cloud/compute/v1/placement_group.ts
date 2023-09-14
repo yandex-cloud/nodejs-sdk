@@ -28,6 +28,7 @@ export interface PlacementGroup {
    * over distinct failure domains.
    */
   spreadPlacementStrategy?: SpreadPlacementStrategy | undefined;
+  partitionPlacementStrategy?: PartitionPlacementStrategy | undefined;
 }
 
 export interface PlacementGroup_LabelsEntry {
@@ -42,6 +43,11 @@ export interface PlacementGroup_LabelsEntry {
  */
 export interface SpreadPlacementStrategy {
   $type: "yandex.cloud.compute.v1.SpreadPlacementStrategy";
+}
+
+export interface PartitionPlacementStrategy {
+  $type: "yandex.cloud.compute.v1.PartitionPlacementStrategy";
+  partitions: number;
 }
 
 const basePlacementGroup: object = {
@@ -93,6 +99,12 @@ export const PlacementGroup = {
         writer.uint32(58).fork()
       ).ldelim();
     }
+    if (message.partitionPlacementStrategy !== undefined) {
+      PartitionPlacementStrategy.encode(
+        message.partitionPlacementStrategy,
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -136,6 +148,10 @@ export const PlacementGroup = {
             reader.uint32()
           );
           break;
+        case 8:
+          message.partitionPlacementStrategy =
+            PartitionPlacementStrategy.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -175,6 +191,11 @@ export const PlacementGroup = {
       object.spreadPlacementStrategy !== null
         ? SpreadPlacementStrategy.fromJSON(object.spreadPlacementStrategy)
         : undefined;
+    message.partitionPlacementStrategy =
+      object.partitionPlacementStrategy !== undefined &&
+      object.partitionPlacementStrategy !== null
+        ? PartitionPlacementStrategy.fromJSON(object.partitionPlacementStrategy)
+        : undefined;
     return message;
   },
 
@@ -196,6 +217,10 @@ export const PlacementGroup = {
     message.spreadPlacementStrategy !== undefined &&
       (obj.spreadPlacementStrategy = message.spreadPlacementStrategy
         ? SpreadPlacementStrategy.toJSON(message.spreadPlacementStrategy)
+        : undefined);
+    message.partitionPlacementStrategy !== undefined &&
+      (obj.partitionPlacementStrategy = message.partitionPlacementStrategy
+        ? PartitionPlacementStrategy.toJSON(message.partitionPlacementStrategy)
         : undefined);
     return obj;
   },
@@ -221,6 +246,13 @@ export const PlacementGroup = {
       object.spreadPlacementStrategy !== undefined &&
       object.spreadPlacementStrategy !== null
         ? SpreadPlacementStrategy.fromPartial(object.spreadPlacementStrategy)
+        : undefined;
+    message.partitionPlacementStrategy =
+      object.partitionPlacementStrategy !== undefined &&
+      object.partitionPlacementStrategy !== null
+        ? PartitionPlacementStrategy.fromPartial(
+            object.partitionPlacementStrategy
+          )
         : undefined;
     return message;
   },
@@ -371,6 +403,92 @@ export const SpreadPlacementStrategy = {
 
 messageTypeRegistry.set(SpreadPlacementStrategy.$type, SpreadPlacementStrategy);
 
+const basePartitionPlacementStrategy: object = {
+  $type: "yandex.cloud.compute.v1.PartitionPlacementStrategy",
+  partitions: 0,
+};
+
+export const PartitionPlacementStrategy = {
+  $type: "yandex.cloud.compute.v1.PartitionPlacementStrategy" as const,
+
+  encode(
+    message: PartitionPlacementStrategy,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.partitions !== 0) {
+      writer.uint32(8).int64(message.partitions);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): PartitionPlacementStrategy {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...basePartitionPlacementStrategy,
+    } as PartitionPlacementStrategy;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.partitions = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PartitionPlacementStrategy {
+    const message = {
+      ...basePartitionPlacementStrategy,
+    } as PartitionPlacementStrategy;
+    message.partitions =
+      object.partitions !== undefined && object.partitions !== null
+        ? Number(object.partitions)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: PartitionPlacementStrategy): unknown {
+    const obj: any = {};
+    message.partitions !== undefined &&
+      (obj.partitions = Math.round(message.partitions));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<PartitionPlacementStrategy>, I>>(
+    object: I
+  ): PartitionPlacementStrategy {
+    const message = {
+      ...basePartitionPlacementStrategy,
+    } as PartitionPlacementStrategy;
+    message.partitions = object.partitions ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  PartitionPlacementStrategy.$type,
+  PartitionPlacementStrategy
+);
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
+
 type Builtin =
   | Date
   | Function
@@ -418,6 +536,13 @@ function fromJsonTimestamp(o: any): Date {
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
+}
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
 }
 
 if (_m0.util.Long !== Long) {

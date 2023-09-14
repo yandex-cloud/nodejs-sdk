@@ -510,7 +510,7 @@ export const Criteria = {
 
 messageTypeRegistry.set(Criteria.$type, Criteria);
 
-/** A set of methods for reading from log groups. To make a request use `reader.logging.yandexcloud.net`. */
+/** A set of methods for reading from log groups. */
 export const LogReadingServiceService = {
   /** Read log entries from the specified log group. */
   read: {

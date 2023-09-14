@@ -56,7 +56,7 @@ export function bindingTypeToJSON(object: BindingType): string {
 
 /**
  * A federation.
- * For more information, see [SAML-compatible identity federations](/docs/iam/concepts/users/identity-federations).
+ * For more information, see [SAML-compatible identity federations](/docs/iam/concepts/federations).
  */
 export interface Federation {
   $type: "yandex.cloud.organizationmanager.v1.saml.Federation";
@@ -121,6 +121,8 @@ export interface FederationSecuritySettings {
   $type: "yandex.cloud.organizationmanager.v1.saml.FederationSecuritySettings";
   /** Enable encrypted assertions. */
   encryptedAssertions: boolean;
+  /** Value parameter ForceAuthn in SAMLRequest. */
+  forceAuthn: boolean;
 }
 
 const baseFederation: object = {
@@ -475,6 +477,7 @@ messageTypeRegistry.set(Federation_LabelsEntry.$type, Federation_LabelsEntry);
 const baseFederationSecuritySettings: object = {
   $type: "yandex.cloud.organizationmanager.v1.saml.FederationSecuritySettings",
   encryptedAssertions: false,
+  forceAuthn: false,
 };
 
 export const FederationSecuritySettings = {
@@ -487,6 +490,9 @@ export const FederationSecuritySettings = {
   ): _m0.Writer {
     if (message.encryptedAssertions === true) {
       writer.uint32(8).bool(message.encryptedAssertions);
+    }
+    if (message.forceAuthn === true) {
+      writer.uint32(16).bool(message.forceAuthn);
     }
     return writer;
   },
@@ -506,6 +512,9 @@ export const FederationSecuritySettings = {
         case 1:
           message.encryptedAssertions = reader.bool();
           break;
+        case 2:
+          message.forceAuthn = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -523,6 +532,10 @@ export const FederationSecuritySettings = {
       object.encryptedAssertions !== null
         ? Boolean(object.encryptedAssertions)
         : false;
+    message.forceAuthn =
+      object.forceAuthn !== undefined && object.forceAuthn !== null
+        ? Boolean(object.forceAuthn)
+        : false;
     return message;
   },
 
@@ -530,6 +543,7 @@ export const FederationSecuritySettings = {
     const obj: any = {};
     message.encryptedAssertions !== undefined &&
       (obj.encryptedAssertions = message.encryptedAssertions);
+    message.forceAuthn !== undefined && (obj.forceAuthn = message.forceAuthn);
     return obj;
   },
 
@@ -540,6 +554,7 @@ export const FederationSecuritySettings = {
       ...baseFederationSecuritySettings,
     } as FederationSecuritySettings;
     message.encryptedAssertions = object.encryptedAssertions ?? false;
+    message.forceAuthn = object.forceAuthn ?? false;
     return message;
   },
 };

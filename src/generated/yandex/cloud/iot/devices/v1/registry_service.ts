@@ -20,6 +20,7 @@ import {
   RegistryCertificate,
   RegistryPassword,
   DeviceAlias,
+  DataStreamExport,
 } from "../../../../../yandex/cloud/iot/devices/v1/registry";
 import { Operation } from "../../../../../yandex/cloud/operation/operation";
 
@@ -371,6 +372,66 @@ export interface ListRegistryOperationsResponse {
    * Each subsequent page will have its own `next_page_token` to continue paging through the results.
    */
   nextPageToken: string;
+}
+
+export interface AddDataStreamExportRequest {
+  $type: "yandex.cloud.iot.devices.v1.AddDataStreamExportRequest";
+  /** Name of the YDS export. The name must be unique within the folder. */
+  name: string;
+  /**
+   * ID of the registry to add a YDS export for.
+   *
+   * To get a registry ID make a [RegistryService.List] request.
+   */
+  registryId: string;
+  /** MQTT topic whose messages export to YDS. */
+  mqttTopicFilter: string;
+  /** YDS database. */
+  database: string;
+  /** YDS stream name. */
+  stream: string;
+  /** ID of the service account which has permission to write to data stream. */
+  serviceAccountId: string;
+}
+
+export interface AddDataStreamExportMetadata {
+  $type: "yandex.cloud.iot.devices.v1.AddDataStreamExportMetadata";
+  /** ID of the registry for which the YDS export was added. */
+  registryId: string;
+  /** ID of the added YDS export. */
+  dataStreamExportId: string;
+}
+
+export interface DeleteDataStreamExportRequest {
+  $type: "yandex.cloud.iot.devices.v1.DeleteDataStreamExportRequest";
+  /** ID of a registry for which the YDS export is being deleted. */
+  registryId: string;
+  /** ID of the YDS export to delete. */
+  dataStreamExportId: string;
+}
+
+export interface DeleteDataStreamExportMetadata {
+  $type: "yandex.cloud.iot.devices.v1.DeleteDataStreamExportMetadata";
+  /** ID of a registry for which the YDS export was deleted. */
+  registryId: string;
+  /** ID of the deleted YDS export. */
+  dataStreamExportId: string;
+}
+
+export interface ListDataStreamExportsRequest {
+  $type: "yandex.cloud.iot.devices.v1.ListDataStreamExportsRequest";
+  /**
+   * ID of the registry to list YDS exports in.
+   *
+   * To get a registry ID make a [RegistryService.List] request.
+   */
+  registryId: string;
+}
+
+export interface ListDataStreamExportsResponse {
+  $type: "yandex.cloud.iot.devices.v1.ListDataStreamExportsResponse";
+  /** List of YDS exports for the specified registry. */
+  dataStreamExports: DataStreamExport[];
 }
 
 const baseGetRegistryRequest: object = {
@@ -2949,6 +3010,571 @@ messageTypeRegistry.set(
   ListRegistryOperationsResponse
 );
 
+const baseAddDataStreamExportRequest: object = {
+  $type: "yandex.cloud.iot.devices.v1.AddDataStreamExportRequest",
+  name: "",
+  registryId: "",
+  mqttTopicFilter: "",
+  database: "",
+  stream: "",
+  serviceAccountId: "",
+};
+
+export const AddDataStreamExportRequest = {
+  $type: "yandex.cloud.iot.devices.v1.AddDataStreamExportRequest" as const,
+
+  encode(
+    message: AddDataStreamExportRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.registryId !== "") {
+      writer.uint32(18).string(message.registryId);
+    }
+    if (message.mqttTopicFilter !== "") {
+      writer.uint32(34).string(message.mqttTopicFilter);
+    }
+    if (message.database !== "") {
+      writer.uint32(42).string(message.database);
+    }
+    if (message.stream !== "") {
+      writer.uint32(50).string(message.stream);
+    }
+    if (message.serviceAccountId !== "") {
+      writer.uint32(58).string(message.serviceAccountId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): AddDataStreamExportRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseAddDataStreamExportRequest,
+    } as AddDataStreamExportRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.name = reader.string();
+          break;
+        case 2:
+          message.registryId = reader.string();
+          break;
+        case 4:
+          message.mqttTopicFilter = reader.string();
+          break;
+        case 5:
+          message.database = reader.string();
+          break;
+        case 6:
+          message.stream = reader.string();
+          break;
+        case 7:
+          message.serviceAccountId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AddDataStreamExportRequest {
+    const message = {
+      ...baseAddDataStreamExportRequest,
+    } as AddDataStreamExportRequest;
+    message.name =
+      object.name !== undefined && object.name !== null
+        ? String(object.name)
+        : "";
+    message.registryId =
+      object.registryId !== undefined && object.registryId !== null
+        ? String(object.registryId)
+        : "";
+    message.mqttTopicFilter =
+      object.mqttTopicFilter !== undefined && object.mqttTopicFilter !== null
+        ? String(object.mqttTopicFilter)
+        : "";
+    message.database =
+      object.database !== undefined && object.database !== null
+        ? String(object.database)
+        : "";
+    message.stream =
+      object.stream !== undefined && object.stream !== null
+        ? String(object.stream)
+        : "";
+    message.serviceAccountId =
+      object.serviceAccountId !== undefined && object.serviceAccountId !== null
+        ? String(object.serviceAccountId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: AddDataStreamExportRequest): unknown {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    message.registryId !== undefined && (obj.registryId = message.registryId);
+    message.mqttTopicFilter !== undefined &&
+      (obj.mqttTopicFilter = message.mqttTopicFilter);
+    message.database !== undefined && (obj.database = message.database);
+    message.stream !== undefined && (obj.stream = message.stream);
+    message.serviceAccountId !== undefined &&
+      (obj.serviceAccountId = message.serviceAccountId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AddDataStreamExportRequest>, I>>(
+    object: I
+  ): AddDataStreamExportRequest {
+    const message = {
+      ...baseAddDataStreamExportRequest,
+    } as AddDataStreamExportRequest;
+    message.name = object.name ?? "";
+    message.registryId = object.registryId ?? "";
+    message.mqttTopicFilter = object.mqttTopicFilter ?? "";
+    message.database = object.database ?? "";
+    message.stream = object.stream ?? "";
+    message.serviceAccountId = object.serviceAccountId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  AddDataStreamExportRequest.$type,
+  AddDataStreamExportRequest
+);
+
+const baseAddDataStreamExportMetadata: object = {
+  $type: "yandex.cloud.iot.devices.v1.AddDataStreamExportMetadata",
+  registryId: "",
+  dataStreamExportId: "",
+};
+
+export const AddDataStreamExportMetadata = {
+  $type: "yandex.cloud.iot.devices.v1.AddDataStreamExportMetadata" as const,
+
+  encode(
+    message: AddDataStreamExportMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.registryId !== "") {
+      writer.uint32(10).string(message.registryId);
+    }
+    if (message.dataStreamExportId !== "") {
+      writer.uint32(18).string(message.dataStreamExportId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): AddDataStreamExportMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseAddDataStreamExportMetadata,
+    } as AddDataStreamExportMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.registryId = reader.string();
+          break;
+        case 2:
+          message.dataStreamExportId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AddDataStreamExportMetadata {
+    const message = {
+      ...baseAddDataStreamExportMetadata,
+    } as AddDataStreamExportMetadata;
+    message.registryId =
+      object.registryId !== undefined && object.registryId !== null
+        ? String(object.registryId)
+        : "";
+    message.dataStreamExportId =
+      object.dataStreamExportId !== undefined &&
+      object.dataStreamExportId !== null
+        ? String(object.dataStreamExportId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: AddDataStreamExportMetadata): unknown {
+    const obj: any = {};
+    message.registryId !== undefined && (obj.registryId = message.registryId);
+    message.dataStreamExportId !== undefined &&
+      (obj.dataStreamExportId = message.dataStreamExportId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AddDataStreamExportMetadata>, I>>(
+    object: I
+  ): AddDataStreamExportMetadata {
+    const message = {
+      ...baseAddDataStreamExportMetadata,
+    } as AddDataStreamExportMetadata;
+    message.registryId = object.registryId ?? "";
+    message.dataStreamExportId = object.dataStreamExportId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  AddDataStreamExportMetadata.$type,
+  AddDataStreamExportMetadata
+);
+
+const baseDeleteDataStreamExportRequest: object = {
+  $type: "yandex.cloud.iot.devices.v1.DeleteDataStreamExportRequest",
+  registryId: "",
+  dataStreamExportId: "",
+};
+
+export const DeleteDataStreamExportRequest = {
+  $type: "yandex.cloud.iot.devices.v1.DeleteDataStreamExportRequest" as const,
+
+  encode(
+    message: DeleteDataStreamExportRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.registryId !== "") {
+      writer.uint32(10).string(message.registryId);
+    }
+    if (message.dataStreamExportId !== "") {
+      writer.uint32(18).string(message.dataStreamExportId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DeleteDataStreamExportRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDeleteDataStreamExportRequest,
+    } as DeleteDataStreamExportRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.registryId = reader.string();
+          break;
+        case 2:
+          message.dataStreamExportId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteDataStreamExportRequest {
+    const message = {
+      ...baseDeleteDataStreamExportRequest,
+    } as DeleteDataStreamExportRequest;
+    message.registryId =
+      object.registryId !== undefined && object.registryId !== null
+        ? String(object.registryId)
+        : "";
+    message.dataStreamExportId =
+      object.dataStreamExportId !== undefined &&
+      object.dataStreamExportId !== null
+        ? String(object.dataStreamExportId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: DeleteDataStreamExportRequest): unknown {
+    const obj: any = {};
+    message.registryId !== undefined && (obj.registryId = message.registryId);
+    message.dataStreamExportId !== undefined &&
+      (obj.dataStreamExportId = message.dataStreamExportId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteDataStreamExportRequest>, I>>(
+    object: I
+  ): DeleteDataStreamExportRequest {
+    const message = {
+      ...baseDeleteDataStreamExportRequest,
+    } as DeleteDataStreamExportRequest;
+    message.registryId = object.registryId ?? "";
+    message.dataStreamExportId = object.dataStreamExportId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  DeleteDataStreamExportRequest.$type,
+  DeleteDataStreamExportRequest
+);
+
+const baseDeleteDataStreamExportMetadata: object = {
+  $type: "yandex.cloud.iot.devices.v1.DeleteDataStreamExportMetadata",
+  registryId: "",
+  dataStreamExportId: "",
+};
+
+export const DeleteDataStreamExportMetadata = {
+  $type: "yandex.cloud.iot.devices.v1.DeleteDataStreamExportMetadata" as const,
+
+  encode(
+    message: DeleteDataStreamExportMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.registryId !== "") {
+      writer.uint32(10).string(message.registryId);
+    }
+    if (message.dataStreamExportId !== "") {
+      writer.uint32(18).string(message.dataStreamExportId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DeleteDataStreamExportMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDeleteDataStreamExportMetadata,
+    } as DeleteDataStreamExportMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.registryId = reader.string();
+          break;
+        case 2:
+          message.dataStreamExportId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteDataStreamExportMetadata {
+    const message = {
+      ...baseDeleteDataStreamExportMetadata,
+    } as DeleteDataStreamExportMetadata;
+    message.registryId =
+      object.registryId !== undefined && object.registryId !== null
+        ? String(object.registryId)
+        : "";
+    message.dataStreamExportId =
+      object.dataStreamExportId !== undefined &&
+      object.dataStreamExportId !== null
+        ? String(object.dataStreamExportId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: DeleteDataStreamExportMetadata): unknown {
+    const obj: any = {};
+    message.registryId !== undefined && (obj.registryId = message.registryId);
+    message.dataStreamExportId !== undefined &&
+      (obj.dataStreamExportId = message.dataStreamExportId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteDataStreamExportMetadata>, I>>(
+    object: I
+  ): DeleteDataStreamExportMetadata {
+    const message = {
+      ...baseDeleteDataStreamExportMetadata,
+    } as DeleteDataStreamExportMetadata;
+    message.registryId = object.registryId ?? "";
+    message.dataStreamExportId = object.dataStreamExportId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  DeleteDataStreamExportMetadata.$type,
+  DeleteDataStreamExportMetadata
+);
+
+const baseListDataStreamExportsRequest: object = {
+  $type: "yandex.cloud.iot.devices.v1.ListDataStreamExportsRequest",
+  registryId: "",
+};
+
+export const ListDataStreamExportsRequest = {
+  $type: "yandex.cloud.iot.devices.v1.ListDataStreamExportsRequest" as const,
+
+  encode(
+    message: ListDataStreamExportsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.registryId !== "") {
+      writer.uint32(10).string(message.registryId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ListDataStreamExportsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseListDataStreamExportsRequest,
+    } as ListDataStreamExportsRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.registryId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListDataStreamExportsRequest {
+    const message = {
+      ...baseListDataStreamExportsRequest,
+    } as ListDataStreamExportsRequest;
+    message.registryId =
+      object.registryId !== undefined && object.registryId !== null
+        ? String(object.registryId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ListDataStreamExportsRequest): unknown {
+    const obj: any = {};
+    message.registryId !== undefined && (obj.registryId = message.registryId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListDataStreamExportsRequest>, I>>(
+    object: I
+  ): ListDataStreamExportsRequest {
+    const message = {
+      ...baseListDataStreamExportsRequest,
+    } as ListDataStreamExportsRequest;
+    message.registryId = object.registryId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ListDataStreamExportsRequest.$type,
+  ListDataStreamExportsRequest
+);
+
+const baseListDataStreamExportsResponse: object = {
+  $type: "yandex.cloud.iot.devices.v1.ListDataStreamExportsResponse",
+};
+
+export const ListDataStreamExportsResponse = {
+  $type: "yandex.cloud.iot.devices.v1.ListDataStreamExportsResponse" as const,
+
+  encode(
+    message: ListDataStreamExportsResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.dataStreamExports) {
+      DataStreamExport.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ListDataStreamExportsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseListDataStreamExportsResponse,
+    } as ListDataStreamExportsResponse;
+    message.dataStreamExports = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.dataStreamExports.push(
+            DataStreamExport.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListDataStreamExportsResponse {
+    const message = {
+      ...baseListDataStreamExportsResponse,
+    } as ListDataStreamExportsResponse;
+    message.dataStreamExports = (object.dataStreamExports ?? []).map((e: any) =>
+      DataStreamExport.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: ListDataStreamExportsResponse): unknown {
+    const obj: any = {};
+    if (message.dataStreamExports) {
+      obj.dataStreamExports = message.dataStreamExports.map((e) =>
+        e ? DataStreamExport.toJSON(e) : undefined
+      );
+    } else {
+      obj.dataStreamExports = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListDataStreamExportsResponse>, I>>(
+    object: I
+  ): ListDataStreamExportsResponse {
+    const message = {
+      ...baseListDataStreamExportsResponse,
+    } as ListDataStreamExportsResponse;
+    message.dataStreamExports =
+      object.dataStreamExports?.map((e) => DataStreamExport.fromPartial(e)) ||
+      [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ListDataStreamExportsResponse.$type,
+  ListDataStreamExportsResponse
+);
+
 /** A set of methods for managing registry. */
 export const RegistryServiceService = {
   /**
@@ -3122,6 +3748,46 @@ export const RegistryServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListDeviceTopicAliasesResponse.decode(value),
   },
+  /** Retrieves the list of YDS exports for the specified registry. */
+  listDataStreamExports: {
+    path: "/yandex.cloud.iot.devices.v1.RegistryService/ListDataStreamExports",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: ListDataStreamExportsRequest) =>
+      Buffer.from(ListDataStreamExportsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      ListDataStreamExportsRequest.decode(value),
+    responseSerialize: (value: ListDataStreamExportsResponse) =>
+      Buffer.from(ListDataStreamExportsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) =>
+      ListDataStreamExportsResponse.decode(value),
+  },
+  /** Adds YDS export for the specified registry. */
+  addDataStreamExport: {
+    path: "/yandex.cloud.iot.devices.v1.RegistryService/AddDataStreamExport",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: AddDataStreamExportRequest) =>
+      Buffer.from(AddDataStreamExportRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      AddDataStreamExportRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /** Deletes the specified YDS export. */
+  deleteDataStreamExport: {
+    path: "/yandex.cloud.iot.devices.v1.RegistryService/DeleteDataStreamExport",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: DeleteDataStreamExportRequest) =>
+      Buffer.from(DeleteDataStreamExportRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      DeleteDataStreamExportRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /** Lists operations for the specified registry. */
   listOperations: {
     path: "/yandex.cloud.iot.devices.v1.RegistryService/ListOperations",
@@ -3179,6 +3845,18 @@ export interface RegistryServiceServer extends UntypedServiceImplementation {
   listDeviceTopicAliases: handleUnaryCall<
     ListDeviceTopicAliasesRequest,
     ListDeviceTopicAliasesResponse
+  >;
+  /** Retrieves the list of YDS exports for the specified registry. */
+  listDataStreamExports: handleUnaryCall<
+    ListDataStreamExportsRequest,
+    ListDataStreamExportsResponse
+  >;
+  /** Adds YDS export for the specified registry. */
+  addDataStreamExport: handleUnaryCall<AddDataStreamExportRequest, Operation>;
+  /** Deletes the specified YDS export. */
+  deleteDataStreamExport: handleUnaryCall<
+    DeleteDataStreamExportRequest,
+    Operation
   >;
   /** Lists operations for the specified registry. */
   listOperations: handleUnaryCall<
@@ -3434,6 +4112,63 @@ export interface RegistryServiceClient extends Client {
       error: ServiceError | null,
       response: ListDeviceTopicAliasesResponse
     ) => void
+  ): ClientUnaryCall;
+  /** Retrieves the list of YDS exports for the specified registry. */
+  listDataStreamExports(
+    request: ListDataStreamExportsRequest,
+    callback: (
+      error: ServiceError | null,
+      response: ListDataStreamExportsResponse
+    ) => void
+  ): ClientUnaryCall;
+  listDataStreamExports(
+    request: ListDataStreamExportsRequest,
+    metadata: Metadata,
+    callback: (
+      error: ServiceError | null,
+      response: ListDataStreamExportsResponse
+    ) => void
+  ): ClientUnaryCall;
+  listDataStreamExports(
+    request: ListDataStreamExportsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (
+      error: ServiceError | null,
+      response: ListDataStreamExportsResponse
+    ) => void
+  ): ClientUnaryCall;
+  /** Adds YDS export for the specified registry. */
+  addDataStreamExport(
+    request: AddDataStreamExportRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  addDataStreamExport(
+    request: AddDataStreamExportRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  addDataStreamExport(
+    request: AddDataStreamExportRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Deletes the specified YDS export. */
+  deleteDataStreamExport(
+    request: DeleteDataStreamExportRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  deleteDataStreamExport(
+    request: DeleteDataStreamExportRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  deleteDataStreamExport(
+    request: DeleteDataStreamExportRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
   /** Lists operations for the specified registry. */
   listOperations(

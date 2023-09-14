@@ -2,7 +2,11 @@
 import { messageTypeRegistry } from "../../../../../typeRegistry";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
-import { Int64Value, BoolValue } from "../../../../../google/protobuf/wrappers";
+import {
+  Int64Value,
+  BoolValue,
+  DoubleValue,
+} from "../../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.mdb.clickhouse.v1";
 
@@ -66,24 +70,25 @@ export interface UserSettings {
    */
   allowDdl?: boolean;
   /**
-   * Enables or disables write quorum for ClickHouse cluster.
-   * If the value is less than **2**, then write quorum is disabled, otherwise it is enabled.
+   * Enables [introspections functions](https://clickhouse.com/docs/en/sql-reference/functions/introspection) for query profiling.
    *
-   * When used, write quorum guarantees that ClickHouse has written data to the quorum of **insert_quorum** replicas with no errors until the [insert_quorum_timeout] expires.
-   * All replicas in the quorum are in the consistent state, meaning that they contain linearized data from the previous **INSERT** queries.
-   * Employ write quorum, if you need the guarantees that the written data would not be lost in case of one or more replicas failure.
-   *
-   * You can use [select_sequential_consistency] setting to read the data written with write quorum.
-   *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#settings-insert_quorum).
+   * More info see in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#settings-allow_introspection_functions).
    */
-  insertQuorum?: number;
+  allowIntrospectionFunctions?: boolean;
   /**
    * Connection timeout in milliseconds.
    *
    * Value must be greater than **0** (default: **10000**, 10 seconds).
    */
   connectTimeout?: number;
+  /**
+   * The timeout in milliseconds for connecting to a remote server for a Distributed table engine. Applies only if the cluster uses sharding and replication. If unsuccessful, several attempts are made to connect to various replicas.
+   *
+   * Default value: **50**.
+   *
+   * More info see in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#connect-timeout-with-failover-ms).
+   */
+  connectTimeoutWithFailover?: number;
   /**
    * Receive timeout in milliseconds.
    *
@@ -97,6 +102,25 @@ export interface UserSettings {
    */
   sendTimeout?: number;
   /**
+   * Timeout (in seconds) between checks of execution speed. It is checked that execution speed is not less that specified in [min_execution_speed] parameter.
+   *
+   * Default value: **10**.
+   */
+  timeoutBeforeCheckingExecutionSpeed?: number;
+  /**
+   * Enables or disables write quorum for ClickHouse cluster.
+   * If the value is less than **2**, then write quorum is disabled, otherwise it is enabled.
+   *
+   * When used, write quorum guarantees that ClickHouse has written data to the quorum of **insert_quorum** replicas with no errors until the [insert_quorum_timeout] expires.
+   * All replicas in the quorum are in the consistent state, meaning that they contain linearized data from the previous **INSERT** queries.
+   * Employ write quorum, if you need the guarantees that the written data would not be lost in case of one or more replicas failure.
+   *
+   * You can use [select_sequential_consistency] setting to read the data written with write quorum.
+   *
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#settings-insert_quorum).
+   */
+  insertQuorum?: number;
+  /**
    * Quorum write timeout in milliseconds.
    *
    * If the write quorum is enabled in the cluster, this timeout expires and some data is not written to the [insert_quorum] replicas, then ClickHouse will abort the execution of **INSERT** query and return an error.
@@ -105,12 +129,34 @@ export interface UserSettings {
    * Minimum value: **1000**, 1 second (default: **60000**, 1 minute).
    */
   insertQuorumTimeout?: number;
+  /** See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#settings-insert_quorum_parallel). */
+  insertQuorumParallel?: boolean;
+  /**
+   * Enables the insertion of default values instead of NULL into columns with not nullable data type.
+   *
+   * Default value: **true**.
+   *
+   * More info see in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#insert_null_as_default).
+   */
+  insertNullAsDefault?: boolean;
   /**
    * Determines the behavior of **SELECT** queries from the replicated table: if enabled, ClickHouse will terminate a query with error message in case the replica does not have a chunk written with the quorum and will not read the parts that have not yet been written with the quorum.
    *
    * Default value: **false** (sequential consistency is disabled).
    */
   selectSequentialConsistency?: boolean;
+  /** See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#settings-deduplicate-blocks-in-dependent-materialized-views). */
+  deduplicateBlocksInDependentMaterializedViews?: boolean;
+  /**
+   * Wait mode for asynchronous actions in **ALTER** queries on replicated tables:
+   *
+   * * **0**-do not wait for replicas.
+   * * **1**-only wait for own execution (default).
+   * * **2**-wait for all replicas.
+   *
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/sql-reference/statements/alter/#synchronicity-of-alter-queries).
+   */
+  replicationAlterPartitionsSync?: number;
   /**
    * Max replica delay in milliseconds. If a replica lags more than the set value, this replica is not used and becomes a stale one.
    *
@@ -129,16 +175,6 @@ export interface UserSettings {
    * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#settings-fallback_to_stale_replicas_for_distributed_queries).
    */
   fallbackToStaleReplicasForDistributedQueries?: boolean;
-  /**
-   * Wait mode for asynchronous actions in **ALTER** queries on replicated tables:
-   *
-   * * **0**-do not wait for replicas.
-   * * **1**-only wait for own execution (default).
-   * * **2**-wait for all replicas.
-   *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/sql-reference/statements/alter/#synchronicity-of-alter-queries).
-   */
-  replicationAlterPartitionsSync?: number;
   /**
    * Determine the behavior of distributed subqueries.
    *
@@ -168,32 +204,6 @@ export interface UserSettings {
    * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#settings-skip_unavailable_shards).
    */
   skipUnavailableShards?: boolean;
-  /**
-   * Enables or disables query compilation.
-   * If you execute a lot of structurally identical queries, then enable this setting.
-   * As a result, such queries may be executed faster due to use of queries' compiled parts.
-   *
-   * Use this setting in combination with [min_count_to_compile] setting.
-   *
-   * Default value: **false** (compilation is disabled).
-   *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#compile).
-   */
-  compile?: boolean;
-  /**
-   * How many structurally identical queries ClickHouse has to encounter before they are compiled.
-   *
-   * Minimum value: **0** (default: **3**).
-   *
-   * For the **0** value compilation is synchronous: a query waits for compilation process to complete prior to continuing execution.
-   * It is recommended to set this value only for testing purposes.
-   *
-   * For all other values, compilation is asynchronous: the compilation process executes in a separate thread.
-   * When a compiled part of query is ready, it will be used by ClickHouse for eligible queries, including the ones that are currently running.
-   *
-   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#min-count-to-compile).
-   */
-  minCountToCompile?: number;
   /**
    * Enables or disables expression compilation.
    * If you execute a lot of queries that contain identical expressions, then enable this setting.
@@ -401,6 +411,13 @@ export interface UserSettings {
    * Minimal value and default value: **0**, no limitation is set.
    */
   maxNetworkBandwidthForUser?: number;
+  /** See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/ru/operations/settings/query-complexity/#max-partitions-per-insert-block). */
+  maxPartitionsPerInsertBlock?: number;
+  /**
+   * The maximum number of concurrent requests per user.
+   * Default value: 0 (no limit).
+   */
+  maxConcurrentQueriesForUser?: number;
   /**
    * If enabled, query is not executed if the ClickHouse can't use index by date.
    * This setting has effect only for tables of the MergeTree family.
@@ -564,6 +581,10 @@ export interface UserSettings {
    * Possible values: OVERFLOW_MODE_THROW, OVERFLOW_MODE_BREAK.
    */
   joinOverflowMode: UserSettings_OverflowMode;
+  /** See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#settings-join_algorithm). */
+  joinAlgorithm: UserSettings_JoinAlgorithm[];
+  /** See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#any_join_distinct_right_table_keys). */
+  anyJoinDistinctRightTableKeys?: boolean;
   /**
    * Limits the maximum number of columns that can be read from a table in a single query.
    * If the query requires to read more columns to complete, then it will be aborted.
@@ -655,6 +676,12 @@ export interface UserSettings {
    * Default value: **true** (replacing is enabled).
    */
   inputFormatDefaultsForOmittedFields?: boolean;
+  /** See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#input_format_null_as_default). */
+  inputFormatNullAsDefault?: boolean;
+  /** See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#date_time_input_format). */
+  dateTimeInputFormat: UserSettings_DateTimeInputFormat;
+  /** See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#input_format_with_names_use_header). */
+  inputFormatWithNamesUseHeader?: boolean;
   /**
    * Enables quoting of 64-bit integers in JSON output format.
    *
@@ -670,6 +697,8 @@ export interface UserSettings {
    * Default value: **false** (special values do not present in output).
    */
   outputFormatJsonQuoteDenormals?: boolean;
+  /** See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#date_time_output_format). */
+  dateTimeOutputFormat: UserSettings_DateTimeOutputFormat;
   /**
    * Determines whether to use LowCardinality type in Native format.
    *
@@ -688,15 +717,18 @@ export interface UserSettings {
    */
   lowCardinalityAllowInNativeFormat?: boolean;
   /**
+   * Allows specifying **LowCardinality** modifier for types of small fixed size (8 or less) in CREATE TABLE statements. Enabling this may increase merge times and memory consumption.
+   *
+   * More info see in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#allow_suspicious_low_cardinality_types).
+   */
+  allowSuspiciousLowCardinalityTypes?: boolean;
+  /**
    * Enables returning of empty result when aggregating without keys (with **GROUP BY** operation absent) on empty set (e.g., **SELECT count(*) FROM table WHERE 0**).
    *
    * * **true**-ClickHouse will return an empty result for such queries.
    * * **false** (default)-ClickHouse will return a single-line result consisting of **NULL** values for aggregation functions, in accordance with SQL standard.
    */
   emptyResultForAggregationByEmptySet?: boolean;
-  joinedSubqueryRequiresAlias?: boolean;
-  joinUseNulls?: boolean;
-  transformNullIn?: boolean;
   /**
    * HTTP connection timeout, in milliseconds.
    *
@@ -748,8 +780,195 @@ export interface UserSettings {
    * Default value: **false** (header is not added).
    */
   addHttpCorsHeader?: boolean;
+  /**
+   * Cancels HTTP read-only queries (e.g. SELECT) when a client closes the connection without waiting for the response.
+   *
+   * Default value: **false**.
+   *
+   * More info see in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#cancel-http-readonly-queries-on-client-close).
+   */
+  cancelHttpReadonlyQueriesOnClientClose?: boolean;
+  /**
+   * Limits the maximum number of HTTP GET redirect hops for [URL-engine](https://clickhouse.com/docs/en/engines/table-engines/special/url) tables.
+   *
+   * If the parameter is set to **0** (default), no hops is allowed.
+   *
+   * More info see in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#setting-max_http_get_redirects).
+   */
+  maxHttpGetRedirects?: number;
+  joinedSubqueryRequiresAlias?: boolean;
+  joinUseNulls?: boolean;
+  transformNullIn?: boolean;
   /** Quota accounting mode. Possible values: QUOTA_MODE_DEFAULT, QUOTA_MODE_KEYED and QUOTA_MODE_KEYED_BY_IP. */
   quotaMode: UserSettings_QuotaMode;
+  /**
+   * Sets the data format of a [nested](https://clickhouse.com/docs/en/sql-reference/data-types/nested-data-structures/nested) columns.
+   *
+   * More info see in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#flatten-nested).
+   */
+  flattenNested?: boolean;
+  /** Regular expression (for Regexp format) */
+  formatRegexp: string;
+  /** See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#format_regexp_escaping_rule). */
+  formatRegexpEscapingRule: UserSettings_FormatRegexpEscapingRule;
+  /** See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#format_regexp_skip_unmatched). */
+  formatRegexpSkipUnmatched?: boolean;
+  /**
+   * Enables asynchronous inserts.
+   *
+   * Disabled by default.
+   *
+   * More info see in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#async-insert).
+   */
+  asyncInsert?: boolean;
+  /**
+   * The maximum number of threads for background data parsing and insertion.
+   *
+   * If the parameter is set to **0**, asynchronous insertions are disabled. Default value: **16**.
+   *
+   * More info see in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#async-insert-threads).
+   */
+  asyncInsertThreads?: number;
+  /**
+   * Enables waiting for processing of asynchronous insertion. If enabled, server returns OK only after the data is inserted.
+   *
+   * More info see in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#wait-for-async-insert).
+   */
+  waitForAsyncInsert?: boolean;
+  /**
+   * The timeout (in seconds) for waiting for processing of asynchronous insertion.
+   *
+   * Default value: **120**.
+   *
+   * More info see in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#wait-for-async-insert-timeout).
+   */
+  waitForAsyncInsertTimeout?: number;
+  /**
+   * The maximum size of the unparsed data in bytes collected per query before being inserted.
+   *
+   * If the parameter is set to **0**, asynchronous insertions are disabled. Default value: **100000**.
+   *
+   * More info see in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#async-insert-max-data-size).
+   */
+  asyncInsertMaxDataSize?: number;
+  /**
+   * The maximum timeout in milliseconds since the first INSERT query before inserting collected data.
+   *
+   * If the parameter is set to **0**, the timeout is disabled. Default value: **200**.
+   *
+   * More info see in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#async-insert-busy-timeout-ms).
+   */
+  asyncInsertBusyTimeout?: number;
+  /**
+   * The maximum timeout in milliseconds since the last INSERT query before dumping collected data. If enabled, the settings prolongs the [async_insert_busy_timeout] with every INSERT query as long as [async_insert_max_data_size] is not exceeded.
+   *
+   * More info see in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#async-insert-stale-timeout-ms).
+   */
+  asyncInsertStaleTimeout?: number;
+  /**
+   * Memory profiler step (in bytes).
+   *
+   * If the next query step requires more memory than this parameter specifies, the memory profiler collects the allocating stack trace. Values lower than a few megabytes slow down query processing.
+   *
+   * Default value: **4194304** (4 MB). Zero means disabled memory profiler.
+   */
+  memoryProfilerStep?: number;
+  /**
+   * Collect random allocations and deallocations and write them into system.trace_log with 'MemorySample' trace_type. The probability is for every alloc/free regardless to the size of the allocation.
+   *
+   * Possible values: from **0** to **1**. Default: **0**.
+   */
+  memoryProfilerSampleProbability?: number;
+  /**
+   * Sets the maximum number of parallel threads for the SELECT query data read phase with the FINAL modifier.
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#max-final-threads).
+   */
+  maxFinalThreads?: number;
+  /**
+   * Enables or disables order-preserving parallel parsing of data formats. Supported only for [TSV](https://clickhouse.com/docs/en/interfaces/formats#tabseparated), [TKSV](https://clickhouse.com/docs/en/interfaces/formats#tskv), [CSV](https://clickhouse.com/docs/en/interfaces/formats#csv) and [JSONEachRow](https://clickhouse.com/docs/en/interfaces/formats#jsoneachrow) formats.
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#input-format-parallel-parsing)
+   */
+  inputFormatParallelParsing?: boolean;
+  /**
+   * Enables or disables the insertion of JSON data with nested objects.
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#input-format-parallel-parsing)
+   */
+  inputFormatImportNestedJson?: boolean;
+  /** Method of reading data from local filesystem, one of: read, pread, mmap, io_uring, pread_threadpool. The 'io_uring' method is experimental and does not work for Log, TinyLog, StripeLog, File, Set and Join, and other tables with append-able files in presence of concurrent reads and writes. */
+  localFilesystemReadMethod: UserSettings_LocalFilesystemReadMethod;
+  /**
+   * The maximum size of the buffer to read from the filesystem.
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_read_buffer_size)
+   */
+  maxReadBufferSize?: number;
+  /**
+   * The setting sets the maximum number of retries for ClickHouse Keeper (or ZooKeeper) requests during insert into replicated MergeTree. Only Keeper requests which failed due to network error, Keeper session timeout, or request timeout are considered for retries.
+   * Default: 20 from 23.2, 0(disabled) before
+   * Min_version: 22.11
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#insert_keeper_max_retries)
+   */
+  insertKeeperMaxRetries?: number;
+  /**
+   * The maximum amount of data consumed by temporary files on disk in bytes for all concurrently running user queries. Zero means unlimited.
+   * Default: 0 - unlimited
+   * Min_version: 22.10
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/query-complexity#settings_max_temporary_data_on_disk_size_for_user)
+   */
+  maxTemporaryDataOnDiskSizeForUser?: number;
+  /**
+   * The maximum amount of data consumed by temporary files on disk in bytes for all concurrently running queries. Zero means unlimited.
+   * Default: 0 - unlimited
+   * Min_version: 22.10
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/query-complexity#settings_max_temporary_data_on_disk_size_for_query)
+   */
+  maxTemporaryDataOnDiskSizeForQuery?: number;
+  /**
+   * Limits maximum recursion depth in the recursive descent parser. Allows controlling the stack size.
+   * Default: 1000
+   * Special: 0 - unlimited
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#max_parser_depth)
+   */
+  maxParserDepth?: number;
+  /**
+   * Method of reading data from remote filesystem, one of: read, threadpool.
+   * Default: read
+   * Min_version: 21.11
+   * See in-depth description in [ClickHouse GitHub](https://github.com/ClickHouse/ClickHouse/blob/f9558345e886876b9132d9c018e357f7fa9b22a3/src/Core/Settings.h#L660)
+   */
+  remoteFilesystemReadMethod: UserSettings_RemoteFilesystemReadMethod;
+  /**
+   * It represents soft memory limit in case when hard limit is reached on user level. This value is used to compute overcommit ratio for the query. Zero means skip the query.
+   * Default: 1GiB
+   * Min_version: 22.5
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#memory_overcommit_ratio_denominator)
+   */
+  memoryOvercommitRatioDenominator?: number;
+  /**
+   * It represents soft memory limit in case when hard limit is reached on global level. This value is used to compute overcommit ratio for the query. Zero means skip the query.
+   * Default: 1GiB
+   * Min_version: 22.5
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#memory_overcommit_ratio_denominator_for_user)
+   */
+  memoryOvercommitRatioDenominatorForUser?: number;
+  /**
+   * Maximum time thread will wait for memory to be freed in the case of memory overcommit on a user level. If the timeout is reached and memory is not freed, an exception is thrown.
+   * Default: 5000000
+   * Min_version: 22.5
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#memory_usage_overcommit_max_wait_microseconds)
+   */
+  memoryUsageOvercommitMaxWaitMicroseconds?: number;
+  /**
+   * The setting is deprecated and has no effect.
+   *
+   * @deprecated
+   */
+  compile?: boolean;
+  /**
+   * The setting is deprecated and has no effect.
+   *
+   * @deprecated
+   */
+  minCountToCompile?: number;
 }
 
 export enum UserSettings_OverflowMode {
@@ -1003,6 +1222,336 @@ export function userSettings_CountDistinctImplementationToJSON(
       return "COUNT_DISTINCT_IMPLEMENTATION_UNIQ_HLL_12";
     case UserSettings_CountDistinctImplementation.COUNT_DISTINCT_IMPLEMENTATION_UNIQ_EXACT:
       return "COUNT_DISTINCT_IMPLEMENTATION_UNIQ_EXACT";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export enum UserSettings_JoinAlgorithm {
+  JOIN_ALGORITHM_UNSPECIFIED = 0,
+  JOIN_ALGORITHM_HASH = 1,
+  JOIN_ALGORITHM_PARALLEL_HASH = 2,
+  JOIN_ALGORITHM_PARTIAL_MERGE = 3,
+  JOIN_ALGORITHM_DIRECT = 4,
+  JOIN_ALGORITHM_AUTO = 5,
+  JOIN_ALGORITHM_FULL_SORTING_MERGE = 6,
+  JOIN_ALGORITHM_PREFER_PARTIAL_MERGE = 7,
+  UNRECOGNIZED = -1,
+}
+
+export function userSettings_JoinAlgorithmFromJSON(
+  object: any
+): UserSettings_JoinAlgorithm {
+  switch (object) {
+    case 0:
+    case "JOIN_ALGORITHM_UNSPECIFIED":
+      return UserSettings_JoinAlgorithm.JOIN_ALGORITHM_UNSPECIFIED;
+    case 1:
+    case "JOIN_ALGORITHM_HASH":
+      return UserSettings_JoinAlgorithm.JOIN_ALGORITHM_HASH;
+    case 2:
+    case "JOIN_ALGORITHM_PARALLEL_HASH":
+      return UserSettings_JoinAlgorithm.JOIN_ALGORITHM_PARALLEL_HASH;
+    case 3:
+    case "JOIN_ALGORITHM_PARTIAL_MERGE":
+      return UserSettings_JoinAlgorithm.JOIN_ALGORITHM_PARTIAL_MERGE;
+    case 4:
+    case "JOIN_ALGORITHM_DIRECT":
+      return UserSettings_JoinAlgorithm.JOIN_ALGORITHM_DIRECT;
+    case 5:
+    case "JOIN_ALGORITHM_AUTO":
+      return UserSettings_JoinAlgorithm.JOIN_ALGORITHM_AUTO;
+    case 6:
+    case "JOIN_ALGORITHM_FULL_SORTING_MERGE":
+      return UserSettings_JoinAlgorithm.JOIN_ALGORITHM_FULL_SORTING_MERGE;
+    case 7:
+    case "JOIN_ALGORITHM_PREFER_PARTIAL_MERGE":
+      return UserSettings_JoinAlgorithm.JOIN_ALGORITHM_PREFER_PARTIAL_MERGE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return UserSettings_JoinAlgorithm.UNRECOGNIZED;
+  }
+}
+
+export function userSettings_JoinAlgorithmToJSON(
+  object: UserSettings_JoinAlgorithm
+): string {
+  switch (object) {
+    case UserSettings_JoinAlgorithm.JOIN_ALGORITHM_UNSPECIFIED:
+      return "JOIN_ALGORITHM_UNSPECIFIED";
+    case UserSettings_JoinAlgorithm.JOIN_ALGORITHM_HASH:
+      return "JOIN_ALGORITHM_HASH";
+    case UserSettings_JoinAlgorithm.JOIN_ALGORITHM_PARALLEL_HASH:
+      return "JOIN_ALGORITHM_PARALLEL_HASH";
+    case UserSettings_JoinAlgorithm.JOIN_ALGORITHM_PARTIAL_MERGE:
+      return "JOIN_ALGORITHM_PARTIAL_MERGE";
+    case UserSettings_JoinAlgorithm.JOIN_ALGORITHM_DIRECT:
+      return "JOIN_ALGORITHM_DIRECT";
+    case UserSettings_JoinAlgorithm.JOIN_ALGORITHM_AUTO:
+      return "JOIN_ALGORITHM_AUTO";
+    case UserSettings_JoinAlgorithm.JOIN_ALGORITHM_FULL_SORTING_MERGE:
+      return "JOIN_ALGORITHM_FULL_SORTING_MERGE";
+    case UserSettings_JoinAlgorithm.JOIN_ALGORITHM_PREFER_PARTIAL_MERGE:
+      return "JOIN_ALGORITHM_PREFER_PARTIAL_MERGE";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export enum UserSettings_FormatRegexpEscapingRule {
+  FORMAT_REGEXP_ESCAPING_RULE_UNSPECIFIED = 0,
+  FORMAT_REGEXP_ESCAPING_RULE_ESCAPED = 1,
+  FORMAT_REGEXP_ESCAPING_RULE_QUOTED = 2,
+  FORMAT_REGEXP_ESCAPING_RULE_CSV = 3,
+  FORMAT_REGEXP_ESCAPING_RULE_JSON = 4,
+  FORMAT_REGEXP_ESCAPING_RULE_XML = 5,
+  FORMAT_REGEXP_ESCAPING_RULE_RAW = 6,
+  UNRECOGNIZED = -1,
+}
+
+export function userSettings_FormatRegexpEscapingRuleFromJSON(
+  object: any
+): UserSettings_FormatRegexpEscapingRule {
+  switch (object) {
+    case 0:
+    case "FORMAT_REGEXP_ESCAPING_RULE_UNSPECIFIED":
+      return UserSettings_FormatRegexpEscapingRule.FORMAT_REGEXP_ESCAPING_RULE_UNSPECIFIED;
+    case 1:
+    case "FORMAT_REGEXP_ESCAPING_RULE_ESCAPED":
+      return UserSettings_FormatRegexpEscapingRule.FORMAT_REGEXP_ESCAPING_RULE_ESCAPED;
+    case 2:
+    case "FORMAT_REGEXP_ESCAPING_RULE_QUOTED":
+      return UserSettings_FormatRegexpEscapingRule.FORMAT_REGEXP_ESCAPING_RULE_QUOTED;
+    case 3:
+    case "FORMAT_REGEXP_ESCAPING_RULE_CSV":
+      return UserSettings_FormatRegexpEscapingRule.FORMAT_REGEXP_ESCAPING_RULE_CSV;
+    case 4:
+    case "FORMAT_REGEXP_ESCAPING_RULE_JSON":
+      return UserSettings_FormatRegexpEscapingRule.FORMAT_REGEXP_ESCAPING_RULE_JSON;
+    case 5:
+    case "FORMAT_REGEXP_ESCAPING_RULE_XML":
+      return UserSettings_FormatRegexpEscapingRule.FORMAT_REGEXP_ESCAPING_RULE_XML;
+    case 6:
+    case "FORMAT_REGEXP_ESCAPING_RULE_RAW":
+      return UserSettings_FormatRegexpEscapingRule.FORMAT_REGEXP_ESCAPING_RULE_RAW;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return UserSettings_FormatRegexpEscapingRule.UNRECOGNIZED;
+  }
+}
+
+export function userSettings_FormatRegexpEscapingRuleToJSON(
+  object: UserSettings_FormatRegexpEscapingRule
+): string {
+  switch (object) {
+    case UserSettings_FormatRegexpEscapingRule.FORMAT_REGEXP_ESCAPING_RULE_UNSPECIFIED:
+      return "FORMAT_REGEXP_ESCAPING_RULE_UNSPECIFIED";
+    case UserSettings_FormatRegexpEscapingRule.FORMAT_REGEXP_ESCAPING_RULE_ESCAPED:
+      return "FORMAT_REGEXP_ESCAPING_RULE_ESCAPED";
+    case UserSettings_FormatRegexpEscapingRule.FORMAT_REGEXP_ESCAPING_RULE_QUOTED:
+      return "FORMAT_REGEXP_ESCAPING_RULE_QUOTED";
+    case UserSettings_FormatRegexpEscapingRule.FORMAT_REGEXP_ESCAPING_RULE_CSV:
+      return "FORMAT_REGEXP_ESCAPING_RULE_CSV";
+    case UserSettings_FormatRegexpEscapingRule.FORMAT_REGEXP_ESCAPING_RULE_JSON:
+      return "FORMAT_REGEXP_ESCAPING_RULE_JSON";
+    case UserSettings_FormatRegexpEscapingRule.FORMAT_REGEXP_ESCAPING_RULE_XML:
+      return "FORMAT_REGEXP_ESCAPING_RULE_XML";
+    case UserSettings_FormatRegexpEscapingRule.FORMAT_REGEXP_ESCAPING_RULE_RAW:
+      return "FORMAT_REGEXP_ESCAPING_RULE_RAW";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export enum UserSettings_DateTimeInputFormat {
+  DATE_TIME_INPUT_FORMAT_UNSPECIFIED = 0,
+  DATE_TIME_INPUT_FORMAT_BEST_EFFORT = 1,
+  DATE_TIME_INPUT_FORMAT_BASIC = 2,
+  DATE_TIME_INPUT_FORMAT_BEST_EFFORT_US = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function userSettings_DateTimeInputFormatFromJSON(
+  object: any
+): UserSettings_DateTimeInputFormat {
+  switch (object) {
+    case 0:
+    case "DATE_TIME_INPUT_FORMAT_UNSPECIFIED":
+      return UserSettings_DateTimeInputFormat.DATE_TIME_INPUT_FORMAT_UNSPECIFIED;
+    case 1:
+    case "DATE_TIME_INPUT_FORMAT_BEST_EFFORT":
+      return UserSettings_DateTimeInputFormat.DATE_TIME_INPUT_FORMAT_BEST_EFFORT;
+    case 2:
+    case "DATE_TIME_INPUT_FORMAT_BASIC":
+      return UserSettings_DateTimeInputFormat.DATE_TIME_INPUT_FORMAT_BASIC;
+    case 3:
+    case "DATE_TIME_INPUT_FORMAT_BEST_EFFORT_US":
+      return UserSettings_DateTimeInputFormat.DATE_TIME_INPUT_FORMAT_BEST_EFFORT_US;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return UserSettings_DateTimeInputFormat.UNRECOGNIZED;
+  }
+}
+
+export function userSettings_DateTimeInputFormatToJSON(
+  object: UserSettings_DateTimeInputFormat
+): string {
+  switch (object) {
+    case UserSettings_DateTimeInputFormat.DATE_TIME_INPUT_FORMAT_UNSPECIFIED:
+      return "DATE_TIME_INPUT_FORMAT_UNSPECIFIED";
+    case UserSettings_DateTimeInputFormat.DATE_TIME_INPUT_FORMAT_BEST_EFFORT:
+      return "DATE_TIME_INPUT_FORMAT_BEST_EFFORT";
+    case UserSettings_DateTimeInputFormat.DATE_TIME_INPUT_FORMAT_BASIC:
+      return "DATE_TIME_INPUT_FORMAT_BASIC";
+    case UserSettings_DateTimeInputFormat.DATE_TIME_INPUT_FORMAT_BEST_EFFORT_US:
+      return "DATE_TIME_INPUT_FORMAT_BEST_EFFORT_US";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export enum UserSettings_DateTimeOutputFormat {
+  DATE_TIME_OUTPUT_FORMAT_UNSPECIFIED = 0,
+  DATE_TIME_OUTPUT_FORMAT_SIMPLE = 1,
+  DATE_TIME_OUTPUT_FORMAT_ISO = 2,
+  DATE_TIME_OUTPUT_FORMAT_UNIX_TIMESTAMP = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function userSettings_DateTimeOutputFormatFromJSON(
+  object: any
+): UserSettings_DateTimeOutputFormat {
+  switch (object) {
+    case 0:
+    case "DATE_TIME_OUTPUT_FORMAT_UNSPECIFIED":
+      return UserSettings_DateTimeOutputFormat.DATE_TIME_OUTPUT_FORMAT_UNSPECIFIED;
+    case 1:
+    case "DATE_TIME_OUTPUT_FORMAT_SIMPLE":
+      return UserSettings_DateTimeOutputFormat.DATE_TIME_OUTPUT_FORMAT_SIMPLE;
+    case 2:
+    case "DATE_TIME_OUTPUT_FORMAT_ISO":
+      return UserSettings_DateTimeOutputFormat.DATE_TIME_OUTPUT_FORMAT_ISO;
+    case 3:
+    case "DATE_TIME_OUTPUT_FORMAT_UNIX_TIMESTAMP":
+      return UserSettings_DateTimeOutputFormat.DATE_TIME_OUTPUT_FORMAT_UNIX_TIMESTAMP;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return UserSettings_DateTimeOutputFormat.UNRECOGNIZED;
+  }
+}
+
+export function userSettings_DateTimeOutputFormatToJSON(
+  object: UserSettings_DateTimeOutputFormat
+): string {
+  switch (object) {
+    case UserSettings_DateTimeOutputFormat.DATE_TIME_OUTPUT_FORMAT_UNSPECIFIED:
+      return "DATE_TIME_OUTPUT_FORMAT_UNSPECIFIED";
+    case UserSettings_DateTimeOutputFormat.DATE_TIME_OUTPUT_FORMAT_SIMPLE:
+      return "DATE_TIME_OUTPUT_FORMAT_SIMPLE";
+    case UserSettings_DateTimeOutputFormat.DATE_TIME_OUTPUT_FORMAT_ISO:
+      return "DATE_TIME_OUTPUT_FORMAT_ISO";
+    case UserSettings_DateTimeOutputFormat.DATE_TIME_OUTPUT_FORMAT_UNIX_TIMESTAMP:
+      return "DATE_TIME_OUTPUT_FORMAT_UNIX_TIMESTAMP";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export enum UserSettings_LocalFilesystemReadMethod {
+  LOCAL_FILESYSTEM_READ_METHOD_UNSPECIFIED = 0,
+  LOCAL_FILESYSTEM_READ_METHOD_READ = 1,
+  LOCAL_FILESYSTEM_READ_METHOD_PREAD_THREADPOOL = 2,
+  LOCAL_FILESYSTEM_READ_METHOD_PREAD = 3,
+  LOCAL_FILESYSTEM_READ_METHOD_NMAP = 4,
+  UNRECOGNIZED = -1,
+}
+
+export function userSettings_LocalFilesystemReadMethodFromJSON(
+  object: any
+): UserSettings_LocalFilesystemReadMethod {
+  switch (object) {
+    case 0:
+    case "LOCAL_FILESYSTEM_READ_METHOD_UNSPECIFIED":
+      return UserSettings_LocalFilesystemReadMethod.LOCAL_FILESYSTEM_READ_METHOD_UNSPECIFIED;
+    case 1:
+    case "LOCAL_FILESYSTEM_READ_METHOD_READ":
+      return UserSettings_LocalFilesystemReadMethod.LOCAL_FILESYSTEM_READ_METHOD_READ;
+    case 2:
+    case "LOCAL_FILESYSTEM_READ_METHOD_PREAD_THREADPOOL":
+      return UserSettings_LocalFilesystemReadMethod.LOCAL_FILESYSTEM_READ_METHOD_PREAD_THREADPOOL;
+    case 3:
+    case "LOCAL_FILESYSTEM_READ_METHOD_PREAD":
+      return UserSettings_LocalFilesystemReadMethod.LOCAL_FILESYSTEM_READ_METHOD_PREAD;
+    case 4:
+    case "LOCAL_FILESYSTEM_READ_METHOD_NMAP":
+      return UserSettings_LocalFilesystemReadMethod.LOCAL_FILESYSTEM_READ_METHOD_NMAP;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return UserSettings_LocalFilesystemReadMethod.UNRECOGNIZED;
+  }
+}
+
+export function userSettings_LocalFilesystemReadMethodToJSON(
+  object: UserSettings_LocalFilesystemReadMethod
+): string {
+  switch (object) {
+    case UserSettings_LocalFilesystemReadMethod.LOCAL_FILESYSTEM_READ_METHOD_UNSPECIFIED:
+      return "LOCAL_FILESYSTEM_READ_METHOD_UNSPECIFIED";
+    case UserSettings_LocalFilesystemReadMethod.LOCAL_FILESYSTEM_READ_METHOD_READ:
+      return "LOCAL_FILESYSTEM_READ_METHOD_READ";
+    case UserSettings_LocalFilesystemReadMethod.LOCAL_FILESYSTEM_READ_METHOD_PREAD_THREADPOOL:
+      return "LOCAL_FILESYSTEM_READ_METHOD_PREAD_THREADPOOL";
+    case UserSettings_LocalFilesystemReadMethod.LOCAL_FILESYSTEM_READ_METHOD_PREAD:
+      return "LOCAL_FILESYSTEM_READ_METHOD_PREAD";
+    case UserSettings_LocalFilesystemReadMethod.LOCAL_FILESYSTEM_READ_METHOD_NMAP:
+      return "LOCAL_FILESYSTEM_READ_METHOD_NMAP";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export enum UserSettings_RemoteFilesystemReadMethod {
+  REMOTE_FILESYSTEM_READ_METHOD_UNSPECIFIED = 0,
+  REMOTE_FILESYSTEM_READ_METHOD_READ = 1,
+  REMOTE_FILESYSTEM_READ_METHOD_THREADPOOL = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function userSettings_RemoteFilesystemReadMethodFromJSON(
+  object: any
+): UserSettings_RemoteFilesystemReadMethod {
+  switch (object) {
+    case 0:
+    case "REMOTE_FILESYSTEM_READ_METHOD_UNSPECIFIED":
+      return UserSettings_RemoteFilesystemReadMethod.REMOTE_FILESYSTEM_READ_METHOD_UNSPECIFIED;
+    case 1:
+    case "REMOTE_FILESYSTEM_READ_METHOD_READ":
+      return UserSettings_RemoteFilesystemReadMethod.REMOTE_FILESYSTEM_READ_METHOD_READ;
+    case 2:
+    case "REMOTE_FILESYSTEM_READ_METHOD_THREADPOOL":
+      return UserSettings_RemoteFilesystemReadMethod.REMOTE_FILESYSTEM_READ_METHOD_THREADPOOL;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return UserSettings_RemoteFilesystemReadMethod.UNRECOGNIZED;
+  }
+}
+
+export function userSettings_RemoteFilesystemReadMethodToJSON(
+  object: UserSettings_RemoteFilesystemReadMethod
+): string {
+  switch (object) {
+    case UserSettings_RemoteFilesystemReadMethod.REMOTE_FILESYSTEM_READ_METHOD_UNSPECIFIED:
+      return "REMOTE_FILESYSTEM_READ_METHOD_UNSPECIFIED";
+    case UserSettings_RemoteFilesystemReadMethod.REMOTE_FILESYSTEM_READ_METHOD_READ:
+      return "REMOTE_FILESYSTEM_READ_METHOD_READ";
+    case UserSettings_RemoteFilesystemReadMethod.REMOTE_FILESYSTEM_READ_METHOD_THREADPOOL:
+      return "REMOTE_FILESYSTEM_READ_METHOD_THREADPOOL";
     default:
       return "UNKNOWN";
   }
@@ -1374,8 +1923,15 @@ const baseUserSettings: object = {
   timeoutOverflowMode: 0,
   setOverflowMode: 0,
   joinOverflowMode: 0,
+  joinAlgorithm: 0,
   countDistinctImplementation: 0,
+  dateTimeInputFormat: 0,
+  dateTimeOutputFormat: 0,
   quotaMode: 0,
+  formatRegexp: "",
+  formatRegexpEscapingRule: 0,
+  localFilesystemReadMethod: 0,
+  remoteFilesystemReadMethod: 0,
 };
 
 export const UserSettings = {
@@ -1397,16 +1953,28 @@ export const UserSettings = {
         writer.uint32(18).fork()
       ).ldelim();
     }
-    if (message.insertQuorum !== undefined) {
-      Int64Value.encode(
-        { $type: "google.protobuf.Int64Value", value: message.insertQuorum! },
-        writer.uint32(26).fork()
+    if (message.allowIntrospectionFunctions !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.allowIntrospectionFunctions!,
+        },
+        writer.uint32(770).fork()
       ).ldelim();
     }
     if (message.connectTimeout !== undefined) {
       Int64Value.encode(
         { $type: "google.protobuf.Int64Value", value: message.connectTimeout! },
         writer.uint32(314).fork()
+      ).ldelim();
+    }
+    if (message.connectTimeoutWithFailover !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.connectTimeoutWithFailover!,
+        },
+        writer.uint32(778).fork()
       ).ldelim();
     }
     if (message.receiveTimeout !== undefined) {
@@ -1421,6 +1989,21 @@ export const UserSettings = {
         writer.uint32(330).fork()
       ).ldelim();
     }
+    if (message.timeoutBeforeCheckingExecutionSpeed !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.timeoutBeforeCheckingExecutionSpeed!,
+        },
+        writer.uint32(786).fork()
+      ).ldelim();
+    }
+    if (message.insertQuorum !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.insertQuorum! },
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     if (message.insertQuorumTimeout !== undefined) {
       Int64Value.encode(
         {
@@ -1430,6 +2013,24 @@ export const UserSettings = {
         writer.uint32(34).fork()
       ).ldelim();
     }
+    if (message.insertQuorumParallel !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.insertQuorumParallel!,
+        },
+        writer.uint32(794).fork()
+      ).ldelim();
+    }
+    if (message.insertNullAsDefault !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.insertNullAsDefault!,
+        },
+        writer.uint32(802).fork()
+      ).ldelim();
+    }
     if (message.selectSequentialConsistency !== undefined) {
       BoolValue.encode(
         {
@@ -1437,6 +2038,24 @@ export const UserSettings = {
           value: message.selectSequentialConsistency!,
         },
         writer.uint32(42).fork()
+      ).ldelim();
+    }
+    if (message.deduplicateBlocksInDependentMaterializedViews !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.deduplicateBlocksInDependentMaterializedViews!,
+        },
+        writer.uint32(810).fork()
+      ).ldelim();
+    }
+    if (message.replicationAlterPartitionsSync !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.replicationAlterPartitionsSync!,
+        },
+        writer.uint32(338).fork()
       ).ldelim();
     }
     if (message.maxReplicaDelayForDistributedQueries !== undefined) {
@@ -1455,15 +2074,6 @@ export const UserSettings = {
           value: message.fallbackToStaleReplicasForDistributedQueries!,
         },
         writer.uint32(58).fork()
-      ).ldelim();
-    }
-    if (message.replicationAlterPartitionsSync !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.replicationAlterPartitionsSync!,
-        },
-        writer.uint32(338).fork()
       ).ldelim();
     }
     if (message.distributedProductMode !== 0) {
@@ -1494,21 +2104,6 @@ export const UserSettings = {
           value: message.skipUnavailableShards!,
         },
         writer.uint32(650).fork()
-      ).ldelim();
-    }
-    if (message.compile !== undefined) {
-      BoolValue.encode(
-        { $type: "google.protobuf.BoolValue", value: message.compile! },
-        writer.uint32(354).fork()
-      ).ldelim();
-    }
-    if (message.minCountToCompile !== undefined) {
-      Int64Value.encode(
-        {
-          $type: "google.protobuf.Int64Value",
-          value: message.minCountToCompile!,
-        },
-        writer.uint32(362).fork()
       ).ldelim();
     }
     if (message.compileExpressions !== undefined) {
@@ -1697,6 +2292,24 @@ export const UserSettings = {
         writer.uint32(466).fork()
       ).ldelim();
     }
+    if (message.maxPartitionsPerInsertBlock !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.maxPartitionsPerInsertBlock!,
+        },
+        writer.uint32(818).fork()
+      ).ldelim();
+    }
+    if (message.maxConcurrentQueriesForUser !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.maxConcurrentQueriesForUser!,
+        },
+        writer.uint32(826).fork()
+      ).ldelim();
+    }
     if (message.forceIndexByDate !== undefined) {
       BoolValue.encode(
         {
@@ -1853,6 +2466,20 @@ export const UserSettings = {
     if (message.joinOverflowMode !== 0) {
       writer.uint32(736).int32(message.joinOverflowMode);
     }
+    writer.uint32(834).fork();
+    for (const v of message.joinAlgorithm) {
+      writer.int32(v);
+    }
+    writer.ldelim();
+    if (message.anyJoinDistinctRightTableKeys !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.anyJoinDistinctRightTableKeys!,
+        },
+        writer.uint32(842).fork()
+      ).ldelim();
+    }
     if (message.maxColumnsToRead !== undefined) {
       Int64Value.encode(
         {
@@ -1946,6 +2573,27 @@ export const UserSettings = {
         writer.uint32(498).fork()
       ).ldelim();
     }
+    if (message.inputFormatNullAsDefault !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.inputFormatNullAsDefault!,
+        },
+        writer.uint32(850).fork()
+      ).ldelim();
+    }
+    if (message.dateTimeInputFormat !== 0) {
+      writer.uint32(856).int32(message.dateTimeInputFormat);
+    }
+    if (message.inputFormatWithNamesUseHeader !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.inputFormatWithNamesUseHeader!,
+        },
+        writer.uint32(866).fork()
+      ).ldelim();
+    }
     if (message.outputFormatJsonQuote64bitIntegers !== undefined) {
       BoolValue.encode(
         {
@@ -1964,6 +2612,9 @@ export const UserSettings = {
         writer.uint32(514).fork()
       ).ldelim();
     }
+    if (message.dateTimeOutputFormat !== 0) {
+      writer.uint32(872).int32(message.dateTimeOutputFormat);
+    }
     if (message.lowCardinalityAllowInNativeFormat !== undefined) {
       BoolValue.encode(
         {
@@ -1973,6 +2624,15 @@ export const UserSettings = {
         writer.uint32(626).fork()
       ).ldelim();
     }
+    if (message.allowSuspiciousLowCardinalityTypes !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.allowSuspiciousLowCardinalityTypes!,
+        },
+        writer.uint32(882).fork()
+      ).ldelim();
+    }
     if (message.emptyResultForAggregationByEmptySet !== undefined) {
       BoolValue.encode(
         {
@@ -1980,27 +2640,6 @@ export const UserSettings = {
           value: message.emptyResultForAggregationByEmptySet!,
         },
         writer.uint32(634).fork()
-      ).ldelim();
-    }
-    if (message.joinedSubqueryRequiresAlias !== undefined) {
-      BoolValue.encode(
-        {
-          $type: "google.protobuf.BoolValue",
-          value: message.joinedSubqueryRequiresAlias!,
-        },
-        writer.uint32(746).fork()
-      ).ldelim();
-    }
-    if (message.joinUseNulls !== undefined) {
-      BoolValue.encode(
-        { $type: "google.protobuf.BoolValue", value: message.joinUseNulls! },
-        writer.uint32(754).fork()
-      ).ldelim();
-    }
-    if (message.transformNullIn !== undefined) {
-      BoolValue.encode(
-        { $type: "google.protobuf.BoolValue", value: message.transformNullIn! },
-        writer.uint32(762).fork()
       ).ldelim();
     }
     if (message.httpConnectionTimeout !== undefined) {
@@ -2066,8 +2705,263 @@ export const UserSettings = {
         writer.uint32(570).fork()
       ).ldelim();
     }
+    if (message.cancelHttpReadonlyQueriesOnClientClose !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.cancelHttpReadonlyQueriesOnClientClose!,
+        },
+        writer.uint32(890).fork()
+      ).ldelim();
+    }
+    if (message.maxHttpGetRedirects !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.maxHttpGetRedirects!,
+        },
+        writer.uint32(898).fork()
+      ).ldelim();
+    }
+    if (message.joinedSubqueryRequiresAlias !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.joinedSubqueryRequiresAlias!,
+        },
+        writer.uint32(746).fork()
+      ).ldelim();
+    }
+    if (message.joinUseNulls !== undefined) {
+      BoolValue.encode(
+        { $type: "google.protobuf.BoolValue", value: message.joinUseNulls! },
+        writer.uint32(754).fork()
+      ).ldelim();
+    }
+    if (message.transformNullIn !== undefined) {
+      BoolValue.encode(
+        { $type: "google.protobuf.BoolValue", value: message.transformNullIn! },
+        writer.uint32(762).fork()
+      ).ldelim();
+    }
     if (message.quotaMode !== 0) {
       writer.uint32(640).int32(message.quotaMode);
+    }
+    if (message.flattenNested !== undefined) {
+      BoolValue.encode(
+        { $type: "google.protobuf.BoolValue", value: message.flattenNested! },
+        writer.uint32(906).fork()
+      ).ldelim();
+    }
+    if (message.formatRegexp !== "") {
+      writer.uint32(914).string(message.formatRegexp);
+    }
+    if (message.formatRegexpEscapingRule !== 0) {
+      writer.uint32(920).int32(message.formatRegexpEscapingRule);
+    }
+    if (message.formatRegexpSkipUnmatched !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.formatRegexpSkipUnmatched!,
+        },
+        writer.uint32(930).fork()
+      ).ldelim();
+    }
+    if (message.asyncInsert !== undefined) {
+      BoolValue.encode(
+        { $type: "google.protobuf.BoolValue", value: message.asyncInsert! },
+        writer.uint32(938).fork()
+      ).ldelim();
+    }
+    if (message.asyncInsertThreads !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.asyncInsertThreads!,
+        },
+        writer.uint32(946).fork()
+      ).ldelim();
+    }
+    if (message.waitForAsyncInsert !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.waitForAsyncInsert!,
+        },
+        writer.uint32(954).fork()
+      ).ldelim();
+    }
+    if (message.waitForAsyncInsertTimeout !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.waitForAsyncInsertTimeout!,
+        },
+        writer.uint32(962).fork()
+      ).ldelim();
+    }
+    if (message.asyncInsertMaxDataSize !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.asyncInsertMaxDataSize!,
+        },
+        writer.uint32(970).fork()
+      ).ldelim();
+    }
+    if (message.asyncInsertBusyTimeout !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.asyncInsertBusyTimeout!,
+        },
+        writer.uint32(978).fork()
+      ).ldelim();
+    }
+    if (message.asyncInsertStaleTimeout !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.asyncInsertStaleTimeout!,
+        },
+        writer.uint32(986).fork()
+      ).ldelim();
+    }
+    if (message.memoryProfilerStep !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.memoryProfilerStep!,
+        },
+        writer.uint32(994).fork()
+      ).ldelim();
+    }
+    if (message.memoryProfilerSampleProbability !== undefined) {
+      DoubleValue.encode(
+        {
+          $type: "google.protobuf.DoubleValue",
+          value: message.memoryProfilerSampleProbability!,
+        },
+        writer.uint32(1002).fork()
+      ).ldelim();
+    }
+    if (message.maxFinalThreads !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.maxFinalThreads!,
+        },
+        writer.uint32(1010).fork()
+      ).ldelim();
+    }
+    if (message.inputFormatParallelParsing !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.inputFormatParallelParsing!,
+        },
+        writer.uint32(1018).fork()
+      ).ldelim();
+    }
+    if (message.inputFormatImportNestedJson !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.inputFormatImportNestedJson!,
+        },
+        writer.uint32(1026).fork()
+      ).ldelim();
+    }
+    if (message.localFilesystemReadMethod !== 0) {
+      writer.uint32(1032).int32(message.localFilesystemReadMethod);
+    }
+    if (message.maxReadBufferSize !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.maxReadBufferSize!,
+        },
+        writer.uint32(1042).fork()
+      ).ldelim();
+    }
+    if (message.insertKeeperMaxRetries !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.insertKeeperMaxRetries!,
+        },
+        writer.uint32(1050).fork()
+      ).ldelim();
+    }
+    if (message.maxTemporaryDataOnDiskSizeForUser !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.maxTemporaryDataOnDiskSizeForUser!,
+        },
+        writer.uint32(1058).fork()
+      ).ldelim();
+    }
+    if (message.maxTemporaryDataOnDiskSizeForQuery !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.maxTemporaryDataOnDiskSizeForQuery!,
+        },
+        writer.uint32(1066).fork()
+      ).ldelim();
+    }
+    if (message.maxParserDepth !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.maxParserDepth! },
+        writer.uint32(1074).fork()
+      ).ldelim();
+    }
+    if (message.remoteFilesystemReadMethod !== 0) {
+      writer.uint32(1080).int32(message.remoteFilesystemReadMethod);
+    }
+    if (message.memoryOvercommitRatioDenominator !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.memoryOvercommitRatioDenominator!,
+        },
+        writer.uint32(1090).fork()
+      ).ldelim();
+    }
+    if (message.memoryOvercommitRatioDenominatorForUser !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.memoryOvercommitRatioDenominatorForUser!,
+        },
+        writer.uint32(1098).fork()
+      ).ldelim();
+    }
+    if (message.memoryUsageOvercommitMaxWaitMicroseconds !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.memoryUsageOvercommitMaxWaitMicroseconds!,
+        },
+        writer.uint32(1106).fork()
+      ).ldelim();
+    }
+    if (message.compile !== undefined) {
+      BoolValue.encode(
+        { $type: "google.protobuf.BoolValue", value: message.compile! },
+        writer.uint32(354).fork()
+      ).ldelim();
+    }
+    if (message.minCountToCompile !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.minCountToCompile!,
+        },
+        writer.uint32(362).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -2076,6 +2970,7 @@ export const UserSettings = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseUserSettings } as UserSettings;
+    message.joinAlgorithm = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2085,14 +2980,20 @@ export const UserSettings = {
         case 2:
           message.allowDdl = BoolValue.decode(reader, reader.uint32()).value;
           break;
-        case 3:
-          message.insertQuorum = Int64Value.decode(
+        case 96:
+          message.allowIntrospectionFunctions = BoolValue.decode(
             reader,
             reader.uint32()
           ).value;
           break;
         case 39:
           message.connectTimeout = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 97:
+          message.connectTimeoutWithFailover = Int64Value.decode(
             reader,
             reader.uint32()
           ).value;
@@ -2109,14 +3010,48 @@ export const UserSettings = {
             reader.uint32()
           ).value;
           break;
+        case 98:
+          message.timeoutBeforeCheckingExecutionSpeed = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 3:
+          message.insertQuorum = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         case 4:
           message.insertQuorumTimeout = Int64Value.decode(
             reader,
             reader.uint32()
           ).value;
           break;
+        case 99:
+          message.insertQuorumParallel = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 100:
+          message.insertNullAsDefault = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         case 5:
           message.selectSequentialConsistency = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 101:
+          message.deduplicateBlocksInDependentMaterializedViews =
+            BoolValue.decode(reader, reader.uint32()).value;
+          break;
+        case 42:
+          message.replicationAlterPartitionsSync = Int64Value.decode(
             reader,
             reader.uint32()
           ).value;
@@ -2130,12 +3065,6 @@ export const UserSettings = {
         case 7:
           message.fallbackToStaleReplicasForDistributedQueries =
             BoolValue.decode(reader, reader.uint32()).value;
-          break;
-        case 42:
-          message.replicationAlterPartitionsSync = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
           break;
         case 43:
           message.distributedProductMode = reader.int32() as any;
@@ -2154,15 +3083,6 @@ export const UserSettings = {
           break;
         case 81:
           message.skipUnavailableShards = BoolValue.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 44:
-          message.compile = BoolValue.decode(reader, reader.uint32()).value;
-          break;
-        case 45:
-          message.minCountToCompile = Int64Value.decode(
             reader,
             reader.uint32()
           ).value;
@@ -2289,6 +3209,18 @@ export const UserSettings = {
           break;
         case 58:
           message.maxNetworkBandwidthForUser = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 102:
+          message.maxPartitionsPerInsertBlock = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 103:
+          message.maxConcurrentQueriesForUser = Int64Value.decode(
             reader,
             reader.uint32()
           ).value;
@@ -2428,6 +3360,22 @@ export const UserSettings = {
         case 92:
           message.joinOverflowMode = reader.int32() as any;
           break;
+        case 104:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.joinAlgorithm.push(reader.int32() as any);
+            }
+          } else {
+            message.joinAlgorithm.push(reader.int32() as any);
+          }
+          break;
+        case 105:
+          message.anyJoinDistinctRightTableKeys = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         case 32:
           message.maxColumnsToRead = Int64Value.decode(
             reader,
@@ -2497,6 +3445,21 @@ export const UserSettings = {
             reader.uint32()
           ).value;
           break;
+        case 106:
+          message.inputFormatNullAsDefault = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 107:
+          message.dateTimeInputFormat = reader.int32() as any;
+          break;
+        case 108:
+          message.inputFormatWithNamesUseHeader = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         case 63:
           message.outputFormatJsonQuote64bitIntegers = BoolValue.decode(
             reader,
@@ -2509,32 +3472,23 @@ export const UserSettings = {
             reader.uint32()
           ).value;
           break;
+        case 109:
+          message.dateTimeOutputFormat = reader.int32() as any;
+          break;
         case 78:
           message.lowCardinalityAllowInNativeFormat = BoolValue.decode(
             reader,
             reader.uint32()
           ).value;
           break;
+        case 110:
+          message.allowSuspiciousLowCardinalityTypes = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         case 79:
           message.emptyResultForAggregationByEmptySet = BoolValue.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 93:
-          message.joinedSubqueryRequiresAlias = BoolValue.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 94:
-          message.joinUseNulls = BoolValue.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        case 95:
-          message.transformNullIn = BoolValue.decode(
             reader,
             reader.uint32()
           ).value;
@@ -2581,8 +3535,188 @@ export const UserSettings = {
             reader.uint32()
           ).value;
           break;
+        case 111:
+          message.cancelHttpReadonlyQueriesOnClientClose = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 112:
+          message.maxHttpGetRedirects = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 93:
+          message.joinedSubqueryRequiresAlias = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 94:
+          message.joinUseNulls = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 95:
+          message.transformNullIn = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         case 80:
           message.quotaMode = reader.int32() as any;
+          break;
+        case 113:
+          message.flattenNested = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 114:
+          message.formatRegexp = reader.string();
+          break;
+        case 115:
+          message.formatRegexpEscapingRule = reader.int32() as any;
+          break;
+        case 116:
+          message.formatRegexpSkipUnmatched = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 117:
+          message.asyncInsert = BoolValue.decode(reader, reader.uint32()).value;
+          break;
+        case 118:
+          message.asyncInsertThreads = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 119:
+          message.waitForAsyncInsert = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 120:
+          message.waitForAsyncInsertTimeout = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 121:
+          message.asyncInsertMaxDataSize = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 122:
+          message.asyncInsertBusyTimeout = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 123:
+          message.asyncInsertStaleTimeout = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 124:
+          message.memoryProfilerStep = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 125:
+          message.memoryProfilerSampleProbability = DoubleValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 126:
+          message.maxFinalThreads = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 127:
+          message.inputFormatParallelParsing = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 128:
+          message.inputFormatImportNestedJson = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 129:
+          message.localFilesystemReadMethod = reader.int32() as any;
+          break;
+        case 130:
+          message.maxReadBufferSize = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 131:
+          message.insertKeeperMaxRetries = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 132:
+          message.maxTemporaryDataOnDiskSizeForUser = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 133:
+          message.maxTemporaryDataOnDiskSizeForQuery = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 134:
+          message.maxParserDepth = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 135:
+          message.remoteFilesystemReadMethod = reader.int32() as any;
+          break;
+        case 136:
+          message.memoryOvercommitRatioDenominator = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 137:
+          message.memoryOvercommitRatioDenominatorForUser = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 138:
+          message.memoryUsageOvercommitMaxWaitMicroseconds = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 44:
+          message.compile = BoolValue.decode(reader, reader.uint32()).value;
+          break;
+        case 45:
+          message.minCountToCompile = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
           break;
         default:
           reader.skipType(tag & 7);
@@ -2602,13 +3736,19 @@ export const UserSettings = {
       object.allowDdl !== undefined && object.allowDdl !== null
         ? Boolean(object.allowDdl)
         : undefined;
-    message.insertQuorum =
-      object.insertQuorum !== undefined && object.insertQuorum !== null
-        ? Number(object.insertQuorum)
+    message.allowIntrospectionFunctions =
+      object.allowIntrospectionFunctions !== undefined &&
+      object.allowIntrospectionFunctions !== null
+        ? Boolean(object.allowIntrospectionFunctions)
         : undefined;
     message.connectTimeout =
       object.connectTimeout !== undefined && object.connectTimeout !== null
         ? Number(object.connectTimeout)
+        : undefined;
+    message.connectTimeoutWithFailover =
+      object.connectTimeoutWithFailover !== undefined &&
+      object.connectTimeoutWithFailover !== null
+        ? Number(object.connectTimeoutWithFailover)
         : undefined;
     message.receiveTimeout =
       object.receiveTimeout !== undefined && object.receiveTimeout !== null
@@ -2618,15 +3758,44 @@ export const UserSettings = {
       object.sendTimeout !== undefined && object.sendTimeout !== null
         ? Number(object.sendTimeout)
         : undefined;
+    message.timeoutBeforeCheckingExecutionSpeed =
+      object.timeoutBeforeCheckingExecutionSpeed !== undefined &&
+      object.timeoutBeforeCheckingExecutionSpeed !== null
+        ? Number(object.timeoutBeforeCheckingExecutionSpeed)
+        : undefined;
+    message.insertQuorum =
+      object.insertQuorum !== undefined && object.insertQuorum !== null
+        ? Number(object.insertQuorum)
+        : undefined;
     message.insertQuorumTimeout =
       object.insertQuorumTimeout !== undefined &&
       object.insertQuorumTimeout !== null
         ? Number(object.insertQuorumTimeout)
         : undefined;
+    message.insertQuorumParallel =
+      object.insertQuorumParallel !== undefined &&
+      object.insertQuorumParallel !== null
+        ? Boolean(object.insertQuorumParallel)
+        : undefined;
+    message.insertNullAsDefault =
+      object.insertNullAsDefault !== undefined &&
+      object.insertNullAsDefault !== null
+        ? Boolean(object.insertNullAsDefault)
+        : undefined;
     message.selectSequentialConsistency =
       object.selectSequentialConsistency !== undefined &&
       object.selectSequentialConsistency !== null
         ? Boolean(object.selectSequentialConsistency)
+        : undefined;
+    message.deduplicateBlocksInDependentMaterializedViews =
+      object.deduplicateBlocksInDependentMaterializedViews !== undefined &&
+      object.deduplicateBlocksInDependentMaterializedViews !== null
+        ? Boolean(object.deduplicateBlocksInDependentMaterializedViews)
+        : undefined;
+    message.replicationAlterPartitionsSync =
+      object.replicationAlterPartitionsSync !== undefined &&
+      object.replicationAlterPartitionsSync !== null
+        ? Number(object.replicationAlterPartitionsSync)
         : undefined;
     message.maxReplicaDelayForDistributedQueries =
       object.maxReplicaDelayForDistributedQueries !== undefined &&
@@ -2637,11 +3806,6 @@ export const UserSettings = {
       object.fallbackToStaleReplicasForDistributedQueries !== undefined &&
       object.fallbackToStaleReplicasForDistributedQueries !== null
         ? Boolean(object.fallbackToStaleReplicasForDistributedQueries)
-        : undefined;
-    message.replicationAlterPartitionsSync =
-      object.replicationAlterPartitionsSync !== undefined &&
-      object.replicationAlterPartitionsSync !== null
-        ? Number(object.replicationAlterPartitionsSync)
         : undefined;
     message.distributedProductMode =
       object.distributedProductMode !== undefined &&
@@ -2664,15 +3828,6 @@ export const UserSettings = {
       object.skipUnavailableShards !== undefined &&
       object.skipUnavailableShards !== null
         ? Boolean(object.skipUnavailableShards)
-        : undefined;
-    message.compile =
-      object.compile !== undefined && object.compile !== null
-        ? Boolean(object.compile)
-        : undefined;
-    message.minCountToCompile =
-      object.minCountToCompile !== undefined &&
-      object.minCountToCompile !== null
-        ? Number(object.minCountToCompile)
         : undefined;
     message.compileExpressions =
       object.compileExpressions !== undefined &&
@@ -2779,6 +3934,16 @@ export const UserSettings = {
       object.maxNetworkBandwidthForUser !== undefined &&
       object.maxNetworkBandwidthForUser !== null
         ? Number(object.maxNetworkBandwidthForUser)
+        : undefined;
+    message.maxPartitionsPerInsertBlock =
+      object.maxPartitionsPerInsertBlock !== undefined &&
+      object.maxPartitionsPerInsertBlock !== null
+        ? Number(object.maxPartitionsPerInsertBlock)
+        : undefined;
+    message.maxConcurrentQueriesForUser =
+      object.maxConcurrentQueriesForUser !== undefined &&
+      object.maxConcurrentQueriesForUser !== null
+        ? Number(object.maxConcurrentQueriesForUser)
         : undefined;
     message.forceIndexByDate =
       object.forceIndexByDate !== undefined && object.forceIndexByDate !== null
@@ -2897,6 +4062,14 @@ export const UserSettings = {
       object.joinOverflowMode !== undefined && object.joinOverflowMode !== null
         ? userSettings_OverflowModeFromJSON(object.joinOverflowMode)
         : 0;
+    message.joinAlgorithm = (object.joinAlgorithm ?? []).map((e: any) =>
+      userSettings_JoinAlgorithmFromJSON(e)
+    );
+    message.anyJoinDistinctRightTableKeys =
+      object.anyJoinDistinctRightTableKeys !== undefined &&
+      object.anyJoinDistinctRightTableKeys !== null
+        ? Boolean(object.anyJoinDistinctRightTableKeys)
+        : undefined;
     message.maxColumnsToRead =
       object.maxColumnsToRead !== undefined && object.maxColumnsToRead !== null
         ? Number(object.maxColumnsToRead)
@@ -2955,6 +4128,21 @@ export const UserSettings = {
       object.inputFormatDefaultsForOmittedFields !== null
         ? Boolean(object.inputFormatDefaultsForOmittedFields)
         : undefined;
+    message.inputFormatNullAsDefault =
+      object.inputFormatNullAsDefault !== undefined &&
+      object.inputFormatNullAsDefault !== null
+        ? Boolean(object.inputFormatNullAsDefault)
+        : undefined;
+    message.dateTimeInputFormat =
+      object.dateTimeInputFormat !== undefined &&
+      object.dateTimeInputFormat !== null
+        ? userSettings_DateTimeInputFormatFromJSON(object.dateTimeInputFormat)
+        : 0;
+    message.inputFormatWithNamesUseHeader =
+      object.inputFormatWithNamesUseHeader !== undefined &&
+      object.inputFormatWithNamesUseHeader !== null
+        ? Boolean(object.inputFormatWithNamesUseHeader)
+        : undefined;
     message.outputFormatJsonQuote64bitIntegers =
       object.outputFormatJsonQuote_64bitIntegers !== undefined &&
       object.outputFormatJsonQuote_64bitIntegers !== null
@@ -2965,28 +4153,25 @@ export const UserSettings = {
       object.outputFormatJsonQuoteDenormals !== null
         ? Boolean(object.outputFormatJsonQuoteDenormals)
         : undefined;
+    message.dateTimeOutputFormat =
+      object.dateTimeOutputFormat !== undefined &&
+      object.dateTimeOutputFormat !== null
+        ? userSettings_DateTimeOutputFormatFromJSON(object.dateTimeOutputFormat)
+        : 0;
     message.lowCardinalityAllowInNativeFormat =
       object.lowCardinalityAllowInNativeFormat !== undefined &&
       object.lowCardinalityAllowInNativeFormat !== null
         ? Boolean(object.lowCardinalityAllowInNativeFormat)
         : undefined;
+    message.allowSuspiciousLowCardinalityTypes =
+      object.allowSuspiciousLowCardinalityTypes !== undefined &&
+      object.allowSuspiciousLowCardinalityTypes !== null
+        ? Boolean(object.allowSuspiciousLowCardinalityTypes)
+        : undefined;
     message.emptyResultForAggregationByEmptySet =
       object.emptyResultForAggregationByEmptySet !== undefined &&
       object.emptyResultForAggregationByEmptySet !== null
         ? Boolean(object.emptyResultForAggregationByEmptySet)
-        : undefined;
-    message.joinedSubqueryRequiresAlias =
-      object.joinedSubqueryRequiresAlias !== undefined &&
-      object.joinedSubqueryRequiresAlias !== null
-        ? Boolean(object.joinedSubqueryRequiresAlias)
-        : undefined;
-    message.joinUseNulls =
-      object.joinUseNulls !== undefined && object.joinUseNulls !== null
-        ? Boolean(object.joinUseNulls)
-        : undefined;
-    message.transformNullIn =
-      object.transformNullIn !== undefined && object.transformNullIn !== null
-        ? Boolean(object.transformNullIn)
         : undefined;
     message.httpConnectionTimeout =
       object.httpConnectionTimeout !== undefined &&
@@ -3022,10 +4207,173 @@ export const UserSettings = {
       object.addHttpCorsHeader !== null
         ? Boolean(object.addHttpCorsHeader)
         : undefined;
+    message.cancelHttpReadonlyQueriesOnClientClose =
+      object.cancelHttpReadonlyQueriesOnClientClose !== undefined &&
+      object.cancelHttpReadonlyQueriesOnClientClose !== null
+        ? Boolean(object.cancelHttpReadonlyQueriesOnClientClose)
+        : undefined;
+    message.maxHttpGetRedirects =
+      object.maxHttpGetRedirects !== undefined &&
+      object.maxHttpGetRedirects !== null
+        ? Number(object.maxHttpGetRedirects)
+        : undefined;
+    message.joinedSubqueryRequiresAlias =
+      object.joinedSubqueryRequiresAlias !== undefined &&
+      object.joinedSubqueryRequiresAlias !== null
+        ? Boolean(object.joinedSubqueryRequiresAlias)
+        : undefined;
+    message.joinUseNulls =
+      object.joinUseNulls !== undefined && object.joinUseNulls !== null
+        ? Boolean(object.joinUseNulls)
+        : undefined;
+    message.transformNullIn =
+      object.transformNullIn !== undefined && object.transformNullIn !== null
+        ? Boolean(object.transformNullIn)
+        : undefined;
     message.quotaMode =
       object.quotaMode !== undefined && object.quotaMode !== null
         ? userSettings_QuotaModeFromJSON(object.quotaMode)
         : 0;
+    message.flattenNested =
+      object.flattenNested !== undefined && object.flattenNested !== null
+        ? Boolean(object.flattenNested)
+        : undefined;
+    message.formatRegexp =
+      object.formatRegexp !== undefined && object.formatRegexp !== null
+        ? String(object.formatRegexp)
+        : "";
+    message.formatRegexpEscapingRule =
+      object.formatRegexpEscapingRule !== undefined &&
+      object.formatRegexpEscapingRule !== null
+        ? userSettings_FormatRegexpEscapingRuleFromJSON(
+            object.formatRegexpEscapingRule
+          )
+        : 0;
+    message.formatRegexpSkipUnmatched =
+      object.formatRegexpSkipUnmatched !== undefined &&
+      object.formatRegexpSkipUnmatched !== null
+        ? Boolean(object.formatRegexpSkipUnmatched)
+        : undefined;
+    message.asyncInsert =
+      object.asyncInsert !== undefined && object.asyncInsert !== null
+        ? Boolean(object.asyncInsert)
+        : undefined;
+    message.asyncInsertThreads =
+      object.asyncInsertThreads !== undefined &&
+      object.asyncInsertThreads !== null
+        ? Number(object.asyncInsertThreads)
+        : undefined;
+    message.waitForAsyncInsert =
+      object.waitForAsyncInsert !== undefined &&
+      object.waitForAsyncInsert !== null
+        ? Boolean(object.waitForAsyncInsert)
+        : undefined;
+    message.waitForAsyncInsertTimeout =
+      object.waitForAsyncInsertTimeout !== undefined &&
+      object.waitForAsyncInsertTimeout !== null
+        ? Number(object.waitForAsyncInsertTimeout)
+        : undefined;
+    message.asyncInsertMaxDataSize =
+      object.asyncInsertMaxDataSize !== undefined &&
+      object.asyncInsertMaxDataSize !== null
+        ? Number(object.asyncInsertMaxDataSize)
+        : undefined;
+    message.asyncInsertBusyTimeout =
+      object.asyncInsertBusyTimeout !== undefined &&
+      object.asyncInsertBusyTimeout !== null
+        ? Number(object.asyncInsertBusyTimeout)
+        : undefined;
+    message.asyncInsertStaleTimeout =
+      object.asyncInsertStaleTimeout !== undefined &&
+      object.asyncInsertStaleTimeout !== null
+        ? Number(object.asyncInsertStaleTimeout)
+        : undefined;
+    message.memoryProfilerStep =
+      object.memoryProfilerStep !== undefined &&
+      object.memoryProfilerStep !== null
+        ? Number(object.memoryProfilerStep)
+        : undefined;
+    message.memoryProfilerSampleProbability =
+      object.memoryProfilerSampleProbability !== undefined &&
+      object.memoryProfilerSampleProbability !== null
+        ? Number(object.memoryProfilerSampleProbability)
+        : undefined;
+    message.maxFinalThreads =
+      object.maxFinalThreads !== undefined && object.maxFinalThreads !== null
+        ? Number(object.maxFinalThreads)
+        : undefined;
+    message.inputFormatParallelParsing =
+      object.inputFormatParallelParsing !== undefined &&
+      object.inputFormatParallelParsing !== null
+        ? Boolean(object.inputFormatParallelParsing)
+        : undefined;
+    message.inputFormatImportNestedJson =
+      object.inputFormatImportNestedJson !== undefined &&
+      object.inputFormatImportNestedJson !== null
+        ? Boolean(object.inputFormatImportNestedJson)
+        : undefined;
+    message.localFilesystemReadMethod =
+      object.localFilesystemReadMethod !== undefined &&
+      object.localFilesystemReadMethod !== null
+        ? userSettings_LocalFilesystemReadMethodFromJSON(
+            object.localFilesystemReadMethod
+          )
+        : 0;
+    message.maxReadBufferSize =
+      object.maxReadBufferSize !== undefined &&
+      object.maxReadBufferSize !== null
+        ? Number(object.maxReadBufferSize)
+        : undefined;
+    message.insertKeeperMaxRetries =
+      object.insertKeeperMaxRetries !== undefined &&
+      object.insertKeeperMaxRetries !== null
+        ? Number(object.insertKeeperMaxRetries)
+        : undefined;
+    message.maxTemporaryDataOnDiskSizeForUser =
+      object.maxTemporaryDataOnDiskSizeForUser !== undefined &&
+      object.maxTemporaryDataOnDiskSizeForUser !== null
+        ? Number(object.maxTemporaryDataOnDiskSizeForUser)
+        : undefined;
+    message.maxTemporaryDataOnDiskSizeForQuery =
+      object.maxTemporaryDataOnDiskSizeForQuery !== undefined &&
+      object.maxTemporaryDataOnDiskSizeForQuery !== null
+        ? Number(object.maxTemporaryDataOnDiskSizeForQuery)
+        : undefined;
+    message.maxParserDepth =
+      object.maxParserDepth !== undefined && object.maxParserDepth !== null
+        ? Number(object.maxParserDepth)
+        : undefined;
+    message.remoteFilesystemReadMethod =
+      object.remoteFilesystemReadMethod !== undefined &&
+      object.remoteFilesystemReadMethod !== null
+        ? userSettings_RemoteFilesystemReadMethodFromJSON(
+            object.remoteFilesystemReadMethod
+          )
+        : 0;
+    message.memoryOvercommitRatioDenominator =
+      object.memoryOvercommitRatioDenominator !== undefined &&
+      object.memoryOvercommitRatioDenominator !== null
+        ? Number(object.memoryOvercommitRatioDenominator)
+        : undefined;
+    message.memoryOvercommitRatioDenominatorForUser =
+      object.memoryOvercommitRatioDenominatorForUser !== undefined &&
+      object.memoryOvercommitRatioDenominatorForUser !== null
+        ? Number(object.memoryOvercommitRatioDenominatorForUser)
+        : undefined;
+    message.memoryUsageOvercommitMaxWaitMicroseconds =
+      object.memoryUsageOvercommitMaxWaitMicroseconds !== undefined &&
+      object.memoryUsageOvercommitMaxWaitMicroseconds !== null
+        ? Number(object.memoryUsageOvercommitMaxWaitMicroseconds)
+        : undefined;
+    message.compile =
+      object.compile !== undefined && object.compile !== null
+        ? Boolean(object.compile)
+        : undefined;
+    message.minCountToCompile =
+      object.minCountToCompile !== undefined &&
+      object.minCountToCompile !== null
+        ? Number(object.minCountToCompile)
+        : undefined;
     return message;
   },
 
@@ -3033,27 +4381,41 @@ export const UserSettings = {
     const obj: any = {};
     message.readonly !== undefined && (obj.readonly = message.readonly);
     message.allowDdl !== undefined && (obj.allowDdl = message.allowDdl);
-    message.insertQuorum !== undefined &&
-      (obj.insertQuorum = message.insertQuorum);
+    message.allowIntrospectionFunctions !== undefined &&
+      (obj.allowIntrospectionFunctions = message.allowIntrospectionFunctions);
     message.connectTimeout !== undefined &&
       (obj.connectTimeout = message.connectTimeout);
+    message.connectTimeoutWithFailover !== undefined &&
+      (obj.connectTimeoutWithFailover = message.connectTimeoutWithFailover);
     message.receiveTimeout !== undefined &&
       (obj.receiveTimeout = message.receiveTimeout);
     message.sendTimeout !== undefined &&
       (obj.sendTimeout = message.sendTimeout);
+    message.timeoutBeforeCheckingExecutionSpeed !== undefined &&
+      (obj.timeoutBeforeCheckingExecutionSpeed =
+        message.timeoutBeforeCheckingExecutionSpeed);
+    message.insertQuorum !== undefined &&
+      (obj.insertQuorum = message.insertQuorum);
     message.insertQuorumTimeout !== undefined &&
       (obj.insertQuorumTimeout = message.insertQuorumTimeout);
+    message.insertQuorumParallel !== undefined &&
+      (obj.insertQuorumParallel = message.insertQuorumParallel);
+    message.insertNullAsDefault !== undefined &&
+      (obj.insertNullAsDefault = message.insertNullAsDefault);
     message.selectSequentialConsistency !== undefined &&
       (obj.selectSequentialConsistency = message.selectSequentialConsistency);
+    message.deduplicateBlocksInDependentMaterializedViews !== undefined &&
+      (obj.deduplicateBlocksInDependentMaterializedViews =
+        message.deduplicateBlocksInDependentMaterializedViews);
+    message.replicationAlterPartitionsSync !== undefined &&
+      (obj.replicationAlterPartitionsSync =
+        message.replicationAlterPartitionsSync);
     message.maxReplicaDelayForDistributedQueries !== undefined &&
       (obj.maxReplicaDelayForDistributedQueries =
         message.maxReplicaDelayForDistributedQueries);
     message.fallbackToStaleReplicasForDistributedQueries !== undefined &&
       (obj.fallbackToStaleReplicasForDistributedQueries =
         message.fallbackToStaleReplicasForDistributedQueries);
-    message.replicationAlterPartitionsSync !== undefined &&
-      (obj.replicationAlterPartitionsSync =
-        message.replicationAlterPartitionsSync);
     message.distributedProductMode !== undefined &&
       (obj.distributedProductMode = userSettings_DistributedProductModeToJSON(
         message.distributedProductMode
@@ -3065,9 +4427,6 @@ export const UserSettings = {
       (obj.distributedDdlTaskTimeout = message.distributedDdlTaskTimeout);
     message.skipUnavailableShards !== undefined &&
       (obj.skipUnavailableShards = message.skipUnavailableShards);
-    message.compile !== undefined && (obj.compile = message.compile);
-    message.minCountToCompile !== undefined &&
-      (obj.minCountToCompile = message.minCountToCompile);
     message.compileExpressions !== undefined &&
       (obj.compileExpressions = message.compileExpressions);
     message.minCountToCompileExpression !== undefined &&
@@ -3114,6 +4473,10 @@ export const UserSettings = {
       (obj.maxNetworkBandwidth = message.maxNetworkBandwidth);
     message.maxNetworkBandwidthForUser !== undefined &&
       (obj.maxNetworkBandwidthForUser = message.maxNetworkBandwidthForUser);
+    message.maxPartitionsPerInsertBlock !== undefined &&
+      (obj.maxPartitionsPerInsertBlock = message.maxPartitionsPerInsertBlock);
+    message.maxConcurrentQueriesForUser !== undefined &&
+      (obj.maxConcurrentQueriesForUser = message.maxConcurrentQueriesForUser);
     message.forceIndexByDate !== undefined &&
       (obj.forceIndexByDate = message.forceIndexByDate);
     message.forcePrimaryKey !== undefined &&
@@ -3186,6 +4549,16 @@ export const UserSettings = {
       (obj.joinOverflowMode = userSettings_OverflowModeToJSON(
         message.joinOverflowMode
       ));
+    if (message.joinAlgorithm) {
+      obj.joinAlgorithm = message.joinAlgorithm.map((e) =>
+        userSettings_JoinAlgorithmToJSON(e)
+      );
+    } else {
+      obj.joinAlgorithm = [];
+    }
+    message.anyJoinDistinctRightTableKeys !== undefined &&
+      (obj.anyJoinDistinctRightTableKeys =
+        message.anyJoinDistinctRightTableKeys);
     message.maxColumnsToRead !== undefined &&
       (obj.maxColumnsToRead = message.maxColumnsToRead);
     message.maxTemporaryColumns !== undefined &&
@@ -3215,24 +4588,34 @@ export const UserSettings = {
     message.inputFormatDefaultsForOmittedFields !== undefined &&
       (obj.inputFormatDefaultsForOmittedFields =
         message.inputFormatDefaultsForOmittedFields);
+    message.inputFormatNullAsDefault !== undefined &&
+      (obj.inputFormatNullAsDefault = message.inputFormatNullAsDefault);
+    message.dateTimeInputFormat !== undefined &&
+      (obj.dateTimeInputFormat = userSettings_DateTimeInputFormatToJSON(
+        message.dateTimeInputFormat
+      ));
+    message.inputFormatWithNamesUseHeader !== undefined &&
+      (obj.inputFormatWithNamesUseHeader =
+        message.inputFormatWithNamesUseHeader);
     message.outputFormatJsonQuote64bitIntegers !== undefined &&
       (obj.outputFormatJsonQuote_64bitIntegers =
         message.outputFormatJsonQuote64bitIntegers);
     message.outputFormatJsonQuoteDenormals !== undefined &&
       (obj.outputFormatJsonQuoteDenormals =
         message.outputFormatJsonQuoteDenormals);
+    message.dateTimeOutputFormat !== undefined &&
+      (obj.dateTimeOutputFormat = userSettings_DateTimeOutputFormatToJSON(
+        message.dateTimeOutputFormat
+      ));
     message.lowCardinalityAllowInNativeFormat !== undefined &&
       (obj.lowCardinalityAllowInNativeFormat =
         message.lowCardinalityAllowInNativeFormat);
+    message.allowSuspiciousLowCardinalityTypes !== undefined &&
+      (obj.allowSuspiciousLowCardinalityTypes =
+        message.allowSuspiciousLowCardinalityTypes);
     message.emptyResultForAggregationByEmptySet !== undefined &&
       (obj.emptyResultForAggregationByEmptySet =
         message.emptyResultForAggregationByEmptySet);
-    message.joinedSubqueryRequiresAlias !== undefined &&
-      (obj.joinedSubqueryRequiresAlias = message.joinedSubqueryRequiresAlias);
-    message.joinUseNulls !== undefined &&
-      (obj.joinUseNulls = message.joinUseNulls);
-    message.transformNullIn !== undefined &&
-      (obj.transformNullIn = message.transformNullIn);
     message.httpConnectionTimeout !== undefined &&
       (obj.httpConnectionTimeout = message.httpConnectionTimeout);
     message.httpReceiveTimeout !== undefined &&
@@ -3247,8 +4630,89 @@ export const UserSettings = {
       (obj.httpHeadersProgressInterval = message.httpHeadersProgressInterval);
     message.addHttpCorsHeader !== undefined &&
       (obj.addHttpCorsHeader = message.addHttpCorsHeader);
+    message.cancelHttpReadonlyQueriesOnClientClose !== undefined &&
+      (obj.cancelHttpReadonlyQueriesOnClientClose =
+        message.cancelHttpReadonlyQueriesOnClientClose);
+    message.maxHttpGetRedirects !== undefined &&
+      (obj.maxHttpGetRedirects = message.maxHttpGetRedirects);
+    message.joinedSubqueryRequiresAlias !== undefined &&
+      (obj.joinedSubqueryRequiresAlias = message.joinedSubqueryRequiresAlias);
+    message.joinUseNulls !== undefined &&
+      (obj.joinUseNulls = message.joinUseNulls);
+    message.transformNullIn !== undefined &&
+      (obj.transformNullIn = message.transformNullIn);
     message.quotaMode !== undefined &&
       (obj.quotaMode = userSettings_QuotaModeToJSON(message.quotaMode));
+    message.flattenNested !== undefined &&
+      (obj.flattenNested = message.flattenNested);
+    message.formatRegexp !== undefined &&
+      (obj.formatRegexp = message.formatRegexp);
+    message.formatRegexpEscapingRule !== undefined &&
+      (obj.formatRegexpEscapingRule =
+        userSettings_FormatRegexpEscapingRuleToJSON(
+          message.formatRegexpEscapingRule
+        ));
+    message.formatRegexpSkipUnmatched !== undefined &&
+      (obj.formatRegexpSkipUnmatched = message.formatRegexpSkipUnmatched);
+    message.asyncInsert !== undefined &&
+      (obj.asyncInsert = message.asyncInsert);
+    message.asyncInsertThreads !== undefined &&
+      (obj.asyncInsertThreads = message.asyncInsertThreads);
+    message.waitForAsyncInsert !== undefined &&
+      (obj.waitForAsyncInsert = message.waitForAsyncInsert);
+    message.waitForAsyncInsertTimeout !== undefined &&
+      (obj.waitForAsyncInsertTimeout = message.waitForAsyncInsertTimeout);
+    message.asyncInsertMaxDataSize !== undefined &&
+      (obj.asyncInsertMaxDataSize = message.asyncInsertMaxDataSize);
+    message.asyncInsertBusyTimeout !== undefined &&
+      (obj.asyncInsertBusyTimeout = message.asyncInsertBusyTimeout);
+    message.asyncInsertStaleTimeout !== undefined &&
+      (obj.asyncInsertStaleTimeout = message.asyncInsertStaleTimeout);
+    message.memoryProfilerStep !== undefined &&
+      (obj.memoryProfilerStep = message.memoryProfilerStep);
+    message.memoryProfilerSampleProbability !== undefined &&
+      (obj.memoryProfilerSampleProbability =
+        message.memoryProfilerSampleProbability);
+    message.maxFinalThreads !== undefined &&
+      (obj.maxFinalThreads = message.maxFinalThreads);
+    message.inputFormatParallelParsing !== undefined &&
+      (obj.inputFormatParallelParsing = message.inputFormatParallelParsing);
+    message.inputFormatImportNestedJson !== undefined &&
+      (obj.inputFormatImportNestedJson = message.inputFormatImportNestedJson);
+    message.localFilesystemReadMethod !== undefined &&
+      (obj.localFilesystemReadMethod =
+        userSettings_LocalFilesystemReadMethodToJSON(
+          message.localFilesystemReadMethod
+        ));
+    message.maxReadBufferSize !== undefined &&
+      (obj.maxReadBufferSize = message.maxReadBufferSize);
+    message.insertKeeperMaxRetries !== undefined &&
+      (obj.insertKeeperMaxRetries = message.insertKeeperMaxRetries);
+    message.maxTemporaryDataOnDiskSizeForUser !== undefined &&
+      (obj.maxTemporaryDataOnDiskSizeForUser =
+        message.maxTemporaryDataOnDiskSizeForUser);
+    message.maxTemporaryDataOnDiskSizeForQuery !== undefined &&
+      (obj.maxTemporaryDataOnDiskSizeForQuery =
+        message.maxTemporaryDataOnDiskSizeForQuery);
+    message.maxParserDepth !== undefined &&
+      (obj.maxParserDepth = message.maxParserDepth);
+    message.remoteFilesystemReadMethod !== undefined &&
+      (obj.remoteFilesystemReadMethod =
+        userSettings_RemoteFilesystemReadMethodToJSON(
+          message.remoteFilesystemReadMethod
+        ));
+    message.memoryOvercommitRatioDenominator !== undefined &&
+      (obj.memoryOvercommitRatioDenominator =
+        message.memoryOvercommitRatioDenominator);
+    message.memoryOvercommitRatioDenominatorForUser !== undefined &&
+      (obj.memoryOvercommitRatioDenominatorForUser =
+        message.memoryOvercommitRatioDenominatorForUser);
+    message.memoryUsageOvercommitMaxWaitMicroseconds !== undefined &&
+      (obj.memoryUsageOvercommitMaxWaitMicroseconds =
+        message.memoryUsageOvercommitMaxWaitMicroseconds);
+    message.compile !== undefined && (obj.compile = message.compile);
+    message.minCountToCompile !== undefined &&
+      (obj.minCountToCompile = message.minCountToCompile);
     return obj;
   },
 
@@ -3258,27 +4722,35 @@ export const UserSettings = {
     const message = { ...baseUserSettings } as UserSettings;
     message.readonly = object.readonly ?? undefined;
     message.allowDdl = object.allowDdl ?? undefined;
-    message.insertQuorum = object.insertQuorum ?? undefined;
+    message.allowIntrospectionFunctions =
+      object.allowIntrospectionFunctions ?? undefined;
     message.connectTimeout = object.connectTimeout ?? undefined;
+    message.connectTimeoutWithFailover =
+      object.connectTimeoutWithFailover ?? undefined;
     message.receiveTimeout = object.receiveTimeout ?? undefined;
     message.sendTimeout = object.sendTimeout ?? undefined;
+    message.timeoutBeforeCheckingExecutionSpeed =
+      object.timeoutBeforeCheckingExecutionSpeed ?? undefined;
+    message.insertQuorum = object.insertQuorum ?? undefined;
     message.insertQuorumTimeout = object.insertQuorumTimeout ?? undefined;
+    message.insertQuorumParallel = object.insertQuorumParallel ?? undefined;
+    message.insertNullAsDefault = object.insertNullAsDefault ?? undefined;
     message.selectSequentialConsistency =
       object.selectSequentialConsistency ?? undefined;
+    message.deduplicateBlocksInDependentMaterializedViews =
+      object.deduplicateBlocksInDependentMaterializedViews ?? undefined;
+    message.replicationAlterPartitionsSync =
+      object.replicationAlterPartitionsSync ?? undefined;
     message.maxReplicaDelayForDistributedQueries =
       object.maxReplicaDelayForDistributedQueries ?? undefined;
     message.fallbackToStaleReplicasForDistributedQueries =
       object.fallbackToStaleReplicasForDistributedQueries ?? undefined;
-    message.replicationAlterPartitionsSync =
-      object.replicationAlterPartitionsSync ?? undefined;
     message.distributedProductMode = object.distributedProductMode ?? 0;
     message.distributedAggregationMemoryEfficient =
       object.distributedAggregationMemoryEfficient ?? undefined;
     message.distributedDdlTaskTimeout =
       object.distributedDdlTaskTimeout ?? undefined;
     message.skipUnavailableShards = object.skipUnavailableShards ?? undefined;
-    message.compile = object.compile ?? undefined;
-    message.minCountToCompile = object.minCountToCompile ?? undefined;
     message.compileExpressions = object.compileExpressions ?? undefined;
     message.minCountToCompileExpression =
       object.minCountToCompileExpression ?? undefined;
@@ -3312,6 +4784,10 @@ export const UserSettings = {
     message.maxNetworkBandwidth = object.maxNetworkBandwidth ?? undefined;
     message.maxNetworkBandwidthForUser =
       object.maxNetworkBandwidthForUser ?? undefined;
+    message.maxPartitionsPerInsertBlock =
+      object.maxPartitionsPerInsertBlock ?? undefined;
+    message.maxConcurrentQueriesForUser =
+      object.maxConcurrentQueriesForUser ?? undefined;
     message.forceIndexByDate = object.forceIndexByDate ?? undefined;
     message.forcePrimaryKey = object.forcePrimaryKey ?? undefined;
     message.maxRowsToRead = object.maxRowsToRead ?? undefined;
@@ -3339,6 +4815,9 @@ export const UserSettings = {
     message.maxRowsInJoin = object.maxRowsInJoin ?? undefined;
     message.maxBytesInJoin = object.maxBytesInJoin ?? undefined;
     message.joinOverflowMode = object.joinOverflowMode ?? 0;
+    message.joinAlgorithm = object.joinAlgorithm?.map((e) => e) || [];
+    message.anyJoinDistinctRightTableKeys =
+      object.anyJoinDistinctRightTableKeys ?? undefined;
     message.maxColumnsToRead = object.maxColumnsToRead ?? undefined;
     message.maxTemporaryColumns = object.maxTemporaryColumns ?? undefined;
     message.maxTemporaryNonConstColumns =
@@ -3355,18 +4834,22 @@ export const UserSettings = {
       object.inputFormatValuesInterpretExpressions ?? undefined;
     message.inputFormatDefaultsForOmittedFields =
       object.inputFormatDefaultsForOmittedFields ?? undefined;
+    message.inputFormatNullAsDefault =
+      object.inputFormatNullAsDefault ?? undefined;
+    message.dateTimeInputFormat = object.dateTimeInputFormat ?? 0;
+    message.inputFormatWithNamesUseHeader =
+      object.inputFormatWithNamesUseHeader ?? undefined;
     message.outputFormatJsonQuote64bitIntegers =
       object.outputFormatJsonQuote64bitIntegers ?? undefined;
     message.outputFormatJsonQuoteDenormals =
       object.outputFormatJsonQuoteDenormals ?? undefined;
+    message.dateTimeOutputFormat = object.dateTimeOutputFormat ?? 0;
     message.lowCardinalityAllowInNativeFormat =
       object.lowCardinalityAllowInNativeFormat ?? undefined;
+    message.allowSuspiciousLowCardinalityTypes =
+      object.allowSuspiciousLowCardinalityTypes ?? undefined;
     message.emptyResultForAggregationByEmptySet =
       object.emptyResultForAggregationByEmptySet ?? undefined;
-    message.joinedSubqueryRequiresAlias =
-      object.joinedSubqueryRequiresAlias ?? undefined;
-    message.joinUseNulls = object.joinUseNulls ?? undefined;
-    message.transformNullIn = object.transformNullIn ?? undefined;
     message.httpConnectionTimeout = object.httpConnectionTimeout ?? undefined;
     message.httpReceiveTimeout = object.httpReceiveTimeout ?? undefined;
     message.httpSendTimeout = object.httpSendTimeout ?? undefined;
@@ -3376,7 +4859,53 @@ export const UserSettings = {
     message.httpHeadersProgressInterval =
       object.httpHeadersProgressInterval ?? undefined;
     message.addHttpCorsHeader = object.addHttpCorsHeader ?? undefined;
+    message.cancelHttpReadonlyQueriesOnClientClose =
+      object.cancelHttpReadonlyQueriesOnClientClose ?? undefined;
+    message.maxHttpGetRedirects = object.maxHttpGetRedirects ?? undefined;
+    message.joinedSubqueryRequiresAlias =
+      object.joinedSubqueryRequiresAlias ?? undefined;
+    message.joinUseNulls = object.joinUseNulls ?? undefined;
+    message.transformNullIn = object.transformNullIn ?? undefined;
     message.quotaMode = object.quotaMode ?? 0;
+    message.flattenNested = object.flattenNested ?? undefined;
+    message.formatRegexp = object.formatRegexp ?? "";
+    message.formatRegexpEscapingRule = object.formatRegexpEscapingRule ?? 0;
+    message.formatRegexpSkipUnmatched =
+      object.formatRegexpSkipUnmatched ?? undefined;
+    message.asyncInsert = object.asyncInsert ?? undefined;
+    message.asyncInsertThreads = object.asyncInsertThreads ?? undefined;
+    message.waitForAsyncInsert = object.waitForAsyncInsert ?? undefined;
+    message.waitForAsyncInsertTimeout =
+      object.waitForAsyncInsertTimeout ?? undefined;
+    message.asyncInsertMaxDataSize = object.asyncInsertMaxDataSize ?? undefined;
+    message.asyncInsertBusyTimeout = object.asyncInsertBusyTimeout ?? undefined;
+    message.asyncInsertStaleTimeout =
+      object.asyncInsertStaleTimeout ?? undefined;
+    message.memoryProfilerStep = object.memoryProfilerStep ?? undefined;
+    message.memoryProfilerSampleProbability =
+      object.memoryProfilerSampleProbability ?? undefined;
+    message.maxFinalThreads = object.maxFinalThreads ?? undefined;
+    message.inputFormatParallelParsing =
+      object.inputFormatParallelParsing ?? undefined;
+    message.inputFormatImportNestedJson =
+      object.inputFormatImportNestedJson ?? undefined;
+    message.localFilesystemReadMethod = object.localFilesystemReadMethod ?? 0;
+    message.maxReadBufferSize = object.maxReadBufferSize ?? undefined;
+    message.insertKeeperMaxRetries = object.insertKeeperMaxRetries ?? undefined;
+    message.maxTemporaryDataOnDiskSizeForUser =
+      object.maxTemporaryDataOnDiskSizeForUser ?? undefined;
+    message.maxTemporaryDataOnDiskSizeForQuery =
+      object.maxTemporaryDataOnDiskSizeForQuery ?? undefined;
+    message.maxParserDepth = object.maxParserDepth ?? undefined;
+    message.remoteFilesystemReadMethod = object.remoteFilesystemReadMethod ?? 0;
+    message.memoryOvercommitRatioDenominator =
+      object.memoryOvercommitRatioDenominator ?? undefined;
+    message.memoryOvercommitRatioDenominatorForUser =
+      object.memoryOvercommitRatioDenominatorForUser ?? undefined;
+    message.memoryUsageOvercommitMaxWaitMicroseconds =
+      object.memoryUsageOvercommitMaxWaitMicroseconds ?? undefined;
+    message.compile = object.compile ?? undefined;
+    message.minCountToCompile = object.minCountToCompile ?? undefined;
     return message;
   },
 };

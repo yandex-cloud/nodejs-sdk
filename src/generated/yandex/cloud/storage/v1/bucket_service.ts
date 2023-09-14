@@ -19,7 +19,10 @@ import {
   ACL,
   WebsiteSettings,
   Versioning,
+  ObjectLock,
+  Encryption,
   Bucket,
+  Tag,
   CorsRule,
   LifecycleRule,
   BucketStats,
@@ -56,13 +59,14 @@ export enum GetBucketRequest_View {
    * VIEW_BASIC - Returns basic information about a bucket.
    *
    * The following fields will _not_ be returned: [Bucket.acl], [Bucket.cors], [Bucket.website_settings],
-   * [Bucket.lifecycle_rules].
+   * [Bucket.lifecycle_rules], [Bucket.tags].
    */
   VIEW_BASIC = 1,
   /**
    * VIEW_ACL - Returns basic information and access control list (ACL) for the bucket.
    *
-   * The following fields will _not_ be returned: [Bucket.cors], [Bucket.website_settings], [Bucket.lifecycle_rules].
+   * The following fields will _not_ be returned: [Bucket.cors], [Bucket.website_settings], [Bucket.lifecycle_rules],
+   * [Bucket.tags].
    */
   VIEW_ACL = 2,
   /** VIEW_FULL - Returns full information about a bucket. */
@@ -162,6 +166,11 @@ export interface CreateBucketRequest {
    * For details, see [documentation](/docs/storage/concepts/acl).
    */
   acl?: ACL;
+  /**
+   * List of tags for the bucket.
+   * For details, see [documentation](/docs/resource-manager/concepts/labels).
+   */
+  tags: Tag[];
 }
 
 export interface CreateBucketMetadata {
@@ -180,8 +189,11 @@ export interface UpdateBucketRequest {
    * To get the bucket name, make a [BucketService.List] request.
    */
   name: string;
-  /** Field mask that specifies which attributes of the bucket should be updated. */
-  fieldMask?: FieldMask;
+  /**
+   * Update mask that specifies which attributes of the bucket should be updated.
+   * Use * for full update.
+   */
+  updateMask?: FieldMask;
   /**
    * Flags for configuring public (anonymous) access to the bucket's content and settings.
    * For details, see [documentation](/docs/storage/concepts/bucket#bucket-access).
@@ -228,6 +240,21 @@ export interface UpdateBucketRequest {
    * For details, see [documentation](/docs/storage/concepts/acl).
    */
   acl?: ACL;
+  /**
+   * List of tags for the bucket.
+   * For details, see [documentation](/docs/resource-manager/concepts/labels).
+   */
+  tags: Tag[];
+  /**
+   * Configuration for object lock on the bucket.
+   * For details about the concept, see [documentation](/docs/storage/concepts/object-lock).
+   */
+  objectLock?: ObjectLock;
+  /**
+   * Configuration for bucket's encryption
+   * For detauls, see [documentation](/docs/storage/concepts/encryption)
+   */
+  encryption?: Encryption;
 }
 
 export interface UpdateBucketMetadata {
@@ -563,6 +590,9 @@ export const CreateBucketRequest = {
     if (message.acl !== undefined) {
       ACL.encode(message.acl, writer.uint32(58).fork()).ldelim();
     }
+    for (const v of message.tags) {
+      Tag.encode(v!, writer.uint32(66).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -570,6 +600,7 @@ export const CreateBucketRequest = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseCreateBucketRequest } as CreateBucketRequest;
+    message.tags = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -593,6 +624,9 @@ export const CreateBucketRequest = {
           break;
         case 7:
           message.acl = ACL.decode(reader, reader.uint32());
+          break;
+        case 8:
+          message.tags.push(Tag.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -630,6 +664,7 @@ export const CreateBucketRequest = {
       object.acl !== undefined && object.acl !== null
         ? ACL.fromJSON(object.acl)
         : undefined;
+    message.tags = (object.tags ?? []).map((e: any) => Tag.fromJSON(e));
     return message;
   },
 
@@ -647,6 +682,11 @@ export const CreateBucketRequest = {
         : undefined);
     message.acl !== undefined &&
       (obj.acl = message.acl ? ACL.toJSON(message.acl) : undefined);
+    if (message.tags) {
+      obj.tags = message.tags.map((e) => (e ? Tag.toJSON(e) : undefined));
+    } else {
+      obj.tags = [];
+    }
     return obj;
   },
 
@@ -667,6 +707,7 @@ export const CreateBucketRequest = {
       object.acl !== undefined && object.acl !== null
         ? ACL.fromPartial(object.acl)
         : undefined;
+    message.tags = object.tags?.map((e) => Tag.fromPartial(e)) || [];
     return message;
   },
 };
@@ -756,8 +797,8 @@ export const UpdateBucketRequest = {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
-    if (message.fieldMask !== undefined) {
-      FieldMask.encode(message.fieldMask, writer.uint32(18).fork()).ldelim();
+    if (message.updateMask !== undefined) {
+      FieldMask.encode(message.updateMask, writer.uint32(18).fork()).ldelim();
     }
     if (message.anonymousAccessFlags !== undefined) {
       AnonymousAccessFlags.encode(
@@ -795,6 +836,15 @@ export const UpdateBucketRequest = {
     if (message.acl !== undefined) {
       ACL.encode(message.acl, writer.uint32(90).fork()).ldelim();
     }
+    for (const v of message.tags) {
+      Tag.encode(v!, writer.uint32(98).fork()).ldelim();
+    }
+    if (message.objectLock !== undefined) {
+      ObjectLock.encode(message.objectLock, writer.uint32(106).fork()).ldelim();
+    }
+    if (message.encryption !== undefined) {
+      Encryption.encode(message.encryption, writer.uint32(114).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -804,6 +854,7 @@ export const UpdateBucketRequest = {
     const message = { ...baseUpdateBucketRequest } as UpdateBucketRequest;
     message.cors = [];
     message.lifecycleRules = [];
+    message.tags = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -811,7 +862,7 @@ export const UpdateBucketRequest = {
           message.name = reader.string();
           break;
         case 2:
-          message.fieldMask = FieldMask.decode(reader, reader.uint32());
+          message.updateMask = FieldMask.decode(reader, reader.uint32());
           break;
         case 3:
           message.anonymousAccessFlags = AnonymousAccessFlags.decode(
@@ -850,6 +901,15 @@ export const UpdateBucketRequest = {
         case 11:
           message.acl = ACL.decode(reader, reader.uint32());
           break;
+        case 12:
+          message.tags.push(Tag.decode(reader, reader.uint32()));
+          break;
+        case 13:
+          message.objectLock = ObjectLock.decode(reader, reader.uint32());
+          break;
+        case 14:
+          message.encryption = Encryption.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -864,9 +924,9 @@ export const UpdateBucketRequest = {
       object.name !== undefined && object.name !== null
         ? String(object.name)
         : "";
-    message.fieldMask =
-      object.fieldMask !== undefined && object.fieldMask !== null
-        ? FieldMask.fromJSON(object.fieldMask)
+    message.updateMask =
+      object.updateMask !== undefined && object.updateMask !== null
+        ? FieldMask.fromJSON(object.updateMask)
         : undefined;
     message.anonymousAccessFlags =
       object.anonymousAccessFlags !== undefined &&
@@ -900,15 +960,24 @@ export const UpdateBucketRequest = {
       object.acl !== undefined && object.acl !== null
         ? ACL.fromJSON(object.acl)
         : undefined;
+    message.tags = (object.tags ?? []).map((e: any) => Tag.fromJSON(e));
+    message.objectLock =
+      object.objectLock !== undefined && object.objectLock !== null
+        ? ObjectLock.fromJSON(object.objectLock)
+        : undefined;
+    message.encryption =
+      object.encryption !== undefined && object.encryption !== null
+        ? Encryption.fromJSON(object.encryption)
+        : undefined;
     return message;
   },
 
   toJSON(message: UpdateBucketRequest): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
-    message.fieldMask !== undefined &&
-      (obj.fieldMask = message.fieldMask
-        ? FieldMask.toJSON(message.fieldMask)
+    message.updateMask !== undefined &&
+      (obj.updateMask = message.updateMask
+        ? FieldMask.toJSON(message.updateMask)
         : undefined);
     message.anonymousAccessFlags !== undefined &&
       (obj.anonymousAccessFlags = message.anonymousAccessFlags
@@ -939,6 +1008,19 @@ export const UpdateBucketRequest = {
     message.policy !== undefined && (obj.policy = message.policy);
     message.acl !== undefined &&
       (obj.acl = message.acl ? ACL.toJSON(message.acl) : undefined);
+    if (message.tags) {
+      obj.tags = message.tags.map((e) => (e ? Tag.toJSON(e) : undefined));
+    } else {
+      obj.tags = [];
+    }
+    message.objectLock !== undefined &&
+      (obj.objectLock = message.objectLock
+        ? ObjectLock.toJSON(message.objectLock)
+        : undefined);
+    message.encryption !== undefined &&
+      (obj.encryption = message.encryption
+        ? Encryption.toJSON(message.encryption)
+        : undefined);
     return obj;
   },
 
@@ -947,9 +1029,9 @@ export const UpdateBucketRequest = {
   ): UpdateBucketRequest {
     const message = { ...baseUpdateBucketRequest } as UpdateBucketRequest;
     message.name = object.name ?? "";
-    message.fieldMask =
-      object.fieldMask !== undefined && object.fieldMask !== null
-        ? FieldMask.fromPartial(object.fieldMask)
+    message.updateMask =
+      object.updateMask !== undefined && object.updateMask !== null
+        ? FieldMask.fromPartial(object.updateMask)
         : undefined;
     message.anonymousAccessFlags =
       object.anonymousAccessFlags !== undefined &&
@@ -970,6 +1052,15 @@ export const UpdateBucketRequest = {
     message.acl =
       object.acl !== undefined && object.acl !== null
         ? ACL.fromPartial(object.acl)
+        : undefined;
+    message.tags = object.tags?.map((e) => Tag.fromPartial(e)) || [];
+    message.objectLock =
+      object.objectLock !== undefined && object.objectLock !== null
+        ? ObjectLock.fromPartial(object.objectLock)
+        : undefined;
+    message.encryption =
+      object.encryption !== undefined && object.encryption !== null
+        ? Encryption.fromPartial(object.encryption)
         : undefined;
     return message;
   },
@@ -1826,7 +1917,7 @@ export const BucketServiceService = {
    * Retrieves the list of buckets in the specified folder.
    *
    * The following fields will not be returned for buckets in the list: [Bucket.policy], [Bucket.acl], [Bucket.cors],
-   * [Bucket.website_settings], [Bucket.lifecycle_rules].
+   * [Bucket.website_settings], [Bucket.lifecycle_rules], [Bucket.tags].
    */
   list: {
     path: "/yandex.cloud.storage.v1.BucketService/List",
@@ -1958,7 +2049,7 @@ export interface BucketServiceServer extends UntypedServiceImplementation {
    * Retrieves the list of buckets in the specified folder.
    *
    * The following fields will not be returned for buckets in the list: [Bucket.policy], [Bucket.acl], [Bucket.cors],
-   * [Bucket.website_settings], [Bucket.lifecycle_rules].
+   * [Bucket.website_settings], [Bucket.lifecycle_rules], [Bucket.tags].
    */
   list: handleUnaryCall<ListBucketsRequest, ListBucketsResponse>;
   /**
@@ -1997,7 +2088,7 @@ export interface BucketServiceClient extends Client {
    * Retrieves the list of buckets in the specified folder.
    *
    * The following fields will not be returned for buckets in the list: [Bucket.policy], [Bucket.acl], [Bucket.cors],
-   * [Bucket.website_settings], [Bucket.lifecycle_rules].
+   * [Bucket.website_settings], [Bucket.lifecycle_rules], [Bucket.tags].
    */
   list(
     request: ListBucketsRequest,

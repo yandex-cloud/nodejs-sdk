@@ -128,7 +128,7 @@ export interface CreateClusterConfigSpec {
   /**
    * Version of the image for cluster provisioning.
    *
-   * All available versions are listed in the [documentation](/docs/data-proc/concepts/image-versions).
+   * All available versions are listed in the [documentation](/docs/data-proc/concepts/environment).
    */
   versionId: string;
   /** Data Proc specific options. */

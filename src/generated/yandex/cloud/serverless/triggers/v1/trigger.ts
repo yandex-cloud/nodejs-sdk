@@ -307,6 +307,8 @@ export interface Trigger_Timer {
   $type: "yandex.cloud.serverless.triggers.v1.Trigger.Timer";
   /** Description of a schedule as a [cron expression](/docs/functions/concepts/trigger/timer). */
   cronExpression: string;
+  /** Payload to be passed to function. */
+  payload: string;
   /** Instructions for invoking a function once. */
   invokeFunction?: InvokeFunctionOnce | undefined;
   /** Instructions for invoking a function with retry. */
@@ -341,6 +343,8 @@ export interface Trigger_IoTMessage {
   deviceId: string;
   /** MQTT topic whose messages activate the trigger. */
   mqttTopic: string;
+  /** Batch settings for processing events. */
+  batchSettings?: BatchSettings;
   /** Instructions for invoking a function with retries as needed. */
   invokeFunction?: InvokeFunctionWithRetry | undefined;
   /** Instructions for invoking a container with retries as needed. */
@@ -354,6 +358,8 @@ export interface Trigger_IoTBrokerMessage {
   brokerId: string;
   /** MQTT topic whose messages activate the trigger. */
   mqttTopic: string;
+  /** Batch settings for processing events. */
+  batchSettings?: BatchSettings;
   /** Instructions for invoking a function with retries as needed. */
   invokeFunction?: InvokeFunctionWithRetry | undefined;
   /** Instructions for invoking a container with retries as needed. */
@@ -370,6 +376,8 @@ export interface Trigger_ObjectStorage {
   prefix: string;
   /** Suffix of the object key. Filter, optional. */
   suffix: string;
+  /** Batch settings for processing events. */
+  batchSettings?: BatchSettings;
   /** Instructions for invoking a function with retries as needed. */
   invokeFunction?: InvokeFunctionWithRetry | undefined;
   /** Instructions for invoking a container with retries as needed. */
@@ -386,6 +394,8 @@ export interface Trigger_ContainerRegistry {
   imageName: string;
   /** Docker-image tag. Filter, optional. */
   tag: string;
+  /** Batch settings for processing events. */
+  batchSettings?: BatchSettings;
   /** Instructions for invoking a function with retries as needed. */
   invokeFunction?: InvokeFunctionWithRetry | undefined;
   /** Instructions for invoking a container with retries as needed. */
@@ -410,6 +420,7 @@ export interface Trigger_Logging {
   logGroupId: string;
   resourceType: string[];
   resourceId: string[];
+  streamName: string[];
   levels: LogLevel_Level[];
   /** Batch settings for processing log events. */
   batchSettings?: LoggingBatchSettings;
@@ -569,6 +580,14 @@ export interface DataStream {
   invokeContainer?: InvokeContainerWithRetry | undefined;
 }
 
+export interface ObjectStorageBucketSettings {
+  $type: "yandex.cloud.serverless.triggers.v1.ObjectStorageBucketSettings";
+  /** Bucket for saving. */
+  bucketId: string;
+  /** SA which has write permission on storage. */
+  serviceAccountId: string;
+}
+
 export interface Mail {
   $type: "yandex.cloud.serverless.triggers.v1.Mail";
   /**
@@ -576,6 +595,10 @@ export interface Mail {
    * Field is ignored for write requests and populated on trigger creation.
    */
   email: string;
+  /** Batch settings for processing events. */
+  batchSettings?: BatchSettings;
+  /** Bucket settings for saving attachments. */
+  attachmentsBucket?: ObjectStorageBucketSettings;
   invokeFunction?: InvokeFunctionWithRetry | undefined;
   invokeContainer?: InvokeContainerWithRetry | undefined;
 }
@@ -1125,6 +1148,7 @@ messageTypeRegistry.set(Trigger_Rule.$type, Trigger_Rule);
 const baseTrigger_Timer: object = {
   $type: "yandex.cloud.serverless.triggers.v1.Trigger.Timer",
   cronExpression: "",
+  payload: "",
 };
 
 export const Trigger_Timer = {
@@ -1136,6 +1160,9 @@ export const Trigger_Timer = {
   ): _m0.Writer {
     if (message.cronExpression !== "") {
       writer.uint32(10).string(message.cronExpression);
+    }
+    if (message.payload !== "") {
+      writer.uint32(18).string(message.payload);
     }
     if (message.invokeFunction !== undefined) {
       InvokeFunctionOnce.encode(
@@ -1167,6 +1194,9 @@ export const Trigger_Timer = {
       switch (tag >>> 3) {
         case 1:
           message.cronExpression = reader.string();
+          break;
+        case 2:
+          message.payload = reader.string();
           break;
         case 101:
           message.invokeFunction = InvokeFunctionOnce.decode(
@@ -1200,6 +1230,10 @@ export const Trigger_Timer = {
       object.cronExpression !== undefined && object.cronExpression !== null
         ? String(object.cronExpression)
         : "";
+    message.payload =
+      object.payload !== undefined && object.payload !== null
+        ? String(object.payload)
+        : "";
     message.invokeFunction =
       object.invokeFunction !== undefined && object.invokeFunction !== null
         ? InvokeFunctionOnce.fromJSON(object.invokeFunction)
@@ -1221,6 +1255,7 @@ export const Trigger_Timer = {
     const obj: any = {};
     message.cronExpression !== undefined &&
       (obj.cronExpression = message.cronExpression);
+    message.payload !== undefined && (obj.payload = message.payload);
     message.invokeFunction !== undefined &&
       (obj.invokeFunction = message.invokeFunction
         ? InvokeFunctionOnce.toJSON(message.invokeFunction)
@@ -1241,6 +1276,7 @@ export const Trigger_Timer = {
   ): Trigger_Timer {
     const message = { ...baseTrigger_Timer } as Trigger_Timer;
     message.cronExpression = object.cronExpression ?? "";
+    message.payload = object.payload ?? "";
     message.invokeFunction =
       object.invokeFunction !== undefined && object.invokeFunction !== null
         ? InvokeFunctionOnce.fromPartial(object.invokeFunction)
@@ -1455,6 +1491,12 @@ export const Trigger_IoTMessage = {
     if (message.mqttTopic !== "") {
       writer.uint32(26).string(message.mqttTopic);
     }
+    if (message.batchSettings !== undefined) {
+      BatchSettings.encode(
+        message.batchSettings,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     if (message.invokeFunction !== undefined) {
       InvokeFunctionWithRetry.encode(
         message.invokeFunction,
@@ -1485,6 +1527,9 @@ export const Trigger_IoTMessage = {
           break;
         case 3:
           message.mqttTopic = reader.string();
+          break;
+        case 4:
+          message.batchSettings = BatchSettings.decode(reader, reader.uint32());
           break;
         case 101:
           message.invokeFunction = InvokeFunctionWithRetry.decode(
@@ -1520,6 +1565,10 @@ export const Trigger_IoTMessage = {
       object.mqttTopic !== undefined && object.mqttTopic !== null
         ? String(object.mqttTopic)
         : "";
+    message.batchSettings =
+      object.batchSettings !== undefined && object.batchSettings !== null
+        ? BatchSettings.fromJSON(object.batchSettings)
+        : undefined;
     message.invokeFunction =
       object.invokeFunction !== undefined && object.invokeFunction !== null
         ? InvokeFunctionWithRetry.fromJSON(object.invokeFunction)
@@ -1536,6 +1585,10 @@ export const Trigger_IoTMessage = {
     message.registryId !== undefined && (obj.registryId = message.registryId);
     message.deviceId !== undefined && (obj.deviceId = message.deviceId);
     message.mqttTopic !== undefined && (obj.mqttTopic = message.mqttTopic);
+    message.batchSettings !== undefined &&
+      (obj.batchSettings = message.batchSettings
+        ? BatchSettings.toJSON(message.batchSettings)
+        : undefined);
     message.invokeFunction !== undefined &&
       (obj.invokeFunction = message.invokeFunction
         ? InvokeFunctionWithRetry.toJSON(message.invokeFunction)
@@ -1554,6 +1607,10 @@ export const Trigger_IoTMessage = {
     message.registryId = object.registryId ?? "";
     message.deviceId = object.deviceId ?? "";
     message.mqttTopic = object.mqttTopic ?? "";
+    message.batchSettings =
+      object.batchSettings !== undefined && object.batchSettings !== null
+        ? BatchSettings.fromPartial(object.batchSettings)
+        : undefined;
     message.invokeFunction =
       object.invokeFunction !== undefined && object.invokeFunction !== null
         ? InvokeFunctionWithRetry.fromPartial(object.invokeFunction)
@@ -1588,6 +1645,12 @@ export const Trigger_IoTBrokerMessage = {
     if (message.mqttTopic !== "") {
       writer.uint32(18).string(message.mqttTopic);
     }
+    if (message.batchSettings !== undefined) {
+      BatchSettings.encode(
+        message.batchSettings,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     if (message.invokeFunction !== undefined) {
       InvokeFunctionWithRetry.encode(
         message.invokeFunction,
@@ -1621,6 +1684,9 @@ export const Trigger_IoTBrokerMessage = {
         case 2:
           message.mqttTopic = reader.string();
           break;
+        case 3:
+          message.batchSettings = BatchSettings.decode(reader, reader.uint32());
+          break;
         case 101:
           message.invokeFunction = InvokeFunctionWithRetry.decode(
             reader,
@@ -1653,6 +1719,10 @@ export const Trigger_IoTBrokerMessage = {
       object.mqttTopic !== undefined && object.mqttTopic !== null
         ? String(object.mqttTopic)
         : "";
+    message.batchSettings =
+      object.batchSettings !== undefined && object.batchSettings !== null
+        ? BatchSettings.fromJSON(object.batchSettings)
+        : undefined;
     message.invokeFunction =
       object.invokeFunction !== undefined && object.invokeFunction !== null
         ? InvokeFunctionWithRetry.fromJSON(object.invokeFunction)
@@ -1668,6 +1738,10 @@ export const Trigger_IoTBrokerMessage = {
     const obj: any = {};
     message.brokerId !== undefined && (obj.brokerId = message.brokerId);
     message.mqttTopic !== undefined && (obj.mqttTopic = message.mqttTopic);
+    message.batchSettings !== undefined &&
+      (obj.batchSettings = message.batchSettings
+        ? BatchSettings.toJSON(message.batchSettings)
+        : undefined);
     message.invokeFunction !== undefined &&
       (obj.invokeFunction = message.invokeFunction
         ? InvokeFunctionWithRetry.toJSON(message.invokeFunction)
@@ -1687,6 +1761,10 @@ export const Trigger_IoTBrokerMessage = {
     } as Trigger_IoTBrokerMessage;
     message.brokerId = object.brokerId ?? "";
     message.mqttTopic = object.mqttTopic ?? "";
+    message.batchSettings =
+      object.batchSettings !== undefined && object.batchSettings !== null
+        ? BatchSettings.fromPartial(object.batchSettings)
+        : undefined;
     message.invokeFunction =
       object.invokeFunction !== undefined && object.invokeFunction !== null
         ? InvokeFunctionWithRetry.fromPartial(object.invokeFunction)
@@ -1733,6 +1811,12 @@ export const Trigger_ObjectStorage = {
     if (message.suffix !== "") {
       writer.uint32(58).string(message.suffix);
     }
+    if (message.batchSettings !== undefined) {
+      BatchSettings.encode(
+        message.batchSettings,
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
     if (message.invokeFunction !== undefined) {
       InvokeFunctionWithRetry.encode(
         message.invokeFunction,
@@ -1778,6 +1862,9 @@ export const Trigger_ObjectStorage = {
         case 7:
           message.suffix = reader.string();
           break;
+        case 8:
+          message.batchSettings = BatchSettings.decode(reader, reader.uint32());
+          break;
         case 101:
           message.invokeFunction = InvokeFunctionWithRetry.decode(
             reader,
@@ -1815,6 +1902,10 @@ export const Trigger_ObjectStorage = {
       object.suffix !== undefined && object.suffix !== null
         ? String(object.suffix)
         : "";
+    message.batchSettings =
+      object.batchSettings !== undefined && object.batchSettings !== null
+        ? BatchSettings.fromJSON(object.batchSettings)
+        : undefined;
     message.invokeFunction =
       object.invokeFunction !== undefined && object.invokeFunction !== null
         ? InvokeFunctionWithRetry.fromJSON(object.invokeFunction)
@@ -1838,6 +1929,10 @@ export const Trigger_ObjectStorage = {
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
     message.prefix !== undefined && (obj.prefix = message.prefix);
     message.suffix !== undefined && (obj.suffix = message.suffix);
+    message.batchSettings !== undefined &&
+      (obj.batchSettings = message.batchSettings
+        ? BatchSettings.toJSON(message.batchSettings)
+        : undefined);
     message.invokeFunction !== undefined &&
       (obj.invokeFunction = message.invokeFunction
         ? InvokeFunctionWithRetry.toJSON(message.invokeFunction)
@@ -1857,6 +1952,10 @@ export const Trigger_ObjectStorage = {
     message.bucketId = object.bucketId ?? "";
     message.prefix = object.prefix ?? "";
     message.suffix = object.suffix ?? "";
+    message.batchSettings =
+      object.batchSettings !== undefined && object.batchSettings !== null
+        ? BatchSettings.fromPartial(object.batchSettings)
+        : undefined;
     message.invokeFunction =
       object.invokeFunction !== undefined && object.invokeFunction !== null
         ? InvokeFunctionWithRetry.fromPartial(object.invokeFunction)
@@ -1900,6 +1999,12 @@ export const Trigger_ContainerRegistry = {
     }
     if (message.tag !== "") {
       writer.uint32(50).string(message.tag);
+    }
+    if (message.batchSettings !== undefined) {
+      BatchSettings.encode(
+        message.batchSettings,
+        writer.uint32(58).fork()
+      ).ldelim();
     }
     if (message.invokeFunction !== undefined) {
       InvokeFunctionWithRetry.encode(
@@ -1948,6 +2053,9 @@ export const Trigger_ContainerRegistry = {
         case 6:
           message.tag = reader.string();
           break;
+        case 7:
+          message.batchSettings = BatchSettings.decode(reader, reader.uint32());
+          break;
         case 101:
           message.invokeFunction = InvokeFunctionWithRetry.decode(
             reader,
@@ -1985,6 +2093,10 @@ export const Trigger_ContainerRegistry = {
         : "";
     message.tag =
       object.tag !== undefined && object.tag !== null ? String(object.tag) : "";
+    message.batchSettings =
+      object.batchSettings !== undefined && object.batchSettings !== null
+        ? BatchSettings.fromJSON(object.batchSettings)
+        : undefined;
     message.invokeFunction =
       object.invokeFunction !== undefined && object.invokeFunction !== null
         ? InvokeFunctionWithRetry.fromJSON(object.invokeFunction)
@@ -2008,6 +2120,10 @@ export const Trigger_ContainerRegistry = {
     message.registryId !== undefined && (obj.registryId = message.registryId);
     message.imageName !== undefined && (obj.imageName = message.imageName);
     message.tag !== undefined && (obj.tag = message.tag);
+    message.batchSettings !== undefined &&
+      (obj.batchSettings = message.batchSettings
+        ? BatchSettings.toJSON(message.batchSettings)
+        : undefined);
     message.invokeFunction !== undefined &&
       (obj.invokeFunction = message.invokeFunction
         ? InvokeFunctionWithRetry.toJSON(message.invokeFunction)
@@ -2029,6 +2145,10 @@ export const Trigger_ContainerRegistry = {
     message.registryId = object.registryId ?? "";
     message.imageName = object.imageName ?? "";
     message.tag = object.tag ?? "";
+    message.batchSettings =
+      object.batchSettings !== undefined && object.batchSettings !== null
+        ? BatchSettings.fromPartial(object.batchSettings)
+        : undefined;
     message.invokeFunction =
       object.invokeFunction !== undefined && object.invokeFunction !== null
         ? InvokeFunctionWithRetry.fromPartial(object.invokeFunction)
@@ -2187,6 +2307,7 @@ const baseTrigger_Logging: object = {
   logGroupId: "",
   resourceType: "",
   resourceId: "",
+  streamName: "",
   levels: 0,
 };
 
@@ -2205,6 +2326,9 @@ export const Trigger_Logging = {
     }
     for (const v of message.resourceId) {
       writer.uint32(34).string(v!);
+    }
+    for (const v of message.streamName) {
+      writer.uint32(58).string(v!);
     }
     writer.uint32(42).fork();
     for (const v of message.levels) {
@@ -2238,6 +2362,7 @@ export const Trigger_Logging = {
     const message = { ...baseTrigger_Logging } as Trigger_Logging;
     message.resourceType = [];
     message.resourceId = [];
+    message.streamName = [];
     message.levels = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -2250,6 +2375,9 @@ export const Trigger_Logging = {
           break;
         case 4:
           message.resourceId.push(reader.string());
+          break;
+        case 7:
+          message.streamName.push(reader.string());
           break;
         case 5:
           if ((tag & 7) === 2) {
@@ -2297,6 +2425,7 @@ export const Trigger_Logging = {
       String(e)
     );
     message.resourceId = (object.resourceId ?? []).map((e: any) => String(e));
+    message.streamName = (object.streamName ?? []).map((e: any) => String(e));
     message.levels = (object.levels ?? []).map((e: any) =>
       logLevel_LevelFromJSON(e)
     );
@@ -2328,6 +2457,11 @@ export const Trigger_Logging = {
     } else {
       obj.resourceId = [];
     }
+    if (message.streamName) {
+      obj.streamName = message.streamName.map((e) => e);
+    } else {
+      obj.streamName = [];
+    }
     if (message.levels) {
       obj.levels = message.levels.map((e) => logLevel_LevelToJSON(e));
     } else {
@@ -2355,6 +2489,7 @@ export const Trigger_Logging = {
     message.logGroupId = object.logGroupId ?? "";
     message.resourceType = object.resourceType?.map((e) => e) || [];
     message.resourceId = object.resourceId?.map((e) => e) || [];
+    message.streamName = object.streamName?.map((e) => e) || [];
     message.levels = object.levels?.map((e) => e) || [];
     message.batchSettings =
       object.batchSettings !== undefined && object.batchSettings !== null
@@ -3636,6 +3771,95 @@ export const DataStream = {
 
 messageTypeRegistry.set(DataStream.$type, DataStream);
 
+const baseObjectStorageBucketSettings: object = {
+  $type: "yandex.cloud.serverless.triggers.v1.ObjectStorageBucketSettings",
+  bucketId: "",
+  serviceAccountId: "",
+};
+
+export const ObjectStorageBucketSettings = {
+  $type:
+    "yandex.cloud.serverless.triggers.v1.ObjectStorageBucketSettings" as const,
+
+  encode(
+    message: ObjectStorageBucketSettings,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.bucketId !== "") {
+      writer.uint32(10).string(message.bucketId);
+    }
+    if (message.serviceAccountId !== "") {
+      writer.uint32(18).string(message.serviceAccountId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ObjectStorageBucketSettings {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseObjectStorageBucketSettings,
+    } as ObjectStorageBucketSettings;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.bucketId = reader.string();
+          break;
+        case 2:
+          message.serviceAccountId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ObjectStorageBucketSettings {
+    const message = {
+      ...baseObjectStorageBucketSettings,
+    } as ObjectStorageBucketSettings;
+    message.bucketId =
+      object.bucketId !== undefined && object.bucketId !== null
+        ? String(object.bucketId)
+        : "";
+    message.serviceAccountId =
+      object.serviceAccountId !== undefined && object.serviceAccountId !== null
+        ? String(object.serviceAccountId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ObjectStorageBucketSettings): unknown {
+    const obj: any = {};
+    message.bucketId !== undefined && (obj.bucketId = message.bucketId);
+    message.serviceAccountId !== undefined &&
+      (obj.serviceAccountId = message.serviceAccountId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ObjectStorageBucketSettings>, I>>(
+    object: I
+  ): ObjectStorageBucketSettings {
+    const message = {
+      ...baseObjectStorageBucketSettings,
+    } as ObjectStorageBucketSettings;
+    message.bucketId = object.bucketId ?? "";
+    message.serviceAccountId = object.serviceAccountId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ObjectStorageBucketSettings.$type,
+  ObjectStorageBucketSettings
+);
+
 const baseMail: object = {
   $type: "yandex.cloud.serverless.triggers.v1.Mail",
   email: "",
@@ -3647,6 +3871,18 @@ export const Mail = {
   encode(message: Mail, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.email !== "") {
       writer.uint32(18).string(message.email);
+    }
+    if (message.batchSettings !== undefined) {
+      BatchSettings.encode(
+        message.batchSettings,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.attachmentsBucket !== undefined) {
+      ObjectStorageBucketSettings.encode(
+        message.attachmentsBucket,
+        writer.uint32(34).fork()
+      ).ldelim();
     }
     if (message.invokeFunction !== undefined) {
       InvokeFunctionWithRetry.encode(
@@ -3672,6 +3908,15 @@ export const Mail = {
       switch (tag >>> 3) {
         case 2:
           message.email = reader.string();
+          break;
+        case 3:
+          message.batchSettings = BatchSettings.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.attachmentsBucket = ObjectStorageBucketSettings.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         case 101:
           message.invokeFunction = InvokeFunctionWithRetry.decode(
@@ -3699,6 +3944,15 @@ export const Mail = {
       object.email !== undefined && object.email !== null
         ? String(object.email)
         : "";
+    message.batchSettings =
+      object.batchSettings !== undefined && object.batchSettings !== null
+        ? BatchSettings.fromJSON(object.batchSettings)
+        : undefined;
+    message.attachmentsBucket =
+      object.attachmentsBucket !== undefined &&
+      object.attachmentsBucket !== null
+        ? ObjectStorageBucketSettings.fromJSON(object.attachmentsBucket)
+        : undefined;
     message.invokeFunction =
       object.invokeFunction !== undefined && object.invokeFunction !== null
         ? InvokeFunctionWithRetry.fromJSON(object.invokeFunction)
@@ -3713,6 +3967,14 @@ export const Mail = {
   toJSON(message: Mail): unknown {
     const obj: any = {};
     message.email !== undefined && (obj.email = message.email);
+    message.batchSettings !== undefined &&
+      (obj.batchSettings = message.batchSettings
+        ? BatchSettings.toJSON(message.batchSettings)
+        : undefined);
+    message.attachmentsBucket !== undefined &&
+      (obj.attachmentsBucket = message.attachmentsBucket
+        ? ObjectStorageBucketSettings.toJSON(message.attachmentsBucket)
+        : undefined);
     message.invokeFunction !== undefined &&
       (obj.invokeFunction = message.invokeFunction
         ? InvokeFunctionWithRetry.toJSON(message.invokeFunction)
@@ -3727,6 +3989,15 @@ export const Mail = {
   fromPartial<I extends Exact<DeepPartial<Mail>, I>>(object: I): Mail {
     const message = { ...baseMail } as Mail;
     message.email = object.email ?? "";
+    message.batchSettings =
+      object.batchSettings !== undefined && object.batchSettings !== null
+        ? BatchSettings.fromPartial(object.batchSettings)
+        : undefined;
+    message.attachmentsBucket =
+      object.attachmentsBucket !== undefined &&
+      object.attachmentsBucket !== null
+        ? ObjectStorageBucketSettings.fromPartial(object.attachmentsBucket)
+        : undefined;
     message.invokeFunction =
       object.invokeFunction !== undefined && object.invokeFunction !== null
         ? InvokeFunctionWithRetry.fromPartial(object.invokeFunction)

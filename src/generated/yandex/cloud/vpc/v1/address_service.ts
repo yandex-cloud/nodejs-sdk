@@ -102,6 +102,8 @@ export interface CreateAddressRequest {
   /** Address labels as `key:value` pairs. */
   labels: { [key: string]: string };
   externalIpv4AddressSpec?: ExternalIpv4AddressSpec | undefined;
+  /** Specifies if address protected from deletion. */
+  deletionProtection: boolean;
 }
 
 export interface CreateAddressRequest_LabelsEntry {
@@ -155,6 +157,8 @@ export interface UpdateAddressRequest {
   labels: { [key: string]: string };
   /** Specifies if address is reserved or not. */
   reserved: boolean;
+  /** Specifies if address protected from deletion. */
+  deletionProtection: boolean;
 }
 
 export interface UpdateAddressRequest_LabelsEntry {
@@ -564,6 +568,7 @@ const baseCreateAddressRequest: object = {
   folderId: "",
   name: "",
   description: "",
+  deletionProtection: false,
 };
 
 export const CreateAddressRequest = {
@@ -597,6 +602,9 @@ export const CreateAddressRequest = {
         message.externalIpv4AddressSpec,
         writer.uint32(42).fork()
       ).ldelim();
+    }
+    if (message.deletionProtection === true) {
+      writer.uint32(80).bool(message.deletionProtection);
     }
     return writer;
   },
@@ -636,6 +644,9 @@ export const CreateAddressRequest = {
             reader.uint32()
           );
           break;
+        case 10:
+          message.deletionProtection = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -669,6 +680,11 @@ export const CreateAddressRequest = {
       object.externalIpv4AddressSpec !== null
         ? ExternalIpv4AddressSpec.fromJSON(object.externalIpv4AddressSpec)
         : undefined;
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
     return message;
   },
 
@@ -688,6 +704,8 @@ export const CreateAddressRequest = {
       (obj.externalIpv4AddressSpec = message.externalIpv4AddressSpec
         ? ExternalIpv4AddressSpec.toJSON(message.externalIpv4AddressSpec)
         : undefined);
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -711,6 +729,7 @@ export const CreateAddressRequest = {
       object.externalIpv4AddressSpec !== null
         ? ExternalIpv4AddressSpec.fromPartial(object.externalIpv4AddressSpec)
         : undefined;
+    message.deletionProtection = object.deletionProtection ?? false;
     return message;
   },
 };
@@ -981,6 +1000,7 @@ const baseUpdateAddressRequest: object = {
   name: "",
   description: "",
   reserved: false,
+  deletionProtection: false,
 };
 
 export const UpdateAddressRequest = {
@@ -1014,6 +1034,9 @@ export const UpdateAddressRequest = {
     });
     if (message.reserved === true) {
       writer.uint32(48).bool(message.reserved);
+    }
+    if (message.deletionProtection === true) {
+      writer.uint32(56).bool(message.deletionProtection);
     }
     return writer;
   },
@@ -1053,6 +1076,9 @@ export const UpdateAddressRequest = {
         case 6:
           message.reserved = reader.bool();
           break;
+        case 7:
+          message.deletionProtection = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1089,6 +1115,11 @@ export const UpdateAddressRequest = {
       object.reserved !== undefined && object.reserved !== null
         ? Boolean(object.reserved)
         : false;
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
     return message;
   },
 
@@ -1109,6 +1140,8 @@ export const UpdateAddressRequest = {
       });
     }
     message.reserved !== undefined && (obj.reserved = message.reserved);
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -1132,6 +1165,7 @@ export const UpdateAddressRequest = {
       return acc;
     }, {});
     message.reserved = object.reserved ?? false;
+    message.deletionProtection = object.deletionProtection ?? false;
     return message;
   },
 };

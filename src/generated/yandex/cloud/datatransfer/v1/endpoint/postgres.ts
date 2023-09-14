@@ -29,6 +29,8 @@ export interface PostgresObjectTransferSettings {
    * CREATE SEQUENCE ... OWNED BY ...
    */
   sequenceOwnedBy: ObjectTransferStage;
+  /**  */
+  sequenceSet: ObjectTransferStage;
   /**
    * Tables
    *
@@ -72,6 +74,12 @@ export interface PostgresObjectTransferSettings {
    */
   view: ObjectTransferStage;
   /**
+   * Materialized views
+   *
+   * CREATE MATERIALIZED VIEW ...
+   */
+  materializedView: ObjectTransferStage;
+  /**
    * Functions
    *
    * CREATE FUNCTION ...
@@ -113,76 +121,38 @@ export interface PostgresObjectTransferSettings {
    * CREATE CAST ...
    */
   cast: ObjectTransferStage;
-  /**
-   * Materialized views
-   *
-   * CREATE MATERIALIZED VIEW ...
-   */
-  materializedView: ObjectTransferStage;
 }
 
 export interface OnPremisePostgres {
   $type: "yandex.cloud.datatransfer.v1.endpoint.OnPremisePostgres";
   hosts: string[];
-  /**
-   * Database port
-   *
-   * Will be used if the cluster ID is not specified. Default: 6432.
-   */
+  /** Will be used if the cluster ID is not specified. */
   port: number;
-  /**
-   * TLS mode
-   *
-   * TLS settings for server connection. Disabled by default.
-   */
+  /** TLS settings for server connection. Disabled by default. */
   tlsMode?: TLSMode;
-  /**
-   * Network interface for endpoint
-   *
-   * Default: public IPv4.
-   */
+  /** Network interface for endpoint. If none will assume public ipv4 */
   subnetId: string;
 }
 
 export interface PostgresConnection {
   $type: "yandex.cloud.datatransfer.v1.endpoint.PostgresConnection";
-  /**
-   * Managed cluster
-   *
-   * Managed Service for PostgreSQL cluster ID
-   */
+  /** Managed Service for PostgreSQL cluster ID */
   mdbClusterId: string | undefined;
-  /**
-   * On-premise
-   *
-   * Connection options for on-premise PostgreSQL
-   */
+  /** Connection options for on-premise PostgreSQL */
   onPremise?: OnPremisePostgres | undefined;
 }
 
 export interface PostgresSource {
   $type: "yandex.cloud.datatransfer.v1.endpoint.PostgresSource";
-  /**
-   * Connection settings
-   *
-   * Database connection settings
-   */
+  /** Database connection settings */
   connection?: PostgresConnection;
   /** Security groups */
   securityGroups: string[];
   /** Database name */
   database: string;
-  /**
-   * Username
-   *
-   * User for database access.
-   */
+  /** User for database access. */
   user: string;
-  /**
-   * Password
-   *
-   * Password for database access.
-   */
+  /** Password for database access. */
   password?: Secret;
   /**
    * Included tables
@@ -199,57 +169,34 @@ export interface PostgresSource {
    */
   excludeTables: string[];
   /**
-   * Maximum WAL size for the replication slot
-   *
-   * Maximum WAL size held by the replication slot. Exceeding this limit will result
-   * in a replication failure and deletion of the replication slot. Unlimited by
-   * default.
+   * Maximum lag of replication slot (in bytes); after exceeding this limit
+   * replication will be aborted.
    */
   slotByteLagLimit: number;
   /**
-   * Database schema for service tables
-   *
-   * Default: public. Here created technical tables (__consumer_keeper,
-   * __data_transfer_mole_finder).
+   * Database schema for service tables (__consumer_keeper,
+   * __data_transfer_mole_finder). Default is public
    */
   serviceSchema: string;
-  /**
-   * Schema migration
-   *
-   * Select database objects to be transferred during activation or deactivation.
-   */
+  /** Select database objects to be transferred during activation or deactivation. */
   objectTransferSettings?: PostgresObjectTransferSettings;
 }
 
 export interface PostgresTarget {
   $type: "yandex.cloud.datatransfer.v1.endpoint.PostgresTarget";
-  /**
-   * Connection settings
-   *
-   * Database connection settings
-   */
+  /** Database connection settings */
   connection?: PostgresConnection;
   /** Security groups */
   securityGroups: string[];
   /** Database name */
   database: string;
-  /**
-   * Username
-   *
-   * User for database access.
-   */
+  /** User for database access. */
   user: string;
-  /**
-   * Password
-   *
-   * Password for database access.
-   */
+  /** Password for database access. */
   password?: Secret;
   /**
-   * Cleanup policy
-   *
    * Cleanup policy for activate, reactivate and reupload processes. Default is
-   * DISABLED.
+   * truncate.
    */
   cleanupPolicy: CleanupPolicy;
 }
@@ -258,6 +205,7 @@ const basePostgresObjectTransferSettings: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.PostgresObjectTransferSettings",
   sequence: 0,
   sequenceOwnedBy: 0,
+  sequenceSet: 0,
   table: 0,
   primaryKey: 0,
   fkConstraint: 0,
@@ -265,6 +213,7 @@ const basePostgresObjectTransferSettings: object = {
   constraint: 0,
   index: 0,
   view: 0,
+  materializedView: 0,
   function: 0,
   trigger: 0,
   type: 0,
@@ -272,7 +221,6 @@ const basePostgresObjectTransferSettings: object = {
   collation: 0,
   policy: 0,
   cast: 0,
-  materializedView: 0,
 };
 
 export const PostgresObjectTransferSettings = {
@@ -288,6 +236,9 @@ export const PostgresObjectTransferSettings = {
     }
     if (message.sequenceOwnedBy !== 0) {
       writer.uint32(16).int32(message.sequenceOwnedBy);
+    }
+    if (message.sequenceSet !== 0) {
+      writer.uint32(144).int32(message.sequenceSet);
     }
     if (message.table !== 0) {
       writer.uint32(24).int32(message.table);
@@ -310,6 +261,9 @@ export const PostgresObjectTransferSettings = {
     if (message.view !== 0) {
       writer.uint32(72).int32(message.view);
     }
+    if (message.materializedView !== 0) {
+      writer.uint32(136).int32(message.materializedView);
+    }
     if (message.function !== 0) {
       writer.uint32(80).int32(message.function);
     }
@@ -330,9 +284,6 @@ export const PostgresObjectTransferSettings = {
     }
     if (message.cast !== 0) {
       writer.uint32(128).int32(message.cast);
-    }
-    if (message.materializedView !== 0) {
-      writer.uint32(136).int32(message.materializedView);
     }
     return writer;
   },
@@ -355,6 +306,9 @@ export const PostgresObjectTransferSettings = {
         case 2:
           message.sequenceOwnedBy = reader.int32() as any;
           break;
+        case 18:
+          message.sequenceSet = reader.int32() as any;
+          break;
         case 3:
           message.table = reader.int32() as any;
           break;
@@ -375,6 +329,9 @@ export const PostgresObjectTransferSettings = {
           break;
         case 9:
           message.view = reader.int32() as any;
+          break;
+        case 17:
+          message.materializedView = reader.int32() as any;
           break;
         case 10:
           message.function = reader.int32() as any;
@@ -397,9 +354,6 @@ export const PostgresObjectTransferSettings = {
         case 16:
           message.cast = reader.int32() as any;
           break;
-        case 17:
-          message.materializedView = reader.int32() as any;
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -419,6 +373,10 @@ export const PostgresObjectTransferSettings = {
     message.sequenceOwnedBy =
       object.sequenceOwnedBy !== undefined && object.sequenceOwnedBy !== null
         ? objectTransferStageFromJSON(object.sequenceOwnedBy)
+        : 0;
+    message.sequenceSet =
+      object.sequenceSet !== undefined && object.sequenceSet !== null
+        ? objectTransferStageFromJSON(object.sequenceSet)
         : 0;
     message.table =
       object.table !== undefined && object.table !== null
@@ -448,6 +406,10 @@ export const PostgresObjectTransferSettings = {
       object.view !== undefined && object.view !== null
         ? objectTransferStageFromJSON(object.view)
         : 0;
+    message.materializedView =
+      object.materializedView !== undefined && object.materializedView !== null
+        ? objectTransferStageFromJSON(object.materializedView)
+        : 0;
     message.function =
       object.function !== undefined && object.function !== null
         ? objectTransferStageFromJSON(object.function)
@@ -476,10 +438,6 @@ export const PostgresObjectTransferSettings = {
       object.cast !== undefined && object.cast !== null
         ? objectTransferStageFromJSON(object.cast)
         : 0;
-    message.materializedView =
-      object.materializedView !== undefined && object.materializedView !== null
-        ? objectTransferStageFromJSON(object.materializedView)
-        : 0;
     return message;
   },
 
@@ -491,6 +449,8 @@ export const PostgresObjectTransferSettings = {
       (obj.sequenceOwnedBy = objectTransferStageToJSON(
         message.sequenceOwnedBy
       ));
+    message.sequenceSet !== undefined &&
+      (obj.sequenceSet = objectTransferStageToJSON(message.sequenceSet));
     message.table !== undefined &&
       (obj.table = objectTransferStageToJSON(message.table));
     message.primaryKey !== undefined &&
@@ -505,6 +465,10 @@ export const PostgresObjectTransferSettings = {
       (obj.index = objectTransferStageToJSON(message.index));
     message.view !== undefined &&
       (obj.view = objectTransferStageToJSON(message.view));
+    message.materializedView !== undefined &&
+      (obj.materializedView = objectTransferStageToJSON(
+        message.materializedView
+      ));
     message.function !== undefined &&
       (obj.function = objectTransferStageToJSON(message.function));
     message.trigger !== undefined &&
@@ -519,10 +483,6 @@ export const PostgresObjectTransferSettings = {
       (obj.policy = objectTransferStageToJSON(message.policy));
     message.cast !== undefined &&
       (obj.cast = objectTransferStageToJSON(message.cast));
-    message.materializedView !== undefined &&
-      (obj.materializedView = objectTransferStageToJSON(
-        message.materializedView
-      ));
     return obj;
   },
 
@@ -534,6 +494,7 @@ export const PostgresObjectTransferSettings = {
     } as PostgresObjectTransferSettings;
     message.sequence = object.sequence ?? 0;
     message.sequenceOwnedBy = object.sequenceOwnedBy ?? 0;
+    message.sequenceSet = object.sequenceSet ?? 0;
     message.table = object.table ?? 0;
     message.primaryKey = object.primaryKey ?? 0;
     message.fkConstraint = object.fkConstraint ?? 0;
@@ -541,6 +502,7 @@ export const PostgresObjectTransferSettings = {
     message.constraint = object.constraint ?? 0;
     message.index = object.index ?? 0;
     message.view = object.view ?? 0;
+    message.materializedView = object.materializedView ?? 0;
     message.function = object.function ?? 0;
     message.trigger = object.trigger ?? 0;
     message.type = object.type ?? 0;
@@ -548,7 +510,6 @@ export const PostgresObjectTransferSettings = {
     message.collation = object.collation ?? 0;
     message.policy = object.policy ?? 0;
     message.cast = object.cast ?? 0;
-    message.materializedView = object.materializedView ?? 0;
     return message;
   },
 };

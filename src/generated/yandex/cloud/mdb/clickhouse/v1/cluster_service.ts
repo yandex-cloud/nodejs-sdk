@@ -31,8 +31,8 @@ import {
   host_TypeFromJSON,
   host_TypeToJSON,
 } from "../../../../../yandex/cloud/mdb/clickhouse/v1/cluster";
-import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import { MaintenanceWindow } from "../../../../../yandex/cloud/mdb/clickhouse/v1/maintenance";
+import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import {
   ClickhouseConfig_ExternalDictionary,
   ClickhouseConfig,
@@ -130,6 +130,8 @@ export interface CreateClusterRequest {
   securityGroupIds: string[];
   /** Deletion Protection inhibits deletion of the cluster */
   deletionProtection: boolean;
+  /** Window of maintenance operations. */
+  maintenanceWindow?: MaintenanceWindow;
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -1003,6 +1005,36 @@ export interface DeleteClusterShardGroupMetadata {
   shardGroupName: string;
 }
 
+export interface ListClusterExternalDictionariesRequest {
+  $type: "yandex.cloud.mdb.clickhouse.v1.ListClusterExternalDictionariesRequest";
+  /** ID of the cluster that the external dictionaries belong to. */
+  clusterId: string;
+  /**
+   * The maximum number of results per page to return. If the number of available
+   * results is larger than [page_size], the service returns a [ListClusterExternalDictionaryResponse.next_page_token]
+   * that can be used to get the next page of results in subsequent list requests.
+   */
+  pageSize: number;
+  /**
+   * Page token. To get the next page of results, set [page_token] to the [ListClusterExternalDictionaryResponse.next_page_token]
+   * returned by a previous list request.
+   */
+  pageToken: string;
+}
+
+export interface ListClusterExternalDictionariesResponse {
+  $type: "yandex.cloud.mdb.clickhouse.v1.ListClusterExternalDictionariesResponse";
+  /** List of ClickHouse Cluster external dictionaries. */
+  externalDictionaries: ClickhouseConfig_ExternalDictionary[];
+  /**
+   * This token allows you to get the next page of results for list requests. If the number of results
+   * is larger than [ListClusterExternalDictionaryRequest.page_size], use the [next_page_token] as the value
+   * for the [ListClusterExternalDictionaryRequest.page_token] parameter in the next list request. Each subsequent
+   * list request will have its own [next_page_token] to continue paging through the results.
+   */
+  nextPageToken: string;
+}
+
 export interface CreateClusterExternalDictionaryRequest {
   $type: "yandex.cloud.mdb.clickhouse.v1.CreateClusterExternalDictionaryRequest";
   /**
@@ -1470,6 +1502,12 @@ export const CreateClusterRequest = {
     if (message.deletionProtection === true) {
       writer.uint32(112).bool(message.deletionProtection);
     }
+    if (message.maintenanceWindow !== undefined) {
+      MaintenanceWindow.encode(
+        message.maintenanceWindow,
+        writer.uint32(122).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1538,6 +1576,12 @@ export const CreateClusterRequest = {
         case 14:
           message.deletionProtection = reader.bool();
           break;
+        case 15:
+          message.maintenanceWindow = MaintenanceWindow.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1603,6 +1647,11 @@ export const CreateClusterRequest = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.maintenanceWindow =
+      object.maintenanceWindow !== undefined &&
+      object.maintenanceWindow !== null
+        ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
+        : undefined;
     return message;
   },
 
@@ -1656,6 +1705,10 @@ export const CreateClusterRequest = {
     }
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.maintenanceWindow !== undefined &&
+      (obj.maintenanceWindow = message.maintenanceWindow
+        ? MaintenanceWindow.toJSON(message.maintenanceWindow)
+        : undefined);
     return obj;
   },
 
@@ -1690,6 +1743,11 @@ export const CreateClusterRequest = {
     message.serviceAccountId = object.serviceAccountId ?? "";
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? false;
+    message.maintenanceWindow =
+      object.maintenanceWindow !== undefined &&
+      object.maintenanceWindow !== null
+        ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
+        : undefined;
     return message;
   },
 };
@@ -7395,6 +7453,212 @@ messageTypeRegistry.set(
   DeleteClusterShardGroupMetadata
 );
 
+const baseListClusterExternalDictionariesRequest: object = {
+  $type:
+    "yandex.cloud.mdb.clickhouse.v1.ListClusterExternalDictionariesRequest",
+  clusterId: "",
+  pageSize: 0,
+  pageToken: "",
+};
+
+export const ListClusterExternalDictionariesRequest = {
+  $type:
+    "yandex.cloud.mdb.clickhouse.v1.ListClusterExternalDictionariesRequest" as const,
+
+  encode(
+    message: ListClusterExternalDictionariesRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(16).int64(message.pageSize);
+    }
+    if (message.pageToken !== "") {
+      writer.uint32(26).string(message.pageToken);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ListClusterExternalDictionariesRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseListClusterExternalDictionariesRequest,
+    } as ListClusterExternalDictionariesRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.pageSize = longToNumber(reader.int64() as Long);
+          break;
+        case 3:
+          message.pageToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListClusterExternalDictionariesRequest {
+    const message = {
+      ...baseListClusterExternalDictionariesRequest,
+    } as ListClusterExternalDictionariesRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.pageSize =
+      object.pageSize !== undefined && object.pageSize !== null
+        ? Number(object.pageSize)
+        : 0;
+    message.pageToken =
+      object.pageToken !== undefined && object.pageToken !== null
+        ? String(object.pageToken)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ListClusterExternalDictionariesRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.pageSize !== undefined &&
+      (obj.pageSize = Math.round(message.pageSize));
+    message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<ListClusterExternalDictionariesRequest>, I>
+  >(object: I): ListClusterExternalDictionariesRequest {
+    const message = {
+      ...baseListClusterExternalDictionariesRequest,
+    } as ListClusterExternalDictionariesRequest;
+    message.clusterId = object.clusterId ?? "";
+    message.pageSize = object.pageSize ?? 0;
+    message.pageToken = object.pageToken ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ListClusterExternalDictionariesRequest.$type,
+  ListClusterExternalDictionariesRequest
+);
+
+const baseListClusterExternalDictionariesResponse: object = {
+  $type:
+    "yandex.cloud.mdb.clickhouse.v1.ListClusterExternalDictionariesResponse",
+  nextPageToken: "",
+};
+
+export const ListClusterExternalDictionariesResponse = {
+  $type:
+    "yandex.cloud.mdb.clickhouse.v1.ListClusterExternalDictionariesResponse" as const,
+
+  encode(
+    message: ListClusterExternalDictionariesResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.externalDictionaries) {
+      ClickhouseConfig_ExternalDictionary.encode(
+        v!,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.nextPageToken !== "") {
+      writer.uint32(18).string(message.nextPageToken);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ListClusterExternalDictionariesResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseListClusterExternalDictionariesResponse,
+    } as ListClusterExternalDictionariesResponse;
+    message.externalDictionaries = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.externalDictionaries.push(
+            ClickhouseConfig_ExternalDictionary.decode(reader, reader.uint32())
+          );
+          break;
+        case 2:
+          message.nextPageToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListClusterExternalDictionariesResponse {
+    const message = {
+      ...baseListClusterExternalDictionariesResponse,
+    } as ListClusterExternalDictionariesResponse;
+    message.externalDictionaries = (object.externalDictionaries ?? []).map(
+      (e: any) => ClickhouseConfig_ExternalDictionary.fromJSON(e)
+    );
+    message.nextPageToken =
+      object.nextPageToken !== undefined && object.nextPageToken !== null
+        ? String(object.nextPageToken)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ListClusterExternalDictionariesResponse): unknown {
+    const obj: any = {};
+    if (message.externalDictionaries) {
+      obj.externalDictionaries = message.externalDictionaries.map((e) =>
+        e ? ClickhouseConfig_ExternalDictionary.toJSON(e) : undefined
+      );
+    } else {
+      obj.externalDictionaries = [];
+    }
+    message.nextPageToken !== undefined &&
+      (obj.nextPageToken = message.nextPageToken);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<ListClusterExternalDictionariesResponse>, I>
+  >(object: I): ListClusterExternalDictionariesResponse {
+    const message = {
+      ...baseListClusterExternalDictionariesResponse,
+    } as ListClusterExternalDictionariesResponse;
+    message.externalDictionaries =
+      object.externalDictionaries?.map((e) =>
+        ClickhouseConfig_ExternalDictionary.fromPartial(e)
+      ) || [];
+    message.nextPageToken = object.nextPageToken ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ListClusterExternalDictionariesResponse.$type,
+  ListClusterExternalDictionariesResponse
+);
+
 const baseCreateClusterExternalDictionaryRequest: object = {
   $type:
     "yandex.cloud.mdb.clickhouse.v1.CreateClusterExternalDictionaryRequest",
@@ -9057,6 +9321,24 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Retrieves a list of external dictionaries that belong to specified cluster. */
+  listExternalDictionaries: {
+    path: "/yandex.cloud.mdb.clickhouse.v1.ClusterService/ListExternalDictionaries",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: ListClusterExternalDictionariesRequest) =>
+      Buffer.from(
+        ListClusterExternalDictionariesRequest.encode(value).finish()
+      ),
+    requestDeserialize: (value: Buffer) =>
+      ListClusterExternalDictionariesRequest.decode(value),
+    responseSerialize: (value: ListClusterExternalDictionariesResponse) =>
+      Buffer.from(
+        ListClusterExternalDictionariesResponse.encode(value).finish()
+      ),
+    responseDeserialize: (value: Buffer) =>
+      ListClusterExternalDictionariesResponse.decode(value),
+  },
   /** Creates an external dictionary for the specified ClickHouse cluster. */
   createExternalDictionary: {
     path: "/yandex.cloud.mdb.clickhouse.v1.ClusterService/CreateExternalDictionary",
@@ -9190,6 +9472,11 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
   updateShardGroup: handleUnaryCall<UpdateClusterShardGroupRequest, Operation>;
   /** Deletes the specified shard group. */
   deleteShardGroup: handleUnaryCall<DeleteClusterShardGroupRequest, Operation>;
+  /** Retrieves a list of external dictionaries that belong to specified cluster. */
+  listExternalDictionaries: handleUnaryCall<
+    ListClusterExternalDictionariesRequest,
+    ListClusterExternalDictionariesResponse
+  >;
   /** Creates an external dictionary for the specified ClickHouse cluster. */
   createExternalDictionary: handleUnaryCall<
     CreateClusterExternalDictionaryRequest,
@@ -9751,6 +10038,31 @@ export interface ClusterServiceClient extends Client {
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Retrieves a list of external dictionaries that belong to specified cluster. */
+  listExternalDictionaries(
+    request: ListClusterExternalDictionariesRequest,
+    callback: (
+      error: ServiceError | null,
+      response: ListClusterExternalDictionariesResponse
+    ) => void
+  ): ClientUnaryCall;
+  listExternalDictionaries(
+    request: ListClusterExternalDictionariesRequest,
+    metadata: Metadata,
+    callback: (
+      error: ServiceError | null,
+      response: ListClusterExternalDictionariesResponse
+    ) => void
+  ): ClientUnaryCall;
+  listExternalDictionaries(
+    request: ListClusterExternalDictionariesRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (
+      error: ServiceError | null,
+      response: ListClusterExternalDictionariesResponse
+    ) => void
   ): ClientUnaryCall;
   /** Creates an external dictionary for the specified ClickHouse cluster. */
   createExternalDictionary(

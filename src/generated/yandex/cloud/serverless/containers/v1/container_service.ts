@@ -19,11 +19,14 @@ import {
   Resources,
   Connectivity,
   ProvisionPolicy,
+  ScalingPolicy,
+  LogOptions,
   Command,
   Args,
   Container,
   Revision,
   Secret,
+  StorageMount,
 } from "../../../../../yandex/cloud/serverless/containers/v1/container";
 import { Duration } from "../../../../../google/protobuf/duration";
 import { Operation } from "../../../../../yandex/cloud/operation/operation";
@@ -38,28 +41,77 @@ export const protobufPackage = "yandex.cloud.serverless.containers.v1";
 
 export interface GetContainerRequest {
   $type: "yandex.cloud.serverless.containers.v1.GetContainerRequest";
+  /**
+   * ID of the container to return.
+   *
+   * To get a container ID make a [ContainerService.List] request.
+   */
   containerId: string;
 }
 
 export interface ListContainersRequest {
   $type: "yandex.cloud.serverless.containers.v1.ListContainersRequest";
+  /**
+   * ID of the folder to list containers in.
+   *
+   * To get a folder ID make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+   */
   folderId: string;
+  /**
+   * The maximum number of results per page to return. If the number of available
+   * results is larger than `pageSize`, the service returns a [ListContainersResponse.next_page_token]
+   * that can be used to get the next page of results in subsequent list requests.
+   *
+   * Default value: 100.
+   */
   pageSize: number;
+  /**
+   * Page token. To get the next page of results, set `pageToken` to the
+   * [ListContainersResponse.next_page_token] returned by a previous list request.
+   */
   pageToken: string;
+  /**
+   * A filter expression that filters containers listed in the response.
+   *
+   * The expression must specify:
+   * 1. The field name. Currently filtering can only be applied to the [Container.name] field.
+   * 2. An `=` operator.
+   * 3. The value in double quotes (`"`). Must be 3-63 characters long and match the regular expression `[a-z][-a-z0-9]{1,61}[a-z0-9]`.
+   * Example of a filter: `name="my-container"`.
+   */
   filter: string;
 }
 
 export interface ListContainersResponse {
   $type: "yandex.cloud.serverless.containers.v1.ListContainersResponse";
+  /** List of containers in the specified folder. */
   containers: Container[];
+  /**
+   * Token for getting the next page of the list. If the number of results is greater than
+   * the specified [ListContainersRequest.page_size], use `nextPageToken` as the value
+   * for the [ListContainersRequest.page_token] parameter in the next list request.
+   *
+   * Each subsequent page will have its own `nextPageToken` to continue paging through the results.
+   */
   nextPageToken: string;
 }
 
 export interface CreateContainerRequest {
   $type: "yandex.cloud.serverless.containers.v1.CreateContainerRequest";
+  /**
+   * ID of the folder to create a container in.
+   *
+   * To get a folder ID make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+   */
   folderId: string;
+  /**
+   * Name of the container.
+   * The name must be unique within the folder.
+   */
   name: string;
+  /** Description of the container. */
   description: string;
+  /** Resource labels as `key:value` pairs. */
   labels: { [key: string]: string };
 }
 
@@ -71,15 +123,33 @@ export interface CreateContainerRequest_LabelsEntry {
 
 export interface CreateContainerMetadata {
   $type: "yandex.cloud.serverless.containers.v1.CreateContainerMetadata";
+  /** ID of the container that is being created. */
   containerId: string;
 }
 
 export interface UpdateContainerRequest {
   $type: "yandex.cloud.serverless.containers.v1.UpdateContainerRequest";
+  /**
+   * ID of the container to update.
+   *
+   * To get a container ID make a [ContainerService.List] request.
+   */
   containerId: string;
+  /** Field mask that specifies which attributes of the container should be updated. */
   updateMask?: FieldMask;
+  /**
+   * New name for the container.
+   * The name must be unique within the folder.
+   */
   name: string;
+  /** New description for the container. */
   description: string;
+  /**
+   * Container labels as `key:value` pairs.
+   *
+   * Existing set of labels is completely replaced by the provided set, so if you just want
+   * to add or remove a label, request the current set of labels with a [ContainerService.Get] request.
+   */
   labels: { [key: string]: string };
 }
 
@@ -91,59 +161,144 @@ export interface UpdateContainerRequest_LabelsEntry {
 
 export interface UpdateContainerMetadata {
   $type: "yandex.cloud.serverless.containers.v1.UpdateContainerMetadata";
+  /** ID of the container that is being updated. */
   containerId: string;
 }
 
 export interface DeleteContainerRequest {
   $type: "yandex.cloud.serverless.containers.v1.DeleteContainerRequest";
+  /**
+   * ID of the container to delete.
+   * To get a container ID make a [ContainerService.List] request.
+   */
   containerId: string;
 }
 
 export interface DeleteContainerMetadata {
   $type: "yandex.cloud.serverless.containers.v1.DeleteContainerMetadata";
+  /** ID of the container that is being deleted. */
   containerId: string;
 }
 
 export interface GetContainerRevisionRequest {
   $type: "yandex.cloud.serverless.containers.v1.GetContainerRevisionRequest";
+  /**
+   * ID of the revision to return.
+   *
+   * To get a revision ID make a [ContainerService.ListRevisions] request.
+   */
   containerRevisionId: string;
 }
 
 export interface ListContainersRevisionsRequest {
   $type: "yandex.cloud.serverless.containers.v1.ListContainersRevisionsRequest";
+  /**
+   * ID of the folder to list container revisions for.
+   * To get a folder ID make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+   */
   folderId: string | undefined;
+  /**
+   * ID of the container to list revisions for.
+   * To get a container ID use a [ContainerService.List] request.
+   */
   containerId: string | undefined;
+  /**
+   * The maximum number of results per page to return. If the number of available results
+   * is larger than `pageSize`, the service returns a [ListContainersRevisionsResponse.next_page_token]
+   * that can be used to get the next page of results in subsequent list requests.
+   *
+   * Default value: 100.
+   */
   pageSize: number;
+  /**
+   * Page token. To get the next page of results, set `pageToken` to the
+   * [ListContainersRevisionsResponse.next_page_token] returned by a previous list request.
+   */
   pageToken: string;
+  /**
+   * A filter expression that filters resources listed in the response.
+   *
+   * The expression must specify:
+   * 1. The field name. Currently filtering can only be applied to the [Revision.status] and [Revision.runtime] fields.
+   * 2. An `=` operator.
+   * 3. The value in double quotes (`"`). Must be 3-63 characters long and match the regular expression `[a-z][-a-z0-9]{1,61}[a-z0-9]`.
+   * Example of a filter: `status="ACTIVE"`.
+   */
   filter: string;
 }
 
 export interface ListContainersRevisionsResponse {
   $type: "yandex.cloud.serverless.containers.v1.ListContainersRevisionsResponse";
+  /** List of revisions for the specified folder or container. */
   revisions: Revision[];
+  /**
+   * Token for getting the next page of the list. If the number of results is greater than
+   * the specified [ListContainersRevisionsRequest.page_size], use `nextPageToken` as the value
+   * for the [ListContainersRevisionsRequest.page_token] parameter in the next list request.
+   *
+   * Each subsequent page will have its own `nextPageToken` to continue paging through the results.
+   */
   nextPageToken: string;
 }
 
 export interface DeployContainerRevisionRequest {
   $type: "yandex.cloud.serverless.containers.v1.DeployContainerRevisionRequest";
+  /**
+   * ID of the container to create a revision for.
+   *
+   * To get a container ID, make a [ContainerService.List] request.
+   */
   containerId: string;
+  /** Description of the revision. */
   description: string;
+  /** Resources allocated to the revision. */
   resources?: Resources;
+  /**
+   * Timeout for the execution of the revision.
+   *
+   * If the timeout is exceeded, Serverless Containers responds with a 504 HTTP code.
+   */
   executionTimeout?: Duration;
+  /** ID of the service account to associate with the revision. */
   serviceAccountId: string;
+  /** Image configuration for the revision. */
   imageSpec?: ImageSpec;
+  /**
+   * The number of concurrent requests allowed per container instance.
+   *
+   * The default value is 1.
+   */
   concurrency: number;
+  /** Yandex Lockbox secrets to be used by the revision. */
   secrets: Secret[];
+  /** Network access. If specified the revision will be attached to specified network/subnet(s). */
   connectivity?: Connectivity;
+  /**
+   * Policy for provisioning instances of the revision.
+   *
+   * The policy is only applied when the revision is ACTIVE.
+   */
   provisionPolicy?: ProvisionPolicy;
+  /** Policy for scaling instances of the revision. */
+  scalingPolicy?: ScalingPolicy;
+  /** Options for logging from the container. */
+  logOptions?: LogOptions;
+  /** S3 mounts to be used by the version. */
+  storageMounts: StorageMount[];
 }
 
+/** Revision image specification. */
 export interface ImageSpec {
   $type: "yandex.cloud.serverless.containers.v1.ImageSpec";
+  /** Image URL, that is used by the revision. */
   imageUrl: string;
+  /** Override for the image's ENTRYPOINT. */
   command?: Command;
+  /** Override for the image's CMD. */
   args?: Args;
+  /** Additional environment for the container. */
   environment: { [key: string]: string };
+  /** Override for the image's WORKDIR. */
   workingDir: string;
 }
 
@@ -155,32 +310,74 @@ export interface ImageSpec_EnvironmentEntry {
 
 export interface DeployContainerRevisionMetadata {
   $type: "yandex.cloud.serverless.containers.v1.DeployContainerRevisionMetadata";
+  /** ID of the revision that is being created. */
   containerRevisionId: string;
 }
 
 export interface RollbackContainerRequest {
   $type: "yandex.cloud.serverless.containers.v1.RollbackContainerRequest";
+  /**
+   * ID of the container to rollback to an old revision.
+   *
+   * To get a container ID, make a [ContainerService.List] request.
+   */
   containerId: string;
+  /**
+   * ID of the revision to rollback to.
+   *
+   * To get a revision ID make a [ContainerService.ListRevisions] request.
+   */
   revisionId: string;
 }
 
 export interface RollbackContainerMetadata {
   $type: "yandex.cloud.serverless.containers.v1.RollbackContainerMetadata";
+  /** ID of the container that is being rolled back. */
   containerId: string;
+  /** ID of the revision that the container is being rolled back to. */
   revisionId: string;
 }
 
 export interface ListContainerOperationsRequest {
   $type: "yandex.cloud.serverless.containers.v1.ListContainerOperationsRequest";
+  /** ID of the container to list operations for. */
   containerId: string;
+  /**
+   * The maximum number of results per page that should be returned. If the number of available
+   * results is larger than `pageSize`, the service returns a [ListContainerOperationsResponse.next_page_token]
+   * that can be used to get the next page of results in subsequent list requests.
+   *
+   * Default value: 100.
+   */
   pageSize: number;
+  /**
+   * Page token. To get the next page of results, set `pageToken` to the
+   * [ListContainerOperationsResponse.next_page_token] returned by a previous list request.
+   */
   pageToken: string;
+  /**
+   * A filter expression that filters resources listed in the response.
+   *
+   * The expression must specify:
+   * 1. The field name. Currently filtering can be applied to the [operation.Operation.done], [operation.Operation.created_by] field.
+   * 2. An `=` operator.
+   * 3. The value in double quotes (`"`). Must be 3-63 characters long and match the regular expression `[a-z][-a-z0-9]{1,61}[a-z0-9]`.
+   * Examples of a filter: `done=false`, `created_by='John.Doe'`.
+   */
   filter: string;
 }
 
 export interface ListContainerOperationsResponse {
   $type: "yandex.cloud.serverless.containers.v1.ListContainerOperationsResponse";
+  /** List of operations for the specified container. */
   operations: Operation[];
+  /**
+   * Token for getting the next page of the list. If the number of results is greater than
+   * the specified [ListContainerOperationsRequest.page_size], use `nextPageToken` as the value
+   * for the [ListContainerOperationsRequest.page_token] parameter in the next list request.
+   *
+   * Each subsequent page will have its own `nextPageToken` to continue paging through the results.
+   */
   nextPageToken: string;
 }
 
@@ -1540,6 +1737,18 @@ export const DeployContainerRevisionRequest = {
         writer.uint32(98).fork()
       ).ldelim();
     }
+    if (message.scalingPolicy !== undefined) {
+      ScalingPolicy.encode(
+        message.scalingPolicy,
+        writer.uint32(106).fork()
+      ).ldelim();
+    }
+    if (message.logOptions !== undefined) {
+      LogOptions.encode(message.logOptions, writer.uint32(114).fork()).ldelim();
+    }
+    for (const v of message.storageMounts) {
+      StorageMount.encode(v!, writer.uint32(122).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1553,6 +1762,7 @@ export const DeployContainerRevisionRequest = {
       ...baseDeployContainerRevisionRequest,
     } as DeployContainerRevisionRequest;
     message.secrets = [];
+    message.storageMounts = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1587,6 +1797,17 @@ export const DeployContainerRevisionRequest = {
           message.provisionPolicy = ProvisionPolicy.decode(
             reader,
             reader.uint32()
+          );
+          break;
+        case 13:
+          message.scalingPolicy = ScalingPolicy.decode(reader, reader.uint32());
+          break;
+        case 14:
+          message.logOptions = LogOptions.decode(reader, reader.uint32());
+          break;
+        case 15:
+          message.storageMounts.push(
+            StorageMount.decode(reader, reader.uint32())
           );
           break;
         default:
@@ -1640,6 +1861,17 @@ export const DeployContainerRevisionRequest = {
       object.provisionPolicy !== undefined && object.provisionPolicy !== null
         ? ProvisionPolicy.fromJSON(object.provisionPolicy)
         : undefined;
+    message.scalingPolicy =
+      object.scalingPolicy !== undefined && object.scalingPolicy !== null
+        ? ScalingPolicy.fromJSON(object.scalingPolicy)
+        : undefined;
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromJSON(object.logOptions)
+        : undefined;
+    message.storageMounts = (object.storageMounts ?? []).map((e: any) =>
+      StorageMount.fromJSON(e)
+    );
     return message;
   },
 
@@ -1680,6 +1912,21 @@ export const DeployContainerRevisionRequest = {
       (obj.provisionPolicy = message.provisionPolicy
         ? ProvisionPolicy.toJSON(message.provisionPolicy)
         : undefined);
+    message.scalingPolicy !== undefined &&
+      (obj.scalingPolicy = message.scalingPolicy
+        ? ScalingPolicy.toJSON(message.scalingPolicy)
+        : undefined);
+    message.logOptions !== undefined &&
+      (obj.logOptions = message.logOptions
+        ? LogOptions.toJSON(message.logOptions)
+        : undefined);
+    if (message.storageMounts) {
+      obj.storageMounts = message.storageMounts.map((e) =>
+        e ? StorageMount.toJSON(e) : undefined
+      );
+    } else {
+      obj.storageMounts = [];
+    }
     return obj;
   },
 
@@ -1714,6 +1961,16 @@ export const DeployContainerRevisionRequest = {
       object.provisionPolicy !== undefined && object.provisionPolicy !== null
         ? ProvisionPolicy.fromPartial(object.provisionPolicy)
         : undefined;
+    message.scalingPolicy =
+      object.scalingPolicy !== undefined && object.scalingPolicy !== null
+        ? ScalingPolicy.fromPartial(object.scalingPolicy)
+        : undefined;
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromPartial(object.logOptions)
+        : undefined;
+    message.storageMounts =
+      object.storageMounts?.map((e) => StorageMount.fromPartial(e)) || [];
     return message;
   },
 };
@@ -2427,7 +2684,13 @@ messageTypeRegistry.set(
   ListContainerOperationsResponse
 );
 
+/** A set of methods for managing serverless containers. */
 export const ContainerServiceService = {
+  /**
+   * Returns the specified container.
+   *
+   * To get the list of all available containers, make a [List] request.
+   */
   get: {
     path: "/yandex.cloud.serverless.containers.v1.ContainerService/Get",
     requestStream: false,
@@ -2439,6 +2702,7 @@ export const ContainerServiceService = {
       Buffer.from(Container.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Container.decode(value),
   },
+  /** Retrieves the list of containers in the specified folder. */
   list: {
     path: "/yandex.cloud.serverless.containers.v1.ContainerService/List",
     requestStream: false,
@@ -2451,6 +2715,7 @@ export const ContainerServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListContainersResponse.decode(value),
   },
+  /** Creates a container in the specified folder. */
   create: {
     path: "/yandex.cloud.serverless.containers.v1.ContainerService/Create",
     requestStream: false,
@@ -2462,6 +2727,7 @@ export const ContainerServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Updates the specified container. */
   update: {
     path: "/yandex.cloud.serverless.containers.v1.ContainerService/Update",
     requestStream: false,
@@ -2473,6 +2739,7 @@ export const ContainerServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Deletes the specified container. */
   delete: {
     path: "/yandex.cloud.serverless.containers.v1.ContainerService/Delete",
     requestStream: false,
@@ -2484,6 +2751,7 @@ export const ContainerServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Deploys a revision for the specified container. */
   deployRevision: {
     path: "/yandex.cloud.serverless.containers.v1.ContainerService/DeployRevision",
     requestStream: false,
@@ -2496,6 +2764,7 @@ export const ContainerServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Rollback the specified container to an old revision. */
   rollback: {
     path: "/yandex.cloud.serverless.containers.v1.ContainerService/Rollback",
     requestStream: false,
@@ -2508,6 +2777,11 @@ export const ContainerServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /**
+   * Returns the specified revision of a container.
+   *
+   * To get the list of available revision, make a [ListRevisions] request.
+   */
   getRevision: {
     path: "/yandex.cloud.serverless.containers.v1.ContainerService/GetRevision",
     requestStream: false,
@@ -2520,6 +2794,10 @@ export const ContainerServiceService = {
       Buffer.from(Revision.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Revision.decode(value),
   },
+  /**
+   * Retrieves the list of revisions for the specified container, or of all container revisions
+   * in the specified folder.
+   */
   listRevisions: {
     path: "/yandex.cloud.serverless.containers.v1.ContainerService/ListRevisions",
     requestStream: false,
@@ -2533,6 +2811,7 @@ export const ContainerServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListContainersRevisionsResponse.decode(value),
   },
+  /** Lists operations for the specified container. */
   listOperations: {
     path: "/yandex.cloud.serverless.containers.v1.ContainerService/ListOperations",
     requestStream: false,
@@ -2546,6 +2825,7 @@ export const ContainerServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListContainerOperationsResponse.decode(value),
   },
+  /** Lists existing access bindings for the specified container. */
   listAccessBindings: {
     path: "/yandex.cloud.serverless.containers.v1.ContainerService/ListAccessBindings",
     requestStream: false,
@@ -2559,6 +2839,7 @@ export const ContainerServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListAccessBindingsResponse.decode(value),
   },
+  /** Sets access bindings for the container. */
   setAccessBindings: {
     path: "/yandex.cloud.serverless.containers.v1.ContainerService/SetAccessBindings",
     requestStream: false,
@@ -2571,6 +2852,7 @@ export const ContainerServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Updates access bindings for the specified container. */
   updateAccessBindings: {
     path: "/yandex.cloud.serverless.containers.v1.ContainerService/UpdateAccessBindings",
     requestStream: false,
@@ -2586,31 +2868,60 @@ export const ContainerServiceService = {
 } as const;
 
 export interface ContainerServiceServer extends UntypedServiceImplementation {
+  /**
+   * Returns the specified container.
+   *
+   * To get the list of all available containers, make a [List] request.
+   */
   get: handleUnaryCall<GetContainerRequest, Container>;
+  /** Retrieves the list of containers in the specified folder. */
   list: handleUnaryCall<ListContainersRequest, ListContainersResponse>;
+  /** Creates a container in the specified folder. */
   create: handleUnaryCall<CreateContainerRequest, Operation>;
+  /** Updates the specified container. */
   update: handleUnaryCall<UpdateContainerRequest, Operation>;
+  /** Deletes the specified container. */
   delete: handleUnaryCall<DeleteContainerRequest, Operation>;
+  /** Deploys a revision for the specified container. */
   deployRevision: handleUnaryCall<DeployContainerRevisionRequest, Operation>;
+  /** Rollback the specified container to an old revision. */
   rollback: handleUnaryCall<RollbackContainerRequest, Operation>;
+  /**
+   * Returns the specified revision of a container.
+   *
+   * To get the list of available revision, make a [ListRevisions] request.
+   */
   getRevision: handleUnaryCall<GetContainerRevisionRequest, Revision>;
+  /**
+   * Retrieves the list of revisions for the specified container, or of all container revisions
+   * in the specified folder.
+   */
   listRevisions: handleUnaryCall<
     ListContainersRevisionsRequest,
     ListContainersRevisionsResponse
   >;
+  /** Lists operations for the specified container. */
   listOperations: handleUnaryCall<
     ListContainerOperationsRequest,
     ListContainerOperationsResponse
   >;
+  /** Lists existing access bindings for the specified container. */
   listAccessBindings: handleUnaryCall<
     ListAccessBindingsRequest,
     ListAccessBindingsResponse
   >;
+  /** Sets access bindings for the container. */
   setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
+  /** Updates access bindings for the specified container. */
   updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
 }
 
 export interface ContainerServiceClient extends Client {
+  /**
+   * Returns the specified container.
+   *
+   * To get the list of all available containers, make a [List] request.
+   */
   get(
     request: GetContainerRequest,
     callback: (error: ServiceError | null, response: Container) => void
@@ -2626,6 +2937,7 @@ export interface ContainerServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Container) => void
   ): ClientUnaryCall;
+  /** Retrieves the list of containers in the specified folder. */
   list(
     request: ListContainersRequest,
     callback: (
@@ -2650,6 +2962,7 @@ export interface ContainerServiceClient extends Client {
       response: ListContainersResponse
     ) => void
   ): ClientUnaryCall;
+  /** Creates a container in the specified folder. */
   create(
     request: CreateContainerRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -2665,6 +2978,7 @@ export interface ContainerServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
+  /** Updates the specified container. */
   update(
     request: UpdateContainerRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -2680,6 +2994,7 @@ export interface ContainerServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
+  /** Deletes the specified container. */
   delete(
     request: DeleteContainerRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -2695,6 +3010,7 @@ export interface ContainerServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
+  /** Deploys a revision for the specified container. */
   deployRevision(
     request: DeployContainerRevisionRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -2710,6 +3026,7 @@ export interface ContainerServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
+  /** Rollback the specified container to an old revision. */
   rollback(
     request: RollbackContainerRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -2725,6 +3042,11 @@ export interface ContainerServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
+  /**
+   * Returns the specified revision of a container.
+   *
+   * To get the list of available revision, make a [ListRevisions] request.
+   */
   getRevision(
     request: GetContainerRevisionRequest,
     callback: (error: ServiceError | null, response: Revision) => void
@@ -2740,6 +3062,10 @@ export interface ContainerServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Revision) => void
   ): ClientUnaryCall;
+  /**
+   * Retrieves the list of revisions for the specified container, or of all container revisions
+   * in the specified folder.
+   */
   listRevisions(
     request: ListContainersRevisionsRequest,
     callback: (
@@ -2764,6 +3090,7 @@ export interface ContainerServiceClient extends Client {
       response: ListContainersRevisionsResponse
     ) => void
   ): ClientUnaryCall;
+  /** Lists operations for the specified container. */
   listOperations(
     request: ListContainerOperationsRequest,
     callback: (
@@ -2788,6 +3115,7 @@ export interface ContainerServiceClient extends Client {
       response: ListContainerOperationsResponse
     ) => void
   ): ClientUnaryCall;
+  /** Lists existing access bindings for the specified container. */
   listAccessBindings(
     request: ListAccessBindingsRequest,
     callback: (
@@ -2812,6 +3140,7 @@ export interface ContainerServiceClient extends Client {
       response: ListAccessBindingsResponse
     ) => void
   ): ClientUnaryCall;
+  /** Sets access bindings for the container. */
   setAccessBindings(
     request: SetAccessBindingsRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -2827,6 +3156,7 @@ export interface ContainerServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
+  /** Updates access bindings for the specified container. */
   updateAccessBindings(
     request: UpdateAccessBindingsRequest,
     callback: (error: ServiceError | null, response: Operation) => void

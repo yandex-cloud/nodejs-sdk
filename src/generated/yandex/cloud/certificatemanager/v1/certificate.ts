@@ -88,7 +88,7 @@ export function challengeTypeToJSON(object: ChallengeType): string {
   }
 }
 
-/** A certificate. For details about the concept, see [documentation](docs/certificate-manager/concepts/). */
+/** A certificate. For details about the concept, see [documentation](/docs/certificate-manager/concepts/). */
 export interface Certificate {
   $type: "yandex.cloud.certificatemanager.v1.Certificate";
   /** ID of the certificate. Generated at creation time. */
@@ -130,6 +130,8 @@ export interface Certificate {
   challenges: Challenge[];
   /** Flag that protects deletion of the certificate */
   deletionProtection: boolean;
+  /** Mark imported certificates without uploaded chain or with chain which not lead to root certificate */
+  incompleteChain: boolean;
 }
 
 export enum Certificate_Status {
@@ -325,6 +327,7 @@ const baseCertificate: object = {
   subject: "",
   serial: "",
   deletionProtection: false,
+  incompleteChain: false,
 };
 
 export const Certificate = {
@@ -410,6 +413,9 @@ export const Certificate = {
     if (message.deletionProtection === true) {
       writer.uint32(144).bool(message.deletionProtection);
     }
+    if (message.incompleteChain === true) {
+      writer.uint32(152).bool(message.incompleteChain);
+    }
     return writer;
   },
 
@@ -493,6 +499,9 @@ export const Certificate = {
         case 18:
           message.deletionProtection = reader.bool();
           break;
+        case 19:
+          message.incompleteChain = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -572,6 +581,10 @@ export const Certificate = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.incompleteChain =
+      object.incompleteChain !== undefined && object.incompleteChain !== null
+        ? Boolean(object.incompleteChain)
+        : false;
     return message;
   },
 
@@ -619,6 +632,8 @@ export const Certificate = {
     }
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.incompleteChain !== undefined &&
+      (obj.incompleteChain = message.incompleteChain);
     return obj;
   },
 
@@ -652,6 +667,7 @@ export const Certificate = {
     message.challenges =
       object.challenges?.map((e) => Challenge.fromPartial(e)) || [];
     message.deletionProtection = object.deletionProtection ?? false;
+    message.incompleteChain = object.incompleteChain ?? false;
     return message;
   },
 };

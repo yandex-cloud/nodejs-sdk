@@ -583,6 +583,7 @@ export interface CloudStorage {
   moveFactor?: number;
   dataCacheEnabled?: boolean;
   dataCacheMaxSize?: number;
+  preferNotToMerge?: boolean;
 }
 
 const baseCluster: object = {
@@ -2387,6 +2388,15 @@ export const CloudStorage = {
         writer.uint32(34).fork()
       ).ldelim();
     }
+    if (message.preferNotToMerge !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.preferNotToMerge!,
+        },
+        writer.uint32(42).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2418,6 +2428,12 @@ export const CloudStorage = {
             reader.uint32()
           ).value;
           break;
+        case 5:
+          message.preferNotToMerge = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2444,6 +2460,10 @@ export const CloudStorage = {
       object.dataCacheMaxSize !== undefined && object.dataCacheMaxSize !== null
         ? Number(object.dataCacheMaxSize)
         : undefined;
+    message.preferNotToMerge =
+      object.preferNotToMerge !== undefined && object.preferNotToMerge !== null
+        ? Boolean(object.preferNotToMerge)
+        : undefined;
     return message;
   },
 
@@ -2455,6 +2475,8 @@ export const CloudStorage = {
       (obj.dataCacheEnabled = message.dataCacheEnabled);
     message.dataCacheMaxSize !== undefined &&
       (obj.dataCacheMaxSize = message.dataCacheMaxSize);
+    message.preferNotToMerge !== undefined &&
+      (obj.preferNotToMerge = message.preferNotToMerge);
     return obj;
   },
 
@@ -2466,6 +2488,7 @@ export const CloudStorage = {
     message.moveFactor = object.moveFactor ?? undefined;
     message.dataCacheEnabled = object.dataCacheEnabled ?? undefined;
     message.dataCacheMaxSize = object.dataCacheMaxSize ?? undefined;
+    message.preferNotToMerge = object.preferNotToMerge ?? undefined;
     return message;
   },
 };

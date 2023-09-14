@@ -94,6 +94,7 @@ export interface Database {
   backupConfig?: BackupConfig;
   documentApiEndpoint: string;
   kinesisApiEndpoint: string;
+  kafkaApiEndpoint: string;
   monitoringConfig?: MonitoringConfig;
   deletionProtection: boolean;
 }
@@ -333,6 +334,7 @@ const baseDatabase: object = {
   locationId: "",
   documentApiEndpoint: "",
   kinesisApiEndpoint: "",
+  kafkaApiEndpoint: "",
   deletionProtection: false,
 };
 
@@ -440,6 +442,9 @@ export const Database = {
     if (message.kinesisApiEndpoint !== "") {
       writer.uint32(186).string(message.kinesisApiEndpoint);
     }
+    if (message.kafkaApiEndpoint !== "") {
+      writer.uint32(210).string(message.kafkaApiEndpoint);
+    }
     if (message.monitoringConfig !== undefined) {
       MonitoringConfig.encode(
         message.monitoringConfig,
@@ -540,6 +545,9 @@ export const Database = {
           break;
         case 23:
           message.kinesisApiEndpoint = reader.string();
+          break;
+        case 26:
+          message.kafkaApiEndpoint = reader.string();
           break;
         case 24:
           message.monitoringConfig = MonitoringConfig.decode(
@@ -649,6 +657,10 @@ export const Database = {
       object.kinesisApiEndpoint !== null
         ? String(object.kinesisApiEndpoint)
         : "";
+    message.kafkaApiEndpoint =
+      object.kafkaApiEndpoint !== undefined && object.kafkaApiEndpoint !== null
+        ? String(object.kafkaApiEndpoint)
+        : "";
     message.monitoringConfig =
       object.monitoringConfig !== undefined && object.monitoringConfig !== null
         ? MonitoringConfig.fromJSON(object.monitoringConfig)
@@ -722,6 +734,8 @@ export const Database = {
       (obj.documentApiEndpoint = message.documentApiEndpoint);
     message.kinesisApiEndpoint !== undefined &&
       (obj.kinesisApiEndpoint = message.kinesisApiEndpoint);
+    message.kafkaApiEndpoint !== undefined &&
+      (obj.kafkaApiEndpoint = message.kafkaApiEndpoint);
     message.monitoringConfig !== undefined &&
       (obj.monitoringConfig = message.monitoringConfig
         ? MonitoringConfig.toJSON(message.monitoringConfig)
@@ -785,6 +799,7 @@ export const Database = {
         : undefined;
     message.documentApiEndpoint = object.documentApiEndpoint ?? "";
     message.kinesisApiEndpoint = object.kinesisApiEndpoint ?? "";
+    message.kafkaApiEndpoint = object.kafkaApiEndpoint ?? "";
     message.monitoringConfig =
       object.monitoringConfig !== undefined && object.monitoringConfig !== null
         ? MonitoringConfig.fromPartial(object.monitoringConfig)

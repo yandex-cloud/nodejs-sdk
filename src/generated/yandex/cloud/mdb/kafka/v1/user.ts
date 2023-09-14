@@ -43,6 +43,15 @@ export interface Permission {
   topicName: string;
   /** Access role type to grant to the user. */
   role: Permission_AccessRole;
+  /**
+   * Lists hosts allowed for this permission.
+   * When not defined, access from any host is allowed.
+   *
+   * Bare in mind that the same host might appear in multiple permissions at the same time,
+   * hence removing individual permission doesn't automatically restricts access from the [allow_hosts] of the permission.
+   * If the same host(s) is listed for another permission of the same principal/topic, the host(s) remains allowed.
+   */
+  allowHosts: string[];
 }
 
 export enum Permission_AccessRole {
@@ -281,6 +290,7 @@ const basePermission: object = {
   $type: "yandex.cloud.mdb.kafka.v1.Permission",
   topicName: "",
   role: 0,
+  allowHosts: "",
 };
 
 export const Permission = {
@@ -296,6 +306,9 @@ export const Permission = {
     if (message.role !== 0) {
       writer.uint32(16).int32(message.role);
     }
+    for (const v of message.allowHosts) {
+      writer.uint32(34).string(v!);
+    }
     return writer;
   },
 
@@ -303,6 +316,7 @@ export const Permission = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...basePermission } as Permission;
+    message.allowHosts = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -311,6 +325,9 @@ export const Permission = {
           break;
         case 2:
           message.role = reader.int32() as any;
+          break;
+        case 4:
+          message.allowHosts.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -330,6 +347,7 @@ export const Permission = {
       object.role !== undefined && object.role !== null
         ? permission_AccessRoleFromJSON(object.role)
         : 0;
+    message.allowHosts = (object.allowHosts ?? []).map((e: any) => String(e));
     return message;
   },
 
@@ -338,6 +356,11 @@ export const Permission = {
     message.topicName !== undefined && (obj.topicName = message.topicName);
     message.role !== undefined &&
       (obj.role = permission_AccessRoleToJSON(message.role));
+    if (message.allowHosts) {
+      obj.allowHosts = message.allowHosts.map((e) => e);
+    } else {
+      obj.allowHosts = [];
+    }
     return obj;
   },
 
@@ -347,6 +370,7 @@ export const Permission = {
     const message = { ...basePermission } as Permission;
     message.topicName = object.topicName ?? "";
     message.role = object.role ?? 0;
+    message.allowHosts = object.allowHosts?.map((e) => e) || [];
     return message;
   },
 };

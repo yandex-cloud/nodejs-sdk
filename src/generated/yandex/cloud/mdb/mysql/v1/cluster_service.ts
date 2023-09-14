@@ -214,6 +214,8 @@ export interface BackupClusterMetadata {
   $type: "yandex.cloud.mdb.mysql.v1.BackupClusterMetadata";
   /** ID of the cluster that is being backed up. */
   clusterId: string;
+  /** ID of the MySQL backup that is created. */
+  backupId: string;
 }
 
 export interface RestoreClusterRequest {
@@ -2181,6 +2183,7 @@ messageTypeRegistry.set(BackupClusterRequest.$type, BackupClusterRequest);
 const baseBackupClusterMetadata: object = {
   $type: "yandex.cloud.mdb.mysql.v1.BackupClusterMetadata",
   clusterId: "",
+  backupId: "",
 };
 
 export const BackupClusterMetadata = {
@@ -2192,6 +2195,9 @@ export const BackupClusterMetadata = {
   ): _m0.Writer {
     if (message.clusterId !== "") {
       writer.uint32(10).string(message.clusterId);
+    }
+    if (message.backupId !== "") {
+      writer.uint32(18).string(message.backupId);
     }
     return writer;
   },
@@ -2209,6 +2215,9 @@ export const BackupClusterMetadata = {
         case 1:
           message.clusterId = reader.string();
           break;
+        case 2:
+          message.backupId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2223,12 +2232,17 @@ export const BackupClusterMetadata = {
       object.clusterId !== undefined && object.clusterId !== null
         ? String(object.clusterId)
         : "";
+    message.backupId =
+      object.backupId !== undefined && object.backupId !== null
+        ? String(object.backupId)
+        : "";
     return message;
   },
 
   toJSON(message: BackupClusterMetadata): unknown {
     const obj: any = {};
     message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.backupId !== undefined && (obj.backupId = message.backupId);
     return obj;
   },
 
@@ -2237,6 +2251,7 @@ export const BackupClusterMetadata = {
   ): BackupClusterMetadata {
     const message = { ...baseBackupClusterMetadata } as BackupClusterMetadata;
     message.clusterId = object.clusterId ?? "";
+    message.backupId = object.backupId ?? "";
     return message;
   },
 };

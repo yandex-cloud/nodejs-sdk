@@ -352,6 +352,8 @@ export enum Host_Health {
   DEAD = 2,
   /** DEGRADED - Host is degraded, and can perform only some of its essential functions. */
   DEGRADED = 3,
+  /** READONLY - Host is alive, but in read-only mode. */
+  READONLY = 4,
   UNRECOGNIZED = -1,
 }
 
@@ -369,6 +371,9 @@ export function host_HealthFromJSON(object: any): Host_Health {
     case 3:
     case "DEGRADED":
       return Host_Health.DEGRADED;
+    case 4:
+    case "READONLY":
+      return Host_Health.READONLY;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -386,6 +391,8 @@ export function host_HealthToJSON(object: Host_Health): string {
       return "DEAD";
     case Host_Health.DEGRADED:
       return "DEGRADED";
+    case Host_Health.READONLY:
+      return "READONLY";
     default:
       return "UNKNOWN";
   }
@@ -439,6 +446,8 @@ export enum Service_Health {
   ALIVE = 1,
   /** DEAD - The service is dead or unresponsive. */
   DEAD = 2,
+  /** READONLY - The service is in read-only mode. */
+  READONLY = 3,
   UNRECOGNIZED = -1,
 }
 
@@ -453,6 +462,9 @@ export function service_HealthFromJSON(object: any): Service_Health {
     case 2:
     case "DEAD":
       return Service_Health.DEAD;
+    case 3:
+    case "READONLY":
+      return Service_Health.READONLY;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -468,6 +480,8 @@ export function service_HealthToJSON(object: Service_Health): string {
       return "ALIVE";
     case Service_Health.DEAD:
       return "DEAD";
+    case Service_Health.READONLY:
+      return "READONLY";
     default:
       return "UNKNOWN";
   }

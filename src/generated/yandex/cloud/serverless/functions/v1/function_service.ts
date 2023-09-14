@@ -18,10 +18,13 @@ import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import {
   Resources,
   Connectivity,
+  LogOptions,
+  AsyncInvocationConfig,
   Function,
   Version,
   Package,
   Secret,
+  StorageMount,
   ScalingPolicy,
 } from "../../../../../yandex/cloud/serverless/functions/v1/function";
 import { Duration } from "../../../../../google/protobuf/duration";
@@ -203,6 +206,24 @@ export interface DeleteFunctionMetadata {
   functionId: string;
 }
 
+export interface DeleteFunctionVersionRequest {
+  $type: "yandex.cloud.serverless.functions.v1.DeleteFunctionVersionRequest";
+  /** ID of the function's version to delete. */
+  functionVersionId: string;
+  /**
+   * Forces deletion of the version tags.
+   *
+   * If the value equals false and the function has tags with the selected version then request returns an error.
+   */
+  force: boolean;
+}
+
+export interface DeleteFunctionVersionMetadata {
+  $type: "yandex.cloud.serverless.functions.v1.DeleteFunctionVersionMetadata";
+  /** ID of the function's version is being deleted. */
+  functionVersionId: string;
+}
+
 export interface ListRuntimesRequest {
   $type: "yandex.cloud.serverless.functions.v1.ListRuntimesRequest";
 }
@@ -348,8 +369,14 @@ export interface CreateFunctionVersionRequest {
   connectivity?: Connectivity;
   /** Additional service accounts to be used by the version. */
   namedServiceAccounts: { [key: string]: string };
-  /** Lockbox secrets to be used by the version */
+  /** Yandex Lockbox secrets to be used by the version. */
   secrets: Secret[];
+  /** Options for logging from the function */
+  logOptions?: LogOptions;
+  /** S3 mounts to be used by the version. */
+  storageMounts: StorageMount[];
+  /** Config for asynchronous invocations of the version */
+  asyncInvocationConfig?: AsyncInvocationConfig;
 }
 
 export interface CreateFunctionVersionRequest_EnvironmentEntry {
@@ -1698,6 +1725,173 @@ export const DeleteFunctionMetadata = {
 
 messageTypeRegistry.set(DeleteFunctionMetadata.$type, DeleteFunctionMetadata);
 
+const baseDeleteFunctionVersionRequest: object = {
+  $type: "yandex.cloud.serverless.functions.v1.DeleteFunctionVersionRequest",
+  functionVersionId: "",
+  force: false,
+};
+
+export const DeleteFunctionVersionRequest = {
+  $type:
+    "yandex.cloud.serverless.functions.v1.DeleteFunctionVersionRequest" as const,
+
+  encode(
+    message: DeleteFunctionVersionRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.functionVersionId !== "") {
+      writer.uint32(18).string(message.functionVersionId);
+    }
+    if (message.force === true) {
+      writer.uint32(24).bool(message.force);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DeleteFunctionVersionRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDeleteFunctionVersionRequest,
+    } as DeleteFunctionVersionRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 2:
+          message.functionVersionId = reader.string();
+          break;
+        case 3:
+          message.force = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteFunctionVersionRequest {
+    const message = {
+      ...baseDeleteFunctionVersionRequest,
+    } as DeleteFunctionVersionRequest;
+    message.functionVersionId =
+      object.functionVersionId !== undefined &&
+      object.functionVersionId !== null
+        ? String(object.functionVersionId)
+        : "";
+    message.force =
+      object.force !== undefined && object.force !== null
+        ? Boolean(object.force)
+        : false;
+    return message;
+  },
+
+  toJSON(message: DeleteFunctionVersionRequest): unknown {
+    const obj: any = {};
+    message.functionVersionId !== undefined &&
+      (obj.functionVersionId = message.functionVersionId);
+    message.force !== undefined && (obj.force = message.force);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteFunctionVersionRequest>, I>>(
+    object: I
+  ): DeleteFunctionVersionRequest {
+    const message = {
+      ...baseDeleteFunctionVersionRequest,
+    } as DeleteFunctionVersionRequest;
+    message.functionVersionId = object.functionVersionId ?? "";
+    message.force = object.force ?? false;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  DeleteFunctionVersionRequest.$type,
+  DeleteFunctionVersionRequest
+);
+
+const baseDeleteFunctionVersionMetadata: object = {
+  $type: "yandex.cloud.serverless.functions.v1.DeleteFunctionVersionMetadata",
+  functionVersionId: "",
+};
+
+export const DeleteFunctionVersionMetadata = {
+  $type:
+    "yandex.cloud.serverless.functions.v1.DeleteFunctionVersionMetadata" as const,
+
+  encode(
+    message: DeleteFunctionVersionMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.functionVersionId !== "") {
+      writer.uint32(18).string(message.functionVersionId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DeleteFunctionVersionMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDeleteFunctionVersionMetadata,
+    } as DeleteFunctionVersionMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 2:
+          message.functionVersionId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteFunctionVersionMetadata {
+    const message = {
+      ...baseDeleteFunctionVersionMetadata,
+    } as DeleteFunctionVersionMetadata;
+    message.functionVersionId =
+      object.functionVersionId !== undefined &&
+      object.functionVersionId !== null
+        ? String(object.functionVersionId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: DeleteFunctionVersionMetadata): unknown {
+    const obj: any = {};
+    message.functionVersionId !== undefined &&
+      (obj.functionVersionId = message.functionVersionId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteFunctionVersionMetadata>, I>>(
+    object: I
+  ): DeleteFunctionVersionMetadata {
+    const message = {
+      ...baseDeleteFunctionVersionMetadata,
+    } as DeleteFunctionVersionMetadata;
+    message.functionVersionId = object.functionVersionId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  DeleteFunctionVersionMetadata.$type,
+  DeleteFunctionVersionMetadata
+);
+
 const baseListRuntimesRequest: object = {
   $type: "yandex.cloud.serverless.functions.v1.ListRuntimesRequest",
 };
@@ -2330,6 +2524,18 @@ export const CreateFunctionVersionRequest = {
     for (const v of message.secrets) {
       Secret.encode(v!, writer.uint32(146).fork()).ldelim();
     }
+    if (message.logOptions !== undefined) {
+      LogOptions.encode(message.logOptions, writer.uint32(154).fork()).ldelim();
+    }
+    for (const v of message.storageMounts) {
+      StorageMount.encode(v!, writer.uint32(162).fork()).ldelim();
+    }
+    if (message.asyncInvocationConfig !== undefined) {
+      AsyncInvocationConfig.encode(
+        message.asyncInvocationConfig,
+        writer.uint32(178).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2346,6 +2552,7 @@ export const CreateFunctionVersionRequest = {
     message.tag = [];
     message.namedServiceAccounts = {};
     message.secrets = [];
+    message.storageMounts = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2406,6 +2613,20 @@ export const CreateFunctionVersionRequest = {
           break;
         case 18:
           message.secrets.push(Secret.decode(reader, reader.uint32()));
+          break;
+        case 19:
+          message.logOptions = LogOptions.decode(reader, reader.uint32());
+          break;
+        case 20:
+          message.storageMounts.push(
+            StorageMount.decode(reader, reader.uint32())
+          );
+          break;
+        case 22:
+          message.asyncInvocationConfig = AsyncInvocationConfig.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -2479,6 +2700,18 @@ export const CreateFunctionVersionRequest = {
     message.secrets = (object.secrets ?? []).map((e: any) =>
       Secret.fromJSON(e)
     );
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromJSON(object.logOptions)
+        : undefined;
+    message.storageMounts = (object.storageMounts ?? []).map((e: any) =>
+      StorageMount.fromJSON(e)
+    );
+    message.asyncInvocationConfig =
+      object.asyncInvocationConfig !== undefined &&
+      object.asyncInvocationConfig !== null
+        ? AsyncInvocationConfig.fromJSON(object.asyncInvocationConfig)
+        : undefined;
     return message;
   },
 
@@ -2537,6 +2770,21 @@ export const CreateFunctionVersionRequest = {
     } else {
       obj.secrets = [];
     }
+    message.logOptions !== undefined &&
+      (obj.logOptions = message.logOptions
+        ? LogOptions.toJSON(message.logOptions)
+        : undefined);
+    if (message.storageMounts) {
+      obj.storageMounts = message.storageMounts.map((e) =>
+        e ? StorageMount.toJSON(e) : undefined
+      );
+    } else {
+      obj.storageMounts = [];
+    }
+    message.asyncInvocationConfig !== undefined &&
+      (obj.asyncInvocationConfig = message.asyncInvocationConfig
+        ? AsyncInvocationConfig.toJSON(message.asyncInvocationConfig)
+        : undefined);
     return obj;
   },
 
@@ -2587,6 +2835,17 @@ export const CreateFunctionVersionRequest = {
       return acc;
     }, {});
     message.secrets = object.secrets?.map((e) => Secret.fromPartial(e)) || [];
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromPartial(object.logOptions)
+        : undefined;
+    message.storageMounts =
+      object.storageMounts?.map((e) => StorageMount.fromPartial(e)) || [];
+    message.asyncInvocationConfig =
+      object.asyncInvocationConfig !== undefined &&
+      object.asyncInvocationConfig !== null
+        ? AsyncInvocationConfig.fromPartial(object.asyncInvocationConfig)
+        : undefined;
     return message;
   },
 };
@@ -4231,6 +4490,23 @@ export const FunctionServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListFunctionsVersionsResponse.decode(value),
   },
+  /**
+   * Deletes the specified version of a function.
+   *
+   * NOTE: old untagged function versions are deleted automatically.
+   */
+  deleteVersion: {
+    path: "/yandex.cloud.serverless.functions.v1.FunctionService/DeleteVersion",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: DeleteFunctionVersionRequest) =>
+      Buffer.from(DeleteFunctionVersionRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      DeleteFunctionVersionRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /** Set a tag for the specified version of a function. */
   setTag: {
     path: "/yandex.cloud.serverless.functions.v1.FunctionService/SetTag",
@@ -4426,6 +4702,12 @@ export interface FunctionServiceServer extends UntypedServiceImplementation {
     ListFunctionsVersionsRequest,
     ListFunctionsVersionsResponse
   >;
+  /**
+   * Deletes the specified version of a function.
+   *
+   * NOTE: old untagged function versions are deleted automatically.
+   */
+  deleteVersion: handleUnaryCall<DeleteFunctionVersionRequest, Operation>;
   /** Set a tag for the specified version of a function. */
   setTag: handleUnaryCall<SetFunctionTagRequest, Operation>;
   /** Remove a tag from the specified version of a function. */
@@ -4625,6 +4907,26 @@ export interface FunctionServiceClient extends Client {
       error: ServiceError | null,
       response: ListFunctionsVersionsResponse
     ) => void
+  ): ClientUnaryCall;
+  /**
+   * Deletes the specified version of a function.
+   *
+   * NOTE: old untagged function versions are deleted automatically.
+   */
+  deleteVersion(
+    request: DeleteFunctionVersionRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  deleteVersion(
+    request: DeleteFunctionVersionRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  deleteVersion(
+    request: DeleteFunctionVersionRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
   /** Set a tag for the specified version of a function. */
   setTag(

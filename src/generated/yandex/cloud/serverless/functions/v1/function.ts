@@ -3,6 +3,11 @@ import { messageTypeRegistry } from "../../../../../typeRegistry";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { Duration } from "../../../../../google/protobuf/duration";
+import {
+  LogLevel_Level,
+  logLevel_LevelFromJSON,
+  logLevel_LevelToJSON,
+} from "../../../../../yandex/cloud/logging/v1/log_entry";
 import { Timestamp } from "../../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.serverless.functions.v1";
@@ -137,8 +142,14 @@ export interface Version {
   connectivity?: Connectivity;
   /** Additional service accounts to be used by the version. */
   namedServiceAccounts: { [key: string]: string };
-  /** Lockbox secrets to be used by the version */
+  /** Yandex Lockbox secrets to be used by the version. */
   secrets: Secret[];
+  /** Options for logging from the function */
+  logOptions?: LogOptions;
+  /** S3 mounts to be used by the version. */
+  storageMounts: StorageMount[];
+  /** Config for asynchronous invocations of the version */
+  asyncInvocationConfig?: AsyncInvocationConfig;
 }
 
 export enum Version_Status {
@@ -196,7 +207,7 @@ export interface Version_NamedServiceAccountsEntry {
 /** Resources allocated to a version. */
 export interface Resources {
   $type: "yandex.cloud.serverless.functions.v1.Resources";
-  /** Amount of memory available to the version, specified in bytes. */
+  /** Amount of memory available to the version, specified in bytes, multiple of 128MB. */
   memory: number;
 }
 
@@ -253,17 +264,78 @@ export interface ScalingPolicy {
   zoneRequestsLimit: number;
 }
 
-/** Secret for serverless function */
+/** Secret for serverless function. */
 export interface Secret {
   $type: "yandex.cloud.serverless.functions.v1.Secret";
-  /** ID of lockbox secret */
+  /** ID of Yandex Lockbox secret. */
   id: string;
-  /** ID of secret version */
+  /** ID of Yandex Lockbox version. */
   versionId: string;
-  /** Key in secret's payload, which value to be delivered into function environment */
+  /** Key in secret's payload, which value to be delivered into function environment. */
   key: string;
-  /** environment variable in which secret's value to be delivered */
+  /** environment variable in which secret's value to be delivered. */
   environmentVariable: string | undefined;
+}
+
+export interface LogOptions {
+  $type: "yandex.cloud.serverless.functions.v1.LogOptions";
+  /** Is logging from function disabled. */
+  disabled: boolean;
+  /** Entry should be written to log group resolved by ID. */
+  logGroupId: string | undefined;
+  /** Entry should be written to default log group for specified folder. */
+  folderId: string | undefined;
+  /**
+   * Minimum log entry level.
+   *
+   * See [LogLevel.Level] for details.
+   */
+  minLevel: LogLevel_Level;
+}
+
+export interface StorageMount {
+  $type: "yandex.cloud.serverless.functions.v1.StorageMount";
+  /** S3 bucket name for mounting. */
+  bucketId: string;
+  /** S3 bucket prefix for mounting. */
+  prefix: string;
+  /** Mount point directory name (not path) for mounting. */
+  mountPointName: string;
+  /** Is mount read only. */
+  readOnly: boolean;
+}
+
+export interface AsyncInvocationConfig {
+  $type: "yandex.cloud.serverless.functions.v1.AsyncInvocationConfig";
+  /** Number of retries of version invocation */
+  retriesCount: number;
+  /** Target for successful result of the version's invocation */
+  successTarget?: AsyncInvocationConfig_ResponseTarget;
+  /** Target for unsuccessful result, if all retries failed */
+  failureTarget?: AsyncInvocationConfig_ResponseTarget;
+  /** Service account which can invoke version */
+  serviceAccountId: string;
+}
+
+/** Target to which a result of an invocation will be sent */
+export interface AsyncInvocationConfig_ResponseTarget {
+  $type: "yandex.cloud.serverless.functions.v1.AsyncInvocationConfig.ResponseTarget";
+  /** Target to ignore a result */
+  emptyTarget?: EmptyTarget | undefined;
+  /** Target to send a result to ymq */
+  ymqTarget?: YMQTarget | undefined;
+}
+
+export interface YMQTarget {
+  $type: "yandex.cloud.serverless.functions.v1.YMQTarget";
+  /** Queue ARN */
+  queueArn: string;
+  /** Service account which has write permission on the queue. */
+  serviceAccountId: string;
+}
+
+export interface EmptyTarget {
+  $type: "yandex.cloud.serverless.functions.v1.EmptyTarget";
 }
 
 const baseFunction: object = {
@@ -633,6 +705,18 @@ export const Version = {
     for (const v of message.secrets) {
       Secret.encode(v!, writer.uint32(154).fork()).ldelim();
     }
+    if (message.logOptions !== undefined) {
+      LogOptions.encode(message.logOptions, writer.uint32(162).fork()).ldelim();
+    }
+    for (const v of message.storageMounts) {
+      StorageMount.encode(v!, writer.uint32(170).fork()).ldelim();
+    }
+    if (message.asyncInvocationConfig !== undefined) {
+      AsyncInvocationConfig.encode(
+        message.asyncInvocationConfig,
+        writer.uint32(178).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -644,6 +728,7 @@ export const Version = {
     message.environment = {};
     message.namedServiceAccounts = {};
     message.secrets = [];
+    message.storageMounts = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -711,6 +796,20 @@ export const Version = {
           break;
         case 19:
           message.secrets.push(Secret.decode(reader, reader.uint32()));
+          break;
+        case 20:
+          message.logOptions = LogOptions.decode(reader, reader.uint32());
+          break;
+        case 21:
+          message.storageMounts.push(
+            StorageMount.decode(reader, reader.uint32())
+          );
+          break;
+        case 22:
+          message.asyncInvocationConfig = AsyncInvocationConfig.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -788,6 +887,18 @@ export const Version = {
     message.secrets = (object.secrets ?? []).map((e: any) =>
       Secret.fromJSON(e)
     );
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromJSON(object.logOptions)
+        : undefined;
+    message.storageMounts = (object.storageMounts ?? []).map((e: any) =>
+      StorageMount.fromJSON(e)
+    );
+    message.asyncInvocationConfig =
+      object.asyncInvocationConfig !== undefined &&
+      object.asyncInvocationConfig !== null
+        ? AsyncInvocationConfig.fromJSON(object.asyncInvocationConfig)
+        : undefined;
     return message;
   },
 
@@ -844,6 +955,21 @@ export const Version = {
     } else {
       obj.secrets = [];
     }
+    message.logOptions !== undefined &&
+      (obj.logOptions = message.logOptions
+        ? LogOptions.toJSON(message.logOptions)
+        : undefined);
+    if (message.storageMounts) {
+      obj.storageMounts = message.storageMounts.map((e) =>
+        e ? StorageMount.toJSON(e) : undefined
+      );
+    } else {
+      obj.storageMounts = [];
+    }
+    message.asyncInvocationConfig !== undefined &&
+      (obj.asyncInvocationConfig = message.asyncInvocationConfig
+        ? AsyncInvocationConfig.toJSON(message.asyncInvocationConfig)
+        : undefined);
     return obj;
   },
 
@@ -889,6 +1015,17 @@ export const Version = {
       return acc;
     }, {});
     message.secrets = object.secrets?.map((e) => Secret.fromPartial(e)) || [];
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromPartial(object.logOptions)
+        : undefined;
+    message.storageMounts =
+      object.storageMounts?.map((e) => StorageMount.fromPartial(e)) || [];
+    message.asyncInvocationConfig =
+      object.asyncInvocationConfig !== undefined &&
+      object.asyncInvocationConfig !== null
+        ? AsyncInvocationConfig.fromPartial(object.asyncInvocationConfig)
+        : undefined;
     return message;
   },
 };
@@ -1546,6 +1683,558 @@ export const Secret = {
 };
 
 messageTypeRegistry.set(Secret.$type, Secret);
+
+const baseLogOptions: object = {
+  $type: "yandex.cloud.serverless.functions.v1.LogOptions",
+  disabled: false,
+  minLevel: 0,
+};
+
+export const LogOptions = {
+  $type: "yandex.cloud.serverless.functions.v1.LogOptions" as const,
+
+  encode(
+    message: LogOptions,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.disabled === true) {
+      writer.uint32(8).bool(message.disabled);
+    }
+    if (message.logGroupId !== undefined) {
+      writer.uint32(18).string(message.logGroupId);
+    }
+    if (message.folderId !== undefined) {
+      writer.uint32(26).string(message.folderId);
+    }
+    if (message.minLevel !== 0) {
+      writer.uint32(32).int32(message.minLevel);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LogOptions {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseLogOptions } as LogOptions;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.disabled = reader.bool();
+          break;
+        case 2:
+          message.logGroupId = reader.string();
+          break;
+        case 3:
+          message.folderId = reader.string();
+          break;
+        case 4:
+          message.minLevel = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LogOptions {
+    const message = { ...baseLogOptions } as LogOptions;
+    message.disabled =
+      object.disabled !== undefined && object.disabled !== null
+        ? Boolean(object.disabled)
+        : false;
+    message.logGroupId =
+      object.logGroupId !== undefined && object.logGroupId !== null
+        ? String(object.logGroupId)
+        : undefined;
+    message.folderId =
+      object.folderId !== undefined && object.folderId !== null
+        ? String(object.folderId)
+        : undefined;
+    message.minLevel =
+      object.minLevel !== undefined && object.minLevel !== null
+        ? logLevel_LevelFromJSON(object.minLevel)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: LogOptions): unknown {
+    const obj: any = {};
+    message.disabled !== undefined && (obj.disabled = message.disabled);
+    message.logGroupId !== undefined && (obj.logGroupId = message.logGroupId);
+    message.folderId !== undefined && (obj.folderId = message.folderId);
+    message.minLevel !== undefined &&
+      (obj.minLevel = logLevel_LevelToJSON(message.minLevel));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<LogOptions>, I>>(
+    object: I
+  ): LogOptions {
+    const message = { ...baseLogOptions } as LogOptions;
+    message.disabled = object.disabled ?? false;
+    message.logGroupId = object.logGroupId ?? undefined;
+    message.folderId = object.folderId ?? undefined;
+    message.minLevel = object.minLevel ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(LogOptions.$type, LogOptions);
+
+const baseStorageMount: object = {
+  $type: "yandex.cloud.serverless.functions.v1.StorageMount",
+  bucketId: "",
+  prefix: "",
+  mountPointName: "",
+  readOnly: false,
+};
+
+export const StorageMount = {
+  $type: "yandex.cloud.serverless.functions.v1.StorageMount" as const,
+
+  encode(
+    message: StorageMount,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.bucketId !== "") {
+      writer.uint32(10).string(message.bucketId);
+    }
+    if (message.prefix !== "") {
+      writer.uint32(18).string(message.prefix);
+    }
+    if (message.mountPointName !== "") {
+      writer.uint32(26).string(message.mountPointName);
+    }
+    if (message.readOnly === true) {
+      writer.uint32(32).bool(message.readOnly);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): StorageMount {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseStorageMount } as StorageMount;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.bucketId = reader.string();
+          break;
+        case 2:
+          message.prefix = reader.string();
+          break;
+        case 3:
+          message.mountPointName = reader.string();
+          break;
+        case 4:
+          message.readOnly = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StorageMount {
+    const message = { ...baseStorageMount } as StorageMount;
+    message.bucketId =
+      object.bucketId !== undefined && object.bucketId !== null
+        ? String(object.bucketId)
+        : "";
+    message.prefix =
+      object.prefix !== undefined && object.prefix !== null
+        ? String(object.prefix)
+        : "";
+    message.mountPointName =
+      object.mountPointName !== undefined && object.mountPointName !== null
+        ? String(object.mountPointName)
+        : "";
+    message.readOnly =
+      object.readOnly !== undefined && object.readOnly !== null
+        ? Boolean(object.readOnly)
+        : false;
+    return message;
+  },
+
+  toJSON(message: StorageMount): unknown {
+    const obj: any = {};
+    message.bucketId !== undefined && (obj.bucketId = message.bucketId);
+    message.prefix !== undefined && (obj.prefix = message.prefix);
+    message.mountPointName !== undefined &&
+      (obj.mountPointName = message.mountPointName);
+    message.readOnly !== undefined && (obj.readOnly = message.readOnly);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<StorageMount>, I>>(
+    object: I
+  ): StorageMount {
+    const message = { ...baseStorageMount } as StorageMount;
+    message.bucketId = object.bucketId ?? "";
+    message.prefix = object.prefix ?? "";
+    message.mountPointName = object.mountPointName ?? "";
+    message.readOnly = object.readOnly ?? false;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(StorageMount.$type, StorageMount);
+
+const baseAsyncInvocationConfig: object = {
+  $type: "yandex.cloud.serverless.functions.v1.AsyncInvocationConfig",
+  retriesCount: 0,
+  serviceAccountId: "",
+};
+
+export const AsyncInvocationConfig = {
+  $type: "yandex.cloud.serverless.functions.v1.AsyncInvocationConfig" as const,
+
+  encode(
+    message: AsyncInvocationConfig,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.retriesCount !== 0) {
+      writer.uint32(8).int64(message.retriesCount);
+    }
+    if (message.successTarget !== undefined) {
+      AsyncInvocationConfig_ResponseTarget.encode(
+        message.successTarget,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.failureTarget !== undefined) {
+      AsyncInvocationConfig_ResponseTarget.encode(
+        message.failureTarget,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.serviceAccountId !== "") {
+      writer.uint32(34).string(message.serviceAccountId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): AsyncInvocationConfig {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseAsyncInvocationConfig } as AsyncInvocationConfig;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.retriesCount = longToNumber(reader.int64() as Long);
+          break;
+        case 2:
+          message.successTarget = AsyncInvocationConfig_ResponseTarget.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 3:
+          message.failureTarget = AsyncInvocationConfig_ResponseTarget.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 4:
+          message.serviceAccountId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AsyncInvocationConfig {
+    const message = { ...baseAsyncInvocationConfig } as AsyncInvocationConfig;
+    message.retriesCount =
+      object.retriesCount !== undefined && object.retriesCount !== null
+        ? Number(object.retriesCount)
+        : 0;
+    message.successTarget =
+      object.successTarget !== undefined && object.successTarget !== null
+        ? AsyncInvocationConfig_ResponseTarget.fromJSON(object.successTarget)
+        : undefined;
+    message.failureTarget =
+      object.failureTarget !== undefined && object.failureTarget !== null
+        ? AsyncInvocationConfig_ResponseTarget.fromJSON(object.failureTarget)
+        : undefined;
+    message.serviceAccountId =
+      object.serviceAccountId !== undefined && object.serviceAccountId !== null
+        ? String(object.serviceAccountId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: AsyncInvocationConfig): unknown {
+    const obj: any = {};
+    message.retriesCount !== undefined &&
+      (obj.retriesCount = Math.round(message.retriesCount));
+    message.successTarget !== undefined &&
+      (obj.successTarget = message.successTarget
+        ? AsyncInvocationConfig_ResponseTarget.toJSON(message.successTarget)
+        : undefined);
+    message.failureTarget !== undefined &&
+      (obj.failureTarget = message.failureTarget
+        ? AsyncInvocationConfig_ResponseTarget.toJSON(message.failureTarget)
+        : undefined);
+    message.serviceAccountId !== undefined &&
+      (obj.serviceAccountId = message.serviceAccountId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AsyncInvocationConfig>, I>>(
+    object: I
+  ): AsyncInvocationConfig {
+    const message = { ...baseAsyncInvocationConfig } as AsyncInvocationConfig;
+    message.retriesCount = object.retriesCount ?? 0;
+    message.successTarget =
+      object.successTarget !== undefined && object.successTarget !== null
+        ? AsyncInvocationConfig_ResponseTarget.fromPartial(object.successTarget)
+        : undefined;
+    message.failureTarget =
+      object.failureTarget !== undefined && object.failureTarget !== null
+        ? AsyncInvocationConfig_ResponseTarget.fromPartial(object.failureTarget)
+        : undefined;
+    message.serviceAccountId = object.serviceAccountId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(AsyncInvocationConfig.$type, AsyncInvocationConfig);
+
+const baseAsyncInvocationConfig_ResponseTarget: object = {
+  $type:
+    "yandex.cloud.serverless.functions.v1.AsyncInvocationConfig.ResponseTarget",
+};
+
+export const AsyncInvocationConfig_ResponseTarget = {
+  $type:
+    "yandex.cloud.serverless.functions.v1.AsyncInvocationConfig.ResponseTarget" as const,
+
+  encode(
+    message: AsyncInvocationConfig_ResponseTarget,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.emptyTarget !== undefined) {
+      EmptyTarget.encode(
+        message.emptyTarget,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.ymqTarget !== undefined) {
+      YMQTarget.encode(message.ymqTarget, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): AsyncInvocationConfig_ResponseTarget {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseAsyncInvocationConfig_ResponseTarget,
+    } as AsyncInvocationConfig_ResponseTarget;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.emptyTarget = EmptyTarget.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.ymqTarget = YMQTarget.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AsyncInvocationConfig_ResponseTarget {
+    const message = {
+      ...baseAsyncInvocationConfig_ResponseTarget,
+    } as AsyncInvocationConfig_ResponseTarget;
+    message.emptyTarget =
+      object.emptyTarget !== undefined && object.emptyTarget !== null
+        ? EmptyTarget.fromJSON(object.emptyTarget)
+        : undefined;
+    message.ymqTarget =
+      object.ymqTarget !== undefined && object.ymqTarget !== null
+        ? YMQTarget.fromJSON(object.ymqTarget)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: AsyncInvocationConfig_ResponseTarget): unknown {
+    const obj: any = {};
+    message.emptyTarget !== undefined &&
+      (obj.emptyTarget = message.emptyTarget
+        ? EmptyTarget.toJSON(message.emptyTarget)
+        : undefined);
+    message.ymqTarget !== undefined &&
+      (obj.ymqTarget = message.ymqTarget
+        ? YMQTarget.toJSON(message.ymqTarget)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<AsyncInvocationConfig_ResponseTarget>, I>
+  >(object: I): AsyncInvocationConfig_ResponseTarget {
+    const message = {
+      ...baseAsyncInvocationConfig_ResponseTarget,
+    } as AsyncInvocationConfig_ResponseTarget;
+    message.emptyTarget =
+      object.emptyTarget !== undefined && object.emptyTarget !== null
+        ? EmptyTarget.fromPartial(object.emptyTarget)
+        : undefined;
+    message.ymqTarget =
+      object.ymqTarget !== undefined && object.ymqTarget !== null
+        ? YMQTarget.fromPartial(object.ymqTarget)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  AsyncInvocationConfig_ResponseTarget.$type,
+  AsyncInvocationConfig_ResponseTarget
+);
+
+const baseYMQTarget: object = {
+  $type: "yandex.cloud.serverless.functions.v1.YMQTarget",
+  queueArn: "",
+  serviceAccountId: "",
+};
+
+export const YMQTarget = {
+  $type: "yandex.cloud.serverless.functions.v1.YMQTarget" as const,
+
+  encode(
+    message: YMQTarget,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.queueArn !== "") {
+      writer.uint32(10).string(message.queueArn);
+    }
+    if (message.serviceAccountId !== "") {
+      writer.uint32(18).string(message.serviceAccountId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): YMQTarget {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseYMQTarget } as YMQTarget;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.queueArn = reader.string();
+          break;
+        case 2:
+          message.serviceAccountId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): YMQTarget {
+    const message = { ...baseYMQTarget } as YMQTarget;
+    message.queueArn =
+      object.queueArn !== undefined && object.queueArn !== null
+        ? String(object.queueArn)
+        : "";
+    message.serviceAccountId =
+      object.serviceAccountId !== undefined && object.serviceAccountId !== null
+        ? String(object.serviceAccountId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: YMQTarget): unknown {
+    const obj: any = {};
+    message.queueArn !== undefined && (obj.queueArn = message.queueArn);
+    message.serviceAccountId !== undefined &&
+      (obj.serviceAccountId = message.serviceAccountId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<YMQTarget>, I>>(
+    object: I
+  ): YMQTarget {
+    const message = { ...baseYMQTarget } as YMQTarget;
+    message.queueArn = object.queueArn ?? "";
+    message.serviceAccountId = object.serviceAccountId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(YMQTarget.$type, YMQTarget);
+
+const baseEmptyTarget: object = {
+  $type: "yandex.cloud.serverless.functions.v1.EmptyTarget",
+};
+
+export const EmptyTarget = {
+  $type: "yandex.cloud.serverless.functions.v1.EmptyTarget" as const,
+
+  encode(_: EmptyTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EmptyTarget {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseEmptyTarget } as EmptyTarget;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): EmptyTarget {
+    const message = { ...baseEmptyTarget } as EmptyTarget;
+    return message;
+  },
+
+  toJSON(_: EmptyTarget): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EmptyTarget>, I>>(_: I): EmptyTarget {
+    const message = { ...baseEmptyTarget } as EmptyTarget;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(EmptyTarget.$type, EmptyTarget);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

@@ -274,6 +274,15 @@ export interface ListFederatedUserAccountsRequest {
    * returned by a previous list request.
    */
   pageToken: string;
+  /**
+   * A filter expression that filters resources listed in the response.
+   * The expression must specify:
+   * 1. The field name. Currently you can use filtering only on the [name_id] field.
+   * 2. An `=` operator.
+   * 3. The value in double quotes (`"`). Must be 1-1000 characters long and match the regular expression
+   *   `[a-z0-9A-Z/@_.\-=+*\\]+`.
+   */
+  filter: string;
 }
 
 export interface ListFederatedUserAccountsResponse {
@@ -1845,6 +1854,7 @@ const baseListFederatedUserAccountsRequest: object = {
   federationId: "",
   pageSize: 0,
   pageToken: "",
+  filter: "",
 };
 
 export const ListFederatedUserAccountsRequest = {
@@ -1863,6 +1873,9 @@ export const ListFederatedUserAccountsRequest = {
     }
     if (message.pageToken !== "") {
       writer.uint32(26).string(message.pageToken);
+    }
+    if (message.filter !== "") {
+      writer.uint32(34).string(message.filter);
     }
     return writer;
   },
@@ -1888,6 +1901,9 @@ export const ListFederatedUserAccountsRequest = {
         case 3:
           message.pageToken = reader.string();
           break;
+        case 4:
+          message.filter = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1912,6 +1928,10 @@ export const ListFederatedUserAccountsRequest = {
       object.pageToken !== undefined && object.pageToken !== null
         ? String(object.pageToken)
         : "";
+    message.filter =
+      object.filter !== undefined && object.filter !== null
+        ? String(object.filter)
+        : "";
     return message;
   },
 
@@ -1922,6 +1942,7 @@ export const ListFederatedUserAccountsRequest = {
     message.pageSize !== undefined &&
       (obj.pageSize = Math.round(message.pageSize));
     message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+    message.filter !== undefined && (obj.filter = message.filter);
     return obj;
   },
 
@@ -1934,6 +1955,7 @@ export const ListFederatedUserAccountsRequest = {
     message.federationId = object.federationId ?? "";
     message.pageSize = object.pageSize ?? 0;
     message.pageToken = object.pageToken ?? "";
+    message.filter = object.filter ?? "";
     return message;
   },
 };

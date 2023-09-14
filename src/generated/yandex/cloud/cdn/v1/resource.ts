@@ -255,6 +255,14 @@ export interface Resource {
   originProtocol: OriginProtocol;
   /** SSL certificate options. */
   sslCertificate?: SSLCertificate;
+  /** Labels of the resource. */
+  labels: { [key: string]: string };
+}
+
+export interface Resource_LabelsEntry {
+  $type: "yandex.cloud.cdn.v1.Resource.LabelsEntry";
+  key: string;
+  value: string;
 }
 
 /** A major set of various resource options. */
@@ -725,6 +733,16 @@ export const Resource = {
         writer.uint32(98).fork()
       ).ldelim();
     }
+    Object.entries(message.labels).forEach(([key, value]) => {
+      Resource_LabelsEntry.encode(
+        {
+          $type: "yandex.cloud.cdn.v1.Resource.LabelsEntry",
+          key: key as any,
+          value,
+        },
+        writer.uint32(106).fork()
+      ).ldelim();
+    });
     return writer;
   },
 
@@ -733,6 +751,7 @@ export const Resource = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseResource } as Resource;
     message.secondaryHostnames = [];
+    message.labels = {};
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -778,6 +797,12 @@ export const Resource = {
             reader,
             reader.uint32()
           );
+          break;
+        case 13:
+          const entry13 = Resource_LabelsEntry.decode(reader, reader.uint32());
+          if (entry13.value !== undefined) {
+            message.labels[entry13.key] = entry13.value;
+          }
           break;
         default:
           reader.skipType(tag & 7);
@@ -834,6 +859,12 @@ export const Resource = {
       object.sslCertificate !== undefined && object.sslCertificate !== null
         ? SSLCertificate.fromJSON(object.sslCertificate)
         : undefined;
+    message.labels = Object.entries(object.labels ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      acc[key] = String(value);
+      return acc;
+    }, {});
     return message;
   },
 
@@ -866,6 +897,12 @@ export const Resource = {
       (obj.sslCertificate = message.sslCertificate
         ? SSLCertificate.toJSON(message.sslCertificate)
         : undefined);
+    obj.labels = {};
+    if (message.labels) {
+      Object.entries(message.labels).forEach(([k, v]) => {
+        obj.labels[k] = v;
+      });
+    }
     return obj;
   },
 
@@ -889,11 +926,95 @@ export const Resource = {
       object.sslCertificate !== undefined && object.sslCertificate !== null
         ? SSLCertificate.fromPartial(object.sslCertificate)
         : undefined;
+    message.labels = Object.entries(object.labels ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = String(value);
+      }
+      return acc;
+    }, {});
     return message;
   },
 };
 
 messageTypeRegistry.set(Resource.$type, Resource);
+
+const baseResource_LabelsEntry: object = {
+  $type: "yandex.cloud.cdn.v1.Resource.LabelsEntry",
+  key: "",
+  value: "",
+};
+
+export const Resource_LabelsEntry = {
+  $type: "yandex.cloud.cdn.v1.Resource.LabelsEntry" as const,
+
+  encode(
+    message: Resource_LabelsEntry,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Resource_LabelsEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseResource_LabelsEntry } as Resource_LabelsEntry;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Resource_LabelsEntry {
+    const message = { ...baseResource_LabelsEntry } as Resource_LabelsEntry;
+    message.key =
+      object.key !== undefined && object.key !== null ? String(object.key) : "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? String(object.value)
+        : "";
+    return message;
+  },
+
+  toJSON(message: Resource_LabelsEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Resource_LabelsEntry>, I>>(
+    object: I
+  ): Resource_LabelsEntry {
+    const message = { ...baseResource_LabelsEntry } as Resource_LabelsEntry;
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Resource_LabelsEntry.$type, Resource_LabelsEntry);
 
 const baseResourceOptions: object = {
   $type: "yandex.cloud.cdn.v1.ResourceOptions",

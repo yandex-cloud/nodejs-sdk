@@ -25,12 +25,14 @@ export interface Backup {
   sourceClusterId: string;
   /** Time when the backup operation was started. */
   startedAt?: Date;
-  /** Size of backup in bytes */
+  /** Size of backup, in bytes */
   size: number;
   /** How this backup was created (manual/automatic/etc...) */
   type: Backup_BackupCreationType;
   /** Method of backup creation */
   method: Backup_BackupMethod;
+  /** Size of the journal associated with backup, in bytes */
+  journalSize: number;
 }
 
 export enum Backup_BackupMethod {
@@ -125,6 +127,7 @@ const baseBackup: object = {
   size: 0,
   type: 0,
   method: 0,
+  journalSize: 0,
 };
 
 export const Backup = {
@@ -164,6 +167,9 @@ export const Backup = {
     if (message.method !== 0) {
       writer.uint32(64).int32(message.method);
     }
+    if (message.journalSize !== 0) {
+      writer.uint32(72).int64(message.journalSize);
+    }
     return writer;
   },
 
@@ -201,6 +207,9 @@ export const Backup = {
           break;
         case 8:
           message.method = reader.int32() as any;
+          break;
+        case 9:
+          message.journalSize = longToNumber(reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -242,6 +251,10 @@ export const Backup = {
       object.method !== undefined && object.method !== null
         ? backup_BackupMethodFromJSON(object.method)
         : 0;
+    message.journalSize =
+      object.journalSize !== undefined && object.journalSize !== null
+        ? Number(object.journalSize)
+        : 0;
     return message;
   },
 
@@ -260,6 +273,8 @@ export const Backup = {
       (obj.type = backup_BackupCreationTypeToJSON(message.type));
     message.method !== undefined &&
       (obj.method = backup_BackupMethodToJSON(message.method));
+    message.journalSize !== undefined &&
+      (obj.journalSize = Math.round(message.journalSize));
     return obj;
   },
 
@@ -273,6 +288,7 @@ export const Backup = {
     message.size = object.size ?? 0;
     message.type = object.type ?? 0;
     message.method = object.method ?? 0;
+    message.journalSize = object.journalSize ?? 0;
     return message;
   },
 };

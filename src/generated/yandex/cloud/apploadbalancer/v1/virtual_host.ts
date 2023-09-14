@@ -54,6 +54,93 @@ export interface RouteOptions {
   modifyRequestHeaders: HeaderModification[];
   /** Apply the following modifications to the response headers. */
   modifyResponseHeaders: HeaderModification[];
+  rbac?: RBAC;
+  /** Security profile that will take effect to all requests routed via particular virtual host. */
+  securityProfileId: string;
+}
+
+/**
+ * Role Based Access Control (RBAC) provides router, virtual host, and route access control for the ALB
+ * service. Requests are allowed or denied based on the `action` and whether a matching principal is
+ * found. For instance, if the action is ALLOW and a matching principal is found the request should be
+ * allowed.
+ */
+export interface RBAC {
+  $type: "yandex.cloud.apploadbalancer.v1.RBAC";
+  /** The action to take if a principal matches. Every action either allows or denies a request. */
+  action: RBAC_Action;
+  /** Required. A match occurs when at least one matches the request. */
+  principals: Principals[];
+}
+
+export enum RBAC_Action {
+  ACTION_UNSPECIFIED = 0,
+  /** ALLOW - Allows the request if and only if there is a principal that matches the request. */
+  ALLOW = 1,
+  /** DENY - Allows the request if and only if there are no principal that match the request. */
+  DENY = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function rBAC_ActionFromJSON(object: any): RBAC_Action {
+  switch (object) {
+    case 0:
+    case "ACTION_UNSPECIFIED":
+      return RBAC_Action.ACTION_UNSPECIFIED;
+    case 1:
+    case "ALLOW":
+      return RBAC_Action.ALLOW;
+    case 2:
+    case "DENY":
+      return RBAC_Action.DENY;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return RBAC_Action.UNRECOGNIZED;
+  }
+}
+
+export function rBAC_ActionToJSON(object: RBAC_Action): string {
+  switch (object) {
+    case RBAC_Action.ACTION_UNSPECIFIED:
+      return "ACTION_UNSPECIFIED";
+    case RBAC_Action.ALLOW:
+      return "ALLOW";
+    case RBAC_Action.DENY:
+      return "DENY";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+/** Principals define a group of identities for a request. */
+export interface Principals {
+  $type: "yandex.cloud.apploadbalancer.v1.Principals";
+  /** Required. A match occurs when all principals match the request. */
+  andPrincipals: Principal[];
+}
+
+/** Principal defines an identity for a request. */
+export interface Principal {
+  $type: "yandex.cloud.apploadbalancer.v1.Principal";
+  /** A header (or pseudo-header such as :path or :method) of the incoming HTTP request. */
+  header?: Principal_HeaderMatcher | undefined;
+  /** A CIDR block or IP that describes the request remote/origin address, e.g. ``192.0.0.0/24`` or``192.0.0.4`` . */
+  remoteIp: string | undefined;
+  /** When any is set, it matches any request. */
+  any: boolean | undefined;
+}
+
+export interface Principal_HeaderMatcher {
+  $type: "yandex.cloud.apploadbalancer.v1.Principal.HeaderMatcher";
+  /** Specifies the name of the header in the request. */
+  name: string;
+  /**
+   * Specifies how the header match will be performed to route the request.
+   * In the absence of value a request that has specified header name will match,
+   * regardless of the header's value.
+   */
+  value?: StringMatch;
 }
 
 /** A header modification resource. */
@@ -394,7 +481,7 @@ export interface HttpRouteAction {
   /**
    * Replacement for the path prefix matched by [StringMatch].
    *
-   * For instance, if [StringMatch.prefix_match] value is `/foo` and `replace_prefix` value is `/bar`,
+   * For instance, if [StringMatch.prefix_match] value is `/foo` and `prefix_rewrite` value is `/bar`,
    * a request with `/foobaz` path is forwarded with `/barbaz` path.
    * For [StringMatch.exact_match], the whole path is replaced.
    *
@@ -600,6 +687,7 @@ messageTypeRegistry.set(VirtualHost.$type, VirtualHost);
 
 const baseRouteOptions: object = {
   $type: "yandex.cloud.apploadbalancer.v1.RouteOptions",
+  securityProfileId: "",
 };
 
 export const RouteOptions = {
@@ -614,6 +702,12 @@ export const RouteOptions = {
     }
     for (const v of message.modifyResponseHeaders) {
       HeaderModification.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.rbac !== undefined) {
+      RBAC.encode(message.rbac, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.securityProfileId !== "") {
+      writer.uint32(34).string(message.securityProfileId);
     }
     return writer;
   },
@@ -637,6 +731,12 @@ export const RouteOptions = {
             HeaderModification.decode(reader, reader.uint32())
           );
           break;
+        case 3:
+          message.rbac = RBAC.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.securityProfileId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -653,6 +753,15 @@ export const RouteOptions = {
     message.modifyResponseHeaders = (object.modifyResponseHeaders ?? []).map(
       (e: any) => HeaderModification.fromJSON(e)
     );
+    message.rbac =
+      object.rbac !== undefined && object.rbac !== null
+        ? RBAC.fromJSON(object.rbac)
+        : undefined;
+    message.securityProfileId =
+      object.securityProfileId !== undefined &&
+      object.securityProfileId !== null
+        ? String(object.securityProfileId)
+        : "";
     return message;
   },
 
@@ -672,6 +781,10 @@ export const RouteOptions = {
     } else {
       obj.modifyResponseHeaders = [];
     }
+    message.rbac !== undefined &&
+      (obj.rbac = message.rbac ? RBAC.toJSON(message.rbac) : undefined);
+    message.securityProfileId !== undefined &&
+      (obj.securityProfileId = message.securityProfileId);
     return obj;
   },
 
@@ -687,11 +800,347 @@ export const RouteOptions = {
       object.modifyResponseHeaders?.map((e) =>
         HeaderModification.fromPartial(e)
       ) || [];
+    message.rbac =
+      object.rbac !== undefined && object.rbac !== null
+        ? RBAC.fromPartial(object.rbac)
+        : undefined;
+    message.securityProfileId = object.securityProfileId ?? "";
     return message;
   },
 };
 
 messageTypeRegistry.set(RouteOptions.$type, RouteOptions);
+
+const baseRBAC: object = {
+  $type: "yandex.cloud.apploadbalancer.v1.RBAC",
+  action: 0,
+};
+
+export const RBAC = {
+  $type: "yandex.cloud.apploadbalancer.v1.RBAC" as const,
+
+  encode(message: RBAC, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.action !== 0) {
+      writer.uint32(8).int32(message.action);
+    }
+    for (const v of message.principals) {
+      Principals.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): RBAC {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseRBAC } as RBAC;
+    message.principals = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.action = reader.int32() as any;
+          break;
+        case 2:
+          message.principals.push(Principals.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RBAC {
+    const message = { ...baseRBAC } as RBAC;
+    message.action =
+      object.action !== undefined && object.action !== null
+        ? rBAC_ActionFromJSON(object.action)
+        : 0;
+    message.principals = (object.principals ?? []).map((e: any) =>
+      Principals.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: RBAC): unknown {
+    const obj: any = {};
+    message.action !== undefined &&
+      (obj.action = rBAC_ActionToJSON(message.action));
+    if (message.principals) {
+      obj.principals = message.principals.map((e) =>
+        e ? Principals.toJSON(e) : undefined
+      );
+    } else {
+      obj.principals = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RBAC>, I>>(object: I): RBAC {
+    const message = { ...baseRBAC } as RBAC;
+    message.action = object.action ?? 0;
+    message.principals =
+      object.principals?.map((e) => Principals.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(RBAC.$type, RBAC);
+
+const basePrincipals: object = {
+  $type: "yandex.cloud.apploadbalancer.v1.Principals",
+};
+
+export const Principals = {
+  $type: "yandex.cloud.apploadbalancer.v1.Principals" as const,
+
+  encode(
+    message: Principals,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.andPrincipals) {
+      Principal.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Principals {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...basePrincipals } as Principals;
+    message.andPrincipals = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.andPrincipals.push(Principal.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Principals {
+    const message = { ...basePrincipals } as Principals;
+    message.andPrincipals = (object.andPrincipals ?? []).map((e: any) =>
+      Principal.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: Principals): unknown {
+    const obj: any = {};
+    if (message.andPrincipals) {
+      obj.andPrincipals = message.andPrincipals.map((e) =>
+        e ? Principal.toJSON(e) : undefined
+      );
+    } else {
+      obj.andPrincipals = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Principals>, I>>(
+    object: I
+  ): Principals {
+    const message = { ...basePrincipals } as Principals;
+    message.andPrincipals =
+      object.andPrincipals?.map((e) => Principal.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Principals.$type, Principals);
+
+const basePrincipal: object = {
+  $type: "yandex.cloud.apploadbalancer.v1.Principal",
+};
+
+export const Principal = {
+  $type: "yandex.cloud.apploadbalancer.v1.Principal" as const,
+
+  encode(
+    message: Principal,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.header !== undefined) {
+      Principal_HeaderMatcher.encode(
+        message.header,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.remoteIp !== undefined) {
+      writer.uint32(18).string(message.remoteIp);
+    }
+    if (message.any !== undefined) {
+      writer.uint32(24).bool(message.any);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Principal {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...basePrincipal } as Principal;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.header = Principal_HeaderMatcher.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.remoteIp = reader.string();
+          break;
+        case 3:
+          message.any = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Principal {
+    const message = { ...basePrincipal } as Principal;
+    message.header =
+      object.header !== undefined && object.header !== null
+        ? Principal_HeaderMatcher.fromJSON(object.header)
+        : undefined;
+    message.remoteIp =
+      object.remoteIp !== undefined && object.remoteIp !== null
+        ? String(object.remoteIp)
+        : undefined;
+    message.any =
+      object.any !== undefined && object.any !== null
+        ? Boolean(object.any)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Principal): unknown {
+    const obj: any = {};
+    message.header !== undefined &&
+      (obj.header = message.header
+        ? Principal_HeaderMatcher.toJSON(message.header)
+        : undefined);
+    message.remoteIp !== undefined && (obj.remoteIp = message.remoteIp);
+    message.any !== undefined && (obj.any = message.any);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Principal>, I>>(
+    object: I
+  ): Principal {
+    const message = { ...basePrincipal } as Principal;
+    message.header =
+      object.header !== undefined && object.header !== null
+        ? Principal_HeaderMatcher.fromPartial(object.header)
+        : undefined;
+    message.remoteIp = object.remoteIp ?? undefined;
+    message.any = object.any ?? undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Principal.$type, Principal);
+
+const basePrincipal_HeaderMatcher: object = {
+  $type: "yandex.cloud.apploadbalancer.v1.Principal.HeaderMatcher",
+  name: "",
+};
+
+export const Principal_HeaderMatcher = {
+  $type: "yandex.cloud.apploadbalancer.v1.Principal.HeaderMatcher" as const,
+
+  encode(
+    message: Principal_HeaderMatcher,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.value !== undefined) {
+      StringMatch.encode(message.value, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Principal_HeaderMatcher {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...basePrincipal_HeaderMatcher,
+    } as Principal_HeaderMatcher;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.name = reader.string();
+          break;
+        case 2:
+          message.value = StringMatch.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Principal_HeaderMatcher {
+    const message = {
+      ...basePrincipal_HeaderMatcher,
+    } as Principal_HeaderMatcher;
+    message.name =
+      object.name !== undefined && object.name !== null
+        ? String(object.name)
+        : "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? StringMatch.fromJSON(object.value)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Principal_HeaderMatcher): unknown {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    message.value !== undefined &&
+      (obj.value = message.value
+        ? StringMatch.toJSON(message.value)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Principal_HeaderMatcher>, I>>(
+    object: I
+  ): Principal_HeaderMatcher {
+    const message = {
+      ...basePrincipal_HeaderMatcher,
+    } as Principal_HeaderMatcher;
+    message.name = object.name ?? "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? StringMatch.fromPartial(object.value)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Principal_HeaderMatcher.$type, Principal_HeaderMatcher);
 
 const baseHeaderModification: object = {
   $type: "yandex.cloud.apploadbalancer.v1.HeaderModification",

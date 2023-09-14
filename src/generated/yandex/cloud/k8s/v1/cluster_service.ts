@@ -19,6 +19,7 @@ import {
   NetworkPolicy,
   IPAllocationPolicy,
   MasterMaintenancePolicy,
+  MasterLogging,
   ReleaseChannel,
   KMSProvider,
   Cluster,
@@ -183,6 +184,10 @@ export interface MasterUpdateSpec {
   maintenancePolicy?: MasterMaintenancePolicy;
   /** Master security groups. */
   securityGroupIds: string[];
+  /** Cloud Logging for master components. */
+  masterLogging?: MasterLogging;
+  /** Update master instance locations. */
+  locations: LocationSpec[];
 }
 
 export interface UpdateClusterMetadata {
@@ -370,12 +375,33 @@ export interface MasterSpec {
   zonalMasterSpec?: ZonalMasterSpec | undefined;
   /** Specification of the regional master. */
   regionalMasterSpec?: RegionalMasterSpec | undefined;
+  /**
+   * Locations specification for Kubernetes control-plane (master) instances.
+   * Works in conjunction with [etcd_cluster_size]. See it's documentation for details.
+   * Possible combinations:
+   * - 1 location and etcd_cluster_size = 1 - a single node cluster whose availability is limited by the availability of a single Compute Instance; downtime is expected during cluster updates.
+   * - 1 location and etcd_cluster_size = 3 - a highly available cluster within a single availability zone; can survive the failure of a Compute Instance, a server, or an individual server rack.
+   * - 3 location and etcd_cluster_size = 3 - a highly available cluster with each etcd instance located within separate availability zone; can survive the failure of a single availability zone.
+   */
+  locations: LocationSpec[];
+  /**
+   * Number of etcd nodes in cluster.
+   * Works in conjunction with [locations]. See it's documentation for details.
+   * Optional. If not set, will be assumed equal to the number of locations.
+   */
+  etcdClusterSize: number;
+  /** Specification of parameters for external IPv4 networking. */
+  externalV4AddressSpec?: ExternalAddressSpec;
+  /** Specification of parameters for external IPv6 networking. */
+  externalV6AddressSpec?: ExternalAddressSpec;
   /** Version of Kubernetes components that runs on the master. */
   version: string;
   /** Maintenance policy of the master. */
   maintenancePolicy?: MasterMaintenancePolicy;
   /** Master security groups. */
   securityGroupIds: string[];
+  /** Cloud Logging for master components. */
+  masterLogging?: MasterLogging;
 }
 
 export interface ZonalMasterSpec {
@@ -421,6 +447,17 @@ export interface MasterLocation {
    * in this subnet will be allocated.
    */
   internalV4AddressSpec?: InternalAddressSpec;
+}
+
+export interface LocationSpec {
+  $type: "yandex.cloud.k8s.v1.LocationSpec";
+  /** ID of the availability zone where the master resides. */
+  zoneId: string;
+  /**
+   * ID of the VPC network's subnet where the master resides.
+   * If not specified and there is a single subnet in specified zone, address in this subnet will be allocated.
+   */
+  subnetId: string;
 }
 
 const baseGetClusterRequest: object = {
@@ -1426,6 +1463,15 @@ export const MasterUpdateSpec = {
     for (const v of message.securityGroupIds) {
       writer.uint32(26).string(v!);
     }
+    if (message.masterLogging !== undefined) {
+      MasterLogging.encode(
+        message.masterLogging,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    for (const v of message.locations) {
+      LocationSpec.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1434,6 +1480,7 @@ export const MasterUpdateSpec = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseMasterUpdateSpec } as MasterUpdateSpec;
     message.securityGroupIds = [];
+    message.locations = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1448,6 +1495,12 @@ export const MasterUpdateSpec = {
           break;
         case 3:
           message.securityGroupIds.push(reader.string());
+          break;
+        case 4:
+          message.masterLogging = MasterLogging.decode(reader, reader.uint32());
+          break;
+        case 5:
+          message.locations.push(LocationSpec.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -1471,6 +1524,13 @@ export const MasterUpdateSpec = {
     message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) =>
       String(e)
     );
+    message.masterLogging =
+      object.masterLogging !== undefined && object.masterLogging !== null
+        ? MasterLogging.fromJSON(object.masterLogging)
+        : undefined;
+    message.locations = (object.locations ?? []).map((e: any) =>
+      LocationSpec.fromJSON(e)
+    );
     return message;
   },
 
@@ -1489,6 +1549,17 @@ export const MasterUpdateSpec = {
     } else {
       obj.securityGroupIds = [];
     }
+    message.masterLogging !== undefined &&
+      (obj.masterLogging = message.masterLogging
+        ? MasterLogging.toJSON(message.masterLogging)
+        : undefined);
+    if (message.locations) {
+      obj.locations = message.locations.map((e) =>
+        e ? LocationSpec.toJSON(e) : undefined
+      );
+    } else {
+      obj.locations = [];
+    }
     return obj;
   },
 
@@ -1506,6 +1577,12 @@ export const MasterUpdateSpec = {
         ? MasterMaintenancePolicy.fromPartial(object.maintenancePolicy)
         : undefined;
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
+    message.masterLogging =
+      object.masterLogging !== undefined && object.masterLogging !== null
+        ? MasterLogging.fromPartial(object.masterLogging)
+        : undefined;
+    message.locations =
+      object.locations?.map((e) => LocationSpec.fromPartial(e)) || [];
     return message;
   },
 };
@@ -2710,6 +2787,7 @@ messageTypeRegistry.set(
 
 const baseMasterSpec: object = {
   $type: "yandex.cloud.k8s.v1.MasterSpec",
+  etcdClusterSize: 0,
   version: "",
   securityGroupIds: "",
 };
@@ -2733,6 +2811,24 @@ export const MasterSpec = {
         writer.uint32(18).fork()
       ).ldelim();
     }
+    for (const v of message.locations) {
+      LocationSpec.encode(v!, writer.uint32(66).fork()).ldelim();
+    }
+    if (message.etcdClusterSize !== 0) {
+      writer.uint32(72).int64(message.etcdClusterSize);
+    }
+    if (message.externalV4AddressSpec !== undefined) {
+      ExternalAddressSpec.encode(
+        message.externalV4AddressSpec,
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
+    if (message.externalV6AddressSpec !== undefined) {
+      ExternalAddressSpec.encode(
+        message.externalV6AddressSpec,
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
     if (message.version !== "") {
       writer.uint32(26).string(message.version);
     }
@@ -2745,6 +2841,12 @@ export const MasterSpec = {
     for (const v of message.securityGroupIds) {
       writer.uint32(50).string(v!);
     }
+    if (message.masterLogging !== undefined) {
+      MasterLogging.encode(
+        message.masterLogging,
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2752,6 +2854,7 @@ export const MasterSpec = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseMasterSpec } as MasterSpec;
+    message.locations = [];
     message.securityGroupIds = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -2768,6 +2871,24 @@ export const MasterSpec = {
             reader.uint32()
           );
           break;
+        case 8:
+          message.locations.push(LocationSpec.decode(reader, reader.uint32()));
+          break;
+        case 9:
+          message.etcdClusterSize = longToNumber(reader.int64() as Long);
+          break;
+        case 10:
+          message.externalV4AddressSpec = ExternalAddressSpec.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 11:
+          message.externalV6AddressSpec = ExternalAddressSpec.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         case 3:
           message.version = reader.string();
           break;
@@ -2779,6 +2900,9 @@ export const MasterSpec = {
           break;
         case 6:
           message.securityGroupIds.push(reader.string());
+          break;
+        case 7:
+          message.masterLogging = MasterLogging.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -2799,6 +2923,23 @@ export const MasterSpec = {
       object.regionalMasterSpec !== null
         ? RegionalMasterSpec.fromJSON(object.regionalMasterSpec)
         : undefined;
+    message.locations = (object.locations ?? []).map((e: any) =>
+      LocationSpec.fromJSON(e)
+    );
+    message.etcdClusterSize =
+      object.etcdClusterSize !== undefined && object.etcdClusterSize !== null
+        ? Number(object.etcdClusterSize)
+        : 0;
+    message.externalV4AddressSpec =
+      object.externalV4AddressSpec !== undefined &&
+      object.externalV4AddressSpec !== null
+        ? ExternalAddressSpec.fromJSON(object.externalV4AddressSpec)
+        : undefined;
+    message.externalV6AddressSpec =
+      object.externalV6AddressSpec !== undefined &&
+      object.externalV6AddressSpec !== null
+        ? ExternalAddressSpec.fromJSON(object.externalV6AddressSpec)
+        : undefined;
     message.version =
       object.version !== undefined && object.version !== null
         ? String(object.version)
@@ -2811,6 +2952,10 @@ export const MasterSpec = {
     message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) =>
       String(e)
     );
+    message.masterLogging =
+      object.masterLogging !== undefined && object.masterLogging !== null
+        ? MasterLogging.fromJSON(object.masterLogging)
+        : undefined;
     return message;
   },
 
@@ -2824,6 +2969,23 @@ export const MasterSpec = {
       (obj.regionalMasterSpec = message.regionalMasterSpec
         ? RegionalMasterSpec.toJSON(message.regionalMasterSpec)
         : undefined);
+    if (message.locations) {
+      obj.locations = message.locations.map((e) =>
+        e ? LocationSpec.toJSON(e) : undefined
+      );
+    } else {
+      obj.locations = [];
+    }
+    message.etcdClusterSize !== undefined &&
+      (obj.etcdClusterSize = Math.round(message.etcdClusterSize));
+    message.externalV4AddressSpec !== undefined &&
+      (obj.externalV4AddressSpec = message.externalV4AddressSpec
+        ? ExternalAddressSpec.toJSON(message.externalV4AddressSpec)
+        : undefined);
+    message.externalV6AddressSpec !== undefined &&
+      (obj.externalV6AddressSpec = message.externalV6AddressSpec
+        ? ExternalAddressSpec.toJSON(message.externalV6AddressSpec)
+        : undefined);
     message.version !== undefined && (obj.version = message.version);
     message.maintenancePolicy !== undefined &&
       (obj.maintenancePolicy = message.maintenancePolicy
@@ -2834,6 +2996,10 @@ export const MasterSpec = {
     } else {
       obj.securityGroupIds = [];
     }
+    message.masterLogging !== undefined &&
+      (obj.masterLogging = message.masterLogging
+        ? MasterLogging.toJSON(message.masterLogging)
+        : undefined);
     return obj;
   },
 
@@ -2850,6 +3016,19 @@ export const MasterSpec = {
       object.regionalMasterSpec !== null
         ? RegionalMasterSpec.fromPartial(object.regionalMasterSpec)
         : undefined;
+    message.locations =
+      object.locations?.map((e) => LocationSpec.fromPartial(e)) || [];
+    message.etcdClusterSize = object.etcdClusterSize ?? 0;
+    message.externalV4AddressSpec =
+      object.externalV4AddressSpec !== undefined &&
+      object.externalV4AddressSpec !== null
+        ? ExternalAddressSpec.fromPartial(object.externalV4AddressSpec)
+        : undefined;
+    message.externalV6AddressSpec =
+      object.externalV6AddressSpec !== undefined &&
+      object.externalV6AddressSpec !== null
+        ? ExternalAddressSpec.fromPartial(object.externalV6AddressSpec)
+        : undefined;
     message.version = object.version ?? "";
     message.maintenancePolicy =
       object.maintenancePolicy !== undefined &&
@@ -2857,6 +3036,10 @@ export const MasterSpec = {
         ? MasterMaintenancePolicy.fromPartial(object.maintenancePolicy)
         : undefined;
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
+    message.masterLogging =
+      object.masterLogging !== undefined && object.masterLogging !== null
+        ? MasterLogging.fromPartial(object.masterLogging)
+        : undefined;
     return message;
   },
 };
@@ -3323,6 +3506,81 @@ export const MasterLocation = {
 };
 
 messageTypeRegistry.set(MasterLocation.$type, MasterLocation);
+
+const baseLocationSpec: object = {
+  $type: "yandex.cloud.k8s.v1.LocationSpec",
+  zoneId: "",
+  subnetId: "",
+};
+
+export const LocationSpec = {
+  $type: "yandex.cloud.k8s.v1.LocationSpec" as const,
+
+  encode(
+    message: LocationSpec,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.zoneId !== "") {
+      writer.uint32(10).string(message.zoneId);
+    }
+    if (message.subnetId !== "") {
+      writer.uint32(18).string(message.subnetId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LocationSpec {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseLocationSpec } as LocationSpec;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.zoneId = reader.string();
+          break;
+        case 2:
+          message.subnetId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LocationSpec {
+    const message = { ...baseLocationSpec } as LocationSpec;
+    message.zoneId =
+      object.zoneId !== undefined && object.zoneId !== null
+        ? String(object.zoneId)
+        : "";
+    message.subnetId =
+      object.subnetId !== undefined && object.subnetId !== null
+        ? String(object.subnetId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: LocationSpec): unknown {
+    const obj: any = {};
+    message.zoneId !== undefined && (obj.zoneId = message.zoneId);
+    message.subnetId !== undefined && (obj.subnetId = message.subnetId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<LocationSpec>, I>>(
+    object: I
+  ): LocationSpec {
+    const message = { ...baseLocationSpec } as LocationSpec;
+    message.zoneId = object.zoneId ?? "";
+    message.subnetId = object.subnetId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(LocationSpec.$type, LocationSpec);
 
 /** A set of methods for managing Kubernetes cluster. */
 export const ClusterServiceService = {

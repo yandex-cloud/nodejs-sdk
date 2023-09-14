@@ -31,6 +31,22 @@ import {
 
 export const protobufPackage = "yandex.cloud.dns.v1";
 
+export interface UpdateDnsZonePrivateNetworksRequest {
+  $type: "yandex.cloud.dns.v1.UpdateDnsZonePrivateNetworksRequest";
+  /** ID of the DNS zone which private networks will be updated */
+  dnsZoneId: string;
+  /** Network IDs to remove */
+  privateNetworkIdAdditions: string[];
+  /** Network IDs to add */
+  privateNetworkIdDeletions: string[];
+}
+
+export interface UpdateDnsZonePrivateNetworksMetadata {
+  $type: "yandex.cloud.dns.v1.UpdateDnsZonePrivateNetworksMetadata";
+  /** ID of the DNS zone which private networks was updated */
+  dnsZoneId: string;
+}
+
 export interface GetDnsZoneRequest {
   $type: "yandex.cloud.dns.v1.GetDnsZoneRequest";
   /**
@@ -342,6 +358,194 @@ export interface ListDnsZoneOperationsResponse {
    */
   nextPageToken: string;
 }
+
+const baseUpdateDnsZonePrivateNetworksRequest: object = {
+  $type: "yandex.cloud.dns.v1.UpdateDnsZonePrivateNetworksRequest",
+  dnsZoneId: "",
+  privateNetworkIdAdditions: "",
+  privateNetworkIdDeletions: "",
+};
+
+export const UpdateDnsZonePrivateNetworksRequest = {
+  $type: "yandex.cloud.dns.v1.UpdateDnsZonePrivateNetworksRequest" as const,
+
+  encode(
+    message: UpdateDnsZonePrivateNetworksRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.dnsZoneId !== "") {
+      writer.uint32(10).string(message.dnsZoneId);
+    }
+    for (const v of message.privateNetworkIdAdditions) {
+      writer.uint32(18).string(v!);
+    }
+    for (const v of message.privateNetworkIdDeletions) {
+      writer.uint32(26).string(v!);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateDnsZonePrivateNetworksRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateDnsZonePrivateNetworksRequest,
+    } as UpdateDnsZonePrivateNetworksRequest;
+    message.privateNetworkIdAdditions = [];
+    message.privateNetworkIdDeletions = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.dnsZoneId = reader.string();
+          break;
+        case 2:
+          message.privateNetworkIdAdditions.push(reader.string());
+          break;
+        case 3:
+          message.privateNetworkIdDeletions.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateDnsZonePrivateNetworksRequest {
+    const message = {
+      ...baseUpdateDnsZonePrivateNetworksRequest,
+    } as UpdateDnsZonePrivateNetworksRequest;
+    message.dnsZoneId =
+      object.dnsZoneId !== undefined && object.dnsZoneId !== null
+        ? String(object.dnsZoneId)
+        : "";
+    message.privateNetworkIdAdditions = (
+      object.privateNetworkIdAdditions ?? []
+    ).map((e: any) => String(e));
+    message.privateNetworkIdDeletions = (
+      object.privateNetworkIdDeletions ?? []
+    ).map((e: any) => String(e));
+    return message;
+  },
+
+  toJSON(message: UpdateDnsZonePrivateNetworksRequest): unknown {
+    const obj: any = {};
+    message.dnsZoneId !== undefined && (obj.dnsZoneId = message.dnsZoneId);
+    if (message.privateNetworkIdAdditions) {
+      obj.privateNetworkIdAdditions = message.privateNetworkIdAdditions.map(
+        (e) => e
+      );
+    } else {
+      obj.privateNetworkIdAdditions = [];
+    }
+    if (message.privateNetworkIdDeletions) {
+      obj.privateNetworkIdDeletions = message.privateNetworkIdDeletions.map(
+        (e) => e
+      );
+    } else {
+      obj.privateNetworkIdDeletions = [];
+    }
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<UpdateDnsZonePrivateNetworksRequest>, I>
+  >(object: I): UpdateDnsZonePrivateNetworksRequest {
+    const message = {
+      ...baseUpdateDnsZonePrivateNetworksRequest,
+    } as UpdateDnsZonePrivateNetworksRequest;
+    message.dnsZoneId = object.dnsZoneId ?? "";
+    message.privateNetworkIdAdditions =
+      object.privateNetworkIdAdditions?.map((e) => e) || [];
+    message.privateNetworkIdDeletions =
+      object.privateNetworkIdDeletions?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  UpdateDnsZonePrivateNetworksRequest.$type,
+  UpdateDnsZonePrivateNetworksRequest
+);
+
+const baseUpdateDnsZonePrivateNetworksMetadata: object = {
+  $type: "yandex.cloud.dns.v1.UpdateDnsZonePrivateNetworksMetadata",
+  dnsZoneId: "",
+};
+
+export const UpdateDnsZonePrivateNetworksMetadata = {
+  $type: "yandex.cloud.dns.v1.UpdateDnsZonePrivateNetworksMetadata" as const,
+
+  encode(
+    message: UpdateDnsZonePrivateNetworksMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.dnsZoneId !== "") {
+      writer.uint32(10).string(message.dnsZoneId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateDnsZonePrivateNetworksMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateDnsZonePrivateNetworksMetadata,
+    } as UpdateDnsZonePrivateNetworksMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.dnsZoneId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateDnsZonePrivateNetworksMetadata {
+    const message = {
+      ...baseUpdateDnsZonePrivateNetworksMetadata,
+    } as UpdateDnsZonePrivateNetworksMetadata;
+    message.dnsZoneId =
+      object.dnsZoneId !== undefined && object.dnsZoneId !== null
+        ? String(object.dnsZoneId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: UpdateDnsZonePrivateNetworksMetadata): unknown {
+    const obj: any = {};
+    message.dnsZoneId !== undefined && (obj.dnsZoneId = message.dnsZoneId);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<UpdateDnsZonePrivateNetworksMetadata>, I>
+  >(object: I): UpdateDnsZonePrivateNetworksMetadata {
+    const message = {
+      ...baseUpdateDnsZonePrivateNetworksMetadata,
+    } as UpdateDnsZonePrivateNetworksMetadata;
+    message.dnsZoneId = object.dnsZoneId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  UpdateDnsZonePrivateNetworksMetadata.$type,
+  UpdateDnsZonePrivateNetworksMetadata
+);
 
 const baseGetDnsZoneRequest: object = {
   $type: "yandex.cloud.dns.v1.GetDnsZoneRequest",
@@ -2561,6 +2765,19 @@ export const DnsZoneServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Atomically updates zone private networks */
+  updatePrivateNetworks: {
+    path: "/yandex.cloud.dns.v1.DnsZoneService/UpdatePrivateNetworks",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: UpdateDnsZonePrivateNetworksRequest) =>
+      Buffer.from(UpdateDnsZonePrivateNetworksRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      UpdateDnsZonePrivateNetworksRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
 } as const;
 
 export interface DnsZoneServiceServer extends UntypedServiceImplementation {
@@ -2613,6 +2830,11 @@ export interface DnsZoneServiceServer extends UntypedServiceImplementation {
   setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
   /** Updates access bindings for the specified DNS zone. */
   updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
+  /** Atomically updates zone private networks */
+  updatePrivateNetworks: handleUnaryCall<
+    UpdateDnsZonePrivateNetworksRequest,
+    Operation
+  >;
 }
 
 export interface DnsZoneServiceClient extends Client {
@@ -2870,6 +3092,22 @@ export interface DnsZoneServiceClient extends Client {
   ): ClientUnaryCall;
   updateAccessBindings(
     request: UpdateAccessBindingsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Atomically updates zone private networks */
+  updatePrivateNetworks(
+    request: UpdateDnsZonePrivateNetworksRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updatePrivateNetworks(
+    request: UpdateDnsZonePrivateNetworksRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updatePrivateNetworks(
+    request: UpdateDnsZonePrivateNetworksRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

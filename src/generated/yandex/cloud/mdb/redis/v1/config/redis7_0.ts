@@ -39,6 +39,8 @@ export interface Redisconfig70 {
   clientOutputBufferLimitPubsub?: Redisconfig70_ClientOutputBufferLimit;
   /** Redis connection output buffers limits for clients. */
   clientOutputBufferLimitNormal?: Redisconfig70_ClientOutputBufferLimit;
+  /** Redis maxmemory percent */
+  maxmemoryPercent?: number;
 }
 
 export enum Redisconfig70_MaxmemoryPolicy {
@@ -218,6 +220,15 @@ export const Redisconfig70 = {
         writer.uint32(74).fork()
       ).ldelim();
     }
+    if (message.maxmemoryPercent !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.maxmemoryPercent!,
+        },
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -268,6 +279,12 @@ export const Redisconfig70 = {
               reader,
               reader.uint32()
             );
+          break;
+        case 10:
+          message.maxmemoryPercent = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
           break;
         default:
           reader.skipType(tag & 7);
@@ -323,6 +340,10 @@ export const Redisconfig70 = {
             object.clientOutputBufferLimitNormal
           )
         : undefined;
+    message.maxmemoryPercent =
+      object.maxmemoryPercent !== undefined && object.maxmemoryPercent !== null
+        ? Number(object.maxmemoryPercent)
+        : undefined;
     return message;
   },
 
@@ -353,6 +374,8 @@ export const Redisconfig70 = {
             message.clientOutputBufferLimitNormal
           )
         : undefined);
+    message.maxmemoryPercent !== undefined &&
+      (obj.maxmemoryPercent = message.maxmemoryPercent);
     return obj;
   },
 
@@ -381,6 +404,7 @@ export const Redisconfig70 = {
             object.clientOutputBufferLimitNormal
           )
         : undefined;
+    message.maxmemoryPercent = object.maxmemoryPercent ?? undefined;
     return message;
   },
 };
