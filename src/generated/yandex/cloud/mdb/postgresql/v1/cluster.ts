@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { messageTypeRegistry } from "../../../../../typeRegistry";
+import { MessageType, messageTypeRegistry } from "../../../../../typeRegistry";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 import {
@@ -778,7 +778,7 @@ const baseCluster: object = {
   hostGroupIds: "",
 };
 
-export const Cluster = {
+export const Cluster: MessageType<Cluster> = {
   $type: "yandex.cloud.mdb.postgresql.v1.Cluster" as const,
 
   encode(
@@ -1274,7 +1274,7 @@ const baseClusterConfig: object = {
   version: "",
 };
 
-export const ClusterConfig = {
+export const ClusterConfig: MessageType<ClusterConfig> = {
   $type: "yandex.cloud.mdb.postgresql.v1.ClusterConfig" as const,
 
   encode(

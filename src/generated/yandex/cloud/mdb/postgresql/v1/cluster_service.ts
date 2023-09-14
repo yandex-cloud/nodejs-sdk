@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { messageTypeRegistry } from "../../../../../typeRegistry";
+import { MessageType, messageTypeRegistry } from "../../../../../typeRegistry";
 import Long from "long";
 import {
   makeGenericClientConstructor,
@@ -1101,7 +1101,7 @@ const baseListClustersResponse: object = {
   nextPageToken: "",
 };
 
-export const ListClustersResponse = {
+export const ListClustersResponse: MessageType<ListClustersResponse> = {
   $type: "yandex.cloud.mdb.postgresql.v1.ListClustersResponse" as const,
 
   encode(
