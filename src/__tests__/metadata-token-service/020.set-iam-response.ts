@@ -1,13 +1,14 @@
 import { buildTestLogger } from '../../utils/test-logger';
 import { MetadataTokenService } from '../../token-service/metadata-token-service';
 import { FakeTimersFixture } from '../../utils/tests/fake-timers-fixture';
+import { HRInterval } from '../../utils/hr-interval';
+import IamGetTokenResponse = MetadataTokenService.IamToken;
 import {
     TOKEN_LIFETIME_LEFT_TO_REFRESH_PCT,
     TOKEN_LIFETIME_LEFT_TO_REPORT_ERROR_PCT,
     TOKEN_MINIMUM_LIFETIME_MARGIN_MS,
+    Messages,
 } from '../../token-service/metadata-token-service.consts';
-import { HRInterval } from '../../utils/hr-interval';
-import IamGetTokenResponse = MetadataTokenService.IamGetTokenResponse;
 
 describe('MetadataTokenService.setIamResponse', () => {
     const fakeTimersFixture = new FakeTimersFixture();
@@ -33,7 +34,7 @@ describe('MetadataTokenService.setIamResponse', () => {
     it('general', async () => {
         const TTL = 10 * 60 * 60; // sec
 
-        metadataTokenService.setIamResponse({
+        metadataTokenService.setIamToken({
             token_type: 'Bearer',
             access_token: '123',
             expires_in: TTL,
@@ -56,11 +57,11 @@ describe('MetadataTokenService.setIamResponse', () => {
             .toEqual([
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_setIamResponse,
+                    Messages.trace_setIamResponse,
                 ],
                 [
                     'debug',
-                    MetadataTokenService.Messages.debug_new_token_was_received,
+                    Messages.debug_new_token_was_received,
                     new HRInterval(36_000_000),
                     '',
                 ],
@@ -73,7 +74,7 @@ describe('MetadataTokenService.setIamResponse', () => {
         // @ts-ignore
         (metadataTokenService as unknown).tokenLastError = {};
 
-        metadataTokenService.setIamResponse({
+        metadataTokenService.setIamToken({
             token_type: 'Bearer',
             access_token: '123',
             expires_in: TTL,
@@ -83,11 +84,11 @@ describe('MetadataTokenService.setIamResponse', () => {
             .toEqual([
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_setIamResponse,
+                    Messages.trace_setIamResponse,
                 ],
                 [
                     'info', // it's info, there was an error
-                    MetadataTokenService.Messages.debug_new_token_was_received,
+                    Messages.debug_new_token_was_received,
                     new HRInterval(36_000_000),
                     '',
                 ],
@@ -95,7 +96,7 @@ describe('MetadataTokenService.setIamResponse', () => {
     });
 
     it('token with TTL less than allowed', async () => {
-        expect(() => metadataTokenService.setIamResponse({
+        expect(() => metadataTokenService.setIamToken({
             token_type: 'Bearer',
             access_token: '123',
             expires_in: TOKEN_MINIMUM_LIFETIME_MARGIN_MS / 1000 / 2,
@@ -106,11 +107,11 @@ describe('MetadataTokenService.setIamResponse', () => {
             .toEqual([
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_setIamResponse,
+                    Messages.trace_setIamResponse,
                 ],
                 [
                     'debug',
-                    MetadataTokenService.Messages.debug_new_token_was_received,
+                    Messages.debug_new_token_was_received,
                     new HRInterval(450_000),
                     ' (too small TTL)',
                 ],
@@ -118,35 +119,35 @@ describe('MetadataTokenService.setIamResponse', () => {
     });
 
     it('invalid token structure', async () => {
-        expect(() => metadataTokenService.setIamResponse(undefined as unknown as IamGetTokenResponse))
+        expect(() => metadataTokenService.setIamToken(undefined as unknown as IamGetTokenResponse))
             .toThrow(new Error('invalid iam token: undefined'));
 
-        expect(() => metadataTokenService.setIamResponse(null as unknown as IamGetTokenResponse))
+        expect(() => metadataTokenService.setIamToken(null as unknown as IamGetTokenResponse))
             .toThrow(new Error('invalid iam token: null'));
 
-        expect(() => metadataTokenService.setIamResponse({} as IamGetTokenResponse))
+        expect(() => metadataTokenService.setIamToken({} as IamGetTokenResponse))
             .toThrow(new Error('invalid iam token: {}'));
 
-        expect(() => metadataTokenService.setIamResponse({
+        expect(() => metadataTokenService.setIamToken({
             token_type: 'Bearer',
             expires_in: 'str',
         } as unknown as IamGetTokenResponse))
             .toThrow(new Error('invalid iam token: { token_type: \'Bearer\', expires_in: \'str\' }'));
 
-        expect(() => metadataTokenService.setIamResponse({
+        expect(() => metadataTokenService.setIamToken({
             token_type: 'Bearer',
             expires_in: -1,
         } as unknown as IamGetTokenResponse))
             .toThrow(new Error('invalid iam token: { token_type: \'Bearer\', expires_in: -1 }'));
 
-        expect(() => metadataTokenService.setIamResponse({
+        expect(() => metadataTokenService.setIamToken({
             token_type: 'Bearer',
             expires_in: 10 * 60 * 60,
             access_token: 111,
         } as unknown as IamGetTokenResponse))
             .toThrow(new Error('invalid iam token: { token_type: \'Bearer\', expires_in: 36000, access_token: 111 }'));
 
-        expect(() => metadataTokenService.setIamResponse({
+        expect(() => metadataTokenService.setIamToken({
             token_type: 'Bearer',
             expires_in: 10 * 60 * 60,
             access_token: '123',

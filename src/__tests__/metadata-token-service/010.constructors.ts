@@ -1,5 +1,11 @@
 import { MetadataTokenService } from '../../token-service/metadata-token-service';
 import { buildTestLogger } from '../../utils/test-logger';
+import {
+    Messages,
+    DEFAULT_URL,
+    DEFAULT_OPTIONS,
+} from '../../token-service/metadata-token-service.consts';
+
 import Mock = jest.Mock;
 
 const {
@@ -24,10 +30,10 @@ describe('metadata-token-service.constructors', () => {
         expect(testLoggerFn.mock.calls)
             .toEqual([
                 ['debug',
-                    MetadataTokenService.Messages.debug_ctor,
-                    MetadataTokenService.DEFAULT_URL,
+                    Messages.debug_ctor,
+                    DEFAULT_URL,
                     false,
-                    MetadataTokenService.DEFAULT_OPTIONS,
+                    DEFAULT_OPTIONS,
                 ]]);
     });
 
@@ -47,19 +53,19 @@ describe('metadata-token-service.constructors', () => {
                         logger: testLogger,
                     });
 
-                await metadataTokenService.dispose();
+                await metadataTokenService.destroy();
 
                 expect(testLoggerFn.mock.calls)
                     .toEqual([
                         ['debug',
-                            MetadataTokenService.Messages.debug_ctor,
+                            Messages.debug_ctor,
                             url === undefined
-                                ? MetadataTokenService.DEFAULT_URL
+                                ? DEFAULT_URL
                                 : url,
                             doUpdateTokenInBackground === undefined ? false : doUpdateTokenInBackground,
                             { headers: {} },
                         ], ['trace',
-                            MetadataTokenService.Messages.trace_dispose,
+                            Messages.trace_destroy,
                         ]]);
             });
         }

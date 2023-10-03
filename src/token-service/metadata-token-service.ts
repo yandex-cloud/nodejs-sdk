@@ -1,7 +1,7 @@
-import axios, {AxiosRequestConfig} from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import * as util from 'util';
-import {TokenService} from '../types';
-import {SimpleLogger} from '../utils/simple-logger';
+import { TokenService } from '../types';
+import { SimpleLogger } from '../utils/simple-logger';
 
 import {
     INITIALIZE_BACKOFF_CEILING,
@@ -14,25 +14,12 @@ import {
     TOKEN_LIFETIME_LEFT_TO_REFRESH_PCT,
     TOKEN_LIFETIME_LEFT_TO_REPORT_ERROR_PCT,
     TOKEN_MINIMUM_LIFETIME_MARGIN_MS,
+    Messages,
+    DEFAULT_URL,
+    DEFAULT_LOGGER_PREFIX,
+    DEFAULT_OPTIONS,
 } from './metadata-token-service.consts';
-import {HRInterval} from '../utils/hr-interval';
-
-type Options = AxiosRequestConfig & {
-    /**
-     * Any logger that have methods required by SimpleLogger.Logger. Default is new instance of SimpleLogger.
-     */
-    logger?: SimpleLogger.Logger,
-
-    /**
-     * The default is false and the token is always checked that it has not expired each time the getToken()
-     * method is called. If the token is out of date, a new token is requested. In this mode, the update logic works well
-     * in both standard nodejs and yandex cloud serverless modes.  However, in standard nodejs, you can improve the process
-     * of token exposure by enabling timed updates in the background. In serverless mode, timer updates are likely to be problematic,
-     * because when the serverless function is not called, the timer events do not work. That's why you should turn it to true
-     * only when you are **absolutely sure** that the code will not be used in serverless mode.
-     */
-    doUpdateTokenInBackground?: boolean,
-};
+import { HRInterval } from '../utils/hr-interval';
 
 /**
  * Since in the metadata token service the initialize() method contains a loop of retries to get the token, so
@@ -49,12 +36,15 @@ export const setTestInitializeTimerAdvance = (timerAdvance: (duration: number) =
 
 let testInitPromise: Promise<string | void>;
 
+/**
+ * **Only for unit tests purposes**.
+ */
 export const getTestInitPromise = (): Promise<string | void> | undefined => testInitPromise;
 
 // eslint-disable-next-line import/export
 export class MetadataTokenService implements TokenService {
     private readonly url: string;
-    private readonly axiosOptions: Options;
+    private readonly axiosOptions: AxiosRequestConfig;
     private readonly doUpdateTokenInBackground;
     private readonly logger;
     private token?: string;
@@ -85,18 +75,16 @@ export class MetadataTokenService implements TokenService {
 
     private currentGetTokenPromise?: Promise<string>;
     private timer?: NodeJS.Timeout;
-    private disposed = false;
+    private destroyed = false;
 
-    constructor();
+    constructor(options?: MetadataTokenService.Options);
 
-    constructor(options: Options);
-
-    constructor(url: string, options?: Options);
+    constructor(url: string, options?: MetadataTokenService.Options);
 
     /* istanbul ignore next */
-    constructor(urlOrOptions: string | Options = MetadataTokenService.DEFAULT_URL, options: Options = {}) {
+    constructor(urlOrOptions: string | MetadataTokenService.Options = DEFAULT_URL, options: MetadataTokenService.Options = {}) {
         if (typeof urlOrOptions === 'object') {
-            this.url = MetadataTokenService.DEFAULT_URL;
+            this.url = DEFAULT_URL;
             // eslint-disable-next-line no-param-reassign
             options = urlOrOptions;
         } else {
@@ -110,26 +98,25 @@ export class MetadataTokenService implements TokenService {
         } = options;
 
         /* istanbul ignore next */
-        this.logger = logger ?? new SimpleLogger({prefix: MetadataTokenService.DEFAULT_LOGGER_PREFIX});
+        this.logger = logger ?? new SimpleLogger({ prefix: DEFAULT_LOGGER_PREFIX });
 
         this.doUpdateTokenInBackground = doUpdateTokenInBackground ?? false;
 
-        this.axiosOptions = {...MetadataTokenService.DEFAULT_OPTIONS, ...opts};
+        this.axiosOptions = { ...DEFAULT_OPTIONS, ...opts };
 
-        this.logger.debug(MetadataTokenService.Messages.debug_ctor, this.url, this.doUpdateTokenInBackground, this.axiosOptions);
+        this.logger.debug(Messages.debug_ctor, this.url, this.doUpdateTokenInBackground, this.axiosOptions);
 
         if (this.doUpdateTokenInBackground) {
             testInitPromise = this.getToken()
-                .catch(() => {
-                }); // intentionally without await
+                .catch(() => {}); // intentionally without await
         }
     }
 
     async getToken(): Promise<string> {
-        this.logger.trace(MetadataTokenService.Messages.trace_getToken);
+        this.logger.trace(Messages.trace_getToken);
 
-        if (this.disposed) {
-            throw new Error(MetadataTokenService.Messages.err_service_is_disposed);
+        if (this.destroyed) {
+            throw new Error(Messages.err_service_is_destroyed);
         }
 
         if (this.doUpdateTokenInBackground && (this.tokenLastError || this.token)) {
@@ -154,8 +141,8 @@ export class MetadataTokenService implements TokenService {
      * It is recommended to call this method at the beginning of serverless function with context.token parameter.
      * This will reduce serverless function runtime avoiding additional request to the Iam service.
      */
-    setIamResponse(iamResponse: MetadataTokenService.IamGetTokenResponse) {
-        this.logger.trace(MetadataTokenService.Messages.trace_setIamResponse);
+    setIamToken(iamResponse: MetadataTokenService.IamToken) {
+        this.logger.trace(Messages.trace_setIamResponse);
 
         if (!(
             typeof (iamResponse as unknown) === 'object'
@@ -166,21 +153,21 @@ export class MetadataTokenService implements TokenService {
             && typeof (iamResponse.access_token as unknown) === 'string'
             && iamResponse.access_token !== ''
         )) {
-            throw new Error(util.format(MetadataTokenService.Messages.err_invalid_iam_token, iamResponse));
+            throw new Error(util.format(Messages.err_invalid_iam_token, iamResponse));
         }
 
         const TTL = iamResponse.expires_in * 1000 - TOKEN_MINIMUM_LIFETIME_MARGIN_MS;
 
         // even in non-debug mode output messages that we've got a new token, if there were errors before that
         this.logger[this.tokenLastError ? 'info' : 'debug'](
-            MetadataTokenService.Messages.debug_new_token_was_received,
+            Messages.debug_new_token_was_received,
             new HRInterval(iamResponse.expires_in * 1000),
-            TTL <= 0 ? MetadataTokenService.Messages.debug_new_token_was_received_too_small_postfix : '',
+            TTL <= 0 ? Messages.debug_new_token_was_received_too_small_postfix : '',
         );
 
         if (TTL <= 0) {
             throw new Error(util.format(
-                MetadataTokenService.Messages.err_part_insufficient_lifetime,
+                Messages.err_part_insufficient_lifetime,
                 new HRInterval(iamResponse.expires_in * 1000),
             ));
         }
@@ -194,13 +181,13 @@ export class MetadataTokenService implements TokenService {
         this.tokenErrorCount = 0;
     }
 
-    async dispose() {
-        this.logger.trace(MetadataTokenService.Messages.trace_dispose);
+    async destroy() {
+        this.logger.trace(Messages.trace_destroy);
 
-        if (this.disposed) {
-            throw new Error(MetadataTokenService.Messages.err_service_is_disposed);
+        if (this.destroyed) {
+            throw new Error(Messages.err_service_is_destroyed);
         }
-        this.disposed = true;
+        this.destroyed = true;
 
         if (this.timer) {
             clearTimeout(this.timer);
@@ -209,7 +196,7 @@ export class MetadataTokenService implements TokenService {
     }
 
     private async _getToken(): Promise<string> {
-        this.logger.trace(MetadataTokenService.Messages.trace__getToken);
+        this.logger.trace(Messages.trace__getToken);
 
         try {
             if (this.tokenLastError && Date.now() < this.tokenRefreshAt) {
@@ -226,7 +213,7 @@ export class MetadataTokenService implements TokenService {
                         // keep using existing token
                         if (Date.now() >= this.tokenStartReportTTLAt) {
                             this.logger.warn(
-                                MetadataTokenService.Messages.warn_emaining_token_TTL,
+                                Messages.warn_emaining_token_TTL,
                                 new HRInterval(this.tokenExpiresAt - Date.now()),
                             );
                         }
@@ -238,7 +225,7 @@ export class MetadataTokenService implements TokenService {
                 throw error;
             }
         } finally {
-            if (this.doUpdateTokenInBackground && !this.disposed) {
+            if (this.doUpdateTokenInBackground && !this.destroyed) {
                 this.setTimer();
             }
         }
@@ -248,7 +235,7 @@ export class MetadataTokenService implements TokenService {
     }
 
     private async initialize() {
-        this.logger.trace(MetadataTokenService.Messages.trace_initialize);
+        this.logger.trace(Messages.trace_initialize);
 
         delete this.token;
 
@@ -259,10 +246,13 @@ export class MetadataTokenService implements TokenService {
 
                 break;
             } catch (error) {
-                if (i === INITIALIZE_MAX_ATTEMPTS_OF_GET_TOKEN) {
+                if (i >= INITIALIZE_MAX_ATTEMPTS_OF_GET_TOKEN) {
                     throw error;
                 }
             }
+
+            // Repeated attempts to get token in case of an error are performed at increasing intervals and adding
+            // a random component - to statistically distribute the load on the IAM.
 
             // eslint-disable-next-line no-bitwise
             const slotsCount = 1 << Math.min(i, INITIALIZE_BACKOFF_CEILING);
@@ -274,7 +264,7 @@ export class MetadataTokenService implements TokenService {
                 try {
                     setTimeout(resolve, duration);
 
-                    // note: await below is skipped out deliberately
+                    // In tests, promote the timer immediately
                     if (testInitializeTimerAdvance) await testInitializeTimerAdvance(duration);
                 } catch (error) {
                     /* istanbul ignore next */
@@ -285,20 +275,20 @@ export class MetadataTokenService implements TokenService {
     }
 
     private async fetchToken(): Promise<string> {
-        this.logger.trace(MetadataTokenService.Messages.trace_fetchToken);
+        this.logger.trace(Messages.trace_fetchToken);
 
         let token: string;
 
         // @ts-ignore
         try {
             // eslint-disable-next-line @typescript-eslint/ban-types
-            const res = await axios.get<MetadataTokenService.IamGetTokenResponse>(this.url, this.axiosOptions);
+            const res = await axios.get<MetadataTokenService.IamToken>(this.url, this.axiosOptions);
 
             if (res.status !== 200) {
-                throw new Error(util.format(MetadataTokenService.Messages.err_part_http_error, res.status, res.statusText));
+                throw new Error(util.format(Messages.err_part_http_error, res.status, res.statusText));
             }
 
-            this.setIamResponse(res.data);
+            this.setIamToken(res.data);
 
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             return this.token!;
@@ -311,7 +301,7 @@ export class MetadataTokenService implements TokenService {
 
             this.tokenRefreshAt = Date.now() + maxDuration * (1 - Math.random() * GET_TOKEN_BACKOFF_UNCERTAIN_RATIO);
 
-            error.message = util.format(MetadataTokenService.Messages.err_failed_fetch, error.message);
+            error.message = util.format(Messages.err_failed_fetch, error.message);
 
             this.logger.error(error.message);
 
@@ -320,7 +310,7 @@ export class MetadataTokenService implements TokenService {
     }
 
     private setTimer() {
-        this.logger.trace(MetadataTokenService.Messages.trace_setTimer);
+        this.logger.trace(Messages.trace_setTimer);
 
         if (this.timer) {
             clearTimeout(this.timer);
@@ -339,57 +329,22 @@ export class MetadataTokenService implements TokenService {
 /* istanbul ignore next */
 // eslint-disable-next-line @typescript-eslint/no-namespace,import/export
 export namespace MetadataTokenService {
-    export enum Messages {
+    export type Options = AxiosRequestConfig & {
         /**
-         * Inlines: new HRInterval().
+         * Any logger that have methods required by SimpleLogger.Logger. Default is new instance of SimpleLogger.
          */
-        warn_emaining_token_TTL = 'remaining token\'s TTL: %s',
-
-        /**
-         * Inlines: url, doUpdateTokenInBackground, axiosOptions.
-         */
-        debug_ctor = 'metadata-token.ctor: url: %s, doUpdateTokenInBackground: %s, axiosOptions: %o',
-        /**
-         * Inlines: new HRInterval(), "(too small TTL)"?.
-         */
-        debug_new_token_was_received = 'new token. TTL: %s%s',
-        debug_new_token_was_received_too_small_postfix = ' (too small TTL)',
-
-        trace_getToken = 'metadata-token.getToken',
-        trace_dispose = 'metadata-token.dispose',
-        trace__getToken = 'metadata-token._getToken',
-        trace_initialize = 'metadata-token.initialize',
-        trace_fetchToken = 'metadata-token.fetchToken',
-        trace_setIamResponse = 'metadata-token.setIamResponse',
-        trace_setTimer = 'metadata-token.setTimer',
+        logger?: SimpleLogger.Logger,
 
         /**
-         * Inlines: http-status, error-message.
+         * The default is false and the token is always checked that it has not expired each time the getToken()
+         * method is called. If the token is out of date, a new token is requested. In this mode, the update logic works well
+         * in both standard nodejs and yandex cloud serverless modes.  However, in standard nodejs, you can improve the process
+         * of token exposure by enabling timed updates in the background. In serverless mode, timer updates are likely to be problematic,
+         * because when the serverless function is not called, the timer events do not work. That's why you should turn it to true
+         * only when you are **absolutely sure** that the code will not be used in serverless mode.
          */
-        err_part_http_error = '%s %s',
-        /**
-         * Inlines: new HRInerval().
-         */
-        err_part_insufficient_lifetime = 'insufficient lifetime: %s',
-        /**
-         * Inlines: err_part
-         */
-        err_failed_fetch = 'failed to fetch token: %s',
-
-        err_invalid_iam_token = 'invalid iam token: %o',
-
-        err_service_is_disposed = 'service is disposed',
-    }
-
-    export const DEFAULT_URL = 'http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token';
-
-    export const DEFAULT_OPTIONS: Options = {
-        headers: {
-            'Metadata-Flavor': 'Google',
-        },
+        doUpdateTokenInBackground?: boolean,
     };
 
-    export const DEFAULT_LOGGER_PREFIX = 'metadata-auth';
-
-    export type IamGetTokenResponse = { token_type: 'Bearer', access_token: string, /** in seconds! */ expires_in: number };
+    export type IamToken = { token_type: 'Bearer', access_token: string, /** in seconds! */ expires_in: number };
 }

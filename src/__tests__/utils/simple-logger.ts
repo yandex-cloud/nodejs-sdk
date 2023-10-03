@@ -29,6 +29,7 @@ describe('logger', () => {
         for (const conf of [
             {
                 level: undefined,
+                fatal: true,
                 error: true,
                 warn: true,
                 info: true,
@@ -37,6 +38,7 @@ describe('logger', () => {
             },
             {
                 level: SimpleLogger.LogLevel.warn,
+                fatal: true,
                 error: true,
                 warn: true,
                 info: false,
@@ -45,6 +47,7 @@ describe('logger', () => {
             },
             {
                 level: SimpleLogger.LogLevel.debug,
+                fatal: true,
                 error: true,
                 warn: true,
                 info: true,
@@ -53,6 +56,7 @@ describe('logger', () => {
             },
             {
                 level: 'wrong' as SimpleLogger.LogLevel,
+                fatal: true,
                 error: true,
                 warn: true,
                 info: true,
@@ -79,6 +83,7 @@ describe('logger', () => {
                         delete process.env[env];
                 }
 
+                logger.fatal('fatal');
                 logger.error('error');
                 logger.warn('warn');
                 logger.info('info');
@@ -87,7 +92,7 @@ describe('logger', () => {
 
                 // @ts-ignore
                 expect((mockConsole.error as Mock).mock.calls)
-                    .toHaveLength(conf.error ? 1 : 0);
+                    .toHaveLength((conf.fatal ? 1 : 0) + (conf.error ? 1 : 0));
                 // @ts-ignore
                 expect((mockConsole.warn as Mock).mock.calls)
                     .toHaveLength(conf.warn ? 1 : 0);

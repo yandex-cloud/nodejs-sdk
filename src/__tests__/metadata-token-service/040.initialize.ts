@@ -1,10 +1,13 @@
 import axios from 'axios';
 import { FakeTimersFixture } from '../../utils/tests/fake-timers-fixture';
 import { MetadataTokenService, setTestInitializeTimerAdvance } from '../../token-service/metadata-token-service';
-import { ERROR_REPORT_INTERVAL_MS, INITIALIZE_MAX_ATTEMPTS_OF_GET_TOKEN } from '../../token-service/metadata-token-service.consts';
 import Mock = jest.Mock;
 import { buildTestLogger } from '../../utils/test-logger';
 import { HRInterval } from '../../utils/hr-interval';
+import {
+    INITIALIZE_MAX_ATTEMPTS_OF_GET_TOKEN,
+    Messages,
+} from '../../token-service/metadata-token-service.consts';
 
 const TTL = 10 * 60 * 60;
 const RANDOM = 0.7;
@@ -88,11 +91,11 @@ describe('MetadataTokenService.initialize', () => {
             .toEqual([
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_initialize,
+                    Messages.trace_initialize,
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_fetchToken,
+                    Messages.trace_fetchToken,
                 ],
                 [
                     'error',
@@ -100,7 +103,7 @@ describe('MetadataTokenService.initialize', () => {
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_fetchToken,
+                    Messages.trace_fetchToken,
                 ],
                 [
                     'error',
@@ -108,15 +111,15 @@ describe('MetadataTokenService.initialize', () => {
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_fetchToken,
+                    Messages.trace_fetchToken,
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_setIamResponse,
+                    Messages.trace_setIamResponse,
                 ],
                 [
                     'debug',
-                    MetadataTokenService.Messages.debug_new_token_was_received,
+                    Messages.debug_new_token_was_received,
                     new HRInterval(TTL * 1000),
                     '',
                 ],

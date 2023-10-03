@@ -21,6 +21,11 @@
     "dist"
   ],
   "homepage": "https://github.com/yandex-cloud/nodejs-sdk#readme",
+  "pre-commit": [
+    "lint",
+    "build",
+    "add-dist"
+  ],
   "dependencies": {
     "@grpc/grpc-js": "^1.6.12",
     "abort-controller-x": "^0.4.1",
@@ -59,6 +64,7 @@
     "grpc-tools": "^1.11.2",
     "husky": "^7.0.4",
     "jest": "^27.4.5",
+    "pre-commit": "^1.2.2",
     "semantic-release": "^21.0.1",
     "ts-jest": "^27.1.1",
     "ts-node": "^10.4.0",
@@ -66,13 +72,15 @@
     "typescript": "^4.5.4"
   },
   "scripts": {
-    "test": "jest -c config/jest.ts --passWithNoTests",
-    "coverage": "jest -c config/jest.coverage.ts --passWithNoTests",
-    "lint": "eslint src config --fix",
+    "test": "jest -c config/jest.ts",
+    "test:coverage": "jest -c config/jest.coverage.ts",
+    "lint": "eslint src config",
+    "lint:fix": "eslint src config --fix",
     "build": "cross-env NODE_OPTIONS=\"--max-old-space-size=4096\" tsc -p .",
     "generate-code": "ts-node scripts/generate-code.ts",
     "prepare": "husky install",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "add-dist": "git add dist/*"
   },
   "engines": {
     "node": ">=12.0.0"

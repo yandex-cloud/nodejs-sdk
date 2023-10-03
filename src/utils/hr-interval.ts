@@ -2,8 +2,7 @@
  * Formats time interval in human-readable form in toString().
  */
 export class HRInterval {
-    constructor(protected period: number) {}
-
+    constructor(readonly period: number) {}
     toString() {
         let remaining = Math.trunc(this.period / 1000);
         const hours = Math.trunc(remaining / 60 / 60);

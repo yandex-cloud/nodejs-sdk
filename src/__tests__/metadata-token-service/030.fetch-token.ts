@@ -1,12 +1,15 @@
 import axios from 'axios';
-import {FakeTimersFixture} from '../../utils/tests/fake-timers-fixture';
-import {MetadataTokenService, setTestInitializeTimerAdvance} from '../../token-service/metadata-token-service';
-import {
-    GET_TOKEN_BACKOFF_CEILING, GET_TOKEN_BACKOFF_SLOT_DURATION, GET_TOKEN_BACKOFF_UNCERTAIN_RATIO,
-} from '../../token-service/metadata-token-service.consts';
+import { FakeTimersFixture } from '../../utils/tests/fake-timers-fixture';
+import { MetadataTokenService, setTestInitializeTimerAdvance } from '../../token-service/metadata-token-service';
 import Mock = jest.Mock;
-import {buildTestLogger} from '../../utils/test-logger';
-import {HRInterval} from '../../utils/hr-interval';
+import { buildTestLogger } from '../../utils/test-logger';
+import { HRInterval } from '../../utils/hr-interval';
+import {
+    GET_TOKEN_BACKOFF_SLOT_DURATION,
+    GET_TOKEN_BACKOFF_CEILING,
+    GET_TOKEN_BACKOFF_UNCERTAIN_RATIO,
+    Messages,
+} from '../../token-service/metadata-token-service.consts';
 
 const TTL = 10 * 60 * 60;
 const RANDOM = 0.7;
@@ -26,7 +29,7 @@ describe('MetadataTokenService.fetchToken', () => {
         jest.spyOn(axios, 'get');
         jest.spyOn(Math, 'random');
         (Math.random as Mock).mockReturnValue(RANDOM);
-        metadataTokenService = new MetadataTokenService({logger: testLogger});
+        metadataTokenService = new MetadataTokenService({ logger: testLogger });
         testLoggerFn.mockReset(); // clear constructor log
     });
 
@@ -55,15 +58,15 @@ describe('MetadataTokenService.fetchToken', () => {
             .toEqual([
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_fetchToken,
+                    Messages.trace_fetchToken,
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_setIamResponse,
+                    Messages.trace_setIamResponse,
                 ],
                 [
                     'debug',
-                    MetadataTokenService.Messages.debug_new_token_was_received,
+                    Messages.debug_new_token_was_received,
                     new HRInterval(TTL * 1000),
                     '',
                 ],
@@ -114,7 +117,7 @@ describe('MetadataTokenService.fetchToken', () => {
                 .toEqual([
                     [
                         'trace',
-                        MetadataTokenService.Messages.trace_fetchToken,
+                        Messages.trace_fetchToken,
                     ],
                     [
                         'error',

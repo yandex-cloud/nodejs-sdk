@@ -7,6 +7,12 @@ const silentLogFn = () => {};
 const simpleLogFnBuilder = (level: SimpleLogger.LogLevel): SimpleLogger.LogFn => {
     const LEVEL = level.toUpperCase();
 
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    if (level === SimpleLogger.LogLevel.fatal) {
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define,no-param-reassign
+        level = SimpleLogger.LogLevel.error;
+    }
+
     return function log(this: SimpleLogger, objOrMsg: string | unknown, ...args: unknown[]) {
         const prefix: string[] = [];
 
@@ -26,13 +32,16 @@ const simpleLogFnBuilder = (level: SimpleLogger.LogLevel): SimpleLogger.LogFn =>
 
         if (typeof objOrMsg === 'object') {
             if (typeof args[0] !== 'string') {
+                // @ts-ignore
                 // eslint-disable-next-line @typescript-eslint/no-use-before-define
-                consoleOrMock[level](prefix.length > 0 ? `${prefixStr.slice(0, -1)} %o` : '%o', objOrMsg);
+                consoleOrMock[level](prefix.length > 0 ? `${prefixStr}%o` : '%o', objOrMsg);
             } else {
+                // @ts-ignore
                 // eslint-disable-next-line @typescript-eslint/no-use-before-define
                 consoleOrMock[level](`${prefixStr}%o ${args[0]}`, ...args.splice(1), objOrMsg);
             }
         } else {
+            // @ts-ignore
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
             consoleOrMock[level](`${prefixStr}${objOrMsg}`, ...args);
         }
@@ -44,6 +53,7 @@ const simpleLogFnBuilder = (level: SimpleLogger.LogLevel): SimpleLogger.LogFn =>
  */
 // eslint-disable-next-line import/export
 export class SimpleLogger implements SimpleLogger.Logger {
+    fatal: SimpleLogger.LogFn = silentLogFn;
     error: SimpleLogger.LogFn = silentLogFn;
     warn: SimpleLogger.LogFn = silentLogFn;
     info: SimpleLogger.LogFn = silentLogFn;
@@ -107,6 +117,7 @@ export class SimpleLogger implements SimpleLogger.Logger {
     }
 }
 
+/* istanbul ignore next */
 // eslint-disable-next-line @typescript-eslint/no-namespace,import/export
 export namespace SimpleLogger {
     export interface LogFn {
@@ -120,6 +131,7 @@ export namespace SimpleLogger {
      * Therefore, *fatal* and *trace* methods are omitted.
      */
     export interface Logger {
+        fatal: LogFn,
         error: LogFn,
         warn: LogFn,
         info: LogFn,
@@ -128,6 +140,7 @@ export namespace SimpleLogger {
     }
 
     export enum LogLevel {
+        fatal = 'fatal',
         error = 'error',
         warn = 'warn',
         info = 'info',

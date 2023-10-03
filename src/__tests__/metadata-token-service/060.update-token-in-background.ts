@@ -4,6 +4,11 @@ import { getTestInitPromise, MetadataTokenService, setTestInitializeTimerAdvance
 import Mock = jest.Mock;
 import { buildTestLogger } from '../../utils/test-logger';
 import { HRInterval } from '../../utils/hr-interval';
+import {
+    Messages,
+    DEFAULT_URL,
+    DEFAULT_OPTIONS,
+} from '../../token-service/metadata-token-service.consts';
 
 const TTL = 10 * 60 * 60;
 
@@ -55,44 +60,44 @@ describe('MetadataTokenService.getToken', () => {
             .toEqual([
                 [
                     'debug',
-                    MetadataTokenService.Messages.debug_ctor,
-                    MetadataTokenService.DEFAULT_URL,
+                    Messages.debug_ctor,
+                    DEFAULT_URL,
                     true,
-                    MetadataTokenService.DEFAULT_OPTIONS,
+                    DEFAULT_OPTIONS,
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_getToken,
+                    Messages.trace_getToken,
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace__getToken,
+                    Messages.trace__getToken,
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_initialize,
+                    Messages.trace_initialize,
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_fetchToken,
+                    Messages.trace_fetchToken,
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_setIamResponse,
+                    Messages.trace_setIamResponse,
                 ],
                 [
                     'debug',
-                    MetadataTokenService.Messages.debug_new_token_was_received,
+                    Messages.debug_new_token_was_received,
                     new HRInterval(TTL * 1000),
                     '',
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_setTimer,
+                    Messages.trace_setTimer,
                 ],
             ]);
 
-        await metadataTokenService.dispose();
+        await metadataTokenService.destroy();
     });
 
     it('the first time the token request has failed', async () => {
@@ -118,11 +123,11 @@ describe('MetadataTokenService.getToken', () => {
             .toEqual([
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_getToken,
+                    Messages.trace_getToken,
                 ],
             ]);
 
-        await metadataTokenService.dispose();
+        await metadataTokenService.destroy();
     });
 
     it('if getToken() is called until an initial response or an error is received, getToken() will wait for a response', async () => {
@@ -165,48 +170,48 @@ describe('MetadataTokenService.getToken', () => {
             .toEqual([
                 [
                     'debug',
-                    MetadataTokenService.Messages.debug_ctor,
-                    MetadataTokenService.DEFAULT_URL,
+                    Messages.debug_ctor,
+                    DEFAULT_URL,
                     true,
-                    MetadataTokenService.DEFAULT_OPTIONS,
+                    DEFAULT_OPTIONS,
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_getToken,
+                    Messages.trace_getToken,
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace__getToken,
+                    Messages.trace__getToken,
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_initialize,
+                    Messages.trace_initialize,
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_fetchToken,
+                    Messages.trace_fetchToken,
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_getToken,
+                    Messages.trace_getToken,
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_getToken,
+                    Messages.trace_getToken,
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_setIamResponse,
+                    Messages.trace_setIamResponse,
                 ],
                 [
                     'debug',
-                    MetadataTokenService.Messages.debug_new_token_was_received,
+                    Messages.debug_new_token_was_received,
                     new HRInterval(TTL * 1000),
                     '',
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_setTimer,
+                    Messages.trace_setTimer,
                 ],
             ]);
     });
@@ -247,25 +252,25 @@ describe('MetadataTokenService.getToken', () => {
                     res.push(
                         [
                             'trace',
-                            MetadataTokenService.Messages.trace__getToken,
+                            Messages.trace__getToken,
                         ],
                         [
                             'trace',
-                            MetadataTokenService.Messages.trace_fetchToken,
+                            Messages.trace_fetchToken,
                         ],
                         [
                             'trace',
-                            MetadataTokenService.Messages.trace_setIamResponse,
+                            Messages.trace_setIamResponse,
                         ],
                         [
                             'debug',
-                            MetadataTokenService.Messages.debug_new_token_was_received,
+                            Messages.debug_new_token_was_received,
                             new HRInterval(TTL * 1000),
                             '',
                         ],
                         [
                             'trace',
-                            MetadataTokenService.Messages.trace_setTimer,
+                            Messages.trace_setTimer,
                         ],
                     );
                 }
@@ -315,11 +320,11 @@ describe('MetadataTokenService.getToken', () => {
                     res.push(
                         [
                             'trace',
-                            MetadataTokenService.Messages.trace__getToken,
+                            Messages.trace__getToken,
                         ],
                         [
                             'trace',
-                            MetadataTokenService.Messages.trace_fetchToken,
+                            Messages.trace_fetchToken,
                         ],
                         [
                             'error',
@@ -327,7 +332,7 @@ describe('MetadataTokenService.getToken', () => {
                         ],
                         [
                             'trace',
-                            MetadataTokenService.Messages.trace_setTimer,
+                            Messages.trace_setTimer,
                         ],
                     );
                 }
@@ -372,11 +377,11 @@ describe('MetadataTokenService.getToken', () => {
             .toEqual([
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_getToken,
+                    Messages.trace_getToken,
                 ],
                 [
                     'trace',
-                    MetadataTokenService.Messages.trace_getToken,
+                    Messages.trace_getToken,
                 ],
             ]);
     });
@@ -402,17 +407,17 @@ describe('MetadataTokenService.getToken', () => {
         expect(await metadataTokenService.getToken())
             .toBe('123');
 
-        await expect(metadataTokenService.dispose())
+        await expect(metadataTokenService.destroy())
             .resolves
             .toBeUndefined();
 
         await expect(metadataTokenService.getToken())
             .rejects
-            .toThrow(new Error(MetadataTokenService.Messages.err_service_is_disposed));
+            .toThrow(new Error(Messages.err_service_is_destroyed));
 
-        await expect(metadataTokenService.dispose())
+        await expect(metadataTokenService.destroy())
             .rejects
-            .toThrow(new Error(MetadataTokenService.Messages.err_service_is_disposed));
+            .toThrow(new Error(Messages.err_service_is_destroyed));
     });
 
     it('dispose() while initialize() is not complete', async () => {
@@ -428,7 +433,7 @@ describe('MetadataTokenService.getToken', () => {
             doUpdateTokenInBackground: true,
         });
 
-        await metadataTokenService.dispose();
+        await metadataTokenService.destroy();
 
         // @ts-ignore
         getResolve({
