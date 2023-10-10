@@ -10,6 +10,7 @@ export default {
         'js',
         'ts',
     ],
+    modulePathIgnorePatterns: ['./src/generated'],
     preset: 'ts-jest',
     rootDir: path.resolve('./src/'),
     transform: {
