@@ -4,5 +4,5 @@ export * from './session';
 export * from './utils/operation';
 export * from './utils/decode-message';
 export * from './utils/simple-logger';
-export { WrappedServiceClientType } from './types';
+export { WrappedServiceClientType, TokenService } from './types';
 export * from './token-service/metadata-token-service';
