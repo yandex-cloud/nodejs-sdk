@@ -12,7 +12,7 @@ interface ServiceEndpoint {
 type ServiceEndpointsList = ServiceEndpoint[];
 
 // @see https://api.cloud.yandex.net/endpoints
-const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
+export const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
     {
         serviceIds: ['yandex.cloud.operation.OperationService'],
         endpoint: 'operation.api.cloud.yandex.net:443',
