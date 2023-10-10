@@ -100,8 +100,8 @@ export class SimpleLogger implements SimpleLogger.Logger {
         } = options;
 
         if (prefix) this.prefix = prefix;
-        this.showTimestamp = showTimestamp ?? false;
-        this.showLevel = showLevel ?? false;
+        this.showTimestamp = showTimestamp ?? true;
+        this.showLevel = showLevel ?? true;
 
         const envKey = options.envKey ?? DEFAULT_ENV_KEY;
         const envLevel = process.env[envKey];

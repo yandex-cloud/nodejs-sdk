@@ -71,15 +71,17 @@ describe('logger', () => {
 
                 switch (env) {
                     case false:
-                        logger = conf.level === undefined ? new SimpleLogger() : new SimpleLogger({ level: conf.level });
+                        logger = conf.level === undefined
+                            ? new SimpleLogger({ showLevel: false, showTimestamp: false })
+                            : new SimpleLogger({ level: conf.level, showLevel: false, showTimestamp: false });
                         break;
                     case true:
                         process.env.LOG_LEVEL = conf.level;
-                        logger = new SimpleLogger();
+                        logger = new SimpleLogger({ showLevel: false, showTimestamp: false });
                         break;
                     default:
                         process.env[env] = conf.level;
-                        logger = new SimpleLogger({ envKey: env });
+                        logger = new SimpleLogger({ envKey: env, showLevel: false, showTimestamp: false });
                         delete process.env[env];
                 }
 
@@ -110,7 +112,7 @@ describe('logger', () => {
     }
 
     it('different parameters of log method', () => {
-        const logger = new SimpleLogger();
+        const logger = new SimpleLogger({ showLevel: false, showTimestamp: false });
 
         const a = {
             b: {
