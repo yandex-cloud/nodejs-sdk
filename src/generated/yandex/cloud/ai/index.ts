@@ -1,3 +1,5 @@
+export * as ocr from './ocr/v1/ocr'
+export * as ocr_service from './ocr/v1/ocr_service'
 export * as stt_service from './stt/v2/stt_service'
 export * as translate_translation from './translate/v2/translation'
 export * as translate_translation_service from './translate/v2/translation_service'

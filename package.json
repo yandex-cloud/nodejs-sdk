@@ -1,11 +1,11 @@
 {
   "name": "@yandex-cloud/nodejs-sdk",
-  "version": "2.4.8",
+  "version": "2.5.0",
   "description": "Yandex.Cloud NodeJS SDK",
   "keywords": [
     "yandex-cloud",
-    "cloud",
-    "sdk"
+    "sdk",
+    "cloud"
   ],
   "repository": {
     "type": "git",
@@ -66,8 +66,8 @@
     "typescript": "^4.5.4"
   },
   "scripts": {
-    "test": "jest -c config/jest.ts",
-    "test:coverage": "jest -c config/jest.coverage.ts",
+    "test": "cross-env NODE_OPTIONS=\"--max-old-space-size=4096\" jest -c config/jest.ts",
+    "test:coverage": "cross-env NODE_OPTIONS=\"--max-old-space-size=4096\" jest -c config/jest.coverage.ts",
     "lint": "eslint src config",
     "lint:fix": "eslint src config --fix",
     "build": "cross-env NODE_OPTIONS=\"--max-old-space-size=4096\" tsc -p .",

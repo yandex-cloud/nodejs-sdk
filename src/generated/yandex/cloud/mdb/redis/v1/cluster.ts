@@ -7,6 +7,7 @@ import {
   MaintenanceOperation,
 } from "../../../../../yandex/cloud/mdb/redis/v1/maintenance";
 import { TimeOfDay } from "../../../../../google/type/timeofday";
+import { RedisConfigSet } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis";
 import { Timestamp } from "../../../../../google/protobuf/timestamp";
 import { Redisconfigset50 } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis5_0";
 import { Redisconfigset60 } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis6_0";
@@ -68,6 +69,8 @@ export interface Cluster {
   deletionProtection: boolean;
   /** Persistence mode */
   persistenceMode: Cluster_PersistenceMode;
+  /** Enable FQDN instead of ip */
+  announceHostnames: boolean;
 }
 
 export enum Cluster_Environment {
@@ -312,6 +315,8 @@ export interface ClusterConfig {
   backupWindowStart?: TimeOfDay;
   /** Access policy to DB */
   access?: Access;
+  /** Unified configuration of a Redis cluster. */
+  redis?: RedisConfigSet;
 }
 
 export interface Shard {
@@ -583,6 +588,7 @@ const baseCluster: object = {
   tlsEnabled: false,
   deletionProtection: false,
   persistenceMode: 0,
+  announceHostnames: false,
 };
 
 export const Cluster = {
@@ -665,6 +671,9 @@ export const Cluster = {
     if (message.persistenceMode !== 0) {
       writer.uint32(152).int32(message.persistenceMode);
     }
+    if (message.announceHostnames === true) {
+      writer.uint32(160).bool(message.announceHostnames);
+    }
     return writer;
   },
 
@@ -745,6 +754,9 @@ export const Cluster = {
           break;
         case 19:
           message.persistenceMode = reader.int32() as any;
+          break;
+        case 20:
+          message.announceHostnames = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -832,6 +844,11 @@ export const Cluster = {
       object.persistenceMode !== undefined && object.persistenceMode !== null
         ? cluster_PersistenceModeFromJSON(object.persistenceMode)
         : 0;
+    message.announceHostnames =
+      object.announceHostnames !== undefined &&
+      object.announceHostnames !== null
+        ? Boolean(object.announceHostnames)
+        : false;
     return message;
   },
 
@@ -889,6 +906,8 @@ export const Cluster = {
       (obj.persistenceMode = cluster_PersistenceModeToJSON(
         message.persistenceMode
       ));
+    message.announceHostnames !== undefined &&
+      (obj.announceHostnames = message.announceHostnames);
     return obj;
   },
 
@@ -931,6 +950,7 @@ export const Cluster = {
     message.tlsEnabled = object.tlsEnabled ?? false;
     message.deletionProtection = object.deletionProtection ?? false;
     message.persistenceMode = object.persistenceMode ?? 0;
+    message.announceHostnames = object.announceHostnames ?? false;
     return message;
   },
 };
@@ -1150,6 +1170,9 @@ export const ClusterConfig = {
     if (message.access !== undefined) {
       Access.encode(message.access, writer.uint32(42).fork()).ldelim();
     }
+    if (message.redis !== undefined) {
+      RedisConfigSet.encode(message.redis, writer.uint32(74).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1196,6 +1219,9 @@ export const ClusterConfig = {
         case 5:
           message.access = Access.decode(reader, reader.uint32());
           break;
+        case 9:
+          message.redis = RedisConfigSet.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1239,6 +1265,10 @@ export const ClusterConfig = {
       object.access !== undefined && object.access !== null
         ? Access.fromJSON(object.access)
         : undefined;
+    message.redis =
+      object.redis !== undefined && object.redis !== null
+        ? RedisConfigSet.fromJSON(object.redis)
+        : undefined;
     return message;
   },
 
@@ -1271,6 +1301,10 @@ export const ClusterConfig = {
         : undefined);
     message.access !== undefined &&
       (obj.access = message.access ? Access.toJSON(message.access) : undefined);
+    message.redis !== undefined &&
+      (obj.redis = message.redis
+        ? RedisConfigSet.toJSON(message.redis)
+        : undefined);
     return obj;
   },
 
@@ -1307,6 +1341,10 @@ export const ClusterConfig = {
     message.access =
       object.access !== undefined && object.access !== null
         ? Access.fromPartial(object.access)
+        : undefined;
+    message.redis =
+      object.redis !== undefined && object.redis !== null
+        ? RedisConfigSet.fromPartial(object.redis)
         : undefined;
     return message;
   },

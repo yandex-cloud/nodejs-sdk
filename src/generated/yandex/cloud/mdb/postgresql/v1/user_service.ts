@@ -128,11 +128,17 @@ export interface UpdateUserRequest {
    */
   login?: boolean;
   /**
-   * Roles and privileges that are granted to the user (`GRANT <role> TO <user>`).
+   * A set of roles and privileges that are granted to the user.
    *
    * For more information, see [the documentation](/docs/managed-postgresql/operations/grant).
    */
   grants: string[];
+  /**
+   * Deletion Protection inhibits deletion of the user
+   *
+   * Default value: `unspecified` (inherits cluster's deletion_protection)
+   */
+  deletionProtection?: boolean;
 }
 
 export interface UpdateUserMetadata {
@@ -658,6 +664,15 @@ export const UpdateUserRequest = {
     for (const v of message.grants) {
       writer.uint32(74).string(v!);
     }
+    if (message.deletionProtection !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.deletionProtection!,
+        },
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -696,6 +711,12 @@ export const UpdateUserRequest = {
           break;
         case 9:
           message.grants.push(reader.string());
+          break;
+        case 10:
+          message.deletionProtection = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
           break;
         default:
           reader.skipType(tag & 7);
@@ -739,6 +760,11 @@ export const UpdateUserRequest = {
         ? Boolean(object.login)
         : undefined;
     message.grants = (object.grants ?? []).map((e: any) => String(e));
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : undefined;
     return message;
   },
 
@@ -770,6 +796,8 @@ export const UpdateUserRequest = {
     } else {
       obj.grants = [];
     }
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -793,6 +821,7 @@ export const UpdateUserRequest = {
         : undefined;
     message.login = object.login ?? undefined;
     message.grants = object.grants?.map((e) => e) || [];
+    message.deletionProtection = object.deletionProtection ?? undefined;
     return message;
   },
 };

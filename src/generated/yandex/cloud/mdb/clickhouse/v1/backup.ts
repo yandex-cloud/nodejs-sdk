@@ -27,6 +27,50 @@ export interface Backup {
   sourceShardNames: string[];
   /** Time when the backup operation was started. */
   startedAt?: Date;
+  /** Size of backup in bytes. */
+  size: number;
+  /** How this backup was created (manual/automatic/etc...). */
+  type: Backup_BackupType;
+}
+
+export enum Backup_BackupType {
+  BACKUP_TYPE_UNSPECIFIED = 0,
+  /** AUTOMATED - Backup created by automated daily schedule. */
+  AUTOMATED = 1,
+  /** MANUAL - Backup created by user request. */
+  MANUAL = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function backup_BackupTypeFromJSON(object: any): Backup_BackupType {
+  switch (object) {
+    case 0:
+    case "BACKUP_TYPE_UNSPECIFIED":
+      return Backup_BackupType.BACKUP_TYPE_UNSPECIFIED;
+    case 1:
+    case "AUTOMATED":
+      return Backup_BackupType.AUTOMATED;
+    case 2:
+    case "MANUAL":
+      return Backup_BackupType.MANUAL;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Backup_BackupType.UNRECOGNIZED;
+  }
+}
+
+export function backup_BackupTypeToJSON(object: Backup_BackupType): string {
+  switch (object) {
+    case Backup_BackupType.BACKUP_TYPE_UNSPECIFIED:
+      return "BACKUP_TYPE_UNSPECIFIED";
+    case Backup_BackupType.AUTOMATED:
+      return "AUTOMATED";
+    case Backup_BackupType.MANUAL:
+      return "MANUAL";
+    default:
+      return "UNKNOWN";
+  }
 }
 
 const baseBackup: object = {
@@ -35,6 +79,8 @@ const baseBackup: object = {
   folderId: "",
   sourceClusterId: "",
   sourceShardNames: "",
+  size: 0,
+  type: 0,
 };
 
 export const Backup = {
@@ -67,6 +113,12 @@ export const Backup = {
         toTimestamp(message.startedAt),
         writer.uint32(42).fork()
       ).ldelim();
+    }
+    if (message.size !== 0) {
+      writer.uint32(56).int64(message.size);
+    }
+    if (message.type !== 0) {
+      writer.uint32(64).int32(message.type);
     }
     return writer;
   },
@@ -101,6 +153,12 @@ export const Backup = {
             Timestamp.decode(reader, reader.uint32())
           );
           break;
+        case 7:
+          message.size = longToNumber(reader.int64() as Long);
+          break;
+        case 8:
+          message.type = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -132,6 +190,14 @@ export const Backup = {
       object.startedAt !== undefined && object.startedAt !== null
         ? fromJsonTimestamp(object.startedAt)
         : undefined;
+    message.size =
+      object.size !== undefined && object.size !== null
+        ? Number(object.size)
+        : 0;
+    message.type =
+      object.type !== undefined && object.type !== null
+        ? backup_BackupTypeFromJSON(object.type)
+        : 0;
     return message;
   },
 
@@ -150,6 +216,9 @@ export const Backup = {
     }
     message.startedAt !== undefined &&
       (obj.startedAt = message.startedAt.toISOString());
+    message.size !== undefined && (obj.size = Math.round(message.size));
+    message.type !== undefined &&
+      (obj.type = backup_BackupTypeToJSON(message.type));
     return obj;
   },
 
@@ -161,11 +230,24 @@ export const Backup = {
     message.sourceClusterId = object.sourceClusterId ?? "";
     message.sourceShardNames = object.sourceShardNames?.map((e) => e) || [];
     message.startedAt = object.startedAt ?? undefined;
+    message.size = object.size ?? 0;
+    message.type = object.type ?? 0;
     return message;
   },
 };
 
 messageTypeRegistry.set(Backup.$type, Backup);
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
 
 type Builtin =
   | Date
@@ -214,6 +296,13 @@ function fromJsonTimestamp(o: any): Date {
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
+}
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
 }
 
 if (_m0.util.Long !== Long) {

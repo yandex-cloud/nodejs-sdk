@@ -2,6 +2,7 @@
 import { messageTypeRegistry } from "../../../../../typeRegistry";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import { BoolValue } from "../../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.mdb.postgresql.v1";
 
@@ -31,13 +32,19 @@ export interface Database {
   extensions: Extension[];
   /** Name of the database template. */
   templateDb: string;
+  /**
+   * Deletion Protection inhibits deletion of the database
+   *
+   * Default value: `unspecified` (inherits cluster's deletion_protection)
+   */
+  deletionProtection?: boolean;
 }
 
 export interface Extension {
   $type: "yandex.cloud.mdb.postgresql.v1.Extension";
   /**
    * Name of the extension, e.g. `pg_trgm` or `pg_btree`.
-   * Extensions supported by Managed Service for PostgreSQL are [listed in the Developer's Guide](/docs/managed-postgresql/operations/cluster-extensions).
+   * Extensions supported by Managed Service for PostgreSQL are [listed in the Developer's Guide](/docs/managed-postgresql/operations/extensions/cluster-extensions).
    */
   name: string;
   /** Version of the extension. */
@@ -67,6 +74,12 @@ export interface DatabaseSpec {
   extensions: Extension[];
   /** Name of the PostgreSQL database template. */
   templateDb: string;
+  /**
+   * Deletion Protection inhibits deletion of the database
+   *
+   * Default value: `unspecified` (inherits cluster's deletion_protection)
+   */
+  deletionProtection?: boolean;
 }
 
 const baseDatabase: object = {
@@ -107,6 +120,15 @@ export const Database = {
     if (message.templateDb !== "") {
       writer.uint32(58).string(message.templateDb);
     }
+    if (message.deletionProtection !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.deletionProtection!,
+        },
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -138,6 +160,12 @@ export const Database = {
           break;
         case 7:
           message.templateDb = reader.string();
+          break;
+        case 8:
+          message.deletionProtection = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
           break;
         default:
           reader.skipType(tag & 7);
@@ -176,6 +204,11 @@ export const Database = {
       object.templateDb !== undefined && object.templateDb !== null
         ? String(object.templateDb)
         : "";
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : undefined;
     return message;
   },
 
@@ -194,6 +227,8 @@ export const Database = {
       obj.extensions = [];
     }
     message.templateDb !== undefined && (obj.templateDb = message.templateDb);
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -207,6 +242,7 @@ export const Database = {
     message.extensions =
       object.extensions?.map((e) => Extension.fromPartial(e)) || [];
     message.templateDb = object.templateDb ?? "";
+    message.deletionProtection = object.deletionProtection ?? undefined;
     return message;
   },
 };
@@ -322,6 +358,15 @@ export const DatabaseSpec = {
     if (message.templateDb !== "") {
       writer.uint32(50).string(message.templateDb);
     }
+    if (message.deletionProtection !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.deletionProtection!,
+        },
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -350,6 +395,12 @@ export const DatabaseSpec = {
           break;
         case 6:
           message.templateDb = reader.string();
+          break;
+        case 7:
+          message.deletionProtection = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
           break;
         default:
           reader.skipType(tag & 7);
@@ -384,6 +435,11 @@ export const DatabaseSpec = {
       object.templateDb !== undefined && object.templateDb !== null
         ? String(object.templateDb)
         : "";
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : undefined;
     return message;
   },
 
@@ -401,6 +457,8 @@ export const DatabaseSpec = {
       obj.extensions = [];
     }
     message.templateDb !== undefined && (obj.templateDb = message.templateDb);
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -415,6 +473,7 @@ export const DatabaseSpec = {
     message.extensions =
       object.extensions?.map((e) => Extension.fromPartial(e)) || [];
     message.templateDb = object.templateDb ?? "";
+    message.deletionProtection = object.deletionProtection ?? undefined;
     return message;
   },
 };

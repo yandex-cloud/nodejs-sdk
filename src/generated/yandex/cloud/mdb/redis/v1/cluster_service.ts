@@ -32,6 +32,7 @@ import {
 import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import { MaintenanceWindow } from "../../../../../yandex/cloud/mdb/redis/v1/maintenance";
 import { TimeOfDay } from "../../../../../google/type/timeofday";
+import { RedisConfig } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis";
 import { Timestamp } from "../../../../../google/protobuf/timestamp";
 import { Operation } from "../../../../../yandex/cloud/operation/operation";
 import { Backup } from "../../../../../yandex/cloud/mdb/redis/v1/backup";
@@ -124,6 +125,8 @@ export interface CreateClusterRequest {
   deletionProtection: boolean;
   /** Persistence mode */
   persistenceMode: Cluster_PersistenceMode;
+  /** Enable FQDN instead of ip */
+  announceHostnames: boolean;
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -169,6 +172,8 @@ export interface UpdateClusterRequest {
   deletionProtection: boolean;
   /** Persistence mode */
   persistenceMode: Cluster_PersistenceMode;
+  /** Enable FQDN instead of ip */
+  announceHostnames: boolean;
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
@@ -311,6 +316,8 @@ export interface RestoreClusterRequest {
   persistenceMode: Cluster_PersistenceMode;
   /** Deletion Protection inhibits deletion of the cluster */
   deletionProtection: boolean;
+  /** Enable FQDN instead of ip */
+  announceHostnames: boolean;
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
@@ -904,6 +911,8 @@ export interface ConfigSpec {
   backupWindowStart?: TimeOfDay;
   /** Access policy to DB */
   access?: Access;
+  /** Unified configuration of a Redis cluster */
+  redis?: RedisConfig;
 }
 
 const baseGetClusterRequest: object = {
@@ -1166,6 +1175,7 @@ const baseCreateClusterRequest: object = {
   securityGroupIds: "",
   deletionProtection: false,
   persistenceMode: 0,
+  announceHostnames: false,
 };
 
 export const CreateClusterRequest = {
@@ -1223,6 +1233,9 @@ export const CreateClusterRequest = {
     }
     if (message.persistenceMode !== 0) {
       writer.uint32(120).int32(message.persistenceMode);
+    }
+    if (message.announceHostnames === true) {
+      writer.uint32(128).bool(message.announceHostnames);
     }
     return writer;
   },
@@ -1284,6 +1297,9 @@ export const CreateClusterRequest = {
           break;
         case 15:
           message.persistenceMode = reader.int32() as any;
+          break;
+        case 16:
+          message.announceHostnames = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1348,6 +1364,11 @@ export const CreateClusterRequest = {
       object.persistenceMode !== undefined && object.persistenceMode !== null
         ? cluster_PersistenceModeFromJSON(object.persistenceMode)
         : 0;
+    message.announceHostnames =
+      object.announceHostnames !== undefined &&
+      object.announceHostnames !== null
+        ? Boolean(object.announceHostnames)
+        : false;
     return message;
   },
 
@@ -1390,6 +1411,8 @@ export const CreateClusterRequest = {
       (obj.persistenceMode = cluster_PersistenceModeToJSON(
         message.persistenceMode
       ));
+    message.announceHostnames !== undefined &&
+      (obj.announceHostnames = message.announceHostnames);
     return obj;
   },
 
@@ -1421,6 +1444,7 @@ export const CreateClusterRequest = {
     message.tlsEnabled = object.tlsEnabled ?? undefined;
     message.deletionProtection = object.deletionProtection ?? false;
     message.persistenceMode = object.persistenceMode ?? 0;
+    message.announceHostnames = object.announceHostnames ?? false;
     return message;
   },
 };
@@ -1585,6 +1609,7 @@ const baseUpdateClusterRequest: object = {
   securityGroupIds: "",
   deletionProtection: false,
   persistenceMode: 0,
+  announceHostnames: false,
 };
 
 export const UpdateClusterRequest = {
@@ -1633,6 +1658,9 @@ export const UpdateClusterRequest = {
     }
     if (message.persistenceMode !== 0) {
       writer.uint32(80).int32(message.persistenceMode);
+    }
+    if (message.announceHostnames === true) {
+      writer.uint32(96).bool(message.announceHostnames);
     }
     return writer;
   },
@@ -1688,6 +1716,9 @@ export const UpdateClusterRequest = {
         case 10:
           message.persistenceMode = reader.int32() as any;
           break;
+        case 12:
+          message.announceHostnames = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1741,6 +1772,11 @@ export const UpdateClusterRequest = {
       object.persistenceMode !== undefined && object.persistenceMode !== null
         ? cluster_PersistenceModeFromJSON(object.persistenceMode)
         : 0;
+    message.announceHostnames =
+      object.announceHostnames !== undefined &&
+      object.announceHostnames !== null
+        ? Boolean(object.announceHostnames)
+        : false;
     return message;
   },
 
@@ -1779,6 +1815,8 @@ export const UpdateClusterRequest = {
       (obj.persistenceMode = cluster_PersistenceModeToJSON(
         message.persistenceMode
       ));
+    message.announceHostnames !== undefined &&
+      (obj.announceHostnames = message.announceHostnames);
     return obj;
   },
 
@@ -1813,6 +1851,7 @@ export const UpdateClusterRequest = {
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? false;
     message.persistenceMode = object.persistenceMode ?? 0;
+    message.announceHostnames = object.announceHostnames ?? false;
     return message;
   },
 };
@@ -2843,6 +2882,7 @@ const baseRestoreClusterRequest: object = {
   securityGroupIds: "",
   persistenceMode: 0,
   deletionProtection: false,
+  announceHostnames: false,
 };
 
 export const RestoreClusterRequest = {
@@ -2900,6 +2940,9 @@ export const RestoreClusterRequest = {
     }
     if (message.deletionProtection === true) {
       writer.uint32(104).bool(message.deletionProtection);
+    }
+    if (message.announceHostnames === true) {
+      writer.uint32(112).bool(message.announceHostnames);
     }
     return writer;
   },
@@ -2961,6 +3004,9 @@ export const RestoreClusterRequest = {
           break;
         case 13:
           message.deletionProtection = reader.bool();
+          break;
+        case 14:
+          message.announceHostnames = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -3025,6 +3071,11 @@ export const RestoreClusterRequest = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.announceHostnames =
+      object.announceHostnames !== undefined &&
+      object.announceHostnames !== null
+        ? Boolean(object.announceHostnames)
+        : false;
     return message;
   },
 
@@ -3067,6 +3118,8 @@ export const RestoreClusterRequest = {
       ));
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.announceHostnames !== undefined &&
+      (obj.announceHostnames = message.announceHostnames);
     return obj;
   },
 
@@ -3098,6 +3151,7 @@ export const RestoreClusterRequest = {
     message.tlsEnabled = object.tlsEnabled ?? undefined;
     message.persistenceMode = object.persistenceMode ?? 0;
     message.deletionProtection = object.deletionProtection ?? false;
+    message.announceHostnames = object.announceHostnames ?? false;
     return message;
   },
 };
@@ -6302,6 +6356,9 @@ export const ConfigSpec = {
     if (message.access !== undefined) {
       Access.encode(message.access, writer.uint32(42).fork()).ldelim();
     }
+    if (message.redis !== undefined) {
+      RedisConfig.encode(message.redis, writer.uint32(90).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -6335,6 +6392,9 @@ export const ConfigSpec = {
           break;
         case 5:
           message.access = Access.decode(reader, reader.uint32());
+          break;
+        case 11:
+          message.redis = RedisConfig.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -6379,6 +6439,10 @@ export const ConfigSpec = {
       object.access !== undefined && object.access !== null
         ? Access.fromJSON(object.access)
         : undefined;
+    message.redis =
+      object.redis !== undefined && object.redis !== null
+        ? RedisConfig.fromJSON(object.redis)
+        : undefined;
     return message;
   },
 
@@ -6411,6 +6475,10 @@ export const ConfigSpec = {
         : undefined);
     message.access !== undefined &&
       (obj.access = message.access ? Access.toJSON(message.access) : undefined);
+    message.redis !== undefined &&
+      (obj.redis = message.redis
+        ? RedisConfig.toJSON(message.redis)
+        : undefined);
     return obj;
   },
 
@@ -6447,6 +6515,10 @@ export const ConfigSpec = {
     message.access =
       object.access !== undefined && object.access !== null
         ? Access.fromPartial(object.access)
+        : undefined;
+    message.redis =
+      object.redis !== undefined && object.redis !== null
+        ? RedisConfig.fromPartial(object.redis)
         : undefined;
     return message;
   },

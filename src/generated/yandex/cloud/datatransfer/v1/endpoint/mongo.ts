@@ -24,8 +24,11 @@ export interface MongoConnectionOptions {
   $type: "yandex.cloud.datatransfer.v1.endpoint.MongoConnectionOptions";
   mdbClusterId: string | undefined;
   onPremise?: OnPremiseMongo | undefined;
+  /** User name */
   user: string;
+  /** Password for user */
   password?: Secret;
+  /** Database name associated with the credentials */
   authSource: string;
 }
 
@@ -46,8 +49,17 @@ export interface MongoSource {
   subnetId: string;
   /** Security groups */
   securityGroups: string[];
+  /**
+   * List of collections for replication. Empty list implies replication of all
+   * tables on the deployment. Allowed to use * as collection name.
+   */
   collections: MongoCollection[];
+  /**
+   * List of forbidden collections for replication. Allowed to use * as collection
+   * name for forbid all collections of concrete schema.
+   */
   excludedCollections: MongoCollection[];
+  /** Read mode for mongo client */
   secondaryPreferredMode: boolean;
 }
 
@@ -57,6 +69,7 @@ export interface MongoTarget {
   subnetId: string;
   /** Security groups */
   securityGroups: string[];
+  /** Database name */
   database: string;
   cleanupPolicy: CleanupPolicy;
 }

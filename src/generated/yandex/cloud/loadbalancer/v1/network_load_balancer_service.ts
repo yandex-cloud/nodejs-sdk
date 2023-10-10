@@ -105,12 +105,14 @@ export interface CreateNetworkLoadBalancerRequest {
   labels: { [key: string]: string };
   /** ID of the region where the network load balancer resides. */
   regionId: string;
-  /** Type of the network load balancer. Only external network load balancers are currently available. */
+  /** Type of the network load balancer. */
   type: NetworkLoadBalancer_Type;
   /** List of listeners and their specs for the network load balancer. */
   listenerSpecs: ListenerSpec[];
   /** List of attached target groups for the network load balancer. */
   attachedTargetGroups: AttachedTargetGroup[];
+  /** Specifies if network load balancer protected from deletion. */
+  deletionProtection: boolean;
 }
 
 export interface CreateNetworkLoadBalancerRequest_LabelsEntry {
@@ -151,6 +153,8 @@ export interface UpdateNetworkLoadBalancerRequest {
   listenerSpecs: ListenerSpec[];
   /** A list of attached target groups for the network load balancer. */
   attachedTargetGroups: AttachedTargetGroup[];
+  /** Specifies if network load balancer protected from deletion. */
+  deletionProtection: boolean;
 }
 
 export interface UpdateNetworkLoadBalancerRequest_LabelsEntry {
@@ -671,6 +675,7 @@ const baseCreateNetworkLoadBalancerRequest: object = {
   description: "",
   regionId: "",
   type: 0,
+  deletionProtection: false,
 };
 
 export const CreateNetworkLoadBalancerRequest = {
@@ -712,6 +717,9 @@ export const CreateNetworkLoadBalancerRequest = {
     }
     for (const v of message.attachedTargetGroups) {
       AttachedTargetGroup.encode(v!, writer.uint32(66).fork()).ldelim();
+    }
+    if (message.deletionProtection === true) {
+      writer.uint32(72).bool(message.deletionProtection);
     }
     return writer;
   },
@@ -765,6 +773,9 @@ export const CreateNetworkLoadBalancerRequest = {
             AttachedTargetGroup.decode(reader, reader.uint32())
           );
           break;
+        case 9:
+          message.deletionProtection = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -809,6 +820,11 @@ export const CreateNetworkLoadBalancerRequest = {
     message.attachedTargetGroups = (object.attachedTargetGroups ?? []).map(
       (e: any) => AttachedTargetGroup.fromJSON(e)
     );
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
     return message;
   },
 
@@ -841,6 +857,8 @@ export const CreateNetworkLoadBalancerRequest = {
     } else {
       obj.attachedTargetGroups = [];
     }
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -869,6 +887,7 @@ export const CreateNetworkLoadBalancerRequest = {
       object.attachedTargetGroups?.map((e) =>
         AttachedTargetGroup.fromPartial(e)
       ) || [];
+    message.deletionProtection = object.deletionProtection ?? false;
     return message;
   },
 };
@@ -1050,6 +1069,7 @@ const baseUpdateNetworkLoadBalancerRequest: object = {
   networkLoadBalancerId: "",
   name: "",
   description: "",
+  deletionProtection: false,
 };
 
 export const UpdateNetworkLoadBalancerRequest = {
@@ -1088,6 +1108,9 @@ export const UpdateNetworkLoadBalancerRequest = {
     }
     for (const v of message.attachedTargetGroups) {
       AttachedTargetGroup.encode(v!, writer.uint32(58).fork()).ldelim();
+    }
+    if (message.deletionProtection === true) {
+      writer.uint32(64).bool(message.deletionProtection);
     }
     return writer;
   },
@@ -1138,6 +1161,9 @@ export const UpdateNetworkLoadBalancerRequest = {
             AttachedTargetGroup.decode(reader, reader.uint32())
           );
           break;
+        case 8:
+          message.deletionProtection = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1179,6 +1205,11 @@ export const UpdateNetworkLoadBalancerRequest = {
     message.attachedTargetGroups = (object.attachedTargetGroups ?? []).map(
       (e: any) => AttachedTargetGroup.fromJSON(e)
     );
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
     return message;
   },
 
@@ -1213,6 +1244,8 @@ export const UpdateNetworkLoadBalancerRequest = {
     } else {
       obj.attachedTargetGroups = [];
     }
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -1243,6 +1276,7 @@ export const UpdateNetworkLoadBalancerRequest = {
       object.attachedTargetGroups?.map((e) =>
         AttachedTargetGroup.fromPartial(e)
       ) || [];
+    message.deletionProtection = object.deletionProtection ?? false;
     return message;
   },
 };

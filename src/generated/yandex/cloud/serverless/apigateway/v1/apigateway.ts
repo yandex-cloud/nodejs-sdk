@@ -2,6 +2,11 @@
 import { messageTypeRegistry } from "../../../../../typeRegistry";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import {
+  LogLevel_Level,
+  logLevel_LevelFromJSON,
+  logLevel_LevelToJSON,
+} from "../../../../../yandex/cloud/logging/v1/log_entry";
 import { Timestamp } from "../../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.serverless.apigateway.v1";
@@ -30,6 +35,12 @@ export interface ApiGateway {
   attachedDomains: AttachedDomain[];
   /** Network access. If specified the gateway will be attached to specified network/subnet(s). */
   connectivity?: Connectivity;
+  /** Options for logging from the API gateway. */
+  logOptions?: LogOptions;
+  /** Values of variables defined in the specification. */
+  variables: { [key: string]: VariableInput };
+  /** Canary release of the gateway. */
+  canary?: Canary;
 }
 
 export enum ApiGateway_Status {
@@ -99,6 +110,12 @@ export interface ApiGateway_LabelsEntry {
   value: string;
 }
 
+export interface ApiGateway_VariablesEntry {
+  $type: "yandex.cloud.serverless.apigateway.v1.ApiGateway.VariablesEntry";
+  key: string;
+  value?: VariableInput;
+}
+
 export interface AttachedDomain {
   $type: "yandex.cloud.serverless.apigateway.v1.AttachedDomain";
   /** ID of the domain. */
@@ -124,6 +141,44 @@ export interface Connectivity {
    * It's essential to specify at least one subnet for each availability zones.
    */
   subnetId: string[];
+}
+
+export interface LogOptions {
+  $type: "yandex.cloud.serverless.apigateway.v1.LogOptions";
+  /** Is logging from API gateway disabled. */
+  disabled: boolean;
+  /** Entry should be written to log group resolved by ID. */
+  logGroupId: string | undefined;
+  /** Entry should be written to default log group for specified folder. */
+  folderId: string | undefined;
+  /**
+   * Minimum log entry level.
+   *
+   * See [LogLevel.Level] for details.
+   */
+  minLevel: LogLevel_Level;
+}
+
+export interface Canary {
+  $type: "yandex.cloud.serverless.apigateway.v1.Canary";
+  /** It describes percentage of requests, which will be processed by canary. */
+  weight: number;
+  /** Values specification variables, associated with canary. */
+  variables: { [key: string]: VariableInput };
+}
+
+export interface Canary_VariablesEntry {
+  $type: "yandex.cloud.serverless.apigateway.v1.Canary.VariablesEntry";
+  key: string;
+  value?: VariableInput;
+}
+
+export interface VariableInput {
+  $type: "yandex.cloud.serverless.apigateway.v1.VariableInput";
+  stringValue: string | undefined;
+  intValue: number | undefined;
+  doubleValue: number | undefined;
+  boolValue: boolean | undefined;
 }
 
 const baseApiGateway: object = {
@@ -190,6 +245,23 @@ export const ApiGateway = {
         writer.uint32(98).fork()
       ).ldelim();
     }
+    if (message.logOptions !== undefined) {
+      LogOptions.encode(message.logOptions, writer.uint32(106).fork()).ldelim();
+    }
+    Object.entries(message.variables).forEach(([key, value]) => {
+      ApiGateway_VariablesEntry.encode(
+        {
+          $type:
+            "yandex.cloud.serverless.apigateway.v1.ApiGateway.VariablesEntry",
+          key: key as any,
+          value,
+        },
+        writer.uint32(114).fork()
+      ).ldelim();
+    });
+    if (message.canary !== undefined) {
+      Canary.encode(message.canary, writer.uint32(122).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -199,6 +271,7 @@ export const ApiGateway = {
     const message = { ...baseApiGateway } as ApiGateway;
     message.labels = {};
     message.attachedDomains = [];
+    message.variables = {};
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -241,6 +314,21 @@ export const ApiGateway = {
           break;
         case 12:
           message.connectivity = Connectivity.decode(reader, reader.uint32());
+          break;
+        case 13:
+          message.logOptions = LogOptions.decode(reader, reader.uint32());
+          break;
+        case 14:
+          const entry14 = ApiGateway_VariablesEntry.decode(
+            reader,
+            reader.uint32()
+          );
+          if (entry14.value !== undefined) {
+            message.variables[entry14.key] = entry14.value;
+          }
+          break;
+        case 15:
+          message.canary = Canary.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -295,6 +383,20 @@ export const ApiGateway = {
       object.connectivity !== undefined && object.connectivity !== null
         ? Connectivity.fromJSON(object.connectivity)
         : undefined;
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromJSON(object.logOptions)
+        : undefined;
+    message.variables = Object.entries(object.variables ?? {}).reduce<{
+      [key: string]: VariableInput;
+    }>((acc, [key, value]) => {
+      acc[key] = VariableInput.fromJSON(value);
+      return acc;
+    }, {});
+    message.canary =
+      object.canary !== undefined && object.canary !== null
+        ? Canary.fromJSON(object.canary)
+        : undefined;
     return message;
   },
 
@@ -328,6 +430,18 @@ export const ApiGateway = {
       (obj.connectivity = message.connectivity
         ? Connectivity.toJSON(message.connectivity)
         : undefined);
+    message.logOptions !== undefined &&
+      (obj.logOptions = message.logOptions
+        ? LogOptions.toJSON(message.logOptions)
+        : undefined);
+    obj.variables = {};
+    if (message.variables) {
+      Object.entries(message.variables).forEach(([k, v]) => {
+        obj.variables[k] = VariableInput.toJSON(v);
+      });
+    }
+    message.canary !== undefined &&
+      (obj.canary = message.canary ? Canary.toJSON(message.canary) : undefined);
     return obj;
   },
 
@@ -356,6 +470,22 @@ export const ApiGateway = {
     message.connectivity =
       object.connectivity !== undefined && object.connectivity !== null
         ? Connectivity.fromPartial(object.connectivity)
+        : undefined;
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromPartial(object.logOptions)
+        : undefined;
+    message.variables = Object.entries(object.variables ?? {}).reduce<{
+      [key: string]: VariableInput;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = VariableInput.fromPartial(value);
+      }
+      return acc;
+    }, {});
+    message.canary =
+      object.canary !== undefined && object.canary !== null
+        ? Canary.fromPartial(object.canary)
         : undefined;
     return message;
   },
@@ -439,6 +569,97 @@ export const ApiGateway_LabelsEntry = {
 };
 
 messageTypeRegistry.set(ApiGateway_LabelsEntry.$type, ApiGateway_LabelsEntry);
+
+const baseApiGateway_VariablesEntry: object = {
+  $type: "yandex.cloud.serverless.apigateway.v1.ApiGateway.VariablesEntry",
+  key: "",
+};
+
+export const ApiGateway_VariablesEntry = {
+  $type:
+    "yandex.cloud.serverless.apigateway.v1.ApiGateway.VariablesEntry" as const,
+
+  encode(
+    message: ApiGateway_VariablesEntry,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== undefined) {
+      VariableInput.encode(message.value, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ApiGateway_VariablesEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseApiGateway_VariablesEntry,
+    } as ApiGateway_VariablesEntry;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = VariableInput.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ApiGateway_VariablesEntry {
+    const message = {
+      ...baseApiGateway_VariablesEntry,
+    } as ApiGateway_VariablesEntry;
+    message.key =
+      object.key !== undefined && object.key !== null ? String(object.key) : "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? VariableInput.fromJSON(object.value)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: ApiGateway_VariablesEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined &&
+      (obj.value = message.value
+        ? VariableInput.toJSON(message.value)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ApiGateway_VariablesEntry>, I>>(
+    object: I
+  ): ApiGateway_VariablesEntry {
+    const message = {
+      ...baseApiGateway_VariablesEntry,
+    } as ApiGateway_VariablesEntry;
+    message.key = object.key ?? "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? VariableInput.fromPartial(object.value)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ApiGateway_VariablesEntry.$type,
+  ApiGateway_VariablesEntry
+);
 
 const baseAttachedDomain: object = {
   $type: "yandex.cloud.serverless.apigateway.v1.AttachedDomain",
@@ -619,6 +840,395 @@ export const Connectivity = {
 
 messageTypeRegistry.set(Connectivity.$type, Connectivity);
 
+const baseLogOptions: object = {
+  $type: "yandex.cloud.serverless.apigateway.v1.LogOptions",
+  disabled: false,
+  minLevel: 0,
+};
+
+export const LogOptions = {
+  $type: "yandex.cloud.serverless.apigateway.v1.LogOptions" as const,
+
+  encode(
+    message: LogOptions,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.disabled === true) {
+      writer.uint32(8).bool(message.disabled);
+    }
+    if (message.logGroupId !== undefined) {
+      writer.uint32(18).string(message.logGroupId);
+    }
+    if (message.folderId !== undefined) {
+      writer.uint32(26).string(message.folderId);
+    }
+    if (message.minLevel !== 0) {
+      writer.uint32(32).int32(message.minLevel);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LogOptions {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseLogOptions } as LogOptions;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.disabled = reader.bool();
+          break;
+        case 2:
+          message.logGroupId = reader.string();
+          break;
+        case 3:
+          message.folderId = reader.string();
+          break;
+        case 4:
+          message.minLevel = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LogOptions {
+    const message = { ...baseLogOptions } as LogOptions;
+    message.disabled =
+      object.disabled !== undefined && object.disabled !== null
+        ? Boolean(object.disabled)
+        : false;
+    message.logGroupId =
+      object.logGroupId !== undefined && object.logGroupId !== null
+        ? String(object.logGroupId)
+        : undefined;
+    message.folderId =
+      object.folderId !== undefined && object.folderId !== null
+        ? String(object.folderId)
+        : undefined;
+    message.minLevel =
+      object.minLevel !== undefined && object.minLevel !== null
+        ? logLevel_LevelFromJSON(object.minLevel)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: LogOptions): unknown {
+    const obj: any = {};
+    message.disabled !== undefined && (obj.disabled = message.disabled);
+    message.logGroupId !== undefined && (obj.logGroupId = message.logGroupId);
+    message.folderId !== undefined && (obj.folderId = message.folderId);
+    message.minLevel !== undefined &&
+      (obj.minLevel = logLevel_LevelToJSON(message.minLevel));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<LogOptions>, I>>(
+    object: I
+  ): LogOptions {
+    const message = { ...baseLogOptions } as LogOptions;
+    message.disabled = object.disabled ?? false;
+    message.logGroupId = object.logGroupId ?? undefined;
+    message.folderId = object.folderId ?? undefined;
+    message.minLevel = object.minLevel ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(LogOptions.$type, LogOptions);
+
+const baseCanary: object = {
+  $type: "yandex.cloud.serverless.apigateway.v1.Canary",
+  weight: 0,
+};
+
+export const Canary = {
+  $type: "yandex.cloud.serverless.apigateway.v1.Canary" as const,
+
+  encode(
+    message: Canary,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.weight !== 0) {
+      writer.uint32(8).int64(message.weight);
+    }
+    Object.entries(message.variables).forEach(([key, value]) => {
+      Canary_VariablesEntry.encode(
+        {
+          $type: "yandex.cloud.serverless.apigateway.v1.Canary.VariablesEntry",
+          key: key as any,
+          value,
+        },
+        writer.uint32(18).fork()
+      ).ldelim();
+    });
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Canary {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseCanary } as Canary;
+    message.variables = {};
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.weight = longToNumber(reader.int64() as Long);
+          break;
+        case 2:
+          const entry2 = Canary_VariablesEntry.decode(reader, reader.uint32());
+          if (entry2.value !== undefined) {
+            message.variables[entry2.key] = entry2.value;
+          }
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Canary {
+    const message = { ...baseCanary } as Canary;
+    message.weight =
+      object.weight !== undefined && object.weight !== null
+        ? Number(object.weight)
+        : 0;
+    message.variables = Object.entries(object.variables ?? {}).reduce<{
+      [key: string]: VariableInput;
+    }>((acc, [key, value]) => {
+      acc[key] = VariableInput.fromJSON(value);
+      return acc;
+    }, {});
+    return message;
+  },
+
+  toJSON(message: Canary): unknown {
+    const obj: any = {};
+    message.weight !== undefined && (obj.weight = Math.round(message.weight));
+    obj.variables = {};
+    if (message.variables) {
+      Object.entries(message.variables).forEach(([k, v]) => {
+        obj.variables[k] = VariableInput.toJSON(v);
+      });
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Canary>, I>>(object: I): Canary {
+    const message = { ...baseCanary } as Canary;
+    message.weight = object.weight ?? 0;
+    message.variables = Object.entries(object.variables ?? {}).reduce<{
+      [key: string]: VariableInput;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = VariableInput.fromPartial(value);
+      }
+      return acc;
+    }, {});
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Canary.$type, Canary);
+
+const baseCanary_VariablesEntry: object = {
+  $type: "yandex.cloud.serverless.apigateway.v1.Canary.VariablesEntry",
+  key: "",
+};
+
+export const Canary_VariablesEntry = {
+  $type: "yandex.cloud.serverless.apigateway.v1.Canary.VariablesEntry" as const,
+
+  encode(
+    message: Canary_VariablesEntry,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== undefined) {
+      VariableInput.encode(message.value, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Canary_VariablesEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseCanary_VariablesEntry } as Canary_VariablesEntry;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = VariableInput.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Canary_VariablesEntry {
+    const message = { ...baseCanary_VariablesEntry } as Canary_VariablesEntry;
+    message.key =
+      object.key !== undefined && object.key !== null ? String(object.key) : "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? VariableInput.fromJSON(object.value)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Canary_VariablesEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined &&
+      (obj.value = message.value
+        ? VariableInput.toJSON(message.value)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Canary_VariablesEntry>, I>>(
+    object: I
+  ): Canary_VariablesEntry {
+    const message = { ...baseCanary_VariablesEntry } as Canary_VariablesEntry;
+    message.key = object.key ?? "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? VariableInput.fromPartial(object.value)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Canary_VariablesEntry.$type, Canary_VariablesEntry);
+
+const baseVariableInput: object = {
+  $type: "yandex.cloud.serverless.apigateway.v1.VariableInput",
+};
+
+export const VariableInput = {
+  $type: "yandex.cloud.serverless.apigateway.v1.VariableInput" as const,
+
+  encode(
+    message: VariableInput,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.stringValue !== undefined) {
+      writer.uint32(10).string(message.stringValue);
+    }
+    if (message.intValue !== undefined) {
+      writer.uint32(16).int64(message.intValue);
+    }
+    if (message.doubleValue !== undefined) {
+      writer.uint32(25).double(message.doubleValue);
+    }
+    if (message.boolValue !== undefined) {
+      writer.uint32(32).bool(message.boolValue);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): VariableInput {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseVariableInput } as VariableInput;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.stringValue = reader.string();
+          break;
+        case 2:
+          message.intValue = longToNumber(reader.int64() as Long);
+          break;
+        case 3:
+          message.doubleValue = reader.double();
+          break;
+        case 4:
+          message.boolValue = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): VariableInput {
+    const message = { ...baseVariableInput } as VariableInput;
+    message.stringValue =
+      object.stringValue !== undefined && object.stringValue !== null
+        ? String(object.stringValue)
+        : undefined;
+    message.intValue =
+      object.intValue !== undefined && object.intValue !== null
+        ? Number(object.intValue)
+        : undefined;
+    message.doubleValue =
+      object.doubleValue !== undefined && object.doubleValue !== null
+        ? Number(object.doubleValue)
+        : undefined;
+    message.boolValue =
+      object.boolValue !== undefined && object.boolValue !== null
+        ? Boolean(object.boolValue)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: VariableInput): unknown {
+    const obj: any = {};
+    message.stringValue !== undefined &&
+      (obj.stringValue = message.stringValue);
+    message.intValue !== undefined &&
+      (obj.intValue = Math.round(message.intValue));
+    message.doubleValue !== undefined &&
+      (obj.doubleValue = message.doubleValue);
+    message.boolValue !== undefined && (obj.boolValue = message.boolValue);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<VariableInput>, I>>(
+    object: I
+  ): VariableInput {
+    const message = { ...baseVariableInput } as VariableInput;
+    message.stringValue = object.stringValue ?? undefined;
+    message.intValue = object.intValue ?? undefined;
+    message.doubleValue = object.doubleValue ?? undefined;
+    message.boolValue = object.boolValue ?? undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(VariableInput.$type, VariableInput);
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
+
 type Builtin =
   | Date
   | Function
@@ -666,6 +1276,13 @@ function fromJsonTimestamp(o: any): Date {
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
+}
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
 }
 
 if (_m0.util.Long !== Long) {

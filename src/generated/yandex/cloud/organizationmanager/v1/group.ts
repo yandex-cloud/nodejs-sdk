@@ -8,7 +8,7 @@ export const protobufPackage = "yandex.cloud.organizationmanager.v1";
 
 /**
  * A Group resource.
- * For more information, see [Groups](/docs/organization/groups).
+ * For more information, see [Groups](/docs/organization/manage-groups).
  */
 export interface Group {
   $type: "yandex.cloud.organizationmanager.v1.Group";

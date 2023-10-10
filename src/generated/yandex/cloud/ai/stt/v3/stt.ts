@@ -52,14 +52,16 @@ export function codeTypeToJSON(object: CodeType): string {
   }
 }
 
-/** options */
+/** Options */
 export interface TextNormalizationOptions {
   $type: "speechkit.stt.v3.TextNormalizationOptions";
   textNormalization: TextNormalizationOptions_TextNormalization;
-  /** Filter profanity (default: false). */
+  /** Profanity filter (default: false). */
   profanityFilter: boolean;
   /** Rewrite text in literature style (default: false). */
   literatureText: boolean;
+  /** Define phone formatting mode */
+  phoneFormattingMode: TextNormalizationOptions_PhoneFormattingMode;
 }
 
 /** Normalization */
@@ -107,11 +109,48 @@ export function textNormalizationOptions_TextNormalizationToJSON(
   }
 }
 
+export enum TextNormalizationOptions_PhoneFormattingMode {
+  PHONE_FORMATTING_MODE_UNSPECIFIED = 0,
+  /** PHONE_FORMATTING_MODE_DISABLED - Disable phone formatting */
+  PHONE_FORMATTING_MODE_DISABLED = 1,
+  UNRECOGNIZED = -1,
+}
+
+export function textNormalizationOptions_PhoneFormattingModeFromJSON(
+  object: any
+): TextNormalizationOptions_PhoneFormattingMode {
+  switch (object) {
+    case 0:
+    case "PHONE_FORMATTING_MODE_UNSPECIFIED":
+      return TextNormalizationOptions_PhoneFormattingMode.PHONE_FORMATTING_MODE_UNSPECIFIED;
+    case 1:
+    case "PHONE_FORMATTING_MODE_DISABLED":
+      return TextNormalizationOptions_PhoneFormattingMode.PHONE_FORMATTING_MODE_DISABLED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return TextNormalizationOptions_PhoneFormattingMode.UNRECOGNIZED;
+  }
+}
+
+export function textNormalizationOptions_PhoneFormattingModeToJSON(
+  object: TextNormalizationOptions_PhoneFormattingMode
+): string {
+  switch (object) {
+    case TextNormalizationOptions_PhoneFormattingMode.PHONE_FORMATTING_MODE_UNSPECIFIED:
+      return "PHONE_FORMATTING_MODE_UNSPECIFIED";
+    case TextNormalizationOptions_PhoneFormattingMode.PHONE_FORMATTING_MODE_DISABLED:
+      return "PHONE_FORMATTING_MODE_DISABLED";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export interface DefaultEouClassifier {
   $type: "speechkit.stt.v3.DefaultEouClassifier";
   /** EOU sensitivity. Currently two levels, faster with more error and more conservative (our default). */
   type: DefaultEouClassifier_EouSensitivity;
-  /** Hint for max pause between words. Our EoU detector could use this information to distinguish between end of utterance and slow speech (like one <long pause> two <long pause> three, etc). */
+  /** Hint for max pause between words. Our EOU detector could use this information to distinguish between end of utterance and slow speech (like one <long pause> two <long pause> three, etc). */
   maxPauseBetweenWordsHintMs: number;
 }
 
@@ -166,8 +205,77 @@ export interface EouClassifierOptions {
   $type: "speechkit.stt.v3.EouClassifierOptions";
   /** EOU classifier provided by SpeechKit. Default. */
   defaultClassifier?: DefaultEouClassifier | undefined;
-  /** EoU is enforced by external messages from user. */
+  /** EOU is enforced by external messages from user. */
   externalClassifier?: ExternalEouClassifier | undefined;
+}
+
+export interface RecognitionClassifier {
+  $type: "speechkit.stt.v3.RecognitionClassifier";
+  /** Classifier name */
+  classifier: string;
+  /** Describes the types of responses to which the classification results will come */
+  triggers: RecognitionClassifier_TriggerType[];
+}
+
+export enum RecognitionClassifier_TriggerType {
+  /** TRIGGER_TYPE_UNSPECIFIED - Do not use */
+  TRIGGER_TYPE_UNSPECIFIED = 0,
+  /** ON_UTTERANCE - Apply classifier to utterance responses */
+  ON_UTTERANCE = 1,
+  /** ON_FINAL - Apply classifier to final responses */
+  ON_FINAL = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function recognitionClassifier_TriggerTypeFromJSON(
+  object: any
+): RecognitionClassifier_TriggerType {
+  switch (object) {
+    case 0:
+    case "TRIGGER_TYPE_UNSPECIFIED":
+      return RecognitionClassifier_TriggerType.TRIGGER_TYPE_UNSPECIFIED;
+    case 1:
+    case "ON_UTTERANCE":
+      return RecognitionClassifier_TriggerType.ON_UTTERANCE;
+    case 2:
+    case "ON_FINAL":
+      return RecognitionClassifier_TriggerType.ON_FINAL;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return RecognitionClassifier_TriggerType.UNRECOGNIZED;
+  }
+}
+
+export function recognitionClassifier_TriggerTypeToJSON(
+  object: RecognitionClassifier_TriggerType
+): string {
+  switch (object) {
+    case RecognitionClassifier_TriggerType.TRIGGER_TYPE_UNSPECIFIED:
+      return "TRIGGER_TYPE_UNSPECIFIED";
+    case RecognitionClassifier_TriggerType.ON_UTTERANCE:
+      return "ON_UTTERANCE";
+    case RecognitionClassifier_TriggerType.ON_FINAL:
+      return "ON_FINAL";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export interface RecognitionClassifierOptions {
+  $type: "speechkit.stt.v3.RecognitionClassifierOptions";
+  /** List of classifiers to use */
+  classifiers: RecognitionClassifier[];
+}
+
+export interface SpeechAnalysisOptions {
+  $type: "speechkit.stt.v3.SpeechAnalysisOptions";
+  /** Analyse speech for every speaker */
+  enableSpeakerAnalysis: boolean;
+  /** Analyse conversation of two speakers */
+  enableConversationAnalysis: boolean;
+  /** Quantile levels in range (0, 1) for descriptive statistics */
+  descriptiveStatisticsQuantiles: number[];
 }
 
 /** RAW Audio format spec (no container to infer type). Used in AudioFormat options. */
@@ -285,15 +393,20 @@ export interface AudioFormatOptions {
   containerAudio?: ContainerAudio | undefined;
 }
 
+/** Type of restriction for the list of languages expected in the incoming speech stream. */
 export interface LanguageRestrictionOptions {
   $type: "speechkit.stt.v3.LanguageRestrictionOptions";
+  /** Language restriction type */
   restrictionType: LanguageRestrictionOptions_LanguageRestrictionType;
+  /** The list of language codes to restrict recognition in the case of an auto model */
   languageCode: string[];
 }
 
 export enum LanguageRestrictionOptions_LanguageRestrictionType {
   LANGUAGE_RESTRICTION_TYPE_UNSPECIFIED = 0,
+  /** WHITELIST - The allowing list. The incoming audio can contain only the listed languages. */
   WHITELIST = 1,
+  /** BLACKLIST - The forbidding list. The incoming audio cannot contain the listed languages. */
   BLACKLIST = 2,
   UNRECOGNIZED = -1,
 }
@@ -335,7 +448,10 @@ export function languageRestrictionOptions_LanguageRestrictionTypeToJSON(
 
 export interface RecognitionModelOptions {
   $type: "speechkit.stt.v3.RecognitionModelOptions";
-  /** Reserved for future, do not use. */
+  /**
+   * Sets the recognition model for the cloud version of SpeechKit. Possible values: 'general', 'general:rc', 'general:deprecated'.
+   * The model is ignored for SpeechKit Hybrid.
+   */
   model: string;
   /** Specified input audio. */
   audioFormat?: AudioFormatOptions;
@@ -349,7 +465,9 @@ export interface RecognitionModelOptions {
 
 export enum RecognitionModelOptions_AudioProcessingType {
   AUDIO_PROCESSING_TYPE_UNSPECIFIED = 0,
+  /** REAL_TIME - Process audio in mode optimized for real-time recognition, i.e. send partials and final responses as soon as possible */
   REAL_TIME = 1,
+  /** FULL_DATA - Process audio after all data was received */
   FULL_DATA = 2,
   UNRECOGNIZED = -1,
 }
@@ -395,6 +513,10 @@ export interface StreamingOptions {
   recognitionModel?: RecognitionModelOptions;
   /** Configuration for end of utterance detection model. */
   eouClassifier?: EouClassifierOptions;
+  /** Configuration for classifiers over speech recognition. */
+  recognitionClassifier?: RecognitionClassifierOptions;
+  /** Configuration for speech analysis over speech recognition. */
+  speechAnalysis?: SpeechAnalysisOptions;
 }
 
 /** Data chunk with audio. */
@@ -404,6 +526,7 @@ export interface AudioChunk {
   data: Buffer;
 }
 
+/** Data chunk with silence. */
 export interface SilenceChunk {
   $type: "speechkit.stt.v3.SilenceChunk";
   /** Duration of silence chunk in ms. */
@@ -423,14 +546,28 @@ export interface Eou {
  */
 export interface StreamingRequest {
   $type: "speechkit.stt.v3.StreamingRequest";
-  /** Session options. should be first message from user */
+  /** Session options. Should be the first message from user. */
   sessionOptions?: StreamingOptions | undefined;
   /** Chunk with audio data. */
   chunk?: AudioChunk | undefined;
   /** Chunk with silence. */
   silenceChunk?: SilenceChunk | undefined;
-  /** Request to end current utterance. Works only with external EoU detector. */
+  /** Request to end current utterance. Works only with external EOU detector. */
   eou?: Eou | undefined;
+}
+
+export interface RecognizeFileRequest {
+  $type: "speechkit.stt.v3.RecognizeFileRequest";
+  /** Bytes with data */
+  content: Buffer | undefined;
+  /** S3 data url */
+  uri: string | undefined;
+  /** Configuration for speech recognition model. */
+  recognitionModel?: RecognitionModelOptions;
+  /** Configuration for classifiers over speech recognition. */
+  recognitionClassifier?: RecognitionClassifierOptions;
+  /** Configuration for speech analysis over speech recognition. */
+  speechAnalysis?: SpeechAnalysisOptions;
 }
 
 /** Recognized word. */
@@ -438,10 +575,19 @@ export interface Word {
   $type: "speechkit.stt.v3.Word";
   /** Word text. */
   text: string;
-  /** Estimation of word start time in ms */
+  /** Estimation of word start time in ms. */
   startTimeMs: number;
-  /** Estimation of word end time in ms */
+  /** Estimation of word end time in ms. */
   endTimeMs: number;
+}
+
+/** Estimation of language and its probability. */
+export interface LanguageEstimation {
+  $type: "speechkit.stt.v3.LanguageEstimation";
+  /** Language code in ISO 639-1 format. */
+  languageCode: string;
+  /** Estimation of language probability. */
+  probability: number;
 }
 
 /** Recognition of specific time frame. */
@@ -455,14 +601,16 @@ export interface Alternative {
   startTimeMs: number;
   /** End of time frame. */
   endTimeMs: number;
-  /** Hypothesis confidence. Currently is not used. */
+  /** The hypothesis confidence. Currently is not used. */
   confidence: number;
+  /** Distribution over possible languages. */
+  languages: LanguageEstimation[];
 }
 
-/** Update information from */
+/** Update information for external End of Utterance. */
 export interface EouUpdate {
   $type: "speechkit.stt.v3.EouUpdate";
-  /** End of utterance estimated time. */
+  /** EOU estimated time. */
   timeMs: number;
 }
 
@@ -471,7 +619,7 @@ export interface AlternativeUpdate {
   $type: "speechkit.stt.v3.AlternativeUpdate";
   /** List of hypothesis for timeframes. */
   alternatives: Alternative[];
-  /** Tag for distinguish audio channels. */
+  /** @deprecated */
   channelTag: string;
 }
 
@@ -484,20 +632,20 @@ export interface AudioCursors {
   resetTimeMs: number;
   /**
    * How much audio was processed. This time includes trimming silences as well. This cursor is moved after server received enough data
-   *  to update recognition results (includes silence as well).
+   * to update recognition results (includes silence as well).
    */
   partialTimeMs: number;
   /**
    * Time of last final. This cursor is moved when server decides that recognition from start of audio until final_time_ms will not change anymore
-   *  usually this even is followed by EOU detection (but this could change in future).
+   * usually this even is followed by EOU detection (but this could change in future).
    */
   finalTimeMs: number;
   /** This is index of last final server send. Incremented after each new final. */
   finalIndex: number;
   /**
    * Estimated time of EOU. Cursor is updated after each new EOU is sent.
-   *  For external classifier this equals to received_data_ms at the moment EOU event arrives.
-   *  For internal classifier this is estimation of time. The time is not exact and has the same guarantees as word timings.
+   * For external classifier this equals to received_data_ms at the moment EOU event arrives.
+   * For internal classifier this is estimation of time. The time is not exact and has the same guarantees as word timings.
    */
   eouTimeMs: number;
 }
@@ -529,6 +677,231 @@ export interface SessionUuid {
   userRequestId: string;
 }
 
+export interface PhraseHighlight {
+  $type: "speechkit.stt.v3.PhraseHighlight";
+  /** Text transcription of the highlighted audio segment */
+  text: string;
+  /** Start time of the highlighted audio segment */
+  startTimeMs: number;
+  /** End time of the highlighted audio segment */
+  endTimeMs: number;
+}
+
+export interface RecognitionClassifierLabel {
+  $type: "speechkit.stt.v3.RecognitionClassifierLabel";
+  /** The label of the class predicted by the classifier */
+  label: string;
+  /** The prediction confidence */
+  confidence: number;
+}
+
+export interface RecognitionClassifierResult {
+  $type: "speechkit.stt.v3.RecognitionClassifierResult";
+  /** Name of the triggered classifier */
+  classifier: string;
+  /** List of highlights, i.e. parts of phrase that determine the result of the classification */
+  highlights: PhraseHighlight[];
+  /** Classifier predictions */
+  labels: RecognitionClassifierLabel[];
+}
+
+export interface RecognitionClassifierUpdate {
+  $type: "speechkit.stt.v3.RecognitionClassifierUpdate";
+  /** Response window type */
+  windowType: RecognitionClassifierUpdate_WindowType;
+  /** Start time of the audio segment used for classification */
+  startTimeMs: number;
+  /** End time of the audio segment used for classification */
+  endTimeMs: number;
+  /** Result for dictionary-based classifier */
+  classifierResult?: RecognitionClassifierResult;
+}
+
+export enum RecognitionClassifierUpdate_WindowType {
+  /** WINDOW_TYPE_UNSPECIFIED - Never used */
+  WINDOW_TYPE_UNSPECIFIED = 0,
+  /** LAST_UTTERANCE - The result of applying the classifier to the last utterance response */
+  LAST_UTTERANCE = 1,
+  /** LAST_FINAL - The result of applying the classifier to the last final response */
+  LAST_FINAL = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function recognitionClassifierUpdate_WindowTypeFromJSON(
+  object: any
+): RecognitionClassifierUpdate_WindowType {
+  switch (object) {
+    case 0:
+    case "WINDOW_TYPE_UNSPECIFIED":
+      return RecognitionClassifierUpdate_WindowType.WINDOW_TYPE_UNSPECIFIED;
+    case 1:
+    case "LAST_UTTERANCE":
+      return RecognitionClassifierUpdate_WindowType.LAST_UTTERANCE;
+    case 2:
+    case "LAST_FINAL":
+      return RecognitionClassifierUpdate_WindowType.LAST_FINAL;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return RecognitionClassifierUpdate_WindowType.UNRECOGNIZED;
+  }
+}
+
+export function recognitionClassifierUpdate_WindowTypeToJSON(
+  object: RecognitionClassifierUpdate_WindowType
+): string {
+  switch (object) {
+    case RecognitionClassifierUpdate_WindowType.WINDOW_TYPE_UNSPECIFIED:
+      return "WINDOW_TYPE_UNSPECIFIED";
+    case RecognitionClassifierUpdate_WindowType.LAST_UTTERANCE:
+      return "LAST_UTTERANCE";
+    case RecognitionClassifierUpdate_WindowType.LAST_FINAL:
+      return "LAST_FINAL";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export interface DescriptiveStatistics {
+  $type: "speechkit.stt.v3.DescriptiveStatistics";
+  /** Minimum observed value */
+  min: number;
+  /** Maximum observed value */
+  max: number;
+  /** Estimated mean of distribution */
+  mean: number;
+  /** Estimated standard deviation of distribution */
+  std: number;
+  /** List of evaluated quantiles */
+  quantiles: DescriptiveStatistics_Quantile[];
+}
+
+export interface DescriptiveStatistics_Quantile {
+  $type: "speechkit.stt.v3.DescriptiveStatistics.Quantile";
+  /** Quantile level in range (0, 1) */
+  level: number;
+  /** Quantile value */
+  value: number;
+}
+
+export interface AudioSegmentBoundaries {
+  $type: "speechkit.stt.v3.AudioSegmentBoundaries";
+  /** Audio segment start time */
+  startTimeMs: number;
+  /** Audio segment end time */
+  endTimeMs: number;
+}
+
+export interface SpeakerAnalysis {
+  $type: "speechkit.stt.v3.SpeakerAnalysis";
+  /** Speaker tag */
+  speakerTag: string;
+  /** Response window type */
+  windowType: SpeakerAnalysis_WindowType;
+  /** Audio segment boundaries */
+  speechBoundaries?: AudioSegmentBoundaries;
+  /** Total speech duration */
+  totalSpeechMs: number;
+  /** Speech ratio within audio segment */
+  speechRatio: number;
+  /** Total silence duration */
+  totalSilenceMs: number;
+  /** Silence ratio within audio segment */
+  silenceRatio: number;
+  /** Number of words in recognized speech */
+  wordsCount: number;
+  /** Number of letters in recognized speech */
+  lettersCount: number;
+  /** Descriptive statistics for words per second distribution */
+  wordsPerSecond?: DescriptiveStatistics;
+  /** Descriptive statistics for letters per second distribution */
+  lettersPerSecond?: DescriptiveStatistics;
+  /** Descriptive statistics for words per utterance distribution */
+  wordsPerUtterance?: DescriptiveStatistics;
+  /** Descriptive statistics for letters per utterance distribution */
+  lettersPerUtterance?: DescriptiveStatistics;
+  /** Number of utterances */
+  utteranceCount: number;
+  /** Descriptive statistics for utterance duration distribution */
+  utteranceDurationEstimation?: DescriptiveStatistics;
+}
+
+export enum SpeakerAnalysis_WindowType {
+  WINDOW_TYPE_UNSPECIFIED = 0,
+  /** TOTAL - Stats for all received audio */
+  TOTAL = 1,
+  /** LAST_UTTERANCE - Stats for last utterance */
+  LAST_UTTERANCE = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function speakerAnalysis_WindowTypeFromJSON(
+  object: any
+): SpeakerAnalysis_WindowType {
+  switch (object) {
+    case 0:
+    case "WINDOW_TYPE_UNSPECIFIED":
+      return SpeakerAnalysis_WindowType.WINDOW_TYPE_UNSPECIFIED;
+    case 1:
+    case "TOTAL":
+      return SpeakerAnalysis_WindowType.TOTAL;
+    case 2:
+    case "LAST_UTTERANCE":
+      return SpeakerAnalysis_WindowType.LAST_UTTERANCE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SpeakerAnalysis_WindowType.UNRECOGNIZED;
+  }
+}
+
+export function speakerAnalysis_WindowTypeToJSON(
+  object: SpeakerAnalysis_WindowType
+): string {
+  switch (object) {
+    case SpeakerAnalysis_WindowType.WINDOW_TYPE_UNSPECIFIED:
+      return "WINDOW_TYPE_UNSPECIFIED";
+    case SpeakerAnalysis_WindowType.TOTAL:
+      return "TOTAL";
+    case SpeakerAnalysis_WindowType.LAST_UTTERANCE:
+      return "LAST_UTTERANCE";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export interface ConversationAnalysis {
+  $type: "speechkit.stt.v3.ConversationAnalysis";
+  /** Audio segment boundaries */
+  conversationBoundaries?: AudioSegmentBoundaries;
+  /** Total simultaneous silence duration */
+  totalSimultaneousSilenceDurationMs: number;
+  /** Simultaneous silence ratio within audio segment */
+  totalSimultaneousSilenceRatio: number;
+  /** Descriptive statistics for simultaneous silence duration distribution */
+  simultaneousSilenceDurationEstimation?: DescriptiveStatistics;
+  /** Total simultaneous speech duration */
+  totalSimultaneousSpeechDurationMs: number;
+  /** Simultaneous speech ratio within audio segment */
+  totalSimultaneousSpeechRatio: number;
+  /** Descriptive statistics for simultaneous speech duration distribution */
+  simultaneousSpeechDurationEstimation?: DescriptiveStatistics;
+  /** Interrupts description for every speaker */
+  speakerInterrupts: ConversationAnalysis_InterruptsEvaluation[];
+}
+
+export interface ConversationAnalysis_InterruptsEvaluation {
+  $type: "speechkit.stt.v3.ConversationAnalysis.InterruptsEvaluation";
+  /** Speaker tag */
+  speakerTag: string;
+  /** Number of interrupts made by the speaker */
+  interruptsCount: number;
+  /** Total duration of all interrupts */
+  interruptsDurationMs: number;
+  /** Boundaries for every interrupt */
+  interrupts: AudioSegmentBoundaries[];
+}
+
 /**
  * Responses from server.
  * Each response contains session uuid
@@ -545,23 +918,31 @@ export interface StreamingResponse {
   responseWallTimeMs: number;
   /**
    * Partial results, server will send them regularly after enough audio data was received from user. This are current text estimation
-   *  from final_time_ms to partial_time_ms. Could change after new data will arrive.
+   * from final_time_ms to partial_time_ms. Could change after new data will arrive.
    */
   partial?: AlternativeUpdate | undefined;
   /** Final results, the recognition is now fixed until final_time_ms. For now, final is sent only if the EOU event was triggered. This could be change in future releases. */
   final?: AlternativeUpdate | undefined;
   /**
    * After EOU classifier, send the message with final, send the EouUpdate with time of EOU
-   *  before eou_update we send final with the same time. there could be several finals before eou update.
+   * before eou_update we send final with the same time. there could be several finals before eou update.
    */
   eouUpdate?: EouUpdate | undefined;
   /**
    * For each final, if normalization is enabled, sent the normalized text (or some other advanced post-processing).
-   *    Final normalization will introduce additional latency.
+   * Final normalization will introduce additional latency.
    */
   finalRefinement?: FinalRefinement | undefined;
   /** Status messages, send by server with fixed interval (keep-alive). */
   statusCode?: StatusCode | undefined;
+  /** Result of the triggered classifier */
+  classifierUpdate?: RecognitionClassifierUpdate | undefined;
+  /** Speech statistics for every speaker */
+  speakerAnalysis?: SpeakerAnalysis | undefined;
+  /** Conversation statistics */
+  conversationAnalysis?: ConversationAnalysis | undefined;
+  /** Tag for distinguish audio channels. */
+  channelTag: string;
 }
 
 const baseTextNormalizationOptions: object = {
@@ -569,6 +950,7 @@ const baseTextNormalizationOptions: object = {
   textNormalization: 0,
   profanityFilter: false,
   literatureText: false,
+  phoneFormattingMode: 0,
 };
 
 export const TextNormalizationOptions = {
@@ -586,6 +968,9 @@ export const TextNormalizationOptions = {
     }
     if (message.literatureText === true) {
       writer.uint32(24).bool(message.literatureText);
+    }
+    if (message.phoneFormattingMode !== 0) {
+      writer.uint32(32).int32(message.phoneFormattingMode);
     }
     return writer;
   },
@@ -610,6 +995,9 @@ export const TextNormalizationOptions = {
           break;
         case 3:
           message.literatureText = reader.bool();
+          break;
+        case 4:
+          message.phoneFormattingMode = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -638,6 +1026,13 @@ export const TextNormalizationOptions = {
       object.literatureText !== undefined && object.literatureText !== null
         ? Boolean(object.literatureText)
         : false;
+    message.phoneFormattingMode =
+      object.phoneFormattingMode !== undefined &&
+      object.phoneFormattingMode !== null
+        ? textNormalizationOptions_PhoneFormattingModeFromJSON(
+            object.phoneFormattingMode
+          )
+        : 0;
     return message;
   },
 
@@ -651,6 +1046,11 @@ export const TextNormalizationOptions = {
       (obj.profanityFilter = message.profanityFilter);
     message.literatureText !== undefined &&
       (obj.literatureText = message.literatureText);
+    message.phoneFormattingMode !== undefined &&
+      (obj.phoneFormattingMode =
+        textNormalizationOptions_PhoneFormattingModeToJSON(
+          message.phoneFormattingMode
+        ));
     return obj;
   },
 
@@ -663,6 +1063,7 @@ export const TextNormalizationOptions = {
     message.textNormalization = object.textNormalization ?? 0;
     message.profanityFilter = object.profanityFilter ?? false;
     message.literatureText = object.literatureText ?? false;
+    message.phoneFormattingMode = object.phoneFormattingMode ?? 0;
     return message;
   },
 };
@@ -912,6 +1313,293 @@ export const EouClassifierOptions = {
 };
 
 messageTypeRegistry.set(EouClassifierOptions.$type, EouClassifierOptions);
+
+const baseRecognitionClassifier: object = {
+  $type: "speechkit.stt.v3.RecognitionClassifier",
+  classifier: "",
+  triggers: 0,
+};
+
+export const RecognitionClassifier = {
+  $type: "speechkit.stt.v3.RecognitionClassifier" as const,
+
+  encode(
+    message: RecognitionClassifier,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.classifier !== "") {
+      writer.uint32(10).string(message.classifier);
+    }
+    writer.uint32(18).fork();
+    for (const v of message.triggers) {
+      writer.int32(v);
+    }
+    writer.ldelim();
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RecognitionClassifier {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseRecognitionClassifier } as RecognitionClassifier;
+    message.triggers = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.classifier = reader.string();
+          break;
+        case 2:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.triggers.push(reader.int32() as any);
+            }
+          } else {
+            message.triggers.push(reader.int32() as any);
+          }
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RecognitionClassifier {
+    const message = { ...baseRecognitionClassifier } as RecognitionClassifier;
+    message.classifier =
+      object.classifier !== undefined && object.classifier !== null
+        ? String(object.classifier)
+        : "";
+    message.triggers = (object.triggers ?? []).map((e: any) =>
+      recognitionClassifier_TriggerTypeFromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: RecognitionClassifier): unknown {
+    const obj: any = {};
+    message.classifier !== undefined && (obj.classifier = message.classifier);
+    if (message.triggers) {
+      obj.triggers = message.triggers.map((e) =>
+        recognitionClassifier_TriggerTypeToJSON(e)
+      );
+    } else {
+      obj.triggers = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RecognitionClassifier>, I>>(
+    object: I
+  ): RecognitionClassifier {
+    const message = { ...baseRecognitionClassifier } as RecognitionClassifier;
+    message.classifier = object.classifier ?? "";
+    message.triggers = object.triggers?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(RecognitionClassifier.$type, RecognitionClassifier);
+
+const baseRecognitionClassifierOptions: object = {
+  $type: "speechkit.stt.v3.RecognitionClassifierOptions",
+};
+
+export const RecognitionClassifierOptions = {
+  $type: "speechkit.stt.v3.RecognitionClassifierOptions" as const,
+
+  encode(
+    message: RecognitionClassifierOptions,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.classifiers) {
+      RecognitionClassifier.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RecognitionClassifierOptions {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseRecognitionClassifierOptions,
+    } as RecognitionClassifierOptions;
+    message.classifiers = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.classifiers.push(
+            RecognitionClassifier.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RecognitionClassifierOptions {
+    const message = {
+      ...baseRecognitionClassifierOptions,
+    } as RecognitionClassifierOptions;
+    message.classifiers = (object.classifiers ?? []).map((e: any) =>
+      RecognitionClassifier.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: RecognitionClassifierOptions): unknown {
+    const obj: any = {};
+    if (message.classifiers) {
+      obj.classifiers = message.classifiers.map((e) =>
+        e ? RecognitionClassifier.toJSON(e) : undefined
+      );
+    } else {
+      obj.classifiers = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RecognitionClassifierOptions>, I>>(
+    object: I
+  ): RecognitionClassifierOptions {
+    const message = {
+      ...baseRecognitionClassifierOptions,
+    } as RecognitionClassifierOptions;
+    message.classifiers =
+      object.classifiers?.map((e) => RecognitionClassifier.fromPartial(e)) ||
+      [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  RecognitionClassifierOptions.$type,
+  RecognitionClassifierOptions
+);
+
+const baseSpeechAnalysisOptions: object = {
+  $type: "speechkit.stt.v3.SpeechAnalysisOptions",
+  enableSpeakerAnalysis: false,
+  enableConversationAnalysis: false,
+  descriptiveStatisticsQuantiles: 0,
+};
+
+export const SpeechAnalysisOptions = {
+  $type: "speechkit.stt.v3.SpeechAnalysisOptions" as const,
+
+  encode(
+    message: SpeechAnalysisOptions,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.enableSpeakerAnalysis === true) {
+      writer.uint32(8).bool(message.enableSpeakerAnalysis);
+    }
+    if (message.enableConversationAnalysis === true) {
+      writer.uint32(16).bool(message.enableConversationAnalysis);
+    }
+    writer.uint32(26).fork();
+    for (const v of message.descriptiveStatisticsQuantiles) {
+      writer.double(v);
+    }
+    writer.ldelim();
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): SpeechAnalysisOptions {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseSpeechAnalysisOptions } as SpeechAnalysisOptions;
+    message.descriptiveStatisticsQuantiles = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.enableSpeakerAnalysis = reader.bool();
+          break;
+        case 2:
+          message.enableConversationAnalysis = reader.bool();
+          break;
+        case 3:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.descriptiveStatisticsQuantiles.push(reader.double());
+            }
+          } else {
+            message.descriptiveStatisticsQuantiles.push(reader.double());
+          }
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SpeechAnalysisOptions {
+    const message = { ...baseSpeechAnalysisOptions } as SpeechAnalysisOptions;
+    message.enableSpeakerAnalysis =
+      object.enableSpeakerAnalysis !== undefined &&
+      object.enableSpeakerAnalysis !== null
+        ? Boolean(object.enableSpeakerAnalysis)
+        : false;
+    message.enableConversationAnalysis =
+      object.enableConversationAnalysis !== undefined &&
+      object.enableConversationAnalysis !== null
+        ? Boolean(object.enableConversationAnalysis)
+        : false;
+    message.descriptiveStatisticsQuantiles = (
+      object.descriptiveStatisticsQuantiles ?? []
+    ).map((e: any) => Number(e));
+    return message;
+  },
+
+  toJSON(message: SpeechAnalysisOptions): unknown {
+    const obj: any = {};
+    message.enableSpeakerAnalysis !== undefined &&
+      (obj.enableSpeakerAnalysis = message.enableSpeakerAnalysis);
+    message.enableConversationAnalysis !== undefined &&
+      (obj.enableConversationAnalysis = message.enableConversationAnalysis);
+    if (message.descriptiveStatisticsQuantiles) {
+      obj.descriptiveStatisticsQuantiles =
+        message.descriptiveStatisticsQuantiles.map((e) => e);
+    } else {
+      obj.descriptiveStatisticsQuantiles = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SpeechAnalysisOptions>, I>>(
+    object: I
+  ): SpeechAnalysisOptions {
+    const message = { ...baseSpeechAnalysisOptions } as SpeechAnalysisOptions;
+    message.enableSpeakerAnalysis = object.enableSpeakerAnalysis ?? false;
+    message.enableConversationAnalysis =
+      object.enableConversationAnalysis ?? false;
+    message.descriptiveStatisticsQuantiles =
+      object.descriptiveStatisticsQuantiles?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(SpeechAnalysisOptions.$type, SpeechAnalysisOptions);
 
 const baseRawAudio: object = {
   $type: "speechkit.stt.v3.RawAudio",
@@ -1447,6 +2135,18 @@ export const StreamingOptions = {
         writer.uint32(18).fork()
       ).ldelim();
     }
+    if (message.recognitionClassifier !== undefined) {
+      RecognitionClassifierOptions.encode(
+        message.recognitionClassifier,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.speechAnalysis !== undefined) {
+      SpeechAnalysisOptions.encode(
+        message.speechAnalysis,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1469,6 +2169,18 @@ export const StreamingOptions = {
             reader.uint32()
           );
           break;
+        case 3:
+          message.recognitionClassifier = RecognitionClassifierOptions.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 4:
+          message.speechAnalysis = SpeechAnalysisOptions.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1487,6 +2199,15 @@ export const StreamingOptions = {
       object.eouClassifier !== undefined && object.eouClassifier !== null
         ? EouClassifierOptions.fromJSON(object.eouClassifier)
         : undefined;
+    message.recognitionClassifier =
+      object.recognitionClassifier !== undefined &&
+      object.recognitionClassifier !== null
+        ? RecognitionClassifierOptions.fromJSON(object.recognitionClassifier)
+        : undefined;
+    message.speechAnalysis =
+      object.speechAnalysis !== undefined && object.speechAnalysis !== null
+        ? SpeechAnalysisOptions.fromJSON(object.speechAnalysis)
+        : undefined;
     return message;
   },
 
@@ -1499,6 +2220,14 @@ export const StreamingOptions = {
     message.eouClassifier !== undefined &&
       (obj.eouClassifier = message.eouClassifier
         ? EouClassifierOptions.toJSON(message.eouClassifier)
+        : undefined);
+    message.recognitionClassifier !== undefined &&
+      (obj.recognitionClassifier = message.recognitionClassifier
+        ? RecognitionClassifierOptions.toJSON(message.recognitionClassifier)
+        : undefined);
+    message.speechAnalysis !== undefined &&
+      (obj.speechAnalysis = message.speechAnalysis
+        ? SpeechAnalysisOptions.toJSON(message.speechAnalysis)
         : undefined);
     return obj;
   },
@@ -1514,6 +2243,15 @@ export const StreamingOptions = {
     message.eouClassifier =
       object.eouClassifier !== undefined && object.eouClassifier !== null
         ? EouClassifierOptions.fromPartial(object.eouClassifier)
+        : undefined;
+    message.recognitionClassifier =
+      object.recognitionClassifier !== undefined &&
+      object.recognitionClassifier !== null
+        ? RecognitionClassifierOptions.fromPartial(object.recognitionClassifier)
+        : undefined;
+    message.speechAnalysis =
+      object.speechAnalysis !== undefined && object.speechAnalysis !== null
+        ? SpeechAnalysisOptions.fromPartial(object.speechAnalysis)
         : undefined;
     return message;
   },
@@ -1817,6 +2555,160 @@ export const StreamingRequest = {
 
 messageTypeRegistry.set(StreamingRequest.$type, StreamingRequest);
 
+const baseRecognizeFileRequest: object = {
+  $type: "speechkit.stt.v3.RecognizeFileRequest",
+};
+
+export const RecognizeFileRequest = {
+  $type: "speechkit.stt.v3.RecognizeFileRequest" as const,
+
+  encode(
+    message: RecognizeFileRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.content !== undefined) {
+      writer.uint32(10).bytes(message.content);
+    }
+    if (message.uri !== undefined) {
+      writer.uint32(18).string(message.uri);
+    }
+    if (message.recognitionModel !== undefined) {
+      RecognitionModelOptions.encode(
+        message.recognitionModel,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.recognitionClassifier !== undefined) {
+      RecognitionClassifierOptions.encode(
+        message.recognitionClassifier,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    if (message.speechAnalysis !== undefined) {
+      SpeechAnalysisOptions.encode(
+        message.speechAnalysis,
+        writer.uint32(42).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RecognizeFileRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseRecognizeFileRequest } as RecognizeFileRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.content = reader.bytes() as Buffer;
+          break;
+        case 2:
+          message.uri = reader.string();
+          break;
+        case 3:
+          message.recognitionModel = RecognitionModelOptions.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 4:
+          message.recognitionClassifier = RecognitionClassifierOptions.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 5:
+          message.speechAnalysis = SpeechAnalysisOptions.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RecognizeFileRequest {
+    const message = { ...baseRecognizeFileRequest } as RecognizeFileRequest;
+    message.content =
+      object.content !== undefined && object.content !== null
+        ? Buffer.from(bytesFromBase64(object.content))
+        : undefined;
+    message.uri =
+      object.uri !== undefined && object.uri !== null
+        ? String(object.uri)
+        : undefined;
+    message.recognitionModel =
+      object.recognitionModel !== undefined && object.recognitionModel !== null
+        ? RecognitionModelOptions.fromJSON(object.recognitionModel)
+        : undefined;
+    message.recognitionClassifier =
+      object.recognitionClassifier !== undefined &&
+      object.recognitionClassifier !== null
+        ? RecognitionClassifierOptions.fromJSON(object.recognitionClassifier)
+        : undefined;
+    message.speechAnalysis =
+      object.speechAnalysis !== undefined && object.speechAnalysis !== null
+        ? SpeechAnalysisOptions.fromJSON(object.speechAnalysis)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: RecognizeFileRequest): unknown {
+    const obj: any = {};
+    message.content !== undefined &&
+      (obj.content =
+        message.content !== undefined
+          ? base64FromBytes(message.content)
+          : undefined);
+    message.uri !== undefined && (obj.uri = message.uri);
+    message.recognitionModel !== undefined &&
+      (obj.recognitionModel = message.recognitionModel
+        ? RecognitionModelOptions.toJSON(message.recognitionModel)
+        : undefined);
+    message.recognitionClassifier !== undefined &&
+      (obj.recognitionClassifier = message.recognitionClassifier
+        ? RecognitionClassifierOptions.toJSON(message.recognitionClassifier)
+        : undefined);
+    message.speechAnalysis !== undefined &&
+      (obj.speechAnalysis = message.speechAnalysis
+        ? SpeechAnalysisOptions.toJSON(message.speechAnalysis)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RecognizeFileRequest>, I>>(
+    object: I
+  ): RecognizeFileRequest {
+    const message = { ...baseRecognizeFileRequest } as RecognizeFileRequest;
+    message.content = object.content ?? undefined;
+    message.uri = object.uri ?? undefined;
+    message.recognitionModel =
+      object.recognitionModel !== undefined && object.recognitionModel !== null
+        ? RecognitionModelOptions.fromPartial(object.recognitionModel)
+        : undefined;
+    message.recognitionClassifier =
+      object.recognitionClassifier !== undefined &&
+      object.recognitionClassifier !== null
+        ? RecognitionClassifierOptions.fromPartial(object.recognitionClassifier)
+        : undefined;
+    message.speechAnalysis =
+      object.speechAnalysis !== undefined && object.speechAnalysis !== null
+        ? SpeechAnalysisOptions.fromPartial(object.speechAnalysis)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(RecognizeFileRequest.$type, RecognizeFileRequest);
+
 const baseWord: object = {
   $type: "speechkit.stt.v3.Word",
   text: "",
@@ -1902,6 +2794,83 @@ export const Word = {
 
 messageTypeRegistry.set(Word.$type, Word);
 
+const baseLanguageEstimation: object = {
+  $type: "speechkit.stt.v3.LanguageEstimation",
+  languageCode: "",
+  probability: 0,
+};
+
+export const LanguageEstimation = {
+  $type: "speechkit.stt.v3.LanguageEstimation" as const,
+
+  encode(
+    message: LanguageEstimation,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.languageCode !== "") {
+      writer.uint32(10).string(message.languageCode);
+    }
+    if (message.probability !== 0) {
+      writer.uint32(17).double(message.probability);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LanguageEstimation {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseLanguageEstimation } as LanguageEstimation;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.languageCode = reader.string();
+          break;
+        case 2:
+          message.probability = reader.double();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LanguageEstimation {
+    const message = { ...baseLanguageEstimation } as LanguageEstimation;
+    message.languageCode =
+      object.languageCode !== undefined && object.languageCode !== null
+        ? String(object.languageCode)
+        : "";
+    message.probability =
+      object.probability !== undefined && object.probability !== null
+        ? Number(object.probability)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: LanguageEstimation): unknown {
+    const obj: any = {};
+    message.languageCode !== undefined &&
+      (obj.languageCode = message.languageCode);
+    message.probability !== undefined &&
+      (obj.probability = message.probability);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<LanguageEstimation>, I>>(
+    object: I
+  ): LanguageEstimation {
+    const message = { ...baseLanguageEstimation } as LanguageEstimation;
+    message.languageCode = object.languageCode ?? "";
+    message.probability = object.probability ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(LanguageEstimation.$type, LanguageEstimation);
+
 const baseAlternative: object = {
   $type: "speechkit.stt.v3.Alternative",
   text: "",
@@ -1932,6 +2901,9 @@ export const Alternative = {
     if (message.confidence !== 0) {
       writer.uint32(41).double(message.confidence);
     }
+    for (const v of message.languages) {
+      LanguageEstimation.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1940,6 +2912,7 @@ export const Alternative = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseAlternative } as Alternative;
     message.words = [];
+    message.languages = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1957,6 +2930,11 @@ export const Alternative = {
           break;
         case 5:
           message.confidence = reader.double();
+          break;
+        case 6:
+          message.languages.push(
+            LanguageEstimation.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -1985,6 +2963,9 @@ export const Alternative = {
       object.confidence !== undefined && object.confidence !== null
         ? Number(object.confidence)
         : 0;
+    message.languages = (object.languages ?? []).map((e: any) =>
+      LanguageEstimation.fromJSON(e)
+    );
     return message;
   },
 
@@ -2001,6 +2982,13 @@ export const Alternative = {
     message.endTimeMs !== undefined &&
       (obj.endTimeMs = Math.round(message.endTimeMs));
     message.confidence !== undefined && (obj.confidence = message.confidence);
+    if (message.languages) {
+      obj.languages = message.languages.map((e) =>
+        e ? LanguageEstimation.toJSON(e) : undefined
+      );
+    } else {
+      obj.languages = [];
+    }
     return obj;
   },
 
@@ -2013,6 +3001,8 @@ export const Alternative = {
     message.startTimeMs = object.startTimeMs ?? 0;
     message.endTimeMs = object.endTimeMs ?? 0;
     message.confidence = object.confidence ?? 0;
+    message.languages =
+      object.languages?.map((e) => LanguageEstimation.fromPartial(e)) || [];
     return message;
   },
 };
@@ -2536,9 +3526,1415 @@ export const SessionUuid = {
 
 messageTypeRegistry.set(SessionUuid.$type, SessionUuid);
 
+const basePhraseHighlight: object = {
+  $type: "speechkit.stt.v3.PhraseHighlight",
+  text: "",
+  startTimeMs: 0,
+  endTimeMs: 0,
+};
+
+export const PhraseHighlight = {
+  $type: "speechkit.stt.v3.PhraseHighlight" as const,
+
+  encode(
+    message: PhraseHighlight,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.text !== "") {
+      writer.uint32(10).string(message.text);
+    }
+    if (message.startTimeMs !== 0) {
+      writer.uint32(16).int64(message.startTimeMs);
+    }
+    if (message.endTimeMs !== 0) {
+      writer.uint32(24).int64(message.endTimeMs);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): PhraseHighlight {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...basePhraseHighlight } as PhraseHighlight;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.text = reader.string();
+          break;
+        case 2:
+          message.startTimeMs = longToNumber(reader.int64() as Long);
+          break;
+        case 3:
+          message.endTimeMs = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PhraseHighlight {
+    const message = { ...basePhraseHighlight } as PhraseHighlight;
+    message.text =
+      object.text !== undefined && object.text !== null
+        ? String(object.text)
+        : "";
+    message.startTimeMs =
+      object.startTimeMs !== undefined && object.startTimeMs !== null
+        ? Number(object.startTimeMs)
+        : 0;
+    message.endTimeMs =
+      object.endTimeMs !== undefined && object.endTimeMs !== null
+        ? Number(object.endTimeMs)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: PhraseHighlight): unknown {
+    const obj: any = {};
+    message.text !== undefined && (obj.text = message.text);
+    message.startTimeMs !== undefined &&
+      (obj.startTimeMs = Math.round(message.startTimeMs));
+    message.endTimeMs !== undefined &&
+      (obj.endTimeMs = Math.round(message.endTimeMs));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<PhraseHighlight>, I>>(
+    object: I
+  ): PhraseHighlight {
+    const message = { ...basePhraseHighlight } as PhraseHighlight;
+    message.text = object.text ?? "";
+    message.startTimeMs = object.startTimeMs ?? 0;
+    message.endTimeMs = object.endTimeMs ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(PhraseHighlight.$type, PhraseHighlight);
+
+const baseRecognitionClassifierLabel: object = {
+  $type: "speechkit.stt.v3.RecognitionClassifierLabel",
+  label: "",
+  confidence: 0,
+};
+
+export const RecognitionClassifierLabel = {
+  $type: "speechkit.stt.v3.RecognitionClassifierLabel" as const,
+
+  encode(
+    message: RecognitionClassifierLabel,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.label !== "") {
+      writer.uint32(10).string(message.label);
+    }
+    if (message.confidence !== 0) {
+      writer.uint32(17).double(message.confidence);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RecognitionClassifierLabel {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseRecognitionClassifierLabel,
+    } as RecognitionClassifierLabel;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.label = reader.string();
+          break;
+        case 2:
+          message.confidence = reader.double();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RecognitionClassifierLabel {
+    const message = {
+      ...baseRecognitionClassifierLabel,
+    } as RecognitionClassifierLabel;
+    message.label =
+      object.label !== undefined && object.label !== null
+        ? String(object.label)
+        : "";
+    message.confidence =
+      object.confidence !== undefined && object.confidence !== null
+        ? Number(object.confidence)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: RecognitionClassifierLabel): unknown {
+    const obj: any = {};
+    message.label !== undefined && (obj.label = message.label);
+    message.confidence !== undefined && (obj.confidence = message.confidence);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RecognitionClassifierLabel>, I>>(
+    object: I
+  ): RecognitionClassifierLabel {
+    const message = {
+      ...baseRecognitionClassifierLabel,
+    } as RecognitionClassifierLabel;
+    message.label = object.label ?? "";
+    message.confidence = object.confidence ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  RecognitionClassifierLabel.$type,
+  RecognitionClassifierLabel
+);
+
+const baseRecognitionClassifierResult: object = {
+  $type: "speechkit.stt.v3.RecognitionClassifierResult",
+  classifier: "",
+};
+
+export const RecognitionClassifierResult = {
+  $type: "speechkit.stt.v3.RecognitionClassifierResult" as const,
+
+  encode(
+    message: RecognitionClassifierResult,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.classifier !== "") {
+      writer.uint32(10).string(message.classifier);
+    }
+    for (const v of message.highlights) {
+      PhraseHighlight.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    for (const v of message.labels) {
+      RecognitionClassifierLabel.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RecognitionClassifierResult {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseRecognitionClassifierResult,
+    } as RecognitionClassifierResult;
+    message.highlights = [];
+    message.labels = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.classifier = reader.string();
+          break;
+        case 2:
+          message.highlights.push(
+            PhraseHighlight.decode(reader, reader.uint32())
+          );
+          break;
+        case 3:
+          message.labels.push(
+            RecognitionClassifierLabel.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RecognitionClassifierResult {
+    const message = {
+      ...baseRecognitionClassifierResult,
+    } as RecognitionClassifierResult;
+    message.classifier =
+      object.classifier !== undefined && object.classifier !== null
+        ? String(object.classifier)
+        : "";
+    message.highlights = (object.highlights ?? []).map((e: any) =>
+      PhraseHighlight.fromJSON(e)
+    );
+    message.labels = (object.labels ?? []).map((e: any) =>
+      RecognitionClassifierLabel.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: RecognitionClassifierResult): unknown {
+    const obj: any = {};
+    message.classifier !== undefined && (obj.classifier = message.classifier);
+    if (message.highlights) {
+      obj.highlights = message.highlights.map((e) =>
+        e ? PhraseHighlight.toJSON(e) : undefined
+      );
+    } else {
+      obj.highlights = [];
+    }
+    if (message.labels) {
+      obj.labels = message.labels.map((e) =>
+        e ? RecognitionClassifierLabel.toJSON(e) : undefined
+      );
+    } else {
+      obj.labels = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RecognitionClassifierResult>, I>>(
+    object: I
+  ): RecognitionClassifierResult {
+    const message = {
+      ...baseRecognitionClassifierResult,
+    } as RecognitionClassifierResult;
+    message.classifier = object.classifier ?? "";
+    message.highlights =
+      object.highlights?.map((e) => PhraseHighlight.fromPartial(e)) || [];
+    message.labels =
+      object.labels?.map((e) => RecognitionClassifierLabel.fromPartial(e)) ||
+      [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  RecognitionClassifierResult.$type,
+  RecognitionClassifierResult
+);
+
+const baseRecognitionClassifierUpdate: object = {
+  $type: "speechkit.stt.v3.RecognitionClassifierUpdate",
+  windowType: 0,
+  startTimeMs: 0,
+  endTimeMs: 0,
+};
+
+export const RecognitionClassifierUpdate = {
+  $type: "speechkit.stt.v3.RecognitionClassifierUpdate" as const,
+
+  encode(
+    message: RecognitionClassifierUpdate,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.windowType !== 0) {
+      writer.uint32(8).int32(message.windowType);
+    }
+    if (message.startTimeMs !== 0) {
+      writer.uint32(16).int64(message.startTimeMs);
+    }
+    if (message.endTimeMs !== 0) {
+      writer.uint32(24).int64(message.endTimeMs);
+    }
+    if (message.classifierResult !== undefined) {
+      RecognitionClassifierResult.encode(
+        message.classifierResult,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RecognitionClassifierUpdate {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseRecognitionClassifierUpdate,
+    } as RecognitionClassifierUpdate;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.windowType = reader.int32() as any;
+          break;
+        case 2:
+          message.startTimeMs = longToNumber(reader.int64() as Long);
+          break;
+        case 3:
+          message.endTimeMs = longToNumber(reader.int64() as Long);
+          break;
+        case 4:
+          message.classifierResult = RecognitionClassifierResult.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RecognitionClassifierUpdate {
+    const message = {
+      ...baseRecognitionClassifierUpdate,
+    } as RecognitionClassifierUpdate;
+    message.windowType =
+      object.windowType !== undefined && object.windowType !== null
+        ? recognitionClassifierUpdate_WindowTypeFromJSON(object.windowType)
+        : 0;
+    message.startTimeMs =
+      object.startTimeMs !== undefined && object.startTimeMs !== null
+        ? Number(object.startTimeMs)
+        : 0;
+    message.endTimeMs =
+      object.endTimeMs !== undefined && object.endTimeMs !== null
+        ? Number(object.endTimeMs)
+        : 0;
+    message.classifierResult =
+      object.classifierResult !== undefined && object.classifierResult !== null
+        ? RecognitionClassifierResult.fromJSON(object.classifierResult)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: RecognitionClassifierUpdate): unknown {
+    const obj: any = {};
+    message.windowType !== undefined &&
+      (obj.windowType = recognitionClassifierUpdate_WindowTypeToJSON(
+        message.windowType
+      ));
+    message.startTimeMs !== undefined &&
+      (obj.startTimeMs = Math.round(message.startTimeMs));
+    message.endTimeMs !== undefined &&
+      (obj.endTimeMs = Math.round(message.endTimeMs));
+    message.classifierResult !== undefined &&
+      (obj.classifierResult = message.classifierResult
+        ? RecognitionClassifierResult.toJSON(message.classifierResult)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RecognitionClassifierUpdate>, I>>(
+    object: I
+  ): RecognitionClassifierUpdate {
+    const message = {
+      ...baseRecognitionClassifierUpdate,
+    } as RecognitionClassifierUpdate;
+    message.windowType = object.windowType ?? 0;
+    message.startTimeMs = object.startTimeMs ?? 0;
+    message.endTimeMs = object.endTimeMs ?? 0;
+    message.classifierResult =
+      object.classifierResult !== undefined && object.classifierResult !== null
+        ? RecognitionClassifierResult.fromPartial(object.classifierResult)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  RecognitionClassifierUpdate.$type,
+  RecognitionClassifierUpdate
+);
+
+const baseDescriptiveStatistics: object = {
+  $type: "speechkit.stt.v3.DescriptiveStatistics",
+  min: 0,
+  max: 0,
+  mean: 0,
+  std: 0,
+};
+
+export const DescriptiveStatistics = {
+  $type: "speechkit.stt.v3.DescriptiveStatistics" as const,
+
+  encode(
+    message: DescriptiveStatistics,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.min !== 0) {
+      writer.uint32(9).double(message.min);
+    }
+    if (message.max !== 0) {
+      writer.uint32(17).double(message.max);
+    }
+    if (message.mean !== 0) {
+      writer.uint32(25).double(message.mean);
+    }
+    if (message.std !== 0) {
+      writer.uint32(33).double(message.std);
+    }
+    for (const v of message.quantiles) {
+      DescriptiveStatistics_Quantile.encode(
+        v!,
+        writer.uint32(42).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DescriptiveStatistics {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseDescriptiveStatistics } as DescriptiveStatistics;
+    message.quantiles = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.min = reader.double();
+          break;
+        case 2:
+          message.max = reader.double();
+          break;
+        case 3:
+          message.mean = reader.double();
+          break;
+        case 4:
+          message.std = reader.double();
+          break;
+        case 5:
+          message.quantiles.push(
+            DescriptiveStatistics_Quantile.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DescriptiveStatistics {
+    const message = { ...baseDescriptiveStatistics } as DescriptiveStatistics;
+    message.min =
+      object.min !== undefined && object.min !== null ? Number(object.min) : 0;
+    message.max =
+      object.max !== undefined && object.max !== null ? Number(object.max) : 0;
+    message.mean =
+      object.mean !== undefined && object.mean !== null
+        ? Number(object.mean)
+        : 0;
+    message.std =
+      object.std !== undefined && object.std !== null ? Number(object.std) : 0;
+    message.quantiles = (object.quantiles ?? []).map((e: any) =>
+      DescriptiveStatistics_Quantile.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: DescriptiveStatistics): unknown {
+    const obj: any = {};
+    message.min !== undefined && (obj.min = message.min);
+    message.max !== undefined && (obj.max = message.max);
+    message.mean !== undefined && (obj.mean = message.mean);
+    message.std !== undefined && (obj.std = message.std);
+    if (message.quantiles) {
+      obj.quantiles = message.quantiles.map((e) =>
+        e ? DescriptiveStatistics_Quantile.toJSON(e) : undefined
+      );
+    } else {
+      obj.quantiles = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DescriptiveStatistics>, I>>(
+    object: I
+  ): DescriptiveStatistics {
+    const message = { ...baseDescriptiveStatistics } as DescriptiveStatistics;
+    message.min = object.min ?? 0;
+    message.max = object.max ?? 0;
+    message.mean = object.mean ?? 0;
+    message.std = object.std ?? 0;
+    message.quantiles =
+      object.quantiles?.map((e) =>
+        DescriptiveStatistics_Quantile.fromPartial(e)
+      ) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(DescriptiveStatistics.$type, DescriptiveStatistics);
+
+const baseDescriptiveStatistics_Quantile: object = {
+  $type: "speechkit.stt.v3.DescriptiveStatistics.Quantile",
+  level: 0,
+  value: 0,
+};
+
+export const DescriptiveStatistics_Quantile = {
+  $type: "speechkit.stt.v3.DescriptiveStatistics.Quantile" as const,
+
+  encode(
+    message: DescriptiveStatistics_Quantile,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.level !== 0) {
+      writer.uint32(9).double(message.level);
+    }
+    if (message.value !== 0) {
+      writer.uint32(17).double(message.value);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DescriptiveStatistics_Quantile {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDescriptiveStatistics_Quantile,
+    } as DescriptiveStatistics_Quantile;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.level = reader.double();
+          break;
+        case 2:
+          message.value = reader.double();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DescriptiveStatistics_Quantile {
+    const message = {
+      ...baseDescriptiveStatistics_Quantile,
+    } as DescriptiveStatistics_Quantile;
+    message.level =
+      object.level !== undefined && object.level !== null
+        ? Number(object.level)
+        : 0;
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? Number(object.value)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: DescriptiveStatistics_Quantile): unknown {
+    const obj: any = {};
+    message.level !== undefined && (obj.level = message.level);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DescriptiveStatistics_Quantile>, I>>(
+    object: I
+  ): DescriptiveStatistics_Quantile {
+    const message = {
+      ...baseDescriptiveStatistics_Quantile,
+    } as DescriptiveStatistics_Quantile;
+    message.level = object.level ?? 0;
+    message.value = object.value ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  DescriptiveStatistics_Quantile.$type,
+  DescriptiveStatistics_Quantile
+);
+
+const baseAudioSegmentBoundaries: object = {
+  $type: "speechkit.stt.v3.AudioSegmentBoundaries",
+  startTimeMs: 0,
+  endTimeMs: 0,
+};
+
+export const AudioSegmentBoundaries = {
+  $type: "speechkit.stt.v3.AudioSegmentBoundaries" as const,
+
+  encode(
+    message: AudioSegmentBoundaries,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.startTimeMs !== 0) {
+      writer.uint32(8).int64(message.startTimeMs);
+    }
+    if (message.endTimeMs !== 0) {
+      writer.uint32(16).int64(message.endTimeMs);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): AudioSegmentBoundaries {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseAudioSegmentBoundaries } as AudioSegmentBoundaries;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.startTimeMs = longToNumber(reader.int64() as Long);
+          break;
+        case 2:
+          message.endTimeMs = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AudioSegmentBoundaries {
+    const message = { ...baseAudioSegmentBoundaries } as AudioSegmentBoundaries;
+    message.startTimeMs =
+      object.startTimeMs !== undefined && object.startTimeMs !== null
+        ? Number(object.startTimeMs)
+        : 0;
+    message.endTimeMs =
+      object.endTimeMs !== undefined && object.endTimeMs !== null
+        ? Number(object.endTimeMs)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: AudioSegmentBoundaries): unknown {
+    const obj: any = {};
+    message.startTimeMs !== undefined &&
+      (obj.startTimeMs = Math.round(message.startTimeMs));
+    message.endTimeMs !== undefined &&
+      (obj.endTimeMs = Math.round(message.endTimeMs));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AudioSegmentBoundaries>, I>>(
+    object: I
+  ): AudioSegmentBoundaries {
+    const message = { ...baseAudioSegmentBoundaries } as AudioSegmentBoundaries;
+    message.startTimeMs = object.startTimeMs ?? 0;
+    message.endTimeMs = object.endTimeMs ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(AudioSegmentBoundaries.$type, AudioSegmentBoundaries);
+
+const baseSpeakerAnalysis: object = {
+  $type: "speechkit.stt.v3.SpeakerAnalysis",
+  speakerTag: "",
+  windowType: 0,
+  totalSpeechMs: 0,
+  speechRatio: 0,
+  totalSilenceMs: 0,
+  silenceRatio: 0,
+  wordsCount: 0,
+  lettersCount: 0,
+  utteranceCount: 0,
+};
+
+export const SpeakerAnalysis = {
+  $type: "speechkit.stt.v3.SpeakerAnalysis" as const,
+
+  encode(
+    message: SpeakerAnalysis,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.speakerTag !== "") {
+      writer.uint32(10).string(message.speakerTag);
+    }
+    if (message.windowType !== 0) {
+      writer.uint32(16).int32(message.windowType);
+    }
+    if (message.speechBoundaries !== undefined) {
+      AudioSegmentBoundaries.encode(
+        message.speechBoundaries,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.totalSpeechMs !== 0) {
+      writer.uint32(32).int64(message.totalSpeechMs);
+    }
+    if (message.speechRatio !== 0) {
+      writer.uint32(41).double(message.speechRatio);
+    }
+    if (message.totalSilenceMs !== 0) {
+      writer.uint32(48).int64(message.totalSilenceMs);
+    }
+    if (message.silenceRatio !== 0) {
+      writer.uint32(57).double(message.silenceRatio);
+    }
+    if (message.wordsCount !== 0) {
+      writer.uint32(64).int64(message.wordsCount);
+    }
+    if (message.lettersCount !== 0) {
+      writer.uint32(72).int64(message.lettersCount);
+    }
+    if (message.wordsPerSecond !== undefined) {
+      DescriptiveStatistics.encode(
+        message.wordsPerSecond,
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
+    if (message.lettersPerSecond !== undefined) {
+      DescriptiveStatistics.encode(
+        message.lettersPerSecond,
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
+    if (message.wordsPerUtterance !== undefined) {
+      DescriptiveStatistics.encode(
+        message.wordsPerUtterance,
+        writer.uint32(98).fork()
+      ).ldelim();
+    }
+    if (message.lettersPerUtterance !== undefined) {
+      DescriptiveStatistics.encode(
+        message.lettersPerUtterance,
+        writer.uint32(106).fork()
+      ).ldelim();
+    }
+    if (message.utteranceCount !== 0) {
+      writer.uint32(112).int64(message.utteranceCount);
+    }
+    if (message.utteranceDurationEstimation !== undefined) {
+      DescriptiveStatistics.encode(
+        message.utteranceDurationEstimation,
+        writer.uint32(122).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SpeakerAnalysis {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseSpeakerAnalysis } as SpeakerAnalysis;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.speakerTag = reader.string();
+          break;
+        case 2:
+          message.windowType = reader.int32() as any;
+          break;
+        case 3:
+          message.speechBoundaries = AudioSegmentBoundaries.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 4:
+          message.totalSpeechMs = longToNumber(reader.int64() as Long);
+          break;
+        case 5:
+          message.speechRatio = reader.double();
+          break;
+        case 6:
+          message.totalSilenceMs = longToNumber(reader.int64() as Long);
+          break;
+        case 7:
+          message.silenceRatio = reader.double();
+          break;
+        case 8:
+          message.wordsCount = longToNumber(reader.int64() as Long);
+          break;
+        case 9:
+          message.lettersCount = longToNumber(reader.int64() as Long);
+          break;
+        case 10:
+          message.wordsPerSecond = DescriptiveStatistics.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 11:
+          message.lettersPerSecond = DescriptiveStatistics.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 12:
+          message.wordsPerUtterance = DescriptiveStatistics.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 13:
+          message.lettersPerUtterance = DescriptiveStatistics.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 14:
+          message.utteranceCount = longToNumber(reader.int64() as Long);
+          break;
+        case 15:
+          message.utteranceDurationEstimation = DescriptiveStatistics.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SpeakerAnalysis {
+    const message = { ...baseSpeakerAnalysis } as SpeakerAnalysis;
+    message.speakerTag =
+      object.speakerTag !== undefined && object.speakerTag !== null
+        ? String(object.speakerTag)
+        : "";
+    message.windowType =
+      object.windowType !== undefined && object.windowType !== null
+        ? speakerAnalysis_WindowTypeFromJSON(object.windowType)
+        : 0;
+    message.speechBoundaries =
+      object.speechBoundaries !== undefined && object.speechBoundaries !== null
+        ? AudioSegmentBoundaries.fromJSON(object.speechBoundaries)
+        : undefined;
+    message.totalSpeechMs =
+      object.totalSpeechMs !== undefined && object.totalSpeechMs !== null
+        ? Number(object.totalSpeechMs)
+        : 0;
+    message.speechRatio =
+      object.speechRatio !== undefined && object.speechRatio !== null
+        ? Number(object.speechRatio)
+        : 0;
+    message.totalSilenceMs =
+      object.totalSilenceMs !== undefined && object.totalSilenceMs !== null
+        ? Number(object.totalSilenceMs)
+        : 0;
+    message.silenceRatio =
+      object.silenceRatio !== undefined && object.silenceRatio !== null
+        ? Number(object.silenceRatio)
+        : 0;
+    message.wordsCount =
+      object.wordsCount !== undefined && object.wordsCount !== null
+        ? Number(object.wordsCount)
+        : 0;
+    message.lettersCount =
+      object.lettersCount !== undefined && object.lettersCount !== null
+        ? Number(object.lettersCount)
+        : 0;
+    message.wordsPerSecond =
+      object.wordsPerSecond !== undefined && object.wordsPerSecond !== null
+        ? DescriptiveStatistics.fromJSON(object.wordsPerSecond)
+        : undefined;
+    message.lettersPerSecond =
+      object.lettersPerSecond !== undefined && object.lettersPerSecond !== null
+        ? DescriptiveStatistics.fromJSON(object.lettersPerSecond)
+        : undefined;
+    message.wordsPerUtterance =
+      object.wordsPerUtterance !== undefined &&
+      object.wordsPerUtterance !== null
+        ? DescriptiveStatistics.fromJSON(object.wordsPerUtterance)
+        : undefined;
+    message.lettersPerUtterance =
+      object.lettersPerUtterance !== undefined &&
+      object.lettersPerUtterance !== null
+        ? DescriptiveStatistics.fromJSON(object.lettersPerUtterance)
+        : undefined;
+    message.utteranceCount =
+      object.utteranceCount !== undefined && object.utteranceCount !== null
+        ? Number(object.utteranceCount)
+        : 0;
+    message.utteranceDurationEstimation =
+      object.utteranceDurationEstimation !== undefined &&
+      object.utteranceDurationEstimation !== null
+        ? DescriptiveStatistics.fromJSON(object.utteranceDurationEstimation)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: SpeakerAnalysis): unknown {
+    const obj: any = {};
+    message.speakerTag !== undefined && (obj.speakerTag = message.speakerTag);
+    message.windowType !== undefined &&
+      (obj.windowType = speakerAnalysis_WindowTypeToJSON(message.windowType));
+    message.speechBoundaries !== undefined &&
+      (obj.speechBoundaries = message.speechBoundaries
+        ? AudioSegmentBoundaries.toJSON(message.speechBoundaries)
+        : undefined);
+    message.totalSpeechMs !== undefined &&
+      (obj.totalSpeechMs = Math.round(message.totalSpeechMs));
+    message.speechRatio !== undefined &&
+      (obj.speechRatio = message.speechRatio);
+    message.totalSilenceMs !== undefined &&
+      (obj.totalSilenceMs = Math.round(message.totalSilenceMs));
+    message.silenceRatio !== undefined &&
+      (obj.silenceRatio = message.silenceRatio);
+    message.wordsCount !== undefined &&
+      (obj.wordsCount = Math.round(message.wordsCount));
+    message.lettersCount !== undefined &&
+      (obj.lettersCount = Math.round(message.lettersCount));
+    message.wordsPerSecond !== undefined &&
+      (obj.wordsPerSecond = message.wordsPerSecond
+        ? DescriptiveStatistics.toJSON(message.wordsPerSecond)
+        : undefined);
+    message.lettersPerSecond !== undefined &&
+      (obj.lettersPerSecond = message.lettersPerSecond
+        ? DescriptiveStatistics.toJSON(message.lettersPerSecond)
+        : undefined);
+    message.wordsPerUtterance !== undefined &&
+      (obj.wordsPerUtterance = message.wordsPerUtterance
+        ? DescriptiveStatistics.toJSON(message.wordsPerUtterance)
+        : undefined);
+    message.lettersPerUtterance !== undefined &&
+      (obj.lettersPerUtterance = message.lettersPerUtterance
+        ? DescriptiveStatistics.toJSON(message.lettersPerUtterance)
+        : undefined);
+    message.utteranceCount !== undefined &&
+      (obj.utteranceCount = Math.round(message.utteranceCount));
+    message.utteranceDurationEstimation !== undefined &&
+      (obj.utteranceDurationEstimation = message.utteranceDurationEstimation
+        ? DescriptiveStatistics.toJSON(message.utteranceDurationEstimation)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SpeakerAnalysis>, I>>(
+    object: I
+  ): SpeakerAnalysis {
+    const message = { ...baseSpeakerAnalysis } as SpeakerAnalysis;
+    message.speakerTag = object.speakerTag ?? "";
+    message.windowType = object.windowType ?? 0;
+    message.speechBoundaries =
+      object.speechBoundaries !== undefined && object.speechBoundaries !== null
+        ? AudioSegmentBoundaries.fromPartial(object.speechBoundaries)
+        : undefined;
+    message.totalSpeechMs = object.totalSpeechMs ?? 0;
+    message.speechRatio = object.speechRatio ?? 0;
+    message.totalSilenceMs = object.totalSilenceMs ?? 0;
+    message.silenceRatio = object.silenceRatio ?? 0;
+    message.wordsCount = object.wordsCount ?? 0;
+    message.lettersCount = object.lettersCount ?? 0;
+    message.wordsPerSecond =
+      object.wordsPerSecond !== undefined && object.wordsPerSecond !== null
+        ? DescriptiveStatistics.fromPartial(object.wordsPerSecond)
+        : undefined;
+    message.lettersPerSecond =
+      object.lettersPerSecond !== undefined && object.lettersPerSecond !== null
+        ? DescriptiveStatistics.fromPartial(object.lettersPerSecond)
+        : undefined;
+    message.wordsPerUtterance =
+      object.wordsPerUtterance !== undefined &&
+      object.wordsPerUtterance !== null
+        ? DescriptiveStatistics.fromPartial(object.wordsPerUtterance)
+        : undefined;
+    message.lettersPerUtterance =
+      object.lettersPerUtterance !== undefined &&
+      object.lettersPerUtterance !== null
+        ? DescriptiveStatistics.fromPartial(object.lettersPerUtterance)
+        : undefined;
+    message.utteranceCount = object.utteranceCount ?? 0;
+    message.utteranceDurationEstimation =
+      object.utteranceDurationEstimation !== undefined &&
+      object.utteranceDurationEstimation !== null
+        ? DescriptiveStatistics.fromPartial(object.utteranceDurationEstimation)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(SpeakerAnalysis.$type, SpeakerAnalysis);
+
+const baseConversationAnalysis: object = {
+  $type: "speechkit.stt.v3.ConversationAnalysis",
+  totalSimultaneousSilenceDurationMs: 0,
+  totalSimultaneousSilenceRatio: 0,
+  totalSimultaneousSpeechDurationMs: 0,
+  totalSimultaneousSpeechRatio: 0,
+};
+
+export const ConversationAnalysis = {
+  $type: "speechkit.stt.v3.ConversationAnalysis" as const,
+
+  encode(
+    message: ConversationAnalysis,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.conversationBoundaries !== undefined) {
+      AudioSegmentBoundaries.encode(
+        message.conversationBoundaries,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.totalSimultaneousSilenceDurationMs !== 0) {
+      writer.uint32(16).int64(message.totalSimultaneousSilenceDurationMs);
+    }
+    if (message.totalSimultaneousSilenceRatio !== 0) {
+      writer.uint32(25).double(message.totalSimultaneousSilenceRatio);
+    }
+    if (message.simultaneousSilenceDurationEstimation !== undefined) {
+      DescriptiveStatistics.encode(
+        message.simultaneousSilenceDurationEstimation,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    if (message.totalSimultaneousSpeechDurationMs !== 0) {
+      writer.uint32(40).int64(message.totalSimultaneousSpeechDurationMs);
+    }
+    if (message.totalSimultaneousSpeechRatio !== 0) {
+      writer.uint32(49).double(message.totalSimultaneousSpeechRatio);
+    }
+    if (message.simultaneousSpeechDurationEstimation !== undefined) {
+      DescriptiveStatistics.encode(
+        message.simultaneousSpeechDurationEstimation,
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
+    for (const v of message.speakerInterrupts) {
+      ConversationAnalysis_InterruptsEvaluation.encode(
+        v!,
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ConversationAnalysis {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseConversationAnalysis } as ConversationAnalysis;
+    message.speakerInterrupts = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.conversationBoundaries = AudioSegmentBoundaries.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.totalSimultaneousSilenceDurationMs = longToNumber(
+            reader.int64() as Long
+          );
+          break;
+        case 3:
+          message.totalSimultaneousSilenceRatio = reader.double();
+          break;
+        case 4:
+          message.simultaneousSilenceDurationEstimation =
+            DescriptiveStatistics.decode(reader, reader.uint32());
+          break;
+        case 5:
+          message.totalSimultaneousSpeechDurationMs = longToNumber(
+            reader.int64() as Long
+          );
+          break;
+        case 6:
+          message.totalSimultaneousSpeechRatio = reader.double();
+          break;
+        case 7:
+          message.simultaneousSpeechDurationEstimation =
+            DescriptiveStatistics.decode(reader, reader.uint32());
+          break;
+        case 8:
+          message.speakerInterrupts.push(
+            ConversationAnalysis_InterruptsEvaluation.decode(
+              reader,
+              reader.uint32()
+            )
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ConversationAnalysis {
+    const message = { ...baseConversationAnalysis } as ConversationAnalysis;
+    message.conversationBoundaries =
+      object.conversationBoundaries !== undefined &&
+      object.conversationBoundaries !== null
+        ? AudioSegmentBoundaries.fromJSON(object.conversationBoundaries)
+        : undefined;
+    message.totalSimultaneousSilenceDurationMs =
+      object.totalSimultaneousSilenceDurationMs !== undefined &&
+      object.totalSimultaneousSilenceDurationMs !== null
+        ? Number(object.totalSimultaneousSilenceDurationMs)
+        : 0;
+    message.totalSimultaneousSilenceRatio =
+      object.totalSimultaneousSilenceRatio !== undefined &&
+      object.totalSimultaneousSilenceRatio !== null
+        ? Number(object.totalSimultaneousSilenceRatio)
+        : 0;
+    message.simultaneousSilenceDurationEstimation =
+      object.simultaneousSilenceDurationEstimation !== undefined &&
+      object.simultaneousSilenceDurationEstimation !== null
+        ? DescriptiveStatistics.fromJSON(
+            object.simultaneousSilenceDurationEstimation
+          )
+        : undefined;
+    message.totalSimultaneousSpeechDurationMs =
+      object.totalSimultaneousSpeechDurationMs !== undefined &&
+      object.totalSimultaneousSpeechDurationMs !== null
+        ? Number(object.totalSimultaneousSpeechDurationMs)
+        : 0;
+    message.totalSimultaneousSpeechRatio =
+      object.totalSimultaneousSpeechRatio !== undefined &&
+      object.totalSimultaneousSpeechRatio !== null
+        ? Number(object.totalSimultaneousSpeechRatio)
+        : 0;
+    message.simultaneousSpeechDurationEstimation =
+      object.simultaneousSpeechDurationEstimation !== undefined &&
+      object.simultaneousSpeechDurationEstimation !== null
+        ? DescriptiveStatistics.fromJSON(
+            object.simultaneousSpeechDurationEstimation
+          )
+        : undefined;
+    message.speakerInterrupts = (object.speakerInterrupts ?? []).map((e: any) =>
+      ConversationAnalysis_InterruptsEvaluation.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: ConversationAnalysis): unknown {
+    const obj: any = {};
+    message.conversationBoundaries !== undefined &&
+      (obj.conversationBoundaries = message.conversationBoundaries
+        ? AudioSegmentBoundaries.toJSON(message.conversationBoundaries)
+        : undefined);
+    message.totalSimultaneousSilenceDurationMs !== undefined &&
+      (obj.totalSimultaneousSilenceDurationMs = Math.round(
+        message.totalSimultaneousSilenceDurationMs
+      ));
+    message.totalSimultaneousSilenceRatio !== undefined &&
+      (obj.totalSimultaneousSilenceRatio =
+        message.totalSimultaneousSilenceRatio);
+    message.simultaneousSilenceDurationEstimation !== undefined &&
+      (obj.simultaneousSilenceDurationEstimation =
+        message.simultaneousSilenceDurationEstimation
+          ? DescriptiveStatistics.toJSON(
+              message.simultaneousSilenceDurationEstimation
+            )
+          : undefined);
+    message.totalSimultaneousSpeechDurationMs !== undefined &&
+      (obj.totalSimultaneousSpeechDurationMs = Math.round(
+        message.totalSimultaneousSpeechDurationMs
+      ));
+    message.totalSimultaneousSpeechRatio !== undefined &&
+      (obj.totalSimultaneousSpeechRatio = message.totalSimultaneousSpeechRatio);
+    message.simultaneousSpeechDurationEstimation !== undefined &&
+      (obj.simultaneousSpeechDurationEstimation =
+        message.simultaneousSpeechDurationEstimation
+          ? DescriptiveStatistics.toJSON(
+              message.simultaneousSpeechDurationEstimation
+            )
+          : undefined);
+    if (message.speakerInterrupts) {
+      obj.speakerInterrupts = message.speakerInterrupts.map((e) =>
+        e ? ConversationAnalysis_InterruptsEvaluation.toJSON(e) : undefined
+      );
+    } else {
+      obj.speakerInterrupts = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ConversationAnalysis>, I>>(
+    object: I
+  ): ConversationAnalysis {
+    const message = { ...baseConversationAnalysis } as ConversationAnalysis;
+    message.conversationBoundaries =
+      object.conversationBoundaries !== undefined &&
+      object.conversationBoundaries !== null
+        ? AudioSegmentBoundaries.fromPartial(object.conversationBoundaries)
+        : undefined;
+    message.totalSimultaneousSilenceDurationMs =
+      object.totalSimultaneousSilenceDurationMs ?? 0;
+    message.totalSimultaneousSilenceRatio =
+      object.totalSimultaneousSilenceRatio ?? 0;
+    message.simultaneousSilenceDurationEstimation =
+      object.simultaneousSilenceDurationEstimation !== undefined &&
+      object.simultaneousSilenceDurationEstimation !== null
+        ? DescriptiveStatistics.fromPartial(
+            object.simultaneousSilenceDurationEstimation
+          )
+        : undefined;
+    message.totalSimultaneousSpeechDurationMs =
+      object.totalSimultaneousSpeechDurationMs ?? 0;
+    message.totalSimultaneousSpeechRatio =
+      object.totalSimultaneousSpeechRatio ?? 0;
+    message.simultaneousSpeechDurationEstimation =
+      object.simultaneousSpeechDurationEstimation !== undefined &&
+      object.simultaneousSpeechDurationEstimation !== null
+        ? DescriptiveStatistics.fromPartial(
+            object.simultaneousSpeechDurationEstimation
+          )
+        : undefined;
+    message.speakerInterrupts =
+      object.speakerInterrupts?.map((e) =>
+        ConversationAnalysis_InterruptsEvaluation.fromPartial(e)
+      ) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(ConversationAnalysis.$type, ConversationAnalysis);
+
+const baseConversationAnalysis_InterruptsEvaluation: object = {
+  $type: "speechkit.stt.v3.ConversationAnalysis.InterruptsEvaluation",
+  speakerTag: "",
+  interruptsCount: 0,
+  interruptsDurationMs: 0,
+};
+
+export const ConversationAnalysis_InterruptsEvaluation = {
+  $type: "speechkit.stt.v3.ConversationAnalysis.InterruptsEvaluation" as const,
+
+  encode(
+    message: ConversationAnalysis_InterruptsEvaluation,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.speakerTag !== "") {
+      writer.uint32(10).string(message.speakerTag);
+    }
+    if (message.interruptsCount !== 0) {
+      writer.uint32(16).int64(message.interruptsCount);
+    }
+    if (message.interruptsDurationMs !== 0) {
+      writer.uint32(24).int64(message.interruptsDurationMs);
+    }
+    for (const v of message.interrupts) {
+      AudioSegmentBoundaries.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ConversationAnalysis_InterruptsEvaluation {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseConversationAnalysis_InterruptsEvaluation,
+    } as ConversationAnalysis_InterruptsEvaluation;
+    message.interrupts = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.speakerTag = reader.string();
+          break;
+        case 2:
+          message.interruptsCount = longToNumber(reader.int64() as Long);
+          break;
+        case 3:
+          message.interruptsDurationMs = longToNumber(reader.int64() as Long);
+          break;
+        case 4:
+          message.interrupts.push(
+            AudioSegmentBoundaries.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ConversationAnalysis_InterruptsEvaluation {
+    const message = {
+      ...baseConversationAnalysis_InterruptsEvaluation,
+    } as ConversationAnalysis_InterruptsEvaluation;
+    message.speakerTag =
+      object.speakerTag !== undefined && object.speakerTag !== null
+        ? String(object.speakerTag)
+        : "";
+    message.interruptsCount =
+      object.interruptsCount !== undefined && object.interruptsCount !== null
+        ? Number(object.interruptsCount)
+        : 0;
+    message.interruptsDurationMs =
+      object.interruptsDurationMs !== undefined &&
+      object.interruptsDurationMs !== null
+        ? Number(object.interruptsDurationMs)
+        : 0;
+    message.interrupts = (object.interrupts ?? []).map((e: any) =>
+      AudioSegmentBoundaries.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: ConversationAnalysis_InterruptsEvaluation): unknown {
+    const obj: any = {};
+    message.speakerTag !== undefined && (obj.speakerTag = message.speakerTag);
+    message.interruptsCount !== undefined &&
+      (obj.interruptsCount = Math.round(message.interruptsCount));
+    message.interruptsDurationMs !== undefined &&
+      (obj.interruptsDurationMs = Math.round(message.interruptsDurationMs));
+    if (message.interrupts) {
+      obj.interrupts = message.interrupts.map((e) =>
+        e ? AudioSegmentBoundaries.toJSON(e) : undefined
+      );
+    } else {
+      obj.interrupts = [];
+    }
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<ConversationAnalysis_InterruptsEvaluation>, I>
+  >(object: I): ConversationAnalysis_InterruptsEvaluation {
+    const message = {
+      ...baseConversationAnalysis_InterruptsEvaluation,
+    } as ConversationAnalysis_InterruptsEvaluation;
+    message.speakerTag = object.speakerTag ?? "";
+    message.interruptsCount = object.interruptsCount ?? 0;
+    message.interruptsDurationMs = object.interruptsDurationMs ?? 0;
+    message.interrupts =
+      object.interrupts?.map((e) => AudioSegmentBoundaries.fromPartial(e)) ||
+      [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ConversationAnalysis_InterruptsEvaluation.$type,
+  ConversationAnalysis_InterruptsEvaluation
+);
+
 const baseStreamingResponse: object = {
   $type: "speechkit.stt.v3.StreamingResponse",
   responseWallTimeMs: 0,
+  channelTag: "",
 };
 
 export const StreamingResponse = {
@@ -2587,6 +4983,27 @@ export const StreamingResponse = {
     if (message.statusCode !== undefined) {
       StatusCode.encode(message.statusCode, writer.uint32(66).fork()).ldelim();
     }
+    if (message.classifierUpdate !== undefined) {
+      RecognitionClassifierUpdate.encode(
+        message.classifierUpdate,
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
+    if (message.speakerAnalysis !== undefined) {
+      SpeakerAnalysis.encode(
+        message.speakerAnalysis,
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
+    if (message.conversationAnalysis !== undefined) {
+      ConversationAnalysis.encode(
+        message.conversationAnalysis,
+        writer.uint32(98).fork()
+      ).ldelim();
+    }
+    if (message.channelTag !== "") {
+      writer.uint32(74).string(message.channelTag);
+    }
     return writer;
   },
 
@@ -2623,6 +5040,27 @@ export const StreamingResponse = {
           break;
         case 8:
           message.statusCode = StatusCode.decode(reader, reader.uint32());
+          break;
+        case 10:
+          message.classifierUpdate = RecognitionClassifierUpdate.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 11:
+          message.speakerAnalysis = SpeakerAnalysis.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 12:
+          message.conversationAnalysis = ConversationAnalysis.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 9:
+          message.channelTag = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2667,6 +5105,23 @@ export const StreamingResponse = {
       object.statusCode !== undefined && object.statusCode !== null
         ? StatusCode.fromJSON(object.statusCode)
         : undefined;
+    message.classifierUpdate =
+      object.classifierUpdate !== undefined && object.classifierUpdate !== null
+        ? RecognitionClassifierUpdate.fromJSON(object.classifierUpdate)
+        : undefined;
+    message.speakerAnalysis =
+      object.speakerAnalysis !== undefined && object.speakerAnalysis !== null
+        ? SpeakerAnalysis.fromJSON(object.speakerAnalysis)
+        : undefined;
+    message.conversationAnalysis =
+      object.conversationAnalysis !== undefined &&
+      object.conversationAnalysis !== null
+        ? ConversationAnalysis.fromJSON(object.conversationAnalysis)
+        : undefined;
+    message.channelTag =
+      object.channelTag !== undefined && object.channelTag !== null
+        ? String(object.channelTag)
+        : "";
     return message;
   },
 
@@ -2702,6 +5157,19 @@ export const StreamingResponse = {
       (obj.statusCode = message.statusCode
         ? StatusCode.toJSON(message.statusCode)
         : undefined);
+    message.classifierUpdate !== undefined &&
+      (obj.classifierUpdate = message.classifierUpdate
+        ? RecognitionClassifierUpdate.toJSON(message.classifierUpdate)
+        : undefined);
+    message.speakerAnalysis !== undefined &&
+      (obj.speakerAnalysis = message.speakerAnalysis
+        ? SpeakerAnalysis.toJSON(message.speakerAnalysis)
+        : undefined);
+    message.conversationAnalysis !== undefined &&
+      (obj.conversationAnalysis = message.conversationAnalysis
+        ? ConversationAnalysis.toJSON(message.conversationAnalysis)
+        : undefined);
+    message.channelTag !== undefined && (obj.channelTag = message.channelTag);
     return obj;
   },
 
@@ -2738,6 +5206,20 @@ export const StreamingResponse = {
       object.statusCode !== undefined && object.statusCode !== null
         ? StatusCode.fromPartial(object.statusCode)
         : undefined;
+    message.classifierUpdate =
+      object.classifierUpdate !== undefined && object.classifierUpdate !== null
+        ? RecognitionClassifierUpdate.fromPartial(object.classifierUpdate)
+        : undefined;
+    message.speakerAnalysis =
+      object.speakerAnalysis !== undefined && object.speakerAnalysis !== null
+        ? SpeakerAnalysis.fromPartial(object.speakerAnalysis)
+        : undefined;
+    message.conversationAnalysis =
+      object.conversationAnalysis !== undefined &&
+      object.conversationAnalysis !== null
+        ? ConversationAnalysis.fromPartial(object.conversationAnalysis)
+        : undefined;
+    message.channelTag = object.channelTag ?? "";
     return message;
   },
 };

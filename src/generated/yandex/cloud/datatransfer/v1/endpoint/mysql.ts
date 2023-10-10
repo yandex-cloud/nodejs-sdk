@@ -18,39 +18,19 @@ export const protobufPackage = "yandex.cloud.datatransfer.v1.endpoint";
 export interface OnPremiseMysql {
   $type: "yandex.cloud.datatransfer.v1.endpoint.OnPremiseMysql";
   hosts: string[];
-  /**
-   * Database port
-   *
-   * Default: 3306.
-   */
+  /** Database port */
   port: number;
-  /**
-   * TLS mode
-   *
-   * TLS settings for server connection. Disabled by default.
-   */
+  /** TLS settings for server connection. Disabled by default. */
   tlsMode?: TLSMode;
-  /**
-   * Network interface for endpoint
-   *
-   * Default: public IPv4.
-   */
+  /** Network interface for endpoint. If none will assume public ipv4 */
   subnetId: string;
 }
 
 export interface MysqlConnection {
   $type: "yandex.cloud.datatransfer.v1.endpoint.MysqlConnection";
-  /**
-   * Managed cluster
-   *
-   * Managed Service for MySQL cluster ID
-   */
+  /** Managed Service for MySQL cluster ID */
   mdbClusterId: string | undefined;
-  /**
-   * On-premise
-   *
-   * Connection options for on-premise MySQL
-   */
+  /** Connection options for on-premise MySQL */
   onPremise?: OnPremiseMysql | undefined;
 }
 
@@ -74,15 +54,12 @@ export interface MysqlObjectTransferSettings {
    * CREATE TRIGGER ...
    */
   trigger: ObjectTransferStage;
+  tables: ObjectTransferStage;
 }
 
 export interface MysqlSource {
   $type: "yandex.cloud.datatransfer.v1.endpoint.MysqlSource";
-  /**
-   * Connection settings
-   *
-   * Database connection settings
-   */
+  /** Database connection settings */
   connection?: MysqlConnection;
   /** Security groups */
   securityGroups: string[];
@@ -100,17 +77,9 @@ export interface MysqlSource {
    * __tm_gtid_keeper).
    */
   serviceDatabase: string;
-  /**
-   * Username
-   *
-   * User for database access.
-   */
+  /** User for database access. */
   user: string;
-  /**
-   * Password
-   *
-   * Password for database access.
-   */
+  /** Password for database access. */
   password?: Secret;
   includeTablesRegex: string[];
   excludeTablesRegex: string[];
@@ -131,11 +100,7 @@ export interface MysqlSource {
 
 export interface MysqlTarget {
   $type: "yandex.cloud.datatransfer.v1.endpoint.MysqlTarget";
-  /**
-   * Connection settings
-   *
-   * Database connection settings
-   */
+  /** Database connection settings */
   connection?: MysqlConnection;
   /** Security groups */
   securityGroups: string[];
@@ -147,23 +112,11 @@ export interface MysqlTarget {
    * schema for service table.
    */
   database: string;
-  /**
-   * Username
-   *
-   * User for database access.
-   */
+  /** User for database access. */
   user: string;
-  /**
-   * Password
-   *
-   * Password for database access.
-   */
+  /** Password for database access. */
   password?: Secret;
-  /**
-   * sql_mode
-   *
-   * Default: NO_AUTO_VALUE_ON_ZERO,NO_DIR_IN_CREATE,NO_ENGINE_SUBSTITUTION.
-   */
+  /** Default: NO_AUTO_VALUE_ON_ZERO,NO_DIR_IN_CREATE,NO_ENGINE_SUBSTITUTION. */
   sqlMode: string;
   /**
    * Disable constraints checks
@@ -391,6 +344,7 @@ const baseMysqlObjectTransferSettings: object = {
   view: 0,
   routine: 0,
   trigger: 0,
+  tables: 0,
 };
 
 export const MysqlObjectTransferSettings = {
@@ -409,6 +363,9 @@ export const MysqlObjectTransferSettings = {
     }
     if (message.trigger !== 0) {
       writer.uint32(24).int32(message.trigger);
+    }
+    if (message.tables !== 0) {
+      writer.uint32(32).int32(message.tables);
     }
     return writer;
   },
@@ -434,6 +391,9 @@ export const MysqlObjectTransferSettings = {
         case 3:
           message.trigger = reader.int32() as any;
           break;
+        case 4:
+          message.tables = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -458,6 +418,10 @@ export const MysqlObjectTransferSettings = {
       object.trigger !== undefined && object.trigger !== null
         ? objectTransferStageFromJSON(object.trigger)
         : 0;
+    message.tables =
+      object.tables !== undefined && object.tables !== null
+        ? objectTransferStageFromJSON(object.tables)
+        : 0;
     return message;
   },
 
@@ -469,6 +433,8 @@ export const MysqlObjectTransferSettings = {
       (obj.routine = objectTransferStageToJSON(message.routine));
     message.trigger !== undefined &&
       (obj.trigger = objectTransferStageToJSON(message.trigger));
+    message.tables !== undefined &&
+      (obj.tables = objectTransferStageToJSON(message.tables));
     return obj;
   },
 
@@ -481,6 +447,7 @@ export const MysqlObjectTransferSettings = {
     message.view = object.view ?? 0;
     message.routine = object.routine ?? 0;
     message.trigger = object.trigger ?? 0;
+    message.tables = object.tables ?? 0;
     return message;
   },
 };

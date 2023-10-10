@@ -6,7 +6,7 @@ import { Timestamp } from "../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.loadbalancer.v1";
 
-/** A TargetGroup resource. For more information, see [Target groups and resources](/docs/network-load-balancer/target-resources). */
+/** A TargetGroup resource. For more information, see [Target groups and resources](/docs/network-load-balancer/concepts/target-resources). */
 export interface TargetGroup {
   $type: "yandex.cloud.loadbalancer.v1.TargetGroup";
   /** Output only. ID of the target group. */

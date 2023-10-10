@@ -7,7 +7,7 @@ import { Timestamp } from "../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.containerregistry.v1";
 
-/** An Image resource. For more information, see [Docker image](/docs/cloud/container-registry/docker-image). */
+/** An Image resource. For more information, see [Docker image](/docs/container-registry/concepts/docker-image). */
 export interface Image {
   $type: "yandex.cloud.containerregistry.v1.Image";
   /** Output only. ID of the Docker image. */

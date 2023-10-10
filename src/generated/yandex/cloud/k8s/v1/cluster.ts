@@ -231,6 +231,10 @@ export interface Master {
   zonalMaster?: ZonalMaster | undefined;
   /** Parameters of the region for the master. */
   regionalMaster?: RegionalMaster | undefined;
+  /** Locations specification for Kubernetes control-plane (master) instances. */
+  locations: Location[];
+  /** Number of etcd nodes in cluster. */
+  etcdClusterSize: number;
   /** Version of Kubernetes components that runs on the master. */
   version: string;
   /**
@@ -246,6 +250,8 @@ export interface Master {
   maintenancePolicy?: MasterMaintenancePolicy;
   /** Master security groups. */
   securityGroupIds: string[];
+  /** Cloud Logging for master components. */
+  masterLogging?: MasterLogging;
 }
 
 export interface MasterAuth {
@@ -274,6 +280,14 @@ export interface RegionalMaster {
   externalV4Address: string;
   /** IPv6 external network address that is assigned to the master. */
   externalV6Address: string;
+}
+
+export interface Location {
+  $type: "yandex.cloud.k8s.v1.Location";
+  /** ID of the availability zone where the master resides. */
+  zoneId: string;
+  /** ID of the VPC network's subnet where the master resides. */
+  subnetId: string;
 }
 
 export interface MasterEndpoints {
@@ -325,6 +339,24 @@ export interface MasterMaintenancePolicy {
    * The time is set in UTC.
    */
   maintenanceWindow?: MaintenanceWindow;
+}
+
+export interface MasterLogging {
+  $type: "yandex.cloud.k8s.v1.MasterLogging";
+  /** Identifies whether Cloud Logging is enabled for master components. */
+  enabled: boolean;
+  /** ID of the log group where logs of master components should be stored. */
+  logGroupId: string | undefined;
+  /** ID of the folder where logs should be stored (in default group). */
+  folderId: string | undefined;
+  /** Identifies whether Cloud Logging is enabled for audit logs. */
+  auditEnabled: boolean;
+  /** Identifies whether Cloud Logging is enabled for cluster-autoscaler. */
+  clusterAutoscalerEnabled: boolean;
+  /** Identifies whether Cloud Logging is enabled for kube-apiserver. */
+  kubeApiserverEnabled: boolean;
+  /** Identifies whether Cloud Logging is enabled for events. */
+  eventsEnabled: boolean;
 }
 
 export interface NetworkPolicy {
@@ -853,6 +885,7 @@ messageTypeRegistry.set(Cluster_LabelsEntry.$type, Cluster_LabelsEntry);
 
 const baseMaster: object = {
   $type: "yandex.cloud.k8s.v1.Master",
+  etcdClusterSize: 0,
   version: "",
   securityGroupIds: "",
 };
@@ -875,6 +908,12 @@ export const Master = {
         message.regionalMaster,
         writer.uint32(58).fork()
       ).ldelim();
+    }
+    for (const v of message.locations) {
+      Location.encode(v!, writer.uint32(82).fork()).ldelim();
+    }
+    if (message.etcdClusterSize !== 0) {
+      writer.uint32(88).int64(message.etcdClusterSize);
     }
     if (message.version !== "") {
       writer.uint32(18).string(message.version);
@@ -903,6 +942,12 @@ export const Master = {
     for (const v of message.securityGroupIds) {
       writer.uint32(66).string(v!);
     }
+    if (message.masterLogging !== undefined) {
+      MasterLogging.encode(
+        message.masterLogging,
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -910,6 +955,7 @@ export const Master = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseMaster } as Master;
+    message.locations = [];
     message.securityGroupIds = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -922,6 +968,12 @@ export const Master = {
             reader,
             reader.uint32()
           );
+          break;
+        case 10:
+          message.locations.push(Location.decode(reader, reader.uint32()));
+          break;
+        case 11:
+          message.etcdClusterSize = longToNumber(reader.int64() as Long);
           break;
         case 2:
           message.version = reader.string();
@@ -944,6 +996,9 @@ export const Master = {
         case 8:
           message.securityGroupIds.push(reader.string());
           break;
+        case 9:
+          message.masterLogging = MasterLogging.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -962,6 +1017,13 @@ export const Master = {
       object.regionalMaster !== undefined && object.regionalMaster !== null
         ? RegionalMaster.fromJSON(object.regionalMaster)
         : undefined;
+    message.locations = (object.locations ?? []).map((e: any) =>
+      Location.fromJSON(e)
+    );
+    message.etcdClusterSize =
+      object.etcdClusterSize !== undefined && object.etcdClusterSize !== null
+        ? Number(object.etcdClusterSize)
+        : 0;
     message.version =
       object.version !== undefined && object.version !== null
         ? String(object.version)
@@ -986,6 +1048,10 @@ export const Master = {
     message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) =>
       String(e)
     );
+    message.masterLogging =
+      object.masterLogging !== undefined && object.masterLogging !== null
+        ? MasterLogging.fromJSON(object.masterLogging)
+        : undefined;
     return message;
   },
 
@@ -999,6 +1065,15 @@ export const Master = {
       (obj.regionalMaster = message.regionalMaster
         ? RegionalMaster.toJSON(message.regionalMaster)
         : undefined);
+    if (message.locations) {
+      obj.locations = message.locations.map((e) =>
+        e ? Location.toJSON(e) : undefined
+      );
+    } else {
+      obj.locations = [];
+    }
+    message.etcdClusterSize !== undefined &&
+      (obj.etcdClusterSize = Math.round(message.etcdClusterSize));
     message.version !== undefined && (obj.version = message.version);
     message.endpoints !== undefined &&
       (obj.endpoints = message.endpoints
@@ -1021,6 +1096,10 @@ export const Master = {
     } else {
       obj.securityGroupIds = [];
     }
+    message.masterLogging !== undefined &&
+      (obj.masterLogging = message.masterLogging
+        ? MasterLogging.toJSON(message.masterLogging)
+        : undefined);
     return obj;
   },
 
@@ -1034,6 +1113,9 @@ export const Master = {
       object.regionalMaster !== undefined && object.regionalMaster !== null
         ? RegionalMaster.fromPartial(object.regionalMaster)
         : undefined;
+    message.locations =
+      object.locations?.map((e) => Location.fromPartial(e)) || [];
+    message.etcdClusterSize = object.etcdClusterSize ?? 0;
     message.version = object.version ?? "";
     message.endpoints =
       object.endpoints !== undefined && object.endpoints !== null
@@ -1053,6 +1135,10 @@ export const Master = {
         ? MasterMaintenancePolicy.fromPartial(object.maintenancePolicy)
         : undefined;
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
+    message.masterLogging =
+      object.masterLogging !== undefined && object.masterLogging !== null
+        ? MasterLogging.fromPartial(object.masterLogging)
+        : undefined;
     return message;
   },
 };
@@ -1321,6 +1407,79 @@ export const RegionalMaster = {
 };
 
 messageTypeRegistry.set(RegionalMaster.$type, RegionalMaster);
+
+const baseLocation: object = {
+  $type: "yandex.cloud.k8s.v1.Location",
+  zoneId: "",
+  subnetId: "",
+};
+
+export const Location = {
+  $type: "yandex.cloud.k8s.v1.Location" as const,
+
+  encode(
+    message: Location,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.zoneId !== "") {
+      writer.uint32(10).string(message.zoneId);
+    }
+    if (message.subnetId !== "") {
+      writer.uint32(18).string(message.subnetId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Location {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseLocation } as Location;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.zoneId = reader.string();
+          break;
+        case 2:
+          message.subnetId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Location {
+    const message = { ...baseLocation } as Location;
+    message.zoneId =
+      object.zoneId !== undefined && object.zoneId !== null
+        ? String(object.zoneId)
+        : "";
+    message.subnetId =
+      object.subnetId !== undefined && object.subnetId !== null
+        ? String(object.subnetId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: Location): unknown {
+    const obj: any = {};
+    message.zoneId !== undefined && (obj.zoneId = message.zoneId);
+    message.subnetId !== undefined && (obj.subnetId = message.subnetId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Location>, I>>(object: I): Location {
+    const message = { ...baseLocation } as Location;
+    message.zoneId = object.zoneId ?? "";
+    message.subnetId = object.subnetId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Location.$type, Location);
 
 const baseMasterEndpoints: object = {
   $type: "yandex.cloud.k8s.v1.MasterEndpoints",
@@ -1637,6 +1796,150 @@ export const MasterMaintenancePolicy = {
 };
 
 messageTypeRegistry.set(MasterMaintenancePolicy.$type, MasterMaintenancePolicy);
+
+const baseMasterLogging: object = {
+  $type: "yandex.cloud.k8s.v1.MasterLogging",
+  enabled: false,
+  auditEnabled: false,
+  clusterAutoscalerEnabled: false,
+  kubeApiserverEnabled: false,
+  eventsEnabled: false,
+};
+
+export const MasterLogging = {
+  $type: "yandex.cloud.k8s.v1.MasterLogging" as const,
+
+  encode(
+    message: MasterLogging,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.enabled === true) {
+      writer.uint32(8).bool(message.enabled);
+    }
+    if (message.logGroupId !== undefined) {
+      writer.uint32(18).string(message.logGroupId);
+    }
+    if (message.folderId !== undefined) {
+      writer.uint32(26).string(message.folderId);
+    }
+    if (message.auditEnabled === true) {
+      writer.uint32(32).bool(message.auditEnabled);
+    }
+    if (message.clusterAutoscalerEnabled === true) {
+      writer.uint32(40).bool(message.clusterAutoscalerEnabled);
+    }
+    if (message.kubeApiserverEnabled === true) {
+      writer.uint32(48).bool(message.kubeApiserverEnabled);
+    }
+    if (message.eventsEnabled === true) {
+      writer.uint32(56).bool(message.eventsEnabled);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MasterLogging {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMasterLogging } as MasterLogging;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.enabled = reader.bool();
+          break;
+        case 2:
+          message.logGroupId = reader.string();
+          break;
+        case 3:
+          message.folderId = reader.string();
+          break;
+        case 4:
+          message.auditEnabled = reader.bool();
+          break;
+        case 5:
+          message.clusterAutoscalerEnabled = reader.bool();
+          break;
+        case 6:
+          message.kubeApiserverEnabled = reader.bool();
+          break;
+        case 7:
+          message.eventsEnabled = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MasterLogging {
+    const message = { ...baseMasterLogging } as MasterLogging;
+    message.enabled =
+      object.enabled !== undefined && object.enabled !== null
+        ? Boolean(object.enabled)
+        : false;
+    message.logGroupId =
+      object.logGroupId !== undefined && object.logGroupId !== null
+        ? String(object.logGroupId)
+        : undefined;
+    message.folderId =
+      object.folderId !== undefined && object.folderId !== null
+        ? String(object.folderId)
+        : undefined;
+    message.auditEnabled =
+      object.auditEnabled !== undefined && object.auditEnabled !== null
+        ? Boolean(object.auditEnabled)
+        : false;
+    message.clusterAutoscalerEnabled =
+      object.clusterAutoscalerEnabled !== undefined &&
+      object.clusterAutoscalerEnabled !== null
+        ? Boolean(object.clusterAutoscalerEnabled)
+        : false;
+    message.kubeApiserverEnabled =
+      object.kubeApiserverEnabled !== undefined &&
+      object.kubeApiserverEnabled !== null
+        ? Boolean(object.kubeApiserverEnabled)
+        : false;
+    message.eventsEnabled =
+      object.eventsEnabled !== undefined && object.eventsEnabled !== null
+        ? Boolean(object.eventsEnabled)
+        : false;
+    return message;
+  },
+
+  toJSON(message: MasterLogging): unknown {
+    const obj: any = {};
+    message.enabled !== undefined && (obj.enabled = message.enabled);
+    message.logGroupId !== undefined && (obj.logGroupId = message.logGroupId);
+    message.folderId !== undefined && (obj.folderId = message.folderId);
+    message.auditEnabled !== undefined &&
+      (obj.auditEnabled = message.auditEnabled);
+    message.clusterAutoscalerEnabled !== undefined &&
+      (obj.clusterAutoscalerEnabled = message.clusterAutoscalerEnabled);
+    message.kubeApiserverEnabled !== undefined &&
+      (obj.kubeApiserverEnabled = message.kubeApiserverEnabled);
+    message.eventsEnabled !== undefined &&
+      (obj.eventsEnabled = message.eventsEnabled);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MasterLogging>, I>>(
+    object: I
+  ): MasterLogging {
+    const message = { ...baseMasterLogging } as MasterLogging;
+    message.enabled = object.enabled ?? false;
+    message.logGroupId = object.logGroupId ?? undefined;
+    message.folderId = object.folderId ?? undefined;
+    message.auditEnabled = object.auditEnabled ?? false;
+    message.clusterAutoscalerEnabled = object.clusterAutoscalerEnabled ?? false;
+    message.kubeApiserverEnabled = object.kubeApiserverEnabled ?? false;
+    message.eventsEnabled = object.eventsEnabled ?? false;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(MasterLogging.$type, MasterLogging);
 
 const baseNetworkPolicy: object = {
   $type: "yandex.cloud.k8s.v1.NetworkPolicy",

@@ -19,6 +19,15 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
     },
     {
         serviceIds: [
+            'yandex.cloud.backup.v1.BackupService',
+            'yandex.cloud.backup.v1.PolicyService',
+            'yandex.cloud.backup.v1.ProviderService',
+            'yandex.cloud.backup.v1.ResourceService',
+        ],
+        endpoint: 'backup.api.cloud.yandex.net:443',
+    },
+    {
+        serviceIds: [
             'yandex.cloud.compute.v1.DiskPlacementGroupService',
             'yandex.cloud.compute.v1.DiskService',
             'yandex.cloud.compute.v1.DiskTypeService',
@@ -32,6 +41,7 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
             'yandex.cloud.compute.v1.ZoneService',
             'yandex.cloud.compute.v1.instancegroup.InstanceGroupService',
             'yandex.cloud.compute.v1.SnapshotScheduleService',
+            'yandex.cloud.compute.v1.GpuClusterService',
         ],
         endpoint: 'compute.api.cloud.yandex.net:443',
     },
@@ -94,6 +104,7 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
             'yandex.cloud.mdb.postgresql.v1.DatabaseService',
             'yandex.cloud.mdb.postgresql.v1.ResourcePresetService',
             'yandex.cloud.mdb.postgresql.v1.UserService',
+            'yandex.cloud.mdb.postgresql.v1.PerformanceDiagnosticsService',
             'yandex.cloud.mdb.redis.v1.BackupService',
             'yandex.cloud.mdb.redis.v1.ClusterService',
             'yandex.cloud.mdb.redis.v1.ResourcePresetService',
@@ -102,6 +113,9 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
             'yandex.cloud.mdb.sqlserver.v1.DatabaseService',
             'yandex.cloud.mdb.sqlserver.v1.ResourcePresetService',
             'yandex.cloud.mdb.sqlserver.v1.UserService',
+            'yandex.cloud.mdb.opensearch.v1.BackupService',
+            'yandex.cloud.mdb.opensearch.v1.ClusterService',
+            'yandex.cloud.mdb.opensearch.v1.ResourcePresetService',
         ],
         endpoint: 'mdb.api.cloud.yandex.net:443',
     },
@@ -132,6 +146,7 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
             'yandex.cloud.containerregistry.v1.RegistryService',
             'yandex.cloud.containerregistry.v1.RepositoryService',
             'yandex.cloud.containerregistry.v1.ScannerService',
+            'yandex.cloud.containerregistry.v1.ScanPolicyService',
         ],
         endpoint: 'container-registry.api.cloud.yandex.net:443',
     },
@@ -177,6 +192,8 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
     {
         serviceIds: [
             'yandex.cloud.logging.v1.LogGroupService',
+            'yandex.cloud.logging.v1.ExportService',
+            'yandex.cloud.logging.v1.SinkService',
         ],
         endpoint: 'logging.api.cloud.yandex.net:443',
     },
@@ -204,21 +221,21 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
     },
     {
         serviceIds: [
+            'yandex.cloud.iot.devices.v1.DeviceService',
             'yandex.cloud.iot.devices.v1.RegistryService',
         ],
         endpoint: 'iot-devices.api.cloud.yandex.net:443',
     },
     {
         serviceIds: [
-            'yandex.cloud.iot.devices.v1.RegistryDataService',
-            'yandex.cloud.iot.devices.v1.DeviceService',
+            'yandex.cloud.iot.broker.v1.BrokerDataService',
             'yandex.cloud.iot.devices.v1.DeviceDataService',
+            'yandex.cloud.iot.devices.v1.RegistryDataService',
         ],
         endpoint: 'iot-data.api.cloud.yandex.net:443',
     },
     {
         serviceIds: [
-            'yandex.cloud.iot.broker.v1.BrokerDataService',
             'yandex.cloud.iot.broker.v1.BrokerService',
         ],
         endpoint: 'iot-broker.api.cloud.yandex.net:443',
@@ -237,11 +254,19 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
         endpoint: 'dataproc-manager.api.cloud.yandex.net:443',
     },
     {
-        serviceIds: ['yandex.cloud.kms.v1.SymmetricKeyService'],
+        serviceIds: [
+            'yandex.cloud.kms.v1.SymmetricKeyService',
+            'yandex.cloud.kms.v1.asymmetricencryption.AsymmetricEncryptionKeyService',
+            'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignatureKeyService',
+        ],
         endpoint: 'kms.api.cloud.yandex.net:443',
     },
     {
-        serviceIds: ['yandex.cloud.kms.v1.SymmetricCryptoService'],
+        serviceIds: [
+            'yandex.cloud.kms.v1.SymmetricCryptoService',
+            'yandex.cloud.kms.v1.asymmetricencryption.AsymmetricEncryptionCryptoService',
+            'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignatureCryptoService',
+        ],
         endpoint: 'kms.yandex:443',
     },
     {
@@ -258,6 +283,12 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
             'yandex.cloud.ai.vision.v2.ImageClassifierService',
         ],
         endpoint: 'vision.api.cloud.yandex.net:443',
+    },
+    {
+        serviceIds: [
+            'yandex.cloud.ai.ocr.v1.TextRecognitionService',
+        ],
+        endpoint: 'ocr.api.cloud.yandex.net:443',
     },
     {
         serviceIds: ['yandex.cloud.ai.stt.v2.SttService'],
@@ -312,6 +343,8 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
             'yandex.cloud.datasphere.v1.NodeService',
             'yandex.cloud.datasphere.v1.ProjectDataService',
             'yandex.cloud.datasphere.v1.ProjectService',
+            'yandex.cloud.datasphere.v2.ProjectService',
+            'yandex.cloud.datasphere.v2.CommunityService',
         ],
         endpoint: 'datasphere.api.cloud.yandex.net:443',
     },
@@ -343,6 +376,9 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
     {
         serviceIds: [
             'yandex.cloud.marketplace.v1.metering.ImageProductUsageService',
+            'yandex.cloud.marketplace.licensemanager.v1.InstanceService',
+            'yandex.cloud.marketplace.licensemanager.v1.LockService',
+            'yandex.cloud.marketplace.metering.v1.ImageProductUsageService',
         ],
         endpoint: 'marketplace.api.cloud.yandex.net:443',
     },
@@ -353,6 +389,8 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
             'yandex.cloud.organizationmanager.v1.saml.CertificateService',
             'yandex.cloud.organizationmanager.v1.saml.FederationService',
             'yandex.cloud.organizationmanager.v1.GroupService',
+            'yandex.cloud.organizationmanager.v1.GroupMappingService',
+            'yandex.cloud.organizationmanager.v1.SshCertificateService',
         ],
         endpoint: 'organization-manager.api.cloud.yandex.net:443',
     },
@@ -361,6 +399,18 @@ const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
             'yandex.cloud.storage.v1.BucketService',
         ],
         endpoint: 'storage.api.cloud.yandex.net:443',
+    },
+    {
+        serviceIds: [
+            'yandex.cloud.loadtesting.agent.v1.AgentRegistrationService',
+            'yandex.cloud.loadtesting.agent.v1.AgentService',
+            'yandex.cloud.loadtesting.agent.v1.JobService',
+            'yandex.cloud.loadtesting.agent.v1.MonitoringService',
+            'yandex.cloud.loadtesting.agent.v1.TestService',
+            'yandex.cloud.loadtesting.agent.v1.TrailService',
+            'yandex.cloud.loadtesting.api.v1.AgentService',
+        ],
+        endpoint: 'loadtesting.api.cloud.yandex.net:443',
     },
 ];
 

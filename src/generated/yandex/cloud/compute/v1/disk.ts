@@ -115,6 +115,7 @@ export interface DiskPlacementPolicy {
   $type: "yandex.cloud.compute.v1.DiskPlacementPolicy";
   /** Placement group ID. */
   placementGroupId: string;
+  placementGroupPartition: number;
 }
 
 const baseDisk: object = {
@@ -492,6 +493,7 @@ messageTypeRegistry.set(Disk_LabelsEntry.$type, Disk_LabelsEntry);
 const baseDiskPlacementPolicy: object = {
   $type: "yandex.cloud.compute.v1.DiskPlacementPolicy",
   placementGroupId: "",
+  placementGroupPartition: 0,
 };
 
 export const DiskPlacementPolicy = {
@@ -503,6 +505,9 @@ export const DiskPlacementPolicy = {
   ): _m0.Writer {
     if (message.placementGroupId !== "") {
       writer.uint32(10).string(message.placementGroupId);
+    }
+    if (message.placementGroupPartition !== 0) {
+      writer.uint32(16).int64(message.placementGroupPartition);
     }
     return writer;
   },
@@ -516,6 +521,11 @@ export const DiskPlacementPolicy = {
       switch (tag >>> 3) {
         case 1:
           message.placementGroupId = reader.string();
+          break;
+        case 2:
+          message.placementGroupPartition = longToNumber(
+            reader.int64() as Long
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -531,6 +541,11 @@ export const DiskPlacementPolicy = {
       object.placementGroupId !== undefined && object.placementGroupId !== null
         ? String(object.placementGroupId)
         : "";
+    message.placementGroupPartition =
+      object.placementGroupPartition !== undefined &&
+      object.placementGroupPartition !== null
+        ? Number(object.placementGroupPartition)
+        : 0;
     return message;
   },
 
@@ -538,6 +553,10 @@ export const DiskPlacementPolicy = {
     const obj: any = {};
     message.placementGroupId !== undefined &&
       (obj.placementGroupId = message.placementGroupId);
+    message.placementGroupPartition !== undefined &&
+      (obj.placementGroupPartition = Math.round(
+        message.placementGroupPartition
+      ));
     return obj;
   },
 
@@ -546,6 +565,7 @@ export const DiskPlacementPolicy = {
   ): DiskPlacementPolicy {
     const message = { ...baseDiskPlacementPolicy } as DiskPlacementPolicy;
     message.placementGroupId = object.placementGroupId ?? "";
+    message.placementGroupPartition = object.placementGroupPartition ?? 0;
     return message;
   },
 };

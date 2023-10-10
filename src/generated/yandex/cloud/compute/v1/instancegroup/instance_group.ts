@@ -618,6 +618,13 @@ export interface AllocationPolicy_Zone {
   $type: "yandex.cloud.compute.v1.instancegroup.AllocationPolicy.Zone";
   /** ID of the availability zone where the instance resides. */
   zoneId: string;
+  /**
+   * Each instance in a zone will be associated with exactly one of a tag from a pool below.
+   * All specified tags must be unique across the whole group not only the zone.
+   * It is guaranteed that during whole deploy only tags from prefix of the specified list will be used.
+   * It is possible to use tag associated with instance in templating via {instance.tag}.
+   */
+  instanceTagsPool: string[];
 }
 
 export interface InstanceTemplate {
@@ -696,6 +703,15 @@ export interface InstanceTemplate {
   hostname: string;
   /** Placement Group */
   placementPolicy?: PlacementPolicy;
+  /**
+   * Array of filesystems to attach to the instance.
+   *
+   * The filesystems must reside in the same availability zone as the instance.
+   *
+   * To use the instance with an attached filesystem, the latter must be mounted.
+   * For details, see [documentation](/docs/compute/operations/filesystem/attach-to-vm).
+   */
+  filesystemSpecs: AttachedFilesystemSpec[];
 }
 
 export interface InstanceTemplate_LabelsEntry {
@@ -708,6 +724,67 @@ export interface InstanceTemplate_MetadataEntry {
   $type: "yandex.cloud.compute.v1.instancegroup.InstanceTemplate.MetadataEntry";
   key: string;
   value: string;
+}
+
+export interface AttachedFilesystemSpec {
+  $type: "yandex.cloud.compute.v1.instancegroup.AttachedFilesystemSpec";
+  /** Mode of access to the filesystem that should be attached. */
+  mode: AttachedFilesystemSpec_Mode;
+  /**
+   * Name of the device representing the filesystem on the instance.
+   *
+   * The name should be used for referencing the filesystem from within the instance
+   * when it's being mounted, resized etc.
+   *
+   * If not specified, a random value will be generated.
+   */
+  deviceName: string;
+  /** ID of the filesystem that should be attached. */
+  filesystemId: string;
+}
+
+export enum AttachedFilesystemSpec_Mode {
+  MODE_UNSPECIFIED = 0,
+  /** READ_ONLY - Read-only access. */
+  READ_ONLY = 1,
+  /** READ_WRITE - Read/Write access. Default value. */
+  READ_WRITE = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function attachedFilesystemSpec_ModeFromJSON(
+  object: any
+): AttachedFilesystemSpec_Mode {
+  switch (object) {
+    case 0:
+    case "MODE_UNSPECIFIED":
+      return AttachedFilesystemSpec_Mode.MODE_UNSPECIFIED;
+    case 1:
+    case "READ_ONLY":
+      return AttachedFilesystemSpec_Mode.READ_ONLY;
+    case 2:
+    case "READ_WRITE":
+      return AttachedFilesystemSpec_Mode.READ_WRITE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return AttachedFilesystemSpec_Mode.UNRECOGNIZED;
+  }
+}
+
+export function attachedFilesystemSpec_ModeToJSON(
+  object: AttachedFilesystemSpec_Mode
+): string {
+  switch (object) {
+    case AttachedFilesystemSpec_Mode.MODE_UNSPECIFIED:
+      return "MODE_UNSPECIFIED";
+    case AttachedFilesystemSpec_Mode.READ_ONLY:
+      return "READ_ONLY";
+    case AttachedFilesystemSpec_Mode.READ_WRITE:
+      return "READ_WRITE";
+    default:
+      return "UNKNOWN";
+  }
 }
 
 export interface PlacementPolicy {
@@ -804,6 +881,8 @@ export interface AttachedDiskSpec {
   diskSpec?: AttachedDiskSpec_DiskSpec;
   /** Set to use an existing disk. To set use variables. */
   diskId: string;
+  /** When set can be later used to change DiskSpec of actual disk. */
+  name: string;
 }
 
 export enum AttachedDiskSpec_Mode {
@@ -984,13 +1063,15 @@ export function networkSettings_TypeToJSON(
 
 export interface LoadBalancerSpec {
   $type: "yandex.cloud.compute.v1.instancegroup.LoadBalancerSpec";
-  /** Specification of the target group that the instance group will be added to. For more information, see [Target groups and resources](/docs/load-balancer/concepts/target-resources). */
+  /** Specification of the target group that the instance group will be added to. For more information, see [Target groups and resources](/docs/network-load-balancer/concepts/target-resources). */
   targetGroupSpec?: TargetGroupSpec;
   /**
    * Timeout for waiting for the VM to be checked by the load balancer. If the timeout is exceeded,
    * the VM will be turned off based on the deployment policy. Specified in seconds.
    */
   maxOpeningTrafficDuration?: Duration;
+  /** Do not wait load balancer health checks. */
+  ignoreHealthChecks: boolean;
 }
 
 export interface TargetGroupSpec {
@@ -1018,6 +1099,8 @@ export interface ApplicationLoadBalancerSpec {
    * the VM will be turned off based on the deployment policy. Specified in seconds.
    */
   maxOpeningTrafficDuration?: Duration;
+  /** Do not wait load balancer health checks. */
+  ignoreHealthChecks: boolean;
 }
 
 export interface ApplicationTargetGroupSpec {
@@ -1038,7 +1121,7 @@ export interface ApplicationTargetGroupSpec_LabelsEntry {
 
 export interface HealthChecksSpec {
   $type: "yandex.cloud.compute.v1.instancegroup.HealthChecksSpec";
-  /** Health checking specification. For more information, see [Health check](/docs/load-balancer/concepts/health-check). */
+  /** Health checking specification. For more information, see [Health check](/docs/network-load-balancer/concepts/health-check). */
   healthCheckSpecs: HealthCheckSpec[];
   /**
    * Timeout for waiting for the VM to become healthy. If the timeout is exceeded,
@@ -1098,6 +1181,8 @@ export interface ManagedInstance {
   networkInterfaces: NetworkInterface[];
   /** The timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format when the status of the managed instance was last changed. */
   statusChangedAt?: Date;
+  /** Managed instance tag. */
+  instanceTag: string;
 }
 
 export enum ManagedInstance_Status {
@@ -3378,6 +3463,7 @@ messageTypeRegistry.set(AllocationPolicy.$type, AllocationPolicy);
 const baseAllocationPolicy_Zone: object = {
   $type: "yandex.cloud.compute.v1.instancegroup.AllocationPolicy.Zone",
   zoneId: "",
+  instanceTagsPool: "",
 };
 
 export const AllocationPolicy_Zone = {
@@ -3390,6 +3476,9 @@ export const AllocationPolicy_Zone = {
     if (message.zoneId !== "") {
       writer.uint32(10).string(message.zoneId);
     }
+    for (const v of message.instanceTagsPool) {
+      writer.uint32(18).string(v!);
+    }
     return writer;
   },
 
@@ -3400,11 +3489,15 @@ export const AllocationPolicy_Zone = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseAllocationPolicy_Zone } as AllocationPolicy_Zone;
+    message.instanceTagsPool = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
           message.zoneId = reader.string();
+          break;
+        case 2:
+          message.instanceTagsPool.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -3420,12 +3513,20 @@ export const AllocationPolicy_Zone = {
       object.zoneId !== undefined && object.zoneId !== null
         ? String(object.zoneId)
         : "";
+    message.instanceTagsPool = (object.instanceTagsPool ?? []).map((e: any) =>
+      String(e)
+    );
     return message;
   },
 
   toJSON(message: AllocationPolicy_Zone): unknown {
     const obj: any = {};
     message.zoneId !== undefined && (obj.zoneId = message.zoneId);
+    if (message.instanceTagsPool) {
+      obj.instanceTagsPool = message.instanceTagsPool.map((e) => e);
+    } else {
+      obj.instanceTagsPool = [];
+    }
     return obj;
   },
 
@@ -3434,6 +3535,7 @@ export const AllocationPolicy_Zone = {
   ): AllocationPolicy_Zone {
     const message = { ...baseAllocationPolicy_Zone } as AllocationPolicy_Zone;
     message.zoneId = object.zoneId ?? "";
+    message.instanceTagsPool = object.instanceTagsPool?.map((e) => e) || [];
     return message;
   },
 };
@@ -3529,6 +3631,9 @@ export const InstanceTemplate = {
         writer.uint32(114).fork()
       ).ldelim();
     }
+    for (const v of message.filesystemSpecs) {
+      AttachedFilesystemSpec.encode(v!, writer.uint32(122).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -3540,6 +3645,7 @@ export const InstanceTemplate = {
     message.metadata = {};
     message.secondaryDiskSpecs = [];
     message.networkInterfaceSpecs = [];
+    message.filesystemSpecs = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -3613,6 +3719,11 @@ export const InstanceTemplate = {
             reader.uint32()
           );
           break;
+        case 15:
+          message.filesystemSpecs.push(
+            AttachedFilesystemSpec.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3681,6 +3792,9 @@ export const InstanceTemplate = {
       object.placementPolicy !== undefined && object.placementPolicy !== null
         ? PlacementPolicy.fromJSON(object.placementPolicy)
         : undefined;
+    message.filesystemSpecs = (object.filesystemSpecs ?? []).map((e: any) =>
+      AttachedFilesystemSpec.fromJSON(e)
+    );
     return message;
   },
 
@@ -3739,6 +3853,13 @@ export const InstanceTemplate = {
       (obj.placementPolicy = message.placementPolicy
         ? PlacementPolicy.toJSON(message.placementPolicy)
         : undefined);
+    if (message.filesystemSpecs) {
+      obj.filesystemSpecs = message.filesystemSpecs.map((e) =>
+        e ? AttachedFilesystemSpec.toJSON(e) : undefined
+      );
+    } else {
+      obj.filesystemSpecs = [];
+    }
     return obj;
   },
 
@@ -3794,6 +3915,10 @@ export const InstanceTemplate = {
       object.placementPolicy !== undefined && object.placementPolicy !== null
         ? PlacementPolicy.fromPartial(object.placementPolicy)
         : undefined;
+    message.filesystemSpecs =
+      object.filesystemSpecs?.map((e) =>
+        AttachedFilesystemSpec.fromPartial(e)
+      ) || [];
     return message;
   },
 };
@@ -3971,6 +4096,100 @@ messageTypeRegistry.set(
   InstanceTemplate_MetadataEntry.$type,
   InstanceTemplate_MetadataEntry
 );
+
+const baseAttachedFilesystemSpec: object = {
+  $type: "yandex.cloud.compute.v1.instancegroup.AttachedFilesystemSpec",
+  mode: 0,
+  deviceName: "",
+  filesystemId: "",
+};
+
+export const AttachedFilesystemSpec = {
+  $type:
+    "yandex.cloud.compute.v1.instancegroup.AttachedFilesystemSpec" as const,
+
+  encode(
+    message: AttachedFilesystemSpec,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.mode !== 0) {
+      writer.uint32(8).int32(message.mode);
+    }
+    if (message.deviceName !== "") {
+      writer.uint32(18).string(message.deviceName);
+    }
+    if (message.filesystemId !== "") {
+      writer.uint32(26).string(message.filesystemId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): AttachedFilesystemSpec {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseAttachedFilesystemSpec } as AttachedFilesystemSpec;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.mode = reader.int32() as any;
+          break;
+        case 2:
+          message.deviceName = reader.string();
+          break;
+        case 3:
+          message.filesystemId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AttachedFilesystemSpec {
+    const message = { ...baseAttachedFilesystemSpec } as AttachedFilesystemSpec;
+    message.mode =
+      object.mode !== undefined && object.mode !== null
+        ? attachedFilesystemSpec_ModeFromJSON(object.mode)
+        : 0;
+    message.deviceName =
+      object.deviceName !== undefined && object.deviceName !== null
+        ? String(object.deviceName)
+        : "";
+    message.filesystemId =
+      object.filesystemId !== undefined && object.filesystemId !== null
+        ? String(object.filesystemId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: AttachedFilesystemSpec): unknown {
+    const obj: any = {};
+    message.mode !== undefined &&
+      (obj.mode = attachedFilesystemSpec_ModeToJSON(message.mode));
+    message.deviceName !== undefined && (obj.deviceName = message.deviceName);
+    message.filesystemId !== undefined &&
+      (obj.filesystemId = message.filesystemId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AttachedFilesystemSpec>, I>>(
+    object: I
+  ): AttachedFilesystemSpec {
+    const message = { ...baseAttachedFilesystemSpec } as AttachedFilesystemSpec;
+    message.mode = object.mode ?? 0;
+    message.deviceName = object.deviceName ?? "";
+    message.filesystemId = object.filesystemId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(AttachedFilesystemSpec.$type, AttachedFilesystemSpec);
 
 const basePlacementPolicy: object = {
   $type: "yandex.cloud.compute.v1.instancegroup.PlacementPolicy",
@@ -4271,6 +4490,7 @@ const baseAttachedDiskSpec: object = {
   mode: 0,
   deviceName: "",
   diskId: "",
+  name: "",
 };
 
 export const AttachedDiskSpec = {
@@ -4294,6 +4514,9 @@ export const AttachedDiskSpec = {
     }
     if (message.diskId !== "") {
       writer.uint32(34).string(message.diskId);
+    }
+    if (message.name !== "") {
+      writer.uint32(58).string(message.name);
     }
     return writer;
   },
@@ -4319,6 +4542,9 @@ export const AttachedDiskSpec = {
           break;
         case 4:
           message.diskId = reader.string();
+          break;
+        case 7:
+          message.name = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -4346,6 +4572,10 @@ export const AttachedDiskSpec = {
       object.diskId !== undefined && object.diskId !== null
         ? String(object.diskId)
         : "";
+    message.name =
+      object.name !== undefined && object.name !== null
+        ? String(object.name)
+        : "";
     return message;
   },
 
@@ -4359,6 +4589,7 @@ export const AttachedDiskSpec = {
         ? AttachedDiskSpec_DiskSpec.toJSON(message.diskSpec)
         : undefined);
     message.diskId !== undefined && (obj.diskId = message.diskId);
+    message.name !== undefined && (obj.name = message.name);
     return obj;
   },
 
@@ -4373,6 +4604,7 @@ export const AttachedDiskSpec = {
         ? AttachedDiskSpec_DiskSpec.fromPartial(object.diskSpec)
         : undefined;
     message.diskId = object.diskId ?? "";
+    message.name = object.name ?? "";
     return message;
   },
 };
@@ -5101,6 +5333,7 @@ messageTypeRegistry.set(NetworkSettings.$type, NetworkSettings);
 
 const baseLoadBalancerSpec: object = {
   $type: "yandex.cloud.compute.v1.instancegroup.LoadBalancerSpec",
+  ignoreHealthChecks: false,
 };
 
 export const LoadBalancerSpec = {
@@ -5121,6 +5354,9 @@ export const LoadBalancerSpec = {
         message.maxOpeningTrafficDuration,
         writer.uint32(18).fork()
       ).ldelim();
+    }
+    if (message.ignoreHealthChecks === true) {
+      writer.uint32(32).bool(message.ignoreHealthChecks);
     }
     return writer;
   },
@@ -5144,6 +5380,9 @@ export const LoadBalancerSpec = {
             reader.uint32()
           );
           break;
+        case 4:
+          message.ignoreHealthChecks = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -5163,6 +5402,11 @@ export const LoadBalancerSpec = {
       object.maxOpeningTrafficDuration !== null
         ? Duration.fromJSON(object.maxOpeningTrafficDuration)
         : undefined;
+    message.ignoreHealthChecks =
+      object.ignoreHealthChecks !== undefined &&
+      object.ignoreHealthChecks !== null
+        ? Boolean(object.ignoreHealthChecks)
+        : false;
     return message;
   },
 
@@ -5176,6 +5420,8 @@ export const LoadBalancerSpec = {
       (obj.maxOpeningTrafficDuration = message.maxOpeningTrafficDuration
         ? Duration.toJSON(message.maxOpeningTrafficDuration)
         : undefined);
+    message.ignoreHealthChecks !== undefined &&
+      (obj.ignoreHealthChecks = message.ignoreHealthChecks);
     return obj;
   },
 
@@ -5192,6 +5438,7 @@ export const LoadBalancerSpec = {
       object.maxOpeningTrafficDuration !== null
         ? Duration.fromPartial(object.maxOpeningTrafficDuration)
         : undefined;
+    message.ignoreHealthChecks = object.ignoreHealthChecks ?? false;
     return message;
   },
 };
@@ -5403,6 +5650,7 @@ messageTypeRegistry.set(
 
 const baseApplicationLoadBalancerSpec: object = {
   $type: "yandex.cloud.compute.v1.instancegroup.ApplicationLoadBalancerSpec",
+  ignoreHealthChecks: false,
 };
 
 export const ApplicationLoadBalancerSpec = {
@@ -5424,6 +5672,9 @@ export const ApplicationLoadBalancerSpec = {
         message.maxOpeningTrafficDuration,
         writer.uint32(18).fork()
       ).ldelim();
+    }
+    if (message.ignoreHealthChecks === true) {
+      writer.uint32(24).bool(message.ignoreHealthChecks);
     }
     return writer;
   },
@@ -5452,6 +5703,9 @@ export const ApplicationLoadBalancerSpec = {
             reader.uint32()
           );
           break;
+        case 3:
+          message.ignoreHealthChecks = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -5473,6 +5727,11 @@ export const ApplicationLoadBalancerSpec = {
       object.maxOpeningTrafficDuration !== null
         ? Duration.fromJSON(object.maxOpeningTrafficDuration)
         : undefined;
+    message.ignoreHealthChecks =
+      object.ignoreHealthChecks !== undefined &&
+      object.ignoreHealthChecks !== null
+        ? Boolean(object.ignoreHealthChecks)
+        : false;
     return message;
   },
 
@@ -5486,6 +5745,8 @@ export const ApplicationLoadBalancerSpec = {
       (obj.maxOpeningTrafficDuration = message.maxOpeningTrafficDuration
         ? Duration.toJSON(message.maxOpeningTrafficDuration)
         : undefined);
+    message.ignoreHealthChecks !== undefined &&
+      (obj.ignoreHealthChecks = message.ignoreHealthChecks);
     return obj;
   },
 
@@ -5504,6 +5765,7 @@ export const ApplicationLoadBalancerSpec = {
       object.maxOpeningTrafficDuration !== null
         ? Duration.fromPartial(object.maxOpeningTrafficDuration)
         : undefined;
+    message.ignoreHealthChecks = object.ignoreHealthChecks ?? false;
     return message;
   },
 };
@@ -6160,6 +6422,7 @@ const baseManagedInstance: object = {
   name: "",
   statusMessage: "",
   zoneId: "",
+  instanceTag: "",
 };
 
 export const ManagedInstance = {
@@ -6198,6 +6461,9 @@ export const ManagedInstance = {
         toTimestamp(message.statusChangedAt),
         writer.uint32(74).fork()
       ).ldelim();
+    }
+    if (message.instanceTag !== "") {
+      writer.uint32(114).string(message.instanceTag);
     }
     return writer;
   },
@@ -6240,6 +6506,9 @@ export const ManagedInstance = {
           message.statusChangedAt = fromTimestamp(
             Timestamp.decode(reader, reader.uint32())
           );
+          break;
+        case 14:
+          message.instanceTag = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -6284,6 +6553,10 @@ export const ManagedInstance = {
       object.statusChangedAt !== undefined && object.statusChangedAt !== null
         ? fromJsonTimestamp(object.statusChangedAt)
         : undefined;
+    message.instanceTag =
+      object.instanceTag !== undefined && object.instanceTag !== null
+        ? String(object.instanceTag)
+        : "";
     return message;
   },
 
@@ -6307,6 +6580,8 @@ export const ManagedInstance = {
     }
     message.statusChangedAt !== undefined &&
       (obj.statusChangedAt = message.statusChangedAt.toISOString());
+    message.instanceTag !== undefined &&
+      (obj.instanceTag = message.instanceTag);
     return obj;
   },
 
@@ -6325,6 +6600,7 @@ export const ManagedInstance = {
       object.networkInterfaces?.map((e) => NetworkInterface.fromPartial(e)) ||
       [];
     message.statusChangedAt = object.statusChangedAt ?? undefined;
+    message.instanceTag = object.instanceTag ?? "";
     return message;
   },
 };

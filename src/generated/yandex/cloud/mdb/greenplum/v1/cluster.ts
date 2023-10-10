@@ -6,13 +6,18 @@ import {
   MasterSubclusterConfig,
   SegmentSubclusterConfig,
   ConnectionPoolerConfigSet,
+  BackgroundActivitiesConfig,
   Greenplumconfigset617,
   Greenplumconfigset619,
+  Greenplumconfigset621,
+  Greenplumconfigset622,
+  GreenplumConfigSet6,
 } from "../../../../../yandex/cloud/mdb/greenplum/v1/config";
 import {
   MaintenanceWindow,
   MaintenanceOperation,
 } from "../../../../../yandex/cloud/mdb/greenplum/v1/maintenance";
+import { PXFConfigSet } from "../../../../../yandex/cloud/mdb/greenplum/v1/pxf";
 import { TimeOfDay } from "../../../../../google/type/timeofday";
 import { Timestamp } from "../../../../../google/protobuf/timestamp";
 
@@ -75,6 +80,8 @@ export interface Cluster {
   hostGroupIds: string[];
   /** Greenplum® and Odyssey® configuration. */
   clusterConfig?: ClusterConfigSet;
+  /** Cloud storage settings */
+  cloudStorage?: CloudStorage;
 }
 
 export enum Cluster_Environment {
@@ -258,8 +265,13 @@ export interface ClusterConfigSet {
   $type: "yandex.cloud.mdb.greenplum.v1.ClusterConfigSet";
   greenplumConfigSet617?: Greenplumconfigset617 | undefined;
   greenplumConfigSet619?: Greenplumconfigset619 | undefined;
+  greenplumConfigSet621?: Greenplumconfigset621 | undefined;
+  greenplumConfigSet622?: Greenplumconfigset622 | undefined;
+  greenplumConfigSet6?: GreenplumConfigSet6 | undefined;
   /** Odyssey® pool settings. */
   pool?: ConnectionPoolerConfigSet;
+  backgroundActivities?: BackgroundActivitiesConfig;
+  pxfConfig?: PXFConfigSet;
 }
 
 /** Monitoring system metadata. */
@@ -343,6 +355,13 @@ export interface RestoreResources {
   resourcePresetId: string;
   /** Volume of the storage available to a host. */
   diskSize: number;
+}
+
+/** Cloud Storage Settings */
+export interface CloudStorage {
+  $type: "yandex.cloud.mdb.greenplum.v1.CloudStorage";
+  /** enable Cloud Storage for cluster */
+  enable: boolean;
 }
 
 const baseCluster: object = {
@@ -468,6 +487,12 @@ export const Cluster = {
         writer.uint32(194).fork()
       ).ldelim();
     }
+    if (message.cloudStorage !== undefined) {
+      CloudStorage.encode(
+        message.cloudStorage,
+        writer.uint32(210).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -574,6 +599,9 @@ export const Cluster = {
             reader.uint32()
           );
           break;
+        case 26:
+          message.cloudStorage = CloudStorage.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -679,6 +707,10 @@ export const Cluster = {
       object.clusterConfig !== undefined && object.clusterConfig !== null
         ? ClusterConfigSet.fromJSON(object.clusterConfig)
         : undefined;
+    message.cloudStorage =
+      object.cloudStorage !== undefined && object.cloudStorage !== null
+        ? CloudStorage.fromJSON(object.cloudStorage)
+        : undefined;
     return message;
   },
 
@@ -754,6 +786,10 @@ export const Cluster = {
       (obj.clusterConfig = message.clusterConfig
         ? ClusterConfigSet.toJSON(message.clusterConfig)
         : undefined);
+    message.cloudStorage !== undefined &&
+      (obj.cloudStorage = message.cloudStorage
+        ? CloudStorage.toJSON(message.cloudStorage)
+        : undefined);
     return obj;
   },
 
@@ -809,6 +845,10 @@ export const Cluster = {
     message.clusterConfig =
       object.clusterConfig !== undefined && object.clusterConfig !== null
         ? ClusterConfigSet.fromPartial(object.clusterConfig)
+        : undefined;
+    message.cloudStorage =
+      object.cloudStorage !== undefined && object.cloudStorage !== null
+        ? CloudStorage.fromPartial(object.cloudStorage)
         : undefined;
     return message;
   },
@@ -912,11 +952,38 @@ export const ClusterConfigSet = {
         writer.uint32(18).fork()
       ).ldelim();
     }
+    if (message.greenplumConfigSet621 !== undefined) {
+      Greenplumconfigset621.encode(
+        message.greenplumConfigSet621,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    if (message.greenplumConfigSet622 !== undefined) {
+      Greenplumconfigset622.encode(
+        message.greenplumConfigSet622,
+        writer.uint32(42).fork()
+      ).ldelim();
+    }
+    if (message.greenplumConfigSet6 !== undefined) {
+      GreenplumConfigSet6.encode(
+        message.greenplumConfigSet6,
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
     if (message.pool !== undefined) {
       ConnectionPoolerConfigSet.encode(
         message.pool,
         writer.uint32(26).fork()
       ).ldelim();
+    }
+    if (message.backgroundActivities !== undefined) {
+      BackgroundActivitiesConfig.encode(
+        message.backgroundActivities,
+        writer.uint32(50).fork()
+      ).ldelim();
+    }
+    if (message.pxfConfig !== undefined) {
+      PXFConfigSet.encode(message.pxfConfig, writer.uint32(66).fork()).ldelim();
     }
     return writer;
   },
@@ -940,11 +1007,38 @@ export const ClusterConfigSet = {
             reader.uint32()
           );
           break;
+        case 4:
+          message.greenplumConfigSet621 = Greenplumconfigset621.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 5:
+          message.greenplumConfigSet622 = Greenplumconfigset622.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 9:
+          message.greenplumConfigSet6 = GreenplumConfigSet6.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         case 3:
           message.pool = ConnectionPoolerConfigSet.decode(
             reader,
             reader.uint32()
           );
+          break;
+        case 6:
+          message.backgroundActivities = BackgroundActivitiesConfig.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 8:
+          message.pxfConfig = PXFConfigSet.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -966,9 +1060,33 @@ export const ClusterConfigSet = {
       object.greenplumConfigSet_6_19 !== null
         ? Greenplumconfigset619.fromJSON(object.greenplumConfigSet_6_19)
         : undefined;
+    message.greenplumConfigSet621 =
+      object.greenplumConfigSet_6_21 !== undefined &&
+      object.greenplumConfigSet_6_21 !== null
+        ? Greenplumconfigset621.fromJSON(object.greenplumConfigSet_6_21)
+        : undefined;
+    message.greenplumConfigSet622 =
+      object.greenplumConfigSet_6_22 !== undefined &&
+      object.greenplumConfigSet_6_22 !== null
+        ? Greenplumconfigset622.fromJSON(object.greenplumConfigSet_6_22)
+        : undefined;
+    message.greenplumConfigSet6 =
+      object.greenplumConfigSet_6 !== undefined &&
+      object.greenplumConfigSet_6 !== null
+        ? GreenplumConfigSet6.fromJSON(object.greenplumConfigSet_6)
+        : undefined;
     message.pool =
       object.pool !== undefined && object.pool !== null
         ? ConnectionPoolerConfigSet.fromJSON(object.pool)
+        : undefined;
+    message.backgroundActivities =
+      object.backgroundActivities !== undefined &&
+      object.backgroundActivities !== null
+        ? BackgroundActivitiesConfig.fromJSON(object.backgroundActivities)
+        : undefined;
+    message.pxfConfig =
+      object.pxfConfig !== undefined && object.pxfConfig !== null
+        ? PXFConfigSet.fromJSON(object.pxfConfig)
         : undefined;
     return message;
   },
@@ -983,9 +1101,29 @@ export const ClusterConfigSet = {
       (obj.greenplumConfigSet_6_19 = message.greenplumConfigSet619
         ? Greenplumconfigset619.toJSON(message.greenplumConfigSet619)
         : undefined);
+    message.greenplumConfigSet621 !== undefined &&
+      (obj.greenplumConfigSet_6_21 = message.greenplumConfigSet621
+        ? Greenplumconfigset621.toJSON(message.greenplumConfigSet621)
+        : undefined);
+    message.greenplumConfigSet622 !== undefined &&
+      (obj.greenplumConfigSet_6_22 = message.greenplumConfigSet622
+        ? Greenplumconfigset622.toJSON(message.greenplumConfigSet622)
+        : undefined);
+    message.greenplumConfigSet6 !== undefined &&
+      (obj.greenplumConfigSet_6 = message.greenplumConfigSet6
+        ? GreenplumConfigSet6.toJSON(message.greenplumConfigSet6)
+        : undefined);
     message.pool !== undefined &&
       (obj.pool = message.pool
         ? ConnectionPoolerConfigSet.toJSON(message.pool)
+        : undefined);
+    message.backgroundActivities !== undefined &&
+      (obj.backgroundActivities = message.backgroundActivities
+        ? BackgroundActivitiesConfig.toJSON(message.backgroundActivities)
+        : undefined);
+    message.pxfConfig !== undefined &&
+      (obj.pxfConfig = message.pxfConfig
+        ? PXFConfigSet.toJSON(message.pxfConfig)
         : undefined);
     return obj;
   },
@@ -1004,9 +1142,33 @@ export const ClusterConfigSet = {
       object.greenplumConfigSet619 !== null
         ? Greenplumconfigset619.fromPartial(object.greenplumConfigSet619)
         : undefined;
+    message.greenplumConfigSet621 =
+      object.greenplumConfigSet621 !== undefined &&
+      object.greenplumConfigSet621 !== null
+        ? Greenplumconfigset621.fromPartial(object.greenplumConfigSet621)
+        : undefined;
+    message.greenplumConfigSet622 =
+      object.greenplumConfigSet622 !== undefined &&
+      object.greenplumConfigSet622 !== null
+        ? Greenplumconfigset622.fromPartial(object.greenplumConfigSet622)
+        : undefined;
+    message.greenplumConfigSet6 =
+      object.greenplumConfigSet6 !== undefined &&
+      object.greenplumConfigSet6 !== null
+        ? GreenplumConfigSet6.fromPartial(object.greenplumConfigSet6)
+        : undefined;
     message.pool =
       object.pool !== undefined && object.pool !== null
         ? ConnectionPoolerConfigSet.fromPartial(object.pool)
+        : undefined;
+    message.backgroundActivities =
+      object.backgroundActivities !== undefined &&
+      object.backgroundActivities !== null
+        ? BackgroundActivitiesConfig.fromPartial(object.backgroundActivities)
+        : undefined;
+    message.pxfConfig =
+      object.pxfConfig !== undefined && object.pxfConfig !== null
+        ? PXFConfigSet.fromPartial(object.pxfConfig)
         : undefined;
     return message;
   },
@@ -1538,6 +1700,68 @@ export const RestoreResources = {
 };
 
 messageTypeRegistry.set(RestoreResources.$type, RestoreResources);
+
+const baseCloudStorage: object = {
+  $type: "yandex.cloud.mdb.greenplum.v1.CloudStorage",
+  enable: false,
+};
+
+export const CloudStorage = {
+  $type: "yandex.cloud.mdb.greenplum.v1.CloudStorage" as const,
+
+  encode(
+    message: CloudStorage,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.enable === true) {
+      writer.uint32(8).bool(message.enable);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CloudStorage {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseCloudStorage } as CloudStorage;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.enable = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CloudStorage {
+    const message = { ...baseCloudStorage } as CloudStorage;
+    message.enable =
+      object.enable !== undefined && object.enable !== null
+        ? Boolean(object.enable)
+        : false;
+    return message;
+  },
+
+  toJSON(message: CloudStorage): unknown {
+    const obj: any = {};
+    message.enable !== undefined && (obj.enable = message.enable);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CloudStorage>, I>>(
+    object: I
+  ): CloudStorage {
+    const message = { ...baseCloudStorage } as CloudStorage;
+    message.enable = object.enable ?? false;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(CloudStorage.$type, CloudStorage);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

@@ -29,7 +29,9 @@ export interface Topic {
   partitions?: number;
   /** Amount of data copies (replicas) for the topic in the cluster. */
   replicationFactor?: number;
+  /** @deprecated */
   topicConfig21?: Topicconfig21 | undefined;
+  /** @deprecated */
   topicConfig26?: Topicconfig26 | undefined;
   topicConfig28?: Topicconfig28 | undefined;
   topicConfig3?: TopicConfig3 | undefined;
@@ -43,13 +45,19 @@ export interface TopicSpec {
   partitions?: number;
   /** Amount of copies of a topic data kept in the cluster. */
   replicationFactor?: number;
+  /** @deprecated */
   topicConfig21?: Topicconfig21 | undefined;
+  /** @deprecated */
   topicConfig26?: Topicconfig26 | undefined;
   topicConfig28?: Topicconfig28 | undefined;
   topicConfig3?: TopicConfig3 | undefined;
 }
 
-/** A topic settings for 2.1. */
+/**
+ * Deprecated. Version `2.1` of Kafka not supported in Yandex Cloud.
+ *
+ * @deprecated
+ */
 export interface Topicconfig21 {
   $type: "yandex.cloud.mdb.kafka.v1.TopicConfig2_1";
   /** Retention policy to use on old log messages. */
@@ -160,7 +168,11 @@ export function topicconfig21_CleanupPolicyToJSON(
   }
 }
 
-/** A topic settings for 2.6 */
+/**
+ * Deprecated. Version `2.6` of Kafka not supported in Yandex Cloud.
+ *
+ * @deprecated
+ */
 export interface Topicconfig26 {
   $type: "yandex.cloud.mdb.kafka.v1.TopicConfig2_6";
   /** Retention policy to use on old log messages. */

@@ -17,6 +17,7 @@ import _m0 from "protobufjs/minimal";
 import { FieldMask } from "../../../../google/protobuf/field_mask";
 import {
   AllocationPolicy,
+  AutoScalePolicy,
   TlsHandler,
   LoadBalancer,
   HttpListener,
@@ -24,6 +25,7 @@ import {
   StreamListener,
   TargetState,
 } from "../../../../yandex/cloud/apploadbalancer/v1/load_balancer";
+import { LogOptions } from "../../../../yandex/cloud/apploadbalancer/v1/logging";
 import { Operation } from "../../../../yandex/cloud/operation/operation";
 
 export const protobufPackage = "yandex.cloud.apploadbalancer.v1";
@@ -165,6 +167,19 @@ export interface UpdateLoadBalancerRequest {
    * 3. Send the new set in this field.
    */
   securityGroupIds: string[];
+  /**
+   * New scaling settings of the application load balancer.
+   *
+   * The scaling settings relate to a special internal instance group which facilitates the balancer's work.
+   * Instances in this group are called _resource units_. The group is scaled automatically based on incoming load
+   * and within limitations specified in these settings.
+   *
+   * For details about the concept,
+   * see [documentation](/docs/application-load-balancer/concepts/application-load-balancer#lcu-scaling).
+   */
+  autoScalePolicy?: AutoScalePolicy;
+  /** Cloud logging settings of the application load balancer. */
+  logOptions?: LogOptions;
 }
 
 export interface UpdateLoadBalancerRequest_LabelsEntry {
@@ -228,6 +243,19 @@ export interface CreateLoadBalancerRequest {
    * see [documentation](/docs/application-load-balancer/concepts/application-load-balancer#security-groups).
    */
   securityGroupIds: string[];
+  /**
+   * Scaling settings of the application load balancer.
+   *
+   * The scaling settings relate to a special internal instance group which facilitates the balancer's work.
+   * Instances in this group are called _resource units_. The group is scaled automatically based on incoming load
+   * and within limitations specified in these settings.
+   *
+   * For details about the concept,
+   * see [documentation](/docs/application-load-balancer/concepts/application-load-balancer#lcu-scaling).
+   */
+  autoScalePolicy?: AutoScalePolicy;
+  /** Cloud logging settings of the application load balancer. */
+  logOptions?: LogOptions;
 }
 
 export interface CreateLoadBalancerRequest_LabelsEntry {
@@ -1000,6 +1028,15 @@ export const UpdateLoadBalancerRequest = {
     for (const v of message.securityGroupIds) {
       writer.uint32(66).string(v!);
     }
+    if (message.autoScalePolicy !== undefined) {
+      AutoScalePolicy.encode(
+        message.autoScalePolicy,
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
+    if (message.logOptions !== undefined) {
+      LogOptions.encode(message.logOptions, writer.uint32(82).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1053,6 +1090,15 @@ export const UpdateLoadBalancerRequest = {
         case 8:
           message.securityGroupIds.push(reader.string());
           break;
+        case 9:
+          message.autoScalePolicy = AutoScalePolicy.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 10:
+          message.logOptions = LogOptions.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1097,6 +1143,14 @@ export const UpdateLoadBalancerRequest = {
     message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) =>
       String(e)
     );
+    message.autoScalePolicy =
+      object.autoScalePolicy !== undefined && object.autoScalePolicy !== null
+        ? AutoScalePolicy.fromJSON(object.autoScalePolicy)
+        : undefined;
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromJSON(object.logOptions)
+        : undefined;
     return message;
   },
 
@@ -1133,6 +1187,14 @@ export const UpdateLoadBalancerRequest = {
     } else {
       obj.securityGroupIds = [];
     }
+    message.autoScalePolicy !== undefined &&
+      (obj.autoScalePolicy = message.autoScalePolicy
+        ? AutoScalePolicy.toJSON(message.autoScalePolicy)
+        : undefined);
+    message.logOptions !== undefined &&
+      (obj.logOptions = message.logOptions
+        ? LogOptions.toJSON(message.logOptions)
+        : undefined);
     return obj;
   },
 
@@ -1164,6 +1226,14 @@ export const UpdateLoadBalancerRequest = {
         ? AllocationPolicy.fromPartial(object.allocationPolicy)
         : undefined;
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
+    message.autoScalePolicy =
+      object.autoScalePolicy !== undefined && object.autoScalePolicy !== null
+        ? AutoScalePolicy.fromPartial(object.autoScalePolicy)
+        : undefined;
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromPartial(object.logOptions)
+        : undefined;
     return message;
   },
 };
@@ -1390,6 +1460,15 @@ export const CreateLoadBalancerRequest = {
     for (const v of message.securityGroupIds) {
       writer.uint32(74).string(v!);
     }
+    if (message.autoScalePolicy !== undefined) {
+      AutoScalePolicy.encode(
+        message.autoScalePolicy,
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
+    if (message.logOptions !== undefined) {
+      LogOptions.encode(message.logOptions, writer.uint32(90).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1446,6 +1525,15 @@ export const CreateLoadBalancerRequest = {
         case 9:
           message.securityGroupIds.push(reader.string());
           break;
+        case 10:
+          message.autoScalePolicy = AutoScalePolicy.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 11:
+          message.logOptions = LogOptions.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1494,6 +1582,14 @@ export const CreateLoadBalancerRequest = {
     message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) =>
       String(e)
     );
+    message.autoScalePolicy =
+      object.autoScalePolicy !== undefined && object.autoScalePolicy !== null
+        ? AutoScalePolicy.fromJSON(object.autoScalePolicy)
+        : undefined;
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromJSON(object.logOptions)
+        : undefined;
     return message;
   },
 
@@ -1527,6 +1623,14 @@ export const CreateLoadBalancerRequest = {
     } else {
       obj.securityGroupIds = [];
     }
+    message.autoScalePolicy !== undefined &&
+      (obj.autoScalePolicy = message.autoScalePolicy
+        ? AutoScalePolicy.toJSON(message.autoScalePolicy)
+        : undefined);
+    message.logOptions !== undefined &&
+      (obj.logOptions = message.logOptions
+        ? LogOptions.toJSON(message.logOptions)
+        : undefined);
     return obj;
   },
 
@@ -1556,6 +1660,14 @@ export const CreateLoadBalancerRequest = {
         ? AllocationPolicy.fromPartial(object.allocationPolicy)
         : undefined;
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
+    message.autoScalePolicy =
+      object.autoScalePolicy !== undefined && object.autoScalePolicy !== null
+        ? AutoScalePolicy.fromPartial(object.autoScalePolicy)
+        : undefined;
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromPartial(object.logOptions)
+        : undefined;
     return message;
   },
 };

@@ -12,8 +12,10 @@ export enum RawLogsStatus {
   RAW_LOGS_STATUS_NOT_ACTIVATED = 1,
   /** RAW_LOGS_STATUS_OK - Raw logs was activated, and logs storing process works as expected. */
   RAW_LOGS_STATUS_OK = 2,
-  /** RAW_LOGS_STATUS_FAILED - Raw logs was activated, but logs CDN provider has been failed to store logs. */
+  /** RAW_LOGS_STATUS_FAILED - Raw logs was activated, but CDN provider has been failed to store logs. */
   RAW_LOGS_STATUS_FAILED = 3,
+  /** RAW_LOGS_STATUS_PENDING - Raw logs was activated, but logs storing process is expected. */
+  RAW_LOGS_STATUS_PENDING = 4,
   UNRECOGNIZED = -1,
 }
 
@@ -31,6 +33,9 @@ export function rawLogsStatusFromJSON(object: any): RawLogsStatus {
     case 3:
     case "RAW_LOGS_STATUS_FAILED":
       return RawLogsStatus.RAW_LOGS_STATUS_FAILED;
+    case 4:
+    case "RAW_LOGS_STATUS_PENDING":
+      return RawLogsStatus.RAW_LOGS_STATUS_PENDING;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -48,6 +53,8 @@ export function rawLogsStatusToJSON(object: RawLogsStatus): string {
       return "RAW_LOGS_STATUS_OK";
     case RawLogsStatus.RAW_LOGS_STATUS_FAILED:
       return "RAW_LOGS_STATUS_FAILED";
+    case RawLogsStatus.RAW_LOGS_STATUS_PENDING:
+      return "RAW_LOGS_STATUS_PENDING";
     default:
       return "UNKNOWN";
   }

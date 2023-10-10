@@ -50,12 +50,21 @@ export interface ListSnapshotsRequest {
   pageToken: string;
   /**
    * A filter expression that filters resources listed in the response.
-   * The expression must specify:
-   * 1. The field name. Currently you can use filtering only on the [Snapshot.name] field.
-   * 2. An `=` operator.
-   * 3. The value in double quotes (`"`). Must be 3-63 characters long and match the regular expression `[a-z]([-a-z0-9]{,61}[a-z0-9])?`.
+   * The expression consists of one or more conditions united by `AND` operator: `<condition1> [AND <condition2> [<...> AND <conditionN>]]`.
+   *
+   * Each condition has the form `<field> <operator> <value>`, where:
+   * 1. `<field>` is the field name. Currently you can use filtering only on the limited number of fields.
+   * 2. `<operator>` is a logical operator, one of `=`, `!=`, `IN`, `NOT IN`.
+   * 3. `<value>` represents a value.
+   * String values should be written in double (`"`) or single (`'`) quotes. C-style escape sequences are supported (`\"` turns to `"`, `\'` to `'`, `\\` to backslash).
    */
   filter: string;
+  /**
+   * By which column the listing should be ordered and in which direction,
+   * format is "createdAt desc". "id asc" if omitted.
+   * The default sorting order is ascending
+   */
+  orderBy: string;
 }
 
 export interface ListSnapshotsResponse {
@@ -253,6 +262,7 @@ const baseListSnapshotsRequest: object = {
   pageSize: 0,
   pageToken: "",
   filter: "",
+  orderBy: "",
 };
 
 export const ListSnapshotsRequest = {
@@ -273,6 +283,9 @@ export const ListSnapshotsRequest = {
     }
     if (message.filter !== "") {
       writer.uint32(34).string(message.filter);
+    }
+    if (message.orderBy !== "") {
+      writer.uint32(42).string(message.orderBy);
     }
     return writer;
   },
@@ -298,6 +311,9 @@ export const ListSnapshotsRequest = {
           break;
         case 4:
           message.filter = reader.string();
+          break;
+        case 5:
+          message.orderBy = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -325,6 +341,10 @@ export const ListSnapshotsRequest = {
       object.filter !== undefined && object.filter !== null
         ? String(object.filter)
         : "";
+    message.orderBy =
+      object.orderBy !== undefined && object.orderBy !== null
+        ? String(object.orderBy)
+        : "";
     return message;
   },
 
@@ -335,6 +355,7 @@ export const ListSnapshotsRequest = {
       (obj.pageSize = Math.round(message.pageSize));
     message.pageToken !== undefined && (obj.pageToken = message.pageToken);
     message.filter !== undefined && (obj.filter = message.filter);
+    message.orderBy !== undefined && (obj.orderBy = message.orderBy);
     return obj;
   },
 
@@ -346,6 +367,7 @@ export const ListSnapshotsRequest = {
     message.pageSize = object.pageSize ?? 0;
     message.pageToken = object.pageToken ?? "";
     message.filter = object.filter ?? "";
+    message.orderBy = object.orderBy ?? "";
     return message;
   },
 };

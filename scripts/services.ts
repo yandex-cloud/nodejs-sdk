@@ -8,6 +8,7 @@ export const servicesConfig: ServicesConfig = {
         tts_service: { importClassName: 'SynthesizerClient' },
         vision_service: { importClassName: 'VisionServiceClient' },
         vision_image_classifier_service: { importClassName: 'ImageClassifierServiceClient' },
+        ocr_service: { importClassName: 'TextRecognitionServiceClient' },
     },
     apploadbalancer: {
         backend_group_service: { importClassName: 'BackendGroupServiceClient' },
@@ -15,6 +16,13 @@ export const servicesConfig: ServicesConfig = {
         load_balancer_service: { importClassName: 'LoadBalancerServiceClient' },
         target_group_service: { importClassName: 'TargetGroupServiceClient', exportClassName: 'AlbTargetGroupServiceClient' },
         virtual_host_service: { importClassName: 'VirtualHostServiceClient' },
+        resource_service: { importClassName: 'ResourceServiceClient' },
+    },
+    backup: {
+        backup_service: { importClassName: 'BackupServiceClient', exportClassName: 'BackupBackupServiceClient' },
+        policy_service: { importClassName: 'PolicyServiceClient', exportClassName: 'BackupPolicyServiceClient' },
+        provider_service: { importClassName: 'ProviderServiceClient', exportClassName: 'BackupProviderServiceClient' },
+        resource_service: { importClassName: 'ResourceServiceClient', exportClassName: 'BackupResourceServiceClient' },
     },
     billing: {
         billing_account_service: { importClassName: 'BillingAccountServiceClient' },
@@ -24,12 +32,12 @@ export const servicesConfig: ServicesConfig = {
         sku_service: { importClassName: 'SkuServiceClient' },
     },
     cdn: {
-        cache_service: { importClassName: 'CacheServiceClient' },
-        origin_group_service: { importClassName: 'OriginGroupServiceClient' },
-        origin_service: { importClassName: 'OriginServiceClient' },
-        provider_service: { importClassName: 'ProviderServiceClient' },
-        resource_service: { importClassName: 'ResourceServiceClient' },
-        raw_logs_service: { importClassName: 'RawLogsServiceClient' },
+        cache_service: { importClassName: 'CacheServiceClient', exportClassName: 'CDNCacheServiceClient' },
+        origin_group_service: { importClassName: 'OriginGroupServiceClient', exportClassName: 'CDNOriginGroupServiceClient' },
+        origin_service: { importClassName: 'OriginServiceClient', exportClassName: 'CDNOriginServiceClient' },
+        provider_service: { importClassName: 'ProviderServiceClient', exportClassName: 'CDNProviderServiceClient' },
+        resource_service: { importClassName: 'ResourceServiceClient', exportClassName: 'CDNResourceServiceClient' },
+        raw_logs_service: { importClassName: 'RawLogsServiceClient', exportClassName: 'CDNRawLogsServiceClient' },
     },
     certificatemanager: {
         certificate_content_service: { importClassName: 'CertificateContentServiceClient' },
@@ -49,6 +57,7 @@ export const servicesConfig: ServicesConfig = {
         zone_service: { importClassName: 'ZoneServiceClient' },
         instance_group_service: { importClassName: 'InstanceGroupServiceClient' },
         snapshot_schedule_service: { importClassName: 'SnapshotScheduleServiceClient' },
+        gpu_cluster_service: { importClassName: 'GpuClusterServiceClient' },
     },
     containerregistry: {
         image_service: { importClassName: 'ImageServiceClient', exportClassName: 'CrImageServiceClient' },
@@ -56,6 +65,7 @@ export const servicesConfig: ServicesConfig = {
         registry_service: { importClassName: 'RegistryServiceClient' },
         repository_service: { importClassName: 'RepositoryServiceClient' },
         scanner_service: { importClassName: 'ScannerServiceClient' },
+        scan_policy_service: { importClassName: 'ScanPolicyServiceClient' },
     },
     dataproc: {
         cluster_service: { importClassName: 'ClusterServiceClient', exportClassName: 'DataProcClusterServiceClient' },
@@ -71,6 +81,7 @@ export const servicesConfig: ServicesConfig = {
         node_service: { importClassName: 'NodeServiceClient' },
         project_data_service: { importClassName: 'ProjectDataServiceClient' },
         project_service: { importClassName: 'ProjectServiceClient' },
+        community_service: { importClassName: 'CommunityServiceClient' },
     },
     datatransfer: {
         endpoint_service: { importClassName: 'EndpointServiceClient' },
@@ -106,6 +117,20 @@ export const servicesConfig: ServicesConfig = {
     kms: {
         symmetric_crypto_service: { importClassName: 'SymmetricCryptoServiceClient' },
         symmetric_key_service: { importClassName: 'SymmetricKeyServiceClient' },
+        asymmetric_encryption_crypto_service: { importClassName: 'AsymmetricEncryptionCryptoServiceClient' },
+        asymmetric_encryption_key_service: { importClassName: 'AsymmetricEncryptionKeyServiceClient' },
+        asymmetric_signature_crypto_service: { importClassName: 'AsymmetricSignatureCryptoServiceClient' },
+        asymmetric_signature_key_service: { importClassName: 'AsymmetricSignatureKeyServiceClient' },
+
+    },
+    loadtesting: {
+        agent_agent_registration_service: { importClassName: 'AgentRegistrationServiceClient', exportClassName: 'LoadTestingAgentRegistrationServiceClient' },
+        agent_service: { importClassName: 'AgentServiceClient', exportClassName: 'LoadTestingAgentServiceClient' },
+        agent_job_service: { importClassName: 'JobServiceClient', exportClassName: 'LoadTestingJobServiceClient' },
+        agent_monitoring_service: { importClassName: 'MonitoringServiceClient', exportClassName: 'LoadTestingMonitoringServiceClient' },
+        agent_test_service: { importClassName: 'TestServiceClient', exportClassName: 'LoadTestingTestServiceClient' },
+        agent_trail_service: { importClassName: 'TrailServiceClient', exportClassName: 'LoadTestingTrailServiceClient' },
+        api_agent_service: { importClassName: 'AgentServiceClient', exportClassName: 'LoadTestingApiAgentServiceClient' },
     },
     loadbalancer: {
         network_load_balancer_service: { importClassName: 'NetworkLoadBalancerServiceClient' },
@@ -119,9 +144,14 @@ export const servicesConfig: ServicesConfig = {
         log_group_service: { importClassName: 'LogGroupServiceClient' },
         log_ingestion_service: { importClassName: 'LogIngestionServiceClient' },
         log_reading_service: { importClassName: 'LogReadingServiceClient' },
+        export_service: { importClassName: 'ExportServiceClient' },
+        sink_service: { importClassName: 'SinkServiceClient' },
     },
     marketplace: {
-        image_product_usage_service: { importClassName: 'ImageProductUsageServiceClient' },
+        image_product_usage_service: { importClassName: 'ImageProductUsageServiceClient', exportClassName: 'MarketplaceImageProductUsageServiceClient' },
+        licensemanager_instance_service: { importClassName: 'InstanceServiceClient', exportClassName: 'MarketplaceInstanceServiceClient' },
+        licensemanager_lock_service: { importClassName: 'LockServiceClient', exportClassName: 'MarketplaceLockServiceClient' },
+        metering_image_product_usage_service: { importClassName: 'ImageProductUsageServiceClient', exportClassName: 'MarketplaceMeteringImageProductUsageServiceClient' },
     },
     mdb: {
         clickhouse_backup_service: { importClassName: 'BackupServiceClient', exportClassName: 'ClickHouseBackupServiceClient' },
@@ -156,11 +186,15 @@ export const servicesConfig: ServicesConfig = {
         mysql_database_service: { importClassName: 'DatabaseServiceClient', exportClassName: 'MysqlDatabaseServiceClient' },
         mysql_resource_preset_service: { importClassName: 'ResourcePresetServiceClient', exportClassName: 'MysqlResourcePresetServiceClient' },
         mysql_user_service: { importClassName: 'UserServiceClient', exportClassName: 'MysqlUserServiceClient' },
+        opensearch_backup_service: { importClassName: 'BackupServiceClient', exportClassName: 'OpenSearchBackupServiceClient' },
+        opensearch_cluster_service: { importClassName: 'ClusterServiceClient', exportClassName: 'OpenSearchClusterServiceClient' },
+        opensearch_resource_preset_service: { importClassName: 'ResourcePresetServiceClient', exportClassName: 'OpenSearchResourcePresetServiceClient' },
         postgresql_backup_service: { importClassName: 'BackupServiceClient', exportClassName: 'PgsqlBackupServiceClient' },
         postgresql_cluster_service: { importClassName: 'ClusterServiceClient', exportClassName: 'PgsqlClusterServiceClient' },
         postgresql_database_service: { importClassName: 'DatabaseServiceClient', exportClassName: 'PgsqlDatabaseServiceClient' },
         postgresql_resource_preset_service: { importClassName: 'ResourcePresetServiceClient', exportClassName: 'PgsqlResourcePresetServiceClient' },
         postgresql_user_service: { importClassName: 'UserServiceClient', exportClassName: 'PgsqlUserServiceClient' },
+        postgresql_perf_diag_service: { importClassName: 'PerformanceDiagnosticsServiceClient', exportClassName: 'PgsqlPerformanceDiagnosticsServiceClient' },
         redis_backup_service: { importClassName: 'BackupServiceClient', exportClassName: 'RedisBackupServiceClient' },
         redis_cluster_service: { importClassName: 'ClusterServiceClient', exportClassName: 'RedisClusterServiceClient' },
         redis_resource_preset_service: { importClassName: 'ResourcePresetServiceClient', exportClassName: 'RedisResourcePresetServiceClient' },
@@ -182,6 +216,8 @@ export const servicesConfig: ServicesConfig = {
         user_service: { importClassName: 'UserServiceClient' },
         certificate_service: { importClassName: 'CertificateServiceClient', exportClassName: 'OmCertificateServiceClient' },
         federation_service: { importClassName: 'FederationServiceClient' },
+        group_mapping_service: { importClassName: 'GroupMappingServiceClient' },
+        ssh_certificate_service: { importClassName: 'SshCertificateServiceClient' },
     },
     resourcemanager: {
         cloud_service: { importClassName: 'CloudServiceClient' },

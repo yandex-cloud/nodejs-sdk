@@ -91,6 +91,8 @@ export interface CreateResourceRequest {
   options?: ResourceOptions;
   /** SSL Certificate options. */
   sslCertificate?: SSLTargetCertificate;
+  /** Labels of the resource. */
+  labels: { [key: string]: string };
 }
 
 export interface CreateResourceRequest_Origin {
@@ -104,6 +106,12 @@ export interface CreateResourceRequest_Origin {
   originSource: string | undefined;
   /** Set up resource origin parameters. */
   originSourceParams?: ResourceOriginParams | undefined;
+}
+
+export interface CreateResourceRequest_LabelsEntry {
+  $type: "yandex.cloud.cdn.v1.CreateResourceRequest.LabelsEntry";
+  key: string;
+  value: string;
 }
 
 /** A set of resource origin parameters. */
@@ -141,6 +149,14 @@ export interface UpdateResourceRequest {
   active?: boolean;
   /** SSL Certificate options. */
   sslCertificate?: SSLTargetCertificate;
+  /** Resource labels. At some point will be needed for granular detailing. */
+  labels: { [key: string]: string };
+}
+
+export interface UpdateResourceRequest_LabelsEntry {
+  $type: "yandex.cloud.cdn.v1.UpdateResourceRequest.LabelsEntry";
+  key: string;
+  value: string;
 }
 
 export interface UpdateResourceMetadata {
@@ -467,6 +483,16 @@ export const CreateResourceRequest = {
         writer.uint32(66).fork()
       ).ldelim();
     }
+    Object.entries(message.labels).forEach(([key, value]) => {
+      CreateResourceRequest_LabelsEntry.encode(
+        {
+          $type: "yandex.cloud.cdn.v1.CreateResourceRequest.LabelsEntry",
+          key: key as any,
+          value,
+        },
+        writer.uint32(74).fork()
+      ).ldelim();
+    });
     return writer;
   },
 
@@ -477,6 +503,7 @@ export const CreateResourceRequest = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseCreateResourceRequest } as CreateResourceRequest;
+    message.labels = {};
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -512,6 +539,15 @@ export const CreateResourceRequest = {
             reader,
             reader.uint32()
           );
+          break;
+        case 9:
+          const entry9 = CreateResourceRequest_LabelsEntry.decode(
+            reader,
+            reader.uint32()
+          );
+          if (entry9.value !== undefined) {
+            message.labels[entry9.key] = entry9.value;
+          }
           break;
         default:
           reader.skipType(tag & 7);
@@ -556,6 +592,12 @@ export const CreateResourceRequest = {
       object.sslCertificate !== undefined && object.sslCertificate !== null
         ? SSLTargetCertificate.fromJSON(object.sslCertificate)
         : undefined;
+    message.labels = Object.entries(object.labels ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      acc[key] = String(value);
+      return acc;
+    }, {});
     return message;
   },
 
@@ -582,6 +624,12 @@ export const CreateResourceRequest = {
       (obj.sslCertificate = message.sslCertificate
         ? SSLTargetCertificate.toJSON(message.sslCertificate)
         : undefined);
+    obj.labels = {};
+    if (message.labels) {
+      Object.entries(message.labels).forEach(([k, v]) => {
+        obj.labels[k] = v;
+      });
+    }
     return obj;
   },
 
@@ -610,6 +658,14 @@ export const CreateResourceRequest = {
       object.sslCertificate !== undefined && object.sslCertificate !== null
         ? SSLTargetCertificate.fromPartial(object.sslCertificate)
         : undefined;
+    message.labels = Object.entries(object.labels ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = String(value);
+      }
+      return acc;
+    }, {});
     return message;
   },
 };
@@ -727,6 +783,91 @@ export const CreateResourceRequest_Origin = {
 messageTypeRegistry.set(
   CreateResourceRequest_Origin.$type,
   CreateResourceRequest_Origin
+);
+
+const baseCreateResourceRequest_LabelsEntry: object = {
+  $type: "yandex.cloud.cdn.v1.CreateResourceRequest.LabelsEntry",
+  key: "",
+  value: "",
+};
+
+export const CreateResourceRequest_LabelsEntry = {
+  $type: "yandex.cloud.cdn.v1.CreateResourceRequest.LabelsEntry" as const,
+
+  encode(
+    message: CreateResourceRequest_LabelsEntry,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): CreateResourceRequest_LabelsEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseCreateResourceRequest_LabelsEntry,
+    } as CreateResourceRequest_LabelsEntry;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateResourceRequest_LabelsEntry {
+    const message = {
+      ...baseCreateResourceRequest_LabelsEntry,
+    } as CreateResourceRequest_LabelsEntry;
+    message.key =
+      object.key !== undefined && object.key !== null ? String(object.key) : "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? String(object.value)
+        : "";
+    return message;
+  },
+
+  toJSON(message: CreateResourceRequest_LabelsEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<CreateResourceRequest_LabelsEntry>, I>
+  >(object: I): CreateResourceRequest_LabelsEntry {
+    const message = {
+      ...baseCreateResourceRequest_LabelsEntry,
+    } as CreateResourceRequest_LabelsEntry;
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  CreateResourceRequest_LabelsEntry.$type,
+  CreateResourceRequest_LabelsEntry
 );
 
 const baseResourceOriginParams: object = {
@@ -924,6 +1065,16 @@ export const UpdateResourceRequest = {
         writer.uint32(58).fork()
       ).ldelim();
     }
+    Object.entries(message.labels).forEach(([key, value]) => {
+      UpdateResourceRequest_LabelsEntry.encode(
+        {
+          $type: "yandex.cloud.cdn.v1.UpdateResourceRequest.LabelsEntry",
+          key: key as any,
+          value,
+        },
+        writer.uint32(66).fork()
+      ).ldelim();
+    });
     return writer;
   },
 
@@ -934,6 +1085,7 @@ export const UpdateResourceRequest = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseUpdateResourceRequest } as UpdateResourceRequest;
+    message.labels = {};
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -966,6 +1118,15 @@ export const UpdateResourceRequest = {
             reader,
             reader.uint32()
           );
+          break;
+        case 8:
+          const entry8 = UpdateResourceRequest_LabelsEntry.decode(
+            reader,
+            reader.uint32()
+          );
+          if (entry8.value !== undefined) {
+            message.labels[entry8.key] = entry8.value;
+          }
           break;
         default:
           reader.skipType(tag & 7);
@@ -1006,6 +1167,12 @@ export const UpdateResourceRequest = {
       object.sslCertificate !== undefined && object.sslCertificate !== null
         ? SSLTargetCertificate.fromJSON(object.sslCertificate)
         : undefined;
+    message.labels = Object.entries(object.labels ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      acc[key] = String(value);
+      return acc;
+    }, {});
     return message;
   },
 
@@ -1029,6 +1196,12 @@ export const UpdateResourceRequest = {
       (obj.sslCertificate = message.sslCertificate
         ? SSLTargetCertificate.toJSON(message.sslCertificate)
         : undefined);
+    obj.labels = {};
+    if (message.labels) {
+      Object.entries(message.labels).forEach(([k, v]) => {
+        obj.labels[k] = v;
+      });
+    }
     return obj;
   },
 
@@ -1053,11 +1226,104 @@ export const UpdateResourceRequest = {
       object.sslCertificate !== undefined && object.sslCertificate !== null
         ? SSLTargetCertificate.fromPartial(object.sslCertificate)
         : undefined;
+    message.labels = Object.entries(object.labels ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = String(value);
+      }
+      return acc;
+    }, {});
     return message;
   },
 };
 
 messageTypeRegistry.set(UpdateResourceRequest.$type, UpdateResourceRequest);
+
+const baseUpdateResourceRequest_LabelsEntry: object = {
+  $type: "yandex.cloud.cdn.v1.UpdateResourceRequest.LabelsEntry",
+  key: "",
+  value: "",
+};
+
+export const UpdateResourceRequest_LabelsEntry = {
+  $type: "yandex.cloud.cdn.v1.UpdateResourceRequest.LabelsEntry" as const,
+
+  encode(
+    message: UpdateResourceRequest_LabelsEntry,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateResourceRequest_LabelsEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateResourceRequest_LabelsEntry,
+    } as UpdateResourceRequest_LabelsEntry;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateResourceRequest_LabelsEntry {
+    const message = {
+      ...baseUpdateResourceRequest_LabelsEntry,
+    } as UpdateResourceRequest_LabelsEntry;
+    message.key =
+      object.key !== undefined && object.key !== null ? String(object.key) : "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? String(object.value)
+        : "";
+    return message;
+  },
+
+  toJSON(message: UpdateResourceRequest_LabelsEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<UpdateResourceRequest_LabelsEntry>, I>
+  >(object: I): UpdateResourceRequest_LabelsEntry {
+    const message = {
+      ...baseUpdateResourceRequest_LabelsEntry,
+    } as UpdateResourceRequest_LabelsEntry;
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  UpdateResourceRequest_LabelsEntry.$type,
+  UpdateResourceRequest_LabelsEntry
+);
 
 const baseUpdateResourceMetadata: object = {
   $type: "yandex.cloud.cdn.v1.UpdateResourceMetadata",

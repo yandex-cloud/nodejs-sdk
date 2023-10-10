@@ -119,6 +119,27 @@ export interface RegistryPassword {
   createdAt?: Date;
 }
 
+/** A Yandex Data Streams export. */
+export interface DataStreamExport {
+  $type: "yandex.cloud.iot.devices.v1.DataStreamExport";
+  /** ID of the YDS export. */
+  id: string;
+  /** Name of the YDS export. */
+  name: string;
+  /** ID of the registry that the YDS export belongs to. */
+  registryId: string;
+  /** MQTT topic whose messages export to YDS. */
+  mqttTopicFilter: string;
+  /** YDS database. */
+  database: string;
+  /** YDS stream name. */
+  stream: string;
+  /** ID of the service account which has permission to write to data stream. */
+  serviceAccountId: string;
+  /** Creation timestamp. */
+  createdAt?: Date;
+}
+
 const baseRegistry: object = {
   $type: "yandex.cloud.iot.devices.v1.Registry",
   id: "",
@@ -662,6 +683,164 @@ export const RegistryPassword = {
 };
 
 messageTypeRegistry.set(RegistryPassword.$type, RegistryPassword);
+
+const baseDataStreamExport: object = {
+  $type: "yandex.cloud.iot.devices.v1.DataStreamExport",
+  id: "",
+  name: "",
+  registryId: "",
+  mqttTopicFilter: "",
+  database: "",
+  stream: "",
+  serviceAccountId: "",
+};
+
+export const DataStreamExport = {
+  $type: "yandex.cloud.iot.devices.v1.DataStreamExport" as const,
+
+  encode(
+    message: DataStreamExport,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.registryId !== "") {
+      writer.uint32(26).string(message.registryId);
+    }
+    if (message.mqttTopicFilter !== "") {
+      writer.uint32(34).string(message.mqttTopicFilter);
+    }
+    if (message.database !== "") {
+      writer.uint32(42).string(message.database);
+    }
+    if (message.stream !== "") {
+      writer.uint32(50).string(message.stream);
+    }
+    if (message.serviceAccountId !== "") {
+      writer.uint32(58).string(message.serviceAccountId);
+    }
+    if (message.createdAt !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.createdAt),
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DataStreamExport {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseDataStreamExport } as DataStreamExport;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+        case 2:
+          message.name = reader.string();
+          break;
+        case 3:
+          message.registryId = reader.string();
+          break;
+        case 4:
+          message.mqttTopicFilter = reader.string();
+          break;
+        case 5:
+          message.database = reader.string();
+          break;
+        case 6:
+          message.stream = reader.string();
+          break;
+        case 7:
+          message.serviceAccountId = reader.string();
+          break;
+        case 8:
+          message.createdAt = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DataStreamExport {
+    const message = { ...baseDataStreamExport } as DataStreamExport;
+    message.id =
+      object.id !== undefined && object.id !== null ? String(object.id) : "";
+    message.name =
+      object.name !== undefined && object.name !== null
+        ? String(object.name)
+        : "";
+    message.registryId =
+      object.registryId !== undefined && object.registryId !== null
+        ? String(object.registryId)
+        : "";
+    message.mqttTopicFilter =
+      object.mqttTopicFilter !== undefined && object.mqttTopicFilter !== null
+        ? String(object.mqttTopicFilter)
+        : "";
+    message.database =
+      object.database !== undefined && object.database !== null
+        ? String(object.database)
+        : "";
+    message.stream =
+      object.stream !== undefined && object.stream !== null
+        ? String(object.stream)
+        : "";
+    message.serviceAccountId =
+      object.serviceAccountId !== undefined && object.serviceAccountId !== null
+        ? String(object.serviceAccountId)
+        : "";
+    message.createdAt =
+      object.createdAt !== undefined && object.createdAt !== null
+        ? fromJsonTimestamp(object.createdAt)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: DataStreamExport): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    message.name !== undefined && (obj.name = message.name);
+    message.registryId !== undefined && (obj.registryId = message.registryId);
+    message.mqttTopicFilter !== undefined &&
+      (obj.mqttTopicFilter = message.mqttTopicFilter);
+    message.database !== undefined && (obj.database = message.database);
+    message.stream !== undefined && (obj.stream = message.stream);
+    message.serviceAccountId !== undefined &&
+      (obj.serviceAccountId = message.serviceAccountId);
+    message.createdAt !== undefined &&
+      (obj.createdAt = message.createdAt.toISOString());
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DataStreamExport>, I>>(
+    object: I
+  ): DataStreamExport {
+    const message = { ...baseDataStreamExport } as DataStreamExport;
+    message.id = object.id ?? "";
+    message.name = object.name ?? "";
+    message.registryId = object.registryId ?? "";
+    message.mqttTopicFilter = object.mqttTopicFilter ?? "";
+    message.database = object.database ?? "";
+    message.stream = object.stream ?? "";
+    message.serviceAccountId = object.serviceAccountId ?? "";
+    message.createdAt = object.createdAt ?? undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(DataStreamExport.$type, DataStreamExport);
 
 type Builtin =
   | Date

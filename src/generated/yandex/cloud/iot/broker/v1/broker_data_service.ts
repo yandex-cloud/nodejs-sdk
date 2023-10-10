@@ -197,7 +197,7 @@ messageTypeRegistry.set(
 
 /** A set of methods to work with IoT Core messages on behalf of broker */
 export const BrokerDataServiceService = {
-  /** Publishes message on behalf of specified registry */
+  /** Publishes message on behalf of specified broker */
   publish: {
     path: "/yandex.cloud.iot.broker.v1.BrokerDataService/Publish",
     requestStream: false,
@@ -214,12 +214,12 @@ export const BrokerDataServiceService = {
 } as const;
 
 export interface BrokerDataServiceServer extends UntypedServiceImplementation {
-  /** Publishes message on behalf of specified registry */
+  /** Publishes message on behalf of specified broker */
   publish: handleUnaryCall<PublishBrokerDataRequest, PublishBrokerDataResponse>;
 }
 
 export interface BrokerDataServiceClient extends Client {
-  /** Publishes message on behalf of specified registry */
+  /** Publishes message on behalf of specified broker */
   publish(
     request: PublishBrokerDataRequest,
     callback: (

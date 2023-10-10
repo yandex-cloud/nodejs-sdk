@@ -35,7 +35,7 @@ export interface GetSkuRequest {
   currency: string;
   /**
    * Optional ID of the billing account.
-   * If specified, contract prices for concrete billing account are included in the response.
+   * If specified, contract prices for a particular billing account are included in the response.
    * To get the billing account ID, use [BillingAccountService.List] request.
    */
   billingAccountId: string;
@@ -53,7 +53,7 @@ export interface ListSkusRequest {
   currency: string;
   /**
    * Optional ID of the billing account.
-   * If specified, contract prices for concrete billing account are included in the response.
+   * If specified, contract prices for a particular billing account are included in the response.
    * To get the billing account ID, use [BillingAccountService.List] request.
    */
   billingAccountId: string;

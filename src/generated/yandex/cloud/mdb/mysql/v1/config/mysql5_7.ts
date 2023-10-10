@@ -40,7 +40,7 @@ export interface Mysqlconfig57 {
   /**
    * Enable writing of audit log of MySQL.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/mysql-security-excerpt/5.6/en/audit-log-options-variables.html#option_mysqld_audit-log) for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/mysql-security-excerpt/5.7/en/audit-log-reference.html#audit-log-options-variables) for details.
    */
   auditLog?: boolean;
   /**
@@ -58,145 +58,145 @@ export interface Mysqlconfig57 {
   /**
    * Authentication plugin used in the managed MySQL cluster.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_default_authentication_plugin for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_default_authentication_plugin) for details.
    */
   defaultAuthenticationPlugin: Mysqlconfig57_AuthPlugin;
   /**
    * Transaction log flush behaviour.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_flush_log_at_trx_commit for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_flush_log_at_trx_commit) for details.
    */
   innodbFlushLogAtTrxCommit?: number;
   /**
    * Max time in seconds for a transaction to wait for a row lock.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_lock_wait_timeout for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_lock_wait_timeout) for details.
    */
   innodbLockWaitTimeout?: number;
   /**
    * Default transaction isolation level.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_transaction_isolation for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_transaction_isolation) for details.
    */
   transactionIsolation: Mysqlconfig57_TransactionIsolation;
   /**
    * Print information about deadlocks in error log.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_print_all_deadlocks for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_print_all_deadlocks) for details.
    */
   innodbPrintAllDeadlocks?: boolean;
   /**
    * The number of seconds to wait for more data from a connection before aborting the read.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_net_read_timeout for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_net_read_timeout) for details.
    */
   netReadTimeout?: number;
   /**
    * The number of seconds to wait for a block to be written to a connection before aborting the write.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_net_write_timeout for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_net_write_timeout) for details.
    */
   netWriteTimeout?: number;
   /**
    * The maximum permitted result length in bytes for the GROUP_CONCAT() function.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_group_concat_max_len for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_group_concat_max_len) for details.
    */
   groupConcatMaxLen?: number;
   /**
    * The maximum size of internal in-memory temporary tables.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_tmp_table_size for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_tmp_table_size) for details.
    */
   tmpTableSize?: number;
   /**
    * This variable sets the maximum size to which user-created MEMORY tables are permitted to grow.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_max_heap_table_size for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_max_heap_table_size) for details.
    */
   maxHeapTableSize?: number;
   /**
    * The servers default time zone.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-options.html#option_mysqld_default-time-zone for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-options.html#option_mysqld_default-time-zone) for details.
    */
   defaultTimeZone: string;
   /**
    * The servers default character set.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_character_set_server for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_character_set_server) for details.
    */
   characterSetServer: string;
   /**
    * The server default collation.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_collation_server for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_collation_server) for details.
    */
   collationServer: string;
   /**
    * Enables InnoDB adaptive hash index.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_adaptive_hash_index for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_adaptive_hash_index) for details.
    */
   innodbAdaptiveHashIndex?: boolean;
   /**
    * Enables the NUMA interleave memory policy for allocation of the InnoDB buffer pool.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_numa_interleave for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_numa_interleave) for details.
    */
   innodbNumaInterleave?: boolean;
   /**
    * The size in bytes of the buffer that InnoDB uses to write to the log files on disk.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_log_buffer_size for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_log_buffer_size) for details.
    */
   innodbLogBufferSize?: number;
   /**
    * The size in bytes of the single InnoDB Redo log file.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_log_file_size for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_log_file_size) for details.
    */
   innodbLogFileSize?: number;
   /**
    * Limits IO available for InnoDB background tasks.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_io_capacity for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_io_capacity) for details.
    */
   innodbIoCapacity?: number;
   /**
    * Limits IO available for InnoDB background tasks.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_io_capacity_max for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_io_capacity_max) for details.
    */
   innodbIoCapacityMax?: number;
   /**
    * The number of I/O threads for read operations in InnoDB.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_read_io_threads for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_read_io_threads) for details.
    */
   innodbReadIoThreads?: number;
   /**
    * The number of I/O threads for write operations in InnoDB.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_write_io_threads for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_write_io_threads) for details.
    */
   innodbWriteIoThreads?: number;
   /**
    * The number of background threads devoted to the InnoDB purge operation.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_purge_threads for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_purge_threads) for details.
    */
   innodbPurgeThreads?: number;
   /**
    * Defines the maximum number of threads permitted inside of InnoDB.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_thread_concurrency for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_thread_concurrency) for details.
    */
   innodbThreadConcurrency?: number;
   /**
    * Limits the max size of InnoDB temp tablespace.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_temp_data_file_path for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_temp_data_file_path) for details.
    */
   innodbTempDataFileMaxSize?: number;
   /**
@@ -250,13 +250,13 @@ export interface Mysqlconfig57 {
   /**
    * Can be used to control the operation of AUTO_INCREMENT columns.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/replication-options-master.html#sysvar_auto_increment_increment) for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/replication-options-source.html#sysvar_auto_increment_increment) for details.
    */
   autoIncrementIncrement?: number;
   /**
    * Can be used to control the operation of AUTO_INCREMENT columns.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/replication-options-master.html#sysvar_auto_increment_offset) for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/replication-options-source.html#sysvar_auto_increment_offset) for details.
    */
   autoIncrementOffset?: number;
   /**
@@ -292,7 +292,7 @@ export interface Mysqlconfig57 {
   /**
    * The number of replica acknowledgments the source must receive per transaction before proceeding.
    *
-   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/replication-options-master.html#sysvar_rpl_semi_sync_master_wait_for_slave_count) for details.
+   * See [MySQL documentation](https://dev.mysql.com/doc/refman/5.7/en/replication-options-source.html#sysvar_rpl_semi_sync_master_wait_for_slave_count) for details.
    */
   rplSemiSyncMasterWaitForSlaveCount?: number;
   /**
@@ -426,9 +426,94 @@ export interface Mysqlconfig57 {
   /**
    * Specifies how the source mysqld generates the dependency information that it writes in the binary log to help replicas determine which transactions can be executed in parallel.
    *
-   * For details, see [MySQL documentation for the variabl](https://dev.mysql.com/doc/refman/5.7/en/replication-options-binary-log.html#sysvar_binlog_transaction_dependency_tracking).
+   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/replication-options-binary-log.html#sysvar_binlog_transaction_dependency_tracking).
    */
   binlogTransactionDependencyTracking: Mysqlconfig57_BinlogTransactionDependencyTracking;
+  /**
+   * Config specific will be all changes to a table take effect immediately or you must use COMMIT to accept a transaction or ROLLBACK to cancel it.
+   *
+   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_autocommit).
+   */
+  autocommit?: boolean;
+  /**
+   * Enables or disables periodic output for the standard InnoDB Monitor.
+   *
+   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_status_output).
+   */
+  innodbStatusOutput?: boolean;
+  /**
+   * When innodb_strict_mode is enabled, InnoDB returns errors rather than warnings when checking for invalid or incompatible table options.
+   *
+   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_strict_mode).
+   */
+  innodbStrictMode?: boolean;
+  /**
+   * Makes InnoDB to write information about all lock wait timeout errors into the log file.
+   *
+   * For details, see [Percona documentation for the variable](https://docs.percona.com/percona-server/5.7/diagnostics/innodb_show_status.html?highlight=innodb_print_lock_wait_timeout_info).
+   */
+  innodbPrintLockWaitTimeoutInfo?: boolean;
+  /**
+   * System variable specifies the verbosity for handling events intended for the error log
+   *
+   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_log_error_verbosity).
+   */
+  logErrorVerbosity?: number;
+  /**
+   * The maximum number of bytes of memory reserved per session for computation of normalized statement digests.
+   *
+   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_max_digest_length).
+   */
+  maxDigestLength?: number;
+  /**
+   * Do not cache results that are larger than this number of bytes.
+   *
+   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_query_cache_limit).
+   */
+  queryCacheLimit?: number;
+  /**
+   * The amount of memory allocated for caching query results.
+   *
+   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_query_cache_size).
+   */
+  queryCacheSize?: number;
+  /**
+   * Set the query cache type.
+   *
+   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_query_cache_type).
+   */
+  queryCacheType?: number;
+  /**
+   * // This variable specifies the timeout in seconds for attempts to acquire metadata locks
+   *
+   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lock_wait_timeout).
+   */
+  lockWaitTimeout?: number;
+  /**
+   * This variable limits the total number of prepared statements in the server.
+   *
+   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_max_prepared_stmt_count).
+   */
+  maxPreparedStmtCount?: number;
+  /**
+   * The system variable enables control over optimizer behavior.
+   *
+   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_optimizer_switch)
+   * https://dev.mysql.com/doc/refman/5.7/en/switchable-optimizations.html
+   */
+  optimizerSwitch: string;
+  /**
+   * The maximum depth of search performed by the query optimizer
+   *
+   * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html)
+   */
+  optimizerSearchDepth?: number;
+  /**
+   * Enables and disables collection of query times
+   *
+   * For details, see [Percona documentation for the variable](https://docs.percona.com/percona-server/5.7/diagnostics/response_time_distribution.html#query_response_time_stats).
+   */
+  queryResponseTimeStats?: boolean;
 }
 
 export enum Mysqlconfig57_SQLMode {
@@ -1018,6 +1103,7 @@ const baseMysqlconfig57: object = {
   logSlowRateType: 0,
   logSlowFilter: 0,
   binlogTransactionDependencyTracking: 0,
+  optimizerSwitch: "",
 };
 
 export const Mysqlconfig57 = {
@@ -1562,6 +1648,117 @@ export const Mysqlconfig57 = {
     if (message.binlogTransactionDependencyTracking !== 0) {
       writer.uint32(568).int32(message.binlogTransactionDependencyTracking);
     }
+    if (message.autocommit !== undefined) {
+      BoolValue.encode(
+        { $type: "google.protobuf.BoolValue", value: message.autocommit! },
+        writer.uint32(578).fork()
+      ).ldelim();
+    }
+    if (message.innodbStatusOutput !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.innodbStatusOutput!,
+        },
+        writer.uint32(586).fork()
+      ).ldelim();
+    }
+    if (message.innodbStrictMode !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.innodbStrictMode!,
+        },
+        writer.uint32(594).fork()
+      ).ldelim();
+    }
+    if (message.innodbPrintLockWaitTimeoutInfo !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.innodbPrintLockWaitTimeoutInfo!,
+        },
+        writer.uint32(602).fork()
+      ).ldelim();
+    }
+    if (message.logErrorVerbosity !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.logErrorVerbosity!,
+        },
+        writer.uint32(610).fork()
+      ).ldelim();
+    }
+    if (message.maxDigestLength !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.maxDigestLength!,
+        },
+        writer.uint32(618).fork()
+      ).ldelim();
+    }
+    if (message.queryCacheLimit !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.queryCacheLimit!,
+        },
+        writer.uint32(626).fork()
+      ).ldelim();
+    }
+    if (message.queryCacheSize !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.queryCacheSize! },
+        writer.uint32(634).fork()
+      ).ldelim();
+    }
+    if (message.queryCacheType !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.queryCacheType! },
+        writer.uint32(642).fork()
+      ).ldelim();
+    }
+    if (message.lockWaitTimeout !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.lockWaitTimeout!,
+        },
+        writer.uint32(650).fork()
+      ).ldelim();
+    }
+    if (message.maxPreparedStmtCount !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.maxPreparedStmtCount!,
+        },
+        writer.uint32(658).fork()
+      ).ldelim();
+    }
+    if (message.optimizerSwitch !== "") {
+      writer.uint32(666).string(message.optimizerSwitch);
+    }
+    if (message.optimizerSearchDepth !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.optimizerSearchDepth!,
+        },
+        writer.uint32(674).fork()
+      ).ldelim();
+    }
+    if (message.queryResponseTimeStats !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.queryResponseTimeStats!,
+        },
+        writer.uint32(682).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1972,6 +2169,84 @@ export const Mysqlconfig57 = {
         case 71:
           message.binlogTransactionDependencyTracking = reader.int32() as any;
           break;
+        case 72:
+          message.autocommit = BoolValue.decode(reader, reader.uint32()).value;
+          break;
+        case 73:
+          message.innodbStatusOutput = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 74:
+          message.innodbStrictMode = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 75:
+          message.innodbPrintLockWaitTimeoutInfo = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 76:
+          message.logErrorVerbosity = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 77:
+          message.maxDigestLength = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 78:
+          message.queryCacheLimit = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 79:
+          message.queryCacheSize = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 80:
+          message.queryCacheType = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 81:
+          message.lockWaitTimeout = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 82:
+          message.maxPreparedStmtCount = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 83:
+          message.optimizerSwitch = reader.string();
+          break;
+        case 84:
+          message.optimizerSearchDepth = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 85:
+          message.queryResponseTimeStats = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2312,6 +2587,68 @@ export const Mysqlconfig57 = {
             object.binlogTransactionDependencyTracking
           )
         : 0;
+    message.autocommit =
+      object.autocommit !== undefined && object.autocommit !== null
+        ? Boolean(object.autocommit)
+        : undefined;
+    message.innodbStatusOutput =
+      object.innodbStatusOutput !== undefined &&
+      object.innodbStatusOutput !== null
+        ? Boolean(object.innodbStatusOutput)
+        : undefined;
+    message.innodbStrictMode =
+      object.innodbStrictMode !== undefined && object.innodbStrictMode !== null
+        ? Boolean(object.innodbStrictMode)
+        : undefined;
+    message.innodbPrintLockWaitTimeoutInfo =
+      object.innodbPrintLockWaitTimeoutInfo !== undefined &&
+      object.innodbPrintLockWaitTimeoutInfo !== null
+        ? Boolean(object.innodbPrintLockWaitTimeoutInfo)
+        : undefined;
+    message.logErrorVerbosity =
+      object.logErrorVerbosity !== undefined &&
+      object.logErrorVerbosity !== null
+        ? Number(object.logErrorVerbosity)
+        : undefined;
+    message.maxDigestLength =
+      object.maxDigestLength !== undefined && object.maxDigestLength !== null
+        ? Number(object.maxDigestLength)
+        : undefined;
+    message.queryCacheLimit =
+      object.queryCacheLimit !== undefined && object.queryCacheLimit !== null
+        ? Number(object.queryCacheLimit)
+        : undefined;
+    message.queryCacheSize =
+      object.queryCacheSize !== undefined && object.queryCacheSize !== null
+        ? Number(object.queryCacheSize)
+        : undefined;
+    message.queryCacheType =
+      object.queryCacheType !== undefined && object.queryCacheType !== null
+        ? Number(object.queryCacheType)
+        : undefined;
+    message.lockWaitTimeout =
+      object.lockWaitTimeout !== undefined && object.lockWaitTimeout !== null
+        ? Number(object.lockWaitTimeout)
+        : undefined;
+    message.maxPreparedStmtCount =
+      object.maxPreparedStmtCount !== undefined &&
+      object.maxPreparedStmtCount !== null
+        ? Number(object.maxPreparedStmtCount)
+        : undefined;
+    message.optimizerSwitch =
+      object.optimizerSwitch !== undefined && object.optimizerSwitch !== null
+        ? String(object.optimizerSwitch)
+        : "";
+    message.optimizerSearchDepth =
+      object.optimizerSearchDepth !== undefined &&
+      object.optimizerSearchDepth !== null
+        ? Number(object.optimizerSearchDepth)
+        : undefined;
+    message.queryResponseTimeStats =
+      object.queryResponseTimeStats !== undefined &&
+      object.queryResponseTimeStats !== null
+        ? Boolean(object.queryResponseTimeStats)
+        : undefined;
     return message;
   },
 
@@ -2478,6 +2815,34 @@ export const Mysqlconfig57 = {
         mysqlconfig57_BinlogTransactionDependencyTrackingToJSON(
           message.binlogTransactionDependencyTracking
         ));
+    message.autocommit !== undefined && (obj.autocommit = message.autocommit);
+    message.innodbStatusOutput !== undefined &&
+      (obj.innodbStatusOutput = message.innodbStatusOutput);
+    message.innodbStrictMode !== undefined &&
+      (obj.innodbStrictMode = message.innodbStrictMode);
+    message.innodbPrintLockWaitTimeoutInfo !== undefined &&
+      (obj.innodbPrintLockWaitTimeoutInfo =
+        message.innodbPrintLockWaitTimeoutInfo);
+    message.logErrorVerbosity !== undefined &&
+      (obj.logErrorVerbosity = message.logErrorVerbosity);
+    message.maxDigestLength !== undefined &&
+      (obj.maxDigestLength = message.maxDigestLength);
+    message.queryCacheLimit !== undefined &&
+      (obj.queryCacheLimit = message.queryCacheLimit);
+    message.queryCacheSize !== undefined &&
+      (obj.queryCacheSize = message.queryCacheSize);
+    message.queryCacheType !== undefined &&
+      (obj.queryCacheType = message.queryCacheType);
+    message.lockWaitTimeout !== undefined &&
+      (obj.lockWaitTimeout = message.lockWaitTimeout);
+    message.maxPreparedStmtCount !== undefined &&
+      (obj.maxPreparedStmtCount = message.maxPreparedStmtCount);
+    message.optimizerSwitch !== undefined &&
+      (obj.optimizerSwitch = message.optimizerSwitch);
+    message.optimizerSearchDepth !== undefined &&
+      (obj.optimizerSearchDepth = message.optimizerSearchDepth);
+    message.queryResponseTimeStats !== undefined &&
+      (obj.queryResponseTimeStats = message.queryResponseTimeStats);
     return obj;
   },
 
@@ -2574,6 +2939,21 @@ export const Mysqlconfig57 = {
     message.innodbCompressionLevel = object.innodbCompressionLevel ?? undefined;
     message.binlogTransactionDependencyTracking =
       object.binlogTransactionDependencyTracking ?? 0;
+    message.autocommit = object.autocommit ?? undefined;
+    message.innodbStatusOutput = object.innodbStatusOutput ?? undefined;
+    message.innodbStrictMode = object.innodbStrictMode ?? undefined;
+    message.innodbPrintLockWaitTimeoutInfo =
+      object.innodbPrintLockWaitTimeoutInfo ?? undefined;
+    message.logErrorVerbosity = object.logErrorVerbosity ?? undefined;
+    message.maxDigestLength = object.maxDigestLength ?? undefined;
+    message.queryCacheLimit = object.queryCacheLimit ?? undefined;
+    message.queryCacheSize = object.queryCacheSize ?? undefined;
+    message.queryCacheType = object.queryCacheType ?? undefined;
+    message.lockWaitTimeout = object.lockWaitTimeout ?? undefined;
+    message.maxPreparedStmtCount = object.maxPreparedStmtCount ?? undefined;
+    message.optimizerSwitch = object.optimizerSwitch ?? "";
+    message.optimizerSearchDepth = object.optimizerSearchDepth ?? undefined;
+    message.queryResponseTimeStats = object.queryResponseTimeStats ?? undefined;
     return message;
   },
 };

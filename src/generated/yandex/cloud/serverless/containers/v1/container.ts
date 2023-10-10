@@ -3,27 +3,44 @@ import { messageTypeRegistry } from "../../../../../typeRegistry";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { Duration } from "../../../../../google/protobuf/duration";
+import {
+  LogLevel_Level,
+  logLevel_LevelFromJSON,
+  logLevel_LevelToJSON,
+} from "../../../../../yandex/cloud/logging/v1/log_entry";
 import { Timestamp } from "../../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.serverless.containers.v1";
 
 export interface Container {
   $type: "yandex.cloud.serverless.containers.v1.Container";
+  /** ID of the container. Generated at creation time. */
   id: string;
+  /** ID of the folder that the container belongs to. */
   folderId: string;
+  /** Creation timestamp for the container. */
   createdAt?: Date;
+  /** Name of the container. The name is unique within the folder. */
   name: string;
+  /** Description of the container. */
   description: string;
+  /** Container labels as `key:value` pairs. */
   labels: { [key: string]: string };
+  /** URL that needs to be requested to call the container. */
   url: string;
+  /** Status of the container. */
   status: Container_Status;
 }
 
 export enum Container_Status {
   STATUS_UNSPECIFIED = 0,
+  /** CREATING - Container is being created. */
   CREATING = 1,
+  /** ACTIVE - Container is ready for use. */
   ACTIVE = 2,
+  /** DELETING - Container is being deleted. */
   DELETING = 3,
+  /** ERROR - Container failed. The only allowed action is delete. */
   ERROR = 4,
   UNRECOGNIZED = -1,
 }
@@ -77,25 +94,55 @@ export interface Container_LabelsEntry {
 
 export interface Revision {
   $type: "yandex.cloud.serverless.containers.v1.Revision";
+  /** ID of the revision. */
   id: string;
+  /** ID of the container that the revision belongs to. */
   containerId: string;
+  /** Description of the revision. */
   description: string;
+  /** Creation timestamp for the revision. */
   createdAt?: Date;
+  /** Image configuration for the revision. */
   image?: Image;
+  /** Resources allocated to the revision. */
   resources?: Resources;
+  /**
+   * Timeout for the execution of the revision.
+   *
+   * If the timeout is exceeded, Serverless Containers responds with a 504 HTTP code.
+   */
   executionTimeout?: Duration;
+  /** The number of concurrent requests allowed per container instance. */
   concurrency: number;
+  /** ID of the service account associated with the revision. */
   serviceAccountId: string;
+  /** Status of the revision. */
   status: Revision_Status;
+  /** Yandex Lockbox secrets to be used by the revision. */
   secrets: Secret[];
+  /** Network access. If specified the revision will be attached to specified network/subnet(s). */
   connectivity?: Connectivity;
+  /**
+   * Policy for provisioning instances of the revision.
+   *
+   * The policy is only applied when the revision is ACTIVE.
+   */
   provisionPolicy?: ProvisionPolicy;
+  /** Policy for scaling instances of the revision. */
+  scalingPolicy?: ScalingPolicy;
+  /** Options for logging from the container. */
+  logOptions?: LogOptions;
+  /** S3 mounts to be used by the version. */
+  storageMounts: StorageMount[];
 }
 
 export enum Revision_Status {
   STATUS_UNSPECIFIED = 0,
+  /** CREATING - Revision is being created. */
   CREATING = 1,
+  /** ACTIVE - Revision is currently used by the container. */
   ACTIVE = 2,
+  /** OBSOLETE - Revision is not used by the container. May be deleted later. */
   OBSOLETE = 3,
   UNRECOGNIZED = -1,
 }
@@ -136,13 +183,20 @@ export function revision_StatusToJSON(object: Revision_Status): string {
   }
 }
 
+/** Revision image specification. */
 export interface Image {
   $type: "yandex.cloud.serverless.containers.v1.Image";
+  /** Image URL, that is used by the revision. */
   imageUrl: string;
+  /** Digest of the image. Calculated at creation time. */
   imageDigest: string;
+  /** Override for the image's ENTRYPOINT. */
   command?: Command;
+  /** Override for the image's CMD. */
   args?: Args;
+  /** Additional environment for the container. */
   environment: { [key: string]: string };
+  /** Override for the image's WORKDIR. */
   workingDir: string;
 }
 
@@ -154,38 +208,117 @@ export interface Image_EnvironmentEntry {
 
 export interface Command {
   $type: "yandex.cloud.serverless.containers.v1.Command";
+  /**
+   * Command that will override ENTRYPOINT of an image.
+   *
+   * Commands will be executed as is. The runtime will not substitute environment
+   * variables or execute shell commands. If one wants to do that, they should
+   * invoke shell interpreter with an appropriate shell script.
+   */
   command: string[];
 }
 
 export interface Args {
   $type: "yandex.cloud.serverless.containers.v1.Args";
+  /**
+   * Arguments that will override CMD of an image.
+   *
+   * Arguments will be passed as is. The runtime will not substitute environment
+   * variables or execute shell commands. If one wants to do that, they should
+   * invoke shell interpreter with an appropriate shell script.
+   */
   args: string[];
 }
 
+/** Resources allocated to a revision. */
 export interface Resources {
   $type: "yandex.cloud.serverless.containers.v1.Resources";
+  /** Amount of memory available to the revision, specified in bytes, multiple of 128MB. */
   memory: number;
+  /** Number of cores available to the revision. */
   cores: number;
+  /**
+   * Specifies baseline performance for a core in percent, multiple of 5%.
+   * Should be 100% for cores > 1.
+   */
   coreFraction: number;
 }
 
 export interface ProvisionPolicy {
   $type: "yandex.cloud.serverless.containers.v1.ProvisionPolicy";
+  /**
+   * Minimum number of guaranteed provisioned container instances for all zones
+   * in total.
+   */
   minInstances: number;
 }
 
+/** Secret that is available to the container at run time. */
 export interface Secret {
   $type: "yandex.cloud.serverless.containers.v1.Secret";
+  /** ID of Yandex Lockbox secret. */
   id: string;
+  /** ID of Yandex Lockbox secret. */
   versionId: string;
+  /** Key in secret's payload, which value to be delivered into container environment. */
   key: string;
+  /** Environment variable in which secret's value is delivered. */
   environmentVariable: string | undefined;
 }
 
+/** Revision connectivity specification. */
 export interface Connectivity {
   $type: "yandex.cloud.serverless.containers.v1.Connectivity";
+  /** Network the revision will have access to. */
   networkId: string;
+  /**
+   * The list of subnets (from the same network) the revision can be attached to.
+   *
+   * Deprecated, it is sufficient to specify only network_id, without the list of subnet_ids.
+   */
   subnetIds: string[];
+}
+
+export interface LogOptions {
+  $type: "yandex.cloud.serverless.containers.v1.LogOptions";
+  /** Is logging from container disabled. */
+  disabled: boolean;
+  /** Entry should be written to log group resolved by ID. */
+  logGroupId: string | undefined;
+  /** Entry should be written to default log group for specified folder. */
+  folderId: string | undefined;
+  /**
+   * Minimum log entry level.
+   *
+   * See [LogLevel.Level] for details.
+   */
+  minLevel: LogLevel_Level;
+}
+
+export interface ScalingPolicy {
+  $type: "yandex.cloud.serverless.containers.v1.ScalingPolicy";
+  /**
+   * Upper limit for instance count in each zone.
+   * 0 means no limit.
+   */
+  zoneInstancesLimit: number;
+  /**
+   * Upper limit of requests count in each zone.
+   * 0 means no limit.
+   */
+  zoneRequestsLimit: number;
+}
+
+export interface StorageMount {
+  $type: "yandex.cloud.serverless.containers.v1.StorageMount";
+  /** S3 bucket name for mounting. */
+  bucketId: string;
+  /** S3 bucket prefix for mounting. */
+  prefix: string;
+  /** Is mount read only. */
+  readOnly: boolean;
+  /** Mount point path inside the container for mounting. */
+  mountPointPath: string;
 }
 
 const baseContainer: object = {
@@ -512,6 +645,18 @@ export const Revision = {
         writer.uint32(106).fork()
       ).ldelim();
     }
+    if (message.scalingPolicy !== undefined) {
+      ScalingPolicy.encode(
+        message.scalingPolicy,
+        writer.uint32(114).fork()
+      ).ldelim();
+    }
+    if (message.logOptions !== undefined) {
+      LogOptions.encode(message.logOptions, writer.uint32(122).fork()).ldelim();
+    }
+    for (const v of message.storageMounts) {
+      StorageMount.encode(v!, writer.uint32(130).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -520,6 +665,7 @@ export const Revision = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseRevision } as Revision;
     message.secrets = [];
+    message.storageMounts = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -565,6 +711,17 @@ export const Revision = {
           message.provisionPolicy = ProvisionPolicy.decode(
             reader,
             reader.uint32()
+          );
+          break;
+        case 14:
+          message.scalingPolicy = ScalingPolicy.decode(reader, reader.uint32());
+          break;
+        case 15:
+          message.logOptions = LogOptions.decode(reader, reader.uint32());
+          break;
+        case 16:
+          message.storageMounts.push(
+            StorageMount.decode(reader, reader.uint32())
           );
           break;
         default:
@@ -626,6 +783,17 @@ export const Revision = {
       object.provisionPolicy !== undefined && object.provisionPolicy !== null
         ? ProvisionPolicy.fromJSON(object.provisionPolicy)
         : undefined;
+    message.scalingPolicy =
+      object.scalingPolicy !== undefined && object.scalingPolicy !== null
+        ? ScalingPolicy.fromJSON(object.scalingPolicy)
+        : undefined;
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromJSON(object.logOptions)
+        : undefined;
+    message.storageMounts = (object.storageMounts ?? []).map((e: any) =>
+      StorageMount.fromJSON(e)
+    );
     return message;
   },
 
@@ -669,6 +837,21 @@ export const Revision = {
       (obj.provisionPolicy = message.provisionPolicy
         ? ProvisionPolicy.toJSON(message.provisionPolicy)
         : undefined);
+    message.scalingPolicy !== undefined &&
+      (obj.scalingPolicy = message.scalingPolicy
+        ? ScalingPolicy.toJSON(message.scalingPolicy)
+        : undefined);
+    message.logOptions !== undefined &&
+      (obj.logOptions = message.logOptions
+        ? LogOptions.toJSON(message.logOptions)
+        : undefined);
+    if (message.storageMounts) {
+      obj.storageMounts = message.storageMounts.map((e) =>
+        e ? StorageMount.toJSON(e) : undefined
+      );
+    } else {
+      obj.storageMounts = [];
+    }
     return obj;
   },
 
@@ -702,6 +885,16 @@ export const Revision = {
       object.provisionPolicy !== undefined && object.provisionPolicy !== null
         ? ProvisionPolicy.fromPartial(object.provisionPolicy)
         : undefined;
+    message.scalingPolicy =
+      object.scalingPolicy !== undefined && object.scalingPolicy !== null
+        ? ScalingPolicy.fromPartial(object.scalingPolicy)
+        : undefined;
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromPartial(object.logOptions)
+        : undefined;
+    message.storageMounts =
+      object.storageMounts?.map((e) => StorageMount.fromPartial(e)) || [];
     return message;
   },
 };
@@ -1385,6 +1578,287 @@ export const Connectivity = {
 };
 
 messageTypeRegistry.set(Connectivity.$type, Connectivity);
+
+const baseLogOptions: object = {
+  $type: "yandex.cloud.serverless.containers.v1.LogOptions",
+  disabled: false,
+  minLevel: 0,
+};
+
+export const LogOptions = {
+  $type: "yandex.cloud.serverless.containers.v1.LogOptions" as const,
+
+  encode(
+    message: LogOptions,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.disabled === true) {
+      writer.uint32(8).bool(message.disabled);
+    }
+    if (message.logGroupId !== undefined) {
+      writer.uint32(18).string(message.logGroupId);
+    }
+    if (message.folderId !== undefined) {
+      writer.uint32(26).string(message.folderId);
+    }
+    if (message.minLevel !== 0) {
+      writer.uint32(32).int32(message.minLevel);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LogOptions {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseLogOptions } as LogOptions;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.disabled = reader.bool();
+          break;
+        case 2:
+          message.logGroupId = reader.string();
+          break;
+        case 3:
+          message.folderId = reader.string();
+          break;
+        case 4:
+          message.minLevel = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LogOptions {
+    const message = { ...baseLogOptions } as LogOptions;
+    message.disabled =
+      object.disabled !== undefined && object.disabled !== null
+        ? Boolean(object.disabled)
+        : false;
+    message.logGroupId =
+      object.logGroupId !== undefined && object.logGroupId !== null
+        ? String(object.logGroupId)
+        : undefined;
+    message.folderId =
+      object.folderId !== undefined && object.folderId !== null
+        ? String(object.folderId)
+        : undefined;
+    message.minLevel =
+      object.minLevel !== undefined && object.minLevel !== null
+        ? logLevel_LevelFromJSON(object.minLevel)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: LogOptions): unknown {
+    const obj: any = {};
+    message.disabled !== undefined && (obj.disabled = message.disabled);
+    message.logGroupId !== undefined && (obj.logGroupId = message.logGroupId);
+    message.folderId !== undefined && (obj.folderId = message.folderId);
+    message.minLevel !== undefined &&
+      (obj.minLevel = logLevel_LevelToJSON(message.minLevel));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<LogOptions>, I>>(
+    object: I
+  ): LogOptions {
+    const message = { ...baseLogOptions } as LogOptions;
+    message.disabled = object.disabled ?? false;
+    message.logGroupId = object.logGroupId ?? undefined;
+    message.folderId = object.folderId ?? undefined;
+    message.minLevel = object.minLevel ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(LogOptions.$type, LogOptions);
+
+const baseScalingPolicy: object = {
+  $type: "yandex.cloud.serverless.containers.v1.ScalingPolicy",
+  zoneInstancesLimit: 0,
+  zoneRequestsLimit: 0,
+};
+
+export const ScalingPolicy = {
+  $type: "yandex.cloud.serverless.containers.v1.ScalingPolicy" as const,
+
+  encode(
+    message: ScalingPolicy,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.zoneInstancesLimit !== 0) {
+      writer.uint32(8).int64(message.zoneInstancesLimit);
+    }
+    if (message.zoneRequestsLimit !== 0) {
+      writer.uint32(16).int64(message.zoneRequestsLimit);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ScalingPolicy {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseScalingPolicy } as ScalingPolicy;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.zoneInstancesLimit = longToNumber(reader.int64() as Long);
+          break;
+        case 2:
+          message.zoneRequestsLimit = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ScalingPolicy {
+    const message = { ...baseScalingPolicy } as ScalingPolicy;
+    message.zoneInstancesLimit =
+      object.zoneInstancesLimit !== undefined &&
+      object.zoneInstancesLimit !== null
+        ? Number(object.zoneInstancesLimit)
+        : 0;
+    message.zoneRequestsLimit =
+      object.zoneRequestsLimit !== undefined &&
+      object.zoneRequestsLimit !== null
+        ? Number(object.zoneRequestsLimit)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: ScalingPolicy): unknown {
+    const obj: any = {};
+    message.zoneInstancesLimit !== undefined &&
+      (obj.zoneInstancesLimit = Math.round(message.zoneInstancesLimit));
+    message.zoneRequestsLimit !== undefined &&
+      (obj.zoneRequestsLimit = Math.round(message.zoneRequestsLimit));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ScalingPolicy>, I>>(
+    object: I
+  ): ScalingPolicy {
+    const message = { ...baseScalingPolicy } as ScalingPolicy;
+    message.zoneInstancesLimit = object.zoneInstancesLimit ?? 0;
+    message.zoneRequestsLimit = object.zoneRequestsLimit ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(ScalingPolicy.$type, ScalingPolicy);
+
+const baseStorageMount: object = {
+  $type: "yandex.cloud.serverless.containers.v1.StorageMount",
+  bucketId: "",
+  prefix: "",
+  readOnly: false,
+  mountPointPath: "",
+};
+
+export const StorageMount = {
+  $type: "yandex.cloud.serverless.containers.v1.StorageMount" as const,
+
+  encode(
+    message: StorageMount,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.bucketId !== "") {
+      writer.uint32(10).string(message.bucketId);
+    }
+    if (message.prefix !== "") {
+      writer.uint32(18).string(message.prefix);
+    }
+    if (message.readOnly === true) {
+      writer.uint32(32).bool(message.readOnly);
+    }
+    if (message.mountPointPath !== "") {
+      writer.uint32(42).string(message.mountPointPath);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): StorageMount {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseStorageMount } as StorageMount;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.bucketId = reader.string();
+          break;
+        case 2:
+          message.prefix = reader.string();
+          break;
+        case 4:
+          message.readOnly = reader.bool();
+          break;
+        case 5:
+          message.mountPointPath = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StorageMount {
+    const message = { ...baseStorageMount } as StorageMount;
+    message.bucketId =
+      object.bucketId !== undefined && object.bucketId !== null
+        ? String(object.bucketId)
+        : "";
+    message.prefix =
+      object.prefix !== undefined && object.prefix !== null
+        ? String(object.prefix)
+        : "";
+    message.readOnly =
+      object.readOnly !== undefined && object.readOnly !== null
+        ? Boolean(object.readOnly)
+        : false;
+    message.mountPointPath =
+      object.mountPointPath !== undefined && object.mountPointPath !== null
+        ? String(object.mountPointPath)
+        : "";
+    return message;
+  },
+
+  toJSON(message: StorageMount): unknown {
+    const obj: any = {};
+    message.bucketId !== undefined && (obj.bucketId = message.bucketId);
+    message.prefix !== undefined && (obj.prefix = message.prefix);
+    message.readOnly !== undefined && (obj.readOnly = message.readOnly);
+    message.mountPointPath !== undefined &&
+      (obj.mountPointPath = message.mountPointPath);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<StorageMount>, I>>(
+    object: I
+  ): StorageMount {
+    const message = { ...baseStorageMount } as StorageMount;
+    message.bucketId = object.bucketId ?? "";
+    message.prefix = object.prefix ?? "";
+    message.readOnly = object.readOnly ?? false;
+    message.mountPointPath = object.mountPointPath ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(StorageMount.$type, StorageMount);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

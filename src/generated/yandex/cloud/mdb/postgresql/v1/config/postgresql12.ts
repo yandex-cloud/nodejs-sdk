@@ -172,8 +172,24 @@ export interface PostgresqlConfig12 {
   geqoThreshold?: number;
   /** tradeoff between planning time and query plan quality, default is 5 */
   geqoEffort?: number;
+  /** number of individuals in the genetic population, useful values are typically 100 to 1000; default - 0 - choose based on based on geqo_effort */
+  geqoPoolSize?: number;
+  /** the number of generations used by GEQO, useful values are in the same range as the pool size */
+  geqoGenerations?: number;
+  /** selective pressure within the population */
+  geqoSelectionBias?: number;
   /** initial value of the random number generator used by GEQO */
   geqoSeed?: number;
+  pgTrgmSimilarityThreshold?: number;
+  pgTrgmWordSimilarityThreshold?: number;
+  pgTrgmStrictWordSimilarityThreshold?: number;
+  /** in milliseconds. */
+  maxStandbyArchiveDelay?: number;
+  /** Terminate any session that exceeds the designated timeout, specified in milliseconds. If a timeout is not specified, the default session timeout is set to 12 hours. To disable it, specify a value of 0. */
+  sessionDurationTimeout?: number;
+  logReplicationCommands?: boolean;
+  /** in milliseconds. The default is 1000 (1 sec). */
+  logAutovacuumMinDuration?: number;
 }
 
 export enum PostgresqlConfig12_BackslashQuote {
@@ -676,6 +692,8 @@ export enum PostgresqlConfig12_SharedPreloadLibraries {
   SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS = 4,
   SHARED_PRELOAD_LIBRARIES_PG_CRON = 5,
   SHARED_PRELOAD_LIBRARIES_PGLOGICAL = 6,
+  SHARED_PRELOAD_LIBRARIES_PG_PREWARM = 7,
+  SHARED_PRELOAD_LIBRARIES_PGAUDIT = 8,
   UNRECOGNIZED = -1,
 }
 
@@ -704,6 +722,12 @@ export function postgresqlConfig12_SharedPreloadLibrariesFromJSON(
     case 6:
     case "SHARED_PRELOAD_LIBRARIES_PGLOGICAL":
       return PostgresqlConfig12_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PGLOGICAL;
+    case 7:
+    case "SHARED_PRELOAD_LIBRARIES_PG_PREWARM":
+      return PostgresqlConfig12_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PG_PREWARM;
+    case 8:
+    case "SHARED_PRELOAD_LIBRARIES_PGAUDIT":
+      return PostgresqlConfig12_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PGAUDIT;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -729,6 +753,10 @@ export function postgresqlConfig12_SharedPreloadLibrariesToJSON(
       return "SHARED_PRELOAD_LIBRARIES_PG_CRON";
     case PostgresqlConfig12_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PGLOGICAL:
       return "SHARED_PRELOAD_LIBRARIES_PGLOGICAL";
+    case PostgresqlConfig12_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PG_PREWARM:
+      return "SHARED_PRELOAD_LIBRARIES_PG_PREWARM";
+    case PostgresqlConfig12_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PGAUDIT:
+      return "SHARED_PRELOAD_LIBRARIES_PGAUDIT";
     default:
       return "UNKNOWN";
   }
@@ -1965,10 +1993,97 @@ export const PostgresqlConfig12 = {
         writer.uint32(1234).fork()
       ).ldelim();
     }
+    if (message.geqoPoolSize !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.geqoPoolSize! },
+        writer.uint32(1242).fork()
+      ).ldelim();
+    }
+    if (message.geqoGenerations !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.geqoGenerations!,
+        },
+        writer.uint32(1250).fork()
+      ).ldelim();
+    }
+    if (message.geqoSelectionBias !== undefined) {
+      DoubleValue.encode(
+        {
+          $type: "google.protobuf.DoubleValue",
+          value: message.geqoSelectionBias!,
+        },
+        writer.uint32(1258).fork()
+      ).ldelim();
+    }
     if (message.geqoSeed !== undefined) {
       DoubleValue.encode(
         { $type: "google.protobuf.DoubleValue", value: message.geqoSeed! },
         writer.uint32(1266).fork()
+      ).ldelim();
+    }
+    if (message.pgTrgmSimilarityThreshold !== undefined) {
+      DoubleValue.encode(
+        {
+          $type: "google.protobuf.DoubleValue",
+          value: message.pgTrgmSimilarityThreshold!,
+        },
+        writer.uint32(1274).fork()
+      ).ldelim();
+    }
+    if (message.pgTrgmWordSimilarityThreshold !== undefined) {
+      DoubleValue.encode(
+        {
+          $type: "google.protobuf.DoubleValue",
+          value: message.pgTrgmWordSimilarityThreshold!,
+        },
+        writer.uint32(1282).fork()
+      ).ldelim();
+    }
+    if (message.pgTrgmStrictWordSimilarityThreshold !== undefined) {
+      DoubleValue.encode(
+        {
+          $type: "google.protobuf.DoubleValue",
+          value: message.pgTrgmStrictWordSimilarityThreshold!,
+        },
+        writer.uint32(1290).fork()
+      ).ldelim();
+    }
+    if (message.maxStandbyArchiveDelay !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.maxStandbyArchiveDelay!,
+        },
+        writer.uint32(1298).fork()
+      ).ldelim();
+    }
+    if (message.sessionDurationTimeout !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.sessionDurationTimeout!,
+        },
+        writer.uint32(1306).fork()
+      ).ldelim();
+    }
+    if (message.logReplicationCommands !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.logReplicationCommands!,
+        },
+        writer.uint32(1314).fork()
+      ).ldelim();
+    }
+    if (message.logAutovacuumMinDuration !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.logAutovacuumMinDuration!,
+        },
+        writer.uint32(1322).fork()
       ).ldelim();
     }
     return writer;
@@ -2676,8 +2791,68 @@ export const PostgresqlConfig12 = {
         case 154:
           message.geqoEffort = Int64Value.decode(reader, reader.uint32()).value;
           break;
+        case 155:
+          message.geqoPoolSize = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 156:
+          message.geqoGenerations = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 157:
+          message.geqoSelectionBias = DoubleValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         case 158:
           message.geqoSeed = DoubleValue.decode(reader, reader.uint32()).value;
+          break;
+        case 159:
+          message.pgTrgmSimilarityThreshold = DoubleValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 160:
+          message.pgTrgmWordSimilarityThreshold = DoubleValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 161:
+          message.pgTrgmStrictWordSimilarityThreshold = DoubleValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 162:
+          message.maxStandbyArchiveDelay = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 163:
+          message.sessionDurationTimeout = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 164:
+          message.logReplicationCommands = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 165:
+          message.logAutovacuumMinDuration = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
           break;
         default:
           reader.skipType(tag & 7);
@@ -3292,9 +3467,57 @@ export const PostgresqlConfig12 = {
       object.geqoEffort !== undefined && object.geqoEffort !== null
         ? Number(object.geqoEffort)
         : undefined;
+    message.geqoPoolSize =
+      object.geqoPoolSize !== undefined && object.geqoPoolSize !== null
+        ? Number(object.geqoPoolSize)
+        : undefined;
+    message.geqoGenerations =
+      object.geqoGenerations !== undefined && object.geqoGenerations !== null
+        ? Number(object.geqoGenerations)
+        : undefined;
+    message.geqoSelectionBias =
+      object.geqoSelectionBias !== undefined &&
+      object.geqoSelectionBias !== null
+        ? Number(object.geqoSelectionBias)
+        : undefined;
     message.geqoSeed =
       object.geqoSeed !== undefined && object.geqoSeed !== null
         ? Number(object.geqoSeed)
+        : undefined;
+    message.pgTrgmSimilarityThreshold =
+      object.pgTrgmSimilarityThreshold !== undefined &&
+      object.pgTrgmSimilarityThreshold !== null
+        ? Number(object.pgTrgmSimilarityThreshold)
+        : undefined;
+    message.pgTrgmWordSimilarityThreshold =
+      object.pgTrgmWordSimilarityThreshold !== undefined &&
+      object.pgTrgmWordSimilarityThreshold !== null
+        ? Number(object.pgTrgmWordSimilarityThreshold)
+        : undefined;
+    message.pgTrgmStrictWordSimilarityThreshold =
+      object.pgTrgmStrictWordSimilarityThreshold !== undefined &&
+      object.pgTrgmStrictWordSimilarityThreshold !== null
+        ? Number(object.pgTrgmStrictWordSimilarityThreshold)
+        : undefined;
+    message.maxStandbyArchiveDelay =
+      object.maxStandbyArchiveDelay !== undefined &&
+      object.maxStandbyArchiveDelay !== null
+        ? Number(object.maxStandbyArchiveDelay)
+        : undefined;
+    message.sessionDurationTimeout =
+      object.sessionDurationTimeout !== undefined &&
+      object.sessionDurationTimeout !== null
+        ? Number(object.sessionDurationTimeout)
+        : undefined;
+    message.logReplicationCommands =
+      object.logReplicationCommands !== undefined &&
+      object.logReplicationCommands !== null
+        ? Boolean(object.logReplicationCommands)
+        : undefined;
+    message.logAutovacuumMinDuration =
+      object.logAutovacuumMinDuration !== undefined &&
+      object.logAutovacuumMinDuration !== null
+        ? Number(object.logAutovacuumMinDuration)
         : undefined;
     return message;
   },
@@ -3589,7 +3812,29 @@ export const PostgresqlConfig12 = {
     message.geqoThreshold !== undefined &&
       (obj.geqoThreshold = message.geqoThreshold);
     message.geqoEffort !== undefined && (obj.geqoEffort = message.geqoEffort);
+    message.geqoPoolSize !== undefined &&
+      (obj.geqoPoolSize = message.geqoPoolSize);
+    message.geqoGenerations !== undefined &&
+      (obj.geqoGenerations = message.geqoGenerations);
+    message.geqoSelectionBias !== undefined &&
+      (obj.geqoSelectionBias = message.geqoSelectionBias);
     message.geqoSeed !== undefined && (obj.geqoSeed = message.geqoSeed);
+    message.pgTrgmSimilarityThreshold !== undefined &&
+      (obj.pgTrgmSimilarityThreshold = message.pgTrgmSimilarityThreshold);
+    message.pgTrgmWordSimilarityThreshold !== undefined &&
+      (obj.pgTrgmWordSimilarityThreshold =
+        message.pgTrgmWordSimilarityThreshold);
+    message.pgTrgmStrictWordSimilarityThreshold !== undefined &&
+      (obj.pgTrgmStrictWordSimilarityThreshold =
+        message.pgTrgmStrictWordSimilarityThreshold);
+    message.maxStandbyArchiveDelay !== undefined &&
+      (obj.maxStandbyArchiveDelay = message.maxStandbyArchiveDelay);
+    message.sessionDurationTimeout !== undefined &&
+      (obj.sessionDurationTimeout = message.sessionDurationTimeout);
+    message.logReplicationCommands !== undefined &&
+      (obj.logReplicationCommands = message.logReplicationCommands);
+    message.logAutovacuumMinDuration !== undefined &&
+      (obj.logAutovacuumMinDuration = message.logAutovacuumMinDuration);
     return obj;
   },
 
@@ -3754,7 +3999,21 @@ export const PostgresqlConfig12 = {
     message.geqo = object.geqo ?? undefined;
     message.geqoThreshold = object.geqoThreshold ?? undefined;
     message.geqoEffort = object.geqoEffort ?? undefined;
+    message.geqoPoolSize = object.geqoPoolSize ?? undefined;
+    message.geqoGenerations = object.geqoGenerations ?? undefined;
+    message.geqoSelectionBias = object.geqoSelectionBias ?? undefined;
     message.geqoSeed = object.geqoSeed ?? undefined;
+    message.pgTrgmSimilarityThreshold =
+      object.pgTrgmSimilarityThreshold ?? undefined;
+    message.pgTrgmWordSimilarityThreshold =
+      object.pgTrgmWordSimilarityThreshold ?? undefined;
+    message.pgTrgmStrictWordSimilarityThreshold =
+      object.pgTrgmStrictWordSimilarityThreshold ?? undefined;
+    message.maxStandbyArchiveDelay = object.maxStandbyArchiveDelay ?? undefined;
+    message.sessionDurationTimeout = object.sessionDurationTimeout ?? undefined;
+    message.logReplicationCommands = object.logReplicationCommands ?? undefined;
+    message.logAutovacuumMinDuration =
+      object.logAutovacuumMinDuration ?? undefined;
     return message;
   },
 };

@@ -148,7 +148,7 @@ export interface CreateInstanceGroupRequest {
    * and attributed to the instance group.
    */
   loadBalancerSpec?: LoadBalancerSpec;
-  /** Health checking specification. For more information, see [Health check](/docs/load-balancer/concepts/health-check). */
+  /** Health checking specification. For more information, see [Health check](/docs/network-load-balancer/concepts/health-check). */
   healthChecksSpec?: HealthChecksSpec;
   /**
    * ID of the service account. The service account will be used for all API calls
@@ -225,7 +225,7 @@ export interface UpdateInstanceGroupRequest {
   deployPolicy?: DeployPolicy;
   /** Allocation policy of the instance group by zones and regions. */
   allocationPolicy?: AllocationPolicy;
-  /** Health checking specification. For more information, see [Health check](/docs/load-balancer/concepts/health-check). */
+  /** Health checking specification. For more information, see [Health check](/docs/network-load-balancer/concepts/health-check). */
   healthChecksSpec?: HealthChecksSpec;
   /**
    * ID of the service account. The service account will be used for all API calls
@@ -301,6 +301,46 @@ export interface StopInstanceGroupRequest {
 export interface StopInstanceGroupMetadata {
   $type: "yandex.cloud.compute.v1.instancegroup.StopInstanceGroupMetadata";
   /** ID of the InstanceGroup resource that is being stopped. */
+  instanceGroupId: string;
+}
+
+export interface RollingRestartRequest {
+  $type: "yandex.cloud.compute.v1.instancegroup.RollingRestartRequest";
+  /**
+   * ID of the instance group to restart instances in.
+   * To get the instance group ID, use a [InstanceGroupService.List] request.
+   */
+  instanceGroupId: string;
+  /**
+   * IDs of managed instances in the group to restart
+   * To get instance IDs, use a [InstanceGroupService.ListInstances] request.
+   */
+  managedInstanceIds: string[];
+}
+
+export interface RollingRestartMetadata {
+  $type: "yandex.cloud.compute.v1.instancegroup.RollingRestartMetadata";
+  /** ID of the InstanceGroup resource that is being rolling restarted. */
+  instanceGroupId: string;
+}
+
+export interface RollingRecreateRequest {
+  $type: "yandex.cloud.compute.v1.instancegroup.RollingRecreateRequest";
+  /**
+   * ID of the instance group to recreate instances in.
+   * To get the instance group ID, use a [InstanceGroupService.List] request.
+   */
+  instanceGroupId: string;
+  /**
+   * IDs of managed instances in the group to recreate
+   * To get instance IDs, use a [InstanceGroupService.ListInstances] request.
+   */
+  managedInstanceIds: string[];
+}
+
+export interface RollingRecreateMetadata {
+  $type: "yandex.cloud.compute.v1.instancegroup.RollingRecreateMetadata";
+  /** ID of the InstanceGroup resource that is being rolling recreated. */
   instanceGroupId: string;
 }
 
@@ -2480,6 +2520,313 @@ messageTypeRegistry.set(
   StopInstanceGroupMetadata
 );
 
+const baseRollingRestartRequest: object = {
+  $type: "yandex.cloud.compute.v1.instancegroup.RollingRestartRequest",
+  instanceGroupId: "",
+  managedInstanceIds: "",
+};
+
+export const RollingRestartRequest = {
+  $type: "yandex.cloud.compute.v1.instancegroup.RollingRestartRequest" as const,
+
+  encode(
+    message: RollingRestartRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.instanceGroupId !== "") {
+      writer.uint32(10).string(message.instanceGroupId);
+    }
+    for (const v of message.managedInstanceIds) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RollingRestartRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseRollingRestartRequest } as RollingRestartRequest;
+    message.managedInstanceIds = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instanceGroupId = reader.string();
+          break;
+        case 2:
+          message.managedInstanceIds.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RollingRestartRequest {
+    const message = { ...baseRollingRestartRequest } as RollingRestartRequest;
+    message.instanceGroupId =
+      object.instanceGroupId !== undefined && object.instanceGroupId !== null
+        ? String(object.instanceGroupId)
+        : "";
+    message.managedInstanceIds = (object.managedInstanceIds ?? []).map(
+      (e: any) => String(e)
+    );
+    return message;
+  },
+
+  toJSON(message: RollingRestartRequest): unknown {
+    const obj: any = {};
+    message.instanceGroupId !== undefined &&
+      (obj.instanceGroupId = message.instanceGroupId);
+    if (message.managedInstanceIds) {
+      obj.managedInstanceIds = message.managedInstanceIds.map((e) => e);
+    } else {
+      obj.managedInstanceIds = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RollingRestartRequest>, I>>(
+    object: I
+  ): RollingRestartRequest {
+    const message = { ...baseRollingRestartRequest } as RollingRestartRequest;
+    message.instanceGroupId = object.instanceGroupId ?? "";
+    message.managedInstanceIds = object.managedInstanceIds?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(RollingRestartRequest.$type, RollingRestartRequest);
+
+const baseRollingRestartMetadata: object = {
+  $type: "yandex.cloud.compute.v1.instancegroup.RollingRestartMetadata",
+  instanceGroupId: "",
+};
+
+export const RollingRestartMetadata = {
+  $type:
+    "yandex.cloud.compute.v1.instancegroup.RollingRestartMetadata" as const,
+
+  encode(
+    message: RollingRestartMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.instanceGroupId !== "") {
+      writer.uint32(10).string(message.instanceGroupId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RollingRestartMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseRollingRestartMetadata } as RollingRestartMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instanceGroupId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RollingRestartMetadata {
+    const message = { ...baseRollingRestartMetadata } as RollingRestartMetadata;
+    message.instanceGroupId =
+      object.instanceGroupId !== undefined && object.instanceGroupId !== null
+        ? String(object.instanceGroupId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: RollingRestartMetadata): unknown {
+    const obj: any = {};
+    message.instanceGroupId !== undefined &&
+      (obj.instanceGroupId = message.instanceGroupId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RollingRestartMetadata>, I>>(
+    object: I
+  ): RollingRestartMetadata {
+    const message = { ...baseRollingRestartMetadata } as RollingRestartMetadata;
+    message.instanceGroupId = object.instanceGroupId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(RollingRestartMetadata.$type, RollingRestartMetadata);
+
+const baseRollingRecreateRequest: object = {
+  $type: "yandex.cloud.compute.v1.instancegroup.RollingRecreateRequest",
+  instanceGroupId: "",
+  managedInstanceIds: "",
+};
+
+export const RollingRecreateRequest = {
+  $type:
+    "yandex.cloud.compute.v1.instancegroup.RollingRecreateRequest" as const,
+
+  encode(
+    message: RollingRecreateRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.instanceGroupId !== "") {
+      writer.uint32(10).string(message.instanceGroupId);
+    }
+    for (const v of message.managedInstanceIds) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RollingRecreateRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseRollingRecreateRequest } as RollingRecreateRequest;
+    message.managedInstanceIds = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instanceGroupId = reader.string();
+          break;
+        case 2:
+          message.managedInstanceIds.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RollingRecreateRequest {
+    const message = { ...baseRollingRecreateRequest } as RollingRecreateRequest;
+    message.instanceGroupId =
+      object.instanceGroupId !== undefined && object.instanceGroupId !== null
+        ? String(object.instanceGroupId)
+        : "";
+    message.managedInstanceIds = (object.managedInstanceIds ?? []).map(
+      (e: any) => String(e)
+    );
+    return message;
+  },
+
+  toJSON(message: RollingRecreateRequest): unknown {
+    const obj: any = {};
+    message.instanceGroupId !== undefined &&
+      (obj.instanceGroupId = message.instanceGroupId);
+    if (message.managedInstanceIds) {
+      obj.managedInstanceIds = message.managedInstanceIds.map((e) => e);
+    } else {
+      obj.managedInstanceIds = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RollingRecreateRequest>, I>>(
+    object: I
+  ): RollingRecreateRequest {
+    const message = { ...baseRollingRecreateRequest } as RollingRecreateRequest;
+    message.instanceGroupId = object.instanceGroupId ?? "";
+    message.managedInstanceIds = object.managedInstanceIds?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(RollingRecreateRequest.$type, RollingRecreateRequest);
+
+const baseRollingRecreateMetadata: object = {
+  $type: "yandex.cloud.compute.v1.instancegroup.RollingRecreateMetadata",
+  instanceGroupId: "",
+};
+
+export const RollingRecreateMetadata = {
+  $type:
+    "yandex.cloud.compute.v1.instancegroup.RollingRecreateMetadata" as const,
+
+  encode(
+    message: RollingRecreateMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.instanceGroupId !== "") {
+      writer.uint32(10).string(message.instanceGroupId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RollingRecreateMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseRollingRecreateMetadata,
+    } as RollingRecreateMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instanceGroupId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RollingRecreateMetadata {
+    const message = {
+      ...baseRollingRecreateMetadata,
+    } as RollingRecreateMetadata;
+    message.instanceGroupId =
+      object.instanceGroupId !== undefined && object.instanceGroupId !== null
+        ? String(object.instanceGroupId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: RollingRecreateMetadata): unknown {
+    const obj: any = {};
+    message.instanceGroupId !== undefined &&
+      (obj.instanceGroupId = message.instanceGroupId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RollingRecreateMetadata>, I>>(
+    object: I
+  ): RollingRecreateMetadata {
+    const message = {
+      ...baseRollingRecreateMetadata,
+    } as RollingRecreateMetadata;
+    message.instanceGroupId = object.instanceGroupId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(RollingRecreateMetadata.$type, RollingRecreateMetadata);
+
 const baseDeleteInstanceGroupRequest: object = {
   $type: "yandex.cloud.compute.v1.instancegroup.DeleteInstanceGroupRequest",
   instanceGroupId: "",
@@ -3929,6 +4276,36 @@ export const InstanceGroupServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /**
+   * Performs rolling restart of specified instances for the specified instance group.
+   * Rolling restart does restart of instances respecting all group policies.
+   */
+  rollingRestart: {
+    path: "/yandex.cloud.compute.v1.instancegroup.InstanceGroupService/RollingRestart",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: RollingRestartRequest) =>
+      Buffer.from(RollingRestartRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => RollingRestartRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /**
+   * Performs rolling recreate of specified instances for the specified instance group.
+   * Rolling recreate does recreate of instance VMs respecting all group policies.
+   */
+  rollingRecreate: {
+    path: "/yandex.cloud.compute.v1.instancegroup.InstanceGroupService/RollingRecreate",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: RollingRecreateRequest) =>
+      Buffer.from(RollingRecreateRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => RollingRecreateRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /** Starts the specified instance group. */
   start: {
     path: "/yandex.cloud.compute.v1.instancegroup.InstanceGroupService/Start",
@@ -4133,6 +4510,16 @@ export interface InstanceGroupServiceServer
   >;
   /** Stops the specified instance group. */
   stop: handleUnaryCall<StopInstanceGroupRequest, Operation>;
+  /**
+   * Performs rolling restart of specified instances for the specified instance group.
+   * Rolling restart does restart of instances respecting all group policies.
+   */
+  rollingRestart: handleUnaryCall<RollingRestartRequest, Operation>;
+  /**
+   * Performs rolling recreate of specified instances for the specified instance group.
+   * Rolling recreate does recreate of instance VMs respecting all group policies.
+   */
+  rollingRecreate: handleUnaryCall<RollingRecreateRequest, Operation>;
   /** Starts the specified instance group. */
   start: handleUnaryCall<StartInstanceGroupRequest, Operation>;
   /** Deletes the specified instance group. */
@@ -4317,6 +4704,44 @@ export interface InstanceGroupServiceClient extends Client {
   ): ClientUnaryCall;
   stop(
     request: StopInstanceGroupRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /**
+   * Performs rolling restart of specified instances for the specified instance group.
+   * Rolling restart does restart of instances respecting all group policies.
+   */
+  rollingRestart(
+    request: RollingRestartRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  rollingRestart(
+    request: RollingRestartRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  rollingRestart(
+    request: RollingRestartRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /**
+   * Performs rolling recreate of specified instances for the specified instance group.
+   * Rolling recreate does recreate of instance VMs respecting all group policies.
+   */
+  rollingRecreate(
+    request: RollingRecreateRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  rollingRecreate(
+    request: RollingRecreateRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  rollingRecreate(
+    request: RollingRecreateRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

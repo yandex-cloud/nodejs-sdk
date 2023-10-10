@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {MessageType, messageTypeRegistry} from "../../../../../typeRegistry";
+import { MessageType, messageTypeRegistry } from "../../../../../typeRegistry";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 import {
@@ -19,6 +19,10 @@ import { PostgresqlConfigSet13 } from "../../../../../yandex/cloud/mdb/postgresq
 import { Postgresqlconfigset131c } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/postgresql13_1c";
 import { PostgresqlConfigSet14 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/postgresql14";
 import { Postgresqlconfigset141c } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/postgresql14_1c";
+import { PostgresqlConfigSet15 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/postgresql15";
+import { Postgresqlconfigset151c } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/postgresql15_1c";
+import { PostgresqlConfigSet16 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/postgresql16";
+import { Postgresqlconfigset161c } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/postgresql16_1c";
 import { Postgresqlhostconfig96 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host9_6";
 import { Postgresqlhostconfig101c } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host10_1c";
 import { PostgresqlHostConfig10 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host10";
@@ -30,6 +34,10 @@ import { PostgresqlHostConfig13 } from "../../../../../yandex/cloud/mdb/postgres
 import { Postgresqlhostconfig131c } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host13_1c";
 import { PostgresqlHostConfig14 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host14";
 import { Postgresqlhostconfig141c } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host14_1c";
+import { PostgresqlHostConfig15 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host15";
+import { Postgresqlhostconfig151c } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host15_1c";
+import { PostgresqlHostConfig16 } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host16";
+import { Postgresqlhostconfig161c } from "../../../../../yandex/cloud/mdb/postgresql/v1/config/host16_1c";
 import { BoolValue, Int64Value } from "../../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.mdb.postgresql.v1";
@@ -298,6 +306,14 @@ export interface ClusterConfig {
   postgresqlConfig14?: PostgresqlConfigSet14 | undefined;
   /** Configuration of a PostgreSQL 14 1C server. */
   postgresqlConfig141c?: Postgresqlconfigset141c | undefined;
+  /** Configuration of a PostgreSQL 15 server. */
+  postgresqlConfig15?: PostgresqlConfigSet15 | undefined;
+  /** Configuration of a PostgreSQL 15 1C server. */
+  postgresqlConfig151c?: Postgresqlconfigset151c | undefined;
+  /** Configuration of a PostgreSQL 16 server. */
+  postgresqlConfig16?: PostgresqlConfigSet16 | undefined;
+  /** Configuration of a PostgreSQL 16 1C server. */
+  postgresqlConfig161c?: Postgresqlconfigset161c | undefined;
   /** Configuration of the connection pooler. */
   poolerConfig?: ConnectionPoolerConfig;
   /** Resources allocated to PostgreSQL hosts. */
@@ -312,6 +328,8 @@ export interface ClusterConfig {
   access?: Access;
   /** Configuration of the performance diagnostics service. */
   performanceDiagnostics?: PerformanceDiagnostics;
+  /** Disk size autoscaling */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface ConnectionPoolerConfig {
@@ -512,6 +530,8 @@ export enum Host_Health {
   DEAD = 2,
   /** DEGRADED - The host is degraded, and can perform only some of its essential functions. */
   DEGRADED = 3,
+  /** READONLY - The host is alive, but in read-only mode. */
+  READONLY = 4,
   UNRECOGNIZED = -1,
 }
 
@@ -529,6 +549,9 @@ export function host_HealthFromJSON(object: any): Host_Health {
     case 3:
     case "DEGRADED":
       return Host_Health.DEGRADED;
+    case 4:
+    case "READONLY":
+      return Host_Health.READONLY;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -546,6 +569,8 @@ export function host_HealthToJSON(object: Host_Health): string {
       return "DEAD";
     case Host_Health.DEGRADED:
       return "DEGRADED";
+    case Host_Health.READONLY:
+      return "READONLY";
     default:
       return "UNKNOWN";
   }
@@ -575,6 +600,14 @@ export interface HostConfig {
   postgresqlConfig14?: PostgresqlHostConfig14 | undefined;
   /** Configuration for a host with PostgreSQL 14 1C server deployed. */
   postgresqlConfig141c?: Postgresqlhostconfig141c | undefined;
+  /** Configuration for a host with PostgreSQL 15 server deployed. */
+  postgresqlConfig15?: PostgresqlHostConfig15 | undefined;
+  /** Configuration for a host with PostgreSQL 15 1C server deployed. */
+  postgresqlConfig151c?: Postgresqlhostconfig151c | undefined;
+  /** Configuration for a host with PostgreSQL 16 server deployed. */
+  postgresqlConfig16?: PostgresqlHostConfig16 | undefined;
+  /** Configuration for a host with PostgreSQL 16 1C server deployed. */
+  postgresqlConfig161c?: Postgresqlhostconfig161c | undefined;
 }
 
 export interface Service {
@@ -632,6 +665,8 @@ export enum Service_Health {
   ALIVE = 1,
   /** DEAD - The server is dead or unresponsive. */
   DEAD = 2,
+  /** READONLY - The server is in read-only mode. */
+  READONLY = 3,
   UNRECOGNIZED = -1,
 }
 
@@ -646,6 +681,9 @@ export function service_HealthFromJSON(object: any): Service_Health {
     case 2:
     case "DEAD":
       return Service_Health.DEAD;
+    case 3:
+    case "READONLY":
+      return Service_Health.READONLY;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -661,6 +699,8 @@ export function service_HealthToJSON(object: Service_Health): string {
       return "ALIVE";
     case Service_Health.DEAD:
       return "DEAD";
+    case Service_Health.READONLY:
+      return "READONLY";
     default:
       return "UNKNOWN";
   }
@@ -699,6 +739,8 @@ export interface Access {
   serverless: boolean;
   /** Allow access for DataTransfer. */
   dataTransfer: boolean;
+  /** Allow access for YandexQuery. */
+  yandexQuery: boolean;
 }
 
 export interface PerformanceDiagnostics {
@@ -709,6 +751,16 @@ export interface PerformanceDiagnostics {
   sessionsSamplingInterval: number;
   /** Interval (in seconds) for pg_stat_statements sampling */
   statementsSamplingInterval: number;
+}
+
+export interface DiskSizeAutoscaling {
+  $type: "yandex.cloud.mdb.postgresql.v1.DiskSizeAutoscaling";
+  /** Amount of used storage for automatic disk scaling in the maintenance window, 0 means disabled, in percent. */
+  plannedUsageThreshold: number;
+  /** Amount of used storage for immediately  automatic disk scaling, 0 means disabled, in percent. */
+  emergencyUsageThreshold: number;
+  /** Limit on how large the storage for database instances can automatically grow, in bytes. */
+  diskSizeLimit: number;
 }
 
 const baseCluster: object = {
@@ -1298,6 +1350,30 @@ export const ClusterConfig: MessageType<ClusterConfig> = {
         writer.uint32(154).fork()
       ).ldelim();
     }
+    if (message.postgresqlConfig15 !== undefined) {
+      PostgresqlConfigSet15.encode(
+        message.postgresqlConfig15,
+        writer.uint32(170).fork()
+      ).ldelim();
+    }
+    if (message.postgresqlConfig151c !== undefined) {
+      Postgresqlconfigset151c.encode(
+        message.postgresqlConfig151c,
+        writer.uint32(178).fork()
+      ).ldelim();
+    }
+    if (message.postgresqlConfig16 !== undefined) {
+      PostgresqlConfigSet16.encode(
+        message.postgresqlConfig16,
+        writer.uint32(194).fork()
+      ).ldelim();
+    }
+    if (message.postgresqlConfig161c !== undefined) {
+      Postgresqlconfigset161c.encode(
+        message.postgresqlConfig161c,
+        writer.uint32(202).fork()
+      ).ldelim();
+    }
     if (message.poolerConfig !== undefined) {
       ConnectionPoolerConfig.encode(
         message.poolerConfig,
@@ -1335,6 +1411,12 @@ export const ClusterConfig: MessageType<ClusterConfig> = {
       PerformanceDiagnostics.encode(
         message.performanceDiagnostics,
         writer.uint32(98).fork()
+      ).ldelim();
+    }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(186).fork()
       ).ldelim();
     }
     return writer;
@@ -1416,6 +1498,30 @@ export const ClusterConfig: MessageType<ClusterConfig> = {
             reader.uint32()
           );
           break;
+        case 21:
+          message.postgresqlConfig15 = PostgresqlConfigSet15.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 22:
+          message.postgresqlConfig151c = Postgresqlconfigset151c.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 24:
+          message.postgresqlConfig16 = PostgresqlConfigSet16.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 25:
+          message.postgresqlConfig161c = Postgresqlconfigset161c.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         case 4:
           message.poolerConfig = ConnectionPoolerConfig.decode(
             reader,
@@ -1445,6 +1551,12 @@ export const ClusterConfig: MessageType<ClusterConfig> = {
           break;
         case 12:
           message.performanceDiagnostics = PerformanceDiagnostics.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 23:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
             reader,
             reader.uint32()
           );
@@ -1518,6 +1630,26 @@ export const ClusterConfig: MessageType<ClusterConfig> = {
       object.postgresqlConfig_14_1c !== null
         ? Postgresqlconfigset141c.fromJSON(object.postgresqlConfig_14_1c)
         : undefined;
+    message.postgresqlConfig15 =
+      object.postgresqlConfig_15 !== undefined &&
+      object.postgresqlConfig_15 !== null
+        ? PostgresqlConfigSet15.fromJSON(object.postgresqlConfig_15)
+        : undefined;
+    message.postgresqlConfig151c =
+      object.postgresqlConfig_15_1c !== undefined &&
+      object.postgresqlConfig_15_1c !== null
+        ? Postgresqlconfigset151c.fromJSON(object.postgresqlConfig_15_1c)
+        : undefined;
+    message.postgresqlConfig16 =
+      object.postgresqlConfig_16 !== undefined &&
+      object.postgresqlConfig_16 !== null
+        ? PostgresqlConfigSet16.fromJSON(object.postgresqlConfig_16)
+        : undefined;
+    message.postgresqlConfig161c =
+      object.postgresqlConfig_16_1c !== undefined &&
+      object.postgresqlConfig_16_1c !== null
+        ? Postgresqlconfigset161c.fromJSON(object.postgresqlConfig_16_1c)
+        : undefined;
     message.poolerConfig =
       object.poolerConfig !== undefined && object.poolerConfig !== null
         ? ConnectionPoolerConfig.fromJSON(object.poolerConfig)
@@ -1548,6 +1680,11 @@ export const ClusterConfig: MessageType<ClusterConfig> = {
       object.performanceDiagnostics !== undefined &&
       object.performanceDiagnostics !== null
         ? PerformanceDiagnostics.fromJSON(object.performanceDiagnostics)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -1599,6 +1736,22 @@ export const ClusterConfig: MessageType<ClusterConfig> = {
       (obj.postgresqlConfig_14_1c = message.postgresqlConfig141c
         ? Postgresqlconfigset141c.toJSON(message.postgresqlConfig141c)
         : undefined);
+    message.postgresqlConfig15 !== undefined &&
+      (obj.postgresqlConfig_15 = message.postgresqlConfig15
+        ? PostgresqlConfigSet15.toJSON(message.postgresqlConfig15)
+        : undefined);
+    message.postgresqlConfig151c !== undefined &&
+      (obj.postgresqlConfig_15_1c = message.postgresqlConfig151c
+        ? Postgresqlconfigset151c.toJSON(message.postgresqlConfig151c)
+        : undefined);
+    message.postgresqlConfig16 !== undefined &&
+      (obj.postgresqlConfig_16 = message.postgresqlConfig16
+        ? PostgresqlConfigSet16.toJSON(message.postgresqlConfig16)
+        : undefined);
+    message.postgresqlConfig161c !== undefined &&
+      (obj.postgresqlConfig_16_1c = message.postgresqlConfig161c
+        ? Postgresqlconfigset161c.toJSON(message.postgresqlConfig161c)
+        : undefined);
     message.poolerConfig !== undefined &&
       (obj.poolerConfig = message.poolerConfig
         ? ConnectionPoolerConfig.toJSON(message.poolerConfig)
@@ -1620,6 +1773,10 @@ export const ClusterConfig: MessageType<ClusterConfig> = {
     message.performanceDiagnostics !== undefined &&
       (obj.performanceDiagnostics = message.performanceDiagnostics
         ? PerformanceDiagnostics.toJSON(message.performanceDiagnostics)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -1684,6 +1841,26 @@ export const ClusterConfig: MessageType<ClusterConfig> = {
       object.postgresqlConfig141c !== null
         ? Postgresqlconfigset141c.fromPartial(object.postgresqlConfig141c)
         : undefined;
+    message.postgresqlConfig15 =
+      object.postgresqlConfig15 !== undefined &&
+      object.postgresqlConfig15 !== null
+        ? PostgresqlConfigSet15.fromPartial(object.postgresqlConfig15)
+        : undefined;
+    message.postgresqlConfig151c =
+      object.postgresqlConfig151c !== undefined &&
+      object.postgresqlConfig151c !== null
+        ? Postgresqlconfigset151c.fromPartial(object.postgresqlConfig151c)
+        : undefined;
+    message.postgresqlConfig16 =
+      object.postgresqlConfig16 !== undefined &&
+      object.postgresqlConfig16 !== null
+        ? PostgresqlConfigSet16.fromPartial(object.postgresqlConfig16)
+        : undefined;
+    message.postgresqlConfig161c =
+      object.postgresqlConfig161c !== undefined &&
+      object.postgresqlConfig161c !== null
+        ? Postgresqlconfigset161c.fromPartial(object.postgresqlConfig161c)
+        : undefined;
     message.poolerConfig =
       object.poolerConfig !== undefined && object.poolerConfig !== null
         ? ConnectionPoolerConfig.fromPartial(object.poolerConfig)
@@ -1707,6 +1884,11 @@ export const ClusterConfig: MessageType<ClusterConfig> = {
       object.performanceDiagnostics !== undefined &&
       object.performanceDiagnostics !== null
         ? PerformanceDiagnostics.fromPartial(object.performanceDiagnostics)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -2111,6 +2293,30 @@ export const HostConfig = {
         writer.uint32(90).fork()
       ).ldelim();
     }
+    if (message.postgresqlConfig15 !== undefined) {
+      PostgresqlHostConfig15.encode(
+        message.postgresqlConfig15,
+        writer.uint32(98).fork()
+      ).ldelim();
+    }
+    if (message.postgresqlConfig151c !== undefined) {
+      Postgresqlhostconfig151c.encode(
+        message.postgresqlConfig151c,
+        writer.uint32(106).fork()
+      ).ldelim();
+    }
+    if (message.postgresqlConfig16 !== undefined) {
+      PostgresqlHostConfig16.encode(
+        message.postgresqlConfig16,
+        writer.uint32(114).fork()
+      ).ldelim();
+    }
+    if (message.postgresqlConfig161c !== undefined) {
+      Postgresqlhostconfig161c.encode(
+        message.postgresqlConfig161c,
+        writer.uint32(122).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2187,6 +2393,30 @@ export const HostConfig = {
             reader.uint32()
           );
           break;
+        case 12:
+          message.postgresqlConfig15 = PostgresqlHostConfig15.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 13:
+          message.postgresqlConfig151c = Postgresqlhostconfig151c.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 14:
+          message.postgresqlConfig16 = PostgresqlHostConfig16.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 15:
+          message.postgresqlConfig161c = Postgresqlhostconfig161c.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2252,6 +2482,26 @@ export const HostConfig = {
       object.postgresqlHostConfig_14_1c !== null
         ? Postgresqlhostconfig141c.fromJSON(object.postgresqlHostConfig_14_1c)
         : undefined;
+    message.postgresqlConfig15 =
+      object.postgresqlHostConfig_15 !== undefined &&
+      object.postgresqlHostConfig_15 !== null
+        ? PostgresqlHostConfig15.fromJSON(object.postgresqlHostConfig_15)
+        : undefined;
+    message.postgresqlConfig151c =
+      object.postgresqlHostConfig_15_1c !== undefined &&
+      object.postgresqlHostConfig_15_1c !== null
+        ? Postgresqlhostconfig151c.fromJSON(object.postgresqlHostConfig_15_1c)
+        : undefined;
+    message.postgresqlConfig16 =
+      object.postgresqlHostConfig_16 !== undefined &&
+      object.postgresqlHostConfig_16 !== null
+        ? PostgresqlHostConfig16.fromJSON(object.postgresqlHostConfig_16)
+        : undefined;
+    message.postgresqlConfig161c =
+      object.postgresqlHostConfig_16_1c !== undefined &&
+      object.postgresqlHostConfig_16_1c !== null
+        ? Postgresqlhostconfig161c.fromJSON(object.postgresqlHostConfig_16_1c)
+        : undefined;
     return message;
   },
 
@@ -2300,6 +2550,22 @@ export const HostConfig = {
     message.postgresqlConfig141c !== undefined &&
       (obj.postgresqlHostConfig_14_1c = message.postgresqlConfig141c
         ? Postgresqlhostconfig141c.toJSON(message.postgresqlConfig141c)
+        : undefined);
+    message.postgresqlConfig15 !== undefined &&
+      (obj.postgresqlHostConfig_15 = message.postgresqlConfig15
+        ? PostgresqlHostConfig15.toJSON(message.postgresqlConfig15)
+        : undefined);
+    message.postgresqlConfig151c !== undefined &&
+      (obj.postgresqlHostConfig_15_1c = message.postgresqlConfig151c
+        ? Postgresqlhostconfig151c.toJSON(message.postgresqlConfig151c)
+        : undefined);
+    message.postgresqlConfig16 !== undefined &&
+      (obj.postgresqlHostConfig_16 = message.postgresqlConfig16
+        ? PostgresqlHostConfig16.toJSON(message.postgresqlConfig16)
+        : undefined);
+    message.postgresqlConfig161c !== undefined &&
+      (obj.postgresqlHostConfig_16_1c = message.postgresqlConfig161c
+        ? Postgresqlhostconfig161c.toJSON(message.postgresqlConfig161c)
         : undefined);
     return obj;
   },
@@ -2362,6 +2628,26 @@ export const HostConfig = {
       object.postgresqlConfig141c !== undefined &&
       object.postgresqlConfig141c !== null
         ? Postgresqlhostconfig141c.fromPartial(object.postgresqlConfig141c)
+        : undefined;
+    message.postgresqlConfig15 =
+      object.postgresqlConfig15 !== undefined &&
+      object.postgresqlConfig15 !== null
+        ? PostgresqlHostConfig15.fromPartial(object.postgresqlConfig15)
+        : undefined;
+    message.postgresqlConfig151c =
+      object.postgresqlConfig151c !== undefined &&
+      object.postgresqlConfig151c !== null
+        ? Postgresqlhostconfig151c.fromPartial(object.postgresqlConfig151c)
+        : undefined;
+    message.postgresqlConfig16 =
+      object.postgresqlConfig16 !== undefined &&
+      object.postgresqlConfig16 !== null
+        ? PostgresqlHostConfig16.fromPartial(object.postgresqlConfig16)
+        : undefined;
+    message.postgresqlConfig161c =
+      object.postgresqlConfig161c !== undefined &&
+      object.postgresqlConfig161c !== null
+        ? Postgresqlhostconfig161c.fromPartial(object.postgresqlConfig161c)
         : undefined;
     return message;
   },
@@ -2539,6 +2825,7 @@ const baseAccess: object = {
   webSql: false,
   serverless: false,
   dataTransfer: false,
+  yandexQuery: false,
 };
 
 export const Access = {
@@ -2559,6 +2846,9 @@ export const Access = {
     }
     if (message.dataTransfer === true) {
       writer.uint32(32).bool(message.dataTransfer);
+    }
+    if (message.yandexQuery === true) {
+      writer.uint32(40).bool(message.yandexQuery);
     }
     return writer;
   },
@@ -2581,6 +2871,9 @@ export const Access = {
           break;
         case 4:
           message.dataTransfer = reader.bool();
+          break;
+        case 5:
+          message.yandexQuery = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2608,6 +2901,10 @@ export const Access = {
       object.dataTransfer !== undefined && object.dataTransfer !== null
         ? Boolean(object.dataTransfer)
         : false;
+    message.yandexQuery =
+      object.yandexQuery !== undefined && object.yandexQuery !== null
+        ? Boolean(object.yandexQuery)
+        : false;
     return message;
   },
 
@@ -2618,6 +2915,8 @@ export const Access = {
     message.serverless !== undefined && (obj.serverless = message.serverless);
     message.dataTransfer !== undefined &&
       (obj.dataTransfer = message.dataTransfer);
+    message.yandexQuery !== undefined &&
+      (obj.yandexQuery = message.yandexQuery);
     return obj;
   },
 
@@ -2627,6 +2926,7 @@ export const Access = {
     message.webSql = object.webSql ?? false;
     message.serverless = object.serverless ?? false;
     message.dataTransfer = object.dataTransfer ?? false;
+    message.yandexQuery = object.yandexQuery ?? false;
     return message;
   },
 };
@@ -2735,6 +3035,103 @@ export const PerformanceDiagnostics = {
 };
 
 messageTypeRegistry.set(PerformanceDiagnostics.$type, PerformanceDiagnostics);
+
+const baseDiskSizeAutoscaling: object = {
+  $type: "yandex.cloud.mdb.postgresql.v1.DiskSizeAutoscaling",
+  plannedUsageThreshold: 0,
+  emergencyUsageThreshold: 0,
+  diskSizeLimit: 0,
+};
+
+export const DiskSizeAutoscaling = {
+  $type: "yandex.cloud.mdb.postgresql.v1.DiskSizeAutoscaling" as const,
+
+  encode(
+    message: DiskSizeAutoscaling,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.plannedUsageThreshold !== 0) {
+      writer.uint32(8).int64(message.plannedUsageThreshold);
+    }
+    if (message.emergencyUsageThreshold !== 0) {
+      writer.uint32(16).int64(message.emergencyUsageThreshold);
+    }
+    if (message.diskSizeLimit !== 0) {
+      writer.uint32(24).int64(message.diskSizeLimit);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DiskSizeAutoscaling {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.plannedUsageThreshold = longToNumber(reader.int64() as Long);
+          break;
+        case 2:
+          message.emergencyUsageThreshold = longToNumber(
+            reader.int64() as Long
+          );
+          break;
+        case 3:
+          message.diskSizeLimit = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DiskSizeAutoscaling {
+    const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+    message.plannedUsageThreshold =
+      object.plannedUsageThreshold !== undefined &&
+      object.plannedUsageThreshold !== null
+        ? Number(object.plannedUsageThreshold)
+        : 0;
+    message.emergencyUsageThreshold =
+      object.emergencyUsageThreshold !== undefined &&
+      object.emergencyUsageThreshold !== null
+        ? Number(object.emergencyUsageThreshold)
+        : 0;
+    message.diskSizeLimit =
+      object.diskSizeLimit !== undefined && object.diskSizeLimit !== null
+        ? Number(object.diskSizeLimit)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: DiskSizeAutoscaling): unknown {
+    const obj: any = {};
+    message.plannedUsageThreshold !== undefined &&
+      (obj.plannedUsageThreshold = Math.round(message.plannedUsageThreshold));
+    message.emergencyUsageThreshold !== undefined &&
+      (obj.emergencyUsageThreshold = Math.round(
+        message.emergencyUsageThreshold
+      ));
+    message.diskSizeLimit !== undefined &&
+      (obj.diskSizeLimit = Math.round(message.diskSizeLimit));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DiskSizeAutoscaling>, I>>(
+    object: I
+  ): DiskSizeAutoscaling {
+    const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+    message.plannedUsageThreshold = object.plannedUsageThreshold ?? 0;
+    message.emergencyUsageThreshold = object.emergencyUsageThreshold ?? 0;
+    message.diskSizeLimit = object.diskSizeLimit ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(DiskSizeAutoscaling.$type, DiskSizeAutoscaling);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

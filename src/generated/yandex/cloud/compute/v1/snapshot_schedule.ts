@@ -7,37 +7,58 @@ import { Duration } from "../../../../google/protobuf/duration";
 
 export const protobufPackage = "yandex.cloud.compute.v1";
 
+/** A snapshot schedule. For details about the concept, see [documentation](/docs/compute/concepts/snapshot-schedule). */
 export interface SnapshotSchedule {
   $type: "yandex.cloud.compute.v1.SnapshotSchedule";
-  /** ID of the snapshot schedule policy. */
+  /** ID of the snapshot schedule. */
   id: string;
-  /** ID of the folder that the scheduler policy belongs to. */
+  /** ID of the folder that the snapshot schedule belongs to. */
   folderId: string;
+  /** Creation timestamp. */
   createdAt?: Date;
   /**
-   * Name of the schedule policy.
+   * Name of the snapshot schedule.
+   *
    * The name is unique within the folder.
    */
   name: string;
-  /** Description of the schedule policy. */
+  /** Description of the snapshot schedule. */
   description: string;
-  /** Resource labels as `key:value` pairs. */
+  /** Snapshot schedule labels as `key:value` pairs. */
   labels: { [key: string]: string };
+  /** Status of the snapshot schedule. */
   status: SnapshotSchedule_Status;
-  /** schedule properties */
+  /** Frequency settings of the snapshot schedule. */
   schedulePolicy?: SchedulePolicy;
+  /**
+   * Retention period of the snapshot schedule. Once a snapshot created by the schedule reaches this age, it is
+   * automatically deleted.
+   */
   retentionPeriod?: Duration | undefined;
+  /**
+   * Retention count of the snapshot schedule. Once the number of snapshots created by the schedule exceeds this
+   * number, the oldest ones are automatically deleted. E.g. if the number is 5, the first snapshot is deleted
+   * after the sixth one is created, the second is deleted after the seventh one is created, and so on.
+   */
   snapshotCount: number | undefined;
-  /** properties to create snapshot with. */
+  /** Attributes of snapshots created by the snapshot schedule. */
   snapshotSpec?: SnapshotSpec;
 }
 
 export enum SnapshotSchedule_Status {
   STATUS_UNSPECIFIED = 0,
+  /** CREATING - The snapshot schedule is being created. */
   CREATING = 1,
+  /**
+   * ACTIVE - The snapshot schedule is on: new disk snapshots will be created, old ones deleted
+   * (if [SnapshotSchedule.retention_policy] is specified).
+   */
   ACTIVE = 2,
+  /** INACTIVE - The schedule is interrupted, snapshots won't be created or deleted. */
   INACTIVE = 3,
+  /** DELETING - The schedule is being deleted. */
   DELETING = 4,
+  /** UPDATING - Changes are being made to snapshot schedule settings or a list of attached disks. */
   UPDATING = 5,
   UNRECOGNIZED = -1,
 }
@@ -98,20 +119,27 @@ export interface SnapshotSchedule_LabelsEntry {
   value: string;
 }
 
+/** A resource for frequency settings of a snapshot schedule. */
 export interface SchedulePolicy {
   $type: "yandex.cloud.compute.v1.SchedulePolicy";
-  /** start time for the first run. */
+  /** Timestamp for creating the first snapshot. */
   startAt?: Date;
-  /** cron format (* * * * *) */
+  /**
+   * Cron expression for the snapshot schedule (UTC+0).
+   *
+   * The expression must consist of five fields (`Minutes Hours Day-of-month Month Day-of-week`) or be one of
+   * nonstandard predefined expressions (e.g. `@hourly`). For details about the format,
+   * see [documentation](/docs/compute/concepts/snapshot-schedule#cron)
+   */
   expression: string;
 }
 
-/** Properties of created snapshot backup */
+/** A resource for attributes of snapshots created by the snapshot schedule. */
 export interface SnapshotSpec {
   $type: "yandex.cloud.compute.v1.SnapshotSpec";
   /** Description of the created snapshot. */
   description: string;
-  /** Resource labels as `key:value` pairs. */
+  /** Snapshot labels as `key:value` pairs. */
   labels: { [key: string]: string };
 }
 

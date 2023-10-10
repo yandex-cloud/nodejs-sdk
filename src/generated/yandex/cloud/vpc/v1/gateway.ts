@@ -6,7 +6,7 @@ import { Timestamp } from "../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.vpc.v1";
 
-/** A Gateway resource. For more information, see [Gateway](/docs/vpc/concepts/gateway). */
+/** A Gateway resource. For more information, see [Gateway](/docs/vpc/concepts/gateways). */
 export interface Gateway {
   $type: "yandex.cloud.vpc.v1.Gateway";
   /** ID of the gateway. Generated at creation time. */

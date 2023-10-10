@@ -22,6 +22,17 @@ export enum GlobalPermission {
    * You can always see your own threads. The `PROCESS` privilege also enables use of `SHOW ENGINE`.
    */
   PROCESS = 3,
+  /** FLUSH_OPTIMIZER_COSTS - Enables use of the `FLUSH OPTIMIZER_COSTS` statement. */
+  FLUSH_OPTIMIZER_COSTS = 4,
+  /**
+   * SHOW_ROUTINE - Enables a user to access definitions and properties of all stored routines (stored procedures and functions), even those for which the user is not named as the routine DEFINER.
+   * This access includes:
+   * The contents of the Information Schema `ROUTINES` table.
+   * The `SHOW CREATE FUNCTION` and `SHOW CREATE PROCEDURE` statements.
+   * The `SHOW FUNCTION CODE` and `SHOW PROCEDURE CODE` statements.
+   * The SHOW `FUNCTION STATUS` and `SHOW PROCEDURE STATUS` statements.
+   */
+  SHOW_ROUTINE = 5,
   UNRECOGNIZED = -1,
 }
 
@@ -39,6 +50,12 @@ export function globalPermissionFromJSON(object: any): GlobalPermission {
     case 3:
     case "PROCESS":
       return GlobalPermission.PROCESS;
+    case 4:
+    case "FLUSH_OPTIMIZER_COSTS":
+      return GlobalPermission.FLUSH_OPTIMIZER_COSTS;
+    case 5:
+    case "SHOW_ROUTINE":
+      return GlobalPermission.SHOW_ROUTINE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -56,6 +73,10 @@ export function globalPermissionToJSON(object: GlobalPermission): string {
       return "REPLICATION_SLAVE";
     case GlobalPermission.PROCESS:
       return "PROCESS";
+    case GlobalPermission.FLUSH_OPTIMIZER_COSTS:
+      return "FLUSH_OPTIMIZER_COSTS";
+    case GlobalPermission.SHOW_ROUTINE:
+      return "SHOW_ROUTINE";
     default:
       return "UNKNOWN";
   }

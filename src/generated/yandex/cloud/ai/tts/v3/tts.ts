@@ -194,6 +194,8 @@ export interface Hints {
   volume: number | undefined;
   /** Hint to specify pronunciation character for the speaker. */
   role: string | undefined;
+  /** Hint to increase (or decrease) speaker's pitch, measured in Hz. Valid values are in range [-1000;1000], default value is 0. */
+  pitchShift: number | undefined;
 }
 
 export interface UtteranceSynthesisRequest {
@@ -1104,6 +1106,9 @@ export const Hints = {
     if (message.role !== undefined) {
       writer.uint32(42).string(message.role);
     }
+    if (message.pitchShift !== undefined) {
+      writer.uint32(49).double(message.pitchShift);
+    }
     return writer;
   },
 
@@ -1128,6 +1133,9 @@ export const Hints = {
           break;
         case 5:
           message.role = reader.string();
+          break;
+        case 6:
+          message.pitchShift = reader.double();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1159,6 +1167,10 @@ export const Hints = {
       object.role !== undefined && object.role !== null
         ? String(object.role)
         : undefined;
+    message.pitchShift =
+      object.pitchShift !== undefined && object.pitchShift !== null
+        ? Number(object.pitchShift)
+        : undefined;
     return message;
   },
 
@@ -1172,6 +1184,7 @@ export const Hints = {
     message.speed !== undefined && (obj.speed = message.speed);
     message.volume !== undefined && (obj.volume = message.volume);
     message.role !== undefined && (obj.role = message.role);
+    message.pitchShift !== undefined && (obj.pitchShift = message.pitchShift);
     return obj;
   },
 
@@ -1185,6 +1198,7 @@ export const Hints = {
     message.speed = object.speed ?? undefined;
     message.volume = object.volume ?? undefined;
     message.role = object.role ?? undefined;
+    message.pitchShift = object.pitchShift ?? undefined;
     return message;
   },
 };

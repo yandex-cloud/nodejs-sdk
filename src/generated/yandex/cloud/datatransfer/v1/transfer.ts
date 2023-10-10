@@ -55,13 +55,21 @@ export function transferTypeToJSON(object: TransferType): string {
 
 export enum TransferStatus {
   TRANSFER_STATUS_UNSPECIFIED = 0,
+  /** CREATING - Transfer does some work before running */
   CREATING = 1,
+  /** CREATED - Transfer created but not started by user */
   CREATED = 2,
+  /** RUNNING - Transfer currently doing replication work */
   RUNNING = 3,
+  /** STOPPING - Transfer shutdown */
   STOPPING = 4,
+  /** STOPPED - Transfer stopped by user */
   STOPPED = 5,
+  /** ERROR - Transfer stopped by system */
   ERROR = 6,
+  /** SNAPSHOTTING - Transfer copy snapshot */
   SNAPSHOTTING = 7,
+  /** DONE - Transfer reach terminal phase */
   DONE = 8,
   UNRECOGNIZED = -1,
 }
@@ -127,6 +135,7 @@ export function transferStatusToJSON(object: TransferStatus): string {
   }
 }
 
+/** Transfer core entity */
 export interface Transfer {
   $type: "yandex.cloud.datatransfer.v1.Transfer";
   id: string;
