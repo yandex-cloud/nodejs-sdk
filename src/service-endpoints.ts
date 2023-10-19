@@ -1,7 +1,4 @@
-import {
-    ServiceClientConstructor,
-    ServiceDefinition,
-} from '@grpc/grpc-js';
+import { ServiceClientConstructor, ServiceDefinition } from '@grpc/grpc-js';
 import { GeneratedServiceClientCtor } from './types';
 
 interface ServiceEndpoint {
@@ -16,6 +13,15 @@ export const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
     {
         serviceIds: ['yandex.cloud.operation.OperationService'],
         endpoint: 'operation.api.cloud.yandex.net:443',
+    },
+    {
+        serviceIds: [
+            'yandex.cloud.ai.llm.v1alpha.EmbeddingsService',
+            'yandex.cloud.ai.llm.v1alpha.TextGenerationAsyncService',
+            'yandex.cloud.ai.llm.v1alpha.TextGenerationService',
+            'yandex.cloud.ai.llm.v1alpha.TokenizerService',
+        ],
+        endpoint: 'llm.api.cloud.yandex.net:443',
     },
     {
         serviceIds: [
@@ -287,6 +293,7 @@ export const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
     {
         serviceIds: [
             'yandex.cloud.ai.ocr.v1.TextRecognitionService',
+            'yandex.cloud.ai.ocr.v1.TextRecognitionAsyncService',
         ],
         endpoint: 'ocr.api.cloud.yandex.net:443',
     },
@@ -411,6 +418,13 @@ export const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
             'yandex.cloud.loadtesting.api.v1.AgentService',
         ],
         endpoint: 'loadtesting.api.cloud.yandex.net:443',
+    },
+    {
+        serviceIds: [
+            'speechkit.stt.v3.AsyncRecognizer',
+            'speechkit.stt.v3.Recognizer',
+        ],
+        endpoint: 'stt.api.cloud.yandex.net:443',
     },
 ];
 
