@@ -12,6 +12,7 @@ runs:
       with:
         fetch-depth: 0
         persist-credentials: ${{ inputs.persist-credentials }}
+        submodules: ${{ inputs.submodules }}
     - uses: actions/setup-node@v2
       with:
         node-version-file: '.nvmrc'
