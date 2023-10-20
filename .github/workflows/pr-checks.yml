@@ -9,7 +9,7 @@ jobs:
   tests:
     runs-on: ubuntu-20.04
     steps:
-      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@f69248b52b7991214847e889f28ba0883ed0ca2c
+      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@9fc72bb2948886090f84c9236580fbca480bdea7
       - run: npm run test
   check-endpoints:
     runs-on: ubuntu-20.04
@@ -17,17 +17,17 @@ jobs:
     # So we need to continue on error.
     continue-on-error: true
     steps:
-      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@f69248b52b7991214847e889f28ba0883ed0ca2c
+      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@9fc72bb2948886090f84c9236580fbca480bdea7
         with:
           submodules: recursive
       - run: npm run check-endpoints
   lint:
     runs-on: ubuntu-20.04
     steps:
-      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@f69248b52b7991214847e889f28ba0883ed0ca2c
+      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@9fc72bb2948886090f84c9236580fbca480bdea7
       - run: npm run lint
   build:
     runs-on: ubuntu-20.04
     steps:
-      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@f69248b52b7991214847e889f28ba0883ed0ca2c
+      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@9fc72bb2948886090f84c9236580fbca480bdea7
       - run: npm run build
