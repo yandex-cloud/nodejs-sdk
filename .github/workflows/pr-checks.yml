@@ -18,6 +18,8 @@ jobs:
     continue-on-error: true
     steps:
       - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@f69248b52b7991214847e889f28ba0883ed0ca2c
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
       - run: npm run check-endpoints
   lint:
     runs-on: ubuntu-20.04
