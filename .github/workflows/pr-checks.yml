@@ -11,11 +11,14 @@ jobs:
     steps:
       - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@f69248b52b7991214847e889f28ba0883ed0ca2c
       - run: npm run test
-#  check-endpoints:
-#    runs-on: ubuntu-20.04
-#    steps:
-#      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@f69248b52b7991214847e889f28ba0883ed0ca2c
-#      - run: npm run check-endpoints
+  check-endpoints:
+    runs-on: ubuntu-20.04
+    # Currently, the check-endpoints script fails on the master branch.
+    # So we need to continue on error.
+    continue-on-error: true
+    steps:
+      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@f69248b52b7991214847e889f28ba0883ed0ca2c
+      - run: npm run check-endpoints
   lint:
     runs-on: ubuntu-20.04
     steps:
