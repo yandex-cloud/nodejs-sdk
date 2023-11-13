@@ -44,6 +44,7 @@ export interface ChannelSslOptions {
 export interface GenericCredentialsConfig {
     pollInterval?: number;
     ssl?: ChannelSslOptions
+    headers?: Record<string, string>;
 }
 
 export interface OAuthCredentialsConfig extends GenericCredentialsConfig {
