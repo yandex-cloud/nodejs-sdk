@@ -11,6 +11,7 @@ import { RetryOptions } from './middleware/retry';
 
 export interface TokenService {
     getToken: () => Promise<string>;
+    destroy?: () => void;
 }
 
 export interface GeneratedServiceClientCtor<T extends ServiceDefinition> {

@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as fg from 'fast-glob';
 import * as _ from 'lodash';
 
-import { logger } from '../src/utils/logger';
+import { logger } from '../src/utils/simple-logger';
 import { servicesConfig } from './services';
 
 const GENERATED_CODE_DIR = path.resolve('./src/generated');
