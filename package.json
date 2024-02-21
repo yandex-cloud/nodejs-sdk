@@ -1,6 +1,6 @@
 {
   "name": "@yandex-cloud/nodejs-sdk",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "Yandex.Cloud NodeJS SDK",
   "keywords": [
     "yandex-cloud",
