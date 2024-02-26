@@ -4,17 +4,22 @@ import { ApiError } from '../errors';
 
 export const errorMetadataMiddleware: ClientMiddleware = async function* errorMetadataMiddleware(
     call,
+    options,
 ) {
     let md: Metadata | undefined;
-
-    const options: CallOptions = {
+    const { onHeader } = options;
+    const callOptions: CallOptions = {
+        ...options,
         onHeader: (header: Metadata) => {
             md = header;
+            if (onHeader !== undefined) {
+                onHeader(header);
+            }
         },
     };
 
     try {
-        return yield* call.next(call.request, options);
+        return yield* call.next(call.request, callOptions);
     } catch (error: unknown) {
         rethrowAbortError(error);
         if (error instanceof Error && md !== undefined) {
