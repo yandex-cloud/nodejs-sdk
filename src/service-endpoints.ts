@@ -338,10 +338,15 @@ export const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
     },
     {
         serviceIds: [
-            'yandex.cloud.certificatemanager.v1.CertificateContentService',
             'yandex.cloud.certificatemanager.v1.CertificateService',
         ],
         endpoint: 'certificate-manager.api.cloud.yandex.net:443',
+    },
+    {
+        serviceIds: [
+            'yandex.cloud.certificatemanager.v1.CertificateContentService',
+        ],
+        endpoint: 'data.certificate-manager.api.cloud.yandex.net:443',
     },
     {
         serviceIds: [
