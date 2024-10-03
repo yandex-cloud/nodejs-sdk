@@ -7,19 +7,45 @@ import {
   statusFromJSON,
   statusToJSON,
 } from "../../../../../../yandex/cloud/loadtesting/api/v1/agent/status";
+import { LogSettings } from "../../../../../../yandex/cloud/loadtesting/api/v1/agent/log_settings";
 
 export const protobufPackage = "yandex.cloud.loadtesting.api.v1.agent";
 
+/** Load testing agent on which tests are executed. */
 export interface Agent {
   $type: "yandex.cloud.loadtesting.api.v1.agent.Agent";
+  /** ID of the agent. Generated at creation time. */
   id: string;
+  /** ID of the folder that the agent belongs to. */
   folderId: string;
+  /** Name of the agent. */
   name: string;
+  /** Description of the agent. */
   description: string;
+  /**
+   * ID of the compute instance managed by the agent.
+   *
+   * Empty if there is no such instance (i.e. the case of external agent).
+   */
   computeInstanceId: string;
+  /** Status of the agent. */
   status: Status;
+  /** List of errors reported by the agent. */
   errors: string[];
+  /** ID of the test that is currently being executed by the agent. */
   currentJobId: string;
+  /** Version of the agent. */
+  agentVersionId: string;
+  /** Agent labels as `key:value` pairs. */
+  labels: { [key: string]: string };
+  /** Agent log settings */
+  logSettings?: LogSettings;
+}
+
+export interface Agent_LabelsEntry {
+  $type: "yandex.cloud.loadtesting.api.v1.agent.Agent.LabelsEntry";
+  key: string;
+  value: string;
 }
 
 const baseAgent: object = {
@@ -32,6 +58,7 @@ const baseAgent: object = {
   status: 0,
   errors: "",
   currentJobId: "",
+  agentVersionId: "",
 };
 
 export const Agent = {
@@ -62,6 +89,25 @@ export const Agent = {
     if (message.currentJobId !== "") {
       writer.uint32(74).string(message.currentJobId);
     }
+    if (message.agentVersionId !== "") {
+      writer.uint32(82).string(message.agentVersionId);
+    }
+    Object.entries(message.labels).forEach(([key, value]) => {
+      Agent_LabelsEntry.encode(
+        {
+          $type: "yandex.cloud.loadtesting.api.v1.agent.Agent.LabelsEntry",
+          key: key as any,
+          value,
+        },
+        writer.uint32(98).fork()
+      ).ldelim();
+    });
+    if (message.logSettings !== undefined) {
+      LogSettings.encode(
+        message.logSettings,
+        writer.uint32(106).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -70,6 +116,7 @@ export const Agent = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseAgent } as Agent;
     message.errors = [];
+    message.labels = {};
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -96,6 +143,18 @@ export const Agent = {
           break;
         case 9:
           message.currentJobId = reader.string();
+          break;
+        case 10:
+          message.agentVersionId = reader.string();
+          break;
+        case 12:
+          const entry12 = Agent_LabelsEntry.decode(reader, reader.uint32());
+          if (entry12.value !== undefined) {
+            message.labels[entry12.key] = entry12.value;
+          }
+          break;
+        case 13:
+          message.logSettings = LogSettings.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -135,6 +194,20 @@ export const Agent = {
       object.currentJobId !== undefined && object.currentJobId !== null
         ? String(object.currentJobId)
         : "";
+    message.agentVersionId =
+      object.agentVersionId !== undefined && object.agentVersionId !== null
+        ? String(object.agentVersionId)
+        : "";
+    message.labels = Object.entries(object.labels ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      acc[key] = String(value);
+      return acc;
+    }, {});
+    message.logSettings =
+      object.logSettings !== undefined && object.logSettings !== null
+        ? LogSettings.fromJSON(object.logSettings)
+        : undefined;
     return message;
   },
 
@@ -155,6 +228,18 @@ export const Agent = {
     }
     message.currentJobId !== undefined &&
       (obj.currentJobId = message.currentJobId);
+    message.agentVersionId !== undefined &&
+      (obj.agentVersionId = message.agentVersionId);
+    obj.labels = {};
+    if (message.labels) {
+      Object.entries(message.labels).forEach(([k, v]) => {
+        obj.labels[k] = v;
+      });
+    }
+    message.logSettings !== undefined &&
+      (obj.logSettings = message.logSettings
+        ? LogSettings.toJSON(message.logSettings)
+        : undefined);
     return obj;
   },
 
@@ -168,11 +253,97 @@ export const Agent = {
     message.status = object.status ?? 0;
     message.errors = object.errors?.map((e) => e) || [];
     message.currentJobId = object.currentJobId ?? "";
+    message.agentVersionId = object.agentVersionId ?? "";
+    message.labels = Object.entries(object.labels ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = String(value);
+      }
+      return acc;
+    }, {});
+    message.logSettings =
+      object.logSettings !== undefined && object.logSettings !== null
+        ? LogSettings.fromPartial(object.logSettings)
+        : undefined;
     return message;
   },
 };
 
 messageTypeRegistry.set(Agent.$type, Agent);
+
+const baseAgent_LabelsEntry: object = {
+  $type: "yandex.cloud.loadtesting.api.v1.agent.Agent.LabelsEntry",
+  key: "",
+  value: "",
+};
+
+export const Agent_LabelsEntry = {
+  $type: "yandex.cloud.loadtesting.api.v1.agent.Agent.LabelsEntry" as const,
+
+  encode(
+    message: Agent_LabelsEntry,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Agent_LabelsEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseAgent_LabelsEntry } as Agent_LabelsEntry;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Agent_LabelsEntry {
+    const message = { ...baseAgent_LabelsEntry } as Agent_LabelsEntry;
+    message.key =
+      object.key !== undefined && object.key !== null ? String(object.key) : "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? String(object.value)
+        : "";
+    return message;
+  },
+
+  toJSON(message: Agent_LabelsEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Agent_LabelsEntry>, I>>(
+    object: I
+  ): Agent_LabelsEntry {
+    const message = { ...baseAgent_LabelsEntry } as Agent_LabelsEntry;
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Agent_LabelsEntry.$type, Agent_LabelsEntry);
 
 type Builtin =
   | Date

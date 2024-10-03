@@ -268,6 +268,8 @@ export interface OpenSearch {
   /** Host groups of the OpenSearch type. */
   nodeGroups: OpenSearch_NodeGroup[];
   opensearchConfigSet2?: OpenSearchConfigSet2 | undefined;
+  /** Keystore entries names. */
+  keystoreSettings: string[];
 }
 
 export enum OpenSearch_GroupRole {
@@ -329,6 +331,8 @@ export interface OpenSearch_NodeGroup {
   assignPublicIp: boolean;
   /** Roles of the host group. */
   roles: OpenSearch_GroupRole[];
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 /** The Dashboards host group type configuration. */
@@ -352,6 +356,8 @@ export interface Dashboards_NodeGroup {
   subnetIds: string[];
   /** Determines whether a public IP is assigned to the hosts in the group. */
   assignPublicIp: boolean;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 /** A list of computational resources allocated to a host. */
@@ -382,9 +388,9 @@ export interface Host {
   zoneId: string;
   /** Resources allocated to the OpenSearch host. */
   resources?: Resources;
-  /** Type of the host. */
+  /** Type of the host. If the field has default value, it is not returned in the response. */
   type: Host_Type;
-  /** Status code of the aggregated health of the host. */
+  /** Aggregated health of the host. If the field has default value, it is not returned in the response. */
   health: Host_Health;
   /** ID of the subnet that the host belongs to. */
   subnetId: string;
@@ -399,7 +405,7 @@ export interface Host {
 }
 
 export enum Host_Health {
-  /** UNKNOWN - Health of the host is unknown. */
+  /** UNKNOWN - Health of the host is unknown. Default value. */
   UNKNOWN = 0,
   /** ALIVE - The host is performing all its functions normally. */
   ALIVE = 1,
@@ -447,7 +453,7 @@ export function host_HealthToJSON(object: Host_Health): string {
 }
 
 export enum Host_Type {
-  /** TYPE_UNSPECIFIED - The type is not specified. */
+  /** TYPE_UNSPECIFIED - Type of the host is unspecified. Default value. */
   TYPE_UNSPECIFIED = 0,
   /** OPENSEARCH - An OpenSearch type host. */
   OPENSEARCH = 1,
@@ -536,6 +542,16 @@ export interface Access {
   dataTransfer: boolean;
   /** Determines whether the access to Serverless is allowed. */
   serverless: boolean;
+}
+
+export interface DiskSizeAutoscaling {
+  $type: "yandex.cloud.mdb.opensearch.v1.DiskSizeAutoscaling";
+  /** Amount of used storage for automatic disk scaling in the maintenance window, 0 means disabled, in percent. */
+  plannedUsageThreshold: number;
+  /** Amount of used storage for immediately  automatic disk scaling, 0 means disabled, in percent. */
+  emergencyUsageThreshold: number;
+  /** Limit on how large the storage for database instances can automatically grow, in bytes. */
+  diskSizeLimit: number;
 }
 
 const baseCluster: object = {
@@ -1158,6 +1174,7 @@ messageTypeRegistry.set(ClusterConfig.$type, ClusterConfig);
 const baseOpenSearch: object = {
   $type: "yandex.cloud.mdb.opensearch.v1.OpenSearch",
   plugins: "",
+  keystoreSettings: "",
 };
 
 export const OpenSearch = {
@@ -1179,6 +1196,9 @@ export const OpenSearch = {
         writer.uint32(26).fork()
       ).ldelim();
     }
+    for (const v of message.keystoreSettings) {
+      writer.uint32(34).string(v!);
+    }
     return writer;
   },
 
@@ -1188,6 +1208,7 @@ export const OpenSearch = {
     const message = { ...baseOpenSearch } as OpenSearch;
     message.plugins = [];
     message.nodeGroups = [];
+    message.keystoreSettings = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1204,6 +1225,9 @@ export const OpenSearch = {
             reader,
             reader.uint32()
           );
+          break;
+        case 4:
+          message.keystoreSettings.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1224,6 +1248,9 @@ export const OpenSearch = {
       object.opensearchConfigSet_2 !== null
         ? OpenSearchConfigSet2.fromJSON(object.opensearchConfigSet_2)
         : undefined;
+    message.keystoreSettings = (object.keystoreSettings ?? []).map((e: any) =>
+      String(e)
+    );
     return message;
   },
 
@@ -1245,6 +1272,11 @@ export const OpenSearch = {
       (obj.opensearchConfigSet_2 = message.opensearchConfigSet2
         ? OpenSearchConfigSet2.toJSON(message.opensearchConfigSet2)
         : undefined);
+    if (message.keystoreSettings) {
+      obj.keystoreSettings = message.keystoreSettings.map((e) => e);
+    } else {
+      obj.keystoreSettings = [];
+    }
     return obj;
   },
 
@@ -1260,6 +1292,7 @@ export const OpenSearch = {
       object.opensearchConfigSet2 !== null
         ? OpenSearchConfigSet2.fromPartial(object.opensearchConfigSet2)
         : undefined;
+    message.keystoreSettings = object.keystoreSettings?.map((e) => e) || [];
     return message;
   },
 };
@@ -1306,6 +1339,12 @@ export const OpenSearch_NodeGroup = {
       writer.int32(v);
     }
     writer.ldelim();
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1350,6 +1389,12 @@ export const OpenSearch_NodeGroup = {
             message.roles.push(reader.int32() as any);
           }
           break;
+        case 9:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1381,6 +1426,11 @@ export const OpenSearch_NodeGroup = {
     message.roles = (object.roles ?? []).map((e: any) =>
       openSearch_GroupRoleFromJSON(e)
     );
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -1410,6 +1460,10 @@ export const OpenSearch_NodeGroup = {
     } else {
       obj.roles = [];
     }
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
+        : undefined);
     return obj;
   },
 
@@ -1427,6 +1481,11 @@ export const OpenSearch_NodeGroup = {
     message.subnetIds = object.subnetIds?.map((e) => e) || [];
     message.assignPublicIp = object.assignPublicIp ?? false;
     message.roles = object.roles?.map((e) => e) || [];
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 };
@@ -1537,6 +1596,12 @@ export const Dashboards_NodeGroup = {
     if (message.assignPublicIp === true) {
       writer.uint32(48).bool(message.assignPublicIp);
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1570,6 +1635,12 @@ export const Dashboards_NodeGroup = {
         case 6:
           message.assignPublicIp = reader.bool();
           break;
+        case 9:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1598,6 +1669,11 @@ export const Dashboards_NodeGroup = {
       object.assignPublicIp !== undefined && object.assignPublicIp !== null
         ? Boolean(object.assignPublicIp)
         : false;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -1622,6 +1698,10 @@ export const Dashboards_NodeGroup = {
     }
     message.assignPublicIp !== undefined &&
       (obj.assignPublicIp = message.assignPublicIp);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
+        : undefined);
     return obj;
   },
 
@@ -1638,6 +1718,11 @@ export const Dashboards_NodeGroup = {
     message.zoneIds = object.zoneIds?.map((e) => e) || [];
     message.subnetIds = object.subnetIds?.map((e) => e) || [];
     message.assignPublicIp = object.assignPublicIp ?? false;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 };
@@ -2380,6 +2465,103 @@ export const Access = {
 };
 
 messageTypeRegistry.set(Access.$type, Access);
+
+const baseDiskSizeAutoscaling: object = {
+  $type: "yandex.cloud.mdb.opensearch.v1.DiskSizeAutoscaling",
+  plannedUsageThreshold: 0,
+  emergencyUsageThreshold: 0,
+  diskSizeLimit: 0,
+};
+
+export const DiskSizeAutoscaling = {
+  $type: "yandex.cloud.mdb.opensearch.v1.DiskSizeAutoscaling" as const,
+
+  encode(
+    message: DiskSizeAutoscaling,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.plannedUsageThreshold !== 0) {
+      writer.uint32(8).int64(message.plannedUsageThreshold);
+    }
+    if (message.emergencyUsageThreshold !== 0) {
+      writer.uint32(16).int64(message.emergencyUsageThreshold);
+    }
+    if (message.diskSizeLimit !== 0) {
+      writer.uint32(24).int64(message.diskSizeLimit);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DiskSizeAutoscaling {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.plannedUsageThreshold = longToNumber(reader.int64() as Long);
+          break;
+        case 2:
+          message.emergencyUsageThreshold = longToNumber(
+            reader.int64() as Long
+          );
+          break;
+        case 3:
+          message.diskSizeLimit = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DiskSizeAutoscaling {
+    const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+    message.plannedUsageThreshold =
+      object.plannedUsageThreshold !== undefined &&
+      object.plannedUsageThreshold !== null
+        ? Number(object.plannedUsageThreshold)
+        : 0;
+    message.emergencyUsageThreshold =
+      object.emergencyUsageThreshold !== undefined &&
+      object.emergencyUsageThreshold !== null
+        ? Number(object.emergencyUsageThreshold)
+        : 0;
+    message.diskSizeLimit =
+      object.diskSizeLimit !== undefined && object.diskSizeLimit !== null
+        ? Number(object.diskSizeLimit)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: DiskSizeAutoscaling): unknown {
+    const obj: any = {};
+    message.plannedUsageThreshold !== undefined &&
+      (obj.plannedUsageThreshold = Math.round(message.plannedUsageThreshold));
+    message.emergencyUsageThreshold !== undefined &&
+      (obj.emergencyUsageThreshold = Math.round(
+        message.emergencyUsageThreshold
+      ));
+    message.diskSizeLimit !== undefined &&
+      (obj.diskSizeLimit = Math.round(message.diskSizeLimit));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DiskSizeAutoscaling>, I>>(
+    object: I
+  ): DiskSizeAutoscaling {
+    const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+    message.plannedUsageThreshold = object.plannedUsageThreshold ?? 0;
+    message.emergencyUsageThreshold = object.emergencyUsageThreshold ?? 0;
+    message.diskSizeLimit = object.diskSizeLimit ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(DiskSizeAutoscaling.$type, DiskSizeAutoscaling);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

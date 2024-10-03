@@ -6,6 +6,46 @@ import { Timestamp } from "../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.backup.v1";
 
+export enum ResourceType {
+  RESOURCE_TYPE_UNSPECIFIED = 0,
+  /** COMPUTE - Resource is Compute Cloud VM */
+  COMPUTE = 1,
+  /** BMS - Resource is baremetal server */
+  BMS = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function resourceTypeFromJSON(object: any): ResourceType {
+  switch (object) {
+    case 0:
+    case "RESOURCE_TYPE_UNSPECIFIED":
+      return ResourceType.RESOURCE_TYPE_UNSPECIFIED;
+    case 1:
+    case "COMPUTE":
+      return ResourceType.COMPUTE;
+    case 2:
+    case "BMS":
+      return ResourceType.BMS;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ResourceType.UNRECOGNIZED;
+  }
+}
+
+export function resourceTypeToJSON(object: ResourceType): string {
+  switch (object) {
+    case ResourceType.RESOURCE_TYPE_UNSPECIFIED:
+      return "RESOURCE_TYPE_UNSPECIFIED";
+    case ResourceType.COMPUTE:
+      return "COMPUTE";
+    case ResourceType.BMS:
+      return "BMS";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export interface Resource {
   $type: "yandex.cloud.backup.v1.Resource";
   /** Compute Cloud instance ID. */
@@ -37,6 +77,15 @@ export interface Resource {
    * Cloud Backup resource.
    */
   isActive: boolean;
+  /** Status of resource initialization in cloud backup service. */
+  initStatus: Resource_InitStatus;
+  /**
+   * Metadata to provide details about instance registration process
+   * if status is FAILED_REGISTRATION or REGISTERING
+   */
+  metadata: string;
+  /** Type of resource. Could be compute VM or baremetal server. */
+  type: ResourceType;
 }
 
 export enum Resource_Status {
@@ -106,6 +155,60 @@ export function resource_StatusToJSON(object: Resource_Status): string {
   }
 }
 
+export enum Resource_InitStatus {
+  INIT_STATUS_UNSPECIFIED = 0,
+  /** REGISTERING - Registration of instance in cloud backups have started. */
+  REGISTERING = 1,
+  /** REGISTRED - Instance is registered in cloud backups. */
+  REGISTRED = 2,
+  /** FAILED_REGISTRATION - Instance registration failed. */
+  FAILED_REGISTRATION = 3,
+  /** DELETED - Instance is deleted from cloud backup service. */
+  DELETED = 4,
+  UNRECOGNIZED = -1,
+}
+
+export function resource_InitStatusFromJSON(object: any): Resource_InitStatus {
+  switch (object) {
+    case 0:
+    case "INIT_STATUS_UNSPECIFIED":
+      return Resource_InitStatus.INIT_STATUS_UNSPECIFIED;
+    case 1:
+    case "REGISTERING":
+      return Resource_InitStatus.REGISTERING;
+    case 2:
+    case "REGISTRED":
+      return Resource_InitStatus.REGISTRED;
+    case 3:
+    case "FAILED_REGISTRATION":
+      return Resource_InitStatus.FAILED_REGISTRATION;
+    case 4:
+    case "DELETED":
+      return Resource_InitStatus.DELETED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Resource_InitStatus.UNRECOGNIZED;
+  }
+}
+
+export function resource_InitStatusToJSON(object: Resource_InitStatus): string {
+  switch (object) {
+    case Resource_InitStatus.INIT_STATUS_UNSPECIFIED:
+      return "INIT_STATUS_UNSPECIFIED";
+    case Resource_InitStatus.REGISTERING:
+      return "REGISTERING";
+    case Resource_InitStatus.REGISTRED:
+      return "REGISTRED";
+    case Resource_InitStatus.FAILED_REGISTRATION:
+      return "FAILED_REGISTRATION";
+    case Resource_InitStatus.DELETED:
+      return "DELETED";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export interface Progress {
   $type: "yandex.cloud.backup.v1.Progress";
   current: number;
@@ -135,6 +238,10 @@ export interface Task {
   completedAt?: Date;
   /** Compute Cloud instance ID. */
   computeInstanceId: string;
+  /** Task result code. */
+  resultCode: Task_Code;
+  /** Task error message if task finished with not OK code */
+  error: string;
 }
 
 export enum Task_Type {
@@ -142,6 +249,8 @@ export enum Task_Type {
   BACKUP = 1,
   RETENTION = 2,
   RECOVERY = 3,
+  APPLY_POLICY = 4,
+  REVOKE_POLICY = 5,
   UNRECOGNIZED = -1,
 }
 
@@ -159,6 +268,12 @@ export function task_TypeFromJSON(object: any): Task_Type {
     case 3:
     case "RECOVERY":
       return Task_Type.RECOVERY;
+    case 4:
+    case "APPLY_POLICY":
+      return Task_Type.APPLY_POLICY;
+    case 5:
+    case "REVOKE_POLICY":
+      return Task_Type.REVOKE_POLICY;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -176,6 +291,10 @@ export function task_TypeToJSON(object: Task_Type): string {
       return "RETENTION";
     case Task_Type.RECOVERY:
       return "RECOVERY";
+    case Task_Type.APPLY_POLICY:
+      return "APPLY_POLICY";
+    case Task_Type.REVOKE_POLICY:
+      return "REVOKE_POLICY";
     default:
       return "UNKNOWN";
   }
@@ -238,6 +357,69 @@ export function task_StatusToJSON(object: Task_Status): string {
   }
 }
 
+/** Result code of task */
+export enum Task_Code {
+  CODE_UNSPECIFIED = 0,
+  OK = 1,
+  ERROR = 2,
+  WARNING = 3,
+  CANCELLED = 4,
+  ABANDONED = 5,
+  TIMEDOUT = 6,
+  UNRECOGNIZED = -1,
+}
+
+export function task_CodeFromJSON(object: any): Task_Code {
+  switch (object) {
+    case 0:
+    case "CODE_UNSPECIFIED":
+      return Task_Code.CODE_UNSPECIFIED;
+    case 1:
+    case "OK":
+      return Task_Code.OK;
+    case 2:
+    case "ERROR":
+      return Task_Code.ERROR;
+    case 3:
+    case "WARNING":
+      return Task_Code.WARNING;
+    case 4:
+    case "CANCELLED":
+      return Task_Code.CANCELLED;
+    case 5:
+    case "ABANDONED":
+      return Task_Code.ABANDONED;
+    case 6:
+    case "TIMEDOUT":
+      return Task_Code.TIMEDOUT;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Task_Code.UNRECOGNIZED;
+  }
+}
+
+export function task_CodeToJSON(object: Task_Code): string {
+  switch (object) {
+    case Task_Code.CODE_UNSPECIFIED:
+      return "CODE_UNSPECIFIED";
+    case Task_Code.OK:
+      return "OK";
+    case Task_Code.ERROR:
+      return "ERROR";
+    case Task_Code.WARNING:
+      return "WARNING";
+    case Task_Code.CANCELLED:
+      return "CANCELLED";
+    case Task_Code.ABANDONED:
+      return "ABANDONED";
+    case Task_Code.TIMEDOUT:
+      return "TIMEDOUT";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 const baseResource: object = {
   $type: "yandex.cloud.backup.v1.Resource",
   computeInstanceId: "",
@@ -248,6 +430,9 @@ const baseResource: object = {
   statusProgress: 0,
   resourceId: "",
   isActive: false,
+  initStatus: 0,
+  metadata: "",
+  type: 0,
 };
 
 export const Resource = {
@@ -305,6 +490,15 @@ export const Resource = {
     if (message.isActive === true) {
       writer.uint32(96).bool(message.isActive);
     }
+    if (message.initStatus !== 0) {
+      writer.uint32(104).int32(message.initStatus);
+    }
+    if (message.metadata !== "") {
+      writer.uint32(114).string(message.metadata);
+    }
+    if (message.type !== 0) {
+      writer.uint32(120).int32(message.type);
+    }
     return writer;
   },
 
@@ -358,6 +552,15 @@ export const Resource = {
           break;
         case 12:
           message.isActive = reader.bool();
+          break;
+        case 13:
+          message.initStatus = reader.int32() as any;
+          break;
+        case 14:
+          message.metadata = reader.string();
+          break;
+        case 15:
+          message.type = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -418,6 +621,18 @@ export const Resource = {
       object.isActive !== undefined && object.isActive !== null
         ? Boolean(object.isActive)
         : false;
+    message.initStatus =
+      object.initStatus !== undefined && object.initStatus !== null
+        ? resource_InitStatusFromJSON(object.initStatus)
+        : 0;
+    message.metadata =
+      object.metadata !== undefined && object.metadata !== null
+        ? String(object.metadata)
+        : "";
+    message.type =
+      object.type !== undefined && object.type !== null
+        ? resourceTypeFromJSON(object.type)
+        : 0;
     return message;
   },
 
@@ -443,6 +658,10 @@ export const Resource = {
       (obj.nextBackupTime = message.nextBackupTime.toISOString());
     message.resourceId !== undefined && (obj.resourceId = message.resourceId);
     message.isActive !== undefined && (obj.isActive = message.isActive);
+    message.initStatus !== undefined &&
+      (obj.initStatus = resource_InitStatusToJSON(message.initStatus));
+    message.metadata !== undefined && (obj.metadata = message.metadata);
+    message.type !== undefined && (obj.type = resourceTypeToJSON(message.type));
     return obj;
   },
 
@@ -460,6 +679,9 @@ export const Resource = {
     message.nextBackupTime = object.nextBackupTime ?? undefined;
     message.resourceId = object.resourceId ?? "";
     message.isActive = object.isActive ?? false;
+    message.initStatus = object.initStatus ?? 0;
+    message.metadata = object.metadata ?? "";
+    message.type = object.type ?? 0;
     return message;
   },
 };
@@ -548,6 +770,8 @@ const baseTask: object = {
   type: 0,
   status: 0,
   computeInstanceId: "",
+  resultCode: 0,
+  error: "",
 };
 
 export const Task = {
@@ -599,6 +823,12 @@ export const Task = {
     if (message.computeInstanceId !== "") {
       writer.uint32(90).string(message.computeInstanceId);
     }
+    if (message.resultCode !== 0) {
+      writer.uint32(96).int32(message.resultCode);
+    }
+    if (message.error !== "") {
+      writer.uint32(106).string(message.error);
+    }
     return writer;
   },
 
@@ -649,6 +879,12 @@ export const Task = {
           break;
         case 11:
           message.computeInstanceId = reader.string();
+          break;
+        case 12:
+          message.resultCode = reader.int32() as any;
+          break;
+        case 13:
+          message.error = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -703,6 +939,14 @@ export const Task = {
       object.computeInstanceId !== null
         ? String(object.computeInstanceId)
         : "";
+    message.resultCode =
+      object.resultCode !== undefined && object.resultCode !== null
+        ? task_CodeFromJSON(object.resultCode)
+        : 0;
+    message.error =
+      object.error !== undefined && object.error !== null
+        ? String(object.error)
+        : "";
     return message;
   },
 
@@ -729,6 +973,9 @@ export const Task = {
       (obj.completedAt = message.completedAt.toISOString());
     message.computeInstanceId !== undefined &&
       (obj.computeInstanceId = message.computeInstanceId);
+    message.resultCode !== undefined &&
+      (obj.resultCode = task_CodeToJSON(message.resultCode));
+    message.error !== undefined && (obj.error = message.error);
     return obj;
   },
 
@@ -748,6 +995,8 @@ export const Task = {
     message.updatedAt = object.updatedAt ?? undefined;
     message.completedAt = object.completedAt ?? undefined;
     message.computeInstanceId = object.computeInstanceId ?? "";
+    message.resultCode = object.resultCode ?? 0;
+    message.error = object.error ?? "";
     return message;
   },
 };

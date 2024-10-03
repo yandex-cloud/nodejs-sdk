@@ -52,6 +52,11 @@ import {
   Mongocfgconfigset60Enterprise,
   Mongosconfigset60Enterprise,
 } from "../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb6_0_enterprise";
+import {
+  MongodConfigSet,
+  MongoCfgConfigSet,
+  MongosConfigSet,
+} from "../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb";
 import { Timestamp } from "../../../../../google/protobuf/timestamp";
 import { Int64Value } from "../../../../../google/protobuf/wrappers";
 
@@ -102,7 +107,6 @@ export interface Cluster {
   deletionProtection: boolean;
 }
 
-/** Deployment environment. */
 export enum Cluster_Environment {
   ENVIRONMENT_UNSPECIFIED = 0,
   /**
@@ -292,7 +296,7 @@ export interface Monitoring {
 
 export interface ClusterConfig {
   $type: "yandex.cloud.mdb.mongodb.v1.ClusterConfig";
-  /** Version of MongoDB server software. Possible values: `3.6`, `4.0`, `4.2`, `4.4`, `4.4-enterprise`, `5.0`, `5.0-enterprise`, `6.0`, `6.0-enterprise`. */
+  /** Version of MongoDB server software. Possible values: `3.6`, `4.0`, `4.2`, `4.4`, `4.4-enterprise`, `5.0`, `5.0-enterprise`, `6.0`, `6.0-enterprise`, `7.0`, `7.0-enterprise`. */
   version: string;
   /**
    * MongoDB feature compatibility version. See usage details in [MongoDB documentation](https://docs.mongodb.com/manual/reference/command/setFeatureCompatibilityVersion/).
@@ -332,6 +336,8 @@ export interface ClusterConfig {
   performanceDiagnostics?: PerformanceDiagnosticsConfig;
   /** Access policy to DB */
   access?: Access;
+  /** Configuration and resource allocation for a MongoDB Enterprise cluster. */
+  mongodbConfig?: Mongodb;
 }
 
 export interface Mongodb36 {
@@ -352,6 +358,8 @@ export interface Mongodb36_Mongod {
   config?: Mongodconfigset36;
   /** Resources allocated to MongoDB hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb36_MongoCfg {
@@ -359,6 +367,8 @@ export interface Mongodb36_MongoCfg {
   config?: Mongocfgconfigset36;
   /** Resources allocated to mongocfg hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb36_Mongos {
@@ -366,6 +376,8 @@ export interface Mongodb36_Mongos {
   config?: Mongosconfigset36;
   /** Resources allocated to mongos hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb36_MongoInfra {
@@ -374,6 +386,8 @@ export interface Mongodb36_MongoInfra {
   configMongocfg?: Mongocfgconfigset36;
   /** Resources allocated to mongoinfra (mongos+mongocfg) hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb40 {
@@ -394,6 +408,8 @@ export interface Mongodb40_Mongod {
   config?: Mongodconfigset40;
   /** Resources allocated to mongod hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb40_MongoCfg {
@@ -402,6 +418,8 @@ export interface Mongodb40_MongoCfg {
   config?: Mongocfgconfigset40;
   /** Resources allocated to mongocfg hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb40_Mongos {
@@ -410,6 +428,8 @@ export interface Mongodb40_Mongos {
   config?: Mongosconfigset40;
   /** Resources allocated to mongos hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb40_MongoInfra {
@@ -418,6 +438,8 @@ export interface Mongodb40_MongoInfra {
   configMongocfg?: Mongocfgconfigset40;
   /** Resources allocated to mongoinfra (mongos+mongocfg) hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb42 {
@@ -438,6 +460,8 @@ export interface Mongodb42_Mongod {
   config?: Mongodconfigset42;
   /** Resources allocated to mongod hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb42_MongoCfg {
@@ -446,6 +470,8 @@ export interface Mongodb42_MongoCfg {
   config?: Mongocfgconfigset42;
   /** Resources allocated to mongocfg hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb42_Mongos {
@@ -454,6 +480,8 @@ export interface Mongodb42_Mongos {
   config?: Mongosconfigset42;
   /** Resources allocated to mongos hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb42_MongoInfra {
@@ -462,6 +490,8 @@ export interface Mongodb42_MongoInfra {
   configMongocfg?: Mongocfgconfigset42;
   /** Resources allocated to mongoinfra (mongos+mongocfg) hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb44 {
@@ -482,6 +512,8 @@ export interface Mongodb44_Mongod {
   config?: Mongodconfigset44;
   /** Resources allocated to mongod hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb44_MongoCfg {
@@ -490,6 +522,8 @@ export interface Mongodb44_MongoCfg {
   config?: Mongocfgconfigset44;
   /** Resources allocated to mongocfg hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb44_Mongos {
@@ -498,6 +532,8 @@ export interface Mongodb44_Mongos {
   config?: Mongosconfigset44;
   /** Resources allocated to mongos hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb44_MongoInfra {
@@ -506,6 +542,8 @@ export interface Mongodb44_MongoInfra {
   configMongocfg?: Mongocfgconfigset44;
   /** Resources allocated to mongoinfra (mongos+mongocfg) hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb44Enterprise {
@@ -526,6 +564,8 @@ export interface Mongodb44Enterprise_Mongod {
   config?: Mongodconfigset44Enterprise;
   /** Resources allocated to mongod hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb44Enterprise_MongoCfg {
@@ -534,6 +574,8 @@ export interface Mongodb44Enterprise_MongoCfg {
   config?: Mongocfgconfigset44Enterprise;
   /** Resources allocated to mongocfg hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb44Enterprise_Mongos {
@@ -542,6 +584,8 @@ export interface Mongodb44Enterprise_Mongos {
   config?: Mongosconfigset44Enterprise;
   /** Resources allocated to mongos hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb44Enterprise_MongoInfra {
@@ -550,6 +594,8 @@ export interface Mongodb44Enterprise_MongoInfra {
   configMongocfg?: Mongocfgconfigset44Enterprise;
   /** Resources allocated to mongoinfra (mongos+mongocfg) hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb50 {
@@ -570,6 +616,8 @@ export interface Mongodb50_Mongod {
   config?: Mongodconfigset50;
   /** Resources allocated to mongod hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb50_MongoCfg {
@@ -578,6 +626,8 @@ export interface Mongodb50_MongoCfg {
   config?: Mongocfgconfigset50;
   /** Resources allocated to mongocfg hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb50_Mongos {
@@ -586,6 +636,8 @@ export interface Mongodb50_Mongos {
   config?: Mongosconfigset50;
   /** Resources allocated to mongos hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb50_MongoInfra {
@@ -594,6 +646,8 @@ export interface Mongodb50_MongoInfra {
   configMongocfg?: Mongocfgconfigset50;
   /** Resources allocated to mongoinfra (mongos+mongocfg) hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb50Enterprise {
@@ -614,6 +668,8 @@ export interface Mongodb50Enterprise_Mongod {
   config?: Mongodconfigset50Enterprise;
   /** Resources allocated to mongod hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb50Enterprise_MongoCfg {
@@ -622,6 +678,8 @@ export interface Mongodb50Enterprise_MongoCfg {
   config?: Mongocfgconfigset50Enterprise;
   /** Resources allocated to mongocfg hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb50Enterprise_Mongos {
@@ -630,6 +688,8 @@ export interface Mongodb50Enterprise_Mongos {
   config?: Mongosconfigset50Enterprise;
   /** Resources allocated to mongos hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb50Enterprise_MongoInfra {
@@ -638,6 +698,8 @@ export interface Mongodb50Enterprise_MongoInfra {
   configMongocfg?: Mongocfgconfigset50Enterprise;
   /** Resources allocated to mongoinfra (mongos+mongocfg) hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb60 {
@@ -658,6 +720,8 @@ export interface Mongodb60_Mongod {
   config?: Mongodconfigset60;
   /** Resources allocated to mongod hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb60_MongoCfg {
@@ -666,6 +730,8 @@ export interface Mongodb60_MongoCfg {
   config?: Mongocfgconfigset60;
   /** Resources allocated to mongocfg hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb60_Mongos {
@@ -674,6 +740,8 @@ export interface Mongodb60_Mongos {
   config?: Mongosconfigset60;
   /** Resources allocated to mongos hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb60_MongoInfra {
@@ -682,6 +750,8 @@ export interface Mongodb60_MongoInfra {
   configMongocfg?: Mongocfgconfigset60;
   /** Resources allocated to mongoinfra (mongos+mongocfg) hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb60Enterprise {
@@ -702,6 +772,8 @@ export interface Mongodb60Enterprise_Mongod {
   config?: Mongodconfigset60Enterprise;
   /** Resources allocated to mongod hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb60Enterprise_MongoCfg {
@@ -710,6 +782,8 @@ export interface Mongodb60Enterprise_MongoCfg {
   config?: Mongocfgconfigset60Enterprise;
   /** Resources allocated to mongocfg hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb60Enterprise_Mongos {
@@ -718,6 +792,8 @@ export interface Mongodb60Enterprise_Mongos {
   config?: Mongosconfigset60Enterprise;
   /** Resources allocated to mongos hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodb60Enterprise_MongoInfra {
@@ -726,6 +802,60 @@ export interface Mongodb60Enterprise_MongoInfra {
   configMongocfg?: Mongocfgconfigset60Enterprise;
   /** Resources allocated to mongoinfra (mongos+mongocfg) hosts. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
+}
+
+export interface Mongodb {
+  $type: "yandex.cloud.mdb.mongodb.v1.Mongodb";
+  /** Configuration and resource allocation for mongod in a MongoDB cluster. */
+  mongod?: Mongodb_Mongod;
+  /** Configuration and resource allocation for mongocfg in a MongoDB cluster. */
+  mongocfg?: Mongodb_MongoCfg;
+  /** Configuration and resource allocation for mongos in a MongoDB cluster. */
+  mongos?: Mongodb_Mongos;
+  /** Configuration and resource allocation for mongoinfra (mongos+mongocfg) in a MongoDB cluster. */
+  mongoinfra?: Mongodb_MongoInfra;
+}
+
+export interface Mongodb_Mongod {
+  $type: "yandex.cloud.mdb.mongodb.v1.Mongodb.Mongod";
+  /** Configuration for mongod hosts. */
+  config?: MongodConfigSet;
+  /** Resources allocated to mongod hosts. */
+  resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
+}
+
+export interface Mongodb_MongoCfg {
+  $type: "yandex.cloud.mdb.mongodb.v1.Mongodb.MongoCfg";
+  /** Configuration for mongocfg hosts. */
+  config?: MongoCfgConfigSet;
+  /** Resources allocated to mongocfg hosts. */
+  resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
+}
+
+export interface Mongodb_Mongos {
+  $type: "yandex.cloud.mdb.mongodb.v1.Mongodb.Mongos";
+  /** Configuration for mongos hosts. */
+  config?: MongosConfigSet;
+  /** Resources allocated to mongos hosts. */
+  resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
+}
+
+export interface Mongodb_MongoInfra {
+  $type: "yandex.cloud.mdb.mongodb.v1.Mongodb.MongoInfra";
+  configMongos?: MongosConfigSet;
+  configMongocfg?: MongoCfgConfigSet;
+  /** Resources allocated to mongoinfra (mongos+mongocfg) hosts. */
+  resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Shard {
@@ -751,9 +881,9 @@ export interface Host {
   zoneId: string;
   /** Resources allocated to the MongoDB host. */
   resources?: Resources;
-  /** Role of the host in the cluster. */
+  /** Role of the host in the cluster. If the field has default value, it is not returned in the response. */
   role: Host_Role;
-  /** Status code of the aggregated health of the host. */
+  /** Aggregated health of the host. If the field has default value, it is not returned in the response. */
   health: Host_Health;
   /** Services provided by the host. */
   services: Service[];
@@ -763,11 +893,14 @@ export interface Host {
   assignPublicIp: boolean;
   /** Shard which this host belongs to. */
   shardName: string;
-  /** Host type */
+  /** Host type. If the field has default value, it is not returned in the response. */
   type: Host_Type;
+  /** Host parameters */
+  hostParameters?: Host_HostParameters;
 }
 
 export enum Host_Type {
+  /** TYPE_UNSPECIFIED - Type of the host is unspecified. Default value. */
   TYPE_UNSPECIFIED = 0,
   /** MONGOD - A mongod host. */
   MONGOD = 1,
@@ -822,7 +955,7 @@ export function host_TypeToJSON(object: Host_Type): string {
 }
 
 export enum Host_Role {
-  /** ROLE_UNKNOWN - Role of the host in the cluster is unknown. */
+  /** ROLE_UNKNOWN - Role of the host in the cluster is unknown. Default value. */
   ROLE_UNKNOWN = 0,
   /** PRIMARY - Host is the primary MongoDB server in the cluster. */
   PRIMARY = 1,
@@ -863,7 +996,7 @@ export function host_RoleToJSON(object: Host_Role): string {
 }
 
 export enum Host_Health {
-  /** HEALTH_UNKNOWN - Health of the host is unknown. */
+  /** HEALTH_UNKNOWN - Health of the host is unknown. Default value. */
   HEALTH_UNKNOWN = 0,
   /** ALIVE - The host is performing all its functions normally. */
   ALIVE = 1,
@@ -910,15 +1043,30 @@ export function host_HealthToJSON(object: Host_Health): string {
   }
 }
 
+export interface Host_HostParameters {
+  $type: "yandex.cloud.mdb.mongodb.v1.Host.HostParameters";
+  hidden: boolean;
+  secondaryDelaySecs: number;
+  priority: number;
+  tags: { [key: string]: string };
+}
+
+export interface Host_HostParameters_TagsEntry {
+  $type: "yandex.cloud.mdb.mongodb.v1.Host.HostParameters.TagsEntry";
+  key: string;
+  value: string;
+}
+
 export interface Service {
   $type: "yandex.cloud.mdb.mongodb.v1.Service";
-  /** Type of the service provided by the host. */
+  /** Type of the service provided by the host. If the field has default value, it is not returned in the response. */
   type: Service_Type;
-  /** Status code of server availability. */
+  /** Aggregated health of the service. If the field has default value, it is not returned in the response. */
   health: Service_Health;
 }
 
 export enum Service_Type {
+  /** TYPE_UNSPECIFIED - Service type of the host is unspecified. Default value. */
   TYPE_UNSPECIFIED = 0,
   /** MONGOD - The host is running a mongod daemon. */
   MONGOD = 1,
@@ -1036,6 +1184,16 @@ export interface Access {
 export interface PerformanceDiagnosticsConfig {
   $type: "yandex.cloud.mdb.mongodb.v1.PerformanceDiagnosticsConfig";
   profilingEnabled: boolean;
+}
+
+export interface DiskSizeAutoscaling {
+  $type: "yandex.cloud.mdb.mongodb.v1.DiskSizeAutoscaling";
+  /** Amount of used storage for automatic disk scaling in the maintenance window, 0 means disabled, in percent. */
+  plannedUsageThreshold?: number;
+  /** Amount of used storage for immediately  automatic disk scaling, 0 means disabled, in percent. */
+  emergencyUsageThreshold?: number;
+  /** Limit on how large the storage for database instances can automatically grow, in bytes. */
+  diskSizeLimit?: number;
 }
 
 const baseCluster: object = {
@@ -1619,6 +1777,9 @@ export const ClusterConfig = {
     if (message.access !== undefined) {
       Access.encode(message.access, writer.uint32(50).fork()).ldelim();
     }
+    if (message.mongodbConfig !== undefined) {
+      Mongodb.encode(message.mongodbConfig, writer.uint32(154).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1688,6 +1849,9 @@ export const ClusterConfig = {
           break;
         case 6:
           message.access = Access.decode(reader, reader.uint32());
+          break;
+        case 19:
+          message.mongodbConfig = Mongodb.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1766,6 +1930,10 @@ export const ClusterConfig = {
       object.access !== undefined && object.access !== null
         ? Access.fromJSON(object.access)
         : undefined;
+    message.mongodbConfig =
+      object.mongodbConfig !== undefined && object.mongodbConfig !== null
+        ? Mongodb.fromJSON(object.mongodbConfig)
+        : undefined;
     return message;
   },
 
@@ -1822,6 +1990,10 @@ export const ClusterConfig = {
         : undefined);
     message.access !== undefined &&
       (obj.access = message.access ? Access.toJSON(message.access) : undefined);
+    message.mongodbConfig !== undefined &&
+      (obj.mongodbConfig = message.mongodbConfig
+        ? Mongodb.toJSON(message.mongodbConfig)
+        : undefined);
     return obj;
   },
 
@@ -1887,6 +2059,10 @@ export const ClusterConfig = {
     message.access =
       object.access !== undefined && object.access !== null
         ? Access.fromPartial(object.access)
+        : undefined;
+    message.mongodbConfig =
+      object.mongodbConfig !== undefined && object.mongodbConfig !== null
+        ? Mongodb.fromPartial(object.mongodbConfig)
         : undefined;
     return message;
   },
@@ -2050,6 +2226,12 @@ export const Mongodb36_Mongod = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2065,6 +2247,12 @@ export const Mongodb36_Mongod = {
           break;
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -2084,6 +2272,11 @@ export const Mongodb36_Mongod = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -2096,6 +2289,10 @@ export const Mongodb36_Mongod = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -2111,6 +2308,11 @@ export const Mongodb36_Mongod = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -2138,6 +2340,12 @@ export const Mongodb36_MongoCfg = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2153,6 +2361,12 @@ export const Mongodb36_MongoCfg = {
           break;
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -2172,6 +2386,11 @@ export const Mongodb36_MongoCfg = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -2184,6 +2403,10 @@ export const Mongodb36_MongoCfg = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -2199,6 +2422,11 @@ export const Mongodb36_MongoCfg = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -2226,6 +2454,12 @@ export const Mongodb36_Mongos = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2241,6 +2475,12 @@ export const Mongodb36_Mongos = {
           break;
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -2260,6 +2500,11 @@ export const Mongodb36_Mongos = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -2272,6 +2517,10 @@ export const Mongodb36_Mongos = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -2287,6 +2536,11 @@ export const Mongodb36_Mongos = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -2320,6 +2574,12 @@ export const Mongodb36_MongoInfra = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2348,6 +2608,12 @@ export const Mongodb36_MongoInfra = {
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2370,6 +2636,11 @@ export const Mongodb36_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -2386,6 +2657,10 @@ export const Mongodb36_MongoInfra = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -2405,6 +2680,11 @@ export const Mongodb36_MongoInfra = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -2568,6 +2848,12 @@ export const Mongodb40_Mongod = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2583,6 +2869,12 @@ export const Mongodb40_Mongod = {
           break;
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -2602,6 +2894,11 @@ export const Mongodb40_Mongod = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -2614,6 +2911,10 @@ export const Mongodb40_Mongod = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -2629,6 +2930,11 @@ export const Mongodb40_Mongod = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -2656,6 +2962,12 @@ export const Mongodb40_MongoCfg = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2671,6 +2983,12 @@ export const Mongodb40_MongoCfg = {
           break;
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -2690,6 +3008,11 @@ export const Mongodb40_MongoCfg = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -2702,6 +3025,10 @@ export const Mongodb40_MongoCfg = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -2717,6 +3044,11 @@ export const Mongodb40_MongoCfg = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -2744,6 +3076,12 @@ export const Mongodb40_Mongos = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2759,6 +3097,12 @@ export const Mongodb40_Mongos = {
           break;
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -2778,6 +3122,11 @@ export const Mongodb40_Mongos = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -2790,6 +3139,10 @@ export const Mongodb40_Mongos = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -2805,6 +3158,11 @@ export const Mongodb40_Mongos = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -2838,6 +3196,12 @@ export const Mongodb40_MongoInfra = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2866,6 +3230,12 @@ export const Mongodb40_MongoInfra = {
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2888,6 +3258,11 @@ export const Mongodb40_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -2904,6 +3279,10 @@ export const Mongodb40_MongoInfra = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -2923,6 +3302,11 @@ export const Mongodb40_MongoInfra = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -3086,6 +3470,12 @@ export const Mongodb42_Mongod = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3101,6 +3491,12 @@ export const Mongodb42_Mongod = {
           break;
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -3120,6 +3516,11 @@ export const Mongodb42_Mongod = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -3132,6 +3533,10 @@ export const Mongodb42_Mongod = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -3147,6 +3552,11 @@ export const Mongodb42_Mongod = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -3174,6 +3584,12 @@ export const Mongodb42_MongoCfg = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3189,6 +3605,12 @@ export const Mongodb42_MongoCfg = {
           break;
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -3208,6 +3630,11 @@ export const Mongodb42_MongoCfg = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -3220,6 +3647,10 @@ export const Mongodb42_MongoCfg = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -3235,6 +3666,11 @@ export const Mongodb42_MongoCfg = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -3262,6 +3698,12 @@ export const Mongodb42_Mongos = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3277,6 +3719,12 @@ export const Mongodb42_Mongos = {
           break;
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -3296,6 +3744,11 @@ export const Mongodb42_Mongos = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -3308,6 +3761,10 @@ export const Mongodb42_Mongos = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -3323,6 +3780,11 @@ export const Mongodb42_Mongos = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -3356,6 +3818,12 @@ export const Mongodb42_MongoInfra = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3384,6 +3852,12 @@ export const Mongodb42_MongoInfra = {
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3406,6 +3880,11 @@ export const Mongodb42_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -3422,6 +3901,10 @@ export const Mongodb42_MongoInfra = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -3441,6 +3924,11 @@ export const Mongodb42_MongoInfra = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -3604,6 +4092,12 @@ export const Mongodb44_Mongod = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3619,6 +4113,12 @@ export const Mongodb44_Mongod = {
           break;
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -3638,6 +4138,11 @@ export const Mongodb44_Mongod = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -3650,6 +4155,10 @@ export const Mongodb44_Mongod = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -3665,6 +4174,11 @@ export const Mongodb44_Mongod = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -3692,6 +4206,12 @@ export const Mongodb44_MongoCfg = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3707,6 +4227,12 @@ export const Mongodb44_MongoCfg = {
           break;
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -3726,6 +4252,11 @@ export const Mongodb44_MongoCfg = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -3738,6 +4269,10 @@ export const Mongodb44_MongoCfg = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -3753,6 +4288,11 @@ export const Mongodb44_MongoCfg = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -3780,6 +4320,12 @@ export const Mongodb44_Mongos = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3795,6 +4341,12 @@ export const Mongodb44_Mongos = {
           break;
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -3814,6 +4366,11 @@ export const Mongodb44_Mongos = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -3826,6 +4383,10 @@ export const Mongodb44_Mongos = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -3841,6 +4402,11 @@ export const Mongodb44_Mongos = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -3874,6 +4440,12 @@ export const Mongodb44_MongoInfra = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3902,6 +4474,12 @@ export const Mongodb44_MongoInfra = {
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3924,6 +4502,11 @@ export const Mongodb44_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -3940,6 +4523,10 @@ export const Mongodb44_MongoInfra = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -3959,6 +4546,11 @@ export const Mongodb44_MongoInfra = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -4131,6 +4723,12 @@ export const Mongodb44Enterprise_Mongod = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -4155,6 +4753,12 @@ export const Mongodb44Enterprise_Mongod = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -4175,6 +4779,11 @@ export const Mongodb44Enterprise_Mongod = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -4187,6 +4796,10 @@ export const Mongodb44Enterprise_Mongod = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -4204,6 +4817,11 @@ export const Mongodb44Enterprise_Mongod = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -4234,6 +4852,12 @@ export const Mongodb44Enterprise_MongoCfg = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -4258,6 +4882,12 @@ export const Mongodb44Enterprise_MongoCfg = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -4278,6 +4908,11 @@ export const Mongodb44Enterprise_MongoCfg = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -4290,6 +4925,10 @@ export const Mongodb44Enterprise_MongoCfg = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -4307,6 +4946,11 @@ export const Mongodb44Enterprise_MongoCfg = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -4337,6 +4981,12 @@ export const Mongodb44Enterprise_Mongos = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -4361,6 +5011,12 @@ export const Mongodb44Enterprise_Mongos = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -4381,6 +5037,11 @@ export const Mongodb44Enterprise_Mongos = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -4393,6 +5054,10 @@ export const Mongodb44Enterprise_Mongos = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -4410,6 +5075,11 @@ export const Mongodb44Enterprise_Mongos = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -4447,6 +5117,12 @@ export const Mongodb44Enterprise_MongoInfra = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -4477,6 +5153,12 @@ export const Mongodb44Enterprise_MongoInfra = {
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -4501,6 +5183,11 @@ export const Mongodb44Enterprise_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -4517,6 +5204,10 @@ export const Mongodb44Enterprise_MongoInfra = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -4538,6 +5229,11 @@ export const Mongodb44Enterprise_MongoInfra = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -4704,6 +5400,12 @@ export const Mongodb50_Mongod = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -4719,6 +5421,12 @@ export const Mongodb50_Mongod = {
           break;
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -4738,6 +5446,11 @@ export const Mongodb50_Mongod = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -4750,6 +5463,10 @@ export const Mongodb50_Mongod = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -4765,6 +5482,11 @@ export const Mongodb50_Mongod = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -4792,6 +5514,12 @@ export const Mongodb50_MongoCfg = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -4807,6 +5535,12 @@ export const Mongodb50_MongoCfg = {
           break;
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -4826,6 +5560,11 @@ export const Mongodb50_MongoCfg = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -4838,6 +5577,10 @@ export const Mongodb50_MongoCfg = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -4853,6 +5596,11 @@ export const Mongodb50_MongoCfg = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -4880,6 +5628,12 @@ export const Mongodb50_Mongos = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -4895,6 +5649,12 @@ export const Mongodb50_Mongos = {
           break;
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -4914,6 +5674,11 @@ export const Mongodb50_Mongos = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -4926,6 +5691,10 @@ export const Mongodb50_Mongos = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -4941,6 +5710,11 @@ export const Mongodb50_Mongos = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -4974,6 +5748,12 @@ export const Mongodb50_MongoInfra = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -5002,6 +5782,12 @@ export const Mongodb50_MongoInfra = {
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -5024,6 +5810,11 @@ export const Mongodb50_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -5040,6 +5831,10 @@ export const Mongodb50_MongoInfra = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -5059,6 +5854,11 @@ export const Mongodb50_MongoInfra = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -5231,6 +6031,12 @@ export const Mongodb50Enterprise_Mongod = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -5255,6 +6061,12 @@ export const Mongodb50Enterprise_Mongod = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -5275,6 +6087,11 @@ export const Mongodb50Enterprise_Mongod = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -5287,6 +6104,10 @@ export const Mongodb50Enterprise_Mongod = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -5304,6 +6125,11 @@ export const Mongodb50Enterprise_Mongod = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -5334,6 +6160,12 @@ export const Mongodb50Enterprise_MongoCfg = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -5358,6 +6190,12 @@ export const Mongodb50Enterprise_MongoCfg = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -5378,6 +6216,11 @@ export const Mongodb50Enterprise_MongoCfg = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -5390,6 +6233,10 @@ export const Mongodb50Enterprise_MongoCfg = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -5407,6 +6254,11 @@ export const Mongodb50Enterprise_MongoCfg = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -5437,6 +6289,12 @@ export const Mongodb50Enterprise_Mongos = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -5461,6 +6319,12 @@ export const Mongodb50Enterprise_Mongos = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -5481,6 +6345,11 @@ export const Mongodb50Enterprise_Mongos = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -5493,6 +6362,10 @@ export const Mongodb50Enterprise_Mongos = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -5510,6 +6383,11 @@ export const Mongodb50Enterprise_Mongos = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -5547,6 +6425,12 @@ export const Mongodb50Enterprise_MongoInfra = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -5577,6 +6461,12 @@ export const Mongodb50Enterprise_MongoInfra = {
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -5601,6 +6491,11 @@ export const Mongodb50Enterprise_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -5617,6 +6512,10 @@ export const Mongodb50Enterprise_MongoInfra = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -5638,6 +6537,11 @@ export const Mongodb50Enterprise_MongoInfra = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -5804,6 +6708,12 @@ export const Mongodb60_Mongod = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -5819,6 +6729,12 @@ export const Mongodb60_Mongod = {
           break;
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -5838,6 +6754,11 @@ export const Mongodb60_Mongod = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -5850,6 +6771,10 @@ export const Mongodb60_Mongod = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -5865,6 +6790,11 @@ export const Mongodb60_Mongod = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -5892,6 +6822,12 @@ export const Mongodb60_MongoCfg = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -5907,6 +6843,12 @@ export const Mongodb60_MongoCfg = {
           break;
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -5926,6 +6868,11 @@ export const Mongodb60_MongoCfg = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -5938,6 +6885,10 @@ export const Mongodb60_MongoCfg = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -5953,6 +6904,11 @@ export const Mongodb60_MongoCfg = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -5980,6 +6936,12 @@ export const Mongodb60_Mongos = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -5995,6 +6957,12 @@ export const Mongodb60_Mongos = {
           break;
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -6014,6 +6982,11 @@ export const Mongodb60_Mongos = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -6026,6 +6999,10 @@ export const Mongodb60_Mongos = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -6041,6 +7018,11 @@ export const Mongodb60_Mongos = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -6074,6 +7056,12 @@ export const Mongodb60_MongoInfra = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -6102,6 +7090,12 @@ export const Mongodb60_MongoInfra = {
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -6124,6 +7118,11 @@ export const Mongodb60_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -6140,6 +7139,10 @@ export const Mongodb60_MongoInfra = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -6159,6 +7162,11 @@ export const Mongodb60_MongoInfra = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -6331,6 +7339,12 @@ export const Mongodb60Enterprise_Mongod = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -6355,6 +7369,12 @@ export const Mongodb60Enterprise_Mongod = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -6375,6 +7395,11 @@ export const Mongodb60Enterprise_Mongod = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -6387,6 +7412,10 @@ export const Mongodb60Enterprise_Mongod = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -6404,6 +7433,11 @@ export const Mongodb60Enterprise_Mongod = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -6434,6 +7468,12 @@ export const Mongodb60Enterprise_MongoCfg = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -6458,6 +7498,12 @@ export const Mongodb60Enterprise_MongoCfg = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -6478,6 +7524,11 @@ export const Mongodb60Enterprise_MongoCfg = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -6490,6 +7541,10 @@ export const Mongodb60Enterprise_MongoCfg = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -6507,6 +7562,11 @@ export const Mongodb60Enterprise_MongoCfg = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -6537,6 +7597,12 @@ export const Mongodb60Enterprise_Mongos = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -6561,6 +7627,12 @@ export const Mongodb60Enterprise_Mongos = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -6581,6 +7653,11 @@ export const Mongodb60Enterprise_Mongos = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -6593,6 +7670,10 @@ export const Mongodb60Enterprise_Mongos = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -6610,6 +7691,11 @@ export const Mongodb60Enterprise_Mongos = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -6647,6 +7733,12 @@ export const Mongodb60Enterprise_MongoInfra = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -6677,6 +7769,12 @@ export const Mongodb60Enterprise_MongoInfra = {
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -6701,6 +7799,11 @@ export const Mongodb60Enterprise_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -6717,6 +7820,10 @@ export const Mongodb60Enterprise_MongoInfra = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -6739,6 +7846,11 @@ export const Mongodb60Enterprise_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 };
@@ -6747,6 +7859,609 @@ messageTypeRegistry.set(
   Mongodb60Enterprise_MongoInfra.$type,
   Mongodb60Enterprise_MongoInfra
 );
+
+const baseMongodb: object = { $type: "yandex.cloud.mdb.mongodb.v1.Mongodb" };
+
+export const Mongodb = {
+  $type: "yandex.cloud.mdb.mongodb.v1.Mongodb" as const,
+
+  encode(
+    message: Mongodb,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.mongod !== undefined) {
+      Mongodb_Mongod.encode(message.mongod, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.mongocfg !== undefined) {
+      Mongodb_MongoCfg.encode(
+        message.mongocfg,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.mongos !== undefined) {
+      Mongodb_Mongos.encode(message.mongos, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.mongoinfra !== undefined) {
+      Mongodb_MongoInfra.encode(
+        message.mongoinfra,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMongodb } as Mongodb;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.mongod = Mongodb_Mongod.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.mongocfg = Mongodb_MongoCfg.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.mongos = Mongodb_Mongos.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.mongoinfra = Mongodb_MongoInfra.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodb {
+    const message = { ...baseMongodb } as Mongodb;
+    message.mongod =
+      object.mongod !== undefined && object.mongod !== null
+        ? Mongodb_Mongod.fromJSON(object.mongod)
+        : undefined;
+    message.mongocfg =
+      object.mongocfg !== undefined && object.mongocfg !== null
+        ? Mongodb_MongoCfg.fromJSON(object.mongocfg)
+        : undefined;
+    message.mongos =
+      object.mongos !== undefined && object.mongos !== null
+        ? Mongodb_Mongos.fromJSON(object.mongos)
+        : undefined;
+    message.mongoinfra =
+      object.mongoinfra !== undefined && object.mongoinfra !== null
+        ? Mongodb_MongoInfra.fromJSON(object.mongoinfra)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodb): unknown {
+    const obj: any = {};
+    message.mongod !== undefined &&
+      (obj.mongod = message.mongod
+        ? Mongodb_Mongod.toJSON(message.mongod)
+        : undefined);
+    message.mongocfg !== undefined &&
+      (obj.mongocfg = message.mongocfg
+        ? Mongodb_MongoCfg.toJSON(message.mongocfg)
+        : undefined);
+    message.mongos !== undefined &&
+      (obj.mongos = message.mongos
+        ? Mongodb_Mongos.toJSON(message.mongos)
+        : undefined);
+    message.mongoinfra !== undefined &&
+      (obj.mongoinfra = message.mongoinfra
+        ? Mongodb_MongoInfra.toJSON(message.mongoinfra)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodb>, I>>(object: I): Mongodb {
+    const message = { ...baseMongodb } as Mongodb;
+    message.mongod =
+      object.mongod !== undefined && object.mongod !== null
+        ? Mongodb_Mongod.fromPartial(object.mongod)
+        : undefined;
+    message.mongocfg =
+      object.mongocfg !== undefined && object.mongocfg !== null
+        ? Mongodb_MongoCfg.fromPartial(object.mongocfg)
+        : undefined;
+    message.mongos =
+      object.mongos !== undefined && object.mongos !== null
+        ? Mongodb_Mongos.fromPartial(object.mongos)
+        : undefined;
+    message.mongoinfra =
+      object.mongoinfra !== undefined && object.mongoinfra !== null
+        ? Mongodb_MongoInfra.fromPartial(object.mongoinfra)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Mongodb.$type, Mongodb);
+
+const baseMongodb_Mongod: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.Mongodb.Mongod",
+};
+
+export const Mongodb_Mongod = {
+  $type: "yandex.cloud.mdb.mongodb.v1.Mongodb.Mongod" as const,
+
+  encode(
+    message: Mongodb_Mongod,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.config !== undefined) {
+      MongodConfigSet.encode(message.config, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb_Mongod {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMongodb_Mongod } as Mongodb_Mongod;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = MongodConfigSet.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodb_Mongod {
+    const message = { ...baseMongodb_Mongod } as Mongodb_Mongod;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? MongodConfigSet.fromJSON(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodb_Mongod): unknown {
+    const obj: any = {};
+    message.config !== undefined &&
+      (obj.config = message.config
+        ? MongodConfigSet.toJSON(message.config)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodb_Mongod>, I>>(
+    object: I
+  ): Mongodb_Mongod {
+    const message = { ...baseMongodb_Mongod } as Mongodb_Mongod;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? MongodConfigSet.fromPartial(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Mongodb_Mongod.$type, Mongodb_Mongod);
+
+const baseMongodb_MongoCfg: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.Mongodb.MongoCfg",
+};
+
+export const Mongodb_MongoCfg = {
+  $type: "yandex.cloud.mdb.mongodb.v1.Mongodb.MongoCfg" as const,
+
+  encode(
+    message: Mongodb_MongoCfg,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.config !== undefined) {
+      MongoCfgConfigSet.encode(
+        message.config,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb_MongoCfg {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMongodb_MongoCfg } as Mongodb_MongoCfg;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = MongoCfgConfigSet.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodb_MongoCfg {
+    const message = { ...baseMongodb_MongoCfg } as Mongodb_MongoCfg;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? MongoCfgConfigSet.fromJSON(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodb_MongoCfg): unknown {
+    const obj: any = {};
+    message.config !== undefined &&
+      (obj.config = message.config
+        ? MongoCfgConfigSet.toJSON(message.config)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodb_MongoCfg>, I>>(
+    object: I
+  ): Mongodb_MongoCfg {
+    const message = { ...baseMongodb_MongoCfg } as Mongodb_MongoCfg;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? MongoCfgConfigSet.fromPartial(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Mongodb_MongoCfg.$type, Mongodb_MongoCfg);
+
+const baseMongodb_Mongos: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.Mongodb.Mongos",
+};
+
+export const Mongodb_Mongos = {
+  $type: "yandex.cloud.mdb.mongodb.v1.Mongodb.Mongos" as const,
+
+  encode(
+    message: Mongodb_Mongos,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.config !== undefined) {
+      MongosConfigSet.encode(message.config, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb_Mongos {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMongodb_Mongos } as Mongodb_Mongos;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = MongosConfigSet.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodb_Mongos {
+    const message = { ...baseMongodb_Mongos } as Mongodb_Mongos;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? MongosConfigSet.fromJSON(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodb_Mongos): unknown {
+    const obj: any = {};
+    message.config !== undefined &&
+      (obj.config = message.config
+        ? MongosConfigSet.toJSON(message.config)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodb_Mongos>, I>>(
+    object: I
+  ): Mongodb_Mongos {
+    const message = { ...baseMongodb_Mongos } as Mongodb_Mongos;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? MongosConfigSet.fromPartial(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Mongodb_Mongos.$type, Mongodb_Mongos);
+
+const baseMongodb_MongoInfra: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.Mongodb.MongoInfra",
+};
+
+export const Mongodb_MongoInfra = {
+  $type: "yandex.cloud.mdb.mongodb.v1.Mongodb.MongoInfra" as const,
+
+  encode(
+    message: Mongodb_MongoInfra,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.configMongos !== undefined) {
+      MongosConfigSet.encode(
+        message.configMongos,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.configMongocfg !== undefined) {
+      MongoCfgConfigSet.encode(
+        message.configMongocfg,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb_MongoInfra {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMongodb_MongoInfra } as Mongodb_MongoInfra;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.configMongos = MongosConfigSet.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.configMongocfg = MongoCfgConfigSet.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 3:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodb_MongoInfra {
+    const message = { ...baseMongodb_MongoInfra } as Mongodb_MongoInfra;
+    message.configMongos =
+      object.configMongos !== undefined && object.configMongos !== null
+        ? MongosConfigSet.fromJSON(object.configMongos)
+        : undefined;
+    message.configMongocfg =
+      object.configMongocfg !== undefined && object.configMongocfg !== null
+        ? MongoCfgConfigSet.fromJSON(object.configMongocfg)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodb_MongoInfra): unknown {
+    const obj: any = {};
+    message.configMongos !== undefined &&
+      (obj.configMongos = message.configMongos
+        ? MongosConfigSet.toJSON(message.configMongos)
+        : undefined);
+    message.configMongocfg !== undefined &&
+      (obj.configMongocfg = message.configMongocfg
+        ? MongoCfgConfigSet.toJSON(message.configMongocfg)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodb_MongoInfra>, I>>(
+    object: I
+  ): Mongodb_MongoInfra {
+    const message = { ...baseMongodb_MongoInfra } as Mongodb_MongoInfra;
+    message.configMongos =
+      object.configMongos !== undefined && object.configMongos !== null
+        ? MongosConfigSet.fromPartial(object.configMongos)
+        : undefined;
+    message.configMongocfg =
+      object.configMongocfg !== undefined && object.configMongocfg !== null
+        ? MongoCfgConfigSet.fromPartial(object.configMongocfg)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Mongodb_MongoInfra.$type, Mongodb_MongoInfra);
 
 const baseShard: object = {
   $type: "yandex.cloud.mdb.mongodb.v1.Shard",
@@ -6868,6 +8583,12 @@ export const Host = {
     if (message.type !== 0) {
       writer.uint32(88).int32(message.type);
     }
+    if (message.hostParameters !== undefined) {
+      Host_HostParameters.encode(
+        message.hostParameters,
+        writer.uint32(98).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -6911,6 +8632,12 @@ export const Host = {
           break;
         case 11:
           message.type = reader.int32() as any;
+          break;
+        case 12:
+          message.hostParameters = Host_HostParameters.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -6965,6 +8692,10 @@ export const Host = {
       object.type !== undefined && object.type !== null
         ? host_TypeFromJSON(object.type)
         : 0;
+    message.hostParameters =
+      object.hostParameters !== undefined && object.hostParameters !== null
+        ? Host_HostParameters.fromJSON(object.hostParameters)
+        : undefined;
     return message;
   },
 
@@ -6992,6 +8723,10 @@ export const Host = {
       (obj.assignPublicIp = message.assignPublicIp);
     message.shardName !== undefined && (obj.shardName = message.shardName);
     message.type !== undefined && (obj.type = host_TypeToJSON(message.type));
+    message.hostParameters !== undefined &&
+      (obj.hostParameters = message.hostParameters
+        ? Host_HostParameters.toJSON(message.hostParameters)
+        : undefined);
     return obj;
   },
 
@@ -7012,11 +8747,230 @@ export const Host = {
     message.assignPublicIp = object.assignPublicIp ?? false;
     message.shardName = object.shardName ?? "";
     message.type = object.type ?? 0;
+    message.hostParameters =
+      object.hostParameters !== undefined && object.hostParameters !== null
+        ? Host_HostParameters.fromPartial(object.hostParameters)
+        : undefined;
     return message;
   },
 };
 
 messageTypeRegistry.set(Host.$type, Host);
+
+const baseHost_HostParameters: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.Host.HostParameters",
+  hidden: false,
+  secondaryDelaySecs: 0,
+  priority: 0,
+};
+
+export const Host_HostParameters = {
+  $type: "yandex.cloud.mdb.mongodb.v1.Host.HostParameters" as const,
+
+  encode(
+    message: Host_HostParameters,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.hidden === true) {
+      writer.uint32(8).bool(message.hidden);
+    }
+    if (message.secondaryDelaySecs !== 0) {
+      writer.uint32(16).int64(message.secondaryDelaySecs);
+    }
+    if (message.priority !== 0) {
+      writer.uint32(25).double(message.priority);
+    }
+    Object.entries(message.tags).forEach(([key, value]) => {
+      Host_HostParameters_TagsEntry.encode(
+        {
+          $type: "yandex.cloud.mdb.mongodb.v1.Host.HostParameters.TagsEntry",
+          key: key as any,
+          value,
+        },
+        writer.uint32(34).fork()
+      ).ldelim();
+    });
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Host_HostParameters {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseHost_HostParameters } as Host_HostParameters;
+    message.tags = {};
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.hidden = reader.bool();
+          break;
+        case 2:
+          message.secondaryDelaySecs = longToNumber(reader.int64() as Long);
+          break;
+        case 3:
+          message.priority = reader.double();
+          break;
+        case 4:
+          const entry4 = Host_HostParameters_TagsEntry.decode(
+            reader,
+            reader.uint32()
+          );
+          if (entry4.value !== undefined) {
+            message.tags[entry4.key] = entry4.value;
+          }
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Host_HostParameters {
+    const message = { ...baseHost_HostParameters } as Host_HostParameters;
+    message.hidden =
+      object.hidden !== undefined && object.hidden !== null
+        ? Boolean(object.hidden)
+        : false;
+    message.secondaryDelaySecs =
+      object.secondaryDelaySecs !== undefined &&
+      object.secondaryDelaySecs !== null
+        ? Number(object.secondaryDelaySecs)
+        : 0;
+    message.priority =
+      object.priority !== undefined && object.priority !== null
+        ? Number(object.priority)
+        : 0;
+    message.tags = Object.entries(object.tags ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      acc[key] = String(value);
+      return acc;
+    }, {});
+    return message;
+  },
+
+  toJSON(message: Host_HostParameters): unknown {
+    const obj: any = {};
+    message.hidden !== undefined && (obj.hidden = message.hidden);
+    message.secondaryDelaySecs !== undefined &&
+      (obj.secondaryDelaySecs = Math.round(message.secondaryDelaySecs));
+    message.priority !== undefined && (obj.priority = message.priority);
+    obj.tags = {};
+    if (message.tags) {
+      Object.entries(message.tags).forEach(([k, v]) => {
+        obj.tags[k] = v;
+      });
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Host_HostParameters>, I>>(
+    object: I
+  ): Host_HostParameters {
+    const message = { ...baseHost_HostParameters } as Host_HostParameters;
+    message.hidden = object.hidden ?? false;
+    message.secondaryDelaySecs = object.secondaryDelaySecs ?? 0;
+    message.priority = object.priority ?? 0;
+    message.tags = Object.entries(object.tags ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = String(value);
+      }
+      return acc;
+    }, {});
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Host_HostParameters.$type, Host_HostParameters);
+
+const baseHost_HostParameters_TagsEntry: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.Host.HostParameters.TagsEntry",
+  key: "",
+  value: "",
+};
+
+export const Host_HostParameters_TagsEntry = {
+  $type: "yandex.cloud.mdb.mongodb.v1.Host.HostParameters.TagsEntry" as const,
+
+  encode(
+    message: Host_HostParameters_TagsEntry,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Host_HostParameters_TagsEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseHost_HostParameters_TagsEntry,
+    } as Host_HostParameters_TagsEntry;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Host_HostParameters_TagsEntry {
+    const message = {
+      ...baseHost_HostParameters_TagsEntry,
+    } as Host_HostParameters_TagsEntry;
+    message.key =
+      object.key !== undefined && object.key !== null ? String(object.key) : "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? String(object.value)
+        : "";
+    return message;
+  },
+
+  toJSON(message: Host_HostParameters_TagsEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Host_HostParameters_TagsEntry>, I>>(
+    object: I
+  ): Host_HostParameters_TagsEntry {
+    const message = {
+      ...baseHost_HostParameters_TagsEntry,
+    } as Host_HostParameters_TagsEntry;
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Host_HostParameters_TagsEntry.$type,
+  Host_HostParameters_TagsEntry
+);
 
 const baseService: object = {
   $type: "yandex.cloud.mdb.mongodb.v1.Service",
@@ -7330,6 +9284,121 @@ messageTypeRegistry.set(
   PerformanceDiagnosticsConfig.$type,
   PerformanceDiagnosticsConfig
 );
+
+const baseDiskSizeAutoscaling: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.DiskSizeAutoscaling",
+};
+
+export const DiskSizeAutoscaling = {
+  $type: "yandex.cloud.mdb.mongodb.v1.DiskSizeAutoscaling" as const,
+
+  encode(
+    message: DiskSizeAutoscaling,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.plannedUsageThreshold !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.plannedUsageThreshold!,
+        },
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.emergencyUsageThreshold !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.emergencyUsageThreshold!,
+        },
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.diskSizeLimit !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.diskSizeLimit! },
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DiskSizeAutoscaling {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.plannedUsageThreshold = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 2:
+          message.emergencyUsageThreshold = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 3:
+          message.diskSizeLimit = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DiskSizeAutoscaling {
+    const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+    message.plannedUsageThreshold =
+      object.plannedUsageThreshold !== undefined &&
+      object.plannedUsageThreshold !== null
+        ? Number(object.plannedUsageThreshold)
+        : undefined;
+    message.emergencyUsageThreshold =
+      object.emergencyUsageThreshold !== undefined &&
+      object.emergencyUsageThreshold !== null
+        ? Number(object.emergencyUsageThreshold)
+        : undefined;
+    message.diskSizeLimit =
+      object.diskSizeLimit !== undefined && object.diskSizeLimit !== null
+        ? Number(object.diskSizeLimit)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: DiskSizeAutoscaling): unknown {
+    const obj: any = {};
+    message.plannedUsageThreshold !== undefined &&
+      (obj.plannedUsageThreshold = message.plannedUsageThreshold);
+    message.emergencyUsageThreshold !== undefined &&
+      (obj.emergencyUsageThreshold = message.emergencyUsageThreshold);
+    message.diskSizeLimit !== undefined &&
+      (obj.diskSizeLimit = message.diskSizeLimit);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DiskSizeAutoscaling>, I>>(
+    object: I
+  ): DiskSizeAutoscaling {
+    const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+    message.plannedUsageThreshold = object.plannedUsageThreshold ?? undefined;
+    message.emergencyUsageThreshold =
+      object.emergencyUsageThreshold ?? undefined;
+    message.diskSizeLimit = object.diskSizeLimit ?? undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(DiskSizeAutoscaling.$type, DiskSizeAutoscaling);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

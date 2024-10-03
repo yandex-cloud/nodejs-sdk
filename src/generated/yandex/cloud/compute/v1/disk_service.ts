@@ -18,9 +18,16 @@ import {
   DiskPlacementPolicy,
   Disk,
 } from "../../../../yandex/cloud/compute/v1/disk";
+import { HardwareGeneration } from "../../../../yandex/cloud/compute/v1/hardware_generation";
 import { FieldMask } from "../../../../google/protobuf/field_mask";
 import { Operation } from "../../../../yandex/cloud/operation/operation";
 import { SnapshotSchedule } from "../../../../yandex/cloud/compute/v1/snapshot_schedule";
+import {
+  ListAccessBindingsRequest,
+  ListAccessBindingsResponse,
+  SetAccessBindingsRequest,
+  UpdateAccessBindingsRequest,
+} from "../../../../yandex/cloud/access/access";
 
 export const protobufPackage = "yandex.cloud.compute.v1";
 
@@ -125,6 +132,11 @@ export interface CreateDiskRequest {
   diskPlacementPolicy?: DiskPlacementPolicy;
   /** List of IDs of the snapshot schedules to attach the disk to. */
   snapshotScheduleIds: string[];
+  /**
+   * Specify the overrides to hardware_generation of a source disk, image or snapshot,
+   * or to the default values if the source does not define it.
+   */
+  hardwareGeneration?: HardwareGeneration;
 }
 
 export interface CreateDiskRequest_LabelsEntry {
@@ -261,6 +273,8 @@ export interface RelocateDiskRequest {
    * To get the zone ID, make a [ZoneService.List] request.
    */
   destinationZoneId: string;
+  /** Placement policy configuration in target zone. Must be specified if disk has placement policy. */
+  diskPlacementPolicy?: DiskPlacementPolicy;
 }
 
 export interface RelocateDiskMetadata {
@@ -625,6 +639,12 @@ export const CreateDiskRequest = {
     for (const v of message.snapshotScheduleIds) {
       writer.uint32(98).string(v!);
     }
+    if (message.hardwareGeneration !== undefined) {
+      HardwareGeneration.encode(
+        message.hardwareGeneration,
+        writer.uint32(106).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -681,6 +701,12 @@ export const CreateDiskRequest = {
           break;
         case 12:
           message.snapshotScheduleIds.push(reader.string());
+          break;
+        case 13:
+          message.hardwareGeneration = HardwareGeneration.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -742,6 +768,11 @@ export const CreateDiskRequest = {
     message.snapshotScheduleIds = (object.snapshotScheduleIds ?? []).map(
       (e: any) => String(e)
     );
+    message.hardwareGeneration =
+      object.hardwareGeneration !== undefined &&
+      object.hardwareGeneration !== null
+        ? HardwareGeneration.fromJSON(object.hardwareGeneration)
+        : undefined;
     return message;
   },
 
@@ -773,6 +804,10 @@ export const CreateDiskRequest = {
     } else {
       obj.snapshotScheduleIds = [];
     }
+    message.hardwareGeneration !== undefined &&
+      (obj.hardwareGeneration = message.hardwareGeneration
+        ? HardwareGeneration.toJSON(message.hardwareGeneration)
+        : undefined);
     return obj;
   },
 
@@ -804,6 +839,11 @@ export const CreateDiskRequest = {
         : undefined;
     message.snapshotScheduleIds =
       object.snapshotScheduleIds?.map((e) => e) || [];
+    message.hardwareGeneration =
+      object.hardwareGeneration !== undefined &&
+      object.hardwareGeneration !== null
+        ? HardwareGeneration.fromPartial(object.hardwareGeneration)
+        : undefined;
     return message;
   },
 };
@@ -1796,6 +1836,12 @@ export const RelocateDiskRequest = {
     if (message.destinationZoneId !== "") {
       writer.uint32(18).string(message.destinationZoneId);
     }
+    if (message.diskPlacementPolicy !== undefined) {
+      DiskPlacementPolicy.encode(
+        message.diskPlacementPolicy,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1811,6 +1857,12 @@ export const RelocateDiskRequest = {
           break;
         case 2:
           message.destinationZoneId = reader.string();
+          break;
+        case 3:
+          message.diskPlacementPolicy = DiskPlacementPolicy.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -1831,6 +1883,11 @@ export const RelocateDiskRequest = {
       object.destinationZoneId !== null
         ? String(object.destinationZoneId)
         : "";
+    message.diskPlacementPolicy =
+      object.diskPlacementPolicy !== undefined &&
+      object.diskPlacementPolicy !== null
+        ? DiskPlacementPolicy.fromJSON(object.diskPlacementPolicy)
+        : undefined;
     return message;
   },
 
@@ -1839,6 +1896,10 @@ export const RelocateDiskRequest = {
     message.diskId !== undefined && (obj.diskId = message.diskId);
     message.destinationZoneId !== undefined &&
       (obj.destinationZoneId = message.destinationZoneId);
+    message.diskPlacementPolicy !== undefined &&
+      (obj.diskPlacementPolicy = message.diskPlacementPolicy
+        ? DiskPlacementPolicy.toJSON(message.diskPlacementPolicy)
+        : undefined);
     return obj;
   },
 
@@ -1848,6 +1909,11 @@ export const RelocateDiskRequest = {
     const message = { ...baseRelocateDiskRequest } as RelocateDiskRequest;
     message.diskId = object.diskId ?? "";
     message.destinationZoneId = object.destinationZoneId ?? "";
+    message.diskPlacementPolicy =
+      object.diskPlacementPolicy !== undefined &&
+      object.diskPlacementPolicy !== null
+        ? DiskPlacementPolicy.fromPartial(object.diskPlacementPolicy)
+        : undefined;
     return message;
   },
 };
@@ -2281,6 +2347,46 @@ export const DiskServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListDiskSnapshotSchedulesResponse.decode(value),
   },
+  /** Lists access bindings for the disk. */
+  listAccessBindings: {
+    path: "/yandex.cloud.compute.v1.DiskService/ListAccessBindings",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: ListAccessBindingsRequest) =>
+      Buffer.from(ListAccessBindingsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      ListAccessBindingsRequest.decode(value),
+    responseSerialize: (value: ListAccessBindingsResponse) =>
+      Buffer.from(ListAccessBindingsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) =>
+      ListAccessBindingsResponse.decode(value),
+  },
+  /** Sets access bindings for the disk. */
+  setAccessBindings: {
+    path: "/yandex.cloud.compute.v1.DiskService/SetAccessBindings",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: SetAccessBindingsRequest) =>
+      Buffer.from(SetAccessBindingsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      SetAccessBindingsRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /** Updates access bindings for the disk. */
+  updateAccessBindings: {
+    path: "/yandex.cloud.compute.v1.DiskService/UpdateAccessBindings",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: UpdateAccessBindingsRequest) =>
+      Buffer.from(UpdateAccessBindingsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      UpdateAccessBindingsRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
 } as const;
 
 export interface DiskServiceServer extends UntypedServiceImplementation {
@@ -2329,6 +2435,15 @@ export interface DiskServiceServer extends UntypedServiceImplementation {
     ListDiskSnapshotSchedulesRequest,
     ListDiskSnapshotSchedulesResponse
   >;
+  /** Lists access bindings for the disk. */
+  listAccessBindings: handleUnaryCall<
+    ListAccessBindingsRequest,
+    ListAccessBindingsResponse
+  >;
+  /** Sets access bindings for the disk. */
+  setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
+  /** Updates access bindings for the disk. */
+  updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
 }
 
 export interface DiskServiceClient extends Client {
@@ -2514,6 +2629,63 @@ export interface DiskServiceClient extends Client {
       error: ServiceError | null,
       response: ListDiskSnapshotSchedulesResponse
     ) => void
+  ): ClientUnaryCall;
+  /** Lists access bindings for the disk. */
+  listAccessBindings(
+    request: ListAccessBindingsRequest,
+    callback: (
+      error: ServiceError | null,
+      response: ListAccessBindingsResponse
+    ) => void
+  ): ClientUnaryCall;
+  listAccessBindings(
+    request: ListAccessBindingsRequest,
+    metadata: Metadata,
+    callback: (
+      error: ServiceError | null,
+      response: ListAccessBindingsResponse
+    ) => void
+  ): ClientUnaryCall;
+  listAccessBindings(
+    request: ListAccessBindingsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (
+      error: ServiceError | null,
+      response: ListAccessBindingsResponse
+    ) => void
+  ): ClientUnaryCall;
+  /** Sets access bindings for the disk. */
+  setAccessBindings(
+    request: SetAccessBindingsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  setAccessBindings(
+    request: SetAccessBindingsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  setAccessBindings(
+    request: SetAccessBindingsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Updates access bindings for the disk. */
+  updateAccessBindings(
+    request: UpdateAccessBindingsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateAccessBindings(
+    request: UpdateAccessBindingsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateAccessBindings(
+    request: UpdateAccessBindingsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
 }
 

@@ -8,24 +8,39 @@ export const protobufPackage = "yandex.cloud.marketplace.licensemanager.v1";
 
 export interface Template {
   $type: "yandex.cloud.marketplace.licensemanager.v1.Template";
+  /** ID of the subscription template. */
   id: string;
+  /** Version of the subscription template. */
   versionId: string;
+  /** Name of the subscription template. */
   name: string;
+  /** ID of publisher. */
   publisherId: string;
+  /** ID of product. */
   productId: string;
+  /** ID of tariff. */
   tariffId: string;
+  /** ID of subscription SKU. */
   licenseSkuId: string;
+  /** Subscription period. */
   period: string;
+  /** Creation timestamp. */
   createdAt?: Date;
+  /** Update timestamp. */
   updatedAt?: Date;
+  /** Subscription template state. */
   state: Template_State;
 }
 
 export enum Template_State {
   STATE_UNSPECIFIED = 0,
+  /** PENDING - Subscription template created but not active yet. */
   PENDING = 1,
+  /** ACTIVE - Subscription template is active. */
   ACTIVE = 2,
+  /** DEPRECATED - Subscription template deprecated. */
   DEPRECATED = 3,
+  /** DELETED - Subscription template deleted. */
   DELETED = 4,
   UNRECOGNIZED = -1,
 }

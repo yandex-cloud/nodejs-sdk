@@ -2,6 +2,7 @@
 import { messageTypeRegistry } from "../../../../../typeRegistry";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import { Int64Value } from "../../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.mdb.opensearch.v1";
 
@@ -26,6 +27,8 @@ export interface SAMLSettings {
   rolesKey: string;
   /** Optional. The attribute in the SAML response where the subject is stored. If not configured, the NameID attribute is used. */
   subjectKey: string;
+  /** default jwt expiration timeout. */
+  jwtDefaultExpirationTimeout?: number;
 }
 
 const baseAuthSettings: object = {
@@ -131,6 +134,15 @@ export const SAMLSettings = {
     if (message.subjectKey !== "") {
       writer.uint32(58).string(message.subjectKey);
     }
+    if (message.jwtDefaultExpirationTimeout !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.jwtDefaultExpirationTimeout!,
+        },
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -162,6 +174,12 @@ export const SAMLSettings = {
           break;
         case 7:
           message.subjectKey = reader.string();
+          break;
+        case 8:
+          message.jwtDefaultExpirationTimeout = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
           break;
         default:
           reader.skipType(tag & 7);
@@ -201,6 +219,11 @@ export const SAMLSettings = {
       object.subjectKey !== undefined && object.subjectKey !== null
         ? String(object.subjectKey)
         : "";
+    message.jwtDefaultExpirationTimeout =
+      object.jwtDefaultExpirationTimeout !== undefined &&
+      object.jwtDefaultExpirationTimeout !== null
+        ? Number(object.jwtDefaultExpirationTimeout)
+        : undefined;
     return message;
   },
 
@@ -220,6 +243,8 @@ export const SAMLSettings = {
       (obj.dashboardsUrl = message.dashboardsUrl);
     message.rolesKey !== undefined && (obj.rolesKey = message.rolesKey);
     message.subjectKey !== undefined && (obj.subjectKey = message.subjectKey);
+    message.jwtDefaultExpirationTimeout !== undefined &&
+      (obj.jwtDefaultExpirationTimeout = message.jwtDefaultExpirationTimeout);
     return obj;
   },
 
@@ -234,6 +259,8 @@ export const SAMLSettings = {
     message.dashboardsUrl = object.dashboardsUrl ?? "";
     message.rolesKey = object.rolesKey ?? "";
     message.subjectKey = object.subjectKey ?? "";
+    message.jwtDefaultExpirationTimeout =
+      object.jwtDefaultExpirationTimeout ?? undefined;
     return message;
   },
 };

@@ -29,8 +29,6 @@ export interface PostgresObjectTransferSettings {
    * CREATE SEQUENCE ... OWNED BY ...
    */
   sequenceOwnedBy: ObjectTransferStage;
-  /**  */
-  sequenceSet: ObjectTransferStage;
   /**
    * Tables
    *
@@ -74,12 +72,6 @@ export interface PostgresObjectTransferSettings {
    */
   view: ObjectTransferStage;
   /**
-   * Materialized views
-   *
-   * CREATE MATERIALIZED VIEW ...
-   */
-  materializedView: ObjectTransferStage;
-  /**
    * Functions
    *
    * CREATE FUNCTION ...
@@ -121,17 +113,25 @@ export interface PostgresObjectTransferSettings {
    * CREATE CAST ...
    */
   cast: ObjectTransferStage;
+  /**
+   * Materialized views
+   *
+   * CREATE MATERIALIZED VIEW ...
+   */
+  materializedView: ObjectTransferStage;
+  /**  */
+  sequenceSet: ObjectTransferStage;
 }
 
 export interface OnPremisePostgres {
   $type: "yandex.cloud.datatransfer.v1.endpoint.OnPremisePostgres";
-  hosts: string[];
   /** Will be used if the cluster ID is not specified. */
   port: number;
-  /** TLS settings for server connection. Disabled by default. */
-  tlsMode?: TLSMode;
   /** Network interface for endpoint. If none will assume public ipv4 */
   subnetId: string;
+  hosts: string[];
+  /** TLS settings for server connection. Disabled by default. */
+  tlsMode?: TLSMode;
 }
 
 export interface PostgresConnection {
@@ -146,11 +146,9 @@ export interface PostgresSource {
   $type: "yandex.cloud.datatransfer.v1.endpoint.PostgresSource";
   /** Database connection settings */
   connection?: PostgresConnection;
-  /** Security groups */
-  securityGroups: string[];
   /** Database name */
   database: string;
-  /** User for database access. */
+  /** User for database access. not required as may be in connection */
   user: string;
   /** Password for database access. */
   password?: Secret;
@@ -180,17 +178,17 @@ export interface PostgresSource {
   serviceSchema: string;
   /** Select database objects to be transferred during activation or deactivation. */
   objectTransferSettings?: PostgresObjectTransferSettings;
+  /** Security groups */
+  securityGroups: string[];
 }
 
 export interface PostgresTarget {
   $type: "yandex.cloud.datatransfer.v1.endpoint.PostgresTarget";
   /** Database connection settings */
   connection?: PostgresConnection;
-  /** Security groups */
-  securityGroups: string[];
   /** Database name */
   database: string;
-  /** User for database access. */
+  /** User for database access. not required as may be in connection */
   user: string;
   /** Password for database access. */
   password?: Secret;
@@ -199,13 +197,14 @@ export interface PostgresTarget {
    * truncate.
    */
   cleanupPolicy: CleanupPolicy;
+  /** Security groups */
+  securityGroups: string[];
 }
 
 const basePostgresObjectTransferSettings: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.PostgresObjectTransferSettings",
   sequence: 0,
   sequenceOwnedBy: 0,
-  sequenceSet: 0,
   table: 0,
   primaryKey: 0,
   fkConstraint: 0,
@@ -213,7 +212,6 @@ const basePostgresObjectTransferSettings: object = {
   constraint: 0,
   index: 0,
   view: 0,
-  materializedView: 0,
   function: 0,
   trigger: 0,
   type: 0,
@@ -221,6 +219,8 @@ const basePostgresObjectTransferSettings: object = {
   collation: 0,
   policy: 0,
   cast: 0,
+  materializedView: 0,
+  sequenceSet: 0,
 };
 
 export const PostgresObjectTransferSettings = {
@@ -236,9 +236,6 @@ export const PostgresObjectTransferSettings = {
     }
     if (message.sequenceOwnedBy !== 0) {
       writer.uint32(16).int32(message.sequenceOwnedBy);
-    }
-    if (message.sequenceSet !== 0) {
-      writer.uint32(144).int32(message.sequenceSet);
     }
     if (message.table !== 0) {
       writer.uint32(24).int32(message.table);
@@ -261,9 +258,6 @@ export const PostgresObjectTransferSettings = {
     if (message.view !== 0) {
       writer.uint32(72).int32(message.view);
     }
-    if (message.materializedView !== 0) {
-      writer.uint32(136).int32(message.materializedView);
-    }
     if (message.function !== 0) {
       writer.uint32(80).int32(message.function);
     }
@@ -284,6 +278,12 @@ export const PostgresObjectTransferSettings = {
     }
     if (message.cast !== 0) {
       writer.uint32(128).int32(message.cast);
+    }
+    if (message.materializedView !== 0) {
+      writer.uint32(136).int32(message.materializedView);
+    }
+    if (message.sequenceSet !== 0) {
+      writer.uint32(144).int32(message.sequenceSet);
     }
     return writer;
   },
@@ -306,9 +306,6 @@ export const PostgresObjectTransferSettings = {
         case 2:
           message.sequenceOwnedBy = reader.int32() as any;
           break;
-        case 18:
-          message.sequenceSet = reader.int32() as any;
-          break;
         case 3:
           message.table = reader.int32() as any;
           break;
@@ -329,9 +326,6 @@ export const PostgresObjectTransferSettings = {
           break;
         case 9:
           message.view = reader.int32() as any;
-          break;
-        case 17:
-          message.materializedView = reader.int32() as any;
           break;
         case 10:
           message.function = reader.int32() as any;
@@ -354,6 +348,12 @@ export const PostgresObjectTransferSettings = {
         case 16:
           message.cast = reader.int32() as any;
           break;
+        case 17:
+          message.materializedView = reader.int32() as any;
+          break;
+        case 18:
+          message.sequenceSet = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -373,10 +373,6 @@ export const PostgresObjectTransferSettings = {
     message.sequenceOwnedBy =
       object.sequenceOwnedBy !== undefined && object.sequenceOwnedBy !== null
         ? objectTransferStageFromJSON(object.sequenceOwnedBy)
-        : 0;
-    message.sequenceSet =
-      object.sequenceSet !== undefined && object.sequenceSet !== null
-        ? objectTransferStageFromJSON(object.sequenceSet)
         : 0;
     message.table =
       object.table !== undefined && object.table !== null
@@ -406,10 +402,6 @@ export const PostgresObjectTransferSettings = {
       object.view !== undefined && object.view !== null
         ? objectTransferStageFromJSON(object.view)
         : 0;
-    message.materializedView =
-      object.materializedView !== undefined && object.materializedView !== null
-        ? objectTransferStageFromJSON(object.materializedView)
-        : 0;
     message.function =
       object.function !== undefined && object.function !== null
         ? objectTransferStageFromJSON(object.function)
@@ -438,6 +430,14 @@ export const PostgresObjectTransferSettings = {
       object.cast !== undefined && object.cast !== null
         ? objectTransferStageFromJSON(object.cast)
         : 0;
+    message.materializedView =
+      object.materializedView !== undefined && object.materializedView !== null
+        ? objectTransferStageFromJSON(object.materializedView)
+        : 0;
+    message.sequenceSet =
+      object.sequenceSet !== undefined && object.sequenceSet !== null
+        ? objectTransferStageFromJSON(object.sequenceSet)
+        : 0;
     return message;
   },
 
@@ -449,8 +449,6 @@ export const PostgresObjectTransferSettings = {
       (obj.sequenceOwnedBy = objectTransferStageToJSON(
         message.sequenceOwnedBy
       ));
-    message.sequenceSet !== undefined &&
-      (obj.sequenceSet = objectTransferStageToJSON(message.sequenceSet));
     message.table !== undefined &&
       (obj.table = objectTransferStageToJSON(message.table));
     message.primaryKey !== undefined &&
@@ -465,10 +463,6 @@ export const PostgresObjectTransferSettings = {
       (obj.index = objectTransferStageToJSON(message.index));
     message.view !== undefined &&
       (obj.view = objectTransferStageToJSON(message.view));
-    message.materializedView !== undefined &&
-      (obj.materializedView = objectTransferStageToJSON(
-        message.materializedView
-      ));
     message.function !== undefined &&
       (obj.function = objectTransferStageToJSON(message.function));
     message.trigger !== undefined &&
@@ -483,6 +477,12 @@ export const PostgresObjectTransferSettings = {
       (obj.policy = objectTransferStageToJSON(message.policy));
     message.cast !== undefined &&
       (obj.cast = objectTransferStageToJSON(message.cast));
+    message.materializedView !== undefined &&
+      (obj.materializedView = objectTransferStageToJSON(
+        message.materializedView
+      ));
+    message.sequenceSet !== undefined &&
+      (obj.sequenceSet = objectTransferStageToJSON(message.sequenceSet));
     return obj;
   },
 
@@ -494,7 +494,6 @@ export const PostgresObjectTransferSettings = {
     } as PostgresObjectTransferSettings;
     message.sequence = object.sequence ?? 0;
     message.sequenceOwnedBy = object.sequenceOwnedBy ?? 0;
-    message.sequenceSet = object.sequenceSet ?? 0;
     message.table = object.table ?? 0;
     message.primaryKey = object.primaryKey ?? 0;
     message.fkConstraint = object.fkConstraint ?? 0;
@@ -502,7 +501,6 @@ export const PostgresObjectTransferSettings = {
     message.constraint = object.constraint ?? 0;
     message.index = object.index ?? 0;
     message.view = object.view ?? 0;
-    message.materializedView = object.materializedView ?? 0;
     message.function = object.function ?? 0;
     message.trigger = object.trigger ?? 0;
     message.type = object.type ?? 0;
@@ -510,6 +508,8 @@ export const PostgresObjectTransferSettings = {
     message.collation = object.collation ?? 0;
     message.policy = object.policy ?? 0;
     message.cast = object.cast ?? 0;
+    message.materializedView = object.materializedView ?? 0;
+    message.sequenceSet = object.sequenceSet ?? 0;
     return message;
   },
 };
@@ -521,9 +521,9 @@ messageTypeRegistry.set(
 
 const baseOnPremisePostgres: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.OnPremisePostgres",
-  hosts: "",
   port: 0,
   subnetId: "",
+  hosts: "",
 };
 
 export const OnPremisePostgres = {
@@ -533,17 +533,17 @@ export const OnPremisePostgres = {
     message: OnPremisePostgres,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    for (const v of message.hosts) {
-      writer.uint32(42).string(v!);
-    }
     if (message.port !== 0) {
       writer.uint32(16).int64(message.port);
     }
-    if (message.tlsMode !== undefined) {
-      TLSMode.encode(message.tlsMode, writer.uint32(50).fork()).ldelim();
-    }
     if (message.subnetId !== "") {
       writer.uint32(34).string(message.subnetId);
+    }
+    for (const v of message.hosts) {
+      writer.uint32(42).string(v!);
+    }
+    if (message.tlsMode !== undefined) {
+      TLSMode.encode(message.tlsMode, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -556,17 +556,17 @@ export const OnPremisePostgres = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 5:
-          message.hosts.push(reader.string());
-          break;
         case 2:
           message.port = longToNumber(reader.int64() as Long);
           break;
-        case 6:
-          message.tlsMode = TLSMode.decode(reader, reader.uint32());
-          break;
         case 4:
           message.subnetId = reader.string();
+          break;
+        case 5:
+          message.hosts.push(reader.string());
+          break;
+        case 6:
+          message.tlsMode = TLSMode.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -578,35 +578,35 @@ export const OnPremisePostgres = {
 
   fromJSON(object: any): OnPremisePostgres {
     const message = { ...baseOnPremisePostgres } as OnPremisePostgres;
-    message.hosts = (object.hosts ?? []).map((e: any) => String(e));
     message.port =
       object.port !== undefined && object.port !== null
         ? Number(object.port)
         : 0;
-    message.tlsMode =
-      object.tlsMode !== undefined && object.tlsMode !== null
-        ? TLSMode.fromJSON(object.tlsMode)
-        : undefined;
     message.subnetId =
       object.subnetId !== undefined && object.subnetId !== null
         ? String(object.subnetId)
         : "";
+    message.hosts = (object.hosts ?? []).map((e: any) => String(e));
+    message.tlsMode =
+      object.tlsMode !== undefined && object.tlsMode !== null
+        ? TLSMode.fromJSON(object.tlsMode)
+        : undefined;
     return message;
   },
 
   toJSON(message: OnPremisePostgres): unknown {
     const obj: any = {};
+    message.port !== undefined && (obj.port = Math.round(message.port));
+    message.subnetId !== undefined && (obj.subnetId = message.subnetId);
     if (message.hosts) {
       obj.hosts = message.hosts.map((e) => e);
     } else {
       obj.hosts = [];
     }
-    message.port !== undefined && (obj.port = Math.round(message.port));
     message.tlsMode !== undefined &&
       (obj.tlsMode = message.tlsMode
         ? TLSMode.toJSON(message.tlsMode)
         : undefined);
-    message.subnetId !== undefined && (obj.subnetId = message.subnetId);
     return obj;
   },
 
@@ -614,13 +614,13 @@ export const OnPremisePostgres = {
     object: I
   ): OnPremisePostgres {
     const message = { ...baseOnPremisePostgres } as OnPremisePostgres;
-    message.hosts = object.hosts?.map((e) => e) || [];
     message.port = object.port ?? 0;
+    message.subnetId = object.subnetId ?? "";
+    message.hosts = object.hosts?.map((e) => e) || [];
     message.tlsMode =
       object.tlsMode !== undefined && object.tlsMode !== null
         ? TLSMode.fromPartial(object.tlsMode)
         : undefined;
-    message.subnetId = object.subnetId ?? "";
     return message;
   },
 };
@@ -712,13 +712,13 @@ messageTypeRegistry.set(PostgresConnection.$type, PostgresConnection);
 
 const basePostgresSource: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.PostgresSource",
-  securityGroups: "",
   database: "",
   user: "",
   includeTables: "",
   excludeTables: "",
   slotByteLagLimit: 0,
   serviceSchema: "",
+  securityGroups: "",
 };
 
 export const PostgresSource = {
@@ -733,9 +733,6 @@ export const PostgresSource = {
         message.connection,
         writer.uint32(10).fork()
       ).ldelim();
-    }
-    for (const v of message.securityGroups) {
-      writer.uint32(114).string(v!);
     }
     if (message.database !== "") {
       writer.uint32(18).string(message.database);
@@ -764,6 +761,9 @@ export const PostgresSource = {
         writer.uint32(106).fork()
       ).ldelim();
     }
+    for (const v of message.securityGroups) {
+      writer.uint32(114).string(v!);
+    }
     return writer;
   },
 
@@ -771,9 +771,9 @@ export const PostgresSource = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...basePostgresSource } as PostgresSource;
-    message.securityGroups = [];
     message.includeTables = [];
     message.excludeTables = [];
+    message.securityGroups = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -782,9 +782,6 @@ export const PostgresSource = {
             reader,
             reader.uint32()
           );
-          break;
-        case 14:
-          message.securityGroups.push(reader.string());
           break;
         case 2:
           message.database = reader.string();
@@ -811,6 +808,9 @@ export const PostgresSource = {
           message.objectTransferSettings =
             PostgresObjectTransferSettings.decode(reader, reader.uint32());
           break;
+        case 14:
+          message.securityGroups.push(reader.string());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -825,9 +825,6 @@ export const PostgresSource = {
       object.connection !== undefined && object.connection !== null
         ? PostgresConnection.fromJSON(object.connection)
         : undefined;
-    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
-      String(e)
-    );
     message.database =
       object.database !== undefined && object.database !== null
         ? String(object.database)
@@ -859,6 +856,9 @@ export const PostgresSource = {
       object.objectTransferSettings !== null
         ? PostgresObjectTransferSettings.fromJSON(object.objectTransferSettings)
         : undefined;
+    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
+      String(e)
+    );
     return message;
   },
 
@@ -868,11 +868,6 @@ export const PostgresSource = {
       (obj.connection = message.connection
         ? PostgresConnection.toJSON(message.connection)
         : undefined);
-    if (message.securityGroups) {
-      obj.securityGroups = message.securityGroups.map((e) => e);
-    } else {
-      obj.securityGroups = [];
-    }
     message.database !== undefined && (obj.database = message.database);
     message.user !== undefined && (obj.user = message.user);
     message.password !== undefined &&
@@ -897,6 +892,11 @@ export const PostgresSource = {
       (obj.objectTransferSettings = message.objectTransferSettings
         ? PostgresObjectTransferSettings.toJSON(message.objectTransferSettings)
         : undefined);
+    if (message.securityGroups) {
+      obj.securityGroups = message.securityGroups.map((e) => e);
+    } else {
+      obj.securityGroups = [];
+    }
     return obj;
   },
 
@@ -908,7 +908,6 @@ export const PostgresSource = {
       object.connection !== undefined && object.connection !== null
         ? PostgresConnection.fromPartial(object.connection)
         : undefined;
-    message.securityGroups = object.securityGroups?.map((e) => e) || [];
     message.database = object.database ?? "";
     message.user = object.user ?? "";
     message.password =
@@ -926,6 +925,7 @@ export const PostgresSource = {
             object.objectTransferSettings
           )
         : undefined;
+    message.securityGroups = object.securityGroups?.map((e) => e) || [];
     return message;
   },
 };
@@ -934,10 +934,10 @@ messageTypeRegistry.set(PostgresSource.$type, PostgresSource);
 
 const basePostgresTarget: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.PostgresTarget",
-  securityGroups: "",
   database: "",
   user: "",
   cleanupPolicy: 0,
+  securityGroups: "",
 };
 
 export const PostgresTarget = {
@@ -953,9 +953,6 @@ export const PostgresTarget = {
         writer.uint32(10).fork()
       ).ldelim();
     }
-    for (const v of message.securityGroups) {
-      writer.uint32(58).string(v!);
-    }
     if (message.database !== "") {
       writer.uint32(18).string(message.database);
     }
@@ -967,6 +964,9 @@ export const PostgresTarget = {
     }
     if (message.cleanupPolicy !== 0) {
       writer.uint32(40).int32(message.cleanupPolicy);
+    }
+    for (const v of message.securityGroups) {
+      writer.uint32(58).string(v!);
     }
     return writer;
   },
@@ -985,9 +985,6 @@ export const PostgresTarget = {
             reader.uint32()
           );
           break;
-        case 7:
-          message.securityGroups.push(reader.string());
-          break;
         case 2:
           message.database = reader.string();
           break;
@@ -999,6 +996,9 @@ export const PostgresTarget = {
           break;
         case 5:
           message.cleanupPolicy = reader.int32() as any;
+          break;
+        case 7:
+          message.securityGroups.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1014,9 +1014,6 @@ export const PostgresTarget = {
       object.connection !== undefined && object.connection !== null
         ? PostgresConnection.fromJSON(object.connection)
         : undefined;
-    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
-      String(e)
-    );
     message.database =
       object.database !== undefined && object.database !== null
         ? String(object.database)
@@ -1033,6 +1030,9 @@ export const PostgresTarget = {
       object.cleanupPolicy !== undefined && object.cleanupPolicy !== null
         ? cleanupPolicyFromJSON(object.cleanupPolicy)
         : 0;
+    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
+      String(e)
+    );
     return message;
   },
 
@@ -1042,11 +1042,6 @@ export const PostgresTarget = {
       (obj.connection = message.connection
         ? PostgresConnection.toJSON(message.connection)
         : undefined);
-    if (message.securityGroups) {
-      obj.securityGroups = message.securityGroups.map((e) => e);
-    } else {
-      obj.securityGroups = [];
-    }
     message.database !== undefined && (obj.database = message.database);
     message.user !== undefined && (obj.user = message.user);
     message.password !== undefined &&
@@ -1055,6 +1050,11 @@ export const PostgresTarget = {
         : undefined);
     message.cleanupPolicy !== undefined &&
       (obj.cleanupPolicy = cleanupPolicyToJSON(message.cleanupPolicy));
+    if (message.securityGroups) {
+      obj.securityGroups = message.securityGroups.map((e) => e);
+    } else {
+      obj.securityGroups = [];
+    }
     return obj;
   },
 
@@ -1066,7 +1066,6 @@ export const PostgresTarget = {
       object.connection !== undefined && object.connection !== null
         ? PostgresConnection.fromPartial(object.connection)
         : undefined;
-    message.securityGroups = object.securityGroups?.map((e) => e) || [];
     message.database = object.database ?? "";
     message.user = object.user ?? "";
     message.password =
@@ -1074,6 +1073,7 @@ export const PostgresTarget = {
         ? Secret.fromPartial(object.password)
         : undefined;
     message.cleanupPolicy = object.cleanupPolicy ?? 0;
+    message.securityGroups = object.securityGroups?.map((e) => e) || [];
     return message;
   },
 };

@@ -24,6 +24,8 @@ export interface ServiceAccount {
   description: string;
   /** Resource labels as `` key:value `` pairs. Maximum of 64 per resource. */
   labels: { [key: string]: string };
+  /** Timestamp for the last authentication of this service account. */
+  lastAuthenticatedAt?: Date;
 }
 
 export interface ServiceAccount_LabelsEntry {
@@ -75,6 +77,12 @@ export const ServiceAccount = {
         writer.uint32(50).fork()
       ).ldelim();
     });
+    if (message.lastAuthenticatedAt !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.lastAuthenticatedAt),
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -112,6 +120,11 @@ export const ServiceAccount = {
             message.labels[entry6.key] = entry6.value;
           }
           break;
+        case 7:
+          message.lastAuthenticatedAt = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -146,6 +159,11 @@ export const ServiceAccount = {
       acc[key] = String(value);
       return acc;
     }, {});
+    message.lastAuthenticatedAt =
+      object.lastAuthenticatedAt !== undefined &&
+      object.lastAuthenticatedAt !== null
+        ? fromJsonTimestamp(object.lastAuthenticatedAt)
+        : undefined;
     return message;
   },
 
@@ -164,6 +182,8 @@ export const ServiceAccount = {
         obj.labels[k] = v;
       });
     }
+    message.lastAuthenticatedAt !== undefined &&
+      (obj.lastAuthenticatedAt = message.lastAuthenticatedAt.toISOString());
     return obj;
   },
 
@@ -184,6 +204,7 @@ export const ServiceAccount = {
       }
       return acc;
     }, {});
+    message.lastAuthenticatedAt = object.lastAuthenticatedAt ?? undefined;
     return message;
   },
 };

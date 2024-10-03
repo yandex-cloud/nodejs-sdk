@@ -315,6 +315,8 @@ export interface Trigger_Timer {
   invokeFunctionWithRetry?: InvokeFunctionWithRetry | undefined;
   /** Instructions for invoking a container with retry. */
   invokeContainerWithRetry?: InvokeContainerWithRetry | undefined;
+  /** Instructions for broadcasting to API gateway websocket once. */
+  gatewayWebsocketBroadcast?: GatewayWebsocketBroadcast | undefined;
 }
 
 /** Rule for activating a message queue trigger. */
@@ -332,6 +334,8 @@ export interface Trigger_MessageQueue {
   invokeFunction?: InvokeFunctionOnce | undefined;
   /** Instructions for invoking a container once. */
   invokeContainer?: InvokeContainerOnce | undefined;
+  /** Instructions for broadcasting to API gateway websocket once. */
+  gatewayWebsocketBroadcast?: GatewayWebsocketBroadcast | undefined;
 }
 
 /** Rule for activating a IoT Core trigger. */
@@ -349,6 +353,8 @@ export interface Trigger_IoTMessage {
   invokeFunction?: InvokeFunctionWithRetry | undefined;
   /** Instructions for invoking a container with retries as needed. */
   invokeContainer?: InvokeContainerWithRetry | undefined;
+  /** Instructions for broadcasting to API gateway websocket once. */
+  gatewayWebsocketBroadcast?: GatewayWebsocketBroadcast | undefined;
 }
 
 /** Rule for activating a IoT Core Broker trigger. */
@@ -364,6 +370,8 @@ export interface Trigger_IoTBrokerMessage {
   invokeFunction?: InvokeFunctionWithRetry | undefined;
   /** Instructions for invoking a container with retries as needed. */
   invokeContainer?: InvokeContainerWithRetry | undefined;
+  /** Instructions for broadcasting to API gateway websocket once. */
+  gatewayWebsocketBroadcast?: GatewayWebsocketBroadcast | undefined;
 }
 
 export interface Trigger_ObjectStorage {
@@ -382,6 +390,8 @@ export interface Trigger_ObjectStorage {
   invokeFunction?: InvokeFunctionWithRetry | undefined;
   /** Instructions for invoking a container with retries as needed. */
   invokeContainer?: InvokeContainerWithRetry | undefined;
+  /** Instructions for broadcasting to API gateway websocket once. */
+  gatewayWebsocketBroadcast?: GatewayWebsocketBroadcast | undefined;
 }
 
 export interface Trigger_ContainerRegistry {
@@ -400,6 +410,8 @@ export interface Trigger_ContainerRegistry {
   invokeFunction?: InvokeFunctionWithRetry | undefined;
   /** Instructions for invoking a container with retries as needed. */
   invokeContainer?: InvokeContainerWithRetry | undefined;
+  /** Instructions for broadcasting to API gateway websocket once. */
+  gatewayWebsocketBroadcast?: GatewayWebsocketBroadcast | undefined;
 }
 
 export interface Trigger_CloudLogs {
@@ -428,6 +440,8 @@ export interface Trigger_Logging {
   invokeFunction?: InvokeFunctionWithRetry | undefined;
   /** Instructions for invoking a container with retries as needed. */
   invokeContainer?: InvokeContainerWithRetry | undefined;
+  /** Instructions for broadcasting to API gateway websocket once. */
+  gatewayWebsocketBroadcast?: GatewayWebsocketBroadcast | undefined;
 }
 
 /** A single function invocation. */
@@ -480,6 +494,14 @@ export interface InvokeContainerWithRetry {
   retrySettings?: RetrySettings;
   /** DLQ policy (no value means discarding a message). */
   deadLetterQueue?: PutQueueMessage;
+}
+
+export interface GatewayWebsocketBroadcast {
+  $type: "yandex.cloud.serverless.triggers.v1.GatewayWebsocketBroadcast";
+  gatewayId: string;
+  path: string;
+  /** sa which has permission for writing to websockets */
+  serviceAccountId: string;
 }
 
 export interface PutQueueMessage {
@@ -548,6 +570,7 @@ export interface BillingBudget {
   budgetId: string;
   invokeFunction?: InvokeFunctionWithRetry | undefined;
   invokeContainer?: InvokeContainerWithRetry | undefined;
+  gatewayWebsocketBroadcast?: GatewayWebsocketBroadcast | undefined;
 }
 
 export interface DataStreamBatchSettings {
@@ -578,6 +601,7 @@ export interface DataStream {
   batchSettings?: DataStreamBatchSettings;
   invokeFunction?: InvokeFunctionWithRetry | undefined;
   invokeContainer?: InvokeContainerWithRetry | undefined;
+  gatewayWebsocketBroadcast?: GatewayWebsocketBroadcast | undefined;
 }
 
 export interface ObjectStorageBucketSettings {
@@ -601,6 +625,7 @@ export interface Mail {
   attachmentsBucket?: ObjectStorageBucketSettings;
   invokeFunction?: InvokeFunctionWithRetry | undefined;
   invokeContainer?: InvokeContainerWithRetry | undefined;
+  gatewayWebsocketBroadcast?: GatewayWebsocketBroadcast | undefined;
 }
 
 const baseTrigger: object = {
@@ -1182,6 +1207,12 @@ export const Trigger_Timer = {
         writer.uint32(834).fork()
       ).ldelim();
     }
+    if (message.gatewayWebsocketBroadcast !== undefined) {
+      GatewayWebsocketBroadcast.encode(
+        message.gatewayWebsocketBroadcast,
+        writer.uint32(842).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1212,6 +1243,12 @@ export const Trigger_Timer = {
           break;
         case 104:
           message.invokeContainerWithRetry = InvokeContainerWithRetry.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 105:
+          message.gatewayWebsocketBroadcast = GatewayWebsocketBroadcast.decode(
             reader,
             reader.uint32()
           );
@@ -1248,6 +1285,11 @@ export const Trigger_Timer = {
       object.invokeContainerWithRetry !== null
         ? InvokeContainerWithRetry.fromJSON(object.invokeContainerWithRetry)
         : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromJSON(object.gatewayWebsocketBroadcast)
+        : undefined;
     return message;
   },
 
@@ -1267,6 +1309,10 @@ export const Trigger_Timer = {
     message.invokeContainerWithRetry !== undefined &&
       (obj.invokeContainerWithRetry = message.invokeContainerWithRetry
         ? InvokeContainerWithRetry.toJSON(message.invokeContainerWithRetry)
+        : undefined);
+    message.gatewayWebsocketBroadcast !== undefined &&
+      (obj.gatewayWebsocketBroadcast = message.gatewayWebsocketBroadcast
+        ? GatewayWebsocketBroadcast.toJSON(message.gatewayWebsocketBroadcast)
         : undefined);
     return obj;
   },
@@ -1290,6 +1336,13 @@ export const Trigger_Timer = {
       object.invokeContainerWithRetry !== undefined &&
       object.invokeContainerWithRetry !== null
         ? InvokeContainerWithRetry.fromPartial(object.invokeContainerWithRetry)
+        : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromPartial(
+            object.gatewayWebsocketBroadcast
+          )
         : undefined;
     return message;
   },
@@ -1340,6 +1393,12 @@ export const Trigger_MessageQueue = {
         writer.uint32(818).fork()
       ).ldelim();
     }
+    if (message.gatewayWebsocketBroadcast !== undefined) {
+      GatewayWebsocketBroadcast.encode(
+        message.gatewayWebsocketBroadcast,
+        writer.uint32(826).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1373,6 +1432,12 @@ export const Trigger_MessageQueue = {
           break;
         case 102:
           message.invokeContainer = InvokeContainerOnce.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 103:
+          message.gatewayWebsocketBroadcast = GatewayWebsocketBroadcast.decode(
             reader,
             reader.uint32()
           );
@@ -1412,6 +1477,11 @@ export const Trigger_MessageQueue = {
       object.invokeContainer !== undefined && object.invokeContainer !== null
         ? InvokeContainerOnce.fromJSON(object.invokeContainer)
         : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromJSON(object.gatewayWebsocketBroadcast)
+        : undefined;
     return message;
   },
 
@@ -1435,6 +1505,10 @@ export const Trigger_MessageQueue = {
     message.invokeContainer !== undefined &&
       (obj.invokeContainer = message.invokeContainer
         ? InvokeContainerOnce.toJSON(message.invokeContainer)
+        : undefined);
+    message.gatewayWebsocketBroadcast !== undefined &&
+      (obj.gatewayWebsocketBroadcast = message.gatewayWebsocketBroadcast
+        ? GatewayWebsocketBroadcast.toJSON(message.gatewayWebsocketBroadcast)
         : undefined);
     return obj;
   },
@@ -1461,6 +1535,13 @@ export const Trigger_MessageQueue = {
     message.invokeContainer =
       object.invokeContainer !== undefined && object.invokeContainer !== null
         ? InvokeContainerOnce.fromPartial(object.invokeContainer)
+        : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromPartial(
+            object.gatewayWebsocketBroadcast
+          )
         : undefined;
     return message;
   },
@@ -1509,6 +1590,12 @@ export const Trigger_IoTMessage = {
         writer.uint32(818).fork()
       ).ldelim();
     }
+    if (message.gatewayWebsocketBroadcast !== undefined) {
+      GatewayWebsocketBroadcast.encode(
+        message.gatewayWebsocketBroadcast,
+        writer.uint32(826).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1539,6 +1626,12 @@ export const Trigger_IoTMessage = {
           break;
         case 102:
           message.invokeContainer = InvokeContainerWithRetry.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 103:
+          message.gatewayWebsocketBroadcast = GatewayWebsocketBroadcast.decode(
             reader,
             reader.uint32()
           );
@@ -1577,6 +1670,11 @@ export const Trigger_IoTMessage = {
       object.invokeContainer !== undefined && object.invokeContainer !== null
         ? InvokeContainerWithRetry.fromJSON(object.invokeContainer)
         : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromJSON(object.gatewayWebsocketBroadcast)
+        : undefined;
     return message;
   },
 
@@ -1596,6 +1694,10 @@ export const Trigger_IoTMessage = {
     message.invokeContainer !== undefined &&
       (obj.invokeContainer = message.invokeContainer
         ? InvokeContainerWithRetry.toJSON(message.invokeContainer)
+        : undefined);
+    message.gatewayWebsocketBroadcast !== undefined &&
+      (obj.gatewayWebsocketBroadcast = message.gatewayWebsocketBroadcast
+        ? GatewayWebsocketBroadcast.toJSON(message.gatewayWebsocketBroadcast)
         : undefined);
     return obj;
   },
@@ -1618,6 +1720,13 @@ export const Trigger_IoTMessage = {
     message.invokeContainer =
       object.invokeContainer !== undefined && object.invokeContainer !== null
         ? InvokeContainerWithRetry.fromPartial(object.invokeContainer)
+        : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromPartial(
+            object.gatewayWebsocketBroadcast
+          )
         : undefined;
     return message;
   },
@@ -1663,6 +1772,12 @@ export const Trigger_IoTBrokerMessage = {
         writer.uint32(818).fork()
       ).ldelim();
     }
+    if (message.gatewayWebsocketBroadcast !== undefined) {
+      GatewayWebsocketBroadcast.encode(
+        message.gatewayWebsocketBroadcast,
+        writer.uint32(826).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1699,6 +1814,12 @@ export const Trigger_IoTBrokerMessage = {
             reader.uint32()
           );
           break;
+        case 103:
+          message.gatewayWebsocketBroadcast = GatewayWebsocketBroadcast.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1731,6 +1852,11 @@ export const Trigger_IoTBrokerMessage = {
       object.invokeContainer !== undefined && object.invokeContainer !== null
         ? InvokeContainerWithRetry.fromJSON(object.invokeContainer)
         : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromJSON(object.gatewayWebsocketBroadcast)
+        : undefined;
     return message;
   },
 
@@ -1749,6 +1875,10 @@ export const Trigger_IoTBrokerMessage = {
     message.invokeContainer !== undefined &&
       (obj.invokeContainer = message.invokeContainer
         ? InvokeContainerWithRetry.toJSON(message.invokeContainer)
+        : undefined);
+    message.gatewayWebsocketBroadcast !== undefined &&
+      (obj.gatewayWebsocketBroadcast = message.gatewayWebsocketBroadcast
+        ? GatewayWebsocketBroadcast.toJSON(message.gatewayWebsocketBroadcast)
         : undefined);
     return obj;
   },
@@ -1772,6 +1902,13 @@ export const Trigger_IoTBrokerMessage = {
     message.invokeContainer =
       object.invokeContainer !== undefined && object.invokeContainer !== null
         ? InvokeContainerWithRetry.fromPartial(object.invokeContainer)
+        : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromPartial(
+            object.gatewayWebsocketBroadcast
+          )
         : undefined;
     return message;
   },
@@ -1829,6 +1966,12 @@ export const Trigger_ObjectStorage = {
         writer.uint32(818).fork()
       ).ldelim();
     }
+    if (message.gatewayWebsocketBroadcast !== undefined) {
+      GatewayWebsocketBroadcast.encode(
+        message.gatewayWebsocketBroadcast,
+        writer.uint32(826).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1877,6 +2020,12 @@ export const Trigger_ObjectStorage = {
             reader.uint32()
           );
           break;
+        case 103:
+          message.gatewayWebsocketBroadcast = GatewayWebsocketBroadcast.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1914,6 +2063,11 @@ export const Trigger_ObjectStorage = {
       object.invokeContainer !== undefined && object.invokeContainer !== null
         ? InvokeContainerWithRetry.fromJSON(object.invokeContainer)
         : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromJSON(object.gatewayWebsocketBroadcast)
+        : undefined;
     return message;
   },
 
@@ -1941,6 +2095,10 @@ export const Trigger_ObjectStorage = {
       (obj.invokeContainer = message.invokeContainer
         ? InvokeContainerWithRetry.toJSON(message.invokeContainer)
         : undefined);
+    message.gatewayWebsocketBroadcast !== undefined &&
+      (obj.gatewayWebsocketBroadcast = message.gatewayWebsocketBroadcast
+        ? GatewayWebsocketBroadcast.toJSON(message.gatewayWebsocketBroadcast)
+        : undefined);
     return obj;
   },
 
@@ -1963,6 +2121,13 @@ export const Trigger_ObjectStorage = {
     message.invokeContainer =
       object.invokeContainer !== undefined && object.invokeContainer !== null
         ? InvokeContainerWithRetry.fromPartial(object.invokeContainer)
+        : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromPartial(
+            object.gatewayWebsocketBroadcast
+          )
         : undefined;
     return message;
   },
@@ -2018,6 +2183,12 @@ export const Trigger_ContainerRegistry = {
         writer.uint32(818).fork()
       ).ldelim();
     }
+    if (message.gatewayWebsocketBroadcast !== undefined) {
+      GatewayWebsocketBroadcast.encode(
+        message.gatewayWebsocketBroadcast,
+        writer.uint32(826).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2068,6 +2239,12 @@ export const Trigger_ContainerRegistry = {
             reader.uint32()
           );
           break;
+        case 103:
+          message.gatewayWebsocketBroadcast = GatewayWebsocketBroadcast.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2105,6 +2282,11 @@ export const Trigger_ContainerRegistry = {
       object.invokeContainer !== undefined && object.invokeContainer !== null
         ? InvokeContainerWithRetry.fromJSON(object.invokeContainer)
         : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromJSON(object.gatewayWebsocketBroadcast)
+        : undefined;
     return message;
   },
 
@@ -2132,6 +2314,10 @@ export const Trigger_ContainerRegistry = {
       (obj.invokeContainer = message.invokeContainer
         ? InvokeContainerWithRetry.toJSON(message.invokeContainer)
         : undefined);
+    message.gatewayWebsocketBroadcast !== undefined &&
+      (obj.gatewayWebsocketBroadcast = message.gatewayWebsocketBroadcast
+        ? GatewayWebsocketBroadcast.toJSON(message.gatewayWebsocketBroadcast)
+        : undefined);
     return obj;
   },
 
@@ -2156,6 +2342,13 @@ export const Trigger_ContainerRegistry = {
     message.invokeContainer =
       object.invokeContainer !== undefined && object.invokeContainer !== null
         ? InvokeContainerWithRetry.fromPartial(object.invokeContainer)
+        : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromPartial(
+            object.gatewayWebsocketBroadcast
+          )
         : undefined;
     return message;
   },
@@ -2353,6 +2546,12 @@ export const Trigger_Logging = {
         writer.uint32(826).fork()
       ).ldelim();
     }
+    if (message.gatewayWebsocketBroadcast !== undefined) {
+      GatewayWebsocketBroadcast.encode(
+        message.gatewayWebsocketBroadcast,
+        writer.uint32(834).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2407,6 +2606,12 @@ export const Trigger_Logging = {
             reader.uint32()
           );
           break;
+        case 104:
+          message.gatewayWebsocketBroadcast = GatewayWebsocketBroadcast.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2440,6 +2645,11 @@ export const Trigger_Logging = {
     message.invokeContainer =
       object.invokeContainer !== undefined && object.invokeContainer !== null
         ? InvokeContainerWithRetry.fromJSON(object.invokeContainer)
+        : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromJSON(object.gatewayWebsocketBroadcast)
         : undefined;
     return message;
   },
@@ -2479,6 +2689,10 @@ export const Trigger_Logging = {
       (obj.invokeContainer = message.invokeContainer
         ? InvokeContainerWithRetry.toJSON(message.invokeContainer)
         : undefined);
+    message.gatewayWebsocketBroadcast !== undefined &&
+      (obj.gatewayWebsocketBroadcast = message.gatewayWebsocketBroadcast
+        ? GatewayWebsocketBroadcast.toJSON(message.gatewayWebsocketBroadcast)
+        : undefined);
     return obj;
   },
 
@@ -2502,6 +2716,13 @@ export const Trigger_Logging = {
     message.invokeContainer =
       object.invokeContainer !== undefined && object.invokeContainer !== null
         ? InvokeContainerWithRetry.fromPartial(object.invokeContainer)
+        : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromPartial(
+            object.gatewayWebsocketBroadcast
+          )
         : undefined;
     return message;
   },
@@ -2981,6 +3202,108 @@ messageTypeRegistry.set(
   InvokeContainerWithRetry
 );
 
+const baseGatewayWebsocketBroadcast: object = {
+  $type: "yandex.cloud.serverless.triggers.v1.GatewayWebsocketBroadcast",
+  gatewayId: "",
+  path: "",
+  serviceAccountId: "",
+};
+
+export const GatewayWebsocketBroadcast = {
+  $type:
+    "yandex.cloud.serverless.triggers.v1.GatewayWebsocketBroadcast" as const,
+
+  encode(
+    message: GatewayWebsocketBroadcast,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.gatewayId !== "") {
+      writer.uint32(10).string(message.gatewayId);
+    }
+    if (message.path !== "") {
+      writer.uint32(18).string(message.path);
+    }
+    if (message.serviceAccountId !== "") {
+      writer.uint32(26).string(message.serviceAccountId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): GatewayWebsocketBroadcast {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseGatewayWebsocketBroadcast,
+    } as GatewayWebsocketBroadcast;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.gatewayId = reader.string();
+          break;
+        case 2:
+          message.path = reader.string();
+          break;
+        case 3:
+          message.serviceAccountId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GatewayWebsocketBroadcast {
+    const message = {
+      ...baseGatewayWebsocketBroadcast,
+    } as GatewayWebsocketBroadcast;
+    message.gatewayId =
+      object.gatewayId !== undefined && object.gatewayId !== null
+        ? String(object.gatewayId)
+        : "";
+    message.path =
+      object.path !== undefined && object.path !== null
+        ? String(object.path)
+        : "";
+    message.serviceAccountId =
+      object.serviceAccountId !== undefined && object.serviceAccountId !== null
+        ? String(object.serviceAccountId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: GatewayWebsocketBroadcast): unknown {
+    const obj: any = {};
+    message.gatewayId !== undefined && (obj.gatewayId = message.gatewayId);
+    message.path !== undefined && (obj.path = message.path);
+    message.serviceAccountId !== undefined &&
+      (obj.serviceAccountId = message.serviceAccountId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GatewayWebsocketBroadcast>, I>>(
+    object: I
+  ): GatewayWebsocketBroadcast {
+    const message = {
+      ...baseGatewayWebsocketBroadcast,
+    } as GatewayWebsocketBroadcast;
+    message.gatewayId = object.gatewayId ?? "";
+    message.path = object.path ?? "";
+    message.serviceAccountId = object.serviceAccountId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  GatewayWebsocketBroadcast.$type,
+  GatewayWebsocketBroadcast
+);
+
 const basePutQueueMessage: object = {
   $type: "yandex.cloud.serverless.triggers.v1.PutQueueMessage",
   queueId: "",
@@ -3415,6 +3738,12 @@ export const BillingBudget = {
         writer.uint32(826).fork()
       ).ldelim();
     }
+    if (message.gatewayWebsocketBroadcast !== undefined) {
+      GatewayWebsocketBroadcast.encode(
+        message.gatewayWebsocketBroadcast,
+        writer.uint32(834).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3439,6 +3768,12 @@ export const BillingBudget = {
           break;
         case 103:
           message.invokeContainer = InvokeContainerWithRetry.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 104:
+          message.gatewayWebsocketBroadcast = GatewayWebsocketBroadcast.decode(
             reader,
             reader.uint32()
           );
@@ -3469,6 +3804,11 @@ export const BillingBudget = {
       object.invokeContainer !== undefined && object.invokeContainer !== null
         ? InvokeContainerWithRetry.fromJSON(object.invokeContainer)
         : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromJSON(object.gatewayWebsocketBroadcast)
+        : undefined;
     return message;
   },
 
@@ -3484,6 +3824,10 @@ export const BillingBudget = {
     message.invokeContainer !== undefined &&
       (obj.invokeContainer = message.invokeContainer
         ? InvokeContainerWithRetry.toJSON(message.invokeContainer)
+        : undefined);
+    message.gatewayWebsocketBroadcast !== undefined &&
+      (obj.gatewayWebsocketBroadcast = message.gatewayWebsocketBroadcast
+        ? GatewayWebsocketBroadcast.toJSON(message.gatewayWebsocketBroadcast)
         : undefined);
     return obj;
   },
@@ -3501,6 +3845,13 @@ export const BillingBudget = {
     message.invokeContainer =
       object.invokeContainer !== undefined && object.invokeContainer !== null
         ? InvokeContainerWithRetry.fromPartial(object.invokeContainer)
+        : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromPartial(
+            object.gatewayWebsocketBroadcast
+          )
         : undefined;
     return message;
   },
@@ -3642,6 +3993,12 @@ export const DataStream = {
         writer.uint32(122).fork()
       ).ldelim();
     }
+    if (message.gatewayWebsocketBroadcast !== undefined) {
+      GatewayWebsocketBroadcast.encode(
+        message.gatewayWebsocketBroadcast,
+        writer.uint32(130).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3678,6 +4035,12 @@ export const DataStream = {
           break;
         case 15:
           message.invokeContainer = InvokeContainerWithRetry.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 16:
+          message.gatewayWebsocketBroadcast = GatewayWebsocketBroadcast.decode(
             reader,
             reader.uint32()
           );
@@ -3720,6 +4083,11 @@ export const DataStream = {
       object.invokeContainer !== undefined && object.invokeContainer !== null
         ? InvokeContainerWithRetry.fromJSON(object.invokeContainer)
         : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromJSON(object.gatewayWebsocketBroadcast)
+        : undefined;
     return message;
   },
 
@@ -3741,6 +4109,10 @@ export const DataStream = {
     message.invokeContainer !== undefined &&
       (obj.invokeContainer = message.invokeContainer
         ? InvokeContainerWithRetry.toJSON(message.invokeContainer)
+        : undefined);
+    message.gatewayWebsocketBroadcast !== undefined &&
+      (obj.gatewayWebsocketBroadcast = message.gatewayWebsocketBroadcast
+        ? GatewayWebsocketBroadcast.toJSON(message.gatewayWebsocketBroadcast)
         : undefined);
     return obj;
   },
@@ -3764,6 +4136,13 @@ export const DataStream = {
     message.invokeContainer =
       object.invokeContainer !== undefined && object.invokeContainer !== null
         ? InvokeContainerWithRetry.fromPartial(object.invokeContainer)
+        : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromPartial(
+            object.gatewayWebsocketBroadcast
+          )
         : undefined;
     return message;
   },
@@ -3896,6 +4275,12 @@ export const Mail = {
         writer.uint32(826).fork()
       ).ldelim();
     }
+    if (message.gatewayWebsocketBroadcast !== undefined) {
+      GatewayWebsocketBroadcast.encode(
+        message.gatewayWebsocketBroadcast,
+        writer.uint32(834).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3926,6 +4311,12 @@ export const Mail = {
           break;
         case 103:
           message.invokeContainer = InvokeContainerWithRetry.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 104:
+          message.gatewayWebsocketBroadcast = GatewayWebsocketBroadcast.decode(
             reader,
             reader.uint32()
           );
@@ -3961,6 +4352,11 @@ export const Mail = {
       object.invokeContainer !== undefined && object.invokeContainer !== null
         ? InvokeContainerWithRetry.fromJSON(object.invokeContainer)
         : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromJSON(object.gatewayWebsocketBroadcast)
+        : undefined;
     return message;
   },
 
@@ -3982,6 +4378,10 @@ export const Mail = {
     message.invokeContainer !== undefined &&
       (obj.invokeContainer = message.invokeContainer
         ? InvokeContainerWithRetry.toJSON(message.invokeContainer)
+        : undefined);
+    message.gatewayWebsocketBroadcast !== undefined &&
+      (obj.gatewayWebsocketBroadcast = message.gatewayWebsocketBroadcast
+        ? GatewayWebsocketBroadcast.toJSON(message.gatewayWebsocketBroadcast)
         : undefined);
     return obj;
   },
@@ -4005,6 +4405,13 @@ export const Mail = {
     message.invokeContainer =
       object.invokeContainer !== undefined && object.invokeContainer !== null
         ? InvokeContainerWithRetry.fromPartial(object.invokeContainer)
+        : undefined;
+    message.gatewayWebsocketBroadcast =
+      object.gatewayWebsocketBroadcast !== undefined &&
+      object.gatewayWebsocketBroadcast !== null
+        ? GatewayWebsocketBroadcast.fromPartial(
+            object.gatewayWebsocketBroadcast
+          )
         : undefined;
     return message;
   },

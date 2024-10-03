@@ -16,8 +16,8 @@ export interface OnPremiseMongo {
   $type: "yandex.cloud.datatransfer.v1.endpoint.OnPremiseMongo";
   hosts: string[];
   port: number;
-  tlsMode?: TLSMode;
   replicaSet: string;
+  tlsMode?: TLSMode;
 }
 
 export interface MongoConnectionOptions {
@@ -47,8 +47,6 @@ export interface MongoSource {
   $type: "yandex.cloud.datatransfer.v1.endpoint.MongoSource";
   connection?: MongoConnection;
   subnetId: string;
-  /** Security groups */
-  securityGroups: string[];
   /**
    * List of collections for replication. Empty list implies replication of all
    * tables on the deployment. Allowed to use * as collection name.
@@ -61,17 +59,19 @@ export interface MongoSource {
   excludedCollections: MongoCollection[];
   /** Read mode for mongo client */
   secondaryPreferredMode: boolean;
+  /** Security groups */
+  securityGroups: string[];
 }
 
 export interface MongoTarget {
   $type: "yandex.cloud.datatransfer.v1.endpoint.MongoTarget";
   connection?: MongoConnection;
-  subnetId: string;
-  /** Security groups */
-  securityGroups: string[];
   /** Database name */
   database: string;
   cleanupPolicy: CleanupPolicy;
+  subnetId: string;
+  /** Security groups */
+  securityGroups: string[];
 }
 
 const baseOnPremiseMongo: object = {
@@ -94,11 +94,11 @@ export const OnPremiseMongo = {
     if (message.port !== 0) {
       writer.uint32(16).int64(message.port);
     }
-    if (message.tlsMode !== undefined) {
-      TLSMode.encode(message.tlsMode, writer.uint32(50).fork()).ldelim();
-    }
     if (message.replicaSet !== "") {
       writer.uint32(42).string(message.replicaSet);
+    }
+    if (message.tlsMode !== undefined) {
+      TLSMode.encode(message.tlsMode, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -117,11 +117,11 @@ export const OnPremiseMongo = {
         case 2:
           message.port = longToNumber(reader.int64() as Long);
           break;
-        case 6:
-          message.tlsMode = TLSMode.decode(reader, reader.uint32());
-          break;
         case 5:
           message.replicaSet = reader.string();
+          break;
+        case 6:
+          message.tlsMode = TLSMode.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -138,14 +138,14 @@ export const OnPremiseMongo = {
       object.port !== undefined && object.port !== null
         ? Number(object.port)
         : 0;
-    message.tlsMode =
-      object.tlsMode !== undefined && object.tlsMode !== null
-        ? TLSMode.fromJSON(object.tlsMode)
-        : undefined;
     message.replicaSet =
       object.replicaSet !== undefined && object.replicaSet !== null
         ? String(object.replicaSet)
         : "";
+    message.tlsMode =
+      object.tlsMode !== undefined && object.tlsMode !== null
+        ? TLSMode.fromJSON(object.tlsMode)
+        : undefined;
     return message;
   },
 
@@ -157,11 +157,11 @@ export const OnPremiseMongo = {
       obj.hosts = [];
     }
     message.port !== undefined && (obj.port = Math.round(message.port));
+    message.replicaSet !== undefined && (obj.replicaSet = message.replicaSet);
     message.tlsMode !== undefined &&
       (obj.tlsMode = message.tlsMode
         ? TLSMode.toJSON(message.tlsMode)
         : undefined);
-    message.replicaSet !== undefined && (obj.replicaSet = message.replicaSet);
     return obj;
   },
 
@@ -171,11 +171,11 @@ export const OnPremiseMongo = {
     const message = { ...baseOnPremiseMongo } as OnPremiseMongo;
     message.hosts = object.hosts?.map((e) => e) || [];
     message.port = object.port ?? 0;
+    message.replicaSet = object.replicaSet ?? "";
     message.tlsMode =
       object.tlsMode !== undefined && object.tlsMode !== null
         ? TLSMode.fromPartial(object.tlsMode)
         : undefined;
-    message.replicaSet = object.replicaSet ?? "";
     return message;
   },
 };
@@ -468,8 +468,8 @@ messageTypeRegistry.set(MongoCollection.$type, MongoCollection);
 const baseMongoSource: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.MongoSource",
   subnetId: "",
-  securityGroups: "",
   secondaryPreferredMode: false,
+  securityGroups: "",
 };
 
 export const MongoSource = {
@@ -488,9 +488,6 @@ export const MongoSource = {
     if (message.subnetId !== "") {
       writer.uint32(18).string(message.subnetId);
     }
-    for (const v of message.securityGroups) {
-      writer.uint32(90).string(v!);
-    }
     for (const v of message.collections) {
       MongoCollection.encode(v!, writer.uint32(50).fork()).ldelim();
     }
@@ -500,6 +497,9 @@ export const MongoSource = {
     if (message.secondaryPreferredMode === true) {
       writer.uint32(64).bool(message.secondaryPreferredMode);
     }
+    for (const v of message.securityGroups) {
+      writer.uint32(90).string(v!);
+    }
     return writer;
   },
 
@@ -507,9 +507,9 @@ export const MongoSource = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseMongoSource } as MongoSource;
-    message.securityGroups = [];
     message.collections = [];
     message.excludedCollections = [];
+    message.securityGroups = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -518,9 +518,6 @@ export const MongoSource = {
           break;
         case 2:
           message.subnetId = reader.string();
-          break;
-        case 11:
-          message.securityGroups.push(reader.string());
           break;
         case 6:
           message.collections.push(
@@ -534,6 +531,9 @@ export const MongoSource = {
           break;
         case 8:
           message.secondaryPreferredMode = reader.bool();
+          break;
+        case 11:
+          message.securityGroups.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -553,9 +553,6 @@ export const MongoSource = {
       object.subnetId !== undefined && object.subnetId !== null
         ? String(object.subnetId)
         : "";
-    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
-      String(e)
-    );
     message.collections = (object.collections ?? []).map((e: any) =>
       MongoCollection.fromJSON(e)
     );
@@ -567,6 +564,9 @@ export const MongoSource = {
       object.secondaryPreferredMode !== null
         ? Boolean(object.secondaryPreferredMode)
         : false;
+    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
+      String(e)
+    );
     return message;
   },
 
@@ -577,11 +577,6 @@ export const MongoSource = {
         ? MongoConnection.toJSON(message.connection)
         : undefined);
     message.subnetId !== undefined && (obj.subnetId = message.subnetId);
-    if (message.securityGroups) {
-      obj.securityGroups = message.securityGroups.map((e) => e);
-    } else {
-      obj.securityGroups = [];
-    }
     if (message.collections) {
       obj.collections = message.collections.map((e) =>
         e ? MongoCollection.toJSON(e) : undefined
@@ -598,6 +593,11 @@ export const MongoSource = {
     }
     message.secondaryPreferredMode !== undefined &&
       (obj.secondaryPreferredMode = message.secondaryPreferredMode);
+    if (message.securityGroups) {
+      obj.securityGroups = message.securityGroups.map((e) => e);
+    } else {
+      obj.securityGroups = [];
+    }
     return obj;
   },
 
@@ -610,13 +610,13 @@ export const MongoSource = {
         ? MongoConnection.fromPartial(object.connection)
         : undefined;
     message.subnetId = object.subnetId ?? "";
-    message.securityGroups = object.securityGroups?.map((e) => e) || [];
     message.collections =
       object.collections?.map((e) => MongoCollection.fromPartial(e)) || [];
     message.excludedCollections =
       object.excludedCollections?.map((e) => MongoCollection.fromPartial(e)) ||
       [];
     message.secondaryPreferredMode = object.secondaryPreferredMode ?? false;
+    message.securityGroups = object.securityGroups?.map((e) => e) || [];
     return message;
   },
 };
@@ -625,10 +625,10 @@ messageTypeRegistry.set(MongoSource.$type, MongoSource);
 
 const baseMongoTarget: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.MongoTarget",
-  subnetId: "",
-  securityGroups: "",
   database: "",
   cleanupPolicy: 0,
+  subnetId: "",
+  securityGroups: "",
 };
 
 export const MongoTarget = {
@@ -644,17 +644,17 @@ export const MongoTarget = {
         writer.uint32(10).fork()
       ).ldelim();
     }
-    if (message.subnetId !== "") {
-      writer.uint32(58).string(message.subnetId);
-    }
-    for (const v of message.securityGroups) {
-      writer.uint32(66).string(v!);
-    }
     if (message.database !== "") {
       writer.uint32(18).string(message.database);
     }
     if (message.cleanupPolicy !== 0) {
       writer.uint32(48).int32(message.cleanupPolicy);
+    }
+    if (message.subnetId !== "") {
+      writer.uint32(58).string(message.subnetId);
+    }
+    for (const v of message.securityGroups) {
+      writer.uint32(66).string(v!);
     }
     return writer;
   },
@@ -670,17 +670,17 @@ export const MongoTarget = {
         case 1:
           message.connection = MongoConnection.decode(reader, reader.uint32());
           break;
-        case 7:
-          message.subnetId = reader.string();
-          break;
-        case 8:
-          message.securityGroups.push(reader.string());
-          break;
         case 2:
           message.database = reader.string();
           break;
         case 6:
           message.cleanupPolicy = reader.int32() as any;
+          break;
+        case 7:
+          message.subnetId = reader.string();
+          break;
+        case 8:
+          message.securityGroups.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -696,13 +696,6 @@ export const MongoTarget = {
       object.connection !== undefined && object.connection !== null
         ? MongoConnection.fromJSON(object.connection)
         : undefined;
-    message.subnetId =
-      object.subnetId !== undefined && object.subnetId !== null
-        ? String(object.subnetId)
-        : "";
-    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
-      String(e)
-    );
     message.database =
       object.database !== undefined && object.database !== null
         ? String(object.database)
@@ -711,6 +704,13 @@ export const MongoTarget = {
       object.cleanupPolicy !== undefined && object.cleanupPolicy !== null
         ? cleanupPolicyFromJSON(object.cleanupPolicy)
         : 0;
+    message.subnetId =
+      object.subnetId !== undefined && object.subnetId !== null
+        ? String(object.subnetId)
+        : "";
+    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
+      String(e)
+    );
     return message;
   },
 
@@ -720,15 +720,15 @@ export const MongoTarget = {
       (obj.connection = message.connection
         ? MongoConnection.toJSON(message.connection)
         : undefined);
+    message.database !== undefined && (obj.database = message.database);
+    message.cleanupPolicy !== undefined &&
+      (obj.cleanupPolicy = cleanupPolicyToJSON(message.cleanupPolicy));
     message.subnetId !== undefined && (obj.subnetId = message.subnetId);
     if (message.securityGroups) {
       obj.securityGroups = message.securityGroups.map((e) => e);
     } else {
       obj.securityGroups = [];
     }
-    message.database !== undefined && (obj.database = message.database);
-    message.cleanupPolicy !== undefined &&
-      (obj.cleanupPolicy = cleanupPolicyToJSON(message.cleanupPolicy));
     return obj;
   },
 
@@ -740,10 +740,10 @@ export const MongoTarget = {
       object.connection !== undefined && object.connection !== null
         ? MongoConnection.fromPartial(object.connection)
         : undefined;
-    message.subnetId = object.subnetId ?? "";
-    message.securityGroups = object.securityGroups?.map((e) => e) || [];
     message.database = object.database ?? "";
     message.cleanupPolicy = object.cleanupPolicy ?? 0;
+    message.subnetId = object.subnetId ?? "";
+    message.securityGroups = object.securityGroups?.map((e) => e) || [];
     return message;
   },
 };

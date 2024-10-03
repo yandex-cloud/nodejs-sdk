@@ -15,6 +15,7 @@ import {
 } from "@grpc/grpc-js";
 import _m0 from "protobufjs/minimal";
 import { Backup } from "../../../../../yandex/cloud/mdb/mysql/v1/backup";
+import { Operation } from "../../../../../yandex/cloud/operation/operation";
 
 export const protobufPackage = "yandex.cloud.mdb.mysql.v1";
 
@@ -484,6 +485,18 @@ export const BackupServiceService = {
       Buffer.from(ListBackupsResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer) => ListBackupsResponse.decode(value),
   },
+  /** Deletes the specified MySQL cluster backup. */
+  delete: {
+    path: "/yandex.cloud.mdb.mysql.v1.BackupService/Delete",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: DeleteBackupRequest) =>
+      Buffer.from(DeleteBackupRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => DeleteBackupRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
 } as const;
 
 export interface BackupServiceServer extends UntypedServiceImplementation {
@@ -495,6 +508,8 @@ export interface BackupServiceServer extends UntypedServiceImplementation {
    * To list backups for an existing cluster, make a [ClusterService.ListBackups] request.
    */
   list: handleUnaryCall<ListBackupsRequest, ListBackupsResponse>;
+  /** Deletes the specified MySQL cluster backup. */
+  delete: handleUnaryCall<DeleteBackupRequest, Operation>;
 }
 
 export interface BackupServiceClient extends Client {
@@ -542,6 +557,22 @@ export interface BackupServiceClient extends Client {
       error: ServiceError | null,
       response: ListBackupsResponse
     ) => void
+  ): ClientUnaryCall;
+  /** Deletes the specified MySQL cluster backup. */
+  delete(
+    request: DeleteBackupRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  delete(
+    request: DeleteBackupRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  delete(
+    request: DeleteBackupRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
 }
 

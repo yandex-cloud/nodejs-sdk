@@ -81,6 +81,7 @@ export enum ClaimJobStatusRequest_JobStatus {
   POST_PROCESS = 1,
   INITIATED = 2,
   PREPARING = 3,
+  /** @deprecated */
   NOT_FOUND = 4,
   RUNNING = 5,
   FINISHING = 6,

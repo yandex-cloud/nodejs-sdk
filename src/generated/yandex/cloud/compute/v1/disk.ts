@@ -2,6 +2,7 @@
 import { messageTypeRegistry } from "../../../../typeRegistry";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import { HardwareGeneration } from "../../../../yandex/cloud/compute/v1/hardware_generation";
 import { Timestamp } from "../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.compute.v1";
@@ -49,6 +50,11 @@ export interface Disk {
   instanceIds: string[];
   /** Placement policy configuration. */
   diskPlacementPolicy?: DiskPlacementPolicy;
+  /**
+   * If specified, forces the same HardwareGeneration features to be applied to the instance
+   * created using this disk as a boot one. Otherwise the current default will be used.
+   */
+  hardwareGeneration?: HardwareGeneration;
 }
 
 export enum Disk_Status {
@@ -116,6 +122,14 @@ export interface DiskPlacementPolicy {
   /** Placement group ID. */
   placementGroupId: string;
   placementGroupPartition: number;
+}
+
+export interface DiskPlacementPolicyChange {
+  $type: "yandex.cloud.compute.v1.DiskPlacementPolicyChange";
+  /** Disk ID. */
+  diskId: string;
+  /** Placement policy configuration for given disk. */
+  diskPlacementPolicy?: DiskPlacementPolicy;
 }
 
 const baseDisk: object = {
@@ -198,6 +212,12 @@ export const Disk = {
         writer.uint32(130).fork()
       ).ldelim();
     }
+    if (message.hardwareGeneration !== undefined) {
+      HardwareGeneration.encode(
+        message.hardwareGeneration,
+        writer.uint32(138).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -263,6 +283,12 @@ export const Disk = {
           break;
         case 16:
           message.diskPlacementPolicy = DiskPlacementPolicy.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 17:
+          message.hardwareGeneration = HardwareGeneration.decode(
             reader,
             reader.uint32()
           );
@@ -336,6 +362,11 @@ export const Disk = {
       object.diskPlacementPolicy !== null
         ? DiskPlacementPolicy.fromJSON(object.diskPlacementPolicy)
         : undefined;
+    message.hardwareGeneration =
+      object.hardwareGeneration !== undefined &&
+      object.hardwareGeneration !== null
+        ? HardwareGeneration.fromJSON(object.hardwareGeneration)
+        : undefined;
     return message;
   },
 
@@ -379,6 +410,10 @@ export const Disk = {
       (obj.diskPlacementPolicy = message.diskPlacementPolicy
         ? DiskPlacementPolicy.toJSON(message.diskPlacementPolicy)
         : undefined);
+    message.hardwareGeneration !== undefined &&
+      (obj.hardwareGeneration = message.hardwareGeneration
+        ? HardwareGeneration.toJSON(message.hardwareGeneration)
+        : undefined);
     return obj;
   },
 
@@ -410,6 +445,11 @@ export const Disk = {
       object.diskPlacementPolicy !== undefined &&
       object.diskPlacementPolicy !== null
         ? DiskPlacementPolicy.fromPartial(object.diskPlacementPolicy)
+        : undefined;
+    message.hardwareGeneration =
+      object.hardwareGeneration !== undefined &&
+      object.hardwareGeneration !== null
+        ? HardwareGeneration.fromPartial(object.hardwareGeneration)
         : undefined;
     return message;
   },
@@ -571,6 +611,106 @@ export const DiskPlacementPolicy = {
 };
 
 messageTypeRegistry.set(DiskPlacementPolicy.$type, DiskPlacementPolicy);
+
+const baseDiskPlacementPolicyChange: object = {
+  $type: "yandex.cloud.compute.v1.DiskPlacementPolicyChange",
+  diskId: "",
+};
+
+export const DiskPlacementPolicyChange = {
+  $type: "yandex.cloud.compute.v1.DiskPlacementPolicyChange" as const,
+
+  encode(
+    message: DiskPlacementPolicyChange,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.diskId !== "") {
+      writer.uint32(10).string(message.diskId);
+    }
+    if (message.diskPlacementPolicy !== undefined) {
+      DiskPlacementPolicy.encode(
+        message.diskPlacementPolicy,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DiskPlacementPolicyChange {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDiskPlacementPolicyChange,
+    } as DiskPlacementPolicyChange;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.diskId = reader.string();
+          break;
+        case 2:
+          message.diskPlacementPolicy = DiskPlacementPolicy.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DiskPlacementPolicyChange {
+    const message = {
+      ...baseDiskPlacementPolicyChange,
+    } as DiskPlacementPolicyChange;
+    message.diskId =
+      object.diskId !== undefined && object.diskId !== null
+        ? String(object.diskId)
+        : "";
+    message.diskPlacementPolicy =
+      object.diskPlacementPolicy !== undefined &&
+      object.diskPlacementPolicy !== null
+        ? DiskPlacementPolicy.fromJSON(object.diskPlacementPolicy)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: DiskPlacementPolicyChange): unknown {
+    const obj: any = {};
+    message.diskId !== undefined && (obj.diskId = message.diskId);
+    message.diskPlacementPolicy !== undefined &&
+      (obj.diskPlacementPolicy = message.diskPlacementPolicy
+        ? DiskPlacementPolicy.toJSON(message.diskPlacementPolicy)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DiskPlacementPolicyChange>, I>>(
+    object: I
+  ): DiskPlacementPolicyChange {
+    const message = {
+      ...baseDiskPlacementPolicyChange,
+    } as DiskPlacementPolicyChange;
+    message.diskId = object.diskId ?? "";
+    message.diskPlacementPolicy =
+      object.diskPlacementPolicy !== undefined &&
+      object.diskPlacementPolicy !== null
+        ? DiskPlacementPolicy.fromPartial(object.diskPlacementPolicy)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  DiskPlacementPolicyChange.$type,
+  DiskPlacementPolicyChange
+);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

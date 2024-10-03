@@ -104,6 +104,8 @@ export interface CreateAddressRequest {
   externalIpv4AddressSpec?: ExternalIpv4AddressSpec | undefined;
   /** Specifies if address protected from deletion. */
   deletionProtection: boolean;
+  /** Optional DNS record specifications */
+  dnsRecordSpecs: DnsRecordSpec[];
 }
 
 export interface CreateAddressRequest_LabelsEntry {
@@ -120,6 +122,18 @@ export interface ExternalIpv4AddressSpec {
   zoneId: string;
   /** Parameters of the allocated address, for example DDoS Protection. */
   requirements?: AddressRequirements;
+}
+
+export interface DnsRecordSpec {
+  $type: "yandex.cloud.vpc.v1.DnsRecordSpec";
+  /** Required. DNS record name (absolute or relative to the DNS zone in use). */
+  fqdn: string;
+  /** Required. ID of the public DNS zone. The maximum string length in characters is 20. */
+  dnsZoneId: string;
+  /** TTL of record. Acceptable values are 0 to 86400, inclusive. */
+  ttl: number;
+  /** Optional. If the PTR record is required, this parameter must be set to "true". */
+  ptr: boolean;
 }
 
 export interface CreateAddressMetadata {
@@ -159,6 +173,8 @@ export interface UpdateAddressRequest {
   reserved: boolean;
   /** Specifies if address protected from deletion. */
   deletionProtection: boolean;
+  /** Optional DNS record specifications */
+  dnsRecordSpecs: DnsRecordSpec[];
 }
 
 export interface UpdateAddressRequest_LabelsEntry {
@@ -227,12 +243,15 @@ export interface ListAddressOperationsResponse {
 
 export interface MoveAddressRequest {
   $type: "yandex.cloud.vpc.v1.MoveAddressRequest";
+  /** ID of the address that is being moved. */
   addressId: string;
+  /** ID of the folder to move address to. */
   destinationFolderId: string;
 }
 
 export interface MoveAddressMetadata {
   $type: "yandex.cloud.vpc.v1.MoveAddressMetadata";
+  /** ID of the address that is being moved. */
   addressId: string;
 }
 
@@ -606,6 +625,9 @@ export const CreateAddressRequest = {
     if (message.deletionProtection === true) {
       writer.uint32(80).bool(message.deletionProtection);
     }
+    for (const v of message.dnsRecordSpecs) {
+      DnsRecordSpec.encode(v!, writer.uint32(90).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -617,6 +639,7 @@ export const CreateAddressRequest = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseCreateAddressRequest } as CreateAddressRequest;
     message.labels = {};
+    message.dnsRecordSpecs = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -646,6 +669,11 @@ export const CreateAddressRequest = {
           break;
         case 10:
           message.deletionProtection = reader.bool();
+          break;
+        case 11:
+          message.dnsRecordSpecs.push(
+            DnsRecordSpec.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -685,6 +713,9 @@ export const CreateAddressRequest = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.dnsRecordSpecs = (object.dnsRecordSpecs ?? []).map((e: any) =>
+      DnsRecordSpec.fromJSON(e)
+    );
     return message;
   },
 
@@ -706,6 +737,13 @@ export const CreateAddressRequest = {
         : undefined);
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    if (message.dnsRecordSpecs) {
+      obj.dnsRecordSpecs = message.dnsRecordSpecs.map((e) =>
+        e ? DnsRecordSpec.toJSON(e) : undefined
+      );
+    } else {
+      obj.dnsRecordSpecs = [];
+    }
     return obj;
   },
 
@@ -730,6 +768,8 @@ export const CreateAddressRequest = {
         ? ExternalIpv4AddressSpec.fromPartial(object.externalIpv4AddressSpec)
         : undefined;
     message.deletionProtection = object.deletionProtection ?? false;
+    message.dnsRecordSpecs =
+      object.dnsRecordSpecs?.map((e) => DnsRecordSpec.fromPartial(e)) || [];
     return message;
   },
 };
@@ -929,6 +969,105 @@ export const ExternalIpv4AddressSpec = {
 
 messageTypeRegistry.set(ExternalIpv4AddressSpec.$type, ExternalIpv4AddressSpec);
 
+const baseDnsRecordSpec: object = {
+  $type: "yandex.cloud.vpc.v1.DnsRecordSpec",
+  fqdn: "",
+  dnsZoneId: "",
+  ttl: 0,
+  ptr: false,
+};
+
+export const DnsRecordSpec = {
+  $type: "yandex.cloud.vpc.v1.DnsRecordSpec" as const,
+
+  encode(
+    message: DnsRecordSpec,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.fqdn !== "") {
+      writer.uint32(10).string(message.fqdn);
+    }
+    if (message.dnsZoneId !== "") {
+      writer.uint32(18).string(message.dnsZoneId);
+    }
+    if (message.ttl !== 0) {
+      writer.uint32(24).int64(message.ttl);
+    }
+    if (message.ptr === true) {
+      writer.uint32(32).bool(message.ptr);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DnsRecordSpec {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseDnsRecordSpec } as DnsRecordSpec;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.fqdn = reader.string();
+          break;
+        case 2:
+          message.dnsZoneId = reader.string();
+          break;
+        case 3:
+          message.ttl = longToNumber(reader.int64() as Long);
+          break;
+        case 4:
+          message.ptr = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DnsRecordSpec {
+    const message = { ...baseDnsRecordSpec } as DnsRecordSpec;
+    message.fqdn =
+      object.fqdn !== undefined && object.fqdn !== null
+        ? String(object.fqdn)
+        : "";
+    message.dnsZoneId =
+      object.dnsZoneId !== undefined && object.dnsZoneId !== null
+        ? String(object.dnsZoneId)
+        : "";
+    message.ttl =
+      object.ttl !== undefined && object.ttl !== null ? Number(object.ttl) : 0;
+    message.ptr =
+      object.ptr !== undefined && object.ptr !== null
+        ? Boolean(object.ptr)
+        : false;
+    return message;
+  },
+
+  toJSON(message: DnsRecordSpec): unknown {
+    const obj: any = {};
+    message.fqdn !== undefined && (obj.fqdn = message.fqdn);
+    message.dnsZoneId !== undefined && (obj.dnsZoneId = message.dnsZoneId);
+    message.ttl !== undefined && (obj.ttl = Math.round(message.ttl));
+    message.ptr !== undefined && (obj.ptr = message.ptr);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DnsRecordSpec>, I>>(
+    object: I
+  ): DnsRecordSpec {
+    const message = { ...baseDnsRecordSpec } as DnsRecordSpec;
+    message.fqdn = object.fqdn ?? "";
+    message.dnsZoneId = object.dnsZoneId ?? "";
+    message.ttl = object.ttl ?? 0;
+    message.ptr = object.ptr ?? false;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(DnsRecordSpec.$type, DnsRecordSpec);
+
 const baseCreateAddressMetadata: object = {
   $type: "yandex.cloud.vpc.v1.CreateAddressMetadata",
   addressId: "",
@@ -1038,6 +1177,9 @@ export const UpdateAddressRequest = {
     if (message.deletionProtection === true) {
       writer.uint32(56).bool(message.deletionProtection);
     }
+    for (const v of message.dnsRecordSpecs) {
+      DnsRecordSpec.encode(v!, writer.uint32(66).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1049,6 +1191,7 @@ export const UpdateAddressRequest = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseUpdateAddressRequest } as UpdateAddressRequest;
     message.labels = {};
+    message.dnsRecordSpecs = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1078,6 +1221,11 @@ export const UpdateAddressRequest = {
           break;
         case 7:
           message.deletionProtection = reader.bool();
+          break;
+        case 8:
+          message.dnsRecordSpecs.push(
+            DnsRecordSpec.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -1120,6 +1268,9 @@ export const UpdateAddressRequest = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.dnsRecordSpecs = (object.dnsRecordSpecs ?? []).map((e: any) =>
+      DnsRecordSpec.fromJSON(e)
+    );
     return message;
   },
 
@@ -1142,6 +1293,13 @@ export const UpdateAddressRequest = {
     message.reserved !== undefined && (obj.reserved = message.reserved);
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    if (message.dnsRecordSpecs) {
+      obj.dnsRecordSpecs = message.dnsRecordSpecs.map((e) =>
+        e ? DnsRecordSpec.toJSON(e) : undefined
+      );
+    } else {
+      obj.dnsRecordSpecs = [];
+    }
     return obj;
   },
 
@@ -1166,6 +1324,8 @@ export const UpdateAddressRequest = {
     }, {});
     message.reserved = object.reserved ?? false;
     message.deletionProtection = object.deletionProtection ?? false;
+    message.dnsRecordSpecs =
+      object.dnsRecordSpecs?.map((e) => DnsRecordSpec.fromPartial(e)) || [];
     return message;
   },
 };

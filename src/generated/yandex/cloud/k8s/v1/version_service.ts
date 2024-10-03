@@ -34,7 +34,7 @@ export interface ListVersionsResponse {
 
 export interface AvailableVersions {
   $type: "yandex.cloud.k8s.v1.AvailableVersions";
-  /** Release channel: `RAPID`, `REGULAR` or `STABLE`. For more details see [documentation](https://cloud.yandex.ru/docs/managed-kubernetes/concepts/release-channels-and-updates). */
+  /** Release channel: `RAPID`, `REGULAR` or `STABLE`. For more details see [documentation](/docs/managed-kubernetes/concepts/release-channels-and-updates). */
   releaseChannel: ReleaseChannel;
   /** Version of Kubernetes components. */
   versions: string[];

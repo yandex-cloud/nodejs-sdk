@@ -18,15 +18,25 @@ import {
   MetadataOptions,
   SchedulingPolicy,
   NetworkSettings,
-  GpuSettings,
   PlacementPolicy,
+  GpuSettings,
+  SerialPortSettings,
   IpVersion,
   Instance,
   ipVersionFromJSON,
   ipVersionToJSON,
 } from "../../../../yandex/cloud/compute/v1/instance";
+import {
+  MaintenancePolicy,
+  maintenancePolicyFromJSON,
+  maintenancePolicyToJSON,
+} from "../../../../yandex/cloud/compute/v1/maintenance";
+import { Duration } from "../../../../google/protobuf/duration";
 import { FieldMask } from "../../../../google/protobuf/field_mask";
-import { DiskPlacementPolicy } from "../../../../yandex/cloud/compute/v1/disk";
+import {
+  DiskPlacementPolicy,
+  DiskPlacementPolicyChange,
+} from "../../../../yandex/cloud/compute/v1/disk";
 import { Operation } from "../../../../yandex/cloud/operation/operation";
 import {
   ListAccessBindingsRequest,
@@ -199,7 +209,6 @@ export interface CreateInstanceRequest {
   /**
    * Network configuration for the instance. Specifies how the network interface is configured
    * to interact with other services on the internal network and on the internet.
-   * Currently only one network interface is supported per instance.
    */
   networkInterfaceSpecs: NetworkInterfaceSpec[];
   /**
@@ -219,10 +228,16 @@ export interface CreateInstanceRequest {
   serviceAccountId: string;
   /** Network settings. */
   networkSettings?: NetworkSettings;
-  /** GPU settings. */
-  gpuSettings?: GpuSettings;
   /** Placement policy configuration. */
   placementPolicy?: PlacementPolicy;
+  /** GPU settings. */
+  gpuSettings?: GpuSettings;
+  /** Behaviour on maintenance events */
+  maintenancePolicy: MaintenancePolicy;
+  /** Time between notification via metadata service and maintenance */
+  maintenanceGracePeriod?: Duration;
+  /** Serial port settings */
+  serialPortSettings?: SerialPortSettings;
 }
 
 export interface CreateInstanceRequest_LabelsEntry {
@@ -302,6 +317,12 @@ export interface UpdateInstanceRequest {
   placementPolicy?: PlacementPolicy;
   /** Scheduling policy configuration. */
   schedulingPolicy?: SchedulingPolicy;
+  /** Behaviour on maintenance events */
+  maintenancePolicy: MaintenancePolicy;
+  /** Time between notification via metadata service and maintenance */
+  maintenanceGracePeriod?: Duration;
+  /** Serial port settings */
+  serialPortSettings?: SerialPortSettings;
 }
 
 export interface UpdateInstanceRequest_LabelsEntry {
@@ -506,6 +527,43 @@ export interface DetachInstanceFilesystemMetadata {
   filesystemId: string;
 }
 
+export interface AttachInstanceNetworkInterfaceRequest {
+  $type: "yandex.cloud.compute.v1.AttachInstanceNetworkInterfaceRequest";
+  /** ID of the instance that in which network interface is being attached to. */
+  instanceId: string;
+  /** The index of the network interface */
+  networkInterfaceIndex: string;
+  /** ID of the subnet. */
+  subnetId: string;
+  /** Primary IPv4 address that will be assigned to the instance for this network interface. */
+  primaryV4AddressSpec?: PrimaryAddressSpec;
+  /** ID's of security groups attached to the interface. */
+  securityGroupIds: string[];
+}
+
+export interface AttachInstanceNetworkInterfaceMetadata {
+  $type: "yandex.cloud.compute.v1.AttachInstanceNetworkInterfaceMetadata";
+  /** ID of the instant network interface that is being updated. */
+  instanceId: string;
+  networkInterfaceIndex: string;
+}
+
+export interface DetachInstanceNetworkInterfaceRequest {
+  $type: "yandex.cloud.compute.v1.DetachInstanceNetworkInterfaceRequest";
+  /** ID of the instance that in which network interface is being attached to. */
+  instanceId: string;
+  /** The index of the network interface. */
+  networkInterfaceIndex: string;
+}
+
+export interface DetachInstanceNetworkInterfaceMetadata {
+  $type: "yandex.cloud.compute.v1.DetachInstanceNetworkInterfaceMetadata";
+  /** ID of the instant network interface that is being updated. */
+  instanceId: string;
+  /** The index of the network interface. */
+  networkInterfaceIndex: string;
+}
+
 /** Enables One-to-one NAT on the network interface. */
 export interface AddInstanceOneToOneNatRequest {
   $type: "yandex.cloud.compute.v1.AddInstanceOneToOneNatRequest";
@@ -546,7 +604,7 @@ export interface RemoveInstanceOneToOneNatMetadata {
 
 export interface UpdateInstanceNetworkInterfaceRequest {
   $type: "yandex.cloud.compute.v1.UpdateInstanceNetworkInterfaceRequest";
-  /** ID of the network interface that is being updated. */
+  /** ID of the instance that is being updated. */
   instanceId: string;
   /** The index of the network interface to be updated. */
   networkInterfaceIndex: string;
@@ -568,6 +626,16 @@ export interface UpdateInstanceNetworkInterfaceMetadata {
   instanceId: string;
   /** The index of the network interface. */
   networkInterfaceIndex: string;
+}
+
+export interface SimulateInstanceMaintenanceEventRequest {
+  $type: "yandex.cloud.compute.v1.SimulateInstanceMaintenanceEventRequest";
+  instanceId: string;
+}
+
+export interface SimulateInstanceMaintenanceEventMetadata {
+  $type: "yandex.cloud.compute.v1.SimulateInstanceMaintenanceEventMetadata";
+  instanceId: string;
 }
 
 export interface ListInstanceOperationsRequest {
@@ -782,6 +850,8 @@ export interface NetworkInterfaceSpec {
   primaryV6AddressSpec?: PrimaryAddressSpec;
   /** ID's of security groups attached to the interface */
   securityGroupIds: string[];
+  /** The index of the network interface, will be generated by the server, 0,1,2... etc if not specified. */
+  index: string;
 }
 
 export interface PrimaryAddressSpec {
@@ -862,6 +932,16 @@ export interface RelocateInstanceRequest {
    * To get the zone ID, make a [ZoneService.List] request.
    */
   destinationZoneId: string;
+  /**
+   * Network configuration for the instance. Specifies how the network interface is configured
+   * to interact with other services on the internal network and on the internet.
+   * Currently only one network interface is supported per instance.
+   */
+  networkInterfaceSpecs: NetworkInterfaceSpec[];
+  /** Boot disk placement policy configuration in target zone. Must be specified if disk has placement policy. */
+  bootDiskPlacement?: DiskPlacementPolicy;
+  /** Secondary disk placement policy configurations in target zone. Must be specified for each disk that has placement policy. */
+  secondaryDiskPlacements: DiskPlacementPolicyChange[];
 }
 
 export interface RelocateInstanceMetadata {
@@ -1179,6 +1259,7 @@ const baseCreateInstanceRequest: object = {
   platformId: "",
   hostname: "",
   serviceAccountId: "",
+  maintenancePolicy: 0,
 };
 
 export const CreateInstanceRequest = {
@@ -1271,16 +1352,31 @@ export const CreateInstanceRequest = {
         writer.uint32(122).fork()
       ).ldelim();
     }
+    if (message.placementPolicy !== undefined) {
+      PlacementPolicy.encode(
+        message.placementPolicy,
+        writer.uint32(130).fork()
+      ).ldelim();
+    }
     if (message.gpuSettings !== undefined) {
       GpuSettings.encode(
         message.gpuSettings,
         writer.uint32(162).fork()
       ).ldelim();
     }
-    if (message.placementPolicy !== undefined) {
-      PlacementPolicy.encode(
-        message.placementPolicy,
-        writer.uint32(130).fork()
+    if (message.maintenancePolicy !== 0) {
+      writer.uint32(168).int32(message.maintenancePolicy);
+    }
+    if (message.maintenanceGracePeriod !== undefined) {
+      Duration.encode(
+        message.maintenanceGracePeriod,
+        writer.uint32(178).fork()
+      ).ldelim();
+    }
+    if (message.serialPortSettings !== undefined) {
+      SerialPortSettings.encode(
+        message.serialPortSettings,
+        writer.uint32(186).fork()
       ).ldelim();
     }
     return writer;
@@ -1388,11 +1484,26 @@ export const CreateInstanceRequest = {
             reader.uint32()
           );
           break;
+        case 16:
+          message.placementPolicy = PlacementPolicy.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         case 20:
           message.gpuSettings = GpuSettings.decode(reader, reader.uint32());
           break;
-        case 16:
-          message.placementPolicy = PlacementPolicy.decode(
+        case 21:
+          message.maintenancePolicy = reader.int32() as any;
+          break;
+        case 22:
+          message.maintenanceGracePeriod = Duration.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 23:
+          message.serialPortSettings = SerialPortSettings.decode(
             reader,
             reader.uint32()
           );
@@ -1479,13 +1590,28 @@ export const CreateInstanceRequest = {
       object.networkSettings !== undefined && object.networkSettings !== null
         ? NetworkSettings.fromJSON(object.networkSettings)
         : undefined;
+    message.placementPolicy =
+      object.placementPolicy !== undefined && object.placementPolicy !== null
+        ? PlacementPolicy.fromJSON(object.placementPolicy)
+        : undefined;
     message.gpuSettings =
       object.gpuSettings !== undefined && object.gpuSettings !== null
         ? GpuSettings.fromJSON(object.gpuSettings)
         : undefined;
-    message.placementPolicy =
-      object.placementPolicy !== undefined && object.placementPolicy !== null
-        ? PlacementPolicy.fromJSON(object.placementPolicy)
+    message.maintenancePolicy =
+      object.maintenancePolicy !== undefined &&
+      object.maintenancePolicy !== null
+        ? maintenancePolicyFromJSON(object.maintenancePolicy)
+        : 0;
+    message.maintenanceGracePeriod =
+      object.maintenanceGracePeriod !== undefined &&
+      object.maintenanceGracePeriod !== null
+        ? Duration.fromJSON(object.maintenanceGracePeriod)
+        : undefined;
+    message.serialPortSettings =
+      object.serialPortSettings !== undefined &&
+      object.serialPortSettings !== null
+        ? SerialPortSettings.fromJSON(object.serialPortSettings)
         : undefined;
     return message;
   },
@@ -1561,13 +1687,25 @@ export const CreateInstanceRequest = {
       (obj.networkSettings = message.networkSettings
         ? NetworkSettings.toJSON(message.networkSettings)
         : undefined);
+    message.placementPolicy !== undefined &&
+      (obj.placementPolicy = message.placementPolicy
+        ? PlacementPolicy.toJSON(message.placementPolicy)
+        : undefined);
     message.gpuSettings !== undefined &&
       (obj.gpuSettings = message.gpuSettings
         ? GpuSettings.toJSON(message.gpuSettings)
         : undefined);
-    message.placementPolicy !== undefined &&
-      (obj.placementPolicy = message.placementPolicy
-        ? PlacementPolicy.toJSON(message.placementPolicy)
+    message.maintenancePolicy !== undefined &&
+      (obj.maintenancePolicy = maintenancePolicyToJSON(
+        message.maintenancePolicy
+      ));
+    message.maintenanceGracePeriod !== undefined &&
+      (obj.maintenanceGracePeriod = message.maintenanceGracePeriod
+        ? Duration.toJSON(message.maintenanceGracePeriod)
+        : undefined);
+    message.serialPortSettings !== undefined &&
+      (obj.serialPortSettings = message.serialPortSettings
+        ? SerialPortSettings.toJSON(message.serialPortSettings)
         : undefined);
     return obj;
   },
@@ -1633,13 +1771,24 @@ export const CreateInstanceRequest = {
       object.networkSettings !== undefined && object.networkSettings !== null
         ? NetworkSettings.fromPartial(object.networkSettings)
         : undefined;
+    message.placementPolicy =
+      object.placementPolicy !== undefined && object.placementPolicy !== null
+        ? PlacementPolicy.fromPartial(object.placementPolicy)
+        : undefined;
     message.gpuSettings =
       object.gpuSettings !== undefined && object.gpuSettings !== null
         ? GpuSettings.fromPartial(object.gpuSettings)
         : undefined;
-    message.placementPolicy =
-      object.placementPolicy !== undefined && object.placementPolicy !== null
-        ? PlacementPolicy.fromPartial(object.placementPolicy)
+    message.maintenancePolicy = object.maintenancePolicy ?? 0;
+    message.maintenanceGracePeriod =
+      object.maintenanceGracePeriod !== undefined &&
+      object.maintenanceGracePeriod !== null
+        ? Duration.fromPartial(object.maintenanceGracePeriod)
+        : undefined;
+    message.serialPortSettings =
+      object.serialPortSettings !== undefined &&
+      object.serialPortSettings !== null
+        ? SerialPortSettings.fromPartial(object.serialPortSettings)
         : undefined;
     return message;
   },
@@ -1889,6 +2038,7 @@ const baseUpdateInstanceRequest: object = {
   description: "",
   platformId: "",
   serviceAccountId: "",
+  maintenancePolicy: 0,
 };
 
 export const UpdateInstanceRequest = {
@@ -1964,6 +2114,21 @@ export const UpdateInstanceRequest = {
       SchedulingPolicy.encode(
         message.schedulingPolicy,
         writer.uint32(98).fork()
+      ).ldelim();
+    }
+    if (message.maintenancePolicy !== 0) {
+      writer.uint32(112).int32(message.maintenancePolicy);
+    }
+    if (message.maintenanceGracePeriod !== undefined) {
+      Duration.encode(
+        message.maintenanceGracePeriod,
+        writer.uint32(122).fork()
+      ).ldelim();
+    }
+    if (message.serialPortSettings !== undefined) {
+      SerialPortSettings.encode(
+        message.serialPortSettings,
+        writer.uint32(130).fork()
       ).ldelim();
     }
     return writer;
@@ -2044,6 +2209,21 @@ export const UpdateInstanceRequest = {
             reader.uint32()
           );
           break;
+        case 14:
+          message.maintenancePolicy = reader.int32() as any;
+          break;
+        case 15:
+          message.maintenanceGracePeriod = Duration.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 16:
+          message.serialPortSettings = SerialPortSettings.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2110,6 +2290,21 @@ export const UpdateInstanceRequest = {
       object.schedulingPolicy !== undefined && object.schedulingPolicy !== null
         ? SchedulingPolicy.fromJSON(object.schedulingPolicy)
         : undefined;
+    message.maintenancePolicy =
+      object.maintenancePolicy !== undefined &&
+      object.maintenancePolicy !== null
+        ? maintenancePolicyFromJSON(object.maintenancePolicy)
+        : 0;
+    message.maintenanceGracePeriod =
+      object.maintenanceGracePeriod !== undefined &&
+      object.maintenanceGracePeriod !== null
+        ? Duration.fromJSON(object.maintenanceGracePeriod)
+        : undefined;
+    message.serialPortSettings =
+      object.serialPortSettings !== undefined &&
+      object.serialPortSettings !== null
+        ? SerialPortSettings.fromJSON(object.serialPortSettings)
+        : undefined;
     return message;
   },
 
@@ -2157,6 +2352,18 @@ export const UpdateInstanceRequest = {
     message.schedulingPolicy !== undefined &&
       (obj.schedulingPolicy = message.schedulingPolicy
         ? SchedulingPolicy.toJSON(message.schedulingPolicy)
+        : undefined);
+    message.maintenancePolicy !== undefined &&
+      (obj.maintenancePolicy = maintenancePolicyToJSON(
+        message.maintenancePolicy
+      ));
+    message.maintenanceGracePeriod !== undefined &&
+      (obj.maintenanceGracePeriod = message.maintenanceGracePeriod
+        ? Duration.toJSON(message.maintenanceGracePeriod)
+        : undefined);
+    message.serialPortSettings !== undefined &&
+      (obj.serialPortSettings = message.serialPortSettings
+        ? SerialPortSettings.toJSON(message.serialPortSettings)
         : undefined);
     return obj;
   },
@@ -2209,6 +2416,17 @@ export const UpdateInstanceRequest = {
     message.schedulingPolicy =
       object.schedulingPolicy !== undefined && object.schedulingPolicy !== null
         ? SchedulingPolicy.fromPartial(object.schedulingPolicy)
+        : undefined;
+    message.maintenancePolicy = object.maintenancePolicy ?? 0;
+    message.maintenanceGracePeriod =
+      object.maintenanceGracePeriod !== undefined &&
+      object.maintenanceGracePeriod !== null
+        ? Duration.fromPartial(object.maintenanceGracePeriod)
+        : undefined;
+    message.serialPortSettings =
+      object.serialPortSettings !== undefined &&
+      object.serialPortSettings !== null
+        ? SerialPortSettings.fromPartial(object.serialPortSettings)
         : undefined;
     return message;
   },
@@ -4170,6 +4388,422 @@ messageTypeRegistry.set(
   DetachInstanceFilesystemMetadata
 );
 
+const baseAttachInstanceNetworkInterfaceRequest: object = {
+  $type: "yandex.cloud.compute.v1.AttachInstanceNetworkInterfaceRequest",
+  instanceId: "",
+  networkInterfaceIndex: "",
+  subnetId: "",
+  securityGroupIds: "",
+};
+
+export const AttachInstanceNetworkInterfaceRequest = {
+  $type:
+    "yandex.cloud.compute.v1.AttachInstanceNetworkInterfaceRequest" as const,
+
+  encode(
+    message: AttachInstanceNetworkInterfaceRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.instanceId !== "") {
+      writer.uint32(10).string(message.instanceId);
+    }
+    if (message.networkInterfaceIndex !== "") {
+      writer.uint32(18).string(message.networkInterfaceIndex);
+    }
+    if (message.subnetId !== "") {
+      writer.uint32(26).string(message.subnetId);
+    }
+    if (message.primaryV4AddressSpec !== undefined) {
+      PrimaryAddressSpec.encode(
+        message.primaryV4AddressSpec,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    for (const v of message.securityGroupIds) {
+      writer.uint32(50).string(v!);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): AttachInstanceNetworkInterfaceRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseAttachInstanceNetworkInterfaceRequest,
+    } as AttachInstanceNetworkInterfaceRequest;
+    message.securityGroupIds = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instanceId = reader.string();
+          break;
+        case 2:
+          message.networkInterfaceIndex = reader.string();
+          break;
+        case 3:
+          message.subnetId = reader.string();
+          break;
+        case 4:
+          message.primaryV4AddressSpec = PrimaryAddressSpec.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 6:
+          message.securityGroupIds.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AttachInstanceNetworkInterfaceRequest {
+    const message = {
+      ...baseAttachInstanceNetworkInterfaceRequest,
+    } as AttachInstanceNetworkInterfaceRequest;
+    message.instanceId =
+      object.instanceId !== undefined && object.instanceId !== null
+        ? String(object.instanceId)
+        : "";
+    message.networkInterfaceIndex =
+      object.networkInterfaceIndex !== undefined &&
+      object.networkInterfaceIndex !== null
+        ? String(object.networkInterfaceIndex)
+        : "";
+    message.subnetId =
+      object.subnetId !== undefined && object.subnetId !== null
+        ? String(object.subnetId)
+        : "";
+    message.primaryV4AddressSpec =
+      object.primaryV4AddressSpec !== undefined &&
+      object.primaryV4AddressSpec !== null
+        ? PrimaryAddressSpec.fromJSON(object.primaryV4AddressSpec)
+        : undefined;
+    message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) =>
+      String(e)
+    );
+    return message;
+  },
+
+  toJSON(message: AttachInstanceNetworkInterfaceRequest): unknown {
+    const obj: any = {};
+    message.instanceId !== undefined && (obj.instanceId = message.instanceId);
+    message.networkInterfaceIndex !== undefined &&
+      (obj.networkInterfaceIndex = message.networkInterfaceIndex);
+    message.subnetId !== undefined && (obj.subnetId = message.subnetId);
+    message.primaryV4AddressSpec !== undefined &&
+      (obj.primaryV4AddressSpec = message.primaryV4AddressSpec
+        ? PrimaryAddressSpec.toJSON(message.primaryV4AddressSpec)
+        : undefined);
+    if (message.securityGroupIds) {
+      obj.securityGroupIds = message.securityGroupIds.map((e) => e);
+    } else {
+      obj.securityGroupIds = [];
+    }
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<AttachInstanceNetworkInterfaceRequest>, I>
+  >(object: I): AttachInstanceNetworkInterfaceRequest {
+    const message = {
+      ...baseAttachInstanceNetworkInterfaceRequest,
+    } as AttachInstanceNetworkInterfaceRequest;
+    message.instanceId = object.instanceId ?? "";
+    message.networkInterfaceIndex = object.networkInterfaceIndex ?? "";
+    message.subnetId = object.subnetId ?? "";
+    message.primaryV4AddressSpec =
+      object.primaryV4AddressSpec !== undefined &&
+      object.primaryV4AddressSpec !== null
+        ? PrimaryAddressSpec.fromPartial(object.primaryV4AddressSpec)
+        : undefined;
+    message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  AttachInstanceNetworkInterfaceRequest.$type,
+  AttachInstanceNetworkInterfaceRequest
+);
+
+const baseAttachInstanceNetworkInterfaceMetadata: object = {
+  $type: "yandex.cloud.compute.v1.AttachInstanceNetworkInterfaceMetadata",
+  instanceId: "",
+  networkInterfaceIndex: "",
+};
+
+export const AttachInstanceNetworkInterfaceMetadata = {
+  $type:
+    "yandex.cloud.compute.v1.AttachInstanceNetworkInterfaceMetadata" as const,
+
+  encode(
+    message: AttachInstanceNetworkInterfaceMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.instanceId !== "") {
+      writer.uint32(10).string(message.instanceId);
+    }
+    if (message.networkInterfaceIndex !== "") {
+      writer.uint32(18).string(message.networkInterfaceIndex);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): AttachInstanceNetworkInterfaceMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseAttachInstanceNetworkInterfaceMetadata,
+    } as AttachInstanceNetworkInterfaceMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instanceId = reader.string();
+          break;
+        case 2:
+          message.networkInterfaceIndex = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AttachInstanceNetworkInterfaceMetadata {
+    const message = {
+      ...baseAttachInstanceNetworkInterfaceMetadata,
+    } as AttachInstanceNetworkInterfaceMetadata;
+    message.instanceId =
+      object.instanceId !== undefined && object.instanceId !== null
+        ? String(object.instanceId)
+        : "";
+    message.networkInterfaceIndex =
+      object.networkInterfaceIndex !== undefined &&
+      object.networkInterfaceIndex !== null
+        ? String(object.networkInterfaceIndex)
+        : "";
+    return message;
+  },
+
+  toJSON(message: AttachInstanceNetworkInterfaceMetadata): unknown {
+    const obj: any = {};
+    message.instanceId !== undefined && (obj.instanceId = message.instanceId);
+    message.networkInterfaceIndex !== undefined &&
+      (obj.networkInterfaceIndex = message.networkInterfaceIndex);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<AttachInstanceNetworkInterfaceMetadata>, I>
+  >(object: I): AttachInstanceNetworkInterfaceMetadata {
+    const message = {
+      ...baseAttachInstanceNetworkInterfaceMetadata,
+    } as AttachInstanceNetworkInterfaceMetadata;
+    message.instanceId = object.instanceId ?? "";
+    message.networkInterfaceIndex = object.networkInterfaceIndex ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  AttachInstanceNetworkInterfaceMetadata.$type,
+  AttachInstanceNetworkInterfaceMetadata
+);
+
+const baseDetachInstanceNetworkInterfaceRequest: object = {
+  $type: "yandex.cloud.compute.v1.DetachInstanceNetworkInterfaceRequest",
+  instanceId: "",
+  networkInterfaceIndex: "",
+};
+
+export const DetachInstanceNetworkInterfaceRequest = {
+  $type:
+    "yandex.cloud.compute.v1.DetachInstanceNetworkInterfaceRequest" as const,
+
+  encode(
+    message: DetachInstanceNetworkInterfaceRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.instanceId !== "") {
+      writer.uint32(10).string(message.instanceId);
+    }
+    if (message.networkInterfaceIndex !== "") {
+      writer.uint32(18).string(message.networkInterfaceIndex);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DetachInstanceNetworkInterfaceRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDetachInstanceNetworkInterfaceRequest,
+    } as DetachInstanceNetworkInterfaceRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instanceId = reader.string();
+          break;
+        case 2:
+          message.networkInterfaceIndex = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DetachInstanceNetworkInterfaceRequest {
+    const message = {
+      ...baseDetachInstanceNetworkInterfaceRequest,
+    } as DetachInstanceNetworkInterfaceRequest;
+    message.instanceId =
+      object.instanceId !== undefined && object.instanceId !== null
+        ? String(object.instanceId)
+        : "";
+    message.networkInterfaceIndex =
+      object.networkInterfaceIndex !== undefined &&
+      object.networkInterfaceIndex !== null
+        ? String(object.networkInterfaceIndex)
+        : "";
+    return message;
+  },
+
+  toJSON(message: DetachInstanceNetworkInterfaceRequest): unknown {
+    const obj: any = {};
+    message.instanceId !== undefined && (obj.instanceId = message.instanceId);
+    message.networkInterfaceIndex !== undefined &&
+      (obj.networkInterfaceIndex = message.networkInterfaceIndex);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<DetachInstanceNetworkInterfaceRequest>, I>
+  >(object: I): DetachInstanceNetworkInterfaceRequest {
+    const message = {
+      ...baseDetachInstanceNetworkInterfaceRequest,
+    } as DetachInstanceNetworkInterfaceRequest;
+    message.instanceId = object.instanceId ?? "";
+    message.networkInterfaceIndex = object.networkInterfaceIndex ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  DetachInstanceNetworkInterfaceRequest.$type,
+  DetachInstanceNetworkInterfaceRequest
+);
+
+const baseDetachInstanceNetworkInterfaceMetadata: object = {
+  $type: "yandex.cloud.compute.v1.DetachInstanceNetworkInterfaceMetadata",
+  instanceId: "",
+  networkInterfaceIndex: "",
+};
+
+export const DetachInstanceNetworkInterfaceMetadata = {
+  $type:
+    "yandex.cloud.compute.v1.DetachInstanceNetworkInterfaceMetadata" as const,
+
+  encode(
+    message: DetachInstanceNetworkInterfaceMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.instanceId !== "") {
+      writer.uint32(10).string(message.instanceId);
+    }
+    if (message.networkInterfaceIndex !== "") {
+      writer.uint32(18).string(message.networkInterfaceIndex);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DetachInstanceNetworkInterfaceMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDetachInstanceNetworkInterfaceMetadata,
+    } as DetachInstanceNetworkInterfaceMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instanceId = reader.string();
+          break;
+        case 2:
+          message.networkInterfaceIndex = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DetachInstanceNetworkInterfaceMetadata {
+    const message = {
+      ...baseDetachInstanceNetworkInterfaceMetadata,
+    } as DetachInstanceNetworkInterfaceMetadata;
+    message.instanceId =
+      object.instanceId !== undefined && object.instanceId !== null
+        ? String(object.instanceId)
+        : "";
+    message.networkInterfaceIndex =
+      object.networkInterfaceIndex !== undefined &&
+      object.networkInterfaceIndex !== null
+        ? String(object.networkInterfaceIndex)
+        : "";
+    return message;
+  },
+
+  toJSON(message: DetachInstanceNetworkInterfaceMetadata): unknown {
+    const obj: any = {};
+    message.instanceId !== undefined && (obj.instanceId = message.instanceId);
+    message.networkInterfaceIndex !== undefined &&
+      (obj.networkInterfaceIndex = message.networkInterfaceIndex);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<DetachInstanceNetworkInterfaceMetadata>, I>
+  >(object: I): DetachInstanceNetworkInterfaceMetadata {
+    const message = {
+      ...baseDetachInstanceNetworkInterfaceMetadata,
+    } as DetachInstanceNetworkInterfaceMetadata;
+    message.instanceId = object.instanceId ?? "";
+    message.networkInterfaceIndex = object.networkInterfaceIndex ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  DetachInstanceNetworkInterfaceMetadata.$type,
+  DetachInstanceNetworkInterfaceMetadata
+);
+
 const baseAddInstanceOneToOneNatRequest: object = {
   $type: "yandex.cloud.compute.v1.AddInstanceOneToOneNatRequest",
   instanceId: "",
@@ -4826,6 +5460,156 @@ export const UpdateInstanceNetworkInterfaceMetadata = {
 messageTypeRegistry.set(
   UpdateInstanceNetworkInterfaceMetadata.$type,
   UpdateInstanceNetworkInterfaceMetadata
+);
+
+const baseSimulateInstanceMaintenanceEventRequest: object = {
+  $type: "yandex.cloud.compute.v1.SimulateInstanceMaintenanceEventRequest",
+  instanceId: "",
+};
+
+export const SimulateInstanceMaintenanceEventRequest = {
+  $type:
+    "yandex.cloud.compute.v1.SimulateInstanceMaintenanceEventRequest" as const,
+
+  encode(
+    message: SimulateInstanceMaintenanceEventRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.instanceId !== "") {
+      writer.uint32(10).string(message.instanceId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): SimulateInstanceMaintenanceEventRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseSimulateInstanceMaintenanceEventRequest,
+    } as SimulateInstanceMaintenanceEventRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instanceId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SimulateInstanceMaintenanceEventRequest {
+    const message = {
+      ...baseSimulateInstanceMaintenanceEventRequest,
+    } as SimulateInstanceMaintenanceEventRequest;
+    message.instanceId =
+      object.instanceId !== undefined && object.instanceId !== null
+        ? String(object.instanceId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: SimulateInstanceMaintenanceEventRequest): unknown {
+    const obj: any = {};
+    message.instanceId !== undefined && (obj.instanceId = message.instanceId);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<SimulateInstanceMaintenanceEventRequest>, I>
+  >(object: I): SimulateInstanceMaintenanceEventRequest {
+    const message = {
+      ...baseSimulateInstanceMaintenanceEventRequest,
+    } as SimulateInstanceMaintenanceEventRequest;
+    message.instanceId = object.instanceId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  SimulateInstanceMaintenanceEventRequest.$type,
+  SimulateInstanceMaintenanceEventRequest
+);
+
+const baseSimulateInstanceMaintenanceEventMetadata: object = {
+  $type: "yandex.cloud.compute.v1.SimulateInstanceMaintenanceEventMetadata",
+  instanceId: "",
+};
+
+export const SimulateInstanceMaintenanceEventMetadata = {
+  $type:
+    "yandex.cloud.compute.v1.SimulateInstanceMaintenanceEventMetadata" as const,
+
+  encode(
+    message: SimulateInstanceMaintenanceEventMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.instanceId !== "") {
+      writer.uint32(10).string(message.instanceId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): SimulateInstanceMaintenanceEventMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseSimulateInstanceMaintenanceEventMetadata,
+    } as SimulateInstanceMaintenanceEventMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instanceId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SimulateInstanceMaintenanceEventMetadata {
+    const message = {
+      ...baseSimulateInstanceMaintenanceEventMetadata,
+    } as SimulateInstanceMaintenanceEventMetadata;
+    message.instanceId =
+      object.instanceId !== undefined && object.instanceId !== null
+        ? String(object.instanceId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: SimulateInstanceMaintenanceEventMetadata): unknown {
+    const obj: any = {};
+    message.instanceId !== undefined && (obj.instanceId = message.instanceId);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<SimulateInstanceMaintenanceEventMetadata>, I>
+  >(object: I): SimulateInstanceMaintenanceEventMetadata {
+    const message = {
+      ...baseSimulateInstanceMaintenanceEventMetadata,
+    } as SimulateInstanceMaintenanceEventMetadata;
+    message.instanceId = object.instanceId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  SimulateInstanceMaintenanceEventMetadata.$type,
+  SimulateInstanceMaintenanceEventMetadata
 );
 
 const baseListInstanceOperationsRequest: object = {
@@ -5590,6 +6374,7 @@ const baseNetworkInterfaceSpec: object = {
   $type: "yandex.cloud.compute.v1.NetworkInterfaceSpec",
   subnetId: "",
   securityGroupIds: "",
+  index: "",
 };
 
 export const NetworkInterfaceSpec = {
@@ -5616,6 +6401,9 @@ export const NetworkInterfaceSpec = {
     }
     for (const v of message.securityGroupIds) {
       writer.uint32(50).string(v!);
+    }
+    if (message.index !== "") {
+      writer.uint32(58).string(message.index);
     }
     return writer;
   },
@@ -5649,6 +6437,9 @@ export const NetworkInterfaceSpec = {
         case 6:
           message.securityGroupIds.push(reader.string());
           break;
+        case 7:
+          message.index = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -5676,6 +6467,10 @@ export const NetworkInterfaceSpec = {
     message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) =>
       String(e)
     );
+    message.index =
+      object.index !== undefined && object.index !== null
+        ? String(object.index)
+        : "";
     return message;
   },
 
@@ -5695,6 +6490,7 @@ export const NetworkInterfaceSpec = {
     } else {
       obj.securityGroupIds = [];
     }
+    message.index !== undefined && (obj.index = message.index);
     return obj;
   },
 
@@ -5714,6 +6510,7 @@ export const NetworkInterfaceSpec = {
         ? PrimaryAddressSpec.fromPartial(object.primaryV6AddressSpec)
         : undefined;
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
+    message.index = object.index ?? "";
     return message;
   },
 };
@@ -6213,6 +7010,18 @@ export const RelocateInstanceRequest = {
     if (message.destinationZoneId !== "") {
       writer.uint32(18).string(message.destinationZoneId);
     }
+    for (const v of message.networkInterfaceSpecs) {
+      NetworkInterfaceSpec.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.bootDiskPlacement !== undefined) {
+      DiskPlacementPolicy.encode(
+        message.bootDiskPlacement,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    for (const v of message.secondaryDiskPlacements) {
+      DiskPlacementPolicyChange.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -6225,6 +7034,8 @@ export const RelocateInstanceRequest = {
     const message = {
       ...baseRelocateInstanceRequest,
     } as RelocateInstanceRequest;
+    message.networkInterfaceSpecs = [];
+    message.secondaryDiskPlacements = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -6233,6 +7044,22 @@ export const RelocateInstanceRequest = {
           break;
         case 2:
           message.destinationZoneId = reader.string();
+          break;
+        case 3:
+          message.networkInterfaceSpecs.push(
+            NetworkInterfaceSpec.decode(reader, reader.uint32())
+          );
+          break;
+        case 4:
+          message.bootDiskPlacement = DiskPlacementPolicy.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 5:
+          message.secondaryDiskPlacements.push(
+            DiskPlacementPolicyChange.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -6255,6 +7082,17 @@ export const RelocateInstanceRequest = {
       object.destinationZoneId !== null
         ? String(object.destinationZoneId)
         : "";
+    message.networkInterfaceSpecs = (object.networkInterfaceSpecs ?? []).map(
+      (e: any) => NetworkInterfaceSpec.fromJSON(e)
+    );
+    message.bootDiskPlacement =
+      object.bootDiskPlacement !== undefined &&
+      object.bootDiskPlacement !== null
+        ? DiskPlacementPolicy.fromJSON(object.bootDiskPlacement)
+        : undefined;
+    message.secondaryDiskPlacements = (
+      object.secondaryDiskPlacements ?? []
+    ).map((e: any) => DiskPlacementPolicyChange.fromJSON(e));
     return message;
   },
 
@@ -6263,6 +7101,24 @@ export const RelocateInstanceRequest = {
     message.instanceId !== undefined && (obj.instanceId = message.instanceId);
     message.destinationZoneId !== undefined &&
       (obj.destinationZoneId = message.destinationZoneId);
+    if (message.networkInterfaceSpecs) {
+      obj.networkInterfaceSpecs = message.networkInterfaceSpecs.map((e) =>
+        e ? NetworkInterfaceSpec.toJSON(e) : undefined
+      );
+    } else {
+      obj.networkInterfaceSpecs = [];
+    }
+    message.bootDiskPlacement !== undefined &&
+      (obj.bootDiskPlacement = message.bootDiskPlacement
+        ? DiskPlacementPolicy.toJSON(message.bootDiskPlacement)
+        : undefined);
+    if (message.secondaryDiskPlacements) {
+      obj.secondaryDiskPlacements = message.secondaryDiskPlacements.map((e) =>
+        e ? DiskPlacementPolicyChange.toJSON(e) : undefined
+      );
+    } else {
+      obj.secondaryDiskPlacements = [];
+    }
     return obj;
   },
 
@@ -6274,6 +7130,19 @@ export const RelocateInstanceRequest = {
     } as RelocateInstanceRequest;
     message.instanceId = object.instanceId ?? "";
     message.destinationZoneId = object.destinationZoneId ?? "";
+    message.networkInterfaceSpecs =
+      object.networkInterfaceSpecs?.map((e) =>
+        NetworkInterfaceSpec.fromPartial(e)
+      ) || [];
+    message.bootDiskPlacement =
+      object.bootDiskPlacement !== undefined &&
+      object.bootDiskPlacement !== null
+        ? DiskPlacementPolicy.fromPartial(object.bootDiskPlacement)
+        : undefined;
+    message.secondaryDiskPlacements =
+      object.secondaryDiskPlacements?.map((e) =>
+        DiskPlacementPolicyChange.fromPartial(e)
+      ) || [];
     return message;
   },
 };
@@ -6760,10 +7629,6 @@ export const InstanceServiceService = {
    *
    * The instance and the filesystem must reside in the same availability zone.
    *
-   * To attach a filesystem, the instance must have a `STOPPED` status ([Instance.status]).
-   * To check the instance status, make a [InstanceService.Get] request.
-   * To stop the running instance, make a [InstanceService.Stop] request.
-   *
    * To use the instance with an attached filesystem, the latter must be mounted.
    * For details, see [documentation](/docs/compute/operations/filesystem/attach-to-vm).
    */
@@ -6779,13 +7644,7 @@ export const InstanceServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /**
-   * Detaches the filesystem from the instance.
-   *
-   * To detach a filesystem, the instance must have a `STOPPED` status ([Instance.status]).
-   * To check the instance status, make a [InstanceService.Get] request.
-   * To stop the running instance, make a [InstanceService.Stop] request.
-   */
+  /** Detaches the filesystem from the instance. */
   detachFilesystem: {
     path: "/yandex.cloud.compute.v1.InstanceService/DetachFilesystem",
     requestStream: false,
@@ -6794,6 +7653,44 @@ export const InstanceServiceService = {
       Buffer.from(DetachInstanceFilesystemRequest.encode(value).finish()),
     requestDeserialize: (value: Buffer) =>
       DetachInstanceFilesystemRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /**
+   * Attaches the network-interface to the instance.
+   *
+   * To attach a network-interface, the instance must have a `STOPPED` status ([Instance.status]).
+   * To check the instance status, make a [InstanceService.Get] request.
+   * To stop the running instance, make a [InstanceService.Stop] request.
+   */
+  attachNetworkInterface: {
+    path: "/yandex.cloud.compute.v1.InstanceService/AttachNetworkInterface",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: AttachInstanceNetworkInterfaceRequest) =>
+      Buffer.from(AttachInstanceNetworkInterfaceRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      AttachInstanceNetworkInterfaceRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /**
+   * Detaches the network-interface to the instance.
+   *
+   * To Detach a network-interface, the instance must have a `STOPPED` status ([Instance.status]).
+   * To check the instance status, make a [InstanceService.Get] request.
+   * To stop the running instance, make a [InstanceService.Stop] request.
+   */
+  detachNetworkInterface: {
+    path: "/yandex.cloud.compute.v1.InstanceService/DetachNetworkInterface",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: DetachInstanceNetworkInterfaceRequest) =>
+      Buffer.from(DetachInstanceNetworkInterfaceRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      DetachInstanceNetworkInterfaceRequest.decode(value),
     responseSerialize: (value: Operation) =>
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
@@ -6887,6 +7784,20 @@ export const InstanceServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  simulateMaintenanceEvent: {
+    path: "/yandex.cloud.compute.v1.InstanceService/SimulateMaintenanceEvent",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: SimulateInstanceMaintenanceEventRequest) =>
+      Buffer.from(
+        SimulateInstanceMaintenanceEventRequest.encode(value).finish()
+      ),
+    requestDeserialize: (value: Buffer) =>
+      SimulateInstanceMaintenanceEventRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /** Lists access bindings for the instance. */
   listAccessBindings: {
     path: "/yandex.cloud.compute.v1.InstanceService/ListAccessBindings",
@@ -6973,22 +7884,34 @@ export interface InstanceServiceServer extends UntypedServiceImplementation {
    *
    * The instance and the filesystem must reside in the same availability zone.
    *
-   * To attach a filesystem, the instance must have a `STOPPED` status ([Instance.status]).
-   * To check the instance status, make a [InstanceService.Get] request.
-   * To stop the running instance, make a [InstanceService.Stop] request.
-   *
    * To use the instance with an attached filesystem, the latter must be mounted.
    * For details, see [documentation](/docs/compute/operations/filesystem/attach-to-vm).
    */
   attachFilesystem: handleUnaryCall<AttachInstanceFilesystemRequest, Operation>;
+  /** Detaches the filesystem from the instance. */
+  detachFilesystem: handleUnaryCall<DetachInstanceFilesystemRequest, Operation>;
   /**
-   * Detaches the filesystem from the instance.
+   * Attaches the network-interface to the instance.
    *
-   * To detach a filesystem, the instance must have a `STOPPED` status ([Instance.status]).
+   * To attach a network-interface, the instance must have a `STOPPED` status ([Instance.status]).
    * To check the instance status, make a [InstanceService.Get] request.
    * To stop the running instance, make a [InstanceService.Stop] request.
    */
-  detachFilesystem: handleUnaryCall<DetachInstanceFilesystemRequest, Operation>;
+  attachNetworkInterface: handleUnaryCall<
+    AttachInstanceNetworkInterfaceRequest,
+    Operation
+  >;
+  /**
+   * Detaches the network-interface to the instance.
+   *
+   * To Detach a network-interface, the instance must have a `STOPPED` status ([Instance.status]).
+   * To check the instance status, make a [InstanceService.Get] request.
+   * To stop the running instance, make a [InstanceService.Stop] request.
+   */
+  detachNetworkInterface: handleUnaryCall<
+    DetachInstanceNetworkInterfaceRequest,
+    Operation
+  >;
   /** Enables One-to-one NAT on the network interface. */
   addOneToOneNat: handleUnaryCall<AddInstanceOneToOneNatRequest, Operation>;
   /** Removes One-to-one NAT from the network interface. */
@@ -7021,6 +7944,10 @@ export interface InstanceServiceServer extends UntypedServiceImplementation {
    * Running instance will be restarted during this operation.
    */
   relocate: handleUnaryCall<RelocateInstanceRequest, Operation>;
+  simulateMaintenanceEvent: handleUnaryCall<
+    SimulateInstanceMaintenanceEventRequest,
+    Operation
+  >;
   /** Lists access bindings for the instance. */
   listAccessBindings: handleUnaryCall<
     ListAccessBindingsRequest,
@@ -7259,10 +8186,6 @@ export interface InstanceServiceClient extends Client {
    *
    * The instance and the filesystem must reside in the same availability zone.
    *
-   * To attach a filesystem, the instance must have a `STOPPED` status ([Instance.status]).
-   * To check the instance status, make a [InstanceService.Get] request.
-   * To stop the running instance, make a [InstanceService.Stop] request.
-   *
    * To use the instance with an attached filesystem, the latter must be mounted.
    * For details, see [documentation](/docs/compute/operations/filesystem/attach-to-vm).
    */
@@ -7281,13 +8204,7 @@ export interface InstanceServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /**
-   * Detaches the filesystem from the instance.
-   *
-   * To detach a filesystem, the instance must have a `STOPPED` status ([Instance.status]).
-   * To check the instance status, make a [InstanceService.Get] request.
-   * To stop the running instance, make a [InstanceService.Stop] request.
-   */
+  /** Detaches the filesystem from the instance. */
   detachFilesystem(
     request: DetachInstanceFilesystemRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -7299,6 +8216,50 @@ export interface InstanceServiceClient extends Client {
   ): ClientUnaryCall;
   detachFilesystem(
     request: DetachInstanceFilesystemRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /**
+   * Attaches the network-interface to the instance.
+   *
+   * To attach a network-interface, the instance must have a `STOPPED` status ([Instance.status]).
+   * To check the instance status, make a [InstanceService.Get] request.
+   * To stop the running instance, make a [InstanceService.Stop] request.
+   */
+  attachNetworkInterface(
+    request: AttachInstanceNetworkInterfaceRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  attachNetworkInterface(
+    request: AttachInstanceNetworkInterfaceRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  attachNetworkInterface(
+    request: AttachInstanceNetworkInterfaceRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /**
+   * Detaches the network-interface to the instance.
+   *
+   * To Detach a network-interface, the instance must have a `STOPPED` status ([Instance.status]).
+   * To check the instance status, make a [InstanceService.Get] request.
+   * To stop the running instance, make a [InstanceService.Stop] request.
+   */
+  detachNetworkInterface(
+    request: DetachInstanceNetworkInterfaceRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  detachNetworkInterface(
+    request: DetachInstanceNetworkInterfaceRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  detachNetworkInterface(
+    request: DetachInstanceNetworkInterfaceRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -7415,6 +8376,21 @@ export interface InstanceServiceClient extends Client {
   ): ClientUnaryCall;
   relocate(
     request: RelocateInstanceRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  simulateMaintenanceEvent(
+    request: SimulateInstanceMaintenanceEventRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  simulateMaintenanceEvent(
+    request: SimulateInstanceMaintenanceEventRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  simulateMaintenanceEvent(
+    request: SimulateInstanceMaintenanceEventRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

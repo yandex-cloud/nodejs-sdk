@@ -3,6 +3,7 @@ import { messageTypeRegistry } from "../../../../typeRegistry";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { Timestamp } from "../../../../google/protobuf/timestamp";
+import { BoolValue } from "../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.lockbox.v1";
 
@@ -29,6 +30,7 @@ export interface Secret {
   currentVersion?: Version;
   /** Flag that inhibits deletion of the secret. */
   deletionProtection: boolean;
+  passwordPayloadSpecification?: PasswordPayloadSpecification | undefined;
 }
 
 export enum Secret_Status {
@@ -111,6 +113,7 @@ export interface Version {
   status: Version_Status;
   /** Keys of the entries contained in the version payload. */
   payloadEntryKeys: string[];
+  passwordPayloadSpecification?: PasswordPayloadSpecification | undefined;
 }
 
 export enum Version_Status {
@@ -161,6 +164,33 @@ export function version_StatusToJSON(object: Version_Status): string {
     default:
       return "UNKNOWN";
   }
+}
+
+export interface PasswordPayloadSpecification {
+  $type: "yandex.cloud.lockbox.v1.PasswordPayloadSpecification";
+  /** key of the entry to store generated password value */
+  passwordKey: string;
+  /** password length; by default, a reasonable length will be decided */
+  length: number;
+  /** whether at least one A..Z character is included in the password, true by default */
+  includeUppercase?: boolean;
+  /** whether at least one a..z character is included in the password, true by default */
+  includeLowercase?: boolean;
+  /** whether at least one 0..9 character is included in the password, true by default */
+  includeDigits?: boolean;
+  /**
+   * whether at least one punctuation character is included in the password, true by default
+   * punctuation characters by default (there are 32): !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+   * to customize the punctuation characters, see included_punctuation and excluded_punctuation below
+   */
+  includePunctuation?: boolean;
+  /**
+   * If include_punctuation is true, one of these two fields (not both) may be used optionally to customize the punctuation:
+   * a string of specific punctuation characters to use (at most, all the 32)
+   */
+  includedPunctuation: string;
+  /** a string of punctuation characters to exclude from the default (at most 31, it's not allowed to exclude all the 32) */
+  excludedPunctuation: string;
 }
 
 const baseSecret: object = {
@@ -221,6 +251,12 @@ export const Secret = {
     if (message.deletionProtection === true) {
       writer.uint32(80).bool(message.deletionProtection);
     }
+    if (message.passwordPayloadSpecification !== undefined) {
+      PasswordPayloadSpecification.encode(
+        message.passwordPayloadSpecification,
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -266,6 +302,10 @@ export const Secret = {
           break;
         case 10:
           message.deletionProtection = reader.bool();
+          break;
+        case 11:
+          message.passwordPayloadSpecification =
+            PasswordPayloadSpecification.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -318,6 +358,13 @@ export const Secret = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.passwordPayloadSpecification =
+      object.passwordPayloadSpecification !== undefined &&
+      object.passwordPayloadSpecification !== null
+        ? PasswordPayloadSpecification.fromJSON(
+            object.passwordPayloadSpecification
+          )
+        : undefined;
     return message;
   },
 
@@ -345,6 +392,12 @@ export const Secret = {
         : undefined);
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.passwordPayloadSpecification !== undefined &&
+      (obj.passwordPayloadSpecification = message.passwordPayloadSpecification
+        ? PasswordPayloadSpecification.toJSON(
+            message.passwordPayloadSpecification
+          )
+        : undefined);
     return obj;
   },
 
@@ -370,6 +423,13 @@ export const Secret = {
         ? Version.fromPartial(object.currentVersion)
         : undefined;
     message.deletionProtection = object.deletionProtection ?? false;
+    message.passwordPayloadSpecification =
+      object.passwordPayloadSpecification !== undefined &&
+      object.passwordPayloadSpecification !== null
+        ? PasswordPayloadSpecification.fromPartial(
+            object.passwordPayloadSpecification
+          )
+        : undefined;
     return message;
   },
 };
@@ -492,6 +552,12 @@ export const Version = {
     for (const v of message.payloadEntryKeys) {
       writer.uint32(58).string(v!);
     }
+    if (message.passwordPayloadSpecification !== undefined) {
+      PasswordPayloadSpecification.encode(
+        message.passwordPayloadSpecification,
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -528,6 +594,10 @@ export const Version = {
         case 7:
           message.payloadEntryKeys.push(reader.string());
           break;
+        case 8:
+          message.passwordPayloadSpecification =
+            PasswordPayloadSpecification.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -563,6 +633,13 @@ export const Version = {
     message.payloadEntryKeys = (object.payloadEntryKeys ?? []).map((e: any) =>
       String(e)
     );
+    message.passwordPayloadSpecification =
+      object.passwordPayloadSpecification !== undefined &&
+      object.passwordPayloadSpecification !== null
+        ? PasswordPayloadSpecification.fromJSON(
+            object.passwordPayloadSpecification
+          )
+        : undefined;
     return message;
   },
 
@@ -583,6 +660,12 @@ export const Version = {
     } else {
       obj.payloadEntryKeys = [];
     }
+    message.passwordPayloadSpecification !== undefined &&
+      (obj.passwordPayloadSpecification = message.passwordPayloadSpecification
+        ? PasswordPayloadSpecification.toJSON(
+            message.passwordPayloadSpecification
+          )
+        : undefined);
     return obj;
   },
 
@@ -595,11 +678,233 @@ export const Version = {
     message.description = object.description ?? "";
     message.status = object.status ?? 0;
     message.payloadEntryKeys = object.payloadEntryKeys?.map((e) => e) || [];
+    message.passwordPayloadSpecification =
+      object.passwordPayloadSpecification !== undefined &&
+      object.passwordPayloadSpecification !== null
+        ? PasswordPayloadSpecification.fromPartial(
+            object.passwordPayloadSpecification
+          )
+        : undefined;
     return message;
   },
 };
 
 messageTypeRegistry.set(Version.$type, Version);
+
+const basePasswordPayloadSpecification: object = {
+  $type: "yandex.cloud.lockbox.v1.PasswordPayloadSpecification",
+  passwordKey: "",
+  length: 0,
+  includedPunctuation: "",
+  excludedPunctuation: "",
+};
+
+export const PasswordPayloadSpecification = {
+  $type: "yandex.cloud.lockbox.v1.PasswordPayloadSpecification" as const,
+
+  encode(
+    message: PasswordPayloadSpecification,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.passwordKey !== "") {
+      writer.uint32(10).string(message.passwordKey);
+    }
+    if (message.length !== 0) {
+      writer.uint32(16).int64(message.length);
+    }
+    if (message.includeUppercase !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.includeUppercase!,
+        },
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.includeLowercase !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.includeLowercase!,
+        },
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    if (message.includeDigits !== undefined) {
+      BoolValue.encode(
+        { $type: "google.protobuf.BoolValue", value: message.includeDigits! },
+        writer.uint32(42).fork()
+      ).ldelim();
+    }
+    if (message.includePunctuation !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.includePunctuation!,
+        },
+        writer.uint32(50).fork()
+      ).ldelim();
+    }
+    if (message.includedPunctuation !== "") {
+      writer.uint32(58).string(message.includedPunctuation);
+    }
+    if (message.excludedPunctuation !== "") {
+      writer.uint32(66).string(message.excludedPunctuation);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): PasswordPayloadSpecification {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...basePasswordPayloadSpecification,
+    } as PasswordPayloadSpecification;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.passwordKey = reader.string();
+          break;
+        case 2:
+          message.length = longToNumber(reader.int64() as Long);
+          break;
+        case 3:
+          message.includeUppercase = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 4:
+          message.includeLowercase = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 5:
+          message.includeDigits = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 6:
+          message.includePunctuation = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 7:
+          message.includedPunctuation = reader.string();
+          break;
+        case 8:
+          message.excludedPunctuation = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PasswordPayloadSpecification {
+    const message = {
+      ...basePasswordPayloadSpecification,
+    } as PasswordPayloadSpecification;
+    message.passwordKey =
+      object.passwordKey !== undefined && object.passwordKey !== null
+        ? String(object.passwordKey)
+        : "";
+    message.length =
+      object.length !== undefined && object.length !== null
+        ? Number(object.length)
+        : 0;
+    message.includeUppercase =
+      object.includeUppercase !== undefined && object.includeUppercase !== null
+        ? Boolean(object.includeUppercase)
+        : undefined;
+    message.includeLowercase =
+      object.includeLowercase !== undefined && object.includeLowercase !== null
+        ? Boolean(object.includeLowercase)
+        : undefined;
+    message.includeDigits =
+      object.includeDigits !== undefined && object.includeDigits !== null
+        ? Boolean(object.includeDigits)
+        : undefined;
+    message.includePunctuation =
+      object.includePunctuation !== undefined &&
+      object.includePunctuation !== null
+        ? Boolean(object.includePunctuation)
+        : undefined;
+    message.includedPunctuation =
+      object.includedPunctuation !== undefined &&
+      object.includedPunctuation !== null
+        ? String(object.includedPunctuation)
+        : "";
+    message.excludedPunctuation =
+      object.excludedPunctuation !== undefined &&
+      object.excludedPunctuation !== null
+        ? String(object.excludedPunctuation)
+        : "";
+    return message;
+  },
+
+  toJSON(message: PasswordPayloadSpecification): unknown {
+    const obj: any = {};
+    message.passwordKey !== undefined &&
+      (obj.passwordKey = message.passwordKey);
+    message.length !== undefined && (obj.length = Math.round(message.length));
+    message.includeUppercase !== undefined &&
+      (obj.includeUppercase = message.includeUppercase);
+    message.includeLowercase !== undefined &&
+      (obj.includeLowercase = message.includeLowercase);
+    message.includeDigits !== undefined &&
+      (obj.includeDigits = message.includeDigits);
+    message.includePunctuation !== undefined &&
+      (obj.includePunctuation = message.includePunctuation);
+    message.includedPunctuation !== undefined &&
+      (obj.includedPunctuation = message.includedPunctuation);
+    message.excludedPunctuation !== undefined &&
+      (obj.excludedPunctuation = message.excludedPunctuation);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<PasswordPayloadSpecification>, I>>(
+    object: I
+  ): PasswordPayloadSpecification {
+    const message = {
+      ...basePasswordPayloadSpecification,
+    } as PasswordPayloadSpecification;
+    message.passwordKey = object.passwordKey ?? "";
+    message.length = object.length ?? 0;
+    message.includeUppercase = object.includeUppercase ?? undefined;
+    message.includeLowercase = object.includeLowercase ?? undefined;
+    message.includeDigits = object.includeDigits ?? undefined;
+    message.includePunctuation = object.includePunctuation ?? undefined;
+    message.includedPunctuation = object.includedPunctuation ?? "";
+    message.excludedPunctuation = object.excludedPunctuation ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  PasswordPayloadSpecification.$type,
+  PasswordPayloadSpecification
+);
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
 
 type Builtin =
   | Date
@@ -648,6 +953,13 @@ function fromJsonTimestamp(o: any): Date {
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
+}
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
 }
 
 if (_m0.util.Long !== Long) {

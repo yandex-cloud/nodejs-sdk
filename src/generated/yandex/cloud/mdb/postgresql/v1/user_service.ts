@@ -17,8 +17,11 @@ import _m0 from "protobufjs/minimal";
 import {
   UserSpec,
   UserSettings,
+  UserPasswordEncryption,
   Permission,
   User,
+  userPasswordEncryptionFromJSON,
+  userPasswordEncryptionToJSON,
 } from "../../../../../yandex/cloud/mdb/postgresql/v1/user";
 import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import { Operation } from "../../../../../yandex/cloud/operation/operation";
@@ -139,6 +142,11 @@ export interface UpdateUserRequest {
    * Default value: `unspecified` (inherits cluster's deletion_protection)
    */
   deletionProtection?: boolean;
+  /**
+   * New password-based authentication method for user.
+   * Possible values are `` USER_PASSWORD_ENCRYPTION_MD5 `` or `` USER_PASSWORD_ENCRYPTION_SCRAM_SHA_256 ``.
+   */
+  userPasswordEncryption: UserPasswordEncryption;
 }
 
 export interface UpdateUserMetadata {
@@ -625,6 +633,7 @@ const baseUpdateUserRequest: object = {
   password: "",
   connLimit: 0,
   grants: "",
+  userPasswordEncryption: 0,
 };
 
 export const UpdateUserRequest = {
@@ -673,6 +682,9 @@ export const UpdateUserRequest = {
         writer.uint32(82).fork()
       ).ldelim();
     }
+    if (message.userPasswordEncryption !== 0) {
+      writer.uint32(88).int32(message.userPasswordEncryption);
+    }
     return writer;
   },
 
@@ -717,6 +729,9 @@ export const UpdateUserRequest = {
             reader,
             reader.uint32()
           ).value;
+          break;
+        case 11:
+          message.userPasswordEncryption = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -765,6 +780,11 @@ export const UpdateUserRequest = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : undefined;
+    message.userPasswordEncryption =
+      object.userPasswordEncryption !== undefined &&
+      object.userPasswordEncryption !== null
+        ? userPasswordEncryptionFromJSON(object.userPasswordEncryption)
+        : 0;
     return message;
   },
 
@@ -798,6 +818,10 @@ export const UpdateUserRequest = {
     }
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.userPasswordEncryption !== undefined &&
+      (obj.userPasswordEncryption = userPasswordEncryptionToJSON(
+        message.userPasswordEncryption
+      ));
     return obj;
   },
 
@@ -822,6 +846,7 @@ export const UpdateUserRequest = {
     message.login = object.login ?? undefined;
     message.grants = object.grants?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? undefined;
+    message.userPasswordEncryption = object.userPasswordEncryption ?? 0;
     return message;
   },
 };

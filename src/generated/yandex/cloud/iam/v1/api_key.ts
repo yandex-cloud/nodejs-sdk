@@ -17,6 +17,12 @@ export interface ApiKey {
   createdAt?: Date;
   /** Description of the API key. 0-256 characters long. */
   description: string;
+  /** Timestamp for the last authentication using this API key. */
+  lastUsedAt?: Date;
+  /** Scope of the API key. 0-256 characters long. */
+  scope: string;
+  /** API key expiration timestamp. */
+  expiresAt?: Date;
 }
 
 const baseApiKey: object = {
@@ -24,6 +30,7 @@ const baseApiKey: object = {
   id: "",
   serviceAccountId: "",
   description: "",
+  scope: "",
 };
 
 export const ApiKey = {
@@ -47,6 +54,21 @@ export const ApiKey = {
     }
     if (message.description !== "") {
       writer.uint32(34).string(message.description);
+    }
+    if (message.lastUsedAt !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.lastUsedAt),
+        writer.uint32(42).fork()
+      ).ldelim();
+    }
+    if (message.scope !== "") {
+      writer.uint32(50).string(message.scope);
+    }
+    if (message.expiresAt !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.expiresAt),
+        writer.uint32(58).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -72,6 +94,19 @@ export const ApiKey = {
         case 4:
           message.description = reader.string();
           break;
+        case 5:
+          message.lastUsedAt = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 6:
+          message.scope = reader.string();
+          break;
+        case 7:
+          message.expiresAt = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -96,6 +131,18 @@ export const ApiKey = {
       object.description !== undefined && object.description !== null
         ? String(object.description)
         : "";
+    message.lastUsedAt =
+      object.lastUsedAt !== undefined && object.lastUsedAt !== null
+        ? fromJsonTimestamp(object.lastUsedAt)
+        : undefined;
+    message.scope =
+      object.scope !== undefined && object.scope !== null
+        ? String(object.scope)
+        : "";
+    message.expiresAt =
+      object.expiresAt !== undefined && object.expiresAt !== null
+        ? fromJsonTimestamp(object.expiresAt)
+        : undefined;
     return message;
   },
 
@@ -108,6 +155,11 @@ export const ApiKey = {
       (obj.createdAt = message.createdAt.toISOString());
     message.description !== undefined &&
       (obj.description = message.description);
+    message.lastUsedAt !== undefined &&
+      (obj.lastUsedAt = message.lastUsedAt.toISOString());
+    message.scope !== undefined && (obj.scope = message.scope);
+    message.expiresAt !== undefined &&
+      (obj.expiresAt = message.expiresAt.toISOString());
     return obj;
   },
 
@@ -117,6 +169,9 @@ export const ApiKey = {
     message.serviceAccountId = object.serviceAccountId ?? "";
     message.createdAt = object.createdAt ?? undefined;
     message.description = object.description ?? "";
+    message.lastUsedAt = object.lastUsedAt ?? undefined;
+    message.scope = object.scope ?? "";
+    message.expiresAt = object.expiresAt ?? undefined;
     return message;
   },
 };

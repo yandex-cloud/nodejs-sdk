@@ -14,12 +14,13 @@ import {
   ServiceError,
 } from "@grpc/grpc-js";
 import _m0 from "protobufjs/minimal";
-import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import {
+  LogOptions,
   Broker,
   BrokerCertificate,
   BrokerPassword,
 } from "../../../../../yandex/cloud/iot/broker/v1/broker";
+import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import { Operation } from "../../../../../yandex/cloud/operation/operation";
 
 export const protobufPackage = "yandex.cloud.iot.broker.v1";
@@ -92,6 +93,8 @@ export interface CreateBrokerRequest {
    * The password must contain at least three character categories among the following: upper case latin, lower case latin, numbers and special symbols.
    */
   password: string;
+  /** Options for logging broker events */
+  logOptions?: LogOptions;
 }
 
 export interface CreateBrokerRequest_LabelsEntry {
@@ -133,6 +136,8 @@ export interface UpdateBrokerRequest {
    * Existing set of `labels` is completely replaced by the provided set.
    */
   labels: { [key: string]: string };
+  /** Options for logging broker events */
+  logOptions?: LogOptions;
 }
 
 export interface UpdateBrokerRequest_LabelsEntry {
@@ -595,6 +600,9 @@ export const CreateBrokerRequest = {
     if (message.password !== "") {
       writer.uint32(50).string(message.password);
     }
+    if (message.logOptions !== undefined) {
+      LogOptions.encode(message.logOptions, writer.uint32(58).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -633,6 +641,9 @@ export const CreateBrokerRequest = {
         case 6:
           message.password = reader.string();
           break;
+        case 7:
+          message.logOptions = LogOptions.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -668,6 +679,10 @@ export const CreateBrokerRequest = {
       object.password !== undefined && object.password !== null
         ? String(object.password)
         : "";
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromJSON(object.logOptions)
+        : undefined;
     return message;
   },
 
@@ -691,6 +706,10 @@ export const CreateBrokerRequest = {
       obj.certificates = [];
     }
     message.password !== undefined && (obj.password = message.password);
+    message.logOptions !== undefined &&
+      (obj.logOptions = message.logOptions
+        ? LogOptions.toJSON(message.logOptions)
+        : undefined);
     return obj;
   },
 
@@ -714,6 +733,10 @@ export const CreateBrokerRequest = {
         CreateBrokerRequest_Certificate.fromPartial(e)
       ) || [];
     message.password = object.password ?? "";
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromPartial(object.logOptions)
+        : undefined;
     return message;
   },
 };
@@ -981,6 +1004,9 @@ export const UpdateBrokerRequest = {
         writer.uint32(42).fork()
       ).ldelim();
     });
+    if (message.logOptions !== undefined) {
+      LogOptions.encode(message.logOptions, writer.uint32(50).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1012,6 +1038,9 @@ export const UpdateBrokerRequest = {
           if (entry5.value !== undefined) {
             message.labels[entry5.key] = entry5.value;
           }
+          break;
+        case 6:
+          message.logOptions = LogOptions.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1045,6 +1074,10 @@ export const UpdateBrokerRequest = {
       acc[key] = String(value);
       return acc;
     }, {});
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromJSON(object.logOptions)
+        : undefined;
     return message;
   },
 
@@ -1064,6 +1097,10 @@ export const UpdateBrokerRequest = {
         obj.labels[k] = v;
       });
     }
+    message.logOptions !== undefined &&
+      (obj.logOptions = message.logOptions
+        ? LogOptions.toJSON(message.logOptions)
+        : undefined);
     return obj;
   },
 
@@ -1086,6 +1123,10 @@ export const UpdateBrokerRequest = {
       }
       return acc;
     }, {});
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromPartial(object.logOptions)
+        : undefined;
     return message;
   },
 };

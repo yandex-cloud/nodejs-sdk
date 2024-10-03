@@ -15,6 +15,7 @@ import {
 } from "@grpc/grpc-js";
 import _m0 from "protobufjs/minimal";
 import { Backup } from "../../../../../yandex/cloud/mdb/greenplum/v1/backup";
+import { Operation } from "../../../../../yandex/cloud/operation/operation";
 
 export const protobufPackage = "yandex.cloud.mdb.greenplum.v1";
 
@@ -64,7 +65,7 @@ export interface DeleteBackupMetadata {
   $type: "yandex.cloud.mdb.greenplum.v1.DeleteBackupMetadata";
   /** Required. ID of the Greenplum backup that is currently being deleted. */
   backupId: string;
-  /** ID of the Greenplum backup that is being created. */
+  /** ID of the Greenplum backup that is being deleted. */
   clusterId: string;
 }
 
@@ -466,6 +467,17 @@ export const BackupServiceService = {
       Buffer.from(ListBackupsResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer) => ListBackupsResponse.decode(value),
   },
+  delete: {
+    path: "/yandex.cloud.mdb.greenplum.v1.BackupService/Delete",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: DeleteBackupRequest) =>
+      Buffer.from(DeleteBackupRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => DeleteBackupRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
 } as const;
 
 export interface BackupServiceServer extends UntypedServiceImplementation {
@@ -473,6 +485,7 @@ export interface BackupServiceServer extends UntypedServiceImplementation {
   get: handleUnaryCall<GetBackupRequest, Backup>;
   /** Returns the list of available backups for the specified Greenplum® cluster. */
   list: handleUnaryCall<ListBackupsRequest, ListBackupsResponse>;
+  delete: handleUnaryCall<DeleteBackupRequest, Operation>;
 }
 
 export interface BackupServiceClient extends Client {
@@ -516,6 +529,21 @@ export interface BackupServiceClient extends Client {
       error: ServiceError | null,
       response: ListBackupsResponse
     ) => void
+  ): ClientUnaryCall;
+  delete(
+    request: DeleteBackupRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  delete(
+    request: DeleteBackupRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  delete(
+    request: DeleteBackupRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
 }
 

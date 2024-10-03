@@ -19,7 +19,9 @@ fs.mkdirSync(GENERATED_CODE_DIR);
 
 const protoFiles = fg.sync('**/*.proto', { cwd: YA_PROTO_DIR, absolute: true });
 
-logger.debug(`Found ${protoFiles.length} proto files in ${YA_PROTO_DIR} directory`);
+logger.debug(
+    `Found ${protoFiles.length} proto files in ${YA_PROTO_DIR} directory`,
+);
 
 const commandArgs = [
     'npx --no-install grpc_tools_node_protoc',
@@ -34,7 +36,11 @@ logger.debug(`Code generation command: \n ${command}`);
 
 cp.execSync(command);
 
-const projectsDirs = fg.sync('*', { cwd: GENERATED_PROJECTS_DIR, onlyDirectories: true, absolute: true });
+const projectsDirs = fg.sync('*', {
+    cwd: GENERATED_PROJECTS_DIR,
+    onlyDirectories: true,
+    absolute: true,
+});
 
 logger.debug(`Found ${projectsDirs.length} project directories`, projectsDirs);
 
@@ -72,19 +78,14 @@ for (const projectDir of projectsDirs) {
         };
 
         const exportStatements = projectModules.map((modulePath) => {
-            const relativePath = path.relative(projectDir, modulePath);
+            const relativePath = path
+                .relative(projectDir, modulePath)
+                .replace('.ts', '');
+
             const relativePathSegments = relativePath.split(path.sep);
-            const firstPathSegment = relativePathSegments[0];
-            const moduleName = path.basename(modulePath).replace('.ts', '');
-            const serviceName = moduleName.replace('_service', '');
-            // Do not use 'vX' as prefixes
-            const usePathSegmentAsPrefix = relativePathSegments.length > 1
-                && firstPathSegment.length > 2
-                && firstPathSegment !== serviceName;
-            const moduleAlias = [
-                usePathSegmentAsPrefix ? firstPathSegment : undefined,
-                moduleName,
-            ].filter(Boolean).join('_');
+            const moduleName = path.basename(modulePath);
+
+            const moduleAlias = relativePathSegments.join('_');
 
             const { ext } = path.parse(modulePath);
             const moduleWithoutExt = relativePath.replace(ext, '');
@@ -101,7 +102,10 @@ for (const projectDir of projectsDirs) {
 
         const indexModuleContent = exportStatements.join('\n');
 
-        logger.debug(`Writing export statements to ${indexModulePath} module`, indexModuleContent);
+        logger.debug(
+            `Writing export statements to ${indexModulePath} module`,
+            indexModuleContent,
+        );
 
         fs.writeFileSync(indexModulePath, indexModuleContent, 'utf8');
     }
@@ -110,28 +114,47 @@ for (const projectDir of projectsDirs) {
 logger.debug('Generating root index module');
 
 const rootIndexModulePath = path.join(GENERATED_PROJECTS_DIR, 'index.ts');
-const serviceClientsModulePath = path.join(GENERATED_PROJECTS_DIR, 'service_clients.ts');
+const serviceClientsModulePath = path.join(
+    GENERATED_PROJECTS_DIR,
+    'service_clients.ts',
+);
 const rootModuleContentParts: string[] = [];
 const serviceClientsModuleContentParts: string[] = [
-    'import * as cloudApi from \'.\'',
+    "import * as cloudApi from '.'",
 ];
+
+const serviceClientsExportsSet = new Set<string>();
 
 for (const [indexModulePath, projectMeta] of Object.entries(projectsMeta)) {
     logger.debug(`Processing ${indexModulePath} module`);
-    const relativePath = path.relative(GENERATED_PROJECTS_DIR, indexModulePath).replace('index.ts', '');
+    const relativePath = path
+        .relative(GENERATED_PROJECTS_DIR, indexModulePath)
+        .replace('index.ts', '');
 
-    rootModuleContentParts.push(`export * as ${projectMeta.name} from './${relativePath}'`);
+    rootModuleContentParts.push(
+        `export * as ${projectMeta.name} from './${relativePath}'`,
+    );
 
     for (const serviceMeta of projectMeta.services) {
         const serviceConfig = servicesConfig[projectMeta.name]?.[serviceMeta.exportAlias];
 
         if (serviceConfig) {
-            serviceClientsModuleContentParts.push(
-                // eslint-disable-next-line max-len
-                `export const ${serviceConfig.exportClassName || serviceConfig.importClassName} = cloudApi.${projectMeta.name}.${serviceMeta.exportAlias}.${serviceConfig.importClassName};`,
-            );
+            delete servicesConfig[projectMeta.name]?.[serviceMeta.exportAlias];
+
+            const exportStr = `export const ${
+                serviceConfig.exportClassName || serviceConfig.importClassName
+            } = cloudApi.${projectMeta.name}.${serviceMeta.exportAlias}.${
+                serviceConfig.importClassName
+            };`;
+
+            if (serviceClientsExportsSet.has(exportStr)) continue;
+
+            serviceClientsModuleContentParts.push(exportStr);
+            serviceClientsExportsSet.add(exportStr);
         } else {
-            logger.warn(`There is no configuration for service ${serviceMeta.exportAlias} in project ${projectMeta.name}`);
+            logger.warn(
+                `There is no configuration for service ${serviceMeta.exportAlias} in project ${projectMeta.name}`,
+            );
         }
     }
 }
@@ -139,5 +162,26 @@ for (const [indexModulePath, projectMeta] of Object.entries(projectsMeta)) {
 logger.debug(`Writing result to ${rootIndexModulePath} module`);
 logger.debug(`Writing result to ${serviceClientsModulePath} module`);
 
-fs.writeFileSync(rootIndexModulePath, rootModuleContentParts.join('\n'), 'utf8');
-fs.writeFileSync(serviceClientsModulePath, serviceClientsModuleContentParts.join('\n'), 'utf8');
+for (const serviceName of Object.keys(servicesConfig)) {
+    const obj = servicesConfig[serviceName];
+    const keys = Object.keys(obj);
+
+    if (keys.length > 0) {
+        logger.warn(
+            `There are unused config keys for service ${serviceName}: ${keys.join(
+                ', ',
+            )}`,
+        );
+    }
+}
+
+fs.writeFileSync(
+    rootIndexModulePath,
+    rootModuleContentParts.join('\n'),
+    'utf8',
+);
+fs.writeFileSync(
+    serviceClientsModulePath,
+    serviceClientsModuleContentParts.join('\n'),
+    'utf8',
+);

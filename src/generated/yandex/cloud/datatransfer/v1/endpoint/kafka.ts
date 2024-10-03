@@ -63,10 +63,10 @@ export interface OnPremiseKafka {
   $type: "yandex.cloud.datatransfer.v1.endpoint.OnPremiseKafka";
   /** Kafka broker URLs */
   brokerUrls: string[];
-  /** TLS settings for broker connection. Disabled by default. */
-  tlsMode?: TLSMode;
   /** Network interface for endpoint. If none will assume public ipv4 */
   subnetId: string;
+  /** TLS settings for broker connection. Disabled by default. */
+  tlsMode?: TLSMode;
 }
 
 export interface KafkaAuth {
@@ -81,10 +81,10 @@ export interface KafkaSaslSecurity {
   $type: "yandex.cloud.datatransfer.v1.endpoint.KafkaSaslSecurity";
   /** User name */
   user: string;
-  /** Password for user */
-  password?: Secret;
   /** SASL mechanism for authentication */
   mechanism: KafkaMechanism;
+  /** Password for user */
+  password?: Secret;
 }
 
 export interface KafkaSource {
@@ -95,12 +95,19 @@ export interface KafkaSource {
   auth?: KafkaAuth;
   /** Security groups */
   securityGroups: string[];
-  /** Full source topic name */
+  /**
+   * Full source topic name
+   * Deprecated in favor of topic names
+   *
+   * @deprecated
+   */
   topicName: string;
   /** Data transformation rules */
   transformer?: DataTransformationOptions;
   /** Data parsing rules */
   parser?: Parser;
+  /** List of topic names to read */
+  topicNames: string[];
 }
 
 export interface KafkaTarget {
@@ -243,11 +250,11 @@ export const OnPremiseKafka = {
     for (const v of message.brokerUrls) {
       writer.uint32(10).string(v!);
     }
-    if (message.tlsMode !== undefined) {
-      TLSMode.encode(message.tlsMode, writer.uint32(42).fork()).ldelim();
-    }
     if (message.subnetId !== "") {
       writer.uint32(34).string(message.subnetId);
+    }
+    if (message.tlsMode !== undefined) {
+      TLSMode.encode(message.tlsMode, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -263,11 +270,11 @@ export const OnPremiseKafka = {
         case 1:
           message.brokerUrls.push(reader.string());
           break;
-        case 5:
-          message.tlsMode = TLSMode.decode(reader, reader.uint32());
-          break;
         case 4:
           message.subnetId = reader.string();
+          break;
+        case 5:
+          message.tlsMode = TLSMode.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -280,14 +287,14 @@ export const OnPremiseKafka = {
   fromJSON(object: any): OnPremiseKafka {
     const message = { ...baseOnPremiseKafka } as OnPremiseKafka;
     message.brokerUrls = (object.brokerUrls ?? []).map((e: any) => String(e));
-    message.tlsMode =
-      object.tlsMode !== undefined && object.tlsMode !== null
-        ? TLSMode.fromJSON(object.tlsMode)
-        : undefined;
     message.subnetId =
       object.subnetId !== undefined && object.subnetId !== null
         ? String(object.subnetId)
         : "";
+    message.tlsMode =
+      object.tlsMode !== undefined && object.tlsMode !== null
+        ? TLSMode.fromJSON(object.tlsMode)
+        : undefined;
     return message;
   },
 
@@ -298,11 +305,11 @@ export const OnPremiseKafka = {
     } else {
       obj.brokerUrls = [];
     }
+    message.subnetId !== undefined && (obj.subnetId = message.subnetId);
     message.tlsMode !== undefined &&
       (obj.tlsMode = message.tlsMode
         ? TLSMode.toJSON(message.tlsMode)
         : undefined);
-    message.subnetId !== undefined && (obj.subnetId = message.subnetId);
     return obj;
   },
 
@@ -311,11 +318,11 @@ export const OnPremiseKafka = {
   ): OnPremiseKafka {
     const message = { ...baseOnPremiseKafka } as OnPremiseKafka;
     message.brokerUrls = object.brokerUrls?.map((e) => e) || [];
+    message.subnetId = object.subnetId ?? "";
     message.tlsMode =
       object.tlsMode !== undefined && object.tlsMode !== null
         ? TLSMode.fromPartial(object.tlsMode)
         : undefined;
-    message.subnetId = object.subnetId ?? "";
     return message;
   },
 };
@@ -421,11 +428,11 @@ export const KafkaSaslSecurity = {
     if (message.user !== "") {
       writer.uint32(10).string(message.user);
     }
-    if (message.password !== undefined) {
-      Secret.encode(message.password, writer.uint32(34).fork()).ldelim();
-    }
     if (message.mechanism !== 0) {
       writer.uint32(24).int32(message.mechanism);
+    }
+    if (message.password !== undefined) {
+      Secret.encode(message.password, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -440,11 +447,11 @@ export const KafkaSaslSecurity = {
         case 1:
           message.user = reader.string();
           break;
-        case 4:
-          message.password = Secret.decode(reader, reader.uint32());
-          break;
         case 3:
           message.mechanism = reader.int32() as any;
+          break;
+        case 4:
+          message.password = Secret.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -460,26 +467,26 @@ export const KafkaSaslSecurity = {
       object.user !== undefined && object.user !== null
         ? String(object.user)
         : "";
-    message.password =
-      object.password !== undefined && object.password !== null
-        ? Secret.fromJSON(object.password)
-        : undefined;
     message.mechanism =
       object.mechanism !== undefined && object.mechanism !== null
         ? kafkaMechanismFromJSON(object.mechanism)
         : 0;
+    message.password =
+      object.password !== undefined && object.password !== null
+        ? Secret.fromJSON(object.password)
+        : undefined;
     return message;
   },
 
   toJSON(message: KafkaSaslSecurity): unknown {
     const obj: any = {};
     message.user !== undefined && (obj.user = message.user);
+    message.mechanism !== undefined &&
+      (obj.mechanism = kafkaMechanismToJSON(message.mechanism));
     message.password !== undefined &&
       (obj.password = message.password
         ? Secret.toJSON(message.password)
         : undefined);
-    message.mechanism !== undefined &&
-      (obj.mechanism = kafkaMechanismToJSON(message.mechanism));
     return obj;
   },
 
@@ -488,11 +495,11 @@ export const KafkaSaslSecurity = {
   ): KafkaSaslSecurity {
     const message = { ...baseKafkaSaslSecurity } as KafkaSaslSecurity;
     message.user = object.user ?? "";
+    message.mechanism = object.mechanism ?? 0;
     message.password =
       object.password !== undefined && object.password !== null
         ? Secret.fromPartial(object.password)
         : undefined;
-    message.mechanism = object.mechanism ?? 0;
     return message;
   },
 };
@@ -503,6 +510,7 @@ const baseKafkaSource: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.KafkaSource",
   securityGroups: "",
   topicName: "",
+  topicNames: "",
 };
 
 export const KafkaSource = {
@@ -536,6 +544,9 @@ export const KafkaSource = {
     if (message.parser !== undefined) {
       Parser.encode(message.parser, writer.uint32(58).fork()).ldelim();
     }
+    for (const v of message.topicNames) {
+      writer.uint32(66).string(v!);
+    }
     return writer;
   },
 
@@ -544,6 +555,7 @@ export const KafkaSource = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseKafkaSource } as KafkaSource;
     message.securityGroups = [];
+    message.topicNames = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -570,6 +582,9 @@ export const KafkaSource = {
           break;
         case 7:
           message.parser = Parser.decode(reader, reader.uint32());
+          break;
+        case 8:
+          message.topicNames.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -604,6 +619,7 @@ export const KafkaSource = {
       object.parser !== undefined && object.parser !== null
         ? Parser.fromJSON(object.parser)
         : undefined;
+    message.topicNames = (object.topicNames ?? []).map((e: any) => String(e));
     return message;
   },
 
@@ -627,6 +643,11 @@ export const KafkaSource = {
         : undefined);
     message.parser !== undefined &&
       (obj.parser = message.parser ? Parser.toJSON(message.parser) : undefined);
+    if (message.topicNames) {
+      obj.topicNames = message.topicNames.map((e) => e);
+    } else {
+      obj.topicNames = [];
+    }
     return obj;
   },
 
@@ -652,6 +673,7 @@ export const KafkaSource = {
       object.parser !== undefined && object.parser !== null
         ? Parser.fromPartial(object.parser)
         : undefined;
+    message.topicNames = object.topicNames?.map((e) => e) || [];
     return message;
   },
 };

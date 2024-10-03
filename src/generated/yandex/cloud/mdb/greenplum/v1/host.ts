@@ -21,11 +21,11 @@ export interface Host {
   clusterId: string;
   /** ID of the availability zone the Greenplum® host belongs to. */
   zoneId: string;
-  /** Type of the host. */
+  /** Type of the host. If the field has default value, it is not returned in the response. */
   type: Host_Type;
   /** Resources allocated to the Greenplum® host. */
   resources?: Resources;
-  /** Status code of the aggregated health of the host. */
+  /** Aggregated health of the host. If the field has default value, it is not returned in the response. */
   health: Host_Health;
   /** ID of the subnet that the host belongs to. */
   subnetId: string;
@@ -34,7 +34,7 @@ export interface Host {
 }
 
 export enum Host_Type {
-  /** TYPE_UNSPECIFIED - The type is not specified. */
+  /** TYPE_UNSPECIFIED - Host type is not specified. Default value. */
   TYPE_UNSPECIFIED = 0,
   /** MASTER - A Greenplum® master host. */
   MASTER = 1,
@@ -82,7 +82,7 @@ export function host_TypeToJSON(object: Host_Type): string {
 }
 
 export enum Host_Health {
-  /** UNKNOWN - Health of the host is unknown. */
+  /** UNKNOWN - Health of the host is unknown. Default value. */
   UNKNOWN = 0,
   /** ALIVE - The host is performing all its functions normally. */
   ALIVE = 1,

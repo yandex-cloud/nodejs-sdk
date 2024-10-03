@@ -17,13 +17,13 @@ export const protobufPackage = "yandex.cloud.datatransfer.v1.endpoint";
 
 export interface OnPremiseMysql {
   $type: "yandex.cloud.datatransfer.v1.endpoint.OnPremiseMysql";
-  hosts: string[];
   /** Database port */
   port: number;
-  /** TLS settings for server connection. Disabled by default. */
-  tlsMode?: TLSMode;
   /** Network interface for endpoint. If none will assume public ipv4 */
   subnetId: string;
+  hosts: string[];
+  /** TLS settings for server connection. Disabled by default. */
+  tlsMode?: TLSMode;
 }
 
 export interface MysqlConnection {
@@ -61,8 +61,6 @@ export interface MysqlSource {
   $type: "yandex.cloud.datatransfer.v1.endpoint.MysqlSource";
   /** Database connection settings */
   connection?: MysqlConnection;
-  /** Security groups */
-  securityGroups: string[];
   /**
    * Database name
    *
@@ -70,19 +68,10 @@ export interface MysqlSource {
    * databases at the same time from this source.
    */
   database: string;
-  /**
-   * Database for service tables
-   *
-   * Default: data source database. Here created technical tables (__tm_keeper,
-   * __tm_gtid_keeper).
-   */
-  serviceDatabase: string;
   /** User for database access. */
   user: string;
   /** Password for database access. */
   password?: Secret;
-  includeTablesRegex: string[];
-  excludeTablesRegex: string[];
   /**
    * Database timezone
    *
@@ -96,14 +85,23 @@ export interface MysqlSource {
    * Select database objects to be transferred during activation or deactivation.
    */
   objectTransferSettings?: MysqlObjectTransferSettings;
+  includeTablesRegex: string[];
+  excludeTablesRegex: string[];
+  /** Security groups */
+  securityGroups: string[];
+  /**
+   * Database for service tables
+   *
+   * Default: data source database. Here created technical tables (__tm_keeper,
+   * __tm_gtid_keeper).
+   */
+  serviceDatabase: string;
 }
 
 export interface MysqlTarget {
   $type: "yandex.cloud.datatransfer.v1.endpoint.MysqlTarget";
   /** Database connection settings */
   connection?: MysqlConnection;
-  /** Security groups */
-  securityGroups: string[];
   /**
    * Database name
    *
@@ -146,13 +144,15 @@ export interface MysqlTarget {
    * Default: db name. Here created technical tables (__tm_keeper, __tm_gtid_keeper).
    */
   serviceDatabase: string;
+  /** Security groups */
+  securityGroups: string[];
 }
 
 const baseOnPremiseMysql: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.OnPremiseMysql",
-  hosts: "",
   port: 0,
   subnetId: "",
+  hosts: "",
 };
 
 export const OnPremiseMysql = {
@@ -162,17 +162,17 @@ export const OnPremiseMysql = {
     message: OnPremiseMysql,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    for (const v of message.hosts) {
-      writer.uint32(42).string(v!);
-    }
     if (message.port !== 0) {
       writer.uint32(16).int64(message.port);
     }
-    if (message.tlsMode !== undefined) {
-      TLSMode.encode(message.tlsMode, writer.uint32(50).fork()).ldelim();
-    }
     if (message.subnetId !== "") {
       writer.uint32(34).string(message.subnetId);
+    }
+    for (const v of message.hosts) {
+      writer.uint32(42).string(v!);
+    }
+    if (message.tlsMode !== undefined) {
+      TLSMode.encode(message.tlsMode, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -185,17 +185,17 @@ export const OnPremiseMysql = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 5:
-          message.hosts.push(reader.string());
-          break;
         case 2:
           message.port = longToNumber(reader.int64() as Long);
           break;
-        case 6:
-          message.tlsMode = TLSMode.decode(reader, reader.uint32());
-          break;
         case 4:
           message.subnetId = reader.string();
+          break;
+        case 5:
+          message.hosts.push(reader.string());
+          break;
+        case 6:
+          message.tlsMode = TLSMode.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -207,35 +207,35 @@ export const OnPremiseMysql = {
 
   fromJSON(object: any): OnPremiseMysql {
     const message = { ...baseOnPremiseMysql } as OnPremiseMysql;
-    message.hosts = (object.hosts ?? []).map((e: any) => String(e));
     message.port =
       object.port !== undefined && object.port !== null
         ? Number(object.port)
         : 0;
-    message.tlsMode =
-      object.tlsMode !== undefined && object.tlsMode !== null
-        ? TLSMode.fromJSON(object.tlsMode)
-        : undefined;
     message.subnetId =
       object.subnetId !== undefined && object.subnetId !== null
         ? String(object.subnetId)
         : "";
+    message.hosts = (object.hosts ?? []).map((e: any) => String(e));
+    message.tlsMode =
+      object.tlsMode !== undefined && object.tlsMode !== null
+        ? TLSMode.fromJSON(object.tlsMode)
+        : undefined;
     return message;
   },
 
   toJSON(message: OnPremiseMysql): unknown {
     const obj: any = {};
+    message.port !== undefined && (obj.port = Math.round(message.port));
+    message.subnetId !== undefined && (obj.subnetId = message.subnetId);
     if (message.hosts) {
       obj.hosts = message.hosts.map((e) => e);
     } else {
       obj.hosts = [];
     }
-    message.port !== undefined && (obj.port = Math.round(message.port));
     message.tlsMode !== undefined &&
       (obj.tlsMode = message.tlsMode
         ? TLSMode.toJSON(message.tlsMode)
         : undefined);
-    message.subnetId !== undefined && (obj.subnetId = message.subnetId);
     return obj;
   },
 
@@ -243,13 +243,13 @@ export const OnPremiseMysql = {
     object: I
   ): OnPremiseMysql {
     const message = { ...baseOnPremiseMysql } as OnPremiseMysql;
-    message.hosts = object.hosts?.map((e) => e) || [];
     message.port = object.port ?? 0;
+    message.subnetId = object.subnetId ?? "";
+    message.hosts = object.hosts?.map((e) => e) || [];
     message.tlsMode =
       object.tlsMode !== undefined && object.tlsMode !== null
         ? TLSMode.fromPartial(object.tlsMode)
         : undefined;
-    message.subnetId = object.subnetId ?? "";
     return message;
   },
 };
@@ -459,13 +459,13 @@ messageTypeRegistry.set(
 
 const baseMysqlSource: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.MysqlSource",
-  securityGroups: "",
   database: "",
-  serviceDatabase: "",
   user: "",
+  timezone: "",
   includeTablesRegex: "",
   excludeTablesRegex: "",
-  timezone: "",
+  securityGroups: "",
+  serviceDatabase: "",
 };
 
 export const MysqlSource = {
@@ -481,26 +481,14 @@ export const MysqlSource = {
         writer.uint32(10).fork()
       ).ldelim();
     }
-    for (const v of message.securityGroups) {
-      writer.uint32(114).string(v!);
-    }
     if (message.database !== "") {
       writer.uint32(18).string(message.database);
-    }
-    if (message.serviceDatabase !== "") {
-      writer.uint32(122).string(message.serviceDatabase);
     }
     if (message.user !== "") {
       writer.uint32(26).string(message.user);
     }
     if (message.password !== undefined) {
       Secret.encode(message.password, writer.uint32(34).fork()).ldelim();
-    }
-    for (const v of message.includeTablesRegex) {
-      writer.uint32(98).string(v!);
-    }
-    for (const v of message.excludeTablesRegex) {
-      writer.uint32(106).string(v!);
     }
     if (message.timezone !== "") {
       writer.uint32(66).string(message.timezone);
@@ -511,6 +499,18 @@ export const MysqlSource = {
         writer.uint32(90).fork()
       ).ldelim();
     }
+    for (const v of message.includeTablesRegex) {
+      writer.uint32(98).string(v!);
+    }
+    for (const v of message.excludeTablesRegex) {
+      writer.uint32(106).string(v!);
+    }
+    for (const v of message.securityGroups) {
+      writer.uint32(114).string(v!);
+    }
+    if (message.serviceDatabase !== "") {
+      writer.uint32(122).string(message.serviceDatabase);
+    }
     return writer;
   },
 
@@ -518,35 +518,23 @@ export const MysqlSource = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseMysqlSource } as MysqlSource;
-    message.securityGroups = [];
     message.includeTablesRegex = [];
     message.excludeTablesRegex = [];
+    message.securityGroups = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
           message.connection = MysqlConnection.decode(reader, reader.uint32());
           break;
-        case 14:
-          message.securityGroups.push(reader.string());
-          break;
         case 2:
           message.database = reader.string();
-          break;
-        case 15:
-          message.serviceDatabase = reader.string();
           break;
         case 3:
           message.user = reader.string();
           break;
         case 4:
           message.password = Secret.decode(reader, reader.uint32());
-          break;
-        case 12:
-          message.includeTablesRegex.push(reader.string());
-          break;
-        case 13:
-          message.excludeTablesRegex.push(reader.string());
           break;
         case 8:
           message.timezone = reader.string();
@@ -556,6 +544,18 @@ export const MysqlSource = {
             reader,
             reader.uint32()
           );
+          break;
+        case 12:
+          message.includeTablesRegex.push(reader.string());
+          break;
+        case 13:
+          message.excludeTablesRegex.push(reader.string());
+          break;
+        case 14:
+          message.securityGroups.push(reader.string());
+          break;
+        case 15:
+          message.serviceDatabase = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -571,16 +571,9 @@ export const MysqlSource = {
       object.connection !== undefined && object.connection !== null
         ? MysqlConnection.fromJSON(object.connection)
         : undefined;
-    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
-      String(e)
-    );
     message.database =
       object.database !== undefined && object.database !== null
         ? String(object.database)
-        : "";
-    message.serviceDatabase =
-      object.serviceDatabase !== undefined && object.serviceDatabase !== null
-        ? String(object.serviceDatabase)
         : "";
     message.user =
       object.user !== undefined && object.user !== null
@@ -590,12 +583,6 @@ export const MysqlSource = {
       object.password !== undefined && object.password !== null
         ? Secret.fromJSON(object.password)
         : undefined;
-    message.includeTablesRegex = (object.includeTablesRegex ?? []).map(
-      (e: any) => String(e)
-    );
-    message.excludeTablesRegex = (object.excludeTablesRegex ?? []).map(
-      (e: any) => String(e)
-    );
     message.timezone =
       object.timezone !== undefined && object.timezone !== null
         ? String(object.timezone)
@@ -605,6 +592,19 @@ export const MysqlSource = {
       object.objectTransferSettings !== null
         ? MysqlObjectTransferSettings.fromJSON(object.objectTransferSettings)
         : undefined;
+    message.includeTablesRegex = (object.includeTablesRegex ?? []).map(
+      (e: any) => String(e)
+    );
+    message.excludeTablesRegex = (object.excludeTablesRegex ?? []).map(
+      (e: any) => String(e)
+    );
+    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
+      String(e)
+    );
+    message.serviceDatabase =
+      object.serviceDatabase !== undefined && object.serviceDatabase !== null
+        ? String(object.serviceDatabase)
+        : "";
     return message;
   },
 
@@ -614,18 +614,16 @@ export const MysqlSource = {
       (obj.connection = message.connection
         ? MysqlConnection.toJSON(message.connection)
         : undefined);
-    if (message.securityGroups) {
-      obj.securityGroups = message.securityGroups.map((e) => e);
-    } else {
-      obj.securityGroups = [];
-    }
     message.database !== undefined && (obj.database = message.database);
-    message.serviceDatabase !== undefined &&
-      (obj.serviceDatabase = message.serviceDatabase);
     message.user !== undefined && (obj.user = message.user);
     message.password !== undefined &&
       (obj.password = message.password
         ? Secret.toJSON(message.password)
+        : undefined);
+    message.timezone !== undefined && (obj.timezone = message.timezone);
+    message.objectTransferSettings !== undefined &&
+      (obj.objectTransferSettings = message.objectTransferSettings
+        ? MysqlObjectTransferSettings.toJSON(message.objectTransferSettings)
         : undefined);
     if (message.includeTablesRegex) {
       obj.includeTablesRegex = message.includeTablesRegex.map((e) => e);
@@ -637,11 +635,13 @@ export const MysqlSource = {
     } else {
       obj.excludeTablesRegex = [];
     }
-    message.timezone !== undefined && (obj.timezone = message.timezone);
-    message.objectTransferSettings !== undefined &&
-      (obj.objectTransferSettings = message.objectTransferSettings
-        ? MysqlObjectTransferSettings.toJSON(message.objectTransferSettings)
-        : undefined);
+    if (message.securityGroups) {
+      obj.securityGroups = message.securityGroups.map((e) => e);
+    } else {
+      obj.securityGroups = [];
+    }
+    message.serviceDatabase !== undefined &&
+      (obj.serviceDatabase = message.serviceDatabase);
     return obj;
   },
 
@@ -653,22 +653,22 @@ export const MysqlSource = {
       object.connection !== undefined && object.connection !== null
         ? MysqlConnection.fromPartial(object.connection)
         : undefined;
-    message.securityGroups = object.securityGroups?.map((e) => e) || [];
     message.database = object.database ?? "";
-    message.serviceDatabase = object.serviceDatabase ?? "";
     message.user = object.user ?? "";
     message.password =
       object.password !== undefined && object.password !== null
         ? Secret.fromPartial(object.password)
         : undefined;
-    message.includeTablesRegex = object.includeTablesRegex?.map((e) => e) || [];
-    message.excludeTablesRegex = object.excludeTablesRegex?.map((e) => e) || [];
     message.timezone = object.timezone ?? "";
     message.objectTransferSettings =
       object.objectTransferSettings !== undefined &&
       object.objectTransferSettings !== null
         ? MysqlObjectTransferSettings.fromPartial(object.objectTransferSettings)
         : undefined;
+    message.includeTablesRegex = object.includeTablesRegex?.map((e) => e) || [];
+    message.excludeTablesRegex = object.excludeTablesRegex?.map((e) => e) || [];
+    message.securityGroups = object.securityGroups?.map((e) => e) || [];
+    message.serviceDatabase = object.serviceDatabase ?? "";
     return message;
   },
 };
@@ -677,7 +677,6 @@ messageTypeRegistry.set(MysqlSource.$type, MysqlSource);
 
 const baseMysqlTarget: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.MysqlTarget",
-  securityGroups: "",
   database: "",
   user: "",
   sqlMode: "",
@@ -685,6 +684,7 @@ const baseMysqlTarget: object = {
   timezone: "",
   cleanupPolicy: 0,
   serviceDatabase: "",
+  securityGroups: "",
 };
 
 export const MysqlTarget = {
@@ -699,9 +699,6 @@ export const MysqlTarget = {
         message.connection,
         writer.uint32(10).fork()
       ).ldelim();
-    }
-    for (const v of message.securityGroups) {
-      writer.uint32(130).string(v!);
     }
     if (message.database !== "") {
       writer.uint32(18).string(message.database);
@@ -727,6 +724,9 @@ export const MysqlTarget = {
     if (message.serviceDatabase !== "") {
       writer.uint32(122).string(message.serviceDatabase);
     }
+    for (const v of message.securityGroups) {
+      writer.uint32(130).string(v!);
+    }
     return writer;
   },
 
@@ -740,9 +740,6 @@ export const MysqlTarget = {
       switch (tag >>> 3) {
         case 1:
           message.connection = MysqlConnection.decode(reader, reader.uint32());
-          break;
-        case 16:
-          message.securityGroups.push(reader.string());
           break;
         case 2:
           message.database = reader.string();
@@ -768,6 +765,9 @@ export const MysqlTarget = {
         case 15:
           message.serviceDatabase = reader.string();
           break;
+        case 16:
+          message.securityGroups.push(reader.string());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -782,9 +782,6 @@ export const MysqlTarget = {
       object.connection !== undefined && object.connection !== null
         ? MysqlConnection.fromJSON(object.connection)
         : undefined;
-    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
-      String(e)
-    );
     message.database =
       object.database !== undefined && object.database !== null
         ? String(object.database)
@@ -818,6 +815,9 @@ export const MysqlTarget = {
       object.serviceDatabase !== undefined && object.serviceDatabase !== null
         ? String(object.serviceDatabase)
         : "";
+    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
+      String(e)
+    );
     return message;
   },
 
@@ -827,11 +827,6 @@ export const MysqlTarget = {
       (obj.connection = message.connection
         ? MysqlConnection.toJSON(message.connection)
         : undefined);
-    if (message.securityGroups) {
-      obj.securityGroups = message.securityGroups.map((e) => e);
-    } else {
-      obj.securityGroups = [];
-    }
     message.database !== undefined && (obj.database = message.database);
     message.user !== undefined && (obj.user = message.user);
     message.password !== undefined &&
@@ -846,6 +841,11 @@ export const MysqlTarget = {
       (obj.cleanupPolicy = cleanupPolicyToJSON(message.cleanupPolicy));
     message.serviceDatabase !== undefined &&
       (obj.serviceDatabase = message.serviceDatabase);
+    if (message.securityGroups) {
+      obj.securityGroups = message.securityGroups.map((e) => e);
+    } else {
+      obj.securityGroups = [];
+    }
     return obj;
   },
 
@@ -857,7 +857,6 @@ export const MysqlTarget = {
       object.connection !== undefined && object.connection !== null
         ? MysqlConnection.fromPartial(object.connection)
         : undefined;
-    message.securityGroups = object.securityGroups?.map((e) => e) || [];
     message.database = object.database ?? "";
     message.user = object.user ?? "";
     message.password =
@@ -869,6 +868,7 @@ export const MysqlTarget = {
     message.timezone = object.timezone ?? "";
     message.cleanupPolicy = object.cleanupPolicy ?? 0;
     message.serviceDatabase = object.serviceDatabase ?? "";
+    message.securityGroups = object.securityGroups?.map((e) => e) || [];
     return message;
   },
 };

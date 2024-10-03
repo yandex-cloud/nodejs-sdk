@@ -20,6 +20,7 @@ import {
   Cluster_Environment,
   Access,
   Resources,
+  DiskSizeAutoscaling,
   Cluster,
   Host,
   OpenSearch_GroupRole,
@@ -169,6 +170,8 @@ export interface UpdateClusterRequest {
   deletionProtection: boolean;
   /** Cluster maintenance window. Should be defined by either one of the two options. */
   maintenanceWindow?: MaintenanceWindow;
+  /** ID of the network to move the cluster to. */
+  networkId: string;
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
@@ -555,6 +558,15 @@ export interface ConfigCreateSpec {
   access?: Access;
 }
 
+/** Single keystore entry. */
+export interface KeystoreSetting {
+  $type: "yandex.cloud.mdb.opensearch.v1.KeystoreSetting";
+  /** Keystore entry name. */
+  name: string;
+  /** Keystore entry value. */
+  value: string;
+}
+
 /** OpenSearch create-time configuration. */
 export interface OpenSearchCreateSpec {
   $type: "yandex.cloud.mdb.opensearch.v1.OpenSearchCreateSpec";
@@ -563,6 +575,8 @@ export interface OpenSearchCreateSpec {
   /** OpenSearch type host groups of the cluster. */
   nodeGroups: OpenSearchCreateSpec_NodeGroup[];
   opensearchConfig2?: OpenSearchConfig2 | undefined;
+  /** Initial cluster keystore settings. */
+  keystoreSettings: KeystoreSetting[];
 }
 
 /** Configuration of the host group. */
@@ -582,6 +596,8 @@ export interface OpenSearchCreateSpec_NodeGroup {
   assignPublicIp: boolean;
   /** Roles of the hosts in the group. */
   roles: OpenSearch_GroupRole[];
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 /** Dashboards create-time configuration. */
@@ -605,6 +621,8 @@ export interface DashboardsCreateSpec_NodeGroup {
   subnetIds: string[];
   /** Determines whether a public IP is assigned to the hosts in the group. */
   assignPublicIp: boolean;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface ConfigUpdateSpec {
@@ -626,6 +644,10 @@ export interface OpenSearchClusterUpdateSpec {
   /** Names of the cluster plugins. */
   plugins: string[];
   opensearchConfig2?: OpenSearchConfig2 | undefined;
+  /** Keystore settings to add/replace. Old entries not listed here will be left unchanged. */
+  setKeystoreSettings: KeystoreSetting[];
+  /** Keystore entries names to remove. */
+  removeKeystoreSettings: string[];
 }
 
 /** Dashboards configuration. */
@@ -850,8 +872,16 @@ export interface OpenSearchNodeGroupUpdateSpec {
   resources?: Resources;
   /** Number of hosts in the group. */
   hostsCount: number;
-  /** Roles of the host group. */
+  /** Opensearch roles applicable to the node group. */
   roles: OpenSearch_GroupRole[];
+  /** IDs of the availability zones for hosts */
+  zoneIds: string[];
+  /** IDs of the subnets for hosts */
+  subnetIds: string[];
+  /** Whether the hosts should get a public IP address. */
+  assignPublicIp: boolean;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface AddOpenSearchNodeGroupRequest {
@@ -896,6 +926,14 @@ export interface DashboardsNodeGroupUpdateSpec {
   resources?: Resources;
   /** Number of hosts in the group. */
   hostsCount: number;
+  /** IDs of the availability zones for hosts */
+  zoneIds: string[];
+  /** IDs of the subnets for hosts */
+  subnetIds: string[];
+  /** Whether the hosts should get a public IP address. */
+  assignPublicIp: boolean;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface AddDashboardsNodeGroupRequest {
@@ -1615,6 +1653,7 @@ const baseUpdateClusterRequest: object = {
   securityGroupIds: "",
   serviceAccountId: "",
   deletionProtection: false,
+  networkId: "",
 };
 
 export const UpdateClusterRequest = {
@@ -1667,6 +1706,9 @@ export const UpdateClusterRequest = {
         message.maintenanceWindow,
         writer.uint32(82).fork()
       ).ldelim();
+    }
+    if (message.networkId !== "") {
+      writer.uint32(90).string(message.networkId);
     }
     return writer;
   },
@@ -1722,6 +1764,9 @@ export const UpdateClusterRequest = {
             reader.uint32()
           );
           break;
+        case 11:
+          message.networkId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1775,6 +1820,10 @@ export const UpdateClusterRequest = {
       object.maintenanceWindow !== null
         ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
         : undefined;
+    message.networkId =
+      object.networkId !== undefined && object.networkId !== null
+        ? String(object.networkId)
+        : "";
     return message;
   },
 
@@ -1811,6 +1860,7 @@ export const UpdateClusterRequest = {
       (obj.maintenanceWindow = message.maintenanceWindow
         ? MaintenanceWindow.toJSON(message.maintenanceWindow)
         : undefined);
+    message.networkId !== undefined && (obj.networkId = message.networkId);
     return obj;
   },
 
@@ -1845,6 +1895,7 @@ export const UpdateClusterRequest = {
       object.maintenanceWindow !== null
         ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
         : undefined;
+    message.networkId = object.networkId ?? "";
     return message;
   },
 };
@@ -3778,6 +3829,81 @@ export const ConfigCreateSpec = {
 
 messageTypeRegistry.set(ConfigCreateSpec.$type, ConfigCreateSpec);
 
+const baseKeystoreSetting: object = {
+  $type: "yandex.cloud.mdb.opensearch.v1.KeystoreSetting",
+  name: "",
+  value: "",
+};
+
+export const KeystoreSetting = {
+  $type: "yandex.cloud.mdb.opensearch.v1.KeystoreSetting" as const,
+
+  encode(
+    message: KeystoreSetting,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): KeystoreSetting {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseKeystoreSetting } as KeystoreSetting;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.name = reader.string();
+          break;
+        case 2:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): KeystoreSetting {
+    const message = { ...baseKeystoreSetting } as KeystoreSetting;
+    message.name =
+      object.name !== undefined && object.name !== null
+        ? String(object.name)
+        : "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? String(object.value)
+        : "";
+    return message;
+  },
+
+  toJSON(message: KeystoreSetting): unknown {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<KeystoreSetting>, I>>(
+    object: I
+  ): KeystoreSetting {
+    const message = { ...baseKeystoreSetting } as KeystoreSetting;
+    message.name = object.name ?? "";
+    message.value = object.value ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(KeystoreSetting.$type, KeystoreSetting);
+
 const baseOpenSearchCreateSpec: object = {
   $type: "yandex.cloud.mdb.opensearch.v1.OpenSearchCreateSpec",
   plugins: "",
@@ -3805,6 +3931,9 @@ export const OpenSearchCreateSpec = {
         writer.uint32(26).fork()
       ).ldelim();
     }
+    for (const v of message.keystoreSettings) {
+      KeystoreSetting.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -3817,6 +3946,7 @@ export const OpenSearchCreateSpec = {
     const message = { ...baseOpenSearchCreateSpec } as OpenSearchCreateSpec;
     message.plugins = [];
     message.nodeGroups = [];
+    message.keystoreSettings = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -3832,6 +3962,11 @@ export const OpenSearchCreateSpec = {
           message.opensearchConfig2 = OpenSearchConfig2.decode(
             reader,
             reader.uint32()
+          );
+          break;
+        case 4:
+          message.keystoreSettings.push(
+            KeystoreSetting.decode(reader, reader.uint32())
           );
           break;
         default:
@@ -3853,6 +3988,9 @@ export const OpenSearchCreateSpec = {
       object.opensearchConfig_2 !== null
         ? OpenSearchConfig2.fromJSON(object.opensearchConfig_2)
         : undefined;
+    message.keystoreSettings = (object.keystoreSettings ?? []).map((e: any) =>
+      KeystoreSetting.fromJSON(e)
+    );
     return message;
   },
 
@@ -3874,6 +4012,13 @@ export const OpenSearchCreateSpec = {
       (obj.opensearchConfig_2 = message.opensearchConfig2
         ? OpenSearchConfig2.toJSON(message.opensearchConfig2)
         : undefined);
+    if (message.keystoreSettings) {
+      obj.keystoreSettings = message.keystoreSettings.map((e) =>
+        e ? KeystoreSetting.toJSON(e) : undefined
+      );
+    } else {
+      obj.keystoreSettings = [];
+    }
     return obj;
   },
 
@@ -3891,6 +4036,8 @@ export const OpenSearchCreateSpec = {
       object.opensearchConfig2 !== null
         ? OpenSearchConfig2.fromPartial(object.opensearchConfig2)
         : undefined;
+    message.keystoreSettings =
+      object.keystoreSettings?.map((e) => KeystoreSetting.fromPartial(e)) || [];
     return message;
   },
 };
@@ -3938,6 +4085,12 @@ export const OpenSearchCreateSpec_NodeGroup = {
       writer.int32(v);
     }
     writer.ldelim();
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3984,6 +4137,12 @@ export const OpenSearchCreateSpec_NodeGroup = {
             message.roles.push(reader.int32() as any);
           }
           break;
+        case 8:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -4017,6 +4176,11 @@ export const OpenSearchCreateSpec_NodeGroup = {
     message.roles = (object.roles ?? []).map((e: any) =>
       openSearch_GroupRoleFromJSON(e)
     );
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -4046,6 +4210,10 @@ export const OpenSearchCreateSpec_NodeGroup = {
     } else {
       obj.roles = [];
     }
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
+        : undefined);
     return obj;
   },
 
@@ -4065,6 +4233,11 @@ export const OpenSearchCreateSpec_NodeGroup = {
     message.subnetIds = object.subnetIds?.map((e) => e) || [];
     message.assignPublicIp = object.assignPublicIp ?? false;
     message.roles = object.roles?.map((e) => e) || [];
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 };
@@ -4187,6 +4360,12 @@ export const DashboardsCreateSpec_NodeGroup = {
     if (message.assignPublicIp === true) {
       writer.uint32(48).bool(message.assignPublicIp);
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -4222,6 +4401,12 @@ export const DashboardsCreateSpec_NodeGroup = {
         case 6:
           message.assignPublicIp = reader.bool();
           break;
+        case 7:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -4252,6 +4437,11 @@ export const DashboardsCreateSpec_NodeGroup = {
       object.assignPublicIp !== undefined && object.assignPublicIp !== null
         ? Boolean(object.assignPublicIp)
         : false;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -4276,6 +4466,10 @@ export const DashboardsCreateSpec_NodeGroup = {
     }
     message.assignPublicIp !== undefined &&
       (obj.assignPublicIp = message.assignPublicIp);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
+        : undefined);
     return obj;
   },
 
@@ -4294,6 +4488,11 @@ export const DashboardsCreateSpec_NodeGroup = {
     message.zoneIds = object.zoneIds?.map((e) => e) || [];
     message.subnetIds = object.subnetIds?.map((e) => e) || [];
     message.assignPublicIp = object.assignPublicIp ?? false;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 };
@@ -4446,6 +4645,7 @@ messageTypeRegistry.set(ConfigUpdateSpec.$type, ConfigUpdateSpec);
 const baseOpenSearchClusterUpdateSpec: object = {
   $type: "yandex.cloud.mdb.opensearch.v1.OpenSearchClusterUpdateSpec",
   plugins: "",
+  removeKeystoreSettings: "",
 };
 
 export const OpenSearchClusterUpdateSpec = {
@@ -4464,6 +4664,12 @@ export const OpenSearchClusterUpdateSpec = {
         writer.uint32(18).fork()
       ).ldelim();
     }
+    for (const v of message.setKeystoreSettings) {
+      KeystoreSetting.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    for (const v of message.removeKeystoreSettings) {
+      writer.uint32(34).string(v!);
+    }
     return writer;
   },
 
@@ -4477,6 +4683,8 @@ export const OpenSearchClusterUpdateSpec = {
       ...baseOpenSearchClusterUpdateSpec,
     } as OpenSearchClusterUpdateSpec;
     message.plugins = [];
+    message.setKeystoreSettings = [];
+    message.removeKeystoreSettings = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -4488,6 +4696,14 @@ export const OpenSearchClusterUpdateSpec = {
             reader,
             reader.uint32()
           );
+          break;
+        case 3:
+          message.setKeystoreSettings.push(
+            KeystoreSetting.decode(reader, reader.uint32())
+          );
+          break;
+        case 4:
+          message.removeKeystoreSettings.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -4507,6 +4723,12 @@ export const OpenSearchClusterUpdateSpec = {
       object.opensearchConfig_2 !== null
         ? OpenSearchConfig2.fromJSON(object.opensearchConfig_2)
         : undefined;
+    message.setKeystoreSettings = (object.setKeystoreSettings ?? []).map(
+      (e: any) => KeystoreSetting.fromJSON(e)
+    );
+    message.removeKeystoreSettings = (object.removeKeystoreSettings ?? []).map(
+      (e: any) => String(e)
+    );
     return message;
   },
 
@@ -4521,6 +4743,18 @@ export const OpenSearchClusterUpdateSpec = {
       (obj.opensearchConfig_2 = message.opensearchConfig2
         ? OpenSearchConfig2.toJSON(message.opensearchConfig2)
         : undefined);
+    if (message.setKeystoreSettings) {
+      obj.setKeystoreSettings = message.setKeystoreSettings.map((e) =>
+        e ? KeystoreSetting.toJSON(e) : undefined
+      );
+    } else {
+      obj.setKeystoreSettings = [];
+    }
+    if (message.removeKeystoreSettings) {
+      obj.removeKeystoreSettings = message.removeKeystoreSettings.map((e) => e);
+    } else {
+      obj.removeKeystoreSettings = [];
+    }
     return obj;
   },
 
@@ -4536,6 +4770,11 @@ export const OpenSearchClusterUpdateSpec = {
       object.opensearchConfig2 !== null
         ? OpenSearchConfig2.fromPartial(object.opensearchConfig2)
         : undefined;
+    message.setKeystoreSettings =
+      object.setKeystoreSettings?.map((e) => KeystoreSetting.fromPartial(e)) ||
+      [];
+    message.removeKeystoreSettings =
+      object.removeKeystoreSettings?.map((e) => e) || [];
     return message;
   },
 };
@@ -5785,6 +6024,9 @@ const baseOpenSearchNodeGroupUpdateSpec: object = {
   $type: "yandex.cloud.mdb.opensearch.v1.OpenSearchNodeGroupUpdateSpec",
   hostsCount: 0,
   roles: 0,
+  zoneIds: "",
+  subnetIds: "",
+  assignPublicIp: false,
 };
 
 export const OpenSearchNodeGroupUpdateSpec = {
@@ -5806,6 +6048,21 @@ export const OpenSearchNodeGroupUpdateSpec = {
       writer.int32(v);
     }
     writer.ldelim();
+    for (const v of message.zoneIds) {
+      writer.uint32(34).string(v!);
+    }
+    for (const v of message.subnetIds) {
+      writer.uint32(42).string(v!);
+    }
+    if (message.assignPublicIp === true) {
+      writer.uint32(48).bool(message.assignPublicIp);
+    }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -5819,6 +6076,8 @@ export const OpenSearchNodeGroupUpdateSpec = {
       ...baseOpenSearchNodeGroupUpdateSpec,
     } as OpenSearchNodeGroupUpdateSpec;
     message.roles = [];
+    message.zoneIds = [];
+    message.subnetIds = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -5837,6 +6096,21 @@ export const OpenSearchNodeGroupUpdateSpec = {
           } else {
             message.roles.push(reader.int32() as any);
           }
+          break;
+        case 4:
+          message.zoneIds.push(reader.string());
+          break;
+        case 5:
+          message.subnetIds.push(reader.string());
+          break;
+        case 6:
+          message.assignPublicIp = reader.bool();
+          break;
+        case 7:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -5861,6 +6135,17 @@ export const OpenSearchNodeGroupUpdateSpec = {
     message.roles = (object.roles ?? []).map((e: any) =>
       openSearch_GroupRoleFromJSON(e)
     );
+    message.zoneIds = (object.zoneIds ?? []).map((e: any) => String(e));
+    message.subnetIds = (object.subnetIds ?? []).map((e: any) => String(e));
+    message.assignPublicIp =
+      object.assignPublicIp !== undefined && object.assignPublicIp !== null
+        ? Boolean(object.assignPublicIp)
+        : false;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -5877,6 +6162,22 @@ export const OpenSearchNodeGroupUpdateSpec = {
     } else {
       obj.roles = [];
     }
+    if (message.zoneIds) {
+      obj.zoneIds = message.zoneIds.map((e) => e);
+    } else {
+      obj.zoneIds = [];
+    }
+    if (message.subnetIds) {
+      obj.subnetIds = message.subnetIds.map((e) => e);
+    } else {
+      obj.subnetIds = [];
+    }
+    message.assignPublicIp !== undefined &&
+      (obj.assignPublicIp = message.assignPublicIp);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
+        : undefined);
     return obj;
   },
 
@@ -5892,6 +6193,14 @@ export const OpenSearchNodeGroupUpdateSpec = {
         : undefined;
     message.hostsCount = object.hostsCount ?? 0;
     message.roles = object.roles?.map((e) => e) || [];
+    message.zoneIds = object.zoneIds?.map((e) => e) || [];
+    message.subnetIds = object.subnetIds?.map((e) => e) || [];
+    message.assignPublicIp = object.assignPublicIp ?? false;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 };
@@ -6221,6 +6530,9 @@ messageTypeRegistry.set(
 const baseDashboardsNodeGroupUpdateSpec: object = {
   $type: "yandex.cloud.mdb.opensearch.v1.DashboardsNodeGroupUpdateSpec",
   hostsCount: 0,
+  zoneIds: "",
+  subnetIds: "",
+  assignPublicIp: false,
 };
 
 export const DashboardsNodeGroupUpdateSpec = {
@@ -6237,6 +6549,21 @@ export const DashboardsNodeGroupUpdateSpec = {
     if (message.hostsCount !== 0) {
       writer.uint32(16).int64(message.hostsCount);
     }
+    for (const v of message.zoneIds) {
+      writer.uint32(26).string(v!);
+    }
+    for (const v of message.subnetIds) {
+      writer.uint32(34).string(v!);
+    }
+    if (message.assignPublicIp === true) {
+      writer.uint32(40).bool(message.assignPublicIp);
+    }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(50).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -6249,6 +6576,8 @@ export const DashboardsNodeGroupUpdateSpec = {
     const message = {
       ...baseDashboardsNodeGroupUpdateSpec,
     } as DashboardsNodeGroupUpdateSpec;
+    message.zoneIds = [];
+    message.subnetIds = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -6257,6 +6586,21 @@ export const DashboardsNodeGroupUpdateSpec = {
           break;
         case 2:
           message.hostsCount = longToNumber(reader.int64() as Long);
+          break;
+        case 3:
+          message.zoneIds.push(reader.string());
+          break;
+        case 4:
+          message.subnetIds.push(reader.string());
+          break;
+        case 5:
+          message.assignPublicIp = reader.bool();
+          break;
+        case 6:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -6278,6 +6622,17 @@ export const DashboardsNodeGroupUpdateSpec = {
       object.hostsCount !== undefined && object.hostsCount !== null
         ? Number(object.hostsCount)
         : 0;
+    message.zoneIds = (object.zoneIds ?? []).map((e: any) => String(e));
+    message.subnetIds = (object.subnetIds ?? []).map((e: any) => String(e));
+    message.assignPublicIp =
+      object.assignPublicIp !== undefined && object.assignPublicIp !== null
+        ? Boolean(object.assignPublicIp)
+        : false;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -6289,6 +6644,22 @@ export const DashboardsNodeGroupUpdateSpec = {
         : undefined);
     message.hostsCount !== undefined &&
       (obj.hostsCount = Math.round(message.hostsCount));
+    if (message.zoneIds) {
+      obj.zoneIds = message.zoneIds.map((e) => e);
+    } else {
+      obj.zoneIds = [];
+    }
+    if (message.subnetIds) {
+      obj.subnetIds = message.subnetIds.map((e) => e);
+    } else {
+      obj.subnetIds = [];
+    }
+    message.assignPublicIp !== undefined &&
+      (obj.assignPublicIp = message.assignPublicIp);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
+        : undefined);
     return obj;
   },
 
@@ -6303,6 +6674,14 @@ export const DashboardsNodeGroupUpdateSpec = {
         ? Resources.fromPartial(object.resources)
         : undefined;
     message.hostsCount = object.hostsCount ?? 0;
+    message.zoneIds = object.zoneIds?.map((e) => e) || [];
+    message.subnetIds = object.subnetIds?.map((e) => e) || [];
+    message.assignPublicIp = object.assignPublicIp ?? false;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 };

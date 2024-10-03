@@ -20,7 +20,17 @@ import {
   Project,
 } from "../../../../yandex/cloud/datasphere/v2/project";
 import { FieldMask } from "../../../../google/protobuf/field_mask";
+import {
+  ResourceType,
+  resourceTypeFromJSON,
+  resourceTypeToJSON,
+} from "../../../../yandex/cloud/datasphere/v2/resource_types";
 import { Timestamp } from "../../../../google/protobuf/timestamp";
+import {
+  Restriction,
+  GetRestrictionsMetaResponse,
+  RestrictionsResponse,
+} from "../../../../yandex/cloud/datasphere/v2/restrictions";
 import { Operation } from "../../../../yandex/cloud/operation/operation";
 import {
   ListAccessBindingsRequest,
@@ -28,6 +38,7 @@ import {
   SetAccessBindingsRequest,
   UpdateAccessBindingsRequest,
 } from "../../../../yandex/cloud/access/access";
+import { Empty } from "../../../../google/protobuf/empty";
 import { Int64Value } from "../../../../google/protobuf/wrappers";
 import { Struct } from "../../../../google/protobuf/struct";
 
@@ -258,7 +269,7 @@ export interface OpenProjectResponse {
    * URL of the project that is being opened.
    * Make GET request to [project_url] with sessionToken query parameter equals to [session_token]
    * or POST request to [project_url] with sessionToken body parameter equals to [session_token]
-   * to fetch Datasphere web interface.
+   * to fetch DataSphere web interface.
    */
   projectUrl: string;
   /** Session token of the project that is being opened. */
@@ -347,14 +358,27 @@ export interface ProjectExecutionRequest {
   $type: "yandex.cloud.datasphere.v2.ProjectExecutionRequest";
   /** ID of the project to execute notebook/cell in. */
   projectId: string;
-  /** ID of the notebook to execute. */
+  /**
+   * The path to the executable notebook in the project storage. The maximum string length is 200 characters.
+   *
+   * To get the path, right-click on the notebook in JupyterLab and select `Copy path`.
+   */
   notebookId: string | undefined;
-  /** ID of the cell to execute. */
+  /**
+   * ID of the cell to execute.
+   * Deprecated
+   *
+   * @deprecated
+   */
   cellId: string | undefined;
-  /** Values of input variables. */
+  /** Values of input variables. Input variables will be available in the project as environment variables. */
   inputVariables?: { [key: string]: any };
   /** Names of output variables. */
   outputVariableNames: string[];
+  /** Specification of the VM */
+  spec: string;
+  /** ID of the Spark Connector */
+  sparkConnectorId: string;
 }
 
 export interface ProjectExecutionMetadata {
@@ -371,7 +395,12 @@ export interface ProjectExecutionResponse {
   $type: "yandex.cloud.datasphere.v2.ProjectExecutionResponse";
   /** ID of the checkpoint resulting from the execution. */
   checkpointId: string;
-  /** Values of output variables resulting from the execution. */
+  /**
+   * Values of output variables resulting from the execution.
+   * Deprecated
+   *
+   * @deprecated
+   */
   outputVariables?: { [key: string]: any };
   /** Execution final status. */
   executionStatus: ExecutionStatus;
@@ -423,6 +452,34 @@ export interface UpdateProjectAccessBindingsMetadata {
   $type: "yandex.cloud.datasphere.v2.UpdateProjectAccessBindingsMetadata";
   /** ID of the project which access bindings are updated. */
   projectId: string;
+}
+
+export interface AddResourceToProjectRequest {
+  $type: "yandex.cloud.datasphere.v2.AddResourceToProjectRequest";
+  projectId: string;
+  resourceType: ResourceType;
+  resourceId: string;
+}
+
+export interface RemoveResourceFromProjectRequest {
+  $type: "yandex.cloud.datasphere.v2.RemoveResourceFromProjectRequest";
+  projectId: string;
+  resourceType: ResourceType;
+  resourceId: string;
+}
+
+export interface GetProjectRestrictionsRequest {
+  $type: "yandex.cloud.datasphere.v2.GetProjectRestrictionsRequest";
+  /** ID of the project. */
+  projectId: string;
+}
+
+export interface SetProjectRestrictionsRequest {
+  $type: "yandex.cloud.datasphere.v2.SetProjectRestrictionsRequest";
+  /** ID of the project. */
+  projectId: string;
+  /** List of restrictions to set. */
+  restrictions: Restriction[];
 }
 
 const baseCreateProjectRequest: object = {
@@ -1986,6 +2043,8 @@ const baseProjectExecutionRequest: object = {
   $type: "yandex.cloud.datasphere.v2.ProjectExecutionRequest",
   projectId: "",
   outputVariableNames: "",
+  spec: "",
+  sparkConnectorId: "",
 };
 
 export const ProjectExecutionRequest = {
@@ -2012,6 +2071,12 @@ export const ProjectExecutionRequest = {
     }
     for (const v of message.outputVariableNames) {
       writer.uint32(42).string(v!);
+    }
+    if (message.spec !== "") {
+      writer.uint32(50).string(message.spec);
+    }
+    if (message.sparkConnectorId !== "") {
+      writer.uint32(58).string(message.sparkConnectorId);
     }
     return writer;
   },
@@ -2046,6 +2111,12 @@ export const ProjectExecutionRequest = {
         case 5:
           message.outputVariableNames.push(reader.string());
           break;
+        case 6:
+          message.spec = reader.string();
+          break;
+        case 7:
+          message.sparkConnectorId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2077,6 +2148,14 @@ export const ProjectExecutionRequest = {
     message.outputVariableNames = (object.outputVariableNames ?? []).map(
       (e: any) => String(e)
     );
+    message.spec =
+      object.spec !== undefined && object.spec !== null
+        ? String(object.spec)
+        : "";
+    message.sparkConnectorId =
+      object.sparkConnectorId !== undefined && object.sparkConnectorId !== null
+        ? String(object.sparkConnectorId)
+        : "";
     return message;
   },
 
@@ -2092,6 +2171,9 @@ export const ProjectExecutionRequest = {
     } else {
       obj.outputVariableNames = [];
     }
+    message.spec !== undefined && (obj.spec = message.spec);
+    message.sparkConnectorId !== undefined &&
+      (obj.sparkConnectorId = message.sparkConnectorId);
     return obj;
   },
 
@@ -2107,6 +2189,8 @@ export const ProjectExecutionRequest = {
     message.inputVariables = object.inputVariables ?? undefined;
     message.outputVariableNames =
       object.outputVariableNames?.map((e) => e) || [];
+    message.spec = object.spec ?? "";
+    message.sparkConnectorId = object.sparkConnectorId ?? "";
     return message;
   },
 };
@@ -2832,6 +2916,377 @@ messageTypeRegistry.set(
   UpdateProjectAccessBindingsMetadata
 );
 
+const baseAddResourceToProjectRequest: object = {
+  $type: "yandex.cloud.datasphere.v2.AddResourceToProjectRequest",
+  projectId: "",
+  resourceType: 0,
+  resourceId: "",
+};
+
+export const AddResourceToProjectRequest = {
+  $type: "yandex.cloud.datasphere.v2.AddResourceToProjectRequest" as const,
+
+  encode(
+    message: AddResourceToProjectRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.projectId !== "") {
+      writer.uint32(10).string(message.projectId);
+    }
+    if (message.resourceType !== 0) {
+      writer.uint32(16).int32(message.resourceType);
+    }
+    if (message.resourceId !== "") {
+      writer.uint32(26).string(message.resourceId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): AddResourceToProjectRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseAddResourceToProjectRequest,
+    } as AddResourceToProjectRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.projectId = reader.string();
+          break;
+        case 2:
+          message.resourceType = reader.int32() as any;
+          break;
+        case 3:
+          message.resourceId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AddResourceToProjectRequest {
+    const message = {
+      ...baseAddResourceToProjectRequest,
+    } as AddResourceToProjectRequest;
+    message.projectId =
+      object.projectId !== undefined && object.projectId !== null
+        ? String(object.projectId)
+        : "";
+    message.resourceType =
+      object.resourceType !== undefined && object.resourceType !== null
+        ? resourceTypeFromJSON(object.resourceType)
+        : 0;
+    message.resourceId =
+      object.resourceId !== undefined && object.resourceId !== null
+        ? String(object.resourceId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: AddResourceToProjectRequest): unknown {
+    const obj: any = {};
+    message.projectId !== undefined && (obj.projectId = message.projectId);
+    message.resourceType !== undefined &&
+      (obj.resourceType = resourceTypeToJSON(message.resourceType));
+    message.resourceId !== undefined && (obj.resourceId = message.resourceId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AddResourceToProjectRequest>, I>>(
+    object: I
+  ): AddResourceToProjectRequest {
+    const message = {
+      ...baseAddResourceToProjectRequest,
+    } as AddResourceToProjectRequest;
+    message.projectId = object.projectId ?? "";
+    message.resourceType = object.resourceType ?? 0;
+    message.resourceId = object.resourceId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  AddResourceToProjectRequest.$type,
+  AddResourceToProjectRequest
+);
+
+const baseRemoveResourceFromProjectRequest: object = {
+  $type: "yandex.cloud.datasphere.v2.RemoveResourceFromProjectRequest",
+  projectId: "",
+  resourceType: 0,
+  resourceId: "",
+};
+
+export const RemoveResourceFromProjectRequest = {
+  $type: "yandex.cloud.datasphere.v2.RemoveResourceFromProjectRequest" as const,
+
+  encode(
+    message: RemoveResourceFromProjectRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.projectId !== "") {
+      writer.uint32(10).string(message.projectId);
+    }
+    if (message.resourceType !== 0) {
+      writer.uint32(16).int32(message.resourceType);
+    }
+    if (message.resourceId !== "") {
+      writer.uint32(26).string(message.resourceId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RemoveResourceFromProjectRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseRemoveResourceFromProjectRequest,
+    } as RemoveResourceFromProjectRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.projectId = reader.string();
+          break;
+        case 2:
+          message.resourceType = reader.int32() as any;
+          break;
+        case 3:
+          message.resourceId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RemoveResourceFromProjectRequest {
+    const message = {
+      ...baseRemoveResourceFromProjectRequest,
+    } as RemoveResourceFromProjectRequest;
+    message.projectId =
+      object.projectId !== undefined && object.projectId !== null
+        ? String(object.projectId)
+        : "";
+    message.resourceType =
+      object.resourceType !== undefined && object.resourceType !== null
+        ? resourceTypeFromJSON(object.resourceType)
+        : 0;
+    message.resourceId =
+      object.resourceId !== undefined && object.resourceId !== null
+        ? String(object.resourceId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: RemoveResourceFromProjectRequest): unknown {
+    const obj: any = {};
+    message.projectId !== undefined && (obj.projectId = message.projectId);
+    message.resourceType !== undefined &&
+      (obj.resourceType = resourceTypeToJSON(message.resourceType));
+    message.resourceId !== undefined && (obj.resourceId = message.resourceId);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<RemoveResourceFromProjectRequest>, I>
+  >(object: I): RemoveResourceFromProjectRequest {
+    const message = {
+      ...baseRemoveResourceFromProjectRequest,
+    } as RemoveResourceFromProjectRequest;
+    message.projectId = object.projectId ?? "";
+    message.resourceType = object.resourceType ?? 0;
+    message.resourceId = object.resourceId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  RemoveResourceFromProjectRequest.$type,
+  RemoveResourceFromProjectRequest
+);
+
+const baseGetProjectRestrictionsRequest: object = {
+  $type: "yandex.cloud.datasphere.v2.GetProjectRestrictionsRequest",
+  projectId: "",
+};
+
+export const GetProjectRestrictionsRequest = {
+  $type: "yandex.cloud.datasphere.v2.GetProjectRestrictionsRequest" as const,
+
+  encode(
+    message: GetProjectRestrictionsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.projectId !== "") {
+      writer.uint32(10).string(message.projectId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): GetProjectRestrictionsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseGetProjectRestrictionsRequest,
+    } as GetProjectRestrictionsRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.projectId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetProjectRestrictionsRequest {
+    const message = {
+      ...baseGetProjectRestrictionsRequest,
+    } as GetProjectRestrictionsRequest;
+    message.projectId =
+      object.projectId !== undefined && object.projectId !== null
+        ? String(object.projectId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: GetProjectRestrictionsRequest): unknown {
+    const obj: any = {};
+    message.projectId !== undefined && (obj.projectId = message.projectId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetProjectRestrictionsRequest>, I>>(
+    object: I
+  ): GetProjectRestrictionsRequest {
+    const message = {
+      ...baseGetProjectRestrictionsRequest,
+    } as GetProjectRestrictionsRequest;
+    message.projectId = object.projectId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  GetProjectRestrictionsRequest.$type,
+  GetProjectRestrictionsRequest
+);
+
+const baseSetProjectRestrictionsRequest: object = {
+  $type: "yandex.cloud.datasphere.v2.SetProjectRestrictionsRequest",
+  projectId: "",
+};
+
+export const SetProjectRestrictionsRequest = {
+  $type: "yandex.cloud.datasphere.v2.SetProjectRestrictionsRequest" as const,
+
+  encode(
+    message: SetProjectRestrictionsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.projectId !== "") {
+      writer.uint32(10).string(message.projectId);
+    }
+    for (const v of message.restrictions) {
+      Restriction.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): SetProjectRestrictionsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseSetProjectRestrictionsRequest,
+    } as SetProjectRestrictionsRequest;
+    message.restrictions = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.projectId = reader.string();
+          break;
+        case 2:
+          message.restrictions.push(
+            Restriction.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SetProjectRestrictionsRequest {
+    const message = {
+      ...baseSetProjectRestrictionsRequest,
+    } as SetProjectRestrictionsRequest;
+    message.projectId =
+      object.projectId !== undefined && object.projectId !== null
+        ? String(object.projectId)
+        : "";
+    message.restrictions = (object.restrictions ?? []).map((e: any) =>
+      Restriction.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: SetProjectRestrictionsRequest): unknown {
+    const obj: any = {};
+    message.projectId !== undefined && (obj.projectId = message.projectId);
+    if (message.restrictions) {
+      obj.restrictions = message.restrictions.map((e) =>
+        e ? Restriction.toJSON(e) : undefined
+      );
+    } else {
+      obj.restrictions = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SetProjectRestrictionsRequest>, I>>(
+    object: I
+  ): SetProjectRestrictionsRequest {
+    const message = {
+      ...baseSetProjectRestrictionsRequest,
+    } as SetProjectRestrictionsRequest;
+    message.projectId = object.projectId ?? "";
+    message.restrictions =
+      object.restrictions?.map((e) => Restriction.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  SetProjectRestrictionsRequest.$type,
+  SetProjectRestrictionsRequest
+);
+
 /** A set of methods for managing Project resources. */
 export const ProjectServiceService = {
   /** Creates a project in the specified folder. */
@@ -2931,7 +3386,7 @@ export const ProjectServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Executes code in the specified cell or notebook. */
+  /** Executes code of the specified notebook using configuration defined in the project settings. If the default project configuration is not specified, `c1.4` is used. */
   execute: {
     path: "/yandex.cloud.datasphere.v2.ProjectService/Execute",
     requestStream: false,
@@ -2944,7 +3399,10 @@ export const ProjectServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** Returns outputs of the specified cell. */
+  /**
+   * Returns outputs of the specified cell.
+   * Deprecated
+   */
   getCellOutputs: {
     path: "/yandex.cloud.datasphere.v2.ProjectService/GetCellOutputs",
     requestStream: false,
@@ -2956,7 +3414,10 @@ export const ProjectServiceService = {
       Buffer.from(CellOutputsResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer) => CellOutputsResponse.decode(value),
   },
-  /** Returns state variables of the specified notebook. */
+  /**
+   * Returns state variables of the specified notebook.
+   * Deprecated
+   */
   getStateVariables: {
     path: "/yandex.cloud.datasphere.v2.ProjectService/GetStateVariables",
     requestStream: false,
@@ -3010,6 +3471,71 @@ export const ProjectServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Adds shared resource to project */
+  addResource: {
+    path: "/yandex.cloud.datasphere.v2.ProjectService/AddResource",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: AddResourceToProjectRequest) =>
+      Buffer.from(AddResourceToProjectRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      AddResourceToProjectRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /** Removes shared resource from project */
+  removeResource: {
+    path: "/yandex.cloud.datasphere.v2.ProjectService/RemoveResource",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: RemoveResourceFromProjectRequest) =>
+      Buffer.from(RemoveResourceFromProjectRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      RemoveResourceFromProjectRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /** Get meta information about available restrictions. */
+  getRestrictionsMeta: {
+    path: "/yandex.cloud.datasphere.v2.ProjectService/GetRestrictionsMeta",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: Empty) =>
+      Buffer.from(Empty.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => Empty.decode(value),
+    responseSerialize: (value: GetRestrictionsMetaResponse) =>
+      Buffer.from(GetRestrictionsMetaResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) =>
+      GetRestrictionsMetaResponse.decode(value),
+  },
+  /** Get current project restrictions. */
+  getRestrictions: {
+    path: "/yandex.cloud.datasphere.v2.ProjectService/GetRestrictions",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: GetProjectRestrictionsRequest) =>
+      Buffer.from(GetProjectRestrictionsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      GetProjectRestrictionsRequest.decode(value),
+    responseSerialize: (value: RestrictionsResponse) =>
+      Buffer.from(RestrictionsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => RestrictionsResponse.decode(value),
+  },
+  /** Set project restrictions. */
+  setRestrictions: {
+    path: "/yandex.cloud.datasphere.v2.ProjectService/SetRestrictions",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: SetProjectRestrictionsRequest) =>
+      Buffer.from(SetProjectRestrictionsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      SetProjectRestrictionsRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
 } as const;
 
 export interface ProjectServiceServer extends UntypedServiceImplementation {
@@ -3032,11 +3558,17 @@ export interface ProjectServiceServer extends UntypedServiceImplementation {
   >;
   /** Sets the unit balance of the specified project. */
   setUnitBalance: handleUnaryCall<SetUnitBalanceRequest, Operation>;
-  /** Executes code in the specified cell or notebook. */
+  /** Executes code of the specified notebook using configuration defined in the project settings. If the default project configuration is not specified, `c1.4` is used. */
   execute: handleUnaryCall<ProjectExecutionRequest, Operation>;
-  /** Returns outputs of the specified cell. */
+  /**
+   * Returns outputs of the specified cell.
+   * Deprecated
+   */
   getCellOutputs: handleUnaryCall<CellOutputsRequest, CellOutputsResponse>;
-  /** Returns state variables of the specified notebook. */
+  /**
+   * Returns state variables of the specified notebook.
+   * Deprecated
+   */
   getStateVariables: handleUnaryCall<
     GetStateVariablesRequest,
     GetStateVariablesResponse
@@ -3050,6 +3582,19 @@ export interface ProjectServiceServer extends UntypedServiceImplementation {
   setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
   /** Updates access bindings for the project. */
   updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
+  /** Adds shared resource to project */
+  addResource: handleUnaryCall<AddResourceToProjectRequest, Operation>;
+  /** Removes shared resource from project */
+  removeResource: handleUnaryCall<RemoveResourceFromProjectRequest, Operation>;
+  /** Get meta information about available restrictions. */
+  getRestrictionsMeta: handleUnaryCall<Empty, GetRestrictionsMetaResponse>;
+  /** Get current project restrictions. */
+  getRestrictions: handleUnaryCall<
+    GetProjectRestrictionsRequest,
+    RestrictionsResponse
+  >;
+  /** Set project restrictions. */
+  setRestrictions: handleUnaryCall<SetProjectRestrictionsRequest, Operation>;
 }
 
 export interface ProjectServiceClient extends Client {
@@ -3199,7 +3744,7 @@ export interface ProjectServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Executes code in the specified cell or notebook. */
+  /** Executes code of the specified notebook using configuration defined in the project settings. If the default project configuration is not specified, `c1.4` is used. */
   execute(
     request: ProjectExecutionRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -3215,7 +3760,10 @@ export interface ProjectServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** Returns outputs of the specified cell. */
+  /**
+   * Returns outputs of the specified cell.
+   * Deprecated
+   */
   getCellOutputs(
     request: CellOutputsRequest,
     callback: (
@@ -3240,7 +3788,10 @@ export interface ProjectServiceClient extends Client {
       response: CellOutputsResponse
     ) => void
   ): ClientUnaryCall;
-  /** Returns state variables of the specified notebook. */
+  /**
+   * Returns state variables of the specified notebook.
+   * Deprecated
+   */
   getStateVariables(
     request: GetStateVariablesRequest,
     callback: (
@@ -3318,6 +3869,104 @@ export interface ProjectServiceClient extends Client {
   ): ClientUnaryCall;
   updateAccessBindings(
     request: UpdateAccessBindingsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Adds shared resource to project */
+  addResource(
+    request: AddResourceToProjectRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  addResource(
+    request: AddResourceToProjectRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  addResource(
+    request: AddResourceToProjectRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Removes shared resource from project */
+  removeResource(
+    request: RemoveResourceFromProjectRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  removeResource(
+    request: RemoveResourceFromProjectRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  removeResource(
+    request: RemoveResourceFromProjectRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Get meta information about available restrictions. */
+  getRestrictionsMeta(
+    request: Empty,
+    callback: (
+      error: ServiceError | null,
+      response: GetRestrictionsMetaResponse
+    ) => void
+  ): ClientUnaryCall;
+  getRestrictionsMeta(
+    request: Empty,
+    metadata: Metadata,
+    callback: (
+      error: ServiceError | null,
+      response: GetRestrictionsMetaResponse
+    ) => void
+  ): ClientUnaryCall;
+  getRestrictionsMeta(
+    request: Empty,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (
+      error: ServiceError | null,
+      response: GetRestrictionsMetaResponse
+    ) => void
+  ): ClientUnaryCall;
+  /** Get current project restrictions. */
+  getRestrictions(
+    request: GetProjectRestrictionsRequest,
+    callback: (
+      error: ServiceError | null,
+      response: RestrictionsResponse
+    ) => void
+  ): ClientUnaryCall;
+  getRestrictions(
+    request: GetProjectRestrictionsRequest,
+    metadata: Metadata,
+    callback: (
+      error: ServiceError | null,
+      response: RestrictionsResponse
+    ) => void
+  ): ClientUnaryCall;
+  getRestrictions(
+    request: GetProjectRestrictionsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (
+      error: ServiceError | null,
+      response: RestrictionsResponse
+    ) => void
+  ): ClientUnaryCall;
+  /** Set project restrictions. */
+  setRestrictions(
+    request: SetProjectRestrictionsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  setRestrictions(
+    request: SetProjectRestrictionsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  setRestrictions(
+    request: SetProjectRestrictionsRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

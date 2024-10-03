@@ -122,15 +122,101 @@ export function rewriteFlagToJSON(object: RewriteFlag): string {
   }
 }
 
+/** SecureKeyURLType defines type of the URL signing. */
+export enum SecureKeyURLType {
+  SECURE_KEY_URL_TYPE_UNSPECIFIED = 0,
+  /** ENABLE_IP_SIGNING - Use scpecific IP address in URL signing. URL will be availible only for this IP. */
+  ENABLE_IP_SIGNING = 1,
+  /** DISABLE_IP_SIGNING - Sign URL without using IP address. URL will be available for all IP addresses. */
+  DISABLE_IP_SIGNING = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function secureKeyURLTypeFromJSON(object: any): SecureKeyURLType {
+  switch (object) {
+    case 0:
+    case "SECURE_KEY_URL_TYPE_UNSPECIFIED":
+      return SecureKeyURLType.SECURE_KEY_URL_TYPE_UNSPECIFIED;
+    case 1:
+    case "ENABLE_IP_SIGNING":
+      return SecureKeyURLType.ENABLE_IP_SIGNING;
+    case 2:
+    case "DISABLE_IP_SIGNING":
+      return SecureKeyURLType.DISABLE_IP_SIGNING;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SecureKeyURLType.UNRECOGNIZED;
+  }
+}
+
+export function secureKeyURLTypeToJSON(object: SecureKeyURLType): string {
+  switch (object) {
+    case SecureKeyURLType.SECURE_KEY_URL_TYPE_UNSPECIFIED:
+      return "SECURE_KEY_URL_TYPE_UNSPECIFIED";
+    case SecureKeyURLType.ENABLE_IP_SIGNING:
+      return "ENABLE_IP_SIGNING";
+    case SecureKeyURLType.DISABLE_IP_SIGNING:
+      return "DISABLE_IP_SIGNING";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+/** PolicyType defines type of the policy in IP address acl rules. */
+export enum PolicyType {
+  POLICY_TYPE_UNSPECIFIED = 0,
+  /** POLICY_TYPE_ALLOW - Allow access to all IP addresses except the ones specified in the excepted_values field. */
+  POLICY_TYPE_ALLOW = 1,
+  /** POLICY_TYPE_DENY - Block access to all IP addresses except the ones specified in the excepted_values field. */
+  POLICY_TYPE_DENY = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function policyTypeFromJSON(object: any): PolicyType {
+  switch (object) {
+    case 0:
+    case "POLICY_TYPE_UNSPECIFIED":
+      return PolicyType.POLICY_TYPE_UNSPECIFIED;
+    case 1:
+    case "POLICY_TYPE_ALLOW":
+      return PolicyType.POLICY_TYPE_ALLOW;
+    case 2:
+    case "POLICY_TYPE_DENY":
+      return PolicyType.POLICY_TYPE_DENY;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return PolicyType.UNRECOGNIZED;
+  }
+}
+
+export function policyTypeToJSON(object: PolicyType): string {
+  switch (object) {
+    case PolicyType.POLICY_TYPE_UNSPECIFIED:
+      return "POLICY_TYPE_UNSPECIFIED";
+    case PolicyType.POLICY_TYPE_ALLOW:
+      return "POLICY_TYPE_ALLOW";
+    case PolicyType.POLICY_TYPE_DENY:
+      return "POLICY_TYPE_DENY";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 /** A certificate type parameters. */
 export enum SSLCertificateType {
   /** SSL_CERTIFICATE_TYPE_UNSPECIFIED - SSL certificate is unspecified. */
   SSL_CERTIFICATE_TYPE_UNSPECIFIED = 0,
   /** DONT_USE - No SSL certificate is added, the requests are sent via HTTP. */
   DONT_USE = 1,
-  /** LETS_ENCRYPT_GCORE - Works only if you have already pointed your domain name to the protected IP address in your DNS */
+  /**
+   * LETS_ENCRYPT_GCORE - The option is deprecated. Works only if you have already pointed your domain name to the protected IP address in your DNS.
+   *
+   * @deprecated
+   */
   LETS_ENCRYPT_GCORE = 2,
-  /** CM - Add your SSL certificate by uploading the certificate in PEM format and your private key */
+  /** CM - Add your SSL certificate by uploading the certificate in PEM format and your private key. */
   CM = 3,
   UNRECOGNIZED = -1,
 }
@@ -177,7 +263,11 @@ export enum SSLCertificateStatus {
   SSL_CERTIFICATE_STATUS_UNSPECIFIED = 0,
   /** READY - SSL certificate is ready to use. */
   READY = 1,
-  /** CREATING - SSL certificate is creating. */
+  /**
+   * CREATING - The option is deprecated. SSL certificate is creating.
+   *
+   * @deprecated
+   */
   CREATING = 2,
   UNRECOGNIZED = -1,
 }
@@ -341,6 +431,13 @@ export interface ResourceOptions {
   ignoreCookie?: ResourceOptions_BoolOption;
   /** Changing or redirecting query paths. */
   rewrite?: ResourceOptions_RewriteOption;
+  /** Secure token to protect contect and limit access by IP addresses and time limits. */
+  secureKey?: ResourceOptions_SecureKeyOption;
+  /**
+   * Manage the state of the IP access policy option.
+   * The option controls access to content from the specified IP addresses.
+   */
+  ipAddressAcl?: ResourceOptions_IPAddressACLOption;
 }
 
 /** Set up bool values. */
@@ -563,6 +660,32 @@ export interface ResourceOptions_RewriteOption {
    * It is not shown in the field.
    */
   flag: RewriteFlag;
+}
+
+export interface ResourceOptions_SecureKeyOption {
+  $type: "yandex.cloud.cdn.v1.ResourceOptions.SecureKeyOption";
+  /**
+   * True - the option is enabled and its [flag] is applied to the resource.
+   * False - the option is disabled and its default value of the [flag] is used for the resource.
+   */
+  enabled: boolean;
+  /** The key for the URL signing. */
+  key: string;
+  /** The type of the URL signing. The URL could be available for all IP addresses or for the only one IP. */
+  type: SecureKeyURLType;
+}
+
+export interface ResourceOptions_IPAddressACLOption {
+  $type: "yandex.cloud.cdn.v1.ResourceOptions.IPAddressACLOption";
+  /**
+   * True - the option is enabled and its [flag] is applied to the resource.
+   * False - the option is disabled and its default value of the [flag] is used for the resource.
+   */
+  enabled: boolean;
+  /** The policy type. One of allow or deny value. */
+  policyType: PolicyType;
+  /** The list of IP addresses to be allowed or denied. */
+  exceptedValues: string[];
 }
 
 /** A set of the personal SSL certificate parameters. */
@@ -1141,6 +1264,18 @@ export const ResourceOptions = {
         writer.uint32(154).fork()
       ).ldelim();
     }
+    if (message.secureKey !== undefined) {
+      ResourceOptions_SecureKeyOption.encode(
+        message.secureKey,
+        writer.uint32(162).fork()
+      ).ldelim();
+    }
+    if (message.ipAddressAcl !== undefined) {
+      ResourceOptions_IPAddressACLOption.encode(
+        message.ipAddressAcl,
+        writer.uint32(170).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1259,6 +1394,18 @@ export const ResourceOptions = {
             reader.uint32()
           );
           break;
+        case 20:
+          message.secureKey = ResourceOptions_SecureKeyOption.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 21:
+          message.ipAddressAcl = ResourceOptions_IPAddressACLOption.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1353,6 +1500,14 @@ export const ResourceOptions = {
       object.rewrite !== undefined && object.rewrite !== null
         ? ResourceOptions_RewriteOption.fromJSON(object.rewrite)
         : undefined;
+    message.secureKey =
+      object.secureKey !== undefined && object.secureKey !== null
+        ? ResourceOptions_SecureKeyOption.fromJSON(object.secureKey)
+        : undefined;
+    message.ipAddressAcl =
+      object.ipAddressAcl !== undefined && object.ipAddressAcl !== null
+        ? ResourceOptions_IPAddressACLOption.fromJSON(object.ipAddressAcl)
+        : undefined;
     return message;
   },
 
@@ -1433,6 +1588,14 @@ export const ResourceOptions = {
     message.rewrite !== undefined &&
       (obj.rewrite = message.rewrite
         ? ResourceOptions_RewriteOption.toJSON(message.rewrite)
+        : undefined);
+    message.secureKey !== undefined &&
+      (obj.secureKey = message.secureKey
+        ? ResourceOptions_SecureKeyOption.toJSON(message.secureKey)
+        : undefined);
+    message.ipAddressAcl !== undefined &&
+      (obj.ipAddressAcl = message.ipAddressAcl
+        ? ResourceOptions_IPAddressACLOption.toJSON(message.ipAddressAcl)
         : undefined);
     return obj;
   },
@@ -1534,6 +1697,14 @@ export const ResourceOptions = {
     message.rewrite =
       object.rewrite !== undefined && object.rewrite !== null
         ? ResourceOptions_RewriteOption.fromPartial(object.rewrite)
+        : undefined;
+    message.secureKey =
+      object.secureKey !== undefined && object.secureKey !== null
+        ? ResourceOptions_SecureKeyOption.fromPartial(object.secureKey)
+        : undefined;
+    message.ipAddressAcl =
+      object.ipAddressAcl !== undefined && object.ipAddressAcl !== null
+        ? ResourceOptions_IPAddressACLOption.fromPartial(object.ipAddressAcl)
         : undefined;
     return message;
   },
@@ -3355,6 +3526,210 @@ export const ResourceOptions_RewriteOption = {
 messageTypeRegistry.set(
   ResourceOptions_RewriteOption.$type,
   ResourceOptions_RewriteOption
+);
+
+const baseResourceOptions_SecureKeyOption: object = {
+  $type: "yandex.cloud.cdn.v1.ResourceOptions.SecureKeyOption",
+  enabled: false,
+  key: "",
+  type: 0,
+};
+
+export const ResourceOptions_SecureKeyOption = {
+  $type: "yandex.cloud.cdn.v1.ResourceOptions.SecureKeyOption" as const,
+
+  encode(
+    message: ResourceOptions_SecureKeyOption,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.enabled === true) {
+      writer.uint32(8).bool(message.enabled);
+    }
+    if (message.key !== "") {
+      writer.uint32(18).string(message.key);
+    }
+    if (message.type !== 0) {
+      writer.uint32(24).int32(message.type);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ResourceOptions_SecureKeyOption {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseResourceOptions_SecureKeyOption,
+    } as ResourceOptions_SecureKeyOption;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.enabled = reader.bool();
+          break;
+        case 2:
+          message.key = reader.string();
+          break;
+        case 3:
+          message.type = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ResourceOptions_SecureKeyOption {
+    const message = {
+      ...baseResourceOptions_SecureKeyOption,
+    } as ResourceOptions_SecureKeyOption;
+    message.enabled =
+      object.enabled !== undefined && object.enabled !== null
+        ? Boolean(object.enabled)
+        : false;
+    message.key =
+      object.key !== undefined && object.key !== null ? String(object.key) : "";
+    message.type =
+      object.type !== undefined && object.type !== null
+        ? secureKeyURLTypeFromJSON(object.type)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: ResourceOptions_SecureKeyOption): unknown {
+    const obj: any = {};
+    message.enabled !== undefined && (obj.enabled = message.enabled);
+    message.key !== undefined && (obj.key = message.key);
+    message.type !== undefined &&
+      (obj.type = secureKeyURLTypeToJSON(message.type));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ResourceOptions_SecureKeyOption>, I>>(
+    object: I
+  ): ResourceOptions_SecureKeyOption {
+    const message = {
+      ...baseResourceOptions_SecureKeyOption,
+    } as ResourceOptions_SecureKeyOption;
+    message.enabled = object.enabled ?? false;
+    message.key = object.key ?? "";
+    message.type = object.type ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ResourceOptions_SecureKeyOption.$type,
+  ResourceOptions_SecureKeyOption
+);
+
+const baseResourceOptions_IPAddressACLOption: object = {
+  $type: "yandex.cloud.cdn.v1.ResourceOptions.IPAddressACLOption",
+  enabled: false,
+  policyType: 0,
+  exceptedValues: "",
+};
+
+export const ResourceOptions_IPAddressACLOption = {
+  $type: "yandex.cloud.cdn.v1.ResourceOptions.IPAddressACLOption" as const,
+
+  encode(
+    message: ResourceOptions_IPAddressACLOption,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.enabled === true) {
+      writer.uint32(8).bool(message.enabled);
+    }
+    if (message.policyType !== 0) {
+      writer.uint32(16).int32(message.policyType);
+    }
+    for (const v of message.exceptedValues) {
+      writer.uint32(26).string(v!);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ResourceOptions_IPAddressACLOption {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseResourceOptions_IPAddressACLOption,
+    } as ResourceOptions_IPAddressACLOption;
+    message.exceptedValues = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.enabled = reader.bool();
+          break;
+        case 2:
+          message.policyType = reader.int32() as any;
+          break;
+        case 3:
+          message.exceptedValues.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ResourceOptions_IPAddressACLOption {
+    const message = {
+      ...baseResourceOptions_IPAddressACLOption,
+    } as ResourceOptions_IPAddressACLOption;
+    message.enabled =
+      object.enabled !== undefined && object.enabled !== null
+        ? Boolean(object.enabled)
+        : false;
+    message.policyType =
+      object.policyType !== undefined && object.policyType !== null
+        ? policyTypeFromJSON(object.policyType)
+        : 0;
+    message.exceptedValues = (object.exceptedValues ?? []).map((e: any) =>
+      String(e)
+    );
+    return message;
+  },
+
+  toJSON(message: ResourceOptions_IPAddressACLOption): unknown {
+    const obj: any = {};
+    message.enabled !== undefined && (obj.enabled = message.enabled);
+    message.policyType !== undefined &&
+      (obj.policyType = policyTypeToJSON(message.policyType));
+    if (message.exceptedValues) {
+      obj.exceptedValues = message.exceptedValues.map((e) => e);
+    } else {
+      obj.exceptedValues = [];
+    }
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<ResourceOptions_IPAddressACLOption>, I>
+  >(object: I): ResourceOptions_IPAddressACLOption {
+    const message = {
+      ...baseResourceOptions_IPAddressACLOption,
+    } as ResourceOptions_IPAddressACLOption;
+    message.enabled = object.enabled ?? false;
+    message.policyType = object.policyType ?? 0;
+    message.exceptedValues = object.exceptedValues?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ResourceOptions_IPAddressACLOption.$type,
+  ResourceOptions_IPAddressACLOption
 );
 
 const baseSSLTargetCertificate: object = {

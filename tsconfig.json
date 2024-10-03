@@ -10,7 +10,8 @@
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "lib": ["es6"]
+    "lib": ["es6"],
+    "disableSizeLimit": true,
   },
   "include": [
     "./src"

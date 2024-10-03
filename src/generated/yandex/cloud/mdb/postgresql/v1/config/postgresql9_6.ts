@@ -42,7 +42,9 @@ export interface Postgresqlconfig96 {
   bgwriterDelay?: number;
   bgwriterLruMaxpages?: number;
   bgwriterLruMultiplier?: number;
+  /** in bytes */
   bgwriterFlushAfter?: number;
+  /** in bytes */
   backendFlushAfter?: number;
   oldSnapshotThreshold?: number;
   walLevel: Postgresqlconfig96_WalLevel;
@@ -51,6 +53,7 @@ export interface Postgresqlconfig96 {
   checkpointTimeout?: number;
   /** Acceptable values are 0.0 to 1.0, inclusive. */
   checkpointCompletionTarget?: number;
+  /** in bytes */
   checkpointFlushAfter?: number;
   /** in bytes. */
   maxWalSize?: number;

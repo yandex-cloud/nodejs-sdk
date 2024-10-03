@@ -6,12 +6,13 @@ import _m0 from "protobufjs/minimal";
 export const protobufPackage = "speechkit.stt.v3";
 
 export enum CodeType {
+  /** @deprecated */
   CODE_TYPE_UNSPECIFIED = 0,
-  /** WORKING - all good */
+  /** WORKING - All good. */
   WORKING = 1,
-  /** WARNING - for example, if speech is sent not in real time. or unknown context (and we've made fallback). */
+  /** WARNING - For example, if speech is sent not in real time or context is unknown and we've made fallback. */
   WARNING = 2,
-  /** CLOSED - after session was closed. */
+  /** CLOSED - After session was closed. */
   CLOSED = 3,
   UNRECOGNIZED = -1,
 }
@@ -217,13 +218,16 @@ export interface RecognitionClassifier {
   triggers: RecognitionClassifier_TriggerType[];
 }
 
+/** Type of recognition classifier trigger. */
 export enum RecognitionClassifier_TriggerType {
-  /** TRIGGER_TYPE_UNSPECIFIED - Do not use */
+  /** @deprecated */
   TRIGGER_TYPE_UNSPECIFIED = 0,
   /** ON_UTTERANCE - Apply classifier to utterance responses */
   ON_UTTERANCE = 1,
   /** ON_FINAL - Apply classifier to final responses */
   ON_FINAL = 2,
+  /** ON_PARTIAL - Apply classifier to partial responses */
+  ON_PARTIAL = 3,
   UNRECOGNIZED = -1,
 }
 
@@ -240,6 +244,9 @@ export function recognitionClassifier_TriggerTypeFromJSON(
     case 2:
     case "ON_FINAL":
       return RecognitionClassifier_TriggerType.ON_FINAL;
+    case 3:
+    case "ON_PARTIAL":
+      return RecognitionClassifier_TriggerType.ON_PARTIAL;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -257,6 +264,8 @@ export function recognitionClassifier_TriggerTypeToJSON(
       return "ON_UTTERANCE";
     case RecognitionClassifier_TriggerType.ON_FINAL:
       return "ON_FINAL";
+    case RecognitionClassifier_TriggerType.ON_PARTIAL:
+      return "ON_PARTIAL";
     default:
       return "UNKNOWN";
   }
@@ -507,6 +516,56 @@ export function recognitionModelOptions_AudioProcessingTypeToJSON(
   }
 }
 
+export interface SpeakerLabelingOptions {
+  $type: "speechkit.stt.v3.SpeakerLabelingOptions";
+  /** Specifies the execution of speaker labeling. Default is SPEAKER_LABELING_DISABLED. */
+  speakerLabeling: SpeakerLabelingOptions_SpeakerLabeling;
+}
+
+export enum SpeakerLabelingOptions_SpeakerLabeling {
+  SPEAKER_LABELING_UNSPECIFIED = 0,
+  /** SPEAKER_LABELING_ENABLED - Enable speaker labeling */
+  SPEAKER_LABELING_ENABLED = 1,
+  /** SPEAKER_LABELING_DISABLED - Disable speaker labeling */
+  SPEAKER_LABELING_DISABLED = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function speakerLabelingOptions_SpeakerLabelingFromJSON(
+  object: any
+): SpeakerLabelingOptions_SpeakerLabeling {
+  switch (object) {
+    case 0:
+    case "SPEAKER_LABELING_UNSPECIFIED":
+      return SpeakerLabelingOptions_SpeakerLabeling.SPEAKER_LABELING_UNSPECIFIED;
+    case 1:
+    case "SPEAKER_LABELING_ENABLED":
+      return SpeakerLabelingOptions_SpeakerLabeling.SPEAKER_LABELING_ENABLED;
+    case 2:
+    case "SPEAKER_LABELING_DISABLED":
+      return SpeakerLabelingOptions_SpeakerLabeling.SPEAKER_LABELING_DISABLED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SpeakerLabelingOptions_SpeakerLabeling.UNRECOGNIZED;
+  }
+}
+
+export function speakerLabelingOptions_SpeakerLabelingToJSON(
+  object: SpeakerLabelingOptions_SpeakerLabeling
+): string {
+  switch (object) {
+    case SpeakerLabelingOptions_SpeakerLabeling.SPEAKER_LABELING_UNSPECIFIED:
+      return "SPEAKER_LABELING_UNSPECIFIED";
+    case SpeakerLabelingOptions_SpeakerLabeling.SPEAKER_LABELING_ENABLED:
+      return "SPEAKER_LABELING_ENABLED";
+    case SpeakerLabelingOptions_SpeakerLabeling.SPEAKER_LABELING_DISABLED:
+      return "SPEAKER_LABELING_DISABLED";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export interface StreamingOptions {
   $type: "speechkit.stt.v3.StreamingOptions";
   /** Configuration for speech recognition model. */
@@ -517,6 +576,8 @@ export interface StreamingOptions {
   recognitionClassifier?: RecognitionClassifierOptions;
   /** Configuration for speech analysis over speech recognition. */
   speechAnalysis?: SpeechAnalysisOptions;
+  /** Configuration for speaker labeling */
+  speakerLabeling?: SpeakerLabelingOptions;
 }
 
 /** Data chunk with audio. */
@@ -568,6 +629,8 @@ export interface RecognizeFileRequest {
   recognitionClassifier?: RecognitionClassifierOptions;
   /** Configuration for speech analysis over speech recognition. */
   speechAnalysis?: SpeechAnalysisOptions;
+  /** Configuration for speaker labeling */
+  speakerLabeling?: SpeakerLabelingOptions;
 }
 
 /** Recognized word. */
@@ -718,12 +781,14 @@ export interface RecognitionClassifierUpdate {
 }
 
 export enum RecognitionClassifierUpdate_WindowType {
-  /** WINDOW_TYPE_UNSPECIFIED - Never used */
+  /** @deprecated */
   WINDOW_TYPE_UNSPECIFIED = 0,
   /** LAST_UTTERANCE - The result of applying the classifier to the last utterance response */
   LAST_UTTERANCE = 1,
   /** LAST_FINAL - The result of applying the classifier to the last final response */
   LAST_FINAL = 2,
+  /** LAST_PARTIAL - The result of applying the classifier to the last partial response */
+  LAST_PARTIAL = 3,
   UNRECOGNIZED = -1,
 }
 
@@ -740,6 +805,9 @@ export function recognitionClassifierUpdate_WindowTypeFromJSON(
     case 2:
     case "LAST_FINAL":
       return RecognitionClassifierUpdate_WindowType.LAST_FINAL;
+    case 3:
+    case "LAST_PARTIAL":
+      return RecognitionClassifierUpdate_WindowType.LAST_PARTIAL;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -757,6 +825,8 @@ export function recognitionClassifierUpdate_WindowTypeToJSON(
       return "LAST_UTTERANCE";
     case RecognitionClassifierUpdate_WindowType.LAST_FINAL:
       return "LAST_FINAL";
+    case RecognitionClassifierUpdate_WindowType.LAST_PARTIAL:
+      return "LAST_PARTIAL";
     default:
       return "UNKNOWN";
   }
@@ -827,10 +897,11 @@ export interface SpeakerAnalysis {
 }
 
 export enum SpeakerAnalysis_WindowType {
+  /** @deprecated */
   WINDOW_TYPE_UNSPECIFIED = 0,
-  /** TOTAL - Stats for all received audio */
+  /** TOTAL - Stats for all received audio. */
   TOTAL = 1,
-  /** LAST_UTTERANCE - Stats for last utterance */
+  /** LAST_UTTERANCE - Stats for last utterance. */
   LAST_UTTERANCE = 2,
   UNRECOGNIZED = -1,
 }
@@ -888,6 +959,10 @@ export interface ConversationAnalysis {
   simultaneousSpeechDurationEstimation?: DescriptiveStatistics;
   /** Interrupts description for every speaker */
   speakerInterrupts: ConversationAnalysis_InterruptsEvaluation[];
+  /** Total speech duration, including both simultaneous and separate speech */
+  totalSpeechDurationMs: number;
+  /** Total speech ratio within audio segment */
+  totalSpeechRatio: number;
 }
 
 export interface ConversationAnalysis_InterruptsEvaluation {
@@ -2112,6 +2187,74 @@ export const RecognitionModelOptions = {
 
 messageTypeRegistry.set(RecognitionModelOptions.$type, RecognitionModelOptions);
 
+const baseSpeakerLabelingOptions: object = {
+  $type: "speechkit.stt.v3.SpeakerLabelingOptions",
+  speakerLabeling: 0,
+};
+
+export const SpeakerLabelingOptions = {
+  $type: "speechkit.stt.v3.SpeakerLabelingOptions" as const,
+
+  encode(
+    message: SpeakerLabelingOptions,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.speakerLabeling !== 0) {
+      writer.uint32(8).int32(message.speakerLabeling);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): SpeakerLabelingOptions {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseSpeakerLabelingOptions } as SpeakerLabelingOptions;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.speakerLabeling = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SpeakerLabelingOptions {
+    const message = { ...baseSpeakerLabelingOptions } as SpeakerLabelingOptions;
+    message.speakerLabeling =
+      object.speakerLabeling !== undefined && object.speakerLabeling !== null
+        ? speakerLabelingOptions_SpeakerLabelingFromJSON(object.speakerLabeling)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: SpeakerLabelingOptions): unknown {
+    const obj: any = {};
+    message.speakerLabeling !== undefined &&
+      (obj.speakerLabeling = speakerLabelingOptions_SpeakerLabelingToJSON(
+        message.speakerLabeling
+      ));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SpeakerLabelingOptions>, I>>(
+    object: I
+  ): SpeakerLabelingOptions {
+    const message = { ...baseSpeakerLabelingOptions } as SpeakerLabelingOptions;
+    message.speakerLabeling = object.speakerLabeling ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(SpeakerLabelingOptions.$type, SpeakerLabelingOptions);
+
 const baseStreamingOptions: object = {
   $type: "speechkit.stt.v3.StreamingOptions",
 };
@@ -2145,6 +2288,12 @@ export const StreamingOptions = {
       SpeechAnalysisOptions.encode(
         message.speechAnalysis,
         writer.uint32(34).fork()
+      ).ldelim();
+    }
+    if (message.speakerLabeling !== undefined) {
+      SpeakerLabelingOptions.encode(
+        message.speakerLabeling,
+        writer.uint32(42).fork()
       ).ldelim();
     }
     return writer;
@@ -2181,6 +2330,12 @@ export const StreamingOptions = {
             reader.uint32()
           );
           break;
+        case 5:
+          message.speakerLabeling = SpeakerLabelingOptions.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2208,6 +2363,10 @@ export const StreamingOptions = {
       object.speechAnalysis !== undefined && object.speechAnalysis !== null
         ? SpeechAnalysisOptions.fromJSON(object.speechAnalysis)
         : undefined;
+    message.speakerLabeling =
+      object.speakerLabeling !== undefined && object.speakerLabeling !== null
+        ? SpeakerLabelingOptions.fromJSON(object.speakerLabeling)
+        : undefined;
     return message;
   },
 
@@ -2228,6 +2387,10 @@ export const StreamingOptions = {
     message.speechAnalysis !== undefined &&
       (obj.speechAnalysis = message.speechAnalysis
         ? SpeechAnalysisOptions.toJSON(message.speechAnalysis)
+        : undefined);
+    message.speakerLabeling !== undefined &&
+      (obj.speakerLabeling = message.speakerLabeling
+        ? SpeakerLabelingOptions.toJSON(message.speakerLabeling)
         : undefined);
     return obj;
   },
@@ -2252,6 +2415,10 @@ export const StreamingOptions = {
     message.speechAnalysis =
       object.speechAnalysis !== undefined && object.speechAnalysis !== null
         ? SpeechAnalysisOptions.fromPartial(object.speechAnalysis)
+        : undefined;
+    message.speakerLabeling =
+      object.speakerLabeling !== undefined && object.speakerLabeling !== null
+        ? SpeakerLabelingOptions.fromPartial(object.speakerLabeling)
         : undefined;
     return message;
   },
@@ -2590,6 +2757,12 @@ export const RecognizeFileRequest = {
         writer.uint32(42).fork()
       ).ldelim();
     }
+    if (message.speakerLabeling !== undefined) {
+      SpeakerLabelingOptions.encode(
+        message.speakerLabeling,
+        writer.uint32(50).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2627,6 +2800,12 @@ export const RecognizeFileRequest = {
             reader.uint32()
           );
           break;
+        case 6:
+          message.speakerLabeling = SpeakerLabelingOptions.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2658,6 +2837,10 @@ export const RecognizeFileRequest = {
       object.speechAnalysis !== undefined && object.speechAnalysis !== null
         ? SpeechAnalysisOptions.fromJSON(object.speechAnalysis)
         : undefined;
+    message.speakerLabeling =
+      object.speakerLabeling !== undefined && object.speakerLabeling !== null
+        ? SpeakerLabelingOptions.fromJSON(object.speakerLabeling)
+        : undefined;
     return message;
   },
 
@@ -2681,6 +2864,10 @@ export const RecognizeFileRequest = {
       (obj.speechAnalysis = message.speechAnalysis
         ? SpeechAnalysisOptions.toJSON(message.speechAnalysis)
         : undefined);
+    message.speakerLabeling !== undefined &&
+      (obj.speakerLabeling = message.speakerLabeling
+        ? SpeakerLabelingOptions.toJSON(message.speakerLabeling)
+        : undefined);
     return obj;
   },
 
@@ -2702,6 +2889,10 @@ export const RecognizeFileRequest = {
     message.speechAnalysis =
       object.speechAnalysis !== undefined && object.speechAnalysis !== null
         ? SpeechAnalysisOptions.fromPartial(object.speechAnalysis)
+        : undefined;
+    message.speakerLabeling =
+      object.speakerLabeling !== undefined && object.speakerLabeling !== null
+        ? SpeakerLabelingOptions.fromPartial(object.speakerLabeling)
         : undefined;
     return message;
   },
@@ -4570,6 +4761,8 @@ const baseConversationAnalysis: object = {
   totalSimultaneousSilenceRatio: 0,
   totalSimultaneousSpeechDurationMs: 0,
   totalSimultaneousSpeechRatio: 0,
+  totalSpeechDurationMs: 0,
+  totalSpeechRatio: 0,
 };
 
 export const ConversationAnalysis = {
@@ -4614,6 +4807,12 @@ export const ConversationAnalysis = {
         v!,
         writer.uint32(66).fork()
       ).ldelim();
+    }
+    if (message.totalSpeechDurationMs !== 0) {
+      writer.uint32(72).int64(message.totalSpeechDurationMs);
+    }
+    if (message.totalSpeechRatio !== 0) {
+      writer.uint32(81).double(message.totalSpeechRatio);
     }
     return writer;
   },
@@ -4667,6 +4866,12 @@ export const ConversationAnalysis = {
             )
           );
           break;
+        case 9:
+          message.totalSpeechDurationMs = longToNumber(reader.int64() as Long);
+          break;
+        case 10:
+          message.totalSpeechRatio = reader.double();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -4719,6 +4924,15 @@ export const ConversationAnalysis = {
     message.speakerInterrupts = (object.speakerInterrupts ?? []).map((e: any) =>
       ConversationAnalysis_InterruptsEvaluation.fromJSON(e)
     );
+    message.totalSpeechDurationMs =
+      object.totalSpeechDurationMs !== undefined &&
+      object.totalSpeechDurationMs !== null
+        ? Number(object.totalSpeechDurationMs)
+        : 0;
+    message.totalSpeechRatio =
+      object.totalSpeechRatio !== undefined && object.totalSpeechRatio !== null
+        ? Number(object.totalSpeechRatio)
+        : 0;
     return message;
   },
 
@@ -4762,6 +4976,10 @@ export const ConversationAnalysis = {
     } else {
       obj.speakerInterrupts = [];
     }
+    message.totalSpeechDurationMs !== undefined &&
+      (obj.totalSpeechDurationMs = Math.round(message.totalSpeechDurationMs));
+    message.totalSpeechRatio !== undefined &&
+      (obj.totalSpeechRatio = message.totalSpeechRatio);
     return obj;
   },
 
@@ -4800,6 +5018,8 @@ export const ConversationAnalysis = {
       object.speakerInterrupts?.map((e) =>
         ConversationAnalysis_InterruptsEvaluation.fromPartial(e)
       ) || [];
+    message.totalSpeechDurationMs = object.totalSpeechDurationMs ?? 0;
+    message.totalSpeechRatio = object.totalSpeechRatio ?? 0;
     return message;
   },
 };

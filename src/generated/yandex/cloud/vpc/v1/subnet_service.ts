@@ -106,7 +106,6 @@ export interface CreateSubnetRequest {
   /**
    * CIDR block.
    * The range of internal addresses that are defined for this subnet.
-   * This field can be set only at Subnet resource creation time and cannot be changed.
    * For example, 10.0.0.0/22 or 192.168.0.0/24.
    * Minimum subnet size is /28, maximum subnet size is /16.
    */
@@ -146,6 +145,8 @@ export interface UpdateSubnetRequest {
   /** ID of route table the subnet is linked to. */
   routeTableId: string;
   dhcpOptions?: DhcpOptions;
+  /** New CIDR blocks which will overwrite the existing ones. */
+  v4CidrBlocks: string[];
 }
 
 export interface UpdateSubnetRequest_LabelsEntry {
@@ -274,6 +275,17 @@ export interface UsedAddress {
   address: string;
   ipVersion: IpVersion;
   references: Reference[];
+}
+
+export interface RelocateSubnetRequest {
+  $type: "yandex.cloud.vpc.v1.RelocateSubnetRequest";
+  subnetId: string;
+  destinationZoneId: string;
+}
+
+export interface RelocateSubnetMetadata {
+  $type: "yandex.cloud.vpc.v1.RelocateSubnetMetadata";
+  subnetId: string;
 }
 
 const baseGetSubnetRequest: object = {
@@ -884,6 +896,7 @@ const baseUpdateSubnetRequest: object = {
   name: "",
   description: "",
   routeTableId: "",
+  v4CidrBlocks: "",
 };
 
 export const UpdateSubnetRequest = {
@@ -924,6 +937,9 @@ export const UpdateSubnetRequest = {
         writer.uint32(58).fork()
       ).ldelim();
     }
+    for (const v of message.v4CidrBlocks) {
+      writer.uint32(66).string(v!);
+    }
     return writer;
   },
 
@@ -932,6 +948,7 @@ export const UpdateSubnetRequest = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseUpdateSubnetRequest } as UpdateSubnetRequest;
     message.labels = {};
+    message.v4CidrBlocks = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -961,6 +978,9 @@ export const UpdateSubnetRequest = {
           break;
         case 7:
           message.dhcpOptions = DhcpOptions.decode(reader, reader.uint32());
+          break;
+        case 8:
+          message.v4CidrBlocks.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1002,6 +1022,9 @@ export const UpdateSubnetRequest = {
       object.dhcpOptions !== undefined && object.dhcpOptions !== null
         ? DhcpOptions.fromJSON(object.dhcpOptions)
         : undefined;
+    message.v4CidrBlocks = (object.v4CidrBlocks ?? []).map((e: any) =>
+      String(e)
+    );
     return message;
   },
 
@@ -1027,6 +1050,11 @@ export const UpdateSubnetRequest = {
       (obj.dhcpOptions = message.dhcpOptions
         ? DhcpOptions.toJSON(message.dhcpOptions)
         : undefined);
+    if (message.v4CidrBlocks) {
+      obj.v4CidrBlocks = message.v4CidrBlocks.map((e) => e);
+    } else {
+      obj.v4CidrBlocks = [];
+    }
     return obj;
   },
 
@@ -1054,6 +1082,7 @@ export const UpdateSubnetRequest = {
       object.dhcpOptions !== undefined && object.dhcpOptions !== null
         ? DhcpOptions.fromPartial(object.dhcpOptions)
         : undefined;
+    message.v4CidrBlocks = object.v4CidrBlocks?.map((e) => e) || [];
     return message;
   },
 };
@@ -2304,6 +2333,151 @@ export const UsedAddress = {
 
 messageTypeRegistry.set(UsedAddress.$type, UsedAddress);
 
+const baseRelocateSubnetRequest: object = {
+  $type: "yandex.cloud.vpc.v1.RelocateSubnetRequest",
+  subnetId: "",
+  destinationZoneId: "",
+};
+
+export const RelocateSubnetRequest = {
+  $type: "yandex.cloud.vpc.v1.RelocateSubnetRequest" as const,
+
+  encode(
+    message: RelocateSubnetRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.subnetId !== "") {
+      writer.uint32(10).string(message.subnetId);
+    }
+    if (message.destinationZoneId !== "") {
+      writer.uint32(18).string(message.destinationZoneId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RelocateSubnetRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseRelocateSubnetRequest } as RelocateSubnetRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.subnetId = reader.string();
+          break;
+        case 2:
+          message.destinationZoneId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RelocateSubnetRequest {
+    const message = { ...baseRelocateSubnetRequest } as RelocateSubnetRequest;
+    message.subnetId =
+      object.subnetId !== undefined && object.subnetId !== null
+        ? String(object.subnetId)
+        : "";
+    message.destinationZoneId =
+      object.destinationZoneId !== undefined &&
+      object.destinationZoneId !== null
+        ? String(object.destinationZoneId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: RelocateSubnetRequest): unknown {
+    const obj: any = {};
+    message.subnetId !== undefined && (obj.subnetId = message.subnetId);
+    message.destinationZoneId !== undefined &&
+      (obj.destinationZoneId = message.destinationZoneId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RelocateSubnetRequest>, I>>(
+    object: I
+  ): RelocateSubnetRequest {
+    const message = { ...baseRelocateSubnetRequest } as RelocateSubnetRequest;
+    message.subnetId = object.subnetId ?? "";
+    message.destinationZoneId = object.destinationZoneId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(RelocateSubnetRequest.$type, RelocateSubnetRequest);
+
+const baseRelocateSubnetMetadata: object = {
+  $type: "yandex.cloud.vpc.v1.RelocateSubnetMetadata",
+  subnetId: "",
+};
+
+export const RelocateSubnetMetadata = {
+  $type: "yandex.cloud.vpc.v1.RelocateSubnetMetadata" as const,
+
+  encode(
+    message: RelocateSubnetMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.subnetId !== "") {
+      writer.uint32(10).string(message.subnetId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RelocateSubnetMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseRelocateSubnetMetadata } as RelocateSubnetMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.subnetId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RelocateSubnetMetadata {
+    const message = { ...baseRelocateSubnetMetadata } as RelocateSubnetMetadata;
+    message.subnetId =
+      object.subnetId !== undefined && object.subnetId !== null
+        ? String(object.subnetId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: RelocateSubnetMetadata): unknown {
+    const obj: any = {};
+    message.subnetId !== undefined && (obj.subnetId = message.subnetId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RelocateSubnetMetadata>, I>>(
+    object: I
+  ): RelocateSubnetMetadata {
+    const message = { ...baseRelocateSubnetMetadata } as RelocateSubnetMetadata;
+    message.subnetId = object.subnetId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(RelocateSubnetMetadata.$type, RelocateSubnetMetadata);
+
 /** A set of methods for managing Subnet resources. */
 export const SubnetServiceService = {
   /**
@@ -2434,6 +2608,17 @@ export const SubnetServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  relocate: {
+    path: "/yandex.cloud.vpc.v1.SubnetService/Relocate",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: RelocateSubnetRequest) =>
+      Buffer.from(RelocateSubnetRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => RelocateSubnetRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /** List used addresses in specified subnet. */
   listUsedAddresses: {
     path: "/yandex.cloud.vpc.v1.SubnetService/ListUsedAddresses",
@@ -2488,6 +2673,7 @@ export interface SubnetServiceServer extends UntypedServiceImplementation {
   >;
   /** Move subnet to another folder. */
   move: handleUnaryCall<MoveSubnetRequest, Operation>;
+  relocate: handleUnaryCall<RelocateSubnetRequest, Operation>;
   /** List used addresses in specified subnet. */
   listUsedAddresses: handleUnaryCall<
     ListUsedAddressesRequest,
@@ -2670,6 +2856,21 @@ export interface SubnetServiceClient extends Client {
   ): ClientUnaryCall;
   move(
     request: MoveSubnetRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  relocate(
+    request: RelocateSubnetRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  relocate(
+    request: RelocateSubnetRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  relocate(
+    request: RelocateSubnetRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

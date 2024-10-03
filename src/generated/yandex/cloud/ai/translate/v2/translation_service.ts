@@ -953,7 +953,11 @@ export const ListLanguagesResponse = {
 
 messageTypeRegistry.set(ListLanguagesResponse.$type, ListLanguagesResponse);
 
-/** A set of methods for the Translate service. */
+/**
+ * A set of methods for the Translate service.
+ *
+ * Make sure you send your [authentication](/docs/translate/api-ref/authentication) credentials in the `Authorization` header of each request.
+ */
 export const TranslationServiceService = {
   /** Translates the text to the specified language. */
   translate: {

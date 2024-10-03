@@ -72,9 +72,9 @@ export interface Cluster {
 
 export enum Cluster_Environment {
   ENVIRONMENT_UNSPECIFIED = 0,
-  /** PRODUCTION - stable environment with a conservative update policy when only hotfixes are applied during regular maintenance. */
+  /** PRODUCTION - Stable environment with a conservative update policy when only hotfixes are applied during regular maintenance. */
   PRODUCTION = 1,
-  /** PRESTABLE - environment with a more aggressive update policy when new versions are rolled out irrespective of backward compatibility. */
+  /** PRESTABLE - Environment with a more aggressive update policy when new versions are rolled out irrespective of backward compatibility. */
   PRESTABLE = 2,
   UNRECOGNIZED = -1,
 }
@@ -111,13 +111,13 @@ export function cluster_EnvironmentToJSON(object: Cluster_Environment): string {
 }
 
 export enum Cluster_Health {
-  /** HEALTH_UNKNOWN - state of the cluster is unknown ([Host.health] of all hosts in the cluster is `UNKNOWN`). */
+  /** HEALTH_UNKNOWN - State of the cluster is unknown ([Host.health] of all hosts in the cluster is `UNKNOWN`). */
   HEALTH_UNKNOWN = 0,
-  /** ALIVE - cluster is alive and well ([Host.health] of all hosts in the cluster is `ALIVE`). */
+  /** ALIVE - Cluster is alive and well ([Host.health] of all hosts in the cluster is `ALIVE`). */
   ALIVE = 1,
-  /** DEAD - cluster is inoperable ([Host.health] of all hosts in the cluster is `DEAD`). */
+  /** DEAD - Cluster is inoperable ([Host.health] of all hosts in the cluster is `DEAD`). */
   DEAD = 2,
-  /** DEGRADED - cluster is in degraded state ([Host.health] of at least one of the hosts in the cluster is not `ALIVE`). */
+  /** DEGRADED - Cluster is in degraded state ([Host.health] of at least one of the hosts in the cluster is not `ALIVE`). */
   DEGRADED = 3,
   UNRECOGNIZED = -1,
 }
@@ -159,21 +159,21 @@ export function cluster_HealthToJSON(object: Cluster_Health): string {
 }
 
 export enum Cluster_Status {
-  /** STATUS_UNKNOWN - cluster state is unknown. */
+  /** STATUS_UNKNOWN - Cluster state is unknown. */
   STATUS_UNKNOWN = 0,
-  /** CREATING - cluster is being created. */
+  /** CREATING - Cluster is being created. */
   CREATING = 1,
-  /** RUNNING - cluster is running normally. */
+  /** RUNNING - Cluster is running normally. */
   RUNNING = 2,
-  /** ERROR - cluster encountered a problem and cannot operate. */
+  /** ERROR - Cluster encountered a problem and cannot operate. */
   ERROR = 3,
-  /** UPDATING - cluster is being updated. */
+  /** UPDATING - Cluster is being updated. */
   UPDATING = 4,
-  /** STOPPING - cluster is stopping. */
+  /** STOPPING - Cluster is stopping. */
   STOPPING = 5,
-  /** STOPPED - cluster stopped. */
+  /** STOPPED - Cluster stopped. */
   STOPPED = 6,
-  /** STARTING - cluster is starting. */
+  /** STARTING - Cluster is starting. */
   STARTING = 7,
   UNRECOGNIZED = -1,
 }
@@ -268,7 +268,12 @@ export interface ConfigSpec {
    * If the value is `true`, then Apache Kafka® cluster is available on the Internet via it's public IP address.
    */
   assignPublicIp: boolean;
-  /** Allows to manage topics via AdminAPI */
+  /**
+   * Allows to manage topics via AdminAPI
+   * Deprecated. Feature enabled permanently.
+   *
+   * @deprecated
+   */
   unmanagedTopics: boolean;
   /** Enables managed schema registry on cluster */
   schemaRegistry: boolean;
@@ -276,6 +281,8 @@ export interface ConfigSpec {
   access?: Access;
   /** Configuration of REST API. */
   restApiConfig?: ConfigSpec_RestAPIConfig;
+  /** DiskSizeAutoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface ConfigSpec_Kafka {
@@ -480,11 +487,11 @@ export interface Host {
   clusterId: string;
   /** ID of the availability zone where the host resides. */
   zoneId: string;
-  /** Host role. */
+  /** Host role. If the field has default value, it is not returned in the response. */
   role: Host_Role;
   /** Computational resources allocated to the host. */
   resources?: Resources;
-  /** Aggregated host health data. */
+  /** Aggregated host health data. If the field has default value, it is not returned in the response. */
   health: Host_Health;
   /** ID of the subnet the host resides in. */
   subnetId: string;
@@ -497,10 +504,11 @@ export interface Host {
 }
 
 export enum Host_Role {
+  /** ROLE_UNSPECIFIED - Role of the host is unspecified. Default value. */
   ROLE_UNSPECIFIED = 0,
-  /** KAFKA - the host is a Kafka broker. */
+  /** KAFKA - The host is a Kafka broker. */
   KAFKA = 1,
-  /** ZOOKEEPER - the host is a ZooKeeper server. */
+  /** ZOOKEEPER - The host is a ZooKeeper server. */
   ZOOKEEPER = 2,
   UNRECOGNIZED = -1,
 }
@@ -537,13 +545,13 @@ export function host_RoleToJSON(object: Host_Role): string {
 }
 
 export enum Host_Health {
-  /** UNKNOWN - health of the host is unknown. */
+  /** UNKNOWN - Health of the host is unknown. Default value. */
   UNKNOWN = 0,
-  /** ALIVE - the host is performing all its functions normally. */
+  /** ALIVE - The host is performing all its functions normally. */
   ALIVE = 1,
-  /** DEAD - the host is inoperable and cannot perform any of its essential functions. */
+  /** DEAD - The host is inoperable and cannot perform any of its essential functions. */
   DEAD = 2,
-  /** DEGRADED - the host is degraded and can perform only some of its essential functions. */
+  /** DEGRADED - The host is degraded and can perform only some of its essential functions. */
   DEGRADED = 3,
   UNRECOGNIZED = -1,
 }
@@ -588,6 +596,16 @@ export interface Access {
   $type: "yandex.cloud.mdb.kafka.v1.Access";
   /** Allow access for DataTransfer. */
   dataTransfer: boolean;
+}
+
+export interface DiskSizeAutoscaling {
+  $type: "yandex.cloud.mdb.kafka.v1.DiskSizeAutoscaling";
+  /** Threshold of storage usage (in percent) that triggers automatic scaling of the storage during the maintenance window. Zero value means disabled threshold. */
+  plannedUsageThreshold: number;
+  /** Threshold of storage usage (in percent) that triggers immediate automatic scaling of the storage. Zero value means disabled threshold. */
+  emergencyUsageThreshold: number;
+  /** New storage size (in bytes) that is set when one of the thresholds is achieved. */
+  diskSizeLimit: number;
 }
 
 const baseCluster: object = {
@@ -1151,6 +1169,12 @@ export const ConfigSpec = {
         writer.uint32(82).fork()
       ).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1197,6 +1221,12 @@ export const ConfigSpec = {
           break;
         case 10:
           message.restApiConfig = ConfigSpec_RestAPIConfig.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 11:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
             reader,
             reader.uint32()
           );
@@ -1248,6 +1278,11 @@ export const ConfigSpec = {
       object.restApiConfig !== undefined && object.restApiConfig !== null
         ? ConfigSpec_RestAPIConfig.fromJSON(object.restApiConfig)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -1281,6 +1316,10 @@ export const ConfigSpec = {
       (obj.restApiConfig = message.restApiConfig
         ? ConfigSpec_RestAPIConfig.toJSON(message.restApiConfig)
         : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
+        : undefined);
     return obj;
   },
 
@@ -1309,6 +1348,11 @@ export const ConfigSpec = {
     message.restApiConfig =
       object.restApiConfig !== undefined && object.restApiConfig !== null
         ? ConfigSpec_RestAPIConfig.fromPartial(object.restApiConfig)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -2856,6 +2900,103 @@ export const Access = {
 };
 
 messageTypeRegistry.set(Access.$type, Access);
+
+const baseDiskSizeAutoscaling: object = {
+  $type: "yandex.cloud.mdb.kafka.v1.DiskSizeAutoscaling",
+  plannedUsageThreshold: 0,
+  emergencyUsageThreshold: 0,
+  diskSizeLimit: 0,
+};
+
+export const DiskSizeAutoscaling = {
+  $type: "yandex.cloud.mdb.kafka.v1.DiskSizeAutoscaling" as const,
+
+  encode(
+    message: DiskSizeAutoscaling,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.plannedUsageThreshold !== 0) {
+      writer.uint32(8).int64(message.plannedUsageThreshold);
+    }
+    if (message.emergencyUsageThreshold !== 0) {
+      writer.uint32(16).int64(message.emergencyUsageThreshold);
+    }
+    if (message.diskSizeLimit !== 0) {
+      writer.uint32(24).int64(message.diskSizeLimit);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DiskSizeAutoscaling {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.plannedUsageThreshold = longToNumber(reader.int64() as Long);
+          break;
+        case 2:
+          message.emergencyUsageThreshold = longToNumber(
+            reader.int64() as Long
+          );
+          break;
+        case 3:
+          message.diskSizeLimit = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DiskSizeAutoscaling {
+    const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+    message.plannedUsageThreshold =
+      object.plannedUsageThreshold !== undefined &&
+      object.plannedUsageThreshold !== null
+        ? Number(object.plannedUsageThreshold)
+        : 0;
+    message.emergencyUsageThreshold =
+      object.emergencyUsageThreshold !== undefined &&
+      object.emergencyUsageThreshold !== null
+        ? Number(object.emergencyUsageThreshold)
+        : 0;
+    message.diskSizeLimit =
+      object.diskSizeLimit !== undefined && object.diskSizeLimit !== null
+        ? Number(object.diskSizeLimit)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: DiskSizeAutoscaling): unknown {
+    const obj: any = {};
+    message.plannedUsageThreshold !== undefined &&
+      (obj.plannedUsageThreshold = Math.round(message.plannedUsageThreshold));
+    message.emergencyUsageThreshold !== undefined &&
+      (obj.emergencyUsageThreshold = Math.round(
+        message.emergencyUsageThreshold
+      ));
+    message.diskSizeLimit !== undefined &&
+      (obj.diskSizeLimit = Math.round(message.diskSizeLimit));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DiskSizeAutoscaling>, I>>(
+    object: I
+  ): DiskSizeAutoscaling {
+    const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+    message.plannedUsageThreshold = object.plannedUsageThreshold ?? 0;
+    message.emergencyUsageThreshold = object.emergencyUsageThreshold ?? 0;
+    message.diskSizeLimit = object.diskSizeLimit ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(DiskSizeAutoscaling.$type, DiskSizeAutoscaling);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

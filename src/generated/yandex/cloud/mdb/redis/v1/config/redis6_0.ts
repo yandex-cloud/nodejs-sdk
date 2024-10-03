@@ -33,7 +33,7 @@ export interface Redisconfig60 {
   slowlogLogSlowerThan?: number;
   /** Max slow requests number to log. */
   slowlogMaxLen?: number;
-  /** String setting for pub\sub functionality; subset of KEg$lshzxeAtm. */
+  /** String setting for pub\sub functionality. */
   notifyKeyspaceEvents: string;
   /** Redis connection output buffers limits for pubsub operations. */
   clientOutputBufferLimitPubsub?: Redisconfig60_ClientOutputBufferLimit;

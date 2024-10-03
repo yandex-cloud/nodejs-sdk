@@ -27,60 +27,119 @@ export const protobufPackage = "yandex.cloud.mdb.clickhouse.v1";
 
 export interface GetFormatSchemaRequest {
   $type: "yandex.cloud.mdb.clickhouse.v1.GetFormatSchemaRequest";
+  /**
+   * ClickHouse cluster ID.
+   *
+   * To get a ClickHouse cluster ID, use the [ClusterService.List] method.
+   */
   clusterId: string;
+  /**
+   * Format schema name.
+   *
+   * To get a format schema name, use the [FormatSchemaService.List] method.
+   */
   formatSchemaName: string;
 }
 
 export interface ListFormatSchemasRequest {
   $type: "yandex.cloud.mdb.clickhouse.v1.ListFormatSchemasRequest";
+  /**
+   * ClickHouse cluster ID.
+   *
+   * To get a ClickHouse cluster ID, use the [ClusterService.List] method.
+   */
   clusterId: string;
+  /** The maximum number of results per page to return. If the number of the results is larger than [page_size], the service returns [ListFormatSchemasResponse.next_page_token]. You can use it to get the next page of the results in subsequent requests of a format schema list. */
   pageSize: number;
+  /** Page token. To get the next page of results, set [page_token] to the [ListFormatSchemasResponse.next_page_token] returned by the previous format schema list request. */
   pageToken: string;
 }
 
 export interface ListFormatSchemasResponse {
   $type: "yandex.cloud.mdb.clickhouse.v1.ListFormatSchemasResponse";
+  /** List of format schemas. */
   formatSchemas: FormatSchema[];
+  /** This token allows you to get the next page of results when requesting the format schema list. If the number of the results is larger than [ListFormatSchemasRequest.page_size], use the [next_page_token] as the value for the [ListFormatSchemasRequest.page_token] parameter in the next request. Each subsequent request will have its own [next_page_token] to continue paging through the results. */
   nextPageToken: string;
 }
 
 export interface CreateFormatSchemaRequest {
   $type: "yandex.cloud.mdb.clickhouse.v1.CreateFormatSchemaRequest";
+  /**
+   * ClickHouse cluster ID.
+   *
+   * To get a ClickHouse cluster ID, use the [ClusterService.List] method.
+   */
   clusterId: string;
+  /** Format schema name. */
   formatSchemaName: string;
+  /**
+   * Schema type. Possible values are the following:
+   *
+   * * FORMAT_SCHEMA_TYPE_PROTOBUF - [Protobuf](https://protobuf.dev/) data format (including [ProtobufSingle](https://clickhouse.com/docs/en/interfaces/formats#protobufsingle)).
+   * * FORMAT_SCHEMA_TYPE_CAPNPROTO - [Cap'n Proto](https://capnproto.org/) data format.
+   */
   type: FormatSchemaType;
+  /** [Link to the file](/docs/managed-clickhouse/operations/s3-access#get-link-to-object) of a format schema in Yandex Object Storage. Managed Service for ClickHouse works only with format schemas imported to Object Storage. */
   uri: string;
 }
 
 export interface CreateFormatSchemaMetadata {
   $type: "yandex.cloud.mdb.clickhouse.v1.CreateFormatSchemaMetadata";
+  /** ClickHouse cluster ID. */
   clusterId: string;
+  /** Format schema name. */
   formatSchemaName: string;
 }
 
 export interface UpdateFormatSchemaRequest {
   $type: "yandex.cloud.mdb.clickhouse.v1.UpdateFormatSchemaRequest";
+  /**
+   * ClickHouse cluster ID.
+   *
+   * To get a ClickHouse cluster ID, use the [ClusterService.List] method.
+   */
   clusterId: string;
+  /**
+   * Format schema name.
+   *
+   * To get a format schema name, use the [FormatSchemaService.List] method.
+   */
   formatSchemaName: string;
   updateMask?: FieldMask;
+  /** [Link to the file](/docs/managed-clickhouse/operations/s3-access#get-link-to-object) of a format schema in Yandex Object Storage. Managed Service for ClickHouse works only with format schemas imported to Object Storage. */
   uri: string;
 }
 
 export interface UpdateFormatSchemaMetadata {
   $type: "yandex.cloud.mdb.clickhouse.v1.UpdateFormatSchemaMetadata";
+  /** ClickHouse cluster ID. */
   clusterId: string;
+  /** Format schema name. */
   formatSchemaName: string;
 }
 
 export interface DeleteFormatSchemaRequest {
   $type: "yandex.cloud.mdb.clickhouse.v1.DeleteFormatSchemaRequest";
+  /**
+   * ClickHouse cluster ID.
+   *
+   * To get a ClickHouse cluster ID, use the [ClusterService.List] method.
+   */
   clusterId: string;
+  /**
+   * Format schema name.
+   *
+   * To get a format schema name, use the [FormatSchemaService.List] method.
+   */
   formatSchemaName: string;
 }
 
 export interface DeleteFormatSchemaMetadata {
   $type: "yandex.cloud.mdb.clickhouse.v1.DeleteFormatSchemaMetadata";
+  /** ClickHouse cluster ID. */
   clusterId: string;
+  /** Format schema name. */
   formatSchemaName: string;
 }
 
@@ -942,7 +1001,9 @@ messageTypeRegistry.set(
   DeleteFormatSchemaMetadata
 );
 
+/** A set of methods for managing [format schemas](https://clickhouse.com/docs/en/interfaces/formats) for input and output data. */
 export const FormatSchemaServiceService = {
+  /** Returns detailed information about a given format schema. */
   get: {
     path: "/yandex.cloud.mdb.clickhouse.v1.FormatSchemaService/Get",
     requestStream: false,
@@ -954,6 +1015,7 @@ export const FormatSchemaServiceService = {
       Buffer.from(FormatSchema.encode(value).finish()),
     responseDeserialize: (value: Buffer) => FormatSchema.decode(value),
   },
+  /** Returns a list of format schemas in a cluster. */
   list: {
     path: "/yandex.cloud.mdb.clickhouse.v1.FormatSchemaService/List",
     requestStream: false,
@@ -967,6 +1029,7 @@ export const FormatSchemaServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListFormatSchemasResponse.decode(value),
   },
+  /** Adds a format schema to a cluster. */
   create: {
     path: "/yandex.cloud.mdb.clickhouse.v1.FormatSchemaService/Create",
     requestStream: false,
@@ -979,6 +1042,7 @@ export const FormatSchemaServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Changes a format schema. */
   update: {
     path: "/yandex.cloud.mdb.clickhouse.v1.FormatSchemaService/Update",
     requestStream: false,
@@ -991,6 +1055,7 @@ export const FormatSchemaServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Deletes a format schema from a cluster. */
   delete: {
     path: "/yandex.cloud.mdb.clickhouse.v1.FormatSchemaService/Delete",
     requestStream: false,
@@ -1007,14 +1072,20 @@ export const FormatSchemaServiceService = {
 
 export interface FormatSchemaServiceServer
   extends UntypedServiceImplementation {
+  /** Returns detailed information about a given format schema. */
   get: handleUnaryCall<GetFormatSchemaRequest, FormatSchema>;
+  /** Returns a list of format schemas in a cluster. */
   list: handleUnaryCall<ListFormatSchemasRequest, ListFormatSchemasResponse>;
+  /** Adds a format schema to a cluster. */
   create: handleUnaryCall<CreateFormatSchemaRequest, Operation>;
+  /** Changes a format schema. */
   update: handleUnaryCall<UpdateFormatSchemaRequest, Operation>;
+  /** Deletes a format schema from a cluster. */
   delete: handleUnaryCall<DeleteFormatSchemaRequest, Operation>;
 }
 
 export interface FormatSchemaServiceClient extends Client {
+  /** Returns detailed information about a given format schema. */
   get(
     request: GetFormatSchemaRequest,
     callback: (error: ServiceError | null, response: FormatSchema) => void
@@ -1030,6 +1101,7 @@ export interface FormatSchemaServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: FormatSchema) => void
   ): ClientUnaryCall;
+  /** Returns a list of format schemas in a cluster. */
   list(
     request: ListFormatSchemasRequest,
     callback: (
@@ -1054,6 +1126,7 @@ export interface FormatSchemaServiceClient extends Client {
       response: ListFormatSchemasResponse
     ) => void
   ): ClientUnaryCall;
+  /** Adds a format schema to a cluster. */
   create(
     request: CreateFormatSchemaRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -1069,6 +1142,7 @@ export interface FormatSchemaServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
+  /** Changes a format schema. */
   update(
     request: UpdateFormatSchemaRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -1084,6 +1158,7 @@ export interface FormatSchemaServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
+  /** Deletes a format schema from a cluster. */
   delete(
     request: DeleteFormatSchemaRequest,
     callback: (error: ServiceError | null, response: Operation) => void

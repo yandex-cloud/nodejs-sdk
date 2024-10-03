@@ -4,23 +4,41 @@ import _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "yandex.cloud.loadtesting.api.v1.agent";
 
+/** Agent status. */
 export enum Status {
+  /** STATUS_UNSPECIFIED - Status is not specified. */
   STATUS_UNSPECIFIED = 0,
+  /** PREPARING_TEST - Agent is preparing a test to be executed. */
   PREPARING_TEST = 1,
+  /** READY_FOR_TEST - Agent is ready to take a test. */
   READY_FOR_TEST = 2,
+  /** TESTING - Agent is executing a test. */
   TESTING = 3,
+  /** TANK_FAILED - Agent application encountered an error and cannot operate normally. */
   TANK_FAILED = 4,
+  /** PROVISIONING - Agent is waiting for resources to be allocated. */
   PROVISIONING = 5,
+  /** STOPPING - Agent is being stopped. */
   STOPPING = 6,
+  /** STOPPED - Agent is stopped. */
   STOPPED = 7,
+  /** STARTING - Agent is being started. */
   STARTING = 8,
+  /** RESTARTING - Agent is being restarted. */
   RESTARTING = 9,
+  /** UPDATING - Agent is being updated. */
   UPDATING = 10,
+  /** ERROR - Agent encountered an error and cannot operate. */
   ERROR = 11,
+  /** CRASHED - Agent is crashed and will be restarted automatically. */
   CRASHED = 12,
+  /** DELETING - Agent is being deleted. */
   DELETING = 13,
+  /** INITIALIZING_CONNECTION - Service is waiting for connection with agent to be established. */
   INITIALIZING_CONNECTION = 15,
+  /** LOST_CONNECTION_WITH_AGENT - Service has lost connection with agent. */
   LOST_CONNECTION_WITH_AGENT = 16,
+  /** UPLOADING_ARTIFACTS - Agent is uploading test artifacts. */
   UPLOADING_ARTIFACTS = 17,
   UNRECOGNIZED = -1,
 }

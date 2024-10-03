@@ -14,14 +14,15 @@ import {
   ServiceError,
 } from "@grpc/grpc-js";
 import _m0 from "protobufjs/minimal";
-import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import {
+  LogOptions,
   Registry,
   RegistryCertificate,
   RegistryPassword,
   DeviceAlias,
   DataStreamExport,
 } from "../../../../../yandex/cloud/iot/devices/v1/registry";
+import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import { Operation } from "../../../../../yandex/cloud/operation/operation";
 
 export const protobufPackage = "yandex.cloud.iot.devices.v1";
@@ -110,6 +111,8 @@ export interface CreateRegistryRequest {
    * The password must contain at least three character categories among the following: upper case latin, lower case latin, numbers and special symbols.
    */
   password: string;
+  /** Options for logging registry events */
+  logOptions?: LogOptions;
 }
 
 export interface CreateRegistryRequest_LabelsEntry {
@@ -151,6 +154,8 @@ export interface UpdateRegistryRequest {
    * Existing set of `labels` is completely replaced by the provided set.
    */
   labels: { [key: string]: string };
+  /** Options for logging registry events */
+  logOptions?: LogOptions;
 }
 
 export interface UpdateRegistryRequest_LabelsEntry {
@@ -432,6 +437,30 @@ export interface ListDataStreamExportsResponse {
   $type: "yandex.cloud.iot.devices.v1.ListDataStreamExportsResponse";
   /** List of YDS exports for the specified registry. */
   dataStreamExports: DataStreamExport[];
+}
+
+export interface DisableRegistryRequest {
+  $type: "yandex.cloud.iot.devices.v1.DisableRegistryRequest";
+  /** ID of the registry to disable. */
+  registryId: string;
+}
+
+export interface DisableRegistryMetadata {
+  $type: "yandex.cloud.iot.devices.v1.DisableRegistryMetadata";
+  /** ID of the registry that was disabled. */
+  registryId: string;
+}
+
+export interface EnableRegistryRequest {
+  $type: "yandex.cloud.iot.devices.v1.EnableRegistryRequest";
+  /** ID of the registry to enable. */
+  registryId: string;
+}
+
+export interface EnableRegistryMetadata {
+  $type: "yandex.cloud.iot.devices.v1.EnableRegistryMetadata";
+  /** ID of the registry that was enabled. */
+  registryId: string;
 }
 
 const baseGetRegistryRequest: object = {
@@ -805,6 +834,9 @@ export const CreateRegistryRequest = {
     if (message.password !== "") {
       writer.uint32(50).string(message.password);
     }
+    if (message.logOptions !== undefined) {
+      LogOptions.encode(message.logOptions, writer.uint32(58).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -846,6 +878,9 @@ export const CreateRegistryRequest = {
         case 6:
           message.password = reader.string();
           break;
+        case 7:
+          message.logOptions = LogOptions.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -881,6 +916,10 @@ export const CreateRegistryRequest = {
       object.password !== undefined && object.password !== null
         ? String(object.password)
         : "";
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromJSON(object.logOptions)
+        : undefined;
     return message;
   },
 
@@ -904,6 +943,10 @@ export const CreateRegistryRequest = {
       obj.certificates = [];
     }
     message.password !== undefined && (obj.password = message.password);
+    message.logOptions !== undefined &&
+      (obj.logOptions = message.logOptions
+        ? LogOptions.toJSON(message.logOptions)
+        : undefined);
     return obj;
   },
 
@@ -927,6 +970,10 @@ export const CreateRegistryRequest = {
         CreateRegistryRequest_Certificate.fromPartial(e)
       ) || [];
     message.password = object.password ?? "";
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromPartial(object.logOptions)
+        : undefined;
     return message;
   },
 };
@@ -1197,6 +1244,9 @@ export const UpdateRegistryRequest = {
         writer.uint32(42).fork()
       ).ldelim();
     });
+    if (message.logOptions !== undefined) {
+      LogOptions.encode(message.logOptions, writer.uint32(50).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1232,6 +1282,9 @@ export const UpdateRegistryRequest = {
             message.labels[entry5.key] = entry5.value;
           }
           break;
+        case 6:
+          message.logOptions = LogOptions.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1264,6 +1317,10 @@ export const UpdateRegistryRequest = {
       acc[key] = String(value);
       return acc;
     }, {});
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromJSON(object.logOptions)
+        : undefined;
     return message;
   },
 
@@ -1283,6 +1340,10 @@ export const UpdateRegistryRequest = {
         obj.labels[k] = v;
       });
     }
+    message.logOptions !== undefined &&
+      (obj.logOptions = message.logOptions
+        ? LogOptions.toJSON(message.logOptions)
+        : undefined);
     return obj;
   },
 
@@ -1305,6 +1366,10 @@ export const UpdateRegistryRequest = {
       }
       return acc;
     }, {});
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromPartial(object.logOptions)
+        : undefined;
     return message;
   },
 };
@@ -3575,6 +3640,272 @@ messageTypeRegistry.set(
   ListDataStreamExportsResponse
 );
 
+const baseDisableRegistryRequest: object = {
+  $type: "yandex.cloud.iot.devices.v1.DisableRegistryRequest",
+  registryId: "",
+};
+
+export const DisableRegistryRequest = {
+  $type: "yandex.cloud.iot.devices.v1.DisableRegistryRequest" as const,
+
+  encode(
+    message: DisableRegistryRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.registryId !== "") {
+      writer.uint32(10).string(message.registryId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DisableRegistryRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseDisableRegistryRequest } as DisableRegistryRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.registryId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DisableRegistryRequest {
+    const message = { ...baseDisableRegistryRequest } as DisableRegistryRequest;
+    message.registryId =
+      object.registryId !== undefined && object.registryId !== null
+        ? String(object.registryId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: DisableRegistryRequest): unknown {
+    const obj: any = {};
+    message.registryId !== undefined && (obj.registryId = message.registryId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DisableRegistryRequest>, I>>(
+    object: I
+  ): DisableRegistryRequest {
+    const message = { ...baseDisableRegistryRequest } as DisableRegistryRequest;
+    message.registryId = object.registryId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(DisableRegistryRequest.$type, DisableRegistryRequest);
+
+const baseDisableRegistryMetadata: object = {
+  $type: "yandex.cloud.iot.devices.v1.DisableRegistryMetadata",
+  registryId: "",
+};
+
+export const DisableRegistryMetadata = {
+  $type: "yandex.cloud.iot.devices.v1.DisableRegistryMetadata" as const,
+
+  encode(
+    message: DisableRegistryMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.registryId !== "") {
+      writer.uint32(10).string(message.registryId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DisableRegistryMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDisableRegistryMetadata,
+    } as DisableRegistryMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.registryId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DisableRegistryMetadata {
+    const message = {
+      ...baseDisableRegistryMetadata,
+    } as DisableRegistryMetadata;
+    message.registryId =
+      object.registryId !== undefined && object.registryId !== null
+        ? String(object.registryId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: DisableRegistryMetadata): unknown {
+    const obj: any = {};
+    message.registryId !== undefined && (obj.registryId = message.registryId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DisableRegistryMetadata>, I>>(
+    object: I
+  ): DisableRegistryMetadata {
+    const message = {
+      ...baseDisableRegistryMetadata,
+    } as DisableRegistryMetadata;
+    message.registryId = object.registryId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(DisableRegistryMetadata.$type, DisableRegistryMetadata);
+
+const baseEnableRegistryRequest: object = {
+  $type: "yandex.cloud.iot.devices.v1.EnableRegistryRequest",
+  registryId: "",
+};
+
+export const EnableRegistryRequest = {
+  $type: "yandex.cloud.iot.devices.v1.EnableRegistryRequest" as const,
+
+  encode(
+    message: EnableRegistryRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.registryId !== "") {
+      writer.uint32(10).string(message.registryId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): EnableRegistryRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseEnableRegistryRequest } as EnableRegistryRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.registryId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EnableRegistryRequest {
+    const message = { ...baseEnableRegistryRequest } as EnableRegistryRequest;
+    message.registryId =
+      object.registryId !== undefined && object.registryId !== null
+        ? String(object.registryId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: EnableRegistryRequest): unknown {
+    const obj: any = {};
+    message.registryId !== undefined && (obj.registryId = message.registryId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EnableRegistryRequest>, I>>(
+    object: I
+  ): EnableRegistryRequest {
+    const message = { ...baseEnableRegistryRequest } as EnableRegistryRequest;
+    message.registryId = object.registryId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(EnableRegistryRequest.$type, EnableRegistryRequest);
+
+const baseEnableRegistryMetadata: object = {
+  $type: "yandex.cloud.iot.devices.v1.EnableRegistryMetadata",
+  registryId: "",
+};
+
+export const EnableRegistryMetadata = {
+  $type: "yandex.cloud.iot.devices.v1.EnableRegistryMetadata" as const,
+
+  encode(
+    message: EnableRegistryMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.registryId !== "") {
+      writer.uint32(10).string(message.registryId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): EnableRegistryMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseEnableRegistryMetadata } as EnableRegistryMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.registryId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EnableRegistryMetadata {
+    const message = { ...baseEnableRegistryMetadata } as EnableRegistryMetadata;
+    message.registryId =
+      object.registryId !== undefined && object.registryId !== null
+        ? String(object.registryId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: EnableRegistryMetadata): unknown {
+    const obj: any = {};
+    message.registryId !== undefined && (obj.registryId = message.registryId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EnableRegistryMetadata>, I>>(
+    object: I
+  ): EnableRegistryMetadata {
+    const message = { ...baseEnableRegistryMetadata } as EnableRegistryMetadata;
+    message.registryId = object.registryId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(EnableRegistryMetadata.$type, EnableRegistryMetadata);
+
 /** A set of methods for managing registry. */
 export const RegistryServiceService = {
   /**
@@ -3802,6 +4133,30 @@ export const RegistryServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListRegistryOperationsResponse.decode(value),
   },
+  /** Disables the specified registry. */
+  disable: {
+    path: "/yandex.cloud.iot.devices.v1.RegistryService/Disable",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: DisableRegistryRequest) =>
+      Buffer.from(DisableRegistryRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => DisableRegistryRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /** Enables the specified registry. */
+  enable: {
+    path: "/yandex.cloud.iot.devices.v1.RegistryService/Enable",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: EnableRegistryRequest) =>
+      Buffer.from(EnableRegistryRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => EnableRegistryRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
 } as const;
 
 export interface RegistryServiceServer extends UntypedServiceImplementation {
@@ -3863,6 +4218,10 @@ export interface RegistryServiceServer extends UntypedServiceImplementation {
     ListRegistryOperationsRequest,
     ListRegistryOperationsResponse
   >;
+  /** Disables the specified registry. */
+  disable: handleUnaryCall<DisableRegistryRequest, Operation>;
+  /** Enables the specified registry. */
+  enable: handleUnaryCall<EnableRegistryRequest, Operation>;
 }
 
 export interface RegistryServiceClient extends Client {
@@ -4194,6 +4553,38 @@ export interface RegistryServiceClient extends Client {
       error: ServiceError | null,
       response: ListRegistryOperationsResponse
     ) => void
+  ): ClientUnaryCall;
+  /** Disables the specified registry. */
+  disable(
+    request: DisableRegistryRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  disable(
+    request: DisableRegistryRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  disable(
+    request: DisableRegistryRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Enables the specified registry. */
+  enable(
+    request: EnableRegistryRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  enable(
+    request: EnableRegistryRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  enable(
+    request: EnableRegistryRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
 }
 

@@ -157,7 +157,7 @@ export interface Address {
   /**
    * Internal IPv4 endpoint address.
    *
-   * To enable the use of listeners with internal addresses, [contact support](https://console.cloud.yandex.ru/support).
+   * To enable the use of listeners with internal addresses, [contact support](/docs/support/overview#response-time).
    */
   internalIpv4Address?: InternalIpv4Address | undefined;
   /** Public IPv6 endpoint address. */

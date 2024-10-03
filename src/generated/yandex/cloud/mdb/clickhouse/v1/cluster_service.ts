@@ -177,6 +177,8 @@ export interface UpdateClusterRequest {
   securityGroupIds: string[];
   /** Deletion Protection inhibits deletion of the cluster */
   deletionProtection: boolean;
+  /** ID of the network to move the cluster to. */
+  networkId: string;
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
@@ -256,6 +258,8 @@ export interface AddClusterZookeeperRequest {
   resources?: Resources;
   /** Configuration of ZooKeeper hosts. */
   hostSpecs: HostSpec[];
+  /** Enable automatic convertation of non-replicated MergeTree tables to replicated ones. */
+  convertTablesToReplicated?: boolean;
 }
 
 export interface AddClusterZookeeperMetadata {
@@ -319,6 +323,8 @@ export interface RestoreClusterRequest {
   serviceAccountId: string;
   /** User security groups */
   securityGroupIds: string[];
+  /** Deletion Protection inhibits deletion of the cluster */
+  deletionProtection: boolean;
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
@@ -752,6 +758,22 @@ export interface DeleteClusterHostsMetadata {
   hostNames: string[];
 }
 
+export interface RestartClusterHostsRequest {
+  $type: "yandex.cloud.mdb.clickhouse.v1.RestartClusterHostsRequest";
+  /** Required. ID of the Clickhouse cluster. */
+  clusterId: string;
+  /** Required. Name of the hosts to restart. */
+  hostNames: string[];
+}
+
+export interface RestartClusterHostsMetadata {
+  $type: "yandex.cloud.mdb.clickhouse.v1.RestartClusterHostsMetadata";
+  /** Required. ID of the ClickHouse cluster. */
+  clusterId: string;
+  /** Required. The name of restarting host. */
+  hostNames: string[];
+}
+
 export interface GetClusterShardRequest {
   $type: "yandex.cloud.mdb.clickhouse.v1.GetClusterShardRequest";
   /**
@@ -825,6 +847,39 @@ export interface AddClusterShardMetadata {
   shardName: string;
 }
 
+export interface AddClusterShardsRequest {
+  $type: "yandex.cloud.mdb.clickhouse.v1.AddClusterShardsRequest";
+  /**
+   * ID of the ClickHouse cluster to add shards to.
+   * To get the ClickHouse cluster ID, use a [ClusterService.List] request.
+   */
+  clusterId: string;
+  /**
+   * Properties of each shard to be created.
+   * If [ShardSpec.config_spec] is not specified for some shard, for this shard
+   * it defaults to the configuration of the first shard in the cluster.
+   */
+  shardSpecs: ShardSpec[];
+  /**
+   * Individual configurations for hosts that should be created for the shards.
+   * Two options are available:
+   * 1. If `host_specs` is empty, each shard's number and configurations of hosts will
+   *    be copied from those of the first shard in the cluster;
+   * 2. Otherwise `host_specs` should contain at least one host per created shard.
+   */
+  hostSpecs: HostSpec[];
+  /** Whether to copy schema to hosts of the new shards. The schema is copied from hosts of an existing shard. */
+  copySchema?: boolean;
+}
+
+export interface AddClusterShardsMetadata {
+  $type: "yandex.cloud.mdb.clickhouse.v1.AddClusterShardsMetadata";
+  /** ID of the cluster that the shards are being added to. */
+  clusterId: string;
+  /** Names of the shards being created. */
+  shardNames: string[];
+}
+
 export interface UpdateClusterShardRequest {
   $type: "yandex.cloud.mdb.clickhouse.v1.UpdateClusterShardRequest";
   /**
@@ -871,6 +926,28 @@ export interface DeleteClusterShardMetadata {
   clusterId: string;
   /** Name of the shard being deleted. */
   shardName: string;
+}
+
+export interface DeleteClusterShardsRequest {
+  $type: "yandex.cloud.mdb.clickhouse.v1.DeleteClusterShardsRequest";
+  /**
+   * ID of the ClickHouse cluster the shards belong to.
+   * To get the cluster ID, use a [ClusterService.List] request.
+   */
+  clusterId: string;
+  /**
+   * Names of the shards to be deleted.
+   * To get the name of a shard, use a [ClusterService.ListShards] request.
+   */
+  shardNames: string[];
+}
+
+export interface DeleteClusterShardsMetadata {
+  $type: "yandex.cloud.mdb.clickhouse.v1.DeleteClusterShardsMetadata";
+  /** ID of the cluster that contains the shards being deleted. */
+  clusterId: string;
+  /** Names of the shards being deleted. */
+  shardNames: string[];
 }
 
 export interface GetClusterShardGroupRequest {
@@ -1145,6 +1222,8 @@ export interface ConfigSpec {
   adminPassword: string;
   /** Whether cluster should use embedded Keeper instead of Zookeeper */
   embeddedKeeper?: boolean;
+  /** Retain period of automatically created backup in days */
+  backupRetainPeriodDays?: number;
 }
 
 export interface ConfigSpec_Clickhouse {
@@ -1181,6 +1260,16 @@ export interface ShardConfigSpec_Clickhouse {
    * For details, see [ClickHouse documentation](https://clickhouse.com/docs/en/operations/table_engines/distributed/).
    */
   weight?: number;
+}
+
+export interface ShardSpec {
+  $type: "yandex.cloud.mdb.clickhouse.v1.ShardSpec";
+  /** Name of the shard to be created. */
+  name: string;
+  /** Configuration of the shard to be created. */
+  configSpec?: ShardConfigSpec;
+  /** Shard groups that contain the shard. */
+  shardGroupNames: string[];
 }
 
 const baseGetClusterRequest: object = {
@@ -1913,6 +2002,7 @@ const baseUpdateClusterRequest: object = {
   serviceAccountId: "",
   securityGroupIds: "",
   deletionProtection: false,
+  networkId: "",
 };
 
 export const UpdateClusterRequest = {
@@ -1962,6 +2052,9 @@ export const UpdateClusterRequest = {
     }
     if (message.deletionProtection === true) {
       writer.uint32(80).bool(message.deletionProtection);
+    }
+    if (message.networkId !== "") {
+      writer.uint32(90).string(message.networkId);
     }
     return writer;
   },
@@ -2017,6 +2110,9 @@ export const UpdateClusterRequest = {
         case 10:
           message.deletionProtection = reader.bool();
           break;
+        case 11:
+          message.networkId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2070,6 +2166,10 @@ export const UpdateClusterRequest = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.networkId =
+      object.networkId !== undefined && object.networkId !== null
+        ? String(object.networkId)
+        : "";
     return message;
   },
 
@@ -2106,6 +2206,7 @@ export const UpdateClusterRequest = {
     }
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.networkId !== undefined && (obj.networkId = message.networkId);
     return obj;
   },
 
@@ -2140,6 +2241,7 @@ export const UpdateClusterRequest = {
         : undefined;
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? false;
+    message.networkId = object.networkId ?? "";
     return message;
   },
 };
@@ -2867,6 +2969,15 @@ export const AddClusterZookeeperRequest = {
     for (const v of message.hostSpecs) {
       HostSpec.encode(v!, writer.uint32(26).fork()).ldelim();
     }
+    if (message.convertTablesToReplicated !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.convertTablesToReplicated!,
+        },
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2892,6 +3003,12 @@ export const AddClusterZookeeperRequest = {
         case 3:
           message.hostSpecs.push(HostSpec.decode(reader, reader.uint32()));
           break;
+        case 4:
+          message.convertTablesToReplicated = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2915,6 +3032,11 @@ export const AddClusterZookeeperRequest = {
     message.hostSpecs = (object.hostSpecs ?? []).map((e: any) =>
       HostSpec.fromJSON(e)
     );
+    message.convertTablesToReplicated =
+      object.convertTablesToReplicated !== undefined &&
+      object.convertTablesToReplicated !== null
+        ? Boolean(object.convertTablesToReplicated)
+        : undefined;
     return message;
   },
 
@@ -2932,6 +3054,8 @@ export const AddClusterZookeeperRequest = {
     } else {
       obj.hostSpecs = [];
     }
+    message.convertTablesToReplicated !== undefined &&
+      (obj.convertTablesToReplicated = message.convertTablesToReplicated);
     return obj;
   },
 
@@ -2948,6 +3072,8 @@ export const AddClusterZookeeperRequest = {
         : undefined;
     message.hostSpecs =
       object.hostSpecs?.map((e) => HostSpec.fromPartial(e)) || [];
+    message.convertTablesToReplicated =
+      object.convertTablesToReplicated ?? undefined;
     return message;
   },
 };
@@ -3172,6 +3298,7 @@ const baseRestoreClusterRequest: object = {
   folderId: "",
   serviceAccountId: "",
   securityGroupIds: "",
+  deletionProtection: false,
 };
 
 export const RestoreClusterRequest = {
@@ -3224,6 +3351,9 @@ export const RestoreClusterRequest = {
     }
     for (const v of message.securityGroupIds) {
       writer.uint32(90).string(v!);
+    }
+    if (message.deletionProtection === true) {
+      writer.uint32(112).bool(message.deletionProtection);
     }
     return writer;
   },
@@ -3284,6 +3414,9 @@ export const RestoreClusterRequest = {
         case 11:
           message.securityGroupIds.push(reader.string());
           break;
+        case 14:
+          message.deletionProtection = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3341,6 +3474,11 @@ export const RestoreClusterRequest = {
     message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) =>
       String(e)
     );
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
     return message;
   },
 
@@ -3383,6 +3521,8 @@ export const RestoreClusterRequest = {
     } else {
       obj.securityGroupIds = [];
     }
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -3414,6 +3554,7 @@ export const RestoreClusterRequest = {
     message.folderId = object.folderId ?? "";
     message.serviceAccountId = object.serviceAccountId ?? "";
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
+    message.deletionProtection = object.deletionProtection ?? false;
     return message;
   },
 };
@@ -5686,6 +5827,184 @@ messageTypeRegistry.set(
   DeleteClusterHostsMetadata
 );
 
+const baseRestartClusterHostsRequest: object = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.RestartClusterHostsRequest",
+  clusterId: "",
+  hostNames: "",
+};
+
+export const RestartClusterHostsRequest = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.RestartClusterHostsRequest" as const,
+
+  encode(
+    message: RestartClusterHostsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    for (const v of message.hostNames) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RestartClusterHostsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseRestartClusterHostsRequest,
+    } as RestartClusterHostsRequest;
+    message.hostNames = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.hostNames.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RestartClusterHostsRequest {
+    const message = {
+      ...baseRestartClusterHostsRequest,
+    } as RestartClusterHostsRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.hostNames = (object.hostNames ?? []).map((e: any) => String(e));
+    return message;
+  },
+
+  toJSON(message: RestartClusterHostsRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    if (message.hostNames) {
+      obj.hostNames = message.hostNames.map((e) => e);
+    } else {
+      obj.hostNames = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RestartClusterHostsRequest>, I>>(
+    object: I
+  ): RestartClusterHostsRequest {
+    const message = {
+      ...baseRestartClusterHostsRequest,
+    } as RestartClusterHostsRequest;
+    message.clusterId = object.clusterId ?? "";
+    message.hostNames = object.hostNames?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  RestartClusterHostsRequest.$type,
+  RestartClusterHostsRequest
+);
+
+const baseRestartClusterHostsMetadata: object = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.RestartClusterHostsMetadata",
+  clusterId: "",
+  hostNames: "",
+};
+
+export const RestartClusterHostsMetadata = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.RestartClusterHostsMetadata" as const,
+
+  encode(
+    message: RestartClusterHostsMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    for (const v of message.hostNames) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RestartClusterHostsMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseRestartClusterHostsMetadata,
+    } as RestartClusterHostsMetadata;
+    message.hostNames = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.hostNames.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RestartClusterHostsMetadata {
+    const message = {
+      ...baseRestartClusterHostsMetadata,
+    } as RestartClusterHostsMetadata;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.hostNames = (object.hostNames ?? []).map((e: any) => String(e));
+    return message;
+  },
+
+  toJSON(message: RestartClusterHostsMetadata): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    if (message.hostNames) {
+      obj.hostNames = message.hostNames.map((e) => e);
+    } else {
+      obj.hostNames = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RestartClusterHostsMetadata>, I>>(
+    object: I
+  ): RestartClusterHostsMetadata {
+    const message = {
+      ...baseRestartClusterHostsMetadata,
+    } as RestartClusterHostsMetadata;
+    message.clusterId = object.clusterId ?? "";
+    message.hostNames = object.hostNames?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  RestartClusterHostsMetadata.$type,
+  RestartClusterHostsMetadata
+);
+
 const baseGetClusterShardRequest: object = {
   $type: "yandex.cloud.mdb.clickhouse.v1.GetClusterShardRequest",
   clusterId: "",
@@ -6171,6 +6490,219 @@ export const AddClusterShardMetadata = {
 
 messageTypeRegistry.set(AddClusterShardMetadata.$type, AddClusterShardMetadata);
 
+const baseAddClusterShardsRequest: object = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.AddClusterShardsRequest",
+  clusterId: "",
+};
+
+export const AddClusterShardsRequest = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.AddClusterShardsRequest" as const,
+
+  encode(
+    message: AddClusterShardsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    for (const v of message.shardSpecs) {
+      ShardSpec.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    for (const v of message.hostSpecs) {
+      HostSpec.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.copySchema !== undefined) {
+      BoolValue.encode(
+        { $type: "google.protobuf.BoolValue", value: message.copySchema! },
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): AddClusterShardsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseAddClusterShardsRequest,
+    } as AddClusterShardsRequest;
+    message.shardSpecs = [];
+    message.hostSpecs = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.shardSpecs.push(ShardSpec.decode(reader, reader.uint32()));
+          break;
+        case 3:
+          message.hostSpecs.push(HostSpec.decode(reader, reader.uint32()));
+          break;
+        case 4:
+          message.copySchema = BoolValue.decode(reader, reader.uint32()).value;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AddClusterShardsRequest {
+    const message = {
+      ...baseAddClusterShardsRequest,
+    } as AddClusterShardsRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.shardSpecs = (object.shardSpecs ?? []).map((e: any) =>
+      ShardSpec.fromJSON(e)
+    );
+    message.hostSpecs = (object.hostSpecs ?? []).map((e: any) =>
+      HostSpec.fromJSON(e)
+    );
+    message.copySchema =
+      object.copySchema !== undefined && object.copySchema !== null
+        ? Boolean(object.copySchema)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: AddClusterShardsRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    if (message.shardSpecs) {
+      obj.shardSpecs = message.shardSpecs.map((e) =>
+        e ? ShardSpec.toJSON(e) : undefined
+      );
+    } else {
+      obj.shardSpecs = [];
+    }
+    if (message.hostSpecs) {
+      obj.hostSpecs = message.hostSpecs.map((e) =>
+        e ? HostSpec.toJSON(e) : undefined
+      );
+    } else {
+      obj.hostSpecs = [];
+    }
+    message.copySchema !== undefined && (obj.copySchema = message.copySchema);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AddClusterShardsRequest>, I>>(
+    object: I
+  ): AddClusterShardsRequest {
+    const message = {
+      ...baseAddClusterShardsRequest,
+    } as AddClusterShardsRequest;
+    message.clusterId = object.clusterId ?? "";
+    message.shardSpecs =
+      object.shardSpecs?.map((e) => ShardSpec.fromPartial(e)) || [];
+    message.hostSpecs =
+      object.hostSpecs?.map((e) => HostSpec.fromPartial(e)) || [];
+    message.copySchema = object.copySchema ?? undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(AddClusterShardsRequest.$type, AddClusterShardsRequest);
+
+const baseAddClusterShardsMetadata: object = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.AddClusterShardsMetadata",
+  clusterId: "",
+  shardNames: "",
+};
+
+export const AddClusterShardsMetadata = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.AddClusterShardsMetadata" as const,
+
+  encode(
+    message: AddClusterShardsMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    for (const v of message.shardNames) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): AddClusterShardsMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseAddClusterShardsMetadata,
+    } as AddClusterShardsMetadata;
+    message.shardNames = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.shardNames.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AddClusterShardsMetadata {
+    const message = {
+      ...baseAddClusterShardsMetadata,
+    } as AddClusterShardsMetadata;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.shardNames = (object.shardNames ?? []).map((e: any) => String(e));
+    return message;
+  },
+
+  toJSON(message: AddClusterShardsMetadata): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    if (message.shardNames) {
+      obj.shardNames = message.shardNames.map((e) => e);
+    } else {
+      obj.shardNames = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AddClusterShardsMetadata>, I>>(
+    object: I
+  ): AddClusterShardsMetadata {
+    const message = {
+      ...baseAddClusterShardsMetadata,
+    } as AddClusterShardsMetadata;
+    message.clusterId = object.clusterId ?? "";
+    message.shardNames = object.shardNames?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  AddClusterShardsMetadata.$type,
+  AddClusterShardsMetadata
+);
+
 const baseUpdateClusterShardRequest: object = {
   $type: "yandex.cloud.mdb.clickhouse.v1.UpdateClusterShardRequest",
   clusterId: "",
@@ -6556,6 +7088,184 @@ export const DeleteClusterShardMetadata = {
 messageTypeRegistry.set(
   DeleteClusterShardMetadata.$type,
   DeleteClusterShardMetadata
+);
+
+const baseDeleteClusterShardsRequest: object = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.DeleteClusterShardsRequest",
+  clusterId: "",
+  shardNames: "",
+};
+
+export const DeleteClusterShardsRequest = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.DeleteClusterShardsRequest" as const,
+
+  encode(
+    message: DeleteClusterShardsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    for (const v of message.shardNames) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DeleteClusterShardsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDeleteClusterShardsRequest,
+    } as DeleteClusterShardsRequest;
+    message.shardNames = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.shardNames.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteClusterShardsRequest {
+    const message = {
+      ...baseDeleteClusterShardsRequest,
+    } as DeleteClusterShardsRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.shardNames = (object.shardNames ?? []).map((e: any) => String(e));
+    return message;
+  },
+
+  toJSON(message: DeleteClusterShardsRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    if (message.shardNames) {
+      obj.shardNames = message.shardNames.map((e) => e);
+    } else {
+      obj.shardNames = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteClusterShardsRequest>, I>>(
+    object: I
+  ): DeleteClusterShardsRequest {
+    const message = {
+      ...baseDeleteClusterShardsRequest,
+    } as DeleteClusterShardsRequest;
+    message.clusterId = object.clusterId ?? "";
+    message.shardNames = object.shardNames?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  DeleteClusterShardsRequest.$type,
+  DeleteClusterShardsRequest
+);
+
+const baseDeleteClusterShardsMetadata: object = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.DeleteClusterShardsMetadata",
+  clusterId: "",
+  shardNames: "",
+};
+
+export const DeleteClusterShardsMetadata = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.DeleteClusterShardsMetadata" as const,
+
+  encode(
+    message: DeleteClusterShardsMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    for (const v of message.shardNames) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DeleteClusterShardsMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDeleteClusterShardsMetadata,
+    } as DeleteClusterShardsMetadata;
+    message.shardNames = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.shardNames.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteClusterShardsMetadata {
+    const message = {
+      ...baseDeleteClusterShardsMetadata,
+    } as DeleteClusterShardsMetadata;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.shardNames = (object.shardNames ?? []).map((e: any) => String(e));
+    return message;
+  },
+
+  toJSON(message: DeleteClusterShardsMetadata): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    if (message.shardNames) {
+      obj.shardNames = message.shardNames.map((e) => e);
+    } else {
+      obj.shardNames = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteClusterShardsMetadata>, I>>(
+    object: I
+  ): DeleteClusterShardsMetadata {
+    const message = {
+      ...baseDeleteClusterShardsMetadata,
+    } as DeleteClusterShardsMetadata;
+    message.clusterId = object.clusterId ?? "";
+    message.shardNames = object.shardNames?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  DeleteClusterShardsMetadata.$type,
+  DeleteClusterShardsMetadata
 );
 
 const baseGetClusterShardGroupRequest: object = {
@@ -8402,6 +9112,15 @@ export const ConfigSpec = {
         writer.uint32(82).fork()
       ).ldelim();
     }
+    if (message.backupRetainPeriodDays !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.backupRetainPeriodDays!,
+        },
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -8453,6 +9172,12 @@ export const ConfigSpec = {
           break;
         case 10:
           message.embeddedKeeper = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 11:
+          message.backupRetainPeriodDays = Int64Value.decode(
             reader,
             reader.uint32()
           ).value;
@@ -8510,6 +9235,11 @@ export const ConfigSpec = {
       object.embeddedKeeper !== undefined && object.embeddedKeeper !== null
         ? Boolean(object.embeddedKeeper)
         : undefined;
+    message.backupRetainPeriodDays =
+      object.backupRetainPeriodDays !== undefined &&
+      object.backupRetainPeriodDays !== null
+        ? Number(object.backupRetainPeriodDays)
+        : undefined;
     return message;
   },
 
@@ -8542,6 +9272,8 @@ export const ConfigSpec = {
       (obj.adminPassword = message.adminPassword);
     message.embeddedKeeper !== undefined &&
       (obj.embeddedKeeper = message.embeddedKeeper);
+    message.backupRetainPeriodDays !== undefined &&
+      (obj.backupRetainPeriodDays = message.backupRetainPeriodDays);
     return obj;
   },
 
@@ -8575,6 +9307,7 @@ export const ConfigSpec = {
     message.sqlUserManagement = object.sqlUserManagement ?? undefined;
     message.adminPassword = object.adminPassword ?? "";
     message.embeddedKeeper = object.embeddedKeeper ?? undefined;
+    message.backupRetainPeriodDays = object.backupRetainPeriodDays ?? undefined;
     return message;
   },
 };
@@ -8930,6 +9663,106 @@ messageTypeRegistry.set(
   ShardConfigSpec_Clickhouse
 );
 
+const baseShardSpec: object = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.ShardSpec",
+  name: "",
+  shardGroupNames: "",
+};
+
+export const ShardSpec = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.ShardSpec" as const,
+
+  encode(
+    message: ShardSpec,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.configSpec !== undefined) {
+      ShardConfigSpec.encode(
+        message.configSpec,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    for (const v of message.shardGroupNames) {
+      writer.uint32(26).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ShardSpec {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseShardSpec } as ShardSpec;
+    message.shardGroupNames = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.name = reader.string();
+          break;
+        case 2:
+          message.configSpec = ShardConfigSpec.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.shardGroupNames.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ShardSpec {
+    const message = { ...baseShardSpec } as ShardSpec;
+    message.name =
+      object.name !== undefined && object.name !== null
+        ? String(object.name)
+        : "";
+    message.configSpec =
+      object.configSpec !== undefined && object.configSpec !== null
+        ? ShardConfigSpec.fromJSON(object.configSpec)
+        : undefined;
+    message.shardGroupNames = (object.shardGroupNames ?? []).map((e: any) =>
+      String(e)
+    );
+    return message;
+  },
+
+  toJSON(message: ShardSpec): unknown {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    message.configSpec !== undefined &&
+      (obj.configSpec = message.configSpec
+        ? ShardConfigSpec.toJSON(message.configSpec)
+        : undefined);
+    if (message.shardGroupNames) {
+      obj.shardGroupNames = message.shardGroupNames.map((e) => e);
+    } else {
+      obj.shardGroupNames = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ShardSpec>, I>>(
+    object: I
+  ): ShardSpec {
+    const message = { ...baseShardSpec } as ShardSpec;
+    message.name = object.name ?? "";
+    message.configSpec =
+      object.configSpec !== undefined && object.configSpec !== null
+        ? ShardConfigSpec.fromPartial(object.configSpec)
+        : undefined;
+    message.shardGroupNames = object.shardGroupNames?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(ShardSpec.$type, ShardSpec);
+
 /** A set of methods for managing ClickHouse clusters. */
 export const ClusterServiceService = {
   /**
@@ -9191,6 +10024,18 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  restartHosts: {
+    path: "/yandex.cloud.mdb.clickhouse.v1.ClusterService/RestartHosts",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: RestartClusterHostsRequest) =>
+      Buffer.from(RestartClusterHostsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      RestartClusterHostsRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /** Returns the specified shard. */
   getShard: {
     path: "/yandex.cloud.mdb.clickhouse.v1.ClusterService/GetShard",
@@ -9229,6 +10074,19 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Creates one or more shards in the specified cluster. */
+  addShards: {
+    path: "/yandex.cloud.mdb.clickhouse.v1.ClusterService/AddShards",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: AddClusterShardsRequest) =>
+      Buffer.from(AddClusterShardsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      AddClusterShardsRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /** Modifies the specified shard. */
   updateShard: {
     path: "/yandex.cloud.mdb.clickhouse.v1.ClusterService/UpdateShard",
@@ -9251,6 +10109,19 @@ export const ClusterServiceService = {
       Buffer.from(DeleteClusterShardRequest.encode(value).finish()),
     requestDeserialize: (value: Buffer) =>
       DeleteClusterShardRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /** Deletes the specified shards (one or more). */
+  deleteShards: {
+    path: "/yandex.cloud.mdb.clickhouse.v1.ClusterService/DeleteShards",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: DeleteClusterShardsRequest) =>
+      Buffer.from(DeleteClusterShardsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      DeleteClusterShardsRequest.decode(value),
     responseSerialize: (value: Operation) =>
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
@@ -9446,6 +10317,7 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
   updateHosts: handleUnaryCall<UpdateClusterHostsRequest, Operation>;
   /** Deletes the specified hosts for a cluster. */
   deleteHosts: handleUnaryCall<DeleteClusterHostsRequest, Operation>;
+  restartHosts: handleUnaryCall<RestartClusterHostsRequest, Operation>;
   /** Returns the specified shard. */
   getShard: handleUnaryCall<GetClusterShardRequest, Shard>;
   /** Retrieves a list of shards that belong to the specified cluster. */
@@ -9455,10 +10327,14 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
   >;
   /** Creates a new shard in the specified cluster. */
   addShard: handleUnaryCall<AddClusterShardRequest, Operation>;
+  /** Creates one or more shards in the specified cluster. */
+  addShards: handleUnaryCall<AddClusterShardsRequest, Operation>;
   /** Modifies the specified shard. */
   updateShard: handleUnaryCall<UpdateClusterShardRequest, Operation>;
   /** Deletes the specified shard. */
   deleteShard: handleUnaryCall<DeleteClusterShardRequest, Operation>;
+  /** Deletes the specified shards (one or more). */
+  deleteShards: handleUnaryCall<DeleteClusterShardsRequest, Operation>;
   /** Returns the specified shard group. */
   getShardGroup: handleUnaryCall<GetClusterShardGroupRequest, ShardGroup>;
   /** Retrieves a list of shard groups that belong to specified cluster. */
@@ -9861,6 +10737,21 @@ export interface ClusterServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
+  restartHosts(
+    request: RestartClusterHostsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  restartHosts(
+    request: RestartClusterHostsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  restartHosts(
+    request: RestartClusterHostsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
   /** Returns the specified shard. */
   getShard(
     request: GetClusterShardRequest,
@@ -9918,6 +10809,22 @@ export interface ClusterServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
+  /** Creates one or more shards in the specified cluster. */
+  addShards(
+    request: AddClusterShardsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  addShards(
+    request: AddClusterShardsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  addShards(
+    request: AddClusterShardsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
   /** Modifies the specified shard. */
   updateShard(
     request: UpdateClusterShardRequest,
@@ -9946,6 +10853,22 @@ export interface ClusterServiceClient extends Client {
   ): ClientUnaryCall;
   deleteShard(
     request: DeleteClusterShardRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Deletes the specified shards (one or more). */
+  deleteShards(
+    request: DeleteClusterShardsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  deleteShards(
+    request: DeleteClusterShardsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  deleteShards(
+    request: DeleteClusterShardsRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

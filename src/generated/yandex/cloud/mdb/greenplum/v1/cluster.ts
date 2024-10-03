@@ -20,6 +20,7 @@ import {
 import { PXFConfigSet } from "../../../../../yandex/cloud/mdb/greenplum/v1/pxf";
 import { TimeOfDay } from "../../../../../google/type/timeofday";
 import { Timestamp } from "../../../../../google/protobuf/timestamp";
+import { Int64Value } from "../../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.mdb.greenplum.v1";
 
@@ -82,6 +83,10 @@ export interface Cluster {
   clusterConfig?: ClusterConfigSet;
   /** Cloud storage settings */
   cloudStorage?: CloudStorage;
+  /** Host groups hosting VMs of the master subcluster. */
+  masterHostGroupIds: string[];
+  /** Host groups hosting VMs of the segment subcluster. */
+  segmentHostGroupIds: string[];
 }
 
 export enum Cluster_Environment {
@@ -270,6 +275,7 @@ export interface ClusterConfigSet {
   greenplumConfigSet6?: GreenplumConfigSet6 | undefined;
   /** Odyssey® pool settings. */
   pool?: ConnectionPoolerConfigSet;
+  /** Managed Greenplum® background tasks configuration. */
   backgroundActivities?: BackgroundActivitiesConfig;
   pxfConfig?: PXFConfigSet;
 }
@@ -291,6 +297,8 @@ export interface GreenplumConfig {
   version: string;
   /** Time to start the daily backup, in the UTC timezone. */
   backupWindowStart?: TimeOfDay;
+  /** Retention policy of automated backups. */
+  backupRetainPeriodDays?: number;
   /** Access policy for external services. */
   access?: Access;
   /**
@@ -316,6 +324,8 @@ export interface Access {
   webSql: boolean;
   /** Allows access for DataTransfer. */
   dataTransfer: boolean;
+  /** Allow access for YandexQuery. */
+  yandexQuery: boolean;
 }
 
 export interface GreenplumRestoreConfig {
@@ -381,6 +391,8 @@ const baseCluster: object = {
   userName: "",
   deletionProtection: false,
   hostGroupIds: "",
+  masterHostGroupIds: "",
+  segmentHostGroupIds: "",
 };
 
 export const Cluster = {
@@ -493,6 +505,12 @@ export const Cluster = {
         writer.uint32(210).fork()
       ).ldelim();
     }
+    for (const v of message.masterHostGroupIds) {
+      writer.uint32(218).string(v!);
+    }
+    for (const v of message.segmentHostGroupIds) {
+      writer.uint32(226).string(v!);
+    }
     return writer;
   },
 
@@ -504,6 +522,8 @@ export const Cluster = {
     message.monitoring = [];
     message.securityGroupIds = [];
     message.hostGroupIds = [];
+    message.masterHostGroupIds = [];
+    message.segmentHostGroupIds = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -601,6 +621,12 @@ export const Cluster = {
           break;
         case 26:
           message.cloudStorage = CloudStorage.decode(reader, reader.uint32());
+          break;
+        case 27:
+          message.masterHostGroupIds.push(reader.string());
+          break;
+        case 28:
+          message.segmentHostGroupIds.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -711,6 +737,12 @@ export const Cluster = {
       object.cloudStorage !== undefined && object.cloudStorage !== null
         ? CloudStorage.fromJSON(object.cloudStorage)
         : undefined;
+    message.masterHostGroupIds = (object.masterHostGroupIds ?? []).map(
+      (e: any) => String(e)
+    );
+    message.segmentHostGroupIds = (object.segmentHostGroupIds ?? []).map(
+      (e: any) => String(e)
+    );
     return message;
   },
 
@@ -790,6 +822,16 @@ export const Cluster = {
       (obj.cloudStorage = message.cloudStorage
         ? CloudStorage.toJSON(message.cloudStorage)
         : undefined);
+    if (message.masterHostGroupIds) {
+      obj.masterHostGroupIds = message.masterHostGroupIds.map((e) => e);
+    } else {
+      obj.masterHostGroupIds = [];
+    }
+    if (message.segmentHostGroupIds) {
+      obj.segmentHostGroupIds = message.segmentHostGroupIds.map((e) => e);
+    } else {
+      obj.segmentHostGroupIds = [];
+    }
     return obj;
   },
 
@@ -850,6 +892,9 @@ export const Cluster = {
       object.cloudStorage !== undefined && object.cloudStorage !== null
         ? CloudStorage.fromPartial(object.cloudStorage)
         : undefined;
+    message.masterHostGroupIds = object.masterHostGroupIds?.map((e) => e) || [];
+    message.segmentHostGroupIds =
+      object.segmentHostGroupIds?.map((e) => e) || [];
     return message;
   },
 };
@@ -1289,6 +1334,15 @@ export const GreenplumConfig = {
         writer.uint32(18).fork()
       ).ldelim();
     }
+    if (message.backupRetainPeriodDays !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.backupRetainPeriodDays!,
+        },
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
     if (message.access !== undefined) {
       Access.encode(message.access, writer.uint32(26).fork()).ldelim();
     }
@@ -1316,6 +1370,12 @@ export const GreenplumConfig = {
           break;
         case 2:
           message.backupWindowStart = TimeOfDay.decode(reader, reader.uint32());
+          break;
+        case 9:
+          message.backupRetainPeriodDays = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
           break;
         case 3:
           message.access = Access.decode(reader, reader.uint32());
@@ -1348,6 +1408,11 @@ export const GreenplumConfig = {
       object.backupWindowStart !== null
         ? TimeOfDay.fromJSON(object.backupWindowStart)
         : undefined;
+    message.backupRetainPeriodDays =
+      object.backupRetainPeriodDays !== undefined &&
+      object.backupRetainPeriodDays !== null
+        ? Number(object.backupRetainPeriodDays)
+        : undefined;
     message.access =
       object.access !== undefined && object.access !== null
         ? Access.fromJSON(object.access)
@@ -1374,6 +1439,8 @@ export const GreenplumConfig = {
       (obj.backupWindowStart = message.backupWindowStart
         ? TimeOfDay.toJSON(message.backupWindowStart)
         : undefined);
+    message.backupRetainPeriodDays !== undefined &&
+      (obj.backupRetainPeriodDays = message.backupRetainPeriodDays);
     message.access !== undefined &&
       (obj.access = message.access ? Access.toJSON(message.access) : undefined);
     message.zoneId !== undefined && (obj.zoneId = message.zoneId);
@@ -1393,6 +1460,7 @@ export const GreenplumConfig = {
       object.backupWindowStart !== null
         ? TimeOfDay.fromPartial(object.backupWindowStart)
         : undefined;
+    message.backupRetainPeriodDays = object.backupRetainPeriodDays ?? undefined;
     message.access =
       object.access !== undefined && object.access !== null
         ? Access.fromPartial(object.access)
@@ -1411,6 +1479,7 @@ const baseAccess: object = {
   dataLens: false,
   webSql: false,
   dataTransfer: false,
+  yandexQuery: false,
 };
 
 export const Access = {
@@ -1428,6 +1497,9 @@ export const Access = {
     }
     if (message.dataTransfer === true) {
       writer.uint32(24).bool(message.dataTransfer);
+    }
+    if (message.yandexQuery === true) {
+      writer.uint32(40).bool(message.yandexQuery);
     }
     return writer;
   },
@@ -1447,6 +1519,9 @@ export const Access = {
           break;
         case 3:
           message.dataTransfer = reader.bool();
+          break;
+        case 5:
+          message.yandexQuery = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1470,6 +1545,10 @@ export const Access = {
       object.dataTransfer !== undefined && object.dataTransfer !== null
         ? Boolean(object.dataTransfer)
         : false;
+    message.yandexQuery =
+      object.yandexQuery !== undefined && object.yandexQuery !== null
+        ? Boolean(object.yandexQuery)
+        : false;
     return message;
   },
 
@@ -1479,6 +1558,8 @@ export const Access = {
     message.webSql !== undefined && (obj.webSql = message.webSql);
     message.dataTransfer !== undefined &&
       (obj.dataTransfer = message.dataTransfer);
+    message.yandexQuery !== undefined &&
+      (obj.yandexQuery = message.yandexQuery);
     return obj;
   },
 
@@ -1487,6 +1568,7 @@ export const Access = {
     message.dataLens = object.dataLens ?? false;
     message.webSql = object.webSql ?? false;
     message.dataTransfer = object.dataTransfer ?? false;
+    message.yandexQuery = object.yandexQuery ?? false;
     return message;
   },
 };

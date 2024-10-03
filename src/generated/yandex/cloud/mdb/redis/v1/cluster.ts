@@ -317,6 +317,8 @@ export interface ClusterConfig {
   access?: Access;
   /** Unified configuration of a Redis cluster. */
   redis?: RedisConfigSet;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Shard {
@@ -347,9 +349,9 @@ export interface Host {
   subnetId: string;
   /** Resources allocated to the Redis host. */
   resources?: Resources;
-  /** Role of the host in the cluster. */
+  /** Role of the host in the cluster. If the field has default value, it is not returned in the response. */
   role: Host_Role;
-  /** Status code of the aggregated health of the host. */
+  /** Aggregated health of the host. If the field has default value, it is not returned in the response. */
   health: Host_Health;
   /** Services provided by the host. */
   services: Service[];
@@ -365,7 +367,7 @@ export interface Host {
 }
 
 export enum Host_Role {
-  /** ROLE_UNKNOWN - Role of the host in the cluster is unknown. */
+  /** ROLE_UNKNOWN - Role of the host in the cluster is unknown. Default value. */
   ROLE_UNKNOWN = 0,
   /** MASTER - Host is the master Redis server in the cluster. */
   MASTER = 1,
@@ -406,7 +408,7 @@ export function host_RoleToJSON(object: Host_Role): string {
 }
 
 export enum Host_Health {
-  /** HEALTH_UNKNOWN - Health of the host is unknown. */
+  /** HEALTH_UNKNOWN - Health of the host is unknown. Default value. */
   HEALTH_UNKNOWN = 0,
   /** ALIVE - The host is performing all its functions normally. */
   ALIVE = 1,
@@ -455,13 +457,14 @@ export function host_HealthToJSON(object: Host_Health): string {
 
 export interface Service {
   $type: "yandex.cloud.mdb.redis.v1.Service";
-  /** Type of the service provided by the host. */
+  /** Type of the service provided by the host. If the field has default value, it is not returned in the response. */
   type: Service_Type;
-  /** Status code of server availability. */
+  /** Aggregated health of the service. If the field has default value, it is not returned in the response. */
   health: Service_Health;
 }
 
 export enum Service_Type {
+  /** TYPE_UNSPECIFIED - Service type of the host is unspecified. Default value. */
   TYPE_UNSPECIFIED = 0,
   /** REDIS - The host is a Redis server. */
   REDIS = 1,
@@ -509,7 +512,7 @@ export function service_TypeToJSON(object: Service_Type): string {
 }
 
 export enum Service_Health {
-  /** HEALTH_UNKNOWN - Health of the server is unknown. */
+  /** HEALTH_UNKNOWN - Health of the server is unknown. Default value. */
   HEALTH_UNKNOWN = 0,
   /** ALIVE - The server is working normally. */
   ALIVE = 1,
@@ -571,6 +574,18 @@ export interface Access {
   $type: "yandex.cloud.mdb.redis.v1.Access";
   /** Allow access for DataLens */
   dataLens: boolean;
+  /** Allow access for Web SQL. */
+  webSql: boolean;
+}
+
+export interface DiskSizeAutoscaling {
+  $type: "yandex.cloud.mdb.redis.v1.DiskSizeAutoscaling";
+  /** Amount of used storage for automatic disk scaling in the maintenance window, 0 means disabled, in percent. */
+  plannedUsageThreshold?: number;
+  /** Amount of used storage for immediately  automatic disk scaling, 0 means disabled, in percent. */
+  emergencyUsageThreshold?: number;
+  /** Limit on how large the storage for database instances can automatically grow, in bytes. */
+  diskSizeLimit?: number;
 }
 
 const baseCluster: object = {
@@ -1173,6 +1188,12 @@ export const ClusterConfig = {
     if (message.redis !== undefined) {
       RedisConfigSet.encode(message.redis, writer.uint32(74).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1222,6 +1243,12 @@ export const ClusterConfig = {
         case 9:
           message.redis = RedisConfigSet.decode(reader, reader.uint32());
           break;
+        case 10:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1269,6 +1296,11 @@ export const ClusterConfig = {
       object.redis !== undefined && object.redis !== null
         ? RedisConfigSet.fromJSON(object.redis)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -1304,6 +1336,10 @@ export const ClusterConfig = {
     message.redis !== undefined &&
       (obj.redis = message.redis
         ? RedisConfigSet.toJSON(message.redis)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -1345,6 +1381,11 @@ export const ClusterConfig = {
     message.redis =
       object.redis !== undefined && object.redis !== null
         ? RedisConfigSet.fromPartial(object.redis)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -1798,6 +1839,7 @@ messageTypeRegistry.set(Resources.$type, Resources);
 const baseAccess: object = {
   $type: "yandex.cloud.mdb.redis.v1.Access",
   dataLens: false,
+  webSql: false,
 };
 
 export const Access = {
@@ -1809,6 +1851,9 @@ export const Access = {
   ): _m0.Writer {
     if (message.dataLens === true) {
       writer.uint32(8).bool(message.dataLens);
+    }
+    if (message.webSql === true) {
+      writer.uint32(16).bool(message.webSql);
     }
     return writer;
   },
@@ -1822,6 +1867,9 @@ export const Access = {
       switch (tag >>> 3) {
         case 1:
           message.dataLens = reader.bool();
+          break;
+        case 2:
+          message.webSql = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1837,23 +1885,144 @@ export const Access = {
       object.dataLens !== undefined && object.dataLens !== null
         ? Boolean(object.dataLens)
         : false;
+    message.webSql =
+      object.webSql !== undefined && object.webSql !== null
+        ? Boolean(object.webSql)
+        : false;
     return message;
   },
 
   toJSON(message: Access): unknown {
     const obj: any = {};
     message.dataLens !== undefined && (obj.dataLens = message.dataLens);
+    message.webSql !== undefined && (obj.webSql = message.webSql);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Access>, I>>(object: I): Access {
     const message = { ...baseAccess } as Access;
     message.dataLens = object.dataLens ?? false;
+    message.webSql = object.webSql ?? false;
     return message;
   },
 };
 
 messageTypeRegistry.set(Access.$type, Access);
+
+const baseDiskSizeAutoscaling: object = {
+  $type: "yandex.cloud.mdb.redis.v1.DiskSizeAutoscaling",
+};
+
+export const DiskSizeAutoscaling = {
+  $type: "yandex.cloud.mdb.redis.v1.DiskSizeAutoscaling" as const,
+
+  encode(
+    message: DiskSizeAutoscaling,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.plannedUsageThreshold !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.plannedUsageThreshold!,
+        },
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.emergencyUsageThreshold !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.emergencyUsageThreshold!,
+        },
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.diskSizeLimit !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.diskSizeLimit! },
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DiskSizeAutoscaling {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.plannedUsageThreshold = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 2:
+          message.emergencyUsageThreshold = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 3:
+          message.diskSizeLimit = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DiskSizeAutoscaling {
+    const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+    message.plannedUsageThreshold =
+      object.plannedUsageThreshold !== undefined &&
+      object.plannedUsageThreshold !== null
+        ? Number(object.plannedUsageThreshold)
+        : undefined;
+    message.emergencyUsageThreshold =
+      object.emergencyUsageThreshold !== undefined &&
+      object.emergencyUsageThreshold !== null
+        ? Number(object.emergencyUsageThreshold)
+        : undefined;
+    message.diskSizeLimit =
+      object.diskSizeLimit !== undefined && object.diskSizeLimit !== null
+        ? Number(object.diskSizeLimit)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: DiskSizeAutoscaling): unknown {
+    const obj: any = {};
+    message.plannedUsageThreshold !== undefined &&
+      (obj.plannedUsageThreshold = message.plannedUsageThreshold);
+    message.emergencyUsageThreshold !== undefined &&
+      (obj.emergencyUsageThreshold = message.emergencyUsageThreshold);
+    message.diskSizeLimit !== undefined &&
+      (obj.diskSizeLimit = message.diskSizeLimit);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DiskSizeAutoscaling>, I>>(
+    object: I
+  ): DiskSizeAutoscaling {
+    const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+    message.plannedUsageThreshold = object.plannedUsageThreshold ?? undefined;
+    message.emergencyUsageThreshold =
+      object.emergencyUsageThreshold ?? undefined;
+    message.diskSizeLimit = object.diskSizeLimit ?? undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(DiskSizeAutoscaling.$type, DiskSizeAutoscaling);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

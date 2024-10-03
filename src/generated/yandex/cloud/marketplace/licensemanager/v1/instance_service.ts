@@ -20,21 +20,51 @@ export const protobufPackage = "yandex.cloud.marketplace.licensemanager.v1";
 
 export interface GetInstanceRequest {
   $type: "yandex.cloud.marketplace.licensemanager.v1.GetInstanceRequest";
+  /** ID of the subscription instance. */
   instanceId: string;
 }
 
 export interface ListInstancesRequest {
   $type: "yandex.cloud.marketplace.licensemanager.v1.ListInstancesRequest";
+  /** ID of the folder that the subscription instance belongs to. */
   folderId: string;
+  /**
+   * The maximum number of results per page to return. If the number of available
+   * results is larger than `page_size`, the service returns a [ListInstancesResponse.next_page_token]
+   * that can be used to get the next page of results in subsequent list requests.
+   * Default value: 100.
+   */
   pageSize: number;
+  /**
+   * Page token. To get the next page of results, set `page_token` to the
+   * [ListInstancesResponse.next_page_token] returned by a previous list request.
+   */
   pageToken: string;
+  /**
+   * A filter expression that filters subscription instances listed in the response.
+   *
+   * The expression must specify:
+   * 1. The field name. Currently you can use filtering only on [Instance.name] field.
+   * 2. An operator. Can be either `=` or `!=` for single values, `IN` or `NOT IN` for lists of values.
+   * 3. The value. Must be in double quotes `""`. Must be 3-63 characters long and match the regular expression `^[a-z][-a-z0-9]{1,61}[a-z0-9]`.
+   * Example of a filter: `name="my-subscription-instance"`.
+   */
   filter: string;
+  /** Sorting order for the list of subscription instances. */
   orderBy: string;
 }
 
 export interface ListInstancesResponse {
   $type: "yandex.cloud.marketplace.licensemanager.v1.ListInstancesResponse";
+  /** List of subscription instances. */
   instances: Instance[];
+  /**
+   * Token for getting the next page of the list. If the number of results is greater than
+   * the specified [ListInstancesRequest.page_size], use `next_page_token` as the value
+   * for the [ListInstancesRequest.page_token] parameter in the next list request.
+   *
+   * Each subsequent page will have its own `next_page_token` to continue paging through the results.
+   */
   nextPageToken: string;
 }
 
@@ -306,7 +336,13 @@ export const ListInstancesResponse = {
 
 messageTypeRegistry.set(ListInstancesResponse.$type, ListInstancesResponse);
 
+/** A set of methods for managing subscription instances. */
 export const InstanceServiceService = {
+  /**
+   * Returns the specified subscription instance.
+   *
+   * To get the list of all available subscription instances, make a [List] request.
+   */
   get: {
     path: "/yandex.cloud.marketplace.licensemanager.v1.InstanceService/Get",
     requestStream: false,
@@ -318,6 +354,7 @@ export const InstanceServiceService = {
       Buffer.from(Instance.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Instance.decode(value),
   },
+  /** Retrieves the list of subscription instances in the specified folder. */
   list: {
     path: "/yandex.cloud.marketplace.licensemanager.v1.InstanceService/List",
     requestStream: false,
@@ -332,11 +369,22 @@ export const InstanceServiceService = {
 } as const;
 
 export interface InstanceServiceServer extends UntypedServiceImplementation {
+  /**
+   * Returns the specified subscription instance.
+   *
+   * To get the list of all available subscription instances, make a [List] request.
+   */
   get: handleUnaryCall<GetInstanceRequest, Instance>;
+  /** Retrieves the list of subscription instances in the specified folder. */
   list: handleUnaryCall<ListInstancesRequest, ListInstancesResponse>;
 }
 
 export interface InstanceServiceClient extends Client {
+  /**
+   * Returns the specified subscription instance.
+   *
+   * To get the list of all available subscription instances, make a [List] request.
+   */
   get(
     request: GetInstanceRequest,
     callback: (error: ServiceError | null, response: Instance) => void
@@ -352,6 +400,7 @@ export interface InstanceServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Instance) => void
   ): ClientUnaryCall;
+  /** Retrieves the list of subscription instances in the specified folder. */
   list(
     request: ListInstancesRequest,
     callback: (

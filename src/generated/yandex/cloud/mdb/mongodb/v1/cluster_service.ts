@@ -20,6 +20,7 @@ import {
   Cluster_Environment,
   Resources,
   Host_Type,
+  DiskSizeAutoscaling,
   PerformanceDiagnosticsConfig,
   Access,
   Cluster,
@@ -30,8 +31,8 @@ import {
   host_TypeFromJSON,
   host_TypeToJSON,
 } from "../../../../../yandex/cloud/mdb/mongodb/v1/cluster";
-import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import { MaintenanceWindow } from "../../../../../yandex/cloud/mdb/mongodb/v1/maintenance";
+import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import {
   Mongodconfig36,
   Mongocfgconfig36,
@@ -77,13 +78,22 @@ import {
   Mongocfgconfig60Enterprise,
   Mongosconfig60Enterprise,
 } from "../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb6_0_enterprise";
+import {
+  MongodConfig,
+  MongoCfgConfig,
+  MongosConfig,
+} from "../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb";
 import { TimeOfDay } from "../../../../../google/type/timeofday";
 import { Timestamp } from "../../../../../google/protobuf/timestamp";
 import { DatabaseSpec } from "../../../../../yandex/cloud/mdb/mongodb/v1/database";
 import { UserSpec } from "../../../../../yandex/cloud/mdb/mongodb/v1/user";
 import { Operation } from "../../../../../yandex/cloud/operation/operation";
 import { Backup } from "../../../../../yandex/cloud/mdb/mongodb/v1/backup";
-import { Int64Value } from "../../../../../google/protobuf/wrappers";
+import {
+  BoolValue,
+  Int64Value,
+  DoubleValue,
+} from "../../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.mdb.mongodb.v1";
 
@@ -167,6 +177,8 @@ export interface CreateClusterRequest {
   securityGroupIds: string[];
   /** Deletion Protection inhibits deletion of the cluster */
   deletionProtection: boolean;
+  /** Maintenance window settings for the cluster. */
+  maintenanceWindow?: MaintenanceWindow;
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -210,6 +222,8 @@ export interface UpdateClusterRequest {
   securityGroupIds: string[];
   /** Deletion Protection inhibits deletion of the cluster */
   deletionProtection: boolean;
+  /** ID of the network to move the cluster to. */
+  networkId: string;
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
@@ -334,6 +348,8 @@ export interface RestoreClusterRequest {
   securityGroupIds: string[];
   /** Deletion Protection inhibits deletion of the cluster */
   deletionProtection: boolean;
+  /** Maintenance window settings for the cluster. */
+  maintenanceWindow?: MaintenanceWindow;
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
@@ -779,6 +795,57 @@ export interface DeleteClusterHostsMetadata {
   hostNames: string[];
 }
 
+export interface UpdateClusterHostsRequest {
+  $type: "yandex.cloud.mdb.mongodb.v1.UpdateClusterHostsRequest";
+  /**
+   * ID of the MongoDB cluster to update hosts from.
+   * To get the MongoDB cluster ID, use a [ClusterService.List] request.
+   */
+  clusterId: string;
+  /** New configurations to apply to hosts of a Managed Service for MongoDB cluster. */
+  updateHostSpecs: UpdateHostSpec[];
+}
+
+export interface UpdateClusterHostsMetadata {
+  $type: "yandex.cloud.mdb.mongodb.v1.UpdateClusterHostsMetadata";
+  /** ID of the MongoDB cluster to update host from. */
+  clusterId: string;
+  /** Name of host that are being updated. */
+  hostNames: string[];
+}
+
+export interface UpdateHostSpec {
+  $type: "yandex.cloud.mdb.mongodb.v1.UpdateHostSpec";
+  /** Host to be updated. Specify the [host FQDN](https://yandex.cloud/en/docs/managed-mongodb/operations/connect/#fqdn). */
+  hostName: string;
+  /**
+   * Determines if the host is a hidden replica set member.
+   *
+   * Such members cannot become primary in a replica set, and they are invisible to client applications. However, hidden members can participate in elections of the primary host. For more information, see the [MongoDB documentation](https://www.mongodb.com/docs/manual/core/replica-set-hidden-member/).
+   */
+  hidden?: boolean;
+  /** The time, in seconds, by which the given replica set member lags behind the primary host. */
+  secondaryDelaySecs?: number;
+  /**
+   * Priority of the host to be elected as the primary in the replica set.
+   *
+   * The minimum value is `0` if the Managed Service for MongoDB cluster contains three or more secondary hosts. Otherwise, the minimum value is `1`.
+   */
+  priority?: number;
+  /** Determines whether the host should get a public IP address after the update. */
+  assignPublicIp: boolean;
+  /** Field mask that specifies which fields of the MongoDB host should be updated. */
+  updateMask?: FieldMask;
+  /** Host tag list that contains key-value pairs for the given replica set member. For more information about how to specify the tags and what values to choose, see the [MongoDB documentation](https://www.mongodb.com/docs/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.tags). */
+  tags: { [key: string]: string };
+}
+
+export interface UpdateHostSpec_TagsEntry {
+  $type: "yandex.cloud.mdb.mongodb.v1.UpdateHostSpec.TagsEntry";
+  key: string;
+  value: string;
+}
+
 export interface EnableClusterShardingRequest {
   $type: "yandex.cloud.mdb.mongodb.v1.EnableClusterShardingRequest";
   /** ID of the MongoDB cluster to enable sharding for. */
@@ -983,6 +1050,20 @@ export interface HostSpec {
   type: Host_Type;
   /** Name of the shard that the host belongs to. */
   shardName: string;
+  /** Is host hidden in replSet */
+  hidden?: boolean;
+  /** The number of seconds "behind" the primary that this replica set member should "lag" */
+  secondaryDelaySecs?: number;
+  /** Priority of host for the election in replSet */
+  priority?: number;
+  /** Host tags */
+  tags: { [key: string]: string };
+}
+
+export interface HostSpec_TagsEntry {
+  $type: "yandex.cloud.mdb.mongodb.v1.HostSpec.TagsEntry";
+  key: string;
+  value: string;
 }
 
 export interface Mongodbspec36 {
@@ -1003,6 +1084,8 @@ export interface Mongodbspec36_Mongod {
   config?: Mongodconfig36;
   /** Resources allocated to each mongod host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec36_MongoCfg {
@@ -1011,6 +1094,8 @@ export interface Mongodbspec36_MongoCfg {
   config?: Mongocfgconfig36;
   /** Resources allocated to each mongocfg host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec36_Mongos {
@@ -1019,6 +1104,8 @@ export interface Mongodbspec36_Mongos {
   config?: Mongosconfig36;
   /** Resources allocated to each mongos host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec36_MongoInfra {
@@ -1028,6 +1115,8 @@ export interface Mongodbspec36_MongoInfra {
   configMongocfg?: Mongocfgconfig36;
   /** Resources allocated to each mongoinfra (mongos+mongocfg) host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec40 {
@@ -1048,6 +1137,8 @@ export interface Mongodbspec40_Mongod {
   config?: Mongodconfig40;
   /** Resources allocated to each mongod host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec40_MongoCfg {
@@ -1056,6 +1147,8 @@ export interface Mongodbspec40_MongoCfg {
   config?: Mongocfgconfig40;
   /** Resources allocated to each mongocfg host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec40_Mongos {
@@ -1064,6 +1157,8 @@ export interface Mongodbspec40_Mongos {
   config?: Mongosconfig40;
   /** Resources allocated to each mongos host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec40_MongoInfra {
@@ -1073,6 +1168,8 @@ export interface Mongodbspec40_MongoInfra {
   configMongocfg?: Mongocfgconfig40;
   /** Resources allocated to each mongoinfra (mongos+mongocfg) host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec42 {
@@ -1093,6 +1190,8 @@ export interface Mongodbspec42_Mongod {
   config?: Mongodconfig42;
   /** Resources allocated to each mongod host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec42_MongoCfg {
@@ -1101,6 +1200,8 @@ export interface Mongodbspec42_MongoCfg {
   config?: Mongocfgconfig42;
   /** Resources allocated to each mongocfg host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec42_Mongos {
@@ -1109,6 +1210,8 @@ export interface Mongodbspec42_Mongos {
   config?: Mongosconfig42;
   /** Resources allocated to each mongos host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec42_MongoInfra {
@@ -1118,6 +1221,8 @@ export interface Mongodbspec42_MongoInfra {
   configMongocfg?: Mongocfgconfig42;
   /** Resources allocated to each mongoinfra (mongos+mongocfg) host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec44 {
@@ -1138,6 +1243,8 @@ export interface Mongodbspec44_Mongod {
   config?: Mongodconfig44;
   /** Resources allocated to each mongod host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec44_MongoCfg {
@@ -1146,6 +1253,8 @@ export interface Mongodbspec44_MongoCfg {
   config?: Mongocfgconfig44;
   /** Resources allocated to each mongocfg host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec44_Mongos {
@@ -1154,6 +1263,8 @@ export interface Mongodbspec44_Mongos {
   config?: Mongosconfig44;
   /** Resources allocated to each mongos host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec44_MongoInfra {
@@ -1163,6 +1274,8 @@ export interface Mongodbspec44_MongoInfra {
   configMongocfg?: Mongocfgconfig44;
   /** Resources allocated to each mongoinfra (mongos+mongocfg) host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec44Enterprise {
@@ -1183,6 +1296,8 @@ export interface Mongodbspec44Enterprise_Mongod {
   config?: Mongodconfig44Enterprise;
   /** Resources allocated to each mongod host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec44Enterprise_MongoCfg {
@@ -1191,6 +1306,8 @@ export interface Mongodbspec44Enterprise_MongoCfg {
   config?: Mongocfgconfig44Enterprise;
   /** Resources allocated to each mongocfg host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec44Enterprise_Mongos {
@@ -1199,6 +1316,8 @@ export interface Mongodbspec44Enterprise_Mongos {
   config?: Mongosconfig44Enterprise;
   /** Resources allocated to each mongos host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec44Enterprise_MongoInfra {
@@ -1208,6 +1327,8 @@ export interface Mongodbspec44Enterprise_MongoInfra {
   configMongocfg?: Mongocfgconfig44Enterprise;
   /** Resources allocated to each mongoinfra (mongos+mongocfg) host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec50 {
@@ -1228,6 +1349,8 @@ export interface Mongodbspec50_Mongod {
   config?: Mongodconfig50;
   /** Resources allocated to each mongod host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec50_MongoCfg {
@@ -1236,6 +1359,8 @@ export interface Mongodbspec50_MongoCfg {
   config?: Mongocfgconfig50;
   /** Resources allocated to each mongocfg host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec50_Mongos {
@@ -1244,6 +1369,8 @@ export interface Mongodbspec50_Mongos {
   config?: Mongosconfig50;
   /** Resources allocated to each mongos host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec50_MongoInfra {
@@ -1253,6 +1380,8 @@ export interface Mongodbspec50_MongoInfra {
   configMongocfg?: Mongocfgconfig50;
   /** Resources allocated to each mongoinfra (mongos+mongocfg) host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec50Enterprise {
@@ -1273,6 +1402,8 @@ export interface Mongodbspec50Enterprise_Mongod {
   config?: Mongodconfig50Enterprise;
   /** Resources allocated to each mongod host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec50Enterprise_MongoCfg {
@@ -1281,6 +1412,8 @@ export interface Mongodbspec50Enterprise_MongoCfg {
   config?: Mongocfgconfig50Enterprise;
   /** Resources allocated to each mongocfg host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec50Enterprise_Mongos {
@@ -1289,6 +1422,8 @@ export interface Mongodbspec50Enterprise_Mongos {
   config?: Mongosconfig50Enterprise;
   /** Resources allocated to each mongos host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec50Enterprise_MongoInfra {
@@ -1298,6 +1433,8 @@ export interface Mongodbspec50Enterprise_MongoInfra {
   configMongocfg?: Mongocfgconfig50Enterprise;
   /** Resources allocated to each mongoinfra (mongos+mongocfg) host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec60 {
@@ -1318,6 +1455,8 @@ export interface Mongodbspec60_Mongod {
   config?: Mongodconfig60;
   /** Resources allocated to each mongod host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec60_MongoCfg {
@@ -1326,6 +1465,8 @@ export interface Mongodbspec60_MongoCfg {
   config?: Mongocfgconfig60;
   /** Resources allocated to each mongocfg host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec60_Mongos {
@@ -1334,6 +1475,8 @@ export interface Mongodbspec60_Mongos {
   config?: Mongosconfig60;
   /** Resources allocated to each mongos host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec60_MongoInfra {
@@ -1343,6 +1486,8 @@ export interface Mongodbspec60_MongoInfra {
   configMongocfg?: Mongocfgconfig60;
   /** Resources allocated to each mongoinfra (mongos+mongocfg) host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec60Enterprise {
@@ -1363,6 +1508,8 @@ export interface Mongodbspec60Enterprise_Mongod {
   config?: Mongodconfig60Enterprise;
   /** Resources allocated to each mongod host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec60Enterprise_MongoCfg {
@@ -1371,6 +1518,8 @@ export interface Mongodbspec60Enterprise_MongoCfg {
   config?: Mongocfgconfig60Enterprise;
   /** Resources allocated to each mongocfg host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec60Enterprise_Mongos {
@@ -1379,6 +1528,8 @@ export interface Mongodbspec60Enterprise_Mongos {
   config?: Mongosconfig60Enterprise;
   /** Resources allocated to each mongos host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Mongodbspec60Enterprise_MongoInfra {
@@ -1388,6 +1539,60 @@ export interface Mongodbspec60Enterprise_MongoInfra {
   configMongocfg?: Mongocfgconfig60Enterprise;
   /** Resources allocated to each mongoinfra (mongos+mongocfg) host. */
   resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
+}
+
+export interface MongodbSpec {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec";
+  /** Configuration and resource allocation for mongod hosts. */
+  mongod?: MongodbSpec_Mongod;
+  /** Configuration and resource allocation for mongocfg hosts. */
+  mongocfg?: MongodbSpec_MongoCfg;
+  /** Configuration and resource allocation for mongos hosts. */
+  mongos?: MongodbSpec_Mongos;
+  /** Configuration and resource allocation for mongoinfra (mongos+mongocfg) hosts. */
+  mongoinfra?: MongodbSpec_MongoInfra;
+}
+
+export interface MongodbSpec_Mongod {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec.Mongod";
+  config?: MongodConfig;
+  /** Resources allocated to each mongod host. */
+  resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
+}
+
+export interface MongodbSpec_MongoCfg {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec.MongoCfg";
+  /** Configuration for mongocfg hosts. */
+  config?: MongoCfgConfig;
+  /** Resources allocated to each mongocfg host. */
+  resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
+}
+
+export interface MongodbSpec_Mongos {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec.Mongos";
+  /** Configuration for mongos hosts. */
+  config?: MongosConfig;
+  /** Resources allocated to each mongos host. */
+  resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
+}
+
+export interface MongodbSpec_MongoInfra {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec.MongoInfra";
+  /** Configuration for mongoinfra hosts. */
+  configMongos?: MongosConfig;
+  configMongocfg?: MongoCfgConfig;
+  /** Resources allocated to each mongoinfra (mongos+mongocfg) host. */
+  resources?: Resources;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface ConfigSpec {
@@ -1432,6 +1637,8 @@ export interface ConfigSpec {
   performanceDiagnostics?: PerformanceDiagnosticsConfig;
   /** Access policy to DB */
   access?: Access;
+  /** Configuration and resource allocation for a MongoDB 7.0 Enterprise cluster. */
+  mongodb?: MongodbSpec;
 }
 
 const baseGetClusterRequest: object = {
@@ -1603,7 +1810,15 @@ const baseListClustersResponse: object = {
   nextPageToken: "",
 };
 
-export const ListClustersResponse = {
+type ListClustersResponseType = {
+    $type: "yandex.cloud.mdb.mongodb.v1.ListClustersResponse";
+    encode(message: ListClustersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClustersResponse;
+    fromJSON(object: any): ListClustersResponse;
+    toJSON(message: ListClustersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClustersResponse>, I>>(object: I): ListClustersResponse;
+}
+export const ListClustersResponse: ListClustersResponseType = {
   $type: "yandex.cloud.mdb.mongodb.v1.ListClustersResponse" as const,
 
   encode(
@@ -1744,6 +1959,12 @@ export const CreateClusterRequest = {
     if (message.deletionProtection === true) {
       writer.uint32(96).bool(message.deletionProtection);
     }
+    if (message.maintenanceWindow !== undefined) {
+      MaintenanceWindow.encode(
+        message.maintenanceWindow,
+        writer.uint32(106).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1806,6 +2027,12 @@ export const CreateClusterRequest = {
         case 12:
           message.deletionProtection = reader.bool();
           break;
+        case 13:
+          message.maintenanceWindow = MaintenanceWindow.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1863,6 +2090,11 @@ export const CreateClusterRequest = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.maintenanceWindow =
+      object.maintenanceWindow !== undefined &&
+      object.maintenanceWindow !== null
+        ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
+        : undefined;
     return message;
   },
 
@@ -1913,6 +2145,10 @@ export const CreateClusterRequest = {
     }
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.maintenanceWindow !== undefined &&
+      (obj.maintenanceWindow = message.maintenanceWindow
+        ? MaintenanceWindow.toJSON(message.maintenanceWindow)
+        : undefined);
     return obj;
   },
 
@@ -1945,6 +2181,11 @@ export const CreateClusterRequest = {
     message.networkId = object.networkId ?? "";
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? false;
+    message.maintenanceWindow =
+      object.maintenanceWindow !== undefined &&
+      object.maintenanceWindow !== null
+        ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
+        : undefined;
     return message;
   },
 };
@@ -2109,6 +2350,7 @@ const baseUpdateClusterRequest: object = {
   name: "",
   securityGroupIds: "",
   deletionProtection: false,
+  networkId: "",
 };
 
 export const UpdateClusterRequest = {
@@ -2154,6 +2396,9 @@ export const UpdateClusterRequest = {
     }
     if (message.deletionProtection === true) {
       writer.uint32(72).bool(message.deletionProtection);
+    }
+    if (message.networkId !== "") {
+      writer.uint32(82).string(message.networkId);
     }
     return writer;
   },
@@ -2206,6 +2451,9 @@ export const UpdateClusterRequest = {
         case 9:
           message.deletionProtection = reader.bool();
           break;
+        case 10:
+          message.networkId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2255,6 +2503,10 @@ export const UpdateClusterRequest = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.networkId =
+      object.networkId !== undefined && object.networkId !== null
+        ? String(object.networkId)
+        : "";
     return message;
   },
 
@@ -2289,6 +2541,7 @@ export const UpdateClusterRequest = {
     }
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.networkId !== undefined && (obj.networkId = message.networkId);
     return obj;
   },
 
@@ -2322,6 +2575,7 @@ export const UpdateClusterRequest = {
         : undefined;
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? false;
+    message.networkId = object.networkId ?? "";
     return message;
   },
 };
@@ -3224,6 +3478,12 @@ export const RestoreClusterRequest = {
     if (message.deletionProtection === true) {
       writer.uint32(96).bool(message.deletionProtection);
     }
+    if (message.maintenanceWindow !== undefined) {
+      MaintenanceWindow.encode(
+        message.maintenanceWindow,
+        writer.uint32(106).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3285,6 +3545,12 @@ export const RestoreClusterRequest = {
           break;
         case 12:
           message.deletionProtection = reader.bool();
+          break;
+        case 13:
+          message.maintenanceWindow = MaintenanceWindow.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -3348,6 +3614,11 @@ export const RestoreClusterRequest = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.maintenanceWindow =
+      object.maintenanceWindow !== undefined &&
+      object.maintenanceWindow !== null
+        ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
+        : undefined;
     return message;
   },
 
@@ -3391,6 +3662,10 @@ export const RestoreClusterRequest = {
     }
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.maintenanceWindow !== undefined &&
+      (obj.maintenanceWindow = message.maintenanceWindow
+        ? MaintenanceWindow.toJSON(message.maintenanceWindow)
+        : undefined);
     return obj;
   },
 
@@ -3427,6 +3702,11 @@ export const RestoreClusterRequest = {
         : undefined;
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? false;
+    message.maintenanceWindow =
+      object.maintenanceWindow !== undefined &&
+      object.maintenanceWindow !== null
+        ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
+        : undefined;
     return message;
   },
 };
@@ -5475,6 +5755,462 @@ messageTypeRegistry.set(
   DeleteClusterHostsMetadata
 );
 
+const baseUpdateClusterHostsRequest: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.UpdateClusterHostsRequest",
+  clusterId: "",
+};
+
+export const UpdateClusterHostsRequest = {
+  $type: "yandex.cloud.mdb.mongodb.v1.UpdateClusterHostsRequest" as const,
+
+  encode(
+    message: UpdateClusterHostsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    for (const v of message.updateHostSpecs) {
+      UpdateHostSpec.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateClusterHostsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateClusterHostsRequest,
+    } as UpdateClusterHostsRequest;
+    message.updateHostSpecs = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.updateHostSpecs.push(
+            UpdateHostSpec.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateClusterHostsRequest {
+    const message = {
+      ...baseUpdateClusterHostsRequest,
+    } as UpdateClusterHostsRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.updateHostSpecs = (object.updateHostSpecs ?? []).map((e: any) =>
+      UpdateHostSpec.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: UpdateClusterHostsRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    if (message.updateHostSpecs) {
+      obj.updateHostSpecs = message.updateHostSpecs.map((e) =>
+        e ? UpdateHostSpec.toJSON(e) : undefined
+      );
+    } else {
+      obj.updateHostSpecs = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UpdateClusterHostsRequest>, I>>(
+    object: I
+  ): UpdateClusterHostsRequest {
+    const message = {
+      ...baseUpdateClusterHostsRequest,
+    } as UpdateClusterHostsRequest;
+    message.clusterId = object.clusterId ?? "";
+    message.updateHostSpecs =
+      object.updateHostSpecs?.map((e) => UpdateHostSpec.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  UpdateClusterHostsRequest.$type,
+  UpdateClusterHostsRequest
+);
+
+const baseUpdateClusterHostsMetadata: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.UpdateClusterHostsMetadata",
+  clusterId: "",
+  hostNames: "",
+};
+
+export const UpdateClusterHostsMetadata = {
+  $type: "yandex.cloud.mdb.mongodb.v1.UpdateClusterHostsMetadata" as const,
+
+  encode(
+    message: UpdateClusterHostsMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    for (const v of message.hostNames) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateClusterHostsMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateClusterHostsMetadata,
+    } as UpdateClusterHostsMetadata;
+    message.hostNames = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.hostNames.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateClusterHostsMetadata {
+    const message = {
+      ...baseUpdateClusterHostsMetadata,
+    } as UpdateClusterHostsMetadata;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.hostNames = (object.hostNames ?? []).map((e: any) => String(e));
+    return message;
+  },
+
+  toJSON(message: UpdateClusterHostsMetadata): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    if (message.hostNames) {
+      obj.hostNames = message.hostNames.map((e) => e);
+    } else {
+      obj.hostNames = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UpdateClusterHostsMetadata>, I>>(
+    object: I
+  ): UpdateClusterHostsMetadata {
+    const message = {
+      ...baseUpdateClusterHostsMetadata,
+    } as UpdateClusterHostsMetadata;
+    message.clusterId = object.clusterId ?? "";
+    message.hostNames = object.hostNames?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  UpdateClusterHostsMetadata.$type,
+  UpdateClusterHostsMetadata
+);
+
+const baseUpdateHostSpec: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.UpdateHostSpec",
+  hostName: "",
+  assignPublicIp: false,
+};
+
+export const UpdateHostSpec = {
+  $type: "yandex.cloud.mdb.mongodb.v1.UpdateHostSpec" as const,
+
+  encode(
+    message: UpdateHostSpec,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.hostName !== "") {
+      writer.uint32(10).string(message.hostName);
+    }
+    if (message.hidden !== undefined) {
+      BoolValue.encode(
+        { $type: "google.protobuf.BoolValue", value: message.hidden! },
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.secondaryDelaySecs !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.secondaryDelaySecs!,
+        },
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.priority !== undefined) {
+      DoubleValue.encode(
+        { $type: "google.protobuf.DoubleValue", value: message.priority! },
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    if (message.assignPublicIp === true) {
+      writer.uint32(40).bool(message.assignPublicIp);
+    }
+    if (message.updateMask !== undefined) {
+      FieldMask.encode(message.updateMask, writer.uint32(50).fork()).ldelim();
+    }
+    Object.entries(message.tags).forEach(([key, value]) => {
+      UpdateHostSpec_TagsEntry.encode(
+        {
+          $type: "yandex.cloud.mdb.mongodb.v1.UpdateHostSpec.TagsEntry",
+          key: key as any,
+          value,
+        },
+        writer.uint32(58).fork()
+      ).ldelim();
+    });
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): UpdateHostSpec {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseUpdateHostSpec } as UpdateHostSpec;
+    message.tags = {};
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.hostName = reader.string();
+          break;
+        case 2:
+          message.hidden = BoolValue.decode(reader, reader.uint32()).value;
+          break;
+        case 3:
+          message.secondaryDelaySecs = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 4:
+          message.priority = DoubleValue.decode(reader, reader.uint32()).value;
+          break;
+        case 5:
+          message.assignPublicIp = reader.bool();
+          break;
+        case 6:
+          message.updateMask = FieldMask.decode(reader, reader.uint32());
+          break;
+        case 7:
+          const entry7 = UpdateHostSpec_TagsEntry.decode(
+            reader,
+            reader.uint32()
+          );
+          if (entry7.value !== undefined) {
+            message.tags[entry7.key] = entry7.value;
+          }
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateHostSpec {
+    const message = { ...baseUpdateHostSpec } as UpdateHostSpec;
+    message.hostName =
+      object.hostName !== undefined && object.hostName !== null
+        ? String(object.hostName)
+        : "";
+    message.hidden =
+      object.hidden !== undefined && object.hidden !== null
+        ? Boolean(object.hidden)
+        : undefined;
+    message.secondaryDelaySecs =
+      object.secondaryDelaySecs !== undefined &&
+      object.secondaryDelaySecs !== null
+        ? Number(object.secondaryDelaySecs)
+        : undefined;
+    message.priority =
+      object.priority !== undefined && object.priority !== null
+        ? Number(object.priority)
+        : undefined;
+    message.assignPublicIp =
+      object.assignPublicIp !== undefined && object.assignPublicIp !== null
+        ? Boolean(object.assignPublicIp)
+        : false;
+    message.updateMask =
+      object.updateMask !== undefined && object.updateMask !== null
+        ? FieldMask.fromJSON(object.updateMask)
+        : undefined;
+    message.tags = Object.entries(object.tags ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      acc[key] = String(value);
+      return acc;
+    }, {});
+    return message;
+  },
+
+  toJSON(message: UpdateHostSpec): unknown {
+    const obj: any = {};
+    message.hostName !== undefined && (obj.hostName = message.hostName);
+    message.hidden !== undefined && (obj.hidden = message.hidden);
+    message.secondaryDelaySecs !== undefined &&
+      (obj.secondaryDelaySecs = message.secondaryDelaySecs);
+    message.priority !== undefined && (obj.priority = message.priority);
+    message.assignPublicIp !== undefined &&
+      (obj.assignPublicIp = message.assignPublicIp);
+    message.updateMask !== undefined &&
+      (obj.updateMask = message.updateMask
+        ? FieldMask.toJSON(message.updateMask)
+        : undefined);
+    obj.tags = {};
+    if (message.tags) {
+      Object.entries(message.tags).forEach(([k, v]) => {
+        obj.tags[k] = v;
+      });
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UpdateHostSpec>, I>>(
+    object: I
+  ): UpdateHostSpec {
+    const message = { ...baseUpdateHostSpec } as UpdateHostSpec;
+    message.hostName = object.hostName ?? "";
+    message.hidden = object.hidden ?? undefined;
+    message.secondaryDelaySecs = object.secondaryDelaySecs ?? undefined;
+    message.priority = object.priority ?? undefined;
+    message.assignPublicIp = object.assignPublicIp ?? false;
+    message.updateMask =
+      object.updateMask !== undefined && object.updateMask !== null
+        ? FieldMask.fromPartial(object.updateMask)
+        : undefined;
+    message.tags = Object.entries(object.tags ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = String(value);
+      }
+      return acc;
+    }, {});
+    return message;
+  },
+};
+
+messageTypeRegistry.set(UpdateHostSpec.$type, UpdateHostSpec);
+
+const baseUpdateHostSpec_TagsEntry: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.UpdateHostSpec.TagsEntry",
+  key: "",
+  value: "",
+};
+
+export const UpdateHostSpec_TagsEntry = {
+  $type: "yandex.cloud.mdb.mongodb.v1.UpdateHostSpec.TagsEntry" as const,
+
+  encode(
+    message: UpdateHostSpec_TagsEntry,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateHostSpec_TagsEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateHostSpec_TagsEntry,
+    } as UpdateHostSpec_TagsEntry;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateHostSpec_TagsEntry {
+    const message = {
+      ...baseUpdateHostSpec_TagsEntry,
+    } as UpdateHostSpec_TagsEntry;
+    message.key =
+      object.key !== undefined && object.key !== null ? String(object.key) : "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? String(object.value)
+        : "";
+    return message;
+  },
+
+  toJSON(message: UpdateHostSpec_TagsEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UpdateHostSpec_TagsEntry>, I>>(
+    object: I
+  ): UpdateHostSpec_TagsEntry {
+    const message = {
+      ...baseUpdateHostSpec_TagsEntry,
+    } as UpdateHostSpec_TagsEntry;
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  UpdateHostSpec_TagsEntry.$type,
+  UpdateHostSpec_TagsEntry
+);
+
 const baseEnableClusterShardingRequest: object = {
   $type: "yandex.cloud.mdb.mongodb.v1.EnableClusterShardingRequest",
   clusterId: "",
@@ -7082,6 +7818,37 @@ export const HostSpec = {
     if (message.shardName !== "") {
       writer.uint32(42).string(message.shardName);
     }
+    if (message.hidden !== undefined) {
+      BoolValue.encode(
+        { $type: "google.protobuf.BoolValue", value: message.hidden! },
+        writer.uint32(50).fork()
+      ).ldelim();
+    }
+    if (message.secondaryDelaySecs !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.secondaryDelaySecs!,
+        },
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
+    if (message.priority !== undefined) {
+      DoubleValue.encode(
+        { $type: "google.protobuf.DoubleValue", value: message.priority! },
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
+    Object.entries(message.tags).forEach(([key, value]) => {
+      HostSpec_TagsEntry.encode(
+        {
+          $type: "yandex.cloud.mdb.mongodb.v1.HostSpec.TagsEntry",
+          key: key as any,
+          value,
+        },
+        writer.uint32(74).fork()
+      ).ldelim();
+    });
     return writer;
   },
 
@@ -7089,6 +7856,7 @@ export const HostSpec = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseHostSpec } as HostSpec;
+    message.tags = {};
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -7106,6 +7874,24 @@ export const HostSpec = {
           break;
         case 5:
           message.shardName = reader.string();
+          break;
+        case 6:
+          message.hidden = BoolValue.decode(reader, reader.uint32()).value;
+          break;
+        case 7:
+          message.secondaryDelaySecs = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 8:
+          message.priority = DoubleValue.decode(reader, reader.uint32()).value;
+          break;
+        case 9:
+          const entry9 = HostSpec_TagsEntry.decode(reader, reader.uint32());
+          if (entry9.value !== undefined) {
+            message.tags[entry9.key] = entry9.value;
+          }
           break;
         default:
           reader.skipType(tag & 7);
@@ -7137,6 +7923,25 @@ export const HostSpec = {
       object.shardName !== undefined && object.shardName !== null
         ? String(object.shardName)
         : "";
+    message.hidden =
+      object.hidden !== undefined && object.hidden !== null
+        ? Boolean(object.hidden)
+        : undefined;
+    message.secondaryDelaySecs =
+      object.secondaryDelaySecs !== undefined &&
+      object.secondaryDelaySecs !== null
+        ? Number(object.secondaryDelaySecs)
+        : undefined;
+    message.priority =
+      object.priority !== undefined && object.priority !== null
+        ? Number(object.priority)
+        : undefined;
+    message.tags = Object.entries(object.tags ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      acc[key] = String(value);
+      return acc;
+    }, {});
     return message;
   },
 
@@ -7148,6 +7953,16 @@ export const HostSpec = {
       (obj.assignPublicIp = message.assignPublicIp);
     message.type !== undefined && (obj.type = host_TypeToJSON(message.type));
     message.shardName !== undefined && (obj.shardName = message.shardName);
+    message.hidden !== undefined && (obj.hidden = message.hidden);
+    message.secondaryDelaySecs !== undefined &&
+      (obj.secondaryDelaySecs = message.secondaryDelaySecs);
+    message.priority !== undefined && (obj.priority = message.priority);
+    obj.tags = {};
+    if (message.tags) {
+      Object.entries(message.tags).forEach(([k, v]) => {
+        obj.tags[k] = v;
+      });
+    }
     return obj;
   },
 
@@ -7158,11 +7973,95 @@ export const HostSpec = {
     message.assignPublicIp = object.assignPublicIp ?? false;
     message.type = object.type ?? 0;
     message.shardName = object.shardName ?? "";
+    message.hidden = object.hidden ?? undefined;
+    message.secondaryDelaySecs = object.secondaryDelaySecs ?? undefined;
+    message.priority = object.priority ?? undefined;
+    message.tags = Object.entries(object.tags ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = String(value);
+      }
+      return acc;
+    }, {});
     return message;
   },
 };
 
 messageTypeRegistry.set(HostSpec.$type, HostSpec);
+
+const baseHostSpec_TagsEntry: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.HostSpec.TagsEntry",
+  key: "",
+  value: "",
+};
+
+export const HostSpec_TagsEntry = {
+  $type: "yandex.cloud.mdb.mongodb.v1.HostSpec.TagsEntry" as const,
+
+  encode(
+    message: HostSpec_TagsEntry,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): HostSpec_TagsEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseHostSpec_TagsEntry } as HostSpec_TagsEntry;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): HostSpec_TagsEntry {
+    const message = { ...baseHostSpec_TagsEntry } as HostSpec_TagsEntry;
+    message.key =
+      object.key !== undefined && object.key !== null ? String(object.key) : "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? String(object.value)
+        : "";
+    return message;
+  },
+
+  toJSON(message: HostSpec_TagsEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<HostSpec_TagsEntry>, I>>(
+    object: I
+  ): HostSpec_TagsEntry {
+    const message = { ...baseHostSpec_TagsEntry } as HostSpec_TagsEntry;
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(HostSpec_TagsEntry.$type, HostSpec_TagsEntry);
 
 const baseMongodbspec36: object = {
   $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec3_6",
@@ -7320,6 +8219,12 @@ export const Mongodbspec36_Mongod = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -7339,6 +8244,12 @@ export const Mongodbspec36_Mongod = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -7357,6 +8268,11 @@ export const Mongodbspec36_Mongod = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -7369,6 +8285,10 @@ export const Mongodbspec36_Mongod = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -7384,6 +8304,11 @@ export const Mongodbspec36_Mongod = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -7411,6 +8336,12 @@ export const Mongodbspec36_MongoCfg = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -7430,6 +8361,12 @@ export const Mongodbspec36_MongoCfg = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -7448,6 +8385,11 @@ export const Mongodbspec36_MongoCfg = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -7460,6 +8402,10 @@ export const Mongodbspec36_MongoCfg = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -7475,6 +8421,11 @@ export const Mongodbspec36_MongoCfg = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -7499,6 +8450,12 @@ export const Mongodbspec36_Mongos = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -7518,6 +8475,12 @@ export const Mongodbspec36_Mongos = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -7536,6 +8499,11 @@ export const Mongodbspec36_Mongos = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -7548,6 +8516,10 @@ export const Mongodbspec36_Mongos = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -7563,6 +8535,11 @@ export const Mongodbspec36_Mongos = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -7596,6 +8573,12 @@ export const Mongodbspec36_MongoInfra = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -7623,6 +8606,12 @@ export const Mongodbspec36_MongoInfra = {
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -7647,6 +8636,11 @@ export const Mongodbspec36_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -7663,6 +8657,10 @@ export const Mongodbspec36_MongoInfra = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -7684,6 +8682,11 @@ export const Mongodbspec36_MongoInfra = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -7850,6 +8853,12 @@ export const Mongodbspec40_Mongod = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -7869,6 +8878,12 @@ export const Mongodbspec40_Mongod = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -7887,6 +8902,11 @@ export const Mongodbspec40_Mongod = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -7899,6 +8919,10 @@ export const Mongodbspec40_Mongod = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -7914,6 +8938,11 @@ export const Mongodbspec40_Mongod = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -7941,6 +8970,12 @@ export const Mongodbspec40_MongoCfg = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -7960,6 +8995,12 @@ export const Mongodbspec40_MongoCfg = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -7978,6 +9019,11 @@ export const Mongodbspec40_MongoCfg = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -7990,6 +9036,10 @@ export const Mongodbspec40_MongoCfg = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -8005,6 +9055,11 @@ export const Mongodbspec40_MongoCfg = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -8029,6 +9084,12 @@ export const Mongodbspec40_Mongos = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -8048,6 +9109,12 @@ export const Mongodbspec40_Mongos = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -8066,6 +9133,11 @@ export const Mongodbspec40_Mongos = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -8078,6 +9150,10 @@ export const Mongodbspec40_Mongos = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -8093,6 +9169,11 @@ export const Mongodbspec40_Mongos = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -8126,6 +9207,12 @@ export const Mongodbspec40_MongoInfra = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -8153,6 +9240,12 @@ export const Mongodbspec40_MongoInfra = {
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -8177,6 +9270,11 @@ export const Mongodbspec40_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -8193,6 +9291,10 @@ export const Mongodbspec40_MongoInfra = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -8214,6 +9316,11 @@ export const Mongodbspec40_MongoInfra = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -8380,6 +9487,12 @@ export const Mongodbspec42_Mongod = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -8399,6 +9512,12 @@ export const Mongodbspec42_Mongod = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -8417,6 +9536,11 @@ export const Mongodbspec42_Mongod = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -8429,6 +9553,10 @@ export const Mongodbspec42_Mongod = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -8444,6 +9572,11 @@ export const Mongodbspec42_Mongod = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -8471,6 +9604,12 @@ export const Mongodbspec42_MongoCfg = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -8490,6 +9629,12 @@ export const Mongodbspec42_MongoCfg = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -8508,6 +9653,11 @@ export const Mongodbspec42_MongoCfg = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -8520,6 +9670,10 @@ export const Mongodbspec42_MongoCfg = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -8535,6 +9689,11 @@ export const Mongodbspec42_MongoCfg = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -8559,6 +9718,12 @@ export const Mongodbspec42_Mongos = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -8578,6 +9743,12 @@ export const Mongodbspec42_Mongos = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -8596,6 +9767,11 @@ export const Mongodbspec42_Mongos = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -8608,6 +9784,10 @@ export const Mongodbspec42_Mongos = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -8623,6 +9803,11 @@ export const Mongodbspec42_Mongos = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -8656,6 +9841,12 @@ export const Mongodbspec42_MongoInfra = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -8683,6 +9874,12 @@ export const Mongodbspec42_MongoInfra = {
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -8707,6 +9904,11 @@ export const Mongodbspec42_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -8723,6 +9925,10 @@ export const Mongodbspec42_MongoInfra = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -8744,6 +9950,11 @@ export const Mongodbspec42_MongoInfra = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -8910,6 +10121,12 @@ export const Mongodbspec44_Mongod = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -8929,6 +10146,12 @@ export const Mongodbspec44_Mongod = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -8947,6 +10170,11 @@ export const Mongodbspec44_Mongod = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -8959,6 +10187,10 @@ export const Mongodbspec44_Mongod = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -8974,6 +10206,11 @@ export const Mongodbspec44_Mongod = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -9001,6 +10238,12 @@ export const Mongodbspec44_MongoCfg = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -9020,6 +10263,12 @@ export const Mongodbspec44_MongoCfg = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -9038,6 +10287,11 @@ export const Mongodbspec44_MongoCfg = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -9050,6 +10304,10 @@ export const Mongodbspec44_MongoCfg = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -9065,6 +10323,11 @@ export const Mongodbspec44_MongoCfg = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -9089,6 +10352,12 @@ export const Mongodbspec44_Mongos = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -9108,6 +10377,12 @@ export const Mongodbspec44_Mongos = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -9126,6 +10401,11 @@ export const Mongodbspec44_Mongos = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -9138,6 +10418,10 @@ export const Mongodbspec44_Mongos = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -9153,6 +10437,11 @@ export const Mongodbspec44_Mongos = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -9186,6 +10475,12 @@ export const Mongodbspec44_MongoInfra = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -9213,6 +10508,12 @@ export const Mongodbspec44_MongoInfra = {
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -9237,6 +10538,11 @@ export const Mongodbspec44_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -9253,6 +10559,10 @@ export const Mongodbspec44_MongoInfra = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -9274,6 +10584,11 @@ export const Mongodbspec44_MongoInfra = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -9459,6 +10774,12 @@ export const Mongodbspec44Enterprise_Mongod = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -9483,6 +10804,12 @@ export const Mongodbspec44Enterprise_Mongod = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -9503,6 +10830,11 @@ export const Mongodbspec44Enterprise_Mongod = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -9515,6 +10847,10 @@ export const Mongodbspec44Enterprise_Mongod = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -9532,6 +10868,11 @@ export const Mongodbspec44Enterprise_Mongod = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -9563,6 +10904,12 @@ export const Mongodbspec44Enterprise_MongoCfg = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -9587,6 +10934,12 @@ export const Mongodbspec44Enterprise_MongoCfg = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -9607,6 +10960,11 @@ export const Mongodbspec44Enterprise_MongoCfg = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -9619,6 +10977,10 @@ export const Mongodbspec44Enterprise_MongoCfg = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -9636,6 +10998,11 @@ export const Mongodbspec44Enterprise_MongoCfg = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -9667,6 +11034,12 @@ export const Mongodbspec44Enterprise_Mongos = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -9691,6 +11064,12 @@ export const Mongodbspec44Enterprise_Mongos = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -9711,6 +11090,11 @@ export const Mongodbspec44Enterprise_Mongos = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -9723,6 +11107,10 @@ export const Mongodbspec44Enterprise_Mongos = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -9740,6 +11128,11 @@ export const Mongodbspec44Enterprise_Mongos = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -9777,6 +11170,12 @@ export const Mongodbspec44Enterprise_MongoInfra = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -9807,6 +11206,12 @@ export const Mongodbspec44Enterprise_MongoInfra = {
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -9831,6 +11236,11 @@ export const Mongodbspec44Enterprise_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -9847,6 +11257,10 @@ export const Mongodbspec44Enterprise_MongoInfra = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -9868,6 +11282,11 @@ export const Mongodbspec44Enterprise_MongoInfra = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -10034,6 +11453,12 @@ export const Mongodbspec50_Mongod = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -10053,6 +11478,12 @@ export const Mongodbspec50_Mongod = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -10071,6 +11502,11 @@ export const Mongodbspec50_Mongod = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -10083,6 +11519,10 @@ export const Mongodbspec50_Mongod = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -10098,6 +11538,11 @@ export const Mongodbspec50_Mongod = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -10125,6 +11570,12 @@ export const Mongodbspec50_MongoCfg = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -10144,6 +11595,12 @@ export const Mongodbspec50_MongoCfg = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -10162,6 +11619,11 @@ export const Mongodbspec50_MongoCfg = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -10174,6 +11636,10 @@ export const Mongodbspec50_MongoCfg = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -10189,6 +11655,11 @@ export const Mongodbspec50_MongoCfg = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -10213,6 +11684,12 @@ export const Mongodbspec50_Mongos = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -10232,6 +11709,12 @@ export const Mongodbspec50_Mongos = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -10250,6 +11733,11 @@ export const Mongodbspec50_Mongos = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -10262,6 +11750,10 @@ export const Mongodbspec50_Mongos = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -10277,6 +11769,11 @@ export const Mongodbspec50_Mongos = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -10310,6 +11807,12 @@ export const Mongodbspec50_MongoInfra = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -10337,6 +11840,12 @@ export const Mongodbspec50_MongoInfra = {
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -10361,6 +11870,11 @@ export const Mongodbspec50_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -10377,6 +11891,10 @@ export const Mongodbspec50_MongoInfra = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -10398,6 +11916,11 @@ export const Mongodbspec50_MongoInfra = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -10583,6 +12106,12 @@ export const Mongodbspec50Enterprise_Mongod = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -10607,6 +12136,12 @@ export const Mongodbspec50Enterprise_Mongod = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -10627,6 +12162,11 @@ export const Mongodbspec50Enterprise_Mongod = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -10639,6 +12179,10 @@ export const Mongodbspec50Enterprise_Mongod = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -10656,6 +12200,11 @@ export const Mongodbspec50Enterprise_Mongod = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -10687,6 +12236,12 @@ export const Mongodbspec50Enterprise_MongoCfg = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -10711,6 +12266,12 @@ export const Mongodbspec50Enterprise_MongoCfg = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -10731,6 +12292,11 @@ export const Mongodbspec50Enterprise_MongoCfg = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -10743,6 +12309,10 @@ export const Mongodbspec50Enterprise_MongoCfg = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -10760,6 +12330,11 @@ export const Mongodbspec50Enterprise_MongoCfg = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -10791,6 +12366,12 @@ export const Mongodbspec50Enterprise_Mongos = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -10815,6 +12396,12 @@ export const Mongodbspec50Enterprise_Mongos = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -10835,6 +12422,11 @@ export const Mongodbspec50Enterprise_Mongos = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -10847,6 +12439,10 @@ export const Mongodbspec50Enterprise_Mongos = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -10864,6 +12460,11 @@ export const Mongodbspec50Enterprise_Mongos = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -10901,6 +12502,12 @@ export const Mongodbspec50Enterprise_MongoInfra = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -10931,6 +12538,12 @@ export const Mongodbspec50Enterprise_MongoInfra = {
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -10955,6 +12568,11 @@ export const Mongodbspec50Enterprise_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -10971,6 +12589,10 @@ export const Mongodbspec50Enterprise_MongoInfra = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -10992,6 +12614,11 @@ export const Mongodbspec50Enterprise_MongoInfra = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -11158,6 +12785,12 @@ export const Mongodbspec60_Mongod = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -11177,6 +12810,12 @@ export const Mongodbspec60_Mongod = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -11195,6 +12834,11 @@ export const Mongodbspec60_Mongod = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -11207,6 +12851,10 @@ export const Mongodbspec60_Mongod = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -11222,6 +12870,11 @@ export const Mongodbspec60_Mongod = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -11249,6 +12902,12 @@ export const Mongodbspec60_MongoCfg = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -11268,6 +12927,12 @@ export const Mongodbspec60_MongoCfg = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -11286,6 +12951,11 @@ export const Mongodbspec60_MongoCfg = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -11298,6 +12968,10 @@ export const Mongodbspec60_MongoCfg = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -11313,6 +12987,11 @@ export const Mongodbspec60_MongoCfg = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -11337,6 +13016,12 @@ export const Mongodbspec60_Mongos = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -11356,6 +13041,12 @@ export const Mongodbspec60_Mongos = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -11374,6 +13065,11 @@ export const Mongodbspec60_Mongos = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -11386,6 +13082,10 @@ export const Mongodbspec60_Mongos = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -11401,6 +13101,11 @@ export const Mongodbspec60_Mongos = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -11434,6 +13139,12 @@ export const Mongodbspec60_MongoInfra = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -11461,6 +13172,12 @@ export const Mongodbspec60_MongoInfra = {
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -11485,6 +13202,11 @@ export const Mongodbspec60_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -11501,6 +13223,10 @@ export const Mongodbspec60_MongoInfra = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -11522,6 +13248,11 @@ export const Mongodbspec60_MongoInfra = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -11707,6 +13438,12 @@ export const Mongodbspec60Enterprise_Mongod = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -11731,6 +13468,12 @@ export const Mongodbspec60Enterprise_Mongod = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -11751,6 +13494,11 @@ export const Mongodbspec60Enterprise_Mongod = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -11763,6 +13511,10 @@ export const Mongodbspec60Enterprise_Mongod = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -11780,6 +13532,11 @@ export const Mongodbspec60Enterprise_Mongod = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -11811,6 +13568,12 @@ export const Mongodbspec60Enterprise_MongoCfg = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -11835,6 +13598,12 @@ export const Mongodbspec60Enterprise_MongoCfg = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -11855,6 +13624,11 @@ export const Mongodbspec60Enterprise_MongoCfg = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -11867,6 +13641,10 @@ export const Mongodbspec60Enterprise_MongoCfg = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -11884,6 +13662,11 @@ export const Mongodbspec60Enterprise_MongoCfg = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -11915,6 +13698,12 @@ export const Mongodbspec60Enterprise_Mongos = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -11939,6 +13728,12 @@ export const Mongodbspec60Enterprise_Mongos = {
         case 2:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -11959,6 +13754,11 @@ export const Mongodbspec60Enterprise_Mongos = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -11971,6 +13771,10 @@ export const Mongodbspec60Enterprise_Mongos = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -11988,6 +13792,11 @@ export const Mongodbspec60Enterprise_Mongos = {
     message.resources =
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -12025,6 +13834,12 @@ export const Mongodbspec60Enterprise_MongoInfra = {
     if (message.resources !== undefined) {
       Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -12055,6 +13870,12 @@ export const Mongodbspec60Enterprise_MongoInfra = {
         case 3:
           message.resources = Resources.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -12079,6 +13900,11 @@ export const Mongodbspec60Enterprise_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromJSON(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -12095,6 +13921,10 @@ export const Mongodbspec60Enterprise_MongoInfra = {
     message.resources !== undefined &&
       (obj.resources = message.resources
         ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -12117,6 +13947,11 @@ export const Mongodbspec60Enterprise_MongoInfra = {
       object.resources !== undefined && object.resources !== null
         ? Resources.fromPartial(object.resources)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 };
@@ -12125,6 +13960,622 @@ messageTypeRegistry.set(
   Mongodbspec60Enterprise_MongoInfra.$type,
   Mongodbspec60Enterprise_MongoInfra
 );
+
+const baseMongodbSpec: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec",
+};
+
+export const MongodbSpec = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec" as const,
+
+  encode(
+    message: MongodbSpec,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.mongod !== undefined) {
+      MongodbSpec_Mongod.encode(
+        message.mongod,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.mongocfg !== undefined) {
+      MongodbSpec_MongoCfg.encode(
+        message.mongocfg,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.mongos !== undefined) {
+      MongodbSpec_Mongos.encode(
+        message.mongos,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.mongoinfra !== undefined) {
+      MongodbSpec_MongoInfra.encode(
+        message.mongoinfra,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MongodbSpec {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMongodbSpec } as MongodbSpec;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.mongod = MongodbSpec_Mongod.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.mongocfg = MongodbSpec_MongoCfg.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 3:
+          message.mongos = MongodbSpec_Mongos.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.mongoinfra = MongodbSpec_MongoInfra.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MongodbSpec {
+    const message = { ...baseMongodbSpec } as MongodbSpec;
+    message.mongod =
+      object.mongod !== undefined && object.mongod !== null
+        ? MongodbSpec_Mongod.fromJSON(object.mongod)
+        : undefined;
+    message.mongocfg =
+      object.mongocfg !== undefined && object.mongocfg !== null
+        ? MongodbSpec_MongoCfg.fromJSON(object.mongocfg)
+        : undefined;
+    message.mongos =
+      object.mongos !== undefined && object.mongos !== null
+        ? MongodbSpec_Mongos.fromJSON(object.mongos)
+        : undefined;
+    message.mongoinfra =
+      object.mongoinfra !== undefined && object.mongoinfra !== null
+        ? MongodbSpec_MongoInfra.fromJSON(object.mongoinfra)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: MongodbSpec): unknown {
+    const obj: any = {};
+    message.mongod !== undefined &&
+      (obj.mongod = message.mongod
+        ? MongodbSpec_Mongod.toJSON(message.mongod)
+        : undefined);
+    message.mongocfg !== undefined &&
+      (obj.mongocfg = message.mongocfg
+        ? MongodbSpec_MongoCfg.toJSON(message.mongocfg)
+        : undefined);
+    message.mongos !== undefined &&
+      (obj.mongos = message.mongos
+        ? MongodbSpec_Mongos.toJSON(message.mongos)
+        : undefined);
+    message.mongoinfra !== undefined &&
+      (obj.mongoinfra = message.mongoinfra
+        ? MongodbSpec_MongoInfra.toJSON(message.mongoinfra)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MongodbSpec>, I>>(
+    object: I
+  ): MongodbSpec {
+    const message = { ...baseMongodbSpec } as MongodbSpec;
+    message.mongod =
+      object.mongod !== undefined && object.mongod !== null
+        ? MongodbSpec_Mongod.fromPartial(object.mongod)
+        : undefined;
+    message.mongocfg =
+      object.mongocfg !== undefined && object.mongocfg !== null
+        ? MongodbSpec_MongoCfg.fromPartial(object.mongocfg)
+        : undefined;
+    message.mongos =
+      object.mongos !== undefined && object.mongos !== null
+        ? MongodbSpec_Mongos.fromPartial(object.mongos)
+        : undefined;
+    message.mongoinfra =
+      object.mongoinfra !== undefined && object.mongoinfra !== null
+        ? MongodbSpec_MongoInfra.fromPartial(object.mongoinfra)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(MongodbSpec.$type, MongodbSpec);
+
+const baseMongodbSpec_Mongod: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec.Mongod",
+};
+
+export const MongodbSpec_Mongod = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec.Mongod" as const,
+
+  encode(
+    message: MongodbSpec_Mongod,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.config !== undefined) {
+      MongodConfig.encode(message.config, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MongodbSpec_Mongod {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMongodbSpec_Mongod } as MongodbSpec_Mongod;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = MongodConfig.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MongodbSpec_Mongod {
+    const message = { ...baseMongodbSpec_Mongod } as MongodbSpec_Mongod;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? MongodConfig.fromJSON(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: MongodbSpec_Mongod): unknown {
+    const obj: any = {};
+    message.config !== undefined &&
+      (obj.config = message.config
+        ? MongodConfig.toJSON(message.config)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MongodbSpec_Mongod>, I>>(
+    object: I
+  ): MongodbSpec_Mongod {
+    const message = { ...baseMongodbSpec_Mongod } as MongodbSpec_Mongod;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? MongodConfig.fromPartial(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(MongodbSpec_Mongod.$type, MongodbSpec_Mongod);
+
+const baseMongodbSpec_MongoCfg: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec.MongoCfg",
+};
+
+export const MongodbSpec_MongoCfg = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec.MongoCfg" as const,
+
+  encode(
+    message: MongodbSpec_MongoCfg,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.config !== undefined) {
+      MongoCfgConfig.encode(message.config, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): MongodbSpec_MongoCfg {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMongodbSpec_MongoCfg } as MongodbSpec_MongoCfg;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = MongoCfgConfig.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MongodbSpec_MongoCfg {
+    const message = { ...baseMongodbSpec_MongoCfg } as MongodbSpec_MongoCfg;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? MongoCfgConfig.fromJSON(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: MongodbSpec_MongoCfg): unknown {
+    const obj: any = {};
+    message.config !== undefined &&
+      (obj.config = message.config
+        ? MongoCfgConfig.toJSON(message.config)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MongodbSpec_MongoCfg>, I>>(
+    object: I
+  ): MongodbSpec_MongoCfg {
+    const message = { ...baseMongodbSpec_MongoCfg } as MongodbSpec_MongoCfg;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? MongoCfgConfig.fromPartial(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(MongodbSpec_MongoCfg.$type, MongodbSpec_MongoCfg);
+
+const baseMongodbSpec_Mongos: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec.Mongos",
+};
+
+export const MongodbSpec_Mongos = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec.Mongos" as const,
+
+  encode(
+    message: MongodbSpec_Mongos,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.config !== undefined) {
+      MongosConfig.encode(message.config, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MongodbSpec_Mongos {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMongodbSpec_Mongos } as MongodbSpec_Mongos;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = MongosConfig.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MongodbSpec_Mongos {
+    const message = { ...baseMongodbSpec_Mongos } as MongodbSpec_Mongos;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? MongosConfig.fromJSON(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: MongodbSpec_Mongos): unknown {
+    const obj: any = {};
+    message.config !== undefined &&
+      (obj.config = message.config
+        ? MongosConfig.toJSON(message.config)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MongodbSpec_Mongos>, I>>(
+    object: I
+  ): MongodbSpec_Mongos {
+    const message = { ...baseMongodbSpec_Mongos } as MongodbSpec_Mongos;
+    message.config =
+      object.config !== undefined && object.config !== null
+        ? MongosConfig.fromPartial(object.config)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(MongodbSpec_Mongos.$type, MongodbSpec_Mongos);
+
+const baseMongodbSpec_MongoInfra: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec.MongoInfra",
+};
+
+export const MongodbSpec_MongoInfra = {
+  $type: "yandex.cloud.mdb.mongodb.v1.MongodbSpec.MongoInfra" as const,
+
+  encode(
+    message: MongodbSpec_MongoInfra,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.configMongos !== undefined) {
+      MongosConfig.encode(
+        message.configMongos,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.configMongocfg !== undefined) {
+      MongoCfgConfig.encode(
+        message.configMongocfg,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.resources !== undefined) {
+      Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): MongodbSpec_MongoInfra {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMongodbSpec_MongoInfra } as MongodbSpec_MongoInfra;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.configMongos = MongosConfig.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.configMongocfg = MongoCfgConfig.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 3:
+          message.resources = Resources.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MongodbSpec_MongoInfra {
+    const message = { ...baseMongodbSpec_MongoInfra } as MongodbSpec_MongoInfra;
+    message.configMongos =
+      object.configMongos !== undefined && object.configMongos !== null
+        ? MongosConfig.fromJSON(object.configMongos)
+        : undefined;
+    message.configMongocfg =
+      object.configMongocfg !== undefined && object.configMongocfg !== null
+        ? MongoCfgConfig.fromJSON(object.configMongocfg)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromJSON(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: MongodbSpec_MongoInfra): unknown {
+    const obj: any = {};
+    message.configMongos !== undefined &&
+      (obj.configMongos = message.configMongos
+        ? MongosConfig.toJSON(message.configMongos)
+        : undefined);
+    message.configMongocfg !== undefined &&
+      (obj.configMongocfg = message.configMongocfg
+        ? MongoCfgConfig.toJSON(message.configMongocfg)
+        : undefined);
+    message.resources !== undefined &&
+      (obj.resources = message.resources
+        ? Resources.toJSON(message.resources)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MongodbSpec_MongoInfra>, I>>(
+    object: I
+  ): MongodbSpec_MongoInfra {
+    const message = { ...baseMongodbSpec_MongoInfra } as MongodbSpec_MongoInfra;
+    message.configMongos =
+      object.configMongos !== undefined && object.configMongos !== null
+        ? MongosConfig.fromPartial(object.configMongos)
+        : undefined;
+    message.configMongocfg =
+      object.configMongocfg !== undefined && object.configMongocfg !== null
+        ? MongoCfgConfig.fromPartial(object.configMongocfg)
+        : undefined;
+    message.resources =
+      object.resources !== undefined && object.resources !== null
+        ? Resources.fromPartial(object.resources)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(MongodbSpec_MongoInfra.$type, MongodbSpec_MongoInfra);
 
 const baseConfigSpec: object = {
   $type: "yandex.cloud.mdb.mongodb.v1.ConfigSpec",
@@ -12223,6 +14674,9 @@ export const ConfigSpec = {
     if (message.access !== undefined) {
       Access.encode(message.access, writer.uint32(50).fork()).ldelim();
     }
+    if (message.mongodb !== undefined) {
+      MongodbSpec.encode(message.mongodb, writer.uint32(162).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -12292,6 +14746,9 @@ export const ConfigSpec = {
           break;
         case 6:
           message.access = Access.decode(reader, reader.uint32());
+          break;
+        case 20:
+          message.mongodb = MongodbSpec.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -12370,6 +14827,10 @@ export const ConfigSpec = {
       object.access !== undefined && object.access !== null
         ? Access.fromJSON(object.access)
         : undefined;
+    message.mongodb =
+      object.mongodb !== undefined && object.mongodb !== null
+        ? MongodbSpec.fromJSON(object.mongodb)
+        : undefined;
     return message;
   },
 
@@ -12426,6 +14887,10 @@ export const ConfigSpec = {
         : undefined);
     message.access !== undefined &&
       (obj.access = message.access ? Access.toJSON(message.access) : undefined);
+    message.mongodb !== undefined &&
+      (obj.mongodb = message.mongodb
+        ? MongodbSpec.toJSON(message.mongodb)
+        : undefined);
     return obj;
   },
 
@@ -12491,6 +14956,10 @@ export const ConfigSpec = {
     message.access =
       object.access !== undefined && object.access !== null
         ? Access.fromPartial(object.access)
+        : undefined;
+    message.mongodb =
+      object.mongodb !== undefined && object.mongodb !== null
+        ? MongodbSpec.fromPartial(object.mongodb)
         : undefined;
     return message;
   },
@@ -12736,6 +15205,19 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Updates the specified parameters for the host. */
+  updateHosts: {
+    path: "/yandex.cloud.mdb.mongodb.v1.ClusterService/UpdateHosts",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: UpdateClusterHostsRequest) =>
+      Buffer.from(UpdateClusterHostsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      UpdateClusterHostsRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /**
    * Enables sharding for the cluster:
    * creates 3 mongoinfra (or 3 mongocfg and 2 mongos) hosts
@@ -12901,6 +15383,8 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
   addHosts: handleUnaryCall<AddClusterHostsRequest, Operation>;
   /** Deletes the specified hosts for a cluster. */
   deleteHosts: handleUnaryCall<DeleteClusterHostsRequest, Operation>;
+  /** Updates the specified parameters for the host. */
+  updateHosts: handleUnaryCall<UpdateClusterHostsRequest, Operation>;
   /**
    * Enables sharding for the cluster:
    * creates 3 mongoinfra (or 3 mongocfg and 2 mongos) hosts
@@ -13260,6 +15744,22 @@ export interface ClusterServiceClient extends Client {
   ): ClientUnaryCall;
   deleteHosts(
     request: DeleteClusterHostsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Updates the specified parameters for the host. */
+  updateHosts(
+    request: UpdateClusterHostsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateHosts(
+    request: UpdateClusterHostsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateHosts(
+    request: UpdateClusterHostsRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

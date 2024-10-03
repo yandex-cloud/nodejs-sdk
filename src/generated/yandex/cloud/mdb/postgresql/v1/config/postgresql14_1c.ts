@@ -41,7 +41,9 @@ export interface Postgresqlconfig141c {
   bgwriterDelay?: number;
   bgwriterLruMaxpages?: number;
   bgwriterLruMultiplier?: number;
+  /** in bytes */
   bgwriterFlushAfter?: number;
+  /** in bytes */
   backendFlushAfter?: number;
   oldSnapshotThreshold?: number;
   walLevel: Postgresqlconfig141c_WalLevel;
@@ -49,6 +51,7 @@ export interface Postgresqlconfig141c {
   /** in milliseconds. */
   checkpointTimeout?: number;
   checkpointCompletionTarget?: number;
+  /** in bytes */
   checkpointFlushAfter?: number;
   /** in bytes. */
   maxWalSize?: number;
@@ -217,6 +220,8 @@ export interface Postgresqlconfig141c {
   logReplicationCommands?: boolean;
   /** in milliseconds. The default is 1000 (1 sec). */
   logAutovacuumMinDuration?: number;
+  /** A default value for `` user_password_encryption `` user-level setting, if it not specified for new users. Possible values are `` PASSWORD_ENCRYPTION_MD5 `` or `` PASSWORD_ENCRYPTION_SCRAM_SHA_256 ``. The default is `` PASSWORD_ENCRYPTION_MD5 ``. */
+  passwordEncryption: Postgresqlconfig141c_PasswordEncryption;
 }
 
 export enum Postgresqlconfig141c_BackslashQuote {
@@ -604,6 +609,48 @@ export function postgresqlconfig141c_LogStatementToJSON(
       return "LOG_STATEMENT_MOD";
     case Postgresqlconfig141c_LogStatement.LOG_STATEMENT_ALL:
       return "LOG_STATEMENT_ALL";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export enum Postgresqlconfig141c_PasswordEncryption {
+  PASSWORD_ENCRYPTION_UNSPECIFIED = 0,
+  PASSWORD_ENCRYPTION_MD5 = 1,
+  PASSWORD_ENCRYPTION_SCRAM_SHA_256 = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function postgresqlconfig141c_PasswordEncryptionFromJSON(
+  object: any
+): Postgresqlconfig141c_PasswordEncryption {
+  switch (object) {
+    case 0:
+    case "PASSWORD_ENCRYPTION_UNSPECIFIED":
+      return Postgresqlconfig141c_PasswordEncryption.PASSWORD_ENCRYPTION_UNSPECIFIED;
+    case 1:
+    case "PASSWORD_ENCRYPTION_MD5":
+      return Postgresqlconfig141c_PasswordEncryption.PASSWORD_ENCRYPTION_MD5;
+    case 2:
+    case "PASSWORD_ENCRYPTION_SCRAM_SHA_256":
+      return Postgresqlconfig141c_PasswordEncryption.PASSWORD_ENCRYPTION_SCRAM_SHA_256;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Postgresqlconfig141c_PasswordEncryption.UNRECOGNIZED;
+  }
+}
+
+export function postgresqlconfig141c_PasswordEncryptionToJSON(
+  object: Postgresqlconfig141c_PasswordEncryption
+): string {
+  switch (object) {
+    case Postgresqlconfig141c_PasswordEncryption.PASSWORD_ENCRYPTION_UNSPECIFIED:
+      return "PASSWORD_ENCRYPTION_UNSPECIFIED";
+    case Postgresqlconfig141c_PasswordEncryption.PASSWORD_ENCRYPTION_MD5:
+      return "PASSWORD_ENCRYPTION_MD5";
+    case Postgresqlconfig141c_PasswordEncryption.PASSWORD_ENCRYPTION_SCRAM_SHA_256:
+      return "PASSWORD_ENCRYPTION_SCRAM_SHA_256";
     default:
       return "UNKNOWN";
   }
@@ -1064,6 +1111,7 @@ const basePostgresqlconfig141c: object = {
   sharedPreloadLibraries: 0,
   pgHintPlanDebugPrint: 0,
   pgHintPlanMessageLevel: 0,
+  passwordEncryption: 0,
 };
 
 export const Postgresqlconfig141c = {
@@ -2272,6 +2320,9 @@ export const Postgresqlconfig141c = {
         writer.uint32(1322).fork()
       ).ldelim();
     }
+    if (message.passwordEncryption !== 0) {
+      writer.uint32(1336).int32(message.passwordEncryption);
+    }
     return writer;
   },
 
@@ -3151,6 +3202,9 @@ export const Postgresqlconfig141c = {
             reader.uint32()
           ).value;
           break;
+        case 167:
+          message.passwordEncryption = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3911,6 +3965,13 @@ export const Postgresqlconfig141c = {
       object.logAutovacuumMinDuration !== null
         ? Number(object.logAutovacuumMinDuration)
         : undefined;
+    message.passwordEncryption =
+      object.passwordEncryption !== undefined &&
+      object.passwordEncryption !== null
+        ? postgresqlconfig141c_PasswordEncryptionFromJSON(
+            object.passwordEncryption
+          )
+        : 0;
     return message;
   },
 
@@ -4266,6 +4327,10 @@ export const Postgresqlconfig141c = {
       (obj.logReplicationCommands = message.logReplicationCommands);
     message.logAutovacuumMinDuration !== undefined &&
       (obj.logAutovacuumMinDuration = message.logAutovacuumMinDuration);
+    message.passwordEncryption !== undefined &&
+      (obj.passwordEncryption = postgresqlconfig141c_PasswordEncryptionToJSON(
+        message.passwordEncryption
+      ));
     return obj;
   },
 
@@ -4468,6 +4533,7 @@ export const Postgresqlconfig141c = {
     message.logReplicationCommands = object.logReplicationCommands ?? undefined;
     message.logAutovacuumMinDuration =
       object.logAutovacuumMinDuration ?? undefined;
+    message.passwordEncryption = object.passwordEncryption ?? 0;
     return message;
   },
 };

@@ -21,6 +21,8 @@ export interface GenericParserCommon {
   nullKeysAllowed: boolean;
   /** Will add _rest column for all unknown fields */
   addRestColumn: boolean;
+  /** Unescape string values */
+  unescapeStringValues: boolean;
 }
 
 export interface AuditTrailsV1Parser {
@@ -182,6 +184,7 @@ const baseGenericParserCommon: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.GenericParserCommon",
   nullKeysAllowed: false,
   addRestColumn: false,
+  unescapeStringValues: false,
 };
 
 export const GenericParserCommon = {
@@ -199,6 +202,9 @@ export const GenericParserCommon = {
     }
     if (message.addRestColumn === true) {
       writer.uint32(24).bool(message.addRestColumn);
+    }
+    if (message.unescapeStringValues === true) {
+      writer.uint32(56).bool(message.unescapeStringValues);
     }
     return writer;
   },
@@ -218,6 +224,9 @@ export const GenericParserCommon = {
           break;
         case 3:
           message.addRestColumn = reader.bool();
+          break;
+        case 7:
+          message.unescapeStringValues = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -241,6 +250,11 @@ export const GenericParserCommon = {
       object.addRestColumn !== undefined && object.addRestColumn !== null
         ? Boolean(object.addRestColumn)
         : false;
+    message.unescapeStringValues =
+      object.unescapeStringValues !== undefined &&
+      object.unescapeStringValues !== null
+        ? Boolean(object.unescapeStringValues)
+        : false;
     return message;
   },
 
@@ -254,6 +268,8 @@ export const GenericParserCommon = {
       (obj.nullKeysAllowed = message.nullKeysAllowed);
     message.addRestColumn !== undefined &&
       (obj.addRestColumn = message.addRestColumn);
+    message.unescapeStringValues !== undefined &&
+      (obj.unescapeStringValues = message.unescapeStringValues);
     return obj;
   },
 
@@ -267,6 +283,7 @@ export const GenericParserCommon = {
         : undefined;
     message.nullKeysAllowed = object.nullKeysAllowed ?? false;
     message.addRestColumn = object.addRestColumn ?? false;
+    message.unescapeStringValues = object.unescapeStringValues ?? false;
     return message;
   },
 };

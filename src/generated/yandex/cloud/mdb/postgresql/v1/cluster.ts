@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { MessageType, messageTypeRegistry } from "../../../../../typeRegistry";
+import { messageTypeRegistry } from "../../../../../typeRegistry";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 import {
@@ -409,9 +409,9 @@ export interface Host {
   zoneId: string;
   /** Resources allocated to the PostgreSQL host. */
   resources?: Resources;
-  /** Role of the host in the cluster. */
+  /** Role of the host in the cluster. If the field has default value, it is not returned in the response. */
   role: Host_Role;
-  /** Status code of the aggregated health of the host. */
+  /** Aggregated health of the host. If the field has default value, it is not returned in the response. */
   health: Host_Health;
   /** Services provided by the host. */
   services: Service[];
@@ -436,7 +436,7 @@ export interface Host {
 }
 
 export enum Host_Role {
-  /** ROLE_UNKNOWN - Role of the host in the cluster is unknown. */
+  /** ROLE_UNKNOWN - Role of the host in the cluster is unknown. Default value. */
   ROLE_UNKNOWN = 0,
   /** MASTER - Host is the master PostgreSQL server in the cluster. */
   MASTER = 1,
@@ -522,7 +522,7 @@ export function host_ReplicaTypeToJSON(object: Host_ReplicaType): string {
 }
 
 export enum Host_Health {
-  /** HEALTH_UNKNOWN - Health of the host is unknown. */
+  /** HEALTH_UNKNOWN - Health of the host is unknown. Default value. */
   HEALTH_UNKNOWN = 0,
   /** ALIVE - The host is performing all its functions normally. */
   ALIVE = 1,
@@ -612,13 +612,14 @@ export interface HostConfig {
 
 export interface Service {
   $type: "yandex.cloud.mdb.postgresql.v1.Service";
-  /** Type of the service provided by the host. */
+  /** Type of the service provided by the host. If the field has default value, it is not returned in the response. */
   type: Service_Type;
-  /** Status code of server availability. */
+  /** Aggregated health of the service. If the field has default value, it is not returned in the response. */
   health: Service_Health;
 }
 
 export enum Service_Type {
+  /** TYPE_UNSPECIFIED - Service type of the host is unspecified. Default value. */
   TYPE_UNSPECIFIED = 0,
   /** POSTGRESQL - The host is a PostgreSQL server. */
   POSTGRESQL = 1,
@@ -659,7 +660,7 @@ export function service_TypeToJSON(object: Service_Type): string {
 }
 
 export enum Service_Health {
-  /** HEALTH_UNKNOWN - Health of the server is unknown. */
+  /** HEALTH_UNKNOWN - Health of the server is unknown. Default value. */
   HEALTH_UNKNOWN = 0,
   /** ALIVE - The server is working normally. */
   ALIVE = 1,
@@ -755,11 +756,11 @@ export interface PerformanceDiagnostics {
 
 export interface DiskSizeAutoscaling {
   $type: "yandex.cloud.mdb.postgresql.v1.DiskSizeAutoscaling";
-  /** Amount of used storage for automatic disk scaling in the maintenance window, 0 means disabled, in percent. */
+  /** Threshold of storage usage (in percent) that triggers automatic scaling of the storage during the maintenance window. Zero value means disabled threshold. */
   plannedUsageThreshold: number;
-  /** Amount of used storage for immediately  automatic disk scaling, 0 means disabled, in percent. */
+  /** Threshold of storage usage (in percent) that triggers immediate automatic scaling of the storage. Zero value means disabled threshold. */
   emergencyUsageThreshold: number;
-  /** Limit on how large the storage for database instances can automatically grow, in bytes. */
+  /** New storage size (in bytes) that is set when one of the thresholds is achieved. */
   diskSizeLimit: number;
 }
 
@@ -778,7 +779,15 @@ const baseCluster: object = {
   hostGroupIds: "",
 };
 
-export const Cluster: MessageType<Cluster> = {
+type ClusterType = {
+    $type: "yandex.cloud.mdb.postgresql.v1.Cluster";
+    encode(message: Cluster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster;
+    fromJSON(object: any): Cluster;
+    toJSON(message: Cluster): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster>, I>>(object: I): Cluster;
+}
+export const Cluster: ClusterType = {
   $type: "yandex.cloud.mdb.postgresql.v1.Cluster" as const,
 
   encode(
@@ -1274,7 +1283,15 @@ const baseClusterConfig: object = {
   version: "",
 };
 
-export const ClusterConfig: MessageType<ClusterConfig> = {
+type ClusterConfigType = {
+    $type: "yandex.cloud.mdb.postgresql.v1.ClusterConfig";
+    encode(message: ClusterConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConfig;
+    fromJSON(object: any): ClusterConfig;
+    toJSON(message: ClusterConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClusterConfig>, I>>(object: I): ClusterConfig;
+}
+export const ClusterConfig: ClusterConfigType = {
   $type: "yandex.cloud.mdb.postgresql.v1.ClusterConfig" as const,
 
   encode(

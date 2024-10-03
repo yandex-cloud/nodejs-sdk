@@ -243,6 +243,107 @@ export interface HiveJob_ScriptVariablesEntry {
   value: string;
 }
 
+/** Data Proc support job. */
+export interface SupportJob {
+  $type: "yandex.cloud.dataproc.manager.v1.SupportJob";
+  /**
+   * Required. Unique ID of the Data Proc job.
+   * This ID is assigned by MDB in the process of creating Data Proc job.
+   */
+  id: string;
+  /** Required. Unique ID of the Data Proc cluster. */
+  clusterId: string;
+  /** The time when the Data Proc job was created. */
+  createdAt?: Date;
+  /** The time when the Data Proc job was started. */
+  startedAt?: Date;
+  /** The time when the Data Proc job was finished. */
+  finishedAt?: Date;
+  /** Status. */
+  status: SupportJob_Status;
+  /** Command. */
+  cmd: string;
+  /** Execution timeout in seconds. */
+  timeout: number;
+  /** The id of the user who created the job */
+  createdBy: string;
+}
+
+export enum SupportJob_Status {
+  STATUS_UNSPECIFIED = 0,
+  /** PROVISIONING - Job created in metadb and is waiting agent to acquire. */
+  PROVISIONING = 1,
+  /** PENDING - Job acquired by agent and is waiting for execution. */
+  PENDING = 2,
+  /** RUNNING - Job is running. */
+  RUNNING = 3,
+  /** ERROR - Job failed. */
+  ERROR = 4,
+  /** DONE - Job finished. */
+  DONE = 5,
+  /** CANCELLED - Job cancelled. */
+  CANCELLED = 6,
+  /** CANCELLING - Job is waiting for cancellation. */
+  CANCELLING = 7,
+  UNRECOGNIZED = -1,
+}
+
+export function supportJob_StatusFromJSON(object: any): SupportJob_Status {
+  switch (object) {
+    case 0:
+    case "STATUS_UNSPECIFIED":
+      return SupportJob_Status.STATUS_UNSPECIFIED;
+    case 1:
+    case "PROVISIONING":
+      return SupportJob_Status.PROVISIONING;
+    case 2:
+    case "PENDING":
+      return SupportJob_Status.PENDING;
+    case 3:
+    case "RUNNING":
+      return SupportJob_Status.RUNNING;
+    case 4:
+    case "ERROR":
+      return SupportJob_Status.ERROR;
+    case 5:
+    case "DONE":
+      return SupportJob_Status.DONE;
+    case 6:
+    case "CANCELLED":
+      return SupportJob_Status.CANCELLED;
+    case 7:
+    case "CANCELLING":
+      return SupportJob_Status.CANCELLING;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SupportJob_Status.UNRECOGNIZED;
+  }
+}
+
+export function supportJob_StatusToJSON(object: SupportJob_Status): string {
+  switch (object) {
+    case SupportJob_Status.STATUS_UNSPECIFIED:
+      return "STATUS_UNSPECIFIED";
+    case SupportJob_Status.PROVISIONING:
+      return "PROVISIONING";
+    case SupportJob_Status.PENDING:
+      return "PENDING";
+    case SupportJob_Status.RUNNING:
+      return "RUNNING";
+    case SupportJob_Status.ERROR:
+      return "ERROR";
+    case SupportJob_Status.DONE:
+      return "DONE";
+    case SupportJob_Status.CANCELLED:
+      return "CANCELLED";
+    case SupportJob_Status.CANCELLING:
+      return "CANCELLING";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 const baseJob: object = {
   $type: "yandex.cloud.dataproc.manager.v1.Job",
   id: "",
@@ -1966,6 +2067,196 @@ messageTypeRegistry.set(
   HiveJob_ScriptVariablesEntry
 );
 
+const baseSupportJob: object = {
+  $type: "yandex.cloud.dataproc.manager.v1.SupportJob",
+  id: "",
+  clusterId: "",
+  status: 0,
+  cmd: "",
+  timeout: 0,
+  createdBy: "",
+};
+
+export const SupportJob = {
+  $type: "yandex.cloud.dataproc.manager.v1.SupportJob" as const,
+
+  encode(
+    message: SupportJob,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.clusterId !== "") {
+      writer.uint32(18).string(message.clusterId);
+    }
+    if (message.createdAt !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.createdAt),
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.startedAt !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.startedAt),
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    if (message.finishedAt !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.finishedAt),
+        writer.uint32(42).fork()
+      ).ldelim();
+    }
+    if (message.status !== 0) {
+      writer.uint32(48).int32(message.status);
+    }
+    if (message.cmd !== "") {
+      writer.uint32(58).string(message.cmd);
+    }
+    if (message.timeout !== 0) {
+      writer.uint32(64).int64(message.timeout);
+    }
+    if (message.createdBy !== "") {
+      writer.uint32(74).string(message.createdBy);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SupportJob {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseSupportJob } as SupportJob;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+        case 2:
+          message.clusterId = reader.string();
+          break;
+        case 3:
+          message.createdAt = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 4:
+          message.startedAt = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 5:
+          message.finishedAt = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 6:
+          message.status = reader.int32() as any;
+          break;
+        case 7:
+          message.cmd = reader.string();
+          break;
+        case 8:
+          message.timeout = longToNumber(reader.int64() as Long);
+          break;
+        case 9:
+          message.createdBy = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SupportJob {
+    const message = { ...baseSupportJob } as SupportJob;
+    message.id =
+      object.id !== undefined && object.id !== null ? String(object.id) : "";
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.createdAt =
+      object.createdAt !== undefined && object.createdAt !== null
+        ? fromJsonTimestamp(object.createdAt)
+        : undefined;
+    message.startedAt =
+      object.startedAt !== undefined && object.startedAt !== null
+        ? fromJsonTimestamp(object.startedAt)
+        : undefined;
+    message.finishedAt =
+      object.finishedAt !== undefined && object.finishedAt !== null
+        ? fromJsonTimestamp(object.finishedAt)
+        : undefined;
+    message.status =
+      object.status !== undefined && object.status !== null
+        ? supportJob_StatusFromJSON(object.status)
+        : 0;
+    message.cmd =
+      object.cmd !== undefined && object.cmd !== null ? String(object.cmd) : "";
+    message.timeout =
+      object.timeout !== undefined && object.timeout !== null
+        ? Number(object.timeout)
+        : 0;
+    message.createdBy =
+      object.createdBy !== undefined && object.createdBy !== null
+        ? String(object.createdBy)
+        : "";
+    return message;
+  },
+
+  toJSON(message: SupportJob): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.createdAt !== undefined &&
+      (obj.createdAt = message.createdAt.toISOString());
+    message.startedAt !== undefined &&
+      (obj.startedAt = message.startedAt.toISOString());
+    message.finishedAt !== undefined &&
+      (obj.finishedAt = message.finishedAt.toISOString());
+    message.status !== undefined &&
+      (obj.status = supportJob_StatusToJSON(message.status));
+    message.cmd !== undefined && (obj.cmd = message.cmd);
+    message.timeout !== undefined &&
+      (obj.timeout = Math.round(message.timeout));
+    message.createdBy !== undefined && (obj.createdBy = message.createdBy);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SupportJob>, I>>(
+    object: I
+  ): SupportJob {
+    const message = { ...baseSupportJob } as SupportJob;
+    message.id = object.id ?? "";
+    message.clusterId = object.clusterId ?? "";
+    message.createdAt = object.createdAt ?? undefined;
+    message.startedAt = object.startedAt ?? undefined;
+    message.finishedAt = object.finishedAt ?? undefined;
+    message.status = object.status ?? 0;
+    message.cmd = object.cmd ?? "";
+    message.timeout = object.timeout ?? 0;
+    message.createdBy = object.createdBy ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(SupportJob.$type, SupportJob);
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
+
 type Builtin =
   | Date
   | Function
@@ -2013,6 +2304,13 @@ function fromJsonTimestamp(o: any): Date {
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
+}
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
 }
 
 if (_m0.util.Long !== Long) {

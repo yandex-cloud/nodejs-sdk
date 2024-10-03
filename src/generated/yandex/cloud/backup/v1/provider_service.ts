@@ -28,6 +28,8 @@ export interface ActivateProviderRequest {
    * For more information, please see [activate-provider](/docs/backup/quickstart#activate-provider)
    */
   name: string;
+  /** Don't create default policies while activating the provider. */
+  skipDefaultPolicy: boolean;
 }
 
 export interface ActivateProviderMetadata {
@@ -54,6 +56,7 @@ const baseActivateProviderRequest: object = {
   $type: "yandex.cloud.backup.v1.ActivateProviderRequest",
   folderId: "",
   name: "",
+  skipDefaultPolicy: false,
 };
 
 export const ActivateProviderRequest = {
@@ -68,6 +71,9 @@ export const ActivateProviderRequest = {
     }
     if (message.name !== "") {
       writer.uint32(26).string(message.name);
+    }
+    if (message.skipDefaultPolicy === true) {
+      writer.uint32(32).bool(message.skipDefaultPolicy);
     }
     return writer;
   },
@@ -90,6 +96,9 @@ export const ActivateProviderRequest = {
         case 3:
           message.name = reader.string();
           break;
+        case 4:
+          message.skipDefaultPolicy = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -110,6 +119,11 @@ export const ActivateProviderRequest = {
       object.name !== undefined && object.name !== null
         ? String(object.name)
         : "";
+    message.skipDefaultPolicy =
+      object.skipDefaultPolicy !== undefined &&
+      object.skipDefaultPolicy !== null
+        ? Boolean(object.skipDefaultPolicy)
+        : false;
     return message;
   },
 
@@ -117,6 +131,8 @@ export const ActivateProviderRequest = {
     const obj: any = {};
     message.folderId !== undefined && (obj.folderId = message.folderId);
     message.name !== undefined && (obj.name = message.name);
+    message.skipDefaultPolicy !== undefined &&
+      (obj.skipDefaultPolicy = message.skipDefaultPolicy);
     return obj;
   },
 
@@ -128,6 +144,7 @@ export const ActivateProviderRequest = {
     } as ActivateProviderRequest;
     message.folderId = object.folderId ?? "";
     message.name = object.name ?? "";
+    message.skipDefaultPolicy = object.skipDefaultPolicy ?? false;
     return message;
   },
 };

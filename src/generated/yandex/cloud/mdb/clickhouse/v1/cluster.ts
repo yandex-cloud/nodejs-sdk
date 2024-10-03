@@ -271,6 +271,8 @@ export interface ClusterConfig {
   sqlUserManagement?: boolean;
   /** Whether cluster should use embedded Keeper instead of Zookeeper. */
   embeddedKeeper?: boolean;
+  /** Retain period of automatically created backup in days */
+  backupRetainPeriodDays?: number;
 }
 
 export interface ClusterConfig_Clickhouse {
@@ -295,6 +297,11 @@ export interface Shard {
   clusterId: string;
   /** Configuration of the shard. */
   config?: ShardConfig;
+}
+
+export interface Shards {
+  $type: "yandex.cloud.mdb.clickhouse.v1.Shards";
+  shards: Shard[];
 }
 
 export interface ShardGroup {
@@ -341,11 +348,11 @@ export interface Host {
   clusterId: string;
   /** ID of the availability zone where the ClickHouse host resides. */
   zoneId: string;
-  /** Type of the host. */
+  /** Type of the host. If the field has default value, it is not returned in the response. */
   type: Host_Type;
   /** Resources allocated to the ClickHouse host. */
   resources?: Resources;
-  /** Status code of the aggregated health of the host. */
+  /** Aggregated health of the host. If the field has default value, it is not returned in the response. */
   health: Host_Health;
   /** Services provided by the host. */
   services: Service[];
@@ -357,6 +364,7 @@ export interface Host {
 }
 
 export enum Host_Type {
+  /** TYPE_UNSPECIFIED - Host type is unspecified. Default value. */
   TYPE_UNSPECIFIED = 0,
   /** CLICKHOUSE - ClickHouse host. */
   CLICKHOUSE = 1,
@@ -446,13 +454,14 @@ export function host_HealthToJSON(object: Host_Health): string {
 
 export interface Service {
   $type: "yandex.cloud.mdb.clickhouse.v1.Service";
-  /** Type of the service provided by the host. */
+  /** Type of the service provided by the host. If the field has default value, it is not returned in the response. */
   type: Service_Type;
-  /** Status code of server availability. */
+  /** Aggregated health of the service. If the field has default value, it is not returned in the response. */
   health: Service_Health;
 }
 
 export enum Service_Type {
+  /** TYPE_UNSPECIFIED - Service type of the host is unspecified. Default value. */
   TYPE_UNSPECIFIED = 0,
   /** CLICKHOUSE - The host is a ClickHouse server. */
   CLICKHOUSE = 1,
@@ -493,7 +502,7 @@ export function service_TypeToJSON(object: Service_Type): string {
 }
 
 export enum Service_Health {
-  /** UNKNOWN - Health of the server is unknown. */
+  /** UNKNOWN - Health of the server is unknown. Default value. */
   UNKNOWN = 0,
   /** ALIVE - The server is working normally. */
   ALIVE = 1,
@@ -1155,6 +1164,15 @@ export const ClusterConfig = {
         writer.uint32(74).fork()
       ).ldelim();
     }
+    if (message.backupRetainPeriodDays !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.backupRetainPeriodDays!,
+        },
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1203,6 +1221,12 @@ export const ClusterConfig = {
           break;
         case 9:
           message.embeddedKeeper = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 10:
+          message.backupRetainPeriodDays = Int64Value.decode(
             reader,
             reader.uint32()
           ).value;
@@ -1256,6 +1280,11 @@ export const ClusterConfig = {
       object.embeddedKeeper !== undefined && object.embeddedKeeper !== null
         ? Boolean(object.embeddedKeeper)
         : undefined;
+    message.backupRetainPeriodDays =
+      object.backupRetainPeriodDays !== undefined &&
+      object.backupRetainPeriodDays !== null
+        ? Number(object.backupRetainPeriodDays)
+        : undefined;
     return message;
   },
 
@@ -1286,6 +1315,8 @@ export const ClusterConfig = {
       (obj.sqlUserManagement = message.sqlUserManagement);
     message.embeddedKeeper !== undefined &&
       (obj.embeddedKeeper = message.embeddedKeeper);
+    message.backupRetainPeriodDays !== undefined &&
+      (obj.backupRetainPeriodDays = message.backupRetainPeriodDays);
     return obj;
   },
 
@@ -1318,6 +1349,7 @@ export const ClusterConfig = {
     message.sqlDatabaseManagement = object.sqlDatabaseManagement ?? undefined;
     message.sqlUserManagement = object.sqlUserManagement ?? undefined;
     message.embeddedKeeper = object.embeddedKeeper ?? undefined;
+    message.backupRetainPeriodDays = object.backupRetainPeriodDays ?? undefined;
     return message;
   },
 };
@@ -1587,6 +1619,65 @@ export const Shard = {
 };
 
 messageTypeRegistry.set(Shard.$type, Shard);
+
+const baseShards: object = { $type: "yandex.cloud.mdb.clickhouse.v1.Shards" };
+
+export const Shards = {
+  $type: "yandex.cloud.mdb.clickhouse.v1.Shards" as const,
+
+  encode(
+    message: Shards,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.shards) {
+      Shard.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Shards {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseShards } as Shards;
+    message.shards = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.shards.push(Shard.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Shards {
+    const message = { ...baseShards } as Shards;
+    message.shards = (object.shards ?? []).map((e: any) => Shard.fromJSON(e));
+    return message;
+  },
+
+  toJSON(message: Shards): unknown {
+    const obj: any = {};
+    if (message.shards) {
+      obj.shards = message.shards.map((e) => (e ? Shard.toJSON(e) : undefined));
+    } else {
+      obj.shards = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Shards>, I>>(object: I): Shards {
+    const message = { ...baseShards } as Shards;
+    message.shards = object.shards?.map((e) => Shard.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Shards.$type, Shards);
 
 const baseShardGroup: object = {
   $type: "yandex.cloud.mdb.clickhouse.v1.ShardGroup",

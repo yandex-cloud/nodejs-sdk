@@ -76,12 +76,12 @@ export interface OnPremiseClickhouse {
 
 export interface ClickhouseConnectionOptions {
   $type: "yandex.cloud.datatransfer.v1.endpoint.ClickhouseConnectionOptions";
-  mdbClusterId: string | undefined;
   onPremise?: OnPremiseClickhouse | undefined;
-  /** Database */
-  database: string;
+  mdbClusterId: string | undefined;
   user: string;
   password?: Secret;
+  /** Database */
+  database: string;
 }
 
 export interface ClickhouseConnection {
@@ -94,6 +94,7 @@ export interface ClickhouseSharding {
   columnValueHash?: ClickhouseSharding_ColumnValueHash | undefined;
   customMapping?: ClickhouseSharding_ColumnValueMapping | undefined;
   transferId?: Empty | undefined;
+  roundRobin?: Empty | undefined;
 }
 
 export interface ClickhouseSharding_ColumnValueHash {
@@ -116,8 +117,6 @@ export interface ClickhouseSharding_ColumnValueMapping_ValueToShard {
 export interface ClickhouseSource {
   $type: "yandex.cloud.datatransfer.v1.endpoint.ClickhouseSource";
   connection?: ClickhouseConnection;
-  subnetId: string;
-  securityGroups: string[];
   /**
    * While list of tables for replication. If none or empty list is presented - will
    * replicate all tables. Can contain * patterns.
@@ -128,18 +127,29 @@ export interface ClickhouseSource {
    * will replicate all tables. Can contain * patterns.
    */
   excludeTables: string[];
+  subnetId: string;
+  securityGroups: string[];
+  /**
+   * Name of the ClickHouse cluster. For Managed ClickHouse that is name of
+   * ShardGroup.
+   */
+  clickhouseClusterName: string;
 }
 
 export interface ClickhouseTarget {
   $type: "yandex.cloud.datatransfer.v1.endpoint.ClickhouseTarget";
   connection?: ClickhouseConnection;
   subnetId: string;
-  securityGroups: string[];
-  clickhouseClusterName: string;
   /** Alternative table names in target */
   altNames: AltName[];
-  sharding?: ClickhouseSharding;
   cleanupPolicy: ClickhouseCleanupPolicy;
+  sharding?: ClickhouseSharding;
+  /**
+   * Name of the ClickHouse cluster. For Managed ClickHouse that is name of
+   * ShardGroup.
+   */
+  clickhouseClusterName: string;
+  securityGroups: string[];
 }
 
 const baseClickhouseShard: object = {
@@ -335,8 +345,8 @@ messageTypeRegistry.set(OnPremiseClickhouse.$type, OnPremiseClickhouse);
 
 const baseClickhouseConnectionOptions: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.ClickhouseConnectionOptions",
-  database: "",
   user: "",
+  database: "",
 };
 
 export const ClickhouseConnectionOptions = {
@@ -347,23 +357,23 @@ export const ClickhouseConnectionOptions = {
     message: ClickhouseConnectionOptions,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.mdbClusterId !== undefined) {
-      writer.uint32(42).string(message.mdbClusterId);
-    }
     if (message.onPremise !== undefined) {
       OnPremiseClickhouse.encode(
         message.onPremise,
         writer.uint32(18).fork()
       ).ldelim();
     }
-    if (message.database !== "") {
-      writer.uint32(66).string(message.database);
+    if (message.mdbClusterId !== undefined) {
+      writer.uint32(42).string(message.mdbClusterId);
     }
     if (message.user !== "") {
       writer.uint32(50).string(message.user);
     }
     if (message.password !== undefined) {
       Secret.encode(message.password, writer.uint32(58).fork()).ldelim();
+    }
+    if (message.database !== "") {
+      writer.uint32(66).string(message.database);
     }
     return writer;
   },
@@ -380,23 +390,23 @@ export const ClickhouseConnectionOptions = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 5:
-          message.mdbClusterId = reader.string();
-          break;
         case 2:
           message.onPremise = OnPremiseClickhouse.decode(
             reader,
             reader.uint32()
           );
           break;
-        case 8:
-          message.database = reader.string();
+        case 5:
+          message.mdbClusterId = reader.string();
           break;
         case 6:
           message.user = reader.string();
           break;
         case 7:
           message.password = Secret.decode(reader, reader.uint32());
+          break;
+        case 8:
+          message.database = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -410,18 +420,14 @@ export const ClickhouseConnectionOptions = {
     const message = {
       ...baseClickhouseConnectionOptions,
     } as ClickhouseConnectionOptions;
-    message.mdbClusterId =
-      object.mdbClusterId !== undefined && object.mdbClusterId !== null
-        ? String(object.mdbClusterId)
-        : undefined;
     message.onPremise =
       object.onPremise !== undefined && object.onPremise !== null
         ? OnPremiseClickhouse.fromJSON(object.onPremise)
         : undefined;
-    message.database =
-      object.database !== undefined && object.database !== null
-        ? String(object.database)
-        : "";
+    message.mdbClusterId =
+      object.mdbClusterId !== undefined && object.mdbClusterId !== null
+        ? String(object.mdbClusterId)
+        : undefined;
     message.user =
       object.user !== undefined && object.user !== null
         ? String(object.user)
@@ -430,23 +436,27 @@ export const ClickhouseConnectionOptions = {
       object.password !== undefined && object.password !== null
         ? Secret.fromJSON(object.password)
         : undefined;
+    message.database =
+      object.database !== undefined && object.database !== null
+        ? String(object.database)
+        : "";
     return message;
   },
 
   toJSON(message: ClickhouseConnectionOptions): unknown {
     const obj: any = {};
-    message.mdbClusterId !== undefined &&
-      (obj.mdbClusterId = message.mdbClusterId);
     message.onPremise !== undefined &&
       (obj.onPremise = message.onPremise
         ? OnPremiseClickhouse.toJSON(message.onPremise)
         : undefined);
-    message.database !== undefined && (obj.database = message.database);
+    message.mdbClusterId !== undefined &&
+      (obj.mdbClusterId = message.mdbClusterId);
     message.user !== undefined && (obj.user = message.user);
     message.password !== undefined &&
       (obj.password = message.password
         ? Secret.toJSON(message.password)
         : undefined);
+    message.database !== undefined && (obj.database = message.database);
     return obj;
   },
 
@@ -456,17 +466,17 @@ export const ClickhouseConnectionOptions = {
     const message = {
       ...baseClickhouseConnectionOptions,
     } as ClickhouseConnectionOptions;
-    message.mdbClusterId = object.mdbClusterId ?? undefined;
     message.onPremise =
       object.onPremise !== undefined && object.onPremise !== null
         ? OnPremiseClickhouse.fromPartial(object.onPremise)
         : undefined;
-    message.database = object.database ?? "";
+    message.mdbClusterId = object.mdbClusterId ?? undefined;
     message.user = object.user ?? "";
     message.password =
       object.password !== undefined && object.password !== null
         ? Secret.fromPartial(object.password)
         : undefined;
+    message.database = object.database ?? "";
     return message;
   },
 };
@@ -580,6 +590,9 @@ export const ClickhouseSharding = {
     if (message.transferId !== undefined) {
       Empty.encode(message.transferId, writer.uint32(26).fork()).ldelim();
     }
+    if (message.roundRobin !== undefined) {
+      Empty.encode(message.roundRobin, writer.uint32(34).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -605,6 +618,9 @@ export const ClickhouseSharding = {
         case 3:
           message.transferId = Empty.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.roundRobin = Empty.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -627,6 +643,10 @@ export const ClickhouseSharding = {
       object.transferId !== undefined && object.transferId !== null
         ? Empty.fromJSON(object.transferId)
         : undefined;
+    message.roundRobin =
+      object.roundRobin !== undefined && object.roundRobin !== null
+        ? Empty.fromJSON(object.roundRobin)
+        : undefined;
     return message;
   },
 
@@ -643,6 +663,10 @@ export const ClickhouseSharding = {
     message.transferId !== undefined &&
       (obj.transferId = message.transferId
         ? Empty.toJSON(message.transferId)
+        : undefined);
+    message.roundRobin !== undefined &&
+      (obj.roundRobin = message.roundRobin
+        ? Empty.toJSON(message.roundRobin)
         : undefined);
     return obj;
   },
@@ -664,6 +688,10 @@ export const ClickhouseSharding = {
     message.transferId =
       object.transferId !== undefined && object.transferId !== null
         ? Empty.fromPartial(object.transferId)
+        : undefined;
+    message.roundRobin =
+      object.roundRobin !== undefined && object.roundRobin !== null
+        ? Empty.fromPartial(object.roundRobin)
         : undefined;
     return message;
   },
@@ -956,10 +984,11 @@ messageTypeRegistry.set(
 
 const baseClickhouseSource: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.ClickhouseSource",
-  subnetId: "",
-  securityGroups: "",
   includeTables: "",
   excludeTables: "",
+  subnetId: "",
+  securityGroups: "",
+  clickhouseClusterName: "",
 };
 
 export const ClickhouseSource = {
@@ -975,17 +1004,20 @@ export const ClickhouseSource = {
         writer.uint32(10).fork()
       ).ldelim();
     }
+    for (const v of message.includeTables) {
+      writer.uint32(58).string(v!);
+    }
+    for (const v of message.excludeTables) {
+      writer.uint32(66).string(v!);
+    }
     if (message.subnetId !== "") {
       writer.uint32(74).string(message.subnetId);
     }
     for (const v of message.securityGroups) {
       writer.uint32(82).string(v!);
     }
-    for (const v of message.includeTables) {
-      writer.uint32(58).string(v!);
-    }
-    for (const v of message.excludeTables) {
-      writer.uint32(66).string(v!);
+    if (message.clickhouseClusterName !== "") {
+      writer.uint32(90).string(message.clickhouseClusterName);
     }
     return writer;
   },
@@ -994,9 +1026,9 @@ export const ClickhouseSource = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseClickhouseSource } as ClickhouseSource;
-    message.securityGroups = [];
     message.includeTables = [];
     message.excludeTables = [];
+    message.securityGroups = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1006,17 +1038,20 @@ export const ClickhouseSource = {
             reader.uint32()
           );
           break;
+        case 7:
+          message.includeTables.push(reader.string());
+          break;
+        case 8:
+          message.excludeTables.push(reader.string());
+          break;
         case 9:
           message.subnetId = reader.string();
           break;
         case 10:
           message.securityGroups.push(reader.string());
           break;
-        case 7:
-          message.includeTables.push(reader.string());
-          break;
-        case 8:
-          message.excludeTables.push(reader.string());
+        case 11:
+          message.clickhouseClusterName = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1032,6 +1067,12 @@ export const ClickhouseSource = {
       object.connection !== undefined && object.connection !== null
         ? ClickhouseConnection.fromJSON(object.connection)
         : undefined;
+    message.includeTables = (object.includeTables ?? []).map((e: any) =>
+      String(e)
+    );
+    message.excludeTables = (object.excludeTables ?? []).map((e: any) =>
+      String(e)
+    );
     message.subnetId =
       object.subnetId !== undefined && object.subnetId !== null
         ? String(object.subnetId)
@@ -1039,12 +1080,11 @@ export const ClickhouseSource = {
     message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
       String(e)
     );
-    message.includeTables = (object.includeTables ?? []).map((e: any) =>
-      String(e)
-    );
-    message.excludeTables = (object.excludeTables ?? []).map((e: any) =>
-      String(e)
-    );
+    message.clickhouseClusterName =
+      object.clickhouseClusterName !== undefined &&
+      object.clickhouseClusterName !== null
+        ? String(object.clickhouseClusterName)
+        : "";
     return message;
   },
 
@@ -1054,12 +1094,6 @@ export const ClickhouseSource = {
       (obj.connection = message.connection
         ? ClickhouseConnection.toJSON(message.connection)
         : undefined);
-    message.subnetId !== undefined && (obj.subnetId = message.subnetId);
-    if (message.securityGroups) {
-      obj.securityGroups = message.securityGroups.map((e) => e);
-    } else {
-      obj.securityGroups = [];
-    }
     if (message.includeTables) {
       obj.includeTables = message.includeTables.map((e) => e);
     } else {
@@ -1070,6 +1104,14 @@ export const ClickhouseSource = {
     } else {
       obj.excludeTables = [];
     }
+    message.subnetId !== undefined && (obj.subnetId = message.subnetId);
+    if (message.securityGroups) {
+      obj.securityGroups = message.securityGroups.map((e) => e);
+    } else {
+      obj.securityGroups = [];
+    }
+    message.clickhouseClusterName !== undefined &&
+      (obj.clickhouseClusterName = message.clickhouseClusterName);
     return obj;
   },
 
@@ -1081,10 +1123,11 @@ export const ClickhouseSource = {
       object.connection !== undefined && object.connection !== null
         ? ClickhouseConnection.fromPartial(object.connection)
         : undefined;
-    message.subnetId = object.subnetId ?? "";
-    message.securityGroups = object.securityGroups?.map((e) => e) || [];
     message.includeTables = object.includeTables?.map((e) => e) || [];
     message.excludeTables = object.excludeTables?.map((e) => e) || [];
+    message.subnetId = object.subnetId ?? "";
+    message.securityGroups = object.securityGroups?.map((e) => e) || [];
+    message.clickhouseClusterName = object.clickhouseClusterName ?? "";
     return message;
   },
 };
@@ -1094,9 +1137,9 @@ messageTypeRegistry.set(ClickhouseSource.$type, ClickhouseSource);
 const baseClickhouseTarget: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.ClickhouseTarget",
   subnetId: "",
-  securityGroups: "",
-  clickhouseClusterName: "",
   cleanupPolicy: 0,
+  clickhouseClusterName: "",
+  securityGroups: "",
 };
 
 export const ClickhouseTarget = {
@@ -1115,14 +1158,11 @@ export const ClickhouseTarget = {
     if (message.subnetId !== "") {
       writer.uint32(98).string(message.subnetId);
     }
-    for (const v of message.securityGroups) {
-      writer.uint32(410).string(v!);
-    }
-    if (message.clickhouseClusterName !== "") {
-      writer.uint32(402).string(message.clickhouseClusterName);
-    }
     for (const v of message.altNames) {
       AltName.encode(v!, writer.uint32(138).fork()).ldelim();
+    }
+    if (message.cleanupPolicy !== 0) {
+      writer.uint32(168).int32(message.cleanupPolicy);
     }
     if (message.sharding !== undefined) {
       ClickhouseSharding.encode(
@@ -1130,8 +1170,11 @@ export const ClickhouseTarget = {
         writer.uint32(178).fork()
       ).ldelim();
     }
-    if (message.cleanupPolicy !== 0) {
-      writer.uint32(168).int32(message.cleanupPolicy);
+    if (message.clickhouseClusterName !== "") {
+      writer.uint32(402).string(message.clickhouseClusterName);
+    }
+    for (const v of message.securityGroups) {
+      writer.uint32(410).string(v!);
     }
     return writer;
   },
@@ -1140,8 +1183,8 @@ export const ClickhouseTarget = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseClickhouseTarget } as ClickhouseTarget;
-    message.securityGroups = [];
     message.altNames = [];
+    message.securityGroups = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1154,20 +1197,20 @@ export const ClickhouseTarget = {
         case 12:
           message.subnetId = reader.string();
           break;
-        case 51:
-          message.securityGroups.push(reader.string());
-          break;
-        case 50:
-          message.clickhouseClusterName = reader.string();
-          break;
         case 17:
           message.altNames.push(AltName.decode(reader, reader.uint32()));
+          break;
+        case 21:
+          message.cleanupPolicy = reader.int32() as any;
           break;
         case 22:
           message.sharding = ClickhouseSharding.decode(reader, reader.uint32());
           break;
-        case 21:
-          message.cleanupPolicy = reader.int32() as any;
+        case 50:
+          message.clickhouseClusterName = reader.string();
+          break;
+        case 51:
+          message.securityGroups.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1187,25 +1230,25 @@ export const ClickhouseTarget = {
       object.subnetId !== undefined && object.subnetId !== null
         ? String(object.subnetId)
         : "";
-    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
-      String(e)
+    message.altNames = (object.altNames ?? []).map((e: any) =>
+      AltName.fromJSON(e)
     );
+    message.cleanupPolicy =
+      object.cleanupPolicy !== undefined && object.cleanupPolicy !== null
+        ? clickhouseCleanupPolicyFromJSON(object.cleanupPolicy)
+        : 0;
+    message.sharding =
+      object.sharding !== undefined && object.sharding !== null
+        ? ClickhouseSharding.fromJSON(object.sharding)
+        : undefined;
     message.clickhouseClusterName =
       object.clickhouseClusterName !== undefined &&
       object.clickhouseClusterName !== null
         ? String(object.clickhouseClusterName)
         : "";
-    message.altNames = (object.altNames ?? []).map((e: any) =>
-      AltName.fromJSON(e)
+    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
+      String(e)
     );
-    message.sharding =
-      object.sharding !== undefined && object.sharding !== null
-        ? ClickhouseSharding.fromJSON(object.sharding)
-        : undefined;
-    message.cleanupPolicy =
-      object.cleanupPolicy !== undefined && object.cleanupPolicy !== null
-        ? clickhouseCleanupPolicyFromJSON(object.cleanupPolicy)
-        : 0;
     return message;
   },
 
@@ -1216,13 +1259,6 @@ export const ClickhouseTarget = {
         ? ClickhouseConnection.toJSON(message.connection)
         : undefined);
     message.subnetId !== undefined && (obj.subnetId = message.subnetId);
-    if (message.securityGroups) {
-      obj.securityGroups = message.securityGroups.map((e) => e);
-    } else {
-      obj.securityGroups = [];
-    }
-    message.clickhouseClusterName !== undefined &&
-      (obj.clickhouseClusterName = message.clickhouseClusterName);
     if (message.altNames) {
       obj.altNames = message.altNames.map((e) =>
         e ? AltName.toJSON(e) : undefined
@@ -1230,14 +1266,21 @@ export const ClickhouseTarget = {
     } else {
       obj.altNames = [];
     }
-    message.sharding !== undefined &&
-      (obj.sharding = message.sharding
-        ? ClickhouseSharding.toJSON(message.sharding)
-        : undefined);
     message.cleanupPolicy !== undefined &&
       (obj.cleanupPolicy = clickhouseCleanupPolicyToJSON(
         message.cleanupPolicy
       ));
+    message.sharding !== undefined &&
+      (obj.sharding = message.sharding
+        ? ClickhouseSharding.toJSON(message.sharding)
+        : undefined);
+    message.clickhouseClusterName !== undefined &&
+      (obj.clickhouseClusterName = message.clickhouseClusterName);
+    if (message.securityGroups) {
+      obj.securityGroups = message.securityGroups.map((e) => e);
+    } else {
+      obj.securityGroups = [];
+    }
     return obj;
   },
 
@@ -1250,15 +1293,15 @@ export const ClickhouseTarget = {
         ? ClickhouseConnection.fromPartial(object.connection)
         : undefined;
     message.subnetId = object.subnetId ?? "";
-    message.securityGroups = object.securityGroups?.map((e) => e) || [];
-    message.clickhouseClusterName = object.clickhouseClusterName ?? "";
     message.altNames =
       object.altNames?.map((e) => AltName.fromPartial(e)) || [];
+    message.cleanupPolicy = object.cleanupPolicy ?? 0;
     message.sharding =
       object.sharding !== undefined && object.sharding !== null
         ? ClickhouseSharding.fromPartial(object.sharding)
         : undefined;
-    message.cleanupPolicy = object.cleanupPolicy ?? 0;
+    message.clickhouseClusterName = object.clickhouseClusterName ?? "";
+    message.securityGroups = object.securityGroups?.map((e) => e) || [];
     return message;
   },
 };

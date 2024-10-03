@@ -29,31 +29,76 @@ export const protobufPackage = "yandex.cloud.vpc.v1";
 
 export interface GetSecurityGroupRequest {
   $type: "yandex.cloud.vpc.v1.GetSecurityGroupRequest";
+  /**
+   * ID of the Security Group resource to return.
+   * To get the security group ID, use a [SecurityGroup.List] request.
+   */
   securityGroupId: string;
 }
 
 export interface ListSecurityGroupsRequest {
   $type: "yandex.cloud.vpc.v1.ListSecurityGroupsRequest";
+  /**
+   * ID of the folder to list security groups in.
+   * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+   */
   folderId: string;
+  /**
+   * The maximum number of results per page to return. If the number of available
+   * results is larger than [page_size],
+   * the service returns a [ListSecurityGroupsResponse.next_page_token]
+   * that can be used to get the next page of results in subsequent list requests. Default value: 100.
+   */
   pageSize: number;
+  /**
+   * Page token. To get the next page of results, set [page_token] to the
+   * [ListSecurityGroupsResponse.next_page_token] returned by a previous list request.
+   */
   pageToken: string;
-  /** filter by network_id is here */
+  /**
+   * A filter expression that filters resources listed in the response.
+   * The expression must specify:
+   * 1. The field name. Currently you can use filtering only on the [SecurityGroup.name] field.
+   * 2. An `=` operator.
+   * 3. The value in double quotes (`"`). Must be 3-63 characters long and match the regular expression `[a-z][-a-z0-9]{1,61}[a-z0-9]`.
+   */
   filter: string;
 }
 
 export interface ListSecurityGroupsResponse {
   $type: "yandex.cloud.vpc.v1.ListSecurityGroupsResponse";
+  /** List of SecurityGroup resources. */
   securityGroups: SecurityGroup[];
+  /**
+   * This token allows you to get the next page of results for list requests. If the number of results
+   * is larger than [ListNetworksRequest.page_size], use
+   * the [next_page_token] as the value
+   * for the [ListNetworksRequest.page_token] query parameter
+   * in the next list request. Subsequent list requests will have their own
+   * [next_page_token] to continue paging through the results.
+   */
   nextPageToken: string;
 }
 
 export interface CreateSecurityGroupRequest {
   $type: "yandex.cloud.vpc.v1.CreateSecurityGroupRequest";
+  /**
+   * ID of the folder for this request to create a security group in.
+   * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+   */
   folderId: string;
+  /**
+   * Name of the security group.
+   * The name must be unique within the folder.
+   */
   name: string;
+  /** Description of the security group. */
   description: string;
+  /** Resource labels as `` key:value `` pairs. */
   labels: { [key: string]: string };
+  /** ID of the Network to create security group for. */
   networkId: string;
+  /** Security rules specifications. */
   ruleSpecs: SecurityGroupRuleSpec[];
 }
 
@@ -65,16 +110,23 @@ export interface CreateSecurityGroupRequest_LabelsEntry {
 
 export interface SecurityGroupRuleSpec {
   $type: "yandex.cloud.vpc.v1.SecurityGroupRuleSpec";
+  /** Description of the security rule. */
   description: string;
+  /** Rule labels as `` key:value `` pairs. */
   labels: { [key: string]: string };
+  /** The direction of network traffic allowed by this rule. */
   direction: SecurityGroupRule_Direction;
-  /** null value means any port */
+  /** The range of ports that allow traffic to pass through. Null value means any port. */
   ports?: PortRange;
+  /** Protocol name. */
   protocolName: string | undefined;
+  /** Protocol number from [IANA protocol numbers](https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml). */
   protocolNumber: number | undefined;
+  /** CIDR blocks to allow to recieve or send traffic. */
   cidrBlocks?: CidrBlocks | undefined;
+  /** ID of the security group to add rule to. */
   securityGroupId: string | undefined;
-  /** string subnet_id = .. ; */
+  /** Predefined target. See [security groups rules](/docs/vpc/concepts/security-groups#security-groups-rules) for more information. */
   predefinedTarget: string | undefined;
 }
 
@@ -86,17 +138,38 @@ export interface SecurityGroupRuleSpec_LabelsEntry {
 
 export interface CreateSecurityGroupMetadata {
   $type: "yandex.cloud.vpc.v1.CreateSecurityGroupMetadata";
+  /** ID of the security group that is being created. */
   securityGroupId: string;
 }
 
 export interface UpdateSecurityGroupRequest {
   $type: "yandex.cloud.vpc.v1.UpdateSecurityGroupRequest";
+  /**
+   * ID of the security group to update.
+   *
+   * To get the security group ID make a [SecurityGroupService.List] request.
+   */
   securityGroupId: string;
+  /** Field mask that specifies which attributes of the Address should be updated. */
   updateMask?: FieldMask;
+  /**
+   * New name for the security group.
+   * The name must be unique within the folder.
+   */
   name: string;
+  /** New description of the security group. */
   description: string;
+  /**
+   * Security group labels as `key:value` pairs.
+   *
+   * Existing set of labels is completely replaced by the provided set, so if you just want
+   * to add or remove a label:
+   * 1. Get the current set of labels with a [SecurityGroupService.Get] request.
+   * 2. Add or remove a label in this set.
+   * 3. Send the new set in this field.
+   */
   labels: { [key: string]: string };
-  /** all existing rules will be replaced with given list */
+  /** Updated rule list. All existing rules will be replaced with given list. */
   ruleSpecs: SecurityGroupRuleSpec[];
 }
 
@@ -108,24 +181,41 @@ export interface UpdateSecurityGroupRequest_LabelsEntry {
 
 export interface UpdateSecurityGroupMetadata {
   $type: "yandex.cloud.vpc.v1.UpdateSecurityGroupMetadata";
+  /** ID of the SecurityGroup that is being updated. */
   securityGroupId: string;
+  /** List of added security rules IDs. */
   addedRuleIds: string[];
 }
 
 export interface UpdateSecurityGroupRulesRequest {
   $type: "yandex.cloud.vpc.v1.UpdateSecurityGroupRulesRequest";
+  /** ID of the SecurityGroup that is being updated with new rules. */
   securityGroupId: string;
-  /** list of rules ids to delete */
+  /** List of rules IDs to delete. */
   deletionRuleIds: string[];
+  /** Security rules specifications. */
   additionRuleSpecs: SecurityGroupRuleSpec[];
 }
 
 export interface UpdateSecurityGroupRuleRequest {
   $type: "yandex.cloud.vpc.v1.UpdateSecurityGroupRuleRequest";
+  /** ID of the SecurityGroup to update rule in. */
   securityGroupId: string;
+  /** ID of the rule to update. */
   ruleId: string;
+  /** Field mask that specifies which attributes of the Address should be updated. */
   updateMask?: FieldMask;
+  /** New description of the rule. */
   description: string;
+  /**
+   * Rule labels as `key:value` pairs.
+   *
+   * Existing set of labels is completely replaced by the provided set, so if you just want
+   * to add or remove a label:
+   * 1. Get the current set of labels with a [AddressService.Get] request.
+   * 2. Add or remove a label in this set.
+   * 3. Send the new set in this field.
+   */
   labels: { [key: string]: string };
 }
 
@@ -137,41 +227,75 @@ export interface UpdateSecurityGroupRuleRequest_LabelsEntry {
 
 export interface UpdateSecurityGroupRuleMetadata {
   $type: "yandex.cloud.vpc.v1.UpdateSecurityGroupRuleMetadata";
+  /** ID of the SecurityGroup that is being updated with new rules. */
   securityGroupId: string;
+  /** ID of the rule that is being updated. */
   ruleId: string;
 }
 
 export interface DeleteSecurityGroupRequest {
   $type: "yandex.cloud.vpc.v1.DeleteSecurityGroupRequest";
+  /**
+   * ID of the security group to delete.
+   *
+   * To get a address ID make a [SecurityGroup.List] request.
+   */
   securityGroupId: string;
 }
 
 export interface DeleteSecurityGroupMetadata {
   $type: "yandex.cloud.vpc.v1.DeleteSecurityGroupMetadata";
+  /** ID of the SecurityGroup that is being deleted. */
   securityGroupId: string;
 }
 
 export interface ListSecurityGroupOperationsRequest {
   $type: "yandex.cloud.vpc.v1.ListSecurityGroupOperationsRequest";
+  /**
+   * ID of the address to list operations for.
+   *
+   * To get a address ID make a [SecurityGroup.List] request.
+   */
   securityGroupId: string;
+  /**
+   * The maximum number of results per page to return. If the number of available
+   * results is larger than [page_size], the service returns a [ListSecurityGroupOperationsResponse.next_page_token]
+   * that can be used to get the next page of results in subsequent list requests.
+   * Default value: 100.
+   */
   pageSize: number;
+  /**
+   * Page token. To get the next page of results, set [page_token] to the
+   * [ListSecurityGroupOperationsResponse.next_page_token] returned by a previous list request.
+   */
   pageToken: string;
 }
 
 export interface ListSecurityGroupOperationsResponse {
   $type: "yandex.cloud.vpc.v1.ListSecurityGroupOperationsResponse";
+  /** List of operations for the specified security group. */
   operations: Operation[];
+  /**
+   * Token for getting the next page of the list. If the number of results is greater than
+   * the specified [ListSecurityGroupOperationsRequest.page_size], use `next_page_token` as the value
+   * for the [ListSecurityGroupOperationsRequest.page_token] parameter in the next list request.
+   *
+   * Each subsequent page will have its own `next_page_token` to continue paging through the results.
+   */
   nextPageToken: string;
 }
 
 export interface MoveSecurityGroupRequest {
   $type: "yandex.cloud.vpc.v1.MoveSecurityGroupRequest";
+  /** ID of the security group to move. */
   securityGroupId: string;
+  /** ID of the folder to move security group to. */
   destinationFolderId: string;
 }
 
 export interface MoveSecurityGroupMetadata {
   $type: "yandex.cloud.vpc.v1.MoveSecurityGroupMetadata";
+  /** ID of the security group that is being moved. */
   securityGroupId: string;
 }
 
@@ -2402,7 +2526,13 @@ messageTypeRegistry.set(
   MoveSecurityGroupMetadata
 );
 
+/** A set of methods for managing SecurityGroup resources. */
 export const SecurityGroupServiceService = {
+  /**
+   * Returns the specified SecurityGroup resource.
+   *
+   * To get the list of all available SecurityGroup resources, make a [List] request.
+   */
   get: {
     path: "/yandex.cloud.vpc.v1.SecurityGroupService/Get",
     requestStream: false,
@@ -2415,6 +2545,7 @@ export const SecurityGroupServiceService = {
       Buffer.from(SecurityGroup.encode(value).finish()),
     responseDeserialize: (value: Buffer) => SecurityGroup.decode(value),
   },
+  /** Retrieves the list of SecurityGroup resources in the specified folder. */
   list: {
     path: "/yandex.cloud.vpc.v1.SecurityGroupService/List",
     requestStream: false,
@@ -2428,6 +2559,7 @@ export const SecurityGroupServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListSecurityGroupsResponse.decode(value),
   },
+  /** Creates a security group in the specified folder and network. */
   create: {
     path: "/yandex.cloud.vpc.v1.SecurityGroupService/Create",
     requestStream: false,
@@ -2440,6 +2572,10 @@ export const SecurityGroupServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /**
+   * Updates the specified security group.
+   * Method starts an asynchronous operation that can be cancelled while it is in progress.
+   */
   update: {
     path: "/yandex.cloud.vpc.v1.SecurityGroupService/Update",
     requestStream: false,
@@ -2452,6 +2588,7 @@ export const SecurityGroupServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Updates the rules of the specified security group. */
   updateRules: {
     path: "/yandex.cloud.vpc.v1.SecurityGroupService/UpdateRules",
     requestStream: false,
@@ -2464,7 +2601,7 @@ export const SecurityGroupServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
-  /** update rule description or labels */
+  /** Updates the specified rule. */
   updateRule: {
     path: "/yandex.cloud.vpc.v1.SecurityGroupService/UpdateRule",
     requestStream: false,
@@ -2477,6 +2614,7 @@ export const SecurityGroupServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Deletes the specified security group. */
   delete: {
     path: "/yandex.cloud.vpc.v1.SecurityGroupService/Delete",
     requestStream: false,
@@ -2489,6 +2627,7 @@ export const SecurityGroupServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Moves security groups to another folder. */
   move: {
     path: "/yandex.cloud.vpc.v1.SecurityGroupService/Move",
     requestStream: false,
@@ -2501,6 +2640,7 @@ export const SecurityGroupServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Lists operations for the specified security groups. */
   listOperations: {
     path: "/yandex.cloud.vpc.v1.SecurityGroupService/ListOperations",
     requestStream: false,
@@ -2518,15 +2658,30 @@ export const SecurityGroupServiceService = {
 
 export interface SecurityGroupServiceServer
   extends UntypedServiceImplementation {
+  /**
+   * Returns the specified SecurityGroup resource.
+   *
+   * To get the list of all available SecurityGroup resources, make a [List] request.
+   */
   get: handleUnaryCall<GetSecurityGroupRequest, SecurityGroup>;
+  /** Retrieves the list of SecurityGroup resources in the specified folder. */
   list: handleUnaryCall<ListSecurityGroupsRequest, ListSecurityGroupsResponse>;
+  /** Creates a security group in the specified folder and network. */
   create: handleUnaryCall<CreateSecurityGroupRequest, Operation>;
+  /**
+   * Updates the specified security group.
+   * Method starts an asynchronous operation that can be cancelled while it is in progress.
+   */
   update: handleUnaryCall<UpdateSecurityGroupRequest, Operation>;
+  /** Updates the rules of the specified security group. */
   updateRules: handleUnaryCall<UpdateSecurityGroupRulesRequest, Operation>;
-  /** update rule description or labels */
+  /** Updates the specified rule. */
   updateRule: handleUnaryCall<UpdateSecurityGroupRuleRequest, Operation>;
+  /** Deletes the specified security group. */
   delete: handleUnaryCall<DeleteSecurityGroupRequest, Operation>;
+  /** Moves security groups to another folder. */
   move: handleUnaryCall<MoveSecurityGroupRequest, Operation>;
+  /** Lists operations for the specified security groups. */
   listOperations: handleUnaryCall<
     ListSecurityGroupOperationsRequest,
     ListSecurityGroupOperationsResponse
@@ -2534,6 +2689,11 @@ export interface SecurityGroupServiceServer
 }
 
 export interface SecurityGroupServiceClient extends Client {
+  /**
+   * Returns the specified SecurityGroup resource.
+   *
+   * To get the list of all available SecurityGroup resources, make a [List] request.
+   */
   get(
     request: GetSecurityGroupRequest,
     callback: (error: ServiceError | null, response: SecurityGroup) => void
@@ -2549,6 +2709,7 @@ export interface SecurityGroupServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: SecurityGroup) => void
   ): ClientUnaryCall;
+  /** Retrieves the list of SecurityGroup resources in the specified folder. */
   list(
     request: ListSecurityGroupsRequest,
     callback: (
@@ -2573,6 +2734,7 @@ export interface SecurityGroupServiceClient extends Client {
       response: ListSecurityGroupsResponse
     ) => void
   ): ClientUnaryCall;
+  /** Creates a security group in the specified folder and network. */
   create(
     request: CreateSecurityGroupRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -2588,6 +2750,10 @@ export interface SecurityGroupServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
+  /**
+   * Updates the specified security group.
+   * Method starts an asynchronous operation that can be cancelled while it is in progress.
+   */
   update(
     request: UpdateSecurityGroupRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -2603,6 +2769,7 @@ export interface SecurityGroupServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
+  /** Updates the rules of the specified security group. */
   updateRules(
     request: UpdateSecurityGroupRulesRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -2618,7 +2785,7 @@ export interface SecurityGroupServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
-  /** update rule description or labels */
+  /** Updates the specified rule. */
   updateRule(
     request: UpdateSecurityGroupRuleRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -2634,6 +2801,7 @@ export interface SecurityGroupServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
+  /** Deletes the specified security group. */
   delete(
     request: DeleteSecurityGroupRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -2649,6 +2817,7 @@ export interface SecurityGroupServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
+  /** Moves security groups to another folder. */
   move(
     request: MoveSecurityGroupRequest,
     callback: (error: ServiceError | null, response: Operation) => void
@@ -2664,6 +2833,7 @@ export interface SecurityGroupServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
+  /** Lists operations for the specified security groups. */
   listOperations(
     request: ListSecurityGroupOperationsRequest,
     callback: (

@@ -37,6 +37,16 @@ export interface Dashboard {
   parametrization?: Parametrization;
   /** Dashboard etag. */
   etag: string;
+  /**
+   * Entity that controls dashboard
+   * Must match the regular expression "[\w \-]{1,100}"
+   */
+  managedBy: string;
+  /**
+   * Information about entity that controls dashboard
+   * Must be valid URI
+   */
+  managedLink: string;
 }
 
 export interface Dashboard_LabelsEntry {
@@ -54,6 +64,8 @@ const baseDashboard: object = {
   description: "",
   title: "",
   etag: "",
+  managedBy: "",
+  managedLink: "",
 };
 
 export const Dashboard = {
@@ -118,6 +130,12 @@ export const Dashboard = {
     if (message.etag !== "") {
       writer.uint32(242).string(message.etag);
     }
+    if (message.managedBy !== "") {
+      writer.uint32(258).string(message.managedBy);
+    }
+    if (message.managedLink !== "") {
+      writer.uint32(266).string(message.managedLink);
+    }
     return writer;
   },
 
@@ -178,6 +196,12 @@ export const Dashboard = {
           break;
         case 30:
           message.etag = reader.string();
+          break;
+        case 32:
+          message.managedBy = reader.string();
+          break;
+        case 33:
+          message.managedLink = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -240,6 +264,14 @@ export const Dashboard = {
       object.etag !== undefined && object.etag !== null
         ? String(object.etag)
         : "";
+    message.managedBy =
+      object.managedBy !== undefined && object.managedBy !== null
+        ? String(object.managedBy)
+        : "";
+    message.managedLink =
+      object.managedLink !== undefined && object.managedLink !== null
+        ? String(object.managedLink)
+        : "";
     return message;
   },
 
@@ -275,6 +307,9 @@ export const Dashboard = {
         ? Parametrization.toJSON(message.parametrization)
         : undefined);
     message.etag !== undefined && (obj.etag = message.etag);
+    message.managedBy !== undefined && (obj.managedBy = message.managedBy);
+    message.managedLink !== undefined &&
+      (obj.managedLink = message.managedLink);
     return obj;
   },
 
@@ -305,6 +340,8 @@ export const Dashboard = {
         ? Parametrization.fromPartial(object.parametrization)
         : undefined;
     message.etag = object.etag ?? "";
+    message.managedBy = object.managedBy ?? "";
+    message.managedLink = object.managedLink ?? "";
     return message;
   },
 };

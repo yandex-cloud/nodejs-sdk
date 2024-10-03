@@ -166,6 +166,10 @@ export interface UpdateClusterRequest {
   deletionProtection: boolean;
   /** New maintenance window settings for the cluster. */
   maintenanceWindow?: MaintenanceWindow;
+  /** ID of the network to move the cluster to. */
+  networkId: string;
+  /** IDs of subnets where the hosts are located or a new host is being created */
+  subnetIds: string[];
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
@@ -1230,6 +1234,8 @@ const baseUpdateClusterRequest: object = {
   name: "",
   securityGroupIds: "",
   deletionProtection: false,
+  networkId: "",
+  subnetIds: "",
 };
 
 export const UpdateClusterRequest = {
@@ -1276,6 +1282,12 @@ export const UpdateClusterRequest = {
         writer.uint32(74).fork()
       ).ldelim();
     }
+    if (message.networkId !== "") {
+      writer.uint32(82).string(message.networkId);
+    }
+    for (const v of message.subnetIds) {
+      writer.uint32(90).string(v!);
+    }
     return writer;
   },
 
@@ -1288,6 +1300,7 @@ export const UpdateClusterRequest = {
     const message = { ...baseUpdateClusterRequest } as UpdateClusterRequest;
     message.labels = {};
     message.securityGroupIds = [];
+    message.subnetIds = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1326,6 +1339,12 @@ export const UpdateClusterRequest = {
             reader,
             reader.uint32()
           );
+          break;
+        case 10:
+          message.networkId = reader.string();
+          break;
+        case 11:
+          message.subnetIds.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1376,6 +1395,11 @@ export const UpdateClusterRequest = {
       object.maintenanceWindow !== null
         ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
         : undefined;
+    message.networkId =
+      object.networkId !== undefined && object.networkId !== null
+        ? String(object.networkId)
+        : "";
+    message.subnetIds = (object.subnetIds ?? []).map((e: any) => String(e));
     return message;
   },
 
@@ -1410,6 +1434,12 @@ export const UpdateClusterRequest = {
       (obj.maintenanceWindow = message.maintenanceWindow
         ? MaintenanceWindow.toJSON(message.maintenanceWindow)
         : undefined);
+    message.networkId !== undefined && (obj.networkId = message.networkId);
+    if (message.subnetIds) {
+      obj.subnetIds = message.subnetIds.map((e) => e);
+    } else {
+      obj.subnetIds = [];
+    }
     return obj;
   },
 
@@ -1443,6 +1473,8 @@ export const UpdateClusterRequest = {
       object.maintenanceWindow !== null
         ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
         : undefined;
+    message.networkId = object.networkId ?? "";
+    message.subnetIds = object.subnetIds?.map((e) => e) || [];
     return message;
   },
 };

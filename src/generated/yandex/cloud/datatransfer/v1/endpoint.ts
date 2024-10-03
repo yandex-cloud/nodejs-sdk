@@ -15,6 +15,10 @@ import {
   YdbTarget,
 } from "../../../../yandex/cloud/datatransfer/v1/endpoint/ydb";
 import {
+  YDSSource,
+  YDSTarget,
+} from "../../../../yandex/cloud/datatransfer/v1/endpoint/yds";
+import {
   KafkaSource,
   KafkaTarget,
 } from "../../../../yandex/cloud/datatransfer/v1/endpoint/kafka";
@@ -26,6 +30,7 @@ import {
   ClickhouseSource,
   ClickhouseTarget,
 } from "../../../../yandex/cloud/datatransfer/v1/endpoint/clickhouse";
+import { MetrikaSource } from "../../../../yandex/cloud/datatransfer/v1/endpoint/metrika";
 
 export const protobufPackage = "yandex.cloud.datatransfer.v1";
 
@@ -50,6 +55,7 @@ export interface EndpointSettings {
   mysqlSource?: MysqlSource | undefined;
   postgresSource?: PostgresSource | undefined;
   ydbSource?: YdbSource | undefined;
+  ydsSource?: YDSSource | undefined;
   kafkaSource?: KafkaSource | undefined;
   mongoSource?: MongoSource | undefined;
   clickhouseSource?: ClickhouseSource | undefined;
@@ -59,6 +65,8 @@ export interface EndpointSettings {
   ydbTarget?: YdbTarget | undefined;
   kafkaTarget?: KafkaTarget | undefined;
   mongoTarget?: MongoTarget | undefined;
+  metrikaSource?: MetrikaSource | undefined;
+  ydsTarget?: YDSTarget | undefined;
 }
 
 const baseEndpoint: object = {
@@ -319,6 +327,9 @@ export const EndpointSettings = {
     if (message.ydbSource !== undefined) {
       YdbSource.encode(message.ydbSource, writer.uint32(26).fork()).ldelim();
     }
+    if (message.ydsSource !== undefined) {
+      YDSSource.encode(message.ydsSource, writer.uint32(58).fork()).ldelim();
+    }
     if (message.kafkaSource !== undefined) {
       KafkaSource.encode(
         message.kafkaSource,
@@ -370,6 +381,15 @@ export const EndpointSettings = {
         writer.uint32(890).fork()
       ).ldelim();
     }
+    if (message.metrikaSource !== undefined) {
+      MetrikaSource.encode(
+        message.metrikaSource,
+        writer.uint32(1170).fork()
+      ).ldelim();
+    }
+    if (message.ydsTarget !== undefined) {
+      YDSTarget.encode(message.ydsTarget, writer.uint32(1202).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -391,6 +411,9 @@ export const EndpointSettings = {
           break;
         case 3:
           message.ydbSource = YdbSource.decode(reader, reader.uint32());
+          break;
+        case 7:
+          message.ydsSource = YDSSource.decode(reader, reader.uint32());
           break;
         case 8:
           message.kafkaSource = KafkaSource.decode(reader, reader.uint32());
@@ -428,6 +451,12 @@ export const EndpointSettings = {
         case 111:
           message.mongoTarget = MongoTarget.decode(reader, reader.uint32());
           break;
+        case 146:
+          message.metrikaSource = MetrikaSource.decode(reader, reader.uint32());
+          break;
+        case 150:
+          message.ydsTarget = YDSTarget.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -449,6 +478,10 @@ export const EndpointSettings = {
     message.ydbSource =
       object.ydbSource !== undefined && object.ydbSource !== null
         ? YdbSource.fromJSON(object.ydbSource)
+        : undefined;
+    message.ydsSource =
+      object.ydsSource !== undefined && object.ydsSource !== null
+        ? YDSSource.fromJSON(object.ydsSource)
         : undefined;
     message.kafkaSource =
       object.kafkaSource !== undefined && object.kafkaSource !== null
@@ -486,6 +519,14 @@ export const EndpointSettings = {
       object.mongoTarget !== undefined && object.mongoTarget !== null
         ? MongoTarget.fromJSON(object.mongoTarget)
         : undefined;
+    message.metrikaSource =
+      object.metrikaSource !== undefined && object.metrikaSource !== null
+        ? MetrikaSource.fromJSON(object.metrikaSource)
+        : undefined;
+    message.ydsTarget =
+      object.ydsTarget !== undefined && object.ydsTarget !== null
+        ? YDSTarget.fromJSON(object.ydsTarget)
+        : undefined;
     return message;
   },
 
@@ -502,6 +543,10 @@ export const EndpointSettings = {
     message.ydbSource !== undefined &&
       (obj.ydbSource = message.ydbSource
         ? YdbSource.toJSON(message.ydbSource)
+        : undefined);
+    message.ydsSource !== undefined &&
+      (obj.ydsSource = message.ydsSource
+        ? YDSSource.toJSON(message.ydsSource)
         : undefined);
     message.kafkaSource !== undefined &&
       (obj.kafkaSource = message.kafkaSource
@@ -539,6 +584,14 @@ export const EndpointSettings = {
       (obj.mongoTarget = message.mongoTarget
         ? MongoTarget.toJSON(message.mongoTarget)
         : undefined);
+    message.metrikaSource !== undefined &&
+      (obj.metrikaSource = message.metrikaSource
+        ? MetrikaSource.toJSON(message.metrikaSource)
+        : undefined);
+    message.ydsTarget !== undefined &&
+      (obj.ydsTarget = message.ydsTarget
+        ? YDSTarget.toJSON(message.ydsTarget)
+        : undefined);
     return obj;
   },
 
@@ -557,6 +610,10 @@ export const EndpointSettings = {
     message.ydbSource =
       object.ydbSource !== undefined && object.ydbSource !== null
         ? YdbSource.fromPartial(object.ydbSource)
+        : undefined;
+    message.ydsSource =
+      object.ydsSource !== undefined && object.ydsSource !== null
+        ? YDSSource.fromPartial(object.ydsSource)
         : undefined;
     message.kafkaSource =
       object.kafkaSource !== undefined && object.kafkaSource !== null
@@ -593,6 +650,14 @@ export const EndpointSettings = {
     message.mongoTarget =
       object.mongoTarget !== undefined && object.mongoTarget !== null
         ? MongoTarget.fromPartial(object.mongoTarget)
+        : undefined;
+    message.metrikaSource =
+      object.metrikaSource !== undefined && object.metrikaSource !== null
+        ? MetrikaSource.fromPartial(object.metrikaSource)
+        : undefined;
+    message.ydsTarget =
+      object.ydsTarget !== undefined && object.ydsTarget !== null
+        ? YDSTarget.fromPartial(object.ydsTarget)
         : undefined;
     return message;
   },

@@ -17,12 +17,20 @@ export interface Network {
   createdAt?: Date;
   /**
    * Name of the network.
-   * The name is unique within the folder. 3-63 characters long.
+   * The name is unique within the folder.
+   * Value must match the regular expression ``\|[a-zA-Z]([-_a-zA-Z0-9]{0,61}[a-zA-Z0-9])?``.
    */
   name: string;
   /** Optional description of the network. 0-256 characters long. */
   description: string;
-  /** Resource labels as `` key:value `` pairs. Maximum of 64 per resource. */
+  /**
+   * Resource labels as `key:value` pairs.
+   * No more than 64 per resource.
+   * The maximum string length in characters for each value is 63.
+   * Each value must match the regular expression `[-_0-9a-z]*`.
+   * The string length in characters for each key must be 1-63.
+   * Each key must match the regular expression `[a-z][-_0-9a-z]*`.
+   */
   labels: { [key: string]: string };
   /** ID of default security group for network. */
   defaultSecurityGroupId: string;

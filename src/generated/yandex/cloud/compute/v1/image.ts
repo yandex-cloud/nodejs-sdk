@@ -2,6 +2,7 @@
 import { messageTypeRegistry } from "../../../../typeRegistry";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import { HardwareGeneration } from "../../../../yandex/cloud/compute/v1/hardware_generation";
 import { Timestamp } from "../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.compute.v1";
@@ -49,6 +50,11 @@ export interface Image {
   os?: Os;
   /** When true, indicates there is an image pool for fast creation disks from the image. */
   pooled: boolean;
+  /**
+   * If specified, forces the same HardwareGeneration features to be applied to the instance
+   * created using this image as a source for the boot disk. Otherwise the current default will be used.
+   */
+  hardwareGeneration?: HardwareGeneration;
 }
 
 export enum Image_Status {
@@ -228,6 +234,12 @@ export const Image = {
     if (message.pooled === true) {
       writer.uint32(104).bool(message.pooled);
     }
+    if (message.hardwareGeneration !== undefined) {
+      HardwareGeneration.encode(
+        message.hardwareGeneration,
+        writer.uint32(114).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -283,6 +295,12 @@ export const Image = {
           break;
         case 13:
           message.pooled = reader.bool();
+          break;
+        case 14:
+          message.hardwareGeneration = HardwareGeneration.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -343,6 +361,11 @@ export const Image = {
       object.pooled !== undefined && object.pooled !== null
         ? Boolean(object.pooled)
         : false;
+    message.hardwareGeneration =
+      object.hardwareGeneration !== undefined &&
+      object.hardwareGeneration !== null
+        ? HardwareGeneration.fromJSON(object.hardwareGeneration)
+        : undefined;
     return message;
   },
 
@@ -376,6 +399,10 @@ export const Image = {
     message.os !== undefined &&
       (obj.os = message.os ? Os.toJSON(message.os) : undefined);
     message.pooled !== undefined && (obj.pooled = message.pooled);
+    message.hardwareGeneration !== undefined &&
+      (obj.hardwareGeneration = message.hardwareGeneration
+        ? HardwareGeneration.toJSON(message.hardwareGeneration)
+        : undefined);
     return obj;
   },
 
@@ -404,6 +431,11 @@ export const Image = {
         ? Os.fromPartial(object.os)
         : undefined;
     message.pooled = object.pooled ?? false;
+    message.hardwareGeneration =
+      object.hardwareGeneration !== undefined &&
+      object.hardwareGeneration !== null
+        ? HardwareGeneration.fromPartial(object.hardwareGeneration)
+        : undefined;
     return message;
   },
 };

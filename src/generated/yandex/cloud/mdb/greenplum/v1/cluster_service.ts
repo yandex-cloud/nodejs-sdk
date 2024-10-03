@@ -144,6 +144,10 @@ export interface CreateClusterRequest {
   configSpec?: ConfigSpec;
   /** Cloud storage settings */
   cloudStorage?: CloudStorage;
+  /** Host groups hosting VMs of the master subcluster. */
+  masterHostGroupIds: string[];
+  /** Host groups hosting VMs of the segment subcluster. */
+  segmentHostGroupIds: string[];
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -161,6 +165,7 @@ export interface ConfigSpec {
   greenplumConfig6?: GreenplumConfig6 | undefined;
   /** Odyssey® pool settings. */
   pool?: ConnectionPoolerConfig;
+  /** Managed Greenplum® background tasks configuration. */
   backgroundActivities?: BackgroundActivitiesConfig;
   pxfConfig?: PXFConfig;
 }
@@ -200,6 +205,8 @@ export interface UpdateClusterRequest {
   segmentConfig?: SegmentSubclusterConfigSpec;
   /** Owner user password. */
   userPassword: string;
+  /** ID of the network to move the cluster to. */
+  networkId: string;
   /** The Greenplum® cluster maintenance window. Should be defined by either one of the two options. */
   maintenanceWindow?: MaintenanceWindow;
   /** User security groups. */
@@ -243,6 +250,12 @@ export interface ExpandRequest {
   addSegmentsPerHostCount: number;
   /** Redistribute duration, in seconds */
   duration: number;
+  /** Redistribute process parallelism, 0 - for automatic detection */
+  parallel: number;
+  /** Deny all client connections during the expand operation */
+  closeCluster: boolean;
+  /** Perform redistribution process by small chunks as background activity */
+  delayRedistribution: boolean;
 }
 
 export interface DeleteClusterRequest {
@@ -288,6 +301,24 @@ export interface StopClusterMetadata {
   $type: "yandex.cloud.mdb.greenplum.v1.StopClusterMetadata";
   /** ID of the Greenplum® cluster being stopped. */
   clusterId: string;
+}
+
+export interface MoveClusterRequest {
+  $type: "yandex.cloud.mdb.greenplum.v1.MoveClusterRequest";
+  /** ID of the Greenplum® cluster to move. */
+  clusterId: string;
+  /** ID of the destination folder. */
+  destinationFolderId: string;
+}
+
+export interface MoveClusterMetadata {
+  $type: "yandex.cloud.mdb.greenplum.v1.MoveClusterMetadata";
+  /** ID of the Greenplum® cluster being moved. */
+  clusterId: string;
+  /** ID of the source folder. */
+  sourceFolderId: string;
+  /** ID of the destination folder. */
+  destinationFolderId: string;
 }
 
 export interface ListClusterOperationsRequest {
@@ -631,6 +662,22 @@ export interface ListClusterBackupsResponse {
   nextPageToken: string;
 }
 
+export interface BackupClusterRequest {
+  $type: "yandex.cloud.mdb.greenplum.v1.BackupClusterRequest";
+  /**
+   * ID of the Greenplum cluster to back up.
+   * To get the Greenplum cluster ID, use a [ClusterService.List] request.
+   */
+  clusterId: string;
+}
+
+export interface BackupClusterMetadata {
+  $type: "yandex.cloud.mdb.greenplum.v1.BackupClusterMetadata";
+  /** ID of the Greenplum cluster to back up. */
+  clusterId: string;
+  backupId: string;
+}
+
 export interface RestoreClusterRequest {
   $type: "yandex.cloud.mdb.greenplum.v1.RestoreClusterRequest";
   /**
@@ -676,6 +723,12 @@ export interface RestoreClusterRequest {
   segmentHostCount: number;
   /** Number of segments on each host */
   segmentInHost: number;
+  /** List of databases and tables to restore */
+  restoreOnly: string[];
+  /** Host groups hosting VMs of the master subcluster. */
+  masterHostGroupIds: string[];
+  /** Host groups hosting VMs of the segment subcluster. */
+  segmentHostGroupIds: string[];
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
@@ -956,6 +1009,8 @@ const baseCreateClusterRequest: object = {
   securityGroupIds: "",
   deletionProtection: false,
   hostGroupIds: "",
+  masterHostGroupIds: "",
+  segmentHostGroupIds: "",
 };
 
 export const CreateClusterRequest = {
@@ -1045,6 +1100,12 @@ export const CreateClusterRequest = {
         writer.uint32(170).fork()
       ).ldelim();
     }
+    for (const v of message.masterHostGroupIds) {
+      writer.uint32(178).string(v!);
+    }
+    for (const v of message.segmentHostGroupIds) {
+      writer.uint32(186).string(v!);
+    }
     return writer;
   },
 
@@ -1058,6 +1119,8 @@ export const CreateClusterRequest = {
     message.labels = {};
     message.securityGroupIds = [];
     message.hostGroupIds = [];
+    message.masterHostGroupIds = [];
+    message.segmentHostGroupIds = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1135,6 +1198,12 @@ export const CreateClusterRequest = {
           break;
         case 21:
           message.cloudStorage = CloudStorage.decode(reader, reader.uint32());
+          break;
+        case 22:
+          message.masterHostGroupIds.push(reader.string());
+          break;
+        case 23:
+          message.segmentHostGroupIds.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1228,6 +1297,12 @@ export const CreateClusterRequest = {
       object.cloudStorage !== undefined && object.cloudStorage !== null
         ? CloudStorage.fromJSON(object.cloudStorage)
         : undefined;
+    message.masterHostGroupIds = (object.masterHostGroupIds ?? []).map(
+      (e: any) => String(e)
+    );
+    message.segmentHostGroupIds = (object.segmentHostGroupIds ?? []).map(
+      (e: any) => String(e)
+    );
     return message;
   },
 
@@ -1291,6 +1366,16 @@ export const CreateClusterRequest = {
       (obj.cloudStorage = message.cloudStorage
         ? CloudStorage.toJSON(message.cloudStorage)
         : undefined);
+    if (message.masterHostGroupIds) {
+      obj.masterHostGroupIds = message.masterHostGroupIds.map((e) => e);
+    } else {
+      obj.masterHostGroupIds = [];
+    }
+    if (message.segmentHostGroupIds) {
+      obj.segmentHostGroupIds = message.segmentHostGroupIds.map((e) => e);
+    } else {
+      obj.segmentHostGroupIds = [];
+    }
     return obj;
   },
 
@@ -1344,6 +1429,9 @@ export const CreateClusterRequest = {
       object.cloudStorage !== undefined && object.cloudStorage !== null
         ? CloudStorage.fromPartial(object.cloudStorage)
         : undefined;
+    message.masterHostGroupIds = object.masterHostGroupIds?.map((e) => e) || [];
+    message.segmentHostGroupIds =
+      object.segmentHostGroupIds?.map((e) => e) || [];
     return message;
   },
 };
@@ -1750,6 +1838,7 @@ const baseUpdateClusterRequest: object = {
   description: "",
   name: "",
   userPassword: "",
+  networkId: "",
   securityGroupIds: "",
   deletionProtection: false,
 };
@@ -1801,6 +1890,9 @@ export const UpdateClusterRequest = {
     }
     if (message.userPassword !== "") {
       writer.uint32(106).string(message.userPassword);
+    }
+    if (message.networkId !== "") {
+      writer.uint32(114).string(message.networkId);
     }
     if (message.maintenanceWindow !== undefined) {
       MaintenanceWindow.encode(
@@ -1877,6 +1969,9 @@ export const UpdateClusterRequest = {
         case 13:
           message.userPassword = reader.string();
           break;
+        case 14:
+          message.networkId = reader.string();
+          break;
         case 15:
           message.maintenanceWindow = MaintenanceWindow.decode(
             reader,
@@ -1943,6 +2038,10 @@ export const UpdateClusterRequest = {
       object.userPassword !== undefined && object.userPassword !== null
         ? String(object.userPassword)
         : "";
+    message.networkId =
+      object.networkId !== undefined && object.networkId !== null
+        ? String(object.networkId)
+        : "";
     message.maintenanceWindow =
       object.maintenanceWindow !== undefined &&
       object.maintenanceWindow !== null
@@ -1997,6 +2096,7 @@ export const UpdateClusterRequest = {
         : undefined);
     message.userPassword !== undefined &&
       (obj.userPassword = message.userPassword);
+    message.networkId !== undefined && (obj.networkId = message.networkId);
     message.maintenanceWindow !== undefined &&
       (obj.maintenanceWindow = message.maintenanceWindow
         ? MaintenanceWindow.toJSON(message.maintenanceWindow)
@@ -2051,6 +2151,7 @@ export const UpdateClusterRequest = {
         ? SegmentSubclusterConfigSpec.fromPartial(object.segmentConfig)
         : undefined;
     message.userPassword = object.userPassword ?? "";
+    message.networkId = object.networkId ?? "";
     message.maintenanceWindow =
       object.maintenanceWindow !== undefined &&
       object.maintenanceWindow !== null
@@ -2300,6 +2401,9 @@ const baseExpandRequest: object = {
   segmentHostCount: 0,
   addSegmentsPerHostCount: 0,
   duration: 0,
+  parallel: 0,
+  closeCluster: false,
+  delayRedistribution: false,
 };
 
 export const ExpandRequest = {
@@ -2320,6 +2424,15 @@ export const ExpandRequest = {
     }
     if (message.duration !== 0) {
       writer.uint32(32).int64(message.duration);
+    }
+    if (message.parallel !== 0) {
+      writer.uint32(40).int64(message.parallel);
+    }
+    if (message.closeCluster === true) {
+      writer.uint32(48).bool(message.closeCluster);
+    }
+    if (message.delayRedistribution === true) {
+      writer.uint32(56).bool(message.delayRedistribution);
     }
     return writer;
   },
@@ -2344,6 +2457,15 @@ export const ExpandRequest = {
           break;
         case 4:
           message.duration = longToNumber(reader.int64() as Long);
+          break;
+        case 5:
+          message.parallel = longToNumber(reader.int64() as Long);
+          break;
+        case 6:
+          message.closeCluster = reader.bool();
+          break;
+        case 7:
+          message.delayRedistribution = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2372,6 +2494,19 @@ export const ExpandRequest = {
       object.duration !== undefined && object.duration !== null
         ? Number(object.duration)
         : 0;
+    message.parallel =
+      object.parallel !== undefined && object.parallel !== null
+        ? Number(object.parallel)
+        : 0;
+    message.closeCluster =
+      object.closeCluster !== undefined && object.closeCluster !== null
+        ? Boolean(object.closeCluster)
+        : false;
+    message.delayRedistribution =
+      object.delayRedistribution !== undefined &&
+      object.delayRedistribution !== null
+        ? Boolean(object.delayRedistribution)
+        : false;
     return message;
   },
 
@@ -2386,6 +2521,12 @@ export const ExpandRequest = {
       ));
     message.duration !== undefined &&
       (obj.duration = Math.round(message.duration));
+    message.parallel !== undefined &&
+      (obj.parallel = Math.round(message.parallel));
+    message.closeCluster !== undefined &&
+      (obj.closeCluster = message.closeCluster);
+    message.delayRedistribution !== undefined &&
+      (obj.delayRedistribution = message.delayRedistribution);
     return obj;
   },
 
@@ -2397,6 +2538,9 @@ export const ExpandRequest = {
     message.segmentHostCount = object.segmentHostCount ?? 0;
     message.addSegmentsPerHostCount = object.addSegmentsPerHostCount ?? 0;
     message.duration = object.duration ?? 0;
+    message.parallel = object.parallel ?? 0;
+    message.closeCluster = object.closeCluster ?? false;
+    message.delayRedistribution = object.delayRedistribution ?? false;
     return message;
   },
 };
@@ -2783,6 +2927,174 @@ export const StopClusterMetadata = {
 };
 
 messageTypeRegistry.set(StopClusterMetadata.$type, StopClusterMetadata);
+
+const baseMoveClusterRequest: object = {
+  $type: "yandex.cloud.mdb.greenplum.v1.MoveClusterRequest",
+  clusterId: "",
+  destinationFolderId: "",
+};
+
+export const MoveClusterRequest = {
+  $type: "yandex.cloud.mdb.greenplum.v1.MoveClusterRequest" as const,
+
+  encode(
+    message: MoveClusterRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    if (message.destinationFolderId !== "") {
+      writer.uint32(18).string(message.destinationFolderId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MoveClusterRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMoveClusterRequest } as MoveClusterRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.destinationFolderId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MoveClusterRequest {
+    const message = { ...baseMoveClusterRequest } as MoveClusterRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.destinationFolderId =
+      object.destinationFolderId !== undefined &&
+      object.destinationFolderId !== null
+        ? String(object.destinationFolderId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: MoveClusterRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.destinationFolderId !== undefined &&
+      (obj.destinationFolderId = message.destinationFolderId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MoveClusterRequest>, I>>(
+    object: I
+  ): MoveClusterRequest {
+    const message = { ...baseMoveClusterRequest } as MoveClusterRequest;
+    message.clusterId = object.clusterId ?? "";
+    message.destinationFolderId = object.destinationFolderId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(MoveClusterRequest.$type, MoveClusterRequest);
+
+const baseMoveClusterMetadata: object = {
+  $type: "yandex.cloud.mdb.greenplum.v1.MoveClusterMetadata",
+  clusterId: "",
+  sourceFolderId: "",
+  destinationFolderId: "",
+};
+
+export const MoveClusterMetadata = {
+  $type: "yandex.cloud.mdb.greenplum.v1.MoveClusterMetadata" as const,
+
+  encode(
+    message: MoveClusterMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    if (message.sourceFolderId !== "") {
+      writer.uint32(18).string(message.sourceFolderId);
+    }
+    if (message.destinationFolderId !== "") {
+      writer.uint32(26).string(message.destinationFolderId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MoveClusterMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMoveClusterMetadata } as MoveClusterMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.sourceFolderId = reader.string();
+          break;
+        case 3:
+          message.destinationFolderId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MoveClusterMetadata {
+    const message = { ...baseMoveClusterMetadata } as MoveClusterMetadata;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.sourceFolderId =
+      object.sourceFolderId !== undefined && object.sourceFolderId !== null
+        ? String(object.sourceFolderId)
+        : "";
+    message.destinationFolderId =
+      object.destinationFolderId !== undefined &&
+      object.destinationFolderId !== null
+        ? String(object.destinationFolderId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: MoveClusterMetadata): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.sourceFolderId !== undefined &&
+      (obj.sourceFolderId = message.sourceFolderId);
+    message.destinationFolderId !== undefined &&
+      (obj.destinationFolderId = message.destinationFolderId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MoveClusterMetadata>, I>>(
+    object: I
+  ): MoveClusterMetadata {
+    const message = { ...baseMoveClusterMetadata } as MoveClusterMetadata;
+    message.clusterId = object.clusterId ?? "";
+    message.sourceFolderId = object.sourceFolderId ?? "";
+    message.destinationFolderId = object.destinationFolderId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(MoveClusterMetadata.$type, MoveClusterMetadata);
 
 const baseListClusterOperationsRequest: object = {
   $type: "yandex.cloud.mdb.greenplum.v1.ListClusterOperationsRequest",
@@ -4222,6 +4534,149 @@ messageTypeRegistry.set(
   ListClusterBackupsResponse
 );
 
+const baseBackupClusterRequest: object = {
+  $type: "yandex.cloud.mdb.greenplum.v1.BackupClusterRequest",
+  clusterId: "",
+};
+
+export const BackupClusterRequest = {
+  $type: "yandex.cloud.mdb.greenplum.v1.BackupClusterRequest" as const,
+
+  encode(
+    message: BackupClusterRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): BackupClusterRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseBackupClusterRequest } as BackupClusterRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BackupClusterRequest {
+    const message = { ...baseBackupClusterRequest } as BackupClusterRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: BackupClusterRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<BackupClusterRequest>, I>>(
+    object: I
+  ): BackupClusterRequest {
+    const message = { ...baseBackupClusterRequest } as BackupClusterRequest;
+    message.clusterId = object.clusterId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(BackupClusterRequest.$type, BackupClusterRequest);
+
+const baseBackupClusterMetadata: object = {
+  $type: "yandex.cloud.mdb.greenplum.v1.BackupClusterMetadata",
+  clusterId: "",
+  backupId: "",
+};
+
+export const BackupClusterMetadata = {
+  $type: "yandex.cloud.mdb.greenplum.v1.BackupClusterMetadata" as const,
+
+  encode(
+    message: BackupClusterMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    if (message.backupId !== "") {
+      writer.uint32(18).string(message.backupId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): BackupClusterMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseBackupClusterMetadata } as BackupClusterMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        case 2:
+          message.backupId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BackupClusterMetadata {
+    const message = { ...baseBackupClusterMetadata } as BackupClusterMetadata;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    message.backupId =
+      object.backupId !== undefined && object.backupId !== null
+        ? String(object.backupId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: BackupClusterMetadata): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    message.backupId !== undefined && (obj.backupId = message.backupId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<BackupClusterMetadata>, I>>(
+    object: I
+  ): BackupClusterMetadata {
+    const message = { ...baseBackupClusterMetadata } as BackupClusterMetadata;
+    message.clusterId = object.clusterId ?? "";
+    message.backupId = object.backupId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(BackupClusterMetadata.$type, BackupClusterMetadata);
+
 const baseRestoreClusterRequest: object = {
   $type: "yandex.cloud.mdb.greenplum.v1.RestoreClusterRequest",
   backupId: "",
@@ -4236,6 +4691,9 @@ const baseRestoreClusterRequest: object = {
   placementGroupId: "",
   segmentHostCount: 0,
   segmentInHost: 0,
+  restoreOnly: "",
+  masterHostGroupIds: "",
+  segmentHostGroupIds: "",
 };
 
 export const RestoreClusterRequest = {
@@ -4322,6 +4780,15 @@ export const RestoreClusterRequest = {
     if (message.segmentInHost !== 0) {
       writer.uint32(144).int64(message.segmentInHost);
     }
+    for (const v of message.restoreOnly) {
+      writer.uint32(154).string(v!);
+    }
+    for (const v of message.masterHostGroupIds) {
+      writer.uint32(162).string(v!);
+    }
+    for (const v of message.segmentHostGroupIds) {
+      writer.uint32(170).string(v!);
+    }
     return writer;
   },
 
@@ -4335,6 +4802,9 @@ export const RestoreClusterRequest = {
     message.labels = {};
     message.securityGroupIds = [];
     message.hostGroupIds = [];
+    message.restoreOnly = [];
+    message.masterHostGroupIds = [];
+    message.segmentHostGroupIds = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -4405,6 +4875,15 @@ export const RestoreClusterRequest = {
           break;
         case 18:
           message.segmentInHost = longToNumber(reader.int64() as Long);
+          break;
+        case 19:
+          message.restoreOnly.push(reader.string());
+          break;
+        case 20:
+          message.masterHostGroupIds.push(reader.string());
+          break;
+        case 21:
+          message.segmentHostGroupIds.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -4490,6 +4969,13 @@ export const RestoreClusterRequest = {
       object.segmentInHost !== undefined && object.segmentInHost !== null
         ? Number(object.segmentInHost)
         : 0;
+    message.restoreOnly = (object.restoreOnly ?? []).map((e: any) => String(e));
+    message.masterHostGroupIds = (object.masterHostGroupIds ?? []).map(
+      (e: any) => String(e)
+    );
+    message.segmentHostGroupIds = (object.segmentHostGroupIds ?? []).map(
+      (e: any) => String(e)
+    );
     return message;
   },
 
@@ -4544,6 +5030,21 @@ export const RestoreClusterRequest = {
       (obj.segmentHostCount = Math.round(message.segmentHostCount));
     message.segmentInHost !== undefined &&
       (obj.segmentInHost = Math.round(message.segmentInHost));
+    if (message.restoreOnly) {
+      obj.restoreOnly = message.restoreOnly.map((e) => e);
+    } else {
+      obj.restoreOnly = [];
+    }
+    if (message.masterHostGroupIds) {
+      obj.masterHostGroupIds = message.masterHostGroupIds.map((e) => e);
+    } else {
+      obj.masterHostGroupIds = [];
+    }
+    if (message.segmentHostGroupIds) {
+      obj.segmentHostGroupIds = message.segmentHostGroupIds.map((e) => e);
+    } else {
+      obj.segmentHostGroupIds = [];
+    }
     return obj;
   },
 
@@ -4589,6 +5090,10 @@ export const RestoreClusterRequest = {
         : undefined;
     message.segmentHostCount = object.segmentHostCount ?? 0;
     message.segmentInHost = object.segmentInHost ?? 0;
+    message.restoreOnly = object.restoreOnly?.map((e) => e) || [];
+    message.masterHostGroupIds = object.masterHostGroupIds?.map((e) => e) || [];
+    message.segmentHostGroupIds =
+      object.segmentHostGroupIds?.map((e) => e) || [];
     return message;
   },
 };
@@ -4861,6 +5366,18 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Moves the specified Greenplum® cluster to the specified folder. */
+  move: {
+    path: "/yandex.cloud.mdb.greenplum.v1.ClusterService/Move",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: MoveClusterRequest) =>
+      Buffer.from(MoveClusterRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => MoveClusterRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /** Retrieves the list of Operation resources for the specified cluster. */
   listOperations: {
     path: "/yandex.cloud.mdb.greenplum.v1.ClusterService/ListOperations",
@@ -4943,6 +5460,18 @@ export const ClusterServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListClusterBackupsResponse.decode(value),
   },
+  /** Creates a backup for the specified Greenplum cluster. */
+  backup: {
+    path: "/yandex.cloud.mdb.greenplum.v1.ClusterService/Backup",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: BackupClusterRequest) =>
+      Buffer.from(BackupClusterRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => BackupClusterRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /** Creates a new Greenplum® cluster using the specified backup. */
   restore: {
     path: "/yandex.cloud.mdb.greenplum.v1.ClusterService/Restore",
@@ -4978,6 +5507,8 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
   start: handleUnaryCall<StartClusterRequest, Operation>;
   /** Stops the specified Greenplum® cluster. */
   stop: handleUnaryCall<StopClusterRequest, Operation>;
+  /** Moves the specified Greenplum® cluster to the specified folder. */
+  move: handleUnaryCall<MoveClusterRequest, Operation>;
   /** Retrieves the list of Operation resources for the specified cluster. */
   listOperations: handleUnaryCall<
     ListClusterOperationsRequest,
@@ -5005,6 +5536,8 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
     ListClusterBackupsRequest,
     ListClusterBackupsResponse
   >;
+  /** Creates a backup for the specified Greenplum cluster. */
+  backup: handleUnaryCall<BackupClusterRequest, Operation>;
   /** Creates a new Greenplum® cluster using the specified backup. */
   restore: handleUnaryCall<RestoreClusterRequest, Operation>;
 }
@@ -5151,6 +5684,22 @@ export interface ClusterServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
+  /** Moves the specified Greenplum® cluster to the specified folder. */
+  move(
+    request: MoveClusterRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  move(
+    request: MoveClusterRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  move(
+    request: MoveClusterRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
   /** Retrieves the list of Operation resources for the specified cluster. */
   listOperations(
     request: ListClusterOperationsRequest,
@@ -5285,6 +5834,22 @@ export interface ClusterServiceClient extends Client {
       error: ServiceError | null,
       response: ListClusterBackupsResponse
     ) => void
+  ): ClientUnaryCall;
+  /** Creates a backup for the specified Greenplum cluster. */
+  backup(
+    request: BackupClusterRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  backup(
+    request: BackupClusterRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  backup(
+    request: BackupClusterRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
   /** Creates a new Greenplum® cluster using the specified backup. */
   restore(
