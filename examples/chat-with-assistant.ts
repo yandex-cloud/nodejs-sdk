@@ -22,10 +22,10 @@ const folderId = getEnv('YC_FOLDER_ID');
 (async () => {
     const session = new Session({ iamToken });
 
-    const assistantApi = cloudApi.ai.assistants_v1_assistant_service;
-    const messageApi = cloudApi.ai.assistants_v1_threads_message_service;
-    const threadApi = cloudApi.ai.assistants_v1_threads_thread_service;
-    const runApi = cloudApi.ai.assistants_v1_runs_run_service;
+    const assistantApi = cloudApi.ai.assistants_assistant_service;
+    const messageApi = cloudApi.ai.assistants_threads_message_service;
+    const threadApi = cloudApi.ai.assistants_threads_thread_service;
+    const runApi = cloudApi.ai.assistants_runs_run_service;
 
     // const assistantClient = session.client(assistantApi.AssistantServiceClient);
     const assistantClient = session.client(
@@ -91,7 +91,7 @@ const folderId = getEnv('YC_FOLDER_ID');
         runApi.ListenRunRequest.fromPartial({ runId: run.id }),
     );
 
-    let lastStreamEvent: cloudApi.ai.assistants_v1_runs_run_service.StreamEvent | null = null;
+    let lastStreamEvent: cloudApi.ai.assistants_runs_run_service.StreamEvent | null = null;
 
     for await (const streamEvent of asyncIterableForStreamEvent) {
         lastStreamEvent = streamEvent;
