@@ -7,6 +7,8 @@ import * as _ from 'lodash';
 import { logger } from '../src/utils/logger';
 import { servicesConfig } from './services';
 
+import { exportAliasExceptions } from './exceptions';
+
 const GENERATED_CODE_DIR = path.resolve('./src/generated');
 const GENERATED_PROJECTS_DIR = path.join(GENERATED_CODE_DIR, 'yandex', 'cloud');
 const PROTO_DIR = path.resolve('./cloudapi');
@@ -56,6 +58,12 @@ interface ProjectMeta {
 
 const projectsMeta: Record<string, ProjectMeta> = {};
 
+const getExportAlias = (relativePath: string) => exportAliasExceptions[relativePath]
+        || relativePath
+            .split(path.sep)
+            .filter((str) => str !== 'v1')
+            .join('_');
+
 for (const projectDir of projectsDirs) {
     logger.debug(`Processing project directory ${projectDir}`);
 
@@ -82,22 +90,18 @@ for (const projectDir of projectsDirs) {
                 .relative(projectDir, modulePath)
                 .replace('.ts', '');
 
-            const relativePathSegments = relativePath.split(path.sep);
-            const moduleName = path.basename(modulePath);
+            const exportAlias = getExportAlias(relativePath);
 
-            const moduleAlias = relativePathSegments.join('_');
+            if (relativePath.endsWith('_service')) {
+                const name = path.basename(modulePath);
 
-            const { ext } = path.parse(modulePath);
-            const moduleWithoutExt = relativePath.replace(ext, '');
-
-            if (moduleWithoutExt.endsWith('_service')) {
                 projectsMeta[indexModulePath].services.push({
-                    name: moduleName,
-                    exportAlias: moduleAlias,
+                    name,
+                    exportAlias,
                 });
             }
 
-            return `export * as ${moduleAlias} from './${moduleWithoutExt}'`;
+            return `export * as ${exportAlias} from './${relativePath}'`;
         });
 
         const indexModuleContent = exportStatements.join('\n');
@@ -161,6 +165,8 @@ for (const [indexModulePath, projectMeta] of Object.entries(projectsMeta)) {
 
 logger.debug(`Writing result to ${rootIndexModulePath} module`);
 logger.debug(`Writing result to ${serviceClientsModulePath} module`);
+
+logger.debug('\n\n\n');
 
 for (const serviceName of Object.keys(servicesConfig)) {
     const obj = servicesConfig[serviceName];

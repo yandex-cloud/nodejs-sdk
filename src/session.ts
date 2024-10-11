@@ -24,10 +24,10 @@ const isIamToken = (config: SessionConfig): config is IamTokenCredentialsConfig 
 
 const isServiceAccount = (config: SessionConfig): config is ServiceAccountCredentialsConfig => 'serviceAccountJson' in config;
 
-const createIamToken = async (iamEndpoint: string, req: Partial<cloudApi.iam.v1_iam_token_service.CreateIamTokenRequest>) => {
+const createIamToken = async (iamEndpoint: string, req: Partial<cloudApi.iam.iam_token_service.CreateIamTokenRequest>) => {
     const channel = createChannel(iamEndpoint, credentials.createSsl());
     const client = clientFactory.create(serviceClients.IamTokenServiceClient.service, channel);
-    const resp = await client.create(cloudApi.iam.v1_iam_token_service.CreateIamTokenRequest.fromPartial(req));
+    const resp = await client.create(cloudApi.iam.iam_token_service.CreateIamTokenRequest.fromPartial(req));
 
     return resp.iamToken;
 };

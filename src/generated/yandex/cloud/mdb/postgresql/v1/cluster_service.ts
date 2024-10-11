@@ -1110,7 +1110,7 @@ type ListClustersResponseType = {
     fromJSON(object: any): ListClustersResponse;
     toJSON(message: ListClustersResponse): unknown;
     fromPartial<I extends Exact<DeepPartial<ListClustersResponse>, I>>(object: I): ListClustersResponse;
-}
+};
 export const ListClustersResponse: ListClustersResponseType = {
   $type: "yandex.cloud.mdb.postgresql.v1.ListClustersResponse" as const,
 
