@@ -4,6 +4,7 @@ import Long from "long";
 import _m0 from "protobufjs/minimal";
 import {
   DoubleValue,
+  BoolValue,
   Int64Value,
 } from "../../../../../../google/protobuf/wrappers";
 
@@ -21,6 +22,8 @@ export interface Mongodconfig50 {
   operationProfiling?: Mongodconfig50_OperationProfiling;
   /** `net` section of mongod configuration. */
   net?: Mongodconfig50_Network;
+  /** `SetParameter` section of mongod configuration. */
+  setParameter?: Mongodconfig50_SetParameter;
 }
 
 export interface Mongodconfig50_Storage {
@@ -38,6 +41,8 @@ export interface Mongodconfig50_Storage_WiredTiger {
   engineConfig?: Mongodconfig50_Storage_WiredTiger_EngineConfig;
   /** Collection configuration for WiredTiger. */
   collectionConfig?: Mongodconfig50_Storage_WiredTiger_CollectionConfig;
+  /** Index configuration for WiredTiger */
+  indexConfig?: Mongodconfig50_Storage_WiredTiger_IndexConfig;
 }
 
 export interface Mongodconfig50_Storage_WiredTiger_EngineConfig {
@@ -110,6 +115,12 @@ export function mongodconfig50_Storage_WiredTiger_CollectionConfig_CompressorToJ
   }
 }
 
+export interface Mongodconfig50_Storage_WiredTiger_IndexConfig {
+  $type: "yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0.Storage.WiredTiger.IndexConfig";
+  /** Enables or disables [prefix compression](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-prefix-compression) */
+  prefixCompression?: boolean;
+}
+
 export interface Mongodconfig50_Storage_Journal {
   $type: "yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0.Storage.Journal";
   /**
@@ -129,6 +140,11 @@ export interface Mongodconfig50_OperationProfiling {
    * running in the SLOW_OP mode.
    */
   slowOpThreshold?: number;
+  /**
+   * The fraction of slow operations that should be profiled or logged.
+   * operationProfiling.slowOpSampleRate accepts values between 0 and 1, inclusive.
+   */
+  slowOpSampleRate?: number;
 }
 
 export enum Mongodconfig50_OperationProfiling_Mode {
@@ -186,6 +202,90 @@ export interface Mongodconfig50_Network {
   $type: "yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0.Network";
   /** The maximum number of simultaneous connections that mongod will accept. */
   maxIncomingConnections?: number;
+  /** Compression settings */
+  compression?: Mongodconfig50_Network_Compression;
+}
+
+export interface Mongodconfig50_Network_Compression {
+  $type: "yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0.Network.Compression";
+  /**
+   * Specifies the default compressor(s) to use for communication between this mongod or mongos instance and:
+   * - other members of the deployment if the instance is part of a replica set or a sharded cluster
+   * - mongosh
+   * - drivers that support the OP_COMPRESSED message format.
+   * MongoDB supports the following compressors:
+   */
+  compressors: Mongodconfig50_Network_Compression_Compressor[];
+}
+
+export enum Mongodconfig50_Network_Compression_Compressor {
+  COMPRESSOR_UNSPECIFIED = 0,
+  /** SNAPPY - The [Snappy](https://docs.mongodb.com/v4.2/reference/glossary/#term-snappy) compression. */
+  SNAPPY = 1,
+  /** ZLIB - The [zlib](https://docs.mongodb.com/v4.2/reference/glossary/#term-zlib) compression. */
+  ZLIB = 2,
+  /** ZSTD - The [zstd](https://docs.mongodb.com/v4.2/reference/glossary/#term-zstd) compression. */
+  ZSTD = 3,
+  /** DISABLED - No compression */
+  DISABLED = 4,
+  UNRECOGNIZED = -1,
+}
+
+export function mongodconfig50_Network_Compression_CompressorFromJSON(
+  object: any
+): Mongodconfig50_Network_Compression_Compressor {
+  switch (object) {
+    case 0:
+    case "COMPRESSOR_UNSPECIFIED":
+      return Mongodconfig50_Network_Compression_Compressor.COMPRESSOR_UNSPECIFIED;
+    case 1:
+    case "SNAPPY":
+      return Mongodconfig50_Network_Compression_Compressor.SNAPPY;
+    case 2:
+    case "ZLIB":
+      return Mongodconfig50_Network_Compression_Compressor.ZLIB;
+    case 3:
+    case "ZSTD":
+      return Mongodconfig50_Network_Compression_Compressor.ZSTD;
+    case 4:
+    case "DISABLED":
+      return Mongodconfig50_Network_Compression_Compressor.DISABLED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Mongodconfig50_Network_Compression_Compressor.UNRECOGNIZED;
+  }
+}
+
+export function mongodconfig50_Network_Compression_CompressorToJSON(
+  object: Mongodconfig50_Network_Compression_Compressor
+): string {
+  switch (object) {
+    case Mongodconfig50_Network_Compression_Compressor.COMPRESSOR_UNSPECIFIED:
+      return "COMPRESSOR_UNSPECIFIED";
+    case Mongodconfig50_Network_Compression_Compressor.SNAPPY:
+      return "SNAPPY";
+    case Mongodconfig50_Network_Compression_Compressor.ZLIB:
+      return "ZLIB";
+    case Mongodconfig50_Network_Compression_Compressor.ZSTD:
+      return "ZSTD";
+    case Mongodconfig50_Network_Compression_Compressor.DISABLED:
+      return "DISABLED";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export interface Mongodconfig50_SetParameter {
+  $type: "yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0.SetParameter";
+  /**
+   * Enables or disables the mechanism that controls the rate at which the primary applies its writes with the
+   * goal of keeping the secondary members [majority committed](https://www.mongodb.com/docs/v4.2/reference/command/replSetGetStatus/#replSetGetStatus.optimes.lastCommittedOpTime)
+   * lag under a configurable maximum value.
+   */
+  enableFlowControl?: boolean;
+  /** The minimum time window in seconds for which the storage engine keeps the snapshot history. */
+  minSnapshotHistoryWindowInSeconds?: number;
 }
 
 export interface Mongocfgconfig50 {
@@ -296,6 +396,78 @@ export interface Mongosconfig50_Network {
   $type: "yandex.cloud.mdb.mongodb.v1.config.MongosConfig5_0.Network";
   /** The maximum number of simultaneous connections that mongos will accept. */
   maxIncomingConnections?: number;
+  /** Compression settings */
+  compression?: Mongosconfig50_Network_Compression;
+}
+
+export interface Mongosconfig50_Network_Compression {
+  $type: "yandex.cloud.mdb.mongodb.v1.config.MongosConfig5_0.Network.Compression";
+  /**
+   * Specifies the default compressor(s) to use for communication between this mongod or mongos instance and:
+   * - other members of the deployment if the instance is part of a replica set or a sharded cluster
+   * - mongosh
+   * - drivers that support the OP_COMPRESSED message format.
+   * MongoDB supports the following compressors:
+   */
+  compressors: Mongosconfig50_Network_Compression_Compressor[];
+}
+
+export enum Mongosconfig50_Network_Compression_Compressor {
+  COMPRESSOR_UNSPECIFIED = 0,
+  /** SNAPPY - The [Snappy](https://docs.mongodb.com/v4.2/reference/glossary/#term-snappy) compression. */
+  SNAPPY = 1,
+  /** ZLIB - The [zlib](https://docs.mongodb.com/v4.2/reference/glossary/#term-zlib) compression. */
+  ZLIB = 2,
+  /** ZSTD - The [zstd](https://docs.mongodb.com/v4.2/reference/glossary/#term-zstd) compression. */
+  ZSTD = 3,
+  /** DISABLED - No compression */
+  DISABLED = 4,
+  UNRECOGNIZED = -1,
+}
+
+export function mongosconfig50_Network_Compression_CompressorFromJSON(
+  object: any
+): Mongosconfig50_Network_Compression_Compressor {
+  switch (object) {
+    case 0:
+    case "COMPRESSOR_UNSPECIFIED":
+      return Mongosconfig50_Network_Compression_Compressor.COMPRESSOR_UNSPECIFIED;
+    case 1:
+    case "SNAPPY":
+      return Mongosconfig50_Network_Compression_Compressor.SNAPPY;
+    case 2:
+    case "ZLIB":
+      return Mongosconfig50_Network_Compression_Compressor.ZLIB;
+    case 3:
+    case "ZSTD":
+      return Mongosconfig50_Network_Compression_Compressor.ZSTD;
+    case 4:
+    case "DISABLED":
+      return Mongosconfig50_Network_Compression_Compressor.DISABLED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Mongosconfig50_Network_Compression_Compressor.UNRECOGNIZED;
+  }
+}
+
+export function mongosconfig50_Network_Compression_CompressorToJSON(
+  object: Mongosconfig50_Network_Compression_Compressor
+): string {
+  switch (object) {
+    case Mongosconfig50_Network_Compression_Compressor.COMPRESSOR_UNSPECIFIED:
+      return "COMPRESSOR_UNSPECIFIED";
+    case Mongosconfig50_Network_Compression_Compressor.SNAPPY:
+      return "SNAPPY";
+    case Mongosconfig50_Network_Compression_Compressor.ZLIB:
+      return "ZLIB";
+    case Mongosconfig50_Network_Compression_Compressor.ZSTD:
+      return "ZSTD";
+    case Mongosconfig50_Network_Compression_Compressor.DISABLED:
+      return "DISABLED";
+    default:
+      return "UNKNOWN";
+  }
 }
 
 export interface Mongodconfigset50 {
@@ -366,6 +538,12 @@ export const Mongodconfig50 = {
         writer.uint32(26).fork()
       ).ldelim();
     }
+    if (message.setParameter !== undefined) {
+      Mongodconfig50_SetParameter.encode(
+        message.setParameter,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -391,6 +569,12 @@ export const Mongodconfig50 = {
         case 3:
           message.net = Mongodconfig50_Network.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.setParameter = Mongodconfig50_SetParameter.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -414,6 +598,10 @@ export const Mongodconfig50 = {
       object.net !== undefined && object.net !== null
         ? Mongodconfig50_Network.fromJSON(object.net)
         : undefined;
+    message.setParameter =
+      object.setParameter !== undefined && object.setParameter !== null
+        ? Mongodconfig50_SetParameter.fromJSON(object.setParameter)
+        : undefined;
     return message;
   },
 
@@ -430,6 +618,10 @@ export const Mongodconfig50 = {
     message.net !== undefined &&
       (obj.net = message.net
         ? Mongodconfig50_Network.toJSON(message.net)
+        : undefined);
+    message.setParameter !== undefined &&
+      (obj.setParameter = message.setParameter
+        ? Mongodconfig50_SetParameter.toJSON(message.setParameter)
         : undefined);
     return obj;
   },
@@ -452,6 +644,10 @@ export const Mongodconfig50 = {
     message.net =
       object.net !== undefined && object.net !== null
         ? Mongodconfig50_Network.fromPartial(object.net)
+        : undefined;
+    message.setParameter =
+      object.setParameter !== undefined && object.setParameter !== null
+        ? Mongodconfig50_SetParameter.fromPartial(object.setParameter)
         : undefined;
     return message;
   },
@@ -584,6 +780,12 @@ export const Mongodconfig50_Storage_WiredTiger = {
         writer.uint32(18).fork()
       ).ldelim();
     }
+    if (message.indexConfig !== undefined) {
+      Mongodconfig50_Storage_WiredTiger_IndexConfig.encode(
+        message.indexConfig,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -613,6 +815,13 @@ export const Mongodconfig50_Storage_WiredTiger = {
               reader.uint32()
             );
           break;
+        case 3:
+          message.indexConfig =
+            Mongodconfig50_Storage_WiredTiger_IndexConfig.decode(
+              reader,
+              reader.uint32()
+            );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -637,6 +846,12 @@ export const Mongodconfig50_Storage_WiredTiger = {
             object.collectionConfig
           )
         : undefined;
+    message.indexConfig =
+      object.indexConfig !== undefined && object.indexConfig !== null
+        ? Mongodconfig50_Storage_WiredTiger_IndexConfig.fromJSON(
+            object.indexConfig
+          )
+        : undefined;
     return message;
   },
 
@@ -652,6 +867,12 @@ export const Mongodconfig50_Storage_WiredTiger = {
       (obj.collectionConfig = message.collectionConfig
         ? Mongodconfig50_Storage_WiredTiger_CollectionConfig.toJSON(
             message.collectionConfig
+          )
+        : undefined);
+    message.indexConfig !== undefined &&
+      (obj.indexConfig = message.indexConfig
+        ? Mongodconfig50_Storage_WiredTiger_IndexConfig.toJSON(
+            message.indexConfig
           )
         : undefined);
     return obj;
@@ -673,6 +894,12 @@ export const Mongodconfig50_Storage_WiredTiger = {
       object.collectionConfig !== undefined && object.collectionConfig !== null
         ? Mongodconfig50_Storage_WiredTiger_CollectionConfig.fromPartial(
             object.collectionConfig
+          )
+        : undefined;
+    message.indexConfig =
+      object.indexConfig !== undefined && object.indexConfig !== null
+        ? Mongodconfig50_Storage_WiredTiger_IndexConfig.fromPartial(
+            object.indexConfig
           )
         : undefined;
     return message;
@@ -854,6 +1081,95 @@ messageTypeRegistry.set(
   Mongodconfig50_Storage_WiredTiger_CollectionConfig
 );
 
+const baseMongodconfig50_Storage_WiredTiger_IndexConfig: object = {
+  $type:
+    "yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0.Storage.WiredTiger.IndexConfig",
+};
+
+export const Mongodconfig50_Storage_WiredTiger_IndexConfig = {
+  $type:
+    "yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0.Storage.WiredTiger.IndexConfig" as const,
+
+  encode(
+    message: Mongodconfig50_Storage_WiredTiger_IndexConfig,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.prefixCompression !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.prefixCompression!,
+        },
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodconfig50_Storage_WiredTiger_IndexConfig {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongodconfig50_Storage_WiredTiger_IndexConfig,
+    } as Mongodconfig50_Storage_WiredTiger_IndexConfig;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.prefixCompression = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodconfig50_Storage_WiredTiger_IndexConfig {
+    const message = {
+      ...baseMongodconfig50_Storage_WiredTiger_IndexConfig,
+    } as Mongodconfig50_Storage_WiredTiger_IndexConfig;
+    message.prefixCompression =
+      object.prefixCompression !== undefined &&
+      object.prefixCompression !== null
+        ? Boolean(object.prefixCompression)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodconfig50_Storage_WiredTiger_IndexConfig): unknown {
+    const obj: any = {};
+    message.prefixCompression !== undefined &&
+      (obj.prefixCompression = message.prefixCompression);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<
+      DeepPartial<Mongodconfig50_Storage_WiredTiger_IndexConfig>,
+      I
+    >
+  >(object: I): Mongodconfig50_Storage_WiredTiger_IndexConfig {
+    const message = {
+      ...baseMongodconfig50_Storage_WiredTiger_IndexConfig,
+    } as Mongodconfig50_Storage_WiredTiger_IndexConfig;
+    message.prefixCompression = object.prefixCompression ?? undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Mongodconfig50_Storage_WiredTiger_IndexConfig.$type,
+  Mongodconfig50_Storage_WiredTiger_IndexConfig
+);
+
 const baseMongodconfig50_Storage_Journal: object = {
   $type: "yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0.Storage.Journal",
 };
@@ -961,6 +1277,15 @@ export const Mongodconfig50_OperationProfiling = {
         writer.uint32(18).fork()
       ).ldelim();
     }
+    if (message.slowOpSampleRate !== undefined) {
+      DoubleValue.encode(
+        {
+          $type: "google.protobuf.DoubleValue",
+          value: message.slowOpSampleRate!,
+        },
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -985,6 +1310,12 @@ export const Mongodconfig50_OperationProfiling = {
             reader.uint32()
           ).value;
           break;
+        case 3:
+          message.slowOpSampleRate = DoubleValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1005,6 +1336,10 @@ export const Mongodconfig50_OperationProfiling = {
       object.slowOpThreshold !== undefined && object.slowOpThreshold !== null
         ? Number(object.slowOpThreshold)
         : undefined;
+    message.slowOpSampleRate =
+      object.slowOpSampleRate !== undefined && object.slowOpSampleRate !== null
+        ? Number(object.slowOpSampleRate)
+        : undefined;
     return message;
   },
 
@@ -1014,6 +1349,8 @@ export const Mongodconfig50_OperationProfiling = {
       (obj.mode = mongodconfig50_OperationProfiling_ModeToJSON(message.mode));
     message.slowOpThreshold !== undefined &&
       (obj.slowOpThreshold = message.slowOpThreshold);
+    message.slowOpSampleRate !== undefined &&
+      (obj.slowOpSampleRate = message.slowOpSampleRate);
     return obj;
   },
 
@@ -1025,6 +1362,7 @@ export const Mongodconfig50_OperationProfiling = {
     } as Mongodconfig50_OperationProfiling;
     message.mode = object.mode ?? 0;
     message.slowOpThreshold = object.slowOpThreshold ?? undefined;
+    message.slowOpSampleRate = object.slowOpSampleRate ?? undefined;
     return message;
   },
 };
@@ -1054,6 +1392,12 @@ export const Mongodconfig50_Network = {
         writer.uint32(10).fork()
       ).ldelim();
     }
+    if (message.compression !== undefined) {
+      Mongodconfig50_Network_Compression.encode(
+        message.compression,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1073,6 +1417,12 @@ export const Mongodconfig50_Network = {
             reader.uint32()
           ).value;
           break;
+        case 2:
+          message.compression = Mongodconfig50_Network_Compression.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1088,6 +1438,10 @@ export const Mongodconfig50_Network = {
       object.maxIncomingConnections !== null
         ? Number(object.maxIncomingConnections)
         : undefined;
+    message.compression =
+      object.compression !== undefined && object.compression !== null
+        ? Mongodconfig50_Network_Compression.fromJSON(object.compression)
+        : undefined;
     return message;
   },
 
@@ -1095,6 +1449,10 @@ export const Mongodconfig50_Network = {
     const obj: any = {};
     message.maxIncomingConnections !== undefined &&
       (obj.maxIncomingConnections = message.maxIncomingConnections);
+    message.compression !== undefined &&
+      (obj.compression = message.compression
+        ? Mongodconfig50_Network_Compression.toJSON(message.compression)
+        : undefined);
     return obj;
   },
 
@@ -1103,11 +1461,216 @@ export const Mongodconfig50_Network = {
   ): Mongodconfig50_Network {
     const message = { ...baseMongodconfig50_Network } as Mongodconfig50_Network;
     message.maxIncomingConnections = object.maxIncomingConnections ?? undefined;
+    message.compression =
+      object.compression !== undefined && object.compression !== null
+        ? Mongodconfig50_Network_Compression.fromPartial(object.compression)
+        : undefined;
     return message;
   },
 };
 
 messageTypeRegistry.set(Mongodconfig50_Network.$type, Mongodconfig50_Network);
+
+const baseMongodconfig50_Network_Compression: object = {
+  $type:
+    "yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0.Network.Compression",
+  compressors: 0,
+};
+
+export const Mongodconfig50_Network_Compression = {
+  $type:
+    "yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0.Network.Compression" as const,
+
+  encode(
+    message: Mongodconfig50_Network_Compression,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    writer.uint32(10).fork();
+    for (const v of message.compressors) {
+      writer.int32(v);
+    }
+    writer.ldelim();
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodconfig50_Network_Compression {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongodconfig50_Network_Compression,
+    } as Mongodconfig50_Network_Compression;
+    message.compressors = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.compressors.push(reader.int32() as any);
+            }
+          } else {
+            message.compressors.push(reader.int32() as any);
+          }
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodconfig50_Network_Compression {
+    const message = {
+      ...baseMongodconfig50_Network_Compression,
+    } as Mongodconfig50_Network_Compression;
+    message.compressors = (object.compressors ?? []).map((e: any) =>
+      mongodconfig50_Network_Compression_CompressorFromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: Mongodconfig50_Network_Compression): unknown {
+    const obj: any = {};
+    if (message.compressors) {
+      obj.compressors = message.compressors.map((e) =>
+        mongodconfig50_Network_Compression_CompressorToJSON(e)
+      );
+    } else {
+      obj.compressors = [];
+    }
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<Mongodconfig50_Network_Compression>, I>
+  >(object: I): Mongodconfig50_Network_Compression {
+    const message = {
+      ...baseMongodconfig50_Network_Compression,
+    } as Mongodconfig50_Network_Compression;
+    message.compressors = object.compressors?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Mongodconfig50_Network_Compression.$type,
+  Mongodconfig50_Network_Compression
+);
+
+const baseMongodconfig50_SetParameter: object = {
+  $type: "yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0.SetParameter",
+};
+
+export const Mongodconfig50_SetParameter = {
+  $type:
+    "yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0.SetParameter" as const,
+
+  encode(
+    message: Mongodconfig50_SetParameter,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.enableFlowControl !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.enableFlowControl!,
+        },
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.minSnapshotHistoryWindowInSeconds !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.minSnapshotHistoryWindowInSeconds!,
+        },
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongodconfig50_SetParameter {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongodconfig50_SetParameter,
+    } as Mongodconfig50_SetParameter;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.enableFlowControl = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 2:
+          message.minSnapshotHistoryWindowInSeconds = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongodconfig50_SetParameter {
+    const message = {
+      ...baseMongodconfig50_SetParameter,
+    } as Mongodconfig50_SetParameter;
+    message.enableFlowControl =
+      object.enableFlowControl !== undefined &&
+      object.enableFlowControl !== null
+        ? Boolean(object.enableFlowControl)
+        : undefined;
+    message.minSnapshotHistoryWindowInSeconds =
+      object.minSnapshotHistoryWindowInSeconds !== undefined &&
+      object.minSnapshotHistoryWindowInSeconds !== null
+        ? Number(object.minSnapshotHistoryWindowInSeconds)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mongodconfig50_SetParameter): unknown {
+    const obj: any = {};
+    message.enableFlowControl !== undefined &&
+      (obj.enableFlowControl = message.enableFlowControl);
+    message.minSnapshotHistoryWindowInSeconds !== undefined &&
+      (obj.minSnapshotHistoryWindowInSeconds =
+        message.minSnapshotHistoryWindowInSeconds);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mongodconfig50_SetParameter>, I>>(
+    object: I
+  ): Mongodconfig50_SetParameter {
+    const message = {
+      ...baseMongodconfig50_SetParameter,
+    } as Mongodconfig50_SetParameter;
+    message.enableFlowControl = object.enableFlowControl ?? undefined;
+    message.minSnapshotHistoryWindowInSeconds =
+      object.minSnapshotHistoryWindowInSeconds ?? undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Mongodconfig50_SetParameter.$type,
+  Mongodconfig50_SetParameter
+);
 
 const baseMongocfgconfig50: object = {
   $type: "yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfig5_0",
@@ -1773,6 +2336,12 @@ export const Mongosconfig50_Network = {
         writer.uint32(10).fork()
       ).ldelim();
     }
+    if (message.compression !== undefined) {
+      Mongosconfig50_Network_Compression.encode(
+        message.compression,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1792,6 +2361,12 @@ export const Mongosconfig50_Network = {
             reader.uint32()
           ).value;
           break;
+        case 2:
+          message.compression = Mongosconfig50_Network_Compression.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1807,6 +2382,10 @@ export const Mongosconfig50_Network = {
       object.maxIncomingConnections !== null
         ? Number(object.maxIncomingConnections)
         : undefined;
+    message.compression =
+      object.compression !== undefined && object.compression !== null
+        ? Mongosconfig50_Network_Compression.fromJSON(object.compression)
+        : undefined;
     return message;
   },
 
@@ -1814,6 +2393,10 @@ export const Mongosconfig50_Network = {
     const obj: any = {};
     message.maxIncomingConnections !== undefined &&
       (obj.maxIncomingConnections = message.maxIncomingConnections);
+    message.compression !== undefined &&
+      (obj.compression = message.compression
+        ? Mongosconfig50_Network_Compression.toJSON(message.compression)
+        : undefined);
     return obj;
   },
 
@@ -1822,11 +2405,106 @@ export const Mongosconfig50_Network = {
   ): Mongosconfig50_Network {
     const message = { ...baseMongosconfig50_Network } as Mongosconfig50_Network;
     message.maxIncomingConnections = object.maxIncomingConnections ?? undefined;
+    message.compression =
+      object.compression !== undefined && object.compression !== null
+        ? Mongosconfig50_Network_Compression.fromPartial(object.compression)
+        : undefined;
     return message;
   },
 };
 
 messageTypeRegistry.set(Mongosconfig50_Network.$type, Mongosconfig50_Network);
+
+const baseMongosconfig50_Network_Compression: object = {
+  $type:
+    "yandex.cloud.mdb.mongodb.v1.config.MongosConfig5_0.Network.Compression",
+  compressors: 0,
+};
+
+export const Mongosconfig50_Network_Compression = {
+  $type:
+    "yandex.cloud.mdb.mongodb.v1.config.MongosConfig5_0.Network.Compression" as const,
+
+  encode(
+    message: Mongosconfig50_Network_Compression,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    writer.uint32(10).fork();
+    for (const v of message.compressors) {
+      writer.int32(v);
+    }
+    writer.ldelim();
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Mongosconfig50_Network_Compression {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMongosconfig50_Network_Compression,
+    } as Mongosconfig50_Network_Compression;
+    message.compressors = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.compressors.push(reader.int32() as any);
+            }
+          } else {
+            message.compressors.push(reader.int32() as any);
+          }
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mongosconfig50_Network_Compression {
+    const message = {
+      ...baseMongosconfig50_Network_Compression,
+    } as Mongosconfig50_Network_Compression;
+    message.compressors = (object.compressors ?? []).map((e: any) =>
+      mongosconfig50_Network_Compression_CompressorFromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: Mongosconfig50_Network_Compression): unknown {
+    const obj: any = {};
+    if (message.compressors) {
+      obj.compressors = message.compressors.map((e) =>
+        mongosconfig50_Network_Compression_CompressorToJSON(e)
+      );
+    } else {
+      obj.compressors = [];
+    }
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<Mongosconfig50_Network_Compression>, I>
+  >(object: I): Mongosconfig50_Network_Compression {
+    const message = {
+      ...baseMongosconfig50_Network_Compression,
+    } as Mongosconfig50_Network_Compression;
+    message.compressors = object.compressors?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  Mongosconfig50_Network_Compression.$type,
+  Mongosconfig50_Network_Compression
+);
 
 const baseMongodconfigset50: object = {
   $type: "yandex.cloud.mdb.mongodb.v1.config.MongodConfigSet5_0",

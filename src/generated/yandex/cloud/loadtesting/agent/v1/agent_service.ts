@@ -14,6 +14,7 @@ import {
   ServiceError,
 } from "@grpc/grpc-js";
 import _m0 from "protobufjs/minimal";
+import { Timestamp } from "../../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.loadtesting.agent.v1";
 
@@ -21,6 +22,7 @@ export interface ClaimAgentStatusRequest {
   $type: "yandex.cloud.loadtesting.agent.v1.ClaimAgentStatusRequest";
   agentInstanceId: string;
   status: ClaimAgentStatusRequest_Status;
+  statusMessage: string;
 }
 
 export enum ClaimAgentStatusRequest_Status {
@@ -31,6 +33,7 @@ export enum ClaimAgentStatusRequest_Status {
   TANK_FAILED = 4,
   STOPPED = 5,
   UPLOADING_ARTIFACTS = 6,
+  ERROR = 7,
   UNRECOGNIZED = -1,
 }
 
@@ -59,6 +62,9 @@ export function claimAgentStatusRequest_StatusFromJSON(
     case 6:
     case "UPLOADING_ARTIFACTS":
       return ClaimAgentStatusRequest_Status.UPLOADING_ARTIFACTS;
+    case 7:
+    case "ERROR":
+      return ClaimAgentStatusRequest_Status.ERROR;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -84,6 +90,8 @@ export function claimAgentStatusRequest_StatusToJSON(
       return "STOPPED";
     case ClaimAgentStatusRequest_Status.UPLOADING_ARTIFACTS:
       return "UPLOADING_ARTIFACTS";
+    case ClaimAgentStatusRequest_Status.ERROR:
+      return "ERROR";
     default:
       return "UNKNOWN";
   }
@@ -94,10 +102,92 @@ export interface ClaimAgentStatusResponse {
   code: number;
 }
 
+export interface ReportEventLogsRequest {
+  $type: "yandex.cloud.loadtesting.agent.v1.ReportEventLogsRequest";
+  agentInstanceId: string;
+  idempotencyKey: string;
+  events: EventLog[];
+}
+
+export interface ReportEventLogsResponse {
+  $type: "yandex.cloud.loadtesting.agent.v1.ReportEventLogsResponse";
+}
+
+export interface EventLog {
+  $type: "yandex.cloud.loadtesting.agent.v1.EventLog";
+  message: string;
+  severity: EventLog_Severity;
+  timestamp?: Date;
+  metadata: { [key: string]: string };
+}
+
+export enum EventLog_Severity {
+  SEVERITY_UNSPECIFIED = 0,
+  DEBUG = 1,
+  INFO = 2,
+  WARNING = 3,
+  ERROR = 4,
+  FATAL = 5,
+  UNRECOGNIZED = -1,
+}
+
+export function eventLog_SeverityFromJSON(object: any): EventLog_Severity {
+  switch (object) {
+    case 0:
+    case "SEVERITY_UNSPECIFIED":
+      return EventLog_Severity.SEVERITY_UNSPECIFIED;
+    case 1:
+    case "DEBUG":
+      return EventLog_Severity.DEBUG;
+    case 2:
+    case "INFO":
+      return EventLog_Severity.INFO;
+    case 3:
+    case "WARNING":
+      return EventLog_Severity.WARNING;
+    case 4:
+    case "ERROR":
+      return EventLog_Severity.ERROR;
+    case 5:
+    case "FATAL":
+      return EventLog_Severity.FATAL;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return EventLog_Severity.UNRECOGNIZED;
+  }
+}
+
+export function eventLog_SeverityToJSON(object: EventLog_Severity): string {
+  switch (object) {
+    case EventLog_Severity.SEVERITY_UNSPECIFIED:
+      return "SEVERITY_UNSPECIFIED";
+    case EventLog_Severity.DEBUG:
+      return "DEBUG";
+    case EventLog_Severity.INFO:
+      return "INFO";
+    case EventLog_Severity.WARNING:
+      return "WARNING";
+    case EventLog_Severity.ERROR:
+      return "ERROR";
+    case EventLog_Severity.FATAL:
+      return "FATAL";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export interface EventLog_MetadataEntry {
+  $type: "yandex.cloud.loadtesting.agent.v1.EventLog.MetadataEntry";
+  key: string;
+  value: string;
+}
+
 const baseClaimAgentStatusRequest: object = {
   $type: "yandex.cloud.loadtesting.agent.v1.ClaimAgentStatusRequest",
   agentInstanceId: "",
   status: 0,
+  statusMessage: "",
 };
 
 export const ClaimAgentStatusRequest = {
@@ -112,6 +202,9 @@ export const ClaimAgentStatusRequest = {
     }
     if (message.status !== 0) {
       writer.uint32(16).int32(message.status);
+    }
+    if (message.statusMessage !== "") {
+      writer.uint32(26).string(message.statusMessage);
     }
     return writer;
   },
@@ -134,6 +227,9 @@ export const ClaimAgentStatusRequest = {
         case 2:
           message.status = reader.int32() as any;
           break;
+        case 3:
+          message.statusMessage = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -154,6 +250,10 @@ export const ClaimAgentStatusRequest = {
       object.status !== undefined && object.status !== null
         ? claimAgentStatusRequest_StatusFromJSON(object.status)
         : 0;
+    message.statusMessage =
+      object.statusMessage !== undefined && object.statusMessage !== null
+        ? String(object.statusMessage)
+        : "";
     return message;
   },
 
@@ -163,6 +263,8 @@ export const ClaimAgentStatusRequest = {
       (obj.agentInstanceId = message.agentInstanceId);
     message.status !== undefined &&
       (obj.status = claimAgentStatusRequest_StatusToJSON(message.status));
+    message.statusMessage !== undefined &&
+      (obj.statusMessage = message.statusMessage);
     return obj;
   },
 
@@ -174,6 +276,7 @@ export const ClaimAgentStatusRequest = {
     } as ClaimAgentStatusRequest;
     message.agentInstanceId = object.agentInstanceId ?? "";
     message.status = object.status ?? 0;
+    message.statusMessage = object.statusMessage ?? "";
     return message;
   },
 };
@@ -254,6 +357,367 @@ messageTypeRegistry.set(
   ClaimAgentStatusResponse
 );
 
+const baseReportEventLogsRequest: object = {
+  $type: "yandex.cloud.loadtesting.agent.v1.ReportEventLogsRequest",
+  agentInstanceId: "",
+  idempotencyKey: "",
+};
+
+export const ReportEventLogsRequest = {
+  $type: "yandex.cloud.loadtesting.agent.v1.ReportEventLogsRequest" as const,
+
+  encode(
+    message: ReportEventLogsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.agentInstanceId !== "") {
+      writer.uint32(10).string(message.agentInstanceId);
+    }
+    if (message.idempotencyKey !== "") {
+      writer.uint32(18).string(message.idempotencyKey);
+    }
+    for (const v of message.events) {
+      EventLog.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ReportEventLogsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseReportEventLogsRequest } as ReportEventLogsRequest;
+    message.events = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.agentInstanceId = reader.string();
+          break;
+        case 2:
+          message.idempotencyKey = reader.string();
+          break;
+        case 3:
+          message.events.push(EventLog.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReportEventLogsRequest {
+    const message = { ...baseReportEventLogsRequest } as ReportEventLogsRequest;
+    message.agentInstanceId =
+      object.agentInstanceId !== undefined && object.agentInstanceId !== null
+        ? String(object.agentInstanceId)
+        : "";
+    message.idempotencyKey =
+      object.idempotencyKey !== undefined && object.idempotencyKey !== null
+        ? String(object.idempotencyKey)
+        : "";
+    message.events = (object.events ?? []).map((e: any) =>
+      EventLog.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: ReportEventLogsRequest): unknown {
+    const obj: any = {};
+    message.agentInstanceId !== undefined &&
+      (obj.agentInstanceId = message.agentInstanceId);
+    message.idempotencyKey !== undefined &&
+      (obj.idempotencyKey = message.idempotencyKey);
+    if (message.events) {
+      obj.events = message.events.map((e) =>
+        e ? EventLog.toJSON(e) : undefined
+      );
+    } else {
+      obj.events = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ReportEventLogsRequest>, I>>(
+    object: I
+  ): ReportEventLogsRequest {
+    const message = { ...baseReportEventLogsRequest } as ReportEventLogsRequest;
+    message.agentInstanceId = object.agentInstanceId ?? "";
+    message.idempotencyKey = object.idempotencyKey ?? "";
+    message.events = object.events?.map((e) => EventLog.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(ReportEventLogsRequest.$type, ReportEventLogsRequest);
+
+const baseReportEventLogsResponse: object = {
+  $type: "yandex.cloud.loadtesting.agent.v1.ReportEventLogsResponse",
+};
+
+export const ReportEventLogsResponse = {
+  $type: "yandex.cloud.loadtesting.agent.v1.ReportEventLogsResponse" as const,
+
+  encode(
+    _: ReportEventLogsResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ReportEventLogsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseReportEventLogsResponse,
+    } as ReportEventLogsResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): ReportEventLogsResponse {
+    const message = {
+      ...baseReportEventLogsResponse,
+    } as ReportEventLogsResponse;
+    return message;
+  },
+
+  toJSON(_: ReportEventLogsResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ReportEventLogsResponse>, I>>(
+    _: I
+  ): ReportEventLogsResponse {
+    const message = {
+      ...baseReportEventLogsResponse,
+    } as ReportEventLogsResponse;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(ReportEventLogsResponse.$type, ReportEventLogsResponse);
+
+const baseEventLog: object = {
+  $type: "yandex.cloud.loadtesting.agent.v1.EventLog",
+  message: "",
+  severity: 0,
+};
+
+export const EventLog = {
+  $type: "yandex.cloud.loadtesting.agent.v1.EventLog" as const,
+
+  encode(
+    message: EventLog,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.message !== "") {
+      writer.uint32(10).string(message.message);
+    }
+    if (message.severity !== 0) {
+      writer.uint32(16).int32(message.severity);
+    }
+    if (message.timestamp !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.timestamp),
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    Object.entries(message.metadata).forEach(([key, value]) => {
+      EventLog_MetadataEntry.encode(
+        {
+          $type: "yandex.cloud.loadtesting.agent.v1.EventLog.MetadataEntry",
+          key: key as any,
+          value,
+        },
+        writer.uint32(34).fork()
+      ).ldelim();
+    });
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventLog {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseEventLog } as EventLog;
+    message.metadata = {};
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.message = reader.string();
+          break;
+        case 2:
+          message.severity = reader.int32() as any;
+          break;
+        case 3:
+          message.timestamp = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 4:
+          const entry4 = EventLog_MetadataEntry.decode(reader, reader.uint32());
+          if (entry4.value !== undefined) {
+            message.metadata[entry4.key] = entry4.value;
+          }
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EventLog {
+    const message = { ...baseEventLog } as EventLog;
+    message.message =
+      object.message !== undefined && object.message !== null
+        ? String(object.message)
+        : "";
+    message.severity =
+      object.severity !== undefined && object.severity !== null
+        ? eventLog_SeverityFromJSON(object.severity)
+        : 0;
+    message.timestamp =
+      object.timestamp !== undefined && object.timestamp !== null
+        ? fromJsonTimestamp(object.timestamp)
+        : undefined;
+    message.metadata = Object.entries(object.metadata ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      acc[key] = String(value);
+      return acc;
+    }, {});
+    return message;
+  },
+
+  toJSON(message: EventLog): unknown {
+    const obj: any = {};
+    message.message !== undefined && (obj.message = message.message);
+    message.severity !== undefined &&
+      (obj.severity = eventLog_SeverityToJSON(message.severity));
+    message.timestamp !== undefined &&
+      (obj.timestamp = message.timestamp.toISOString());
+    obj.metadata = {};
+    if (message.metadata) {
+      Object.entries(message.metadata).forEach(([k, v]) => {
+        obj.metadata[k] = v;
+      });
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EventLog>, I>>(object: I): EventLog {
+    const message = { ...baseEventLog } as EventLog;
+    message.message = object.message ?? "";
+    message.severity = object.severity ?? 0;
+    message.timestamp = object.timestamp ?? undefined;
+    message.metadata = Object.entries(object.metadata ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = String(value);
+      }
+      return acc;
+    }, {});
+    return message;
+  },
+};
+
+messageTypeRegistry.set(EventLog.$type, EventLog);
+
+const baseEventLog_MetadataEntry: object = {
+  $type: "yandex.cloud.loadtesting.agent.v1.EventLog.MetadataEntry",
+  key: "",
+  value: "",
+};
+
+export const EventLog_MetadataEntry = {
+  $type: "yandex.cloud.loadtesting.agent.v1.EventLog.MetadataEntry" as const,
+
+  encode(
+    message: EventLog_MetadataEntry,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): EventLog_MetadataEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseEventLog_MetadataEntry } as EventLog_MetadataEntry;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EventLog_MetadataEntry {
+    const message = { ...baseEventLog_MetadataEntry } as EventLog_MetadataEntry;
+    message.key =
+      object.key !== undefined && object.key !== null ? String(object.key) : "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? String(object.value)
+        : "";
+    return message;
+  },
+
+  toJSON(message: EventLog_MetadataEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EventLog_MetadataEntry>, I>>(
+    object: I
+  ): EventLog_MetadataEntry {
+    const message = { ...baseEventLog_MetadataEntry } as EventLog_MetadataEntry;
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(EventLog_MetadataEntry.$type, EventLog_MetadataEntry);
+
 export const AgentServiceService = {
   /** Claims status for the specified agent. */
   claimStatus: {
@@ -269,6 +733,18 @@ export const AgentServiceService = {
     responseDeserialize: (value: Buffer) =>
       ClaimAgentStatusResponse.decode(value),
   },
+  reportEventLogs: {
+    path: "/yandex.cloud.loadtesting.agent.v1.AgentService/ReportEventLogs",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: ReportEventLogsRequest) =>
+      Buffer.from(ReportEventLogsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => ReportEventLogsRequest.decode(value),
+    responseSerialize: (value: ReportEventLogsResponse) =>
+      Buffer.from(ReportEventLogsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) =>
+      ReportEventLogsResponse.decode(value),
+  },
 } as const;
 
 export interface AgentServiceServer extends UntypedServiceImplementation {
@@ -276,6 +752,10 @@ export interface AgentServiceServer extends UntypedServiceImplementation {
   claimStatus: handleUnaryCall<
     ClaimAgentStatusRequest,
     ClaimAgentStatusResponse
+  >;
+  reportEventLogs: handleUnaryCall<
+    ReportEventLogsRequest,
+    ReportEventLogsResponse
   >;
 }
 
@@ -303,6 +783,30 @@ export interface AgentServiceClient extends Client {
     callback: (
       error: ServiceError | null,
       response: ClaimAgentStatusResponse
+    ) => void
+  ): ClientUnaryCall;
+  reportEventLogs(
+    request: ReportEventLogsRequest,
+    callback: (
+      error: ServiceError | null,
+      response: ReportEventLogsResponse
+    ) => void
+  ): ClientUnaryCall;
+  reportEventLogs(
+    request: ReportEventLogsRequest,
+    metadata: Metadata,
+    callback: (
+      error: ServiceError | null,
+      response: ReportEventLogsResponse
+    ) => void
+  ): ClientUnaryCall;
+  reportEventLogs(
+    request: ReportEventLogsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (
+      error: ServiceError | null,
+      response: ReportEventLogsResponse
     ) => void
   ): ClientUnaryCall;
 }
@@ -356,6 +860,28 @@ export type Exact<P, I extends P> = P extends Builtin
         Exclude<keyof I, KeysOfUnion<P> | "$type">,
         never
       >;
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = date.getTime() / 1_000;
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { $type: "google.protobuf.Timestamp", seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = t.seconds * 1_000;
+  millis += t.nanos / 1_000_000;
+  return new Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {

@@ -194,6 +194,9 @@ export interface DeleteCloudMetadata {
   cloudId: string;
   /** The timestamp after which the process of deleting the cloud should begin. */
   deleteAfter?: Date;
+  /** Information about operation cancellation */
+  cancelledBy: string;
+  cancelledAt?: Date;
 }
 
 const baseGetCloudRequest: object = {
@@ -1291,6 +1294,7 @@ messageTypeRegistry.set(DeleteCloudRequest.$type, DeleteCloudRequest);
 const baseDeleteCloudMetadata: object = {
   $type: "yandex.cloud.resourcemanager.v1.DeleteCloudMetadata",
   cloudId: "",
+  cancelledBy: "",
 };
 
 export const DeleteCloudMetadata = {
@@ -1309,6 +1313,15 @@ export const DeleteCloudMetadata = {
         writer.uint32(18).fork()
       ).ldelim();
     }
+    if (message.cancelledBy !== "") {
+      writer.uint32(26).string(message.cancelledBy);
+    }
+    if (message.cancelledAt !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.cancelledAt),
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1324,6 +1337,14 @@ export const DeleteCloudMetadata = {
           break;
         case 2:
           message.deleteAfter = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 3:
+          message.cancelledBy = reader.string();
+          break;
+        case 4:
+          message.cancelledAt = fromTimestamp(
             Timestamp.decode(reader, reader.uint32())
           );
           break;
@@ -1345,6 +1366,14 @@ export const DeleteCloudMetadata = {
       object.deleteAfter !== undefined && object.deleteAfter !== null
         ? fromJsonTimestamp(object.deleteAfter)
         : undefined;
+    message.cancelledBy =
+      object.cancelledBy !== undefined && object.cancelledBy !== null
+        ? String(object.cancelledBy)
+        : "";
+    message.cancelledAt =
+      object.cancelledAt !== undefined && object.cancelledAt !== null
+        ? fromJsonTimestamp(object.cancelledAt)
+        : undefined;
     return message;
   },
 
@@ -1353,6 +1382,10 @@ export const DeleteCloudMetadata = {
     message.cloudId !== undefined && (obj.cloudId = message.cloudId);
     message.deleteAfter !== undefined &&
       (obj.deleteAfter = message.deleteAfter.toISOString());
+    message.cancelledBy !== undefined &&
+      (obj.cancelledBy = message.cancelledBy);
+    message.cancelledAt !== undefined &&
+      (obj.cancelledAt = message.cancelledAt.toISOString());
     return obj;
   },
 
@@ -1362,6 +1395,8 @@ export const DeleteCloudMetadata = {
     const message = { ...baseDeleteCloudMetadata } as DeleteCloudMetadata;
     message.cloudId = object.cloudId ?? "";
     message.deleteAfter = object.deleteAfter ?? undefined;
+    message.cancelledBy = object.cancelledBy ?? "";
+    message.cancelledAt = object.cancelledAt ?? undefined;
     return message;
   },
 };

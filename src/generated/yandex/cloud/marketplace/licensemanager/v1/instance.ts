@@ -10,28 +10,47 @@ export const protobufPackage = "yandex.cloud.marketplace.licensemanager.v1";
 
 export interface Instance {
   $type: "yandex.cloud.marketplace.licensemanager.v1.Instance";
+  /** ID of the subscription instance. */
   id: string;
+  /** ID of the cloud that the subscription instance belongs to. */
   cloudId: string;
+  /** ID of the folder that the subscription instance belongs to. */
   folderId: string;
+  /** ID of the subscription template that was used to create subscription instance. */
   templateId: string;
+  /** ID of the version of subscription template. */
   templateVersionId: string;
+  /** Description of the subscription instance. */
   description: string;
+  /** Timestamp of the start of the subscription. */
   startTime?: Date;
+  /** Timestamp of the end of the subscription. */
   endTime?: Date;
+  /** Creation timestamp. */
   createdAt?: Date;
+  /** Update timestamp. */
   updatedAt?: Date;
+  /** Subscription state. */
   state: Instance_State;
+  /** List of subscription locks. */
   locks: Lock[];
+  /** Subscription template. */
   licenseTemplate?: Template;
 }
 
 export enum Instance_State {
   STATE_UNSPECIFIED = 0,
+  /** PENDING - Subscription created but not active yet. */
   PENDING = 1,
+  /** ACTIVE - Subscription is active. */
   ACTIVE = 2,
+  /** CANCELLED - Subscription canceled. It is still active, but won't be automatically renewed after the end of the current period. */
   CANCELLED = 3,
+  /** EXPIRED - Subscription expired. */
   EXPIRED = 4,
+  /** DEPRECATED - Subscription deprecated. */
   DEPRECATED = 5,
+  /** DELETED - Subscription deleted. */
   DELETED = 6,
   UNRECOGNIZED = -1,
 }

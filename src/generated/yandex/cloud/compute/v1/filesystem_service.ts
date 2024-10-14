@@ -17,6 +17,12 @@ import _m0 from "protobufjs/minimal";
 import { FieldMask } from "../../../../google/protobuf/field_mask";
 import { Filesystem } from "../../../../yandex/cloud/compute/v1/filesystem";
 import { Operation } from "../../../../yandex/cloud/operation/operation";
+import {
+  ListAccessBindingsRequest,
+  ListAccessBindingsResponse,
+  SetAccessBindingsRequest,
+  UpdateAccessBindingsRequest,
+} from "../../../../yandex/cloud/access/access";
 
 export const protobufPackage = "yandex.cloud.compute.v1";
 
@@ -1626,6 +1632,46 @@ export const FilesystemServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListFilesystemOperationsResponse.decode(value),
   },
+  /** Lists access bindings for the filesystem. */
+  listAccessBindings: {
+    path: "/yandex.cloud.compute.v1.FilesystemService/ListAccessBindings",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: ListAccessBindingsRequest) =>
+      Buffer.from(ListAccessBindingsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      ListAccessBindingsRequest.decode(value),
+    responseSerialize: (value: ListAccessBindingsResponse) =>
+      Buffer.from(ListAccessBindingsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) =>
+      ListAccessBindingsResponse.decode(value),
+  },
+  /** Sets access bindings for the filesystem. */
+  setAccessBindings: {
+    path: "/yandex.cloud.compute.v1.FilesystemService/SetAccessBindings",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: SetAccessBindingsRequest) =>
+      Buffer.from(SetAccessBindingsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      SetAccessBindingsRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /** Updates access bindings for the filesystem. */
+  updateAccessBindings: {
+    path: "/yandex.cloud.compute.v1.FilesystemService/UpdateAccessBindings",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: UpdateAccessBindingsRequest) =>
+      Buffer.from(UpdateAccessBindingsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      UpdateAccessBindingsRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
 } as const;
 
 export interface FilesystemServiceServer extends UntypedServiceImplementation {
@@ -1654,6 +1700,15 @@ export interface FilesystemServiceServer extends UntypedServiceImplementation {
     ListFilesystemOperationsRequest,
     ListFilesystemOperationsResponse
   >;
+  /** Lists access bindings for the filesystem. */
+  listAccessBindings: handleUnaryCall<
+    ListAccessBindingsRequest,
+    ListAccessBindingsResponse
+  >;
+  /** Sets access bindings for the filesystem. */
+  setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
+  /** Updates access bindings for the filesystem. */
+  updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
 }
 
 export interface FilesystemServiceClient extends Client {
@@ -1780,6 +1835,63 @@ export interface FilesystemServiceClient extends Client {
       error: ServiceError | null,
       response: ListFilesystemOperationsResponse
     ) => void
+  ): ClientUnaryCall;
+  /** Lists access bindings for the filesystem. */
+  listAccessBindings(
+    request: ListAccessBindingsRequest,
+    callback: (
+      error: ServiceError | null,
+      response: ListAccessBindingsResponse
+    ) => void
+  ): ClientUnaryCall;
+  listAccessBindings(
+    request: ListAccessBindingsRequest,
+    metadata: Metadata,
+    callback: (
+      error: ServiceError | null,
+      response: ListAccessBindingsResponse
+    ) => void
+  ): ClientUnaryCall;
+  listAccessBindings(
+    request: ListAccessBindingsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (
+      error: ServiceError | null,
+      response: ListAccessBindingsResponse
+    ) => void
+  ): ClientUnaryCall;
+  /** Sets access bindings for the filesystem. */
+  setAccessBindings(
+    request: SetAccessBindingsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  setAccessBindings(
+    request: SetAccessBindingsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  setAccessBindings(
+    request: SetAccessBindingsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Updates access bindings for the filesystem. */
+  updateAccessBindings(
+    request: UpdateAccessBindingsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateAccessBindings(
+    request: UpdateAccessBindingsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateAccessBindings(
+    request: UpdateAccessBindingsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
   ): ClientUnaryCall;
 }
 

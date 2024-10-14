@@ -15,7 +15,17 @@ import {
 } from "@grpc/grpc-js";
 import _m0 from "protobufjs/minimal";
 import { FieldMask } from "../../../../google/protobuf/field_mask";
+import {
+  ResourceType,
+  resourceTypeFromJSON,
+  resourceTypeToJSON,
+} from "../../../../yandex/cloud/datasphere/v2/resource_types";
 import { Community } from "../../../../yandex/cloud/datasphere/v2/community";
+import {
+  Restriction,
+  GetRestrictionsMetaResponse,
+  RestrictionsResponse,
+} from "../../../../yandex/cloud/datasphere/v2/restrictions";
 import { Operation } from "../../../../yandex/cloud/operation/operation";
 import {
   ListAccessBindingsRequest,
@@ -23,6 +33,7 @@ import {
   SetAccessBindingsRequest,
   UpdateAccessBindingsRequest,
 } from "../../../../yandex/cloud/access/access";
+import { Empty } from "../../../../google/protobuf/empty";
 
 export const protobufPackage = "yandex.cloud.datasphere.v2";
 
@@ -38,6 +49,8 @@ export interface CreateCommunityRequest {
   billingAccountId: string;
   /** Labels of the community. */
   labels: { [key: string]: string };
+  /** ID of the zone where community will be created (all projects and other resources will be in this zone) */
+  zoneId: string;
 }
 
 export interface CreateCommunityRequest_LabelsEntry {
@@ -150,12 +163,41 @@ export interface UpdateCommunityAccessBindingsMetadata {
   communityId: string;
 }
 
+export interface AddCommunityResourceRequest {
+  $type: "yandex.cloud.datasphere.v2.AddCommunityResourceRequest";
+  communityId: string;
+  resourceType: ResourceType;
+  resourceId: string;
+}
+
+export interface RemoveCommunityResourceRequest {
+  $type: "yandex.cloud.datasphere.v2.RemoveCommunityResourceRequest";
+  communityId: string;
+  resourceType: ResourceType;
+  resourceId: string;
+}
+
+export interface GetCommunityRestrictionsRequest {
+  $type: "yandex.cloud.datasphere.v2.GetCommunityRestrictionsRequest";
+  /** ID of the community. */
+  communityId: string;
+}
+
+export interface SetCommunityRestrictionsRequest {
+  $type: "yandex.cloud.datasphere.v2.SetCommunityRestrictionsRequest";
+  /** ID of the community. */
+  communityId: string;
+  /** List of restrictions to set. */
+  restrictions: Restriction[];
+}
+
 const baseCreateCommunityRequest: object = {
   $type: "yandex.cloud.datasphere.v2.CreateCommunityRequest",
   name: "",
   description: "",
   organizationId: "",
   billingAccountId: "",
+  zoneId: "",
 };
 
 export const CreateCommunityRequest = {
@@ -188,6 +230,9 @@ export const CreateCommunityRequest = {
         writer.uint32(42).fork()
       ).ldelim();
     });
+    if (message.zoneId !== "") {
+      writer.uint32(50).string(message.zoneId);
+    }
     return writer;
   },
 
@@ -223,6 +268,9 @@ export const CreateCommunityRequest = {
             message.labels[entry5.key] = entry5.value;
           }
           break;
+        case 6:
+          message.zoneId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -255,6 +303,10 @@ export const CreateCommunityRequest = {
       acc[key] = String(value);
       return acc;
     }, {});
+    message.zoneId =
+      object.zoneId !== undefined && object.zoneId !== null
+        ? String(object.zoneId)
+        : "";
     return message;
   },
 
@@ -273,6 +325,7 @@ export const CreateCommunityRequest = {
         obj.labels[k] = v;
       });
     }
+    message.zoneId !== undefined && (obj.zoneId = message.zoneId);
     return obj;
   },
 
@@ -292,6 +345,7 @@ export const CreateCommunityRequest = {
       }
       return acc;
     }, {});
+    message.zoneId = object.zoneId ?? "";
     return message;
   },
 };
@@ -1344,6 +1398,382 @@ messageTypeRegistry.set(
   UpdateCommunityAccessBindingsMetadata
 );
 
+const baseAddCommunityResourceRequest: object = {
+  $type: "yandex.cloud.datasphere.v2.AddCommunityResourceRequest",
+  communityId: "",
+  resourceType: 0,
+  resourceId: "",
+};
+
+export const AddCommunityResourceRequest = {
+  $type: "yandex.cloud.datasphere.v2.AddCommunityResourceRequest" as const,
+
+  encode(
+    message: AddCommunityResourceRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.communityId !== "") {
+      writer.uint32(10).string(message.communityId);
+    }
+    if (message.resourceType !== 0) {
+      writer.uint32(16).int32(message.resourceType);
+    }
+    if (message.resourceId !== "") {
+      writer.uint32(26).string(message.resourceId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): AddCommunityResourceRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseAddCommunityResourceRequest,
+    } as AddCommunityResourceRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.communityId = reader.string();
+          break;
+        case 2:
+          message.resourceType = reader.int32() as any;
+          break;
+        case 3:
+          message.resourceId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AddCommunityResourceRequest {
+    const message = {
+      ...baseAddCommunityResourceRequest,
+    } as AddCommunityResourceRequest;
+    message.communityId =
+      object.communityId !== undefined && object.communityId !== null
+        ? String(object.communityId)
+        : "";
+    message.resourceType =
+      object.resourceType !== undefined && object.resourceType !== null
+        ? resourceTypeFromJSON(object.resourceType)
+        : 0;
+    message.resourceId =
+      object.resourceId !== undefined && object.resourceId !== null
+        ? String(object.resourceId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: AddCommunityResourceRequest): unknown {
+    const obj: any = {};
+    message.communityId !== undefined &&
+      (obj.communityId = message.communityId);
+    message.resourceType !== undefined &&
+      (obj.resourceType = resourceTypeToJSON(message.resourceType));
+    message.resourceId !== undefined && (obj.resourceId = message.resourceId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AddCommunityResourceRequest>, I>>(
+    object: I
+  ): AddCommunityResourceRequest {
+    const message = {
+      ...baseAddCommunityResourceRequest,
+    } as AddCommunityResourceRequest;
+    message.communityId = object.communityId ?? "";
+    message.resourceType = object.resourceType ?? 0;
+    message.resourceId = object.resourceId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  AddCommunityResourceRequest.$type,
+  AddCommunityResourceRequest
+);
+
+const baseRemoveCommunityResourceRequest: object = {
+  $type: "yandex.cloud.datasphere.v2.RemoveCommunityResourceRequest",
+  communityId: "",
+  resourceType: 0,
+  resourceId: "",
+};
+
+export const RemoveCommunityResourceRequest = {
+  $type: "yandex.cloud.datasphere.v2.RemoveCommunityResourceRequest" as const,
+
+  encode(
+    message: RemoveCommunityResourceRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.communityId !== "") {
+      writer.uint32(10).string(message.communityId);
+    }
+    if (message.resourceType !== 0) {
+      writer.uint32(16).int32(message.resourceType);
+    }
+    if (message.resourceId !== "") {
+      writer.uint32(26).string(message.resourceId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RemoveCommunityResourceRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseRemoveCommunityResourceRequest,
+    } as RemoveCommunityResourceRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.communityId = reader.string();
+          break;
+        case 2:
+          message.resourceType = reader.int32() as any;
+          break;
+        case 3:
+          message.resourceId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RemoveCommunityResourceRequest {
+    const message = {
+      ...baseRemoveCommunityResourceRequest,
+    } as RemoveCommunityResourceRequest;
+    message.communityId =
+      object.communityId !== undefined && object.communityId !== null
+        ? String(object.communityId)
+        : "";
+    message.resourceType =
+      object.resourceType !== undefined && object.resourceType !== null
+        ? resourceTypeFromJSON(object.resourceType)
+        : 0;
+    message.resourceId =
+      object.resourceId !== undefined && object.resourceId !== null
+        ? String(object.resourceId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: RemoveCommunityResourceRequest): unknown {
+    const obj: any = {};
+    message.communityId !== undefined &&
+      (obj.communityId = message.communityId);
+    message.resourceType !== undefined &&
+      (obj.resourceType = resourceTypeToJSON(message.resourceType));
+    message.resourceId !== undefined && (obj.resourceId = message.resourceId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RemoveCommunityResourceRequest>, I>>(
+    object: I
+  ): RemoveCommunityResourceRequest {
+    const message = {
+      ...baseRemoveCommunityResourceRequest,
+    } as RemoveCommunityResourceRequest;
+    message.communityId = object.communityId ?? "";
+    message.resourceType = object.resourceType ?? 0;
+    message.resourceId = object.resourceId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  RemoveCommunityResourceRequest.$type,
+  RemoveCommunityResourceRequest
+);
+
+const baseGetCommunityRestrictionsRequest: object = {
+  $type: "yandex.cloud.datasphere.v2.GetCommunityRestrictionsRequest",
+  communityId: "",
+};
+
+export const GetCommunityRestrictionsRequest = {
+  $type: "yandex.cloud.datasphere.v2.GetCommunityRestrictionsRequest" as const,
+
+  encode(
+    message: GetCommunityRestrictionsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.communityId !== "") {
+      writer.uint32(10).string(message.communityId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): GetCommunityRestrictionsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseGetCommunityRestrictionsRequest,
+    } as GetCommunityRestrictionsRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.communityId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetCommunityRestrictionsRequest {
+    const message = {
+      ...baseGetCommunityRestrictionsRequest,
+    } as GetCommunityRestrictionsRequest;
+    message.communityId =
+      object.communityId !== undefined && object.communityId !== null
+        ? String(object.communityId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: GetCommunityRestrictionsRequest): unknown {
+    const obj: any = {};
+    message.communityId !== undefined &&
+      (obj.communityId = message.communityId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetCommunityRestrictionsRequest>, I>>(
+    object: I
+  ): GetCommunityRestrictionsRequest {
+    const message = {
+      ...baseGetCommunityRestrictionsRequest,
+    } as GetCommunityRestrictionsRequest;
+    message.communityId = object.communityId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  GetCommunityRestrictionsRequest.$type,
+  GetCommunityRestrictionsRequest
+);
+
+const baseSetCommunityRestrictionsRequest: object = {
+  $type: "yandex.cloud.datasphere.v2.SetCommunityRestrictionsRequest",
+  communityId: "",
+};
+
+export const SetCommunityRestrictionsRequest = {
+  $type: "yandex.cloud.datasphere.v2.SetCommunityRestrictionsRequest" as const,
+
+  encode(
+    message: SetCommunityRestrictionsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.communityId !== "") {
+      writer.uint32(10).string(message.communityId);
+    }
+    for (const v of message.restrictions) {
+      Restriction.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): SetCommunityRestrictionsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseSetCommunityRestrictionsRequest,
+    } as SetCommunityRestrictionsRequest;
+    message.restrictions = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.communityId = reader.string();
+          break;
+        case 2:
+          message.restrictions.push(
+            Restriction.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SetCommunityRestrictionsRequest {
+    const message = {
+      ...baseSetCommunityRestrictionsRequest,
+    } as SetCommunityRestrictionsRequest;
+    message.communityId =
+      object.communityId !== undefined && object.communityId !== null
+        ? String(object.communityId)
+        : "";
+    message.restrictions = (object.restrictions ?? []).map((e: any) =>
+      Restriction.fromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: SetCommunityRestrictionsRequest): unknown {
+    const obj: any = {};
+    message.communityId !== undefined &&
+      (obj.communityId = message.communityId);
+    if (message.restrictions) {
+      obj.restrictions = message.restrictions.map((e) =>
+        e ? Restriction.toJSON(e) : undefined
+      );
+    } else {
+      obj.restrictions = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SetCommunityRestrictionsRequest>, I>>(
+    object: I
+  ): SetCommunityRestrictionsRequest {
+    const message = {
+      ...baseSetCommunityRestrictionsRequest,
+    } as SetCommunityRestrictionsRequest;
+    message.communityId = object.communityId ?? "";
+    message.restrictions =
+      object.restrictions?.map((e) => Restriction.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  SetCommunityRestrictionsRequest.$type,
+  SetCommunityRestrictionsRequest
+);
+
+/** A set of methods for managing Community resources. */
 export const CommunityServiceService = {
   /** Creates community in specified organization. */
   create: {
@@ -1446,6 +1876,71 @@ export const CommunityServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Adds shared resource to community */
+  addResource: {
+    path: "/yandex.cloud.datasphere.v2.CommunityService/AddResource",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: AddCommunityResourceRequest) =>
+      Buffer.from(AddCommunityResourceRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      AddCommunityResourceRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /** Removes shared resource from community */
+  removeResource: {
+    path: "/yandex.cloud.datasphere.v2.CommunityService/RemoveResource",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: RemoveCommunityResourceRequest) =>
+      Buffer.from(RemoveCommunityResourceRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      RemoveCommunityResourceRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /** Get meta information about available restrictions. */
+  getRestrictionsMeta: {
+    path: "/yandex.cloud.datasphere.v2.CommunityService/GetRestrictionsMeta",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: Empty) =>
+      Buffer.from(Empty.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => Empty.decode(value),
+    responseSerialize: (value: GetRestrictionsMetaResponse) =>
+      Buffer.from(GetRestrictionsMetaResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) =>
+      GetRestrictionsMetaResponse.decode(value),
+  },
+  /** Get current community restrictions. */
+  getRestrictions: {
+    path: "/yandex.cloud.datasphere.v2.CommunityService/GetRestrictions",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: GetCommunityRestrictionsRequest) =>
+      Buffer.from(GetCommunityRestrictionsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      GetCommunityRestrictionsRequest.decode(value),
+    responseSerialize: (value: RestrictionsResponse) =>
+      Buffer.from(RestrictionsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => RestrictionsResponse.decode(value),
+  },
+  /** Set community restrictions. */
+  setRestrictions: {
+    path: "/yandex.cloud.datasphere.v2.CommunityService/SetRestrictions",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: SetCommunityRestrictionsRequest) =>
+      Buffer.from(SetCommunityRestrictionsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      SetCommunityRestrictionsRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
 } as const;
 
 export interface CommunityServiceServer extends UntypedServiceImplementation {
@@ -1468,6 +1963,19 @@ export interface CommunityServiceServer extends UntypedServiceImplementation {
   setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
   /** Updates access bindings for specified community. */
   updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
+  /** Adds shared resource to community */
+  addResource: handleUnaryCall<AddCommunityResourceRequest, Operation>;
+  /** Removes shared resource from community */
+  removeResource: handleUnaryCall<RemoveCommunityResourceRequest, Operation>;
+  /** Get meta information about available restrictions. */
+  getRestrictionsMeta: handleUnaryCall<Empty, GetRestrictionsMetaResponse>;
+  /** Get current community restrictions. */
+  getRestrictions: handleUnaryCall<
+    GetCommunityRestrictionsRequest,
+    RestrictionsResponse
+  >;
+  /** Set community restrictions. */
+  setRestrictions: handleUnaryCall<SetCommunityRestrictionsRequest, Operation>;
 }
 
 export interface CommunityServiceClient extends Client {
@@ -1613,6 +2121,104 @@ export interface CommunityServiceClient extends Client {
   ): ClientUnaryCall;
   updateAccessBindings(
     request: UpdateAccessBindingsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Adds shared resource to community */
+  addResource(
+    request: AddCommunityResourceRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  addResource(
+    request: AddCommunityResourceRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  addResource(
+    request: AddCommunityResourceRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Removes shared resource from community */
+  removeResource(
+    request: RemoveCommunityResourceRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  removeResource(
+    request: RemoveCommunityResourceRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  removeResource(
+    request: RemoveCommunityResourceRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Get meta information about available restrictions. */
+  getRestrictionsMeta(
+    request: Empty,
+    callback: (
+      error: ServiceError | null,
+      response: GetRestrictionsMetaResponse
+    ) => void
+  ): ClientUnaryCall;
+  getRestrictionsMeta(
+    request: Empty,
+    metadata: Metadata,
+    callback: (
+      error: ServiceError | null,
+      response: GetRestrictionsMetaResponse
+    ) => void
+  ): ClientUnaryCall;
+  getRestrictionsMeta(
+    request: Empty,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (
+      error: ServiceError | null,
+      response: GetRestrictionsMetaResponse
+    ) => void
+  ): ClientUnaryCall;
+  /** Get current community restrictions. */
+  getRestrictions(
+    request: GetCommunityRestrictionsRequest,
+    callback: (
+      error: ServiceError | null,
+      response: RestrictionsResponse
+    ) => void
+  ): ClientUnaryCall;
+  getRestrictions(
+    request: GetCommunityRestrictionsRequest,
+    metadata: Metadata,
+    callback: (
+      error: ServiceError | null,
+      response: RestrictionsResponse
+    ) => void
+  ): ClientUnaryCall;
+  getRestrictions(
+    request: GetCommunityRestrictionsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (
+      error: ServiceError | null,
+      response: RestrictionsResponse
+    ) => void
+  ): ClientUnaryCall;
+  /** Set community restrictions. */
+  setRestrictions(
+    request: SetCommunityRestrictionsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  setRestrictions(
+    request: SetCommunityRestrictionsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  setRestrictions(
+    request: SetCommunityRestrictionsRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

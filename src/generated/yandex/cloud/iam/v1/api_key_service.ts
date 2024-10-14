@@ -16,6 +16,7 @@ import {
 import _m0 from "protobufjs/minimal";
 import { ApiKey } from "../../../../yandex/cloud/iam/v1/api_key";
 import { FieldMask } from "../../../../google/protobuf/field_mask";
+import { Timestamp } from "../../../../google/protobuf/timestamp";
 import { Operation } from "../../../../yandex/cloud/operation/operation";
 
 export const protobufPackage = "yandex.cloud.iam.v1";
@@ -78,6 +79,10 @@ export interface CreateApiKeyRequest {
   serviceAccountId: string;
   /** Description of the API key. */
   description: string;
+  /** Scope of the API key. */
+  scope: string;
+  /** API key expiration timestamp, if not specified, then the API key doesn't expire */
+  expiresAt?: Date;
 }
 
 export interface CreateApiKeyResponse {
@@ -149,6 +154,36 @@ export interface ListApiKeyOperationsResponse {
    * This token allows you to get the next page of results for list requests. If the number of results
    * is larger than [ListApiKeyOperationsRequest.page_size], use the [next_page_token] as the value
    * for the [ListApiKeyOperationsRequest.page_token] query parameter in the next list request.
+   * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
+   */
+  nextPageToken: string;
+}
+
+export interface ListApiKeyScopesRequest {
+  $type: "yandex.cloud.iam.v1.ListApiKeyScopesRequest";
+  /**
+   * The maximum number of results per page to return. If the number of available
+   * results is larger than [page_size],
+   * the service returns a [ListApiKeyScopesResponse.next_page_token]
+   * that can be used to get the next page of results in subsequent list requests.
+   * Default value: 100.
+   */
+  pageSize: number;
+  /**
+   * Page token. To get the next page of results, set [page_token] to the
+   * [ListApiKeyScopesResponse.next_page_token] returned by a previous list request.
+   */
+  pageToken: string;
+}
+
+export interface ListApiKeyScopesResponse {
+  $type: "yandex.cloud.iam.v1.ListApiKeyScopesResponse";
+  /** List of scopes */
+  scopes: string[];
+  /**
+   * This token allows you to get the next page of results for list requests. If the number of results
+   * is larger than [ListApiKeyScopesRequest.page_size], use the [next_page_token] as the value
+   * for the [ListApiKeyScopesRequest.page_token] query parameter in the next list request.
    * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
    */
   nextPageToken: string;
@@ -391,6 +426,7 @@ const baseCreateApiKeyRequest: object = {
   $type: "yandex.cloud.iam.v1.CreateApiKeyRequest",
   serviceAccountId: "",
   description: "",
+  scope: "",
 };
 
 export const CreateApiKeyRequest = {
@@ -405,6 +441,15 @@ export const CreateApiKeyRequest = {
     }
     if (message.description !== "") {
       writer.uint32(18).string(message.description);
+    }
+    if (message.scope !== "") {
+      writer.uint32(26).string(message.scope);
+    }
+    if (message.expiresAt !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.expiresAt),
+        writer.uint32(34).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -421,6 +466,14 @@ export const CreateApiKeyRequest = {
           break;
         case 2:
           message.description = reader.string();
+          break;
+        case 3:
+          message.scope = reader.string();
+          break;
+        case 4:
+          message.expiresAt = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -440,6 +493,14 @@ export const CreateApiKeyRequest = {
       object.description !== undefined && object.description !== null
         ? String(object.description)
         : "";
+    message.scope =
+      object.scope !== undefined && object.scope !== null
+        ? String(object.scope)
+        : "";
+    message.expiresAt =
+      object.expiresAt !== undefined && object.expiresAt !== null
+        ? fromJsonTimestamp(object.expiresAt)
+        : undefined;
     return message;
   },
 
@@ -449,6 +510,9 @@ export const CreateApiKeyRequest = {
       (obj.serviceAccountId = message.serviceAccountId);
     message.description !== undefined &&
       (obj.description = message.description);
+    message.scope !== undefined && (obj.scope = message.scope);
+    message.expiresAt !== undefined &&
+      (obj.expiresAt = message.expiresAt.toISOString());
     return obj;
   },
 
@@ -458,6 +522,8 @@ export const CreateApiKeyRequest = {
     const message = { ...baseCreateApiKeyRequest } as CreateApiKeyRequest;
     message.serviceAccountId = object.serviceAccountId ?? "";
     message.description = object.description ?? "";
+    message.scope = object.scope ?? "";
+    message.expiresAt = object.expiresAt ?? undefined;
     return message;
   },
 };
@@ -1026,6 +1092,181 @@ messageTypeRegistry.set(
   ListApiKeyOperationsResponse
 );
 
+const baseListApiKeyScopesRequest: object = {
+  $type: "yandex.cloud.iam.v1.ListApiKeyScopesRequest",
+  pageSize: 0,
+  pageToken: "",
+};
+
+export const ListApiKeyScopesRequest = {
+  $type: "yandex.cloud.iam.v1.ListApiKeyScopesRequest" as const,
+
+  encode(
+    message: ListApiKeyScopesRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.pageSize !== 0) {
+      writer.uint32(8).int64(message.pageSize);
+    }
+    if (message.pageToken !== "") {
+      writer.uint32(18).string(message.pageToken);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ListApiKeyScopesRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseListApiKeyScopesRequest,
+    } as ListApiKeyScopesRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pageSize = longToNumber(reader.int64() as Long);
+          break;
+        case 2:
+          message.pageToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListApiKeyScopesRequest {
+    const message = {
+      ...baseListApiKeyScopesRequest,
+    } as ListApiKeyScopesRequest;
+    message.pageSize =
+      object.pageSize !== undefined && object.pageSize !== null
+        ? Number(object.pageSize)
+        : 0;
+    message.pageToken =
+      object.pageToken !== undefined && object.pageToken !== null
+        ? String(object.pageToken)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ListApiKeyScopesRequest): unknown {
+    const obj: any = {};
+    message.pageSize !== undefined &&
+      (obj.pageSize = Math.round(message.pageSize));
+    message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListApiKeyScopesRequest>, I>>(
+    object: I
+  ): ListApiKeyScopesRequest {
+    const message = {
+      ...baseListApiKeyScopesRequest,
+    } as ListApiKeyScopesRequest;
+    message.pageSize = object.pageSize ?? 0;
+    message.pageToken = object.pageToken ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(ListApiKeyScopesRequest.$type, ListApiKeyScopesRequest);
+
+const baseListApiKeyScopesResponse: object = {
+  $type: "yandex.cloud.iam.v1.ListApiKeyScopesResponse",
+  scopes: "",
+  nextPageToken: "",
+};
+
+export const ListApiKeyScopesResponse = {
+  $type: "yandex.cloud.iam.v1.ListApiKeyScopesResponse" as const,
+
+  encode(
+    message: ListApiKeyScopesResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.scopes) {
+      writer.uint32(10).string(v!);
+    }
+    if (message.nextPageToken !== "") {
+      writer.uint32(18).string(message.nextPageToken);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ListApiKeyScopesResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseListApiKeyScopesResponse,
+    } as ListApiKeyScopesResponse;
+    message.scopes = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.scopes.push(reader.string());
+          break;
+        case 2:
+          message.nextPageToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListApiKeyScopesResponse {
+    const message = {
+      ...baseListApiKeyScopesResponse,
+    } as ListApiKeyScopesResponse;
+    message.scopes = (object.scopes ?? []).map((e: any) => String(e));
+    message.nextPageToken =
+      object.nextPageToken !== undefined && object.nextPageToken !== null
+        ? String(object.nextPageToken)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ListApiKeyScopesResponse): unknown {
+    const obj: any = {};
+    if (message.scopes) {
+      obj.scopes = message.scopes.map((e) => e);
+    } else {
+      obj.scopes = [];
+    }
+    message.nextPageToken !== undefined &&
+      (obj.nextPageToken = message.nextPageToken);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListApiKeyScopesResponse>, I>>(
+    object: I
+  ): ListApiKeyScopesResponse {
+    const message = {
+      ...baseListApiKeyScopesResponse,
+    } as ListApiKeyScopesResponse;
+    message.scopes = object.scopes?.map((e) => e) || [];
+    message.nextPageToken = object.nextPageToken ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ListApiKeyScopesResponse.$type,
+  ListApiKeyScopesResponse
+);
+
 /** A set of methods for managing API keys. */
 export const ApiKeyServiceService = {
   /** Retrieves the list of API keys for the specified service account. */
@@ -1106,6 +1347,20 @@ export const ApiKeyServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListApiKeyOperationsResponse.decode(value),
   },
+  /** Retrieves the list of scopes. */
+  listScopes: {
+    path: "/yandex.cloud.iam.v1.ApiKeyService/ListScopes",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: ListApiKeyScopesRequest) =>
+      Buffer.from(ListApiKeyScopesRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      ListApiKeyScopesRequest.decode(value),
+    responseSerialize: (value: ListApiKeyScopesResponse) =>
+      Buffer.from(ListApiKeyScopesResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) =>
+      ListApiKeyScopesResponse.decode(value),
+  },
 } as const;
 
 export interface ApiKeyServiceServer extends UntypedServiceImplementation {
@@ -1127,6 +1382,11 @@ export interface ApiKeyServiceServer extends UntypedServiceImplementation {
   listOperations: handleUnaryCall<
     ListApiKeyOperationsRequest,
     ListApiKeyOperationsResponse
+  >;
+  /** Retrieves the list of scopes. */
+  listScopes: handleUnaryCall<
+    ListApiKeyScopesRequest,
+    ListApiKeyScopesResponse
   >;
 }
 
@@ -1258,6 +1518,31 @@ export interface ApiKeyServiceClient extends Client {
       response: ListApiKeyOperationsResponse
     ) => void
   ): ClientUnaryCall;
+  /** Retrieves the list of scopes. */
+  listScopes(
+    request: ListApiKeyScopesRequest,
+    callback: (
+      error: ServiceError | null,
+      response: ListApiKeyScopesResponse
+    ) => void
+  ): ClientUnaryCall;
+  listScopes(
+    request: ListApiKeyScopesRequest,
+    metadata: Metadata,
+    callback: (
+      error: ServiceError | null,
+      response: ListApiKeyScopesResponse
+    ) => void
+  ): ClientUnaryCall;
+  listScopes(
+    request: ListApiKeyScopesRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (
+      error: ServiceError | null,
+      response: ListApiKeyScopesResponse
+    ) => void
+  ): ClientUnaryCall;
 }
 
 export const ApiKeyServiceClient = makeGenericClientConstructor(
@@ -1309,6 +1594,28 @@ export type Exact<P, I extends P> = P extends Builtin
         Exclude<keyof I, KeysOfUnion<P> | "$type">,
         never
       >;
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = date.getTime() / 1_000;
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { $type: "google.protobuf.Timestamp", seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = t.seconds * 1_000;
+  millis += t.nanos / 1_000_000;
+  return new Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {

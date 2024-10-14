@@ -41,7 +41,9 @@ export interface Postgresqlconfig151c {
   bgwriterDelay?: number;
   bgwriterLruMaxpages?: number;
   bgwriterLruMultiplier?: number;
+  /** in bytes */
   bgwriterFlushAfter?: number;
+  /** in bytes */
   backendFlushAfter?: number;
   oldSnapshotThreshold?: number;
   walLevel: Postgresqlconfig151c_WalLevel;
@@ -49,6 +51,7 @@ export interface Postgresqlconfig151c {
   /** in milliseconds. */
   checkpointTimeout?: number;
   checkpointCompletionTarget?: number;
+  /** in bytes */
   checkpointFlushAfter?: number;
   /** in bytes. */
   maxWalSize?: number;
@@ -220,6 +223,8 @@ export interface Postgresqlconfig151c {
   logReplicationCommands?: boolean;
   /** in milliseconds. The default is 1000 (1 sec). */
   logAutovacuumMinDuration?: number;
+  /** A default value for `` user_password_encryption `` user-level setting, if it not specified for new users. Possible values are `` PASSWORD_ENCRYPTION_MD5 `` or `` PASSWORD_ENCRYPTION_SCRAM_SHA_256 ``. The default is `` PASSWORD_ENCRYPTION_MD5 ``. */
+  passwordEncryption: Postgresqlconfig151c_PasswordEncryption;
 }
 
 export enum Postgresqlconfig151c_BackslashQuote {
@@ -612,6 +617,48 @@ export function postgresqlconfig151c_LogStatementToJSON(
   }
 }
 
+export enum Postgresqlconfig151c_PasswordEncryption {
+  PASSWORD_ENCRYPTION_UNSPECIFIED = 0,
+  PASSWORD_ENCRYPTION_MD5 = 1,
+  PASSWORD_ENCRYPTION_SCRAM_SHA_256 = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function postgresqlconfig151c_PasswordEncryptionFromJSON(
+  object: any
+): Postgresqlconfig151c_PasswordEncryption {
+  switch (object) {
+    case 0:
+    case "PASSWORD_ENCRYPTION_UNSPECIFIED":
+      return Postgresqlconfig151c_PasswordEncryption.PASSWORD_ENCRYPTION_UNSPECIFIED;
+    case 1:
+    case "PASSWORD_ENCRYPTION_MD5":
+      return Postgresqlconfig151c_PasswordEncryption.PASSWORD_ENCRYPTION_MD5;
+    case 2:
+    case "PASSWORD_ENCRYPTION_SCRAM_SHA_256":
+      return Postgresqlconfig151c_PasswordEncryption.PASSWORD_ENCRYPTION_SCRAM_SHA_256;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Postgresqlconfig151c_PasswordEncryption.UNRECOGNIZED;
+  }
+}
+
+export function postgresqlconfig151c_PasswordEncryptionToJSON(
+  object: Postgresqlconfig151c_PasswordEncryption
+): string {
+  switch (object) {
+    case Postgresqlconfig151c_PasswordEncryption.PASSWORD_ENCRYPTION_UNSPECIFIED:
+      return "PASSWORD_ENCRYPTION_UNSPECIFIED";
+    case Postgresqlconfig151c_PasswordEncryption.PASSWORD_ENCRYPTION_MD5:
+      return "PASSWORD_ENCRYPTION_MD5";
+    case Postgresqlconfig151c_PasswordEncryption.PASSWORD_ENCRYPTION_SCRAM_SHA_256:
+      return "PASSWORD_ENCRYPTION_SCRAM_SHA_256";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export enum Postgresqlconfig151c_PgHintPlanDebugPrint {
   PG_HINT_PLAN_DEBUG_PRINT_UNSPECIFIED = 0,
   PG_HINT_PLAN_DEBUG_PRINT_OFF = 1,
@@ -724,6 +771,7 @@ export enum Postgresqlconfig151c_SharedPreloadLibraries {
   SHARED_PRELOAD_LIBRARIES_PGLOGICAL = 6,
   SHARED_PRELOAD_LIBRARIES_PG_PREWARM = 7,
   SHARED_PRELOAD_LIBRARIES_PGAUDIT = 8,
+  SHARED_PRELOAD_LIBRARIES_ANON = 9,
   UNRECOGNIZED = -1,
 }
 
@@ -758,6 +806,9 @@ export function postgresqlconfig151c_SharedPreloadLibrariesFromJSON(
     case 8:
     case "SHARED_PRELOAD_LIBRARIES_PGAUDIT":
       return Postgresqlconfig151c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PGAUDIT;
+    case 9:
+    case "SHARED_PRELOAD_LIBRARIES_ANON":
+      return Postgresqlconfig151c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_ANON;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -787,6 +838,8 @@ export function postgresqlconfig151c_SharedPreloadLibrariesToJSON(
       return "SHARED_PRELOAD_LIBRARIES_PG_PREWARM";
     case Postgresqlconfig151c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_PGAUDIT:
       return "SHARED_PRELOAD_LIBRARIES_PGAUDIT";
+    case Postgresqlconfig151c_SharedPreloadLibraries.SHARED_PRELOAD_LIBRARIES_ANON:
+      return "SHARED_PRELOAD_LIBRARIES_ANON";
     default:
       return "UNKNOWN";
   }
@@ -1067,6 +1120,7 @@ const basePostgresqlconfig151c: object = {
   sharedPreloadLibraries: 0,
   pgHintPlanDebugPrint: 0,
   pgHintPlanMessageLevel: 0,
+  passwordEncryption: 0,
 };
 
 export const Postgresqlconfig151c = {
@@ -2290,6 +2344,9 @@ export const Postgresqlconfig151c = {
         writer.uint32(1322).fork()
       ).ldelim();
     }
+    if (message.passwordEncryption !== 0) {
+      writer.uint32(1336).int32(message.passwordEncryption);
+    }
     return writer;
   },
 
@@ -3181,6 +3238,9 @@ export const Postgresqlconfig151c = {
             reader.uint32()
           ).value;
           break;
+        case 167:
+          message.passwordEncryption = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3950,6 +4010,13 @@ export const Postgresqlconfig151c = {
       object.logAutovacuumMinDuration !== null
         ? Number(object.logAutovacuumMinDuration)
         : undefined;
+    message.passwordEncryption =
+      object.passwordEncryption !== undefined &&
+      object.passwordEncryption !== null
+        ? postgresqlconfig151c_PasswordEncryptionFromJSON(
+            object.passwordEncryption
+          )
+        : 0;
     return message;
   },
 
@@ -4309,6 +4376,10 @@ export const Postgresqlconfig151c = {
       (obj.logReplicationCommands = message.logReplicationCommands);
     message.logAutovacuumMinDuration !== undefined &&
       (obj.logAutovacuumMinDuration = message.logAutovacuumMinDuration);
+    message.passwordEncryption !== undefined &&
+      (obj.passwordEncryption = postgresqlconfig151c_PasswordEncryptionToJSON(
+        message.passwordEncryption
+      ));
     return obj;
   },
 
@@ -4514,6 +4585,7 @@ export const Postgresqlconfig151c = {
     message.logReplicationCommands = object.logReplicationCommands ?? undefined;
     message.logAutovacuumMinDuration =
       object.logAutovacuumMinDuration ?? undefined;
+    message.passwordEncryption = object.passwordEncryption ?? 0;
     return message;
   },
 };

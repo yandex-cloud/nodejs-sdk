@@ -106,6 +106,8 @@ export interface ListApplicationsRequest {
   policyId: string | undefined;
   /** Compute Cloud instance ID. */
   computeInstanceId: string | undefined;
+  /** If true, also returns applications that in the process of binding. */
+  showProcessing: boolean;
 }
 
 export interface ListApplicationsResponse {
@@ -127,6 +129,8 @@ export interface ExecuteMetadata {
   policyId: string;
   /** Compute Cloud instance ID. */
   computeInstanceId: string;
+  /** Progress of the backup process. */
+  progressPercentage: number;
 }
 
 export interface RevokeRequest {
@@ -946,6 +950,7 @@ messageTypeRegistry.set(ApplyPolicyMetadata.$type, ApplyPolicyMetadata);
 
 const baseListApplicationsRequest: object = {
   $type: "yandex.cloud.backup.v1.ListApplicationsRequest",
+  showProcessing: false,
 };
 
 export const ListApplicationsRequest = {
@@ -963,6 +968,9 @@ export const ListApplicationsRequest = {
     }
     if (message.computeInstanceId !== undefined) {
       writer.uint32(26).string(message.computeInstanceId);
+    }
+    if (message.showProcessing === true) {
+      writer.uint32(32).bool(message.showProcessing);
     }
     return writer;
   },
@@ -987,6 +995,9 @@ export const ListApplicationsRequest = {
           break;
         case 3:
           message.computeInstanceId = reader.string();
+          break;
+        case 4:
+          message.showProcessing = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1013,6 +1024,10 @@ export const ListApplicationsRequest = {
       object.computeInstanceId !== null
         ? String(object.computeInstanceId)
         : undefined;
+    message.showProcessing =
+      object.showProcessing !== undefined && object.showProcessing !== null
+        ? Boolean(object.showProcessing)
+        : false;
     return message;
   },
 
@@ -1022,6 +1037,8 @@ export const ListApplicationsRequest = {
     message.policyId !== undefined && (obj.policyId = message.policyId);
     message.computeInstanceId !== undefined &&
       (obj.computeInstanceId = message.computeInstanceId);
+    message.showProcessing !== undefined &&
+      (obj.showProcessing = message.showProcessing);
     return obj;
   },
 
@@ -1034,6 +1051,7 @@ export const ListApplicationsRequest = {
     message.folderId = object.folderId ?? undefined;
     message.policyId = object.policyId ?? undefined;
     message.computeInstanceId = object.computeInstanceId ?? undefined;
+    message.showProcessing = object.showProcessing ?? false;
     return message;
   },
 };
@@ -1203,6 +1221,7 @@ const baseExecuteMetadata: object = {
   $type: "yandex.cloud.backup.v1.ExecuteMetadata",
   policyId: "",
   computeInstanceId: "",
+  progressPercentage: 0,
 };
 
 export const ExecuteMetadata = {
@@ -1217,6 +1236,9 @@ export const ExecuteMetadata = {
     }
     if (message.computeInstanceId !== "") {
       writer.uint32(18).string(message.computeInstanceId);
+    }
+    if (message.progressPercentage !== 0) {
+      writer.uint32(25).double(message.progressPercentage);
     }
     return writer;
   },
@@ -1233,6 +1255,9 @@ export const ExecuteMetadata = {
           break;
         case 2:
           message.computeInstanceId = reader.string();
+          break;
+        case 3:
+          message.progressPercentage = reader.double();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1253,6 +1278,11 @@ export const ExecuteMetadata = {
       object.computeInstanceId !== null
         ? String(object.computeInstanceId)
         : "";
+    message.progressPercentage =
+      object.progressPercentage !== undefined &&
+      object.progressPercentage !== null
+        ? Number(object.progressPercentage)
+        : 0;
     return message;
   },
 
@@ -1261,6 +1291,8 @@ export const ExecuteMetadata = {
     message.policyId !== undefined && (obj.policyId = message.policyId);
     message.computeInstanceId !== undefined &&
       (obj.computeInstanceId = message.computeInstanceId);
+    message.progressPercentage !== undefined &&
+      (obj.progressPercentage = message.progressPercentage);
     return obj;
   },
 
@@ -1270,6 +1302,7 @@ export const ExecuteMetadata = {
     const message = { ...baseExecuteMetadata } as ExecuteMetadata;
     message.policyId = object.policyId ?? "";
     message.computeInstanceId = object.computeInstanceId ?? "";
+    message.progressPercentage = object.progressPercentage ?? 0;
     return message;
   },
 };

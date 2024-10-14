@@ -77,6 +77,16 @@ export interface CreateDashboardRequest {
   widgets: Widget[];
   /** Dashboard parametrization. */
   parametrization?: Parametrization;
+  /**
+   * Entity that controls dashboard
+   * Must match the regular expression "[\w \-]{1,100}"
+   */
+  managedBy: string;
+  /**
+   * Information about entity that controls dashboard
+   * Must be valid URI
+   */
+  managedLink: string;
 }
 
 export interface CreateDashboardRequest_LabelsEntry {
@@ -113,6 +123,16 @@ export interface UpdateDashboardRequest {
   parametrization?: Parametrization;
   /** The current etag of the dashboard. */
   etag: string;
+  /**
+   * Entity that controls dashboard
+   * Must match the regular expression "[\w \-]{1,100}"
+   */
+  managedBy: string;
+  /**
+   * Information about entity that controls dashboard
+   * Must be valid URI
+   */
+  managedLink: string;
 }
 
 export interface UpdateDashboardRequest_LabelsEntry {
@@ -428,6 +448,8 @@ const baseCreateDashboardRequest: object = {
   name: "",
   description: "",
   title: "",
+  managedBy: "",
+  managedLink: "",
 };
 
 export const CreateDashboardRequest = {
@@ -468,6 +490,12 @@ export const CreateDashboardRequest = {
         message.parametrization,
         writer.uint32(194).fork()
       ).ldelim();
+    }
+    if (message.managedBy !== "") {
+      writer.uint32(210).string(message.managedBy);
+    }
+    if (message.managedLink !== "") {
+      writer.uint32(218).string(message.managedLink);
     }
     return writer;
   },
@@ -514,6 +542,12 @@ export const CreateDashboardRequest = {
             reader.uint32()
           );
           break;
+        case 26:
+          message.managedBy = reader.string();
+          break;
+        case 27:
+          message.managedLink = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -553,6 +587,14 @@ export const CreateDashboardRequest = {
       object.parametrization !== undefined && object.parametrization !== null
         ? Parametrization.fromJSON(object.parametrization)
         : undefined;
+    message.managedBy =
+      object.managedBy !== undefined && object.managedBy !== null
+        ? String(object.managedBy)
+        : "";
+    message.managedLink =
+      object.managedLink !== undefined && object.managedLink !== null
+        ? String(object.managedLink)
+        : "";
     return message;
   },
 
@@ -580,6 +622,9 @@ export const CreateDashboardRequest = {
       (obj.parametrization = message.parametrization
         ? Parametrization.toJSON(message.parametrization)
         : undefined);
+    message.managedBy !== undefined && (obj.managedBy = message.managedBy);
+    message.managedLink !== undefined &&
+      (obj.managedLink = message.managedLink);
     return obj;
   },
 
@@ -604,6 +649,8 @@ export const CreateDashboardRequest = {
       object.parametrization !== undefined && object.parametrization !== null
         ? Parametrization.fromPartial(object.parametrization)
         : undefined;
+    message.managedBy = object.managedBy ?? "";
+    message.managedLink = object.managedLink ?? "";
     return message;
   },
 };
@@ -775,6 +822,8 @@ const baseUpdateDashboardRequest: object = {
   description: "",
   title: "",
   etag: "",
+  managedBy: "",
+  managedLink: "",
 };
 
 export const UpdateDashboardRequest = {
@@ -818,6 +867,12 @@ export const UpdateDashboardRequest = {
     }
     if (message.etag !== "") {
       writer.uint32(66).string(message.etag);
+    }
+    if (message.managedBy !== "") {
+      writer.uint32(210).string(message.managedBy);
+    }
+    if (message.managedLink !== "") {
+      writer.uint32(218).string(message.managedLink);
     }
     return writer;
   },
@@ -867,6 +922,12 @@ export const UpdateDashboardRequest = {
         case 8:
           message.etag = reader.string();
           break;
+        case 26:
+          message.managedBy = reader.string();
+          break;
+        case 27:
+          message.managedLink = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -910,6 +971,14 @@ export const UpdateDashboardRequest = {
       object.etag !== undefined && object.etag !== null
         ? String(object.etag)
         : "";
+    message.managedBy =
+      object.managedBy !== undefined && object.managedBy !== null
+        ? String(object.managedBy)
+        : "";
+    message.managedLink =
+      object.managedLink !== undefined && object.managedLink !== null
+        ? String(object.managedLink)
+        : "";
     return message;
   },
 
@@ -939,6 +1008,9 @@ export const UpdateDashboardRequest = {
         ? Parametrization.toJSON(message.parametrization)
         : undefined);
     message.etag !== undefined && (obj.etag = message.etag);
+    message.managedBy !== undefined && (obj.managedBy = message.managedBy);
+    message.managedLink !== undefined &&
+      (obj.managedLink = message.managedLink);
     return obj;
   },
 
@@ -964,6 +1036,8 @@ export const UpdateDashboardRequest = {
         ? Parametrization.fromPartial(object.parametrization)
         : undefined;
     message.etag = object.etag ?? "";
+    message.managedBy = object.managedBy ?? "";
+    message.managedLink = object.managedLink ?? "";
     return message;
   },
 };

@@ -21,6 +21,7 @@ import {
   Cluster_PersistenceMode,
   Resources,
   Access,
+  DiskSizeAutoscaling,
   Cluster,
   Host,
   Shard,
@@ -29,8 +30,8 @@ import {
   cluster_EnvironmentToJSON,
   cluster_PersistenceModeToJSON,
 } from "../../../../../yandex/cloud/mdb/redis/v1/cluster";
-import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import { MaintenanceWindow } from "../../../../../yandex/cloud/mdb/redis/v1/maintenance";
+import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import { TimeOfDay } from "../../../../../google/type/timeofday";
 import { RedisConfig } from "../../../../../yandex/cloud/mdb/redis/v1/config/redis";
 import { Timestamp } from "../../../../../google/protobuf/timestamp";
@@ -43,6 +44,17 @@ import { Redisconfig70 } from "../../../../../yandex/cloud/mdb/redis/v1/config/r
 import { BoolValue, Int64Value } from "../../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.mdb.redis.v1";
+
+export interface EnableShardingClusterMetadata {
+  $type: "yandex.cloud.mdb.redis.v1.EnableShardingClusterMetadata";
+  clusterId: string;
+}
+
+export interface EnableShardingClusterRequest {
+  $type: "yandex.cloud.mdb.redis.v1.EnableShardingClusterRequest";
+  /** Required. ID of the Redis cluster to return. */
+  clusterId: string;
+}
 
 export interface GetClusterRequest {
   $type: "yandex.cloud.mdb.redis.v1.GetClusterRequest";
@@ -127,6 +139,8 @@ export interface CreateClusterRequest {
   persistenceMode: Cluster_PersistenceMode;
   /** Enable FQDN instead of ip */
   announceHostnames: boolean;
+  /** Window of maintenance operations. */
+  maintenanceWindow?: MaintenanceWindow;
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -172,6 +186,8 @@ export interface UpdateClusterRequest {
   deletionProtection: boolean;
   /** Persistence mode */
   persistenceMode: Cluster_PersistenceMode;
+  /** ID of the network to move the cluster to. */
+  networkId: string;
   /** Enable FQDN instead of ip */
   announceHostnames: boolean;
 }
@@ -318,6 +334,8 @@ export interface RestoreClusterRequest {
   deletionProtection: boolean;
   /** Enable FQDN instead of ip */
   announceHostnames: boolean;
+  /** Window of maintenance operations. */
+  maintenanceWindow?: MaintenanceWindow;
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
@@ -913,7 +931,157 @@ export interface ConfigSpec {
   access?: Access;
   /** Unified configuration of a Redis cluster */
   redis?: RedisConfig;
+  /** Disk size autoscaling settings */
+  diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
+
+const baseEnableShardingClusterMetadata: object = {
+  $type: "yandex.cloud.mdb.redis.v1.EnableShardingClusterMetadata",
+  clusterId: "",
+};
+
+export const EnableShardingClusterMetadata = {
+  $type: "yandex.cloud.mdb.redis.v1.EnableShardingClusterMetadata" as const,
+
+  encode(
+    message: EnableShardingClusterMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): EnableShardingClusterMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseEnableShardingClusterMetadata,
+    } as EnableShardingClusterMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EnableShardingClusterMetadata {
+    const message = {
+      ...baseEnableShardingClusterMetadata,
+    } as EnableShardingClusterMetadata;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: EnableShardingClusterMetadata): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EnableShardingClusterMetadata>, I>>(
+    object: I
+  ): EnableShardingClusterMetadata {
+    const message = {
+      ...baseEnableShardingClusterMetadata,
+    } as EnableShardingClusterMetadata;
+    message.clusterId = object.clusterId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  EnableShardingClusterMetadata.$type,
+  EnableShardingClusterMetadata
+);
+
+const baseEnableShardingClusterRequest: object = {
+  $type: "yandex.cloud.mdb.redis.v1.EnableShardingClusterRequest",
+  clusterId: "",
+};
+
+export const EnableShardingClusterRequest = {
+  $type: "yandex.cloud.mdb.redis.v1.EnableShardingClusterRequest" as const,
+
+  encode(
+    message: EnableShardingClusterRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.clusterId !== "") {
+      writer.uint32(10).string(message.clusterId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): EnableShardingClusterRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseEnableShardingClusterRequest,
+    } as EnableShardingClusterRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.clusterId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EnableShardingClusterRequest {
+    const message = {
+      ...baseEnableShardingClusterRequest,
+    } as EnableShardingClusterRequest;
+    message.clusterId =
+      object.clusterId !== undefined && object.clusterId !== null
+        ? String(object.clusterId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: EnableShardingClusterRequest): unknown {
+    const obj: any = {};
+    message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EnableShardingClusterRequest>, I>>(
+    object: I
+  ): EnableShardingClusterRequest {
+    const message = {
+      ...baseEnableShardingClusterRequest,
+    } as EnableShardingClusterRequest;
+    message.clusterId = object.clusterId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  EnableShardingClusterRequest.$type,
+  EnableShardingClusterRequest
+);
 
 const baseGetClusterRequest: object = {
   $type: "yandex.cloud.mdb.redis.v1.GetClusterRequest",
@@ -1237,6 +1405,12 @@ export const CreateClusterRequest = {
     if (message.announceHostnames === true) {
       writer.uint32(128).bool(message.announceHostnames);
     }
+    if (message.maintenanceWindow !== undefined) {
+      MaintenanceWindow.encode(
+        message.maintenanceWindow,
+        writer.uint32(138).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1300,6 +1474,12 @@ export const CreateClusterRequest = {
           break;
         case 16:
           message.announceHostnames = reader.bool();
+          break;
+        case 17:
+          message.maintenanceWindow = MaintenanceWindow.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -1369,6 +1549,11 @@ export const CreateClusterRequest = {
       object.announceHostnames !== null
         ? Boolean(object.announceHostnames)
         : false;
+    message.maintenanceWindow =
+      object.maintenanceWindow !== undefined &&
+      object.maintenanceWindow !== null
+        ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
+        : undefined;
     return message;
   },
 
@@ -1413,6 +1598,10 @@ export const CreateClusterRequest = {
       ));
     message.announceHostnames !== undefined &&
       (obj.announceHostnames = message.announceHostnames);
+    message.maintenanceWindow !== undefined &&
+      (obj.maintenanceWindow = message.maintenanceWindow
+        ? MaintenanceWindow.toJSON(message.maintenanceWindow)
+        : undefined);
     return obj;
   },
 
@@ -1445,6 +1634,11 @@ export const CreateClusterRequest = {
     message.deletionProtection = object.deletionProtection ?? false;
     message.persistenceMode = object.persistenceMode ?? 0;
     message.announceHostnames = object.announceHostnames ?? false;
+    message.maintenanceWindow =
+      object.maintenanceWindow !== undefined &&
+      object.maintenanceWindow !== null
+        ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
+        : undefined;
     return message;
   },
 };
@@ -1609,6 +1803,7 @@ const baseUpdateClusterRequest: object = {
   securityGroupIds: "",
   deletionProtection: false,
   persistenceMode: 0,
+  networkId: "",
   announceHostnames: false,
 };
 
@@ -1658,6 +1853,9 @@ export const UpdateClusterRequest = {
     }
     if (message.persistenceMode !== 0) {
       writer.uint32(80).int32(message.persistenceMode);
+    }
+    if (message.networkId !== "") {
+      writer.uint32(90).string(message.networkId);
     }
     if (message.announceHostnames === true) {
       writer.uint32(96).bool(message.announceHostnames);
@@ -1716,6 +1914,9 @@ export const UpdateClusterRequest = {
         case 10:
           message.persistenceMode = reader.int32() as any;
           break;
+        case 11:
+          message.networkId = reader.string();
+          break;
         case 12:
           message.announceHostnames = reader.bool();
           break;
@@ -1772,6 +1973,10 @@ export const UpdateClusterRequest = {
       object.persistenceMode !== undefined && object.persistenceMode !== null
         ? cluster_PersistenceModeFromJSON(object.persistenceMode)
         : 0;
+    message.networkId =
+      object.networkId !== undefined && object.networkId !== null
+        ? String(object.networkId)
+        : "";
     message.announceHostnames =
       object.announceHostnames !== undefined &&
       object.announceHostnames !== null
@@ -1815,6 +2020,7 @@ export const UpdateClusterRequest = {
       (obj.persistenceMode = cluster_PersistenceModeToJSON(
         message.persistenceMode
       ));
+    message.networkId !== undefined && (obj.networkId = message.networkId);
     message.announceHostnames !== undefined &&
       (obj.announceHostnames = message.announceHostnames);
     return obj;
@@ -1851,6 +2057,7 @@ export const UpdateClusterRequest = {
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? false;
     message.persistenceMode = object.persistenceMode ?? 0;
+    message.networkId = object.networkId ?? "";
     message.announceHostnames = object.announceHostnames ?? false;
     return message;
   },
@@ -2944,6 +3151,12 @@ export const RestoreClusterRequest = {
     if (message.announceHostnames === true) {
       writer.uint32(112).bool(message.announceHostnames);
     }
+    if (message.maintenanceWindow !== undefined) {
+      MaintenanceWindow.encode(
+        message.maintenanceWindow,
+        writer.uint32(122).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3007,6 +3220,12 @@ export const RestoreClusterRequest = {
           break;
         case 14:
           message.announceHostnames = reader.bool();
+          break;
+        case 15:
+          message.maintenanceWindow = MaintenanceWindow.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -3076,6 +3295,11 @@ export const RestoreClusterRequest = {
       object.announceHostnames !== null
         ? Boolean(object.announceHostnames)
         : false;
+    message.maintenanceWindow =
+      object.maintenanceWindow !== undefined &&
+      object.maintenanceWindow !== null
+        ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
+        : undefined;
     return message;
   },
 
@@ -3120,6 +3344,10 @@ export const RestoreClusterRequest = {
       (obj.deletionProtection = message.deletionProtection);
     message.announceHostnames !== undefined &&
       (obj.announceHostnames = message.announceHostnames);
+    message.maintenanceWindow !== undefined &&
+      (obj.maintenanceWindow = message.maintenanceWindow
+        ? MaintenanceWindow.toJSON(message.maintenanceWindow)
+        : undefined);
     return obj;
   },
 
@@ -3152,6 +3380,11 @@ export const RestoreClusterRequest = {
     message.persistenceMode = object.persistenceMode ?? 0;
     message.deletionProtection = object.deletionProtection ?? false;
     message.announceHostnames = object.announceHostnames ?? false;
+    message.maintenanceWindow =
+      object.maintenanceWindow !== undefined &&
+      object.maintenanceWindow !== null
+        ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
+        : undefined;
     return message;
   },
 };
@@ -6359,6 +6592,12 @@ export const ConfigSpec = {
     if (message.redis !== undefined) {
       RedisConfig.encode(message.redis, writer.uint32(90).fork()).ldelim();
     }
+    if (message.diskSizeAutoscaling !== undefined) {
+      DiskSizeAutoscaling.encode(
+        message.diskSizeAutoscaling,
+        writer.uint32(98).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -6395,6 +6634,12 @@ export const ConfigSpec = {
           break;
         case 11:
           message.redis = RedisConfig.decode(reader, reader.uint32());
+          break;
+        case 12:
+          message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -6443,6 +6688,11 @@ export const ConfigSpec = {
       object.redis !== undefined && object.redis !== null
         ? RedisConfig.fromJSON(object.redis)
         : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+        : undefined;
     return message;
   },
 
@@ -6478,6 +6728,10 @@ export const ConfigSpec = {
     message.redis !== undefined &&
       (obj.redis = message.redis
         ? RedisConfig.toJSON(message.redis)
+        : undefined);
+    message.diskSizeAutoscaling !== undefined &&
+      (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+        ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
         : undefined);
     return obj;
   },
@@ -6519,6 +6773,11 @@ export const ConfigSpec = {
     message.redis =
       object.redis !== undefined && object.redis !== null
         ? RedisConfig.fromPartial(object.redis)
+        : undefined;
+    message.diskSizeAutoscaling =
+      object.diskSizeAutoscaling !== undefined &&
+      object.diskSizeAutoscaling !== null
+        ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
         : undefined;
     return message;
   },
@@ -6851,6 +7110,19 @@ export const ClusterServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Enable Sharding on non sharded cluster */
+  enableSharding: {
+    path: "/yandex.cloud.mdb.redis.v1.ClusterService/EnableSharding",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: EnableShardingClusterRequest) =>
+      Buffer.from(EnableShardingClusterRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      EnableShardingClusterRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
 } as const;
 
 export interface ClusterServiceServer extends UntypedServiceImplementation {
@@ -6926,6 +7198,8 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
   deleteShard: handleUnaryCall<DeleteClusterShardRequest, Operation>;
   /** Rebalances the cluster. Evenly distributes all the hash slots between the shards. */
   rebalance: handleUnaryCall<RebalanceClusterRequest, Operation>;
+  /** Enable Sharding on non sharded cluster */
+  enableSharding: handleUnaryCall<EnableShardingClusterRequest, Operation>;
 }
 
 export interface ClusterServiceClient extends Client {
@@ -7380,6 +7654,22 @@ export interface ClusterServiceClient extends Client {
   ): ClientUnaryCall;
   rebalance(
     request: RebalanceClusterRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Enable Sharding on non sharded cluster */
+  enableSharding(
+    request: EnableShardingClusterRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  enableSharding(
+    request: EnableShardingClusterRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  enableSharding(
+    request: EnableShardingClusterRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

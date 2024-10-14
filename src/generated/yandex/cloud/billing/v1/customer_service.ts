@@ -58,7 +58,7 @@ export interface ListCustomersResponse {
 
 export interface InviteCustomerRequest {
   $type: "yandex.cloud.billing.v1.InviteCustomerRequest";
-  /** ID of the reseller that customer will be associated with. */
+  /** Billing account ID of the reseller that the customer will be associated with. */
   resellerId: string;
   /** Name of the customer. */
   name: string;
@@ -70,9 +70,19 @@ export interface InviteCustomerRequest {
 
 export interface CreateResellerServedCustomerRequest {
   $type: "yandex.cloud.billing.v1.CreateResellerServedCustomerRequest";
-  /** ID of the reseller that customer will be associated with. */
+  /**
+   * ID of the reseller that customer will be associated with.
+   *
+   * Value must match either one of the two regular expressions:
+   * `^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|[0-9a-f]{32})$`
+   * or `^[a-z][-a-zA-Z0-9.]{0,48}[a-zA-Z0-9]$`.
+   */
   resellerId: string;
-  /** Name of the customer. */
+  /**
+   * Name of the customer.
+   *
+   * String length is not limited.
+   */
   name: string;
   /** Person of the customer. */
   person?: CustomerPerson;

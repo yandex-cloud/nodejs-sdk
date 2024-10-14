@@ -15,7 +15,7 @@ export interface GenerationOptions {
   /** Enables streaming of partially generated text. */
   partialResults: boolean;
   /**
-   * Affects creativity and randomness of responses. Should be a double number between 0 (inclusive) and infinity.
+   * Affects creativity and randomness of responses. Should be a double number between 0 (inclusive) and 1 (inclusive).
    * Lower values produce more straightforward responses, while higher values lead to increased creativity and randomness.
    */
   temperature?: number;

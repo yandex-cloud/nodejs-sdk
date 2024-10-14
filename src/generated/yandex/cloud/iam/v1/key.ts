@@ -23,6 +23,8 @@ export interface Key {
   keyAlgorithm: Key_Algorithm;
   /** A public key of the Key resource. */
   publicKey: string;
+  /** Timestamp for the last use of this key. */
+  lastUsedAt?: Date;
 }
 
 export enum Key_Algorithm {
@@ -101,6 +103,12 @@ export const Key = {
     if (message.publicKey !== "") {
       writer.uint32(58).string(message.publicKey);
     }
+    if (message.lastUsedAt !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.lastUsedAt),
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -133,6 +141,11 @@ export const Key = {
           break;
         case 7:
           message.publicKey = reader.string();
+          break;
+        case 9:
+          message.lastUsedAt = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -170,6 +183,10 @@ export const Key = {
       object.publicKey !== undefined && object.publicKey !== null
         ? String(object.publicKey)
         : "";
+    message.lastUsedAt =
+      object.lastUsedAt !== undefined && object.lastUsedAt !== null
+        ? fromJsonTimestamp(object.lastUsedAt)
+        : undefined;
     return message;
   },
 
@@ -187,6 +204,8 @@ export const Key = {
     message.keyAlgorithm !== undefined &&
       (obj.keyAlgorithm = key_AlgorithmToJSON(message.keyAlgorithm));
     message.publicKey !== undefined && (obj.publicKey = message.publicKey);
+    message.lastUsedAt !== undefined &&
+      (obj.lastUsedAt = message.lastUsedAt.toISOString());
     return obj;
   },
 
@@ -199,6 +218,7 @@ export const Key = {
     message.description = object.description ?? "";
     message.keyAlgorithm = object.keyAlgorithm ?? 0;
     message.publicKey = object.publicKey ?? "";
+    message.lastUsedAt = object.lastUsedAt ?? undefined;
     return message;
   },
 };

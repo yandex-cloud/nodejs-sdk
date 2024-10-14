@@ -50,6 +50,16 @@ export interface CreateIamTokenForServiceAccountRequest {
   serviceAccountId: string;
 }
 
+export interface RevokeIamTokenRequest {
+  $type: "yandex.cloud.iam.v1.RevokeIamTokenRequest";
+  iamToken: string;
+}
+
+export interface RevokeIamTokenResponse {
+  $type: "yandex.cloud.iam.v1.RevokeIamTokenResponse";
+  subjectId: string;
+}
+
 const baseCreateIamTokenRequest: object = {
   $type: "yandex.cloud.iam.v1.CreateIamTokenRequest",
 };
@@ -287,9 +297,139 @@ messageTypeRegistry.set(
   CreateIamTokenForServiceAccountRequest
 );
 
+const baseRevokeIamTokenRequest: object = {
+  $type: "yandex.cloud.iam.v1.RevokeIamTokenRequest",
+  iamToken: "",
+};
+
+export const RevokeIamTokenRequest = {
+  $type: "yandex.cloud.iam.v1.RevokeIamTokenRequest" as const,
+
+  encode(
+    message: RevokeIamTokenRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.iamToken !== "") {
+      writer.uint32(10).string(message.iamToken);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RevokeIamTokenRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseRevokeIamTokenRequest } as RevokeIamTokenRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.iamToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RevokeIamTokenRequest {
+    const message = { ...baseRevokeIamTokenRequest } as RevokeIamTokenRequest;
+    message.iamToken =
+      object.iamToken !== undefined && object.iamToken !== null
+        ? String(object.iamToken)
+        : "";
+    return message;
+  },
+
+  toJSON(message: RevokeIamTokenRequest): unknown {
+    const obj: any = {};
+    message.iamToken !== undefined && (obj.iamToken = message.iamToken);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RevokeIamTokenRequest>, I>>(
+    object: I
+  ): RevokeIamTokenRequest {
+    const message = { ...baseRevokeIamTokenRequest } as RevokeIamTokenRequest;
+    message.iamToken = object.iamToken ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(RevokeIamTokenRequest.$type, RevokeIamTokenRequest);
+
+const baseRevokeIamTokenResponse: object = {
+  $type: "yandex.cloud.iam.v1.RevokeIamTokenResponse",
+  subjectId: "",
+};
+
+export const RevokeIamTokenResponse = {
+  $type: "yandex.cloud.iam.v1.RevokeIamTokenResponse" as const,
+
+  encode(
+    message: RevokeIamTokenResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.subjectId !== "") {
+      writer.uint32(10).string(message.subjectId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): RevokeIamTokenResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseRevokeIamTokenResponse } as RevokeIamTokenResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.subjectId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RevokeIamTokenResponse {
+    const message = { ...baseRevokeIamTokenResponse } as RevokeIamTokenResponse;
+    message.subjectId =
+      object.subjectId !== undefined && object.subjectId !== null
+        ? String(object.subjectId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: RevokeIamTokenResponse): unknown {
+    const obj: any = {};
+    message.subjectId !== undefined && (obj.subjectId = message.subjectId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RevokeIamTokenResponse>, I>>(
+    object: I
+  ): RevokeIamTokenResponse {
+    const message = { ...baseRevokeIamTokenResponse } as RevokeIamTokenResponse;
+    message.subjectId = object.subjectId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(RevokeIamTokenResponse.$type, RevokeIamTokenResponse);
+
 /** A set of methods for managing IAM tokens. */
 export const IamTokenServiceService = {
-  /** Creates an IAM token for the specified identity. */
+  /** Create an IAM token for the specified identity. */
   create: {
     path: "/yandex.cloud.iam.v1.IamTokenService/Create",
     requestStream: false,
@@ -302,7 +442,7 @@ export const IamTokenServiceService = {
     responseDeserialize: (value: Buffer) =>
       CreateIamTokenResponse.decode(value),
   },
-  /** Create iam token for service account. */
+  /** Create an IAM token for service account. */
   createForServiceAccount: {
     path: "/yandex.cloud.iam.v1.IamTokenService/CreateForServiceAccount",
     requestStream: false,
@@ -318,20 +458,35 @@ export const IamTokenServiceService = {
     responseDeserialize: (value: Buffer) =>
       CreateIamTokenResponse.decode(value),
   },
+  /** Revoke the IAM token. */
+  revoke: {
+    path: "/yandex.cloud.iam.v1.IamTokenService/Revoke",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: RevokeIamTokenRequest) =>
+      Buffer.from(RevokeIamTokenRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => RevokeIamTokenRequest.decode(value),
+    responseSerialize: (value: RevokeIamTokenResponse) =>
+      Buffer.from(RevokeIamTokenResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) =>
+      RevokeIamTokenResponse.decode(value),
+  },
 } as const;
 
 export interface IamTokenServiceServer extends UntypedServiceImplementation {
-  /** Creates an IAM token for the specified identity. */
+  /** Create an IAM token for the specified identity. */
   create: handleUnaryCall<CreateIamTokenRequest, CreateIamTokenResponse>;
-  /** Create iam token for service account. */
+  /** Create an IAM token for service account. */
   createForServiceAccount: handleUnaryCall<
     CreateIamTokenForServiceAccountRequest,
     CreateIamTokenResponse
   >;
+  /** Revoke the IAM token. */
+  revoke: handleUnaryCall<RevokeIamTokenRequest, RevokeIamTokenResponse>;
 }
 
 export interface IamTokenServiceClient extends Client {
-  /** Creates an IAM token for the specified identity. */
+  /** Create an IAM token for the specified identity. */
   create(
     request: CreateIamTokenRequest,
     callback: (
@@ -356,7 +511,7 @@ export interface IamTokenServiceClient extends Client {
       response: CreateIamTokenResponse
     ) => void
   ): ClientUnaryCall;
-  /** Create iam token for service account. */
+  /** Create an IAM token for service account. */
   createForServiceAccount(
     request: CreateIamTokenForServiceAccountRequest,
     callback: (
@@ -379,6 +534,31 @@ export interface IamTokenServiceClient extends Client {
     callback: (
       error: ServiceError | null,
       response: CreateIamTokenResponse
+    ) => void
+  ): ClientUnaryCall;
+  /** Revoke the IAM token. */
+  revoke(
+    request: RevokeIamTokenRequest,
+    callback: (
+      error: ServiceError | null,
+      response: RevokeIamTokenResponse
+    ) => void
+  ): ClientUnaryCall;
+  revoke(
+    request: RevokeIamTokenRequest,
+    metadata: Metadata,
+    callback: (
+      error: ServiceError | null,
+      response: RevokeIamTokenResponse
+    ) => void
+  ): ClientUnaryCall;
+  revoke(
+    request: RevokeIamTokenRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (
+      error: ServiceError | null,
+      response: RevokeIamTokenResponse
     ) => void
   ): ClientUnaryCall;
 }

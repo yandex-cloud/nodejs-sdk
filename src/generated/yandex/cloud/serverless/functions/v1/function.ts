@@ -27,8 +27,6 @@ export interface Function {
   description: string;
   /** Function labels as `key:value` pairs. */
   labels: { [key: string]: string };
-  /** ID of the log group for the function. */
-  logGroupId: string;
   /** URL that needs to be requested to invoke the function. */
   httpInvokeUrl: string;
   /** Status of the function. */
@@ -134,8 +132,6 @@ export interface Version {
   status: Version_Status;
   /** Version tags. For details, see [Version tag](/docs/functions/concepts/function#tag). */
   tags: string[];
-  /** ID of the log group for the version. */
-  logGroupId: string;
   /** Environment settings for the version. */
   environment: { [key: string]: string };
   /** Network access. If specified the version will be attached to specified network/subnet(s). */
@@ -150,6 +146,12 @@ export interface Version {
   storageMounts: StorageMount[];
   /** Config for asynchronous invocations of the version */
   asyncInvocationConfig?: AsyncInvocationConfig;
+  /** Optional size of in-memory mounted /tmp directory in bytes. */
+  tmpfsSize: number;
+  /** The maximum number of requests processed by a function instance at the same time */
+  concurrency: number;
+  /** Mounts to be used by the version. */
+  mounts: Mount[];
 }
 
 export enum Version_Status {
@@ -158,6 +160,10 @@ export enum Version_Status {
   CREATING = 1,
   /** ACTIVE - Version is ready to use. */
   ACTIVE = 2,
+  /** OBSOLETE - Version will be deleted soon. */
+  OBSOLETE = 3,
+  /** DELETING - Version is being deleted. */
+  DELETING = 4,
   UNRECOGNIZED = -1,
 }
 
@@ -172,6 +178,12 @@ export function version_StatusFromJSON(object: any): Version_Status {
     case 2:
     case "ACTIVE":
       return Version_Status.ACTIVE;
+    case 3:
+    case "OBSOLETE":
+      return Version_Status.OBSOLETE;
+    case 4:
+    case "DELETING":
+      return Version_Status.DELETING;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -187,6 +199,10 @@ export function version_StatusToJSON(object: Version_Status): string {
       return "CREATING";
     case Version_Status.ACTIVE:
       return "ACTIVE";
+    case Version_Status.OBSOLETE:
+      return "OBSOLETE";
+    case Version_Status.DELETING:
+      return "DELETING";
     default:
       return "UNKNOWN";
   }
@@ -293,6 +309,7 @@ export interface LogOptions {
   minLevel: LogLevel_Level;
 }
 
+/** @deprecated */
 export interface StorageMount {
   $type: "yandex.cloud.serverless.functions.v1.StorageMount";
   /** S3 bucket name for mounting. */
@@ -303,6 +320,75 @@ export interface StorageMount {
   mountPointName: string;
   /** Is mount read only. */
   readOnly: boolean;
+}
+
+/** Mount contains an information about version's external storage mount */
+export interface Mount {
+  $type: "yandex.cloud.serverless.functions.v1.Mount";
+  /** Unique mount point name. Device will be mounted into /function/storage/<name> */
+  name: string;
+  /** Mount's mode */
+  mode: Mount_Mode;
+  /** Object storage mounts */
+  objectStorage?: Mount_ObjectStorage | undefined;
+  /** Working disk (worker-local non-shared read-write NBS disk templates) */
+  ephemeralDiskSpec?: Mount_DiskSpec | undefined;
+}
+
+export enum Mount_Mode {
+  MODE_UNSPECIFIED = 0,
+  READ_ONLY = 1,
+  READ_WRITE = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function mount_ModeFromJSON(object: any): Mount_Mode {
+  switch (object) {
+    case 0:
+    case "MODE_UNSPECIFIED":
+      return Mount_Mode.MODE_UNSPECIFIED;
+    case 1:
+    case "READ_ONLY":
+      return Mount_Mode.READ_ONLY;
+    case 2:
+    case "READ_WRITE":
+      return Mount_Mode.READ_WRITE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Mount_Mode.UNRECOGNIZED;
+  }
+}
+
+export function mount_ModeToJSON(object: Mount_Mode): string {
+  switch (object) {
+    case Mount_Mode.MODE_UNSPECIFIED:
+      return "MODE_UNSPECIFIED";
+    case Mount_Mode.READ_ONLY:
+      return "READ_ONLY";
+    case Mount_Mode.READ_WRITE:
+      return "READ_WRITE";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+/** ObjectStorage as a mount */
+export interface Mount_ObjectStorage {
+  $type: "yandex.cloud.serverless.functions.v1.Mount.ObjectStorage";
+  /** ObjectStorage bucket name for mounting. */
+  bucketId: string;
+  /** ObjectStorage bucket prefix for mounting. */
+  prefix: string;
+}
+
+/** Disk as a mount */
+export interface Mount_DiskSpec {
+  $type: "yandex.cloud.serverless.functions.v1.Mount.DiskSpec";
+  /** The size of disk for mount in bytes */
+  size: number;
+  /** Optional block size of disk for mount in bytes */
+  blockSize: number;
 }
 
 export interface AsyncInvocationConfig {
@@ -344,7 +430,6 @@ const baseFunction: object = {
   folderId: "",
   name: "",
   description: "",
-  logGroupId: "",
   httpInvokeUrl: "",
   status: 0,
 };
@@ -384,9 +469,6 @@ export const Function = {
         writer.uint32(50).fork()
       ).ldelim();
     });
-    if (message.logGroupId !== "") {
-      writer.uint32(58).string(message.logGroupId);
-    }
     if (message.httpInvokeUrl !== "") {
       writer.uint32(66).string(message.httpInvokeUrl);
     }
@@ -426,9 +508,6 @@ export const Function = {
           if (entry6.value !== undefined) {
             message.labels[entry6.key] = entry6.value;
           }
-          break;
-        case 7:
-          message.logGroupId = reader.string();
           break;
         case 8:
           message.httpInvokeUrl = reader.string();
@@ -470,10 +549,6 @@ export const Function = {
       acc[key] = String(value);
       return acc;
     }, {});
-    message.logGroupId =
-      object.logGroupId !== undefined && object.logGroupId !== null
-        ? String(object.logGroupId)
-        : "";
     message.httpInvokeUrl =
       object.httpInvokeUrl !== undefined && object.httpInvokeUrl !== null
         ? String(object.httpInvokeUrl)
@@ -500,7 +575,6 @@ export const Function = {
         obj.labels[k] = v;
       });
     }
-    message.logGroupId !== undefined && (obj.logGroupId = message.logGroupId);
     message.httpInvokeUrl !== undefined &&
       (obj.httpInvokeUrl = message.httpInvokeUrl);
     message.status !== undefined &&
@@ -523,7 +597,6 @@ export const Function = {
       }
       return acc;
     }, {});
-    message.logGroupId = object.logGroupId ?? "";
     message.httpInvokeUrl = object.httpInvokeUrl ?? "";
     message.status = object.status ?? 0;
     return message;
@@ -619,7 +692,8 @@ const baseVersion: object = {
   imageSize: 0,
   status: 0,
   tags: "",
-  logGroupId: "",
+  tmpfsSize: 0,
+  concurrency: 0,
 };
 
 export const Version = {
@@ -671,9 +745,6 @@ export const Version = {
     for (const v of message.tags) {
       writer.uint32(114).string(v!);
     }
-    if (message.logGroupId !== "") {
-      writer.uint32(122).string(message.logGroupId);
-    }
     Object.entries(message.environment).forEach(([key, value]) => {
       Version_EnvironmentEntry.encode(
         {
@@ -717,6 +788,15 @@ export const Version = {
         writer.uint32(178).fork()
       ).ldelim();
     }
+    if (message.tmpfsSize !== 0) {
+      writer.uint32(184).int64(message.tmpfsSize);
+    }
+    if (message.concurrency !== 0) {
+      writer.uint32(192).int64(message.concurrency);
+    }
+    for (const v of message.mounts) {
+      Mount.encode(v!, writer.uint32(202).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -729,6 +809,7 @@ export const Version = {
     message.namedServiceAccounts = {};
     message.secrets = [];
     message.storageMounts = [];
+    message.mounts = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -770,9 +851,6 @@ export const Version = {
         case 14:
           message.tags.push(reader.string());
           break;
-        case 15:
-          message.logGroupId = reader.string();
-          break;
         case 16:
           const entry16 = Version_EnvironmentEntry.decode(
             reader,
@@ -810,6 +888,15 @@ export const Version = {
             reader,
             reader.uint32()
           );
+          break;
+        case 23:
+          message.tmpfsSize = longToNumber(reader.int64() as Long);
+          break;
+        case 24:
+          message.concurrency = longToNumber(reader.int64() as Long);
+          break;
+        case 25:
+          message.mounts.push(Mount.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -864,10 +951,6 @@ export const Version = {
         ? version_StatusFromJSON(object.status)
         : 0;
     message.tags = (object.tags ?? []).map((e: any) => String(e));
-    message.logGroupId =
-      object.logGroupId !== undefined && object.logGroupId !== null
-        ? String(object.logGroupId)
-        : "";
     message.environment = Object.entries(object.environment ?? {}).reduce<{
       [key: string]: string;
     }>((acc, [key, value]) => {
@@ -899,6 +982,15 @@ export const Version = {
       object.asyncInvocationConfig !== null
         ? AsyncInvocationConfig.fromJSON(object.asyncInvocationConfig)
         : undefined;
+    message.tmpfsSize =
+      object.tmpfsSize !== undefined && object.tmpfsSize !== null
+        ? Number(object.tmpfsSize)
+        : 0;
+    message.concurrency =
+      object.concurrency !== undefined && object.concurrency !== null
+        ? Number(object.concurrency)
+        : 0;
+    message.mounts = (object.mounts ?? []).map((e: any) => Mount.fromJSON(e));
     return message;
   },
 
@@ -931,7 +1023,6 @@ export const Version = {
     } else {
       obj.tags = [];
     }
-    message.logGroupId !== undefined && (obj.logGroupId = message.logGroupId);
     obj.environment = {};
     if (message.environment) {
       Object.entries(message.environment).forEach(([k, v]) => {
@@ -970,6 +1061,15 @@ export const Version = {
       (obj.asyncInvocationConfig = message.asyncInvocationConfig
         ? AsyncInvocationConfig.toJSON(message.asyncInvocationConfig)
         : undefined);
+    message.tmpfsSize !== undefined &&
+      (obj.tmpfsSize = Math.round(message.tmpfsSize));
+    message.concurrency !== undefined &&
+      (obj.concurrency = Math.round(message.concurrency));
+    if (message.mounts) {
+      obj.mounts = message.mounts.map((e) => (e ? Mount.toJSON(e) : undefined));
+    } else {
+      obj.mounts = [];
+    }
     return obj;
   },
 
@@ -993,7 +1093,6 @@ export const Version = {
     message.imageSize = object.imageSize ?? 0;
     message.status = object.status ?? 0;
     message.tags = object.tags?.map((e) => e) || [];
-    message.logGroupId = object.logGroupId ?? "";
     message.environment = Object.entries(object.environment ?? {}).reduce<{
       [key: string]: string;
     }>((acc, [key, value]) => {
@@ -1026,6 +1125,9 @@ export const Version = {
       object.asyncInvocationConfig !== null
         ? AsyncInvocationConfig.fromPartial(object.asyncInvocationConfig)
         : undefined;
+    message.tmpfsSize = object.tmpfsSize ?? 0;
+    message.concurrency = object.concurrency ?? 0;
+    message.mounts = object.mounts?.map((e) => Mount.fromPartial(e)) || [];
     return message;
   },
 };
@@ -1885,6 +1987,277 @@ export const StorageMount = {
 };
 
 messageTypeRegistry.set(StorageMount.$type, StorageMount);
+
+const baseMount: object = {
+  $type: "yandex.cloud.serverless.functions.v1.Mount",
+  name: "",
+  mode: 0,
+};
+
+export const Mount = {
+  $type: "yandex.cloud.serverless.functions.v1.Mount" as const,
+
+  encode(message: Mount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.mode !== 0) {
+      writer.uint32(24).int32(message.mode);
+    }
+    if (message.objectStorage !== undefined) {
+      Mount_ObjectStorage.encode(
+        message.objectStorage,
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
+    if (message.ephemeralDiskSpec !== undefined) {
+      Mount_DiskSpec.encode(
+        message.ephemeralDiskSpec,
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Mount {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMount } as Mount;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.name = reader.string();
+          break;
+        case 3:
+          message.mode = reader.int32() as any;
+          break;
+        case 10:
+          message.objectStorage = Mount_ObjectStorage.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 11:
+          message.ephemeralDiskSpec = Mount_DiskSpec.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mount {
+    const message = { ...baseMount } as Mount;
+    message.name =
+      object.name !== undefined && object.name !== null
+        ? String(object.name)
+        : "";
+    message.mode =
+      object.mode !== undefined && object.mode !== null
+        ? mount_ModeFromJSON(object.mode)
+        : 0;
+    message.objectStorage =
+      object.objectStorage !== undefined && object.objectStorage !== null
+        ? Mount_ObjectStorage.fromJSON(object.objectStorage)
+        : undefined;
+    message.ephemeralDiskSpec =
+      object.ephemeralDiskSpec !== undefined &&
+      object.ephemeralDiskSpec !== null
+        ? Mount_DiskSpec.fromJSON(object.ephemeralDiskSpec)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mount): unknown {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    message.mode !== undefined && (obj.mode = mount_ModeToJSON(message.mode));
+    message.objectStorage !== undefined &&
+      (obj.objectStorage = message.objectStorage
+        ? Mount_ObjectStorage.toJSON(message.objectStorage)
+        : undefined);
+    message.ephemeralDiskSpec !== undefined &&
+      (obj.ephemeralDiskSpec = message.ephemeralDiskSpec
+        ? Mount_DiskSpec.toJSON(message.ephemeralDiskSpec)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mount>, I>>(object: I): Mount {
+    const message = { ...baseMount } as Mount;
+    message.name = object.name ?? "";
+    message.mode = object.mode ?? 0;
+    message.objectStorage =
+      object.objectStorage !== undefined && object.objectStorage !== null
+        ? Mount_ObjectStorage.fromPartial(object.objectStorage)
+        : undefined;
+    message.ephemeralDiskSpec =
+      object.ephemeralDiskSpec !== undefined &&
+      object.ephemeralDiskSpec !== null
+        ? Mount_DiskSpec.fromPartial(object.ephemeralDiskSpec)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Mount.$type, Mount);
+
+const baseMount_ObjectStorage: object = {
+  $type: "yandex.cloud.serverless.functions.v1.Mount.ObjectStorage",
+  bucketId: "",
+  prefix: "",
+};
+
+export const Mount_ObjectStorage = {
+  $type: "yandex.cloud.serverless.functions.v1.Mount.ObjectStorage" as const,
+
+  encode(
+    message: Mount_ObjectStorage,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.bucketId !== "") {
+      writer.uint32(10).string(message.bucketId);
+    }
+    if (message.prefix !== "") {
+      writer.uint32(18).string(message.prefix);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Mount_ObjectStorage {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMount_ObjectStorage } as Mount_ObjectStorage;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.bucketId = reader.string();
+          break;
+        case 2:
+          message.prefix = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mount_ObjectStorage {
+    const message = { ...baseMount_ObjectStorage } as Mount_ObjectStorage;
+    message.bucketId =
+      object.bucketId !== undefined && object.bucketId !== null
+        ? String(object.bucketId)
+        : "";
+    message.prefix =
+      object.prefix !== undefined && object.prefix !== null
+        ? String(object.prefix)
+        : "";
+    return message;
+  },
+
+  toJSON(message: Mount_ObjectStorage): unknown {
+    const obj: any = {};
+    message.bucketId !== undefined && (obj.bucketId = message.bucketId);
+    message.prefix !== undefined && (obj.prefix = message.prefix);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mount_ObjectStorage>, I>>(
+    object: I
+  ): Mount_ObjectStorage {
+    const message = { ...baseMount_ObjectStorage } as Mount_ObjectStorage;
+    message.bucketId = object.bucketId ?? "";
+    message.prefix = object.prefix ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Mount_ObjectStorage.$type, Mount_ObjectStorage);
+
+const baseMount_DiskSpec: object = {
+  $type: "yandex.cloud.serverless.functions.v1.Mount.DiskSpec",
+  size: 0,
+  blockSize: 0,
+};
+
+export const Mount_DiskSpec = {
+  $type: "yandex.cloud.serverless.functions.v1.Mount.DiskSpec" as const,
+
+  encode(
+    message: Mount_DiskSpec,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.size !== 0) {
+      writer.uint32(8).int64(message.size);
+    }
+    if (message.blockSize !== 0) {
+      writer.uint32(16).int64(message.blockSize);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Mount_DiskSpec {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMount_DiskSpec } as Mount_DiskSpec;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.size = longToNumber(reader.int64() as Long);
+          break;
+        case 2:
+          message.blockSize = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mount_DiskSpec {
+    const message = { ...baseMount_DiskSpec } as Mount_DiskSpec;
+    message.size =
+      object.size !== undefined && object.size !== null
+        ? Number(object.size)
+        : 0;
+    message.blockSize =
+      object.blockSize !== undefined && object.blockSize !== null
+        ? Number(object.blockSize)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: Mount_DiskSpec): unknown {
+    const obj: any = {};
+    message.size !== undefined && (obj.size = Math.round(message.size));
+    message.blockSize !== undefined &&
+      (obj.blockSize = Math.round(message.blockSize));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mount_DiskSpec>, I>>(
+    object: I
+  ): Mount_DiskSpec {
+    const message = { ...baseMount_DiskSpec } as Mount_DiskSpec;
+    message.size = object.size ?? 0;
+    message.blockSize = object.blockSize ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Mount_DiskSpec.$type, Mount_DiskSpec);
 
 const baseAsyncInvocationConfig: object = {
   $type: "yandex.cloud.serverless.functions.v1.AsyncInvocationConfig",

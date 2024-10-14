@@ -2,6 +2,7 @@
 import { messageTypeRegistry } from "../../../../typeRegistry";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import { HardwareGeneration } from "../../../../yandex/cloud/compute/v1/hardware_generation";
 import { Timestamp } from "../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.compute.v1";
@@ -39,6 +40,11 @@ export interface Snapshot {
   status: Snapshot_Status;
   /** ID of the source disk used to create this snapshot. */
   sourceDiskId: string;
+  /**
+   * If specified, forces the same HardwareGeneration features to be applied to the instance
+   * created using this snapshot as source for the boot disk. Otherwise the current default will be used.
+   */
+  hardwareGeneration?: HardwareGeneration;
 }
 
 export enum Snapshot_Status {
@@ -164,6 +170,12 @@ export const Snapshot = {
     if (message.sourceDiskId !== "") {
       writer.uint32(90).string(message.sourceDiskId);
     }
+    if (message.hardwareGeneration !== undefined) {
+      HardwareGeneration.encode(
+        message.hardwareGeneration,
+        writer.uint32(98).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -213,6 +225,12 @@ export const Snapshot = {
           break;
         case 11:
           message.sourceDiskId = reader.string();
+          break;
+        case 12:
+          message.hardwareGeneration = HardwareGeneration.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -265,6 +283,11 @@ export const Snapshot = {
       object.sourceDiskId !== undefined && object.sourceDiskId !== null
         ? String(object.sourceDiskId)
         : "";
+    message.hardwareGeneration =
+      object.hardwareGeneration !== undefined &&
+      object.hardwareGeneration !== null
+        ? HardwareGeneration.fromJSON(object.hardwareGeneration)
+        : undefined;
     return message;
   },
 
@@ -296,6 +319,10 @@ export const Snapshot = {
       (obj.status = snapshot_StatusToJSON(message.status));
     message.sourceDiskId !== undefined &&
       (obj.sourceDiskId = message.sourceDiskId);
+    message.hardwareGeneration !== undefined &&
+      (obj.hardwareGeneration = message.hardwareGeneration
+        ? HardwareGeneration.toJSON(message.hardwareGeneration)
+        : undefined);
     return obj;
   },
 
@@ -319,6 +346,11 @@ export const Snapshot = {
     message.productIds = object.productIds?.map((e) => e) || [];
     message.status = object.status ?? 0;
     message.sourceDiskId = object.sourceDiskId ?? "";
+    message.hardwareGeneration =
+      object.hardwareGeneration !== undefined &&
+      object.hardwareGeneration !== null
+        ? HardwareGeneration.fromPartial(object.hardwareGeneration)
+        : undefined;
     return message;
   },
 };

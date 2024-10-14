@@ -201,6 +201,10 @@ export interface PackageVulnerability {
   version: string;
   /** The version of the package where vulnerability has been fixed. */
   fixedBy: string;
+  /** The place where vulnerability is originated (OS, lang package, etc.) */
+  origin: string;
+  /** The type of vulnerability origin - name of OS if origin="os" or package type (jar, gobinary, etc.) if origin="lang" */
+  type: string;
 }
 
 const baseScanResult: object = {
@@ -555,6 +559,8 @@ const basePackageVulnerability: object = {
   source: "",
   version: "",
   fixedBy: "",
+  origin: "",
+  type: "",
 };
 
 export const PackageVulnerability = {
@@ -581,6 +587,12 @@ export const PackageVulnerability = {
     }
     if (message.fixedBy !== "") {
       writer.uint32(50).string(message.fixedBy);
+    }
+    if (message.origin !== "") {
+      writer.uint32(58).string(message.origin);
+    }
+    if (message.type !== "") {
+      writer.uint32(66).string(message.type);
     }
     return writer;
   },
@@ -612,6 +624,12 @@ export const PackageVulnerability = {
           break;
         case 6:
           message.fixedBy = reader.string();
+          break;
+        case 7:
+          message.origin = reader.string();
+          break;
+        case 8:
+          message.type = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -647,6 +665,14 @@ export const PackageVulnerability = {
       object.fixedBy !== undefined && object.fixedBy !== null
         ? String(object.fixedBy)
         : "";
+    message.origin =
+      object.origin !== undefined && object.origin !== null
+        ? String(object.origin)
+        : "";
+    message.type =
+      object.type !== undefined && object.type !== null
+        ? String(object.type)
+        : "";
     return message;
   },
 
@@ -658,6 +684,8 @@ export const PackageVulnerability = {
     message.source !== undefined && (obj.source = message.source);
     message.version !== undefined && (obj.version = message.version);
     message.fixedBy !== undefined && (obj.fixedBy = message.fixedBy);
+    message.origin !== undefined && (obj.origin = message.origin);
+    message.type !== undefined && (obj.type = message.type);
     return obj;
   },
 
@@ -671,6 +699,8 @@ export const PackageVulnerability = {
     message.source = object.source ?? "";
     message.version = object.version ?? "";
     message.fixedBy = object.fixedBy ?? "";
+    message.origin = object.origin ?? "";
+    message.type = object.type ?? "";
     return message;
   },
 };

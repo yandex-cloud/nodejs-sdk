@@ -56,11 +56,11 @@ export interface Permission {
 
 export enum Permission_AccessRole {
   ACCESS_ROLE_UNSPECIFIED = 0,
-  /** ACCESS_ROLE_PRODUCER - producer role for the user. */
+  /** ACCESS_ROLE_PRODUCER - Producer role for the user. */
   ACCESS_ROLE_PRODUCER = 1,
-  /** ACCESS_ROLE_CONSUMER - consumer role for the user. */
+  /** ACCESS_ROLE_CONSUMER - Consumer role for the user. */
   ACCESS_ROLE_CONSUMER = 2,
-  /** ACCESS_ROLE_ADMIN - admin role for the user. */
+  /** ACCESS_ROLE_ADMIN - Admin role for the user. */
   ACCESS_ROLE_ADMIN = 3,
   UNRECOGNIZED = -1,
 }

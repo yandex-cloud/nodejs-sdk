@@ -515,8 +515,8 @@ export interface PolicySettings_Retention {
   $type: "yandex.cloud.backup.v1.PolicySettings.Retention";
   /** A list of retention rules. */
   rules: PolicySettings_Retention_RetentionRule[];
-  /** If true, retention rules will be applied after backup is finished. */
-  afterBackup: boolean;
+  /** If true, retention rules will be applied before backup is finished. */
+  beforeBackup: boolean;
 }
 
 export interface PolicySettings_Retention_RetentionRule {
@@ -626,6 +626,65 @@ export interface PolicySettings_Scheduling_BackupSet {
   sinceLastExecTime?:
     | PolicySettings_Scheduling_BackupSet_SinceLastExecTime
     | undefined;
+  /**
+   * BackupSet type -- one of incr, full, differential or auto.
+   * if custom scheme is used the BackupSet type should be specified
+   */
+  type: PolicySettings_Scheduling_BackupSet_Type;
+}
+
+export enum PolicySettings_Scheduling_BackupSet_Type {
+  TYPE_UNSPECIFIED = 0,
+  TYPE_AUTO = 1,
+  TYPE_FULL = 2,
+  TYPE_INCREMENTAL = 3,
+  TYPE_DIFFERENTIAL = 4,
+  UNRECOGNIZED = -1,
+}
+
+export function policySettings_Scheduling_BackupSet_TypeFromJSON(
+  object: any
+): PolicySettings_Scheduling_BackupSet_Type {
+  switch (object) {
+    case 0:
+    case "TYPE_UNSPECIFIED":
+      return PolicySettings_Scheduling_BackupSet_Type.TYPE_UNSPECIFIED;
+    case 1:
+    case "TYPE_AUTO":
+      return PolicySettings_Scheduling_BackupSet_Type.TYPE_AUTO;
+    case 2:
+    case "TYPE_FULL":
+      return PolicySettings_Scheduling_BackupSet_Type.TYPE_FULL;
+    case 3:
+    case "TYPE_INCREMENTAL":
+      return PolicySettings_Scheduling_BackupSet_Type.TYPE_INCREMENTAL;
+    case 4:
+    case "TYPE_DIFFERENTIAL":
+      return PolicySettings_Scheduling_BackupSet_Type.TYPE_DIFFERENTIAL;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return PolicySettings_Scheduling_BackupSet_Type.UNRECOGNIZED;
+  }
+}
+
+export function policySettings_Scheduling_BackupSet_TypeToJSON(
+  object: PolicySettings_Scheduling_BackupSet_Type
+): string {
+  switch (object) {
+    case PolicySettings_Scheduling_BackupSet_Type.TYPE_UNSPECIFIED:
+      return "TYPE_UNSPECIFIED";
+    case PolicySettings_Scheduling_BackupSet_Type.TYPE_AUTO:
+      return "TYPE_AUTO";
+    case PolicySettings_Scheduling_BackupSet_Type.TYPE_FULL:
+      return "TYPE_FULL";
+    case PolicySettings_Scheduling_BackupSet_Type.TYPE_INCREMENTAL:
+      return "TYPE_INCREMENTAL";
+    case PolicySettings_Scheduling_BackupSet_Type.TYPE_DIFFERENTIAL:
+      return "TYPE_DIFFERENTIAL";
+    default:
+      return "UNKNOWN";
+  }
 }
 
 export interface PolicySettings_Scheduling_BackupSet_Time {
@@ -671,6 +730,8 @@ export interface PolicyApplication {
   enabled: boolean;
   status: PolicyApplication_Status;
   createdAt?: Date;
+  /** If true, then the policy is in in the process of binding to the instance. */
+  isProcessing: boolean;
 }
 
 export enum PolicyApplication_Status {
@@ -1853,7 +1914,7 @@ messageTypeRegistry.set(
 
 const basePolicySettings_Retention: object = {
   $type: "yandex.cloud.backup.v1.PolicySettings.Retention",
-  afterBackup: false,
+  beforeBackup: false,
 };
 
 export const PolicySettings_Retention = {
@@ -1869,8 +1930,8 @@ export const PolicySettings_Retention = {
         writer.uint32(10).fork()
       ).ldelim();
     }
-    if (message.afterBackup === true) {
-      writer.uint32(16).bool(message.afterBackup);
+    if (message.beforeBackup === true) {
+      writer.uint32(24).bool(message.beforeBackup);
     }
     return writer;
   },
@@ -1896,8 +1957,8 @@ export const PolicySettings_Retention = {
             )
           );
           break;
-        case 2:
-          message.afterBackup = reader.bool();
+        case 3:
+          message.beforeBackup = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1914,9 +1975,9 @@ export const PolicySettings_Retention = {
     message.rules = (object.rules ?? []).map((e: any) =>
       PolicySettings_Retention_RetentionRule.fromJSON(e)
     );
-    message.afterBackup =
-      object.afterBackup !== undefined && object.afterBackup !== null
-        ? Boolean(object.afterBackup)
+    message.beforeBackup =
+      object.beforeBackup !== undefined && object.beforeBackup !== null
+        ? Boolean(object.beforeBackup)
         : false;
     return message;
   },
@@ -1930,8 +1991,8 @@ export const PolicySettings_Retention = {
     } else {
       obj.rules = [];
     }
-    message.afterBackup !== undefined &&
-      (obj.afterBackup = message.afterBackup);
+    message.beforeBackup !== undefined &&
+      (obj.beforeBackup = message.beforeBackup);
     return obj;
   },
 
@@ -1945,7 +2006,7 @@ export const PolicySettings_Retention = {
       object.rules?.map((e) =>
         PolicySettings_Retention_RetentionRule.fromPartial(e)
       ) || [];
-    message.afterBackup = object.afterBackup ?? false;
+    message.beforeBackup = object.beforeBackup ?? false;
     return message;
   },
 };
@@ -2251,6 +2312,7 @@ messageTypeRegistry.set(
 
 const basePolicySettings_Scheduling_BackupSet: object = {
   $type: "yandex.cloud.backup.v1.PolicySettings.Scheduling.BackupSet",
+  type: 0,
 };
 
 export const PolicySettings_Scheduling_BackupSet = {
@@ -2271,6 +2333,9 @@ export const PolicySettings_Scheduling_BackupSet = {
         message.sinceLastExecTime,
         writer.uint32(18).fork()
       ).ldelim();
+    }
+    if (message.type !== 0) {
+      writer.uint32(24).int32(message.type);
     }
     return writer;
   },
@@ -2300,6 +2365,9 @@ export const PolicySettings_Scheduling_BackupSet = {
               reader.uint32()
             );
           break;
+        case 3:
+          message.type = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2323,6 +2391,10 @@ export const PolicySettings_Scheduling_BackupSet = {
             object.sinceLastExecTime
           )
         : undefined;
+    message.type =
+      object.type !== undefined && object.type !== null
+        ? policySettings_Scheduling_BackupSet_TypeFromJSON(object.type)
+        : 0;
     return message;
   },
 
@@ -2338,6 +2410,8 @@ export const PolicySettings_Scheduling_BackupSet = {
             message.sinceLastExecTime
           )
         : undefined);
+    message.type !== undefined &&
+      (obj.type = policySettings_Scheduling_BackupSet_TypeToJSON(message.type));
     return obj;
   },
 
@@ -2358,6 +2432,7 @@ export const PolicySettings_Scheduling_BackupSet = {
             object.sinceLastExecTime
           )
         : undefined;
+    message.type = object.type ?? 0;
     return message;
   },
 };
@@ -2724,6 +2799,7 @@ const basePolicyApplication: object = {
   computeInstanceId: "",
   enabled: false,
   status: 0,
+  isProcessing: false,
 };
 
 export const PolicyApplication = {
@@ -2751,6 +2827,9 @@ export const PolicyApplication = {
         writer.uint32(42).fork()
       ).ldelim();
     }
+    if (message.isProcessing === true) {
+      writer.uint32(48).bool(message.isProcessing);
+    }
     return writer;
   },
 
@@ -2777,6 +2856,9 @@ export const PolicyApplication = {
           message.createdAt = fromTimestamp(
             Timestamp.decode(reader, reader.uint32())
           );
+          break;
+        case 6:
+          message.isProcessing = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2809,6 +2891,10 @@ export const PolicyApplication = {
       object.createdAt !== undefined && object.createdAt !== null
         ? fromJsonTimestamp(object.createdAt)
         : undefined;
+    message.isProcessing =
+      object.isProcessing !== undefined && object.isProcessing !== null
+        ? Boolean(object.isProcessing)
+        : false;
     return message;
   },
 
@@ -2822,6 +2908,8 @@ export const PolicyApplication = {
       (obj.status = policyApplication_StatusToJSON(message.status));
     message.createdAt !== undefined &&
       (obj.createdAt = message.createdAt.toISOString());
+    message.isProcessing !== undefined &&
+      (obj.isProcessing = message.isProcessing);
     return obj;
   },
 
@@ -2834,6 +2922,7 @@ export const PolicyApplication = {
     message.enabled = object.enabled ?? false;
     message.status = object.status ?? 0;
     message.createdAt = object.createdAt ?? undefined;
+    message.isProcessing = object.isProcessing ?? false;
     return message;
   },
 };

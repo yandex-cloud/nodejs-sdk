@@ -131,6 +131,8 @@ export interface CreateDnsZoneRequest {
    * At least one of two visibility fields must be set.
    */
   publicVisibility?: PublicVisibility;
+  /** Prevents accidental zone removal. */
+  deletionProtection: boolean;
 }
 
 export interface CreateDnsZoneRequest_LabelsEntry {
@@ -176,6 +178,8 @@ export interface UpdateDnsZoneRequest {
   privateVisibility?: PrivateVisibility;
   /** Public visibility configuration. */
   publicVisibility?: PublicVisibility;
+  /** Prevents accidental zone removal. */
+  deletionProtection: boolean;
 }
 
 export interface UpdateDnsZoneRequest_LabelsEntry {
@@ -802,6 +806,7 @@ const baseCreateDnsZoneRequest: object = {
   name: "",
   description: "",
   zone: "",
+  deletionProtection: false,
 };
 
 export const CreateDnsZoneRequest = {
@@ -844,6 +849,9 @@ export const CreateDnsZoneRequest = {
         message.publicVisibility,
         writer.uint32(58).fork()
       ).ldelim();
+    }
+    if (message.deletionProtection === true) {
+      writer.uint32(64).bool(message.deletionProtection);
     }
     return writer;
   },
@@ -892,6 +900,9 @@ export const CreateDnsZoneRequest = {
             reader.uint32()
           );
           break;
+        case 8:
+          message.deletionProtection = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -933,6 +944,11 @@ export const CreateDnsZoneRequest = {
       object.publicVisibility !== undefined && object.publicVisibility !== null
         ? PublicVisibility.fromJSON(object.publicVisibility)
         : undefined;
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
     return message;
   },
 
@@ -957,6 +973,8 @@ export const CreateDnsZoneRequest = {
       (obj.publicVisibility = message.publicVisibility
         ? PublicVisibility.toJSON(message.publicVisibility)
         : undefined);
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -985,6 +1003,7 @@ export const CreateDnsZoneRequest = {
       object.publicVisibility !== undefined && object.publicVisibility !== null
         ? PublicVisibility.fromPartial(object.publicVisibility)
         : undefined;
+    message.deletionProtection = object.deletionProtection ?? false;
     return message;
   },
 };
@@ -1146,6 +1165,7 @@ const baseUpdateDnsZoneRequest: object = {
   dnsZoneId: "",
   name: "",
   description: "",
+  deletionProtection: false,
 };
 
 export const UpdateDnsZoneRequest = {
@@ -1188,6 +1208,9 @@ export const UpdateDnsZoneRequest = {
         message.publicVisibility,
         writer.uint32(58).fork()
       ).ldelim();
+    }
+    if (message.deletionProtection === true) {
+      writer.uint32(64).bool(message.deletionProtection);
     }
     return writer;
   },
@@ -1236,6 +1259,9 @@ export const UpdateDnsZoneRequest = {
             reader.uint32()
           );
           break;
+        case 8:
+          message.deletionProtection = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1277,6 +1303,11 @@ export const UpdateDnsZoneRequest = {
       object.publicVisibility !== undefined && object.publicVisibility !== null
         ? PublicVisibility.fromJSON(object.publicVisibility)
         : undefined;
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
     return message;
   },
 
@@ -1304,6 +1335,8 @@ export const UpdateDnsZoneRequest = {
       (obj.publicVisibility = message.publicVisibility
         ? PublicVisibility.toJSON(message.publicVisibility)
         : undefined);
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -1335,6 +1368,7 @@ export const UpdateDnsZoneRequest = {
       object.publicVisibility !== undefined && object.publicVisibility !== null
         ? PublicVisibility.fromPartial(object.publicVisibility)
         : undefined;
+    message.deletionProtection = object.deletionProtection ?? false;
     return message;
   },
 };

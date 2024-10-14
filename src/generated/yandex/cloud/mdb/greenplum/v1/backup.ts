@@ -20,6 +20,96 @@ export interface Backup {
   startedAt?: Date;
   /** Size of the backup in bytes. */
   size: number;
+  /** How this backup was created (manual/automatic/etc...) */
+  type: Backup_BackupCreationType;
+  /** Method of backup creation */
+  method: Backup_BackupMethod;
+  /** Size of the journal associated with backup, in bytes */
+  journalSize: number;
+}
+
+export enum Backup_BackupMethod {
+  BACKUP_METHOD_UNSPECIFIED = 0,
+  /** BASE - Base backup */
+  BASE = 1,
+  /** INCREMENTAL - Delta (incremental) Greenplum backup */
+  INCREMENTAL = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function backup_BackupMethodFromJSON(object: any): Backup_BackupMethod {
+  switch (object) {
+    case 0:
+    case "BACKUP_METHOD_UNSPECIFIED":
+      return Backup_BackupMethod.BACKUP_METHOD_UNSPECIFIED;
+    case 1:
+    case "BASE":
+      return Backup_BackupMethod.BASE;
+    case 2:
+    case "INCREMENTAL":
+      return Backup_BackupMethod.INCREMENTAL;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Backup_BackupMethod.UNRECOGNIZED;
+  }
+}
+
+export function backup_BackupMethodToJSON(object: Backup_BackupMethod): string {
+  switch (object) {
+    case Backup_BackupMethod.BACKUP_METHOD_UNSPECIFIED:
+      return "BACKUP_METHOD_UNSPECIFIED";
+    case Backup_BackupMethod.BASE:
+      return "BASE";
+    case Backup_BackupMethod.INCREMENTAL:
+      return "INCREMENTAL";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export enum Backup_BackupCreationType {
+  BACKUP_CREATION_TYPE_UNSPECIFIED = 0,
+  /** AUTOMATED - Backup created by automated daily schedule */
+  AUTOMATED = 1,
+  /** MANUAL - Backup created by user request */
+  MANUAL = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function backup_BackupCreationTypeFromJSON(
+  object: any
+): Backup_BackupCreationType {
+  switch (object) {
+    case 0:
+    case "BACKUP_CREATION_TYPE_UNSPECIFIED":
+      return Backup_BackupCreationType.BACKUP_CREATION_TYPE_UNSPECIFIED;
+    case 1:
+    case "AUTOMATED":
+      return Backup_BackupCreationType.AUTOMATED;
+    case 2:
+    case "MANUAL":
+      return Backup_BackupCreationType.MANUAL;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Backup_BackupCreationType.UNRECOGNIZED;
+  }
+}
+
+export function backup_BackupCreationTypeToJSON(
+  object: Backup_BackupCreationType
+): string {
+  switch (object) {
+    case Backup_BackupCreationType.BACKUP_CREATION_TYPE_UNSPECIFIED:
+      return "BACKUP_CREATION_TYPE_UNSPECIFIED";
+    case Backup_BackupCreationType.AUTOMATED:
+      return "AUTOMATED";
+    case Backup_BackupCreationType.MANUAL:
+      return "MANUAL";
+    default:
+      return "UNKNOWN";
+  }
 }
 
 const baseBackup: object = {
@@ -28,6 +118,9 @@ const baseBackup: object = {
   folderId: "",
   sourceClusterId: "",
   size: 0,
+  type: 0,
+  method: 0,
+  journalSize: 0,
 };
 
 export const Backup = {
@@ -61,6 +154,15 @@ export const Backup = {
     if (message.size !== 0) {
       writer.uint32(48).int64(message.size);
     }
+    if (message.type !== 0) {
+      writer.uint32(56).int32(message.type);
+    }
+    if (message.method !== 0) {
+      writer.uint32(64).int32(message.method);
+    }
+    if (message.journalSize !== 0) {
+      writer.uint32(72).int64(message.journalSize);
+    }
     return writer;
   },
 
@@ -92,6 +194,15 @@ export const Backup = {
           break;
         case 6:
           message.size = longToNumber(reader.int64() as Long);
+          break;
+        case 7:
+          message.type = reader.int32() as any;
+          break;
+        case 8:
+          message.method = reader.int32() as any;
+          break;
+        case 9:
+          message.journalSize = longToNumber(reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -125,6 +236,18 @@ export const Backup = {
       object.size !== undefined && object.size !== null
         ? Number(object.size)
         : 0;
+    message.type =
+      object.type !== undefined && object.type !== null
+        ? backup_BackupCreationTypeFromJSON(object.type)
+        : 0;
+    message.method =
+      object.method !== undefined && object.method !== null
+        ? backup_BackupMethodFromJSON(object.method)
+        : 0;
+    message.journalSize =
+      object.journalSize !== undefined && object.journalSize !== null
+        ? Number(object.journalSize)
+        : 0;
     return message;
   },
 
@@ -139,6 +262,12 @@ export const Backup = {
     message.startedAt !== undefined &&
       (obj.startedAt = message.startedAt.toISOString());
     message.size !== undefined && (obj.size = Math.round(message.size));
+    message.type !== undefined &&
+      (obj.type = backup_BackupCreationTypeToJSON(message.type));
+    message.method !== undefined &&
+      (obj.method = backup_BackupMethodToJSON(message.method));
+    message.journalSize !== undefined &&
+      (obj.journalSize = Math.round(message.journalSize));
     return obj;
   },
 
@@ -150,6 +279,9 @@ export const Backup = {
     message.sourceClusterId = object.sourceClusterId ?? "";
     message.startedAt = object.startedAt ?? undefined;
     message.size = object.size ?? 0;
+    message.type = object.type ?? 0;
+    message.method = object.method ?? 0;
+    message.journalSize = object.journalSize ?? 0;
     return message;
   },
 };

@@ -102,7 +102,6 @@ export function cleanupPolicyToJSON(object: CleanupPolicy): string {
 
 export enum ColumnType {
   COLUMN_TYPE_UNSPECIFIED = 0,
-  INT64 = 14,
   INT32 = 1,
   INT16 = 2,
   INT8 = 3,
@@ -116,6 +115,7 @@ export enum ColumnType {
   UTF8 = 11,
   ANY = 12,
   DATETIME = 13,
+  INT64 = 14,
   UNRECOGNIZED = -1,
 }
 
@@ -124,9 +124,6 @@ export function columnTypeFromJSON(object: any): ColumnType {
     case 0:
     case "COLUMN_TYPE_UNSPECIFIED":
       return ColumnType.COLUMN_TYPE_UNSPECIFIED;
-    case 14:
-    case "INT64":
-      return ColumnType.INT64;
     case 1:
     case "INT32":
       return ColumnType.INT32;
@@ -166,6 +163,9 @@ export function columnTypeFromJSON(object: any): ColumnType {
     case 13:
     case "DATETIME":
       return ColumnType.DATETIME;
+    case 14:
+    case "INT64":
+      return ColumnType.INT64;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -177,8 +177,6 @@ export function columnTypeToJSON(object: ColumnType): string {
   switch (object) {
     case ColumnType.COLUMN_TYPE_UNSPECIFIED:
       return "COLUMN_TYPE_UNSPECIFIED";
-    case ColumnType.INT64:
-      return "INT64";
     case ColumnType.INT32:
       return "INT32";
     case ColumnType.INT16:
@@ -205,6 +203,8 @@ export function columnTypeToJSON(object: ColumnType): string {
       return "ANY";
     case ColumnType.DATETIME:
       return "DATETIME";
+    case ColumnType.INT64:
+      return "INT64";
     default:
       return "UNKNOWN";
   }
@@ -260,8 +260,6 @@ export interface DataTransformationOptions {
   $type: "yandex.cloud.datatransfer.v1.endpoint.DataTransformationOptions";
   /** Cloud function */
   cloudFunction: string;
-  /** Service account */
-  serviceAccountId: string;
   /** Number of retries */
   numberOfRetries: number;
   /** Buffer size for function */
@@ -270,6 +268,8 @@ export interface DataTransformationOptions {
   bufferFlushInterval: string;
   /** Invocation timeout */
   invocationTimeout: string;
+  /** Service account */
+  serviceAccountId: string;
 }
 
 export interface FieldList {
@@ -280,8 +280,8 @@ export interface FieldList {
 
 export interface DataSchema {
   $type: "yandex.cloud.datatransfer.v1.endpoint.DataSchema";
-  fields?: FieldList | undefined;
   jsonFields: string | undefined;
+  fields?: FieldList | undefined;
 }
 
 /** No authentication */
@@ -746,11 +746,11 @@ messageTypeRegistry.set(ColumnValue.$type, ColumnValue);
 const baseDataTransformationOptions: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.DataTransformationOptions",
   cloudFunction: "",
-  serviceAccountId: "",
   numberOfRetries: 0,
   bufferSize: "",
   bufferFlushInterval: "",
   invocationTimeout: "",
+  serviceAccountId: "",
 };
 
 export const DataTransformationOptions = {
@@ -764,9 +764,6 @@ export const DataTransformationOptions = {
     if (message.cloudFunction !== "") {
       writer.uint32(10).string(message.cloudFunction);
     }
-    if (message.serviceAccountId !== "") {
-      writer.uint32(66).string(message.serviceAccountId);
-    }
     if (message.numberOfRetries !== 0) {
       writer.uint32(16).int64(message.numberOfRetries);
     }
@@ -778,6 +775,9 @@ export const DataTransformationOptions = {
     }
     if (message.invocationTimeout !== "") {
       writer.uint32(42).string(message.invocationTimeout);
+    }
+    if (message.serviceAccountId !== "") {
+      writer.uint32(66).string(message.serviceAccountId);
     }
     return writer;
   },
@@ -797,9 +797,6 @@ export const DataTransformationOptions = {
         case 1:
           message.cloudFunction = reader.string();
           break;
-        case 8:
-          message.serviceAccountId = reader.string();
-          break;
         case 2:
           message.numberOfRetries = longToNumber(reader.int64() as Long);
           break;
@@ -811,6 +808,9 @@ export const DataTransformationOptions = {
           break;
         case 5:
           message.invocationTimeout = reader.string();
+          break;
+        case 8:
+          message.serviceAccountId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -827,10 +827,6 @@ export const DataTransformationOptions = {
     message.cloudFunction =
       object.cloudFunction !== undefined && object.cloudFunction !== null
         ? String(object.cloudFunction)
-        : "";
-    message.serviceAccountId =
-      object.serviceAccountId !== undefined && object.serviceAccountId !== null
-        ? String(object.serviceAccountId)
         : "";
     message.numberOfRetries =
       object.numberOfRetries !== undefined && object.numberOfRetries !== null
@@ -850,6 +846,10 @@ export const DataTransformationOptions = {
       object.invocationTimeout !== null
         ? String(object.invocationTimeout)
         : "";
+    message.serviceAccountId =
+      object.serviceAccountId !== undefined && object.serviceAccountId !== null
+        ? String(object.serviceAccountId)
+        : "";
     return message;
   },
 
@@ -857,8 +857,6 @@ export const DataTransformationOptions = {
     const obj: any = {};
     message.cloudFunction !== undefined &&
       (obj.cloudFunction = message.cloudFunction);
-    message.serviceAccountId !== undefined &&
-      (obj.serviceAccountId = message.serviceAccountId);
     message.numberOfRetries !== undefined &&
       (obj.numberOfRetries = Math.round(message.numberOfRetries));
     message.bufferSize !== undefined && (obj.bufferSize = message.bufferSize);
@@ -866,6 +864,8 @@ export const DataTransformationOptions = {
       (obj.bufferFlushInterval = message.bufferFlushInterval);
     message.invocationTimeout !== undefined &&
       (obj.invocationTimeout = message.invocationTimeout);
+    message.serviceAccountId !== undefined &&
+      (obj.serviceAccountId = message.serviceAccountId);
     return obj;
   },
 
@@ -876,11 +876,11 @@ export const DataTransformationOptions = {
       ...baseDataTransformationOptions,
     } as DataTransformationOptions;
     message.cloudFunction = object.cloudFunction ?? "";
-    message.serviceAccountId = object.serviceAccountId ?? "";
     message.numberOfRetries = object.numberOfRetries ?? 0;
     message.bufferSize = object.bufferSize ?? "";
     message.bufferFlushInterval = object.bufferFlushInterval ?? "";
     message.invocationTimeout = object.invocationTimeout ?? "";
+    message.serviceAccountId = object.serviceAccountId ?? "";
     return message;
   },
 };
@@ -968,11 +968,11 @@ export const DataSchema = {
     message: DataSchema,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.fields !== undefined) {
-      FieldList.encode(message.fields, writer.uint32(18).fork()).ldelim();
-    }
     if (message.jsonFields !== undefined) {
       writer.uint32(10).string(message.jsonFields);
+    }
+    if (message.fields !== undefined) {
+      FieldList.encode(message.fields, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -984,11 +984,11 @@ export const DataSchema = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 2:
-          message.fields = FieldList.decode(reader, reader.uint32());
-          break;
         case 1:
           message.jsonFields = reader.string();
+          break;
+        case 2:
+          message.fields = FieldList.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1000,24 +1000,24 @@ export const DataSchema = {
 
   fromJSON(object: any): DataSchema {
     const message = { ...baseDataSchema } as DataSchema;
-    message.fields =
-      object.fields !== undefined && object.fields !== null
-        ? FieldList.fromJSON(object.fields)
-        : undefined;
     message.jsonFields =
       object.jsonFields !== undefined && object.jsonFields !== null
         ? String(object.jsonFields)
+        : undefined;
+    message.fields =
+      object.fields !== undefined && object.fields !== null
+        ? FieldList.fromJSON(object.fields)
         : undefined;
     return message;
   },
 
   toJSON(message: DataSchema): unknown {
     const obj: any = {};
+    message.jsonFields !== undefined && (obj.jsonFields = message.jsonFields);
     message.fields !== undefined &&
       (obj.fields = message.fields
         ? FieldList.toJSON(message.fields)
         : undefined);
-    message.jsonFields !== undefined && (obj.jsonFields = message.jsonFields);
     return obj;
   },
 
@@ -1025,11 +1025,11 @@ export const DataSchema = {
     object: I
   ): DataSchema {
     const message = { ...baseDataSchema } as DataSchema;
+    message.jsonFields = object.jsonFields ?? undefined;
     message.fields =
       object.fields !== undefined && object.fields !== null
         ? FieldList.fromPartial(object.fields)
         : undefined;
-    message.jsonFields = object.jsonFields ?? undefined;
     return message;
   },
 };

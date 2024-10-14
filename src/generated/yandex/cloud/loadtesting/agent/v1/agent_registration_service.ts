@@ -21,6 +21,7 @@ export const protobufPackage = "yandex.cloud.loadtesting.agent.v1";
 export interface RegisterRequest {
   $type: "yandex.cloud.loadtesting.agent.v1.RegisterRequest";
   computeInstanceId: string;
+  agentVersion: string;
 }
 
 export interface RegisterResponse {
@@ -34,6 +35,13 @@ export interface ExternalAgentRegisterRequest {
   computeInstanceId: string;
   name: string;
   agentVersion: string;
+  labels: { [key: string]: string };
+}
+
+export interface ExternalAgentRegisterRequest_LabelsEntry {
+  $type: "yandex.cloud.loadtesting.agent.v1.ExternalAgentRegisterRequest.LabelsEntry";
+  key: string;
+  value: string;
 }
 
 export interface ExternalAgentRegisterMetadata {
@@ -44,6 +52,7 @@ export interface ExternalAgentRegisterMetadata {
 const baseRegisterRequest: object = {
   $type: "yandex.cloud.loadtesting.agent.v1.RegisterRequest",
   computeInstanceId: "",
+  agentVersion: "",
 };
 
 export const RegisterRequest = {
@@ -55,6 +64,9 @@ export const RegisterRequest = {
   ): _m0.Writer {
     if (message.computeInstanceId !== "") {
       writer.uint32(10).string(message.computeInstanceId);
+    }
+    if (message.agentVersion !== "") {
+      writer.uint32(18).string(message.agentVersion);
     }
     return writer;
   },
@@ -68,6 +80,9 @@ export const RegisterRequest = {
       switch (tag >>> 3) {
         case 1:
           message.computeInstanceId = reader.string();
+          break;
+        case 2:
+          message.agentVersion = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -84,6 +99,10 @@ export const RegisterRequest = {
       object.computeInstanceId !== null
         ? String(object.computeInstanceId)
         : "";
+    message.agentVersion =
+      object.agentVersion !== undefined && object.agentVersion !== null
+        ? String(object.agentVersion)
+        : "";
     return message;
   },
 
@@ -91,6 +110,8 @@ export const RegisterRequest = {
     const obj: any = {};
     message.computeInstanceId !== undefined &&
       (obj.computeInstanceId = message.computeInstanceId);
+    message.agentVersion !== undefined &&
+      (obj.agentVersion = message.agentVersion);
     return obj;
   },
 
@@ -99,6 +120,7 @@ export const RegisterRequest = {
   ): RegisterRequest {
     const message = { ...baseRegisterRequest } as RegisterRequest;
     message.computeInstanceId = object.computeInstanceId ?? "";
+    message.agentVersion = object.agentVersion ?? "";
     return message;
   },
 };
@@ -196,6 +218,17 @@ export const ExternalAgentRegisterRequest = {
     if (message.agentVersion !== "") {
       writer.uint32(34).string(message.agentVersion);
     }
+    Object.entries(message.labels).forEach(([key, value]) => {
+      ExternalAgentRegisterRequest_LabelsEntry.encode(
+        {
+          $type:
+            "yandex.cloud.loadtesting.agent.v1.ExternalAgentRegisterRequest.LabelsEntry",
+          key: key as any,
+          value,
+        },
+        writer.uint32(42).fork()
+      ).ldelim();
+    });
     return writer;
   },
 
@@ -208,6 +241,7 @@ export const ExternalAgentRegisterRequest = {
     const message = {
       ...baseExternalAgentRegisterRequest,
     } as ExternalAgentRegisterRequest;
+    message.labels = {};
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -222,6 +256,15 @@ export const ExternalAgentRegisterRequest = {
           break;
         case 4:
           message.agentVersion = reader.string();
+          break;
+        case 5:
+          const entry5 = ExternalAgentRegisterRequest_LabelsEntry.decode(
+            reader,
+            reader.uint32()
+          );
+          if (entry5.value !== undefined) {
+            message.labels[entry5.key] = entry5.value;
+          }
           break;
         default:
           reader.skipType(tag & 7);
@@ -252,6 +295,12 @@ export const ExternalAgentRegisterRequest = {
       object.agentVersion !== undefined && object.agentVersion !== null
         ? String(object.agentVersion)
         : "";
+    message.labels = Object.entries(object.labels ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      acc[key] = String(value);
+      return acc;
+    }, {});
     return message;
   },
 
@@ -263,6 +312,12 @@ export const ExternalAgentRegisterRequest = {
     message.name !== undefined && (obj.name = message.name);
     message.agentVersion !== undefined &&
       (obj.agentVersion = message.agentVersion);
+    obj.labels = {};
+    if (message.labels) {
+      Object.entries(message.labels).forEach(([k, v]) => {
+        obj.labels[k] = v;
+      });
+    }
     return obj;
   },
 
@@ -276,6 +331,14 @@ export const ExternalAgentRegisterRequest = {
     message.computeInstanceId = object.computeInstanceId ?? "";
     message.name = object.name ?? "";
     message.agentVersion = object.agentVersion ?? "";
+    message.labels = Object.entries(object.labels ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = String(value);
+      }
+      return acc;
+    }, {});
     return message;
   },
 };
@@ -283,6 +346,93 @@ export const ExternalAgentRegisterRequest = {
 messageTypeRegistry.set(
   ExternalAgentRegisterRequest.$type,
   ExternalAgentRegisterRequest
+);
+
+const baseExternalAgentRegisterRequest_LabelsEntry: object = {
+  $type:
+    "yandex.cloud.loadtesting.agent.v1.ExternalAgentRegisterRequest.LabelsEntry",
+  key: "",
+  value: "",
+};
+
+export const ExternalAgentRegisterRequest_LabelsEntry = {
+  $type:
+    "yandex.cloud.loadtesting.agent.v1.ExternalAgentRegisterRequest.LabelsEntry" as const,
+
+  encode(
+    message: ExternalAgentRegisterRequest_LabelsEntry,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ExternalAgentRegisterRequest_LabelsEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseExternalAgentRegisterRequest_LabelsEntry,
+    } as ExternalAgentRegisterRequest_LabelsEntry;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ExternalAgentRegisterRequest_LabelsEntry {
+    const message = {
+      ...baseExternalAgentRegisterRequest_LabelsEntry,
+    } as ExternalAgentRegisterRequest_LabelsEntry;
+    message.key =
+      object.key !== undefined && object.key !== null ? String(object.key) : "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? String(object.value)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ExternalAgentRegisterRequest_LabelsEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<ExternalAgentRegisterRequest_LabelsEntry>, I>
+  >(object: I): ExternalAgentRegisterRequest_LabelsEntry {
+    const message = {
+      ...baseExternalAgentRegisterRequest_LabelsEntry,
+    } as ExternalAgentRegisterRequest_LabelsEntry;
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ExternalAgentRegisterRequest_LabelsEntry.$type,
+  ExternalAgentRegisterRequest_LabelsEntry
 );
 
 const baseExternalAgentRegisterMetadata: object = {

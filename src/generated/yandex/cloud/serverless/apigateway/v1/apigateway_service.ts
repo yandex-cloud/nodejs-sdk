@@ -21,6 +21,7 @@ import {
   VariableInput,
   ApiGateway,
 } from "../../../../../yandex/cloud/serverless/apigateway/v1/apigateway";
+import { Duration } from "../../../../../google/protobuf/duration";
 import { FieldMask } from "../../../../../google/protobuf/field_mask";
 import { Operation } from "../../../../../yandex/cloud/operation/operation";
 import {
@@ -116,6 +117,8 @@ export interface CreateApiGatewayRequest {
   variables: { [key: string]: VariableInput };
   /** Canary release of the gateway. */
   canary?: Canary;
+  /** Timeout for gateway call execution */
+  executionTimeout?: Duration;
 }
 
 export interface CreateApiGatewayRequest_LabelsEntry {
@@ -164,6 +167,8 @@ export interface UpdateApiGatewayRequest {
   variables: { [key: string]: VariableInput };
   /** Canary release of the gateway. */
   canary?: Canary;
+  /** Timeout for gateway call execution */
+  executionTimeout?: Duration;
 }
 
 export interface UpdateApiGatewayRequest_LabelsEntry {
@@ -663,6 +668,12 @@ export const CreateApiGatewayRequest = {
     if (message.canary !== undefined) {
       Canary.encode(message.canary, writer.uint32(74).fork()).ldelim();
     }
+    if (message.executionTimeout !== undefined) {
+      Duration.encode(
+        message.executionTimeout,
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -719,6 +730,9 @@ export const CreateApiGatewayRequest = {
         case 9:
           message.canary = Canary.decode(reader, reader.uint32());
           break;
+        case 10:
+          message.executionTimeout = Duration.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -771,6 +785,10 @@ export const CreateApiGatewayRequest = {
       object.canary !== undefined && object.canary !== null
         ? Canary.fromJSON(object.canary)
         : undefined;
+    message.executionTimeout =
+      object.executionTimeout !== undefined && object.executionTimeout !== null
+        ? Duration.fromJSON(object.executionTimeout)
+        : undefined;
     return message;
   },
 
@@ -804,6 +822,10 @@ export const CreateApiGatewayRequest = {
     }
     message.canary !== undefined &&
       (obj.canary = message.canary ? Canary.toJSON(message.canary) : undefined);
+    message.executionTimeout !== undefined &&
+      (obj.executionTimeout = message.executionTimeout
+        ? Duration.toJSON(message.executionTimeout)
+        : undefined);
     return obj;
   },
 
@@ -844,6 +866,10 @@ export const CreateApiGatewayRequest = {
     message.canary =
       object.canary !== undefined && object.canary !== null
         ? Canary.fromPartial(object.canary)
+        : undefined;
+    message.executionTimeout =
+      object.executionTimeout !== undefined && object.executionTimeout !== null
+        ? Duration.fromPartial(object.executionTimeout)
         : undefined;
     return message;
   },
@@ -1094,6 +1120,12 @@ export const UpdateApiGatewayRequest = {
     if (message.canary !== undefined) {
       Canary.encode(message.canary, writer.uint32(82).fork()).ldelim();
     }
+    if (message.executionTimeout !== undefined) {
+      Duration.encode(
+        message.executionTimeout,
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1153,6 +1185,9 @@ export const UpdateApiGatewayRequest = {
         case 10:
           message.canary = Canary.decode(reader, reader.uint32());
           break;
+        case 11:
+          message.executionTimeout = Duration.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1209,6 +1244,10 @@ export const UpdateApiGatewayRequest = {
       object.canary !== undefined && object.canary !== null
         ? Canary.fromJSON(object.canary)
         : undefined;
+    message.executionTimeout =
+      object.executionTimeout !== undefined && object.executionTimeout !== null
+        ? Duration.fromJSON(object.executionTimeout)
+        : undefined;
     return message;
   },
 
@@ -1247,6 +1286,10 @@ export const UpdateApiGatewayRequest = {
     }
     message.canary !== undefined &&
       (obj.canary = message.canary ? Canary.toJSON(message.canary) : undefined);
+    message.executionTimeout !== undefined &&
+      (obj.executionTimeout = message.executionTimeout
+        ? Duration.toJSON(message.executionTimeout)
+        : undefined);
     return obj;
   },
 
@@ -1291,6 +1334,10 @@ export const UpdateApiGatewayRequest = {
     message.canary =
       object.canary !== undefined && object.canary !== null
         ? Canary.fromPartial(object.canary)
+        : undefined;
+    message.executionTimeout =
+      object.executionTimeout !== undefined && object.executionTimeout !== null
+        ? Duration.fromPartial(object.executionTimeout)
         : undefined;
     return message;
   },

@@ -17,21 +17,53 @@ export interface Customer {
 /** Person of the customer. Contains legal information. */
 export interface CustomerPerson {
   $type: "yandex.cloud.billing.v1.CustomerPerson";
-  /** Name of the person. */
+  /**
+   * Optional. Name of the person.
+   *
+   * String length is not limited.
+   */
   name: string;
-  /** Long name of the person. */
+  /**
+   * Optional. Long name of the person.
+   *
+   * String length is not limited.
+   */
   longname: string;
-  /** Phone of the person. */
+  /**
+   * Optional. Phone of the person.
+   *
+   * Must be a valid telephone number or a valid [phoneword](https://en.m.wikipedia.org/wiki/Phoneword).
+   */
   phone: string;
-  /** Email of the person. */
+  /**
+   * Optional. Email of the person.
+   *
+   * Must be a valid [email address](https://en.wikipedia.org/wiki/Email_address).
+   */
   email: string;
-  /** Post code of the person. */
+  /**
+   * Optional. Post code of the person.
+   *
+   * String length is not limited.
+   */
   postCode: string;
-  /** Post address of the person. */
+  /**
+   * Optional. Post address of the person.
+   *
+   * String length is not limited.
+   */
   postAddress: string;
-  /** Legal address of the person. */
+  /**
+   * Optional. Legal address of the person.
+   *
+   * String length is not limited.
+   */
   legalAddress: string;
-  /** Tax identification number of the person. */
+  /**
+   * Optional. Tax identification number of the person.
+   *
+   * String length is not limited.
+   */
   tin: string;
 }
 

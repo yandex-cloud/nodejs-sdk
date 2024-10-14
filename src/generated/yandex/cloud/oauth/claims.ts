@@ -2,6 +2,7 @@
 import { messageTypeRegistry } from "../../../typeRegistry";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import { Timestamp } from "../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.oauth";
 
@@ -97,6 +98,8 @@ export interface SubjectClaims {
   subType: SubjectType;
   /** User federation, non-empty only for federated users. */
   federation?: Federation;
+  /** Last time the access token was created. Filled only for federated users (not for global users). */
+  lastAuthenticatedAt?: Date;
 }
 
 /** Minimalistic analog of yandex.cloud.organizationmanager.v1.saml.Federation */
@@ -166,6 +169,12 @@ export const SubjectClaims = {
     if (message.federation !== undefined) {
       Federation.encode(message.federation, writer.uint32(802).fork()).ldelim();
     }
+    if (message.lastAuthenticatedAt !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.lastAuthenticatedAt),
+        writer.uint32(842).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -211,6 +220,11 @@ export const SubjectClaims = {
           break;
         case 100:
           message.federation = Federation.decode(reader, reader.uint32());
+          break;
+        case 105:
+          message.lastAuthenticatedAt = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -269,6 +283,11 @@ export const SubjectClaims = {
       object.federation !== undefined && object.federation !== null
         ? Federation.fromJSON(object.federation)
         : undefined;
+    message.lastAuthenticatedAt =
+      object.lastAuthenticatedAt !== undefined &&
+      object.lastAuthenticatedAt !== null
+        ? fromJsonTimestamp(object.lastAuthenticatedAt)
+        : undefined;
     return message;
   },
 
@@ -292,6 +311,8 @@ export const SubjectClaims = {
       (obj.federation = message.federation
         ? Federation.toJSON(message.federation)
         : undefined);
+    message.lastAuthenticatedAt !== undefined &&
+      (obj.lastAuthenticatedAt = message.lastAuthenticatedAt.toISOString());
     return obj;
   },
 
@@ -314,6 +335,7 @@ export const SubjectClaims = {
       object.federation !== undefined && object.federation !== null
         ? Federation.fromPartial(object.federation)
         : undefined;
+    message.lastAuthenticatedAt = object.lastAuthenticatedAt ?? undefined;
     return message;
   },
 };
@@ -419,6 +441,28 @@ export type Exact<P, I extends P> = P extends Builtin
         Exclude<keyof I, KeysOfUnion<P> | "$type">,
         never
       >;
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = date.getTime() / 1_000;
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { $type: "google.protobuf.Timestamp", seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = t.seconds * 1_000;
+  millis += t.nanos / 1_000_000;
+  return new Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 if (_m0.util.Long !== Long) {
   _m0.util.Long = Long as any;

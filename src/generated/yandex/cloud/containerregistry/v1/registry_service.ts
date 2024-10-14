@@ -102,6 +102,8 @@ export interface CreateRegistryRequest {
   name: string;
   /** Resource labels as `key:value` pairs. */
   labels: { [key: string]: string };
+  /** If true, registry will be created with pre-setup scanning policy (on push and on schedule every 7 days) */
+  secure: boolean;
 }
 
 export interface CreateRegistryRequest_LabelsEntry {
@@ -460,6 +462,7 @@ const baseCreateRegistryRequest: object = {
   $type: "yandex.cloud.containerregistry.v1.CreateRegistryRequest",
   folderId: "",
   name: "",
+  secure: false,
 };
 
 export const CreateRegistryRequest = {
@@ -486,6 +489,9 @@ export const CreateRegistryRequest = {
         writer.uint32(26).fork()
       ).ldelim();
     });
+    if (message.secure === true) {
+      writer.uint32(32).bool(message.secure);
+    }
     return writer;
   },
 
@@ -515,6 +521,9 @@ export const CreateRegistryRequest = {
             message.labels[entry3.key] = entry3.value;
           }
           break;
+        case 4:
+          message.secure = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -539,6 +548,10 @@ export const CreateRegistryRequest = {
       acc[key] = String(value);
       return acc;
     }, {});
+    message.secure =
+      object.secure !== undefined && object.secure !== null
+        ? Boolean(object.secure)
+        : false;
     return message;
   },
 
@@ -552,6 +565,7 @@ export const CreateRegistryRequest = {
         obj.labels[k] = v;
       });
     }
+    message.secure !== undefined && (obj.secure = message.secure);
     return obj;
   },
 
@@ -569,6 +583,7 @@ export const CreateRegistryRequest = {
       }
       return acc;
     }, {});
+    message.secure = object.secure ?? false;
     return message;
   },
 };

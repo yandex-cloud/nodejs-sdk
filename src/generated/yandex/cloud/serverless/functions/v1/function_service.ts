@@ -25,6 +25,7 @@ import {
   Package,
   Secret,
   StorageMount,
+  Mount,
   ScalingPolicy,
 } from "../../../../../yandex/cloud/serverless/functions/v1/function";
 import { Duration } from "../../../../../google/protobuf/duration";
@@ -377,6 +378,17 @@ export interface CreateFunctionVersionRequest {
   storageMounts: StorageMount[];
   /** Config for asynchronous invocations of the version */
   asyncInvocationConfig?: AsyncInvocationConfig;
+  /**
+   * Optional size of in-memory mounted /tmp directory in bytes.
+   * Available for versions with resources.memory greater or equal to 1024 MiB.
+   *
+   * 0 or in range from 512 MiB to 3/4 of resources.memory.
+   */
+  tmpfsSize: number;
+  /** The maximum number of requests processed by a function instance at the same time */
+  concurrency: number;
+  /** Mounts to be used by the version. */
+  mounts: Mount[];
 }
 
 export interface CreateFunctionVersionRequest_EnvironmentEntry {
@@ -2447,6 +2459,8 @@ const baseCreateFunctionVersionRequest: object = {
   entrypoint: "",
   serviceAccountId: "",
   tag: "",
+  tmpfsSize: 0,
+  concurrency: 0,
 };
 
 export const CreateFunctionVersionRequest = {
@@ -2536,6 +2550,15 @@ export const CreateFunctionVersionRequest = {
         writer.uint32(178).fork()
       ).ldelim();
     }
+    if (message.tmpfsSize !== 0) {
+      writer.uint32(184).int64(message.tmpfsSize);
+    }
+    if (message.concurrency !== 0) {
+      writer.uint32(192).int64(message.concurrency);
+    }
+    for (const v of message.mounts) {
+      Mount.encode(v!, writer.uint32(202).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -2553,6 +2576,7 @@ export const CreateFunctionVersionRequest = {
     message.namedServiceAccounts = {};
     message.secrets = [];
     message.storageMounts = [];
+    message.mounts = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2627,6 +2651,15 @@ export const CreateFunctionVersionRequest = {
             reader,
             reader.uint32()
           );
+          break;
+        case 23:
+          message.tmpfsSize = longToNumber(reader.int64() as Long);
+          break;
+        case 24:
+          message.concurrency = longToNumber(reader.int64() as Long);
+          break;
+        case 25:
+          message.mounts.push(Mount.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -2712,6 +2745,15 @@ export const CreateFunctionVersionRequest = {
       object.asyncInvocationConfig !== null
         ? AsyncInvocationConfig.fromJSON(object.asyncInvocationConfig)
         : undefined;
+    message.tmpfsSize =
+      object.tmpfsSize !== undefined && object.tmpfsSize !== null
+        ? Number(object.tmpfsSize)
+        : 0;
+    message.concurrency =
+      object.concurrency !== undefined && object.concurrency !== null
+        ? Number(object.concurrency)
+        : 0;
+    message.mounts = (object.mounts ?? []).map((e: any) => Mount.fromJSON(e));
     return message;
   },
 
@@ -2785,6 +2827,15 @@ export const CreateFunctionVersionRequest = {
       (obj.asyncInvocationConfig = message.asyncInvocationConfig
         ? AsyncInvocationConfig.toJSON(message.asyncInvocationConfig)
         : undefined);
+    message.tmpfsSize !== undefined &&
+      (obj.tmpfsSize = Math.round(message.tmpfsSize));
+    message.concurrency !== undefined &&
+      (obj.concurrency = Math.round(message.concurrency));
+    if (message.mounts) {
+      obj.mounts = message.mounts.map((e) => (e ? Mount.toJSON(e) : undefined));
+    } else {
+      obj.mounts = [];
+    }
     return obj;
   },
 
@@ -2846,6 +2897,9 @@ export const CreateFunctionVersionRequest = {
       object.asyncInvocationConfig !== null
         ? AsyncInvocationConfig.fromPartial(object.asyncInvocationConfig)
         : undefined;
+    message.tmpfsSize = object.tmpfsSize ?? 0;
+    message.concurrency = object.concurrency ?? 0;
+    message.mounts = object.mounts?.map((e) => Mount.fromPartial(e)) || [];
     return message;
   },
 };

@@ -958,6 +958,48 @@ export interface UserSettings {
    */
   memoryUsageOvercommitMaxWaitMicroseconds?: number;
   /**
+   * Setting up query threads logging. Query threads log into the [system.query_thread_log](https://clickhouse.com/docs/en/operations/system-tables/query_thread_log) table. This setting has effect only when [log_queries](https://clickhouse.com/docs/en/operations/settings/settings#log-queries) is true. Queries threads run by ClickHouse with this setup are logged according to the rules in the [query_thread_log](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings#server_configuration_parameters-query_thread_log) server configuration parameter.
+   * Default: true
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#log_query_threads)
+   */
+  logQueryThreads?: boolean;
+  /**
+   * The maximum number of threads to execute the INSERT SELECT query.
+   * Default: 0
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#max_insert_threads)
+   */
+  maxInsertThreads?: number;
+  /**
+   * Enables hedged requests logic for remote queries. It allows to establish many connections with different replicas for query. New connection is enabled in case existent connection(s) with replica(s) were not established within hedged_connection_timeout or no data was received within receive_data_timeout. Query uses the first connection which send non empty progress packet (or data packet, if allow_changing_replica_until_first_data_packet); other connections are cancelled. Queries with max_parallel_replicas > 1 are supported.
+   * Default: true
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#use_hedged_requests)
+   */
+  useHedgedRequests?: boolean;
+  /**
+   * Timeout to close idle TCP connections after specified number of milliseconds.
+   * Default: 360000 (3600 seconds)
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#idle_connection_timeout)
+   */
+  idleConnectionTimeout?: number;
+  /**
+   * Connection timeout for establishing connection with replica for Hedged requests.
+   * Default: 50
+   * See in-depth description in [ClickHouse GitHub](https://github.com/ClickHouse/ClickHouse/blob/f9558345e886876b9132d9c018e357f7fa9b22a3/src/Core/Settings.h#L64)
+   */
+  hedgedConnectionTimeoutMs?: number;
+  /**
+   * Specifies the algorithm of replicas selection that is used for distributed query processing, one of: random, nearest_hostname, in_order, first_or_random, round_robin.
+   * Default: random
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#load_balancing)
+   */
+  loadBalancing: UserSettings_LoadBalancing;
+  /**
+   * Enables/disables preferable using the localhost replica when processing distributed queries.
+   * Default: true
+   * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#prefer_localhost_replica)
+   */
+  preferLocalhostReplica?: boolean;
+  /**
    * The setting is deprecated and has no effect.
    *
    * @deprecated
@@ -1557,6 +1599,66 @@ export function userSettings_RemoteFilesystemReadMethodToJSON(
   }
 }
 
+export enum UserSettings_LoadBalancing {
+  LOAD_BALANCING_UNSPECIFIED = 0,
+  LOAD_BALANCING_RANDOM = 1,
+  LOAD_BALANCING_NEAREST_HOSTNAME = 2,
+  LOAD_BALANCING_IN_ORDER = 3,
+  LOAD_BALANCING_FIRST_OR_RANDOM = 4,
+  LOAD_BALANCING_ROUND_ROBIN = 5,
+  UNRECOGNIZED = -1,
+}
+
+export function userSettings_LoadBalancingFromJSON(
+  object: any
+): UserSettings_LoadBalancing {
+  switch (object) {
+    case 0:
+    case "LOAD_BALANCING_UNSPECIFIED":
+      return UserSettings_LoadBalancing.LOAD_BALANCING_UNSPECIFIED;
+    case 1:
+    case "LOAD_BALANCING_RANDOM":
+      return UserSettings_LoadBalancing.LOAD_BALANCING_RANDOM;
+    case 2:
+    case "LOAD_BALANCING_NEAREST_HOSTNAME":
+      return UserSettings_LoadBalancing.LOAD_BALANCING_NEAREST_HOSTNAME;
+    case 3:
+    case "LOAD_BALANCING_IN_ORDER":
+      return UserSettings_LoadBalancing.LOAD_BALANCING_IN_ORDER;
+    case 4:
+    case "LOAD_BALANCING_FIRST_OR_RANDOM":
+      return UserSettings_LoadBalancing.LOAD_BALANCING_FIRST_OR_RANDOM;
+    case 5:
+    case "LOAD_BALANCING_ROUND_ROBIN":
+      return UserSettings_LoadBalancing.LOAD_BALANCING_ROUND_ROBIN;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return UserSettings_LoadBalancing.UNRECOGNIZED;
+  }
+}
+
+export function userSettings_LoadBalancingToJSON(
+  object: UserSettings_LoadBalancing
+): string {
+  switch (object) {
+    case UserSettings_LoadBalancing.LOAD_BALANCING_UNSPECIFIED:
+      return "LOAD_BALANCING_UNSPECIFIED";
+    case UserSettings_LoadBalancing.LOAD_BALANCING_RANDOM:
+      return "LOAD_BALANCING_RANDOM";
+    case UserSettings_LoadBalancing.LOAD_BALANCING_NEAREST_HOSTNAME:
+      return "LOAD_BALANCING_NEAREST_HOSTNAME";
+    case UserSettings_LoadBalancing.LOAD_BALANCING_IN_ORDER:
+      return "LOAD_BALANCING_IN_ORDER";
+    case UserSettings_LoadBalancing.LOAD_BALANCING_FIRST_OR_RANDOM:
+      return "LOAD_BALANCING_FIRST_OR_RANDOM";
+    case UserSettings_LoadBalancing.LOAD_BALANCING_ROUND_ROBIN:
+      return "LOAD_BALANCING_ROUND_ROBIN";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 /**
  * ClickHouse quota representation. Each quota associated with an user and limits it resource usage for an interval.
  * See in-depth description [ClickHouse documentation](https://clickhouse.com/docs/en/operations/quotas/).
@@ -1932,6 +2034,7 @@ const baseUserSettings: object = {
   formatRegexpEscapingRule: 0,
   localFilesystemReadMethod: 0,
   remoteFilesystemReadMethod: 0,
+  loadBalancing: 0,
 };
 
 export const UserSettings = {
@@ -2948,6 +3051,60 @@ export const UserSettings = {
         writer.uint32(1106).fork()
       ).ldelim();
     }
+    if (message.logQueryThreads !== undefined) {
+      BoolValue.encode(
+        { $type: "google.protobuf.BoolValue", value: message.logQueryThreads! },
+        writer.uint32(1114).fork()
+      ).ldelim();
+    }
+    if (message.maxInsertThreads !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.maxInsertThreads!,
+        },
+        writer.uint32(1122).fork()
+      ).ldelim();
+    }
+    if (message.useHedgedRequests !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.useHedgedRequests!,
+        },
+        writer.uint32(1130).fork()
+      ).ldelim();
+    }
+    if (message.idleConnectionTimeout !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.idleConnectionTimeout!,
+        },
+        writer.uint32(1138).fork()
+      ).ldelim();
+    }
+    if (message.hedgedConnectionTimeoutMs !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.hedgedConnectionTimeoutMs!,
+        },
+        writer.uint32(1146).fork()
+      ).ldelim();
+    }
+    if (message.loadBalancing !== 0) {
+      writer.uint32(1152).int32(message.loadBalancing);
+    }
+    if (message.preferLocalhostReplica !== undefined) {
+      BoolValue.encode(
+        {
+          $type: "google.protobuf.BoolValue",
+          value: message.preferLocalhostReplica!,
+        },
+        writer.uint32(1162).fork()
+      ).ldelim();
+    }
     if (message.compile !== undefined) {
       BoolValue.encode(
         { $type: "google.protobuf.BoolValue", value: message.compile! },
@@ -3709,6 +3866,45 @@ export const UserSettings = {
             reader.uint32()
           ).value;
           break;
+        case 139:
+          message.logQueryThreads = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 140:
+          message.maxInsertThreads = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 141:
+          message.useHedgedRequests = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 142:
+          message.idleConnectionTimeout = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 143:
+          message.hedgedConnectionTimeoutMs = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 144:
+          message.loadBalancing = reader.int32() as any;
+          break;
+        case 145:
+          message.preferLocalhostReplica = BoolValue.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
         case 44:
           message.compile = BoolValue.decode(reader, reader.uint32()).value;
           break;
@@ -4365,6 +4561,38 @@ export const UserSettings = {
       object.memoryUsageOvercommitMaxWaitMicroseconds !== null
         ? Number(object.memoryUsageOvercommitMaxWaitMicroseconds)
         : undefined;
+    message.logQueryThreads =
+      object.logQueryThreads !== undefined && object.logQueryThreads !== null
+        ? Boolean(object.logQueryThreads)
+        : undefined;
+    message.maxInsertThreads =
+      object.maxInsertThreads !== undefined && object.maxInsertThreads !== null
+        ? Number(object.maxInsertThreads)
+        : undefined;
+    message.useHedgedRequests =
+      object.useHedgedRequests !== undefined &&
+      object.useHedgedRequests !== null
+        ? Boolean(object.useHedgedRequests)
+        : undefined;
+    message.idleConnectionTimeout =
+      object.idleConnectionTimeout !== undefined &&
+      object.idleConnectionTimeout !== null
+        ? Number(object.idleConnectionTimeout)
+        : undefined;
+    message.hedgedConnectionTimeoutMs =
+      object.hedgedConnectionTimeoutMs !== undefined &&
+      object.hedgedConnectionTimeoutMs !== null
+        ? Number(object.hedgedConnectionTimeoutMs)
+        : undefined;
+    message.loadBalancing =
+      object.loadBalancing !== undefined && object.loadBalancing !== null
+        ? userSettings_LoadBalancingFromJSON(object.loadBalancing)
+        : 0;
+    message.preferLocalhostReplica =
+      object.preferLocalhostReplica !== undefined &&
+      object.preferLocalhostReplica !== null
+        ? Boolean(object.preferLocalhostReplica)
+        : undefined;
     message.compile =
       object.compile !== undefined && object.compile !== null
         ? Boolean(object.compile)
@@ -4710,6 +4938,22 @@ export const UserSettings = {
     message.memoryUsageOvercommitMaxWaitMicroseconds !== undefined &&
       (obj.memoryUsageOvercommitMaxWaitMicroseconds =
         message.memoryUsageOvercommitMaxWaitMicroseconds);
+    message.logQueryThreads !== undefined &&
+      (obj.logQueryThreads = message.logQueryThreads);
+    message.maxInsertThreads !== undefined &&
+      (obj.maxInsertThreads = message.maxInsertThreads);
+    message.useHedgedRequests !== undefined &&
+      (obj.useHedgedRequests = message.useHedgedRequests);
+    message.idleConnectionTimeout !== undefined &&
+      (obj.idleConnectionTimeout = message.idleConnectionTimeout);
+    message.hedgedConnectionTimeoutMs !== undefined &&
+      (obj.hedgedConnectionTimeoutMs = message.hedgedConnectionTimeoutMs);
+    message.loadBalancing !== undefined &&
+      (obj.loadBalancing = userSettings_LoadBalancingToJSON(
+        message.loadBalancing
+      ));
+    message.preferLocalhostReplica !== undefined &&
+      (obj.preferLocalhostReplica = message.preferLocalhostReplica);
     message.compile !== undefined && (obj.compile = message.compile);
     message.minCountToCompile !== undefined &&
       (obj.minCountToCompile = message.minCountToCompile);
@@ -4904,6 +5148,14 @@ export const UserSettings = {
       object.memoryOvercommitRatioDenominatorForUser ?? undefined;
     message.memoryUsageOvercommitMaxWaitMicroseconds =
       object.memoryUsageOvercommitMaxWaitMicroseconds ?? undefined;
+    message.logQueryThreads = object.logQueryThreads ?? undefined;
+    message.maxInsertThreads = object.maxInsertThreads ?? undefined;
+    message.useHedgedRequests = object.useHedgedRequests ?? undefined;
+    message.idleConnectionTimeout = object.idleConnectionTimeout ?? undefined;
+    message.hedgedConnectionTimeoutMs =
+      object.hedgedConnectionTimeoutMs ?? undefined;
+    message.loadBalancing = object.loadBalancing ?? 0;
+    message.preferLocalhostReplica = object.preferLocalhostReplica ?? undefined;
     message.compile = object.compile ?? undefined;
     message.minCountToCompile = object.minCountToCompile ?? undefined;
     return message;

@@ -16,15 +16,24 @@ import {
 import _m0 from "protobufjs/minimal";
 import {
   MaintenancePolicy,
+  maintenancePolicyFromJSON,
+  maintenancePolicyToJSON,
+} from "../../../../yandex/cloud/compute/v1/maintenance";
+import {
   ScalePolicy,
   HostGroup,
   Host,
-  maintenancePolicyFromJSON,
-  maintenancePolicyToJSON,
 } from "../../../../yandex/cloud/compute/v1/host_group";
 import { FieldMask } from "../../../../google/protobuf/field_mask";
+import { Timestamp } from "../../../../google/protobuf/timestamp";
 import { Instance } from "../../../../yandex/cloud/compute/v1/instance";
 import { Operation } from "../../../../yandex/cloud/operation/operation";
+import {
+  ListAccessBindingsRequest,
+  ListAccessBindingsResponse,
+  SetAccessBindingsRequest,
+  UpdateAccessBindingsRequest,
+} from "../../../../yandex/cloud/access/access";
 
 export const protobufPackage = "yandex.cloud.compute.v1";
 
@@ -198,7 +207,18 @@ export interface ListHostGroupInstancesRequest {
    * returned by a previous list request.
    */
   pageToken: string;
-  /** Filter support is not currently implemented. Any filters are ignored. */
+  /**
+   * A filter expression that filters resources listed in the response.
+   * The expression consists of one or more conditions united by `AND` operator: `<condition1> [AND <condition2> [<...> AND <conditionN>]]`.
+   *
+   * Each condition has the form `<field> <operator> <value>`, where:
+   * 1. `<field>` is the field name. Currently you can use filtering only on the limited number of fields.
+   * 2. `<operator>` is a logical operator, one of `=`, `!=`, `IN`, `NOT IN`.
+   * 3. `<value>` represents a value.
+   * String values should be written in double (`"`) or single (`'`) quotes. C-style escape sequences are supported (`\"` turns to `"`, `\'` to `'`, `\\` to backslash).
+   * Currently you can use filtering only on the [Host.id] field.
+   * To get the host ID, use [HostGroupService.ListHosts] request.
+   */
   filter: string;
 }
 
@@ -252,6 +272,29 @@ export interface ListHostGroupHostsResponse {
    * [next_page_token] to continue paging through the results.
    */
   nextPageToken: string;
+}
+
+export interface UpdateHostGroupHostRequest {
+  $type: "yandex.cloud.compute.v1.UpdateHostGroupHostRequest";
+  /** ID of the host group to update. */
+  hostGroupId: string;
+  /** ID of the host to update. */
+  hostId: string;
+  /** Field mask that specifies which fields of the Host are going to be updated. */
+  updateMask?: FieldMask;
+  /**
+   * The date and time when this host will be automatically freed of instances.
+   * Timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
+   */
+  deadlineAt?: Date;
+}
+
+export interface UpdateHostGroupHostMetadata {
+  $type: "yandex.cloud.compute.v1.UpdateHostGroupHostMetadata";
+  /** ID of the host group that is being updated. */
+  hostGroupId: string;
+  /** ID of the host that is being updated. */
+  hostId: string;
 }
 
 export interface ListHostGroupOperationsRequest {
@@ -1790,6 +1833,218 @@ messageTypeRegistry.set(
   ListHostGroupHostsResponse
 );
 
+const baseUpdateHostGroupHostRequest: object = {
+  $type: "yandex.cloud.compute.v1.UpdateHostGroupHostRequest",
+  hostGroupId: "",
+  hostId: "",
+};
+
+export const UpdateHostGroupHostRequest = {
+  $type: "yandex.cloud.compute.v1.UpdateHostGroupHostRequest" as const,
+
+  encode(
+    message: UpdateHostGroupHostRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.hostGroupId !== "") {
+      writer.uint32(10).string(message.hostGroupId);
+    }
+    if (message.hostId !== "") {
+      writer.uint32(18).string(message.hostId);
+    }
+    if (message.updateMask !== undefined) {
+      FieldMask.encode(message.updateMask, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.deadlineAt !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.deadlineAt),
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateHostGroupHostRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateHostGroupHostRequest,
+    } as UpdateHostGroupHostRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.hostGroupId = reader.string();
+          break;
+        case 2:
+          message.hostId = reader.string();
+          break;
+        case 3:
+          message.updateMask = FieldMask.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.deadlineAt = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateHostGroupHostRequest {
+    const message = {
+      ...baseUpdateHostGroupHostRequest,
+    } as UpdateHostGroupHostRequest;
+    message.hostGroupId =
+      object.hostGroupId !== undefined && object.hostGroupId !== null
+        ? String(object.hostGroupId)
+        : "";
+    message.hostId =
+      object.hostId !== undefined && object.hostId !== null
+        ? String(object.hostId)
+        : "";
+    message.updateMask =
+      object.updateMask !== undefined && object.updateMask !== null
+        ? FieldMask.fromJSON(object.updateMask)
+        : undefined;
+    message.deadlineAt =
+      object.deadlineAt !== undefined && object.deadlineAt !== null
+        ? fromJsonTimestamp(object.deadlineAt)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: UpdateHostGroupHostRequest): unknown {
+    const obj: any = {};
+    message.hostGroupId !== undefined &&
+      (obj.hostGroupId = message.hostGroupId);
+    message.hostId !== undefined && (obj.hostId = message.hostId);
+    message.updateMask !== undefined &&
+      (obj.updateMask = message.updateMask
+        ? FieldMask.toJSON(message.updateMask)
+        : undefined);
+    message.deadlineAt !== undefined &&
+      (obj.deadlineAt = message.deadlineAt.toISOString());
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UpdateHostGroupHostRequest>, I>>(
+    object: I
+  ): UpdateHostGroupHostRequest {
+    const message = {
+      ...baseUpdateHostGroupHostRequest,
+    } as UpdateHostGroupHostRequest;
+    message.hostGroupId = object.hostGroupId ?? "";
+    message.hostId = object.hostId ?? "";
+    message.updateMask =
+      object.updateMask !== undefined && object.updateMask !== null
+        ? FieldMask.fromPartial(object.updateMask)
+        : undefined;
+    message.deadlineAt = object.deadlineAt ?? undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  UpdateHostGroupHostRequest.$type,
+  UpdateHostGroupHostRequest
+);
+
+const baseUpdateHostGroupHostMetadata: object = {
+  $type: "yandex.cloud.compute.v1.UpdateHostGroupHostMetadata",
+  hostGroupId: "",
+  hostId: "",
+};
+
+export const UpdateHostGroupHostMetadata = {
+  $type: "yandex.cloud.compute.v1.UpdateHostGroupHostMetadata" as const,
+
+  encode(
+    message: UpdateHostGroupHostMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.hostGroupId !== "") {
+      writer.uint32(10).string(message.hostGroupId);
+    }
+    if (message.hostId !== "") {
+      writer.uint32(18).string(message.hostId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): UpdateHostGroupHostMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseUpdateHostGroupHostMetadata,
+    } as UpdateHostGroupHostMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.hostGroupId = reader.string();
+          break;
+        case 2:
+          message.hostId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateHostGroupHostMetadata {
+    const message = {
+      ...baseUpdateHostGroupHostMetadata,
+    } as UpdateHostGroupHostMetadata;
+    message.hostGroupId =
+      object.hostGroupId !== undefined && object.hostGroupId !== null
+        ? String(object.hostGroupId)
+        : "";
+    message.hostId =
+      object.hostId !== undefined && object.hostId !== null
+        ? String(object.hostId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: UpdateHostGroupHostMetadata): unknown {
+    const obj: any = {};
+    message.hostGroupId !== undefined &&
+      (obj.hostGroupId = message.hostGroupId);
+    message.hostId !== undefined && (obj.hostId = message.hostId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UpdateHostGroupHostMetadata>, I>>(
+    object: I
+  ): UpdateHostGroupHostMetadata {
+    const message = {
+      ...baseUpdateHostGroupHostMetadata,
+    } as UpdateHostGroupHostMetadata;
+    message.hostGroupId = object.hostGroupId ?? "";
+    message.hostId = object.hostId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  UpdateHostGroupHostMetadata.$type,
+  UpdateHostGroupHostMetadata
+);
+
 const baseListHostGroupOperationsRequest: object = {
   $type: "yandex.cloud.compute.v1.ListHostGroupOperationsRequest",
   hostGroupId: "",
@@ -2091,6 +2346,59 @@ export const HostGroupServiceService = {
     responseDeserialize: (value: Buffer) =>
       ListHostGroupHostsResponse.decode(value),
   },
+  /** Update host */
+  updateHost: {
+    path: "/yandex.cloud.compute.v1.HostGroupService/UpdateHost",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: UpdateHostGroupHostRequest) =>
+      Buffer.from(UpdateHostGroupHostRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      UpdateHostGroupHostRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /** Lists access bindings for the host group. */
+  listAccessBindings: {
+    path: "/yandex.cloud.compute.v1.HostGroupService/ListAccessBindings",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: ListAccessBindingsRequest) =>
+      Buffer.from(ListAccessBindingsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      ListAccessBindingsRequest.decode(value),
+    responseSerialize: (value: ListAccessBindingsResponse) =>
+      Buffer.from(ListAccessBindingsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) =>
+      ListAccessBindingsResponse.decode(value),
+  },
+  /** Sets access bindings for the host group. */
+  setAccessBindings: {
+    path: "/yandex.cloud.compute.v1.HostGroupService/SetAccessBindings",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: SetAccessBindingsRequest) =>
+      Buffer.from(SetAccessBindingsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      SetAccessBindingsRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
+  /** Updates access bindings for the host group. */
+  updateAccessBindings: {
+    path: "/yandex.cloud.compute.v1.HostGroupService/UpdateAccessBindings",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: UpdateAccessBindingsRequest) =>
+      Buffer.from(UpdateAccessBindingsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      UpdateAccessBindingsRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
 } as const;
 
 export interface HostGroupServiceServer extends UntypedServiceImplementation {
@@ -2119,6 +2427,17 @@ export interface HostGroupServiceServer extends UntypedServiceImplementation {
     ListHostGroupHostsRequest,
     ListHostGroupHostsResponse
   >;
+  /** Update host */
+  updateHost: handleUnaryCall<UpdateHostGroupHostRequest, Operation>;
+  /** Lists access bindings for the host group. */
+  listAccessBindings: handleUnaryCall<
+    ListAccessBindingsRequest,
+    ListAccessBindingsResponse
+  >;
+  /** Sets access bindings for the host group. */
+  setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
+  /** Updates access bindings for the host group. */
+  updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
 }
 
 export interface HostGroupServiceClient extends Client {
@@ -2286,6 +2605,79 @@ export interface HostGroupServiceClient extends Client {
       response: ListHostGroupHostsResponse
     ) => void
   ): ClientUnaryCall;
+  /** Update host */
+  updateHost(
+    request: UpdateHostGroupHostRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateHost(
+    request: UpdateHostGroupHostRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateHost(
+    request: UpdateHostGroupHostRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Lists access bindings for the host group. */
+  listAccessBindings(
+    request: ListAccessBindingsRequest,
+    callback: (
+      error: ServiceError | null,
+      response: ListAccessBindingsResponse
+    ) => void
+  ): ClientUnaryCall;
+  listAccessBindings(
+    request: ListAccessBindingsRequest,
+    metadata: Metadata,
+    callback: (
+      error: ServiceError | null,
+      response: ListAccessBindingsResponse
+    ) => void
+  ): ClientUnaryCall;
+  listAccessBindings(
+    request: ListAccessBindingsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (
+      error: ServiceError | null,
+      response: ListAccessBindingsResponse
+    ) => void
+  ): ClientUnaryCall;
+  /** Sets access bindings for the host group. */
+  setAccessBindings(
+    request: SetAccessBindingsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  setAccessBindings(
+    request: SetAccessBindingsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  setAccessBindings(
+    request: SetAccessBindingsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Updates access bindings for the host group. */
+  updateAccessBindings(
+    request: UpdateAccessBindingsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateAccessBindings(
+    request: UpdateAccessBindingsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  updateAccessBindings(
+    request: UpdateAccessBindingsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
 }
 
 export const HostGroupServiceClient = makeGenericClientConstructor(
@@ -2337,6 +2729,28 @@ export type Exact<P, I extends P> = P extends Builtin
         Exclude<keyof I, KeysOfUnion<P> | "$type">,
         never
       >;
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = date.getTime() / 1_000;
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { $type: "google.protobuf.Timestamp", seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = t.seconds * 1_000;
+  millis += t.nanos / 1_000_000;
+  return new Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {

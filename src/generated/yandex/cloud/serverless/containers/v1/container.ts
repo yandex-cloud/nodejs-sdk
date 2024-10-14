@@ -132,8 +132,10 @@ export interface Revision {
   scalingPolicy?: ScalingPolicy;
   /** Options for logging from the container. */
   logOptions?: LogOptions;
-  /** S3 mounts to be used by the version. */
+  /** S3 mounts to be used by the revision. */
   storageMounts: StorageMount[];
+  /** Mounts to be used by the revision. */
+  mounts: Mount[];
 }
 
 export enum Revision_Status {
@@ -309,6 +311,7 @@ export interface ScalingPolicy {
   zoneRequestsLimit: number;
 }
 
+/** @deprecated */
 export interface StorageMount {
   $type: "yandex.cloud.serverless.containers.v1.StorageMount";
   /** S3 bucket name for mounting. */
@@ -319,6 +322,75 @@ export interface StorageMount {
   readOnly: boolean;
   /** Mount point path inside the container for mounting. */
   mountPointPath: string;
+}
+
+/** Mount contains an information about version's external storage mount */
+export interface Mount {
+  $type: "yandex.cloud.serverless.containers.v1.Mount";
+  /** The absolute mount point path inside the container for mounting. */
+  mountPointPath: string;
+  /** Mount's mode */
+  mode: Mount_Mode;
+  /** Object storage mounts */
+  objectStorage?: Mount_ObjectStorage | undefined;
+  /** Working disk (worker-local non-shared read-write NBS disk templates) */
+  ephemeralDiskSpec?: Mount_DiskSpec | undefined;
+}
+
+export enum Mount_Mode {
+  MODE_UNSPECIFIED = 0,
+  READ_ONLY = 1,
+  READ_WRITE = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function mount_ModeFromJSON(object: any): Mount_Mode {
+  switch (object) {
+    case 0:
+    case "MODE_UNSPECIFIED":
+      return Mount_Mode.MODE_UNSPECIFIED;
+    case 1:
+    case "READ_ONLY":
+      return Mount_Mode.READ_ONLY;
+    case 2:
+    case "READ_WRITE":
+      return Mount_Mode.READ_WRITE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Mount_Mode.UNRECOGNIZED;
+  }
+}
+
+export function mount_ModeToJSON(object: Mount_Mode): string {
+  switch (object) {
+    case Mount_Mode.MODE_UNSPECIFIED:
+      return "MODE_UNSPECIFIED";
+    case Mount_Mode.READ_ONLY:
+      return "READ_ONLY";
+    case Mount_Mode.READ_WRITE:
+      return "READ_WRITE";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+/** ObjectStorage as a mount */
+export interface Mount_ObjectStorage {
+  $type: "yandex.cloud.serverless.containers.v1.Mount.ObjectStorage";
+  /** ObjectStorage bucket name for mounting. */
+  bucketId: string;
+  /** ObjectStorage bucket prefix for mounting. */
+  prefix: string;
+}
+
+/** Disk as a mount */
+export interface Mount_DiskSpec {
+  $type: "yandex.cloud.serverless.containers.v1.Mount.DiskSpec";
+  /** The size of disk for mount in bytes */
+  size: number;
+  /** Optional block size of disk for mount in bytes */
+  blockSize: number;
 }
 
 const baseContainer: object = {
@@ -657,6 +729,9 @@ export const Revision = {
     for (const v of message.storageMounts) {
       StorageMount.encode(v!, writer.uint32(130).fork()).ldelim();
     }
+    for (const v of message.mounts) {
+      Mount.encode(v!, writer.uint32(138).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -666,6 +741,7 @@ export const Revision = {
     const message = { ...baseRevision } as Revision;
     message.secrets = [];
     message.storageMounts = [];
+    message.mounts = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -723,6 +799,9 @@ export const Revision = {
           message.storageMounts.push(
             StorageMount.decode(reader, reader.uint32())
           );
+          break;
+        case 17:
+          message.mounts.push(Mount.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -794,6 +873,7 @@ export const Revision = {
     message.storageMounts = (object.storageMounts ?? []).map((e: any) =>
       StorageMount.fromJSON(e)
     );
+    message.mounts = (object.mounts ?? []).map((e: any) => Mount.fromJSON(e));
     return message;
   },
 
@@ -852,6 +932,11 @@ export const Revision = {
     } else {
       obj.storageMounts = [];
     }
+    if (message.mounts) {
+      obj.mounts = message.mounts.map((e) => (e ? Mount.toJSON(e) : undefined));
+    } else {
+      obj.mounts = [];
+    }
     return obj;
   },
 
@@ -895,6 +980,7 @@ export const Revision = {
         : undefined;
     message.storageMounts =
       object.storageMounts?.map((e) => StorageMount.fromPartial(e)) || [];
+    message.mounts = object.mounts?.map((e) => Mount.fromPartial(e)) || [];
     return message;
   },
 };
@@ -1859,6 +1945,278 @@ export const StorageMount = {
 };
 
 messageTypeRegistry.set(StorageMount.$type, StorageMount);
+
+const baseMount: object = {
+  $type: "yandex.cloud.serverless.containers.v1.Mount",
+  mountPointPath: "",
+  mode: 0,
+};
+
+export const Mount = {
+  $type: "yandex.cloud.serverless.containers.v1.Mount" as const,
+
+  encode(message: Mount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.mountPointPath !== "") {
+      writer.uint32(18).string(message.mountPointPath);
+    }
+    if (message.mode !== 0) {
+      writer.uint32(24).int32(message.mode);
+    }
+    if (message.objectStorage !== undefined) {
+      Mount_ObjectStorage.encode(
+        message.objectStorage,
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
+    if (message.ephemeralDiskSpec !== undefined) {
+      Mount_DiskSpec.encode(
+        message.ephemeralDiskSpec,
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Mount {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMount } as Mount;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 2:
+          message.mountPointPath = reader.string();
+          break;
+        case 3:
+          message.mode = reader.int32() as any;
+          break;
+        case 10:
+          message.objectStorage = Mount_ObjectStorage.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 11:
+          message.ephemeralDiskSpec = Mount_DiskSpec.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mount {
+    const message = { ...baseMount } as Mount;
+    message.mountPointPath =
+      object.mountPointPath !== undefined && object.mountPointPath !== null
+        ? String(object.mountPointPath)
+        : "";
+    message.mode =
+      object.mode !== undefined && object.mode !== null
+        ? mount_ModeFromJSON(object.mode)
+        : 0;
+    message.objectStorage =
+      object.objectStorage !== undefined && object.objectStorage !== null
+        ? Mount_ObjectStorage.fromJSON(object.objectStorage)
+        : undefined;
+    message.ephemeralDiskSpec =
+      object.ephemeralDiskSpec !== undefined &&
+      object.ephemeralDiskSpec !== null
+        ? Mount_DiskSpec.fromJSON(object.ephemeralDiskSpec)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Mount): unknown {
+    const obj: any = {};
+    message.mountPointPath !== undefined &&
+      (obj.mountPointPath = message.mountPointPath);
+    message.mode !== undefined && (obj.mode = mount_ModeToJSON(message.mode));
+    message.objectStorage !== undefined &&
+      (obj.objectStorage = message.objectStorage
+        ? Mount_ObjectStorage.toJSON(message.objectStorage)
+        : undefined);
+    message.ephemeralDiskSpec !== undefined &&
+      (obj.ephemeralDiskSpec = message.ephemeralDiskSpec
+        ? Mount_DiskSpec.toJSON(message.ephemeralDiskSpec)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mount>, I>>(object: I): Mount {
+    const message = { ...baseMount } as Mount;
+    message.mountPointPath = object.mountPointPath ?? "";
+    message.mode = object.mode ?? 0;
+    message.objectStorage =
+      object.objectStorage !== undefined && object.objectStorage !== null
+        ? Mount_ObjectStorage.fromPartial(object.objectStorage)
+        : undefined;
+    message.ephemeralDiskSpec =
+      object.ephemeralDiskSpec !== undefined &&
+      object.ephemeralDiskSpec !== null
+        ? Mount_DiskSpec.fromPartial(object.ephemeralDiskSpec)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Mount.$type, Mount);
+
+const baseMount_ObjectStorage: object = {
+  $type: "yandex.cloud.serverless.containers.v1.Mount.ObjectStorage",
+  bucketId: "",
+  prefix: "",
+};
+
+export const Mount_ObjectStorage = {
+  $type: "yandex.cloud.serverless.containers.v1.Mount.ObjectStorage" as const,
+
+  encode(
+    message: Mount_ObjectStorage,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.bucketId !== "") {
+      writer.uint32(10).string(message.bucketId);
+    }
+    if (message.prefix !== "") {
+      writer.uint32(18).string(message.prefix);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Mount_ObjectStorage {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMount_ObjectStorage } as Mount_ObjectStorage;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.bucketId = reader.string();
+          break;
+        case 2:
+          message.prefix = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mount_ObjectStorage {
+    const message = { ...baseMount_ObjectStorage } as Mount_ObjectStorage;
+    message.bucketId =
+      object.bucketId !== undefined && object.bucketId !== null
+        ? String(object.bucketId)
+        : "";
+    message.prefix =
+      object.prefix !== undefined && object.prefix !== null
+        ? String(object.prefix)
+        : "";
+    return message;
+  },
+
+  toJSON(message: Mount_ObjectStorage): unknown {
+    const obj: any = {};
+    message.bucketId !== undefined && (obj.bucketId = message.bucketId);
+    message.prefix !== undefined && (obj.prefix = message.prefix);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mount_ObjectStorage>, I>>(
+    object: I
+  ): Mount_ObjectStorage {
+    const message = { ...baseMount_ObjectStorage } as Mount_ObjectStorage;
+    message.bucketId = object.bucketId ?? "";
+    message.prefix = object.prefix ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Mount_ObjectStorage.$type, Mount_ObjectStorage);
+
+const baseMount_DiskSpec: object = {
+  $type: "yandex.cloud.serverless.containers.v1.Mount.DiskSpec",
+  size: 0,
+  blockSize: 0,
+};
+
+export const Mount_DiskSpec = {
+  $type: "yandex.cloud.serverless.containers.v1.Mount.DiskSpec" as const,
+
+  encode(
+    message: Mount_DiskSpec,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.size !== 0) {
+      writer.uint32(8).int64(message.size);
+    }
+    if (message.blockSize !== 0) {
+      writer.uint32(16).int64(message.blockSize);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Mount_DiskSpec {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMount_DiskSpec } as Mount_DiskSpec;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.size = longToNumber(reader.int64() as Long);
+          break;
+        case 2:
+          message.blockSize = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mount_DiskSpec {
+    const message = { ...baseMount_DiskSpec } as Mount_DiskSpec;
+    message.size =
+      object.size !== undefined && object.size !== null
+        ? Number(object.size)
+        : 0;
+    message.blockSize =
+      object.blockSize !== undefined && object.blockSize !== null
+        ? Number(object.blockSize)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: Mount_DiskSpec): unknown {
+    const obj: any = {};
+    message.size !== undefined && (obj.size = Math.round(message.size));
+    message.blockSize !== undefined &&
+      (obj.blockSize = Math.round(message.blockSize));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Mount_DiskSpec>, I>>(
+    object: I
+  ): Mount_DiskSpec {
+    const message = { ...baseMount_DiskSpec } as Mount_DiskSpec;
+    message.size = object.size ?? 0;
+    message.blockSize = object.blockSize ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Mount_DiskSpec.$type, Mount_DiskSpec);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

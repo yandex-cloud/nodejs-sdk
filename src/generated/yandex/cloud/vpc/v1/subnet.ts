@@ -53,11 +53,22 @@ export interface Subnet {
   folderId: string;
   /** Creation timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
   createdAt?: Date;
-  /** Name of the subnet. The name is unique within the project. 3-63 characters long. */
+  /**
+   * Name of the subnet.
+   * The name must be unique within the folder.
+   * Value must match the regular expression ``\|[a-zA-Z]([-_a-zA-Z0-9]{0,61}[a-zA-Z0-9])?``.
+   */
   name: string;
   /** Optional description of the subnet. 0-256 characters long. */
   description: string;
-  /** Resource labels as `` key:value `` pairs. Maximum of 64 per resource. */
+  /**
+   * Resource labels, `key:value` pairs.
+   * No more than 64 per resource.
+   * The maximum string length in characters for each value is 63.
+   * Each value must match the regular expression `[-_0-9a-z]*`.
+   * The string length in characters for each key must be 1-63.
+   * Each key must match the regular expression `[a-z][-_0-9a-z]*`.
+   */
   labels: { [key: string]: string };
   /** ID of the network the subnet belongs to. */
   networkId: string;
@@ -75,6 +86,7 @@ export interface Subnet {
   v6CidrBlocks: string[];
   /** ID of route table the subnet is linked to. */
   routeTableId: string;
+  /** DHCP options for the subnet. */
   dhcpOptions?: DhcpOptions;
 }
 
@@ -86,8 +98,11 @@ export interface Subnet_LabelsEntry {
 
 export interface DhcpOptions {
   $type: "yandex.cloud.vpc.v1.DhcpOptions";
+  /** A list of DHCP servers for this subnet. */
   domainNameServers: string[];
+  /** A domain name to us as a suffix when resolving host names in this subnet. */
   domainName: string;
+  /** List of NTP servers for this subnet. */
   ntpServers: string[];
 }
 

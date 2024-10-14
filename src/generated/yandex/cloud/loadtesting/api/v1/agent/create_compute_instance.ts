@@ -48,6 +48,11 @@ export interface CreateComputeInstance {
    * To get the service account ID, use a [yandex.cloud.iam.v1.ServiceAccountService.List] request.
    */
   serviceAccountId: string;
+  /**
+   * ID of the [Compute VM platform](docs/compute/concepts/vm-platforms) on which the agent will be created.
+   * Default value: "standard-v2"
+   */
+  platformId: string;
 }
 
 export interface CreateComputeInstance_LabelsEntry {
@@ -66,6 +71,7 @@ const baseCreateComputeInstance: object = {
   $type: "yandex.cloud.loadtesting.api.v1.agent.CreateComputeInstance",
   zoneId: "",
   serviceAccountId: "",
+  platformId: "",
 };
 
 export const CreateComputeInstance = {
@@ -117,6 +123,9 @@ export const CreateComputeInstance = {
     }
     if (message.serviceAccountId !== "") {
       writer.uint32(114).string(message.serviceAccountId);
+    }
+    if (message.platformId !== "") {
+      writer.uint32(122).string(message.platformId);
     }
     return writer;
   },
@@ -172,6 +181,9 @@ export const CreateComputeInstance = {
         case 14:
           message.serviceAccountId = reader.string();
           break;
+        case 15:
+          message.platformId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -213,6 +225,10 @@ export const CreateComputeInstance = {
       object.serviceAccountId !== undefined && object.serviceAccountId !== null
         ? String(object.serviceAccountId)
         : "";
+    message.platformId =
+      object.platformId !== undefined && object.platformId !== null
+        ? String(object.platformId)
+        : "";
     return message;
   },
 
@@ -248,6 +264,7 @@ export const CreateComputeInstance = {
     }
     message.serviceAccountId !== undefined &&
       (obj.serviceAccountId = message.serviceAccountId);
+    message.platformId !== undefined && (obj.platformId = message.platformId);
     return obj;
   },
 
@@ -285,6 +302,7 @@ export const CreateComputeInstance = {
         NetworkInterfaceSpec.fromPartial(e)
       ) || [];
     message.serviceAccountId = object.serviceAccountId ?? "";
+    message.platformId = object.platformId ?? "";
     return message;
   },
 };

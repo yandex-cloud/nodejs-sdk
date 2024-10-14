@@ -177,6 +177,8 @@ export interface UpdateClusterRequest {
   deletionProtection: boolean;
   /** Window of maintenance operations. */
   maintenanceWindow?: MaintenanceWindow;
+  /** ID of the network to move the cluster to. */
+  networkId: string;
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
@@ -1533,6 +1535,7 @@ const baseUpdateClusterRequest: object = {
   securityGroupIds: "",
   serviceAccountId: "",
   deletionProtection: false,
+  networkId: "",
 };
 
 export const UpdateClusterRequest = {
@@ -1585,6 +1588,9 @@ export const UpdateClusterRequest = {
         message.maintenanceWindow,
         writer.uint32(82).fork()
       ).ldelim();
+    }
+    if (message.networkId !== "") {
+      writer.uint32(90).string(message.networkId);
     }
     return writer;
   },
@@ -1640,6 +1646,9 @@ export const UpdateClusterRequest = {
             reader.uint32()
           );
           break;
+        case 11:
+          message.networkId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1693,6 +1702,10 @@ export const UpdateClusterRequest = {
       object.maintenanceWindow !== null
         ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
         : undefined;
+    message.networkId =
+      object.networkId !== undefined && object.networkId !== null
+        ? String(object.networkId)
+        : "";
     return message;
   },
 
@@ -1729,6 +1742,7 @@ export const UpdateClusterRequest = {
       (obj.maintenanceWindow = message.maintenanceWindow
         ? MaintenanceWindow.toJSON(message.maintenanceWindow)
         : undefined);
+    message.networkId !== undefined && (obj.networkId = message.networkId);
     return obj;
   },
 
@@ -1763,6 +1777,7 @@ export const UpdateClusterRequest = {
       object.maintenanceWindow !== null
         ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
         : undefined;
+    message.networkId = object.networkId ?? "";
     return message;
   },
 };

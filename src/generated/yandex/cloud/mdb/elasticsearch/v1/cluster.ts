@@ -64,9 +64,9 @@ export interface Cluster {
 
 export enum Cluster_Environment {
   ENVIRONMENT_UNSPECIFIED = 0,
-  /** PRODUCTION - stable environment with a conservative update policy when only hotfixes are applied during regular maintenance. */
+  /** PRODUCTION - Stable environment with a conservative update policy when only hotfixes are applied during regular maintenance. */
   PRODUCTION = 1,
-  /** PRESTABLE - environment with a more aggressive update policy when new versions are rolled out irrespective of backward compatibility. */
+  /** PRESTABLE - Environment with a more aggressive update policy when new versions are rolled out irrespective of backward compatibility. */
   PRESTABLE = 2,
   UNRECOGNIZED = -1,
 }
@@ -103,13 +103,13 @@ export function cluster_EnvironmentToJSON(object: Cluster_Environment): string {
 }
 
 export enum Cluster_Health {
-  /** HEALTH_UNKNOWN - state of the cluster is unknown ([Host.health] of all hosts in the cluster is `UNKNOWN`). */
+  /** HEALTH_UNKNOWN - State of the cluster is unknown ([Host.health] of all hosts in the cluster is `UNKNOWN`). */
   HEALTH_UNKNOWN = 0,
-  /** ALIVE - cluster is alive and well ([Host.health] of all hosts in the cluster is `ALIVE`). */
+  /** ALIVE - Cluster is alive and well ([Host.health] of all hosts in the cluster is `ALIVE`). */
   ALIVE = 1,
-  /** DEAD - cluster is inoperable ([Host.health] of all hosts in the cluster is `DEAD`). */
+  /** DEAD - Cluster is inoperable ([Host.health] of all hosts in the cluster is `DEAD`). */
   DEAD = 2,
-  /** DEGRADED - cluster is in degraded state ([Host.health] of at least one of the hosts in the cluster is not `ALIVE`). */
+  /** DEGRADED - Cluster is in degraded state ([Host.health] of at least one of the hosts in the cluster is not `ALIVE`). */
   DEGRADED = 3,
   UNRECOGNIZED = -1,
 }
@@ -151,21 +151,21 @@ export function cluster_HealthToJSON(object: Cluster_Health): string {
 }
 
 export enum Cluster_Status {
-  /** STATUS_UNKNOWN - cluster state is unknown. */
+  /** STATUS_UNKNOWN - Cluster state is unknown. */
   STATUS_UNKNOWN = 0,
-  /** CREATING - cluster is being created. */
+  /** CREATING - Cluster is being created. */
   CREATING = 1,
-  /** RUNNING - cluster is running normally. */
+  /** RUNNING - Cluster is running normally. */
   RUNNING = 2,
-  /** ERROR - cluster encountered a problem and cannot operate. */
+  /** ERROR - Cluster encountered a problem and cannot operate. */
   ERROR = 3,
-  /** UPDATING - cluster is being updated. */
+  /** UPDATING - Cluster is being updated. */
   UPDATING = 4,
-  /** STOPPING - cluster is stopping. */
+  /** STOPPING - Cluster is stopping. */
   STOPPING = 5,
-  /** STOPPED - cluster stopped. */
+  /** STOPPED - Cluster stopped. */
   STOPPED = 6,
-  /** STARTING - cluster is starting. */
+  /** STARTING - Cluster is starting. */
   STARTING = 7,
   UNRECOGNIZED = -1,
 }
@@ -306,7 +306,7 @@ export interface Host {
   /** Host type. */
   type: Host_Type;
   resources?: Resources;
-  /** Aggregated host health data. */
+  /** Aggregated host health data. If the field has default value, it is not returned in the response. */
   health: Host_Health;
   /** Services provided by the host. */
   services: Service[];
@@ -321,10 +321,11 @@ export interface Host {
 }
 
 export enum Host_Type {
+  /** TYPE_UNSPECIFIED - Host type is unspecified. Default value. */
   TYPE_UNSPECIFIED = 0,
-  /** DATA_NODE - the host is an Elasticsearch data node. */
+  /** DATA_NODE - The host is an Elasticsearch data node. */
   DATA_NODE = 1,
-  /** MASTER_NODE - the host is an Elasticsearch master node. */
+  /** MASTER_NODE - The host is an Elasticsearch master node. */
   MASTER_NODE = 2,
   UNRECOGNIZED = -1,
 }
@@ -361,13 +362,13 @@ export function host_TypeToJSON(object: Host_Type): string {
 }
 
 export enum Host_Health {
-  /** UNKNOWN - health of the host is unknown. */
+  /** UNKNOWN - Health of the host is unknown. */
   UNKNOWN = 0,
-  /** ALIVE - the host is performing all its functions normally. */
+  /** ALIVE - The host is performing all its functions normally. */
   ALIVE = 1,
-  /** DEAD - the host is inoperable and cannot perform any of its essential functions. */
+  /** DEAD - The host is inoperable and cannot perform any of its essential functions. */
   DEAD = 2,
-  /** DEGRADED - the host is degraded and can perform only some of its essential functions. */
+  /** DEGRADED - The host is degraded and can perform only some of its essential functions. */
   DEGRADED = 3,
   UNRECOGNIZED = -1,
 }
@@ -413,13 +414,13 @@ export interface Service {
   $type: "yandex.cloud.mdb.elasticsearch.v1.Service";
   /** Type of the service provided by the host. */
   type: Service_Type;
-  /** Service health data. */
+  /** Service health data. If the field has default value, it is not returned in the response. */
   health: Service_Health;
 }
 
 export enum Service_Type {
   TYPE_UNSPECIFIED = 0,
-  /** ELASTICSEARCH - the Elasticsearch service. */
+  /** ELASTICSEARCH - The Elasticsearch service. */
   ELASTICSEARCH = 1,
   UNRECOGNIZED = -1,
 }
@@ -451,11 +452,11 @@ export function service_TypeToJSON(object: Service_Type): string {
 }
 
 export enum Service_Health {
-  /** UNKNOWN - health of the service is unknown. */
+  /** UNKNOWN - Health of the service is unknown. */
   UNKNOWN = 0,
-  /** ALIVE - the service is working normally. */
+  /** ALIVE - The service is working normally. */
   ALIVE = 1,
-  /** DEAD - the service is dead or unresponsive. */
+  /** DEAD - The service is dead or unresponsive. */
   DEAD = 2,
   UNRECOGNIZED = -1,
 }

@@ -22,6 +22,8 @@ export interface Community {
   createdById: string;
   /** ID of the organization to which community belongs. */
   organizationId: string;
+  /** ID of the zone where this community was created */
+  zoneId: string;
 }
 
 export interface Community_LabelsEntry {
@@ -37,6 +39,7 @@ const baseCommunity: object = {
   description: "",
   createdById: "",
   organizationId: "",
+  zoneId: "",
 };
 
 export const Community = {
@@ -77,6 +80,9 @@ export const Community = {
     if (message.organizationId !== "") {
       writer.uint32(82).string(message.organizationId);
     }
+    if (message.zoneId !== "") {
+      writer.uint32(90).string(message.zoneId);
+    }
     return writer;
   },
 
@@ -113,6 +119,9 @@ export const Community = {
           break;
         case 10:
           message.organizationId = reader.string();
+          break;
+        case 11:
+          message.zoneId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -152,6 +161,10 @@ export const Community = {
       object.organizationId !== undefined && object.organizationId !== null
         ? String(object.organizationId)
         : "";
+    message.zoneId =
+      object.zoneId !== undefined && object.zoneId !== null
+        ? String(object.zoneId)
+        : "";
     return message;
   },
 
@@ -173,6 +186,7 @@ export const Community = {
       (obj.createdById = message.createdById);
     message.organizationId !== undefined &&
       (obj.organizationId = message.organizationId);
+    message.zoneId !== undefined && (obj.zoneId = message.zoneId);
     return obj;
   },
 
@@ -194,6 +208,7 @@ export const Community = {
     }, {});
     message.createdById = object.createdById ?? "";
     message.organizationId = object.organizationId ?? "";
+    message.zoneId = object.zoneId ?? "";
     return message;
   },
 };

@@ -6,6 +6,48 @@ import { BoolValue, Int64Value } from "../../../../../google/protobuf/wrappers";
 
 export const protobufPackage = "yandex.cloud.mdb.postgresql.v1";
 
+export enum UserPasswordEncryption {
+  USER_PASSWORD_ENCRYPTION_UNSPECIFIED = 0,
+  USER_PASSWORD_ENCRYPTION_MD5 = 1,
+  USER_PASSWORD_ENCRYPTION_SCRAM_SHA_256 = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function userPasswordEncryptionFromJSON(
+  object: any
+): UserPasswordEncryption {
+  switch (object) {
+    case 0:
+    case "USER_PASSWORD_ENCRYPTION_UNSPECIFIED":
+      return UserPasswordEncryption.USER_PASSWORD_ENCRYPTION_UNSPECIFIED;
+    case 1:
+    case "USER_PASSWORD_ENCRYPTION_MD5":
+      return UserPasswordEncryption.USER_PASSWORD_ENCRYPTION_MD5;
+    case 2:
+    case "USER_PASSWORD_ENCRYPTION_SCRAM_SHA_256":
+      return UserPasswordEncryption.USER_PASSWORD_ENCRYPTION_SCRAM_SHA_256;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return UserPasswordEncryption.UNRECOGNIZED;
+  }
+}
+
+export function userPasswordEncryptionToJSON(
+  object: UserPasswordEncryption
+): string {
+  switch (object) {
+    case UserPasswordEncryption.USER_PASSWORD_ENCRYPTION_UNSPECIFIED:
+      return "USER_PASSWORD_ENCRYPTION_UNSPECIFIED";
+    case UserPasswordEncryption.USER_PASSWORD_ENCRYPTION_MD5:
+      return "USER_PASSWORD_ENCRYPTION_MD5";
+    case UserPasswordEncryption.USER_PASSWORD_ENCRYPTION_SCRAM_SHA_256:
+      return "USER_PASSWORD_ENCRYPTION_SCRAM_SHA_256";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 /**
  * A PostgreSQL User resource. For more information, see
  * the [Developer's Guide](/docs/managed-postgresql/concepts).
@@ -42,11 +84,17 @@ export interface User {
    */
   grants: string[];
   /**
-   * Deletion Protection inhibits deletion of the user
+   * Determines whether the user deletion protection is enabled.
    *
-   * Default value: `unspecified` (inherits cluster's deletion_protection)
+   * The default value is `unspecified`. In this case, the user configuration inherits the cluster's deletion protection settings.
    */
   deletionProtection?: boolean;
+  /**
+   * Password-based authentication method for user.
+   * Possible values are `` USER_PASSWORD_ENCRYPTION_MD5 `` or `` USER_PASSWORD_ENCRYPTION_SCRAM_SHA_256 ``.
+   * The default is `` password_encryption `` setting for cluster.
+   */
+  userPasswordEncryption: UserPasswordEncryption;
 }
 
 export interface Permission {
@@ -93,6 +141,104 @@ export interface UserSpec {
    * Default value: `unspecified` (inherits cluster's deletion_protection)
    */
   deletionProtection?: boolean;
+  /**
+   * Password-based authentication method for user.
+   * Possible values are `` USER_PASSWORD_ENCRYPTION_MD5 `` or `` USER_PASSWORD_ENCRYPTION_SCRAM_SHA_256 ``.
+   * The default is `` password_encryption `` setting for cluster.
+   */
+  userPasswordEncryption: UserPasswordEncryption;
+}
+
+export interface PGAuditSettings {
+  $type: "yandex.cloud.mdb.postgresql.v1.PGAuditSettings";
+  /**
+   * Defines which user queries will be written to the audit log. Corresponds to the [Pg audit log](https://yandex.cloud/en/docs/managed-postgresql/concepts/settings-list#setting-pg-audit-log) user setting.
+   *
+   * The possible values are the following:
+   *
+   * * PG_AUDIT_SETTINGS_LOG_READ: `SELECT` and `COPY` queries are logged if the data source is a relation or query.
+   * * PG_AUDIT_SETTINGS_LOG_WRITE: `INSERT`, `UPDATE`, `DELETE`, `TRUNCATE`, and `COPY` queries are logged if the data target is a relation.
+   * * PG_AUDIT_SETTINGS_LOG_FUNCTION: Function invocations and `DO` sections are logged.
+   * * PG_AUDIT_SETTINGS_LOG_ROLE: Statements related to role and privilege management, such as `GRANT`, `REVOKE`, or `CREATE/ALTER/DROP ROLE`, are logged.
+   * * PG_AUDIT_SETTINGS_LOG_DDL: Any `DDL` statements that do not belong to the `ROLE` class are logged.
+   * * PG_AUDIT_SETTINGS_LOG_MISC: Miscellaneous commands, such as `DISCARD`, `FETCH`, `CHECKPOINT`, `VACUUM`, and `SET`, are logged.
+   * * PG_AUDIT_SETTINGS_LOG_MISC_SET: Miscellaneous `SET` commands, e.g., `SET ROLE`, are logged.
+   *
+   * The default value is PG_AUDIT_SETTINGS_LOG_UNSPECIFIED. In this case, the parameter is not configured.
+   */
+  log: PGAuditSettings_PGAuditSettingsLog[];
+}
+
+export enum PGAuditSettings_PGAuditSettingsLog {
+  PG_AUDIT_SETTINGS_LOG_UNSPECIFIED = 0,
+  PG_AUDIT_SETTINGS_LOG_READ = 1,
+  PG_AUDIT_SETTINGS_LOG_WRITE = 2,
+  PG_AUDIT_SETTINGS_LOG_FUNCTION = 3,
+  PG_AUDIT_SETTINGS_LOG_ROLE = 4,
+  PG_AUDIT_SETTINGS_LOG_DDL = 5,
+  PG_AUDIT_SETTINGS_LOG_MISC = 6,
+  PG_AUDIT_SETTINGS_LOG_MISC_SET = 7,
+  UNRECOGNIZED = -1,
+}
+
+export function pGAuditSettings_PGAuditSettingsLogFromJSON(
+  object: any
+): PGAuditSettings_PGAuditSettingsLog {
+  switch (object) {
+    case 0:
+    case "PG_AUDIT_SETTINGS_LOG_UNSPECIFIED":
+      return PGAuditSettings_PGAuditSettingsLog.PG_AUDIT_SETTINGS_LOG_UNSPECIFIED;
+    case 1:
+    case "PG_AUDIT_SETTINGS_LOG_READ":
+      return PGAuditSettings_PGAuditSettingsLog.PG_AUDIT_SETTINGS_LOG_READ;
+    case 2:
+    case "PG_AUDIT_SETTINGS_LOG_WRITE":
+      return PGAuditSettings_PGAuditSettingsLog.PG_AUDIT_SETTINGS_LOG_WRITE;
+    case 3:
+    case "PG_AUDIT_SETTINGS_LOG_FUNCTION":
+      return PGAuditSettings_PGAuditSettingsLog.PG_AUDIT_SETTINGS_LOG_FUNCTION;
+    case 4:
+    case "PG_AUDIT_SETTINGS_LOG_ROLE":
+      return PGAuditSettings_PGAuditSettingsLog.PG_AUDIT_SETTINGS_LOG_ROLE;
+    case 5:
+    case "PG_AUDIT_SETTINGS_LOG_DDL":
+      return PGAuditSettings_PGAuditSettingsLog.PG_AUDIT_SETTINGS_LOG_DDL;
+    case 6:
+    case "PG_AUDIT_SETTINGS_LOG_MISC":
+      return PGAuditSettings_PGAuditSettingsLog.PG_AUDIT_SETTINGS_LOG_MISC;
+    case 7:
+    case "PG_AUDIT_SETTINGS_LOG_MISC_SET":
+      return PGAuditSettings_PGAuditSettingsLog.PG_AUDIT_SETTINGS_LOG_MISC_SET;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return PGAuditSettings_PGAuditSettingsLog.UNRECOGNIZED;
+  }
+}
+
+export function pGAuditSettings_PGAuditSettingsLogToJSON(
+  object: PGAuditSettings_PGAuditSettingsLog
+): string {
+  switch (object) {
+    case PGAuditSettings_PGAuditSettingsLog.PG_AUDIT_SETTINGS_LOG_UNSPECIFIED:
+      return "PG_AUDIT_SETTINGS_LOG_UNSPECIFIED";
+    case PGAuditSettings_PGAuditSettingsLog.PG_AUDIT_SETTINGS_LOG_READ:
+      return "PG_AUDIT_SETTINGS_LOG_READ";
+    case PGAuditSettings_PGAuditSettingsLog.PG_AUDIT_SETTINGS_LOG_WRITE:
+      return "PG_AUDIT_SETTINGS_LOG_WRITE";
+    case PGAuditSettings_PGAuditSettingsLog.PG_AUDIT_SETTINGS_LOG_FUNCTION:
+      return "PG_AUDIT_SETTINGS_LOG_FUNCTION";
+    case PGAuditSettings_PGAuditSettingsLog.PG_AUDIT_SETTINGS_LOG_ROLE:
+      return "PG_AUDIT_SETTINGS_LOG_ROLE";
+    case PGAuditSettings_PGAuditSettingsLog.PG_AUDIT_SETTINGS_LOG_DDL:
+      return "PG_AUDIT_SETTINGS_LOG_DDL";
+    case PGAuditSettings_PGAuditSettingsLog.PG_AUDIT_SETTINGS_LOG_MISC:
+      return "PG_AUDIT_SETTINGS_LOG_MISC";
+    case PGAuditSettings_PGAuditSettingsLog.PG_AUDIT_SETTINGS_LOG_MISC_SET:
+      return "PG_AUDIT_SETTINGS_LOG_MISC_SET";
+    default:
+      return "UNKNOWN";
+  }
 }
 
 /** PostgreSQL user settings. */
@@ -102,7 +248,7 @@ export interface UserSettings {
    * SQL sets an isolation level for each transaction.
    * This setting defines the default isolation level to be set for all new SQL transactions.
    *
-   * See in-depth description in [PostgreSQL documentation](https://www.postgresql.org/docs/current/transaction-iso.html).
+   * For more information, see the [PostgreSQL documentation](https://www.postgresql.org/docs/current/transaction-iso.html).
    */
   defaultTransactionIsolation: UserSettings_TransactionIsolation;
   /**
@@ -122,7 +268,7 @@ export interface UserSettings {
    *
    * Value of `-1` (default) disables logging of the duration of statements.
    *
-   * See in-depth description in [PostgreSQL documentation](https://www.postgresql.org/docs/current/runtime-config-logging.html).
+   * For more information, see the [PostgreSQL documentation](https://www.postgresql.org/docs/current/runtime-config-logging.html).
    */
   logMinDurationStatement?: number;
   /**
@@ -131,7 +277,7 @@ export interface UserSettings {
    * When synchronization is enabled, cluster waits for the synchronous operations to be completed prior to reporting `success` to the client.
    * These operations guarantee different levels of the data safety and visibility in the cluster.
    *
-   * See in-depth description in [PostgreSQL documentation](https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-SYNCHRONOUS-COMMIT).
+   * For more information, see the [PostgreSQL documentation](https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-SYNCHRONOUS-COMMIT).
    */
   synchronousCommit: UserSettings_SynchronousCommit;
   /**
@@ -144,19 +290,19 @@ export interface UserSettings {
   /**
    * This setting specifies which SQL statements should be logged (on the user level).
    *
-   * See in-depth description in [PostgreSQL documentation](https://www.postgresql.org/docs/current/runtime-config-logging.html).
+   * For more information, see the [PostgreSQL documentation](https://www.postgresql.org/docs/current/runtime-config-logging.html).
    */
   logStatement: UserSettings_LogStatement;
   /**
    * Mode that the connection pooler is working in with specified user.
    *
-   * See in-depth description in [Odyssey documentation](https://github.com/yandex/odyssey/blob/master/documentation/configuration.md#pool-string)
+   * For more information, see the [Odyssey documentation](https://github.com/yandex/odyssey/blob/master/documentation/configuration.md#pool-string).
    */
   poolMode: UserSettings_PoolingMode;
   /**
    * User can use prepared statements with transaction pooling.
    *
-   * See in-depth description in [PostgreSQL documentation](https://www.postgresql.org/docs/current/sql-prepare.html)
+   * For more information, see the [PostgreSQL documentation](https://www.postgresql.org/docs/current/sql-prepare.html).
    */
   preparedStatementsPooling?: boolean;
   /**
@@ -177,51 +323,53 @@ export interface UserSettings {
    *
    * Value of `0` disables the timeout mechanism.
    *
-   * See in-depth description in [PostgreSQL documentation](https://www.postgresql.org/docs/current/runtime-config-replication.html)
+   * For more information, see the [PostgreSQL documentation](https://www.postgresql.org/docs/current/runtime-config-replication.html).
    */
   walSenderTimeout?: number;
   /**
-   * Sets the maximum allowed idle time (in milliseconds) between queries, when in a transaction.
+   * Sets the maximum allowed idle time, in milliseconds, between queries while in a transaction.
    *
-   * Values of `0` (default) disables the timeout.
+   * The default value is `0`, which disables the timeout.
    *
-   * See in-depth description in [PostgreSQL documentation](https://www.postgresql.org/docs/current/runtime-config-client.html)
+   * For more information, see the [PostgreSQL documentation](https://www.postgresql.org/docs/current/runtime-config-client.html).
    */
   idleInTransactionSessionTimeout?: number;
   /**
-   * The maximum time (in milliseconds) to wait for statement
+   * The maximum time (in milliseconds) to wait for statement.
    * The timeout is measured from the time a command arrives at the server until it is completed by the server.
    *
    * If `log_min_error_statement` is set to ERROR or lower, the statement that timed out will also be logged.
    *
    * Value of `0` (default) disables the timeout
    *
-   * See in-depth description in [PostgreSQL documentation](https://www.postgresql.org/docs/current/runtime-config-client.html)
+   * For more information, see the [PostgreSQL documentation](https://www.postgresql.org/docs/current/runtime-config-client.html).
    */
   statementTimeout?: number;
+  /** Settings of the [PostgreSQL Audit Extension](https://www.pgaudit.org/) (pgaudit). */
+  pgaudit?: PGAuditSettings;
 }
 
 export enum UserSettings_SynchronousCommit {
   SYNCHRONOUS_COMMIT_UNSPECIFIED = 0,
-  /** SYNCHRONOUS_COMMIT_ON - (default value) success is reported to the client if the data is in WAL (Write-Ahead Log), and WAL is written to the storage of both the master and its synchronous standby server. */
+  /** SYNCHRONOUS_COMMIT_ON - Success is reported to the client if the data is in WAL (Write-Ahead Log), and WAL is written to the storage of both the master and its synchronous standby server. Default value. */
   SYNCHRONOUS_COMMIT_ON = 1,
   /**
-   * SYNCHRONOUS_COMMIT_OFF - success is reported to the client even if the data is not in WAL.
+   * SYNCHRONOUS_COMMIT_OFF - Success is reported to the client even if the data is not in WAL.
    * There is no synchronous write operation, data may be loss in case of storage subsystem failure.
    */
   SYNCHRONOUS_COMMIT_OFF = 2,
   /**
-   * SYNCHRONOUS_COMMIT_LOCAL - success is reported to the client if the data is in WAL, and WAL is written to the storage of the master server.
+   * SYNCHRONOUS_COMMIT_LOCAL - Success is reported to the client if the data is in WAL, and WAL is written to the storage of the master server.
    * The transaction may be lost due to storage subsystem failure on the master server.
    */
   SYNCHRONOUS_COMMIT_LOCAL = 3,
   /**
-   * SYNCHRONOUS_COMMIT_REMOTE_WRITE - success is reported to the client if the data is in WAL, WAL is written to the storage of the master server, and the server's synchronous standby indicates that it has received WAL and written it out to its operating system.
+   * SYNCHRONOUS_COMMIT_REMOTE_WRITE - Success is reported to the client if the data is in WAL, WAL is written to the storage of the master server, and the server's synchronous standby indicates that it has received WAL and written it out to its operating system.
    * The transaction may be lost due to simultaneous storage subsystem failure on the master and operating system's failure on the synchronous standby.
    */
   SYNCHRONOUS_COMMIT_REMOTE_WRITE = 4,
   /**
-   * SYNCHRONOUS_COMMIT_REMOTE_APPLY - success is reported to the client if the data is in WAL (Write-Ahead Log), WAL is written to the storage of the master server, and its synchronous standby indicates that it has received WAL and applied it.
+   * SYNCHRONOUS_COMMIT_REMOTE_APPLY - Success is reported to the client if the data is in WAL (Write-Ahead Log), WAL is written to the storage of the master server, and its synchronous standby indicates that it has received WAL and applied it.
    * The transaction may be lost due to irrecoverably failure of both the master and its synchronous standby.
    */
   SYNCHRONOUS_COMMIT_REMOTE_APPLY = 5,
@@ -280,13 +428,13 @@ export function userSettings_SynchronousCommitToJSON(
 
 export enum UserSettings_LogStatement {
   LOG_STATEMENT_UNSPECIFIED = 0,
-  /** LOG_STATEMENT_NONE - (default) logs none of SQL statements. */
+  /** LOG_STATEMENT_NONE - Logs none of SQL statements. Default value. */
   LOG_STATEMENT_NONE = 1,
-  /** LOG_STATEMENT_DDL - logs all data definition statements (such as `CREATE`, `ALTER`, `DROP` and others). */
+  /** LOG_STATEMENT_DDL - Logs all data definition statements (such as `CREATE`, `ALTER`, `DROP` and others). */
   LOG_STATEMENT_DDL = 2,
-  /** LOG_STATEMENT_MOD - logs all statements that fall in the `LOG_STATEMENT_DDL` category plus data-modifying statements (such as `INSERT`, `UPDATE` and others). */
+  /** LOG_STATEMENT_MOD - Logs all statements that fall in the `LOG_STATEMENT_DDL` category plus data-modifying statements (such as `INSERT`, `UPDATE` and others). */
   LOG_STATEMENT_MOD = 3,
-  /** LOG_STATEMENT_ALL - logs all SQL statements. */
+  /** LOG_STATEMENT_ALL - Logs all SQL statements. */
   LOG_STATEMENT_ALL = 4,
   UNRECOGNIZED = -1,
 }
@@ -338,14 +486,14 @@ export function userSettings_LogStatementToJSON(
 
 export enum UserSettings_TransactionIsolation {
   TRANSACTION_ISOLATION_UNSPECIFIED = 0,
-  /** TRANSACTION_ISOLATION_READ_UNCOMMITTED - this level behaves like `TRANSACTION_ISOLATION_READ_COMMITTED` in PostgreSQL. */
+  /** TRANSACTION_ISOLATION_READ_UNCOMMITTED - This level behaves like `TRANSACTION_ISOLATION_READ_COMMITTED` in PostgreSQL. */
   TRANSACTION_ISOLATION_READ_UNCOMMITTED = 1,
-  /** TRANSACTION_ISOLATION_READ_COMMITTED - (default) on this level query sees only data committed before the query began. */
+  /** TRANSACTION_ISOLATION_READ_COMMITTED - On this level query sees only data committed before the query began. Default value. */
   TRANSACTION_ISOLATION_READ_COMMITTED = 2,
-  /** TRANSACTION_ISOLATION_REPEATABLE_READ - on this level all subsequent queries in a transaction will see the same rows, that were read by the first `SELECT` or `INSERT` query in this transaction, unchanged (these rows are locked during the first query). */
+  /** TRANSACTION_ISOLATION_REPEATABLE_READ - On this level all subsequent queries in a transaction will see the same rows, that were read by the first `SELECT` or `INSERT` query in this transaction, unchanged (these rows are locked during the first query). */
   TRANSACTION_ISOLATION_REPEATABLE_READ = 3,
   /**
-   * TRANSACTION_ISOLATION_SERIALIZABLE - this level provides the strictest transaction isolation.
+   * TRANSACTION_ISOLATION_SERIALIZABLE - This level provides the strictest transaction isolation.
    * All queries in the current transaction see only the rows that were fixed prior to execution of the first `SELECT` or `INSERT` query in this transaction.
    * If read and write operations in a concurrent set of serializable transactions overlap and this may cause an inconsistency that is not possible during the serial transaction execution, then one of the transaction will be rolled back, triggering a serialization failure.
    */
@@ -400,11 +548,11 @@ export function userSettings_TransactionIsolationToJSON(
 
 export enum UserSettings_PoolingMode {
   POOLING_MODE_UNSPECIFIED = 0,
-  /** SESSION - (default) server connection will be assigned to it for the whole duration the client stays connected */
+  /** SESSION - Server connection will be assigned to it for the whole duration the client stays connected. Default value. */
   SESSION = 1,
-  /** TRANSACTION - server connection is assigned to a client only during a transaction */
+  /** TRANSACTION - Server connection is assigned to a client only during a transaction. */
   TRANSACTION = 2,
-  /** STATEMENT - server connection will be put back into the pool immediately after a query completes */
+  /** STATEMENT - Server connection will be put back into the pool immediately after a query completes. */
   STATEMENT = 3,
   UNRECOGNIZED = -1,
 }
@@ -455,6 +603,7 @@ const baseUser: object = {
   clusterId: "",
   connLimit: 0,
   grants: "",
+  userPasswordEncryption: 0,
 };
 
 export const User = {
@@ -493,6 +642,9 @@ export const User = {
         },
         writer.uint32(66).fork()
       ).ldelim();
+    }
+    if (message.userPasswordEncryption !== 0) {
+      writer.uint32(72).int32(message.userPasswordEncryption);
     }
     return writer;
   },
@@ -533,6 +685,9 @@ export const User = {
             reader.uint32()
           ).value;
           break;
+        case 9:
+          message.userPasswordEncryption = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -572,6 +727,11 @@ export const User = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : undefined;
+    message.userPasswordEncryption =
+      object.userPasswordEncryption !== undefined &&
+      object.userPasswordEncryption !== null
+        ? userPasswordEncryptionFromJSON(object.userPasswordEncryption)
+        : 0;
     return message;
   },
 
@@ -600,6 +760,10 @@ export const User = {
     }
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.userPasswordEncryption !== undefined &&
+      (obj.userPasswordEncryption = userPasswordEncryptionToJSON(
+        message.userPasswordEncryption
+      ));
     return obj;
   },
 
@@ -617,6 +781,7 @@ export const User = {
     message.login = object.login ?? undefined;
     message.grants = object.grants?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? undefined;
+    message.userPasswordEncryption = object.userPasswordEncryption ?? 0;
     return message;
   },
 };
@@ -691,6 +856,7 @@ const baseUserSpec: object = {
   name: "",
   password: "",
   grants: "",
+  userPasswordEncryption: 0,
 };
 
 export const UserSpec = {
@@ -736,6 +902,9 @@ export const UserSpec = {
         writer.uint32(66).fork()
       ).ldelim();
     }
+    if (message.userPasswordEncryption !== 0) {
+      writer.uint32(72).int32(message.userPasswordEncryption);
+    }
     return writer;
   },
 
@@ -774,6 +943,9 @@ export const UserSpec = {
             reader,
             reader.uint32()
           ).value;
+          break;
+        case 9:
+          message.userPasswordEncryption = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -814,6 +986,11 @@ export const UserSpec = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : undefined;
+    message.userPasswordEncryption =
+      object.userPasswordEncryption !== undefined &&
+      object.userPasswordEncryption !== null
+        ? userPasswordEncryptionFromJSON(object.userPasswordEncryption)
+        : 0;
     return message;
   },
 
@@ -841,6 +1018,10 @@ export const UserSpec = {
     }
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.userPasswordEncryption !== undefined &&
+      (obj.userPasswordEncryption = userPasswordEncryptionToJSON(
+        message.userPasswordEncryption
+      ));
     return obj;
   },
 
@@ -858,11 +1039,89 @@ export const UserSpec = {
     message.login = object.login ?? undefined;
     message.grants = object.grants?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? undefined;
+    message.userPasswordEncryption = object.userPasswordEncryption ?? 0;
     return message;
   },
 };
 
 messageTypeRegistry.set(UserSpec.$type, UserSpec);
+
+const basePGAuditSettings: object = {
+  $type: "yandex.cloud.mdb.postgresql.v1.PGAuditSettings",
+  log: 0,
+};
+
+export const PGAuditSettings = {
+  $type: "yandex.cloud.mdb.postgresql.v1.PGAuditSettings" as const,
+
+  encode(
+    message: PGAuditSettings,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    writer.uint32(10).fork();
+    for (const v of message.log) {
+      writer.int32(v);
+    }
+    writer.ldelim();
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): PGAuditSettings {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...basePGAuditSettings } as PGAuditSettings;
+    message.log = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.log.push(reader.int32() as any);
+            }
+          } else {
+            message.log.push(reader.int32() as any);
+          }
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PGAuditSettings {
+    const message = { ...basePGAuditSettings } as PGAuditSettings;
+    message.log = (object.log ?? []).map((e: any) =>
+      pGAuditSettings_PGAuditSettingsLogFromJSON(e)
+    );
+    return message;
+  },
+
+  toJSON(message: PGAuditSettings): unknown {
+    const obj: any = {};
+    if (message.log) {
+      obj.log = message.log.map((e) =>
+        pGAuditSettings_PGAuditSettingsLogToJSON(e)
+      );
+    } else {
+      obj.log = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<PGAuditSettings>, I>>(
+    object: I
+  ): PGAuditSettings {
+    const message = { ...basePGAuditSettings } as PGAuditSettings;
+    message.log = object.log?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(PGAuditSettings.$type, PGAuditSettings);
 
 const baseUserSettings: object = {
   $type: "yandex.cloud.mdb.postgresql.v1.UserSettings",
@@ -954,6 +1213,12 @@ export const UserSettings = {
         writer.uint32(98).fork()
       ).ldelim();
     }
+    if (message.pgaudit !== undefined) {
+      PGAuditSettings.encode(
+        message.pgaudit,
+        writer.uint32(106).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1024,6 +1289,9 @@ export const UserSettings = {
             reader.uint32()
           ).value;
           break;
+        case 13:
+          message.pgaudit = PGAuditSettings.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1089,6 +1357,10 @@ export const UserSettings = {
       object.statementTimeout !== undefined && object.statementTimeout !== null
         ? Number(object.statementTimeout)
         : undefined;
+    message.pgaudit =
+      object.pgaudit !== undefined && object.pgaudit !== null
+        ? PGAuditSettings.fromJSON(object.pgaudit)
+        : undefined;
     return message;
   },
 
@@ -1126,6 +1398,10 @@ export const UserSettings = {
         message.idleInTransactionSessionTimeout);
     message.statementTimeout !== undefined &&
       (obj.statementTimeout = message.statementTimeout);
+    message.pgaudit !== undefined &&
+      (obj.pgaudit = message.pgaudit
+        ? PGAuditSettings.toJSON(message.pgaudit)
+        : undefined);
     return obj;
   },
 
@@ -1149,6 +1425,10 @@ export const UserSettings = {
     message.idleInTransactionSessionTimeout =
       object.idleInTransactionSessionTimeout ?? undefined;
     message.statementTimeout = object.statementTimeout ?? undefined;
+    message.pgaudit =
+      object.pgaudit !== undefined && object.pgaudit !== null
+        ? PGAuditSettings.fromPartial(object.pgaudit)
+        : undefined;
     return message;
   },
 };

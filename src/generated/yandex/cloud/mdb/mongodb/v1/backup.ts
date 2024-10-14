@@ -31,6 +31,8 @@ export interface Backup {
   size: number;
   /** How this backup was created (manual/automatic/etc...) */
   type: Backup_BackupType;
+  /** Size of the journal associated with backup, in bytes */
+  journalSize: number;
 }
 
 export enum Backup_BackupType {
@@ -81,6 +83,7 @@ const baseBackup: object = {
   sourceShardNames: "",
   size: 0,
   type: 0,
+  journalSize: 0,
 };
 
 export const Backup = {
@@ -119,6 +122,9 @@ export const Backup = {
     }
     if (message.type !== 0) {
       writer.uint32(64).int32(message.type);
+    }
+    if (message.journalSize !== 0) {
+      writer.uint32(72).int64(message.journalSize);
     }
     return writer;
   },
@@ -159,6 +165,9 @@ export const Backup = {
         case 8:
           message.type = reader.int32() as any;
           break;
+        case 9:
+          message.journalSize = longToNumber(reader.int64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -198,6 +207,10 @@ export const Backup = {
       object.type !== undefined && object.type !== null
         ? backup_BackupTypeFromJSON(object.type)
         : 0;
+    message.journalSize =
+      object.journalSize !== undefined && object.journalSize !== null
+        ? Number(object.journalSize)
+        : 0;
     return message;
   },
 
@@ -219,6 +232,8 @@ export const Backup = {
     message.size !== undefined && (obj.size = Math.round(message.size));
     message.type !== undefined &&
       (obj.type = backup_BackupTypeToJSON(message.type));
+    message.journalSize !== undefined &&
+      (obj.journalSize = Math.round(message.journalSize));
     return obj;
   },
 
@@ -232,6 +247,7 @@ export const Backup = {
     message.sourceShardNames = object.sourceShardNames?.map((e) => e) || [];
     message.size = object.size ?? 0;
     message.type = object.type ?? 0;
+    message.journalSize = object.journalSize ?? 0;
     return message;
   },
 };

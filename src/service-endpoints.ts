@@ -431,6 +431,15 @@ export const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
         ],
         endpoint: 'stt.api.cloud.yandex.net:443',
     },
+    {
+        serviceIds: [
+            'yandex.cloud.ai.assistants.v1.AssistantService',
+            'yandex.cloud.ai.assistants.v1.threads.MessageService',
+            'yandex.cloud.ai.assistants.v1.threads.ThreadService',
+            'yandex.cloud.ai.assistants.v1.runs.RunService',
+        ],
+        endpoint: 'assistant.api.cloud.yandex.net:443',
+    },
 ];
 
 export const getServiceClientEndpoint = <T extends ServiceDefinition>(generatedClientCtor: GeneratedServiceClientCtor<T>): string => {

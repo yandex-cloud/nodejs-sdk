@@ -6,7 +6,7 @@ import { Timestamp } from "../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.vpc.v1";
 
-/** A RouteTable resource. For more information, see [Static Routes](/docs/vpc/concepts/static-routes). */
+/** A RouteTable resource. For more information, see [Static Routes](/docs/vpc/concepts/routing). */
 export interface RouteTable {
   $type: "yandex.cloud.vpc.v1.RouteTable";
   /** ID of the route table. */
@@ -15,11 +15,21 @@ export interface RouteTable {
   folderId: string;
   /** Creation timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
   createdAt?: Date;
-  /** Name of the route table. The name is unique within the project. 3-63 characters long. */
+  /**
+   * Name of the route table.
+   * The name must be unique within the folder.
+   * Value must match the regular expression `|[a-zA-Z]([-_a-zA-Z0-9]{0,61}[a-zA-Z0-9])?`.
+   */
   name: string;
   /** Optional description of the route table. 0-256 characters long. */
   description: string;
-  /** Resource labels as `` key:value `` pairs. Maximum of 64 per resource. */
+  /**
+   * Resource labels, `key:value` pairs.
+   * No more than 64 per resource.
+   * The string length in characters for each key must be 1-63.
+   * Each value must match the regular expression `[-_0-9a-z]*`.
+   * Each key must match the regular expression `[a-z][-_0-9a-z]*`.
+   */
   labels: { [key: string]: string };
   /** ID of the network the route table belongs to. */
   networkId: string;
@@ -33,7 +43,7 @@ export interface RouteTable_LabelsEntry {
   value: string;
 }
 
-/** A StaticRoute resource. For more information, see [Static Routes](/docs/vpc/concepts/static-routes). */
+/** A StaticRoute resource. For more information, see [Static Routes](/docs/vpc/concepts/routing). */
 export interface StaticRoute {
   $type: "yandex.cloud.vpc.v1.StaticRoute";
   /** Destination subnet in CIDR notation */

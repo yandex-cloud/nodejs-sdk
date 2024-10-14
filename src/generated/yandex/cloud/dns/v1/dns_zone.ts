@@ -36,6 +36,8 @@ export interface DnsZone {
    * Indicates whether records within the zone are publicly visible.
    */
   publicVisibility?: PublicVisibility;
+  /** Prevents accidental zone removal. */
+  deletionProtection: boolean;
 }
 
 export interface DnsZone_LabelsEntry {
@@ -76,6 +78,7 @@ const baseDnsZone: object = {
   name: "",
   description: "",
   zone: "",
+  deletionProtection: false,
 };
 
 export const DnsZone = {
@@ -128,6 +131,9 @@ export const DnsZone = {
         writer.uint32(74).fork()
       ).ldelim();
     }
+    if (message.deletionProtection === true) {
+      writer.uint32(80).bool(message.deletionProtection);
+    }
     return writer;
   },
 
@@ -177,6 +183,9 @@ export const DnsZone = {
             reader.uint32()
           );
           break;
+        case 10:
+          message.deletionProtection = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -224,6 +233,11 @@ export const DnsZone = {
       object.publicVisibility !== undefined && object.publicVisibility !== null
         ? PublicVisibility.fromJSON(object.publicVisibility)
         : undefined;
+    message.deletionProtection =
+      object.deletionProtection !== undefined &&
+      object.deletionProtection !== null
+        ? Boolean(object.deletionProtection)
+        : false;
     return message;
   },
 
@@ -251,6 +265,8 @@ export const DnsZone = {
       (obj.publicVisibility = message.publicVisibility
         ? PublicVisibility.toJSON(message.publicVisibility)
         : undefined);
+    message.deletionProtection !== undefined &&
+      (obj.deletionProtection = message.deletionProtection);
     return obj;
   },
 
@@ -279,6 +295,7 @@ export const DnsZone = {
       object.publicVisibility !== undefined && object.publicVisibility !== null
         ? PublicVisibility.fromPartial(object.publicVisibility)
         : undefined;
+    message.deletionProtection = object.deletionProtection ?? false;
     return message;
   },
 };

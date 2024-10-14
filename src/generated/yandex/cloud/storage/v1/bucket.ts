@@ -653,6 +653,14 @@ export interface LifecycleRule {
    * At transition, the non-current version of the object is transitioned to the specified storage class.
    */
   noncurrentTransitions: LifecycleRule_NoncurrentTransition[];
+  /**
+   * Expiration rule for non-current delete markers of an objects in a bucket with versioning
+   * enabled ([Bucket.versioning] is `VERSIONING_ENABLED`) or suspended (`VERSIONING_SUSPENDED`).
+   * Works in the same way as noncurrent_expiration rule, but only for delete markers.
+   *
+   * At expiration, the non-current delete marker of the object is deleted and cannot be recovered.
+   */
+  noncurrentDeleteMarkers?: LifecycleRule_NoncurrentDeleteMarkers;
 }
 
 export interface LifecycleRule_AfterDays {
@@ -662,6 +670,15 @@ export interface LifecycleRule_AfterDays {
    * aborted.
    */
   daysAfterExpiration?: number;
+}
+
+export interface LifecycleRule_NoncurrentDeleteMarkers {
+  $type: "yandex.cloud.storage.v1.LifecycleRule.NoncurrentDeleteMarkers";
+  /**
+   * Time period, in number of days since the version of a delete marker was classified as non-current, after which
+   * the delete marker expires.
+   */
+  noncurrentDays?: number;
 }
 
 export interface LifecycleRule_NoncurrentExpiration {
@@ -767,6 +784,18 @@ export interface LifecycleRule_RuleFilter {
   objectSizeGreaterThan?: number;
   /** Size that the object must be less t. */
   objectSizeLessThan?: number;
+  /** Tags that the object's tag set must have for the rule to apply. */
+  tag?: Tag;
+  /** Apply a logical AND to all of the predicates configured inside the And operator. */
+  andOperator?: LifecycleRule_RuleFilter_And;
+}
+
+export interface LifecycleRule_RuleFilter_And {
+  $type: "yandex.cloud.storage.v1.LifecycleRule.RuleFilter.And";
+  prefix: string;
+  objectSizeGreaterThan?: number;
+  objectSizeLessThan?: number;
+  tag: Tag[];
 }
 
 export interface Counters {
@@ -2416,6 +2445,12 @@ export const LifecycleRule = {
         writer.uint32(66).fork()
       ).ldelim();
     }
+    if (message.noncurrentDeleteMarkers !== undefined) {
+      LifecycleRule_NoncurrentDeleteMarkers.encode(
+        message.noncurrentDeleteMarkers,
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -2464,6 +2499,13 @@ export const LifecycleRule = {
             LifecycleRule_NoncurrentTransition.decode(reader, reader.uint32())
           );
           break;
+        case 9:
+          message.noncurrentDeleteMarkers =
+            LifecycleRule_NoncurrentDeleteMarkers.decode(
+              reader,
+              reader.uint32()
+            );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2510,6 +2552,13 @@ export const LifecycleRule = {
     message.noncurrentTransitions = (object.noncurrentTransitions ?? []).map(
       (e: any) => LifecycleRule_NoncurrentTransition.fromJSON(e)
     );
+    message.noncurrentDeleteMarkers =
+      object.noncurrentDeleteMarkers !== undefined &&
+      object.noncurrentDeleteMarkers !== null
+        ? LifecycleRule_NoncurrentDeleteMarkers.fromJSON(
+            object.noncurrentDeleteMarkers
+          )
+        : undefined;
     return message;
   },
 
@@ -2552,6 +2601,12 @@ export const LifecycleRule = {
     } else {
       obj.noncurrentTransitions = [];
     }
+    message.noncurrentDeleteMarkers !== undefined &&
+      (obj.noncurrentDeleteMarkers = message.noncurrentDeleteMarkers
+        ? LifecycleRule_NoncurrentDeleteMarkers.toJSON(
+            message.noncurrentDeleteMarkers
+          )
+        : undefined);
     return obj;
   },
 
@@ -2590,6 +2645,13 @@ export const LifecycleRule = {
       object.noncurrentTransitions?.map((e) =>
         LifecycleRule_NoncurrentTransition.fromPartial(e)
       ) || [];
+    message.noncurrentDeleteMarkers =
+      object.noncurrentDeleteMarkers !== undefined &&
+      object.noncurrentDeleteMarkers !== null
+        ? LifecycleRule_NoncurrentDeleteMarkers.fromPartial(
+            object.noncurrentDeleteMarkers
+          )
+        : undefined;
     return message;
   },
 };
@@ -2676,6 +2738,87 @@ export const LifecycleRule_AfterDays = {
 };
 
 messageTypeRegistry.set(LifecycleRule_AfterDays.$type, LifecycleRule_AfterDays);
+
+const baseLifecycleRule_NoncurrentDeleteMarkers: object = {
+  $type: "yandex.cloud.storage.v1.LifecycleRule.NoncurrentDeleteMarkers",
+};
+
+export const LifecycleRule_NoncurrentDeleteMarkers = {
+  $type:
+    "yandex.cloud.storage.v1.LifecycleRule.NoncurrentDeleteMarkers" as const,
+
+  encode(
+    message: LifecycleRule_NoncurrentDeleteMarkers,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.noncurrentDays !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.noncurrentDays! },
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): LifecycleRule_NoncurrentDeleteMarkers {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseLifecycleRule_NoncurrentDeleteMarkers,
+    } as LifecycleRule_NoncurrentDeleteMarkers;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.noncurrentDays = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LifecycleRule_NoncurrentDeleteMarkers {
+    const message = {
+      ...baseLifecycleRule_NoncurrentDeleteMarkers,
+    } as LifecycleRule_NoncurrentDeleteMarkers;
+    message.noncurrentDays =
+      object.noncurrentDays !== undefined && object.noncurrentDays !== null
+        ? Number(object.noncurrentDays)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: LifecycleRule_NoncurrentDeleteMarkers): unknown {
+    const obj: any = {};
+    message.noncurrentDays !== undefined &&
+      (obj.noncurrentDays = message.noncurrentDays);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<LifecycleRule_NoncurrentDeleteMarkers>, I>
+  >(object: I): LifecycleRule_NoncurrentDeleteMarkers {
+    const message = {
+      ...baseLifecycleRule_NoncurrentDeleteMarkers,
+    } as LifecycleRule_NoncurrentDeleteMarkers;
+    message.noncurrentDays = object.noncurrentDays ?? undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  LifecycleRule_NoncurrentDeleteMarkers.$type,
+  LifecycleRule_NoncurrentDeleteMarkers
+);
 
 const baseLifecycleRule_NoncurrentExpiration: object = {
   $type: "yandex.cloud.storage.v1.LifecycleRule.NoncurrentExpiration",
@@ -3108,6 +3251,15 @@ export const LifecycleRule_RuleFilter = {
         writer.uint32(26).fork()
       ).ldelim();
     }
+    if (message.tag !== undefined) {
+      Tag.encode(message.tag, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.andOperator !== undefined) {
+      LifecycleRule_RuleFilter_And.encode(
+        message.andOperator,
+        writer.uint32(42).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3138,6 +3290,15 @@ export const LifecycleRule_RuleFilter = {
             reader.uint32()
           ).value;
           break;
+        case 4:
+          message.tag = Tag.decode(reader, reader.uint32());
+          break;
+        case 5:
+          message.andOperator = LifecycleRule_RuleFilter_And.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3164,6 +3325,14 @@ export const LifecycleRule_RuleFilter = {
       object.objectSizeLessThan !== null
         ? Number(object.objectSizeLessThan)
         : undefined;
+    message.tag =
+      object.tag !== undefined && object.tag !== null
+        ? Tag.fromJSON(object.tag)
+        : undefined;
+    message.andOperator =
+      object.andOperator !== undefined && object.andOperator !== null
+        ? LifecycleRule_RuleFilter_And.fromJSON(object.andOperator)
+        : undefined;
     return message;
   },
 
@@ -3174,6 +3343,12 @@ export const LifecycleRule_RuleFilter = {
       (obj.objectSizeGreaterThan = message.objectSizeGreaterThan);
     message.objectSizeLessThan !== undefined &&
       (obj.objectSizeLessThan = message.objectSizeLessThan);
+    message.tag !== undefined &&
+      (obj.tag = message.tag ? Tag.toJSON(message.tag) : undefined);
+    message.andOperator !== undefined &&
+      (obj.andOperator = message.andOperator
+        ? LifecycleRule_RuleFilter_And.toJSON(message.andOperator)
+        : undefined);
     return obj;
   },
 
@@ -3186,6 +3361,14 @@ export const LifecycleRule_RuleFilter = {
     message.prefix = object.prefix ?? "";
     message.objectSizeGreaterThan = object.objectSizeGreaterThan ?? undefined;
     message.objectSizeLessThan = object.objectSizeLessThan ?? undefined;
+    message.tag =
+      object.tag !== undefined && object.tag !== null
+        ? Tag.fromPartial(object.tag)
+        : undefined;
+    message.andOperator =
+      object.andOperator !== undefined && object.andOperator !== null
+        ? LifecycleRule_RuleFilter_And.fromPartial(object.andOperator)
+        : undefined;
     return message;
   },
 };
@@ -3193,6 +3376,140 @@ export const LifecycleRule_RuleFilter = {
 messageTypeRegistry.set(
   LifecycleRule_RuleFilter.$type,
   LifecycleRule_RuleFilter
+);
+
+const baseLifecycleRule_RuleFilter_And: object = {
+  $type: "yandex.cloud.storage.v1.LifecycleRule.RuleFilter.And",
+  prefix: "",
+};
+
+export const LifecycleRule_RuleFilter_And = {
+  $type: "yandex.cloud.storage.v1.LifecycleRule.RuleFilter.And" as const,
+
+  encode(
+    message: LifecycleRule_RuleFilter_And,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.prefix !== "") {
+      writer.uint32(10).string(message.prefix);
+    }
+    if (message.objectSizeGreaterThan !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.objectSizeGreaterThan!,
+        },
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.objectSizeLessThan !== undefined) {
+      Int64Value.encode(
+        {
+          $type: "google.protobuf.Int64Value",
+          value: message.objectSizeLessThan!,
+        },
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    for (const v of message.tag) {
+      Tag.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): LifecycleRule_RuleFilter_And {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseLifecycleRule_RuleFilter_And,
+    } as LifecycleRule_RuleFilter_And;
+    message.tag = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.prefix = reader.string();
+          break;
+        case 2:
+          message.objectSizeGreaterThan = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 3:
+          message.objectSizeLessThan = Int64Value.decode(
+            reader,
+            reader.uint32()
+          ).value;
+          break;
+        case 4:
+          message.tag.push(Tag.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LifecycleRule_RuleFilter_And {
+    const message = {
+      ...baseLifecycleRule_RuleFilter_And,
+    } as LifecycleRule_RuleFilter_And;
+    message.prefix =
+      object.prefix !== undefined && object.prefix !== null
+        ? String(object.prefix)
+        : "";
+    message.objectSizeGreaterThan =
+      object.objectSizeGreaterThan !== undefined &&
+      object.objectSizeGreaterThan !== null
+        ? Number(object.objectSizeGreaterThan)
+        : undefined;
+    message.objectSizeLessThan =
+      object.objectSizeLessThan !== undefined &&
+      object.objectSizeLessThan !== null
+        ? Number(object.objectSizeLessThan)
+        : undefined;
+    message.tag = (object.tag ?? []).map((e: any) => Tag.fromJSON(e));
+    return message;
+  },
+
+  toJSON(message: LifecycleRule_RuleFilter_And): unknown {
+    const obj: any = {};
+    message.prefix !== undefined && (obj.prefix = message.prefix);
+    message.objectSizeGreaterThan !== undefined &&
+      (obj.objectSizeGreaterThan = message.objectSizeGreaterThan);
+    message.objectSizeLessThan !== undefined &&
+      (obj.objectSizeLessThan = message.objectSizeLessThan);
+    if (message.tag) {
+      obj.tag = message.tag.map((e) => (e ? Tag.toJSON(e) : undefined));
+    } else {
+      obj.tag = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<LifecycleRule_RuleFilter_And>, I>>(
+    object: I
+  ): LifecycleRule_RuleFilter_And {
+    const message = {
+      ...baseLifecycleRule_RuleFilter_And,
+    } as LifecycleRule_RuleFilter_And;
+    message.prefix = object.prefix ?? "";
+    message.objectSizeGreaterThan = object.objectSizeGreaterThan ?? undefined;
+    message.objectSizeLessThan = object.objectSizeLessThan ?? undefined;
+    message.tag = object.tag?.map((e) => Tag.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  LifecycleRule_RuleFilter_And.$type,
+  LifecycleRule_RuleFilter_And
 );
 
 const baseCounters: object = {

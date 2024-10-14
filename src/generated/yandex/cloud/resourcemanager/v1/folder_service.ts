@@ -168,6 +168,9 @@ export interface DeleteFolderMetadata {
   folderId: string;
   /** The timestamp after which the process of deleting the folder should begin. */
   deleteAfter?: Date;
+  /** Information about operation cancellation */
+  cancelledBy: string;
+  cancelledAt?: Date;
 }
 
 export interface ListFolderOperationsRequest {
@@ -1110,6 +1113,7 @@ messageTypeRegistry.set(DeleteFolderRequest.$type, DeleteFolderRequest);
 const baseDeleteFolderMetadata: object = {
   $type: "yandex.cloud.resourcemanager.v1.DeleteFolderMetadata",
   folderId: "",
+  cancelledBy: "",
 };
 
 export const DeleteFolderMetadata = {
@@ -1126,6 +1130,15 @@ export const DeleteFolderMetadata = {
       Timestamp.encode(
         toTimestamp(message.deleteAfter),
         writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.cancelledBy !== "") {
+      writer.uint32(26).string(message.cancelledBy);
+    }
+    if (message.cancelledAt !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.cancelledAt),
+        writer.uint32(34).fork()
       ).ldelim();
     }
     return writer;
@@ -1149,6 +1162,14 @@ export const DeleteFolderMetadata = {
             Timestamp.decode(reader, reader.uint32())
           );
           break;
+        case 3:
+          message.cancelledBy = reader.string();
+          break;
+        case 4:
+          message.cancelledAt = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1167,6 +1188,14 @@ export const DeleteFolderMetadata = {
       object.deleteAfter !== undefined && object.deleteAfter !== null
         ? fromJsonTimestamp(object.deleteAfter)
         : undefined;
+    message.cancelledBy =
+      object.cancelledBy !== undefined && object.cancelledBy !== null
+        ? String(object.cancelledBy)
+        : "";
+    message.cancelledAt =
+      object.cancelledAt !== undefined && object.cancelledAt !== null
+        ? fromJsonTimestamp(object.cancelledAt)
+        : undefined;
     return message;
   },
 
@@ -1175,6 +1204,10 @@ export const DeleteFolderMetadata = {
     message.folderId !== undefined && (obj.folderId = message.folderId);
     message.deleteAfter !== undefined &&
       (obj.deleteAfter = message.deleteAfter.toISOString());
+    message.cancelledBy !== undefined &&
+      (obj.cancelledBy = message.cancelledBy);
+    message.cancelledAt !== undefined &&
+      (obj.cancelledAt = message.cancelledAt.toISOString());
     return obj;
   },
 
@@ -1184,6 +1217,8 @@ export const DeleteFolderMetadata = {
     const message = { ...baseDeleteFolderMetadata } as DeleteFolderMetadata;
     message.folderId = object.folderId ?? "";
     message.deleteAfter = object.deleteAfter ?? undefined;
+    message.cancelledBy = object.cancelledBy ?? "";
+    message.cancelledAt = object.cancelledAt ?? undefined;
     return message;
   },
 };

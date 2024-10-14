@@ -2,6 +2,7 @@
 import { messageTypeRegistry } from "../../../../typeRegistry";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import { Duration } from "../../../../google/protobuf/duration";
 import { Timestamp } from "../../../../google/protobuf/timestamp";
 import { Int64Value } from "../../../../google/protobuf/wrappers";
 
@@ -50,6 +51,12 @@ export interface Project_Settings {
   defaultFolderId: string;
   /** Timeout to automatically stop stale executions. */
   staleExecTimeoutMode: Project_Settings_StaleExecutionTimeoutMode;
+  /** VM allocation mode. */
+  ideExecutionMode: Project_Settings_IdeExecutionMode;
+  /** Timeout for VM deallocation. */
+  vmInactivityTimeout?: Duration;
+  /** Default VM configuration for DEDICATED mode. */
+  defaultDedicatedSpec: string;
 }
 
 export enum Project_Settings_CommitMode {
@@ -182,6 +189,53 @@ export function project_Settings_StaleExecutionTimeoutModeToJSON(
       return "THREE_HOURS";
     case Project_Settings_StaleExecutionTimeoutMode.NO_TIMEOUT:
       return "NO_TIMEOUT";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+export enum Project_Settings_IdeExecutionMode {
+  IDE_EXECUTION_MODE_UNSPECIFIED = 0,
+  /** SERVERLESS - VM is allocated for specific execution and deallocated after the execution ends. */
+  SERVERLESS = 1,
+  /**
+   * DEDICATED - VM is allocated at the first execution and stays allocated until manually deallocated.
+   * Or until timeout exceeded.
+   */
+  DEDICATED = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function project_Settings_IdeExecutionModeFromJSON(
+  object: any
+): Project_Settings_IdeExecutionMode {
+  switch (object) {
+    case 0:
+    case "IDE_EXECUTION_MODE_UNSPECIFIED":
+      return Project_Settings_IdeExecutionMode.IDE_EXECUTION_MODE_UNSPECIFIED;
+    case 1:
+    case "SERVERLESS":
+      return Project_Settings_IdeExecutionMode.SERVERLESS;
+    case 2:
+    case "DEDICATED":
+      return Project_Settings_IdeExecutionMode.DEDICATED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Project_Settings_IdeExecutionMode.UNRECOGNIZED;
+  }
+}
+
+export function project_Settings_IdeExecutionModeToJSON(
+  object: Project_Settings_IdeExecutionMode
+): string {
+  switch (object) {
+    case Project_Settings_IdeExecutionMode.IDE_EXECUTION_MODE_UNSPECIFIED:
+      return "IDE_EXECUTION_MODE_UNSPECIFIED";
+    case Project_Settings_IdeExecutionMode.SERVERLESS:
+      return "SERVERLESS";
+    case Project_Settings_IdeExecutionMode.DEDICATED:
+      return "DEDICATED";
     default:
       return "UNKNOWN";
   }
@@ -419,6 +473,8 @@ const baseProject_Settings: object = {
   ide: 0,
   defaultFolderId: "",
   staleExecTimeoutMode: 0,
+  ideExecutionMode: 0,
+  defaultDedicatedSpec: "",
 };
 
 export const Project_Settings = {
@@ -454,6 +510,18 @@ export const Project_Settings = {
     }
     if (message.staleExecTimeoutMode !== 0) {
       writer.uint32(72).int32(message.staleExecTimeoutMode);
+    }
+    if (message.ideExecutionMode !== 0) {
+      writer.uint32(80).int32(message.ideExecutionMode);
+    }
+    if (message.vmInactivityTimeout !== undefined) {
+      Duration.encode(
+        message.vmInactivityTimeout,
+        writer.uint32(90).fork()
+      ).ldelim();
+    }
+    if (message.defaultDedicatedSpec !== "") {
+      writer.uint32(98).string(message.defaultDedicatedSpec);
     }
     return writer;
   },
@@ -492,6 +560,18 @@ export const Project_Settings = {
           break;
         case 9:
           message.staleExecTimeoutMode = reader.int32() as any;
+          break;
+        case 10:
+          message.ideExecutionMode = reader.int32() as any;
+          break;
+        case 11:
+          message.vmInactivityTimeout = Duration.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 12:
+          message.defaultDedicatedSpec = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -542,6 +622,20 @@ export const Project_Settings = {
             object.staleExecTimeoutMode
           )
         : 0;
+    message.ideExecutionMode =
+      object.ideExecutionMode !== undefined && object.ideExecutionMode !== null
+        ? project_Settings_IdeExecutionModeFromJSON(object.ideExecutionMode)
+        : 0;
+    message.vmInactivityTimeout =
+      object.vmInactivityTimeout !== undefined &&
+      object.vmInactivityTimeout !== null
+        ? Duration.fromJSON(object.vmInactivityTimeout)
+        : undefined;
+    message.defaultDedicatedSpec =
+      object.defaultDedicatedSpec !== undefined &&
+      object.defaultDedicatedSpec !== null
+        ? String(object.defaultDedicatedSpec)
+        : "";
     return message;
   },
 
@@ -570,6 +664,16 @@ export const Project_Settings = {
         project_Settings_StaleExecutionTimeoutModeToJSON(
           message.staleExecTimeoutMode
         ));
+    message.ideExecutionMode !== undefined &&
+      (obj.ideExecutionMode = project_Settings_IdeExecutionModeToJSON(
+        message.ideExecutionMode
+      ));
+    message.vmInactivityTimeout !== undefined &&
+      (obj.vmInactivityTimeout = message.vmInactivityTimeout
+        ? Duration.toJSON(message.vmInactivityTimeout)
+        : undefined);
+    message.defaultDedicatedSpec !== undefined &&
+      (obj.defaultDedicatedSpec = message.defaultDedicatedSpec);
     return obj;
   },
 
@@ -586,6 +690,13 @@ export const Project_Settings = {
     message.ide = object.ide ?? 0;
     message.defaultFolderId = object.defaultFolderId ?? "";
     message.staleExecTimeoutMode = object.staleExecTimeoutMode ?? 0;
+    message.ideExecutionMode = object.ideExecutionMode ?? 0;
+    message.vmInactivityTimeout =
+      object.vmInactivityTimeout !== undefined &&
+      object.vmInactivityTimeout !== null
+        ? Duration.fromPartial(object.vmInactivityTimeout)
+        : undefined;
+    message.defaultDedicatedSpec = object.defaultDedicatedSpec ?? "";
     return message;
   },
 };

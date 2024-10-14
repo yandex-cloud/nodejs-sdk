@@ -152,16 +152,39 @@ export interface TableSizes {
 export interface AnalyzeAndVacuum {
   $type: "yandex.cloud.mdb.greenplum.v1.AnalyzeAndVacuum";
   start?: BackgroundActivityStartAt;
-  /** in seconds 24*60*60-1 = 86399 */
+  /** Maximum duration of the `ANALYZE` operation, in seconds. The default value is `36000`. As soon as this period expires, the `ANALYZE` operation will be forced to terminate. */
   analyzeTimeout?: number;
-  /** in seconds 24*60*60-1 = 86399 */
+  /** Maximum duration of the `VACUUM` operation, in seconds. The default value is `36000`. As soon as this period expires, the `VACUUM` operation will be forced to terminate. */
   vacuumTimeout?: number;
 }
 
 export interface BackgroundActivitiesConfig {
   $type: "yandex.cloud.mdb.greenplum.v1.BackgroundActivitiesConfig";
+  /** Enables scripts that collects tables sizes to `*_sizes` tables in `mdb_toolkit` schema. */
   tableSizes?: TableSizes;
+  /** Configuration for `ANALYZE` and `VACUUM` operations. */
   analyzeAndVacuum?: AnalyzeAndVacuum;
+  /** Configuration for long running queries killer. */
+  queryKillerScripts?: QueryKillerScripts;
+}
+
+export interface QueryKiller {
+  $type: "yandex.cloud.mdb.greenplum.v1.QueryKiller";
+  enable?: boolean;
+  /** Maximum duration for this type of queries (in seconds). */
+  maxAge?: number;
+  /** Ignore these users when considering queries to terminate */
+  ignoreUsers: string[];
+}
+
+export interface QueryKillerScripts {
+  $type: "yandex.cloud.mdb.greenplum.v1.QueryKillerScripts";
+  /** Configuration of script that kills long running queries that are in `idle` state. */
+  idle?: QueryKiller;
+  /** Configuration of script that kills long running queries that are in `idle in transaction` state. */
+  idleInTransaction?: QueryKiller;
+  /** Configuration of script that kills long running queries (in any state). */
+  longRunning?: QueryKiller;
 }
 
 export interface MasterSubclusterConfig {
@@ -1041,6 +1064,12 @@ export const BackgroundActivitiesConfig = {
         writer.uint32(18).fork()
       ).ldelim();
     }
+    if (message.queryKillerScripts !== undefined) {
+      QueryKillerScripts.encode(
+        message.queryKillerScripts,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1065,6 +1094,12 @@ export const BackgroundActivitiesConfig = {
             reader.uint32()
           );
           break;
+        case 3:
+          message.queryKillerScripts = QueryKillerScripts.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1085,6 +1120,11 @@ export const BackgroundActivitiesConfig = {
       object.analyzeAndVacuum !== undefined && object.analyzeAndVacuum !== null
         ? AnalyzeAndVacuum.fromJSON(object.analyzeAndVacuum)
         : undefined;
+    message.queryKillerScripts =
+      object.queryKillerScripts !== undefined &&
+      object.queryKillerScripts !== null
+        ? QueryKillerScripts.fromJSON(object.queryKillerScripts)
+        : undefined;
     return message;
   },
 
@@ -1097,6 +1137,10 @@ export const BackgroundActivitiesConfig = {
     message.analyzeAndVacuum !== undefined &&
       (obj.analyzeAndVacuum = message.analyzeAndVacuum
         ? AnalyzeAndVacuum.toJSON(message.analyzeAndVacuum)
+        : undefined);
+    message.queryKillerScripts !== undefined &&
+      (obj.queryKillerScripts = message.queryKillerScripts
+        ? QueryKillerScripts.toJSON(message.queryKillerScripts)
         : undefined);
     return obj;
   },
@@ -1115,6 +1159,11 @@ export const BackgroundActivitiesConfig = {
       object.analyzeAndVacuum !== undefined && object.analyzeAndVacuum !== null
         ? AnalyzeAndVacuum.fromPartial(object.analyzeAndVacuum)
         : undefined;
+    message.queryKillerScripts =
+      object.queryKillerScripts !== undefined &&
+      object.queryKillerScripts !== null
+        ? QueryKillerScripts.fromPartial(object.queryKillerScripts)
+        : undefined;
     return message;
   },
 };
@@ -1123,6 +1172,212 @@ messageTypeRegistry.set(
   BackgroundActivitiesConfig.$type,
   BackgroundActivitiesConfig
 );
+
+const baseQueryKiller: object = {
+  $type: "yandex.cloud.mdb.greenplum.v1.QueryKiller",
+  ignoreUsers: "",
+};
+
+export const QueryKiller = {
+  $type: "yandex.cloud.mdb.greenplum.v1.QueryKiller" as const,
+
+  encode(
+    message: QueryKiller,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.enable !== undefined) {
+      BoolValue.encode(
+        { $type: "google.protobuf.BoolValue", value: message.enable! },
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.maxAge !== undefined) {
+      Int64Value.encode(
+        { $type: "google.protobuf.Int64Value", value: message.maxAge! },
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    for (const v of message.ignoreUsers) {
+      writer.uint32(26).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKiller {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryKiller } as QueryKiller;
+    message.ignoreUsers = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.enable = BoolValue.decode(reader, reader.uint32()).value;
+          break;
+        case 2:
+          message.maxAge = Int64Value.decode(reader, reader.uint32()).value;
+          break;
+        case 3:
+          message.ignoreUsers.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryKiller {
+    const message = { ...baseQueryKiller } as QueryKiller;
+    message.enable =
+      object.enable !== undefined && object.enable !== null
+        ? Boolean(object.enable)
+        : undefined;
+    message.maxAge =
+      object.maxAge !== undefined && object.maxAge !== null
+        ? Number(object.maxAge)
+        : undefined;
+    message.ignoreUsers = (object.ignoreUsers ?? []).map((e: any) => String(e));
+    return message;
+  },
+
+  toJSON(message: QueryKiller): unknown {
+    const obj: any = {};
+    message.enable !== undefined && (obj.enable = message.enable);
+    message.maxAge !== undefined && (obj.maxAge = message.maxAge);
+    if (message.ignoreUsers) {
+      obj.ignoreUsers = message.ignoreUsers.map((e) => e);
+    } else {
+      obj.ignoreUsers = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryKiller>, I>>(
+    object: I
+  ): QueryKiller {
+    const message = { ...baseQueryKiller } as QueryKiller;
+    message.enable = object.enable ?? undefined;
+    message.maxAge = object.maxAge ?? undefined;
+    message.ignoreUsers = object.ignoreUsers?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(QueryKiller.$type, QueryKiller);
+
+const baseQueryKillerScripts: object = {
+  $type: "yandex.cloud.mdb.greenplum.v1.QueryKillerScripts",
+};
+
+export const QueryKillerScripts = {
+  $type: "yandex.cloud.mdb.greenplum.v1.QueryKillerScripts" as const,
+
+  encode(
+    message: QueryKillerScripts,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.idle !== undefined) {
+      QueryKiller.encode(message.idle, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.idleInTransaction !== undefined) {
+      QueryKiller.encode(
+        message.idleInTransaction,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.longRunning !== undefined) {
+      QueryKiller.encode(
+        message.longRunning,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKillerScripts {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryKillerScripts } as QueryKillerScripts;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.idle = QueryKiller.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.idleInTransaction = QueryKiller.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 3:
+          message.longRunning = QueryKiller.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryKillerScripts {
+    const message = { ...baseQueryKillerScripts } as QueryKillerScripts;
+    message.idle =
+      object.idle !== undefined && object.idle !== null
+        ? QueryKiller.fromJSON(object.idle)
+        : undefined;
+    message.idleInTransaction =
+      object.idleInTransaction !== undefined &&
+      object.idleInTransaction !== null
+        ? QueryKiller.fromJSON(object.idleInTransaction)
+        : undefined;
+    message.longRunning =
+      object.longRunning !== undefined && object.longRunning !== null
+        ? QueryKiller.fromJSON(object.longRunning)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: QueryKillerScripts): unknown {
+    const obj: any = {};
+    message.idle !== undefined &&
+      (obj.idle = message.idle ? QueryKiller.toJSON(message.idle) : undefined);
+    message.idleInTransaction !== undefined &&
+      (obj.idleInTransaction = message.idleInTransaction
+        ? QueryKiller.toJSON(message.idleInTransaction)
+        : undefined);
+    message.longRunning !== undefined &&
+      (obj.longRunning = message.longRunning
+        ? QueryKiller.toJSON(message.longRunning)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryKillerScripts>, I>>(
+    object: I
+  ): QueryKillerScripts {
+    const message = { ...baseQueryKillerScripts } as QueryKillerScripts;
+    message.idle =
+      object.idle !== undefined && object.idle !== null
+        ? QueryKiller.fromPartial(object.idle)
+        : undefined;
+    message.idleInTransaction =
+      object.idleInTransaction !== undefined &&
+      object.idleInTransaction !== null
+        ? QueryKiller.fromPartial(object.idleInTransaction)
+        : undefined;
+    message.longRunning =
+      object.longRunning !== undefined && object.longRunning !== null
+        ? QueryKiller.fromPartial(object.longRunning)
+        : undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(QueryKillerScripts.$type, QueryKillerScripts);
 
 const baseMasterSubclusterConfig: object = {
   $type: "yandex.cloud.mdb.greenplum.v1.MasterSubclusterConfig",

@@ -2,7 +2,7 @@ import { serviceClients, Session, cloudApi } from '@yandex-cloud/nodejs-sdk';
 import { getEnv } from './utils/get-env';
 import { log } from './utils/logger';
 
-const { ai: { translate_translation_service: { TranslateRequest, TranslateRequest_Format: Format } } } = cloudApi;
+const { ai: { translate_v2_translation_service: { TranslateRequest, TranslateRequest_Format: Format } } } = cloudApi;
 
 const TEXTS = ['NodeJS SDK examples', 'Powerful, but easy to use library'];
 const AUTH_TOKEN = getEnv('YC_OAUTH_TOKEN');

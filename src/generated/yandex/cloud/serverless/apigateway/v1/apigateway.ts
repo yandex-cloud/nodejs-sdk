@@ -2,6 +2,7 @@
 import { messageTypeRegistry } from "../../../../../typeRegistry";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import { Duration } from "../../../../../google/protobuf/duration";
 import {
   LogLevel_Level,
   logLevel_LevelFromJSON,
@@ -41,6 +42,8 @@ export interface ApiGateway {
   variables: { [key: string]: VariableInput };
   /** Canary release of the gateway. */
   canary?: Canary;
+  /** Timeout for gateway call execution */
+  executionTimeout?: Duration;
 }
 
 export enum ApiGateway_Status {
@@ -262,6 +265,12 @@ export const ApiGateway = {
     if (message.canary !== undefined) {
       Canary.encode(message.canary, writer.uint32(122).fork()).ldelim();
     }
+    if (message.executionTimeout !== undefined) {
+      Duration.encode(
+        message.executionTimeout,
+        writer.uint32(130).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -330,6 +339,9 @@ export const ApiGateway = {
         case 15:
           message.canary = Canary.decode(reader, reader.uint32());
           break;
+        case 16:
+          message.executionTimeout = Duration.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -397,6 +409,10 @@ export const ApiGateway = {
       object.canary !== undefined && object.canary !== null
         ? Canary.fromJSON(object.canary)
         : undefined;
+    message.executionTimeout =
+      object.executionTimeout !== undefined && object.executionTimeout !== null
+        ? Duration.fromJSON(object.executionTimeout)
+        : undefined;
     return message;
   },
 
@@ -442,6 +458,10 @@ export const ApiGateway = {
     }
     message.canary !== undefined &&
       (obj.canary = message.canary ? Canary.toJSON(message.canary) : undefined);
+    message.executionTimeout !== undefined &&
+      (obj.executionTimeout = message.executionTimeout
+        ? Duration.toJSON(message.executionTimeout)
+        : undefined);
     return obj;
   },
 
@@ -486,6 +506,10 @@ export const ApiGateway = {
     message.canary =
       object.canary !== undefined && object.canary !== null
         ? Canary.fromPartial(object.canary)
+        : undefined;
+    message.executionTimeout =
+      object.executionTimeout !== undefined && object.executionTimeout !== null
+        ? Duration.fromPartial(object.executionTimeout)
         : undefined;
     return message;
   },

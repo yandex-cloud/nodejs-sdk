@@ -28,6 +28,8 @@ export interface AccessKey {
    * The key is AWS compatible.
    */
   keyId: string;
+  /** Timestamp for the last authentication using this Access key. */
+  lastUsedAt?: Date;
 }
 
 const baseAccessKey: object = {
@@ -63,6 +65,12 @@ export const AccessKey = {
     if (message.keyId !== "") {
       writer.uint32(42).string(message.keyId);
     }
+    if (message.lastUsedAt !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.lastUsedAt),
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -89,6 +97,11 @@ export const AccessKey = {
           break;
         case 5:
           message.keyId = reader.string();
+          break;
+        case 7:
+          message.lastUsedAt = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -118,6 +131,10 @@ export const AccessKey = {
       object.keyId !== undefined && object.keyId !== null
         ? String(object.keyId)
         : "";
+    message.lastUsedAt =
+      object.lastUsedAt !== undefined && object.lastUsedAt !== null
+        ? fromJsonTimestamp(object.lastUsedAt)
+        : undefined;
     return message;
   },
 
@@ -131,6 +148,8 @@ export const AccessKey = {
     message.description !== undefined &&
       (obj.description = message.description);
     message.keyId !== undefined && (obj.keyId = message.keyId);
+    message.lastUsedAt !== undefined &&
+      (obj.lastUsedAt = message.lastUsedAt.toISOString());
     return obj;
   },
 
@@ -143,6 +162,7 @@ export const AccessKey = {
     message.createdAt = object.createdAt ?? undefined;
     message.description = object.description ?? "";
     message.keyId = object.keyId ?? "";
+    message.lastUsedAt = object.lastUsedAt ?? undefined;
     return message;
   },
 };

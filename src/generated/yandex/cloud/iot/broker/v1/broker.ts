@@ -2,6 +2,11 @@
 import { messageTypeRegistry } from "../../../../../typeRegistry";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import {
+  LogLevel_Level,
+  logLevel_LevelFromJSON,
+  logLevel_LevelToJSON,
+} from "../../../../../yandex/cloud/logging/v1/log_entry";
 import { Timestamp } from "../../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.iot.broker.v1";
@@ -23,6 +28,8 @@ export interface Broker {
   labels: { [key: string]: string };
   /** Status of the broker. */
   status: Broker_Status;
+  /** Options for logging broker events */
+  logOptions?: LogOptions;
 }
 
 export enum Broker_Status {
@@ -102,6 +109,22 @@ export interface BrokerPassword {
   createdAt?: Date;
 }
 
+export interface LogOptions {
+  $type: "yandex.cloud.iot.broker.v1.LogOptions";
+  /** Is logging from broker disabled. */
+  disabled: boolean;
+  /** Entry should be written to log group resolved by ID. */
+  logGroupId: string | undefined;
+  /** Entry should be written to default log group for specified folder. */
+  folderId: string | undefined;
+  /**
+   * Minimum log entry level.
+   *
+   * See [LogLevel.Level] for details.
+   */
+  minLevel: LogLevel_Level;
+}
+
 const baseBroker: object = {
   $type: "yandex.cloud.iot.broker.v1.Broker",
   id: "",
@@ -149,6 +172,9 @@ export const Broker = {
     if (message.status !== 0) {
       writer.uint32(56).int32(message.status);
     }
+    if (message.logOptions !== undefined) {
+      LogOptions.encode(message.logOptions, writer.uint32(66).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -185,6 +211,9 @@ export const Broker = {
           break;
         case 7:
           message.status = reader.int32() as any;
+          break;
+        case 8:
+          message.logOptions = LogOptions.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -224,6 +253,10 @@ export const Broker = {
       object.status !== undefined && object.status !== null
         ? broker_StatusFromJSON(object.status)
         : 0;
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromJSON(object.logOptions)
+        : undefined;
     return message;
   },
 
@@ -244,6 +277,10 @@ export const Broker = {
     }
     message.status !== undefined &&
       (obj.status = broker_StatusToJSON(message.status));
+    message.logOptions !== undefined &&
+      (obj.logOptions = message.logOptions
+        ? LogOptions.toJSON(message.logOptions)
+        : undefined);
     return obj;
   },
 
@@ -263,6 +300,10 @@ export const Broker = {
       return acc;
     }, {});
     message.status = object.status ?? 0;
+    message.logOptions =
+      object.logOptions !== undefined && object.logOptions !== null
+        ? LogOptions.fromPartial(object.logOptions)
+        : undefined;
     return message;
   },
 };
@@ -540,6 +581,106 @@ export const BrokerPassword = {
 };
 
 messageTypeRegistry.set(BrokerPassword.$type, BrokerPassword);
+
+const baseLogOptions: object = {
+  $type: "yandex.cloud.iot.broker.v1.LogOptions",
+  disabled: false,
+  minLevel: 0,
+};
+
+export const LogOptions = {
+  $type: "yandex.cloud.iot.broker.v1.LogOptions" as const,
+
+  encode(
+    message: LogOptions,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.disabled === true) {
+      writer.uint32(8).bool(message.disabled);
+    }
+    if (message.logGroupId !== undefined) {
+      writer.uint32(18).string(message.logGroupId);
+    }
+    if (message.folderId !== undefined) {
+      writer.uint32(26).string(message.folderId);
+    }
+    if (message.minLevel !== 0) {
+      writer.uint32(32).int32(message.minLevel);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LogOptions {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseLogOptions } as LogOptions;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.disabled = reader.bool();
+          break;
+        case 2:
+          message.logGroupId = reader.string();
+          break;
+        case 3:
+          message.folderId = reader.string();
+          break;
+        case 4:
+          message.minLevel = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LogOptions {
+    const message = { ...baseLogOptions } as LogOptions;
+    message.disabled =
+      object.disabled !== undefined && object.disabled !== null
+        ? Boolean(object.disabled)
+        : false;
+    message.logGroupId =
+      object.logGroupId !== undefined && object.logGroupId !== null
+        ? String(object.logGroupId)
+        : undefined;
+    message.folderId =
+      object.folderId !== undefined && object.folderId !== null
+        ? String(object.folderId)
+        : undefined;
+    message.minLevel =
+      object.minLevel !== undefined && object.minLevel !== null
+        ? logLevel_LevelFromJSON(object.minLevel)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: LogOptions): unknown {
+    const obj: any = {};
+    message.disabled !== undefined && (obj.disabled = message.disabled);
+    message.logGroupId !== undefined && (obj.logGroupId = message.logGroupId);
+    message.folderId !== undefined && (obj.folderId = message.folderId);
+    message.minLevel !== undefined &&
+      (obj.minLevel = logLevel_LevelToJSON(message.minLevel));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<LogOptions>, I>>(
+    object: I
+  ): LogOptions {
+    const message = { ...baseLogOptions } as LogOptions;
+    message.disabled = object.disabled ?? false;
+    message.logGroupId = object.logGroupId ?? undefined;
+    message.folderId = object.folderId ?? undefined;
+    message.minLevel = object.minLevel ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(LogOptions.$type, LogOptions);
 
 type Builtin =
   | Date

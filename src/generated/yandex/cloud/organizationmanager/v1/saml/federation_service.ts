@@ -257,6 +257,28 @@ export interface AddFederatedUserAccountsResponse {
   userAccounts: UserAccount[];
 }
 
+export interface DeleteFederatedUserAccountsRequest {
+  $type: "yandex.cloud.organizationmanager.v1.saml.DeleteFederatedUserAccountsRequest";
+  /** ID of the federation to delete users from. */
+  federationId: string;
+  /** List of subjects to delete. */
+  subjectIds: string[];
+}
+
+export interface DeleteFederatedUserAccountsMetadata {
+  $type: "yandex.cloud.organizationmanager.v1.saml.DeleteFederatedUserAccountsMetadata";
+  /** ID of the federation that is being altered. */
+  federationId: string;
+}
+
+export interface DeleteFederatedUserAccountsResponse {
+  $type: "yandex.cloud.organizationmanager.v1.saml.DeleteFederatedUserAccountsResponse";
+  /** List of subjects deleted by [FederationService.DeleteUserAccounts] request. */
+  deletedSubjects: string[];
+  /** List of subjects found in [FederationService.DeleteUserAccounts] request that do not exist. */
+  nonExistingSubjects: string[];
+}
+
 export interface ListFederatedUserAccountsRequest {
   $type: "yandex.cloud.organizationmanager.v1.saml.ListFederatedUserAccountsRequest";
   /** ID of the federation to list user accounts for. */
@@ -1848,6 +1870,273 @@ messageTypeRegistry.set(
   AddFederatedUserAccountsResponse
 );
 
+const baseDeleteFederatedUserAccountsRequest: object = {
+  $type:
+    "yandex.cloud.organizationmanager.v1.saml.DeleteFederatedUserAccountsRequest",
+  federationId: "",
+  subjectIds: "",
+};
+
+export const DeleteFederatedUserAccountsRequest = {
+  $type:
+    "yandex.cloud.organizationmanager.v1.saml.DeleteFederatedUserAccountsRequest" as const,
+
+  encode(
+    message: DeleteFederatedUserAccountsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.federationId !== "") {
+      writer.uint32(10).string(message.federationId);
+    }
+    for (const v of message.subjectIds) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DeleteFederatedUserAccountsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDeleteFederatedUserAccountsRequest,
+    } as DeleteFederatedUserAccountsRequest;
+    message.subjectIds = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.federationId = reader.string();
+          break;
+        case 2:
+          message.subjectIds.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteFederatedUserAccountsRequest {
+    const message = {
+      ...baseDeleteFederatedUserAccountsRequest,
+    } as DeleteFederatedUserAccountsRequest;
+    message.federationId =
+      object.federationId !== undefined && object.federationId !== null
+        ? String(object.federationId)
+        : "";
+    message.subjectIds = (object.subjectIds ?? []).map((e: any) => String(e));
+    return message;
+  },
+
+  toJSON(message: DeleteFederatedUserAccountsRequest): unknown {
+    const obj: any = {};
+    message.federationId !== undefined &&
+      (obj.federationId = message.federationId);
+    if (message.subjectIds) {
+      obj.subjectIds = message.subjectIds.map((e) => e);
+    } else {
+      obj.subjectIds = [];
+    }
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<DeleteFederatedUserAccountsRequest>, I>
+  >(object: I): DeleteFederatedUserAccountsRequest {
+    const message = {
+      ...baseDeleteFederatedUserAccountsRequest,
+    } as DeleteFederatedUserAccountsRequest;
+    message.federationId = object.federationId ?? "";
+    message.subjectIds = object.subjectIds?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  DeleteFederatedUserAccountsRequest.$type,
+  DeleteFederatedUserAccountsRequest
+);
+
+const baseDeleteFederatedUserAccountsMetadata: object = {
+  $type:
+    "yandex.cloud.organizationmanager.v1.saml.DeleteFederatedUserAccountsMetadata",
+  federationId: "",
+};
+
+export const DeleteFederatedUserAccountsMetadata = {
+  $type:
+    "yandex.cloud.organizationmanager.v1.saml.DeleteFederatedUserAccountsMetadata" as const,
+
+  encode(
+    message: DeleteFederatedUserAccountsMetadata,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.federationId !== "") {
+      writer.uint32(10).string(message.federationId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DeleteFederatedUserAccountsMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDeleteFederatedUserAccountsMetadata,
+    } as DeleteFederatedUserAccountsMetadata;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.federationId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteFederatedUserAccountsMetadata {
+    const message = {
+      ...baseDeleteFederatedUserAccountsMetadata,
+    } as DeleteFederatedUserAccountsMetadata;
+    message.federationId =
+      object.federationId !== undefined && object.federationId !== null
+        ? String(object.federationId)
+        : "";
+    return message;
+  },
+
+  toJSON(message: DeleteFederatedUserAccountsMetadata): unknown {
+    const obj: any = {};
+    message.federationId !== undefined &&
+      (obj.federationId = message.federationId);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<DeleteFederatedUserAccountsMetadata>, I>
+  >(object: I): DeleteFederatedUserAccountsMetadata {
+    const message = {
+      ...baseDeleteFederatedUserAccountsMetadata,
+    } as DeleteFederatedUserAccountsMetadata;
+    message.federationId = object.federationId ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  DeleteFederatedUserAccountsMetadata.$type,
+  DeleteFederatedUserAccountsMetadata
+);
+
+const baseDeleteFederatedUserAccountsResponse: object = {
+  $type:
+    "yandex.cloud.organizationmanager.v1.saml.DeleteFederatedUserAccountsResponse",
+  deletedSubjects: "",
+  nonExistingSubjects: "",
+};
+
+export const DeleteFederatedUserAccountsResponse = {
+  $type:
+    "yandex.cloud.organizationmanager.v1.saml.DeleteFederatedUserAccountsResponse" as const,
+
+  encode(
+    message: DeleteFederatedUserAccountsResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.deletedSubjects) {
+      writer.uint32(10).string(v!);
+    }
+    for (const v of message.nonExistingSubjects) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DeleteFederatedUserAccountsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDeleteFederatedUserAccountsResponse,
+    } as DeleteFederatedUserAccountsResponse;
+    message.deletedSubjects = [];
+    message.nonExistingSubjects = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.deletedSubjects.push(reader.string());
+          break;
+        case 2:
+          message.nonExistingSubjects.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteFederatedUserAccountsResponse {
+    const message = {
+      ...baseDeleteFederatedUserAccountsResponse,
+    } as DeleteFederatedUserAccountsResponse;
+    message.deletedSubjects = (object.deletedSubjects ?? []).map((e: any) =>
+      String(e)
+    );
+    message.nonExistingSubjects = (object.nonExistingSubjects ?? []).map(
+      (e: any) => String(e)
+    );
+    return message;
+  },
+
+  toJSON(message: DeleteFederatedUserAccountsResponse): unknown {
+    const obj: any = {};
+    if (message.deletedSubjects) {
+      obj.deletedSubjects = message.deletedSubjects.map((e) => e);
+    } else {
+      obj.deletedSubjects = [];
+    }
+    if (message.nonExistingSubjects) {
+      obj.nonExistingSubjects = message.nonExistingSubjects.map((e) => e);
+    } else {
+      obj.nonExistingSubjects = [];
+    }
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<DeleteFederatedUserAccountsResponse>, I>
+  >(object: I): DeleteFederatedUserAccountsResponse {
+    const message = {
+      ...baseDeleteFederatedUserAccountsResponse,
+    } as DeleteFederatedUserAccountsResponse;
+    message.deletedSubjects = object.deletedSubjects?.map((e) => e) || [];
+    message.nonExistingSubjects =
+      object.nonExistingSubjects?.map((e) => e) || [];
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  DeleteFederatedUserAccountsResponse.$type,
+  DeleteFederatedUserAccountsResponse
+);
+
 const baseListFederatedUserAccountsRequest: object = {
   $type:
     "yandex.cloud.organizationmanager.v1.saml.ListFederatedUserAccountsRequest",
@@ -2346,6 +2635,19 @@ export const FederationServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** Deletes users from the specified federation. */
+  deleteUserAccounts: {
+    path: "/yandex.cloud.organizationmanager.v1.saml.FederationService/DeleteUserAccounts",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: DeleteFederatedUserAccountsRequest) =>
+      Buffer.from(DeleteFederatedUserAccountsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      DeleteFederatedUserAccountsRequest.decode(value),
+    responseSerialize: (value: Operation) =>
+      Buffer.from(Operation.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Operation.decode(value),
+  },
   /** Lists users for the specified federation. */
   listUserAccounts: {
     path: "/yandex.cloud.organizationmanager.v1.saml.FederationService/ListUserAccounts",
@@ -2393,6 +2695,11 @@ export interface FederationServiceServer extends UntypedServiceImplementation {
   delete: handleUnaryCall<DeleteFederationRequest, Operation>;
   /** Adds users to the specified federation. */
   addUserAccounts: handleUnaryCall<AddFederatedUserAccountsRequest, Operation>;
+  /** Deletes users from the specified federation. */
+  deleteUserAccounts: handleUnaryCall<
+    DeleteFederatedUserAccountsRequest,
+    Operation
+  >;
   /** Lists users for the specified federation. */
   listUserAccounts: handleUnaryCall<
     ListFederatedUserAccountsRequest,
@@ -2511,6 +2818,22 @@ export interface FederationServiceClient extends Client {
   ): ClientUnaryCall;
   addUserAccounts(
     request: AddFederatedUserAccountsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** Deletes users from the specified federation. */
+  deleteUserAccounts(
+    request: DeleteFederatedUserAccountsRequest,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  deleteUserAccounts(
+    request: DeleteFederatedUserAccountsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  deleteUserAccounts(
+    request: DeleteFederatedUserAccountsRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void

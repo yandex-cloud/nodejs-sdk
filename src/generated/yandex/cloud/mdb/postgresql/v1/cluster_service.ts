@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { MessageType, messageTypeRegistry } from "../../../../../typeRegistry";
+import { messageTypeRegistry } from "../../../../../typeRegistry";
 import Long from "long";
 import {
   makeGenericClientConstructor,
@@ -194,6 +194,8 @@ export interface UpdateClusterRequest {
   securityGroupIds: string[];
   /** Deletion Protection inhibits deletion of the cluster */
   deletionProtection: boolean;
+  /** ID of the network to move the cluster to. */
+  networkId: string;
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
@@ -1101,7 +1103,15 @@ const baseListClustersResponse: object = {
   nextPageToken: "",
 };
 
-export const ListClustersResponse: MessageType<ListClustersResponse> = {
+type ListClustersResponseType = {
+    $type: "yandex.cloud.mdb.postgresql.v1.ListClustersResponse";
+    encode(message: ListClustersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClustersResponse;
+    fromJSON(object: any): ListClustersResponse;
+    toJSON(message: ListClustersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClustersResponse>, I>>(object: I): ListClustersResponse;
+};
+export const ListClustersResponse: ListClustersResponseType = {
   $type: "yandex.cloud.mdb.postgresql.v1.ListClustersResponse" as const,
 
   encode(
@@ -1625,6 +1635,7 @@ const baseUpdateClusterRequest: object = {
   name: "",
   securityGroupIds: "",
   deletionProtection: false,
+  networkId: "",
 };
 
 export const UpdateClusterRequest = {
@@ -1671,6 +1682,9 @@ export const UpdateClusterRequest = {
     }
     if (message.deletionProtection === true) {
       writer.uint32(72).bool(message.deletionProtection);
+    }
+    if (message.networkId !== "") {
+      writer.uint32(90).string(message.networkId);
     }
     return writer;
   },
@@ -1723,6 +1737,9 @@ export const UpdateClusterRequest = {
         case 9:
           message.deletionProtection = reader.bool();
           break;
+        case 11:
+          message.networkId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1772,6 +1789,10 @@ export const UpdateClusterRequest = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.networkId =
+      object.networkId !== undefined && object.networkId !== null
+        ? String(object.networkId)
+        : "";
     return message;
   },
 
@@ -1806,6 +1827,7 @@ export const UpdateClusterRequest = {
     }
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.networkId !== undefined && (obj.networkId = message.networkId);
     return obj;
   },
 
@@ -1839,6 +1861,7 @@ export const UpdateClusterRequest = {
         : undefined;
     message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
     message.deletionProtection = object.deletionProtection ?? false;
+    message.networkId = object.networkId ?? "";
     return message;
   },
 };

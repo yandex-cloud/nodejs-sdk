@@ -33,6 +33,8 @@ export interface Backup {
   method: Backup_BackupMethod;
   /** Size of the journal associated with backup, in bytes */
   journalSize: number;
+  /** Status of backup */
+  status: Backup_BackupStatus;
 }
 
 export enum Backup_BackupMethod {
@@ -119,6 +121,46 @@ export function backup_BackupCreationTypeToJSON(
   }
 }
 
+export enum Backup_BackupStatus {
+  BACKUP_STATUS_UNSPECIFIED = 0,
+  /** DONE - Backup is done */
+  DONE = 1,
+  /** CREATING - Backup is creating */
+  CREATING = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function backup_BackupStatusFromJSON(object: any): Backup_BackupStatus {
+  switch (object) {
+    case 0:
+    case "BACKUP_STATUS_UNSPECIFIED":
+      return Backup_BackupStatus.BACKUP_STATUS_UNSPECIFIED;
+    case 1:
+    case "DONE":
+      return Backup_BackupStatus.DONE;
+    case 2:
+    case "CREATING":
+      return Backup_BackupStatus.CREATING;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Backup_BackupStatus.UNRECOGNIZED;
+  }
+}
+
+export function backup_BackupStatusToJSON(object: Backup_BackupStatus): string {
+  switch (object) {
+    case Backup_BackupStatus.BACKUP_STATUS_UNSPECIFIED:
+      return "BACKUP_STATUS_UNSPECIFIED";
+    case Backup_BackupStatus.DONE:
+      return "DONE";
+    case Backup_BackupStatus.CREATING:
+      return "CREATING";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 const baseBackup: object = {
   $type: "yandex.cloud.mdb.postgresql.v1.Backup",
   id: "",
@@ -128,6 +170,7 @@ const baseBackup: object = {
   type: 0,
   method: 0,
   journalSize: 0,
+  status: 0,
 };
 
 export const Backup = {
@@ -170,6 +213,9 @@ export const Backup = {
     if (message.journalSize !== 0) {
       writer.uint32(72).int64(message.journalSize);
     }
+    if (message.status !== 0) {
+      writer.uint32(80).int32(message.status);
+    }
     return writer;
   },
 
@@ -210,6 +256,9 @@ export const Backup = {
           break;
         case 9:
           message.journalSize = longToNumber(reader.int64() as Long);
+          break;
+        case 10:
+          message.status = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -255,6 +304,10 @@ export const Backup = {
       object.journalSize !== undefined && object.journalSize !== null
         ? Number(object.journalSize)
         : 0;
+    message.status =
+      object.status !== undefined && object.status !== null
+        ? backup_BackupStatusFromJSON(object.status)
+        : 0;
     return message;
   },
 
@@ -275,6 +328,8 @@ export const Backup = {
       (obj.method = backup_BackupMethodToJSON(message.method));
     message.journalSize !== undefined &&
       (obj.journalSize = Math.round(message.journalSize));
+    message.status !== undefined &&
+      (obj.status = backup_BackupStatusToJSON(message.status));
     return obj;
   },
 
@@ -289,6 +344,7 @@ export const Backup = {
     message.type = object.type ?? 0;
     message.method = object.method ?? 0;
     message.journalSize = object.journalSize ?? 0;
+    message.status = object.status ?? 0;
     return message;
   },
 };

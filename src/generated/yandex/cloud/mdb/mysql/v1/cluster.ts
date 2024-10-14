@@ -37,7 +37,7 @@ export interface Cluster {
   description: string;
   /** Custom labels for the cluster as `key:value` pairs. */
   labels: { [key: string]: string };
-  /** Deployment environment of the cluster. */
+  /** Deployment environment of the MySQL cluster. */
   environment: Cluster_Environment;
   /** Monitoring systems data that is relevant to the cluster. */
   monitoring: Monitoring[];
@@ -284,9 +284,9 @@ export interface Host {
   zoneId: string;
   /** Resources allocated to the host. */
   resources?: Resources;
-  /** Role of the host in the cluster. */
+  /** Role of the host in the cluster. If the field has default value, it is not returned in the response. */
   role: Host_Role;
-  /** Aggregated health of the host. */
+  /** Aggregated health of the host. If the field has default value, it is not returned in the response. */
   health: Host_Health;
   /** List of services provided by the host. */
   services: Service[];
@@ -303,7 +303,7 @@ export interface Host {
 }
 
 export enum Host_Role {
-  /** ROLE_UNKNOWN - Role of the host is unknown. */
+  /** ROLE_UNKNOWN - Role of the host is unknown. Default value. */
   ROLE_UNKNOWN = 0,
   /** MASTER - Host is the master. */
   MASTER = 1,
@@ -344,7 +344,7 @@ export function host_RoleToJSON(object: Host_Role): string {
 }
 
 export enum Host_Health {
-  /** HEALTH_UNKNOWN - Health of the host is unknown. */
+  /** HEALTH_UNKNOWN - Health of the host is unknown. Default value. */
   HEALTH_UNKNOWN = 0,
   /** ALIVE - Host is performing all its functions normally. */
   ALIVE = 1,
@@ -400,13 +400,14 @@ export function host_HealthToJSON(object: Host_Health): string {
 
 export interface Service {
   $type: "yandex.cloud.mdb.mysql.v1.Service";
-  /** Type of the service provided by the host. */
+  /** Type of the service provided by the host. If the field has default value, it is not returned in the response. */
   type: Service_Type;
-  /** Aggregated health of the service. */
+  /** Aggregated health of the service. If the field has default value, it is not returned in the response. */
   health: Service_Health;
 }
 
 export enum Service_Type {
+  /** TYPE_UNSPECIFIED - Service type of the host is unspecified. Default value. */
   TYPE_UNSPECIFIED = 0,
   /** MYSQL - The host is a MySQL server. */
   MYSQL = 1,
@@ -440,7 +441,7 @@ export function service_TypeToJSON(object: Service_Type): string {
 }
 
 export enum Service_Health {
-  /** HEALTH_UNKNOWN - Health of the service is unknown. */
+  /** HEALTH_UNKNOWN - Health of the service is unknown. Default value. */
   HEALTH_UNKNOWN = 0,
   /** ALIVE - The service is working normally. */
   ALIVE = 1,

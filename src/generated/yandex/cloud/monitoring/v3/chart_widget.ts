@@ -33,6 +33,8 @@ export interface ChartWidget {
   displayLegend: boolean;
   /** Fixed time interval for chart. */
   freeze: ChartWidget_FreezeDuration;
+  /** Setting for repeat panel / repeat row */
+  repeat?: ChartWidget_RepeatSettings;
 }
 
 export enum ChartWidget_FreezeDuration {
@@ -111,6 +113,8 @@ export interface ChartWidget_Queries_Target {
   textMode: boolean;
   /** Checks that target is visible or invisible. */
   hidden: boolean;
+  /** Name of the query. */
+  name: string;
 }
 
 /** Visualization settings. */
@@ -405,6 +409,10 @@ export interface ChartWidget_VisualizationSettings_ColorSchemeSettings {
   gradient?:
     | ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme
     | undefined;
+  /** Hash color scheme. Based on line name or value. */
+  hash?:
+    | ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme
+    | undefined;
 }
 
 export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme {
@@ -425,6 +433,10 @@ export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientC
   redValue: string;
   /** Gradient violet_value. */
   violetValue: string;
+}
+
+export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme {
+  $type: "yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.ColorSchemeSettings.HashColorScheme";
 }
 
 export interface ChartWidget_VisualizationSettings_HeatmapSettings {
@@ -604,6 +616,14 @@ export interface ChartWidget_NameHidingSettings {
   names: string[];
 }
 
+export interface ChartWidget_RepeatSettings {
+  $type: "yandex.cloud.monitoring.v3.ChartWidget.RepeatSettings";
+  /** Parameters to repeat by. */
+  repeatBy: string[];
+  /** Max number of chart in one row. */
+  maxChartsInRow: number;
+}
+
 const baseChartWidget: object = {
   $type: "yandex.cloud.monitoring.v3.ChartWidget",
   id: "",
@@ -656,6 +676,12 @@ export const ChartWidget = {
     if (message.freeze !== 0) {
       writer.uint32(72).int32(message.freeze);
     }
+    if (message.repeat !== undefined) {
+      ChartWidget_RepeatSettings.encode(
+        message.repeat,
+        writer.uint32(82).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -699,6 +725,12 @@ export const ChartWidget = {
           break;
         case 9:
           message.freeze = reader.int32() as any;
+          break;
+        case 10:
+          message.repeat = ChartWidget_RepeatSettings.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -747,6 +779,10 @@ export const ChartWidget = {
       object.freeze !== undefined && object.freeze !== null
         ? chartWidget_FreezeDurationFromJSON(object.freeze)
         : 0;
+    message.repeat =
+      object.repeat !== undefined && object.repeat !== null
+        ? ChartWidget_RepeatSettings.fromJSON(object.repeat)
+        : undefined;
     return message;
   },
 
@@ -781,6 +817,10 @@ export const ChartWidget = {
       (obj.displayLegend = message.displayLegend);
     message.freeze !== undefined &&
       (obj.freeze = chartWidget_FreezeDurationToJSON(message.freeze));
+    message.repeat !== undefined &&
+      (obj.repeat = message.repeat
+        ? ChartWidget_RepeatSettings.toJSON(message.repeat)
+        : undefined);
     return obj;
   },
 
@@ -813,6 +853,10 @@ export const ChartWidget = {
     message.title = object.title ?? "";
     message.displayLegend = object.displayLegend ?? false;
     message.freeze = object.freeze ?? 0;
+    message.repeat =
+      object.repeat !== undefined && object.repeat !== null
+        ? ChartWidget_RepeatSettings.fromPartial(object.repeat)
+        : undefined;
     return message;
   },
 };
@@ -916,6 +960,7 @@ const baseChartWidget_Queries_Target: object = {
   query: "",
   textMode: false,
   hidden: false,
+  name: "",
 };
 
 export const ChartWidget_Queries_Target = {
@@ -933,6 +978,9 @@ export const ChartWidget_Queries_Target = {
     }
     if (message.hidden === true) {
       writer.uint32(24).bool(message.hidden);
+    }
+    if (message.name !== "") {
+      writer.uint32(34).string(message.name);
     }
     return writer;
   },
@@ -958,6 +1006,9 @@ export const ChartWidget_Queries_Target = {
         case 3:
           message.hidden = reader.bool();
           break;
+        case 4:
+          message.name = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -982,6 +1033,10 @@ export const ChartWidget_Queries_Target = {
       object.hidden !== undefined && object.hidden !== null
         ? Boolean(object.hidden)
         : false;
+    message.name =
+      object.name !== undefined && object.name !== null
+        ? String(object.name)
+        : "";
     return message;
   },
 
@@ -990,6 +1045,7 @@ export const ChartWidget_Queries_Target = {
     message.query !== undefined && (obj.query = message.query);
     message.textMode !== undefined && (obj.textMode = message.textMode);
     message.hidden !== undefined && (obj.hidden = message.hidden);
+    message.name !== undefined && (obj.name = message.name);
     return obj;
   },
 
@@ -1002,6 +1058,7 @@ export const ChartWidget_Queries_Target = {
     message.query = object.query ?? "";
     message.textMode = object.textMode ?? false;
     message.hidden = object.hidden ?? false;
+    message.name = object.name ?? "";
     return message;
   },
 };
@@ -1293,6 +1350,12 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings = {
         writer.uint32(26).fork()
       ).ldelim();
     }
+    if (message.hash !== undefined) {
+      ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme.encode(
+        message.hash,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1329,6 +1392,13 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings = {
               reader.uint32()
             );
           break;
+        case 4:
+          message.hash =
+            ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme.decode(
+              reader,
+              reader.uint32()
+            );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1359,6 +1429,12 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings = {
             object.gradient
           )
         : undefined;
+    message.hash =
+      object.hash !== undefined && object.hash !== null
+        ? ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme.fromJSON(
+            object.hash
+          )
+        : undefined;
     return message;
   },
 
@@ -1382,6 +1458,12 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings = {
       (obj.gradient = message.gradient
         ? ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme.toJSON(
             message.gradient
+          )
+        : undefined);
+    message.hash !== undefined &&
+      (obj.hash = message.hash
+        ? ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme.toJSON(
+            message.hash
           )
         : undefined);
     return obj;
@@ -1412,6 +1494,12 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings = {
       object.gradient !== undefined && object.gradient !== null
         ? ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme.fromPartial(
             object.gradient
+          )
+        : undefined;
+    message.hash =
+      object.hash !== undefined && object.hash !== null
+        ? ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme.fromPartial(
+            object.hash
           )
         : undefined;
     return message;
@@ -1700,6 +1788,81 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColor
 messageTypeRegistry.set(
   ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme.$type,
   ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme
+);
+
+const baseChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme: object =
+  {
+    $type:
+      "yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.ColorSchemeSettings.HashColorScheme",
+  };
+
+export const ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme =
+  {
+    $type:
+      "yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.ColorSchemeSettings.HashColorScheme" as const,
+
+    encode(
+      _: ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme,
+      writer: _m0.Writer = _m0.Writer.create()
+    ): _m0.Writer {
+      return writer;
+    },
+
+    decode(
+      input: _m0.Reader | Uint8Array,
+      length?: number
+    ): ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme {
+      const reader =
+        input instanceof _m0.Reader ? input : new _m0.Reader(input);
+      let end = length === undefined ? reader.len : reader.pos + length;
+      const message = {
+        ...baseChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme,
+      } as ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme;
+      while (reader.pos < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          default:
+            reader.skipType(tag & 7);
+            break;
+        }
+      }
+      return message;
+    },
+
+    fromJSON(
+      _: any
+    ): ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme {
+      const message = {
+        ...baseChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme,
+      } as ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme;
+      return message;
+    },
+
+    toJSON(
+      _: ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme
+    ): unknown {
+      const obj: any = {};
+      return obj;
+    },
+
+    fromPartial<
+      I extends Exact<
+        DeepPartial<ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme>,
+        I
+      >
+    >(
+      _: I
+    ): ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme {
+      const message = {
+        ...baseChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme,
+      } as ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme;
+      return message;
+    },
+  };
+
+messageTypeRegistry.set(
+  ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme.$type,
+  ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme
 );
 
 const baseChartWidget_VisualizationSettings_HeatmapSettings: object = {
@@ -2438,6 +2601,107 @@ messageTypeRegistry.set(
   ChartWidget_NameHidingSettings
 );
 
+const baseChartWidget_RepeatSettings: object = {
+  $type: "yandex.cloud.monitoring.v3.ChartWidget.RepeatSettings",
+  repeatBy: "",
+  maxChartsInRow: 0,
+};
+
+export const ChartWidget_RepeatSettings = {
+  $type: "yandex.cloud.monitoring.v3.ChartWidget.RepeatSettings" as const,
+
+  encode(
+    message: ChartWidget_RepeatSettings,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.repeatBy) {
+      writer.uint32(10).string(v!);
+    }
+    if (message.maxChartsInRow !== 0) {
+      writer.uint32(16).int64(message.maxChartsInRow);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ChartWidget_RepeatSettings {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseChartWidget_RepeatSettings,
+    } as ChartWidget_RepeatSettings;
+    message.repeatBy = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.repeatBy.push(reader.string());
+          break;
+        case 2:
+          message.maxChartsInRow = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ChartWidget_RepeatSettings {
+    const message = {
+      ...baseChartWidget_RepeatSettings,
+    } as ChartWidget_RepeatSettings;
+    message.repeatBy = (object.repeatBy ?? []).map((e: any) => String(e));
+    message.maxChartsInRow =
+      object.maxChartsInRow !== undefined && object.maxChartsInRow !== null
+        ? Number(object.maxChartsInRow)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: ChartWidget_RepeatSettings): unknown {
+    const obj: any = {};
+    if (message.repeatBy) {
+      obj.repeatBy = message.repeatBy.map((e) => e);
+    } else {
+      obj.repeatBy = [];
+    }
+    message.maxChartsInRow !== undefined &&
+      (obj.maxChartsInRow = Math.round(message.maxChartsInRow));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ChartWidget_RepeatSettings>, I>>(
+    object: I
+  ): ChartWidget_RepeatSettings {
+    const message = {
+      ...baseChartWidget_RepeatSettings,
+    } as ChartWidget_RepeatSettings;
+    message.repeatBy = object.repeatBy?.map((e) => e) || [];
+    message.maxChartsInRow = object.maxChartsInRow ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ChartWidget_RepeatSettings.$type,
+  ChartWidget_RepeatSettings
+);
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
+
 type Builtin =
   | Date
   | Function
@@ -2464,6 +2728,13 @@ export type Exact<P, I extends P> = P extends Builtin
         Exclude<keyof I, KeysOfUnion<P> | "$type">,
         never
       >;
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
 
 if (_m0.util.Long !== Long) {
   _m0.util.Long = Long as any;

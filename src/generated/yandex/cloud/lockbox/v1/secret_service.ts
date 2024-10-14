@@ -17,7 +17,11 @@ import _m0 from "protobufjs/minimal";
 import { FieldMask } from "../../../../google/protobuf/field_mask";
 import { Duration } from "../../../../google/protobuf/duration";
 import { Timestamp } from "../../../../google/protobuf/timestamp";
-import { Secret, Version } from "../../../../yandex/cloud/lockbox/v1/secret";
+import {
+  Secret,
+  PasswordPayloadSpecification,
+  Version,
+} from "../../../../yandex/cloud/lockbox/v1/secret";
 import { Operation } from "../../../../yandex/cloud/operation/operation";
 import {
   ListAccessBindingsRequest,
@@ -101,6 +105,7 @@ export interface CreateSecretRequest {
   versionPayloadEntries: PayloadEntryChange[];
   /** Flag that inhibits deletion of the secret. */
   deletionProtection: boolean;
+  passwordPayloadSpecification?: PasswordPayloadSpecification | undefined;
 }
 
 export interface CreateSecretRequest_LabelsEntry {
@@ -131,6 +136,7 @@ export interface UpdateSecretRequest {
   labels: { [key: string]: string };
   /** Flag that inhibits deletion of the secret. */
   deletionProtection: boolean;
+  passwordPayloadSpecification?: PasswordPayloadSpecification | undefined;
 }
 
 export interface UpdateSecretRequest_LabelsEntry {
@@ -671,6 +677,12 @@ export const CreateSecretRequest = {
     if (message.deletionProtection === true) {
       writer.uint32(64).bool(message.deletionProtection);
     }
+    if (message.passwordPayloadSpecification !== undefined) {
+      PasswordPayloadSpecification.encode(
+        message.passwordPayloadSpecification,
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -714,6 +726,10 @@ export const CreateSecretRequest = {
           break;
         case 8:
           message.deletionProtection = reader.bool();
+          break;
+        case 9:
+          message.passwordPayloadSpecification =
+            PasswordPayloadSpecification.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -760,6 +776,13 @@ export const CreateSecretRequest = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.passwordPayloadSpecification =
+      object.passwordPayloadSpecification !== undefined &&
+      object.passwordPayloadSpecification !== null
+        ? PasswordPayloadSpecification.fromJSON(
+            object.passwordPayloadSpecification
+          )
+        : undefined;
     return message;
   },
 
@@ -787,6 +810,12 @@ export const CreateSecretRequest = {
     }
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.passwordPayloadSpecification !== undefined &&
+      (obj.passwordPayloadSpecification = message.passwordPayloadSpecification
+        ? PasswordPayloadSpecification.toJSON(
+            message.passwordPayloadSpecification
+          )
+        : undefined);
     return obj;
   },
 
@@ -812,6 +841,13 @@ export const CreateSecretRequest = {
         PayloadEntryChange.fromPartial(e)
       ) || [];
     message.deletionProtection = object.deletionProtection ?? false;
+    message.passwordPayloadSpecification =
+      object.passwordPayloadSpecification !== undefined &&
+      object.passwordPayloadSpecification !== null
+        ? PasswordPayloadSpecification.fromPartial(
+            object.passwordPayloadSpecification
+          )
+        : undefined;
     return message;
   },
 };
@@ -1021,6 +1057,12 @@ export const UpdateSecretRequest = {
     if (message.deletionProtection === true) {
       writer.uint32(48).bool(message.deletionProtection);
     }
+    if (message.passwordPayloadSpecification !== undefined) {
+      PasswordPayloadSpecification.encode(
+        message.passwordPayloadSpecification,
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1055,6 +1097,10 @@ export const UpdateSecretRequest = {
           break;
         case 6:
           message.deletionProtection = reader.bool();
+          break;
+        case 7:
+          message.passwordPayloadSpecification =
+            PasswordPayloadSpecification.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1093,6 +1139,13 @@ export const UpdateSecretRequest = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.passwordPayloadSpecification =
+      object.passwordPayloadSpecification !== undefined &&
+      object.passwordPayloadSpecification !== null
+        ? PasswordPayloadSpecification.fromJSON(
+            object.passwordPayloadSpecification
+          )
+        : undefined;
     return message;
   },
 
@@ -1114,6 +1167,12 @@ export const UpdateSecretRequest = {
     }
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    message.passwordPayloadSpecification !== undefined &&
+      (obj.passwordPayloadSpecification = message.passwordPayloadSpecification
+        ? PasswordPayloadSpecification.toJSON(
+            message.passwordPayloadSpecification
+          )
+        : undefined);
     return obj;
   },
 
@@ -1137,6 +1196,13 @@ export const UpdateSecretRequest = {
       return acc;
     }, {});
     message.deletionProtection = object.deletionProtection ?? false;
+    message.passwordPayloadSpecification =
+      object.passwordPayloadSpecification !== undefined &&
+      object.passwordPayloadSpecification !== null
+        ? PasswordPayloadSpecification.fromPartial(
+            object.passwordPayloadSpecification
+          )
+        : undefined;
     return message;
   },
 };

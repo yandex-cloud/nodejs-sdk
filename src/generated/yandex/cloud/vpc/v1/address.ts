@@ -18,11 +18,19 @@ export interface Address {
   /**
    * Name of the address.
    * The name is unique within the folder.
+   * Value must match the regular expression ``\|[a-zA-Z]([-_a-zA-Z0-9]{0,61}[a-zA-Z0-9])?``.
    */
   name: string;
-  /** Description of the address. */
+  /** Description of the address. 0-256 characters long. */
   description: string;
-  /** Resource labels as `key:value` pairs. */
+  /**
+   * Address labels as `key:value` pairs.
+   * No more than 64 per resource.
+   * The maximum string length in characters for each value is 63.
+   * Each value must match the regular expression `[-_0-9a-z]*`.
+   * The string length in characters for each key must be 1-63.
+   * Each key must match the regular expression `[a-z][-_0-9a-z]*`.
+   */
   labels: { [key: string]: string };
   externalIpv4Address?: ExternalIpv4Address | undefined;
   /** Specifies if address is reserved or not. */
@@ -31,10 +39,12 @@ export interface Address {
   used: boolean;
   /** Type of the IP address. */
   type: Address_Type;
-  /** Vervion of the IP address. */
+  /** Version of the IP address. */
   ipVersion: Address_IpVersion;
   /** Specifies if address protected from deletion. */
   deletionProtection: boolean;
+  /** Optional DNS record specifications */
+  dnsRecords: DnsRecord[];
 }
 
 export enum Address_Type {
@@ -141,6 +151,18 @@ export interface AddressRequirements {
   outgoingSmtpCapability: string;
 }
 
+export interface DnsRecord {
+  $type: "yandex.cloud.vpc.v1.DnsRecord";
+  /** DNS record name (absolute or relative to the DNS zone in use). */
+  fqdn: string;
+  /** ID of the public DNS zone. */
+  dnsZoneId: string;
+  /** TTL of record. */
+  ttl: number;
+  /** If the PTR record is required, this parameter must be set to "true". */
+  ptr: boolean;
+}
+
 const baseAddress: object = {
   $type: "yandex.cloud.vpc.v1.Address",
   id: "",
@@ -210,6 +232,9 @@ export const Address = {
     if (message.deletionProtection === true) {
       writer.uint32(152).bool(message.deletionProtection);
     }
+    for (const v of message.dnsRecords) {
+      DnsRecord.encode(v!, writer.uint32(162).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -218,6 +243,7 @@ export const Address = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseAddress } as Address;
     message.labels = {};
+    message.dnsRecords = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -264,6 +290,9 @@ export const Address = {
           break;
         case 19:
           message.deletionProtection = reader.bool();
+          break;
+        case 20:
+          message.dnsRecords.push(DnsRecord.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -325,6 +354,9 @@ export const Address = {
       object.deletionProtection !== null
         ? Boolean(object.deletionProtection)
         : false;
+    message.dnsRecords = (object.dnsRecords ?? []).map((e: any) =>
+      DnsRecord.fromJSON(e)
+    );
     return message;
   },
 
@@ -354,6 +386,13 @@ export const Address = {
       (obj.ipVersion = address_IpVersionToJSON(message.ipVersion));
     message.deletionProtection !== undefined &&
       (obj.deletionProtection = message.deletionProtection);
+    if (message.dnsRecords) {
+      obj.dnsRecords = message.dnsRecords.map((e) =>
+        e ? DnsRecord.toJSON(e) : undefined
+      );
+    } else {
+      obj.dnsRecords = [];
+    }
     return obj;
   },
 
@@ -382,6 +421,8 @@ export const Address = {
     message.type = object.type ?? 0;
     message.ipVersion = object.ipVersion ?? 0;
     message.deletionProtection = object.deletionProtection ?? false;
+    message.dnsRecords =
+      object.dnsRecords?.map((e) => DnsRecord.fromPartial(e)) || [];
     return message;
   },
 };
@@ -639,6 +680,116 @@ export const AddressRequirements = {
 
 messageTypeRegistry.set(AddressRequirements.$type, AddressRequirements);
 
+const baseDnsRecord: object = {
+  $type: "yandex.cloud.vpc.v1.DnsRecord",
+  fqdn: "",
+  dnsZoneId: "",
+  ttl: 0,
+  ptr: false,
+};
+
+export const DnsRecord = {
+  $type: "yandex.cloud.vpc.v1.DnsRecord" as const,
+
+  encode(
+    message: DnsRecord,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.fqdn !== "") {
+      writer.uint32(10).string(message.fqdn);
+    }
+    if (message.dnsZoneId !== "") {
+      writer.uint32(18).string(message.dnsZoneId);
+    }
+    if (message.ttl !== 0) {
+      writer.uint32(24).int64(message.ttl);
+    }
+    if (message.ptr === true) {
+      writer.uint32(32).bool(message.ptr);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DnsRecord {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseDnsRecord } as DnsRecord;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.fqdn = reader.string();
+          break;
+        case 2:
+          message.dnsZoneId = reader.string();
+          break;
+        case 3:
+          message.ttl = longToNumber(reader.int64() as Long);
+          break;
+        case 4:
+          message.ptr = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DnsRecord {
+    const message = { ...baseDnsRecord } as DnsRecord;
+    message.fqdn =
+      object.fqdn !== undefined && object.fqdn !== null
+        ? String(object.fqdn)
+        : "";
+    message.dnsZoneId =
+      object.dnsZoneId !== undefined && object.dnsZoneId !== null
+        ? String(object.dnsZoneId)
+        : "";
+    message.ttl =
+      object.ttl !== undefined && object.ttl !== null ? Number(object.ttl) : 0;
+    message.ptr =
+      object.ptr !== undefined && object.ptr !== null
+        ? Boolean(object.ptr)
+        : false;
+    return message;
+  },
+
+  toJSON(message: DnsRecord): unknown {
+    const obj: any = {};
+    message.fqdn !== undefined && (obj.fqdn = message.fqdn);
+    message.dnsZoneId !== undefined && (obj.dnsZoneId = message.dnsZoneId);
+    message.ttl !== undefined && (obj.ttl = Math.round(message.ttl));
+    message.ptr !== undefined && (obj.ptr = message.ptr);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DnsRecord>, I>>(
+    object: I
+  ): DnsRecord {
+    const message = { ...baseDnsRecord } as DnsRecord;
+    message.fqdn = object.fqdn ?? "";
+    message.dnsZoneId = object.dnsZoneId ?? "";
+    message.ttl = object.ttl ?? 0;
+    message.ptr = object.ptr ?? false;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(DnsRecord.$type, DnsRecord);
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
+
 type Builtin =
   | Date
   | Function
@@ -686,6 +837,13 @@ function fromJsonTimestamp(o: any): Date {
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
+}
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
 }
 
 if (_m0.util.Long !== Long) {

@@ -27,6 +27,7 @@ import {
   Revision,
   Secret,
   StorageMount,
+  Mount,
 } from "../../../../../yandex/cloud/serverless/containers/v1/container";
 import { Duration } from "../../../../../google/protobuf/duration";
 import { Operation } from "../../../../../yandex/cloud/operation/operation";
@@ -283,8 +284,10 @@ export interface DeployContainerRevisionRequest {
   scalingPolicy?: ScalingPolicy;
   /** Options for logging from the container. */
   logOptions?: LogOptions;
-  /** S3 mounts to be used by the version. */
+  /** S3 mounts to be used by the revision. */
   storageMounts: StorageMount[];
+  /** Mounts to be used by the revision. */
+  mounts: Mount[];
 }
 
 /** Revision image specification. */
@@ -1749,6 +1752,9 @@ export const DeployContainerRevisionRequest = {
     for (const v of message.storageMounts) {
       StorageMount.encode(v!, writer.uint32(122).fork()).ldelim();
     }
+    for (const v of message.mounts) {
+      Mount.encode(v!, writer.uint32(130).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1763,6 +1769,7 @@ export const DeployContainerRevisionRequest = {
     } as DeployContainerRevisionRequest;
     message.secrets = [];
     message.storageMounts = [];
+    message.mounts = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1809,6 +1816,9 @@ export const DeployContainerRevisionRequest = {
           message.storageMounts.push(
             StorageMount.decode(reader, reader.uint32())
           );
+          break;
+        case 16:
+          message.mounts.push(Mount.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -1872,6 +1882,7 @@ export const DeployContainerRevisionRequest = {
     message.storageMounts = (object.storageMounts ?? []).map((e: any) =>
       StorageMount.fromJSON(e)
     );
+    message.mounts = (object.mounts ?? []).map((e: any) => Mount.fromJSON(e));
     return message;
   },
 
@@ -1927,6 +1938,11 @@ export const DeployContainerRevisionRequest = {
     } else {
       obj.storageMounts = [];
     }
+    if (message.mounts) {
+      obj.mounts = message.mounts.map((e) => (e ? Mount.toJSON(e) : undefined));
+    } else {
+      obj.mounts = [];
+    }
     return obj;
   },
 
@@ -1971,6 +1987,7 @@ export const DeployContainerRevisionRequest = {
         : undefined;
     message.storageMounts =
       object.storageMounts?.map((e) => StorageMount.fromPartial(e)) || [];
+    message.mounts = object.mounts?.map((e) => Mount.fromPartial(e)) || [];
     return message;
   },
 };

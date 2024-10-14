@@ -15,7 +15,9 @@ import {
 } from "@grpc/grpc-js";
 import _m0 from "protobufjs/minimal";
 import {
+  Runtime,
   TransferType,
+  Transformation,
   Transfer,
   transferTypeFromJSON,
   transferTypeToJSON,
@@ -29,11 +31,13 @@ export interface CreateTransferRequest {
   $type: "yandex.cloud.datatransfer.v1.CreateTransferRequest";
   sourceId: string;
   targetId: string;
-  name: string;
   description: string;
-  labels: { [key: string]: string };
   folderId: string;
+  runtime?: Runtime;
   type: TransferType;
+  name: string;
+  labels: { [key: string]: string };
+  transformation?: Transformation;
 }
 
 export interface CreateTransferRequest_LabelsEntry {
@@ -53,7 +57,7 @@ export interface UpdateTransferRequest {
   transferId: string;
   /** The new description for the transfer. */
   description: string;
-  labels: { [key: string]: string };
+  runtime?: Runtime;
   /** The new transfer name. Must be unique within the folder. */
   name: string;
   /**
@@ -64,6 +68,8 @@ export interface UpdateTransferRequest {
    * the new value replaces the old one instead of being appended to the old one.
    */
   updateMask?: FieldMask;
+  labels: { [key: string]: string };
+  transformation?: Transformation;
 }
 
 export interface UpdateTransferRequest_LabelsEntry {
@@ -157,10 +163,10 @@ const baseCreateTransferRequest: object = {
   $type: "yandex.cloud.datatransfer.v1.CreateTransferRequest",
   sourceId: "",
   targetId: "",
-  name: "",
   description: "",
   folderId: "",
   type: 0,
+  name: "",
 };
 
 export const CreateTransferRequest = {
@@ -176,11 +182,20 @@ export const CreateTransferRequest = {
     if (message.targetId !== "") {
       writer.uint32(18).string(message.targetId);
     }
-    if (message.name !== "") {
-      writer.uint32(58).string(message.name);
-    }
     if (message.description !== "") {
       writer.uint32(26).string(message.description);
+    }
+    if (message.folderId !== "") {
+      writer.uint32(34).string(message.folderId);
+    }
+    if (message.runtime !== undefined) {
+      Runtime.encode(message.runtime, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.type !== 0) {
+      writer.uint32(48).int32(message.type);
+    }
+    if (message.name !== "") {
+      writer.uint32(58).string(message.name);
     }
     Object.entries(message.labels).forEach(([key, value]) => {
       CreateTransferRequest_LabelsEntry.encode(
@@ -193,11 +208,11 @@ export const CreateTransferRequest = {
         writer.uint32(66).fork()
       ).ldelim();
     });
-    if (message.folderId !== "") {
-      writer.uint32(34).string(message.folderId);
-    }
-    if (message.type !== 0) {
-      writer.uint32(48).int32(message.type);
+    if (message.transformation !== undefined) {
+      Transformation.encode(
+        message.transformation,
+        writer.uint32(82).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -219,11 +234,20 @@ export const CreateTransferRequest = {
         case 2:
           message.targetId = reader.string();
           break;
-        case 7:
-          message.name = reader.string();
-          break;
         case 3:
           message.description = reader.string();
+          break;
+        case 4:
+          message.folderId = reader.string();
+          break;
+        case 5:
+          message.runtime = Runtime.decode(reader, reader.uint32());
+          break;
+        case 6:
+          message.type = reader.int32() as any;
+          break;
+        case 7:
+          message.name = reader.string();
           break;
         case 8:
           const entry8 = CreateTransferRequest_LabelsEntry.decode(
@@ -234,11 +258,11 @@ export const CreateTransferRequest = {
             message.labels[entry8.key] = entry8.value;
           }
           break;
-        case 4:
-          message.folderId = reader.string();
-          break;
-        case 6:
-          message.type = reader.int32() as any;
+        case 10:
+          message.transformation = Transformation.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -258,13 +282,25 @@ export const CreateTransferRequest = {
       object.targetId !== undefined && object.targetId !== null
         ? String(object.targetId)
         : "";
-    message.name =
-      object.name !== undefined && object.name !== null
-        ? String(object.name)
-        : "";
     message.description =
       object.description !== undefined && object.description !== null
         ? String(object.description)
+        : "";
+    message.folderId =
+      object.folderId !== undefined && object.folderId !== null
+        ? String(object.folderId)
+        : "";
+    message.runtime =
+      object.runtime !== undefined && object.runtime !== null
+        ? Runtime.fromJSON(object.runtime)
+        : undefined;
+    message.type =
+      object.type !== undefined && object.type !== null
+        ? transferTypeFromJSON(object.type)
+        : 0;
+    message.name =
+      object.name !== undefined && object.name !== null
+        ? String(object.name)
         : "";
     message.labels = Object.entries(object.labels ?? {}).reduce<{
       [key: string]: string;
@@ -272,14 +308,10 @@ export const CreateTransferRequest = {
       acc[key] = String(value);
       return acc;
     }, {});
-    message.folderId =
-      object.folderId !== undefined && object.folderId !== null
-        ? String(object.folderId)
-        : "";
-    message.type =
-      object.type !== undefined && object.type !== null
-        ? transferTypeFromJSON(object.type)
-        : 0;
+    message.transformation =
+      object.transformation !== undefined && object.transformation !== null
+        ? Transformation.fromJSON(object.transformation)
+        : undefined;
     return message;
   },
 
@@ -287,17 +319,25 @@ export const CreateTransferRequest = {
     const obj: any = {};
     message.sourceId !== undefined && (obj.sourceId = message.sourceId);
     message.targetId !== undefined && (obj.targetId = message.targetId);
-    message.name !== undefined && (obj.name = message.name);
     message.description !== undefined &&
       (obj.description = message.description);
+    message.folderId !== undefined && (obj.folderId = message.folderId);
+    message.runtime !== undefined &&
+      (obj.runtime = message.runtime
+        ? Runtime.toJSON(message.runtime)
+        : undefined);
+    message.type !== undefined && (obj.type = transferTypeToJSON(message.type));
+    message.name !== undefined && (obj.name = message.name);
     obj.labels = {};
     if (message.labels) {
       Object.entries(message.labels).forEach(([k, v]) => {
         obj.labels[k] = v;
       });
     }
-    message.folderId !== undefined && (obj.folderId = message.folderId);
-    message.type !== undefined && (obj.type = transferTypeToJSON(message.type));
+    message.transformation !== undefined &&
+      (obj.transformation = message.transformation
+        ? Transformation.toJSON(message.transformation)
+        : undefined);
     return obj;
   },
 
@@ -307,8 +347,14 @@ export const CreateTransferRequest = {
     const message = { ...baseCreateTransferRequest } as CreateTransferRequest;
     message.sourceId = object.sourceId ?? "";
     message.targetId = object.targetId ?? "";
-    message.name = object.name ?? "";
     message.description = object.description ?? "";
+    message.folderId = object.folderId ?? "";
+    message.runtime =
+      object.runtime !== undefined && object.runtime !== null
+        ? Runtime.fromPartial(object.runtime)
+        : undefined;
+    message.type = object.type ?? 0;
+    message.name = object.name ?? "";
     message.labels = Object.entries(object.labels ?? {}).reduce<{
       [key: string]: string;
     }>((acc, [key, value]) => {
@@ -317,8 +363,10 @@ export const CreateTransferRequest = {
       }
       return acc;
     }, {});
-    message.folderId = object.folderId ?? "";
-    message.type = object.type ?? 0;
+    message.transformation =
+      object.transformation !== undefined && object.transformation !== null
+        ? Transformation.fromPartial(object.transformation)
+        : undefined;
     return message;
   },
 };
@@ -496,6 +544,15 @@ export const UpdateTransferRequest = {
     if (message.description !== "") {
       writer.uint32(18).string(message.description);
     }
+    if (message.runtime !== undefined) {
+      Runtime.encode(message.runtime, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.name !== "") {
+      writer.uint32(34).string(message.name);
+    }
+    if (message.updateMask !== undefined) {
+      FieldMask.encode(message.updateMask, writer.uint32(42).fork()).ldelim();
+    }
     Object.entries(message.labels).forEach(([key, value]) => {
       UpdateTransferRequest_LabelsEntry.encode(
         {
@@ -507,11 +564,11 @@ export const UpdateTransferRequest = {
         writer.uint32(50).fork()
       ).ldelim();
     });
-    if (message.name !== "") {
-      writer.uint32(34).string(message.name);
-    }
-    if (message.updateMask !== undefined) {
-      FieldMask.encode(message.updateMask, writer.uint32(42).fork()).ldelim();
+    if (message.transformation !== undefined) {
+      Transformation.encode(
+        message.transformation,
+        writer.uint32(66).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -533,6 +590,15 @@ export const UpdateTransferRequest = {
         case 2:
           message.description = reader.string();
           break;
+        case 3:
+          message.runtime = Runtime.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.name = reader.string();
+          break;
+        case 5:
+          message.updateMask = FieldMask.decode(reader, reader.uint32());
+          break;
         case 6:
           const entry6 = UpdateTransferRequest_LabelsEntry.decode(
             reader,
@@ -542,11 +608,11 @@ export const UpdateTransferRequest = {
             message.labels[entry6.key] = entry6.value;
           }
           break;
-        case 4:
-          message.name = reader.string();
-          break;
-        case 5:
-          message.updateMask = FieldMask.decode(reader, reader.uint32());
+        case 8:
+          message.transformation = Transformation.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -566,12 +632,10 @@ export const UpdateTransferRequest = {
       object.description !== undefined && object.description !== null
         ? String(object.description)
         : "";
-    message.labels = Object.entries(object.labels ?? {}).reduce<{
-      [key: string]: string;
-    }>((acc, [key, value]) => {
-      acc[key] = String(value);
-      return acc;
-    }, {});
+    message.runtime =
+      object.runtime !== undefined && object.runtime !== null
+        ? Runtime.fromJSON(object.runtime)
+        : undefined;
     message.name =
       object.name !== undefined && object.name !== null
         ? String(object.name)
@@ -579,6 +643,16 @@ export const UpdateTransferRequest = {
     message.updateMask =
       object.updateMask !== undefined && object.updateMask !== null
         ? FieldMask.fromJSON(object.updateMask)
+        : undefined;
+    message.labels = Object.entries(object.labels ?? {}).reduce<{
+      [key: string]: string;
+    }>((acc, [key, value]) => {
+      acc[key] = String(value);
+      return acc;
+    }, {});
+    message.transformation =
+      object.transformation !== undefined && object.transformation !== null
+        ? Transformation.fromJSON(object.transformation)
         : undefined;
     return message;
   },
@@ -588,16 +662,24 @@ export const UpdateTransferRequest = {
     message.transferId !== undefined && (obj.transferId = message.transferId);
     message.description !== undefined &&
       (obj.description = message.description);
+    message.runtime !== undefined &&
+      (obj.runtime = message.runtime
+        ? Runtime.toJSON(message.runtime)
+        : undefined);
+    message.name !== undefined && (obj.name = message.name);
+    message.updateMask !== undefined &&
+      (obj.updateMask = message.updateMask
+        ? FieldMask.toJSON(message.updateMask)
+        : undefined);
     obj.labels = {};
     if (message.labels) {
       Object.entries(message.labels).forEach(([k, v]) => {
         obj.labels[k] = v;
       });
     }
-    message.name !== undefined && (obj.name = message.name);
-    message.updateMask !== undefined &&
-      (obj.updateMask = message.updateMask
-        ? FieldMask.toJSON(message.updateMask)
+    message.transformation !== undefined &&
+      (obj.transformation = message.transformation
+        ? Transformation.toJSON(message.transformation)
         : undefined);
     return obj;
   },
@@ -608,6 +690,15 @@ export const UpdateTransferRequest = {
     const message = { ...baseUpdateTransferRequest } as UpdateTransferRequest;
     message.transferId = object.transferId ?? "";
     message.description = object.description ?? "";
+    message.runtime =
+      object.runtime !== undefined && object.runtime !== null
+        ? Runtime.fromPartial(object.runtime)
+        : undefined;
+    message.name = object.name ?? "";
+    message.updateMask =
+      object.updateMask !== undefined && object.updateMask !== null
+        ? FieldMask.fromPartial(object.updateMask)
+        : undefined;
     message.labels = Object.entries(object.labels ?? {}).reduce<{
       [key: string]: string;
     }>((acc, [key, value]) => {
@@ -616,10 +707,9 @@ export const UpdateTransferRequest = {
       }
       return acc;
     }, {});
-    message.name = object.name ?? "";
-    message.updateMask =
-      object.updateMask !== undefined && object.updateMask !== null
-        ? FieldMask.fromPartial(object.updateMask)
+    message.transformation =
+      object.transformation !== undefined && object.transformation !== null
+        ? Transformation.fromPartial(object.transformation)
         : undefined;
     return message;
   },

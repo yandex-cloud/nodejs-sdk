@@ -2,49 +2,14 @@
 import { messageTypeRegistry } from "../../../../typeRegistry";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import {
+  MaintenancePolicy,
+  maintenancePolicyFromJSON,
+  maintenancePolicyToJSON,
+} from "../../../../yandex/cloud/compute/v1/maintenance";
 import { Timestamp } from "../../../../google/protobuf/timestamp";
 
 export const protobufPackage = "yandex.cloud.compute.v1";
-
-export enum MaintenancePolicy {
-  MAINTENANCE_POLICY_UNSPECIFIED = 0,
-  /** RESTART - Restart instances on the same host after maintenance event. */
-  RESTART = 1,
-  /** MIGRATE - Migrate instances to another host before maintenance event. */
-  MIGRATE = 2,
-  UNRECOGNIZED = -1,
-}
-
-export function maintenancePolicyFromJSON(object: any): MaintenancePolicy {
-  switch (object) {
-    case 0:
-    case "MAINTENANCE_POLICY_UNSPECIFIED":
-      return MaintenancePolicy.MAINTENANCE_POLICY_UNSPECIFIED;
-    case 1:
-    case "RESTART":
-      return MaintenancePolicy.RESTART;
-    case 2:
-    case "MIGRATE":
-      return MaintenancePolicy.MIGRATE;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return MaintenancePolicy.UNRECOGNIZED;
-  }
-}
-
-export function maintenancePolicyToJSON(object: MaintenancePolicy): string {
-  switch (object) {
-    case MaintenancePolicy.MAINTENANCE_POLICY_UNSPECIFIED:
-      return "MAINTENANCE_POLICY_UNSPECIFIED";
-    case MaintenancePolicy.RESTART:
-      return "RESTART";
-    case MaintenancePolicy.MIGRATE:
-      return "MIGRATE";
-    default:
-      return "UNKNOWN";
-  }
-}
 
 /** Represents group of dedicated hosts */
 export interface HostGroup {
@@ -138,6 +103,8 @@ export interface Host {
   status: Host_Status;
   /** ID of the physical server that the host belongs to. */
   serverId: string;
+  /** Set temporarily if maintenance is planned for this host, and a new host was provided as a replacement. */
+  replacement?: Replacement;
 }
 
 export enum Host_Status {
@@ -186,6 +153,14 @@ export interface ScalePolicy {
 export interface ScalePolicy_FixedScale {
   $type: "yandex.cloud.compute.v1.ScalePolicy.FixedScale";
   size: number;
+}
+
+export interface Replacement {
+  $type: "yandex.cloud.compute.v1.Replacement";
+  /** ID of the host which replaces this one. */
+  hostId: string;
+  /** The date and time when this host will be automatically freed of instances. */
+  deadlineAt?: Date;
 }
 
 const baseHostGroup: object = {
@@ -517,6 +492,12 @@ export const Host = {
     if (message.serverId !== "") {
       writer.uint32(26).string(message.serverId);
     }
+    if (message.replacement !== undefined) {
+      Replacement.encode(
+        message.replacement,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -535,6 +516,9 @@ export const Host = {
           break;
         case 3:
           message.serverId = reader.string();
+          break;
+        case 4:
+          message.replacement = Replacement.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -556,6 +540,10 @@ export const Host = {
       object.serverId !== undefined && object.serverId !== null
         ? String(object.serverId)
         : "";
+    message.replacement =
+      object.replacement !== undefined && object.replacement !== null
+        ? Replacement.fromJSON(object.replacement)
+        : undefined;
     return message;
   },
 
@@ -565,6 +553,10 @@ export const Host = {
     message.status !== undefined &&
       (obj.status = host_StatusToJSON(message.status));
     message.serverId !== undefined && (obj.serverId = message.serverId);
+    message.replacement !== undefined &&
+      (obj.replacement = message.replacement
+        ? Replacement.toJSON(message.replacement)
+        : undefined);
     return obj;
   },
 
@@ -573,6 +565,10 @@ export const Host = {
     message.id = object.id ?? "";
     message.status = object.status ?? 0;
     message.serverId = object.serverId ?? "";
+    message.replacement =
+      object.replacement !== undefined && object.replacement !== null
+        ? Replacement.fromPartial(object.replacement)
+        : undefined;
     return message;
   },
 };
@@ -716,6 +712,86 @@ export const ScalePolicy_FixedScale = {
 };
 
 messageTypeRegistry.set(ScalePolicy_FixedScale.$type, ScalePolicy_FixedScale);
+
+const baseReplacement: object = {
+  $type: "yandex.cloud.compute.v1.Replacement",
+  hostId: "",
+};
+
+export const Replacement = {
+  $type: "yandex.cloud.compute.v1.Replacement" as const,
+
+  encode(
+    message: Replacement,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.hostId !== "") {
+      writer.uint32(10).string(message.hostId);
+    }
+    if (message.deadlineAt !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.deadlineAt),
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Replacement {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseReplacement } as Replacement;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.hostId = reader.string();
+          break;
+        case 2:
+          message.deadlineAt = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Replacement {
+    const message = { ...baseReplacement } as Replacement;
+    message.hostId =
+      object.hostId !== undefined && object.hostId !== null
+        ? String(object.hostId)
+        : "";
+    message.deadlineAt =
+      object.deadlineAt !== undefined && object.deadlineAt !== null
+        ? fromJsonTimestamp(object.deadlineAt)
+        : undefined;
+    return message;
+  },
+
+  toJSON(message: Replacement): unknown {
+    const obj: any = {};
+    message.hostId !== undefined && (obj.hostId = message.hostId);
+    message.deadlineAt !== undefined &&
+      (obj.deadlineAt = message.deadlineAt.toISOString());
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Replacement>, I>>(
+    object: I
+  ): Replacement {
+    const message = { ...baseReplacement } as Replacement;
+    message.hostId = object.hostId ?? "";
+    message.deadlineAt = object.deadlineAt ?? undefined;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(Replacement.$type, Replacement);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

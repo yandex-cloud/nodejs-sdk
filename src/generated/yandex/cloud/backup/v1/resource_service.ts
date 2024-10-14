@@ -14,7 +14,13 @@ import {
   ServiceError,
 } from "@grpc/grpc-js";
 import _m0 from "protobufjs/minimal";
-import { Resource, Task } from "../../../../yandex/cloud/backup/v1/resource";
+import {
+  ResourceType,
+  Resource,
+  Task,
+  resourceTypeFromJSON,
+  resourceTypeToJSON,
+} from "../../../../yandex/cloud/backup/v1/resource";
 import { Operation } from "../../../../yandex/cloud/operation/operation";
 
 export const protobufPackage = "yandex.cloud.backup.v1";
@@ -27,6 +33,8 @@ export interface ListResourcesRequest {
   pageSize: number;
   /** Token for the results page. */
   pageToken: string;
+  /** Type of resource. Could be compute VM or baremetal server. */
+  type: ResourceType;
 }
 
 export interface ListResourcesResponse {
@@ -173,11 +181,30 @@ export interface CreateDirectoryMetadata {
   path: string;
 }
 
+export interface ListResourceOperationsRequest {
+  $type: "yandex.cloud.backup.v1.ListResourceOperationsRequest";
+  /** Compute Cloud instance ID. */
+  computeInstanceId: string;
+  /** Number of results per page. */
+  pageSize: number;
+  /** Token for the results page. */
+  pageToken: string;
+}
+
+export interface ListResourceOperationsResponse {
+  $type: "yandex.cloud.backup.v1.ListResourceOperationsResponse";
+  /** List of operations for the specified instance. */
+  operations: Operation[];
+  /** Token for the next results page. */
+  nextPageToken: string;
+}
+
 const baseListResourcesRequest: object = {
   $type: "yandex.cloud.backup.v1.ListResourcesRequest",
   folderId: "",
   pageSize: 0,
   pageToken: "",
+  type: 0,
 };
 
 export const ListResourcesRequest = {
@@ -195,6 +222,9 @@ export const ListResourcesRequest = {
     }
     if (message.pageToken !== "") {
       writer.uint32(26).string(message.pageToken);
+    }
+    if (message.type !== 0) {
+      writer.uint32(32).int32(message.type);
     }
     return writer;
   },
@@ -218,6 +248,9 @@ export const ListResourcesRequest = {
         case 3:
           message.pageToken = reader.string();
           break;
+        case 4:
+          message.type = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -240,6 +273,10 @@ export const ListResourcesRequest = {
       object.pageToken !== undefined && object.pageToken !== null
         ? String(object.pageToken)
         : "";
+    message.type =
+      object.type !== undefined && object.type !== null
+        ? resourceTypeFromJSON(object.type)
+        : 0;
     return message;
   },
 
@@ -249,6 +286,7 @@ export const ListResourcesRequest = {
     message.pageSize !== undefined &&
       (obj.pageSize = Math.round(message.pageSize));
     message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+    message.type !== undefined && (obj.type = resourceTypeToJSON(message.type));
     return obj;
   },
 
@@ -259,6 +297,7 @@ export const ListResourcesRequest = {
     message.folderId = object.folderId ?? "";
     message.pageSize = object.pageSize ?? 0;
     message.pageToken = object.pageToken ?? "";
+    message.type = object.type ?? 0;
     return message;
   },
 };
@@ -1265,6 +1304,203 @@ export const CreateDirectoryMetadata = {
 
 messageTypeRegistry.set(CreateDirectoryMetadata.$type, CreateDirectoryMetadata);
 
+const baseListResourceOperationsRequest: object = {
+  $type: "yandex.cloud.backup.v1.ListResourceOperationsRequest",
+  computeInstanceId: "",
+  pageSize: 0,
+  pageToken: "",
+};
+
+export const ListResourceOperationsRequest = {
+  $type: "yandex.cloud.backup.v1.ListResourceOperationsRequest" as const,
+
+  encode(
+    message: ListResourceOperationsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.computeInstanceId !== "") {
+      writer.uint32(10).string(message.computeInstanceId);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(16).int64(message.pageSize);
+    }
+    if (message.pageToken !== "") {
+      writer.uint32(26).string(message.pageToken);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ListResourceOperationsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseListResourceOperationsRequest,
+    } as ListResourceOperationsRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.computeInstanceId = reader.string();
+          break;
+        case 2:
+          message.pageSize = longToNumber(reader.int64() as Long);
+          break;
+        case 3:
+          message.pageToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListResourceOperationsRequest {
+    const message = {
+      ...baseListResourceOperationsRequest,
+    } as ListResourceOperationsRequest;
+    message.computeInstanceId =
+      object.computeInstanceId !== undefined &&
+      object.computeInstanceId !== null
+        ? String(object.computeInstanceId)
+        : "";
+    message.pageSize =
+      object.pageSize !== undefined && object.pageSize !== null
+        ? Number(object.pageSize)
+        : 0;
+    message.pageToken =
+      object.pageToken !== undefined && object.pageToken !== null
+        ? String(object.pageToken)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ListResourceOperationsRequest): unknown {
+    const obj: any = {};
+    message.computeInstanceId !== undefined &&
+      (obj.computeInstanceId = message.computeInstanceId);
+    message.pageSize !== undefined &&
+      (obj.pageSize = Math.round(message.pageSize));
+    message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListResourceOperationsRequest>, I>>(
+    object: I
+  ): ListResourceOperationsRequest {
+    const message = {
+      ...baseListResourceOperationsRequest,
+    } as ListResourceOperationsRequest;
+    message.computeInstanceId = object.computeInstanceId ?? "";
+    message.pageSize = object.pageSize ?? 0;
+    message.pageToken = object.pageToken ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ListResourceOperationsRequest.$type,
+  ListResourceOperationsRequest
+);
+
+const baseListResourceOperationsResponse: object = {
+  $type: "yandex.cloud.backup.v1.ListResourceOperationsResponse",
+  nextPageToken: "",
+};
+
+export const ListResourceOperationsResponse = {
+  $type: "yandex.cloud.backup.v1.ListResourceOperationsResponse" as const,
+
+  encode(
+    message: ListResourceOperationsResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.operations) {
+      Operation.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageToken !== "") {
+      writer.uint32(18).string(message.nextPageToken);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ListResourceOperationsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseListResourceOperationsResponse,
+    } as ListResourceOperationsResponse;
+    message.operations = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.operations.push(Operation.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.nextPageToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListResourceOperationsResponse {
+    const message = {
+      ...baseListResourceOperationsResponse,
+    } as ListResourceOperationsResponse;
+    message.operations = (object.operations ?? []).map((e: any) =>
+      Operation.fromJSON(e)
+    );
+    message.nextPageToken =
+      object.nextPageToken !== undefined && object.nextPageToken !== null
+        ? String(object.nextPageToken)
+        : "";
+    return message;
+  },
+
+  toJSON(message: ListResourceOperationsResponse): unknown {
+    const obj: any = {};
+    if (message.operations) {
+      obj.operations = message.operations.map((e) =>
+        e ? Operation.toJSON(e) : undefined
+      );
+    } else {
+      obj.operations = [];
+    }
+    message.nextPageToken !== undefined &&
+      (obj.nextPageToken = message.nextPageToken);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListResourceOperationsResponse>, I>>(
+    object: I
+  ): ListResourceOperationsResponse {
+    const message = {
+      ...baseListResourceOperationsResponse,
+    } as ListResourceOperationsResponse;
+    message.operations =
+      object.operations?.map((e) => Operation.fromPartial(e)) || [];
+    message.nextPageToken = object.nextPageToken ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(
+  ListResourceOperationsResponse.$type,
+  ListResourceOperationsResponse
+);
+
 /** A set of methods for managing backup resources: [Compute Cloud instances](/docs/backup/concepts/vm-connection#os). */
 export const ResourceServiceService = {
   /** List resources: Compute Cloud instances. */
@@ -1345,6 +1581,20 @@ export const ResourceServiceService = {
       Buffer.from(Operation.encode(value).finish()),
     responseDeserialize: (value: Buffer) => Operation.decode(value),
   },
+  /** ListOperations return all operations in backup service for given instance */
+  listOperations: {
+    path: "/yandex.cloud.backup.v1.ResourceService/ListOperations",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: ListResourceOperationsRequest) =>
+      Buffer.from(ListResourceOperationsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) =>
+      ListResourceOperationsRequest.decode(value),
+    responseSerialize: (value: ListResourceOperationsResponse) =>
+      Buffer.from(ListResourceOperationsResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) =>
+      ListResourceOperationsResponse.decode(value),
+  },
 } as const;
 
 export interface ResourceServiceServer extends UntypedServiceImplementation {
@@ -1366,6 +1616,11 @@ export interface ResourceServiceServer extends UntypedServiceImplementation {
   listDirectory: handleUnaryCall<ListDirectoryRequest, ListDirectoryResponse>;
   /** CreateDirectory creates new directory by requested path. */
   createDirectory: handleUnaryCall<CreateDirectoryRequest, Operation>;
+  /** ListOperations return all operations in backup service for given instance */
+  listOperations: handleUnaryCall<
+    ListResourceOperationsRequest,
+    ListResourceOperationsResponse
+  >;
 }
 
 export interface ResourceServiceClient extends Client {
@@ -1497,6 +1752,31 @@ export interface ResourceServiceClient extends Client {
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: Operation) => void
+  ): ClientUnaryCall;
+  /** ListOperations return all operations in backup service for given instance */
+  listOperations(
+    request: ListResourceOperationsRequest,
+    callback: (
+      error: ServiceError | null,
+      response: ListResourceOperationsResponse
+    ) => void
+  ): ClientUnaryCall;
+  listOperations(
+    request: ListResourceOperationsRequest,
+    metadata: Metadata,
+    callback: (
+      error: ServiceError | null,
+      response: ListResourceOperationsResponse
+    ) => void
+  ): ClientUnaryCall;
+  listOperations(
+    request: ListResourceOperationsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (
+      error: ServiceError | null,
+      response: ListResourceOperationsResponse
+    ) => void
   ): ClientUnaryCall;
 }
 

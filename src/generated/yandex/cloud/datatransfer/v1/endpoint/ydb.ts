@@ -43,20 +43,64 @@ export function ydbCleanupPolicyToJSON(object: YdbCleanupPolicy): string {
   }
 }
 
+export enum YdbDefaultCompression {
+  YDB_DEFAULT_COMPRESSION_UNSPECIFIED = 0,
+  YDB_DEFAULT_COMPRESSION_DISABLED = 1,
+  YDB_DEFAULT_COMPRESSION_LZ4 = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function ydbDefaultCompressionFromJSON(
+  object: any
+): YdbDefaultCompression {
+  switch (object) {
+    case 0:
+    case "YDB_DEFAULT_COMPRESSION_UNSPECIFIED":
+      return YdbDefaultCompression.YDB_DEFAULT_COMPRESSION_UNSPECIFIED;
+    case 1:
+    case "YDB_DEFAULT_COMPRESSION_DISABLED":
+      return YdbDefaultCompression.YDB_DEFAULT_COMPRESSION_DISABLED;
+    case 2:
+    case "YDB_DEFAULT_COMPRESSION_LZ4":
+      return YdbDefaultCompression.YDB_DEFAULT_COMPRESSION_LZ4;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return YdbDefaultCompression.UNRECOGNIZED;
+  }
+}
+
+export function ydbDefaultCompressionToJSON(
+  object: YdbDefaultCompression
+): string {
+  switch (object) {
+    case YdbDefaultCompression.YDB_DEFAULT_COMPRESSION_UNSPECIFIED:
+      return "YDB_DEFAULT_COMPRESSION_UNSPECIFIED";
+    case YdbDefaultCompression.YDB_DEFAULT_COMPRESSION_DISABLED:
+      return "YDB_DEFAULT_COMPRESSION_DISABLED";
+    case YdbDefaultCompression.YDB_DEFAULT_COMPRESSION_LZ4:
+      return "YDB_DEFAULT_COMPRESSION_LZ4";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export interface YdbSource {
   $type: "yandex.cloud.datatransfer.v1.endpoint.YdbSource";
   /** Path in YDB where to store tables */
   database: string;
   /** Instance of YDB. example: ydb-ru-prestable.yandex.net:2135 */
   instance: string;
-  serviceAccountId: string;
   paths: string[];
+  serviceAccountId: string;
   /** Network interface for endpoint. If none will assume public ipv4 */
   subnetId: string;
-  /** Security groups */
-  securityGroups: string[];
   /** Authorization Key */
   saKeyContent: string;
+  /** Security groups */
+  securityGroups: string[];
+  /** Pre-created change feed */
+  changefeedCustomName: string;
 }
 
 export interface YdbTarget {
@@ -65,28 +109,36 @@ export interface YdbTarget {
   database: string;
   /** Instance of YDB. example: ydb-ru-prestable.yandex.net:2135 */
   instance: string;
-  serviceAccountId: string;
   /** Path extension for database, each table will be layouted into this path */
   path: string;
-  /** Network interface for endpoint. If none will assume public ipv4 */
-  subnetId: string;
-  /** Security groups */
-  securityGroups: string[];
-  /** SA content */
-  saKeyContent: string;
+  serviceAccountId: string;
   /** Cleanup policy */
   cleanupPolicy: YdbCleanupPolicy;
+  /** Network interface for endpoint. If none will assume public ipv4 */
+  subnetId: string;
+  /** SA content */
+  saKeyContent: string;
+  /** Security groups */
+  securityGroups: string[];
+  /**
+   * Should create column-oriented table (OLAP). By default it creates row-oriented
+   * (OLTP)
+   */
+  isTableColumnOriented: boolean;
+  /** Compression that will be used for default columns family on YDB table creation */
+  defaultCompression: YdbDefaultCompression;
 }
 
 const baseYdbSource: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.YdbSource",
   database: "",
   instance: "",
-  serviceAccountId: "",
   paths: "",
+  serviceAccountId: "",
   subnetId: "",
-  securityGroups: "",
   saKeyContent: "",
+  securityGroups: "",
+  changefeedCustomName: "",
 };
 
 export const YdbSource = {
@@ -102,20 +154,23 @@ export const YdbSource = {
     if (message.instance !== "") {
       writer.uint32(18).string(message.instance);
     }
-    if (message.serviceAccountId !== "") {
-      writer.uint32(50).string(message.serviceAccountId);
-    }
     for (const v of message.paths) {
       writer.uint32(42).string(v!);
+    }
+    if (message.serviceAccountId !== "") {
+      writer.uint32(50).string(message.serviceAccountId);
     }
     if (message.subnetId !== "") {
       writer.uint32(242).string(message.subnetId);
     }
+    if (message.saKeyContent !== "") {
+      writer.uint32(266).string(message.saKeyContent);
+    }
     for (const v of message.securityGroups) {
       writer.uint32(274).string(v!);
     }
-    if (message.saKeyContent !== "") {
-      writer.uint32(266).string(message.saKeyContent);
+    if (message.changefeedCustomName !== "") {
+      writer.uint32(282).string(message.changefeedCustomName);
     }
     return writer;
   },
@@ -135,20 +190,23 @@ export const YdbSource = {
         case 2:
           message.instance = reader.string();
           break;
-        case 6:
-          message.serviceAccountId = reader.string();
-          break;
         case 5:
           message.paths.push(reader.string());
+          break;
+        case 6:
+          message.serviceAccountId = reader.string();
           break;
         case 30:
           message.subnetId = reader.string();
           break;
+        case 33:
+          message.saKeyContent = reader.string();
+          break;
         case 34:
           message.securityGroups.push(reader.string());
           break;
-        case 33:
-          message.saKeyContent = reader.string();
+        case 35:
+          message.changefeedCustomName = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -168,21 +226,26 @@ export const YdbSource = {
       object.instance !== undefined && object.instance !== null
         ? String(object.instance)
         : "";
+    message.paths = (object.paths ?? []).map((e: any) => String(e));
     message.serviceAccountId =
       object.serviceAccountId !== undefined && object.serviceAccountId !== null
         ? String(object.serviceAccountId)
         : "";
-    message.paths = (object.paths ?? []).map((e: any) => String(e));
     message.subnetId =
       object.subnetId !== undefined && object.subnetId !== null
         ? String(object.subnetId)
         : "";
-    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
-      String(e)
-    );
     message.saKeyContent =
       object.saKeyContent !== undefined && object.saKeyContent !== null
         ? String(object.saKeyContent)
+        : "";
+    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
+      String(e)
+    );
+    message.changefeedCustomName =
+      object.changefeedCustomName !== undefined &&
+      object.changefeedCustomName !== null
+        ? String(object.changefeedCustomName)
         : "";
     return message;
   },
@@ -191,21 +254,23 @@ export const YdbSource = {
     const obj: any = {};
     message.database !== undefined && (obj.database = message.database);
     message.instance !== undefined && (obj.instance = message.instance);
-    message.serviceAccountId !== undefined &&
-      (obj.serviceAccountId = message.serviceAccountId);
     if (message.paths) {
       obj.paths = message.paths.map((e) => e);
     } else {
       obj.paths = [];
     }
+    message.serviceAccountId !== undefined &&
+      (obj.serviceAccountId = message.serviceAccountId);
     message.subnetId !== undefined && (obj.subnetId = message.subnetId);
+    message.saKeyContent !== undefined &&
+      (obj.saKeyContent = message.saKeyContent);
     if (message.securityGroups) {
       obj.securityGroups = message.securityGroups.map((e) => e);
     } else {
       obj.securityGroups = [];
     }
-    message.saKeyContent !== undefined &&
-      (obj.saKeyContent = message.saKeyContent);
+    message.changefeedCustomName !== undefined &&
+      (obj.changefeedCustomName = message.changefeedCustomName);
     return obj;
   },
 
@@ -215,11 +280,12 @@ export const YdbSource = {
     const message = { ...baseYdbSource } as YdbSource;
     message.database = object.database ?? "";
     message.instance = object.instance ?? "";
-    message.serviceAccountId = object.serviceAccountId ?? "";
     message.paths = object.paths?.map((e) => e) || [];
+    message.serviceAccountId = object.serviceAccountId ?? "";
     message.subnetId = object.subnetId ?? "";
-    message.securityGroups = object.securityGroups?.map((e) => e) || [];
     message.saKeyContent = object.saKeyContent ?? "";
+    message.securityGroups = object.securityGroups?.map((e) => e) || [];
+    message.changefeedCustomName = object.changefeedCustomName ?? "";
     return message;
   },
 };
@@ -230,12 +296,14 @@ const baseYdbTarget: object = {
   $type: "yandex.cloud.datatransfer.v1.endpoint.YdbTarget",
   database: "",
   instance: "",
-  serviceAccountId: "",
   path: "",
-  subnetId: "",
-  securityGroups: "",
-  saKeyContent: "",
+  serviceAccountId: "",
   cleanupPolicy: 0,
+  subnetId: "",
+  saKeyContent: "",
+  securityGroups: "",
+  isTableColumnOriented: false,
+  defaultCompression: 0,
 };
 
 export const YdbTarget = {
@@ -251,23 +319,29 @@ export const YdbTarget = {
     if (message.instance !== "") {
       writer.uint32(18).string(message.instance);
     }
+    if (message.path !== "") {
+      writer.uint32(82).string(message.path);
+    }
     if (message.serviceAccountId !== "") {
       writer.uint32(90).string(message.serviceAccountId);
     }
-    if (message.path !== "") {
-      writer.uint32(82).string(message.path);
+    if (message.cleanupPolicy !== 0) {
+      writer.uint32(168).int32(message.cleanupPolicy);
     }
     if (message.subnetId !== "") {
       writer.uint32(242).string(message.subnetId);
     }
-    for (const v of message.securityGroups) {
-      writer.uint32(266).string(v!);
-    }
     if (message.saKeyContent !== "") {
       writer.uint32(258).string(message.saKeyContent);
     }
-    if (message.cleanupPolicy !== 0) {
-      writer.uint32(168).int32(message.cleanupPolicy);
+    for (const v of message.securityGroups) {
+      writer.uint32(266).string(v!);
+    }
+    if (message.isTableColumnOriented === true) {
+      writer.uint32(272).bool(message.isTableColumnOriented);
+    }
+    if (message.defaultCompression !== 0) {
+      writer.uint32(280).int32(message.defaultCompression);
     }
     return writer;
   },
@@ -286,23 +360,29 @@ export const YdbTarget = {
         case 2:
           message.instance = reader.string();
           break;
+        case 10:
+          message.path = reader.string();
+          break;
         case 11:
           message.serviceAccountId = reader.string();
           break;
-        case 10:
-          message.path = reader.string();
+        case 21:
+          message.cleanupPolicy = reader.int32() as any;
           break;
         case 30:
           message.subnetId = reader.string();
           break;
-        case 33:
-          message.securityGroups.push(reader.string());
-          break;
         case 32:
           message.saKeyContent = reader.string();
           break;
-        case 21:
-          message.cleanupPolicy = reader.int32() as any;
+        case 33:
+          message.securityGroups.push(reader.string());
+          break;
+        case 34:
+          message.isTableColumnOriented = reader.bool();
+          break;
+        case 35:
+          message.defaultCompression = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -322,28 +402,38 @@ export const YdbTarget = {
       object.instance !== undefined && object.instance !== null
         ? String(object.instance)
         : "";
-    message.serviceAccountId =
-      object.serviceAccountId !== undefined && object.serviceAccountId !== null
-        ? String(object.serviceAccountId)
-        : "";
     message.path =
       object.path !== undefined && object.path !== null
         ? String(object.path)
         : "";
-    message.subnetId =
-      object.subnetId !== undefined && object.subnetId !== null
-        ? String(object.subnetId)
-        : "";
-    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
-      String(e)
-    );
-    message.saKeyContent =
-      object.saKeyContent !== undefined && object.saKeyContent !== null
-        ? String(object.saKeyContent)
+    message.serviceAccountId =
+      object.serviceAccountId !== undefined && object.serviceAccountId !== null
+        ? String(object.serviceAccountId)
         : "";
     message.cleanupPolicy =
       object.cleanupPolicy !== undefined && object.cleanupPolicy !== null
         ? ydbCleanupPolicyFromJSON(object.cleanupPolicy)
+        : 0;
+    message.subnetId =
+      object.subnetId !== undefined && object.subnetId !== null
+        ? String(object.subnetId)
+        : "";
+    message.saKeyContent =
+      object.saKeyContent !== undefined && object.saKeyContent !== null
+        ? String(object.saKeyContent)
+        : "";
+    message.securityGroups = (object.securityGroups ?? []).map((e: any) =>
+      String(e)
+    );
+    message.isTableColumnOriented =
+      object.isTableColumnOriented !== undefined &&
+      object.isTableColumnOriented !== null
+        ? Boolean(object.isTableColumnOriented)
+        : false;
+    message.defaultCompression =
+      object.defaultCompression !== undefined &&
+      object.defaultCompression !== null
+        ? ydbDefaultCompressionFromJSON(object.defaultCompression)
         : 0;
     return message;
   },
@@ -352,19 +442,25 @@ export const YdbTarget = {
     const obj: any = {};
     message.database !== undefined && (obj.database = message.database);
     message.instance !== undefined && (obj.instance = message.instance);
+    message.path !== undefined && (obj.path = message.path);
     message.serviceAccountId !== undefined &&
       (obj.serviceAccountId = message.serviceAccountId);
-    message.path !== undefined && (obj.path = message.path);
+    message.cleanupPolicy !== undefined &&
+      (obj.cleanupPolicy = ydbCleanupPolicyToJSON(message.cleanupPolicy));
     message.subnetId !== undefined && (obj.subnetId = message.subnetId);
+    message.saKeyContent !== undefined &&
+      (obj.saKeyContent = message.saKeyContent);
     if (message.securityGroups) {
       obj.securityGroups = message.securityGroups.map((e) => e);
     } else {
       obj.securityGroups = [];
     }
-    message.saKeyContent !== undefined &&
-      (obj.saKeyContent = message.saKeyContent);
-    message.cleanupPolicy !== undefined &&
-      (obj.cleanupPolicy = ydbCleanupPolicyToJSON(message.cleanupPolicy));
+    message.isTableColumnOriented !== undefined &&
+      (obj.isTableColumnOriented = message.isTableColumnOriented);
+    message.defaultCompression !== undefined &&
+      (obj.defaultCompression = ydbDefaultCompressionToJSON(
+        message.defaultCompression
+      ));
     return obj;
   },
 
@@ -374,12 +470,14 @@ export const YdbTarget = {
     const message = { ...baseYdbTarget } as YdbTarget;
     message.database = object.database ?? "";
     message.instance = object.instance ?? "";
-    message.serviceAccountId = object.serviceAccountId ?? "";
     message.path = object.path ?? "";
-    message.subnetId = object.subnetId ?? "";
-    message.securityGroups = object.securityGroups?.map((e) => e) || [];
-    message.saKeyContent = object.saKeyContent ?? "";
+    message.serviceAccountId = object.serviceAccountId ?? "";
     message.cleanupPolicy = object.cleanupPolicy ?? 0;
+    message.subnetId = object.subnetId ?? "";
+    message.saKeyContent = object.saKeyContent ?? "";
+    message.securityGroups = object.securityGroups?.map((e) => e) || [];
+    message.isTableColumnOriented = object.isTableColumnOriented ?? false;
+    message.defaultCompression = object.defaultCompression ?? 0;
     return message;
   },
 };

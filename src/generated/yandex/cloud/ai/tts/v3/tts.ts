@@ -144,6 +144,12 @@ export interface UtteranceSynthesisResponse {
   $type: "speechkit.tts.v3.UtteranceSynthesisResponse";
   /** Part of synthesized audio. */
   audioChunk?: AudioChunk;
+  /** Part of synthesized text. */
+  textChunk?: TextChunk;
+  /** Start time of the audio chunk in milliseconds. */
+  startMs: number;
+  /** Length of the audio chunk in milliseconds. */
+  lengthMs: number;
 }
 
 export interface AudioTemplate {
@@ -162,6 +168,12 @@ export interface AudioChunk {
   data: Buffer;
 }
 
+export interface TextChunk {
+  $type: "speechkit.tts.v3.TextChunk";
+  /** Synthesized text. */
+  text: string;
+}
+
 export interface TextTemplate {
   $type: "speechkit.tts.v3.TextTemplate";
   /**
@@ -176,6 +188,65 @@ export interface TextTemplate {
    * Sample: `{animal: cat, place: forest}`
    */
   variables: TextVariable[];
+}
+
+export interface DurationHint {
+  $type: "speechkit.tts.v3.DurationHint";
+  /** Type of duration constraint. */
+  policy: DurationHint_DurationHintPolicy;
+  /** Constraint on audio duration in milliseconds. */
+  durationMs: number;
+}
+
+export enum DurationHint_DurationHintPolicy {
+  DURATION_HINT_POLICY_UNSPECIFIED = 0,
+  /** EXACT_DURATION - Limit audio duration to exact value. */
+  EXACT_DURATION = 1,
+  /** MIN_DURATION - Limit the minimum audio duration. */
+  MIN_DURATION = 2,
+  /** MAX_DURATION - Limit the maximum audio duration. */
+  MAX_DURATION = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function durationHint_DurationHintPolicyFromJSON(
+  object: any
+): DurationHint_DurationHintPolicy {
+  switch (object) {
+    case 0:
+    case "DURATION_HINT_POLICY_UNSPECIFIED":
+      return DurationHint_DurationHintPolicy.DURATION_HINT_POLICY_UNSPECIFIED;
+    case 1:
+    case "EXACT_DURATION":
+      return DurationHint_DurationHintPolicy.EXACT_DURATION;
+    case 2:
+    case "MIN_DURATION":
+      return DurationHint_DurationHintPolicy.MIN_DURATION;
+    case 3:
+    case "MAX_DURATION":
+      return DurationHint_DurationHintPolicy.MAX_DURATION;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return DurationHint_DurationHintPolicy.UNRECOGNIZED;
+  }
+}
+
+export function durationHint_DurationHintPolicyToJSON(
+  object: DurationHint_DurationHintPolicy
+): string {
+  switch (object) {
+    case DurationHint_DurationHintPolicy.DURATION_HINT_POLICY_UNSPECIFIED:
+      return "DURATION_HINT_POLICY_UNSPECIFIED";
+    case DurationHint_DurationHintPolicy.EXACT_DURATION:
+      return "EXACT_DURATION";
+    case DurationHint_DurationHintPolicy.MIN_DURATION:
+      return "MIN_DURATION";
+    case DurationHint_DurationHintPolicy.MAX_DURATION:
+      return "MAX_DURATION";
+    default:
+      return "UNKNOWN";
+  }
 }
 
 export interface Hints {
@@ -196,6 +267,8 @@ export interface Hints {
   role: string | undefined;
   /** Hint to increase (or decrease) speaker's pitch, measured in Hz. Valid values are in range [-1000;1000], default value is 0. */
   pitchShift: number | undefined;
+  /** Hint to limit both minimum and maximum audio duration. */
+  duration?: DurationHint | undefined;
 }
 
 export interface UtteranceSynthesisRequest {
@@ -755,6 +828,8 @@ messageTypeRegistry.set(AudioVariable.$type, AudioVariable);
 
 const baseUtteranceSynthesisResponse: object = {
   $type: "speechkit.tts.v3.UtteranceSynthesisResponse",
+  startMs: 0,
+  lengthMs: 0,
 };
 
 export const UtteranceSynthesisResponse = {
@@ -766,6 +841,15 @@ export const UtteranceSynthesisResponse = {
   ): _m0.Writer {
     if (message.audioChunk !== undefined) {
       AudioChunk.encode(message.audioChunk, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.textChunk !== undefined) {
+      TextChunk.encode(message.textChunk, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.startMs !== 0) {
+      writer.uint32(24).int64(message.startMs);
+    }
+    if (message.lengthMs !== 0) {
+      writer.uint32(32).int64(message.lengthMs);
     }
     return writer;
   },
@@ -785,6 +869,15 @@ export const UtteranceSynthesisResponse = {
         case 1:
           message.audioChunk = AudioChunk.decode(reader, reader.uint32());
           break;
+        case 2:
+          message.textChunk = TextChunk.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.startMs = longToNumber(reader.int64() as Long);
+          break;
+        case 4:
+          message.lengthMs = longToNumber(reader.int64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -801,6 +894,18 @@ export const UtteranceSynthesisResponse = {
       object.audioChunk !== undefined && object.audioChunk !== null
         ? AudioChunk.fromJSON(object.audioChunk)
         : undefined;
+    message.textChunk =
+      object.textChunk !== undefined && object.textChunk !== null
+        ? TextChunk.fromJSON(object.textChunk)
+        : undefined;
+    message.startMs =
+      object.startMs !== undefined && object.startMs !== null
+        ? Number(object.startMs)
+        : 0;
+    message.lengthMs =
+      object.lengthMs !== undefined && object.lengthMs !== null
+        ? Number(object.lengthMs)
+        : 0;
     return message;
   },
 
@@ -810,6 +915,14 @@ export const UtteranceSynthesisResponse = {
       (obj.audioChunk = message.audioChunk
         ? AudioChunk.toJSON(message.audioChunk)
         : undefined);
+    message.textChunk !== undefined &&
+      (obj.textChunk = message.textChunk
+        ? TextChunk.toJSON(message.textChunk)
+        : undefined);
+    message.startMs !== undefined &&
+      (obj.startMs = Math.round(message.startMs));
+    message.lengthMs !== undefined &&
+      (obj.lengthMs = Math.round(message.lengthMs));
     return obj;
   },
 
@@ -823,6 +936,12 @@ export const UtteranceSynthesisResponse = {
       object.audioChunk !== undefined && object.audioChunk !== null
         ? AudioChunk.fromPartial(object.audioChunk)
         : undefined;
+    message.textChunk =
+      object.textChunk !== undefined && object.textChunk !== null
+        ? TextChunk.fromPartial(object.textChunk)
+        : undefined;
+    message.startMs = object.startMs ?? 0;
+    message.lengthMs = object.lengthMs ?? 0;
     return message;
   },
 };
@@ -1000,6 +1119,65 @@ export const AudioChunk = {
 
 messageTypeRegistry.set(AudioChunk.$type, AudioChunk);
 
+const baseTextChunk: object = { $type: "speechkit.tts.v3.TextChunk", text: "" };
+
+export const TextChunk = {
+  $type: "speechkit.tts.v3.TextChunk" as const,
+
+  encode(
+    message: TextChunk,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.text !== "") {
+      writer.uint32(10).string(message.text);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TextChunk {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseTextChunk } as TextChunk;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.text = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TextChunk {
+    const message = { ...baseTextChunk } as TextChunk;
+    message.text =
+      object.text !== undefined && object.text !== null
+        ? String(object.text)
+        : "";
+    return message;
+  },
+
+  toJSON(message: TextChunk): unknown {
+    const obj: any = {};
+    message.text !== undefined && (obj.text = message.text);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<TextChunk>, I>>(
+    object: I
+  ): TextChunk {
+    const message = { ...baseTextChunk } as TextChunk;
+    message.text = object.text ?? "";
+    return message;
+  },
+};
+
+messageTypeRegistry.set(TextChunk.$type, TextChunk);
+
 const baseTextTemplate: object = {
   $type: "speechkit.tts.v3.TextTemplate",
   textTemplate: "",
@@ -1082,6 +1260,83 @@ export const TextTemplate = {
 
 messageTypeRegistry.set(TextTemplate.$type, TextTemplate);
 
+const baseDurationHint: object = {
+  $type: "speechkit.tts.v3.DurationHint",
+  policy: 0,
+  durationMs: 0,
+};
+
+export const DurationHint = {
+  $type: "speechkit.tts.v3.DurationHint" as const,
+
+  encode(
+    message: DurationHint,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.policy !== 0) {
+      writer.uint32(8).int32(message.policy);
+    }
+    if (message.durationMs !== 0) {
+      writer.uint32(16).int64(message.durationMs);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DurationHint {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseDurationHint } as DurationHint;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.policy = reader.int32() as any;
+          break;
+        case 2:
+          message.durationMs = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DurationHint {
+    const message = { ...baseDurationHint } as DurationHint;
+    message.policy =
+      object.policy !== undefined && object.policy !== null
+        ? durationHint_DurationHintPolicyFromJSON(object.policy)
+        : 0;
+    message.durationMs =
+      object.durationMs !== undefined && object.durationMs !== null
+        ? Number(object.durationMs)
+        : 0;
+    return message;
+  },
+
+  toJSON(message: DurationHint): unknown {
+    const obj: any = {};
+    message.policy !== undefined &&
+      (obj.policy = durationHint_DurationHintPolicyToJSON(message.policy));
+    message.durationMs !== undefined &&
+      (obj.durationMs = Math.round(message.durationMs));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DurationHint>, I>>(
+    object: I
+  ): DurationHint {
+    const message = { ...baseDurationHint } as DurationHint;
+    message.policy = object.policy ?? 0;
+    message.durationMs = object.durationMs ?? 0;
+    return message;
+  },
+};
+
+messageTypeRegistry.set(DurationHint.$type, DurationHint);
+
 const baseHints: object = { $type: "speechkit.tts.v3.Hints" };
 
 export const Hints = {
@@ -1108,6 +1363,9 @@ export const Hints = {
     }
     if (message.pitchShift !== undefined) {
       writer.uint32(49).double(message.pitchShift);
+    }
+    if (message.duration !== undefined) {
+      DurationHint.encode(message.duration, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -1136,6 +1394,9 @@ export const Hints = {
           break;
         case 6:
           message.pitchShift = reader.double();
+          break;
+        case 7:
+          message.duration = DurationHint.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1171,6 +1432,10 @@ export const Hints = {
       object.pitchShift !== undefined && object.pitchShift !== null
         ? Number(object.pitchShift)
         : undefined;
+    message.duration =
+      object.duration !== undefined && object.duration !== null
+        ? DurationHint.fromJSON(object.duration)
+        : undefined;
     return message;
   },
 
@@ -1185,6 +1450,10 @@ export const Hints = {
     message.volume !== undefined && (obj.volume = message.volume);
     message.role !== undefined && (obj.role = message.role);
     message.pitchShift !== undefined && (obj.pitchShift = message.pitchShift);
+    message.duration !== undefined &&
+      (obj.duration = message.duration
+        ? DurationHint.toJSON(message.duration)
+        : undefined);
     return obj;
   },
 
@@ -1199,6 +1468,10 @@ export const Hints = {
     message.volume = object.volume ?? undefined;
     message.role = object.role ?? undefined;
     message.pitchShift = object.pitchShift ?? undefined;
+    message.duration =
+      object.duration !== undefined && object.duration !== null
+        ? DurationHint.fromPartial(object.duration)
+        : undefined;
     return message;
   },
 };
