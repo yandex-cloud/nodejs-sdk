@@ -129,4 +129,5 @@ YC_OAUTH_TOKEN=... YC_FOLDER_ID=... npm run start path/to/example.ts
 * Virtual Private Cloud (VPC)
 * Yandex Database (YDB)
 
+
 If you need generated client for other Yandex.Cloud services, just open an issue.
