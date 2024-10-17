@@ -1,8 +1,6 @@
 import * as fg from 'fast-glob';
 import * as path from 'path';
-import {
-    Namespace, NamespaceBase, Root, Service,
-} from 'protobufjs';
+import { Namespace, NamespaceBase, Root, Service } from 'protobufjs';
 import { SERVICE_ENDPOINTS_LIST } from '../src/service-endpoints';
 
 const PROTO_DIR = path.resolve('./cloudapi');
@@ -39,8 +37,9 @@ pbRoot.resolvePath = (origin, target) => {
 
 const SERVICES: Service[] = [];
 const findServices = <T extends NamespaceBase>(node: T) => {
-    for (const child of Object.values(node.nested ?? {})
-        .sort((a, b) => (a.name < b.name ? -1 : (a.name === b.name ? 0 : 1)))) {
+    for (const child of Object.values(node.nested ?? {}).sort((a, b) =>
+        a.name < b.name ? -1 : a.name === b.name ? 0 : 1,
+    )) {
         if (child instanceof Service) {
             SERVICES.push(child);
         } else if (child instanceof Namespace) {
