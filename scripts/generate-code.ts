@@ -2,7 +2,6 @@ import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as fg from 'fast-glob';
-import * as _ from 'lodash';
 
 import { logger } from '../src/utils/logger';
 import { servicesConfig } from './services';
@@ -21,9 +20,7 @@ fs.mkdirSync(GENERATED_CODE_DIR);
 
 const protoFiles = fg.sync('**/*.proto', { cwd: YA_PROTO_DIR, absolute: true });
 
-logger.debug(
-    `Found ${protoFiles.length} proto files in ${YA_PROTO_DIR} directory`,
-);
+logger.debug(`Found ${protoFiles.length} proto files in ${YA_PROTO_DIR} directory`);
 
 const commandArgs = [
     'npx --no-install grpc_tools_node_protoc',
@@ -58,11 +55,12 @@ interface ProjectMeta {
 
 const projectsMeta: Record<string, ProjectMeta> = {};
 
-const getExportAlias = (relativePath: string) => exportAliasExceptions[relativePath]
-        || relativePath
-            .split(path.sep)
-            .filter((str) => str !== 'v1')
-            .join('_');
+const getExportAlias = (relativePath: string) =>
+    exportAliasExceptions[relativePath] ||
+    relativePath
+        .split(path.sep)
+        .filter((str) => str !== 'v1')
+        .join('_');
 
 for (const projectDir of projectsDirs) {
     logger.debug(`Processing project directory ${projectDir}`);
@@ -86,9 +84,7 @@ for (const projectDir of projectsDirs) {
         };
 
         const exportStatements = projectModules.map((modulePath) => {
-            const relativePath = path
-                .relative(projectDir, modulePath)
-                .replace('.ts', '');
+            const relativePath = path.relative(projectDir, modulePath).replace('.ts', '');
 
             const exportAlias = getExportAlias(relativePath);
 
@@ -106,10 +102,7 @@ for (const projectDir of projectsDirs) {
 
         const indexModuleContent = exportStatements.join('\n');
 
-        logger.debug(
-            `Writing export statements to ${indexModulePath} module`,
-            indexModuleContent,
-        );
+        logger.debug(`Writing export statements to ${indexModulePath} module`, indexModuleContent);
 
         fs.writeFileSync(indexModulePath, indexModuleContent, 'utf8');
     }
@@ -118,14 +111,9 @@ for (const projectDir of projectsDirs) {
 logger.debug('Generating root index module');
 
 const rootIndexModulePath = path.join(GENERATED_PROJECTS_DIR, 'index.ts');
-const serviceClientsModulePath = path.join(
-    GENERATED_PROJECTS_DIR,
-    'service_clients.ts',
-);
+const serviceClientsModulePath = path.join(GENERATED_PROJECTS_DIR, 'service_clients.ts');
 const rootModuleContentParts: string[] = [];
-const serviceClientsModuleContentParts: string[] = [
-    "import * as cloudApi from '.'",
-];
+const serviceClientsModuleContentParts: string[] = ["import * as cloudApi from '.'"];
 
 const serviceClientsExportsSet = new Set<string>();
 
@@ -135,9 +123,7 @@ for (const [indexModulePath, projectMeta] of Object.entries(projectsMeta)) {
         .relative(GENERATED_PROJECTS_DIR, indexModulePath)
         .replace('index.ts', '');
 
-    rootModuleContentParts.push(
-        `export * as ${projectMeta.name} from './${relativePath}'`,
-    );
+    rootModuleContentParts.push(`export * as ${projectMeta.name} from './${relativePath}'`);
 
     for (const serviceMeta of projectMeta.services) {
         const serviceConfig = servicesConfig[projectMeta.name]?.[serviceMeta.exportAlias];
@@ -173,21 +159,9 @@ for (const serviceName of Object.keys(servicesConfig)) {
     const keys = Object.keys(obj);
 
     if (keys.length > 0) {
-        logger.warn(
-            `There are unused config keys for service ${serviceName}: ${keys.join(
-                ', ',
-            )}`,
-        );
+        logger.warn(`There are unused config keys for service ${serviceName}: ${keys.join(', ')}`);
     }
 }
 
-fs.writeFileSync(
-    rootIndexModulePath,
-    rootModuleContentParts.join('\n'),
-    'utf8',
-);
-fs.writeFileSync(
-    serviceClientsModulePath,
-    serviceClientsModuleContentParts.join('\n'),
-    'utf8',
-);
+fs.writeFileSync(rootIndexModulePath, rootModuleContentParts.join('\n'), 'utf8');
+fs.writeFileSync(serviceClientsModulePath, serviceClientsModuleContentParts.join('\n'), 'utf8');
