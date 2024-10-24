@@ -48,7 +48,6 @@ const findServices = <T extends NamespaceBase>(node: T) => {
     }
 };
 
-// eslint-disable-next-line unicorn/prefer-top-level-await
 pbRoot.load(protoFiles, { alternateCommentMode: true }).then((loadedRoot) => {
     const SERVICE_IDS = new Set<string>();
     let hasMissing = false;
@@ -65,14 +64,12 @@ pbRoot.load(protoFiles, { alternateCommentMode: true }).then((loadedRoot) => {
         const fullName = s.fullName.slice(1);
 
         if (!SERVICE_IDS.has(fullName)) {
-            // eslint-disable-next-line no-console
             console.log('Missing service', fullName);
             hasMissing = true;
         }
     }
 
     if (hasMissing) {
-        // eslint-disable-next-line unicorn/no-process-exit
         process.exit(1);
     }
 });

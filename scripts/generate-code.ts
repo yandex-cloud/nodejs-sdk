@@ -2,7 +2,6 @@ import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as fg from 'fast-glob';
-import * as _ from 'lodash';
 
 import { logger } from '../src/utils/logger';
 import { servicesConfig } from './services';

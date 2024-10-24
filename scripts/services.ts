@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 type ServicesConfig = Record<
     string,
     Record<string, { importClassName: string; exportClassName?: string }>

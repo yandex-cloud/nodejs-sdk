@@ -204,15 +204,11 @@ export const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
         endpoint: 'logging.api.cloud.yandex.net:443',
     },
     {
-        serviceIds: [
-            'yandex.cloud.logging.v1.LogReadingService',
-        ],
+        serviceIds: ['yandex.cloud.logging.v1.LogReadingService'],
         endpoint: 'reader.logging.yandexcloud.net:443',
     },
     {
-        serviceIds: [
-            'yandex.cloud.logging.v1.LogIngestionService',
-        ],
+        serviceIds: ['yandex.cloud.logging.v1.LogIngestionService'],
         endpoint: 'ingester.logging.yandexcloud.net:443',
     },
     {
@@ -241,15 +237,11 @@ export const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
         endpoint: 'iot-data.api.cloud.yandex.net:443',
     },
     {
-        serviceIds: [
-            'yandex.cloud.iot.broker.v1.BrokerService',
-        ],
+        serviceIds: ['yandex.cloud.iot.broker.v1.BrokerService'],
         endpoint: 'iot-broker.api.cloud.yandex.net:443',
     },
     {
-        serviceIds: [
-            'yandex.cloud.monitoring.v3.DashboardService',
-        ],
+        serviceIds: ['yandex.cloud.monitoring.v3.DashboardService'],
         endpoint: 'monitoring.api.cloud.yandex.net:443',
     },
     {
@@ -337,15 +329,11 @@ export const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
         endpoint: 'cdn.api.cloud.yandex.net:443',
     },
     {
-        serviceIds: [
-            'yandex.cloud.certificatemanager.v1.CertificateService',
-        ],
+        serviceIds: ['yandex.cloud.certificatemanager.v1.CertificateService'],
         endpoint: 'certificate-manager.api.cloud.yandex.net:443',
     },
     {
-        serviceIds: [
-            'yandex.cloud.certificatemanager.v1.CertificateContentService',
-        ],
+        serviceIds: ['yandex.cloud.certificatemanager.v1.CertificateContentService'],
         endpoint: 'data.certificate-manager.api.cloud.yandex.net:443',
     },
     {
@@ -368,21 +356,15 @@ export const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
         endpoint: 'datatransfer.api.cloud.yandex.net:443',
     },
     {
-        serviceIds: [
-            'yandex.cloud.dns.v1.DnsZoneService',
-        ],
+        serviceIds: ['yandex.cloud.dns.v1.DnsZoneService'],
         endpoint: 'dns.api.cloud.yandex.net:443',
     },
     {
-        serviceIds: [
-            'yandex.cloud.lockbox.v1.SecretService',
-        ],
+        serviceIds: ['yandex.cloud.lockbox.v1.SecretService'],
         endpoint: 'lockbox.api.cloud.yandex.net:443',
     },
     {
-        serviceIds: [
-            'yandex.cloud.lockbox.v1.PayloadService',
-        ],
+        serviceIds: ['yandex.cloud.lockbox.v1.PayloadService'],
         endpoint: 'payload.lockbox.api.cloud.yandex.net:443',
     },
     {
@@ -407,9 +389,7 @@ export const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
         endpoint: 'organization-manager.api.cloud.yandex.net:443',
     },
     {
-        serviceIds: [
-            'yandex.cloud.storage.v1.BucketService',
-        ],
+        serviceIds: ['yandex.cloud.storage.v1.BucketService'],
         endpoint: 'storage.api.cloud.yandex.net:443',
     },
     {
@@ -425,10 +405,7 @@ export const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
         endpoint: 'loadtesting.api.cloud.yandex.net:443',
     },
     {
-        serviceIds: [
-            'speechkit.stt.v3.AsyncRecognizer',
-            'speechkit.stt.v3.Recognizer',
-        ],
+        serviceIds: ['speechkit.stt.v3.AsyncRecognizer', 'speechkit.stt.v3.Recognizer'],
         endpoint: 'stt.api.cloud.yandex.net:443',
     },
     {
@@ -442,7 +419,9 @@ export const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
     },
 ];
 
-export const getServiceClientEndpoint = <T extends ServiceDefinition>(generatedClientCtor: GeneratedServiceClientCtor<T>): string => {
+export const getServiceClientEndpoint = <T extends ServiceDefinition>(
+    generatedClientCtor: GeneratedServiceClientCtor<T>,
+): string => {
     const clientCtor = generatedClientCtor as unknown as ServiceClientConstructor;
     const serviceName: string = clientCtor.serviceName as string;
 
@@ -450,7 +429,9 @@ export const getServiceClientEndpoint = <T extends ServiceDefinition>(generatedC
         throw new Error('Unable to retrieve serviceName of provided service client class');
     }
 
-    const endpointItem = SERVICE_ENDPOINTS_LIST.find((item) => item.serviceIds.includes(serviceName));
+    const endpointItem = SERVICE_ENDPOINTS_LIST.find((item) =>
+        item.serviceIds.includes(serviceName),
+    );
 
     if (!endpointItem) {
         throw new Error(`Endpoint for service ${serviceName} is no defined`);
