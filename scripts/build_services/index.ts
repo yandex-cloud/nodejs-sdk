@@ -4,7 +4,7 @@ import fs from 'fs';
 import { Options } from 'ts-loader';
 
 const getServices = () => {
-    const files = fs.readdirSync(path.resolve(__dirname, './clients'), { withFileTypes: true });
+    const files = fs.readdirSync(path.resolve('./clients'), { withFileTypes: true });
     return files.filter((file) => file.isDirectory()).map((file) => file.name);
 };
 
@@ -51,7 +51,7 @@ const getConfig = (tsLoaderOptions: Partial<Options>): webpack.Configuration => 
 const getServiceConfig = (serviceName: string): webpack.Configuration => {
     const tsLoaderOptions: Partial<Options> = {
         compilerOptions: {
-            outDir: path.resolve(__dirname, `./${serviceName}`),
+            outDir: path.resolve(`./${serviceName}`),
         },
         onlyCompileBundledFiles: true,
     };
@@ -61,18 +61,35 @@ const getServiceConfig = (serviceName: string): webpack.Configuration => {
     return {
         ...config,
         name: serviceName,
-        entry: path.resolve(__dirname, `./clients/${serviceName}/index.ts`),
+        entry: path.resolve(`./clients/${serviceName}/index.ts`),
         output: {
-            path: path.resolve(__dirname, serviceName),
+            path: path.resolve(serviceName),
             filename: 'index.js',
             libraryTarget: 'umd',
             library: serviceName,
             umdNamedDefine: true,
         },
+        stats: {
+            colors: true,
+            logging: 'log',
+        },
     };
 };
 
-const serviceConfigList = getServices().map(getServiceConfig);
+(async () => {
+    const serviceConfigList = getServices().map(getServiceConfig);
 
-module.exports = serviceConfigList;
-module.exports.parallelism = 1;
+    for (let i = 0; i !== serviceConfigList.length; i++) {
+        const config = serviceConfigList[i];
+
+        console.log('Started', config.name);
+
+        await new Promise<null>((res) => {
+            webpack(config, (err) => {
+                console.log('Ended', config.name, err);
+
+                res(null);
+            });
+        });
+    }
+})();
