@@ -13,8 +13,12 @@ import {
 import { IamTokenService } from './token-service/iam-token-service';
 import { MetadataTokenService } from './token-service/metadata-token-service';
 import { clientFactory } from './utils/client-factory';
-import { cloudApi, serviceClients } from '.';
+
 import { getServiceClientEndpoint } from './service-endpoints';
+import {
+    CreateIamTokenRequest,
+    IamTokenServiceClient,
+} from './generated/yandex/cloud/iam/v1/iam_token_service';
 
 const isOAuth = (config: SessionConfig): config is OAuthCredentialsConfig => 'oauthToken' in config;
 
@@ -24,15 +28,10 @@ const isIamToken = (config: SessionConfig): config is IamTokenCredentialsConfig 
 const isServiceAccount = (config: SessionConfig): config is ServiceAccountCredentialsConfig =>
     'serviceAccountJson' in config;
 
-const createIamToken = async (
-    iamEndpoint: string,
-    req: Partial<cloudApi.iam.iam_token_service.CreateIamTokenRequest>,
-) => {
+const createIamToken = async (iamEndpoint: string, req: Partial<CreateIamTokenRequest>) => {
     const channel = createChannel(iamEndpoint, credentials.createSsl());
-    const client = clientFactory.create(serviceClients.IamTokenServiceClient.service, channel);
-    const resp = await client.create(
-        cloudApi.iam.iam_token_service.CreateIamTokenRequest.fromPartial(req),
-    );
+    const client = clientFactory.create(IamTokenServiceClient.service, channel);
+    const resp = await client.create(CreateIamTokenRequest.fromPartial(req));
 
     return resp.iamToken;
 };
@@ -40,7 +39,7 @@ const createIamToken = async (
 const newTokenCreator = (config: SessionConfig): (() => Promise<string>) => {
     if (isOAuth(config)) {
         return () => {
-            const iamEndpoint = getServiceClientEndpoint(serviceClients.IamTokenServiceClient);
+            const iamEndpoint = getServiceClientEndpoint(IamTokenServiceClient);
 
             return createIamToken(iamEndpoint, {
                 yandexPassportOauthToken: config.oauthToken,

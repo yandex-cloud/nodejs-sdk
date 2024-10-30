@@ -2,12 +2,14 @@ import { credentials } from '@grpc/grpc-js';
 import * as jwt from 'jsonwebtoken';
 import { DateTime } from 'luxon';
 import { createChannel } from 'nice-grpc';
-import { cloudApi, serviceClients } from '..';
 import { getServiceClientEndpoint } from '../service-endpoints';
 import { IIAmCredentials, ISslCredentials, TokenService } from '../types';
 import { clientFactory } from '../utils/client-factory';
-
-const { IamTokenServiceClient } = serviceClients;
+import {
+    CreateIamTokenRequest,
+    CreateIamTokenResponse,
+    IamTokenServiceClient,
+} from '../generated/yandex/cloud/iam/v1/iam_token_service';
 
 export class IamTokenService implements TokenService {
     public readonly sslCredentials?: ISslCredentials;
@@ -76,11 +78,11 @@ export class IamTokenService implements TokenService {
         }
     }
 
-    private async requestToken(): Promise<cloudApi.iam.iam_token_service.CreateIamTokenResponse> {
+    private async requestToken(): Promise<CreateIamTokenResponse> {
         const deadline = DateTime.now().plus({ millisecond: this.tokenRequestTimeout }).toJSDate();
 
         return this.client().create(
-            cloudApi.iam.iam_token_service.CreateIamTokenRequest.fromPartial({
+            CreateIamTokenRequest.fromPartial({
                 jwt: this.getJwtRequest(),
             }),
             { deadline },
