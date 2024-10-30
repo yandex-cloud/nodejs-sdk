@@ -3,7 +3,10 @@ import webpack from 'webpack';
 import fs from 'fs';
 import { Options } from 'ts-loader';
 
-const getServices = () => fs.readdirSync(path.resolve(__dirname, './clients'));
+const getServices = () => {
+    const files = fs.readdirSync(path.resolve(__dirname, './clients'), { withFileTypes: true });
+    return files.filter((file) => file.isDirectory()).map((file) => file.name);
+};
 
 const getConfig = (tsLoaderOptions: Partial<Options>): webpack.Configuration => ({
     mode: 'development',
@@ -69,5 +72,7 @@ const getServiceConfig = (serviceName: string): webpack.Configuration => {
     };
 };
 
-module.exports = getServices().map(getServiceConfig);
+const serviceConfigList = getServices().map(getServiceConfig);
+
+module.exports = serviceConfigList;
 module.exports.parallelism = 1;
