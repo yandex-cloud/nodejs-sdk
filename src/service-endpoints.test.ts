@@ -2,13 +2,12 @@ import { getServiceClientEndpoint } from './service-endpoints';
 import { serviceClients } from '.';
 import { GeneratedServiceClientCtor } from './types';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-type MockServiceClientCtor = GeneratedServiceClientCtor<{}>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type MockServiceClientCtor = GeneratedServiceClientCtor<any>;
 
 describe('service endpoints', () => {
     it('each service in generated service_clients module should have endpoint declared in service-endpoints', () => {
         for (const [, ServiceClient] of Object.entries(serviceClients)) {
-            // eslint-disable-next-line @typescript-eslint/no-loop-func
             expect(() => {
                 const endpoint = getServiceClientEndpoint(ServiceClient as MockServiceClientCtor);
 

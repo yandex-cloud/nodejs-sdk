@@ -11,12 +11,7 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": [
-    "@typescript-eslint",
-    "unicorn",
-    "import",
-    "prefer-arrow-functions"
-  ],
+  "plugins": ["@typescript-eslint", "unicorn", "import", "prefer-arrow-functions"],
   "parserOptions": {
     "project": "tsconfig.eslint.json"
   },
@@ -42,14 +37,20 @@
     "no-plusplus": "off",
     "unicorn/import-style": "off",
     "@typescript-eslint/no-var-requires": "off",
-    "no-underscore-dangle": ["error", {
-      "allowAfterThis": true,
-      "allowAfterSuper": false
-    }],
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allowAfterThis": true,
+        "allowAfterSuper": false
+      }
+    ],
     "unicorn/no-null": "off",
-    "import/no-extraneous-dependencies": ["error", {
-      "devDependencies": true
-    }],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true
+      }
+    ],
     "import/no-cycle": "off"
   }
 }

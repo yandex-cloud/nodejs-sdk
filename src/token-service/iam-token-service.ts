@@ -28,8 +28,8 @@ export class IamTokenService implements TokenService {
 
     private get expired() {
         return (
-            !this.tokenTimestamp
-            || DateTime.utc().diff(this.tokenTimestamp).valueOf() > this.tokenExpirationTimeout
+            !this.tokenTimestamp ||
+            DateTime.utc().diff(this.tokenTimestamp).valueOf() > this.tokenExpirationTimeout
         );
     }
 

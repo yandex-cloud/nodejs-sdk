@@ -1,0 +1,30 @@
+// generated file
+
+export * as agent from './generated/yandex/cloud/loadtesting/api/v1/agent/agent';
+export * as createComputeInstance from './generated/yandex/cloud/loadtesting/api/v1/agent/create_compute_instance';
+export * as logSettings from './generated/yandex/cloud/loadtesting/api/v1/agent/log_settings';
+export * as status from './generated/yandex/cloud/loadtesting/api/v1/agent/status';
+export * as agentService from './generated/yandex/cloud/loadtesting/api/v1/agent_service';
+export * as quantiles from './generated/yandex/cloud/loadtesting/api/v1/common/quantiles';
+export * as tag from './generated/yandex/cloud/loadtesting/api/v1/common/tag';
+export * as config from './generated/yandex/cloud/loadtesting/api/v1/config/config';
+export * as configService from './generated/yandex/cloud/loadtesting/api/v1/config_service';
+export * as dashboard from './generated/yandex/cloud/loadtesting/api/v1/regression/dashboard';
+export * as widget from './generated/yandex/cloud/loadtesting/api/v1/regression/widget';
+export * as regressionDashboardService from './generated/yandex/cloud/loadtesting/api/v1/regression_dashboard_service';
+export * as kpi from './generated/yandex/cloud/loadtesting/api/v1/report/kpi';
+export * as kpiValue from './generated/yandex/cloud/loadtesting/api/v1/report/kpi_value';
+export * as reportStatus from './generated/yandex/cloud/loadtesting/api/v1/report/status';
+export * as report from './generated/yandex/cloud/loadtesting/api/v1/report/table/report';
+export * as reportService from './generated/yandex/cloud/loadtesting/api/v1/report_service';
+export * as agentSelector from './generated/yandex/cloud/loadtesting/api/v1/test/agent_selector';
+export * as artifactSettings from './generated/yandex/cloud/loadtesting/api/v1/test/artifact_settings';
+export * as details from './generated/yandex/cloud/loadtesting/api/v1/test/details';
+export * as filePointer from './generated/yandex/cloud/loadtesting/api/v1/test/file_pointer';
+export * as imbalancePoint from './generated/yandex/cloud/loadtesting/api/v1/test/imbalance_point';
+export * as objectStorage from './generated/yandex/cloud/loadtesting/api/v1/test/object_storage';
+export * as singleAgentConfiguration from './generated/yandex/cloud/loadtesting/api/v1/test/single_agent_configuration';
+export * as testStatus from './generated/yandex/cloud/loadtesting/api/v1/test/status';
+export * as summary from './generated/yandex/cloud/loadtesting/api/v1/test/summary';
+export * as test from './generated/yandex/cloud/loadtesting/api/v1/test/test';
+export * as testService from './generated/yandex/cloud/loadtesting/api/v1/test_service';

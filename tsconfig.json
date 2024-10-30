@@ -11,9 +11,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "lib": ["es6"],
-    "disableSizeLimit": true,
+    "disableSizeLimit": true
   },
-  "include": [
-    "./src"
-  ]
+  "include": ["./src"]
 }

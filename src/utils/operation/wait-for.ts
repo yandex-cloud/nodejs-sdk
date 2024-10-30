@@ -16,10 +16,7 @@ export const waitForOperation = (
     timeoutMs: number = DEFAULT_TIMEOUT_MS,
     operationServiceEndpoint?: string,
 ): Promise<Operation> => {
-    const client = session.client(
-        serviceClients.OperationServiceClient,
-        operationServiceEndpoint,
-    );
+    const client = session.client(serviceClients.OperationServiceClient, operationServiceEndpoint);
     const maxChecksCount = Math.ceil(timeoutMs / session.pollInterval);
 
     let checksCount = 0;
