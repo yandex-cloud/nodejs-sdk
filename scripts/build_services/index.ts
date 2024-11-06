@@ -25,26 +25,6 @@ const getConfig = (tsLoaderOptions: Partial<Options>): webpack.Configuration => 
     resolve: {
         plugins: [],
         extensions: ['.tsx', '.ts', '.jsx', '.js', '...'],
-        fallback: {
-            stream: require.resolve('stream-browserify'),
-            zlib: require.resolve('browserify-zlib'),
-            buffer: require.resolve('buffer/'),
-            assert: require.resolve('assert/'),
-            path: require.resolve('path-browserify'),
-            os: require.resolve('os-browserify/browser'),
-
-            url: require.resolve('url'),
-            crypto: require.resolve('crypto-browserify'),
-
-            vm: require.resolve('vm-browserify'),
-            http: require.resolve('stream-http'),
-
-            fs: false,
-            tls: false,
-            net: false,
-            http2: false,
-            dns: false,
-        },
     },
 });
 
