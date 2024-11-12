@@ -1,12 +1,9 @@
-import { cloudApi, serviceClients } from '../..';
 import { Operation } from '../../generated/yandex/cloud/operation/operation';
+import {
+    GetOperationRequest,
+    OperationServiceClient,
+} from '../../generated/yandex/cloud/operation/operation_service';
 import { Session } from '../../session';
-
-const {
-    operation: {
-        operation_service: { GetOperationRequest },
-    },
-} = cloudApi;
 
 const DEFAULT_TIMEOUT_MS = 10 * 60 * 1000; // 10 minutes
 
@@ -16,10 +13,7 @@ export const waitForOperation = (
     timeoutMs: number = DEFAULT_TIMEOUT_MS,
     operationServiceEndpoint?: string,
 ): Promise<Operation> => {
-    const client = session.client(
-        serviceClients.OperationServiceClient,
-        operationServiceEndpoint,
-    );
+    const client = session.client(OperationServiceClient, operationServiceEndpoint);
     const maxChecksCount = Math.ceil(timeoutMs / session.pollInterval);
 
     let checksCount = 0;
