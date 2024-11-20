@@ -117,7 +117,7 @@ const generateService = async (dir: string) => {
 
 const START_SIGN = '# generate_services start';
 
-const modidyGitignore = async (serviceList: string[]) => {
+const modifyGitignore = async (serviceList: string[]) => {
     const path = PATH.resolve('.gitignore');
     const content = fs.readFileSync(path, 'utf8');
 
@@ -126,7 +126,7 @@ const modidyGitignore = async (serviceList: string[]) => {
 
     let newContent = content.substring(0, startIdx + START_SIGN.length + 1);
 
-    serviceList.sort().forEach((service) => {
+    serviceList.forEach((service) => {
         newContent += `/${service}\n`;
     });
 
@@ -135,14 +135,25 @@ const modidyGitignore = async (serviceList: string[]) => {
     fs.writeFileSync(path, newContent, 'utf8');
 };
 
+const modifyPackageJSON = async (serviceList: string[]) => {
+    const path = PATH.resolve('package.json');
+    const data = fs.readFileSync(path, 'utf8');
+    const jsonData = JSON.parse(data);
+
+    jsonData.files = ['dist', ...serviceList];
+
+    fs.writeFileSync(path, JSON.stringify(jsonData, null, 2) + '\n', 'utf8');
+};
+
 const main = async () => {
     const serviceMap = await detectRootServices(YANDEX_CLOUD_DIR);
 
     writeToFile(serviceMap);
 
     const serviceList = await Promise.all(Object.keys(serviceMap).map(generateService));
+    serviceList.sort();
 
-    await modidyGitignore(serviceList);
+    await Promise.all([modifyGitignore(serviceList), modifyPackageJSON(serviceList)]);
 };
 
 if (require.main === module) {
