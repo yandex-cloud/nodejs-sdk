@@ -779,7 +779,15 @@ const baseCluster: object = {
     hostGroupIds: '',
 };
 
-export const Cluster = {
+type ClusterType = {
+    $type: "yandex.cloud.mdb.postgresql.v1.Cluster";
+    encode(message: Cluster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster;
+    fromJSON(object: any): Cluster;
+    toJSON(message: Cluster): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster>, I>>(object: I): Cluster;
+}
+export const Cluster: ClusterType = {
     $type: 'yandex.cloud.mdb.postgresql.v1.Cluster' as const,
 
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
@@ -1220,7 +1228,15 @@ const baseClusterConfig: object = {
     version: '',
 };
 
-export const ClusterConfig = {
+type ClusterConfigType = {
+    $type: "yandex.cloud.mdb.postgresql.v1.ClusterConfig";
+    encode(message: ClusterConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConfig;
+    fromJSON(object: any): ClusterConfig;
+    toJSON(message: ClusterConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClusterConfig>, I>>(object: I): ClusterConfig;
+}
+export const ClusterConfig: ClusterConfigType = {
     $type: 'yandex.cloud.mdb.postgresql.v1.ClusterConfig' as const,
 
     encode(message: ClusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {

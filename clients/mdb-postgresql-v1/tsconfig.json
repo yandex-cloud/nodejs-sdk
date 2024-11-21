@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../mdb-postgresql-v1"
+  },
+  "include": [
+    "."
+  ]
+}

@@ -81,6 +81,20 @@ const addReExportsForService = async (
     fs.writeFileSync(indexModulePath, indexModuleContent, 'utf8');
 };
 
+const initTsConfig = async (absoluteServiceDir: string, serviceName: string) => {
+    const pathStr = PATH.join(absoluteServiceDir, 'tsconfig.json');
+
+    const content = {
+        extends: '../tsconfig',
+        compilerOptions: {
+            outDir: `../../${serviceName}`,
+        },
+        include: ['.'],
+    };
+
+    fs.writeFileSync(pathStr, JSON.stringify(content, null, 2), 'utf8');
+};
+
 const generateService = async (dir: string) => {
     const target = PATH.join(YANDEX_CLOUD_DIR, dir);
 
@@ -110,7 +124,10 @@ const generateService = async (dir: string) => {
         return PATH.relative(target, pathStr);
     });
 
-    await addReExportsForService(serviceDir, dir, relativeProtoPathList);
+    await Promise.all([
+        addReExportsForService(serviceDir, dir, relativeProtoPathList),
+        initTsConfig(serviceDir, serviceName),
+    ]);
 
     return serviceName;
 };
@@ -151,6 +168,7 @@ const main = async () => {
     writeToFile(serviceMap);
 
     const serviceList = await Promise.all(Object.keys(serviceMap).map(generateService));
+
     serviceList.sort();
 
     await Promise.all([modifyGitignore(serviceList), modifyPackageJSON(serviceList)]);

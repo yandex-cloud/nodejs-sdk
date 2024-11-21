@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../datatransfer-v1"
+  },
+  "include": [
+    "."
+  ]
+}

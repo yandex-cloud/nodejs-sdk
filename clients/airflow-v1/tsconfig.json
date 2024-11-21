@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../airflow-v1"
+  },
+  "include": [
+    "."
+  ]
+}

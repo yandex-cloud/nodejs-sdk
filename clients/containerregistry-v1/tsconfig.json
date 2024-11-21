@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../containerregistry-v1"
+  },
+  "include": [
+    "."
+  ]
+}

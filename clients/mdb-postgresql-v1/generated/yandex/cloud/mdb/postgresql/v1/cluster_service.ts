@@ -1090,7 +1090,15 @@ const baseListClustersResponse: object = {
     nextPageToken: '',
 };
 
-export const ListClustersResponse = {
+type ListClustersResponseType = {
+    $type: "yandex.cloud.mdb.postgresql.v1.ListClustersResponse";
+    encode(message: ListClustersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClustersResponse;
+    fromJSON(object: any): ListClustersResponse;
+    toJSON(message: ListClustersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClustersResponse>, I>>(object: I): ListClustersResponse;
+}
+export const ListClustersResponse: ListClustersResponseType = {
     $type: 'yandex.cloud.mdb.postgresql.v1.ListClustersResponse' as const,
 
     encode(message: ListClustersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {

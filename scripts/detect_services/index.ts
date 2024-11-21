@@ -125,18 +125,24 @@ const replacer = (key: string, value: any) => {
         : value;
 };
 
+const FILE_PATH = path.resolve('./scripts/service_map.json');
 export const writeToFile = (serviceMap: ServiceMapType) => {
-    const filePath = path.resolve('./scripts/service_map.json');
-
-    fs.writeFile(filePath, JSON.stringify(serviceMap, replacer, 2), 'utf8', (err) => {
+    fs.writeFile(FILE_PATH, JSON.stringify(serviceMap, replacer, 2), 'utf8', (err) => {
         if (err !== null) {
             return;
         }
 
         const configPath = path.resolve('./.prettierrc.js');
-        const comand = `npx --no-install prettier ${filePath} --write --config ${configPath}`;
+        const comand = `npx --no-install prettier ${FILE_PATH} --write --config ${configPath}`;
         cp.execSync(comand);
     });
+};
+
+export const readFile = () => {
+    const data = fs.readFileSync(FILE_PATH, 'utf8');
+    const jsonData = JSON.parse(data);
+
+    return jsonData as Record<string, undefined | { rootServiceList: string[] }>;
 };
 
 const main = async () => {
