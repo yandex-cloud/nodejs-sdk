@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../iam-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

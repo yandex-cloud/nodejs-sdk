@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../ai-llm-v1alpha"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../kms-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../marketplace-metering-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

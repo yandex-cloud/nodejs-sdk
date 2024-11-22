@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../loadtesting-api-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../logging-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

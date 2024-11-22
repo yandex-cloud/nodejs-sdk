@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../compute-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

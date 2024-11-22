@@ -172,6 +172,8 @@ const main = async () => {
     serviceList.sort();
 
     await Promise.all([modifyGitignore(serviceList), modifyPackageJSON(serviceList)]);
+
+    await exec('npm run prettier:fix:clients');
 };
 
 if (require.main === module) {

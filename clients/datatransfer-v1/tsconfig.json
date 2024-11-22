@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../datatransfer-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

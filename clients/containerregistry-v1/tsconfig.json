@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../containerregistry-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

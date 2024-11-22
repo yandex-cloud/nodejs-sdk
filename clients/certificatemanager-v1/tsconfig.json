@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../certificatemanager-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

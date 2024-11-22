@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../cdn-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

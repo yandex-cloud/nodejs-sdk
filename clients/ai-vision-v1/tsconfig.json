@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../ai-vision-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

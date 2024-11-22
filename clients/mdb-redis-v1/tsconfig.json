@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../mdb-redis-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

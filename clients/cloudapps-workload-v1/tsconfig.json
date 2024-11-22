@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../cloudapps-workload-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

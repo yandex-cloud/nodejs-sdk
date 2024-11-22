@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../ai-assistants-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

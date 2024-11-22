@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../dns-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

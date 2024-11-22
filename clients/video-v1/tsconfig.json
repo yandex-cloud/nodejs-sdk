@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../video-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

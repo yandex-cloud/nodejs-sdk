@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../cloudrouter-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

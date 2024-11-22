@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../cic-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

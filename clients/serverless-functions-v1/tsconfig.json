@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../serverless-functions-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

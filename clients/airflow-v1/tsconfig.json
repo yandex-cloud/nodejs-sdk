@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../airflow-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

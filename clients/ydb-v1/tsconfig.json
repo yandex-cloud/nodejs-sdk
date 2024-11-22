@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../ydb-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

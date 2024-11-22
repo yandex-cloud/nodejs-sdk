@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../serverless-eventrouter-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

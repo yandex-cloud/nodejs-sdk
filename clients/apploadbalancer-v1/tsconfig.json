@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../apploadbalancer-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

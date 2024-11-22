@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../mdb-clickhouse-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

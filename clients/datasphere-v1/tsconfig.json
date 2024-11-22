@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../datasphere-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../k8s-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../serverless-apigateway-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

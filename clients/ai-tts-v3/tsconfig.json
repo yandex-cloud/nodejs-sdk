@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../ai-tts-v3"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

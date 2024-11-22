@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../mdb-mysql-v1alpha"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

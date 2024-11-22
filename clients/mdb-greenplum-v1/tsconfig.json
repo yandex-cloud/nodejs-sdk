@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../mdb-greenplum-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

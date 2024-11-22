@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../organizationmanager-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../smartcaptcha-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

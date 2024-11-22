@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../monitoring-v3"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

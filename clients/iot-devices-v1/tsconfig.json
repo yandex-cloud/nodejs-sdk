@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../iot-devices-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

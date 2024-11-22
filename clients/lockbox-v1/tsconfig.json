@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../lockbox-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

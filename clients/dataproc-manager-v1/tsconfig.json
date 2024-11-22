@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../dataproc-manager-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }

@@ -3,7 +3,5 @@
   "compilerOptions": {
     "outDir": "../../speechsense-v1"
   },
-  "include": [
-    "."
-  ]
+  "include": ["."]
 }
