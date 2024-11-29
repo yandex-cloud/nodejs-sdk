@@ -1,13 +1,19 @@
-import { serviceClients, Session, cloudApi } from '@yandex-cloud/nodejs-sdk';
 import path from 'path';
 import dotenv from 'dotenv';
+
+import {
+    assistantService,
+    messageService,
+    threadService,
+    runService,
+} from '@yandex-cloud/nodejs-sdk/ai-assistants-v1';
+
+import { Session } from '@yandex-cloud/nodejs-sdk/dist/session';
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const getEnv = (envName: string, defaultValue?: string): string => {
     const envValue = process.env[envName] || defaultValue;
-
-    console.log(process.env);
 
     if (!envValue) {
         throw new Error(`Env variable ${envName} is not defined`);
@@ -19,56 +25,38 @@ const getEnv = (envName: string, defaultValue?: string): string => {
 const iamToken = getEnv('YC_IAM_TOKEN');
 const folderId = getEnv('YC_FOLDER_ID');
 
-(async () => {
+const Sleep = (ms?: number) => new Promise<void>((res) => setTimeout(() => res(), ms));
+
+(async function () {
     const session = new Session({ iamToken });
 
-    const assistantApi = cloudApi.ai.assistants_assistant_service;
-    const messageApi = cloudApi.ai.assistants_threads_message_service;
-    const threadApi = cloudApi.ai.assistants_threads_thread_service;
-    const runApi = cloudApi.ai.assistants_runs_run_service;
-
-    // const assistantClient = session.client(assistantApi.AssistantServiceClient);
-    const assistantClient = session.client(
-        serviceClients.AssistantServiceClient,
-    );
-
-    // const messageClient = session.client(messageApi.MessageServiceClient);
-    const messageClient = session.client(
-        serviceClients.AssistantMessageServiceClient,
-    );
-
-    // const threadClient = session.client(threadApi.ThreadServiceClient);
-    const threadClient = session.client(
-        serviceClients.AssistantThreadServiceClient,
-    );
-
-    // const runClient = session.client(runApi.RunServiceClient);
-    const runClient = session.client(serviceClients.AssistantRunServiceClient);
+    const assistantClient = session.client(assistantService.AssistantServiceClient);
+    const messageClient = session.client(messageService.MessageServiceClient);
+    const threadClient = session.client(threadService.ThreadServiceClient);
+    const runClient = session.client(runService.RunServiceClient);
 
     const thread = await threadClient.create(
-        threadApi.CreateThreadRequest.fromPartial({
+        threadService.CreateThreadRequest.fromPartial({
             name: 'qwerty',
             folderId,
         }),
     );
-
     console.log({ thread });
 
     const assistant = await assistantClient.create(
-        assistantApi.CreateAssistantRequest.fromPartial({
+        assistantService.CreateAssistantRequest.fromPartial({
             name: 'qwerty',
             folderId,
             modelUri: `gpt://${folderId}/yandexgpt/latest`,
         }),
     );
-
     console.log({ assistant });
 
     const assistantId = assistant.id;
     const threadId = thread.id;
 
     const message = await messageClient.create(
-        messageApi.CreateMessageRequest.fromPartial({
+        messageService.CreateMessageRequest.fromPartial({
             threadId,
             content: {
                 content: [{ text: { content: 'qwerty' } }],
@@ -79,7 +67,7 @@ const folderId = getEnv('YC_FOLDER_ID');
     console.log({ message });
 
     const run = await runClient.create(
-        runApi.CreateRunRequest.fromPartial({
+        runService.CreateRunRequest.fromPartial({
             threadId,
             assistantId,
         }),
@@ -88,15 +76,17 @@ const folderId = getEnv('YC_FOLDER_ID');
     console.log({ run });
 
     const asyncIterableForStreamEvent = runClient.listen(
-        runApi.ListenRunRequest.fromPartial({ runId: run.id }),
+        runService.ListenRunRequest.fromPartial({ runId: run.id }),
     );
 
-    let lastStreamEvent: cloudApi.ai.assistants_runs_run_service.StreamEvent | null = null;
-
+    let lastStreamEvent: runService.StreamEvent | null = null;
     for await (const streamEvent of asyncIterableForStreamEvent) {
         lastStreamEvent = streamEvent;
     }
 
     console.dir({ lastStreamEvent });
-    console.dir(lastStreamEvent.completedMessage.content.content);
+
+    if (lastStreamEvent?.completedMessage?.content) {
+        console.dir(lastStreamEvent.completedMessage.content.content);
+    }
 })();
