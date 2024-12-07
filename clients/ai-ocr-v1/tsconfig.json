@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../ai-ocr-v1"
+  },
+  "include": ["."]
+}

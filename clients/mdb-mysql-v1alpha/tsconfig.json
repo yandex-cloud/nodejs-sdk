@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../mdb-mysql-v1alpha"
+  },
+  "include": ["."]
+}

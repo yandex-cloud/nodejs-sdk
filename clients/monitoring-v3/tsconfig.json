@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../monitoring-v3"
+  },
+  "include": ["."]
+}

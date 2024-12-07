@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../smartcaptcha-v1"
+  },
+  "include": ["."]
+}

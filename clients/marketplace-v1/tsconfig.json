@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../marketplace-v1"
+  },
+  "include": ["."]
+}

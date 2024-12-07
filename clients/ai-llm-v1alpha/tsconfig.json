@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../ai-llm-v1alpha"
+  },
+  "include": ["."]
+}

@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../ai-tts-v3"
+  },
+  "include": ["."]
+}

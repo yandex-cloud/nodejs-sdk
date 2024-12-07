@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../ai-foundation_models-v1"
+  },
+  "include": ["."]
+}

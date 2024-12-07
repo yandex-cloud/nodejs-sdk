@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../dataproc-v1"
+  },
+  "include": ["."]
+}

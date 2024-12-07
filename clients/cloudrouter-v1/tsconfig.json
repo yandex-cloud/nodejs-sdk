@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../cloudrouter-v1"
+  },
+  "include": ["."]
+}

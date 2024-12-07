@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../mdb-elasticsearch-v1"
+  },
+  "include": ["."]
+}

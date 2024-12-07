@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../iot-broker-v1"
+  },
+  "include": ["."]
+}

@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../iot-devices-v1"
+  },
+  "include": ["."]
+}

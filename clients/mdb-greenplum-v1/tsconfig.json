@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../mdb-greenplum-v1"
+  },
+  "include": ["."]
+}

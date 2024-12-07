@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../loadbalancer-v1"
+  },
+  "include": ["."]
+}

@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../mdb-sqlserver-v1"
+  },
+  "include": ["."]
+}

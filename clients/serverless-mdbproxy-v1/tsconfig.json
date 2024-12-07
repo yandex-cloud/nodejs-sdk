@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../serverless-mdbproxy-v1"
+  },
+  "include": ["."]
+}

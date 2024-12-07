@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../marketplace-licensemanager-v1"
+  },
+  "include": ["."]
+}

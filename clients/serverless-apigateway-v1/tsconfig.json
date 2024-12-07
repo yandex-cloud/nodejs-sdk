@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../serverless-apigateway-v1"
+  },
+  "include": ["."]
+}

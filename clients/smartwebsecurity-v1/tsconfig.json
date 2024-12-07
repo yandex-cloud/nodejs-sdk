@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../smartwebsecurity-v1"
+  },
+  "include": ["."]
+}
