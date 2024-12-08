@@ -25,8 +25,6 @@ const getEnv = (envName: string, defaultValue?: string): string => {
 const iamToken = getEnv('YC_IAM_TOKEN');
 const folderId = getEnv('YC_FOLDER_ID');
 
-const Sleep = (ms?: number) => new Promise<void>((res) => setTimeout(() => res(), ms));
-
 (async function () {
     const session = new Session({ iamToken });
 
@@ -35,36 +33,34 @@ const Sleep = (ms?: number) => new Promise<void>((res) => setTimeout(() => res()
     const threadClient = session.client(threadService.ThreadServiceClient);
     const runClient = session.client(runService.RunServiceClient);
 
-    const thread = await threadClient.create(
+    const threadP = threadClient.create(
         threadService.CreateThreadRequest.fromPartial({
-            name: 'qwerty',
+            name: 'Thread Name',
             folderId,
         }),
     );
-    console.log({ thread });
 
-    const assistant = await assistantClient.create(
+    const assistantP = assistantClient.create(
         assistantService.CreateAssistantRequest.fromPartial({
-            name: 'qwerty',
+            name: 'Assistant Name',
             folderId,
             modelUri: `gpt://${folderId}/yandexgpt/latest`,
         }),
     );
-    console.log({ assistant });
+
+    const [thread, assistant] = await Promise.all([threadP, assistantP]);
 
     const assistantId = assistant.id;
     const threadId = thread.id;
 
-    const message = await messageClient.create(
+    await messageClient.create(
         messageService.CreateMessageRequest.fromPartial({
             threadId,
             content: {
-                content: [{ text: { content: 'qwerty' } }],
+                content: [{ text: { content: 'What is it "qwerty"?' } }],
             },
         }),
     );
-
-    console.log({ message });
 
     const run = await runClient.create(
         runService.CreateRunRequest.fromPartial({
@@ -72,8 +68,6 @@ const Sleep = (ms?: number) => new Promise<void>((res) => setTimeout(() => res()
             assistantId,
         }),
     );
-
-    console.log({ run });
 
     const asyncIterableForStreamEvent = runClient.listen(
         runService.ListenRunRequest.fromPartial({ runId: run.id }),
