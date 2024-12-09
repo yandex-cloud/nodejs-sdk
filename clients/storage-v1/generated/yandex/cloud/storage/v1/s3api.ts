@@ -216,6 +216,189 @@ export interface S3APIDeleteObjectTaggingResponse {
     versionId: string;
 }
 
+/** Represents a response of start multipart upload request to S3. */
+export interface S3APIStartMultipartUploadResponse {
+    $type: 'yandex.cloud.storage.v1.S3APIStartMultipartUploadResponse';
+    /** Unique request ID. */
+    requestId: string;
+    /** The name of the bucket in which the initiated multipart upload was initiated. */
+    bucket: string;
+    /** Object key for which the multipart upload was initiated. */
+    key: string;
+    /** The ID of the initiated multipart upload. */
+    uploadId: string;
+}
+
+/** Represents a response of upload part request to S3. */
+export interface S3APIUploadPartResponse {
+    $type: 'yandex.cloud.storage.v1.S3APIUploadPartResponse';
+    /** Unique request ID. */
+    requestId: string;
+    /** MD5 hash of the object. */
+    etag: string;
+}
+
+/** Represents a response of list parts request to S3. */
+export interface S3APIListPartsResponse {
+    $type: 'yandex.cloud.storage.v1.S3APIListPartsResponse';
+    /** The name of the bucket to which the multipart upload was initiated. */
+    bucket: string;
+    /** Object key for which the multipart upload was initiated. */
+    key: string;
+    /** Upload ID identifying the multipart upload whose parts are being listed. */
+    uploadId: string;
+    /**
+     * When a list is truncated, this element specifies the last part in the list, as
+     * well as the value to use for the part-number-marker request parameter in a
+     * subsequent request.
+     */
+    partNumberMarker: string;
+    /**
+     * When a list is truncated, this element specifies the last part in the list, as
+     * well as the value to use for the part-number-marker request parameter in a
+     * subsequent request.
+     */
+    nextPartNumberMarker: string;
+    /** Maximum number of parts that were allowed in the response. */
+    maxParts: number;
+    /** Indicates whether the returned list of parts is truncated. */
+    isTruncated: boolean;
+    /** Container for elements related to a particular part. */
+    parts: S3APIPart[];
+    /** Container element that identifies who initiated the multipart upload. */
+    initiator?: S3APIOwner;
+    /** Container element that identifies who initiated the multipart upload. */
+    owner?: S3APIOwner;
+    /** Class of storage used to store the uploaded object. */
+    storageClass: string;
+    /** Unique request ID. */
+    requestId: string;
+}
+
+/** Container for elements related to a part. */
+export interface S3APIPart {
+    $type: 'yandex.cloud.storage.v1.S3APIPart';
+    /**
+     * Part number identifying the part. This is a positive integer between 1 and
+     * 10,000.
+     */
+    partNumber: number;
+    /** Date and time at which the part was uploaded. */
+    lastModifiedAt?: Date;
+    /** Size in bytes of the uploaded part data. */
+    size: number;
+    /** Entity tag returned when the part was uploaded. */
+    etag: string;
+}
+
+/** Represents a response of abort multipart upload request to S3. */
+export interface S3APIAbortMultipartUploadResponse {
+    $type: 'yandex.cloud.storage.v1.S3APIAbortMultipartUploadResponse';
+    /** Unique request ID. */
+    requestId: string;
+}
+
+/** Represents a response of complete multipart upload request to S3. */
+export interface S3APICompleteMultipartUploadResponse {
+    $type: 'yandex.cloud.storage.v1.S3APICompleteMultipartUploadResponse';
+    /** Unique request ID. */
+    requestId: string;
+    /** The name of the bucket that contains the newly created object. */
+    bucket: string;
+    /** The object key of the newly created object. */
+    key: string;
+    /** Entity tag that identifies the newly created object's data. */
+    etag: string;
+    /** The URI that identifies the newly created object. */
+    location: string;
+    /**
+     * Version ID of the newly created object, in case the bucket has versioning
+     * turned on.
+     */
+    versionId: string;
+}
+
+/** Represents a response of list multipart uploads request to S3. */
+export interface S3APIListMultipartUploadsResponse {
+    $type: 'yandex.cloud.storage.v1.S3APIListMultipartUploadsResponse';
+    /** The name of the bucket to which the multipart upload was initiated. */
+    bucket: string;
+    /** The key at or after which the listing began. */
+    keyMarker: string;
+    /** Upload ID after which listing began. */
+    uploadIdMarker: string;
+    /**
+     * When a list is truncated, this element specifies the value that should be used
+     * for the key-marker request parameter in a subsequent request.
+     */
+    nextKeyMarker: string;
+    /**
+     * When a list is truncated, this element specifies the value that should be used
+     * for the upload-id-marker request parameter in a subsequent request.
+     */
+    nextUploadIdMarker: string;
+    /** Contains the delimiter you specified in the request. */
+    delimiter: string;
+    /**
+     * When a prefix is provided in the request, this field contains the specified
+     * prefix.
+     */
+    prefix: string;
+    /**
+     * Maximum number of multipart uploads that could have been included in the
+     * response.
+     */
+    maxUploads: number;
+    /** Indicates whether the returned list of multipart uploads is truncated. */
+    isTruncated: boolean;
+    /** Container for elements related to a particular multipart upload. */
+    uploads: S3APIMultipartUpload[];
+    /**
+     * If you specify a delimiter in the request, then the result returns each
+     * distinct key prefix containing the delimiter in a CommonPrefixes element.
+     */
+    commonPrefixes: string[];
+    /** Unique request ID. */
+    requestId: string;
+}
+
+/** Container for the MultipartUpload for the Amazon S3 object. */
+export interface S3APIMultipartUpload {
+    $type: 'yandex.cloud.storage.v1.S3APIMultipartUpload';
+    /** Key of the object for which the multipart upload was initiated. */
+    key: string;
+    /** Upload ID that identifies the multipart upload. */
+    uploadId: string;
+    /** Identifies who initiated the multipart upload. */
+    initiator?: S3APIOwner;
+    /** Specifies the owner of the object that is part of the multipart upload. */
+    owner?: S3APIOwner;
+    /** The class of storage used to store the object. */
+    storageClass: string;
+    /** Date and time at which the multipart upload was initiated. */
+    initiatedAt?: Date;
+}
+
+/** Container for the owner/initiator display name and ID. */
+export interface S3APIOwner {
+    $type: 'yandex.cloud.storage.v1.S3APIOwner';
+    /** Container for the ID of the owner/initiator. */
+    id: string;
+    /** Container for the display name of the owner/initiator. */
+    displayName: string;
+}
+
+/** Response message for UploadPartCopy operation */
+export interface S3APIUploadPartCopyResponse {
+    $type: 'yandex.cloud.storage.v1.S3APIUploadPartCopyResponse';
+    /** Entity tag of the object. */
+    etag: string;
+    /** Date and time at which the object was uploaded. */
+    lastModifiedAt?: Date;
+    /** Unique request ID. */
+    requestId: string;
+}
+
 const baseS3APIGetObjectResponse: object = {
     $type: 'yandex.cloud.storage.v1.S3APIGetObjectResponse',
     etag: '',
@@ -2000,6 +2183,1167 @@ export const S3APIDeleteObjectTaggingResponse = {
 };
 
 messageTypeRegistry.set(S3APIDeleteObjectTaggingResponse.$type, S3APIDeleteObjectTaggingResponse);
+
+const baseS3APIStartMultipartUploadResponse: object = {
+    $type: 'yandex.cloud.storage.v1.S3APIStartMultipartUploadResponse',
+    requestId: '',
+    bucket: '',
+    key: '',
+    uploadId: '',
+};
+
+export const S3APIStartMultipartUploadResponse = {
+    $type: 'yandex.cloud.storage.v1.S3APIStartMultipartUploadResponse' as const,
+
+    encode(
+        message: S3APIStartMultipartUploadResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.requestId !== '') {
+            writer.uint32(10).string(message.requestId);
+        }
+        if (message.bucket !== '') {
+            writer.uint32(18).string(message.bucket);
+        }
+        if (message.key !== '') {
+            writer.uint32(26).string(message.key);
+        }
+        if (message.uploadId !== '') {
+            writer.uint32(34).string(message.uploadId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIStartMultipartUploadResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseS3APIStartMultipartUploadResponse,
+        } as S3APIStartMultipartUploadResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.requestId = reader.string();
+                    break;
+                case 2:
+                    message.bucket = reader.string();
+                    break;
+                case 3:
+                    message.key = reader.string();
+                    break;
+                case 4:
+                    message.uploadId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): S3APIStartMultipartUploadResponse {
+        const message = {
+            ...baseS3APIStartMultipartUploadResponse,
+        } as S3APIStartMultipartUploadResponse;
+        message.requestId =
+            object.requestId !== undefined && object.requestId !== null
+                ? String(object.requestId)
+                : '';
+        message.bucket =
+            object.bucket !== undefined && object.bucket !== null ? String(object.bucket) : '';
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.uploadId =
+            object.uploadId !== undefined && object.uploadId !== null
+                ? String(object.uploadId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: S3APIStartMultipartUploadResponse): unknown {
+        const obj: any = {};
+        message.requestId !== undefined && (obj.requestId = message.requestId);
+        message.bucket !== undefined && (obj.bucket = message.bucket);
+        message.key !== undefined && (obj.key = message.key);
+        message.uploadId !== undefined && (obj.uploadId = message.uploadId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<S3APIStartMultipartUploadResponse>, I>>(
+        object: I,
+    ): S3APIStartMultipartUploadResponse {
+        const message = {
+            ...baseS3APIStartMultipartUploadResponse,
+        } as S3APIStartMultipartUploadResponse;
+        message.requestId = object.requestId ?? '';
+        message.bucket = object.bucket ?? '';
+        message.key = object.key ?? '';
+        message.uploadId = object.uploadId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(S3APIStartMultipartUploadResponse.$type, S3APIStartMultipartUploadResponse);
+
+const baseS3APIUploadPartResponse: object = {
+    $type: 'yandex.cloud.storage.v1.S3APIUploadPartResponse',
+    requestId: '',
+    etag: '',
+};
+
+export const S3APIUploadPartResponse = {
+    $type: 'yandex.cloud.storage.v1.S3APIUploadPartResponse' as const,
+
+    encode(message: S3APIUploadPartResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.requestId !== '') {
+            writer.uint32(10).string(message.requestId);
+        }
+        if (message.etag !== '') {
+            writer.uint32(18).string(message.etag);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIUploadPartResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseS3APIUploadPartResponse } as S3APIUploadPartResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.requestId = reader.string();
+                    break;
+                case 2:
+                    message.etag = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): S3APIUploadPartResponse {
+        const message = { ...baseS3APIUploadPartResponse } as S3APIUploadPartResponse;
+        message.requestId =
+            object.requestId !== undefined && object.requestId !== null
+                ? String(object.requestId)
+                : '';
+        message.etag = object.etag !== undefined && object.etag !== null ? String(object.etag) : '';
+        return message;
+    },
+
+    toJSON(message: S3APIUploadPartResponse): unknown {
+        const obj: any = {};
+        message.requestId !== undefined && (obj.requestId = message.requestId);
+        message.etag !== undefined && (obj.etag = message.etag);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<S3APIUploadPartResponse>, I>>(
+        object: I,
+    ): S3APIUploadPartResponse {
+        const message = { ...baseS3APIUploadPartResponse } as S3APIUploadPartResponse;
+        message.requestId = object.requestId ?? '';
+        message.etag = object.etag ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(S3APIUploadPartResponse.$type, S3APIUploadPartResponse);
+
+const baseS3APIListPartsResponse: object = {
+    $type: 'yandex.cloud.storage.v1.S3APIListPartsResponse',
+    bucket: '',
+    key: '',
+    uploadId: '',
+    partNumberMarker: '',
+    nextPartNumberMarker: '',
+    maxParts: 0,
+    isTruncated: false,
+    storageClass: '',
+    requestId: '',
+};
+
+export const S3APIListPartsResponse = {
+    $type: 'yandex.cloud.storage.v1.S3APIListPartsResponse' as const,
+
+    encode(message: S3APIListPartsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.bucket !== '') {
+            writer.uint32(10).string(message.bucket);
+        }
+        if (message.key !== '') {
+            writer.uint32(18).string(message.key);
+        }
+        if (message.uploadId !== '') {
+            writer.uint32(26).string(message.uploadId);
+        }
+        if (message.partNumberMarker !== '') {
+            writer.uint32(34).string(message.partNumberMarker);
+        }
+        if (message.nextPartNumberMarker !== '') {
+            writer.uint32(42).string(message.nextPartNumberMarker);
+        }
+        if (message.maxParts !== 0) {
+            writer.uint32(48).int64(message.maxParts);
+        }
+        if (message.isTruncated === true) {
+            writer.uint32(56).bool(message.isTruncated);
+        }
+        for (const v of message.parts) {
+            S3APIPart.encode(v!, writer.uint32(66).fork()).ldelim();
+        }
+        if (message.initiator !== undefined) {
+            S3APIOwner.encode(message.initiator, writer.uint32(74).fork()).ldelim();
+        }
+        if (message.owner !== undefined) {
+            S3APIOwner.encode(message.owner, writer.uint32(82).fork()).ldelim();
+        }
+        if (message.storageClass !== '') {
+            writer.uint32(90).string(message.storageClass);
+        }
+        if (message.requestId !== '') {
+            writer.uint32(98).string(message.requestId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIListPartsResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseS3APIListPartsResponse } as S3APIListPartsResponse;
+        message.parts = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.bucket = reader.string();
+                    break;
+                case 2:
+                    message.key = reader.string();
+                    break;
+                case 3:
+                    message.uploadId = reader.string();
+                    break;
+                case 4:
+                    message.partNumberMarker = reader.string();
+                    break;
+                case 5:
+                    message.nextPartNumberMarker = reader.string();
+                    break;
+                case 6:
+                    message.maxParts = longToNumber(reader.int64() as Long);
+                    break;
+                case 7:
+                    message.isTruncated = reader.bool();
+                    break;
+                case 8:
+                    message.parts.push(S3APIPart.decode(reader, reader.uint32()));
+                    break;
+                case 9:
+                    message.initiator = S3APIOwner.decode(reader, reader.uint32());
+                    break;
+                case 10:
+                    message.owner = S3APIOwner.decode(reader, reader.uint32());
+                    break;
+                case 11:
+                    message.storageClass = reader.string();
+                    break;
+                case 12:
+                    message.requestId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): S3APIListPartsResponse {
+        const message = { ...baseS3APIListPartsResponse } as S3APIListPartsResponse;
+        message.bucket =
+            object.bucket !== undefined && object.bucket !== null ? String(object.bucket) : '';
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.uploadId =
+            object.uploadId !== undefined && object.uploadId !== null
+                ? String(object.uploadId)
+                : '';
+        message.partNumberMarker =
+            object.partNumberMarker !== undefined && object.partNumberMarker !== null
+                ? String(object.partNumberMarker)
+                : '';
+        message.nextPartNumberMarker =
+            object.nextPartNumberMarker !== undefined && object.nextPartNumberMarker !== null
+                ? String(object.nextPartNumberMarker)
+                : '';
+        message.maxParts =
+            object.maxParts !== undefined && object.maxParts !== null ? Number(object.maxParts) : 0;
+        message.isTruncated =
+            object.isTruncated !== undefined && object.isTruncated !== null
+                ? Boolean(object.isTruncated)
+                : false;
+        message.parts = (object.parts ?? []).map((e: any) => S3APIPart.fromJSON(e));
+        message.initiator =
+            object.initiator !== undefined && object.initiator !== null
+                ? S3APIOwner.fromJSON(object.initiator)
+                : undefined;
+        message.owner =
+            object.owner !== undefined && object.owner !== null
+                ? S3APIOwner.fromJSON(object.owner)
+                : undefined;
+        message.storageClass =
+            object.storageClass !== undefined && object.storageClass !== null
+                ? String(object.storageClass)
+                : '';
+        message.requestId =
+            object.requestId !== undefined && object.requestId !== null
+                ? String(object.requestId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: S3APIListPartsResponse): unknown {
+        const obj: any = {};
+        message.bucket !== undefined && (obj.bucket = message.bucket);
+        message.key !== undefined && (obj.key = message.key);
+        message.uploadId !== undefined && (obj.uploadId = message.uploadId);
+        message.partNumberMarker !== undefined && (obj.partNumberMarker = message.partNumberMarker);
+        message.nextPartNumberMarker !== undefined &&
+            (obj.nextPartNumberMarker = message.nextPartNumberMarker);
+        message.maxParts !== undefined && (obj.maxParts = Math.round(message.maxParts));
+        message.isTruncated !== undefined && (obj.isTruncated = message.isTruncated);
+        if (message.parts) {
+            obj.parts = message.parts.map((e) => (e ? S3APIPart.toJSON(e) : undefined));
+        } else {
+            obj.parts = [];
+        }
+        message.initiator !== undefined &&
+            (obj.initiator = message.initiator ? S3APIOwner.toJSON(message.initiator) : undefined);
+        message.owner !== undefined &&
+            (obj.owner = message.owner ? S3APIOwner.toJSON(message.owner) : undefined);
+        message.storageClass !== undefined && (obj.storageClass = message.storageClass);
+        message.requestId !== undefined && (obj.requestId = message.requestId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<S3APIListPartsResponse>, I>>(
+        object: I,
+    ): S3APIListPartsResponse {
+        const message = { ...baseS3APIListPartsResponse } as S3APIListPartsResponse;
+        message.bucket = object.bucket ?? '';
+        message.key = object.key ?? '';
+        message.uploadId = object.uploadId ?? '';
+        message.partNumberMarker = object.partNumberMarker ?? '';
+        message.nextPartNumberMarker = object.nextPartNumberMarker ?? '';
+        message.maxParts = object.maxParts ?? 0;
+        message.isTruncated = object.isTruncated ?? false;
+        message.parts = object.parts?.map((e) => S3APIPart.fromPartial(e)) || [];
+        message.initiator =
+            object.initiator !== undefined && object.initiator !== null
+                ? S3APIOwner.fromPartial(object.initiator)
+                : undefined;
+        message.owner =
+            object.owner !== undefined && object.owner !== null
+                ? S3APIOwner.fromPartial(object.owner)
+                : undefined;
+        message.storageClass = object.storageClass ?? '';
+        message.requestId = object.requestId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(S3APIListPartsResponse.$type, S3APIListPartsResponse);
+
+const baseS3APIPart: object = {
+    $type: 'yandex.cloud.storage.v1.S3APIPart',
+    partNumber: 0,
+    size: 0,
+    etag: '',
+};
+
+export const S3APIPart = {
+    $type: 'yandex.cloud.storage.v1.S3APIPart' as const,
+
+    encode(message: S3APIPart, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.partNumber !== 0) {
+            writer.uint32(8).int64(message.partNumber);
+        }
+        if (message.lastModifiedAt !== undefined) {
+            Timestamp.encode(
+                toTimestamp(message.lastModifiedAt),
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        if (message.size !== 0) {
+            writer.uint32(24).int64(message.size);
+        }
+        if (message.etag !== '') {
+            writer.uint32(34).string(message.etag);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIPart {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseS3APIPart } as S3APIPart;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.partNumber = longToNumber(reader.int64() as Long);
+                    break;
+                case 2:
+                    message.lastModifiedAt = fromTimestamp(
+                        Timestamp.decode(reader, reader.uint32()),
+                    );
+                    break;
+                case 3:
+                    message.size = longToNumber(reader.int64() as Long);
+                    break;
+                case 4:
+                    message.etag = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): S3APIPart {
+        const message = { ...baseS3APIPart } as S3APIPart;
+        message.partNumber =
+            object.partNumber !== undefined && object.partNumber !== null
+                ? Number(object.partNumber)
+                : 0;
+        message.lastModifiedAt =
+            object.lastModifiedAt !== undefined && object.lastModifiedAt !== null
+                ? fromJsonTimestamp(object.lastModifiedAt)
+                : undefined;
+        message.size = object.size !== undefined && object.size !== null ? Number(object.size) : 0;
+        message.etag = object.etag !== undefined && object.etag !== null ? String(object.etag) : '';
+        return message;
+    },
+
+    toJSON(message: S3APIPart): unknown {
+        const obj: any = {};
+        message.partNumber !== undefined && (obj.partNumber = Math.round(message.partNumber));
+        message.lastModifiedAt !== undefined &&
+            (obj.lastModifiedAt = message.lastModifiedAt.toISOString());
+        message.size !== undefined && (obj.size = Math.round(message.size));
+        message.etag !== undefined && (obj.etag = message.etag);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<S3APIPart>, I>>(object: I): S3APIPart {
+        const message = { ...baseS3APIPart } as S3APIPart;
+        message.partNumber = object.partNumber ?? 0;
+        message.lastModifiedAt = object.lastModifiedAt ?? undefined;
+        message.size = object.size ?? 0;
+        message.etag = object.etag ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(S3APIPart.$type, S3APIPart);
+
+const baseS3APIAbortMultipartUploadResponse: object = {
+    $type: 'yandex.cloud.storage.v1.S3APIAbortMultipartUploadResponse',
+    requestId: '',
+};
+
+export const S3APIAbortMultipartUploadResponse = {
+    $type: 'yandex.cloud.storage.v1.S3APIAbortMultipartUploadResponse' as const,
+
+    encode(
+        message: S3APIAbortMultipartUploadResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.requestId !== '') {
+            writer.uint32(10).string(message.requestId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIAbortMultipartUploadResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseS3APIAbortMultipartUploadResponse,
+        } as S3APIAbortMultipartUploadResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.requestId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): S3APIAbortMultipartUploadResponse {
+        const message = {
+            ...baseS3APIAbortMultipartUploadResponse,
+        } as S3APIAbortMultipartUploadResponse;
+        message.requestId =
+            object.requestId !== undefined && object.requestId !== null
+                ? String(object.requestId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: S3APIAbortMultipartUploadResponse): unknown {
+        const obj: any = {};
+        message.requestId !== undefined && (obj.requestId = message.requestId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<S3APIAbortMultipartUploadResponse>, I>>(
+        object: I,
+    ): S3APIAbortMultipartUploadResponse {
+        const message = {
+            ...baseS3APIAbortMultipartUploadResponse,
+        } as S3APIAbortMultipartUploadResponse;
+        message.requestId = object.requestId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(S3APIAbortMultipartUploadResponse.$type, S3APIAbortMultipartUploadResponse);
+
+const baseS3APICompleteMultipartUploadResponse: object = {
+    $type: 'yandex.cloud.storage.v1.S3APICompleteMultipartUploadResponse',
+    requestId: '',
+    bucket: '',
+    key: '',
+    etag: '',
+    location: '',
+    versionId: '',
+};
+
+export const S3APICompleteMultipartUploadResponse = {
+    $type: 'yandex.cloud.storage.v1.S3APICompleteMultipartUploadResponse' as const,
+
+    encode(
+        message: S3APICompleteMultipartUploadResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.requestId !== '') {
+            writer.uint32(10).string(message.requestId);
+        }
+        if (message.bucket !== '') {
+            writer.uint32(18).string(message.bucket);
+        }
+        if (message.key !== '') {
+            writer.uint32(26).string(message.key);
+        }
+        if (message.etag !== '') {
+            writer.uint32(34).string(message.etag);
+        }
+        if (message.location !== '') {
+            writer.uint32(42).string(message.location);
+        }
+        if (message.versionId !== '') {
+            writer.uint32(50).string(message.versionId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APICompleteMultipartUploadResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseS3APICompleteMultipartUploadResponse,
+        } as S3APICompleteMultipartUploadResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.requestId = reader.string();
+                    break;
+                case 2:
+                    message.bucket = reader.string();
+                    break;
+                case 3:
+                    message.key = reader.string();
+                    break;
+                case 4:
+                    message.etag = reader.string();
+                    break;
+                case 5:
+                    message.location = reader.string();
+                    break;
+                case 6:
+                    message.versionId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): S3APICompleteMultipartUploadResponse {
+        const message = {
+            ...baseS3APICompleteMultipartUploadResponse,
+        } as S3APICompleteMultipartUploadResponse;
+        message.requestId =
+            object.requestId !== undefined && object.requestId !== null
+                ? String(object.requestId)
+                : '';
+        message.bucket =
+            object.bucket !== undefined && object.bucket !== null ? String(object.bucket) : '';
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.etag = object.etag !== undefined && object.etag !== null ? String(object.etag) : '';
+        message.location =
+            object.location !== undefined && object.location !== null
+                ? String(object.location)
+                : '';
+        message.versionId =
+            object.versionId !== undefined && object.versionId !== null
+                ? String(object.versionId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: S3APICompleteMultipartUploadResponse): unknown {
+        const obj: any = {};
+        message.requestId !== undefined && (obj.requestId = message.requestId);
+        message.bucket !== undefined && (obj.bucket = message.bucket);
+        message.key !== undefined && (obj.key = message.key);
+        message.etag !== undefined && (obj.etag = message.etag);
+        message.location !== undefined && (obj.location = message.location);
+        message.versionId !== undefined && (obj.versionId = message.versionId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<S3APICompleteMultipartUploadResponse>, I>>(
+        object: I,
+    ): S3APICompleteMultipartUploadResponse {
+        const message = {
+            ...baseS3APICompleteMultipartUploadResponse,
+        } as S3APICompleteMultipartUploadResponse;
+        message.requestId = object.requestId ?? '';
+        message.bucket = object.bucket ?? '';
+        message.key = object.key ?? '';
+        message.etag = object.etag ?? '';
+        message.location = object.location ?? '';
+        message.versionId = object.versionId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(
+    S3APICompleteMultipartUploadResponse.$type,
+    S3APICompleteMultipartUploadResponse,
+);
+
+const baseS3APIListMultipartUploadsResponse: object = {
+    $type: 'yandex.cloud.storage.v1.S3APIListMultipartUploadsResponse',
+    bucket: '',
+    keyMarker: '',
+    uploadIdMarker: '',
+    nextKeyMarker: '',
+    nextUploadIdMarker: '',
+    delimiter: '',
+    prefix: '',
+    maxUploads: 0,
+    isTruncated: false,
+    commonPrefixes: '',
+    requestId: '',
+};
+
+export const S3APIListMultipartUploadsResponse = {
+    $type: 'yandex.cloud.storage.v1.S3APIListMultipartUploadsResponse' as const,
+
+    encode(
+        message: S3APIListMultipartUploadsResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.bucket !== '') {
+            writer.uint32(10).string(message.bucket);
+        }
+        if (message.keyMarker !== '') {
+            writer.uint32(18).string(message.keyMarker);
+        }
+        if (message.uploadIdMarker !== '') {
+            writer.uint32(26).string(message.uploadIdMarker);
+        }
+        if (message.nextKeyMarker !== '') {
+            writer.uint32(34).string(message.nextKeyMarker);
+        }
+        if (message.nextUploadIdMarker !== '') {
+            writer.uint32(42).string(message.nextUploadIdMarker);
+        }
+        if (message.delimiter !== '') {
+            writer.uint32(50).string(message.delimiter);
+        }
+        if (message.prefix !== '') {
+            writer.uint32(58).string(message.prefix);
+        }
+        if (message.maxUploads !== 0) {
+            writer.uint32(64).int64(message.maxUploads);
+        }
+        if (message.isTruncated === true) {
+            writer.uint32(72).bool(message.isTruncated);
+        }
+        for (const v of message.uploads) {
+            S3APIMultipartUpload.encode(v!, writer.uint32(82).fork()).ldelim();
+        }
+        for (const v of message.commonPrefixes) {
+            writer.uint32(90).string(v!);
+        }
+        if (message.requestId !== '') {
+            writer.uint32(98).string(message.requestId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIListMultipartUploadsResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseS3APIListMultipartUploadsResponse,
+        } as S3APIListMultipartUploadsResponse;
+        message.uploads = [];
+        message.commonPrefixes = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.bucket = reader.string();
+                    break;
+                case 2:
+                    message.keyMarker = reader.string();
+                    break;
+                case 3:
+                    message.uploadIdMarker = reader.string();
+                    break;
+                case 4:
+                    message.nextKeyMarker = reader.string();
+                    break;
+                case 5:
+                    message.nextUploadIdMarker = reader.string();
+                    break;
+                case 6:
+                    message.delimiter = reader.string();
+                    break;
+                case 7:
+                    message.prefix = reader.string();
+                    break;
+                case 8:
+                    message.maxUploads = longToNumber(reader.int64() as Long);
+                    break;
+                case 9:
+                    message.isTruncated = reader.bool();
+                    break;
+                case 10:
+                    message.uploads.push(S3APIMultipartUpload.decode(reader, reader.uint32()));
+                    break;
+                case 11:
+                    message.commonPrefixes.push(reader.string());
+                    break;
+                case 12:
+                    message.requestId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): S3APIListMultipartUploadsResponse {
+        const message = {
+            ...baseS3APIListMultipartUploadsResponse,
+        } as S3APIListMultipartUploadsResponse;
+        message.bucket =
+            object.bucket !== undefined && object.bucket !== null ? String(object.bucket) : '';
+        message.keyMarker =
+            object.keyMarker !== undefined && object.keyMarker !== null
+                ? String(object.keyMarker)
+                : '';
+        message.uploadIdMarker =
+            object.uploadIdMarker !== undefined && object.uploadIdMarker !== null
+                ? String(object.uploadIdMarker)
+                : '';
+        message.nextKeyMarker =
+            object.nextKeyMarker !== undefined && object.nextKeyMarker !== null
+                ? String(object.nextKeyMarker)
+                : '';
+        message.nextUploadIdMarker =
+            object.nextUploadIdMarker !== undefined && object.nextUploadIdMarker !== null
+                ? String(object.nextUploadIdMarker)
+                : '';
+        message.delimiter =
+            object.delimiter !== undefined && object.delimiter !== null
+                ? String(object.delimiter)
+                : '';
+        message.prefix =
+            object.prefix !== undefined && object.prefix !== null ? String(object.prefix) : '';
+        message.maxUploads =
+            object.maxUploads !== undefined && object.maxUploads !== null
+                ? Number(object.maxUploads)
+                : 0;
+        message.isTruncated =
+            object.isTruncated !== undefined && object.isTruncated !== null
+                ? Boolean(object.isTruncated)
+                : false;
+        message.uploads = (object.uploads ?? []).map((e: any) => S3APIMultipartUpload.fromJSON(e));
+        message.commonPrefixes = (object.commonPrefixes ?? []).map((e: any) => String(e));
+        message.requestId =
+            object.requestId !== undefined && object.requestId !== null
+                ? String(object.requestId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: S3APIListMultipartUploadsResponse): unknown {
+        const obj: any = {};
+        message.bucket !== undefined && (obj.bucket = message.bucket);
+        message.keyMarker !== undefined && (obj.keyMarker = message.keyMarker);
+        message.uploadIdMarker !== undefined && (obj.uploadIdMarker = message.uploadIdMarker);
+        message.nextKeyMarker !== undefined && (obj.nextKeyMarker = message.nextKeyMarker);
+        message.nextUploadIdMarker !== undefined &&
+            (obj.nextUploadIdMarker = message.nextUploadIdMarker);
+        message.delimiter !== undefined && (obj.delimiter = message.delimiter);
+        message.prefix !== undefined && (obj.prefix = message.prefix);
+        message.maxUploads !== undefined && (obj.maxUploads = Math.round(message.maxUploads));
+        message.isTruncated !== undefined && (obj.isTruncated = message.isTruncated);
+        if (message.uploads) {
+            obj.uploads = message.uploads.map((e) =>
+                e ? S3APIMultipartUpload.toJSON(e) : undefined,
+            );
+        } else {
+            obj.uploads = [];
+        }
+        if (message.commonPrefixes) {
+            obj.commonPrefixes = message.commonPrefixes.map((e) => e);
+        } else {
+            obj.commonPrefixes = [];
+        }
+        message.requestId !== undefined && (obj.requestId = message.requestId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<S3APIListMultipartUploadsResponse>, I>>(
+        object: I,
+    ): S3APIListMultipartUploadsResponse {
+        const message = {
+            ...baseS3APIListMultipartUploadsResponse,
+        } as S3APIListMultipartUploadsResponse;
+        message.bucket = object.bucket ?? '';
+        message.keyMarker = object.keyMarker ?? '';
+        message.uploadIdMarker = object.uploadIdMarker ?? '';
+        message.nextKeyMarker = object.nextKeyMarker ?? '';
+        message.nextUploadIdMarker = object.nextUploadIdMarker ?? '';
+        message.delimiter = object.delimiter ?? '';
+        message.prefix = object.prefix ?? '';
+        message.maxUploads = object.maxUploads ?? 0;
+        message.isTruncated = object.isTruncated ?? false;
+        message.uploads = object.uploads?.map((e) => S3APIMultipartUpload.fromPartial(e)) || [];
+        message.commonPrefixes = object.commonPrefixes?.map((e) => e) || [];
+        message.requestId = object.requestId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(S3APIListMultipartUploadsResponse.$type, S3APIListMultipartUploadsResponse);
+
+const baseS3APIMultipartUpload: object = {
+    $type: 'yandex.cloud.storage.v1.S3APIMultipartUpload',
+    key: '',
+    uploadId: '',
+    storageClass: '',
+};
+
+export const S3APIMultipartUpload = {
+    $type: 'yandex.cloud.storage.v1.S3APIMultipartUpload' as const,
+
+    encode(message: S3APIMultipartUpload, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.uploadId !== '') {
+            writer.uint32(18).string(message.uploadId);
+        }
+        if (message.initiator !== undefined) {
+            S3APIOwner.encode(message.initiator, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.owner !== undefined) {
+            S3APIOwner.encode(message.owner, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.storageClass !== '') {
+            writer.uint32(42).string(message.storageClass);
+        }
+        if (message.initiatedAt !== undefined) {
+            Timestamp.encode(toTimestamp(message.initiatedAt), writer.uint32(50).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIMultipartUpload {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseS3APIMultipartUpload } as S3APIMultipartUpload;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.uploadId = reader.string();
+                    break;
+                case 3:
+                    message.initiator = S3APIOwner.decode(reader, reader.uint32());
+                    break;
+                case 4:
+                    message.owner = S3APIOwner.decode(reader, reader.uint32());
+                    break;
+                case 5:
+                    message.storageClass = reader.string();
+                    break;
+                case 6:
+                    message.initiatedAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): S3APIMultipartUpload {
+        const message = { ...baseS3APIMultipartUpload } as S3APIMultipartUpload;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.uploadId =
+            object.uploadId !== undefined && object.uploadId !== null
+                ? String(object.uploadId)
+                : '';
+        message.initiator =
+            object.initiator !== undefined && object.initiator !== null
+                ? S3APIOwner.fromJSON(object.initiator)
+                : undefined;
+        message.owner =
+            object.owner !== undefined && object.owner !== null
+                ? S3APIOwner.fromJSON(object.owner)
+                : undefined;
+        message.storageClass =
+            object.storageClass !== undefined && object.storageClass !== null
+                ? String(object.storageClass)
+                : '';
+        message.initiatedAt =
+            object.initiatedAt !== undefined && object.initiatedAt !== null
+                ? fromJsonTimestamp(object.initiatedAt)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: S3APIMultipartUpload): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.uploadId !== undefined && (obj.uploadId = message.uploadId);
+        message.initiator !== undefined &&
+            (obj.initiator = message.initiator ? S3APIOwner.toJSON(message.initiator) : undefined);
+        message.owner !== undefined &&
+            (obj.owner = message.owner ? S3APIOwner.toJSON(message.owner) : undefined);
+        message.storageClass !== undefined && (obj.storageClass = message.storageClass);
+        message.initiatedAt !== undefined && (obj.initiatedAt = message.initiatedAt.toISOString());
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<S3APIMultipartUpload>, I>>(
+        object: I,
+    ): S3APIMultipartUpload {
+        const message = { ...baseS3APIMultipartUpload } as S3APIMultipartUpload;
+        message.key = object.key ?? '';
+        message.uploadId = object.uploadId ?? '';
+        message.initiator =
+            object.initiator !== undefined && object.initiator !== null
+                ? S3APIOwner.fromPartial(object.initiator)
+                : undefined;
+        message.owner =
+            object.owner !== undefined && object.owner !== null
+                ? S3APIOwner.fromPartial(object.owner)
+                : undefined;
+        message.storageClass = object.storageClass ?? '';
+        message.initiatedAt = object.initiatedAt ?? undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(S3APIMultipartUpload.$type, S3APIMultipartUpload);
+
+const baseS3APIOwner: object = {
+    $type: 'yandex.cloud.storage.v1.S3APIOwner',
+    id: '',
+    displayName: '',
+};
+
+export const S3APIOwner = {
+    $type: 'yandex.cloud.storage.v1.S3APIOwner' as const,
+
+    encode(message: S3APIOwner, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.id !== '') {
+            writer.uint32(10).string(message.id);
+        }
+        if (message.displayName !== '') {
+            writer.uint32(18).string(message.displayName);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIOwner {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseS3APIOwner } as S3APIOwner;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.id = reader.string();
+                    break;
+                case 2:
+                    message.displayName = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): S3APIOwner {
+        const message = { ...baseS3APIOwner } as S3APIOwner;
+        message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
+        message.displayName =
+            object.displayName !== undefined && object.displayName !== null
+                ? String(object.displayName)
+                : '';
+        return message;
+    },
+
+    toJSON(message: S3APIOwner): unknown {
+        const obj: any = {};
+        message.id !== undefined && (obj.id = message.id);
+        message.displayName !== undefined && (obj.displayName = message.displayName);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<S3APIOwner>, I>>(object: I): S3APIOwner {
+        const message = { ...baseS3APIOwner } as S3APIOwner;
+        message.id = object.id ?? '';
+        message.displayName = object.displayName ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(S3APIOwner.$type, S3APIOwner);
+
+const baseS3APIUploadPartCopyResponse: object = {
+    $type: 'yandex.cloud.storage.v1.S3APIUploadPartCopyResponse',
+    etag: '',
+    requestId: '',
+};
+
+export const S3APIUploadPartCopyResponse = {
+    $type: 'yandex.cloud.storage.v1.S3APIUploadPartCopyResponse' as const,
+
+    encode(
+        message: S3APIUploadPartCopyResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.etag !== '') {
+            writer.uint32(10).string(message.etag);
+        }
+        if (message.lastModifiedAt !== undefined) {
+            Timestamp.encode(
+                toTimestamp(message.lastModifiedAt),
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        if (message.requestId !== '') {
+            writer.uint32(26).string(message.requestId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIUploadPartCopyResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseS3APIUploadPartCopyResponse } as S3APIUploadPartCopyResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.etag = reader.string();
+                    break;
+                case 2:
+                    message.lastModifiedAt = fromTimestamp(
+                        Timestamp.decode(reader, reader.uint32()),
+                    );
+                    break;
+                case 3:
+                    message.requestId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): S3APIUploadPartCopyResponse {
+        const message = { ...baseS3APIUploadPartCopyResponse } as S3APIUploadPartCopyResponse;
+        message.etag = object.etag !== undefined && object.etag !== null ? String(object.etag) : '';
+        message.lastModifiedAt =
+            object.lastModifiedAt !== undefined && object.lastModifiedAt !== null
+                ? fromJsonTimestamp(object.lastModifiedAt)
+                : undefined;
+        message.requestId =
+            object.requestId !== undefined && object.requestId !== null
+                ? String(object.requestId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: S3APIUploadPartCopyResponse): unknown {
+        const obj: any = {};
+        message.etag !== undefined && (obj.etag = message.etag);
+        message.lastModifiedAt !== undefined &&
+            (obj.lastModifiedAt = message.lastModifiedAt.toISOString());
+        message.requestId !== undefined && (obj.requestId = message.requestId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<S3APIUploadPartCopyResponse>, I>>(
+        object: I,
+    ): S3APIUploadPartCopyResponse {
+        const message = { ...baseS3APIUploadPartCopyResponse } as S3APIUploadPartCopyResponse;
+        message.etag = object.etag ?? '';
+        message.lastModifiedAt = object.lastModifiedAt ?? undefined;
+        message.requestId = object.requestId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(S3APIUploadPartCopyResponse.$type, S3APIUploadPartCopyResponse);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

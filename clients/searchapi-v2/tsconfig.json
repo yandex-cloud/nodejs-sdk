@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../searchapi-v2"
+  },
+  "include": ["."]
+}

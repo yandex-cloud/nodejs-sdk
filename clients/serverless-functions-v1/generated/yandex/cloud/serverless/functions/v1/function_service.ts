@@ -20,6 +20,7 @@ import {
     Connectivity,
     LogOptions,
     AsyncInvocationConfig,
+    MetadataOptions,
     Function,
     Version,
     Package,
@@ -389,6 +390,8 @@ export interface CreateFunctionVersionRequest {
     concurrency: number;
     /** Mounts to be used by the version. */
     mounts: Mount[];
+    /** Metadata options for the version. */
+    metadataOptions?: MetadataOptions;
 }
 
 export interface CreateFunctionVersionRequest_EnvironmentEntry {
@@ -2317,6 +2320,9 @@ export const CreateFunctionVersionRequest = {
         for (const v of message.mounts) {
             Mount.encode(v!, writer.uint32(202).fork()).ldelim();
         }
+        if (message.metadataOptions !== undefined) {
+            MetadataOptions.encode(message.metadataOptions, writer.uint32(210).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -2411,6 +2417,9 @@ export const CreateFunctionVersionRequest = {
                 case 25:
                     message.mounts.push(Mount.decode(reader, reader.uint32()));
                     break;
+                case 26:
+                    message.metadataOptions = MetadataOptions.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2497,6 +2506,10 @@ export const CreateFunctionVersionRequest = {
                 ? Number(object.concurrency)
                 : 0;
         message.mounts = (object.mounts ?? []).map((e: any) => Mount.fromJSON(e));
+        message.metadataOptions =
+            object.metadataOptions !== undefined && object.metadataOptions !== null
+                ? MetadataOptions.fromJSON(object.metadataOptions)
+                : undefined;
         return message;
     },
 
@@ -2567,6 +2580,10 @@ export const CreateFunctionVersionRequest = {
         } else {
             obj.mounts = [];
         }
+        message.metadataOptions !== undefined &&
+            (obj.metadataOptions = message.metadataOptions
+                ? MetadataOptions.toJSON(message.metadataOptions)
+                : undefined);
         return obj;
     },
 
@@ -2627,6 +2644,10 @@ export const CreateFunctionVersionRequest = {
         message.tmpfsSize = object.tmpfsSize ?? 0;
         message.concurrency = object.concurrency ?? 0;
         message.mounts = object.mounts?.map((e) => Mount.fromPartial(e)) || [];
+        message.metadataOptions =
+            object.metadataOptions !== undefined && object.metadataOptions !== null
+                ? MetadataOptions.fromPartial(object.metadataOptions)
+                : undefined;
         return message;
     },
 };

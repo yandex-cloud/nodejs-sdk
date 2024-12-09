@@ -48,9 +48,15 @@ export interface Cluster {
     labels: { [key: string]: string };
     /** Deployment environment of the Apache Kafka® cluster. */
     environment: Cluster_Environment;
-    /** Description of monitoring systems relevant to the Apache Kafka® cluster. */
+    /**
+     * Description of monitoring systems relevant to the Apache Kafka® cluster.
+     * * The field is ignored for response of List method.
+     */
     monitoring: Monitoring[];
-    /** Configuration of the Apache Kafka® cluster. */
+    /**
+     * Configuration of the Apache Kafka® cluster.
+     * * The field is ignored for response of List method.
+     */
     config?: ConfigSpec;
     /** ID of the network that the cluster belongs to. */
     networkId: string;
@@ -253,7 +259,7 @@ export interface Monitoring {
 
 export interface ConfigSpec {
     $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec';
-    /** Version of Apache Kafka® used in the cluster. Possible values: `2.1`, `2.6`. */
+    /** Version of Apache Kafka® used in the cluster. Possible values: `2.8`, `3.0`, `3.1`, `3.2`, `3.3`, `3.4`, `3.5`, `3.6`. */
     version: string;
     /** Configuration and resource allocation for Kafka brokers. */
     kafka?: ConfigSpec_Kafka;
@@ -283,6 +289,8 @@ export interface ConfigSpec {
     restApiConfig?: ConfigSpec_RestAPIConfig;
     /** DiskSizeAutoscaling settings */
     diskSizeAutoscaling?: DiskSizeAutoscaling;
+    /** Configuration and resource allocation for KRaft-controller hosts. */
+    kraft?: ConfigSpec_KRaft;
 }
 
 export interface ConfigSpec_Kafka {
@@ -296,6 +304,12 @@ export interface ConfigSpec_Kafka {
 export interface ConfigSpec_Zookeeper {
     $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec.Zookeeper';
     /** Resources allocated to ZooKeeper hosts. */
+    resources?: Resources;
+}
+
+export interface ConfigSpec_KRaft {
+    $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec.KRaft';
+    /** Resources allocated to KRaft controller hosts. */
     resources?: Resources;
 }
 
@@ -1110,6 +1124,9 @@ export const ConfigSpec = {
                 writer.uint32(90).fork(),
             ).ldelim();
         }
+        if (message.kraft !== undefined) {
+            ConfigSpec_KRaft.encode(message.kraft, writer.uint32(98).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -1160,6 +1177,9 @@ export const ConfigSpec = {
                         reader.uint32(),
                     );
                     break;
+                case 12:
+                    message.kraft = ConfigSpec_KRaft.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1209,6 +1229,10 @@ export const ConfigSpec = {
             object.diskSizeAutoscaling !== undefined && object.diskSizeAutoscaling !== null
                 ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
                 : undefined;
+        message.kraft =
+            object.kraft !== undefined && object.kraft !== null
+                ? ConfigSpec_KRaft.fromJSON(object.kraft)
+                : undefined;
         return message;
     },
 
@@ -1240,6 +1264,8 @@ export const ConfigSpec = {
             (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
                 ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
                 : undefined);
+        message.kraft !== undefined &&
+            (obj.kraft = message.kraft ? ConfigSpec_KRaft.toJSON(message.kraft) : undefined);
         return obj;
     },
 
@@ -1270,6 +1296,10 @@ export const ConfigSpec = {
         message.diskSizeAutoscaling =
             object.diskSizeAutoscaling !== undefined && object.diskSizeAutoscaling !== null
                 ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+                : undefined;
+        message.kraft =
+            object.kraft !== undefined && object.kraft !== null
+                ? ConfigSpec_KRaft.fromPartial(object.kraft)
                 : undefined;
         return message;
     },
@@ -1432,6 +1462,64 @@ export const ConfigSpec_Zookeeper = {
 };
 
 messageTypeRegistry.set(ConfigSpec_Zookeeper.$type, ConfigSpec_Zookeeper);
+
+const baseConfigSpec_KRaft: object = { $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec.KRaft' };
+
+export const ConfigSpec_KRaft = {
+    $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec.KRaft' as const,
+
+    encode(message: ConfigSpec_KRaft, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.resources !== undefined) {
+            Resources.encode(message.resources, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConfigSpec_KRaft {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseConfigSpec_KRaft } as ConfigSpec_KRaft;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.resources = Resources.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ConfigSpec_KRaft {
+        const message = { ...baseConfigSpec_KRaft } as ConfigSpec_KRaft;
+        message.resources =
+            object.resources !== undefined && object.resources !== null
+                ? Resources.fromJSON(object.resources)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: ConfigSpec_KRaft): unknown {
+        const obj: any = {};
+        message.resources !== undefined &&
+            (obj.resources = message.resources ? Resources.toJSON(message.resources) : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ConfigSpec_KRaft>, I>>(object: I): ConfigSpec_KRaft {
+        const message = { ...baseConfigSpec_KRaft } as ConfigSpec_KRaft;
+        message.resources =
+            object.resources !== undefined && object.resources !== null
+                ? Resources.fromPartial(object.resources)
+                : undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ConfigSpec_KRaft.$type, ConfigSpec_KRaft);
 
 const baseConfigSpec_RestAPIConfig: object = {
     $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec.RestAPIConfig',

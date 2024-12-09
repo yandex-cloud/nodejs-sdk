@@ -759,14 +759,16 @@ export interface AttachedDiskSpec_DiskSpec {
     typeId: string;
     /** Size of the disk, specified in bytes. */
     size: number;
-    /** Block size of the disk, specified in bytes. The default is 4096. */
-    blockSize: number;
-    /** Placement policy configuration. */
-    diskPlacementPolicy?: DiskPlacementPolicy;
     /** ID of the image to create the disk from. */
     imageId: string | undefined;
     /** ID of the snapshot to restore the disk from. */
     snapshotId: string | undefined;
+    /** Placement policy configuration. */
+    diskPlacementPolicy?: DiskPlacementPolicy;
+    /** Block size of the disk, specified in bytes. The default is 4096. */
+    blockSize: number;
+    /** ID of KMS key for disk encryption */
+    kmsKeyId: string;
 }
 
 export interface AttachedLocalDiskSpec {
@@ -5535,6 +5537,7 @@ const baseAttachedDiskSpec_DiskSpec: object = {
     typeId: '',
     size: 0,
     blockSize: 0,
+    kmsKeyId: '',
 };
 
 export const AttachedDiskSpec_DiskSpec = {
@@ -5556,8 +5559,11 @@ export const AttachedDiskSpec_DiskSpec = {
         if (message.size !== 0) {
             writer.uint32(32).int64(message.size);
         }
-        if (message.blockSize !== 0) {
-            writer.uint32(64).int64(message.blockSize);
+        if (message.imageId !== undefined) {
+            writer.uint32(42).string(message.imageId);
+        }
+        if (message.snapshotId !== undefined) {
+            writer.uint32(50).string(message.snapshotId);
         }
         if (message.diskPlacementPolicy !== undefined) {
             DiskPlacementPolicy.encode(
@@ -5565,11 +5571,11 @@ export const AttachedDiskSpec_DiskSpec = {
                 writer.uint32(58).fork(),
             ).ldelim();
         }
-        if (message.imageId !== undefined) {
-            writer.uint32(42).string(message.imageId);
+        if (message.blockSize !== 0) {
+            writer.uint32(64).int64(message.blockSize);
         }
-        if (message.snapshotId !== undefined) {
-            writer.uint32(50).string(message.snapshotId);
+        if (message.kmsKeyId !== '') {
+            writer.uint32(74).string(message.kmsKeyId);
         }
         return writer;
     },
@@ -5593,8 +5599,11 @@ export const AttachedDiskSpec_DiskSpec = {
                 case 4:
                     message.size = longToNumber(reader.int64() as Long);
                     break;
-                case 8:
-                    message.blockSize = longToNumber(reader.int64() as Long);
+                case 5:
+                    message.imageId = reader.string();
+                    break;
+                case 6:
+                    message.snapshotId = reader.string();
                     break;
                 case 7:
                     message.diskPlacementPolicy = DiskPlacementPolicy.decode(
@@ -5602,11 +5611,11 @@ export const AttachedDiskSpec_DiskSpec = {
                         reader.uint32(),
                     );
                     break;
-                case 5:
-                    message.imageId = reader.string();
+                case 8:
+                    message.blockSize = longToNumber(reader.int64() as Long);
                     break;
-                case 6:
-                    message.snapshotId = reader.string();
+                case 9:
+                    message.kmsKeyId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -5626,14 +5635,6 @@ export const AttachedDiskSpec_DiskSpec = {
         message.typeId =
             object.typeId !== undefined && object.typeId !== null ? String(object.typeId) : '';
         message.size = object.size !== undefined && object.size !== null ? Number(object.size) : 0;
-        message.blockSize =
-            object.blockSize !== undefined && object.blockSize !== null
-                ? Number(object.blockSize)
-                : 0;
-        message.diskPlacementPolicy =
-            object.diskPlacementPolicy !== undefined && object.diskPlacementPolicy !== null
-                ? DiskPlacementPolicy.fromJSON(object.diskPlacementPolicy)
-                : undefined;
         message.imageId =
             object.imageId !== undefined && object.imageId !== null
                 ? String(object.imageId)
@@ -5642,6 +5643,18 @@ export const AttachedDiskSpec_DiskSpec = {
             object.snapshotId !== undefined && object.snapshotId !== null
                 ? String(object.snapshotId)
                 : undefined;
+        message.diskPlacementPolicy =
+            object.diskPlacementPolicy !== undefined && object.diskPlacementPolicy !== null
+                ? DiskPlacementPolicy.fromJSON(object.diskPlacementPolicy)
+                : undefined;
+        message.blockSize =
+            object.blockSize !== undefined && object.blockSize !== null
+                ? Number(object.blockSize)
+                : 0;
+        message.kmsKeyId =
+            object.kmsKeyId !== undefined && object.kmsKeyId !== null
+                ? String(object.kmsKeyId)
+                : '';
         return message;
     },
 
@@ -5651,13 +5664,14 @@ export const AttachedDiskSpec_DiskSpec = {
         message.description !== undefined && (obj.description = message.description);
         message.typeId !== undefined && (obj.typeId = message.typeId);
         message.size !== undefined && (obj.size = Math.round(message.size));
-        message.blockSize !== undefined && (obj.blockSize = Math.round(message.blockSize));
+        message.imageId !== undefined && (obj.imageId = message.imageId);
+        message.snapshotId !== undefined && (obj.snapshotId = message.snapshotId);
         message.diskPlacementPolicy !== undefined &&
             (obj.diskPlacementPolicy = message.diskPlacementPolicy
                 ? DiskPlacementPolicy.toJSON(message.diskPlacementPolicy)
                 : undefined);
-        message.imageId !== undefined && (obj.imageId = message.imageId);
-        message.snapshotId !== undefined && (obj.snapshotId = message.snapshotId);
+        message.blockSize !== undefined && (obj.blockSize = Math.round(message.blockSize));
+        message.kmsKeyId !== undefined && (obj.kmsKeyId = message.kmsKeyId);
         return obj;
     },
 
@@ -5669,13 +5683,14 @@ export const AttachedDiskSpec_DiskSpec = {
         message.description = object.description ?? '';
         message.typeId = object.typeId ?? '';
         message.size = object.size ?? 0;
-        message.blockSize = object.blockSize ?? 0;
+        message.imageId = object.imageId ?? undefined;
+        message.snapshotId = object.snapshotId ?? undefined;
         message.diskPlacementPolicy =
             object.diskPlacementPolicy !== undefined && object.diskPlacementPolicy !== null
                 ? DiskPlacementPolicy.fromPartial(object.diskPlacementPolicy)
                 : undefined;
-        message.imageId = object.imageId ?? undefined;
-        message.snapshotId = object.snapshotId ?? undefined;
+        message.blockSize = object.blockSize ?? 0;
+        message.kmsKeyId = object.kmsKeyId ?? '';
         return message;
     },
 };
@@ -6854,7 +6869,7 @@ export const InstanceServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Updates the metadata of the specified instance. */
+    /** Updates the metadata of the specified instance. For more information on metadata, see [VM metadata](/docs/compute/concepts/vm-metadata). */
     updateMetadata: {
         path: '/yandex.cloud.compute.v1.InstanceService/UpdateMetadata',
         requestStream: false,
@@ -7142,7 +7157,7 @@ export interface InstanceServiceServer extends UntypedServiceImplementation {
     update: handleUnaryCall<UpdateInstanceRequest, Operation>;
     /** Deletes the specified instance. */
     delete: handleUnaryCall<DeleteInstanceRequest, Operation>;
-    /** Updates the metadata of the specified instance. */
+    /** Updates the metadata of the specified instance. For more information on metadata, see [VM metadata](/docs/compute/concepts/vm-metadata). */
     updateMetadata: handleUnaryCall<UpdateInstanceMetadataRequest, Operation>;
     /** Returns the serial port output of the specified Instance resource. */
     getSerialPortOutput: handleUnaryCall<
@@ -7310,7 +7325,7 @@ export interface InstanceServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Updates the metadata of the specified instance. */
+    /** Updates the metadata of the specified instance. For more information on metadata, see [VM metadata](/docs/compute/concepts/vm-metadata). */
     updateMetadata(
         request: UpdateInstanceMetadataRequest,
         callback: (error: ServiceError | null, response: Operation) => void,

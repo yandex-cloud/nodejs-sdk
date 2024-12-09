@@ -62,6 +62,20 @@ export interface ListStreamsResponse {
     nextPageToken: string;
 }
 
+export interface BatchGetStreamsRequest {
+    $type: 'yandex.cloud.video.v1.BatchGetStreamsRequest';
+    /** ID of the channel. */
+    channelId: string;
+    /** List of requested stream IDs. */
+    streamIds: string[];
+}
+
+export interface BatchGetStreamsResponse {
+    $type: 'yandex.cloud.video.v1.BatchGetStreamsResponse';
+    /** List of streams for specific channel. */
+    streams: Stream[];
+}
+
 export interface CreateStreamRequest {
     $type: 'yandex.cloud.video.v1.CreateStreamRequest';
     /** ID of the channel. */
@@ -148,6 +162,20 @@ export interface DeleteStreamMetadata {
     $type: 'yandex.cloud.video.v1.DeleteStreamMetadata';
     /** ID of the stream. */
     streamId: string;
+}
+
+export interface BatchDeleteStreamsRequest {
+    $type: 'yandex.cloud.video.v1.BatchDeleteStreamsRequest';
+    /** ID of the channel. */
+    channelId: string;
+    /** List of stream IDs. */
+    streamIds: string[];
+}
+
+export interface BatchDeleteStreamsMetadata {
+    $type: 'yandex.cloud.video.v1.BatchDeleteStreamsMetadata';
+    /** List of stream IDs. */
+    streamIds: string[];
 }
 
 export interface PerformStreamActionRequest {
@@ -406,6 +434,140 @@ export const ListStreamsResponse = {
 };
 
 messageTypeRegistry.set(ListStreamsResponse.$type, ListStreamsResponse);
+
+const baseBatchGetStreamsRequest: object = {
+    $type: 'yandex.cloud.video.v1.BatchGetStreamsRequest',
+    channelId: '',
+    streamIds: '',
+};
+
+export const BatchGetStreamsRequest = {
+    $type: 'yandex.cloud.video.v1.BatchGetStreamsRequest' as const,
+
+    encode(message: BatchGetStreamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.channelId !== '') {
+            writer.uint32(10).string(message.channelId);
+        }
+        for (const v of message.streamIds) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetStreamsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchGetStreamsRequest } as BatchGetStreamsRequest;
+        message.streamIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.channelId = reader.string();
+                    break;
+                case 2:
+                    message.streamIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchGetStreamsRequest {
+        const message = { ...baseBatchGetStreamsRequest } as BatchGetStreamsRequest;
+        message.channelId =
+            object.channelId !== undefined && object.channelId !== null
+                ? String(object.channelId)
+                : '';
+        message.streamIds = (object.streamIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: BatchGetStreamsRequest): unknown {
+        const obj: any = {};
+        message.channelId !== undefined && (obj.channelId = message.channelId);
+        if (message.streamIds) {
+            obj.streamIds = message.streamIds.map((e) => e);
+        } else {
+            obj.streamIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchGetStreamsRequest>, I>>(
+        object: I,
+    ): BatchGetStreamsRequest {
+        const message = { ...baseBatchGetStreamsRequest } as BatchGetStreamsRequest;
+        message.channelId = object.channelId ?? '';
+        message.streamIds = object.streamIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BatchGetStreamsRequest.$type, BatchGetStreamsRequest);
+
+const baseBatchGetStreamsResponse: object = {
+    $type: 'yandex.cloud.video.v1.BatchGetStreamsResponse',
+};
+
+export const BatchGetStreamsResponse = {
+    $type: 'yandex.cloud.video.v1.BatchGetStreamsResponse' as const,
+
+    encode(message: BatchGetStreamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.streams) {
+            Stream.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetStreamsResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchGetStreamsResponse } as BatchGetStreamsResponse;
+        message.streams = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.streams.push(Stream.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchGetStreamsResponse {
+        const message = { ...baseBatchGetStreamsResponse } as BatchGetStreamsResponse;
+        message.streams = (object.streams ?? []).map((e: any) => Stream.fromJSON(e));
+        return message;
+    },
+
+    toJSON(message: BatchGetStreamsResponse): unknown {
+        const obj: any = {};
+        if (message.streams) {
+            obj.streams = message.streams.map((e) => (e ? Stream.toJSON(e) : undefined));
+        } else {
+            obj.streams = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchGetStreamsResponse>, I>>(
+        object: I,
+    ): BatchGetStreamsResponse {
+        const message = { ...baseBatchGetStreamsResponse } as BatchGetStreamsResponse;
+        message.streams = object.streams?.map((e) => Stream.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BatchGetStreamsResponse.$type, BatchGetStreamsResponse);
 
 const baseCreateStreamRequest: object = {
     $type: 'yandex.cloud.video.v1.CreateStreamRequest',
@@ -1281,6 +1443,147 @@ export const DeleteStreamMetadata = {
 
 messageTypeRegistry.set(DeleteStreamMetadata.$type, DeleteStreamMetadata);
 
+const baseBatchDeleteStreamsRequest: object = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteStreamsRequest',
+    channelId: '',
+    streamIds: '',
+};
+
+export const BatchDeleteStreamsRequest = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteStreamsRequest' as const,
+
+    encode(
+        message: BatchDeleteStreamsRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.channelId !== '') {
+            writer.uint32(10).string(message.channelId);
+        }
+        for (const v of message.streamIds) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteStreamsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchDeleteStreamsRequest } as BatchDeleteStreamsRequest;
+        message.streamIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.channelId = reader.string();
+                    break;
+                case 2:
+                    message.streamIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchDeleteStreamsRequest {
+        const message = { ...baseBatchDeleteStreamsRequest } as BatchDeleteStreamsRequest;
+        message.channelId =
+            object.channelId !== undefined && object.channelId !== null
+                ? String(object.channelId)
+                : '';
+        message.streamIds = (object.streamIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: BatchDeleteStreamsRequest): unknown {
+        const obj: any = {};
+        message.channelId !== undefined && (obj.channelId = message.channelId);
+        if (message.streamIds) {
+            obj.streamIds = message.streamIds.map((e) => e);
+        } else {
+            obj.streamIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteStreamsRequest>, I>>(
+        object: I,
+    ): BatchDeleteStreamsRequest {
+        const message = { ...baseBatchDeleteStreamsRequest } as BatchDeleteStreamsRequest;
+        message.channelId = object.channelId ?? '';
+        message.streamIds = object.streamIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BatchDeleteStreamsRequest.$type, BatchDeleteStreamsRequest);
+
+const baseBatchDeleteStreamsMetadata: object = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteStreamsMetadata',
+    streamIds: '',
+};
+
+export const BatchDeleteStreamsMetadata = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteStreamsMetadata' as const,
+
+    encode(
+        message: BatchDeleteStreamsMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.streamIds) {
+            writer.uint32(10).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteStreamsMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchDeleteStreamsMetadata } as BatchDeleteStreamsMetadata;
+        message.streamIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.streamIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchDeleteStreamsMetadata {
+        const message = { ...baseBatchDeleteStreamsMetadata } as BatchDeleteStreamsMetadata;
+        message.streamIds = (object.streamIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: BatchDeleteStreamsMetadata): unknown {
+        const obj: any = {};
+        if (message.streamIds) {
+            obj.streamIds = message.streamIds.map((e) => e);
+        } else {
+            obj.streamIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteStreamsMetadata>, I>>(
+        object: I,
+    ): BatchDeleteStreamsMetadata {
+        const message = { ...baseBatchDeleteStreamsMetadata } as BatchDeleteStreamsMetadata;
+        message.streamIds = object.streamIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BatchDeleteStreamsMetadata.$type, BatchDeleteStreamsMetadata);
+
 const basePerformStreamActionRequest: object = {
     $type: 'yandex.cloud.video.v1.PerformStreamActionRequest',
     streamId: '',
@@ -1546,6 +1849,18 @@ export const StreamServiceService = {
             Buffer.from(ListStreamsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListStreamsResponse.decode(value),
     },
+    /** Batch get streams for channel. */
+    batchGet: {
+        path: '/yandex.cloud.video.v1.StreamService/BatchGet',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: BatchGetStreamsRequest) =>
+            Buffer.from(BatchGetStreamsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => BatchGetStreamsRequest.decode(value),
+        responseSerialize: (value: BatchGetStreamsResponse) =>
+            Buffer.from(BatchGetStreamsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => BatchGetStreamsResponse.decode(value),
+    },
     /** Create stream. */
     create: {
         path: '/yandex.cloud.video.v1.StreamService/Create',
@@ -1579,6 +1894,17 @@ export const StreamServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Batch delete streams. */
+    batchDelete: {
+        path: '/yandex.cloud.video.v1.StreamService/BatchDelete',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: BatchDeleteStreamsRequest) =>
+            Buffer.from(BatchDeleteStreamsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => BatchDeleteStreamsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
     /** Perform an action on the episode. */
     performAction: {
         path: '/yandex.cloud.video.v1.StreamService/PerformAction',
@@ -1597,12 +1923,16 @@ export interface StreamServiceServer extends UntypedServiceImplementation {
     get: handleUnaryCall<GetStreamRequest, Stream>;
     /** List streams for channel. */
     list: handleUnaryCall<ListStreamsRequest, ListStreamsResponse>;
+    /** Batch get streams for channel. */
+    batchGet: handleUnaryCall<BatchGetStreamsRequest, BatchGetStreamsResponse>;
     /** Create stream. */
     create: handleUnaryCall<CreateStreamRequest, Operation>;
     /** Update stream. */
     update: handleUnaryCall<UpdateStreamRequest, Operation>;
     /** Delete stream. */
     delete: handleUnaryCall<DeleteStreamRequest, Operation>;
+    /** Batch delete streams. */
+    batchDelete: handleUnaryCall<BatchDeleteStreamsRequest, Operation>;
     /** Perform an action on the episode. */
     performAction: handleUnaryCall<PerformStreamActionRequest, Operation>;
 }
@@ -1640,6 +1970,22 @@ export interface StreamServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListStreamsResponse) => void,
     ): ClientUnaryCall;
+    /** Batch get streams for channel. */
+    batchGet(
+        request: BatchGetStreamsRequest,
+        callback: (error: ServiceError | null, response: BatchGetStreamsResponse) => void,
+    ): ClientUnaryCall;
+    batchGet(
+        request: BatchGetStreamsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: BatchGetStreamsResponse) => void,
+    ): ClientUnaryCall;
+    batchGet(
+        request: BatchGetStreamsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: BatchGetStreamsResponse) => void,
+    ): ClientUnaryCall;
     /** Create stream. */
     create(
         request: CreateStreamRequest,
@@ -1684,6 +2030,22 @@ export interface StreamServiceClient extends Client {
     ): ClientUnaryCall;
     delete(
         request: DeleteStreamRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Batch delete streams. */
+    batchDelete(
+        request: BatchDeleteStreamsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    batchDelete(
+        request: BatchDeleteStreamsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    batchDelete(
+        request: BatchDeleteStreamsRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

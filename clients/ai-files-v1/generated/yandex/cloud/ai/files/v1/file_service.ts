@@ -20,14 +20,24 @@ import { File } from '../../../../../yandex/cloud/ai/files/v1/file';
 
 export const protobufPackage = 'yandex.cloud.ai.files.v1';
 
+/** Request message for creating a new file. */
 export interface CreateFileRequest {
     $type: 'yandex.cloud.ai.files.v1.CreateFileRequest';
     folderId: string;
+    /** Name of the file. */
     name: string;
+    /** Description of the file. */
     description: string;
+    /**
+     * MIME type of the file, indicating the file's format (e.g., "application/pdf").
+     * If not specified, will be deduced automatically based on the file content.
+     */
     mimeType: string;
+    /** Binary content of the file. */
     content: Buffer;
+    /** Set of key-value pairs to label the file. */
     labels: { [key: string]: string };
+    /** Expiration configuration for the file. */
     expirationConfig?: ExpirationConfig;
 }
 
@@ -37,28 +47,41 @@ export interface CreateFileRequest_LabelsEntry {
     value: string;
 }
 
+/** Request message for retrieving a file by ID. */
 export interface GetFileRequest {
     $type: 'yandex.cloud.ai.files.v1.GetFileRequest';
+    /** ID of the file to retrieve. */
     fileId: string;
 }
 
+/** Request message for retrieving the URL of a specific file. */
 export interface GetFileUrlRequest {
     $type: 'yandex.cloud.ai.files.v1.GetFileUrlRequest';
+    /** ID of the file which the URL is requested. */
     fileId: string;
 }
 
+/** Response message containing the URL to access the requested file. */
 export interface GetFileUrlResponse {
     $type: 'yandex.cloud.ai.files.v1.GetFileUrlResponse';
+    /** URL that can be used to access or download the file. */
     url: string;
 }
 
+/** Request message for updating an existing file. */
 export interface UpdateFileRequest {
     $type: 'yandex.cloud.ai.files.v1.UpdateFileRequest';
+    /** ID of the file to update. */
     fileId: string;
+    /** Field mask specifying which fields to update. */
     updateMask?: FieldMask;
+    /** New name for the file. */
     name: string;
+    /** New description for the file. */
     description: string;
+    /** New expiration configuration for the file. */
     expirationConfig?: ExpirationConfig;
+    /** New set of labels for the file. */
     labels: { [key: string]: string };
 }
 
@@ -68,25 +91,35 @@ export interface UpdateFileRequest_LabelsEntry {
     value: string;
 }
 
+/** Request message for deleting a file by ID. */
 export interface DeleteFileRequest {
     $type: 'yandex.cloud.ai.files.v1.DeleteFileRequest';
+    /** ID of the file to delete. */
     fileId: string;
 }
 
+/** Response message for the delete operation. */
 export interface DeleteFileResponse {
     $type: 'yandex.cloud.ai.files.v1.DeleteFileResponse';
 }
 
+/** Request message for listing files in a specific folder. */
 export interface ListFilesRequest {
     $type: 'yandex.cloud.ai.files.v1.ListFilesRequest';
+    /** Folder ID from which to list files. */
     folderId: string;
+    /** Maximum number of files to return per page. */
     pageSize: number;
+    /** Token to retrieve the next page of results. */
     pageToken: string;
 }
 
+/** Response message for the list operation. */
 export interface ListFilesResponse {
     $type: 'yandex.cloud.ai.files.v1.ListFilesResponse';
+    /** List of files in the specified folder. */
     files: File[];
+    /** Token to retrieve the next page of results. */
     nextPageToken: string;
 }
 
@@ -961,7 +994,9 @@ export const ListFilesResponse = {
 
 messageTypeRegistry.set(ListFilesResponse.$type, ListFilesResponse);
 
+/** FileService provides operations for managing files. */
 export const FileServiceService = {
+    /** Create a new file. */
     create: {
         path: '/yandex.cloud.ai.files.v1.FileService/Create',
         requestStream: false,
@@ -972,6 +1007,7 @@ export const FileServiceService = {
         responseSerialize: (value: File) => Buffer.from(File.encode(value).finish()),
         responseDeserialize: (value: Buffer) => File.decode(value),
     },
+    /** Retrieve details of a specific file by its ID. */
     get: {
         path: '/yandex.cloud.ai.files.v1.FileService/Get',
         requestStream: false,
@@ -982,6 +1018,7 @@ export const FileServiceService = {
         responseSerialize: (value: File) => Buffer.from(File.encode(value).finish()),
         responseDeserialize: (value: Buffer) => File.decode(value),
     },
+    /** Retrieve a URL for accessing or downloading a specific file. */
     getUrl: {
         path: '/yandex.cloud.ai.files.v1.FileService/GetUrl',
         requestStream: false,
@@ -993,6 +1030,7 @@ export const FileServiceService = {
             Buffer.from(GetFileUrlResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => GetFileUrlResponse.decode(value),
     },
+    /** Update an existing file. */
     update: {
         path: '/yandex.cloud.ai.files.v1.FileService/Update',
         requestStream: false,
@@ -1003,6 +1041,7 @@ export const FileServiceService = {
         responseSerialize: (value: File) => Buffer.from(File.encode(value).finish()),
         responseDeserialize: (value: Buffer) => File.decode(value),
     },
+    /** Delete a file by its ID. */
     delete: {
         path: '/yandex.cloud.ai.files.v1.FileService/Delete',
         requestStream: false,
@@ -1014,6 +1053,7 @@ export const FileServiceService = {
             Buffer.from(DeleteFileResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => DeleteFileResponse.decode(value),
     },
+    /** List files in a specific folder. */
     list: {
         path: '/yandex.cloud.ai.files.v1.FileService/List',
         requestStream: false,
@@ -1028,15 +1068,22 @@ export const FileServiceService = {
 } as const;
 
 export interface FileServiceServer extends UntypedServiceImplementation {
+    /** Create a new file. */
     create: handleUnaryCall<CreateFileRequest, File>;
+    /** Retrieve details of a specific file by its ID. */
     get: handleUnaryCall<GetFileRequest, File>;
+    /** Retrieve a URL for accessing or downloading a specific file. */
     getUrl: handleUnaryCall<GetFileUrlRequest, GetFileUrlResponse>;
+    /** Update an existing file. */
     update: handleUnaryCall<UpdateFileRequest, File>;
+    /** Delete a file by its ID. */
     delete: handleUnaryCall<DeleteFileRequest, DeleteFileResponse>;
+    /** List files in a specific folder. */
     list: handleUnaryCall<ListFilesRequest, ListFilesResponse>;
 }
 
 export interface FileServiceClient extends Client {
+    /** Create a new file. */
     create(
         request: CreateFileRequest,
         callback: (error: ServiceError | null, response: File) => void,
@@ -1052,6 +1099,7 @@ export interface FileServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: File) => void,
     ): ClientUnaryCall;
+    /** Retrieve details of a specific file by its ID. */
     get(
         request: GetFileRequest,
         callback: (error: ServiceError | null, response: File) => void,
@@ -1067,6 +1115,7 @@ export interface FileServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: File) => void,
     ): ClientUnaryCall;
+    /** Retrieve a URL for accessing or downloading a specific file. */
     getUrl(
         request: GetFileUrlRequest,
         callback: (error: ServiceError | null, response: GetFileUrlResponse) => void,
@@ -1082,6 +1131,7 @@ export interface FileServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: GetFileUrlResponse) => void,
     ): ClientUnaryCall;
+    /** Update an existing file. */
     update(
         request: UpdateFileRequest,
         callback: (error: ServiceError | null, response: File) => void,
@@ -1097,6 +1147,7 @@ export interface FileServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: File) => void,
     ): ClientUnaryCall;
+    /** Delete a file by its ID. */
     delete(
         request: DeleteFileRequest,
         callback: (error: ServiceError | null, response: DeleteFileResponse) => void,
@@ -1112,6 +1163,7 @@ export interface FileServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: DeleteFileResponse) => void,
     ): ClientUnaryCall;
+    /** List files in a specific folder. */
     list(
         request: ListFilesRequest,
         callback: (error: ServiceError | null, response: ListFilesResponse) => void,

@@ -45,6 +45,10 @@ export enum Connector_Status {
     PERMISSION_DENIED = 4,
     /** SUBJECT_NOT_FOUND - service account not found */
     SUBJECT_NOT_FOUND = 5,
+    /** DELETING - deletion in progress */
+    DELETING = 7,
+    /** CREATING - creation in progress */
+    CREATING = 8,
     UNRECOGNIZED = -1,
 }
 
@@ -68,6 +72,12 @@ export function connector_StatusFromJSON(object: any): Connector_Status {
         case 5:
         case 'SUBJECT_NOT_FOUND':
             return Connector_Status.SUBJECT_NOT_FOUND;
+        case 7:
+        case 'DELETING':
+            return Connector_Status.DELETING;
+        case 8:
+        case 'CREATING':
+            return Connector_Status.CREATING;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -89,6 +99,10 @@ export function connector_StatusToJSON(object: Connector_Status): string {
             return 'PERMISSION_DENIED';
         case Connector_Status.SUBJECT_NOT_FOUND:
             return 'SUBJECT_NOT_FOUND';
+        case Connector_Status.DELETING:
+            return 'DELETING';
+        case Connector_Status.CREATING:
+            return 'CREATING';
         default:
             return 'UNKNOWN';
     }
@@ -104,6 +118,7 @@ export interface Source {
     $type: 'yandex.cloud.serverless.eventrouter.v1.Source';
     dataStream?: DataStream | undefined;
     messageQueue?: MessageQueue | undefined;
+    timer?: Timer | undefined;
 }
 
 export interface DataStream {
@@ -136,6 +151,16 @@ export interface MessageQueue {
     batchSize: number;
     /** Queue polling timeout. */
     pollingTimeout?: Duration;
+}
+
+export interface Timer {
+    $type: 'yandex.cloud.serverless.eventrouter.v1.Timer';
+    /** cron expression, with second precision */
+    cronExpression: string;
+    /** time zone, e.g. Europe/Moscow */
+    timeZone: string;
+    /** payload to send to target */
+    payload: string;
 }
 
 const baseConnector: object = {
@@ -423,6 +448,9 @@ export const Source = {
         if (message.messageQueue !== undefined) {
             MessageQueue.encode(message.messageQueue, writer.uint32(18).fork()).ldelim();
         }
+        if (message.timer !== undefined) {
+            Timer.encode(message.timer, writer.uint32(26).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -438,6 +466,9 @@ export const Source = {
                     break;
                 case 2:
                     message.messageQueue = MessageQueue.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.timer = Timer.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -457,6 +488,10 @@ export const Source = {
             object.messageQueue !== undefined && object.messageQueue !== null
                 ? MessageQueue.fromJSON(object.messageQueue)
                 : undefined;
+        message.timer =
+            object.timer !== undefined && object.timer !== null
+                ? Timer.fromJSON(object.timer)
+                : undefined;
         return message;
     },
 
@@ -470,6 +505,8 @@ export const Source = {
             (obj.messageQueue = message.messageQueue
                 ? MessageQueue.toJSON(message.messageQueue)
                 : undefined);
+        message.timer !== undefined &&
+            (obj.timer = message.timer ? Timer.toJSON(message.timer) : undefined);
         return obj;
     },
 
@@ -482,6 +519,10 @@ export const Source = {
         message.messageQueue =
             object.messageQueue !== undefined && object.messageQueue !== null
                 ? MessageQueue.fromPartial(object.messageQueue)
+                : undefined;
+        message.timer =
+            object.timer !== undefined && object.timer !== null
+                ? Timer.fromPartial(object.timer)
                 : undefined;
         return message;
     },
@@ -703,6 +744,87 @@ export const MessageQueue = {
 };
 
 messageTypeRegistry.set(MessageQueue.$type, MessageQueue);
+
+const baseTimer: object = {
+    $type: 'yandex.cloud.serverless.eventrouter.v1.Timer',
+    cronExpression: '',
+    timeZone: '',
+    payload: '',
+};
+
+export const Timer = {
+    $type: 'yandex.cloud.serverless.eventrouter.v1.Timer' as const,
+
+    encode(message: Timer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.cronExpression !== '') {
+            writer.uint32(10).string(message.cronExpression);
+        }
+        if (message.timeZone !== '') {
+            writer.uint32(18).string(message.timeZone);
+        }
+        if (message.payload !== '') {
+            writer.uint32(34).string(message.payload);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Timer {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseTimer } as Timer;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.cronExpression = reader.string();
+                    break;
+                case 2:
+                    message.timeZone = reader.string();
+                    break;
+                case 4:
+                    message.payload = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Timer {
+        const message = { ...baseTimer } as Timer;
+        message.cronExpression =
+            object.cronExpression !== undefined && object.cronExpression !== null
+                ? String(object.cronExpression)
+                : '';
+        message.timeZone =
+            object.timeZone !== undefined && object.timeZone !== null
+                ? String(object.timeZone)
+                : '';
+        message.payload =
+            object.payload !== undefined && object.payload !== null ? String(object.payload) : '';
+        return message;
+    },
+
+    toJSON(message: Timer): unknown {
+        const obj: any = {};
+        message.cronExpression !== undefined && (obj.cronExpression = message.cronExpression);
+        message.timeZone !== undefined && (obj.timeZone = message.timeZone);
+        message.payload !== undefined && (obj.payload = message.payload);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Timer>, I>>(object: I): Timer {
+        const message = { ...baseTimer } as Timer;
+        message.cronExpression = object.cronExpression ?? '';
+        message.timeZone = object.timeZone ?? '';
+        message.payload = object.payload ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(Timer.$type, Timer);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

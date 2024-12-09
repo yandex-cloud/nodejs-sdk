@@ -11,10 +11,6 @@ export interface Manifest {
     type: Manifest_ManifestType;
 }
 
-/**
- * TODO: CLOUDAPI-336
- * TODO: reserved 3;
- */
 export enum Manifest_ManifestType {
     MANIFEST_TYPE_UNSPECIFIED = 0,
     DASH = 1,

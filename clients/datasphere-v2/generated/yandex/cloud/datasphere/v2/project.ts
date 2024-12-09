@@ -39,8 +39,6 @@ export interface Project_Settings {
     subnetId: string;
     /** ID of the DataProc cluster. */
     dataProcClusterId: string;
-    /** Commit mode that is assigned to the project. */
-    commitMode: Project_Settings_CommitMode;
     /** Network interfaces security groups. */
     securityGroupIds: string[];
     /** Is early access preview enabled for the project. */
@@ -51,55 +49,10 @@ export interface Project_Settings {
     defaultFolderId: string;
     /** Timeout to automatically stop stale executions. */
     staleExecTimeoutMode: Project_Settings_StaleExecutionTimeoutMode;
-    /** VM allocation mode. */
-    ideExecutionMode: Project_Settings_IdeExecutionMode;
     /** Timeout for VM deallocation. */
     vmInactivityTimeout?: Duration;
     /** Default VM configuration for DEDICATED mode. */
     defaultDedicatedSpec: string;
-}
-
-export enum Project_Settings_CommitMode {
-    COMMIT_MODE_UNSPECIFIED = 0,
-    /** STANDARD - Commit happens after the execution of a cell or group of cells or after completion with an error. */
-    STANDARD = 1,
-    /**
-     * AUTO - Commit happens periodically.
-     * Also, automatic saving of state occurs when switching to another type of computing resource.
-     */
-    AUTO = 2,
-    UNRECOGNIZED = -1,
-}
-
-export function project_Settings_CommitModeFromJSON(object: any): Project_Settings_CommitMode {
-    switch (object) {
-        case 0:
-        case 'COMMIT_MODE_UNSPECIFIED':
-            return Project_Settings_CommitMode.COMMIT_MODE_UNSPECIFIED;
-        case 1:
-        case 'STANDARD':
-            return Project_Settings_CommitMode.STANDARD;
-        case 2:
-        case 'AUTO':
-            return Project_Settings_CommitMode.AUTO;
-        case -1:
-        case 'UNRECOGNIZED':
-        default:
-            return Project_Settings_CommitMode.UNRECOGNIZED;
-    }
-}
-
-export function project_Settings_CommitModeToJSON(object: Project_Settings_CommitMode): string {
-    switch (object) {
-        case Project_Settings_CommitMode.COMMIT_MODE_UNSPECIFIED:
-            return 'COMMIT_MODE_UNSPECIFIED';
-        case Project_Settings_CommitMode.STANDARD:
-            return 'STANDARD';
-        case Project_Settings_CommitMode.AUTO:
-            return 'AUTO';
-        default:
-            return 'UNKNOWN';
-    }
 }
 
 export enum Project_Settings_Ide {
@@ -181,53 +134,6 @@ export function project_Settings_StaleExecutionTimeoutModeToJSON(
             return 'THREE_HOURS';
         case Project_Settings_StaleExecutionTimeoutMode.NO_TIMEOUT:
             return 'NO_TIMEOUT';
-        default:
-            return 'UNKNOWN';
-    }
-}
-
-export enum Project_Settings_IdeExecutionMode {
-    IDE_EXECUTION_MODE_UNSPECIFIED = 0,
-    /** SERVERLESS - VM is allocated for specific execution and deallocated after the execution ends. */
-    SERVERLESS = 1,
-    /**
-     * DEDICATED - VM is allocated at the first execution and stays allocated until manually deallocated.
-     * Or until timeout exceeded.
-     */
-    DEDICATED = 2,
-    UNRECOGNIZED = -1,
-}
-
-export function project_Settings_IdeExecutionModeFromJSON(
-    object: any,
-): Project_Settings_IdeExecutionMode {
-    switch (object) {
-        case 0:
-        case 'IDE_EXECUTION_MODE_UNSPECIFIED':
-            return Project_Settings_IdeExecutionMode.IDE_EXECUTION_MODE_UNSPECIFIED;
-        case 1:
-        case 'SERVERLESS':
-            return Project_Settings_IdeExecutionMode.SERVERLESS;
-        case 2:
-        case 'DEDICATED':
-            return Project_Settings_IdeExecutionMode.DEDICATED;
-        case -1:
-        case 'UNRECOGNIZED':
-        default:
-            return Project_Settings_IdeExecutionMode.UNRECOGNIZED;
-    }
-}
-
-export function project_Settings_IdeExecutionModeToJSON(
-    object: Project_Settings_IdeExecutionMode,
-): string {
-    switch (object) {
-        case Project_Settings_IdeExecutionMode.IDE_EXECUTION_MODE_UNSPECIFIED:
-            return 'IDE_EXECUTION_MODE_UNSPECIFIED';
-        case Project_Settings_IdeExecutionMode.SERVERLESS:
-            return 'SERVERLESS';
-        case Project_Settings_IdeExecutionMode.DEDICATED:
-            return 'DEDICATED';
         default:
             return 'UNKNOWN';
     }
@@ -436,13 +342,11 @@ const baseProject_Settings: object = {
     serviceAccountId: '',
     subnetId: '',
     dataProcClusterId: '',
-    commitMode: 0,
     securityGroupIds: '',
     earlyAccess: false,
     ide: 0,
     defaultFolderId: '',
     staleExecTimeoutMode: 0,
-    ideExecutionMode: 0,
     defaultDedicatedSpec: '',
 };
 
@@ -459,9 +363,6 @@ export const Project_Settings = {
         if (message.dataProcClusterId !== '') {
             writer.uint32(26).string(message.dataProcClusterId);
         }
-        if (message.commitMode !== 0) {
-            writer.uint32(32).int32(message.commitMode);
-        }
         for (const v of message.securityGroupIds) {
             writer.uint32(42).string(v!);
         }
@@ -476,9 +377,6 @@ export const Project_Settings = {
         }
         if (message.staleExecTimeoutMode !== 0) {
             writer.uint32(72).int32(message.staleExecTimeoutMode);
-        }
-        if (message.ideExecutionMode !== 0) {
-            writer.uint32(80).int32(message.ideExecutionMode);
         }
         if (message.vmInactivityTimeout !== undefined) {
             Duration.encode(message.vmInactivityTimeout, writer.uint32(90).fork()).ldelim();
@@ -506,9 +404,6 @@ export const Project_Settings = {
                 case 3:
                     message.dataProcClusterId = reader.string();
                     break;
-                case 4:
-                    message.commitMode = reader.int32() as any;
-                    break;
                 case 5:
                     message.securityGroupIds.push(reader.string());
                     break;
@@ -523,9 +418,6 @@ export const Project_Settings = {
                     break;
                 case 9:
                     message.staleExecTimeoutMode = reader.int32() as any;
-                    break;
-                case 10:
-                    message.ideExecutionMode = reader.int32() as any;
                     break;
                 case 11:
                     message.vmInactivityTimeout = Duration.decode(reader, reader.uint32());
@@ -555,10 +447,6 @@ export const Project_Settings = {
             object.dataProcClusterId !== undefined && object.dataProcClusterId !== null
                 ? String(object.dataProcClusterId)
                 : '';
-        message.commitMode =
-            object.commitMode !== undefined && object.commitMode !== null
-                ? project_Settings_CommitModeFromJSON(object.commitMode)
-                : 0;
         message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
         message.earlyAccess =
             object.earlyAccess !== undefined && object.earlyAccess !== null
@@ -575,10 +463,6 @@ export const Project_Settings = {
         message.staleExecTimeoutMode =
             object.staleExecTimeoutMode !== undefined && object.staleExecTimeoutMode !== null
                 ? project_Settings_StaleExecutionTimeoutModeFromJSON(object.staleExecTimeoutMode)
-                : 0;
-        message.ideExecutionMode =
-            object.ideExecutionMode !== undefined && object.ideExecutionMode !== null
-                ? project_Settings_IdeExecutionModeFromJSON(object.ideExecutionMode)
                 : 0;
         message.vmInactivityTimeout =
             object.vmInactivityTimeout !== undefined && object.vmInactivityTimeout !== null
@@ -597,8 +481,6 @@ export const Project_Settings = {
         message.subnetId !== undefined && (obj.subnetId = message.subnetId);
         message.dataProcClusterId !== undefined &&
             (obj.dataProcClusterId = message.dataProcClusterId);
-        message.commitMode !== undefined &&
-            (obj.commitMode = project_Settings_CommitModeToJSON(message.commitMode));
         if (message.securityGroupIds) {
             obj.securityGroupIds = message.securityGroupIds.map((e) => e);
         } else {
@@ -610,10 +492,6 @@ export const Project_Settings = {
         message.staleExecTimeoutMode !== undefined &&
             (obj.staleExecTimeoutMode = project_Settings_StaleExecutionTimeoutModeToJSON(
                 message.staleExecTimeoutMode,
-            ));
-        message.ideExecutionMode !== undefined &&
-            (obj.ideExecutionMode = project_Settings_IdeExecutionModeToJSON(
-                message.ideExecutionMode,
             ));
         message.vmInactivityTimeout !== undefined &&
             (obj.vmInactivityTimeout = message.vmInactivityTimeout
@@ -629,13 +507,11 @@ export const Project_Settings = {
         message.serviceAccountId = object.serviceAccountId ?? '';
         message.subnetId = object.subnetId ?? '';
         message.dataProcClusterId = object.dataProcClusterId ?? '';
-        message.commitMode = object.commitMode ?? 0;
         message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         message.earlyAccess = object.earlyAccess ?? false;
         message.ide = object.ide ?? 0;
         message.defaultFolderId = object.defaultFolderId ?? '';
         message.staleExecTimeoutMode = object.staleExecTimeoutMode ?? 0;
-        message.ideExecutionMode = object.ideExecutionMode ?? 0;
         message.vmInactivityTimeout =
             object.vmInactivityTimeout !== undefined && object.vmInactivityTimeout !== null
                 ? Duration.fromPartial(object.vmInactivityTimeout)

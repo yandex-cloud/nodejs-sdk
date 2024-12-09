@@ -3,6 +3,7 @@ import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { HardwareGeneration } from '../../../../yandex/cloud/compute/v1/hardware_generation';
+import { KMSKey } from '../../../../yandex/cloud/compute/v1/kek';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
@@ -45,6 +46,8 @@ export interface Snapshot {
      * created using this snapshot as source for the boot disk. Otherwise the current default will be used.
      */
     hardwareGeneration?: HardwareGeneration;
+    /** Key encryption key info. */
+    kmsKey?: KMSKey;
 }
 
 export enum Snapshot_Status {
@@ -166,6 +169,9 @@ export const Snapshot = {
                 writer.uint32(98).fork(),
             ).ldelim();
         }
+        if (message.kmsKey !== undefined) {
+            KMSKey.encode(message.kmsKey, writer.uint32(106).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -217,6 +223,9 @@ export const Snapshot = {
                 case 12:
                     message.hardwareGeneration = HardwareGeneration.decode(reader, reader.uint32());
                     break;
+                case 13:
+                    message.kmsKey = KMSKey.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -267,6 +276,10 @@ export const Snapshot = {
             object.hardwareGeneration !== undefined && object.hardwareGeneration !== null
                 ? HardwareGeneration.fromJSON(object.hardwareGeneration)
                 : undefined;
+        message.kmsKey =
+            object.kmsKey !== undefined && object.kmsKey !== null
+                ? KMSKey.fromJSON(object.kmsKey)
+                : undefined;
         return message;
     },
 
@@ -296,6 +309,8 @@ export const Snapshot = {
             (obj.hardwareGeneration = message.hardwareGeneration
                 ? HardwareGeneration.toJSON(message.hardwareGeneration)
                 : undefined);
+        message.kmsKey !== undefined &&
+            (obj.kmsKey = message.kmsKey ? KMSKey.toJSON(message.kmsKey) : undefined);
         return obj;
     },
 
@@ -323,6 +338,10 @@ export const Snapshot = {
         message.hardwareGeneration =
             object.hardwareGeneration !== undefined && object.hardwareGeneration !== null
                 ? HardwareGeneration.fromPartial(object.hardwareGeneration)
+                : undefined;
+        message.kmsKey =
+            object.kmsKey !== undefined && object.kmsKey !== null
+                ? KMSKey.fromPartial(object.kmsKey)
                 : undefined;
         return message;
     },

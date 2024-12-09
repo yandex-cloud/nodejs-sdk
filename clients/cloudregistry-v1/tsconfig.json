@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "../../cloudregistry-v1"
+  },
+  "include": ["."]
+}

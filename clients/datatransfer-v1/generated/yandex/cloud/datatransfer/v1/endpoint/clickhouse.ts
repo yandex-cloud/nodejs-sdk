@@ -114,7 +114,7 @@ export interface ClickhouseSource {
     $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseSource';
     connection?: ClickhouseConnection;
     /**
-     * While list of tables for replication. If none or empty list is presented - will
+     * White list of tables for replication. If none or empty list is presented - will
      * replicate all tables. Can contain * patterns.
      */
     includeTables: string[];

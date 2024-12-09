@@ -22,10 +22,14 @@ import { Operation } from '../../../../../../yandex/cloud/operation/operation';
 
 export const protobufPackage = 'yandex.cloud.ai.foundation_models.v1.image_generation';
 
-/** Request for the service to generate an image. */
+/**
+ * Request for the service to generate an image.
+ *
+ * For examples of usage, see [step-by-step guide](/docs/foundation-models/operations/yandexart/request).
+ */
 export interface ImageGenerationRequest {
     $type: 'yandex.cloud.ai.foundation_models.v1.image_generation.ImageGenerationRequest';
-    /** The [ID of the model](/docs/foundation-models/concepts/yandexart/models) to be used for image generation. */
+    /** The [model URI](/docs/foundation-models/concepts/yandexart/models) to be used for image generation. */
     modelUri: string;
     /** A list of messages representing the context for the image generation model. */
     messages: Message[];
@@ -36,7 +40,7 @@ export interface ImageGenerationRequest {
 /** Response containing generated image. */
 export interface ImageGenerationResponse {
     $type: 'yandex.cloud.ai.foundation_models.v1.image_generation.ImageGenerationResponse';
-    /** The image is serialized as an array of bytes encoded in base64. */
+    /** The image is serialized as an array of bytes encoded in [Base64](https://en.wikipedia.org/wiki/Base64). */
     image: Buffer;
     /** The model version changes with each new releases. */
     modelVersion: string;
@@ -214,7 +218,7 @@ export const ImageGenerationResponse = {
 
 messageTypeRegistry.set(ImageGenerationResponse.$type, ImageGenerationResponse);
 
-/** Service for obtaining images from input data. */
+/** Service for creating images based on a text description. */
 export const ImageGenerationAsyncServiceService = {
     /** A method for generating an image based on a textual description. */
     generate: {

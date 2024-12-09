@@ -2,6 +2,9 @@
   "ai/assistants/v1": {
     "rootServiceList": ["assistant_service.proto"]
   },
+  "ai/dataset/v1": {
+    "rootServiceList": ["dataset_service.proto"]
+  },
   "ai/files/v1": {
     "rootServiceList": ["file_service.proto"]
   },
@@ -30,6 +33,9 @@
   },
   "ai/tts/v3": {
     "rootServiceList": ["tts_service.proto"]
+  },
+  "ai/tuning/v1": {
+    "rootServiceList": ["tuning_service.proto"]
   },
   "ai/vision/v1": {
     "rootServiceList": ["vision_service.proto"]
@@ -94,6 +100,9 @@
   },
   "cloudapps/workload/v1": {
     "rootServiceList": ["cloud_application_service.proto"]
+  },
+  "cloudregistry/v1": {
+    "rootServiceList": ["artifact_service.proto", "registry_service.proto"]
   },
   "cloudrouter/v1": {
     "rootServiceList": ["routing_instance_service.proto"]
@@ -241,7 +250,10 @@
     "rootServiceList": ["instance_service.proto", "lock_service.proto"]
   },
   "marketplace/metering/v1": {
-    "rootServiceList": ["image_product_usage_service.proto"]
+    "rootServiceList": ["image_product_usage_service.proto", "product_usage_service.proto"]
+  },
+  "marketplace/pim/v1": {
+    "rootServiceList": ["saas/product_instance_service.proto"]
   },
   "marketplace/v1": {
     "rootServiceList": ["metering/image_product_usage_service.proto"]
@@ -366,6 +378,9 @@
   "resourcemanager/v1": {
     "rootServiceList": ["cloud_service.proto", "folder_service.proto"]
   },
+  "searchapi/v2": {
+    "rootServiceList": ["search_service.proto"]
+  },
   "serverless/apigateway/v1": {
     "rootServiceList": ["apigateway_service.proto"]
   },
@@ -402,7 +417,7 @@
     "rootServiceList": ["security_profile_service.proto"]
   },
   "speechsense/v1": {
-    "rootServiceList": ["project_service.proto", "talk_service.proto"]
+    "rootServiceList": ["classifiers_service.proto", "project_service.proto", "talk_service.proto"]
   },
   "storage/v1": {
     "rootServiceList": ["bucket_service.proto"]
@@ -411,8 +426,10 @@
     "rootServiceList": [
       "channel_service.proto",
       "episode_service.proto",
+      "playlist_service.proto",
       "stream_line_service.proto",
       "stream_service.proto",
+      "subtitle_service.proto",
       "thumbnail_service.proto",
       "video_service.proto"
     ]

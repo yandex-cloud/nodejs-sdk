@@ -151,6 +151,8 @@ export interface UpdateResourceRequest {
     sslCertificate?: SSLTargetCertificate;
     /** Resource labels. At some point will be needed for granular detailing. */
     labels: { [key: string]: string };
+    /** If flag is set to true resource labels will be deleted. */
+    removeLabels: boolean;
 }
 
 export interface UpdateResourceRequest_LabelsEntry {
@@ -930,6 +932,7 @@ const baseUpdateResourceRequest: object = {
     $type: 'yandex.cloud.cdn.v1.UpdateResourceRequest',
     resourceId: '',
     originProtocol: 0,
+    removeLabels: false,
 };
 
 export const UpdateResourceRequest = {
@@ -976,6 +979,9 @@ export const UpdateResourceRequest = {
                 writer.uint32(66).fork(),
             ).ldelim();
         });
+        if (message.removeLabels === true) {
+            writer.uint32(72).bool(message.removeLabels);
+        }
         return writer;
     },
 
@@ -1016,6 +1022,9 @@ export const UpdateResourceRequest = {
                     if (entry8.value !== undefined) {
                         message.labels[entry8.key] = entry8.value;
                     }
+                    break;
+                case 9:
+                    message.removeLabels = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1062,6 +1071,10 @@ export const UpdateResourceRequest = {
             },
             {},
         );
+        message.removeLabels =
+            object.removeLabels !== undefined && object.removeLabels !== null
+                ? Boolean(object.removeLabels)
+                : false;
         return message;
     },
 
@@ -1088,6 +1101,7 @@ export const UpdateResourceRequest = {
                 obj.labels[k] = v;
             });
         }
+        message.removeLabels !== undefined && (obj.removeLabels = message.removeLabels);
         return obj;
     },
 
@@ -1120,6 +1134,7 @@ export const UpdateResourceRequest = {
             },
             {},
         );
+        message.removeLabels = object.removeLabels ?? false;
         return message;
     },
 };

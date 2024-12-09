@@ -1793,15 +1793,7 @@ const baseListClustersResponse: object = {
     nextPageToken: '',
 };
 
-type ListClustersResponseType = {
-    $type: "yandex.cloud.mdb.mongodb.v1.ListClustersResponse";
-    encode(message: ListClustersResponse, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): ListClustersResponse;
-    fromJSON(object: any): ListClustersResponse;
-    toJSON(message: ListClustersResponse): unknown;
-    fromPartial<I extends Exact<DeepPartial<ListClustersResponse>, I>>(object: I): ListClustersResponse;
-}
-export const ListClustersResponse: ListClustersResponseType = {
+export const ListClustersResponse = {
     $type: 'yandex.cloud.mdb.mongodb.v1.ListClustersResponse' as const,
 
     encode(message: ListClustersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {

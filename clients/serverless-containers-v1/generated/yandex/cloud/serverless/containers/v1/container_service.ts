@@ -21,6 +21,8 @@ import {
     ProvisionPolicy,
     ScalingPolicy,
     LogOptions,
+    Runtime,
+    MetadataOptions,
     Command,
     Args,
     Container,
@@ -288,6 +290,10 @@ export interface DeployContainerRevisionRequest {
     storageMounts: StorageMount[];
     /** Mounts to be used by the revision. */
     mounts: Mount[];
+    /** The container's execution mode */
+    runtime?: Runtime;
+    /** Metadata options for the revision. */
+    metadataOptions?: MetadataOptions;
 }
 
 /** Revision image specification. */
@@ -1580,6 +1586,12 @@ export const DeployContainerRevisionRequest = {
         for (const v of message.mounts) {
             Mount.encode(v!, writer.uint32(130).fork()).ldelim();
         }
+        if (message.runtime !== undefined) {
+            Runtime.encode(message.runtime, writer.uint32(138).fork()).ldelim();
+        }
+        if (message.metadataOptions !== undefined) {
+            MetadataOptions.encode(message.metadataOptions, writer.uint32(146).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -1634,6 +1646,12 @@ export const DeployContainerRevisionRequest = {
                     break;
                 case 16:
                     message.mounts.push(Mount.decode(reader, reader.uint32()));
+                    break;
+                case 17:
+                    message.runtime = Runtime.decode(reader, reader.uint32());
+                    break;
+                case 18:
+                    message.metadataOptions = MetadataOptions.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1694,6 +1712,14 @@ export const DeployContainerRevisionRequest = {
             StorageMount.fromJSON(e),
         );
         message.mounts = (object.mounts ?? []).map((e: any) => Mount.fromJSON(e));
+        message.runtime =
+            object.runtime !== undefined && object.runtime !== null
+                ? Runtime.fromJSON(object.runtime)
+                : undefined;
+        message.metadataOptions =
+            object.metadataOptions !== undefined && object.metadataOptions !== null
+                ? MetadataOptions.fromJSON(object.metadataOptions)
+                : undefined;
         return message;
     },
 
@@ -1744,6 +1770,12 @@ export const DeployContainerRevisionRequest = {
         } else {
             obj.mounts = [];
         }
+        message.runtime !== undefined &&
+            (obj.runtime = message.runtime ? Runtime.toJSON(message.runtime) : undefined);
+        message.metadataOptions !== undefined &&
+            (obj.metadataOptions = message.metadataOptions
+                ? MetadataOptions.toJSON(message.metadataOptions)
+                : undefined);
         return obj;
     },
 
@@ -1786,6 +1818,14 @@ export const DeployContainerRevisionRequest = {
                 : undefined;
         message.storageMounts = object.storageMounts?.map((e) => StorageMount.fromPartial(e)) || [];
         message.mounts = object.mounts?.map((e) => Mount.fromPartial(e)) || [];
+        message.runtime =
+            object.runtime !== undefined && object.runtime !== null
+                ? Runtime.fromPartial(object.runtime)
+                : undefined;
+        message.metadataOptions =
+            object.metadataOptions !== undefined && object.metadataOptions !== null
+                ? MetadataOptions.fromPartial(object.metadataOptions)
+                : undefined;
         return message;
     },
 };

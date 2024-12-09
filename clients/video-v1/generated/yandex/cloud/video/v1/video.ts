@@ -7,6 +7,47 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
+export enum AutoTranscode {
+    /** AUTO_TRANSCODE_UNSPECIFIED - Unspecified auto transcoding value. */
+    AUTO_TRANSCODE_UNSPECIFIED = 0,
+    /** ENABLE - Enable auto transcoding. */
+    ENABLE = 1,
+    /** DISABLE - Disable auto transcoding. */
+    DISABLE = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function autoTranscodeFromJSON(object: any): AutoTranscode {
+    switch (object) {
+        case 0:
+        case 'AUTO_TRANSCODE_UNSPECIFIED':
+            return AutoTranscode.AUTO_TRANSCODE_UNSPECIFIED;
+        case 1:
+        case 'ENABLE':
+            return AutoTranscode.ENABLE;
+        case 2:
+        case 'DISABLE':
+            return AutoTranscode.DISABLE;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return AutoTranscode.UNRECOGNIZED;
+    }
+}
+
+export function autoTranscodeToJSON(object: AutoTranscode): string {
+    switch (object) {
+        case AutoTranscode.AUTO_TRANSCODE_UNSPECIFIED:
+            return 'AUTO_TRANSCODE_UNSPECIFIED';
+        case AutoTranscode.ENABLE:
+            return 'ENABLE';
+        case AutoTranscode.DISABLE:
+            return 'DISABLE';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 export interface Video {
     $type: 'yandex.cloud.video.v1.Video';
     /** ID of the video. */
@@ -25,12 +66,22 @@ export interface Video {
     duration?: Duration;
     /** Video visibility status. */
     visibilityStatus: Video_VisibilityStatus;
+    /**
+     * Auto start transcoding.
+     * If set to ENABLE, transcoding process is initiated automatically after video upload.
+     * If set to DISABLE, manual "Transcode()" call is required instead.
+     */
+    autoTranscode: AutoTranscode;
+    /** IDs of active video subtitles. */
+    subtitleIds: string[];
     /** Upload video using the tus protocol. */
     tusd?: VideoTUSDSource | undefined;
     /** Video is available to everyone. */
     publicAccess?: VideoPublicAccessRights | undefined;
     /** Checking access rights using the authorization system. */
     authSystemAccess?: VideoAuthSystemAccessRights | undefined;
+    /** Checking access rights using url's signature. */
+    signUrlAccess?: VideoSignURLAccessRights | undefined;
     /** Time when video was created. */
     createdAt?: Date;
     /** Time of last video update. */
@@ -155,6 +206,10 @@ export interface VideoAuthSystemAccessRights {
     $type: 'yandex.cloud.video.v1.VideoAuthSystemAccessRights';
 }
 
+export interface VideoSignURLAccessRights {
+    $type: 'yandex.cloud.video.v1.VideoSignURLAccessRights';
+}
+
 const baseVideo: object = {
     $type: 'yandex.cloud.video.v1.Video',
     id: '',
@@ -164,6 +219,8 @@ const baseVideo: object = {
     thumbnailId: '',
     status: 0,
     visibilityStatus: 0,
+    autoTranscode: 0,
+    subtitleIds: '',
 };
 
 export const Video = {
@@ -194,6 +251,12 @@ export const Video = {
         if (message.visibilityStatus !== 0) {
             writer.uint32(72).int32(message.visibilityStatus);
         }
+        if (message.autoTranscode !== 0) {
+            writer.uint32(88).int32(message.autoTranscode);
+        }
+        for (const v of message.subtitleIds) {
+            writer.uint32(98).string(v!);
+        }
         if (message.tusd !== undefined) {
             VideoTUSDSource.encode(message.tusd, writer.uint32(8002).fork()).ldelim();
         }
@@ -207,6 +270,12 @@ export const Video = {
             VideoAuthSystemAccessRights.encode(
                 message.authSystemAccess,
                 writer.uint32(16018).fork(),
+            ).ldelim();
+        }
+        if (message.signUrlAccess !== undefined) {
+            VideoSignURLAccessRights.encode(
+                message.signUrlAccess,
+                writer.uint32(16026).fork(),
             ).ldelim();
         }
         if (message.createdAt !== undefined) {
@@ -228,6 +297,7 @@ export const Video = {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseVideo } as Video;
+        message.subtitleIds = [];
         message.labels = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
@@ -256,6 +326,12 @@ export const Video = {
                 case 9:
                     message.visibilityStatus = reader.int32() as any;
                     break;
+                case 11:
+                    message.autoTranscode = reader.int32() as any;
+                    break;
+                case 12:
+                    message.subtitleIds.push(reader.string());
+                    break;
                 case 1000:
                     message.tusd = VideoTUSDSource.decode(reader, reader.uint32());
                     break;
@@ -264,6 +340,12 @@ export const Video = {
                     break;
                 case 2002:
                     message.authSystemAccess = VideoAuthSystemAccessRights.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 2003:
+                    message.signUrlAccess = VideoSignURLAccessRights.decode(
                         reader,
                         reader.uint32(),
                     );
@@ -317,6 +399,11 @@ export const Video = {
             object.visibilityStatus !== undefined && object.visibilityStatus !== null
                 ? video_VisibilityStatusFromJSON(object.visibilityStatus)
                 : 0;
+        message.autoTranscode =
+            object.autoTranscode !== undefined && object.autoTranscode !== null
+                ? autoTranscodeFromJSON(object.autoTranscode)
+                : 0;
+        message.subtitleIds = (object.subtitleIds ?? []).map((e: any) => String(e));
         message.tusd =
             object.tusd !== undefined && object.tusd !== null
                 ? VideoTUSDSource.fromJSON(object.tusd)
@@ -328,6 +415,10 @@ export const Video = {
         message.authSystemAccess =
             object.authSystemAccess !== undefined && object.authSystemAccess !== null
                 ? VideoAuthSystemAccessRights.fromJSON(object.authSystemAccess)
+                : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? VideoSignURLAccessRights.fromJSON(object.signUrlAccess)
                 : undefined;
         message.createdAt =
             object.createdAt !== undefined && object.createdAt !== null
@@ -359,6 +450,13 @@ export const Video = {
             (obj.duration = message.duration ? Duration.toJSON(message.duration) : undefined);
         message.visibilityStatus !== undefined &&
             (obj.visibilityStatus = video_VisibilityStatusToJSON(message.visibilityStatus));
+        message.autoTranscode !== undefined &&
+            (obj.autoTranscode = autoTranscodeToJSON(message.autoTranscode));
+        if (message.subtitleIds) {
+            obj.subtitleIds = message.subtitleIds.map((e) => e);
+        } else {
+            obj.subtitleIds = [];
+        }
         message.tusd !== undefined &&
             (obj.tusd = message.tusd ? VideoTUSDSource.toJSON(message.tusd) : undefined);
         message.publicAccess !== undefined &&
@@ -368,6 +466,10 @@ export const Video = {
         message.authSystemAccess !== undefined &&
             (obj.authSystemAccess = message.authSystemAccess
                 ? VideoAuthSystemAccessRights.toJSON(message.authSystemAccess)
+                : undefined);
+        message.signUrlAccess !== undefined &&
+            (obj.signUrlAccess = message.signUrlAccess
+                ? VideoSignURLAccessRights.toJSON(message.signUrlAccess)
                 : undefined);
         message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
         message.updatedAt !== undefined && (obj.updatedAt = message.updatedAt.toISOString());
@@ -393,6 +495,8 @@ export const Video = {
                 ? Duration.fromPartial(object.duration)
                 : undefined;
         message.visibilityStatus = object.visibilityStatus ?? 0;
+        message.autoTranscode = object.autoTranscode ?? 0;
+        message.subtitleIds = object.subtitleIds?.map((e) => e) || [];
         message.tusd =
             object.tusd !== undefined && object.tusd !== null
                 ? VideoTUSDSource.fromPartial(object.tusd)
@@ -404,6 +508,10 @@ export const Video = {
         message.authSystemAccess =
             object.authSystemAccess !== undefined && object.authSystemAccess !== null
                 ? VideoAuthSystemAccessRights.fromPartial(object.authSystemAccess)
+                : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? VideoSignURLAccessRights.fromPartial(object.signUrlAccess)
                 : undefined;
         message.createdAt = object.createdAt ?? undefined;
         message.updatedAt = object.updatedAt ?? undefined;
@@ -629,6 +737,52 @@ export const VideoAuthSystemAccessRights = {
 };
 
 messageTypeRegistry.set(VideoAuthSystemAccessRights.$type, VideoAuthSystemAccessRights);
+
+const baseVideoSignURLAccessRights: object = {
+    $type: 'yandex.cloud.video.v1.VideoSignURLAccessRights',
+};
+
+export const VideoSignURLAccessRights = {
+    $type: 'yandex.cloud.video.v1.VideoSignURLAccessRights' as const,
+
+    encode(_: VideoSignURLAccessRights, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoSignURLAccessRights {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseVideoSignURLAccessRights } as VideoSignURLAccessRights;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): VideoSignURLAccessRights {
+        const message = { ...baseVideoSignURLAccessRights } as VideoSignURLAccessRights;
+        return message;
+    },
+
+    toJSON(_: VideoSignURLAccessRights): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<VideoSignURLAccessRights>, I>>(
+        _: I,
+    ): VideoSignURLAccessRights {
+        const message = { ...baseVideoSignURLAccessRights } as VideoSignURLAccessRights;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(VideoSignURLAccessRights.$type, VideoSignURLAccessRights);
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 

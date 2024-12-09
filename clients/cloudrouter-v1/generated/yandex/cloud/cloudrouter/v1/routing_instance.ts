@@ -112,8 +112,6 @@ export interface RoutingInstance_VpcAzInfo {
     $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.VpcAzInfo';
     /** VpcInfo which is set by user */
     manualInfo?: RoutingInstance_VpcManualInfo;
-    /** VpcInfo which is get from vpc service by attached networks */
-    automaticInfo?: RoutingInstance_VpcAutomaticInfo;
 }
 
 export interface RoutingInstance_VpcManualInfo {
@@ -121,14 +119,6 @@ export interface RoutingInstance_VpcManualInfo {
     /** ID of the AZ */
     azId: string;
     /** List of prefixes to announce */
-    prefixes: string[];
-}
-
-export interface RoutingInstance_VpcAutomaticInfo {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.VpcAutomaticInfo';
-    /** ID of the AZ */
-    azId: string;
-    /** List of prefixes from attached VpcNetwork */
     prefixes: string[];
 }
 
@@ -568,12 +558,6 @@ export const RoutingInstance_VpcAzInfo = {
                 writer.uint32(18).fork(),
             ).ldelim();
         }
-        if (message.automaticInfo !== undefined) {
-            RoutingInstance_VpcAutomaticInfo.encode(
-                message.automaticInfo,
-                writer.uint32(26).fork(),
-            ).ldelim();
-        }
         return writer;
     },
 
@@ -586,12 +570,6 @@ export const RoutingInstance_VpcAzInfo = {
             switch (tag >>> 3) {
                 case 2:
                     message.manualInfo = RoutingInstance_VpcManualInfo.decode(
-                        reader,
-                        reader.uint32(),
-                    );
-                    break;
-                case 3:
-                    message.automaticInfo = RoutingInstance_VpcAutomaticInfo.decode(
                         reader,
                         reader.uint32(),
                     );
@@ -610,10 +588,6 @@ export const RoutingInstance_VpcAzInfo = {
             object.manualInfo !== undefined && object.manualInfo !== null
                 ? RoutingInstance_VpcManualInfo.fromJSON(object.manualInfo)
                 : undefined;
-        message.automaticInfo =
-            object.automaticInfo !== undefined && object.automaticInfo !== null
-                ? RoutingInstance_VpcAutomaticInfo.fromJSON(object.automaticInfo)
-                : undefined;
         return message;
     },
 
@@ -622,10 +596,6 @@ export const RoutingInstance_VpcAzInfo = {
         message.manualInfo !== undefined &&
             (obj.manualInfo = message.manualInfo
                 ? RoutingInstance_VpcManualInfo.toJSON(message.manualInfo)
-                : undefined);
-        message.automaticInfo !== undefined &&
-            (obj.automaticInfo = message.automaticInfo
-                ? RoutingInstance_VpcAutomaticInfo.toJSON(message.automaticInfo)
                 : undefined);
         return obj;
     },
@@ -637,10 +607,6 @@ export const RoutingInstance_VpcAzInfo = {
         message.manualInfo =
             object.manualInfo !== undefined && object.manualInfo !== null
                 ? RoutingInstance_VpcManualInfo.fromPartial(object.manualInfo)
-                : undefined;
-        message.automaticInfo =
-            object.automaticInfo !== undefined && object.automaticInfo !== null
-                ? RoutingInstance_VpcAutomaticInfo.fromPartial(object.automaticInfo)
                 : undefined;
         return message;
     },
@@ -721,86 +687,6 @@ export const RoutingInstance_VpcManualInfo = {
 };
 
 messageTypeRegistry.set(RoutingInstance_VpcManualInfo.$type, RoutingInstance_VpcManualInfo);
-
-const baseRoutingInstance_VpcAutomaticInfo: object = {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.VpcAutomaticInfo',
-    azId: '',
-    prefixes: '',
-};
-
-export const RoutingInstance_VpcAutomaticInfo = {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.VpcAutomaticInfo' as const,
-
-    encode(
-        message: RoutingInstance_VpcAutomaticInfo,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.azId !== '') {
-            writer.uint32(10).string(message.azId);
-        }
-        for (const v of message.prefixes) {
-            writer.uint32(18).string(v!);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): RoutingInstance_VpcAutomaticInfo {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = {
-            ...baseRoutingInstance_VpcAutomaticInfo,
-        } as RoutingInstance_VpcAutomaticInfo;
-        message.prefixes = [];
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.azId = reader.string();
-                    break;
-                case 2:
-                    message.prefixes.push(reader.string());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): RoutingInstance_VpcAutomaticInfo {
-        const message = {
-            ...baseRoutingInstance_VpcAutomaticInfo,
-        } as RoutingInstance_VpcAutomaticInfo;
-        message.azId = object.azId !== undefined && object.azId !== null ? String(object.azId) : '';
-        message.prefixes = (object.prefixes ?? []).map((e: any) => String(e));
-        return message;
-    },
-
-    toJSON(message: RoutingInstance_VpcAutomaticInfo): unknown {
-        const obj: any = {};
-        message.azId !== undefined && (obj.azId = message.azId);
-        if (message.prefixes) {
-            obj.prefixes = message.prefixes.map((e) => e);
-        } else {
-            obj.prefixes = [];
-        }
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<RoutingInstance_VpcAutomaticInfo>, I>>(
-        object: I,
-    ): RoutingInstance_VpcAutomaticInfo {
-        const message = {
-            ...baseRoutingInstance_VpcAutomaticInfo,
-        } as RoutingInstance_VpcAutomaticInfo;
-        message.azId = object.azId ?? '';
-        message.prefixes = object.prefixes?.map((e) => e) || [];
-        return message;
-    },
-};
-
-messageTypeRegistry.set(RoutingInstance_VpcAutomaticInfo.$type, RoutingInstance_VpcAutomaticInfo);
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 

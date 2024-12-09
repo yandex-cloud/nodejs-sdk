@@ -134,6 +134,8 @@ export interface CreateDiskRequest {
      * or to the default values if the source does not define it.
      */
     hardwareGeneration?: HardwareGeneration;
+    /** ID of KMS key for disk encryption. */
+    kmsKeyId: string;
 }
 
 export interface CreateDiskRequest_LabelsEntry {
@@ -553,6 +555,7 @@ const baseCreateDiskRequest: object = {
     size: 0,
     blockSize: 0,
     snapshotScheduleIds: '',
+    kmsKeyId: '',
 };
 
 export const CreateDiskRequest = {
@@ -611,6 +614,9 @@ export const CreateDiskRequest = {
                 writer.uint32(106).fork(),
             ).ldelim();
         }
+        if (message.kmsKeyId !== '') {
+            writer.uint32(114).string(message.kmsKeyId);
+        }
         return writer;
     },
 
@@ -668,6 +674,9 @@ export const CreateDiskRequest = {
                 case 13:
                     message.hardwareGeneration = HardwareGeneration.decode(reader, reader.uint32());
                     break;
+                case 14:
+                    message.kmsKeyId = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -720,6 +729,10 @@ export const CreateDiskRequest = {
             object.hardwareGeneration !== undefined && object.hardwareGeneration !== null
                 ? HardwareGeneration.fromJSON(object.hardwareGeneration)
                 : undefined;
+        message.kmsKeyId =
+            object.kmsKeyId !== undefined && object.kmsKeyId !== null
+                ? String(object.kmsKeyId)
+                : '';
         return message;
     },
 
@@ -753,6 +766,7 @@ export const CreateDiskRequest = {
             (obj.hardwareGeneration = message.hardwareGeneration
                 ? HardwareGeneration.toJSON(message.hardwareGeneration)
                 : undefined);
+        message.kmsKeyId !== undefined && (obj.kmsKeyId = message.kmsKeyId);
         return obj;
     },
 
@@ -785,6 +799,7 @@ export const CreateDiskRequest = {
             object.hardwareGeneration !== undefined && object.hardwareGeneration !== null
                 ? HardwareGeneration.fromPartial(object.hardwareGeneration)
                 : undefined;
+        message.kmsKeyId = object.kmsKeyId ?? '';
         return message;
     },
 };

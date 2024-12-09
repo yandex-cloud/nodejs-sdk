@@ -9,17 +9,29 @@ export const protobufPackage = 'yandex.cloud.ai.files.v1';
 
 export interface File {
     $type: 'yandex.cloud.ai.files.v1.File';
+    /** Unique identifier of the file. */
     id: string;
+    /** ID of the folder that the file belongs to. */
     folderId: string;
+    /** Name of the file. */
     name: string;
+    /** Description of the file. */
     description: string;
+    /** MIME type of the file, indicating the file's format (e.g., "application/pdf") */
     mimeType: string;
+    /** Identifier of the subject who created this file. */
     createdBy: string;
+    /** Timestamp representing when the file was created. */
     createdAt?: Date;
+    /** Identifier of the subject who last updated this file. */
     updatedBy: string;
+    /** Timestamp representing the last time this file was updated. */
     updatedAt?: Date;
+    /** Configuration for the expiration of the file, defining when and how the file will expire. */
     expirationConfig?: ExpirationConfig;
+    /** Timestamp representing when the file will expire. */
     expiresAt?: Date;
+    /** Set of key-value pairs that can be used to organize and categorize the file. */
     labels: { [key: string]: string };
 }
 

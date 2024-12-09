@@ -31,6 +31,8 @@ export interface SecurityProfile {
     captchaId: string;
     /** Advanced rate limiter profile ID to use with this security profile. Set empty to use default. */
     advancedRateLimiterProfileId: string;
+    /** Parameters for request body analyzer. */
+    analyzeRequestBody?: SecurityProfile_AnalyzeRequestBody;
 }
 
 /** Action to perform if none of rules matched. */
@@ -68,6 +70,59 @@ export function securityProfile_DefaultActionToJSON(object: SecurityProfile_Defa
         case SecurityProfile_DefaultAction.ALLOW:
             return 'ALLOW';
         case SecurityProfile_DefaultAction.DENY:
+            return 'DENY';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export interface SecurityProfile_AnalyzeRequestBody {
+    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityProfile.AnalyzeRequestBody';
+    /** Maximum size of body to pass to analyzer. In kilobytes. */
+    sizeLimit: number;
+    /** Action to perform if maximum size of body exceeded. */
+    sizeLimitAction: SecurityProfile_AnalyzeRequestBody_Action;
+}
+
+/** Action to perform if maximum size of body exceeded. */
+export enum SecurityProfile_AnalyzeRequestBody_Action {
+    ACTION_UNSPECIFIED = 0,
+    /** IGNORE - Ignore body. */
+    IGNORE = 1,
+    /** DENY - Deny request. */
+    DENY = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function securityProfile_AnalyzeRequestBody_ActionFromJSON(
+    object: any,
+): SecurityProfile_AnalyzeRequestBody_Action {
+    switch (object) {
+        case 0:
+        case 'ACTION_UNSPECIFIED':
+            return SecurityProfile_AnalyzeRequestBody_Action.ACTION_UNSPECIFIED;
+        case 1:
+        case 'IGNORE':
+            return SecurityProfile_AnalyzeRequestBody_Action.IGNORE;
+        case 2:
+        case 'DENY':
+            return SecurityProfile_AnalyzeRequestBody_Action.DENY;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return SecurityProfile_AnalyzeRequestBody_Action.UNRECOGNIZED;
+    }
+}
+
+export function securityProfile_AnalyzeRequestBody_ActionToJSON(
+    object: SecurityProfile_AnalyzeRequestBody_Action,
+): string {
+    switch (object) {
+        case SecurityProfile_AnalyzeRequestBody_Action.ACTION_UNSPECIFIED:
+            return 'ACTION_UNSPECIFIED';
+        case SecurityProfile_AnalyzeRequestBody_Action.IGNORE:
+            return 'IGNORE';
+        case SecurityProfile_AnalyzeRequestBody_Action.DENY:
             return 'DENY';
         default:
             return 'UNKNOWN';
@@ -430,6 +485,12 @@ export const SecurityProfile = {
         if (message.advancedRateLimiterProfileId !== '') {
             writer.uint32(98).string(message.advancedRateLimiterProfileId);
         }
+        if (message.analyzeRequestBody !== undefined) {
+            SecurityProfile_AnalyzeRequestBody.encode(
+                message.analyzeRequestBody,
+                writer.uint32(106).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -477,6 +538,12 @@ export const SecurityProfile = {
                     break;
                 case 12:
                     message.advancedRateLimiterProfileId = reader.string();
+                    break;
+                case 13:
+                    message.analyzeRequestBody = SecurityProfile_AnalyzeRequestBody.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -527,6 +594,10 @@ export const SecurityProfile = {
             object.advancedRateLimiterProfileId !== null
                 ? String(object.advancedRateLimiterProfileId)
                 : '';
+        message.analyzeRequestBody =
+            object.analyzeRequestBody !== undefined && object.analyzeRequestBody !== null
+                ? SecurityProfile_AnalyzeRequestBody.fromJSON(object.analyzeRequestBody)
+                : undefined;
         return message;
     },
 
@@ -556,6 +627,10 @@ export const SecurityProfile = {
         message.captchaId !== undefined && (obj.captchaId = message.captchaId);
         message.advancedRateLimiterProfileId !== undefined &&
             (obj.advancedRateLimiterProfileId = message.advancedRateLimiterProfileId);
+        message.analyzeRequestBody !== undefined &&
+            (obj.analyzeRequestBody = message.analyzeRequestBody
+                ? SecurityProfile_AnalyzeRequestBody.toJSON(message.analyzeRequestBody)
+                : undefined);
         return obj;
     },
 
@@ -580,11 +655,102 @@ export const SecurityProfile = {
         message.cloudId = object.cloudId ?? '';
         message.captchaId = object.captchaId ?? '';
         message.advancedRateLimiterProfileId = object.advancedRateLimiterProfileId ?? '';
+        message.analyzeRequestBody =
+            object.analyzeRequestBody !== undefined && object.analyzeRequestBody !== null
+                ? SecurityProfile_AnalyzeRequestBody.fromPartial(object.analyzeRequestBody)
+                : undefined;
         return message;
     },
 };
 
 messageTypeRegistry.set(SecurityProfile.$type, SecurityProfile);
+
+const baseSecurityProfile_AnalyzeRequestBody: object = {
+    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityProfile.AnalyzeRequestBody',
+    sizeLimit: 0,
+    sizeLimitAction: 0,
+};
+
+export const SecurityProfile_AnalyzeRequestBody = {
+    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityProfile.AnalyzeRequestBody' as const,
+
+    encode(
+        message: SecurityProfile_AnalyzeRequestBody,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.sizeLimit !== 0) {
+            writer.uint32(8).int64(message.sizeLimit);
+        }
+        if (message.sizeLimitAction !== 0) {
+            writer.uint32(16).int32(message.sizeLimitAction);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SecurityProfile_AnalyzeRequestBody {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseSecurityProfile_AnalyzeRequestBody,
+        } as SecurityProfile_AnalyzeRequestBody;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.sizeLimit = longToNumber(reader.int64() as Long);
+                    break;
+                case 2:
+                    message.sizeLimitAction = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SecurityProfile_AnalyzeRequestBody {
+        const message = {
+            ...baseSecurityProfile_AnalyzeRequestBody,
+        } as SecurityProfile_AnalyzeRequestBody;
+        message.sizeLimit =
+            object.sizeLimit !== undefined && object.sizeLimit !== null
+                ? Number(object.sizeLimit)
+                : 0;
+        message.sizeLimitAction =
+            object.sizeLimitAction !== undefined && object.sizeLimitAction !== null
+                ? securityProfile_AnalyzeRequestBody_ActionFromJSON(object.sizeLimitAction)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: SecurityProfile_AnalyzeRequestBody): unknown {
+        const obj: any = {};
+        message.sizeLimit !== undefined && (obj.sizeLimit = Math.round(message.sizeLimit));
+        message.sizeLimitAction !== undefined &&
+            (obj.sizeLimitAction = securityProfile_AnalyzeRequestBody_ActionToJSON(
+                message.sizeLimitAction,
+            ));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SecurityProfile_AnalyzeRequestBody>, I>>(
+        object: I,
+    ): SecurityProfile_AnalyzeRequestBody {
+        const message = {
+            ...baseSecurityProfile_AnalyzeRequestBody,
+        } as SecurityProfile_AnalyzeRequestBody;
+        message.sizeLimit = object.sizeLimit ?? 0;
+        message.sizeLimitAction = object.sizeLimitAction ?? 0;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(
+    SecurityProfile_AnalyzeRequestBody.$type,
+    SecurityProfile_AnalyzeRequestBody,
+);
 
 const baseSecurityProfile_LabelsEntry: object = {
     $type: 'yandex.cloud.smartwebsecurity.v1.SecurityProfile.LabelsEntry',

@@ -5,6 +5,7 @@ import _m0 from 'protobufjs/minimal';
 import { TextWidget } from '../../../../yandex/cloud/monitoring/v3/text_widget';
 import { TitleWidget } from '../../../../yandex/cloud/monitoring/v3/title_widget';
 import { ChartWidget } from '../../../../yandex/cloud/monitoring/v3/chart_widget';
+import { MultiSourceChartWidget } from '../../../../yandex/cloud/monitoring/v3/multi_source_chart_widget';
 
 export const protobufPackage = 'yandex.cloud.monitoring.v3';
 
@@ -19,6 +20,8 @@ export interface Widget {
     title?: TitleWidget | undefined;
     /** Chart widget. */
     chart?: ChartWidget | undefined;
+    /** Multi-source chart widget. */
+    multiSourceChart?: MultiSourceChartWidget | undefined;
 }
 
 /** Layout item for widget item positioning. */
@@ -52,6 +55,12 @@ export const Widget = {
         if (message.chart !== undefined) {
             ChartWidget.encode(message.chart, writer.uint32(42).fork()).ldelim();
         }
+        if (message.multiSourceChart !== undefined) {
+            MultiSourceChartWidget.encode(
+                message.multiSourceChart,
+                writer.uint32(50).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -73,6 +82,12 @@ export const Widget = {
                     break;
                 case 5:
                     message.chart = ChartWidget.decode(reader, reader.uint32());
+                    break;
+                case 6:
+                    message.multiSourceChart = MultiSourceChartWidget.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -100,6 +115,10 @@ export const Widget = {
             object.chart !== undefined && object.chart !== null
                 ? ChartWidget.fromJSON(object.chart)
                 : undefined;
+        message.multiSourceChart =
+            object.multiSourceChart !== undefined && object.multiSourceChart !== null
+                ? MultiSourceChartWidget.fromJSON(object.multiSourceChart)
+                : undefined;
         return message;
     },
 
@@ -115,6 +134,10 @@ export const Widget = {
             (obj.title = message.title ? TitleWidget.toJSON(message.title) : undefined);
         message.chart !== undefined &&
             (obj.chart = message.chart ? ChartWidget.toJSON(message.chart) : undefined);
+        message.multiSourceChart !== undefined &&
+            (obj.multiSourceChart = message.multiSourceChart
+                ? MultiSourceChartWidget.toJSON(message.multiSourceChart)
+                : undefined);
         return obj;
     },
 
@@ -135,6 +158,10 @@ export const Widget = {
         message.chart =
             object.chart !== undefined && object.chart !== null
                 ? ChartWidget.fromPartial(object.chart)
+                : undefined;
+        message.multiSourceChart =
+            object.multiSourceChart !== undefined && object.multiSourceChart !== null
+                ? MultiSourceChartWidget.fromPartial(object.multiSourceChart)
                 : undefined;
         return message;
     },

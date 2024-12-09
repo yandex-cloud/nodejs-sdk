@@ -12,23 +12,46 @@ import { Timestamp } from '../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1';
 
+/** Assistant represents an AI assistant configuration with various settings and metadata. */
 export interface Assistant {
     $type: 'yandex.cloud.ai.assistants.v1.Assistant';
+    /** Unique identifier of the assistant. */
     id: string;
+    /** ID of the folder that the assistant belongs to. */
     folderId: string;
+    /** Name of the assistant. */
     name: string;
+    /** Description of the assistant. */
     description: string;
+    /** Identifier of the subject who created this assistant. */
     createdBy: string;
+    /** Timestamp representing when the assistant was created. */
     createdAt?: Date;
+    /** Identifier of the subject who last updated this assistant. */
     updatedBy: string;
+    /** Timestamp representing the last time this assistant was updated. */
     updatedAt?: Date;
+    /** Configuration for the expiration of the assistant, defining when and how the assistant will expire. */
     expirationConfig?: ExpirationConfig;
+    /** Timestamp representing when the assistant will expire. */
     expiresAt?: Date;
+    /** Set of key-value pairs that can be used to organize and categorize the assistant. */
     labels: { [key: string]: string };
+    /** The [ID of the model](/docs/foundation-models/concepts/yandexgpt/models) to be used for completion generation. */
     modelUri: string;
+    /**
+     * Instructions or guidelines that the assistant should follow when generating responses or performing tasks.
+     * These instructions can help guide the assistant's behavior and responses.
+     */
     instruction: string;
+    /** Configuration options for truncating the prompt when the token count exceeds a specified limit. */
     promptTruncationOptions?: PromptTruncationOptions;
+    /** Configuration options for completion generation. */
     completionOptions?: CompletionOptions;
+    /**
+     * List of tools that the assistant can use to perform additional tasks.
+     * One example is the SearchIndexTool, which is used for Retrieval-Augmented Generation (RAG).
+     */
     tools: Tool[];
 }
 

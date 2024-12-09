@@ -24,9 +24,12 @@ export interface AspectRatio {
 
 export interface ImageGenerationOptions {
     $type: 'yandex.cloud.ai.foundation_models.v1.image_generation.ImageGenerationOptions';
-    /** MIME type of generated image format. */
+    /**
+     * The [MIME type](https://en.wikipedia.org/wiki/Media_type) of generated image format.
+     * For possible specifications, see [documentation](/docs/foundation-models/concepts).
+     */
     mimeType: string;
-    /** Seed for image generation. */
+    /** Seed for image generation. It serves as a starting point for image generation from noise. */
     seed: number;
     /** Aspect ratio of generated image. */
     aspectRatio?: AspectRatio;

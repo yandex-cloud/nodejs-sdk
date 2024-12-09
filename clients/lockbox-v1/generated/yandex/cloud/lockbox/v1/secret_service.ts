@@ -29,6 +29,7 @@ import {
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
 } from '../../../../yandex/cloud/access/access';
+import { BoolValue } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.lockbox.v1';
 
@@ -106,6 +107,13 @@ export interface CreateSecretRequest {
     /** Flag that inhibits deletion of the secret. */
     deletionProtection: boolean;
     passwordPayloadSpecification?: PasswordPayloadSpecification | undefined;
+    /**
+     * If true: a version will be created with either version_payload_entries or password_payload_specification (one is required).
+     * If false: a version is NOT created, no matter version_payload_entries or password_payload_specification.
+     * Default: a version is created IF either version_payload_entries or password_payload_specification are specified.
+     * It's never allowed to set both version_payload_entries and password_payload_specification.
+     */
+    createVersion?: boolean;
 }
 
 export interface CreateSecretRequest_LabelsEntry {
@@ -657,6 +665,12 @@ export const CreateSecretRequest = {
                 writer.uint32(74).fork(),
             ).ldelim();
         }
+        if (message.createVersion !== undefined) {
+            BoolValue.encode(
+                { $type: 'google.protobuf.BoolValue', value: message.createVersion! },
+                writer.uint32(82).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -704,6 +718,9 @@ export const CreateSecretRequest = {
                         reader.uint32(),
                     );
                     break;
+                case 10:
+                    message.createVersion = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -750,6 +767,10 @@ export const CreateSecretRequest = {
             object.passwordPayloadSpecification !== null
                 ? PasswordPayloadSpecification.fromJSON(object.passwordPayloadSpecification)
                 : undefined;
+        message.createVersion =
+            object.createVersion !== undefined && object.createVersion !== null
+                ? Boolean(object.createVersion)
+                : undefined;
         return message;
     },
 
@@ -780,6 +801,7 @@ export const CreateSecretRequest = {
             (obj.passwordPayloadSpecification = message.passwordPayloadSpecification
                 ? PasswordPayloadSpecification.toJSON(message.passwordPayloadSpecification)
                 : undefined);
+        message.createVersion !== undefined && (obj.createVersion = message.createVersion);
         return obj;
     },
 
@@ -809,6 +831,7 @@ export const CreateSecretRequest = {
             object.passwordPayloadSpecification !== null
                 ? PasswordPayloadSpecification.fromPartial(object.passwordPayloadSpecification)
                 : undefined;
+        message.createVersion = object.createVersion ?? undefined;
         return message;
     },
 };

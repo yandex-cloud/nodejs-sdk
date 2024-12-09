@@ -1012,6 +1012,11 @@ export interface StreamingResponse {
     channelTag: string;
 }
 
+export interface DeleteRecognitionRequest {
+    $type: 'speechkit.stt.v3.DeleteRecognitionRequest';
+    operationId: string;
+}
+
 const baseTextNormalizationOptions: object = {
     $type: 'speechkit.stt.v3.TextNormalizationOptions',
     textNormalization: 0,
@@ -4920,6 +4925,68 @@ export const StreamingResponse = {
 };
 
 messageTypeRegistry.set(StreamingResponse.$type, StreamingResponse);
+
+const baseDeleteRecognitionRequest: object = {
+    $type: 'speechkit.stt.v3.DeleteRecognitionRequest',
+    operationId: '',
+};
+
+export const DeleteRecognitionRequest = {
+    $type: 'speechkit.stt.v3.DeleteRecognitionRequest' as const,
+
+    encode(
+        message: DeleteRecognitionRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.operationId !== '') {
+            writer.uint32(10).string(message.operationId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteRecognitionRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDeleteRecognitionRequest } as DeleteRecognitionRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.operationId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeleteRecognitionRequest {
+        const message = { ...baseDeleteRecognitionRequest } as DeleteRecognitionRequest;
+        message.operationId =
+            object.operationId !== undefined && object.operationId !== null
+                ? String(object.operationId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: DeleteRecognitionRequest): unknown {
+        const obj: any = {};
+        message.operationId !== undefined && (obj.operationId = message.operationId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeleteRecognitionRequest>, I>>(
+        object: I,
+    ): DeleteRecognitionRequest {
+        const message = { ...baseDeleteRecognitionRequest } as DeleteRecognitionRequest;
+        message.operationId = object.operationId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(DeleteRecognitionRequest.$type, DeleteRecognitionRequest);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

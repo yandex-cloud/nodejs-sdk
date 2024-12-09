@@ -6,25 +6,50 @@ import { Int64Value, DoubleValue } from '../../../../../google/protobuf/wrappers
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1';
 
+/** Defines the options for truncating thread messages within a prompt. */
 export interface PromptTruncationOptions {
     $type: 'yandex.cloud.ai.assistants.v1.PromptTruncationOptions';
+    /**
+     * The maximum number of tokens allowed in the prompt.
+     * If the prompt exceeds this limit, the thread messages will be truncated.
+     * Default max_prompt_tokens: 7000
+     */
     maxPromptTokens?: number;
 }
 
+/** Defines the options for completion generation. */
 export interface CompletionOptions {
     $type: 'yandex.cloud.ai.assistants.v1.CompletionOptions';
+    /**
+     * The limit on the number of tokens used for single completion generation.
+     * Must be greater than zero. This maximum allowed parameter value may depend on the model being used.
+     */
     maxTokens?: number;
+    /**
+     * Affects creativity and randomness of responses. Should be a double number between 0 (inclusive) and 1 (inclusive).
+     * Lower values produce more straightforward responses while higher values lead to increased creativity and randomness.
+     * Default temperature: 0.3
+     */
     temperature?: number;
 }
 
+/** Configures a tool that enables Retrieval-Augmented Generation (RAG) by allowing the assistant to search across a specified search index. */
 export interface SearchIndexTool {
     $type: 'yandex.cloud.ai.assistants.v1.SearchIndexTool';
+    /** A list of search index IDs that this tool will query. Currently, only a single index ID is supported. */
     searchIndexIds: string[];
+    /**
+     * The maximum number of results to return from the search.
+     * Fewer results may be returned if necessary to fit within the prompt's token limit.
+     * This ensures that the combined prompt and search results do not exceed the token constraints.
+     */
     maxNumResults?: number;
 }
 
+/** Represents a general tool that can be one of several types. */
 export interface Tool {
     $type: 'yandex.cloud.ai.assistants.v1.Tool';
+    /** SearchIndexTool tool that performs search across specified indexes. */
     searchIndex?: SearchIndexTool | undefined;
 }
 

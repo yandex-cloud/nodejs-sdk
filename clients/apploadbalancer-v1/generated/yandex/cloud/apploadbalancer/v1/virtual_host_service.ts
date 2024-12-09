@@ -22,6 +22,7 @@ import {
     HttpRoute,
     GrpcRoute,
 } from '../../../../yandex/cloud/apploadbalancer/v1/virtual_host';
+import { RateLimit } from '../../../../yandex/cloud/apploadbalancer/v1/rate_limit';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Operation } from '../../../../yandex/cloud/operation/operation';
 
@@ -124,6 +125,8 @@ export interface CreateVirtualHostRequest {
     modifyResponseHeaders: HeaderModification[];
     /** Route options for the virtual host. */
     routeOptions?: RouteOptions;
+    /** RateLimit is a rate limit configuration applied for a whole virtual host. */
+    rateLimit?: RateLimit;
 }
 
 export interface CreateVirtualHostMetadata {
@@ -199,6 +202,8 @@ export interface UpdateVirtualHostRequest {
     modifyResponseHeaders: HeaderModification[];
     /** New route options for the virtual host. */
     routeOptions?: RouteOptions;
+    /** RateLimit is a rate limit configuration applied for a whole virtual host. */
+    rateLimit?: RateLimit;
 }
 
 export interface UpdateVirtualHostMetadata {
@@ -573,6 +578,9 @@ export const CreateVirtualHostRequest = {
         if (message.routeOptions !== undefined) {
             RouteOptions.encode(message.routeOptions, writer.uint32(66).fork()).ldelim();
         }
+        if (message.rateLimit !== undefined) {
+            RateLimit.encode(message.rateLimit, writer.uint32(74).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -612,6 +620,9 @@ export const CreateVirtualHostRequest = {
                 case 8:
                     message.routeOptions = RouteOptions.decode(reader, reader.uint32());
                     break;
+                case 9:
+                    message.rateLimit = RateLimit.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -638,6 +649,10 @@ export const CreateVirtualHostRequest = {
         message.routeOptions =
             object.routeOptions !== undefined && object.routeOptions !== null
                 ? RouteOptions.fromJSON(object.routeOptions)
+                : undefined;
+        message.rateLimit =
+            object.rateLimit !== undefined && object.rateLimit !== null
+                ? RateLimit.fromJSON(object.rateLimit)
                 : undefined;
         return message;
     },
@@ -674,6 +689,8 @@ export const CreateVirtualHostRequest = {
             (obj.routeOptions = message.routeOptions
                 ? RouteOptions.toJSON(message.routeOptions)
                 : undefined);
+        message.rateLimit !== undefined &&
+            (obj.rateLimit = message.rateLimit ? RateLimit.toJSON(message.rateLimit) : undefined);
         return obj;
     },
 
@@ -692,6 +709,10 @@ export const CreateVirtualHostRequest = {
         message.routeOptions =
             object.routeOptions !== undefined && object.routeOptions !== null
                 ? RouteOptions.fromPartial(object.routeOptions)
+                : undefined;
+        message.rateLimit =
+            object.rateLimit !== undefined && object.rateLimit !== null
+                ? RateLimit.fromPartial(object.rateLimit)
                 : undefined;
         return message;
     },
@@ -812,6 +833,9 @@ export const UpdateVirtualHostRequest = {
         if (message.routeOptions !== undefined) {
             RouteOptions.encode(message.routeOptions, writer.uint32(74).fork()).ldelim();
         }
+        if (message.rateLimit !== undefined) {
+            RateLimit.encode(message.rateLimit, writer.uint32(82).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -854,6 +878,9 @@ export const UpdateVirtualHostRequest = {
                 case 9:
                     message.routeOptions = RouteOptions.decode(reader, reader.uint32());
                     break;
+                case 10:
+                    message.rateLimit = RateLimit.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -887,6 +914,10 @@ export const UpdateVirtualHostRequest = {
         message.routeOptions =
             object.routeOptions !== undefined && object.routeOptions !== null
                 ? RouteOptions.fromJSON(object.routeOptions)
+                : undefined;
+        message.rateLimit =
+            object.rateLimit !== undefined && object.rateLimit !== null
+                ? RateLimit.fromJSON(object.rateLimit)
                 : undefined;
         return message;
     },
@@ -927,6 +958,8 @@ export const UpdateVirtualHostRequest = {
             (obj.routeOptions = message.routeOptions
                 ? RouteOptions.toJSON(message.routeOptions)
                 : undefined);
+        message.rateLimit !== undefined &&
+            (obj.rateLimit = message.rateLimit ? RateLimit.toJSON(message.rateLimit) : undefined);
         return obj;
     },
 
@@ -949,6 +982,10 @@ export const UpdateVirtualHostRequest = {
         message.routeOptions =
             object.routeOptions !== undefined && object.routeOptions !== null
                 ? RouteOptions.fromPartial(object.routeOptions)
+                : undefined;
+        message.rateLimit =
+            object.rateLimit !== undefined && object.rateLimit !== null
+                ? RateLimit.fromPartial(object.rateLimit)
                 : undefined;
         return message;
     },

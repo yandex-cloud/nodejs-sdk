@@ -97,6 +97,7 @@ export interface YdbSource {
     securityGroups: string[];
     /** Pre-created change feed */
     changefeedCustomName: string;
+    changefeedCustomConsumerName: string;
 }
 
 export interface YdbTarget {
@@ -135,6 +136,7 @@ const baseYdbSource: object = {
     saKeyContent: '',
     securityGroups: '',
     changefeedCustomName: '',
+    changefeedCustomConsumerName: '',
 };
 
 export const YdbSource = {
@@ -164,6 +166,9 @@ export const YdbSource = {
         }
         if (message.changefeedCustomName !== '') {
             writer.uint32(282).string(message.changefeedCustomName);
+        }
+        if (message.changefeedCustomConsumerName !== '') {
+            writer.uint32(290).string(message.changefeedCustomConsumerName);
         }
         return writer;
     },
@@ -201,6 +206,9 @@ export const YdbSource = {
                 case 35:
                     message.changefeedCustomName = reader.string();
                     break;
+                case 36:
+                    message.changefeedCustomConsumerName = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -237,6 +245,11 @@ export const YdbSource = {
             object.changefeedCustomName !== undefined && object.changefeedCustomName !== null
                 ? String(object.changefeedCustomName)
                 : '';
+        message.changefeedCustomConsumerName =
+            object.changefeedCustomConsumerName !== undefined &&
+            object.changefeedCustomConsumerName !== null
+                ? String(object.changefeedCustomConsumerName)
+                : '';
         return message;
     },
 
@@ -259,6 +272,8 @@ export const YdbSource = {
         }
         message.changefeedCustomName !== undefined &&
             (obj.changefeedCustomName = message.changefeedCustomName);
+        message.changefeedCustomConsumerName !== undefined &&
+            (obj.changefeedCustomConsumerName = message.changefeedCustomConsumerName);
         return obj;
     },
 
@@ -272,6 +287,7 @@ export const YdbSource = {
         message.saKeyContent = object.saKeyContent ?? '';
         message.securityGroups = object.securityGroups?.map((e) => e) || [];
         message.changefeedCustomName = object.changefeedCustomName ?? '';
+        message.changefeedCustomConsumerName = object.changefeedCustomConsumerName ?? '';
         return message;
     },
 };

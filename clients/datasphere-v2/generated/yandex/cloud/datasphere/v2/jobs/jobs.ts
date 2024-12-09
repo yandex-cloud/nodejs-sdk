@@ -54,6 +54,7 @@ export enum JobStatus {
     ERROR = 5,
     CANCELLED = 6,
     CANCELLING = 7,
+    PREPARING = 8,
     UNRECOGNIZED = -1,
 }
 
@@ -83,6 +84,9 @@ export function jobStatusFromJSON(object: any): JobStatus {
         case 7:
         case 'CANCELLING':
             return JobStatus.CANCELLING;
+        case 8:
+        case 'PREPARING':
+            return JobStatus.PREPARING;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -108,6 +112,8 @@ export function jobStatusToJSON(object: JobStatus): string {
             return 'CANCELLED';
         case JobStatus.CANCELLING:
             return 'CANCELLING';
+        case JobStatus.PREPARING:
+            return 'PREPARING';
         default:
             return 'UNKNOWN';
     }
@@ -140,6 +146,8 @@ export interface JobParameters {
     outputDatasets: OutputDatasetDesc[];
     /** Graceful shutdown settings. */
     gracefulShutdownParameters?: GracefulShutdownParameters;
+    /** Spark connector settings. */
+    sparkParameters?: SparkParameters;
 }
 
 export interface CloudInstanceType {
@@ -228,6 +236,45 @@ export interface FileUploadError {
     outputFileDesc?: FileDesc | undefined;
     logFileName: string | undefined;
     description: string;
+    type: FileUploadError_ErrorType;
+}
+
+export enum FileUploadError_ErrorType {
+    ERROR_TYPE_UNSPECIFIED = 0,
+    UPLOAD_FAILED = 1,
+    NOT_FOUND = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function fileUploadError_ErrorTypeFromJSON(object: any): FileUploadError_ErrorType {
+    switch (object) {
+        case 0:
+        case 'ERROR_TYPE_UNSPECIFIED':
+            return FileUploadError_ErrorType.ERROR_TYPE_UNSPECIFIED;
+        case 1:
+        case 'UPLOAD_FAILED':
+            return FileUploadError_ErrorType.UPLOAD_FAILED;
+        case 2:
+        case 'NOT_FOUND':
+            return FileUploadError_ErrorType.NOT_FOUND;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return FileUploadError_ErrorType.UNRECOGNIZED;
+    }
+}
+
+export function fileUploadError_ErrorTypeToJSON(object: FileUploadError_ErrorType): string {
+    switch (object) {
+        case FileUploadError_ErrorType.ERROR_TYPE_UNSPECIFIED:
+            return 'ERROR_TYPE_UNSPECIFIED';
+        case FileUploadError_ErrorType.UPLOAD_FAILED:
+            return 'UPLOAD_FAILED';
+        case FileUploadError_ErrorType.NOT_FOUND:
+            return 'NOT_FOUND';
+        default:
+            return 'UNKNOWN';
+    }
 }
 
 export interface Environment {
@@ -264,6 +311,24 @@ export interface PythonEnv {
     condaYaml: string;
     /** List of local modules descriptions. */
     localModules: File[];
+    /** Python version reduced to major.minor */
+    pythonVersion: string;
+    /** List of pip requirements */
+    requirements: string[];
+    /** Pip install options */
+    pipOptions?: PipOptions;
+}
+
+export interface PipOptions {
+    $type: 'yandex.cloud.datasphere.v2.jobs.PipOptions';
+    /** --index-url option */
+    indexUrl: string;
+    /** --extra-index-urls option */
+    extraIndexUrls: string[];
+    /** --trusted-hosts option */
+    trustedHosts: string[];
+    /** --no-deps option */
+    noDeps: boolean;
 }
 
 export interface OutputDatasetDesc {
@@ -354,6 +419,50 @@ export interface GracefulShutdownParameters {
     signal: number;
 }
 
+export interface JobMetadata {
+    $type: 'yandex.cloud.datasphere.v2.jobs.JobMetadata';
+    /** ID of the job. */
+    id: string;
+    /** Name of the job. */
+    name: string;
+    /** Description of the job. */
+    description: string;
+    /** Create job timestamp. */
+    createdAt?: Date;
+    /** Start job timestamp. */
+    startedAt?: Date;
+    /** Finish job timestamp. */
+    finishedAt?: Date;
+    /** Job data expiration timestamp. */
+    dataExpiresAt?: Date;
+    /** Status of the job. */
+    status: JobStatus;
+    /** Details. */
+    statusDetails: string;
+    /** ID of the user who created the job. */
+    createdById: string;
+    /** ID of the project. */
+    projectId: string;
+    /** Reference to the parent job. */
+    parentJobId: string;
+}
+
+export interface JobProgress {
+    $type: 'yandex.cloud.datasphere.v2.jobs.JobProgress';
+    /** Progress message */
+    message: string;
+    /** Progress of the job from 0 to 100 */
+    progress: number;
+    /** Progress create time */
+    createTime?: Date;
+}
+
+export interface SparkParameters {
+    $type: 'yandex.cloud.datasphere.v2.jobs.SparkParameters';
+    /** ID of the Spark connector. */
+    connectorId: string;
+}
+
 const baseJobParameters: object = {
     $type: 'yandex.cloud.datasphere.v2.jobs.JobParameters',
     s3MountIds: '',
@@ -407,6 +516,9 @@ export const JobParameters = {
                 message.gracefulShutdownParameters,
                 writer.uint32(98).fork(),
             ).ldelim();
+        }
+        if (message.sparkParameters !== undefined) {
+            SparkParameters.encode(message.sparkParameters, writer.uint32(106).fork()).ldelim();
         }
         return writer;
     },
@@ -469,6 +581,9 @@ export const JobParameters = {
                         reader.uint32(),
                     );
                     break;
+                case 13:
+                    message.sparkParameters = SparkParameters.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -507,6 +622,10 @@ export const JobParameters = {
             object.gracefulShutdownParameters !== undefined &&
             object.gracefulShutdownParameters !== null
                 ? GracefulShutdownParameters.fromJSON(object.gracefulShutdownParameters)
+                : undefined;
+        message.sparkParameters =
+            object.sparkParameters !== undefined && object.sparkParameters !== null
+                ? SparkParameters.fromJSON(object.sparkParameters)
                 : undefined;
         return message;
     },
@@ -565,6 +684,10 @@ export const JobParameters = {
             (obj.gracefulShutdownParameters = message.gracefulShutdownParameters
                 ? GracefulShutdownParameters.toJSON(message.gracefulShutdownParameters)
                 : undefined);
+        message.sparkParameters !== undefined &&
+            (obj.sparkParameters = message.sparkParameters
+                ? SparkParameters.toJSON(message.sparkParameters)
+                : undefined);
         return obj;
     },
 
@@ -593,6 +716,10 @@ export const JobParameters = {
             object.gracefulShutdownParameters !== undefined &&
             object.gracefulShutdownParameters !== null
                 ? GracefulShutdownParameters.fromPartial(object.gracefulShutdownParameters)
+                : undefined;
+        message.sparkParameters =
+            object.sparkParameters !== undefined && object.sparkParameters !== null
+                ? SparkParameters.fromPartial(object.sparkParameters)
                 : undefined;
         return message;
     },
@@ -1022,6 +1149,7 @@ messageTypeRegistry.set(FileDesc.$type, FileDesc);
 const baseFileUploadError: object = {
     $type: 'yandex.cloud.datasphere.v2.jobs.FileUploadError',
     description: '',
+    type: 0,
 };
 
 export const FileUploadError = {
@@ -1036,6 +1164,9 @@ export const FileUploadError = {
         }
         if (message.description !== '') {
             writer.uint32(26).string(message.description);
+        }
+        if (message.type !== 0) {
+            writer.uint32(32).int32(message.type);
         }
         return writer;
     },
@@ -1055,6 +1186,9 @@ export const FileUploadError = {
                     break;
                 case 3:
                     message.description = reader.string();
+                    break;
+                case 4:
+                    message.type = reader.int32() as any;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1078,6 +1212,10 @@ export const FileUploadError = {
             object.description !== undefined && object.description !== null
                 ? String(object.description)
                 : '';
+        message.type =
+            object.type !== undefined && object.type !== null
+                ? fileUploadError_ErrorTypeFromJSON(object.type)
+                : 0;
         return message;
     },
 
@@ -1089,6 +1227,7 @@ export const FileUploadError = {
                 : undefined);
         message.logFileName !== undefined && (obj.logFileName = message.logFileName);
         message.description !== undefined && (obj.description = message.description);
+        message.type !== undefined && (obj.type = fileUploadError_ErrorTypeToJSON(message.type));
         return obj;
     },
 
@@ -1100,6 +1239,7 @@ export const FileUploadError = {
                 : undefined;
         message.logFileName = object.logFileName ?? undefined;
         message.description = object.description ?? '';
+        message.type = object.type ?? 0;
         return message;
     },
 };
@@ -1397,7 +1537,12 @@ export const DockerImageSpec = {
 
 messageTypeRegistry.set(DockerImageSpec.$type, DockerImageSpec);
 
-const basePythonEnv: object = { $type: 'yandex.cloud.datasphere.v2.jobs.PythonEnv', condaYaml: '' };
+const basePythonEnv: object = {
+    $type: 'yandex.cloud.datasphere.v2.jobs.PythonEnv',
+    condaYaml: '',
+    pythonVersion: '',
+    requirements: '',
+};
 
 export const PythonEnv = {
     $type: 'yandex.cloud.datasphere.v2.jobs.PythonEnv' as const,
@@ -1409,6 +1554,15 @@ export const PythonEnv = {
         for (const v of message.localModules) {
             File.encode(v!, writer.uint32(18).fork()).ldelim();
         }
+        if (message.pythonVersion !== '') {
+            writer.uint32(26).string(message.pythonVersion);
+        }
+        for (const v of message.requirements) {
+            writer.uint32(34).string(v!);
+        }
+        if (message.pipOptions !== undefined) {
+            PipOptions.encode(message.pipOptions, writer.uint32(42).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -1417,6 +1571,7 @@ export const PythonEnv = {
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...basePythonEnv } as PythonEnv;
         message.localModules = [];
+        message.requirements = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1425,6 +1580,15 @@ export const PythonEnv = {
                     break;
                 case 2:
                     message.localModules.push(File.decode(reader, reader.uint32()));
+                    break;
+                case 3:
+                    message.pythonVersion = reader.string();
+                    break;
+                case 4:
+                    message.requirements.push(reader.string());
+                    break;
+                case 5:
+                    message.pipOptions = PipOptions.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1441,6 +1605,15 @@ export const PythonEnv = {
                 ? String(object.condaYaml)
                 : '';
         message.localModules = (object.localModules ?? []).map((e: any) => File.fromJSON(e));
+        message.pythonVersion =
+            object.pythonVersion !== undefined && object.pythonVersion !== null
+                ? String(object.pythonVersion)
+                : '';
+        message.requirements = (object.requirements ?? []).map((e: any) => String(e));
+        message.pipOptions =
+            object.pipOptions !== undefined && object.pipOptions !== null
+                ? PipOptions.fromJSON(object.pipOptions)
+                : undefined;
         return message;
     },
 
@@ -1452,6 +1625,16 @@ export const PythonEnv = {
         } else {
             obj.localModules = [];
         }
+        message.pythonVersion !== undefined && (obj.pythonVersion = message.pythonVersion);
+        if (message.requirements) {
+            obj.requirements = message.requirements.map((e) => e);
+        } else {
+            obj.requirements = [];
+        }
+        message.pipOptions !== undefined &&
+            (obj.pipOptions = message.pipOptions
+                ? PipOptions.toJSON(message.pipOptions)
+                : undefined);
         return obj;
     },
 
@@ -1459,11 +1642,115 @@ export const PythonEnv = {
         const message = { ...basePythonEnv } as PythonEnv;
         message.condaYaml = object.condaYaml ?? '';
         message.localModules = object.localModules?.map((e) => File.fromPartial(e)) || [];
+        message.pythonVersion = object.pythonVersion ?? '';
+        message.requirements = object.requirements?.map((e) => e) || [];
+        message.pipOptions =
+            object.pipOptions !== undefined && object.pipOptions !== null
+                ? PipOptions.fromPartial(object.pipOptions)
+                : undefined;
         return message;
     },
 };
 
 messageTypeRegistry.set(PythonEnv.$type, PythonEnv);
+
+const basePipOptions: object = {
+    $type: 'yandex.cloud.datasphere.v2.jobs.PipOptions',
+    indexUrl: '',
+    extraIndexUrls: '',
+    trustedHosts: '',
+    noDeps: false,
+};
+
+export const PipOptions = {
+    $type: 'yandex.cloud.datasphere.v2.jobs.PipOptions' as const,
+
+    encode(message: PipOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.indexUrl !== '') {
+            writer.uint32(10).string(message.indexUrl);
+        }
+        for (const v of message.extraIndexUrls) {
+            writer.uint32(18).string(v!);
+        }
+        for (const v of message.trustedHosts) {
+            writer.uint32(26).string(v!);
+        }
+        if (message.noDeps === true) {
+            writer.uint32(32).bool(message.noDeps);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): PipOptions {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...basePipOptions } as PipOptions;
+        message.extraIndexUrls = [];
+        message.trustedHosts = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.indexUrl = reader.string();
+                    break;
+                case 2:
+                    message.extraIndexUrls.push(reader.string());
+                    break;
+                case 3:
+                    message.trustedHosts.push(reader.string());
+                    break;
+                case 4:
+                    message.noDeps = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): PipOptions {
+        const message = { ...basePipOptions } as PipOptions;
+        message.indexUrl =
+            object.indexUrl !== undefined && object.indexUrl !== null
+                ? String(object.indexUrl)
+                : '';
+        message.extraIndexUrls = (object.extraIndexUrls ?? []).map((e: any) => String(e));
+        message.trustedHosts = (object.trustedHosts ?? []).map((e: any) => String(e));
+        message.noDeps =
+            object.noDeps !== undefined && object.noDeps !== null ? Boolean(object.noDeps) : false;
+        return message;
+    },
+
+    toJSON(message: PipOptions): unknown {
+        const obj: any = {};
+        message.indexUrl !== undefined && (obj.indexUrl = message.indexUrl);
+        if (message.extraIndexUrls) {
+            obj.extraIndexUrls = message.extraIndexUrls.map((e) => e);
+        } else {
+            obj.extraIndexUrls = [];
+        }
+        if (message.trustedHosts) {
+            obj.trustedHosts = message.trustedHosts.map((e) => e);
+        } else {
+            obj.trustedHosts = [];
+        }
+        message.noDeps !== undefined && (obj.noDeps = message.noDeps);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<PipOptions>, I>>(object: I): PipOptions {
+        const message = { ...basePipOptions } as PipOptions;
+        message.indexUrl = object.indexUrl ?? '';
+        message.extraIndexUrls = object.extraIndexUrls?.map((e) => e) || [];
+        message.trustedHosts = object.trustedHosts?.map((e) => e) || [];
+        message.noDeps = object.noDeps ?? false;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(PipOptions.$type, PipOptions);
 
 const baseOutputDatasetDesc: object = {
     $type: 'yandex.cloud.datasphere.v2.jobs.OutputDatasetDesc',
@@ -2210,6 +2497,334 @@ export const GracefulShutdownParameters = {
 };
 
 messageTypeRegistry.set(GracefulShutdownParameters.$type, GracefulShutdownParameters);
+
+const baseJobMetadata: object = {
+    $type: 'yandex.cloud.datasphere.v2.jobs.JobMetadata',
+    id: '',
+    name: '',
+    description: '',
+    status: 0,
+    statusDetails: '',
+    createdById: '',
+    projectId: '',
+    parentJobId: '',
+};
+
+export const JobMetadata = {
+    $type: 'yandex.cloud.datasphere.v2.jobs.JobMetadata' as const,
+
+    encode(message: JobMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.id !== '') {
+            writer.uint32(10).string(message.id);
+        }
+        if (message.name !== '') {
+            writer.uint32(18).string(message.name);
+        }
+        if (message.description !== '') {
+            writer.uint32(26).string(message.description);
+        }
+        if (message.createdAt !== undefined) {
+            Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(34).fork()).ldelim();
+        }
+        if (message.startedAt !== undefined) {
+            Timestamp.encode(toTimestamp(message.startedAt), writer.uint32(42).fork()).ldelim();
+        }
+        if (message.finishedAt !== undefined) {
+            Timestamp.encode(toTimestamp(message.finishedAt), writer.uint32(50).fork()).ldelim();
+        }
+        if (message.dataExpiresAt !== undefined) {
+            Timestamp.encode(toTimestamp(message.dataExpiresAt), writer.uint32(58).fork()).ldelim();
+        }
+        if (message.status !== 0) {
+            writer.uint32(64).int32(message.status);
+        }
+        if (message.statusDetails !== '') {
+            writer.uint32(74).string(message.statusDetails);
+        }
+        if (message.createdById !== '') {
+            writer.uint32(82).string(message.createdById);
+        }
+        if (message.projectId !== '') {
+            writer.uint32(90).string(message.projectId);
+        }
+        if (message.parentJobId !== '') {
+            writer.uint32(98).string(message.parentJobId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): JobMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseJobMetadata } as JobMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.id = reader.string();
+                    break;
+                case 2:
+                    message.name = reader.string();
+                    break;
+                case 3:
+                    message.description = reader.string();
+                    break;
+                case 4:
+                    message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
+                case 5:
+                    message.startedAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
+                case 6:
+                    message.finishedAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
+                case 7:
+                    message.dataExpiresAt = fromTimestamp(
+                        Timestamp.decode(reader, reader.uint32()),
+                    );
+                    break;
+                case 8:
+                    message.status = reader.int32() as any;
+                    break;
+                case 9:
+                    message.statusDetails = reader.string();
+                    break;
+                case 10:
+                    message.createdById = reader.string();
+                    break;
+                case 11:
+                    message.projectId = reader.string();
+                    break;
+                case 12:
+                    message.parentJobId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): JobMetadata {
+        const message = { ...baseJobMetadata } as JobMetadata;
+        message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
+        message.createdAt =
+            object.createdAt !== undefined && object.createdAt !== null
+                ? fromJsonTimestamp(object.createdAt)
+                : undefined;
+        message.startedAt =
+            object.startedAt !== undefined && object.startedAt !== null
+                ? fromJsonTimestamp(object.startedAt)
+                : undefined;
+        message.finishedAt =
+            object.finishedAt !== undefined && object.finishedAt !== null
+                ? fromJsonTimestamp(object.finishedAt)
+                : undefined;
+        message.dataExpiresAt =
+            object.dataExpiresAt !== undefined && object.dataExpiresAt !== null
+                ? fromJsonTimestamp(object.dataExpiresAt)
+                : undefined;
+        message.status =
+            object.status !== undefined && object.status !== null
+                ? jobStatusFromJSON(object.status)
+                : 0;
+        message.statusDetails =
+            object.statusDetails !== undefined && object.statusDetails !== null
+                ? String(object.statusDetails)
+                : '';
+        message.createdById =
+            object.createdById !== undefined && object.createdById !== null
+                ? String(object.createdById)
+                : '';
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.parentJobId =
+            object.parentJobId !== undefined && object.parentJobId !== null
+                ? String(object.parentJobId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: JobMetadata): unknown {
+        const obj: any = {};
+        message.id !== undefined && (obj.id = message.id);
+        message.name !== undefined && (obj.name = message.name);
+        message.description !== undefined && (obj.description = message.description);
+        message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
+        message.startedAt !== undefined && (obj.startedAt = message.startedAt.toISOString());
+        message.finishedAt !== undefined && (obj.finishedAt = message.finishedAt.toISOString());
+        message.dataExpiresAt !== undefined &&
+            (obj.dataExpiresAt = message.dataExpiresAt.toISOString());
+        message.status !== undefined && (obj.status = jobStatusToJSON(message.status));
+        message.statusDetails !== undefined && (obj.statusDetails = message.statusDetails);
+        message.createdById !== undefined && (obj.createdById = message.createdById);
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        message.parentJobId !== undefined && (obj.parentJobId = message.parentJobId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<JobMetadata>, I>>(object: I): JobMetadata {
+        const message = { ...baseJobMetadata } as JobMetadata;
+        message.id = object.id ?? '';
+        message.name = object.name ?? '';
+        message.description = object.description ?? '';
+        message.createdAt = object.createdAt ?? undefined;
+        message.startedAt = object.startedAt ?? undefined;
+        message.finishedAt = object.finishedAt ?? undefined;
+        message.dataExpiresAt = object.dataExpiresAt ?? undefined;
+        message.status = object.status ?? 0;
+        message.statusDetails = object.statusDetails ?? '';
+        message.createdById = object.createdById ?? '';
+        message.projectId = object.projectId ?? '';
+        message.parentJobId = object.parentJobId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(JobMetadata.$type, JobMetadata);
+
+const baseJobProgress: object = {
+    $type: 'yandex.cloud.datasphere.v2.jobs.JobProgress',
+    message: '',
+    progress: 0,
+};
+
+export const JobProgress = {
+    $type: 'yandex.cloud.datasphere.v2.jobs.JobProgress' as const,
+
+    encode(message: JobProgress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.message !== '') {
+            writer.uint32(10).string(message.message);
+        }
+        if (message.progress !== 0) {
+            writer.uint32(16).int64(message.progress);
+        }
+        if (message.createTime !== undefined) {
+            Timestamp.encode(toTimestamp(message.createTime), writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): JobProgress {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseJobProgress } as JobProgress;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.message = reader.string();
+                    break;
+                case 2:
+                    message.progress = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.createTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): JobProgress {
+        const message = { ...baseJobProgress } as JobProgress;
+        message.message =
+            object.message !== undefined && object.message !== null ? String(object.message) : '';
+        message.progress =
+            object.progress !== undefined && object.progress !== null ? Number(object.progress) : 0;
+        message.createTime =
+            object.createTime !== undefined && object.createTime !== null
+                ? fromJsonTimestamp(object.createTime)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: JobProgress): unknown {
+        const obj: any = {};
+        message.message !== undefined && (obj.message = message.message);
+        message.progress !== undefined && (obj.progress = Math.round(message.progress));
+        message.createTime !== undefined && (obj.createTime = message.createTime.toISOString());
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<JobProgress>, I>>(object: I): JobProgress {
+        const message = { ...baseJobProgress } as JobProgress;
+        message.message = object.message ?? '';
+        message.progress = object.progress ?? 0;
+        message.createTime = object.createTime ?? undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(JobProgress.$type, JobProgress);
+
+const baseSparkParameters: object = {
+    $type: 'yandex.cloud.datasphere.v2.jobs.SparkParameters',
+    connectorId: '',
+};
+
+export const SparkParameters = {
+    $type: 'yandex.cloud.datasphere.v2.jobs.SparkParameters' as const,
+
+    encode(message: SparkParameters, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.connectorId !== '') {
+            writer.uint32(10).string(message.connectorId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SparkParameters {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSparkParameters } as SparkParameters;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.connectorId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SparkParameters {
+        const message = { ...baseSparkParameters } as SparkParameters;
+        message.connectorId =
+            object.connectorId !== undefined && object.connectorId !== null
+                ? String(object.connectorId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: SparkParameters): unknown {
+        const obj: any = {};
+        message.connectorId !== undefined && (obj.connectorId = message.connectorId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SparkParameters>, I>>(object: I): SparkParameters {
+        const message = { ...baseSparkParameters } as SparkParameters;
+        message.connectorId = object.connectorId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(SparkParameters.$type, SparkParameters);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

@@ -21,14 +21,21 @@ import { Thread } from '../../../../../../yandex/cloud/ai/assistants/v1/threads/
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.threads';
 
+/** Request message for creating a new thread. */
 export interface CreateThreadRequest {
     $type: 'yandex.cloud.ai.assistants.v1.threads.CreateThreadRequest';
     folderId: string;
+    /** List of messages to initialize the thread. */
     messages: MessageData[];
+    /** Name of the thread. */
     name: string;
+    /** Description of the thread. */
     description: string;
+    /** Default user ID that will be used as the author for thread messages if no other author is specified. */
     defaultMessageAuthorId: string;
+    /** Expiration configuration for the thread. */
     expirationConfig?: ExpirationConfig;
+    /** Set of key-value pairs to label the thread. */
     labels: { [key: string]: string };
 }
 
@@ -38,18 +45,27 @@ export interface CreateThreadRequest_LabelsEntry {
     value: string;
 }
 
+/** Request message for retrieving a thread by ID. */
 export interface GetThreadRequest {
     $type: 'yandex.cloud.ai.assistants.v1.threads.GetThreadRequest';
+    /** ID of the thread to retrieve. */
     threadId: string;
 }
 
+/** Request message for updating an existing thread. */
 export interface UpdateThreadRequest {
     $type: 'yandex.cloud.ai.assistants.v1.threads.UpdateThreadRequest';
+    /** ID of the thread to update. */
     threadId: string;
+    /** Field mask specifying which fields to update. */
     updateMask?: FieldMask;
+    /** New name for the thread. */
     name: string;
+    /** New description for the thread. */
     description: string;
+    /** New expiration configuration for the thread. */
     expirationConfig?: ExpirationConfig;
+    /** New set of labels for the thread. */
     labels: { [key: string]: string };
 }
 
@@ -59,25 +75,35 @@ export interface UpdateThreadRequest_LabelsEntry {
     value: string;
 }
 
+/** Request message for deleting a thread by ID. */
 export interface DeleteThreadRequest {
     $type: 'yandex.cloud.ai.assistants.v1.threads.DeleteThreadRequest';
+    /** ID of the thread to delete. */
     threadId: string;
 }
 
+/** Response message for the delete operation. */
 export interface DeleteThreadResponse {
     $type: 'yandex.cloud.ai.assistants.v1.threads.DeleteThreadResponse';
 }
 
+/** Request message for listing threads in a specific folder. */
 export interface ListThreadsRequest {
     $type: 'yandex.cloud.ai.assistants.v1.threads.ListThreadsRequest';
+    /** Folder ID from which to list threads. */
     folderId: string;
+    /** Maximum number of threads to return per page. */
     pageSize: number;
+    /** Token to retrieve the next page of results. */
     pageToken: string;
 }
 
+/** Response message for the list operation. */
 export interface ListThreadsResponse {
     $type: 'yandex.cloud.ai.assistants.v1.threads.ListThreadsResponse';
+    /** List of threads in the specified folder. */
     threads: Thread[];
+    /** Token to retrieve the next page of results. */
     nextPageToken: string;
 }
 
@@ -873,7 +899,9 @@ export const ListThreadsResponse = {
 
 messageTypeRegistry.set(ListThreadsResponse.$type, ListThreadsResponse);
 
+/** ThreadService provides operations for managing threads. */
 export const ThreadServiceService = {
+    /** Create a new thread. */
     create: {
         path: '/yandex.cloud.ai.assistants.v1.threads.ThreadService/Create',
         requestStream: false,
@@ -884,6 +912,7 @@ export const ThreadServiceService = {
         responseSerialize: (value: Thread) => Buffer.from(Thread.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Thread.decode(value),
     },
+    /** Retrieve details of a specific thread by its ID. */
     get: {
         path: '/yandex.cloud.ai.assistants.v1.threads.ThreadService/Get',
         requestStream: false,
@@ -894,6 +923,7 @@ export const ThreadServiceService = {
         responseSerialize: (value: Thread) => Buffer.from(Thread.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Thread.decode(value),
     },
+    /** Update an existing thread. */
     update: {
         path: '/yandex.cloud.ai.assistants.v1.threads.ThreadService/Update',
         requestStream: false,
@@ -904,6 +934,7 @@ export const ThreadServiceService = {
         responseSerialize: (value: Thread) => Buffer.from(Thread.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Thread.decode(value),
     },
+    /** Delete a thread by its ID. */
     delete: {
         path: '/yandex.cloud.ai.assistants.v1.threads.ThreadService/Delete',
         requestStream: false,
@@ -915,6 +946,7 @@ export const ThreadServiceService = {
             Buffer.from(DeleteThreadResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => DeleteThreadResponse.decode(value),
     },
+    /** List threads in a specific folder. */
     list: {
         path: '/yandex.cloud.ai.assistants.v1.threads.ThreadService/List',
         requestStream: false,
@@ -929,14 +961,20 @@ export const ThreadServiceService = {
 } as const;
 
 export interface ThreadServiceServer extends UntypedServiceImplementation {
+    /** Create a new thread. */
     create: handleUnaryCall<CreateThreadRequest, Thread>;
+    /** Retrieve details of a specific thread by its ID. */
     get: handleUnaryCall<GetThreadRequest, Thread>;
+    /** Update an existing thread. */
     update: handleUnaryCall<UpdateThreadRequest, Thread>;
+    /** Delete a thread by its ID. */
     delete: handleUnaryCall<DeleteThreadRequest, DeleteThreadResponse>;
+    /** List threads in a specific folder. */
     list: handleUnaryCall<ListThreadsRequest, ListThreadsResponse>;
 }
 
 export interface ThreadServiceClient extends Client {
+    /** Create a new thread. */
     create(
         request: CreateThreadRequest,
         callback: (error: ServiceError | null, response: Thread) => void,
@@ -952,6 +990,7 @@ export interface ThreadServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Thread) => void,
     ): ClientUnaryCall;
+    /** Retrieve details of a specific thread by its ID. */
     get(
         request: GetThreadRequest,
         callback: (error: ServiceError | null, response: Thread) => void,
@@ -967,6 +1006,7 @@ export interface ThreadServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Thread) => void,
     ): ClientUnaryCall;
+    /** Update an existing thread. */
     update(
         request: UpdateThreadRequest,
         callback: (error: ServiceError | null, response: Thread) => void,
@@ -982,6 +1022,7 @@ export interface ThreadServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Thread) => void,
     ): ClientUnaryCall;
+    /** Delete a thread by its ID. */
     delete(
         request: DeleteThreadRequest,
         callback: (error: ServiceError | null, response: DeleteThreadResponse) => void,
@@ -997,6 +1038,7 @@ export interface ThreadServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: DeleteThreadResponse) => void,
     ): ClientUnaryCall;
+    /** List threads in a specific folder. */
     list(
         request: ListThreadsRequest,
         callback: (error: ServiceError | null, response: ListThreadsResponse) => void,

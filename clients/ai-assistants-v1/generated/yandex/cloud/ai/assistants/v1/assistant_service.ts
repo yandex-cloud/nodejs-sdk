@@ -25,17 +25,33 @@ import { Assistant } from '../../../../../yandex/cloud/ai/assistants/v1/assistan
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1';
 
+/** Request to create a new assistant. */
 export interface CreateAssistantRequest {
     $type: 'yandex.cloud.ai.assistants.v1.CreateAssistantRequest';
     folderId: string;
+    /** Name of the assistant. */
     name: string;
+    /** Description of the assistant. */
     description: string;
+    /** Expiration configuration for the assistant. */
     expirationConfig?: ExpirationConfig;
+    /** Set of key-value pairs to label the user. */
     labels: { [key: string]: string };
+    /** The [ID of the model](/docs/foundation-models/concepts/yandexgpt/models) to be used for completion generation. */
     modelUri: string;
+    /**
+     * Instructions or guidelines that the assistant should follow when generating responses or performing tasks.
+     * These instructions can help guide the assistant's behavior and responses.
+     */
     instruction: string;
+    /** Configuration options for truncating the prompt when the token count exceeds a specified limit. */
     promptTruncationOptions?: PromptTruncationOptions;
+    /** Configuration options for completion generation. */
     completionOptions?: CompletionOptions;
+    /**
+     * List of tools that the assistant can use to perform additional tasks.
+     * One example is the SearchIndexTool, which is used for Retrieval-Augmented Generation (RAG).
+     */
     tools: Tool[];
 }
 
@@ -45,23 +61,37 @@ export interface CreateAssistantRequest_LabelsEntry {
     value: string;
 }
 
+/** Request message for retrieving an assistant by ID. */
 export interface GetAssistantRequest {
     $type: 'yandex.cloud.ai.assistants.v1.GetAssistantRequest';
+    /** ID of the assistant to retrieve. */
     assistantId: string;
 }
 
+/** Request message for updating an existing assistant. */
 export interface UpdateAssistantRequest {
     $type: 'yandex.cloud.ai.assistants.v1.UpdateAssistantRequest';
+    /** ID of the assistant to update. */
     assistantId: string;
+    /** Field mask specifying which fields to update. */
     updateMask?: FieldMask;
+    /** New name for the assistant. */
     name: string;
+    /** New description for the assistant. */
     description: string;
+    /** New expiration configuration for the assistant. */
     expirationConfig?: ExpirationConfig;
+    /** New set of labels for the assistant. */
     labels: { [key: string]: string };
+    /** The new [ID of the model](/docs/foundation-models/concepts/yandexgpt/models) to be used for completion generation. */
     modelUri: string;
+    /** New instructions or guidelines for the assistant to follow. */
     instruction: string;
+    /** New configuration for truncating the prompt. */
     promptTruncationOptions?: PromptTruncationOptions;
+    /** New configuration for completion generation. */
     completionOptions?: CompletionOptions;
+    /** New list of tools the assistant can use. */
     tools: Tool[];
 }
 
@@ -71,45 +101,66 @@ export interface UpdateAssistantRequest_LabelsEntry {
     value: string;
 }
 
+/** Request message for deleting an assistant by ID. */
 export interface DeleteAssistantRequest {
     $type: 'yandex.cloud.ai.assistants.v1.DeleteAssistantRequest';
+    /** ID of the assistant to delete. */
     assistantId: string;
 }
 
+/** Response message for the delete operation. */
 export interface DeleteAssistantResponse {
     $type: 'yandex.cloud.ai.assistants.v1.DeleteAssistantResponse';
 }
 
+/** Request message for listing assistants in a specific folder. */
 export interface ListAssistantsRequest {
     $type: 'yandex.cloud.ai.assistants.v1.ListAssistantsRequest';
+    /** Folder ID from which to list assistants. */
     folderId: string;
+    /** Maximum number of assistants to return per page. */
     pageSize: number;
+    /** Token to retrieve the next page of results. */
     pageToken: string;
 }
 
+/** Response message for the list operation. */
 export interface ListAssistantsResponse {
     $type: 'yandex.cloud.ai.assistants.v1.ListAssistantsResponse';
+    /** List of assistants in the specified folder. */
     assistants: Assistant[];
+    /** Token to retrieve the next page of results. */
     nextPageToken: string;
 }
 
+/** Request to list all versions of a specific assistant. */
 export interface ListAssistantVersionsRequest {
     $type: 'yandex.cloud.ai.assistants.v1.ListAssistantVersionsRequest';
+    /** ID of the assistant whose versions are to be listed. */
     assistantId: string;
+    /** Maximum number of versions to return per page. */
     pageSize: number;
+    /** Token to retrieve the next page of results. */
     pageToken: string;
 }
 
+/** Represents a specific version of an assistant. */
 export interface AssistantVersion {
     $type: 'yandex.cloud.ai.assistants.v1.AssistantVersion';
+    /** ID of the assistant version. */
     id: string;
+    /** Mask specifying which fields were updated in this version. */
     updateMask?: FieldMask;
+    /** Assistant configuration for this version. */
     assistant?: Assistant;
 }
 
+/** Response message containing the list versions operation. */
 export interface ListAssistantVersionsResponse {
     $type: 'yandex.cloud.ai.assistants.v1.ListAssistantVersionsResponse';
+    /** List of assistant versions. */
     versions: AssistantVersion[];
+    /** Token to retrieve the next page of results. */
     nextPageToken: string;
 }
 
@@ -1309,7 +1360,9 @@ export const ListAssistantVersionsResponse = {
 
 messageTypeRegistry.set(ListAssistantVersionsResponse.$type, ListAssistantVersionsResponse);
 
+/** AssistantService provides operations for managing assistants. */
 export const AssistantServiceService = {
+    /** Create a new assistant. */
     create: {
         path: '/yandex.cloud.ai.assistants.v1.AssistantService/Create',
         requestStream: false,
@@ -1320,6 +1373,7 @@ export const AssistantServiceService = {
         responseSerialize: (value: Assistant) => Buffer.from(Assistant.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Assistant.decode(value),
     },
+    /** Retrieve details of a specific assistant by its ID. */
     get: {
         path: '/yandex.cloud.ai.assistants.v1.AssistantService/Get',
         requestStream: false,
@@ -1330,6 +1384,7 @@ export const AssistantServiceService = {
         responseSerialize: (value: Assistant) => Buffer.from(Assistant.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Assistant.decode(value),
     },
+    /** Update an existing assistant. */
     update: {
         path: '/yandex.cloud.ai.assistants.v1.AssistantService/Update',
         requestStream: false,
@@ -1340,6 +1395,7 @@ export const AssistantServiceService = {
         responseSerialize: (value: Assistant) => Buffer.from(Assistant.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Assistant.decode(value),
     },
+    /** Delete an assistant by its ID. */
     delete: {
         path: '/yandex.cloud.ai.assistants.v1.AssistantService/Delete',
         requestStream: false,
@@ -1351,6 +1407,7 @@ export const AssistantServiceService = {
             Buffer.from(DeleteAssistantResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => DeleteAssistantResponse.decode(value),
     },
+    /** List assistants in a specific folder. */
     list: {
         path: '/yandex.cloud.ai.assistants.v1.AssistantService/List',
         requestStream: false,
@@ -1362,6 +1419,7 @@ export const AssistantServiceService = {
             Buffer.from(ListAssistantsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListAssistantsResponse.decode(value),
     },
+    /** Lists all versions of a specific assistant. */
     listVersions: {
         path: '/yandex.cloud.ai.assistants.v1.AssistantService/ListVersions',
         requestStream: false,
@@ -1376,15 +1434,22 @@ export const AssistantServiceService = {
 } as const;
 
 export interface AssistantServiceServer extends UntypedServiceImplementation {
+    /** Create a new assistant. */
     create: handleUnaryCall<CreateAssistantRequest, Assistant>;
+    /** Retrieve details of a specific assistant by its ID. */
     get: handleUnaryCall<GetAssistantRequest, Assistant>;
+    /** Update an existing assistant. */
     update: handleUnaryCall<UpdateAssistantRequest, Assistant>;
+    /** Delete an assistant by its ID. */
     delete: handleUnaryCall<DeleteAssistantRequest, DeleteAssistantResponse>;
+    /** List assistants in a specific folder. */
     list: handleUnaryCall<ListAssistantsRequest, ListAssistantsResponse>;
+    /** Lists all versions of a specific assistant. */
     listVersions: handleUnaryCall<ListAssistantVersionsRequest, ListAssistantVersionsResponse>;
 }
 
 export interface AssistantServiceClient extends Client {
+    /** Create a new assistant. */
     create(
         request: CreateAssistantRequest,
         callback: (error: ServiceError | null, response: Assistant) => void,
@@ -1400,6 +1465,7 @@ export interface AssistantServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Assistant) => void,
     ): ClientUnaryCall;
+    /** Retrieve details of a specific assistant by its ID. */
     get(
         request: GetAssistantRequest,
         callback: (error: ServiceError | null, response: Assistant) => void,
@@ -1415,6 +1481,7 @@ export interface AssistantServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Assistant) => void,
     ): ClientUnaryCall;
+    /** Update an existing assistant. */
     update(
         request: UpdateAssistantRequest,
         callback: (error: ServiceError | null, response: Assistant) => void,
@@ -1430,6 +1497,7 @@ export interface AssistantServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Assistant) => void,
     ): ClientUnaryCall;
+    /** Delete an assistant by its ID. */
     delete(
         request: DeleteAssistantRequest,
         callback: (error: ServiceError | null, response: DeleteAssistantResponse) => void,
@@ -1445,6 +1513,7 @@ export interface AssistantServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: DeleteAssistantResponse) => void,
     ): ClientUnaryCall;
+    /** List assistants in a specific folder. */
     list(
         request: ListAssistantsRequest,
         callback: (error: ServiceError | null, response: ListAssistantsResponse) => void,
@@ -1460,6 +1529,7 @@ export interface AssistantServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListAssistantsResponse) => void,
     ): ClientUnaryCall;
+    /** Lists all versions of a specific assistant. */
     listVersions(
         request: ListAssistantVersionsRequest,
         callback: (error: ServiceError | null, response: ListAssistantVersionsResponse) => void,

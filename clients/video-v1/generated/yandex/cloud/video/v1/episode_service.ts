@@ -65,6 +65,20 @@ export interface ListEpisodesResponse {
     nextPageToken: string;
 }
 
+export interface BatchGetEpisodesRequest {
+    $type: 'yandex.cloud.video.v1.BatchGetEpisodesRequest';
+    /** ID of the channel. */
+    channelId: string;
+    /** List of requested episode IDs. */
+    episodeIds: string[];
+}
+
+export interface BatchGetEpisodesResponse {
+    $type: 'yandex.cloud.video.v1.BatchGetEpisodesResponse';
+    /** List of episodes for specific channel. */
+    episodes: Episode[];
+}
+
 export interface CreateEpisodeRequest {
     $type: 'yandex.cloud.video.v1.CreateEpisodeRequest';
     /** ID of the stream. */
@@ -93,6 +107,8 @@ export interface CreateEpisodeRequest {
     publicAccess?: EpisodePublicAccessParams | undefined;
     /** Checking access rights using the authorization system. */
     authSystemAccess?: EpisodeAuthSystemAccessParams | undefined;
+    /** Checking access rights using url's signature. */
+    signUrlAccess?: EpisodeSignURLAccessParams | undefined;
 }
 
 export interface EpisodePublicAccessParams {
@@ -101,6 +117,10 @@ export interface EpisodePublicAccessParams {
 
 export interface EpisodeAuthSystemAccessParams {
     $type: 'yandex.cloud.video.v1.EpisodeAuthSystemAccessParams';
+}
+
+export interface EpisodeSignURLAccessParams {
+    $type: 'yandex.cloud.video.v1.EpisodeSignURLAccessParams';
 }
 
 export interface CreateEpisodeMetadata {
@@ -136,6 +156,8 @@ export interface UpdateEpisodeRequest {
     publicAccess?: EpisodePublicAccessParams | undefined;
     /** Checking access rights using the authorization system. */
     authSystemAccess?: EpisodeAuthSystemAccessParams | undefined;
+    /** Checking access rights using url's signature. */
+    signUrlAccess?: EpisodeSignURLAccessParams | undefined;
 }
 
 export interface UpdateEpisodeMetadata {
@@ -460,6 +482,143 @@ export const ListEpisodesResponse = {
 
 messageTypeRegistry.set(ListEpisodesResponse.$type, ListEpisodesResponse);
 
+const baseBatchGetEpisodesRequest: object = {
+    $type: 'yandex.cloud.video.v1.BatchGetEpisodesRequest',
+    channelId: '',
+    episodeIds: '',
+};
+
+export const BatchGetEpisodesRequest = {
+    $type: 'yandex.cloud.video.v1.BatchGetEpisodesRequest' as const,
+
+    encode(message: BatchGetEpisodesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.channelId !== '') {
+            writer.uint32(10).string(message.channelId);
+        }
+        for (const v of message.episodeIds) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetEpisodesRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchGetEpisodesRequest } as BatchGetEpisodesRequest;
+        message.episodeIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.channelId = reader.string();
+                    break;
+                case 2:
+                    message.episodeIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchGetEpisodesRequest {
+        const message = { ...baseBatchGetEpisodesRequest } as BatchGetEpisodesRequest;
+        message.channelId =
+            object.channelId !== undefined && object.channelId !== null
+                ? String(object.channelId)
+                : '';
+        message.episodeIds = (object.episodeIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: BatchGetEpisodesRequest): unknown {
+        const obj: any = {};
+        message.channelId !== undefined && (obj.channelId = message.channelId);
+        if (message.episodeIds) {
+            obj.episodeIds = message.episodeIds.map((e) => e);
+        } else {
+            obj.episodeIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchGetEpisodesRequest>, I>>(
+        object: I,
+    ): BatchGetEpisodesRequest {
+        const message = { ...baseBatchGetEpisodesRequest } as BatchGetEpisodesRequest;
+        message.channelId = object.channelId ?? '';
+        message.episodeIds = object.episodeIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BatchGetEpisodesRequest.$type, BatchGetEpisodesRequest);
+
+const baseBatchGetEpisodesResponse: object = {
+    $type: 'yandex.cloud.video.v1.BatchGetEpisodesResponse',
+};
+
+export const BatchGetEpisodesResponse = {
+    $type: 'yandex.cloud.video.v1.BatchGetEpisodesResponse' as const,
+
+    encode(
+        message: BatchGetEpisodesResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.episodes) {
+            Episode.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetEpisodesResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchGetEpisodesResponse } as BatchGetEpisodesResponse;
+        message.episodes = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.episodes.push(Episode.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchGetEpisodesResponse {
+        const message = { ...baseBatchGetEpisodesResponse } as BatchGetEpisodesResponse;
+        message.episodes = (object.episodes ?? []).map((e: any) => Episode.fromJSON(e));
+        return message;
+    },
+
+    toJSON(message: BatchGetEpisodesResponse): unknown {
+        const obj: any = {};
+        if (message.episodes) {
+            obj.episodes = message.episodes.map((e) => (e ? Episode.toJSON(e) : undefined));
+        } else {
+            obj.episodes = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchGetEpisodesResponse>, I>>(
+        object: I,
+    ): BatchGetEpisodesResponse {
+        const message = { ...baseBatchGetEpisodesResponse } as BatchGetEpisodesResponse;
+        message.episodes = object.episodes?.map((e) => Episode.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BatchGetEpisodesResponse.$type, BatchGetEpisodesResponse);
+
 const baseCreateEpisodeRequest: object = {
     $type: 'yandex.cloud.video.v1.CreateEpisodeRequest',
     title: '',
@@ -508,6 +667,12 @@ export const CreateEpisodeRequest = {
                 writer.uint32(8018).fork(),
             ).ldelim();
         }
+        if (message.signUrlAccess !== undefined) {
+            EpisodeSignURLAccessParams.encode(
+                message.signUrlAccess,
+                writer.uint32(8026).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -550,6 +715,12 @@ export const CreateEpisodeRequest = {
                     break;
                 case 1002:
                     message.authSystemAccess = EpisodeAuthSystemAccessParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 1003:
+                    message.signUrlAccess = EpisodeSignURLAccessParams.decode(
                         reader,
                         reader.uint32(),
                     );
@@ -602,6 +773,10 @@ export const CreateEpisodeRequest = {
             object.authSystemAccess !== undefined && object.authSystemAccess !== null
                 ? EpisodeAuthSystemAccessParams.fromJSON(object.authSystemAccess)
                 : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? EpisodeSignURLAccessParams.fromJSON(object.signUrlAccess)
+                : undefined;
         return message;
     },
 
@@ -622,6 +797,10 @@ export const CreateEpisodeRequest = {
         message.authSystemAccess !== undefined &&
             (obj.authSystemAccess = message.authSystemAccess
                 ? EpisodeAuthSystemAccessParams.toJSON(message.authSystemAccess)
+                : undefined);
+        message.signUrlAccess !== undefined &&
+            (obj.signUrlAccess = message.signUrlAccess
+                ? EpisodeSignURLAccessParams.toJSON(message.signUrlAccess)
                 : undefined);
         return obj;
     },
@@ -645,6 +824,10 @@ export const CreateEpisodeRequest = {
         message.authSystemAccess =
             object.authSystemAccess !== undefined && object.authSystemAccess !== null
                 ? EpisodeAuthSystemAccessParams.fromPartial(object.authSystemAccess)
+                : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? EpisodeSignURLAccessParams.fromPartial(object.signUrlAccess)
                 : undefined;
         return message;
     },
@@ -743,6 +926,52 @@ export const EpisodeAuthSystemAccessParams = {
 };
 
 messageTypeRegistry.set(EpisodeAuthSystemAccessParams.$type, EpisodeAuthSystemAccessParams);
+
+const baseEpisodeSignURLAccessParams: object = {
+    $type: 'yandex.cloud.video.v1.EpisodeSignURLAccessParams',
+};
+
+export const EpisodeSignURLAccessParams = {
+    $type: 'yandex.cloud.video.v1.EpisodeSignURLAccessParams' as const,
+
+    encode(_: EpisodeSignURLAccessParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): EpisodeSignURLAccessParams {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseEpisodeSignURLAccessParams } as EpisodeSignURLAccessParams;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): EpisodeSignURLAccessParams {
+        const message = { ...baseEpisodeSignURLAccessParams } as EpisodeSignURLAccessParams;
+        return message;
+    },
+
+    toJSON(_: EpisodeSignURLAccessParams): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<EpisodeSignURLAccessParams>, I>>(
+        _: I,
+    ): EpisodeSignURLAccessParams {
+        const message = { ...baseEpisodeSignURLAccessParams } as EpisodeSignURLAccessParams;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(EpisodeSignURLAccessParams.$type, EpisodeSignURLAccessParams);
 
 const baseCreateEpisodeMetadata: object = {
     $type: 'yandex.cloud.video.v1.CreateEpisodeMetadata',
@@ -852,6 +1081,12 @@ export const UpdateEpisodeRequest = {
                 writer.uint32(8018).fork(),
             ).ldelim();
         }
+        if (message.signUrlAccess !== undefined) {
+            EpisodeSignURLAccessParams.encode(
+                message.signUrlAccess,
+                writer.uint32(8026).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -894,6 +1129,12 @@ export const UpdateEpisodeRequest = {
                     break;
                 case 1002:
                     message.authSystemAccess = EpisodeAuthSystemAccessParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 1003:
+                    message.signUrlAccess = EpisodeSignURLAccessParams.decode(
                         reader,
                         reader.uint32(),
                     );
@@ -946,6 +1187,10 @@ export const UpdateEpisodeRequest = {
             object.authSystemAccess !== undefined && object.authSystemAccess !== null
                 ? EpisodeAuthSystemAccessParams.fromJSON(object.authSystemAccess)
                 : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? EpisodeSignURLAccessParams.fromJSON(object.signUrlAccess)
+                : undefined;
         return message;
     },
 
@@ -967,6 +1212,10 @@ export const UpdateEpisodeRequest = {
         message.authSystemAccess !== undefined &&
             (obj.authSystemAccess = message.authSystemAccess
                 ? EpisodeAuthSystemAccessParams.toJSON(message.authSystemAccess)
+                : undefined);
+        message.signUrlAccess !== undefined &&
+            (obj.signUrlAccess = message.signUrlAccess
+                ? EpisodeSignURLAccessParams.toJSON(message.signUrlAccess)
                 : undefined);
         return obj;
     },
@@ -993,6 +1242,10 @@ export const UpdateEpisodeRequest = {
         message.authSystemAccess =
             object.authSystemAccess !== undefined && object.authSystemAccess !== null
                 ? EpisodeAuthSystemAccessParams.fromPartial(object.authSystemAccess)
+                : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? EpisodeSignURLAccessParams.fromPartial(object.signUrlAccess)
                 : undefined;
         return message;
     },
@@ -1806,6 +2059,18 @@ export const EpisodeServiceService = {
             Buffer.from(ListEpisodesResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListEpisodesResponse.decode(value),
     },
+    /** Batch get episodes for channel. */
+    batchGet: {
+        path: '/yandex.cloud.video.v1.EpisodeService/BatchGet',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: BatchGetEpisodesRequest) =>
+            Buffer.from(BatchGetEpisodesRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => BatchGetEpisodesRequest.decode(value),
+        responseSerialize: (value: BatchGetEpisodesResponse) =>
+            Buffer.from(BatchGetEpisodesResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => BatchGetEpisodesResponse.decode(value),
+    },
     /** Create episode. */
     create: {
         path: '/yandex.cloud.video.v1.EpisodeService/Create',
@@ -1881,6 +2146,8 @@ export interface EpisodeServiceServer extends UntypedServiceImplementation {
     get: handleUnaryCall<GetEpisodeRequest, Episode>;
     /** List episodes for stream or line. */
     list: handleUnaryCall<ListEpisodesRequest, ListEpisodesResponse>;
+    /** Batch get episodes for channel. */
+    batchGet: handleUnaryCall<BatchGetEpisodesRequest, BatchGetEpisodesResponse>;
     /** Create episode. */
     create: handleUnaryCall<CreateEpisodeRequest, Operation>;
     /** Update episode. */
@@ -1927,6 +2194,22 @@ export interface EpisodeServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListEpisodesResponse) => void,
+    ): ClientUnaryCall;
+    /** Batch get episodes for channel. */
+    batchGet(
+        request: BatchGetEpisodesRequest,
+        callback: (error: ServiceError | null, response: BatchGetEpisodesResponse) => void,
+    ): ClientUnaryCall;
+    batchGet(
+        request: BatchGetEpisodesRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: BatchGetEpisodesResponse) => void,
+    ): ClientUnaryCall;
+    batchGet(
+        request: BatchGetEpisodesRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: BatchGetEpisodesResponse) => void,
     ): ClientUnaryCall;
     /** Create episode. */
     create(

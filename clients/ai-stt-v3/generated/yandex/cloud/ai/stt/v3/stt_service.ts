@@ -22,8 +22,10 @@ import {
     StreamingRequest,
     StreamingResponse,
     RecognizeFileRequest,
+    DeleteRecognitionRequest,
 } from '../../../../../yandex/cloud/ai/stt/v3/stt';
 import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Empty } from '../../../../../google/protobuf/empty';
 
 export const protobufPackage = 'speechkit.stt.v3';
 
@@ -159,11 +161,22 @@ export const AsyncRecognizerService = {
             Buffer.from(StreamingResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => StreamingResponse.decode(value),
     },
+    deleteRecognition: {
+        path: '/speechkit.stt.v3.AsyncRecognizer/DeleteRecognition',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: DeleteRecognitionRequest) =>
+            Buffer.from(DeleteRecognitionRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => DeleteRecognitionRequest.decode(value),
+        responseSerialize: (value: Empty) => Buffer.from(Empty.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Empty.decode(value),
+    },
 } as const;
 
 export interface AsyncRecognizerServer extends UntypedServiceImplementation {
     recognizeFile: handleUnaryCall<RecognizeFileRequest, Operation>;
     getRecognition: handleServerStreamingCall<GetRecognitionRequest, StreamingResponse>;
+    deleteRecognition: handleUnaryCall<DeleteRecognitionRequest, Empty>;
 }
 
 export interface AsyncRecognizerClient extends Client {
@@ -191,6 +204,21 @@ export interface AsyncRecognizerClient extends Client {
         metadata?: Metadata,
         options?: Partial<CallOptions>,
     ): ClientReadableStream<StreamingResponse>;
+    deleteRecognition(
+        request: DeleteRecognitionRequest,
+        callback: (error: ServiceError | null, response: Empty) => void,
+    ): ClientUnaryCall;
+    deleteRecognition(
+        request: DeleteRecognitionRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Empty) => void,
+    ): ClientUnaryCall;
+    deleteRecognition(
+        request: DeleteRecognitionRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Empty) => void,
+    ): ClientUnaryCall;
 }
 
 export const AsyncRecognizerClient = makeGenericClientConstructor(

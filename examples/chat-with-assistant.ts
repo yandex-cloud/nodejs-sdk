@@ -26,7 +26,7 @@ const iamToken = getEnv('YC_IAM_TOKEN');
 const folderId = getEnv('YC_FOLDER_ID');
 
 (async function () {
-    const session = new Session({ iamToken });
+    const session = new Session({  });
 
     const assistantClient = session.client(assistantService.AssistantServiceClient);
     const messageClient = session.client(messageService.MessageServiceClient);

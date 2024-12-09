@@ -16,6 +16,7 @@ import {
 import _m0 from 'protobufjs/minimal';
 import {
     SecurityProfile_DefaultAction,
+    SecurityProfile_AnalyzeRequestBody,
     SecurityProfile,
     SecurityRule,
     securityProfile_DefaultActionFromJSON,
@@ -68,6 +69,8 @@ export interface CreateSecurityProfileRequest {
     captchaId: string;
     /** Advanced rate limiter profile ID to use with this security profile. Set empty to use default. */
     advancedRateLimiterProfileId: string;
+    /** Parameters for request body analyzer. */
+    analyzeRequestBody?: SecurityProfile_AnalyzeRequestBody;
 }
 
 export interface CreateSecurityProfileRequest_LabelsEntry {
@@ -102,6 +105,8 @@ export interface UpdateSecurityProfileRequest {
     captchaId: string;
     /** Advanced rate limiter profile ID to use with this security profile. Set empty to use default. */
     advancedRateLimiterProfileId: string;
+    /** Parameters for request body analyzer. */
+    analyzeRequestBody?: SecurityProfile_AnalyzeRequestBody;
 }
 
 export interface UpdateSecurityProfileRequest_LabelsEntry {
@@ -369,6 +374,12 @@ export const CreateSecurityProfileRequest = {
         if (message.advancedRateLimiterProfileId !== '') {
             writer.uint32(66).string(message.advancedRateLimiterProfileId);
         }
+        if (message.analyzeRequestBody !== undefined) {
+            SecurityProfile_AnalyzeRequestBody.encode(
+                message.analyzeRequestBody,
+                writer.uint32(74).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -410,6 +421,12 @@ export const CreateSecurityProfileRequest = {
                     break;
                 case 8:
                     message.advancedRateLimiterProfileId = reader.string();
+                    break;
+                case 9:
+                    message.analyzeRequestBody = SecurityProfile_AnalyzeRequestBody.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -453,6 +470,10 @@ export const CreateSecurityProfileRequest = {
             object.advancedRateLimiterProfileId !== null
                 ? String(object.advancedRateLimiterProfileId)
                 : '';
+        message.analyzeRequestBody =
+            object.analyzeRequestBody !== undefined && object.analyzeRequestBody !== null
+                ? SecurityProfile_AnalyzeRequestBody.fromJSON(object.analyzeRequestBody)
+                : undefined;
         return message;
     },
 
@@ -479,6 +500,10 @@ export const CreateSecurityProfileRequest = {
         message.captchaId !== undefined && (obj.captchaId = message.captchaId);
         message.advancedRateLimiterProfileId !== undefined &&
             (obj.advancedRateLimiterProfileId = message.advancedRateLimiterProfileId);
+        message.analyzeRequestBody !== undefined &&
+            (obj.analyzeRequestBody = message.analyzeRequestBody
+                ? SecurityProfile_AnalyzeRequestBody.toJSON(message.analyzeRequestBody)
+                : undefined);
         return obj;
     },
 
@@ -502,6 +527,10 @@ export const CreateSecurityProfileRequest = {
         message.securityRules = object.securityRules?.map((e) => SecurityRule.fromPartial(e)) || [];
         message.captchaId = object.captchaId ?? '';
         message.advancedRateLimiterProfileId = object.advancedRateLimiterProfileId ?? '';
+        message.analyzeRequestBody =
+            object.analyzeRequestBody !== undefined && object.analyzeRequestBody !== null
+                ? SecurityProfile_AnalyzeRequestBody.fromPartial(object.analyzeRequestBody)
+                : undefined;
         return message;
     },
 };
@@ -704,6 +733,12 @@ export const UpdateSecurityProfileRequest = {
         if (message.advancedRateLimiterProfileId !== '') {
             writer.uint32(74).string(message.advancedRateLimiterProfileId);
         }
+        if (message.analyzeRequestBody !== undefined) {
+            SecurityProfile_AnalyzeRequestBody.encode(
+                message.analyzeRequestBody,
+                writer.uint32(82).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -748,6 +783,12 @@ export const UpdateSecurityProfileRequest = {
                     break;
                 case 9:
                     message.advancedRateLimiterProfileId = reader.string();
+                    break;
+                case 10:
+                    message.analyzeRequestBody = SecurityProfile_AnalyzeRequestBody.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -795,6 +836,10 @@ export const UpdateSecurityProfileRequest = {
             object.advancedRateLimiterProfileId !== null
                 ? String(object.advancedRateLimiterProfileId)
                 : '';
+        message.analyzeRequestBody =
+            object.analyzeRequestBody !== undefined && object.analyzeRequestBody !== null
+                ? SecurityProfile_AnalyzeRequestBody.fromJSON(object.analyzeRequestBody)
+                : undefined;
         return message;
     },
 
@@ -826,6 +871,10 @@ export const UpdateSecurityProfileRequest = {
         message.captchaId !== undefined && (obj.captchaId = message.captchaId);
         message.advancedRateLimiterProfileId !== undefined &&
             (obj.advancedRateLimiterProfileId = message.advancedRateLimiterProfileId);
+        message.analyzeRequestBody !== undefined &&
+            (obj.analyzeRequestBody = message.analyzeRequestBody
+                ? SecurityProfile_AnalyzeRequestBody.toJSON(message.analyzeRequestBody)
+                : undefined);
         return obj;
     },
 
@@ -853,6 +902,10 @@ export const UpdateSecurityProfileRequest = {
         message.securityRules = object.securityRules?.map((e) => SecurityRule.fromPartial(e)) || [];
         message.captchaId = object.captchaId ?? '';
         message.advancedRateLimiterProfileId = object.advancedRateLimiterProfileId ?? '';
+        message.analyzeRequestBody =
+            object.analyzeRequestBody !== undefined && object.analyzeRequestBody !== null
+                ? SecurityProfile_AnalyzeRequestBody.fromPartial(object.analyzeRequestBody)
+                : undefined;
         return message;
     },
 };

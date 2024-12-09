@@ -2,7 +2,7 @@
 import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Int64Value } from '../../../../../../google/protobuf/wrappers';
+import { Int64Value, BoolValue } from '../../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.redis.v1.config';
 
@@ -41,6 +41,28 @@ export interface RedisConfig {
     clientOutputBufferLimitNormal?: RedisConfig_ClientOutputBufferLimit;
     /** Redis maxmemory percent */
     maxmemoryPercent?: number;
+    /** Maximum time in milliseconds for Lua scripts, 0 - disabled mechanism */
+    luaTimeLimit?: number;
+    /** Replication backlog size as a percentage of flavor maxmemory */
+    replBacklogSizePercent?: number;
+    /** Controls whether all hash slots must be covered by nodes */
+    clusterRequireFullCoverage?: boolean;
+    /** Allows read operations when cluster is down */
+    clusterAllowReadsWhenDown?: boolean;
+    /** Permits Pub/Sub shard operations when cluster is down */
+    clusterAllowPubsubshardWhenDown?: boolean;
+    /** The time, in minutes, that must elapse in order for the key counter to be divided by two (or decremented if it has a value less <= 10) */
+    lfuDecayTime?: number;
+    /** Determines how the frequency counter represents key hits. */
+    lfuLogFactor?: number;
+    /** Allows to turn before switchover in RDSync */
+    turnBeforeSwitchover?: boolean;
+    /** Allows some data to be lost in favor of faster switchover/restart */
+    allowDataLoss?: boolean;
+    /** Use JIT for lua scripts and functions */
+    useLuajit?: boolean;
+    /** Allow redis to use io-threads */
+    ioThreadsAllowed?: boolean;
 }
 
 export enum RedisConfig_MaxmemoryPolicy {
@@ -216,6 +238,75 @@ export const RedisConfig = {
                 writer.uint32(82).fork(),
             ).ldelim();
         }
+        if (message.luaTimeLimit !== undefined) {
+            Int64Value.encode(
+                { $type: 'google.protobuf.Int64Value', value: message.luaTimeLimit! },
+                writer.uint32(90).fork(),
+            ).ldelim();
+        }
+        if (message.replBacklogSizePercent !== undefined) {
+            Int64Value.encode(
+                { $type: 'google.protobuf.Int64Value', value: message.replBacklogSizePercent! },
+                writer.uint32(98).fork(),
+            ).ldelim();
+        }
+        if (message.clusterRequireFullCoverage !== undefined) {
+            BoolValue.encode(
+                { $type: 'google.protobuf.BoolValue', value: message.clusterRequireFullCoverage! },
+                writer.uint32(106).fork(),
+            ).ldelim();
+        }
+        if (message.clusterAllowReadsWhenDown !== undefined) {
+            BoolValue.encode(
+                { $type: 'google.protobuf.BoolValue', value: message.clusterAllowReadsWhenDown! },
+                writer.uint32(114).fork(),
+            ).ldelim();
+        }
+        if (message.clusterAllowPubsubshardWhenDown !== undefined) {
+            BoolValue.encode(
+                {
+                    $type: 'google.protobuf.BoolValue',
+                    value: message.clusterAllowPubsubshardWhenDown!,
+                },
+                writer.uint32(122).fork(),
+            ).ldelim();
+        }
+        if (message.lfuDecayTime !== undefined) {
+            Int64Value.encode(
+                { $type: 'google.protobuf.Int64Value', value: message.lfuDecayTime! },
+                writer.uint32(130).fork(),
+            ).ldelim();
+        }
+        if (message.lfuLogFactor !== undefined) {
+            Int64Value.encode(
+                { $type: 'google.protobuf.Int64Value', value: message.lfuLogFactor! },
+                writer.uint32(138).fork(),
+            ).ldelim();
+        }
+        if (message.turnBeforeSwitchover !== undefined) {
+            BoolValue.encode(
+                { $type: 'google.protobuf.BoolValue', value: message.turnBeforeSwitchover! },
+                writer.uint32(146).fork(),
+            ).ldelim();
+        }
+        if (message.allowDataLoss !== undefined) {
+            BoolValue.encode(
+                { $type: 'google.protobuf.BoolValue', value: message.allowDataLoss! },
+                writer.uint32(154).fork(),
+            ).ldelim();
+        }
+        if (message.useLuajit !== undefined) {
+            BoolValue.encode(
+                { $type: 'google.protobuf.BoolValue', value: message.useLuajit! },
+                writer.uint32(162).fork(),
+            ).ldelim();
+        }
+        if (message.ioThreadsAllowed !== undefined) {
+            BoolValue.encode(
+                { $type: 'google.protobuf.BoolValue', value: message.ioThreadsAllowed! },
+                writer.uint32(170).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -257,6 +348,51 @@ export const RedisConfig = {
                     break;
                 case 10:
                     message.maxmemoryPercent = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 11:
+                    message.luaTimeLimit = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 12:
+                    message.replBacklogSizePercent = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 13:
+                    message.clusterRequireFullCoverage = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 14:
+                    message.clusterAllowReadsWhenDown = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 15:
+                    message.clusterAllowPubsubshardWhenDown = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 16:
+                    message.lfuDecayTime = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 17:
+                    message.lfuLogFactor = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 18:
+                    message.turnBeforeSwitchover = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 19:
+                    message.allowDataLoss = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 20:
+                    message.useLuajit = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 21:
+                    message.ioThreadsAllowed = BoolValue.decode(reader, reader.uint32()).value;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -310,6 +446,53 @@ export const RedisConfig = {
             object.maxmemoryPercent !== undefined && object.maxmemoryPercent !== null
                 ? Number(object.maxmemoryPercent)
                 : undefined;
+        message.luaTimeLimit =
+            object.luaTimeLimit !== undefined && object.luaTimeLimit !== null
+                ? Number(object.luaTimeLimit)
+                : undefined;
+        message.replBacklogSizePercent =
+            object.replBacklogSizePercent !== undefined && object.replBacklogSizePercent !== null
+                ? Number(object.replBacklogSizePercent)
+                : undefined;
+        message.clusterRequireFullCoverage =
+            object.clusterRequireFullCoverage !== undefined &&
+            object.clusterRequireFullCoverage !== null
+                ? Boolean(object.clusterRequireFullCoverage)
+                : undefined;
+        message.clusterAllowReadsWhenDown =
+            object.clusterAllowReadsWhenDown !== undefined &&
+            object.clusterAllowReadsWhenDown !== null
+                ? Boolean(object.clusterAllowReadsWhenDown)
+                : undefined;
+        message.clusterAllowPubsubshardWhenDown =
+            object.clusterAllowPubsubshardWhenDown !== undefined &&
+            object.clusterAllowPubsubshardWhenDown !== null
+                ? Boolean(object.clusterAllowPubsubshardWhenDown)
+                : undefined;
+        message.lfuDecayTime =
+            object.lfuDecayTime !== undefined && object.lfuDecayTime !== null
+                ? Number(object.lfuDecayTime)
+                : undefined;
+        message.lfuLogFactor =
+            object.lfuLogFactor !== undefined && object.lfuLogFactor !== null
+                ? Number(object.lfuLogFactor)
+                : undefined;
+        message.turnBeforeSwitchover =
+            object.turnBeforeSwitchover !== undefined && object.turnBeforeSwitchover !== null
+                ? Boolean(object.turnBeforeSwitchover)
+                : undefined;
+        message.allowDataLoss =
+            object.allowDataLoss !== undefined && object.allowDataLoss !== null
+                ? Boolean(object.allowDataLoss)
+                : undefined;
+        message.useLuajit =
+            object.useLuajit !== undefined && object.useLuajit !== null
+                ? Boolean(object.useLuajit)
+                : undefined;
+        message.ioThreadsAllowed =
+            object.ioThreadsAllowed !== undefined && object.ioThreadsAllowed !== null
+                ? Boolean(object.ioThreadsAllowed)
+                : undefined;
         return message;
     },
 
@@ -334,6 +517,22 @@ export const RedisConfig = {
                 ? RedisConfig_ClientOutputBufferLimit.toJSON(message.clientOutputBufferLimitNormal)
                 : undefined);
         message.maxmemoryPercent !== undefined && (obj.maxmemoryPercent = message.maxmemoryPercent);
+        message.luaTimeLimit !== undefined && (obj.luaTimeLimit = message.luaTimeLimit);
+        message.replBacklogSizePercent !== undefined &&
+            (obj.replBacklogSizePercent = message.replBacklogSizePercent);
+        message.clusterRequireFullCoverage !== undefined &&
+            (obj.clusterRequireFullCoverage = message.clusterRequireFullCoverage);
+        message.clusterAllowReadsWhenDown !== undefined &&
+            (obj.clusterAllowReadsWhenDown = message.clusterAllowReadsWhenDown);
+        message.clusterAllowPubsubshardWhenDown !== undefined &&
+            (obj.clusterAllowPubsubshardWhenDown = message.clusterAllowPubsubshardWhenDown);
+        message.lfuDecayTime !== undefined && (obj.lfuDecayTime = message.lfuDecayTime);
+        message.lfuLogFactor !== undefined && (obj.lfuLogFactor = message.lfuLogFactor);
+        message.turnBeforeSwitchover !== undefined &&
+            (obj.turnBeforeSwitchover = message.turnBeforeSwitchover);
+        message.allowDataLoss !== undefined && (obj.allowDataLoss = message.allowDataLoss);
+        message.useLuajit !== undefined && (obj.useLuajit = message.useLuajit);
+        message.ioThreadsAllowed !== undefined && (obj.ioThreadsAllowed = message.ioThreadsAllowed);
         return obj;
     },
 
@@ -361,6 +560,18 @@ export const RedisConfig = {
                   )
                 : undefined;
         message.maxmemoryPercent = object.maxmemoryPercent ?? undefined;
+        message.luaTimeLimit = object.luaTimeLimit ?? undefined;
+        message.replBacklogSizePercent = object.replBacklogSizePercent ?? undefined;
+        message.clusterRequireFullCoverage = object.clusterRequireFullCoverage ?? undefined;
+        message.clusterAllowReadsWhenDown = object.clusterAllowReadsWhenDown ?? undefined;
+        message.clusterAllowPubsubshardWhenDown =
+            object.clusterAllowPubsubshardWhenDown ?? undefined;
+        message.lfuDecayTime = object.lfuDecayTime ?? undefined;
+        message.lfuLogFactor = object.lfuLogFactor ?? undefined;
+        message.turnBeforeSwitchover = object.turnBeforeSwitchover ?? undefined;
+        message.allowDataLoss = object.allowDataLoss ?? undefined;
+        message.useLuajit = object.useLuajit ?? undefined;
+        message.ioThreadsAllowed = object.ioThreadsAllowed ?? undefined;
         return message;
     },
 };
