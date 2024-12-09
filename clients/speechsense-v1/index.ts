@@ -13,6 +13,8 @@ export * as textClassifiers from './generated/yandex/cloud/speechsense/v1/analys
 export * as transcription from './generated/yandex/cloud/speechsense/v1/analysis/transcription';
 export * as utteranceStatistics from './generated/yandex/cloud/speechsense/v1/analysis/utterance_statistics';
 export * as audio from './generated/yandex/cloud/speechsense/v1/audio';
+export * as classifier from './generated/yandex/cloud/speechsense/v1/classifier';
+export * as classifiersService from './generated/yandex/cloud/speechsense/v1/classifiers_service';
 export * as project from './generated/yandex/cloud/speechsense/v1/project';
 export * as projectService from './generated/yandex/cloud/speechsense/v1/project_service';
 export * as search from './generated/yandex/cloud/speechsense/v1/search';

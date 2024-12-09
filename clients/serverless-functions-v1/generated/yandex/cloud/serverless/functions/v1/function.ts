@@ -12,6 +12,47 @@ import { Timestamp } from '../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.serverless.functions.v1';
 
+export enum MetadataOption {
+    /** METADATA_OPTION_UNSPECIFIED - Option is default */
+    METADATA_OPTION_UNSPECIFIED = 0,
+    /** ENABLED - Option is enabled */
+    ENABLED = 1,
+    /** DISABLED - Option is disabled */
+    DISABLED = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function metadataOptionFromJSON(object: any): MetadataOption {
+    switch (object) {
+        case 0:
+        case 'METADATA_OPTION_UNSPECIFIED':
+            return MetadataOption.METADATA_OPTION_UNSPECIFIED;
+        case 1:
+        case 'ENABLED':
+            return MetadataOption.ENABLED;
+        case 2:
+        case 'DISABLED':
+            return MetadataOption.DISABLED;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return MetadataOption.UNRECOGNIZED;
+    }
+}
+
+export function metadataOptionToJSON(object: MetadataOption): string {
+    switch (object) {
+        case MetadataOption.METADATA_OPTION_UNSPECIFIED:
+            return 'METADATA_OPTION_UNSPECIFIED';
+        case MetadataOption.ENABLED:
+            return 'ENABLED';
+        case MetadataOption.DISABLED:
+            return 'DISABLED';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 /** A serverless function. For details about the concept, see [Functions](/docs/functions/concepts/function). */
 export interface Function {
     $type: 'yandex.cloud.serverless.functions.v1.Function';
@@ -152,6 +193,8 @@ export interface Version {
     concurrency: number;
     /** Mounts to be used by the version. */
     mounts: Mount[];
+    /** Metadata options for the version. */
+    metadataOptions?: MetadataOptions;
 }
 
 export enum Version_Status {
@@ -422,6 +465,14 @@ export interface YMQTarget {
 
 export interface EmptyTarget {
     $type: 'yandex.cloud.serverless.functions.v1.EmptyTarget';
+}
+
+export interface MetadataOptions {
+    $type: 'yandex.cloud.serverless.functions.v1.MetadataOptions';
+    /** Enabled access to GCE flavored metadata */
+    gceHttpEndpoint: MetadataOption;
+    /** Enabled access to AWS flavored metadata (IMDSv1) */
+    awsV1HttpEndpoint: MetadataOption;
 }
 
 const baseFunction: object = {
@@ -760,6 +811,9 @@ export const Version = {
         for (const v of message.mounts) {
             Mount.encode(v!, writer.uint32(202).fork()).ldelim();
         }
+        if (message.metadataOptions !== undefined) {
+            MetadataOptions.encode(message.metadataOptions, writer.uint32(210).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -854,6 +908,9 @@ export const Version = {
                 case 25:
                     message.mounts.push(Mount.decode(reader, reader.uint32()));
                     break;
+                case 26:
+                    message.metadataOptions = MetadataOptions.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -941,6 +998,10 @@ export const Version = {
                 ? Number(object.concurrency)
                 : 0;
         message.mounts = (object.mounts ?? []).map((e: any) => Mount.fromJSON(e));
+        message.metadataOptions =
+            object.metadataOptions !== undefined && object.metadataOptions !== null
+                ? MetadataOptions.fromJSON(object.metadataOptions)
+                : undefined;
         return message;
     },
 
@@ -1009,6 +1070,10 @@ export const Version = {
         } else {
             obj.mounts = [];
         }
+        message.metadataOptions !== undefined &&
+            (obj.metadataOptions = message.metadataOptions
+                ? MetadataOptions.toJSON(message.metadataOptions)
+                : undefined);
         return obj;
     },
 
@@ -1065,6 +1130,10 @@ export const Version = {
         message.tmpfsSize = object.tmpfsSize ?? 0;
         message.concurrency = object.concurrency ?? 0;
         message.mounts = object.mounts?.map((e) => Mount.fromPartial(e)) || [];
+        message.metadataOptions =
+            object.metadataOptions !== undefined && object.metadataOptions !== null
+                ? MetadataOptions.fromPartial(object.metadataOptions)
+                : undefined;
         return message;
     },
 };
@@ -2398,6 +2467,78 @@ export const EmptyTarget = {
 };
 
 messageTypeRegistry.set(EmptyTarget.$type, EmptyTarget);
+
+const baseMetadataOptions: object = {
+    $type: 'yandex.cloud.serverless.functions.v1.MetadataOptions',
+    gceHttpEndpoint: 0,
+    awsV1HttpEndpoint: 0,
+};
+
+export const MetadataOptions = {
+    $type: 'yandex.cloud.serverless.functions.v1.MetadataOptions' as const,
+
+    encode(message: MetadataOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.gceHttpEndpoint !== 0) {
+            writer.uint32(8).int32(message.gceHttpEndpoint);
+        }
+        if (message.awsV1HttpEndpoint !== 0) {
+            writer.uint32(16).int32(message.awsV1HttpEndpoint);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MetadataOptions {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMetadataOptions } as MetadataOptions;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.gceHttpEndpoint = reader.int32() as any;
+                    break;
+                case 2:
+                    message.awsV1HttpEndpoint = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MetadataOptions {
+        const message = { ...baseMetadataOptions } as MetadataOptions;
+        message.gceHttpEndpoint =
+            object.gceHttpEndpoint !== undefined && object.gceHttpEndpoint !== null
+                ? metadataOptionFromJSON(object.gceHttpEndpoint)
+                : 0;
+        message.awsV1HttpEndpoint =
+            object.awsV1HttpEndpoint !== undefined && object.awsV1HttpEndpoint !== null
+                ? metadataOptionFromJSON(object.awsV1HttpEndpoint)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: MetadataOptions): unknown {
+        const obj: any = {};
+        message.gceHttpEndpoint !== undefined &&
+            (obj.gceHttpEndpoint = metadataOptionToJSON(message.gceHttpEndpoint));
+        message.awsV1HttpEndpoint !== undefined &&
+            (obj.awsV1HttpEndpoint = metadataOptionToJSON(message.awsV1HttpEndpoint));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MetadataOptions>, I>>(object: I): MetadataOptions {
+        const message = { ...baseMetadataOptions } as MetadataOptions;
+        message.gceHttpEndpoint = object.gceHttpEndpoint ?? 0;
+        message.awsV1HttpEndpoint = object.awsV1HttpEndpoint ?? 0;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(MetadataOptions.$type, MetadataOptions);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

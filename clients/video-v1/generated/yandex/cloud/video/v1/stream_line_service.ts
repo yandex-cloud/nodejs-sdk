@@ -61,6 +61,20 @@ export interface ListStreamLinesResponse {
     nextPageToken: string;
 }
 
+export interface BatchGetStreamLinesRequest {
+    $type: 'yandex.cloud.video.v1.BatchGetStreamLinesRequest';
+    /** ID of the channel. */
+    channelId: string;
+    /** List of requested stream line IDs. */
+    streamLineIds: string[];
+}
+
+export interface BatchGetStreamLinesResponse {
+    $type: 'yandex.cloud.video.v1.BatchGetStreamLinesResponse';
+    /** List of lines for specific channel. */
+    streamLines: StreamLine[];
+}
+
 export interface CreateStreamLineRequest {
     $type: 'yandex.cloud.video.v1.CreateStreamLineRequest';
     /** ID of the channel. */
@@ -149,6 +163,20 @@ export interface DeleteStreamLineMetadata {
     $type: 'yandex.cloud.video.v1.DeleteStreamLineMetadata';
     /** ID of the line. */
     streamLineId: string;
+}
+
+export interface BatchDeleteStreamLinesRequest {
+    $type: 'yandex.cloud.video.v1.BatchDeleteStreamLinesRequest';
+    /** ID of the channel. */
+    channelId: string;
+    /** List of line IDs. */
+    streamLineIds: string[];
+}
+
+export interface BatchDeleteStreamLinesMetadata {
+    $type: 'yandex.cloud.video.v1.BatchDeleteStreamLinesMetadata';
+    /** List of line IDs. */
+    streamLineIds: string[];
 }
 
 export interface PerformLineActionRequest {
@@ -469,6 +497,148 @@ export const ListStreamLinesResponse = {
 };
 
 messageTypeRegistry.set(ListStreamLinesResponse.$type, ListStreamLinesResponse);
+
+const baseBatchGetStreamLinesRequest: object = {
+    $type: 'yandex.cloud.video.v1.BatchGetStreamLinesRequest',
+    channelId: '',
+    streamLineIds: '',
+};
+
+export const BatchGetStreamLinesRequest = {
+    $type: 'yandex.cloud.video.v1.BatchGetStreamLinesRequest' as const,
+
+    encode(
+        message: BatchGetStreamLinesRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.channelId !== '') {
+            writer.uint32(10).string(message.channelId);
+        }
+        for (const v of message.streamLineIds) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetStreamLinesRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchGetStreamLinesRequest } as BatchGetStreamLinesRequest;
+        message.streamLineIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.channelId = reader.string();
+                    break;
+                case 2:
+                    message.streamLineIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchGetStreamLinesRequest {
+        const message = { ...baseBatchGetStreamLinesRequest } as BatchGetStreamLinesRequest;
+        message.channelId =
+            object.channelId !== undefined && object.channelId !== null
+                ? String(object.channelId)
+                : '';
+        message.streamLineIds = (object.streamLineIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: BatchGetStreamLinesRequest): unknown {
+        const obj: any = {};
+        message.channelId !== undefined && (obj.channelId = message.channelId);
+        if (message.streamLineIds) {
+            obj.streamLineIds = message.streamLineIds.map((e) => e);
+        } else {
+            obj.streamLineIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchGetStreamLinesRequest>, I>>(
+        object: I,
+    ): BatchGetStreamLinesRequest {
+        const message = { ...baseBatchGetStreamLinesRequest } as BatchGetStreamLinesRequest;
+        message.channelId = object.channelId ?? '';
+        message.streamLineIds = object.streamLineIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BatchGetStreamLinesRequest.$type, BatchGetStreamLinesRequest);
+
+const baseBatchGetStreamLinesResponse: object = {
+    $type: 'yandex.cloud.video.v1.BatchGetStreamLinesResponse',
+};
+
+export const BatchGetStreamLinesResponse = {
+    $type: 'yandex.cloud.video.v1.BatchGetStreamLinesResponse' as const,
+
+    encode(
+        message: BatchGetStreamLinesResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.streamLines) {
+            StreamLine.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetStreamLinesResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchGetStreamLinesResponse } as BatchGetStreamLinesResponse;
+        message.streamLines = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.streamLines.push(StreamLine.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchGetStreamLinesResponse {
+        const message = { ...baseBatchGetStreamLinesResponse } as BatchGetStreamLinesResponse;
+        message.streamLines = (object.streamLines ?? []).map((e: any) => StreamLine.fromJSON(e));
+        return message;
+    },
+
+    toJSON(message: BatchGetStreamLinesResponse): unknown {
+        const obj: any = {};
+        if (message.streamLines) {
+            obj.streamLines = message.streamLines.map((e) =>
+                e ? StreamLine.toJSON(e) : undefined,
+            );
+        } else {
+            obj.streamLines = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchGetStreamLinesResponse>, I>>(
+        object: I,
+    ): BatchGetStreamLinesResponse {
+        const message = { ...baseBatchGetStreamLinesResponse } as BatchGetStreamLinesResponse;
+        message.streamLines = object.streamLines?.map((e) => StreamLine.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BatchGetStreamLinesResponse.$type, BatchGetStreamLinesResponse);
 
 const baseCreateStreamLineRequest: object = {
     $type: 'yandex.cloud.video.v1.CreateStreamLineRequest',
@@ -1365,6 +1535,147 @@ export const DeleteStreamLineMetadata = {
 
 messageTypeRegistry.set(DeleteStreamLineMetadata.$type, DeleteStreamLineMetadata);
 
+const baseBatchDeleteStreamLinesRequest: object = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteStreamLinesRequest',
+    channelId: '',
+    streamLineIds: '',
+};
+
+export const BatchDeleteStreamLinesRequest = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteStreamLinesRequest' as const,
+
+    encode(
+        message: BatchDeleteStreamLinesRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.channelId !== '') {
+            writer.uint32(10).string(message.channelId);
+        }
+        for (const v of message.streamLineIds) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteStreamLinesRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchDeleteStreamLinesRequest } as BatchDeleteStreamLinesRequest;
+        message.streamLineIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.channelId = reader.string();
+                    break;
+                case 2:
+                    message.streamLineIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchDeleteStreamLinesRequest {
+        const message = { ...baseBatchDeleteStreamLinesRequest } as BatchDeleteStreamLinesRequest;
+        message.channelId =
+            object.channelId !== undefined && object.channelId !== null
+                ? String(object.channelId)
+                : '';
+        message.streamLineIds = (object.streamLineIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: BatchDeleteStreamLinesRequest): unknown {
+        const obj: any = {};
+        message.channelId !== undefined && (obj.channelId = message.channelId);
+        if (message.streamLineIds) {
+            obj.streamLineIds = message.streamLineIds.map((e) => e);
+        } else {
+            obj.streamLineIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteStreamLinesRequest>, I>>(
+        object: I,
+    ): BatchDeleteStreamLinesRequest {
+        const message = { ...baseBatchDeleteStreamLinesRequest } as BatchDeleteStreamLinesRequest;
+        message.channelId = object.channelId ?? '';
+        message.streamLineIds = object.streamLineIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BatchDeleteStreamLinesRequest.$type, BatchDeleteStreamLinesRequest);
+
+const baseBatchDeleteStreamLinesMetadata: object = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteStreamLinesMetadata',
+    streamLineIds: '',
+};
+
+export const BatchDeleteStreamLinesMetadata = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteStreamLinesMetadata' as const,
+
+    encode(
+        message: BatchDeleteStreamLinesMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.streamLineIds) {
+            writer.uint32(10).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteStreamLinesMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchDeleteStreamLinesMetadata } as BatchDeleteStreamLinesMetadata;
+        message.streamLineIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.streamLineIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchDeleteStreamLinesMetadata {
+        const message = { ...baseBatchDeleteStreamLinesMetadata } as BatchDeleteStreamLinesMetadata;
+        message.streamLineIds = (object.streamLineIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: BatchDeleteStreamLinesMetadata): unknown {
+        const obj: any = {};
+        if (message.streamLineIds) {
+            obj.streamLineIds = message.streamLineIds.map((e) => e);
+        } else {
+            obj.streamLineIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteStreamLinesMetadata>, I>>(
+        object: I,
+    ): BatchDeleteStreamLinesMetadata {
+        const message = { ...baseBatchDeleteStreamLinesMetadata } as BatchDeleteStreamLinesMetadata;
+        message.streamLineIds = object.streamLineIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BatchDeleteStreamLinesMetadata.$type, BatchDeleteStreamLinesMetadata);
+
 const basePerformLineActionRequest: object = {
     $type: 'yandex.cloud.video.v1.PerformLineActionRequest',
     streamLineId: '',
@@ -2181,6 +2492,18 @@ export const StreamLineServiceService = {
             Buffer.from(ListStreamLinesResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListStreamLinesResponse.decode(value),
     },
+    /** Batch get lines for channel. */
+    batchGet: {
+        path: '/yandex.cloud.video.v1.StreamLineService/BatchGet',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: BatchGetStreamLinesRequest) =>
+            Buffer.from(BatchGetStreamLinesRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => BatchGetStreamLinesRequest.decode(value),
+        responseSerialize: (value: BatchGetStreamLinesResponse) =>
+            Buffer.from(BatchGetStreamLinesResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => BatchGetStreamLinesResponse.decode(value),
+    },
     /** Create stream line. */
     create: {
         path: '/yandex.cloud.video.v1.StreamLineService/Create',
@@ -2211,6 +2534,17 @@ export const StreamLineServiceService = {
         requestSerialize: (value: DeleteStreamLineRequest) =>
             Buffer.from(DeleteStreamLineRequest.encode(value).finish()),
         requestDeserialize: (value: Buffer) => DeleteStreamLineRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Batch delete stream lines. */
+    batchDelete: {
+        path: '/yandex.cloud.video.v1.StreamLineService/BatchDelete',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: BatchDeleteStreamLinesRequest) =>
+            Buffer.from(BatchDeleteStreamLinesRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => BatchDeleteStreamLinesRequest.decode(value),
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
@@ -2255,12 +2589,16 @@ export interface StreamLineServiceServer extends UntypedServiceImplementation {
     get: handleUnaryCall<GetStreamLineRequest, StreamLine>;
     /** List lines for channel. */
     list: handleUnaryCall<ListStreamLinesRequest, ListStreamLinesResponse>;
+    /** Batch get lines for channel. */
+    batchGet: handleUnaryCall<BatchGetStreamLinesRequest, BatchGetStreamLinesResponse>;
     /** Create stream line. */
     create: handleUnaryCall<CreateStreamLineRequest, Operation>;
     /** Update stream line. */
     update: handleUnaryCall<UpdateStreamLineRequest, Operation>;
     /** Delete stream line. */
     delete: handleUnaryCall<DeleteStreamLineRequest, Operation>;
+    /** Batch delete stream lines. */
+    batchDelete: handleUnaryCall<BatchDeleteStreamLinesRequest, Operation>;
     /** Perform an action on the line. */
     performAction: handleUnaryCall<PerformLineActionRequest, Operation>;
     /** Returns unique stream key. */
@@ -2302,6 +2640,22 @@ export interface StreamLineServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListStreamLinesResponse) => void,
     ): ClientUnaryCall;
+    /** Batch get lines for channel. */
+    batchGet(
+        request: BatchGetStreamLinesRequest,
+        callback: (error: ServiceError | null, response: BatchGetStreamLinesResponse) => void,
+    ): ClientUnaryCall;
+    batchGet(
+        request: BatchGetStreamLinesRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: BatchGetStreamLinesResponse) => void,
+    ): ClientUnaryCall;
+    batchGet(
+        request: BatchGetStreamLinesRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: BatchGetStreamLinesResponse) => void,
+    ): ClientUnaryCall;
     /** Create stream line. */
     create(
         request: CreateStreamLineRequest,
@@ -2346,6 +2700,22 @@ export interface StreamLineServiceClient extends Client {
     ): ClientUnaryCall;
     delete(
         request: DeleteStreamLineRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Batch delete stream lines. */
+    batchDelete(
+        request: BatchDeleteStreamLinesRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    batchDelete(
+        request: BatchDeleteStreamLinesRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    batchDelete(
+        request: BatchDeleteStreamLinesRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

@@ -28,7 +28,7 @@ const folderId = getEnv('YC_FOLDER_ID');
 const Sleep = (ms?: number) => new Promise<void>((res) => setTimeout(() => res(), ms));
 
 (async function () {
-    const session = new Session({ iamToken });
+    const session = new Session({  });
 
     const assistantClient = session.client(assistantService.AssistantServiceClient);
     const messageClient = session.client(messageService.MessageServiceClient);

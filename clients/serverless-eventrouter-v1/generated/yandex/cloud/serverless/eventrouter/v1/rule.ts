@@ -45,6 +45,8 @@ export enum Rule_Status {
     UPDATING = 3,
     /** DISABLED - Rule is explicitly disabled by the user */
     DISABLED = 4,
+    /** DELETING - Rule deletion in progress */
+    DELETING = 5,
     UNRECOGNIZED = -1,
 }
 
@@ -65,6 +67,9 @@ export function rule_StatusFromJSON(object: any): Rule_Status {
         case 4:
         case 'DISABLED':
             return Rule_Status.DISABLED;
+        case 5:
+        case 'DELETING':
+            return Rule_Status.DELETING;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -84,6 +89,8 @@ export function rule_StatusToJSON(object: Rule_Status): string {
             return 'UPDATING';
         case Rule_Status.DISABLED:
             return 'DISABLED';
+        case Rule_Status.DELETING:
+            return 'DELETING';
         default:
             return 'UNKNOWN';
     }

@@ -188,6 +188,8 @@ export interface MasterUpdateSpec {
     masterLogging?: MasterLogging;
     /** Update master instance locations. */
     locations: LocationSpec[];
+    /** Specification of parameters for external IPv6 networking. */
+    externalV6AddressSpec?: ExternalAddressSpec;
 }
 
 export interface UpdateClusterMetadata {
@@ -1377,6 +1379,12 @@ export const MasterUpdateSpec = {
         for (const v of message.locations) {
             LocationSpec.encode(v!, writer.uint32(42).fork()).ldelim();
         }
+        if (message.externalV6AddressSpec !== undefined) {
+            ExternalAddressSpec.encode(
+                message.externalV6AddressSpec,
+                writer.uint32(50).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -1407,6 +1415,12 @@ export const MasterUpdateSpec = {
                 case 5:
                     message.locations.push(LocationSpec.decode(reader, reader.uint32()));
                     break;
+                case 6:
+                    message.externalV6AddressSpec = ExternalAddressSpec.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1431,6 +1445,10 @@ export const MasterUpdateSpec = {
                 ? MasterLogging.fromJSON(object.masterLogging)
                 : undefined;
         message.locations = (object.locations ?? []).map((e: any) => LocationSpec.fromJSON(e));
+        message.externalV6AddressSpec =
+            object.externalV6AddressSpec !== undefined && object.externalV6AddressSpec !== null
+                ? ExternalAddressSpec.fromJSON(object.externalV6AddressSpec)
+                : undefined;
         return message;
     },
 
@@ -1456,6 +1474,10 @@ export const MasterUpdateSpec = {
         } else {
             obj.locations = [];
         }
+        message.externalV6AddressSpec !== undefined &&
+            (obj.externalV6AddressSpec = message.externalV6AddressSpec
+                ? ExternalAddressSpec.toJSON(message.externalV6AddressSpec)
+                : undefined);
         return obj;
     },
 
@@ -1475,6 +1497,10 @@ export const MasterUpdateSpec = {
                 ? MasterLogging.fromPartial(object.masterLogging)
                 : undefined;
         message.locations = object.locations?.map((e) => LocationSpec.fromPartial(e)) || [];
+        message.externalV6AddressSpec =
+            object.externalV6AddressSpec !== undefined && object.externalV6AddressSpec !== null
+                ? ExternalAddressSpec.fromPartial(object.externalV6AddressSpec)
+                : undefined;
         return message;
     },
 };

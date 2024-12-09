@@ -49,6 +49,18 @@ export interface StopExecutionResponse {
     executionId: string;
 }
 
+export interface TerminateExecutionRequest {
+    $type: 'yandex.cloud.serverless.workflows.v1.TerminateExecutionRequest';
+    /** ID of the Workflow execution. */
+    executionId: string;
+}
+
+export interface TerminateExecutionResponse {
+    $type: 'yandex.cloud.serverless.workflows.v1.TerminateExecutionResponse';
+    /** ID of the Workflow execution. */
+    executionId: string;
+}
+
 export interface GetExecutionRequest {
     $type: 'yandex.cloud.serverless.workflows.v1.GetExecutionRequest';
     /** ID of the Workflow execution. */
@@ -369,6 +381,130 @@ export const StopExecutionResponse = {
 };
 
 messageTypeRegistry.set(StopExecutionResponse.$type, StopExecutionResponse);
+
+const baseTerminateExecutionRequest: object = {
+    $type: 'yandex.cloud.serverless.workflows.v1.TerminateExecutionRequest',
+    executionId: '',
+};
+
+export const TerminateExecutionRequest = {
+    $type: 'yandex.cloud.serverless.workflows.v1.TerminateExecutionRequest' as const,
+
+    encode(
+        message: TerminateExecutionRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.executionId !== '') {
+            writer.uint32(10).string(message.executionId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): TerminateExecutionRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseTerminateExecutionRequest } as TerminateExecutionRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.executionId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): TerminateExecutionRequest {
+        const message = { ...baseTerminateExecutionRequest } as TerminateExecutionRequest;
+        message.executionId =
+            object.executionId !== undefined && object.executionId !== null
+                ? String(object.executionId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: TerminateExecutionRequest): unknown {
+        const obj: any = {};
+        message.executionId !== undefined && (obj.executionId = message.executionId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<TerminateExecutionRequest>, I>>(
+        object: I,
+    ): TerminateExecutionRequest {
+        const message = { ...baseTerminateExecutionRequest } as TerminateExecutionRequest;
+        message.executionId = object.executionId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(TerminateExecutionRequest.$type, TerminateExecutionRequest);
+
+const baseTerminateExecutionResponse: object = {
+    $type: 'yandex.cloud.serverless.workflows.v1.TerminateExecutionResponse',
+    executionId: '',
+};
+
+export const TerminateExecutionResponse = {
+    $type: 'yandex.cloud.serverless.workflows.v1.TerminateExecutionResponse' as const,
+
+    encode(
+        message: TerminateExecutionResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.executionId !== '') {
+            writer.uint32(10).string(message.executionId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): TerminateExecutionResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseTerminateExecutionResponse } as TerminateExecutionResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.executionId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): TerminateExecutionResponse {
+        const message = { ...baseTerminateExecutionResponse } as TerminateExecutionResponse;
+        message.executionId =
+            object.executionId !== undefined && object.executionId !== null
+                ? String(object.executionId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: TerminateExecutionResponse): unknown {
+        const obj: any = {};
+        message.executionId !== undefined && (obj.executionId = message.executionId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<TerminateExecutionResponse>, I>>(
+        object: I,
+    ): TerminateExecutionResponse {
+        const message = { ...baseTerminateExecutionResponse } as TerminateExecutionResponse;
+        message.executionId = object.executionId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(TerminateExecutionResponse.$type, TerminateExecutionResponse);
 
 const baseGetExecutionRequest: object = {
     $type: 'yandex.cloud.serverless.workflows.v1.GetExecutionRequest',
@@ -831,6 +967,18 @@ export const ExecutionServiceService = {
             Buffer.from(StopExecutionResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => StopExecutionResponse.decode(value),
     },
+    /** Terminates specified Workflow execution. */
+    terminate: {
+        path: '/yandex.cloud.serverless.workflows.v1.ExecutionService/Terminate',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: TerminateExecutionRequest) =>
+            Buffer.from(TerminateExecutionRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => TerminateExecutionRequest.decode(value),
+        responseSerialize: (value: TerminateExecutionResponse) =>
+            Buffer.from(TerminateExecutionResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => TerminateExecutionResponse.decode(value),
+    },
     /** Retrieves specified Workflow execution. */
     get: {
         path: '/yandex.cloud.serverless.workflows.v1.ExecutionService/Get',
@@ -874,6 +1022,8 @@ export interface ExecutionServiceServer extends UntypedServiceImplementation {
     start: handleUnaryCall<StartExecutionRequest, StartExecutionResponse>;
     /** Stops specified Workflow execution. */
     stop: handleUnaryCall<StopExecutionRequest, StopExecutionResponse>;
+    /** Terminates specified Workflow execution. */
+    terminate: handleUnaryCall<TerminateExecutionRequest, TerminateExecutionResponse>;
     /** Retrieves specified Workflow execution. */
     get: handleUnaryCall<GetExecutionRequest, GetExecutionResponse>;
     /** Retrieves detailed history of specified Workflow execution. */
@@ -914,6 +1064,22 @@ export interface ExecutionServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: StopExecutionResponse) => void,
+    ): ClientUnaryCall;
+    /** Terminates specified Workflow execution. */
+    terminate(
+        request: TerminateExecutionRequest,
+        callback: (error: ServiceError | null, response: TerminateExecutionResponse) => void,
+    ): ClientUnaryCall;
+    terminate(
+        request: TerminateExecutionRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: TerminateExecutionResponse) => void,
+    ): ClientUnaryCall;
+    terminate(
+        request: TerminateExecutionRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: TerminateExecutionResponse) => void,
     ): ClientUnaryCall;
     /** Retrieves specified Workflow execution. */
     get(

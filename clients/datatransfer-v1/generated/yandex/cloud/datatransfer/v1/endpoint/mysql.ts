@@ -68,7 +68,7 @@ export interface MysqlSource {
      * databases at the same time from this source.
      */
     database: string;
-    /** User for database access. */
+    /** User for database access. not required as may be in connection */
     user: string;
     /** Password for database access. */
     password?: Secret;
@@ -110,7 +110,7 @@ export interface MysqlTarget {
      * schema for service table.
      */
     database: string;
-    /** User for database access. */
+    /** User for database access. not required as may be in connection */
     user: string;
     /** Password for database access. */
     password?: Secret;

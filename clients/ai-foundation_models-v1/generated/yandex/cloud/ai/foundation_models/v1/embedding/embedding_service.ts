@@ -20,7 +20,7 @@ export const protobufPackage = 'yandex.cloud.ai.foundation_models.v1';
 /** Request for the service to obtain text embeddings. */
 export interface TextEmbeddingRequest {
     $type: 'yandex.cloud.ai.foundation_models.v1.TextEmbeddingRequest';
-    /** The [ID of the model](/docs/foundation-models/concepts/embeddings) to be used for obtaining text embeddings. */
+    /** The [model URI](/docs/foundation-models/concepts/embeddings) to be used for obtaining text embeddings. */
     modelUri: string;
     /** The input text for which the embedding is requested. */
     text: string;

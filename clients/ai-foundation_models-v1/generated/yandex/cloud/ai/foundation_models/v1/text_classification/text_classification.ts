@@ -5,12 +5,12 @@ import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.ai.foundation_models.v1.text_classification';
 
-/** A pair of text label and corresponding confidence used in classification problems. */
+/** A pair of text labels and their corresponding confidence values. */
 export interface ClassificationLabel {
     $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.ClassificationLabel';
-    /** A label with a class name. */
+    /** A class name label. */
     label: string;
-    /** Confidence of item's belonging to a class. */
+    /** The probability of classifying text into a specific class. */
     confidence: number;
 }
 

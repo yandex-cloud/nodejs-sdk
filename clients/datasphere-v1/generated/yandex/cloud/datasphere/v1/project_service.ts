@@ -20,7 +20,6 @@ import {
     Project,
 } from '../../../../yandex/cloud/datasphere/v1/project';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Timestamp } from '../../../../google/protobuf/timestamp';
 import { Operation } from '../../../../yandex/cloud/operation/operation';
 import { Empty } from '../../../../google/protobuf/empty';
 import { Int64Value } from '../../../../google/protobuf/wrappers';
@@ -210,68 +209,6 @@ export interface ProjectExecutionMetadata {
 
 export interface ProjectExecutionResponse {
     $type: 'yandex.cloud.datasphere.v1.ProjectExecutionResponse';
-    /** ID of the checkpoint resulting from the execution. */
-    checkpointId: string;
-    /** Values of output variables resulting from the execution. */
-    outputVariables?: { [key: string]: any };
-}
-
-export interface CellOutputsRequest {
-    $type: 'yandex.cloud.datasphere.v1.CellOutputsRequest';
-    /** ID of the project to return cell outputs for. */
-    projectId: string;
-    /** ID of the cell to return outputs for. */
-    cellId: string;
-    /** ID of the checkpoint to return cell outputs for. */
-    checkpointId: string;
-    /** Timestamp from which to return outputs. */
-    startAt?: Date;
-}
-
-export interface CellOutputsResponse {
-    $type: 'yandex.cloud.datasphere.v1.CellOutputsResponse';
-    /** List of outputs. */
-    outputs: string[];
-}
-
-export interface GetStateVariablesRequest {
-    $type: 'yandex.cloud.datasphere.v1.GetStateVariablesRequest';
-    /** ID of the project, for which to return state variables. */
-    projectId: string;
-    /** ID of the notebook, for which to return state variables. */
-    notebookId: string;
-    /** Names of variables to return. */
-    variableNames: string[];
-    /** ID of the checkpoint, for which to return state variables. */
-    checkpointId: string;
-}
-
-export interface GetStateVariablesResponse {
-    $type: 'yandex.cloud.datasphere.v1.GetStateVariablesResponse';
-    /** Values of the specified variables. */
-    variables?: { [key: string]: any };
-}
-
-export interface GetNotebookMetadataRequest {
-    $type: 'yandex.cloud.datasphere.v1.GetNotebookMetadataRequest';
-    /** ID of the project, for which to return notebook metadata. */
-    projectId: string;
-    /** Path of the notebook to get metadata. */
-    notebookPath: string;
-}
-
-export interface GetNotebookMetadataResponse {
-    $type: 'yandex.cloud.datasphere.v1.GetNotebookMetadataResponse';
-    /** ID of the specified notebook. */
-    notebookId: string;
-    /** The time the notebook was created. */
-    createdAt?: Date;
-    /** The time the notebook was modified last time. */
-    modifiedAt?: Date;
-    /** Content length of the specified notebook. */
-    contentLength: number;
-    /** Cell ids of the specified notebook. */
-    cellIds: string[];
 }
 
 const baseCreateProjectRequest: object = {
@@ -1553,22 +1490,12 @@ messageTypeRegistry.set(ProjectExecutionMetadata.$type, ProjectExecutionMetadata
 
 const baseProjectExecutionResponse: object = {
     $type: 'yandex.cloud.datasphere.v1.ProjectExecutionResponse',
-    checkpointId: '',
 };
 
 export const ProjectExecutionResponse = {
     $type: 'yandex.cloud.datasphere.v1.ProjectExecutionResponse' as const,
 
-    encode(
-        message: ProjectExecutionResponse,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.checkpointId !== '') {
-            writer.uint32(10).string(message.checkpointId);
-        }
-        if (message.outputVariables !== undefined) {
-            Struct.encode(Struct.wrap(message.outputVariables), writer.uint32(18).fork()).ldelim();
-        }
+    encode(_: ProjectExecutionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
 
@@ -1579,12 +1506,6 @@ export const ProjectExecutionResponse = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.checkpointId = reader.string();
-                    break;
-                case 2:
-                    message.outputVariables = Struct.unwrap(Struct.decode(reader, reader.uint32()));
-                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1593,542 +1514,25 @@ export const ProjectExecutionResponse = {
         return message;
     },
 
-    fromJSON(object: any): ProjectExecutionResponse {
+    fromJSON(_: any): ProjectExecutionResponse {
         const message = { ...baseProjectExecutionResponse } as ProjectExecutionResponse;
-        message.checkpointId =
-            object.checkpointId !== undefined && object.checkpointId !== null
-                ? String(object.checkpointId)
-                : '';
-        message.outputVariables =
-            typeof object.outputVariables === 'object' ? object.outputVariables : undefined;
         return message;
     },
 
-    toJSON(message: ProjectExecutionResponse): unknown {
+    toJSON(_: ProjectExecutionResponse): unknown {
         const obj: any = {};
-        message.checkpointId !== undefined && (obj.checkpointId = message.checkpointId);
-        message.outputVariables !== undefined && (obj.outputVariables = message.outputVariables);
         return obj;
     },
 
     fromPartial<I extends Exact<DeepPartial<ProjectExecutionResponse>, I>>(
-        object: I,
+        _: I,
     ): ProjectExecutionResponse {
         const message = { ...baseProjectExecutionResponse } as ProjectExecutionResponse;
-        message.checkpointId = object.checkpointId ?? '';
-        message.outputVariables = object.outputVariables ?? undefined;
         return message;
     },
 };
 
 messageTypeRegistry.set(ProjectExecutionResponse.$type, ProjectExecutionResponse);
-
-const baseCellOutputsRequest: object = {
-    $type: 'yandex.cloud.datasphere.v1.CellOutputsRequest',
-    projectId: '',
-    cellId: '',
-    checkpointId: '',
-};
-
-export const CellOutputsRequest = {
-    $type: 'yandex.cloud.datasphere.v1.CellOutputsRequest' as const,
-
-    encode(message: CellOutputsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.projectId !== '') {
-            writer.uint32(10).string(message.projectId);
-        }
-        if (message.cellId !== '') {
-            writer.uint32(18).string(message.cellId);
-        }
-        if (message.checkpointId !== '') {
-            writer.uint32(26).string(message.checkpointId);
-        }
-        if (message.startAt !== undefined) {
-            Timestamp.encode(toTimestamp(message.startAt), writer.uint32(34).fork()).ldelim();
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): CellOutputsRequest {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseCellOutputsRequest } as CellOutputsRequest;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.projectId = reader.string();
-                    break;
-                case 2:
-                    message.cellId = reader.string();
-                    break;
-                case 3:
-                    message.checkpointId = reader.string();
-                    break;
-                case 4:
-                    message.startAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): CellOutputsRequest {
-        const message = { ...baseCellOutputsRequest } as CellOutputsRequest;
-        message.projectId =
-            object.projectId !== undefined && object.projectId !== null
-                ? String(object.projectId)
-                : '';
-        message.cellId =
-            object.cellId !== undefined && object.cellId !== null ? String(object.cellId) : '';
-        message.checkpointId =
-            object.checkpointId !== undefined && object.checkpointId !== null
-                ? String(object.checkpointId)
-                : '';
-        message.startAt =
-            object.startAt !== undefined && object.startAt !== null
-                ? fromJsonTimestamp(object.startAt)
-                : undefined;
-        return message;
-    },
-
-    toJSON(message: CellOutputsRequest): unknown {
-        const obj: any = {};
-        message.projectId !== undefined && (obj.projectId = message.projectId);
-        message.cellId !== undefined && (obj.cellId = message.cellId);
-        message.checkpointId !== undefined && (obj.checkpointId = message.checkpointId);
-        message.startAt !== undefined && (obj.startAt = message.startAt.toISOString());
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<CellOutputsRequest>, I>>(
-        object: I,
-    ): CellOutputsRequest {
-        const message = { ...baseCellOutputsRequest } as CellOutputsRequest;
-        message.projectId = object.projectId ?? '';
-        message.cellId = object.cellId ?? '';
-        message.checkpointId = object.checkpointId ?? '';
-        message.startAt = object.startAt ?? undefined;
-        return message;
-    },
-};
-
-messageTypeRegistry.set(CellOutputsRequest.$type, CellOutputsRequest);
-
-const baseCellOutputsResponse: object = {
-    $type: 'yandex.cloud.datasphere.v1.CellOutputsResponse',
-    outputs: '',
-};
-
-export const CellOutputsResponse = {
-    $type: 'yandex.cloud.datasphere.v1.CellOutputsResponse' as const,
-
-    encode(message: CellOutputsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        for (const v of message.outputs) {
-            writer.uint32(10).string(v!);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): CellOutputsResponse {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseCellOutputsResponse } as CellOutputsResponse;
-        message.outputs = [];
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.outputs.push(reader.string());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): CellOutputsResponse {
-        const message = { ...baseCellOutputsResponse } as CellOutputsResponse;
-        message.outputs = (object.outputs ?? []).map((e: any) => String(e));
-        return message;
-    },
-
-    toJSON(message: CellOutputsResponse): unknown {
-        const obj: any = {};
-        if (message.outputs) {
-            obj.outputs = message.outputs.map((e) => e);
-        } else {
-            obj.outputs = [];
-        }
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<CellOutputsResponse>, I>>(
-        object: I,
-    ): CellOutputsResponse {
-        const message = { ...baseCellOutputsResponse } as CellOutputsResponse;
-        message.outputs = object.outputs?.map((e) => e) || [];
-        return message;
-    },
-};
-
-messageTypeRegistry.set(CellOutputsResponse.$type, CellOutputsResponse);
-
-const baseGetStateVariablesRequest: object = {
-    $type: 'yandex.cloud.datasphere.v1.GetStateVariablesRequest',
-    projectId: '',
-    notebookId: '',
-    variableNames: '',
-    checkpointId: '',
-};
-
-export const GetStateVariablesRequest = {
-    $type: 'yandex.cloud.datasphere.v1.GetStateVariablesRequest' as const,
-
-    encode(
-        message: GetStateVariablesRequest,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.projectId !== '') {
-            writer.uint32(10).string(message.projectId);
-        }
-        if (message.notebookId !== '') {
-            writer.uint32(18).string(message.notebookId);
-        }
-        for (const v of message.variableNames) {
-            writer.uint32(26).string(v!);
-        }
-        if (message.checkpointId !== '') {
-            writer.uint32(34).string(message.checkpointId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): GetStateVariablesRequest {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseGetStateVariablesRequest } as GetStateVariablesRequest;
-        message.variableNames = [];
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.projectId = reader.string();
-                    break;
-                case 2:
-                    message.notebookId = reader.string();
-                    break;
-                case 3:
-                    message.variableNames.push(reader.string());
-                    break;
-                case 4:
-                    message.checkpointId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): GetStateVariablesRequest {
-        const message = { ...baseGetStateVariablesRequest } as GetStateVariablesRequest;
-        message.projectId =
-            object.projectId !== undefined && object.projectId !== null
-                ? String(object.projectId)
-                : '';
-        message.notebookId =
-            object.notebookId !== undefined && object.notebookId !== null
-                ? String(object.notebookId)
-                : '';
-        message.variableNames = (object.variableNames ?? []).map((e: any) => String(e));
-        message.checkpointId =
-            object.checkpointId !== undefined && object.checkpointId !== null
-                ? String(object.checkpointId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: GetStateVariablesRequest): unknown {
-        const obj: any = {};
-        message.projectId !== undefined && (obj.projectId = message.projectId);
-        message.notebookId !== undefined && (obj.notebookId = message.notebookId);
-        if (message.variableNames) {
-            obj.variableNames = message.variableNames.map((e) => e);
-        } else {
-            obj.variableNames = [];
-        }
-        message.checkpointId !== undefined && (obj.checkpointId = message.checkpointId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<GetStateVariablesRequest>, I>>(
-        object: I,
-    ): GetStateVariablesRequest {
-        const message = { ...baseGetStateVariablesRequest } as GetStateVariablesRequest;
-        message.projectId = object.projectId ?? '';
-        message.notebookId = object.notebookId ?? '';
-        message.variableNames = object.variableNames?.map((e) => e) || [];
-        message.checkpointId = object.checkpointId ?? '';
-        return message;
-    },
-};
-
-messageTypeRegistry.set(GetStateVariablesRequest.$type, GetStateVariablesRequest);
-
-const baseGetStateVariablesResponse: object = {
-    $type: 'yandex.cloud.datasphere.v1.GetStateVariablesResponse',
-};
-
-export const GetStateVariablesResponse = {
-    $type: 'yandex.cloud.datasphere.v1.GetStateVariablesResponse' as const,
-
-    encode(
-        message: GetStateVariablesResponse,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.variables !== undefined) {
-            Struct.encode(Struct.wrap(message.variables), writer.uint32(10).fork()).ldelim();
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): GetStateVariablesResponse {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseGetStateVariablesResponse } as GetStateVariablesResponse;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.variables = Struct.unwrap(Struct.decode(reader, reader.uint32()));
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): GetStateVariablesResponse {
-        const message = { ...baseGetStateVariablesResponse } as GetStateVariablesResponse;
-        message.variables = typeof object.variables === 'object' ? object.variables : undefined;
-        return message;
-    },
-
-    toJSON(message: GetStateVariablesResponse): unknown {
-        const obj: any = {};
-        message.variables !== undefined && (obj.variables = message.variables);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<GetStateVariablesResponse>, I>>(
-        object: I,
-    ): GetStateVariablesResponse {
-        const message = { ...baseGetStateVariablesResponse } as GetStateVariablesResponse;
-        message.variables = object.variables ?? undefined;
-        return message;
-    },
-};
-
-messageTypeRegistry.set(GetStateVariablesResponse.$type, GetStateVariablesResponse);
-
-const baseGetNotebookMetadataRequest: object = {
-    $type: 'yandex.cloud.datasphere.v1.GetNotebookMetadataRequest',
-    projectId: '',
-    notebookPath: '',
-};
-
-export const GetNotebookMetadataRequest = {
-    $type: 'yandex.cloud.datasphere.v1.GetNotebookMetadataRequest' as const,
-
-    encode(
-        message: GetNotebookMetadataRequest,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.projectId !== '') {
-            writer.uint32(10).string(message.projectId);
-        }
-        if (message.notebookPath !== '') {
-            writer.uint32(18).string(message.notebookPath);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): GetNotebookMetadataRequest {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseGetNotebookMetadataRequest } as GetNotebookMetadataRequest;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.projectId = reader.string();
-                    break;
-                case 2:
-                    message.notebookPath = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): GetNotebookMetadataRequest {
-        const message = { ...baseGetNotebookMetadataRequest } as GetNotebookMetadataRequest;
-        message.projectId =
-            object.projectId !== undefined && object.projectId !== null
-                ? String(object.projectId)
-                : '';
-        message.notebookPath =
-            object.notebookPath !== undefined && object.notebookPath !== null
-                ? String(object.notebookPath)
-                : '';
-        return message;
-    },
-
-    toJSON(message: GetNotebookMetadataRequest): unknown {
-        const obj: any = {};
-        message.projectId !== undefined && (obj.projectId = message.projectId);
-        message.notebookPath !== undefined && (obj.notebookPath = message.notebookPath);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<GetNotebookMetadataRequest>, I>>(
-        object: I,
-    ): GetNotebookMetadataRequest {
-        const message = { ...baseGetNotebookMetadataRequest } as GetNotebookMetadataRequest;
-        message.projectId = object.projectId ?? '';
-        message.notebookPath = object.notebookPath ?? '';
-        return message;
-    },
-};
-
-messageTypeRegistry.set(GetNotebookMetadataRequest.$type, GetNotebookMetadataRequest);
-
-const baseGetNotebookMetadataResponse: object = {
-    $type: 'yandex.cloud.datasphere.v1.GetNotebookMetadataResponse',
-    notebookId: '',
-    contentLength: 0,
-    cellIds: '',
-};
-
-export const GetNotebookMetadataResponse = {
-    $type: 'yandex.cloud.datasphere.v1.GetNotebookMetadataResponse' as const,
-
-    encode(
-        message: GetNotebookMetadataResponse,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.notebookId !== '') {
-            writer.uint32(10).string(message.notebookId);
-        }
-        if (message.createdAt !== undefined) {
-            Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(18).fork()).ldelim();
-        }
-        if (message.modifiedAt !== undefined) {
-            Timestamp.encode(toTimestamp(message.modifiedAt), writer.uint32(26).fork()).ldelim();
-        }
-        if (message.contentLength !== 0) {
-            writer.uint32(32).int64(message.contentLength);
-        }
-        for (const v of message.cellIds) {
-            writer.uint32(42).string(v!);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): GetNotebookMetadataResponse {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseGetNotebookMetadataResponse } as GetNotebookMetadataResponse;
-        message.cellIds = [];
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.notebookId = reader.string();
-                    break;
-                case 2:
-                    message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-                    break;
-                case 3:
-                    message.modifiedAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-                    break;
-                case 4:
-                    message.contentLength = longToNumber(reader.int64() as Long);
-                    break;
-                case 5:
-                    message.cellIds.push(reader.string());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): GetNotebookMetadataResponse {
-        const message = { ...baseGetNotebookMetadataResponse } as GetNotebookMetadataResponse;
-        message.notebookId =
-            object.notebookId !== undefined && object.notebookId !== null
-                ? String(object.notebookId)
-                : '';
-        message.createdAt =
-            object.createdAt !== undefined && object.createdAt !== null
-                ? fromJsonTimestamp(object.createdAt)
-                : undefined;
-        message.modifiedAt =
-            object.modifiedAt !== undefined && object.modifiedAt !== null
-                ? fromJsonTimestamp(object.modifiedAt)
-                : undefined;
-        message.contentLength =
-            object.contentLength !== undefined && object.contentLength !== null
-                ? Number(object.contentLength)
-                : 0;
-        message.cellIds = (object.cellIds ?? []).map((e: any) => String(e));
-        return message;
-    },
-
-    toJSON(message: GetNotebookMetadataResponse): unknown {
-        const obj: any = {};
-        message.notebookId !== undefined && (obj.notebookId = message.notebookId);
-        message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
-        message.modifiedAt !== undefined && (obj.modifiedAt = message.modifiedAt.toISOString());
-        message.contentLength !== undefined &&
-            (obj.contentLength = Math.round(message.contentLength));
-        if (message.cellIds) {
-            obj.cellIds = message.cellIds.map((e) => e);
-        } else {
-            obj.cellIds = [];
-        }
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<GetNotebookMetadataResponse>, I>>(
-        object: I,
-    ): GetNotebookMetadataResponse {
-        const message = { ...baseGetNotebookMetadataResponse } as GetNotebookMetadataResponse;
-        message.notebookId = object.notebookId ?? '';
-        message.createdAt = object.createdAt ?? undefined;
-        message.modifiedAt = object.modifiedAt ?? undefined;
-        message.contentLength = object.contentLength ?? 0;
-        message.cellIds = object.cellIds?.map((e) => e) || [];
-        return message;
-    },
-};
-
-messageTypeRegistry.set(GetNotebookMetadataResponse.$type, GetNotebookMetadataResponse);
 
 /** A set of methods for managing Project resources. */
 export const ProjectServiceService = {
@@ -2233,42 +1637,6 @@ export const ProjectServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Returns outputs of the specified cell. */
-    getCellOutputs: {
-        path: '/yandex.cloud.datasphere.v1.ProjectService/GetCellOutputs',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: CellOutputsRequest) =>
-            Buffer.from(CellOutputsRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => CellOutputsRequest.decode(value),
-        responseSerialize: (value: CellOutputsResponse) =>
-            Buffer.from(CellOutputsResponse.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => CellOutputsResponse.decode(value),
-    },
-    /** Returns state variables of the specified notebook. */
-    getStateVariables: {
-        path: '/yandex.cloud.datasphere.v1.ProjectService/GetStateVariables',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: GetStateVariablesRequest) =>
-            Buffer.from(GetStateVariablesRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => GetStateVariablesRequest.decode(value),
-        responseSerialize: (value: GetStateVariablesResponse) =>
-            Buffer.from(GetStateVariablesResponse.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => GetStateVariablesResponse.decode(value),
-    },
-    /** Returns metadata of the specified notebook. */
-    getNotebookMetadata: {
-        path: '/yandex.cloud.datasphere.v1.ProjectService/GetNotebookMetadata',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: GetNotebookMetadataRequest) =>
-            Buffer.from(GetNotebookMetadataRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => GetNotebookMetadataRequest.decode(value),
-        responseSerialize: (value: GetNotebookMetadataResponse) =>
-            Buffer.from(GetNotebookMetadataResponse.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => GetNotebookMetadataResponse.decode(value),
-    },
 } as const;
 
 export interface ProjectServiceServer extends UntypedServiceImplementation {
@@ -2290,12 +1658,6 @@ export interface ProjectServiceServer extends UntypedServiceImplementation {
     setUnitBalance: handleUnaryCall<SetUnitBalanceRequest, Empty>;
     /** Executes code in the specified cell or notebook. */
     execute: handleUnaryCall<ProjectExecutionRequest, Operation>;
-    /** Returns outputs of the specified cell. */
-    getCellOutputs: handleUnaryCall<CellOutputsRequest, CellOutputsResponse>;
-    /** Returns state variables of the specified notebook. */
-    getStateVariables: handleUnaryCall<GetStateVariablesRequest, GetStateVariablesResponse>;
-    /** Returns metadata of the specified notebook. */
-    getNotebookMetadata: handleUnaryCall<GetNotebookMetadataRequest, GetNotebookMetadataResponse>;
 }
 
 export interface ProjectServiceClient extends Client {
@@ -2443,54 +1805,6 @@ export interface ProjectServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Returns outputs of the specified cell. */
-    getCellOutputs(
-        request: CellOutputsRequest,
-        callback: (error: ServiceError | null, response: CellOutputsResponse) => void,
-    ): ClientUnaryCall;
-    getCellOutputs(
-        request: CellOutputsRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: CellOutputsResponse) => void,
-    ): ClientUnaryCall;
-    getCellOutputs(
-        request: CellOutputsRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: CellOutputsResponse) => void,
-    ): ClientUnaryCall;
-    /** Returns state variables of the specified notebook. */
-    getStateVariables(
-        request: GetStateVariablesRequest,
-        callback: (error: ServiceError | null, response: GetStateVariablesResponse) => void,
-    ): ClientUnaryCall;
-    getStateVariables(
-        request: GetStateVariablesRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: GetStateVariablesResponse) => void,
-    ): ClientUnaryCall;
-    getStateVariables(
-        request: GetStateVariablesRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: GetStateVariablesResponse) => void,
-    ): ClientUnaryCall;
-    /** Returns metadata of the specified notebook. */
-    getNotebookMetadata(
-        request: GetNotebookMetadataRequest,
-        callback: (error: ServiceError | null, response: GetNotebookMetadataResponse) => void,
-    ): ClientUnaryCall;
-    getNotebookMetadata(
-        request: GetNotebookMetadataRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: GetNotebookMetadataResponse) => void,
-    ): ClientUnaryCall;
-    getNotebookMetadata(
-        request: GetNotebookMetadataRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: GetNotebookMetadataResponse) => void,
-    ): ClientUnaryCall;
 }
 
 export const ProjectServiceClient = makeGenericClientConstructor(
@@ -2535,28 +1849,6 @@ export type Exact<P, I extends P> = P extends Builtin
               Exclude<keyof I, KeysOfUnion<P> | '$type'>,
               never
           >;
-
-function toTimestamp(date: Date): Timestamp {
-    const seconds = date.getTime() / 1_000;
-    const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
-}
-
-function fromTimestamp(t: Timestamp): Date {
-    let millis = t.seconds * 1_000;
-    millis += t.nanos / 1_000_000;
-    return new Date(millis);
-}
-
-function fromJsonTimestamp(o: any): Date {
-    if (o instanceof Date) {
-        return o;
-    } else if (typeof o === 'string') {
-        return new Date(o);
-    } else {
-        return fromTimestamp(Timestamp.fromJSON(o));
-    }
-}
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

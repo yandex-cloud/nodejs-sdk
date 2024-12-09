@@ -292,6 +292,11 @@ export interface StreamBackend {
     tls?: BackendTls;
     /** If set, proxy protocol will be enabled for this backend. */
     enableProxyProtocol: boolean;
+    /**
+     * If a backend host becomes unhealthy (as determined by the configured health checks),
+     * keep connections to the failed host.
+     */
+    keepConnectionsOnHostHealthFailure: boolean;
 }
 
 /** An HTTP backend resource. */
@@ -515,6 +520,11 @@ export interface HealthCheck_HttpHealthCheck {
      * Default value: `false`, HTTP/1.1 is used.
      */
     useHttp2: boolean;
+    /**
+     * A list of HTTP response statuses considered healthy.
+     * By default only 200 HTTP status code considered healthy.
+     */
+    expectedStatuses: number[];
 }
 
 /** A resource for gRPC health check settings. */
@@ -1386,6 +1396,7 @@ const baseStreamBackend: object = {
     name: '',
     port: 0,
     enableProxyProtocol: false,
+    keepConnectionsOnHostHealthFailure: false,
 };
 
 export const StreamBackend = {
@@ -1421,6 +1432,9 @@ export const StreamBackend = {
         }
         if (message.enableProxyProtocol === true) {
             writer.uint32(64).bool(message.enableProxyProtocol);
+        }
+        if (message.keepConnectionsOnHostHealthFailure === true) {
+            writer.uint32(72).bool(message.keepConnectionsOnHostHealthFailure);
         }
         return writer;
     },
@@ -1460,6 +1474,9 @@ export const StreamBackend = {
                 case 8:
                     message.enableProxyProtocol = reader.bool();
                     break;
+                case 9:
+                    message.keepConnectionsOnHostHealthFailure = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1493,6 +1510,11 @@ export const StreamBackend = {
             object.enableProxyProtocol !== undefined && object.enableProxyProtocol !== null
                 ? Boolean(object.enableProxyProtocol)
                 : false;
+        message.keepConnectionsOnHostHealthFailure =
+            object.keepConnectionsOnHostHealthFailure !== undefined &&
+            object.keepConnectionsOnHostHealthFailure !== null
+                ? Boolean(object.keepConnectionsOnHostHealthFailure)
+                : false;
         return message;
     },
 
@@ -1520,6 +1542,8 @@ export const StreamBackend = {
             (obj.tls = message.tls ? BackendTls.toJSON(message.tls) : undefined);
         message.enableProxyProtocol !== undefined &&
             (obj.enableProxyProtocol = message.enableProxyProtocol);
+        message.keepConnectionsOnHostHealthFailure !== undefined &&
+            (obj.keepConnectionsOnHostHealthFailure = message.keepConnectionsOnHostHealthFailure);
         return obj;
     },
 
@@ -1542,6 +1566,8 @@ export const StreamBackend = {
                 ? BackendTls.fromPartial(object.tls)
                 : undefined;
         message.enableProxyProtocol = object.enableProxyProtocol ?? false;
+        message.keepConnectionsOnHostHealthFailure =
+            object.keepConnectionsOnHostHealthFailure ?? false;
         return message;
     },
 };
@@ -2498,6 +2524,7 @@ const baseHealthCheck_HttpHealthCheck: object = {
     host: '',
     path: '',
     useHttp2: false,
+    expectedStatuses: 0,
 };
 
 export const HealthCheck_HttpHealthCheck = {
@@ -2516,6 +2543,11 @@ export const HealthCheck_HttpHealthCheck = {
         if (message.useHttp2 === true) {
             writer.uint32(24).bool(message.useHttp2);
         }
+        writer.uint32(34).fork();
+        for (const v of message.expectedStatuses) {
+            writer.int64(v);
+        }
+        writer.ldelim();
         return writer;
     },
 
@@ -2523,6 +2555,7 @@ export const HealthCheck_HttpHealthCheck = {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseHealthCheck_HttpHealthCheck } as HealthCheck_HttpHealthCheck;
+        message.expectedStatuses = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -2534,6 +2567,16 @@ export const HealthCheck_HttpHealthCheck = {
                     break;
                 case 3:
                     message.useHttp2 = reader.bool();
+                    break;
+                case 4:
+                    if ((tag & 7) === 2) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.expectedStatuses.push(longToNumber(reader.int64() as Long));
+                        }
+                    } else {
+                        message.expectedStatuses.push(longToNumber(reader.int64() as Long));
+                    }
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2551,6 +2594,7 @@ export const HealthCheck_HttpHealthCheck = {
             object.useHttp2 !== undefined && object.useHttp2 !== null
                 ? Boolean(object.useHttp2)
                 : false;
+        message.expectedStatuses = (object.expectedStatuses ?? []).map((e: any) => Number(e));
         return message;
     },
 
@@ -2559,6 +2603,11 @@ export const HealthCheck_HttpHealthCheck = {
         message.host !== undefined && (obj.host = message.host);
         message.path !== undefined && (obj.path = message.path);
         message.useHttp2 !== undefined && (obj.useHttp2 = message.useHttp2);
+        if (message.expectedStatuses) {
+            obj.expectedStatuses = message.expectedStatuses.map((e) => Math.round(e));
+        } else {
+            obj.expectedStatuses = [];
+        }
         return obj;
     },
 
@@ -2569,6 +2618,7 @@ export const HealthCheck_HttpHealthCheck = {
         message.host = object.host ?? '';
         message.path = object.path ?? '';
         message.useHttp2 = object.useHttp2 ?? false;
+        message.expectedStatuses = object.expectedStatuses?.map((e) => e) || [];
         return message;
     },
 };

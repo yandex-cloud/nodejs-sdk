@@ -8,6 +8,7 @@ export * as loadBalancer from './generated/yandex/cloud/apploadbalancer/v1/load_
 export * as loadBalancerService from './generated/yandex/cloud/apploadbalancer/v1/load_balancer_service';
 export * as logging from './generated/yandex/cloud/apploadbalancer/v1/logging';
 export * as payload from './generated/yandex/cloud/apploadbalancer/v1/payload';
+export * as rateLimit from './generated/yandex/cloud/apploadbalancer/v1/rate_limit';
 export * as targetGroup from './generated/yandex/cloud/apploadbalancer/v1/target_group';
 export * as targetGroupService from './generated/yandex/cloud/apploadbalancer/v1/target_group_service';
 export * as tls from './generated/yandex/cloud/apploadbalancer/v1/tls';

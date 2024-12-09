@@ -2,18 +2,21 @@
 import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { ChunkingStrategy } from '../../../../../../yandex/cloud/ai/assistants/v1/searchindex/common';
 import { Timestamp } from '../../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.searchindex';
 
+/** Represents a file that has been indexed within a search index. */
 export interface SearchIndexFile {
     $type: 'yandex.cloud.ai.assistants.v1.searchindex.SearchIndexFile';
+    /** Unique identifier of the file that was used for indexing. */
     id: string;
+    /** ID of the search index that contains this file. */
     searchIndexId: string;
+    /** Identifier of the subject who created the file in the search index. */
     createdBy: string;
+    /** Timestamp representing when the file was created. */
     createdAt?: Date;
-    chunkingStrategy?: ChunkingStrategy;
 }
 
 const baseSearchIndexFile: object = {
@@ -39,9 +42,6 @@ export const SearchIndexFile = {
         if (message.createdAt !== undefined) {
             Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(34).fork()).ldelim();
         }
-        if (message.chunkingStrategy !== undefined) {
-            ChunkingStrategy.encode(message.chunkingStrategy, writer.uint32(42).fork()).ldelim();
-        }
         return writer;
     },
 
@@ -63,9 +63,6 @@ export const SearchIndexFile = {
                     break;
                 case 4:
                     message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-                    break;
-                case 5:
-                    message.chunkingStrategy = ChunkingStrategy.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -90,10 +87,6 @@ export const SearchIndexFile = {
             object.createdAt !== undefined && object.createdAt !== null
                 ? fromJsonTimestamp(object.createdAt)
                 : undefined;
-        message.chunkingStrategy =
-            object.chunkingStrategy !== undefined && object.chunkingStrategy !== null
-                ? ChunkingStrategy.fromJSON(object.chunkingStrategy)
-                : undefined;
         return message;
     },
 
@@ -103,10 +96,6 @@ export const SearchIndexFile = {
         message.searchIndexId !== undefined && (obj.searchIndexId = message.searchIndexId);
         message.createdBy !== undefined && (obj.createdBy = message.createdBy);
         message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
-        message.chunkingStrategy !== undefined &&
-            (obj.chunkingStrategy = message.chunkingStrategy
-                ? ChunkingStrategy.toJSON(message.chunkingStrategy)
-                : undefined);
         return obj;
     },
 
@@ -116,10 +105,6 @@ export const SearchIndexFile = {
         message.searchIndexId = object.searchIndexId ?? '';
         message.createdBy = object.createdBy ?? '';
         message.createdAt = object.createdAt ?? undefined;
-        message.chunkingStrategy =
-            object.chunkingStrategy !== undefined && object.chunkingStrategy !== null
-                ? ChunkingStrategy.fromPartial(object.chunkingStrategy)
-                : undefined;
         return message;
     },
 };

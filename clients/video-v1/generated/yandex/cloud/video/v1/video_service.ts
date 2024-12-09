@@ -14,8 +14,13 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
+import {
+    AutoTranscode,
+    Video,
+    autoTranscodeFromJSON,
+    autoTranscodeToJSON,
+} from '../../../../yandex/cloud/video/v1/video';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Video } from '../../../../yandex/cloud/video/v1/video';
 import { Manifest } from '../../../../yandex/cloud/video/v1/manifest';
 import { Operation } from '../../../../yandex/cloud/operation/operation';
 
@@ -61,6 +66,20 @@ export interface ListVideoResponse {
     nextPageToken: string;
 }
 
+export interface BatchGetVideosRequest {
+    $type: 'yandex.cloud.video.v1.BatchGetVideosRequest';
+    /** ID of the channel. */
+    channelId: string;
+    /** List of requested video IDs. */
+    videoIds: string[];
+}
+
+export interface BatchGetVideosResponse {
+    $type: 'yandex.cloud.video.v1.BatchGetVideosResponse';
+    /** List of videos for channel. */
+    videos: Video[];
+}
+
 export interface CreateVideoRequest {
     $type: 'yandex.cloud.video.v1.CreateVideoRequest';
     /** ID of the channel. */
@@ -71,6 +90,8 @@ export interface CreateVideoRequest {
     description: string;
     /** ID of the thumbnail. */
     thumbnailId: string;
+    /** Auto start transcoding. */
+    autoTranscode: AutoTranscode;
     /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
     labels: { [key: string]: string };
     /** Upload video using the tus protocol. */
@@ -79,6 +100,8 @@ export interface CreateVideoRequest {
     publicAccess?: VideoPublicAccessParams | undefined;
     /** Checking access rights using the authorization system. */
     authSystemAccess?: VideoAuthSystemAccessParams | undefined;
+    /** Checking access rights using url's signature. */
+    signUrlAccess?: VideoSignURLAccessParams | undefined;
 }
 
 export interface CreateVideoRequest_LabelsEntry {
@@ -103,6 +126,10 @@ export interface VideoAuthSystemAccessParams {
     $type: 'yandex.cloud.video.v1.VideoAuthSystemAccessParams';
 }
 
+export interface VideoSignURLAccessParams {
+    $type: 'yandex.cloud.video.v1.VideoSignURLAccessParams';
+}
+
 export interface CreateVideoMetadata {
     $type: 'yandex.cloud.video.v1.CreateVideoMetadata';
     /** ID of the video. */
@@ -121,10 +148,13 @@ export interface UpdateVideoRequest {
     description: string;
     /** ID of the thumbnail. */
     thumbnailId: string;
+    /** Auto start transcoding. */
+    autoTranscode: AutoTranscode;
     /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
     labels: { [key: string]: string };
     publicAccess?: VideoPublicAccessParams | undefined;
     authSystemAccess?: VideoAuthSystemAccessParams | undefined;
+    signUrlAccess?: VideoSignURLAccessParams | undefined;
 }
 
 export interface UpdateVideoRequest_LabelsEntry {
@@ -139,6 +169,25 @@ export interface UpdateVideoMetadata {
     videoId: string;
 }
 
+export interface TranscodeVideoRequest {
+    $type: 'yandex.cloud.video.v1.TranscodeVideoRequest';
+    /** ID of the video. */
+    videoId: string;
+    /**
+     * Field mask that specifies which transcoding specific fields of the video
+     * are going to be updated.
+     */
+    fieldMask?: FieldMask;
+    /** IDs of active video subtitles. */
+    subtitleIds: string[];
+}
+
+export interface TranscodeVideoMetadata {
+    $type: 'yandex.cloud.video.v1.TranscodeVideoMetadata';
+    /** ID of the video. */
+    videoId: string;
+}
+
 export interface DeleteVideoRequest {
     $type: 'yandex.cloud.video.v1.DeleteVideoRequest';
     /** ID of the video. */
@@ -149,6 +198,20 @@ export interface DeleteVideoMetadata {
     $type: 'yandex.cloud.video.v1.DeleteVideoMetadata';
     /** ID of the video. */
     videoId: string;
+}
+
+export interface BatchDeleteVideosRequest {
+    $type: 'yandex.cloud.video.v1.BatchDeleteVideosRequest';
+    /** ID of the channel. */
+    channelId: string;
+    /** List of video IDs. */
+    videoIds: string[];
+}
+
+export interface BatchDeleteVideosMetadata {
+    $type: 'yandex.cloud.video.v1.BatchDeleteVideosMetadata';
+    /** List of video IDs. */
+    videoIds: string[];
 }
 
 export interface PerformVideoActionRequest {
@@ -435,12 +498,147 @@ export const ListVideoResponse = {
 
 messageTypeRegistry.set(ListVideoResponse.$type, ListVideoResponse);
 
+const baseBatchGetVideosRequest: object = {
+    $type: 'yandex.cloud.video.v1.BatchGetVideosRequest',
+    channelId: '',
+    videoIds: '',
+};
+
+export const BatchGetVideosRequest = {
+    $type: 'yandex.cloud.video.v1.BatchGetVideosRequest' as const,
+
+    encode(message: BatchGetVideosRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.channelId !== '') {
+            writer.uint32(10).string(message.channelId);
+        }
+        for (const v of message.videoIds) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetVideosRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchGetVideosRequest } as BatchGetVideosRequest;
+        message.videoIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.channelId = reader.string();
+                    break;
+                case 2:
+                    message.videoIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchGetVideosRequest {
+        const message = { ...baseBatchGetVideosRequest } as BatchGetVideosRequest;
+        message.channelId =
+            object.channelId !== undefined && object.channelId !== null
+                ? String(object.channelId)
+                : '';
+        message.videoIds = (object.videoIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: BatchGetVideosRequest): unknown {
+        const obj: any = {};
+        message.channelId !== undefined && (obj.channelId = message.channelId);
+        if (message.videoIds) {
+            obj.videoIds = message.videoIds.map((e) => e);
+        } else {
+            obj.videoIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchGetVideosRequest>, I>>(
+        object: I,
+    ): BatchGetVideosRequest {
+        const message = { ...baseBatchGetVideosRequest } as BatchGetVideosRequest;
+        message.channelId = object.channelId ?? '';
+        message.videoIds = object.videoIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BatchGetVideosRequest.$type, BatchGetVideosRequest);
+
+const baseBatchGetVideosResponse: object = {
+    $type: 'yandex.cloud.video.v1.BatchGetVideosResponse',
+};
+
+export const BatchGetVideosResponse = {
+    $type: 'yandex.cloud.video.v1.BatchGetVideosResponse' as const,
+
+    encode(message: BatchGetVideosResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.videos) {
+            Video.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetVideosResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchGetVideosResponse } as BatchGetVideosResponse;
+        message.videos = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.videos.push(Video.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchGetVideosResponse {
+        const message = { ...baseBatchGetVideosResponse } as BatchGetVideosResponse;
+        message.videos = (object.videos ?? []).map((e: any) => Video.fromJSON(e));
+        return message;
+    },
+
+    toJSON(message: BatchGetVideosResponse): unknown {
+        const obj: any = {};
+        if (message.videos) {
+            obj.videos = message.videos.map((e) => (e ? Video.toJSON(e) : undefined));
+        } else {
+            obj.videos = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchGetVideosResponse>, I>>(
+        object: I,
+    ): BatchGetVideosResponse {
+        const message = { ...baseBatchGetVideosResponse } as BatchGetVideosResponse;
+        message.videos = object.videos?.map((e) => Video.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BatchGetVideosResponse.$type, BatchGetVideosResponse);
+
 const baseCreateVideoRequest: object = {
     $type: 'yandex.cloud.video.v1.CreateVideoRequest',
     channelId: '',
     title: '',
     description: '',
     thumbnailId: '',
+    autoTranscode: 0,
 };
 
 export const CreateVideoRequest = {
@@ -458,6 +656,9 @@ export const CreateVideoRequest = {
         }
         if (message.thumbnailId !== '') {
             writer.uint32(34).string(message.thumbnailId);
+        }
+        if (message.autoTranscode !== 0) {
+            writer.uint32(40).int32(message.autoTranscode);
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateVideoRequest_LabelsEntry.encode(
@@ -484,6 +685,12 @@ export const CreateVideoRequest = {
                 writer.uint32(16018).fork(),
             ).ldelim();
         }
+        if (message.signUrlAccess !== undefined) {
+            VideoSignURLAccessParams.encode(
+                message.signUrlAccess,
+                writer.uint32(16026).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -507,6 +714,9 @@ export const CreateVideoRequest = {
                 case 4:
                     message.thumbnailId = reader.string();
                     break;
+                case 5:
+                    message.autoTranscode = reader.int32() as any;
+                    break;
                 case 200:
                     const entry200 = CreateVideoRequest_LabelsEntry.decode(reader, reader.uint32());
                     if (entry200.value !== undefined) {
@@ -521,6 +731,12 @@ export const CreateVideoRequest = {
                     break;
                 case 2002:
                     message.authSystemAccess = VideoAuthSystemAccessParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 2003:
+                    message.signUrlAccess = VideoSignURLAccessParams.decode(
                         reader,
                         reader.uint32(),
                     );
@@ -549,6 +765,10 @@ export const CreateVideoRequest = {
             object.thumbnailId !== undefined && object.thumbnailId !== null
                 ? String(object.thumbnailId)
                 : '';
+        message.autoTranscode =
+            object.autoTranscode !== undefined && object.autoTranscode !== null
+                ? autoTranscodeFromJSON(object.autoTranscode)
+                : 0;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 acc[key] = String(value);
@@ -568,6 +788,10 @@ export const CreateVideoRequest = {
             object.authSystemAccess !== undefined && object.authSystemAccess !== null
                 ? VideoAuthSystemAccessParams.fromJSON(object.authSystemAccess)
                 : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? VideoSignURLAccessParams.fromJSON(object.signUrlAccess)
+                : undefined;
         return message;
     },
 
@@ -577,6 +801,8 @@ export const CreateVideoRequest = {
         message.title !== undefined && (obj.title = message.title);
         message.description !== undefined && (obj.description = message.description);
         message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
+        message.autoTranscode !== undefined &&
+            (obj.autoTranscode = autoTranscodeToJSON(message.autoTranscode));
         obj.labels = {};
         if (message.labels) {
             Object.entries(message.labels).forEach(([k, v]) => {
@@ -593,6 +819,10 @@ export const CreateVideoRequest = {
             (obj.authSystemAccess = message.authSystemAccess
                 ? VideoAuthSystemAccessParams.toJSON(message.authSystemAccess)
                 : undefined);
+        message.signUrlAccess !== undefined &&
+            (obj.signUrlAccess = message.signUrlAccess
+                ? VideoSignURLAccessParams.toJSON(message.signUrlAccess)
+                : undefined);
         return obj;
     },
 
@@ -604,6 +834,7 @@ export const CreateVideoRequest = {
         message.title = object.title ?? '';
         message.description = object.description ?? '';
         message.thumbnailId = object.thumbnailId ?? '';
+        message.autoTranscode = object.autoTranscode ?? 0;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 if (value !== undefined) {
@@ -624,6 +855,10 @@ export const CreateVideoRequest = {
         message.authSystemAccess =
             object.authSystemAccess !== undefined && object.authSystemAccess !== null
                 ? VideoAuthSystemAccessParams.fromPartial(object.authSystemAccess)
+                : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? VideoSignURLAccessParams.fromPartial(object.signUrlAccess)
                 : undefined;
         return message;
     },
@@ -861,6 +1096,52 @@ export const VideoAuthSystemAccessParams = {
 
 messageTypeRegistry.set(VideoAuthSystemAccessParams.$type, VideoAuthSystemAccessParams);
 
+const baseVideoSignURLAccessParams: object = {
+    $type: 'yandex.cloud.video.v1.VideoSignURLAccessParams',
+};
+
+export const VideoSignURLAccessParams = {
+    $type: 'yandex.cloud.video.v1.VideoSignURLAccessParams' as const,
+
+    encode(_: VideoSignURLAccessParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoSignURLAccessParams {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseVideoSignURLAccessParams } as VideoSignURLAccessParams;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): VideoSignURLAccessParams {
+        const message = { ...baseVideoSignURLAccessParams } as VideoSignURLAccessParams;
+        return message;
+    },
+
+    toJSON(_: VideoSignURLAccessParams): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<VideoSignURLAccessParams>, I>>(
+        _: I,
+    ): VideoSignURLAccessParams {
+        const message = { ...baseVideoSignURLAccessParams } as VideoSignURLAccessParams;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(VideoSignURLAccessParams.$type, VideoSignURLAccessParams);
+
 const baseCreateVideoMetadata: object = {
     $type: 'yandex.cloud.video.v1.CreateVideoMetadata',
     videoId: '',
@@ -924,6 +1205,7 @@ const baseUpdateVideoRequest: object = {
     title: '',
     description: '',
     thumbnailId: '',
+    autoTranscode: 0,
 };
 
 export const UpdateVideoRequest = {
@@ -945,6 +1227,9 @@ export const UpdateVideoRequest = {
         if (message.thumbnailId !== '') {
             writer.uint32(42).string(message.thumbnailId);
         }
+        if (message.autoTranscode !== 0) {
+            writer.uint32(48).int32(message.autoTranscode);
+        }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateVideoRequest_LabelsEntry.encode(
                 {
@@ -965,6 +1250,12 @@ export const UpdateVideoRequest = {
             VideoAuthSystemAccessParams.encode(
                 message.authSystemAccess,
                 writer.uint32(16018).fork(),
+            ).ldelim();
+        }
+        if (message.signUrlAccess !== undefined) {
+            VideoSignURLAccessParams.encode(
+                message.signUrlAccess,
+                writer.uint32(16026).fork(),
             ).ldelim();
         }
         return writer;
@@ -993,6 +1284,9 @@ export const UpdateVideoRequest = {
                 case 5:
                     message.thumbnailId = reader.string();
                     break;
+                case 6:
+                    message.autoTranscode = reader.int32() as any;
+                    break;
                 case 200:
                     const entry200 = UpdateVideoRequest_LabelsEntry.decode(reader, reader.uint32());
                     if (entry200.value !== undefined) {
@@ -1004,6 +1298,12 @@ export const UpdateVideoRequest = {
                     break;
                 case 2002:
                     message.authSystemAccess = VideoAuthSystemAccessParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 2003:
+                    message.signUrlAccess = VideoSignURLAccessParams.decode(
                         reader,
                         reader.uint32(),
                     );
@@ -1034,6 +1334,10 @@ export const UpdateVideoRequest = {
             object.thumbnailId !== undefined && object.thumbnailId !== null
                 ? String(object.thumbnailId)
                 : '';
+        message.autoTranscode =
+            object.autoTranscode !== undefined && object.autoTranscode !== null
+                ? autoTranscodeFromJSON(object.autoTranscode)
+                : 0;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 acc[key] = String(value);
@@ -1049,6 +1353,10 @@ export const UpdateVideoRequest = {
             object.authSystemAccess !== undefined && object.authSystemAccess !== null
                 ? VideoAuthSystemAccessParams.fromJSON(object.authSystemAccess)
                 : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? VideoSignURLAccessParams.fromJSON(object.signUrlAccess)
+                : undefined;
         return message;
     },
 
@@ -1060,6 +1368,8 @@ export const UpdateVideoRequest = {
         message.title !== undefined && (obj.title = message.title);
         message.description !== undefined && (obj.description = message.description);
         message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
+        message.autoTranscode !== undefined &&
+            (obj.autoTranscode = autoTranscodeToJSON(message.autoTranscode));
         obj.labels = {};
         if (message.labels) {
             Object.entries(message.labels).forEach(([k, v]) => {
@@ -1073,6 +1383,10 @@ export const UpdateVideoRequest = {
         message.authSystemAccess !== undefined &&
             (obj.authSystemAccess = message.authSystemAccess
                 ? VideoAuthSystemAccessParams.toJSON(message.authSystemAccess)
+                : undefined);
+        message.signUrlAccess !== undefined &&
+            (obj.signUrlAccess = message.signUrlAccess
+                ? VideoSignURLAccessParams.toJSON(message.signUrlAccess)
                 : undefined);
         return obj;
     },
@@ -1089,6 +1403,7 @@ export const UpdateVideoRequest = {
         message.title = object.title ?? '';
         message.description = object.description ?? '';
         message.thumbnailId = object.thumbnailId ?? '';
+        message.autoTranscode = object.autoTranscode ?? 0;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 if (value !== undefined) {
@@ -1105,6 +1420,10 @@ export const UpdateVideoRequest = {
         message.authSystemAccess =
             object.authSystemAccess !== undefined && object.authSystemAccess !== null
                 ? VideoAuthSystemAccessParams.fromPartial(object.authSystemAccess)
+                : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? VideoSignURLAccessParams.fromPartial(object.signUrlAccess)
                 : undefined;
         return message;
     },
@@ -1239,6 +1558,151 @@ export const UpdateVideoMetadata = {
 
 messageTypeRegistry.set(UpdateVideoMetadata.$type, UpdateVideoMetadata);
 
+const baseTranscodeVideoRequest: object = {
+    $type: 'yandex.cloud.video.v1.TranscodeVideoRequest',
+    videoId: '',
+    subtitleIds: '',
+};
+
+export const TranscodeVideoRequest = {
+    $type: 'yandex.cloud.video.v1.TranscodeVideoRequest' as const,
+
+    encode(message: TranscodeVideoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.videoId !== '') {
+            writer.uint32(10).string(message.videoId);
+        }
+        if (message.fieldMask !== undefined) {
+            FieldMask.encode(message.fieldMask, writer.uint32(18).fork()).ldelim();
+        }
+        for (const v of message.subtitleIds) {
+            writer.uint32(26).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): TranscodeVideoRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseTranscodeVideoRequest } as TranscodeVideoRequest;
+        message.subtitleIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.videoId = reader.string();
+                    break;
+                case 2:
+                    message.fieldMask = FieldMask.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.subtitleIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): TranscodeVideoRequest {
+        const message = { ...baseTranscodeVideoRequest } as TranscodeVideoRequest;
+        message.videoId =
+            object.videoId !== undefined && object.videoId !== null ? String(object.videoId) : '';
+        message.fieldMask =
+            object.fieldMask !== undefined && object.fieldMask !== null
+                ? FieldMask.fromJSON(object.fieldMask)
+                : undefined;
+        message.subtitleIds = (object.subtitleIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: TranscodeVideoRequest): unknown {
+        const obj: any = {};
+        message.videoId !== undefined && (obj.videoId = message.videoId);
+        message.fieldMask !== undefined &&
+            (obj.fieldMask = message.fieldMask ? FieldMask.toJSON(message.fieldMask) : undefined);
+        if (message.subtitleIds) {
+            obj.subtitleIds = message.subtitleIds.map((e) => e);
+        } else {
+            obj.subtitleIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<TranscodeVideoRequest>, I>>(
+        object: I,
+    ): TranscodeVideoRequest {
+        const message = { ...baseTranscodeVideoRequest } as TranscodeVideoRequest;
+        message.videoId = object.videoId ?? '';
+        message.fieldMask =
+            object.fieldMask !== undefined && object.fieldMask !== null
+                ? FieldMask.fromPartial(object.fieldMask)
+                : undefined;
+        message.subtitleIds = object.subtitleIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(TranscodeVideoRequest.$type, TranscodeVideoRequest);
+
+const baseTranscodeVideoMetadata: object = {
+    $type: 'yandex.cloud.video.v1.TranscodeVideoMetadata',
+    videoId: '',
+};
+
+export const TranscodeVideoMetadata = {
+    $type: 'yandex.cloud.video.v1.TranscodeVideoMetadata' as const,
+
+    encode(message: TranscodeVideoMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.videoId !== '') {
+            writer.uint32(10).string(message.videoId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): TranscodeVideoMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseTranscodeVideoMetadata } as TranscodeVideoMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.videoId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): TranscodeVideoMetadata {
+        const message = { ...baseTranscodeVideoMetadata } as TranscodeVideoMetadata;
+        message.videoId =
+            object.videoId !== undefined && object.videoId !== null ? String(object.videoId) : '';
+        return message;
+    },
+
+    toJSON(message: TranscodeVideoMetadata): unknown {
+        const obj: any = {};
+        message.videoId !== undefined && (obj.videoId = message.videoId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<TranscodeVideoMetadata>, I>>(
+        object: I,
+    ): TranscodeVideoMetadata {
+        const message = { ...baseTranscodeVideoMetadata } as TranscodeVideoMetadata;
+        message.videoId = object.videoId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(TranscodeVideoMetadata.$type, TranscodeVideoMetadata);
+
 const baseDeleteVideoRequest: object = {
     $type: 'yandex.cloud.video.v1.DeleteVideoRequest',
     videoId: '',
@@ -1352,6 +1816,147 @@ export const DeleteVideoMetadata = {
 };
 
 messageTypeRegistry.set(DeleteVideoMetadata.$type, DeleteVideoMetadata);
+
+const baseBatchDeleteVideosRequest: object = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteVideosRequest',
+    channelId: '',
+    videoIds: '',
+};
+
+export const BatchDeleteVideosRequest = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteVideosRequest' as const,
+
+    encode(
+        message: BatchDeleteVideosRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.channelId !== '') {
+            writer.uint32(10).string(message.channelId);
+        }
+        for (const v of message.videoIds) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteVideosRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchDeleteVideosRequest } as BatchDeleteVideosRequest;
+        message.videoIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.channelId = reader.string();
+                    break;
+                case 2:
+                    message.videoIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchDeleteVideosRequest {
+        const message = { ...baseBatchDeleteVideosRequest } as BatchDeleteVideosRequest;
+        message.channelId =
+            object.channelId !== undefined && object.channelId !== null
+                ? String(object.channelId)
+                : '';
+        message.videoIds = (object.videoIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: BatchDeleteVideosRequest): unknown {
+        const obj: any = {};
+        message.channelId !== undefined && (obj.channelId = message.channelId);
+        if (message.videoIds) {
+            obj.videoIds = message.videoIds.map((e) => e);
+        } else {
+            obj.videoIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteVideosRequest>, I>>(
+        object: I,
+    ): BatchDeleteVideosRequest {
+        const message = { ...baseBatchDeleteVideosRequest } as BatchDeleteVideosRequest;
+        message.channelId = object.channelId ?? '';
+        message.videoIds = object.videoIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BatchDeleteVideosRequest.$type, BatchDeleteVideosRequest);
+
+const baseBatchDeleteVideosMetadata: object = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteVideosMetadata',
+    videoIds: '',
+};
+
+export const BatchDeleteVideosMetadata = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteVideosMetadata' as const,
+
+    encode(
+        message: BatchDeleteVideosMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.videoIds) {
+            writer.uint32(10).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteVideosMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchDeleteVideosMetadata } as BatchDeleteVideosMetadata;
+        message.videoIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.videoIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchDeleteVideosMetadata {
+        const message = { ...baseBatchDeleteVideosMetadata } as BatchDeleteVideosMetadata;
+        message.videoIds = (object.videoIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: BatchDeleteVideosMetadata): unknown {
+        const obj: any = {};
+        if (message.videoIds) {
+            obj.videoIds = message.videoIds.map((e) => e);
+        } else {
+            obj.videoIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteVideosMetadata>, I>>(
+        object: I,
+    ): BatchDeleteVideosMetadata {
+        const message = { ...baseBatchDeleteVideosMetadata } as BatchDeleteVideosMetadata;
+        message.videoIds = object.videoIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BatchDeleteVideosMetadata.$type, BatchDeleteVideosMetadata);
 
 const basePerformVideoActionRequest: object = {
     $type: 'yandex.cloud.video.v1.PerformVideoActionRequest',
@@ -1968,6 +2573,18 @@ export const VideoServiceService = {
             Buffer.from(ListVideoResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListVideoResponse.decode(value),
     },
+    /** Batch get video in specific channel. */
+    batchGet: {
+        path: '/yandex.cloud.video.v1.VideoService/BatchGet',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: BatchGetVideosRequest) =>
+            Buffer.from(BatchGetVideosRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => BatchGetVideosRequest.decode(value),
+        responseSerialize: (value: BatchGetVideosResponse) =>
+            Buffer.from(BatchGetVideosResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => BatchGetVideosResponse.decode(value),
+    },
     /** Create video. */
     create: {
         path: '/yandex.cloud.video.v1.VideoService/Create',
@@ -1990,6 +2607,17 @@ export const VideoServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Transcode video. */
+    transcode: {
+        path: '/yandex.cloud.video.v1.VideoService/Transcode',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: TranscodeVideoRequest) =>
+            Buffer.from(TranscodeVideoRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => TranscodeVideoRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
     /** Delete video. */
     delete: {
         path: '/yandex.cloud.video.v1.VideoService/Delete',
@@ -1998,6 +2626,17 @@ export const VideoServiceService = {
         requestSerialize: (value: DeleteVideoRequest) =>
             Buffer.from(DeleteVideoRequest.encode(value).finish()),
         requestDeserialize: (value: Buffer) => DeleteVideoRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Batch delete video. */
+    batchDelete: {
+        path: '/yandex.cloud.video.v1.VideoService/BatchDelete',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: BatchDeleteVideosRequest) =>
+            Buffer.from(BatchDeleteVideosRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => BatchDeleteVideosRequest.decode(value),
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
@@ -2043,12 +2682,18 @@ export interface VideoServiceServer extends UntypedServiceImplementation {
     get: handleUnaryCall<GetVideoRequest, Video>;
     /** List videos for channel. */
     list: handleUnaryCall<ListVideoRequest, ListVideoResponse>;
+    /** Batch get video in specific channel. */
+    batchGet: handleUnaryCall<BatchGetVideosRequest, BatchGetVideosResponse>;
     /** Create video. */
     create: handleUnaryCall<CreateVideoRequest, Operation>;
     /** Update video. */
     update: handleUnaryCall<UpdateVideoRequest, Operation>;
+    /** Transcode video. */
+    transcode: handleUnaryCall<TranscodeVideoRequest, Operation>;
     /** Delete video. */
     delete: handleUnaryCall<DeleteVideoRequest, Operation>;
+    /** Batch delete video. */
+    batchDelete: handleUnaryCall<BatchDeleteVideosRequest, Operation>;
     /** Perform an action on the episode. */
     performAction: handleUnaryCall<PerformVideoActionRequest, Operation>;
     /** Returns url to the player. */
@@ -2090,6 +2735,22 @@ export interface VideoServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListVideoResponse) => void,
     ): ClientUnaryCall;
+    /** Batch get video in specific channel. */
+    batchGet(
+        request: BatchGetVideosRequest,
+        callback: (error: ServiceError | null, response: BatchGetVideosResponse) => void,
+    ): ClientUnaryCall;
+    batchGet(
+        request: BatchGetVideosRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: BatchGetVideosResponse) => void,
+    ): ClientUnaryCall;
+    batchGet(
+        request: BatchGetVideosRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: BatchGetVideosResponse) => void,
+    ): ClientUnaryCall;
     /** Create video. */
     create(
         request: CreateVideoRequest,
@@ -2122,6 +2783,22 @@ export interface VideoServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
+    /** Transcode video. */
+    transcode(
+        request: TranscodeVideoRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    transcode(
+        request: TranscodeVideoRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    transcode(
+        request: TranscodeVideoRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
     /** Delete video. */
     delete(
         request: DeleteVideoRequest,
@@ -2134,6 +2811,22 @@ export interface VideoServiceClient extends Client {
     ): ClientUnaryCall;
     delete(
         request: DeleteVideoRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Batch delete video. */
+    batchDelete(
+        request: BatchDeleteVideosRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    batchDelete(
+        request: BatchDeleteVideosRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    batchDelete(
+        request: BatchDeleteVideosRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

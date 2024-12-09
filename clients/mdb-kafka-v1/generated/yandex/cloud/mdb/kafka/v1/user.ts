@@ -45,6 +45,7 @@ export interface Permission {
     role: Permission_AccessRole;
     /**
      * Lists hosts allowed for this permission.
+     * Only ip-addresses allowed as value of single host.
      * When not defined, access from any host is allowed.
      *
      * Bare in mind that the same host might appear in multiple permissions at the same time,

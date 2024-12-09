@@ -123,6 +123,20 @@ export interface DeleteChannelMetadata {
     channelId: string;
 }
 
+export interface BatchDeleteChannelsRequest {
+    $type: 'yandex.cloud.video.v1.BatchDeleteChannelsRequest';
+    /** ID of the organization. */
+    organizationId: string;
+    /** List of channel IDs. */
+    channelIds: string[];
+}
+
+export interface BatchDeleteChannelsMetadata {
+    $type: 'yandex.cloud.video.v1.BatchDeleteChannelsMetadata';
+    /** List of channel IDs. */
+    channelIds: string[];
+}
+
 const baseGetChannelRequest: object = {
     $type: 'yandex.cloud.video.v1.GetChannelRequest',
     channelId: '',
@@ -1012,6 +1026,147 @@ export const DeleteChannelMetadata = {
 
 messageTypeRegistry.set(DeleteChannelMetadata.$type, DeleteChannelMetadata);
 
+const baseBatchDeleteChannelsRequest: object = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteChannelsRequest',
+    organizationId: '',
+    channelIds: '',
+};
+
+export const BatchDeleteChannelsRequest = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteChannelsRequest' as const,
+
+    encode(
+        message: BatchDeleteChannelsRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.organizationId !== '') {
+            writer.uint32(10).string(message.organizationId);
+        }
+        for (const v of message.channelIds) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteChannelsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchDeleteChannelsRequest } as BatchDeleteChannelsRequest;
+        message.channelIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.organizationId = reader.string();
+                    break;
+                case 2:
+                    message.channelIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchDeleteChannelsRequest {
+        const message = { ...baseBatchDeleteChannelsRequest } as BatchDeleteChannelsRequest;
+        message.organizationId =
+            object.organizationId !== undefined && object.organizationId !== null
+                ? String(object.organizationId)
+                : '';
+        message.channelIds = (object.channelIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: BatchDeleteChannelsRequest): unknown {
+        const obj: any = {};
+        message.organizationId !== undefined && (obj.organizationId = message.organizationId);
+        if (message.channelIds) {
+            obj.channelIds = message.channelIds.map((e) => e);
+        } else {
+            obj.channelIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteChannelsRequest>, I>>(
+        object: I,
+    ): BatchDeleteChannelsRequest {
+        const message = { ...baseBatchDeleteChannelsRequest } as BatchDeleteChannelsRequest;
+        message.organizationId = object.organizationId ?? '';
+        message.channelIds = object.channelIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BatchDeleteChannelsRequest.$type, BatchDeleteChannelsRequest);
+
+const baseBatchDeleteChannelsMetadata: object = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteChannelsMetadata',
+    channelIds: '',
+};
+
+export const BatchDeleteChannelsMetadata = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteChannelsMetadata' as const,
+
+    encode(
+        message: BatchDeleteChannelsMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.channelIds) {
+            writer.uint32(10).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteChannelsMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchDeleteChannelsMetadata } as BatchDeleteChannelsMetadata;
+        message.channelIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.channelIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchDeleteChannelsMetadata {
+        const message = { ...baseBatchDeleteChannelsMetadata } as BatchDeleteChannelsMetadata;
+        message.channelIds = (object.channelIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: BatchDeleteChannelsMetadata): unknown {
+        const obj: any = {};
+        if (message.channelIds) {
+            obj.channelIds = message.channelIds.map((e) => e);
+        } else {
+            obj.channelIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteChannelsMetadata>, I>>(
+        object: I,
+    ): BatchDeleteChannelsMetadata {
+        const message = { ...baseBatchDeleteChannelsMetadata } as BatchDeleteChannelsMetadata;
+        message.channelIds = object.channelIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BatchDeleteChannelsMetadata.$type, BatchDeleteChannelsMetadata);
+
 /** Channel management service. */
 export const ChannelServiceService = {
     /** Returns the specific channel. */
@@ -1070,6 +1225,17 @@ export const ChannelServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Batch delete channels. */
+    batchDelete: {
+        path: '/yandex.cloud.video.v1.ChannelService/BatchDelete',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: BatchDeleteChannelsRequest) =>
+            Buffer.from(BatchDeleteChannelsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => BatchDeleteChannelsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
 } as const;
 
 export interface ChannelServiceServer extends UntypedServiceImplementation {
@@ -1083,6 +1249,8 @@ export interface ChannelServiceServer extends UntypedServiceImplementation {
     update: handleUnaryCall<UpdateChannelRequest, Operation>;
     /** Delete channel. */
     delete: handleUnaryCall<DeleteChannelRequest, Operation>;
+    /** Batch delete channels. */
+    batchDelete: handleUnaryCall<BatchDeleteChannelsRequest, Operation>;
 }
 
 export interface ChannelServiceClient extends Client {
@@ -1162,6 +1330,22 @@ export interface ChannelServiceClient extends Client {
     ): ClientUnaryCall;
     delete(
         request: DeleteChannelRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Batch delete channels. */
+    batchDelete(
+        request: BatchDeleteChannelsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    batchDelete(
+        request: BatchDeleteChannelsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    batchDelete(
+        request: BatchDeleteChannelsRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

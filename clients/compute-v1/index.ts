@@ -21,6 +21,7 @@ export * as instance from './generated/yandex/cloud/compute/v1/instance';
 export * as instanceService from './generated/yandex/cloud/compute/v1/instance_service';
 export * as instanceGroup from './generated/yandex/cloud/compute/v1/instancegroup/instance_group';
 export * as instanceGroupService from './generated/yandex/cloud/compute/v1/instancegroup/instance_group_service';
+export * as kek from './generated/yandex/cloud/compute/v1/kek';
 export * as maintenance from './generated/yandex/cloud/compute/v1/maintenance';
 export * as placementGroup from './generated/yandex/cloud/compute/v1/placement_group';
 export * as placementGroupService from './generated/yandex/cloud/compute/v1/placement_group_service';

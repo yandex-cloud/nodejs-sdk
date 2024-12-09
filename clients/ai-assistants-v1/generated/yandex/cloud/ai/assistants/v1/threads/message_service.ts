@@ -24,11 +24,19 @@ import {
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.threads';
 
+/** Request to create a new message in a specific thread. */
 export interface CreateMessageRequest {
     $type: 'yandex.cloud.ai.assistants.v1.threads.CreateMessageRequest';
+    /** ID of the thread to which the message will be added. */
     threadId: string;
+    /**
+     * Author of the message, containing details about the message's creator.
+     * If not provided, the default author ID specified in the corresponding thread will be used.
+     */
     author?: Author;
+    /** Set of key-value pairs to label the message. */
     labels: { [key: string]: string };
+    /** Content of the message. */
     content?: MessageContent;
 }
 
@@ -38,14 +46,19 @@ export interface CreateMessageRequest_LabelsEntry {
     value: string;
 }
 
+/** Request message for retrieving a message from a thread. */
 export interface GetMessageRequest {
     $type: 'yandex.cloud.ai.assistants.v1.threads.GetMessageRequest';
+    /** ID of the thread that contains the message. */
     threadId: string;
+    /** ID of the message to retrieve. */
     messageId: string;
 }
 
+/** Request message for listing messages in a specific thread. */
 export interface ListMessagesRequest {
     $type: 'yandex.cloud.ai.assistants.v1.threads.ListMessagesRequest';
+    /** ID of the thread whose messages will be listed. */
     threadId: string;
 }
 
@@ -384,7 +397,9 @@ export const ListMessagesRequest = {
 
 messageTypeRegistry.set(ListMessagesRequest.$type, ListMessagesRequest);
 
+/** MessageService provides operations for managing messages. */
 export const MessageServiceService = {
+    /** Create a new message. */
     create: {
         path: '/yandex.cloud.ai.assistants.v1.threads.MessageService/Create',
         requestStream: false,
@@ -395,6 +410,7 @@ export const MessageServiceService = {
         responseSerialize: (value: Message) => Buffer.from(Message.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Message.decode(value),
     },
+    /** Retrieve details of a specific message by its ID. */
     get: {
         path: '/yandex.cloud.ai.assistants.v1.threads.MessageService/Get',
         requestStream: false,
@@ -405,6 +421,10 @@ export const MessageServiceService = {
         responseSerialize: (value: Message) => Buffer.from(Message.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Message.decode(value),
     },
+    /**
+     * List messages in a specific thread.
+     * By default, messages are listed in reverse chronological order, i.e., from the newest to the oldest.
+     */
     list: {
         path: '/yandex.cloud.ai.assistants.v1.threads.MessageService/List',
         requestStream: false,
@@ -418,12 +438,19 @@ export const MessageServiceService = {
 } as const;
 
 export interface MessageServiceServer extends UntypedServiceImplementation {
+    /** Create a new message. */
     create: handleUnaryCall<CreateMessageRequest, Message>;
+    /** Retrieve details of a specific message by its ID. */
     get: handleUnaryCall<GetMessageRequest, Message>;
+    /**
+     * List messages in a specific thread.
+     * By default, messages are listed in reverse chronological order, i.e., from the newest to the oldest.
+     */
     list: handleServerStreamingCall<ListMessagesRequest, Message>;
 }
 
 export interface MessageServiceClient extends Client {
+    /** Create a new message. */
     create(
         request: CreateMessageRequest,
         callback: (error: ServiceError | null, response: Message) => void,
@@ -439,6 +466,7 @@ export interface MessageServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Message) => void,
     ): ClientUnaryCall;
+    /** Retrieve details of a specific message by its ID. */
     get(
         request: GetMessageRequest,
         callback: (error: ServiceError | null, response: Message) => void,
@@ -454,6 +482,10 @@ export interface MessageServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Message) => void,
     ): ClientUnaryCall;
+    /**
+     * List messages in a specific thread.
+     * By default, messages are listed in reverse chronological order, i.e., from the newest to the oldest.
+     */
     list(
         request: ListMessagesRequest,
         options?: Partial<CallOptions>,

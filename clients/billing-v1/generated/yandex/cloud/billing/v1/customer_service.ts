@@ -68,11 +68,12 @@ export interface InviteCustomerRequest {
 export interface CreateResellerServedCustomerRequest {
     $type: 'yandex.cloud.billing.v1.CreateResellerServedCustomerRequest';
     /**
-     * ID of the reseller that customer will be associated with.
+     * ID of the reseller that customer will be associated with.</br>
      *
-     * Value must match either one of the two regular expressions:
-     * `^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|[0-9a-f]{32})$`
-     * or `^[a-z][-a-zA-Z0-9.]{0,48}[a-zA-Z0-9]$`.
+     * Value must match either one of the three regular expressions:
+     * </br>- `^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$`
+     * </br>- `^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{32})$`
+     * </br>- `^[a-z][-a-zA-Z0-9.]{0,48}[a-zA-Z0-9]$`
      */
     resellerId: string;
     /**

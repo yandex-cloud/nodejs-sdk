@@ -671,6 +671,22 @@ export interface BackupClusterMetadata {
     clusterId: string;
 }
 
+export interface DeleteBackupRequest {
+    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteBackupRequest';
+    /** Required. ID of the OpenSearch cluster. */
+    clusterId: string;
+    /** Required. ID of the backup to delete. */
+    backupId: string;
+}
+
+export interface DeleteBackupMetadata {
+    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteBackupMetadata';
+    /** ID of the OpenSearch cluster. */
+    clusterId: string;
+    /** ID of the backup to delete. */
+    backupId: string;
+}
+
 export interface RestoreClusterRequest {
     $type: 'yandex.cloud.mdb.opensearch.v1.RestoreClusterRequest';
     /**
@@ -4503,6 +4519,150 @@ export const BackupClusterMetadata = {
 
 messageTypeRegistry.set(BackupClusterMetadata.$type, BackupClusterMetadata);
 
+const baseDeleteBackupRequest: object = {
+    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteBackupRequest',
+    clusterId: '',
+    backupId: '',
+};
+
+export const DeleteBackupRequest = {
+    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteBackupRequest' as const,
+
+    encode(message: DeleteBackupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.clusterId !== '') {
+            writer.uint32(10).string(message.clusterId);
+        }
+        if (message.backupId !== '') {
+            writer.uint32(18).string(message.backupId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBackupRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDeleteBackupRequest } as DeleteBackupRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.clusterId = reader.string();
+                    break;
+                case 2:
+                    message.backupId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeleteBackupRequest {
+        const message = { ...baseDeleteBackupRequest } as DeleteBackupRequest;
+        message.clusterId =
+            object.clusterId !== undefined && object.clusterId !== null
+                ? String(object.clusterId)
+                : '';
+        message.backupId =
+            object.backupId !== undefined && object.backupId !== null
+                ? String(object.backupId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: DeleteBackupRequest): unknown {
+        const obj: any = {};
+        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+        message.backupId !== undefined && (obj.backupId = message.backupId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeleteBackupRequest>, I>>(
+        object: I,
+    ): DeleteBackupRequest {
+        const message = { ...baseDeleteBackupRequest } as DeleteBackupRequest;
+        message.clusterId = object.clusterId ?? '';
+        message.backupId = object.backupId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(DeleteBackupRequest.$type, DeleteBackupRequest);
+
+const baseDeleteBackupMetadata: object = {
+    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteBackupMetadata',
+    clusterId: '',
+    backupId: '',
+};
+
+export const DeleteBackupMetadata = {
+    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteBackupMetadata' as const,
+
+    encode(message: DeleteBackupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.clusterId !== '') {
+            writer.uint32(10).string(message.clusterId);
+        }
+        if (message.backupId !== '') {
+            writer.uint32(18).string(message.backupId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBackupMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDeleteBackupMetadata } as DeleteBackupMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.clusterId = reader.string();
+                    break;
+                case 2:
+                    message.backupId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeleteBackupMetadata {
+        const message = { ...baseDeleteBackupMetadata } as DeleteBackupMetadata;
+        message.clusterId =
+            object.clusterId !== undefined && object.clusterId !== null
+                ? String(object.clusterId)
+                : '';
+        message.backupId =
+            object.backupId !== undefined && object.backupId !== null
+                ? String(object.backupId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: DeleteBackupMetadata): unknown {
+        const obj: any = {};
+        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+        message.backupId !== undefined && (obj.backupId = message.backupId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeleteBackupMetadata>, I>>(
+        object: I,
+    ): DeleteBackupMetadata {
+        const message = { ...baseDeleteBackupMetadata } as DeleteBackupMetadata;
+        message.clusterId = object.clusterId ?? '';
+        message.backupId = object.backupId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(DeleteBackupMetadata.$type, DeleteBackupMetadata);
+
 const baseRestoreClusterRequest: object = {
     $type: 'yandex.cloud.mdb.opensearch.v1.RestoreClusterRequest',
     backupId: '',
@@ -6582,6 +6742,17 @@ export const ClusterServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Delete backup for the specified OpenSearch cluster. */
+    deleteBackup: {
+        path: '/yandex.cloud.mdb.opensearch.v1.ClusterService/DeleteBackup',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: DeleteBackupRequest) =>
+            Buffer.from(DeleteBackupRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => DeleteBackupRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
     /** Creates a new OpenSearch cluster using the specified backup. */
     restore: {
         path: '/yandex.cloud.mdb.opensearch.v1.ClusterService/Restore',
@@ -6808,6 +6979,8 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
     delete: handleUnaryCall<DeleteClusterRequest, Operation>;
     /** Creates a backup for the specified OpenSearch cluster. */
     backup: handleUnaryCall<BackupClusterRequest, Operation>;
+    /** Delete backup for the specified OpenSearch cluster. */
+    deleteBackup: handleUnaryCall<DeleteBackupRequest, Operation>;
     /** Creates a new OpenSearch cluster using the specified backup. */
     restore: handleUnaryCall<RestoreClusterRequest, Operation>;
     /** Reschedules a planned maintenance operation. */
@@ -6946,6 +7119,22 @@ export interface ClusterServiceClient extends Client {
     ): ClientUnaryCall;
     backup(
         request: BackupClusterRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Delete backup for the specified OpenSearch cluster. */
+    deleteBackup(
+        request: DeleteBackupRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    deleteBackup(
+        request: DeleteBackupRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    deleteBackup(
+        request: DeleteBackupRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

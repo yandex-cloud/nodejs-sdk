@@ -20,6 +20,7 @@ import {
     CompletionOptions,
     ContentUsage,
     Message,
+    Tool,
     Alternative,
     Token,
 } from '../../../../../../yandex/cloud/ai/foundation_models/v1/text_common';
@@ -36,6 +37,11 @@ export interface CompletionRequest {
     completionOptions?: CompletionOptions;
     /** A list of messages representing the context for the completion model. */
     messages: Message[];
+    /**
+     * List of tools that are available for the model to invoke during the completion generation.
+     * Note: This parameter is not yet supported and will be ignored if provided.
+     */
+    tools: Tool[];
 }
 
 /** Response containing generated text completions. */
@@ -85,6 +91,9 @@ export const CompletionRequest = {
         for (const v of message.messages) {
             Message.encode(v!, writer.uint32(26).fork()).ldelim();
         }
+        for (const v of message.tools) {
+            Tool.encode(v!, writer.uint32(34).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -93,6 +102,7 @@ export const CompletionRequest = {
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseCompletionRequest } as CompletionRequest;
         message.messages = [];
+        message.tools = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -104,6 +114,9 @@ export const CompletionRequest = {
                     break;
                 case 3:
                     message.messages.push(Message.decode(reader, reader.uint32()));
+                    break;
+                case 4:
+                    message.tools.push(Tool.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -124,6 +137,7 @@ export const CompletionRequest = {
                 ? CompletionOptions.fromJSON(object.completionOptions)
                 : undefined;
         message.messages = (object.messages ?? []).map((e: any) => Message.fromJSON(e));
+        message.tools = (object.tools ?? []).map((e: any) => Tool.fromJSON(e));
         return message;
     },
 
@@ -139,6 +153,11 @@ export const CompletionRequest = {
         } else {
             obj.messages = [];
         }
+        if (message.tools) {
+            obj.tools = message.tools.map((e) => (e ? Tool.toJSON(e) : undefined));
+        } else {
+            obj.tools = [];
+        }
         return obj;
     },
 
@@ -150,6 +169,7 @@ export const CompletionRequest = {
                 ? CompletionOptions.fromPartial(object.completionOptions)
                 : undefined;
         message.messages = object.messages?.map((e) => Message.fromPartial(e)) || [];
+        message.tools = object.tools?.map((e) => Tool.fromPartial(e)) || [];
         return message;
     },
 };

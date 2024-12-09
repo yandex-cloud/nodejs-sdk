@@ -77,6 +77,118 @@ export function fieldTypeToJSON(object: FieldType): string {
     }
 }
 
+export enum ProcessingState {
+    PROCESSING_STATE_UNSPECIFIED = 0,
+    PROCESSING_STATE_NOT_STARTED = 1,
+    PROCESSING_STATE_PROCESSING = 2,
+    PROCESSING_STATE_SUCCESS = 3,
+    PROCESSING_STATE_FAILED = 4,
+    UNRECOGNIZED = -1,
+}
+
+export function processingStateFromJSON(object: any): ProcessingState {
+    switch (object) {
+        case 0:
+        case 'PROCESSING_STATE_UNSPECIFIED':
+            return ProcessingState.PROCESSING_STATE_UNSPECIFIED;
+        case 1:
+        case 'PROCESSING_STATE_NOT_STARTED':
+            return ProcessingState.PROCESSING_STATE_NOT_STARTED;
+        case 2:
+        case 'PROCESSING_STATE_PROCESSING':
+            return ProcessingState.PROCESSING_STATE_PROCESSING;
+        case 3:
+        case 'PROCESSING_STATE_SUCCESS':
+            return ProcessingState.PROCESSING_STATE_SUCCESS;
+        case 4:
+        case 'PROCESSING_STATE_FAILED':
+            return ProcessingState.PROCESSING_STATE_FAILED;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return ProcessingState.UNRECOGNIZED;
+    }
+}
+
+export function processingStateToJSON(object: ProcessingState): string {
+    switch (object) {
+        case ProcessingState.PROCESSING_STATE_UNSPECIFIED:
+            return 'PROCESSING_STATE_UNSPECIFIED';
+        case ProcessingState.PROCESSING_STATE_NOT_STARTED:
+            return 'PROCESSING_STATE_NOT_STARTED';
+        case ProcessingState.PROCESSING_STATE_PROCESSING:
+            return 'PROCESSING_STATE_PROCESSING';
+        case ProcessingState.PROCESSING_STATE_SUCCESS:
+            return 'PROCESSING_STATE_SUCCESS';
+        case ProcessingState.PROCESSING_STATE_FAILED:
+            return 'PROCESSING_STATE_FAILED';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export enum Algorithm {
+    ALGORITHM_UNSPECIFIED = 0,
+    ALGORITHM_SPEECHKIT = 1,
+    ALGORITHM_YGPT = 2,
+    ALGORITHM_CLASSIFIER = 3,
+    ALGORITHM_SUMMARIZATION = 4,
+    ALGORITHM_EMBEDDING = 5,
+    ALGORITHM_STATISTICS = 6,
+    UNRECOGNIZED = -1,
+}
+
+export function algorithmFromJSON(object: any): Algorithm {
+    switch (object) {
+        case 0:
+        case 'ALGORITHM_UNSPECIFIED':
+            return Algorithm.ALGORITHM_UNSPECIFIED;
+        case 1:
+        case 'ALGORITHM_SPEECHKIT':
+            return Algorithm.ALGORITHM_SPEECHKIT;
+        case 2:
+        case 'ALGORITHM_YGPT':
+            return Algorithm.ALGORITHM_YGPT;
+        case 3:
+        case 'ALGORITHM_CLASSIFIER':
+            return Algorithm.ALGORITHM_CLASSIFIER;
+        case 4:
+        case 'ALGORITHM_SUMMARIZATION':
+            return Algorithm.ALGORITHM_SUMMARIZATION;
+        case 5:
+        case 'ALGORITHM_EMBEDDING':
+            return Algorithm.ALGORITHM_EMBEDDING;
+        case 6:
+        case 'ALGORITHM_STATISTICS':
+            return Algorithm.ALGORITHM_STATISTICS;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return Algorithm.UNRECOGNIZED;
+    }
+}
+
+export function algorithmToJSON(object: Algorithm): string {
+    switch (object) {
+        case Algorithm.ALGORITHM_UNSPECIFIED:
+            return 'ALGORITHM_UNSPECIFIED';
+        case Algorithm.ALGORITHM_SPEECHKIT:
+            return 'ALGORITHM_SPEECHKIT';
+        case Algorithm.ALGORITHM_YGPT:
+            return 'ALGORITHM_YGPT';
+        case Algorithm.ALGORITHM_CLASSIFIER:
+            return 'ALGORITHM_CLASSIFIER';
+        case Algorithm.ALGORITHM_SUMMARIZATION:
+            return 'ALGORITHM_SUMMARIZATION';
+        case Algorithm.ALGORITHM_EMBEDDING:
+            return 'ALGORITHM_EMBEDDING';
+        case Algorithm.ALGORITHM_STATISTICS:
+            return 'ALGORITHM_STATISTICS';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 export interface Talk {
     $type: 'yandex.cloud.speechsense.v1.Talk';
     /** talk id */
@@ -101,6 +213,13 @@ export interface Talk {
     points?: Points;
     textClassifiers?: TextClassifiers;
     summarization?: Summarization;
+    talkState?: TalkState;
+}
+
+export interface TalkState {
+    $type: 'yandex.cloud.speechsense.v1.TalkState';
+    processingState: ProcessingState;
+    algorithmProcessingInfos: AlgorithmProcessingInfo[];
 }
 
 /** connection field value */
@@ -112,6 +231,12 @@ export interface Field {
     value: string;
     /** field type */
     type: FieldType;
+}
+
+export interface AlgorithmProcessingInfo {
+    $type: 'yandex.cloud.speechsense.v1.AlgorithmProcessingInfo';
+    algorithm: Algorithm;
+    processingState: ProcessingState;
 }
 
 const baseTalk: object = {
@@ -189,6 +314,9 @@ export const Talk = {
         if (message.summarization !== undefined) {
             Summarization.encode(message.summarization, writer.uint32(146).fork()).ldelim();
         }
+        if (message.talkState !== undefined) {
+            TalkState.encode(message.talkState, writer.uint32(154).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -261,6 +389,9 @@ export const Talk = {
                 case 18:
                     message.summarization = Summarization.decode(reader, reader.uint32());
                     break;
+                case 19:
+                    message.talkState = TalkState.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -332,6 +463,10 @@ export const Talk = {
             object.summarization !== undefined && object.summarization !== null
                 ? Summarization.fromJSON(object.summarization)
                 : undefined;
+        message.talkState =
+            object.talkState !== undefined && object.talkState !== null
+                ? TalkState.fromJSON(object.talkState)
+                : undefined;
         return message;
     },
 
@@ -385,6 +520,8 @@ export const Talk = {
             (obj.summarization = message.summarization
                 ? Summarization.toJSON(message.summarization)
                 : undefined);
+        message.talkState !== undefined &&
+            (obj.talkState = message.talkState ? TalkState.toJSON(message.talkState) : undefined);
         return obj;
     },
 
@@ -432,11 +569,95 @@ export const Talk = {
             object.summarization !== undefined && object.summarization !== null
                 ? Summarization.fromPartial(object.summarization)
                 : undefined;
+        message.talkState =
+            object.talkState !== undefined && object.talkState !== null
+                ? TalkState.fromPartial(object.talkState)
+                : undefined;
         return message;
     },
 };
 
 messageTypeRegistry.set(Talk.$type, Talk);
+
+const baseTalkState: object = {
+    $type: 'yandex.cloud.speechsense.v1.TalkState',
+    processingState: 0,
+};
+
+export const TalkState = {
+    $type: 'yandex.cloud.speechsense.v1.TalkState' as const,
+
+    encode(message: TalkState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.processingState !== 0) {
+            writer.uint32(8).int32(message.processingState);
+        }
+        for (const v of message.algorithmProcessingInfos) {
+            AlgorithmProcessingInfo.encode(v!, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): TalkState {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseTalkState } as TalkState;
+        message.algorithmProcessingInfos = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.processingState = reader.int32() as any;
+                    break;
+                case 2:
+                    message.algorithmProcessingInfos.push(
+                        AlgorithmProcessingInfo.decode(reader, reader.uint32()),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): TalkState {
+        const message = { ...baseTalkState } as TalkState;
+        message.processingState =
+            object.processingState !== undefined && object.processingState !== null
+                ? processingStateFromJSON(object.processingState)
+                : 0;
+        message.algorithmProcessingInfos = (object.algorithmProcessingInfos ?? []).map((e: any) =>
+            AlgorithmProcessingInfo.fromJSON(e),
+        );
+        return message;
+    },
+
+    toJSON(message: TalkState): unknown {
+        const obj: any = {};
+        message.processingState !== undefined &&
+            (obj.processingState = processingStateToJSON(message.processingState));
+        if (message.algorithmProcessingInfos) {
+            obj.algorithmProcessingInfos = message.algorithmProcessingInfos.map((e) =>
+                e ? AlgorithmProcessingInfo.toJSON(e) : undefined,
+            );
+        } else {
+            obj.algorithmProcessingInfos = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<TalkState>, I>>(object: I): TalkState {
+        const message = { ...baseTalkState } as TalkState;
+        message.processingState = object.processingState ?? 0;
+        message.algorithmProcessingInfos =
+            object.algorithmProcessingInfos?.map((e) => AlgorithmProcessingInfo.fromPartial(e)) ||
+            [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(TalkState.$type, TalkState);
 
 const baseField: object = {
     $type: 'yandex.cloud.speechsense.v1.Field',
@@ -513,6 +734,79 @@ export const Field = {
 };
 
 messageTypeRegistry.set(Field.$type, Field);
+
+const baseAlgorithmProcessingInfo: object = {
+    $type: 'yandex.cloud.speechsense.v1.AlgorithmProcessingInfo',
+    algorithm: 0,
+    processingState: 0,
+};
+
+export const AlgorithmProcessingInfo = {
+    $type: 'yandex.cloud.speechsense.v1.AlgorithmProcessingInfo' as const,
+
+    encode(message: AlgorithmProcessingInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.algorithm !== 0) {
+            writer.uint32(8).int32(message.algorithm);
+        }
+        if (message.processingState !== 0) {
+            writer.uint32(16).int32(message.processingState);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): AlgorithmProcessingInfo {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseAlgorithmProcessingInfo } as AlgorithmProcessingInfo;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.algorithm = reader.int32() as any;
+                    break;
+                case 2:
+                    message.processingState = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): AlgorithmProcessingInfo {
+        const message = { ...baseAlgorithmProcessingInfo } as AlgorithmProcessingInfo;
+        message.algorithm =
+            object.algorithm !== undefined && object.algorithm !== null
+                ? algorithmFromJSON(object.algorithm)
+                : 0;
+        message.processingState =
+            object.processingState !== undefined && object.processingState !== null
+                ? processingStateFromJSON(object.processingState)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: AlgorithmProcessingInfo): unknown {
+        const obj: any = {};
+        message.algorithm !== undefined && (obj.algorithm = algorithmToJSON(message.algorithm));
+        message.processingState !== undefined &&
+            (obj.processingState = processingStateToJSON(message.processingState));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<AlgorithmProcessingInfo>, I>>(
+        object: I,
+    ): AlgorithmProcessingInfo {
+        const message = { ...baseAlgorithmProcessingInfo } as AlgorithmProcessingInfo;
+        message.algorithm = object.algorithm ?? 0;
+        message.processingState = object.processingState ?? 0;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(AlgorithmProcessingInfo.$type, AlgorithmProcessingInfo);
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 

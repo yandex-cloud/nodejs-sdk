@@ -20,7 +20,10 @@ import {
     JobParameters,
     JobResult,
     Job,
+    JobProgress,
+    JobMetadata,
     StorageFile,
+    FileUploadError,
     OutputDataset,
     File,
 } from '../../../../../yandex/cloud/datasphere/v2/jobs/jobs';
@@ -148,6 +151,8 @@ export interface ExecuteProjectJobResponse {
     $type: 'yandex.cloud.datasphere.v2.jobs.ExecuteProjectJobResponse';
     /** Uploaded output files with URLs. */
     outputFiles: StorageFile[];
+    /** Output file errors */
+    outputFilesErrors: FileUploadError[];
     /** Created datasets */
     outputDatasets: OutputDataset[];
     /** Result of the job. */
@@ -156,8 +161,16 @@ export interface ExecuteProjectJobResponse {
 
 export interface ExecuteProjectJobMetadata {
     $type: 'yandex.cloud.datasphere.v2.jobs.ExecuteProjectJobMetadata';
-    /** Instance of the job. */
+    /**
+     * Instance of the job.
+     *
+     * @deprecated
+     */
     job?: Job;
+    /** Job progress info */
+    progress?: JobProgress;
+    /** Job metadata with main job info */
+    metadata?: JobMetadata;
 }
 
 export interface CancelProjectJobRequest {
@@ -973,6 +986,9 @@ export const ExecuteProjectJobResponse = {
         for (const v of message.outputFiles) {
             StorageFile.encode(v!, writer.uint32(10).fork()).ldelim();
         }
+        for (const v of message.outputFilesErrors) {
+            FileUploadError.encode(v!, writer.uint32(34).fork()).ldelim();
+        }
         for (const v of message.outputDatasets) {
             OutputDataset.encode(v!, writer.uint32(26).fork()).ldelim();
         }
@@ -987,12 +1003,16 @@ export const ExecuteProjectJobResponse = {
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseExecuteProjectJobResponse } as ExecuteProjectJobResponse;
         message.outputFiles = [];
+        message.outputFilesErrors = [];
         message.outputDatasets = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
                     message.outputFiles.push(StorageFile.decode(reader, reader.uint32()));
+                    break;
+                case 4:
+                    message.outputFilesErrors.push(FileUploadError.decode(reader, reader.uint32()));
                     break;
                 case 3:
                     message.outputDatasets.push(OutputDataset.decode(reader, reader.uint32()));
@@ -1011,6 +1031,9 @@ export const ExecuteProjectJobResponse = {
     fromJSON(object: any): ExecuteProjectJobResponse {
         const message = { ...baseExecuteProjectJobResponse } as ExecuteProjectJobResponse;
         message.outputFiles = (object.outputFiles ?? []).map((e: any) => StorageFile.fromJSON(e));
+        message.outputFilesErrors = (object.outputFilesErrors ?? []).map((e: any) =>
+            FileUploadError.fromJSON(e),
+        );
         message.outputDatasets = (object.outputDatasets ?? []).map((e: any) =>
             OutputDataset.fromJSON(e),
         );
@@ -1030,6 +1053,13 @@ export const ExecuteProjectJobResponse = {
         } else {
             obj.outputFiles = [];
         }
+        if (message.outputFilesErrors) {
+            obj.outputFilesErrors = message.outputFilesErrors.map((e) =>
+                e ? FileUploadError.toJSON(e) : undefined,
+            );
+        } else {
+            obj.outputFilesErrors = [];
+        }
         if (message.outputDatasets) {
             obj.outputDatasets = message.outputDatasets.map((e) =>
                 e ? OutputDataset.toJSON(e) : undefined,
@@ -1047,6 +1077,8 @@ export const ExecuteProjectJobResponse = {
     ): ExecuteProjectJobResponse {
         const message = { ...baseExecuteProjectJobResponse } as ExecuteProjectJobResponse;
         message.outputFiles = object.outputFiles?.map((e) => StorageFile.fromPartial(e)) || [];
+        message.outputFilesErrors =
+            object.outputFilesErrors?.map((e) => FileUploadError.fromPartial(e)) || [];
         message.outputDatasets =
             object.outputDatasets?.map((e) => OutputDataset.fromPartial(e)) || [];
         message.result =
@@ -1073,6 +1105,12 @@ export const ExecuteProjectJobMetadata = {
         if (message.job !== undefined) {
             Job.encode(message.job, writer.uint32(10).fork()).ldelim();
         }
+        if (message.progress !== undefined) {
+            JobProgress.encode(message.progress, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.metadata !== undefined) {
+            JobMetadata.encode(message.metadata, writer.uint32(26).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -1086,6 +1124,12 @@ export const ExecuteProjectJobMetadata = {
                 case 1:
                     message.job = Job.decode(reader, reader.uint32());
                     break;
+                case 2:
+                    message.progress = JobProgress.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.metadata = JobMetadata.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1098,12 +1142,24 @@ export const ExecuteProjectJobMetadata = {
         const message = { ...baseExecuteProjectJobMetadata } as ExecuteProjectJobMetadata;
         message.job =
             object.job !== undefined && object.job !== null ? Job.fromJSON(object.job) : undefined;
+        message.progress =
+            object.progress !== undefined && object.progress !== null
+                ? JobProgress.fromJSON(object.progress)
+                : undefined;
+        message.metadata =
+            object.metadata !== undefined && object.metadata !== null
+                ? JobMetadata.fromJSON(object.metadata)
+                : undefined;
         return message;
     },
 
     toJSON(message: ExecuteProjectJobMetadata): unknown {
         const obj: any = {};
         message.job !== undefined && (obj.job = message.job ? Job.toJSON(message.job) : undefined);
+        message.progress !== undefined &&
+            (obj.progress = message.progress ? JobProgress.toJSON(message.progress) : undefined);
+        message.metadata !== undefined &&
+            (obj.metadata = message.metadata ? JobMetadata.toJSON(message.metadata) : undefined);
         return obj;
     },
 
@@ -1114,6 +1170,14 @@ export const ExecuteProjectJobMetadata = {
         message.job =
             object.job !== undefined && object.job !== null
                 ? Job.fromPartial(object.job)
+                : undefined;
+        message.progress =
+            object.progress !== undefined && object.progress !== null
+                ? JobProgress.fromPartial(object.progress)
+                : undefined;
+        message.metadata =
+            object.metadata !== undefined && object.metadata !== null
+                ? JobMetadata.fromPartial(object.metadata)
                 : undefined;
         return message;
     },

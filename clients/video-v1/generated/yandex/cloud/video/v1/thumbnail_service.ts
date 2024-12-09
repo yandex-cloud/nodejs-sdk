@@ -19,6 +19,12 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
+export interface GetThumbnailRequest {
+    $type: 'yandex.cloud.video.v1.GetThumbnailRequest';
+    /** ID of the thumbnail. */
+    thumbnailId: string;
+}
+
 export interface ListThumbnailRequest {
     $type: 'yandex.cloud.video.v1.ListThumbnailRequest';
     /** ID of the channel. */
@@ -82,6 +88,77 @@ export interface GenerateThumbnailUploadURLResponse {
     /** Upload url. */
     uploadUrl: string;
 }
+
+export interface DeleteThumbnailRequest {
+    $type: 'yandex.cloud.video.v1.DeleteThumbnailRequest';
+    /** ID of the thumbnail. */
+    thumbnailId: string;
+}
+
+export interface DeleteThumbnailMetadata {
+    $type: 'yandex.cloud.video.v1.DeleteThumbnailMetadata';
+    /** ID of the thumbnail. */
+    thumbnailId: string;
+}
+
+const baseGetThumbnailRequest: object = {
+    $type: 'yandex.cloud.video.v1.GetThumbnailRequest',
+    thumbnailId: '',
+};
+
+export const GetThumbnailRequest = {
+    $type: 'yandex.cloud.video.v1.GetThumbnailRequest' as const,
+
+    encode(message: GetThumbnailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.thumbnailId !== '') {
+            writer.uint32(10).string(message.thumbnailId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetThumbnailRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGetThumbnailRequest } as GetThumbnailRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.thumbnailId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GetThumbnailRequest {
+        const message = { ...baseGetThumbnailRequest } as GetThumbnailRequest;
+        message.thumbnailId =
+            object.thumbnailId !== undefined && object.thumbnailId !== null
+                ? String(object.thumbnailId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: GetThumbnailRequest): unknown {
+        const obj: any = {};
+        message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GetThumbnailRequest>, I>>(
+        object: I,
+    ): GetThumbnailRequest {
+        const message = { ...baseGetThumbnailRequest } as GetThumbnailRequest;
+        message.thumbnailId = object.thumbnailId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(GetThumbnailRequest.$type, GetThumbnailRequest);
 
 const baseListThumbnailRequest: object = {
     $type: 'yandex.cloud.video.v1.ListThumbnailRequest',
@@ -725,8 +802,137 @@ messageTypeRegistry.set(
     GenerateThumbnailUploadURLResponse,
 );
 
+const baseDeleteThumbnailRequest: object = {
+    $type: 'yandex.cloud.video.v1.DeleteThumbnailRequest',
+    thumbnailId: '',
+};
+
+export const DeleteThumbnailRequest = {
+    $type: 'yandex.cloud.video.v1.DeleteThumbnailRequest' as const,
+
+    encode(message: DeleteThumbnailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.thumbnailId !== '') {
+            writer.uint32(10).string(message.thumbnailId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteThumbnailRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDeleteThumbnailRequest } as DeleteThumbnailRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.thumbnailId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeleteThumbnailRequest {
+        const message = { ...baseDeleteThumbnailRequest } as DeleteThumbnailRequest;
+        message.thumbnailId =
+            object.thumbnailId !== undefined && object.thumbnailId !== null
+                ? String(object.thumbnailId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: DeleteThumbnailRequest): unknown {
+        const obj: any = {};
+        message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeleteThumbnailRequest>, I>>(
+        object: I,
+    ): DeleteThumbnailRequest {
+        const message = { ...baseDeleteThumbnailRequest } as DeleteThumbnailRequest;
+        message.thumbnailId = object.thumbnailId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(DeleteThumbnailRequest.$type, DeleteThumbnailRequest);
+
+const baseDeleteThumbnailMetadata: object = {
+    $type: 'yandex.cloud.video.v1.DeleteThumbnailMetadata',
+    thumbnailId: '',
+};
+
+export const DeleteThumbnailMetadata = {
+    $type: 'yandex.cloud.video.v1.DeleteThumbnailMetadata' as const,
+
+    encode(message: DeleteThumbnailMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.thumbnailId !== '') {
+            writer.uint32(10).string(message.thumbnailId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteThumbnailMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDeleteThumbnailMetadata } as DeleteThumbnailMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.thumbnailId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeleteThumbnailMetadata {
+        const message = { ...baseDeleteThumbnailMetadata } as DeleteThumbnailMetadata;
+        message.thumbnailId =
+            object.thumbnailId !== undefined && object.thumbnailId !== null
+                ? String(object.thumbnailId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: DeleteThumbnailMetadata): unknown {
+        const obj: any = {};
+        message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeleteThumbnailMetadata>, I>>(
+        object: I,
+    ): DeleteThumbnailMetadata {
+        const message = { ...baseDeleteThumbnailMetadata } as DeleteThumbnailMetadata;
+        message.thumbnailId = object.thumbnailId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(DeleteThumbnailMetadata.$type, DeleteThumbnailMetadata);
+
 /** Thumbnail management service. */
 export const ThumbnailServiceService = {
+    /** Returns the specific thumbnail. */
+    get: {
+        path: '/yandex.cloud.video.v1.ThumbnailService/Get',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: GetThumbnailRequest) =>
+            Buffer.from(GetThumbnailRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => GetThumbnailRequest.decode(value),
+        responseSerialize: (value: Thumbnail) => Buffer.from(Thumbnail.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Thumbnail.decode(value),
+    },
     /** List thumbnails for channel. */
     list: {
         path: '/yandex.cloud.video.v1.ThumbnailService/List',
@@ -774,9 +980,22 @@ export const ThumbnailServiceService = {
             Buffer.from(GenerateThumbnailUploadURLResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => GenerateThumbnailUploadURLResponse.decode(value),
     },
+    /** Delete thumbnail. */
+    delete: {
+        path: '/yandex.cloud.video.v1.ThumbnailService/Delete',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: DeleteThumbnailRequest) =>
+            Buffer.from(DeleteThumbnailRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => DeleteThumbnailRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
 } as const;
 
 export interface ThumbnailServiceServer extends UntypedServiceImplementation {
+    /** Returns the specific thumbnail. */
+    get: handleUnaryCall<GetThumbnailRequest, Thumbnail>;
     /** List thumbnails for channel. */
     list: handleUnaryCall<ListThumbnailRequest, ListThumbnailResponse>;
     /** Create thumbnail. */
@@ -791,9 +1010,27 @@ export interface ThumbnailServiceServer extends UntypedServiceImplementation {
         GenerateThumbnailUploadURLRequest,
         GenerateThumbnailUploadURLResponse
     >;
+    /** Delete thumbnail. */
+    delete: handleUnaryCall<DeleteThumbnailRequest, Operation>;
 }
 
 export interface ThumbnailServiceClient extends Client {
+    /** Returns the specific thumbnail. */
+    get(
+        request: GetThumbnailRequest,
+        callback: (error: ServiceError | null, response: Thumbnail) => void,
+    ): ClientUnaryCall;
+    get(
+        request: GetThumbnailRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Thumbnail) => void,
+    ): ClientUnaryCall;
+    get(
+        request: GetThumbnailRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Thumbnail) => void,
+    ): ClientUnaryCall;
     /** List thumbnails for channel. */
     list(
         request: ListThumbnailRequest,
@@ -866,6 +1103,22 @@ export interface ThumbnailServiceClient extends Client {
             error: ServiceError | null,
             response: GenerateThumbnailUploadURLResponse,
         ) => void,
+    ): ClientUnaryCall;
+    /** Delete thumbnail. */
+    delete(
+        request: DeleteThumbnailRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    delete(
+        request: DeleteThumbnailRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    delete(
+        request: DeleteThumbnailRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
 }
 

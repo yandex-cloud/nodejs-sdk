@@ -2,10 +2,11 @@
 import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
+import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.iam.v1';
 
-/** Currently represents only [Yandex account](/docs/iam/concepts/#passport). */
+/** Currently represents only [Yandex account](/docs/iam/concepts/users/accounts#passport). */
 export interface UserAccount {
     $type: 'yandex.cloud.iam.v1.UserAccount';
     /** ID of the user account. */
@@ -14,11 +15,12 @@ export interface UserAccount {
     yandexPassportUserAccount?: YandexPassportUserAccount | undefined;
     /** A SAML federated user. */
     samlUserAccount?: SamlUserAccount | undefined;
+    lastAuthenticatedAt?: Date;
 }
 
 /**
  * A YandexPassportUserAccount resource.
- * For more information, see [Yandex account](/docs/iam/concepts/#passport).
+ * For more information, see [Yandex account](/docs/iam/concepts/users/accounts#passport).
  */
 export interface YandexPassportUserAccount {
     $type: 'yandex.cloud.iam.v1.YandexPassportUserAccount';
@@ -74,6 +76,12 @@ export const UserAccount = {
         if (message.samlUserAccount !== undefined) {
             SamlUserAccount.encode(message.samlUserAccount, writer.uint32(26).fork()).ldelim();
         }
+        if (message.lastAuthenticatedAt !== undefined) {
+            Timestamp.encode(
+                toTimestamp(message.lastAuthenticatedAt),
+                writer.uint32(34).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -96,6 +104,11 @@ export const UserAccount = {
                 case 3:
                     message.samlUserAccount = SamlUserAccount.decode(reader, reader.uint32());
                     break;
+                case 4:
+                    message.lastAuthenticatedAt = fromTimestamp(
+                        Timestamp.decode(reader, reader.uint32()),
+                    );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -116,6 +129,10 @@ export const UserAccount = {
             object.samlUserAccount !== undefined && object.samlUserAccount !== null
                 ? SamlUserAccount.fromJSON(object.samlUserAccount)
                 : undefined;
+        message.lastAuthenticatedAt =
+            object.lastAuthenticatedAt !== undefined && object.lastAuthenticatedAt !== null
+                ? fromJsonTimestamp(object.lastAuthenticatedAt)
+                : undefined;
         return message;
     },
 
@@ -130,6 +147,8 @@ export const UserAccount = {
             (obj.samlUserAccount = message.samlUserAccount
                 ? SamlUserAccount.toJSON(message.samlUserAccount)
                 : undefined);
+        message.lastAuthenticatedAt !== undefined &&
+            (obj.lastAuthenticatedAt = message.lastAuthenticatedAt.toISOString());
         return obj;
     },
 
@@ -145,6 +164,7 @@ export const UserAccount = {
             object.samlUserAccount !== undefined && object.samlUserAccount !== null
                 ? SamlUserAccount.fromPartial(object.samlUserAccount)
                 : undefined;
+        message.lastAuthenticatedAt = object.lastAuthenticatedAt ?? undefined;
         return message;
     },
 };
@@ -495,6 +515,28 @@ export type Exact<P, I extends P> = P extends Builtin
               Exclude<keyof I, KeysOfUnion<P> | '$type'>,
               never
           >;
+
+function toTimestamp(date: Date): Timestamp {
+    const seconds = date.getTime() / 1_000;
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+    let millis = t.seconds * 1_000;
+    millis += t.nanos / 1_000_000;
+    return new Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+    if (o instanceof Date) {
+        return o;
+    } else if (typeof o === 'string') {
+        return new Date(o);
+    } else {
+        return fromTimestamp(Timestamp.fromJSON(o));
+    }
+}
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

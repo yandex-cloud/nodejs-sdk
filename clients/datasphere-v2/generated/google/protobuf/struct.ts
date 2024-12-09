@@ -456,7 +456,7 @@ export const ListValue = {
     },
 
     wrap(value: Array<any>): ListValue {
-        return { $type: 'google.protobuf.ListValue', values: value };
+        return { values: value };
     },
 
     unwrap(message: ListValue): Array<any> {

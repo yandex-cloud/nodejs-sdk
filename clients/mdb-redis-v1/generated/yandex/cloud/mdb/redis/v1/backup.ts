@@ -30,6 +30,48 @@ export interface Backup {
     startedAt?: Date;
     /** Shard names used as a source for backup. */
     sourceShardNames: string[];
+    /** How this backup was created (manual/automatic/etc...) */
+    type: Backup_BackupType;
+}
+
+export enum Backup_BackupType {
+    BACKUP_TYPE_UNSPECIFIED = 0,
+    /** AUTOMATED - Backup created by automated daily schedule */
+    AUTOMATED = 1,
+    /** MANUAL - Backup created by user request */
+    MANUAL = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function backup_BackupTypeFromJSON(object: any): Backup_BackupType {
+    switch (object) {
+        case 0:
+        case 'BACKUP_TYPE_UNSPECIFIED':
+            return Backup_BackupType.BACKUP_TYPE_UNSPECIFIED;
+        case 1:
+        case 'AUTOMATED':
+            return Backup_BackupType.AUTOMATED;
+        case 2:
+        case 'MANUAL':
+            return Backup_BackupType.MANUAL;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return Backup_BackupType.UNRECOGNIZED;
+    }
+}
+
+export function backup_BackupTypeToJSON(object: Backup_BackupType): string {
+    switch (object) {
+        case Backup_BackupType.BACKUP_TYPE_UNSPECIFIED:
+            return 'BACKUP_TYPE_UNSPECIFIED';
+        case Backup_BackupType.AUTOMATED:
+            return 'AUTOMATED';
+        case Backup_BackupType.MANUAL:
+            return 'MANUAL';
+        default:
+            return 'UNKNOWN';
+    }
 }
 
 const baseBackup: object = {
@@ -38,6 +80,7 @@ const baseBackup: object = {
     folderId: '',
     sourceClusterId: '',
     sourceShardNames: '',
+    type: 0,
 };
 
 export const Backup = {
@@ -61,6 +104,9 @@ export const Backup = {
         }
         for (const v of message.sourceShardNames) {
             writer.uint32(50).string(v!);
+        }
+        if (message.type !== 0) {
+            writer.uint32(56).int32(message.type);
         }
         return writer;
     },
@@ -91,6 +137,9 @@ export const Backup = {
                 case 6:
                     message.sourceShardNames.push(reader.string());
                     break;
+                case 7:
+                    message.type = reader.int32() as any;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -119,6 +168,10 @@ export const Backup = {
                 ? fromJsonTimestamp(object.startedAt)
                 : undefined;
         message.sourceShardNames = (object.sourceShardNames ?? []).map((e: any) => String(e));
+        message.type =
+            object.type !== undefined && object.type !== null
+                ? backup_BackupTypeFromJSON(object.type)
+                : 0;
         return message;
     },
 
@@ -134,6 +187,7 @@ export const Backup = {
         } else {
             obj.sourceShardNames = [];
         }
+        message.type !== undefined && (obj.type = backup_BackupTypeToJSON(message.type));
         return obj;
     },
 
@@ -145,6 +199,7 @@ export const Backup = {
         message.sourceClusterId = object.sourceClusterId ?? '';
         message.startedAt = object.startedAt ?? undefined;
         message.sourceShardNames = object.sourceShardNames?.map((e) => e) || [];
+        message.type = object.type ?? 0;
         return message;
     },
 };

@@ -37,6 +37,8 @@ export interface Episode {
     publicAccess?: EpisodePublicAccessRights | undefined;
     /** Checking access rights using the authorization system. */
     authSystemAccess?: EpisodeAuthSystemAccessRights | undefined;
+    /** Checking access rights using url's signature. */
+    signUrlAccess?: EpisodeSignURLAccessRights | undefined;
     /** Time when episode was created. */
     createdAt?: Date;
     /** Time of last episode update. */
@@ -87,6 +89,10 @@ export interface EpisodePublicAccessRights {
 
 export interface EpisodeAuthSystemAccessRights {
     $type: 'yandex.cloud.video.v1.EpisodeAuthSystemAccessRights';
+}
+
+export interface EpisodeSignURLAccessRights {
+    $type: 'yandex.cloud.video.v1.EpisodeSignURLAccessRights';
 }
 
 const baseEpisode: object = {
@@ -147,6 +153,12 @@ export const Episode = {
                 writer.uint32(8018).fork(),
             ).ldelim();
         }
+        if (message.signUrlAccess !== undefined) {
+            EpisodeSignURLAccessRights.encode(
+                message.signUrlAccess,
+                writer.uint32(8026).fork(),
+            ).ldelim();
+        }
         if (message.createdAt !== undefined) {
             Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(802).fork()).ldelim();
         }
@@ -201,6 +213,12 @@ export const Episode = {
                     break;
                 case 1002:
                     message.authSystemAccess = EpisodeAuthSystemAccessRights.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 1003:
+                    message.signUrlAccess = EpisodeSignURLAccessRights.decode(
                         reader,
                         reader.uint32(),
                     );
@@ -262,6 +280,10 @@ export const Episode = {
             object.authSystemAccess !== undefined && object.authSystemAccess !== null
                 ? EpisodeAuthSystemAccessRights.fromJSON(object.authSystemAccess)
                 : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? EpisodeSignURLAccessRights.fromJSON(object.signUrlAccess)
+                : undefined;
         message.createdAt =
             object.createdAt !== undefined && object.createdAt !== null
                 ? fromJsonTimestamp(object.createdAt)
@@ -294,6 +316,10 @@ export const Episode = {
             (obj.authSystemAccess = message.authSystemAccess
                 ? EpisodeAuthSystemAccessRights.toJSON(message.authSystemAccess)
                 : undefined);
+        message.signUrlAccess !== undefined &&
+            (obj.signUrlAccess = message.signUrlAccess
+                ? EpisodeSignURLAccessRights.toJSON(message.signUrlAccess)
+                : undefined);
         message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
         message.updatedAt !== undefined && (obj.updatedAt = message.updatedAt.toISOString());
         return obj;
@@ -318,6 +344,10 @@ export const Episode = {
         message.authSystemAccess =
             object.authSystemAccess !== undefined && object.authSystemAccess !== null
                 ? EpisodeAuthSystemAccessRights.fromPartial(object.authSystemAccess)
+                : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? EpisodeSignURLAccessRights.fromPartial(object.signUrlAccess)
                 : undefined;
         message.createdAt = object.createdAt ?? undefined;
         message.updatedAt = object.updatedAt ?? undefined;
@@ -418,6 +448,52 @@ export const EpisodeAuthSystemAccessRights = {
 };
 
 messageTypeRegistry.set(EpisodeAuthSystemAccessRights.$type, EpisodeAuthSystemAccessRights);
+
+const baseEpisodeSignURLAccessRights: object = {
+    $type: 'yandex.cloud.video.v1.EpisodeSignURLAccessRights',
+};
+
+export const EpisodeSignURLAccessRights = {
+    $type: 'yandex.cloud.video.v1.EpisodeSignURLAccessRights' as const,
+
+    encode(_: EpisodeSignURLAccessRights, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): EpisodeSignURLAccessRights {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseEpisodeSignURLAccessRights } as EpisodeSignURLAccessRights;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): EpisodeSignURLAccessRights {
+        const message = { ...baseEpisodeSignURLAccessRights } as EpisodeSignURLAccessRights;
+        return message;
+    },
+
+    toJSON(_: EpisodeSignURLAccessRights): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<EpisodeSignURLAccessRights>, I>>(
+        _: I,
+    ): EpisodeSignURLAccessRights {
+        const message = { ...baseEpisodeSignURLAccessRights } as EpisodeSignURLAccessRights;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(EpisodeSignURLAccessRights.$type, EpisodeSignURLAccessRights);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

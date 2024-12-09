@@ -14,6 +14,11 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
+import {
+    ResourceType,
+    resourceTypeFromJSON,
+    resourceTypeToJSON,
+} from '../../../../yandex/cloud/backup/v1/resource';
 import { Archive, Backup, BackupFile } from '../../../../yandex/cloud/backup/v1/backup';
 import { Operation } from '../../../../yandex/cloud/operation/operation';
 
@@ -60,6 +65,8 @@ export interface ListBackupsRequest {
      * * AND
      */
     filter: string;
+    /** Type of resource. Could be compute VM or baremetal server. */
+    type: ResourceType;
 }
 
 export interface ListBackupsRequest_ArchiveParameters {
@@ -365,6 +372,7 @@ const baseListBackupsRequest: object = {
     $type: 'yandex.cloud.backup.v1.ListBackupsRequest',
     orderBy: '',
     filter: '',
+    type: 0,
 };
 
 export const ListBackupsRequest = {
@@ -400,6 +408,9 @@ export const ListBackupsRequest = {
         }
         if (message.filter !== '') {
             writer.uint32(66).string(message.filter);
+        }
+        if (message.type !== 0) {
+            writer.uint32(72).int32(message.type);
         }
         return writer;
     },
@@ -441,6 +452,9 @@ export const ListBackupsRequest = {
                 case 8:
                     message.filter = reader.string();
                     break;
+                case 9:
+                    message.type = reader.int32() as any;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -479,6 +493,10 @@ export const ListBackupsRequest = {
             object.orderBy !== undefined && object.orderBy !== null ? String(object.orderBy) : '';
         message.filter =
             object.filter !== undefined && object.filter !== null ? String(object.filter) : '';
+        message.type =
+            object.type !== undefined && object.type !== null
+                ? resourceTypeFromJSON(object.type)
+                : 0;
         return message;
     },
 
@@ -499,6 +517,7 @@ export const ListBackupsRequest = {
         message.policyId !== undefined && (obj.policyId = message.policyId);
         message.orderBy !== undefined && (obj.orderBy = message.orderBy);
         message.filter !== undefined && (obj.filter = message.filter);
+        message.type !== undefined && (obj.type = resourceTypeToJSON(message.type));
         return obj;
     },
 
@@ -520,6 +539,7 @@ export const ListBackupsRequest = {
         message.policyId = object.policyId ?? undefined;
         message.orderBy = object.orderBy ?? '';
         message.filter = object.filter ?? '';
+        message.type = object.type ?? 0;
         return message;
     },
 };

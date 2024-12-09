@@ -36,53 +36,8 @@ export interface Project_Settings {
     subnetId: string;
     /** ID of the DataProc cluster. */
     dataProcClusterId: string;
-    /** Commit mode that is assigned to the project. */
-    commitMode: Project_Settings_CommitMode;
     /** Network interfaces security groups. */
     securityGroupIds: string[];
-}
-
-export enum Project_Settings_CommitMode {
-    COMMIT_MODE_UNSPECIFIED = 0,
-    /** STANDARD - Commit happens after the execution of a cell or group of cells or after completion with an error. */
-    STANDARD = 1,
-    /**
-     * AUTO - Commit happens periodically.
-     * Also, automatic saving of state occurs when switching to another type of computing resource.
-     */
-    AUTO = 2,
-    UNRECOGNIZED = -1,
-}
-
-export function project_Settings_CommitModeFromJSON(object: any): Project_Settings_CommitMode {
-    switch (object) {
-        case 0:
-        case 'COMMIT_MODE_UNSPECIFIED':
-            return Project_Settings_CommitMode.COMMIT_MODE_UNSPECIFIED;
-        case 1:
-        case 'STANDARD':
-            return Project_Settings_CommitMode.STANDARD;
-        case 2:
-        case 'AUTO':
-            return Project_Settings_CommitMode.AUTO;
-        case -1:
-        case 'UNRECOGNIZED':
-        default:
-            return Project_Settings_CommitMode.UNRECOGNIZED;
-    }
-}
-
-export function project_Settings_CommitModeToJSON(object: Project_Settings_CommitMode): string {
-    switch (object) {
-        case Project_Settings_CommitMode.COMMIT_MODE_UNSPECIFIED:
-            return 'COMMIT_MODE_UNSPECIFIED';
-        case Project_Settings_CommitMode.STANDARD:
-            return 'STANDARD';
-        case Project_Settings_CommitMode.AUTO:
-            return 'AUTO';
-        default:
-            return 'UNKNOWN';
-    }
 }
 
 export interface Project_Limits {
@@ -234,7 +189,6 @@ const baseProject_Settings: object = {
     serviceAccountId: '',
     subnetId: '',
     dataProcClusterId: '',
-    commitMode: 0,
     securityGroupIds: '',
 };
 
@@ -250,9 +204,6 @@ export const Project_Settings = {
         }
         if (message.dataProcClusterId !== '') {
             writer.uint32(26).string(message.dataProcClusterId);
-        }
-        if (message.commitMode !== 0) {
-            writer.uint32(32).int32(message.commitMode);
         }
         for (const v of message.securityGroupIds) {
             writer.uint32(42).string(v!);
@@ -276,9 +227,6 @@ export const Project_Settings = {
                     break;
                 case 3:
                     message.dataProcClusterId = reader.string();
-                    break;
-                case 4:
-                    message.commitMode = reader.int32() as any;
                     break;
                 case 5:
                     message.securityGroupIds.push(reader.string());
@@ -305,10 +253,6 @@ export const Project_Settings = {
             object.dataProcClusterId !== undefined && object.dataProcClusterId !== null
                 ? String(object.dataProcClusterId)
                 : '';
-        message.commitMode =
-            object.commitMode !== undefined && object.commitMode !== null
-                ? project_Settings_CommitModeFromJSON(object.commitMode)
-                : 0;
         message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
         return message;
     },
@@ -319,8 +263,6 @@ export const Project_Settings = {
         message.subnetId !== undefined && (obj.subnetId = message.subnetId);
         message.dataProcClusterId !== undefined &&
             (obj.dataProcClusterId = message.dataProcClusterId);
-        message.commitMode !== undefined &&
-            (obj.commitMode = project_Settings_CommitModeToJSON(message.commitMode));
         if (message.securityGroupIds) {
             obj.securityGroupIds = message.securityGroupIds.map((e) => e);
         } else {
@@ -334,7 +276,6 @@ export const Project_Settings = {
         message.serviceAccountId = object.serviceAccountId ?? '';
         message.subnetId = object.subnetId ?? '';
         message.dataProcClusterId = object.dataProcClusterId ?? '';
-        message.commitMode = object.commitMode ?? 0;
         message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         return message;
     },

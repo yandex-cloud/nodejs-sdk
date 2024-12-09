@@ -83,7 +83,7 @@ export interface PolicySettings {
     $type: 'yandex.cloud.backup.v1.PolicySettings';
     /** Archive compression level. */
     compression: PolicySettings_Compression;
-    /** Format of the Acronis backup archive. */
+    /** Format of the Cyberprotect backup archive. */
     format: Format;
     /** If true, snapshots of multiple volumes will be taken simultaneously. */
     multiVolumeSnapshottingEnabled: boolean;

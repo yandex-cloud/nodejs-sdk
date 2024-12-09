@@ -3,6 +3,7 @@ import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { DoubleValue, Int64Value } from '../../../../../google/protobuf/wrappers';
+import { Struct } from '../../../../../google/protobuf/struct';
 
 export const protobufPackage = 'yandex.cloud.ai.foundation_models.v1';
 
@@ -36,6 +37,10 @@ export interface Message {
     role: string;
     /** Textual content of the message. */
     text: string | undefined;
+    /** List of tool calls made by the model as part of the response generation. */
+    toolCallList?: ToolCallList | undefined;
+    /** List of tool results returned from external tools that were invoked by the model. */
+    toolResultList?: ToolResultList | undefined;
 }
 
 /** An object representing the number of content [tokens](/docs/foundation-models/concepts/yandexgpt/tokens) used by the completion model. */
@@ -43,7 +48,7 @@ export interface ContentUsage {
     $type: 'yandex.cloud.ai.foundation_models.v1.ContentUsage';
     /** The number of tokens in the textual part of the model input. */
     inputTextTokens: number;
-    /** The total number of tokens in the generated completions. */
+    /** The number of tokens in the generated completion. */
     completionTokens: number;
     /** The total number of tokens, including all input tokens and all generated tokens. */
     totalTokens: number;
@@ -52,9 +57,9 @@ export interface ContentUsage {
 /** Represents a generated completion alternative, including its content and generation status. */
 export interface Alternative {
     $type: 'yandex.cloud.ai.foundation_models.v1.Alternative';
-    /** A message containing the content of the alternative. */
+    /** A message with the content of the alternative. */
     message?: Message;
-    /** The generation status of the alternative */
+    /** The generation status of the alternative. */
     status: Alternative_AlternativeStatus;
 }
 
@@ -73,6 +78,8 @@ export enum Alternative_AlternativeStatus {
      * To fix, modify the prompt and restart generation.
      */
     ALTERNATIVE_STATUS_CONTENT_FILTER = 4,
+    /** ALTERNATIVE_STATUS_TOOL_CALLS - Tools were invoked during the completion generation. */
+    ALTERNATIVE_STATUS_TOOL_CALLS = 5,
     UNRECOGNIZED = -1,
 }
 
@@ -93,6 +100,9 @@ export function alternative_AlternativeStatusFromJSON(object: any): Alternative_
         case 4:
         case 'ALTERNATIVE_STATUS_CONTENT_FILTER':
             return Alternative_AlternativeStatus.ALTERNATIVE_STATUS_CONTENT_FILTER;
+        case 5:
+        case 'ALTERNATIVE_STATUS_TOOL_CALLS':
+            return Alternative_AlternativeStatus.ALTERNATIVE_STATUS_TOOL_CALLS;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -112,6 +122,8 @@ export function alternative_AlternativeStatusToJSON(object: Alternative_Alternat
             return 'ALTERNATIVE_STATUS_FINAL';
         case Alternative_AlternativeStatus.ALTERNATIVE_STATUS_CONTENT_FILTER:
             return 'ALTERNATIVE_STATUS_CONTENT_FILTER';
+        case Alternative_AlternativeStatus.ALTERNATIVE_STATUS_TOOL_CALLS:
+            return 'ALTERNATIVE_STATUS_TOOL_CALLS';
         default:
             return 'UNKNOWN';
     }
@@ -126,6 +138,79 @@ export interface Token {
     text: string;
     /** Indicates whether the token is special or not. Special tokens may define the model's behavior and are not visible to users. */
     special: boolean;
+}
+
+/** Represents a tool that can be invoked during completion generation. */
+export interface Tool {
+    $type: 'yandex.cloud.ai.foundation_models.v1.Tool';
+    /** Represents a function that can be called. */
+    function?: FunctionTool | undefined;
+}
+
+/** Represents a function tool that can be invoked during completion generation. */
+export interface FunctionTool {
+    $type: 'yandex.cloud.ai.foundation_models.v1.FunctionTool';
+    /** The name of the function. */
+    name: string;
+    /** A description of the function's purpose or behavior. */
+    description: string;
+    /**
+     * A JSON Schema that defines the expected parameters for the function.
+     * The schema should describe the required fields, their types, and any constraints or default values.
+     */
+    parameters?: { [key: string]: any };
+}
+
+/** Represents a call to a tool. */
+export interface ToolCall {
+    $type: 'yandex.cloud.ai.foundation_models.v1.ToolCall';
+    /** Represents a call to a function. */
+    functionCall?: FunctionCall | undefined;
+}
+
+/** Represents the invocation of a function with specific arguments. */
+export interface FunctionCall {
+    $type: 'yandex.cloud.ai.foundation_models.v1.FunctionCall';
+    /** The name of the function being called. */
+    name: string;
+    /**
+     * The structured arguments passed to the function.
+     * These arguments must adhere to the JSON Schema defined in the corresponding function's parameters.
+     */
+    arguments?: { [key: string]: any };
+}
+
+/** Represents a list of tool calls. */
+export interface ToolCallList {
+    $type: 'yandex.cloud.ai.foundation_models.v1.ToolCallList';
+    /** A list of tool calls to be executed. */
+    toolCalls: ToolCall[];
+}
+
+/** Represents the result of a tool call. */
+export interface ToolResult {
+    $type: 'yandex.cloud.ai.foundation_models.v1.ToolResult';
+    /** Represents the result of a function call. */
+    functionResult?: FunctionResult | undefined;
+}
+
+/** Represents the result of a function call. */
+export interface FunctionResult {
+    $type: 'yandex.cloud.ai.foundation_models.v1.FunctionResult';
+    /** The name of the function that was executed. */
+    name: string;
+    /**
+     * The result of the function call, represented as a string.
+     * This field can be used to store the output of the function.
+     */
+    content: string | undefined;
+}
+
+/** Represents a list of tool results. */
+export interface ToolResultList {
+    $type: 'yandex.cloud.ai.foundation_models.v1.ToolResultList';
+    /** A list of tool results. */
+    toolResults: ToolResult[];
 }
 
 const baseCompletionOptions: object = {
@@ -225,6 +310,12 @@ export const Message = {
         if (message.text !== undefined) {
             writer.uint32(18).string(message.text);
         }
+        if (message.toolCallList !== undefined) {
+            ToolCallList.encode(message.toolCallList, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.toolResultList !== undefined) {
+            ToolResultList.encode(message.toolResultList, writer.uint32(34).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -241,6 +332,12 @@ export const Message = {
                 case 2:
                     message.text = reader.string();
                     break;
+                case 3:
+                    message.toolCallList = ToolCallList.decode(reader, reader.uint32());
+                    break;
+                case 4:
+                    message.toolResultList = ToolResultList.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -254,6 +351,14 @@ export const Message = {
         message.role = object.role !== undefined && object.role !== null ? String(object.role) : '';
         message.text =
             object.text !== undefined && object.text !== null ? String(object.text) : undefined;
+        message.toolCallList =
+            object.toolCallList !== undefined && object.toolCallList !== null
+                ? ToolCallList.fromJSON(object.toolCallList)
+                : undefined;
+        message.toolResultList =
+            object.toolResultList !== undefined && object.toolResultList !== null
+                ? ToolResultList.fromJSON(object.toolResultList)
+                : undefined;
         return message;
     },
 
@@ -261,6 +366,14 @@ export const Message = {
         const obj: any = {};
         message.role !== undefined && (obj.role = message.role);
         message.text !== undefined && (obj.text = message.text);
+        message.toolCallList !== undefined &&
+            (obj.toolCallList = message.toolCallList
+                ? ToolCallList.toJSON(message.toolCallList)
+                : undefined);
+        message.toolResultList !== undefined &&
+            (obj.toolResultList = message.toolResultList
+                ? ToolResultList.toJSON(message.toolResultList)
+                : undefined);
         return obj;
     },
 
@@ -268,6 +381,14 @@ export const Message = {
         const message = { ...baseMessage } as Message;
         message.role = object.role ?? '';
         message.text = object.text ?? undefined;
+        message.toolCallList =
+            object.toolCallList !== undefined && object.toolCallList !== null
+                ? ToolCallList.fromPartial(object.toolCallList)
+                : undefined;
+        message.toolResultList =
+            object.toolResultList !== undefined && object.toolResultList !== null
+                ? ToolResultList.fromPartial(object.toolResultList)
+                : undefined;
         return message;
     },
 };
@@ -509,6 +630,503 @@ export const Token = {
 };
 
 messageTypeRegistry.set(Token.$type, Token);
+
+const baseTool: object = { $type: 'yandex.cloud.ai.foundation_models.v1.Tool' };
+
+export const Tool = {
+    $type: 'yandex.cloud.ai.foundation_models.v1.Tool' as const,
+
+    encode(message: Tool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.function !== undefined) {
+            FunctionTool.encode(message.function, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Tool {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseTool } as Tool;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.function = FunctionTool.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Tool {
+        const message = { ...baseTool } as Tool;
+        message.function =
+            object.function !== undefined && object.function !== null
+                ? FunctionTool.fromJSON(object.function)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: Tool): unknown {
+        const obj: any = {};
+        message.function !== undefined &&
+            (obj.function = message.function ? FunctionTool.toJSON(message.function) : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Tool>, I>>(object: I): Tool {
+        const message = { ...baseTool } as Tool;
+        message.function =
+            object.function !== undefined && object.function !== null
+                ? FunctionTool.fromPartial(object.function)
+                : undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(Tool.$type, Tool);
+
+const baseFunctionTool: object = {
+    $type: 'yandex.cloud.ai.foundation_models.v1.FunctionTool',
+    name: '',
+    description: '',
+};
+
+export const FunctionTool = {
+    $type: 'yandex.cloud.ai.foundation_models.v1.FunctionTool' as const,
+
+    encode(message: FunctionTool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.name !== '') {
+            writer.uint32(10).string(message.name);
+        }
+        if (message.description !== '') {
+            writer.uint32(18).string(message.description);
+        }
+        if (message.parameters !== undefined) {
+            Struct.encode(Struct.wrap(message.parameters), writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): FunctionTool {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseFunctionTool } as FunctionTool;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.name = reader.string();
+                    break;
+                case 2:
+                    message.description = reader.string();
+                    break;
+                case 3:
+                    message.parameters = Struct.unwrap(Struct.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): FunctionTool {
+        const message = { ...baseFunctionTool } as FunctionTool;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
+        message.parameters = typeof object.parameters === 'object' ? object.parameters : undefined;
+        return message;
+    },
+
+    toJSON(message: FunctionTool): unknown {
+        const obj: any = {};
+        message.name !== undefined && (obj.name = message.name);
+        message.description !== undefined && (obj.description = message.description);
+        message.parameters !== undefined && (obj.parameters = message.parameters);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<FunctionTool>, I>>(object: I): FunctionTool {
+        const message = { ...baseFunctionTool } as FunctionTool;
+        message.name = object.name ?? '';
+        message.description = object.description ?? '';
+        message.parameters = object.parameters ?? undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(FunctionTool.$type, FunctionTool);
+
+const baseToolCall: object = { $type: 'yandex.cloud.ai.foundation_models.v1.ToolCall' };
+
+export const ToolCall = {
+    $type: 'yandex.cloud.ai.foundation_models.v1.ToolCall' as const,
+
+    encode(message: ToolCall, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.functionCall !== undefined) {
+            FunctionCall.encode(message.functionCall, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ToolCall {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseToolCall } as ToolCall;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.functionCall = FunctionCall.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ToolCall {
+        const message = { ...baseToolCall } as ToolCall;
+        message.functionCall =
+            object.functionCall !== undefined && object.functionCall !== null
+                ? FunctionCall.fromJSON(object.functionCall)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: ToolCall): unknown {
+        const obj: any = {};
+        message.functionCall !== undefined &&
+            (obj.functionCall = message.functionCall
+                ? FunctionCall.toJSON(message.functionCall)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ToolCall>, I>>(object: I): ToolCall {
+        const message = { ...baseToolCall } as ToolCall;
+        message.functionCall =
+            object.functionCall !== undefined && object.functionCall !== null
+                ? FunctionCall.fromPartial(object.functionCall)
+                : undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ToolCall.$type, ToolCall);
+
+const baseFunctionCall: object = {
+    $type: 'yandex.cloud.ai.foundation_models.v1.FunctionCall',
+    name: '',
+};
+
+export const FunctionCall = {
+    $type: 'yandex.cloud.ai.foundation_models.v1.FunctionCall' as const,
+
+    encode(message: FunctionCall, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.name !== '') {
+            writer.uint32(10).string(message.name);
+        }
+        if (message.arguments !== undefined) {
+            Struct.encode(Struct.wrap(message.arguments), writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): FunctionCall {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseFunctionCall } as FunctionCall;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.name = reader.string();
+                    break;
+                case 2:
+                    message.arguments = Struct.unwrap(Struct.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): FunctionCall {
+        const message = { ...baseFunctionCall } as FunctionCall;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.arguments = typeof object.arguments === 'object' ? object.arguments : undefined;
+        return message;
+    },
+
+    toJSON(message: FunctionCall): unknown {
+        const obj: any = {};
+        message.name !== undefined && (obj.name = message.name);
+        message.arguments !== undefined && (obj.arguments = message.arguments);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<FunctionCall>, I>>(object: I): FunctionCall {
+        const message = { ...baseFunctionCall } as FunctionCall;
+        message.name = object.name ?? '';
+        message.arguments = object.arguments ?? undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(FunctionCall.$type, FunctionCall);
+
+const baseToolCallList: object = { $type: 'yandex.cloud.ai.foundation_models.v1.ToolCallList' };
+
+export const ToolCallList = {
+    $type: 'yandex.cloud.ai.foundation_models.v1.ToolCallList' as const,
+
+    encode(message: ToolCallList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.toolCalls) {
+            ToolCall.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ToolCallList {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseToolCallList } as ToolCallList;
+        message.toolCalls = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.toolCalls.push(ToolCall.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ToolCallList {
+        const message = { ...baseToolCallList } as ToolCallList;
+        message.toolCalls = (object.toolCalls ?? []).map((e: any) => ToolCall.fromJSON(e));
+        return message;
+    },
+
+    toJSON(message: ToolCallList): unknown {
+        const obj: any = {};
+        if (message.toolCalls) {
+            obj.toolCalls = message.toolCalls.map((e) => (e ? ToolCall.toJSON(e) : undefined));
+        } else {
+            obj.toolCalls = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ToolCallList>, I>>(object: I): ToolCallList {
+        const message = { ...baseToolCallList } as ToolCallList;
+        message.toolCalls = object.toolCalls?.map((e) => ToolCall.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ToolCallList.$type, ToolCallList);
+
+const baseToolResult: object = { $type: 'yandex.cloud.ai.foundation_models.v1.ToolResult' };
+
+export const ToolResult = {
+    $type: 'yandex.cloud.ai.foundation_models.v1.ToolResult' as const,
+
+    encode(message: ToolResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.functionResult !== undefined) {
+            FunctionResult.encode(message.functionResult, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ToolResult {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseToolResult } as ToolResult;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.functionResult = FunctionResult.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ToolResult {
+        const message = { ...baseToolResult } as ToolResult;
+        message.functionResult =
+            object.functionResult !== undefined && object.functionResult !== null
+                ? FunctionResult.fromJSON(object.functionResult)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: ToolResult): unknown {
+        const obj: any = {};
+        message.functionResult !== undefined &&
+            (obj.functionResult = message.functionResult
+                ? FunctionResult.toJSON(message.functionResult)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ToolResult>, I>>(object: I): ToolResult {
+        const message = { ...baseToolResult } as ToolResult;
+        message.functionResult =
+            object.functionResult !== undefined && object.functionResult !== null
+                ? FunctionResult.fromPartial(object.functionResult)
+                : undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ToolResult.$type, ToolResult);
+
+const baseFunctionResult: object = {
+    $type: 'yandex.cloud.ai.foundation_models.v1.FunctionResult',
+    name: '',
+};
+
+export const FunctionResult = {
+    $type: 'yandex.cloud.ai.foundation_models.v1.FunctionResult' as const,
+
+    encode(message: FunctionResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.name !== '') {
+            writer.uint32(10).string(message.name);
+        }
+        if (message.content !== undefined) {
+            writer.uint32(18).string(message.content);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): FunctionResult {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseFunctionResult } as FunctionResult;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.name = reader.string();
+                    break;
+                case 2:
+                    message.content = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): FunctionResult {
+        const message = { ...baseFunctionResult } as FunctionResult;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.content =
+            object.content !== undefined && object.content !== null
+                ? String(object.content)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: FunctionResult): unknown {
+        const obj: any = {};
+        message.name !== undefined && (obj.name = message.name);
+        message.content !== undefined && (obj.content = message.content);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<FunctionResult>, I>>(object: I): FunctionResult {
+        const message = { ...baseFunctionResult } as FunctionResult;
+        message.name = object.name ?? '';
+        message.content = object.content ?? undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(FunctionResult.$type, FunctionResult);
+
+const baseToolResultList: object = { $type: 'yandex.cloud.ai.foundation_models.v1.ToolResultList' };
+
+export const ToolResultList = {
+    $type: 'yandex.cloud.ai.foundation_models.v1.ToolResultList' as const,
+
+    encode(message: ToolResultList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.toolResults) {
+            ToolResult.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ToolResultList {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseToolResultList } as ToolResultList;
+        message.toolResults = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.toolResults.push(ToolResult.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ToolResultList {
+        const message = { ...baseToolResultList } as ToolResultList;
+        message.toolResults = (object.toolResults ?? []).map((e: any) => ToolResult.fromJSON(e));
+        return message;
+    },
+
+    toJSON(message: ToolResultList): unknown {
+        const obj: any = {};
+        if (message.toolResults) {
+            obj.toolResults = message.toolResults.map((e) =>
+                e ? ToolResult.toJSON(e) : undefined,
+            );
+        } else {
+            obj.toolResults = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ToolResultList>, I>>(object: I): ToolResultList {
+        const message = { ...baseToolResultList } as ToolResultList;
+        message.toolResults = object.toolResults?.map((e) => ToolResult.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ToolResultList.$type, ToolResultList);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

@@ -63,6 +63,9 @@ export interface PrivateConnection_StaticRoute {
     /**
      * PeerIp.
      * It's an ip with just an ipAddress format without mask.
+     * Will be removed in some next release
+     *
+     * @deprecated
      */
     nextHop: string[];
 }

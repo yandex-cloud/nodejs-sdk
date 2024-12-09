@@ -3,6 +3,7 @@ import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { LogOptions } from '../../../../yandex/cloud/apploadbalancer/v1/logging';
+import { Duration } from '../../../../google/protobuf/duration';
 import { Target } from '../../../../yandex/cloud/apploadbalancer/v1/target_group';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
@@ -318,6 +319,11 @@ export interface StreamHandler {
      * To get the list of all available backend groups, make a [BackendGroupService.List] request.
      */
     backendGroupId: string;
+    /**
+     * The idle timeout is duration during which no data is transmitted or received on either the upstream or downstream connection.
+     * If not configured, the default idle timeout is 1 hour. Setting it to 0 disables the timeout.
+     */
+    idleTimeout?: Duration;
 }
 
 /** An HTTP handler resource. */
@@ -1758,6 +1764,9 @@ export const StreamHandler = {
         if (message.backendGroupId !== '') {
             writer.uint32(10).string(message.backendGroupId);
         }
+        if (message.idleTimeout !== undefined) {
+            Duration.encode(message.idleTimeout, writer.uint32(18).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -1770,6 +1779,9 @@ export const StreamHandler = {
             switch (tag >>> 3) {
                 case 1:
                     message.backendGroupId = reader.string();
+                    break;
+                case 2:
+                    message.idleTimeout = Duration.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1785,18 +1797,30 @@ export const StreamHandler = {
             object.backendGroupId !== undefined && object.backendGroupId !== null
                 ? String(object.backendGroupId)
                 : '';
+        message.idleTimeout =
+            object.idleTimeout !== undefined && object.idleTimeout !== null
+                ? Duration.fromJSON(object.idleTimeout)
+                : undefined;
         return message;
     },
 
     toJSON(message: StreamHandler): unknown {
         const obj: any = {};
         message.backendGroupId !== undefined && (obj.backendGroupId = message.backendGroupId);
+        message.idleTimeout !== undefined &&
+            (obj.idleTimeout = message.idleTimeout
+                ? Duration.toJSON(message.idleTimeout)
+                : undefined);
         return obj;
     },
 
     fromPartial<I extends Exact<DeepPartial<StreamHandler>, I>>(object: I): StreamHandler {
         const message = { ...baseStreamHandler } as StreamHandler;
         message.backendGroupId = object.backendGroupId ?? '';
+        message.idleTimeout =
+            object.idleTimeout !== undefined && object.idleTimeout !== null
+                ? Duration.fromPartial(object.idleTimeout)
+                : undefined;
         return message;
     },
 };

@@ -9,17 +9,29 @@ export const protobufPackage = 'yandex.cloud.ai.assistants.v1.threads';
 
 export interface Thread {
     $type: 'yandex.cloud.ai.assistants.v1.threads.Thread';
+    /** Unique identifier of the thread. */
     id: string;
+    /** ID of the folder that the thread belongs to. */
     folderId: string;
+    /** Name of the thread. */
     name: string;
+    /** Description of the thread. */
     description: string;
+    /** Default user ID that will be used as the author for thread messages if no other author is specified. */
     defaultMessageAuthorId: string;
+    /** Identifier of the subject who created this thread. */
     createdBy: string;
+    /** Timestamp representing when the thread was created. */
     createdAt?: Date;
+    /** Identifier of the subject who last updated this thread. */
     updatedBy: string;
+    /** Timestamp representing the last time this thread was updated. */
     updatedAt?: Date;
+    /** Configuration for the expiration of the thread, defining when and how the thread will expire. */
     expirationConfig?: ExpirationConfig;
+    /** Timestamp representing when the thread will expire. */
     expiresAt?: Date;
+    /** Set of key-value pairs that can be used to organize and categorize the thread. */
     labels: { [key: string]: string };
 }
 

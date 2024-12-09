@@ -12,6 +12,47 @@ import { Timestamp } from '../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.serverless.containers.v1';
 
+export enum MetadataOption {
+    /** METADATA_OPTION_UNSPECIFIED - Option is default */
+    METADATA_OPTION_UNSPECIFIED = 0,
+    /** ENABLED - Option is enabled */
+    ENABLED = 1,
+    /** DISABLED - Option is disabled */
+    DISABLED = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function metadataOptionFromJSON(object: any): MetadataOption {
+    switch (object) {
+        case 0:
+        case 'METADATA_OPTION_UNSPECIFIED':
+            return MetadataOption.METADATA_OPTION_UNSPECIFIED;
+        case 1:
+        case 'ENABLED':
+            return MetadataOption.ENABLED;
+        case 2:
+        case 'DISABLED':
+            return MetadataOption.DISABLED;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return MetadataOption.UNRECOGNIZED;
+    }
+}
+
+export function metadataOptionToJSON(object: MetadataOption): string {
+    switch (object) {
+        case MetadataOption.METADATA_OPTION_UNSPECIFIED:
+            return 'METADATA_OPTION_UNSPECIFIED';
+        case MetadataOption.ENABLED:
+            return 'ENABLED';
+        case MetadataOption.DISABLED:
+            return 'DISABLED';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 export interface Container {
     $type: 'yandex.cloud.serverless.containers.v1.Container';
     /** ID of the container. Generated at creation time. */
@@ -136,6 +177,10 @@ export interface Revision {
     storageMounts: StorageMount[];
     /** Mounts to be used by the revision. */
     mounts: Mount[];
+    /** The container's execution mode */
+    runtime?: Runtime;
+    /** Metadata options for the revision. */
+    metadataOptions?: MetadataOptions;
 }
 
 export enum Revision_Status {
@@ -391,6 +436,31 @@ export interface Mount_DiskSpec {
     size: number;
     /** Optional block size of disk for mount in bytes */
     blockSize: number;
+}
+
+/** The container's execution mode */
+export interface Runtime {
+    $type: 'yandex.cloud.serverless.containers.v1.Runtime';
+    /** The classic one. You need to run an HTTP server inside the container. */
+    http?: Runtime_Http | undefined;
+    /** We run a process from ENTRYPOINT inside the container for each user request. */
+    task?: Runtime_Task | undefined;
+}
+
+export interface Runtime_Http {
+    $type: 'yandex.cloud.serverless.containers.v1.Runtime.Http';
+}
+
+export interface Runtime_Task {
+    $type: 'yandex.cloud.serverless.containers.v1.Runtime.Task';
+}
+
+export interface MetadataOptions {
+    $type: 'yandex.cloud.serverless.containers.v1.MetadataOptions';
+    /** Enabled access to GCE flavored metadata */
+    gceHttpEndpoint: MetadataOption;
+    /** Enabled access to AWS flavored metadata (IMDSv1) */
+    awsV1HttpEndpoint: MetadataOption;
 }
 
 const baseContainer: object = {
@@ -689,6 +759,12 @@ export const Revision = {
         for (const v of message.mounts) {
             Mount.encode(v!, writer.uint32(138).fork()).ldelim();
         }
+        if (message.runtime !== undefined) {
+            Runtime.encode(message.runtime, writer.uint32(146).fork()).ldelim();
+        }
+        if (message.metadataOptions !== undefined) {
+            MetadataOptions.encode(message.metadataOptions, writer.uint32(154).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -752,6 +828,12 @@ export const Revision = {
                     break;
                 case 17:
                     message.mounts.push(Mount.decode(reader, reader.uint32()));
+                    break;
+                case 18:
+                    message.runtime = Runtime.decode(reader, reader.uint32());
+                    break;
+                case 19:
+                    message.metadataOptions = MetadataOptions.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -821,6 +903,14 @@ export const Revision = {
             StorageMount.fromJSON(e),
         );
         message.mounts = (object.mounts ?? []).map((e: any) => Mount.fromJSON(e));
+        message.runtime =
+            object.runtime !== undefined && object.runtime !== null
+                ? Runtime.fromJSON(object.runtime)
+                : undefined;
+        message.metadataOptions =
+            object.metadataOptions !== undefined && object.metadataOptions !== null
+                ? MetadataOptions.fromJSON(object.metadataOptions)
+                : undefined;
         return message;
     },
 
@@ -874,6 +964,12 @@ export const Revision = {
         } else {
             obj.mounts = [];
         }
+        message.runtime !== undefined &&
+            (obj.runtime = message.runtime ? Runtime.toJSON(message.runtime) : undefined);
+        message.metadataOptions !== undefined &&
+            (obj.metadataOptions = message.metadataOptions
+                ? MetadataOptions.toJSON(message.metadataOptions)
+                : undefined);
         return obj;
     },
 
@@ -917,6 +1013,14 @@ export const Revision = {
                 : undefined;
         message.storageMounts = object.storageMounts?.map((e) => StorageMount.fromPartial(e)) || [];
         message.mounts = object.mounts?.map((e) => Mount.fromPartial(e)) || [];
+        message.runtime =
+            object.runtime !== undefined && object.runtime !== null
+                ? Runtime.fromPartial(object.runtime)
+                : undefined;
+        message.metadataOptions =
+            object.metadataOptions !== undefined && object.metadataOptions !== null
+                ? MetadataOptions.fromPartial(object.metadataOptions)
+                : undefined;
         return message;
     },
 };
@@ -2052,6 +2156,236 @@ export const Mount_DiskSpec = {
 };
 
 messageTypeRegistry.set(Mount_DiskSpec.$type, Mount_DiskSpec);
+
+const baseRuntime: object = { $type: 'yandex.cloud.serverless.containers.v1.Runtime' };
+
+export const Runtime = {
+    $type: 'yandex.cloud.serverless.containers.v1.Runtime' as const,
+
+    encode(message: Runtime, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.http !== undefined) {
+            Runtime_Http.encode(message.http, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.task !== undefined) {
+            Runtime_Task.encode(message.task, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Runtime {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseRuntime } as Runtime;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.http = Runtime_Http.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.task = Runtime_Task.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Runtime {
+        const message = { ...baseRuntime } as Runtime;
+        message.http =
+            object.http !== undefined && object.http !== null
+                ? Runtime_Http.fromJSON(object.http)
+                : undefined;
+        message.task =
+            object.task !== undefined && object.task !== null
+                ? Runtime_Task.fromJSON(object.task)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: Runtime): unknown {
+        const obj: any = {};
+        message.http !== undefined &&
+            (obj.http = message.http ? Runtime_Http.toJSON(message.http) : undefined);
+        message.task !== undefined &&
+            (obj.task = message.task ? Runtime_Task.toJSON(message.task) : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Runtime>, I>>(object: I): Runtime {
+        const message = { ...baseRuntime } as Runtime;
+        message.http =
+            object.http !== undefined && object.http !== null
+                ? Runtime_Http.fromPartial(object.http)
+                : undefined;
+        message.task =
+            object.task !== undefined && object.task !== null
+                ? Runtime_Task.fromPartial(object.task)
+                : undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(Runtime.$type, Runtime);
+
+const baseRuntime_Http: object = { $type: 'yandex.cloud.serverless.containers.v1.Runtime.Http' };
+
+export const Runtime_Http = {
+    $type: 'yandex.cloud.serverless.containers.v1.Runtime.Http' as const,
+
+    encode(_: Runtime_Http, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Runtime_Http {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseRuntime_Http } as Runtime_Http;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): Runtime_Http {
+        const message = { ...baseRuntime_Http } as Runtime_Http;
+        return message;
+    },
+
+    toJSON(_: Runtime_Http): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Runtime_Http>, I>>(_: I): Runtime_Http {
+        const message = { ...baseRuntime_Http } as Runtime_Http;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(Runtime_Http.$type, Runtime_Http);
+
+const baseRuntime_Task: object = { $type: 'yandex.cloud.serverless.containers.v1.Runtime.Task' };
+
+export const Runtime_Task = {
+    $type: 'yandex.cloud.serverless.containers.v1.Runtime.Task' as const,
+
+    encode(_: Runtime_Task, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Runtime_Task {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseRuntime_Task } as Runtime_Task;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): Runtime_Task {
+        const message = { ...baseRuntime_Task } as Runtime_Task;
+        return message;
+    },
+
+    toJSON(_: Runtime_Task): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Runtime_Task>, I>>(_: I): Runtime_Task {
+        const message = { ...baseRuntime_Task } as Runtime_Task;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(Runtime_Task.$type, Runtime_Task);
+
+const baseMetadataOptions: object = {
+    $type: 'yandex.cloud.serverless.containers.v1.MetadataOptions',
+    gceHttpEndpoint: 0,
+    awsV1HttpEndpoint: 0,
+};
+
+export const MetadataOptions = {
+    $type: 'yandex.cloud.serverless.containers.v1.MetadataOptions' as const,
+
+    encode(message: MetadataOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.gceHttpEndpoint !== 0) {
+            writer.uint32(8).int32(message.gceHttpEndpoint);
+        }
+        if (message.awsV1HttpEndpoint !== 0) {
+            writer.uint32(16).int32(message.awsV1HttpEndpoint);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MetadataOptions {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMetadataOptions } as MetadataOptions;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.gceHttpEndpoint = reader.int32() as any;
+                    break;
+                case 2:
+                    message.awsV1HttpEndpoint = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MetadataOptions {
+        const message = { ...baseMetadataOptions } as MetadataOptions;
+        message.gceHttpEndpoint =
+            object.gceHttpEndpoint !== undefined && object.gceHttpEndpoint !== null
+                ? metadataOptionFromJSON(object.gceHttpEndpoint)
+                : 0;
+        message.awsV1HttpEndpoint =
+            object.awsV1HttpEndpoint !== undefined && object.awsV1HttpEndpoint !== null
+                ? metadataOptionFromJSON(object.awsV1HttpEndpoint)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: MetadataOptions): unknown {
+        const obj: any = {};
+        message.gceHttpEndpoint !== undefined &&
+            (obj.gceHttpEndpoint = metadataOptionToJSON(message.gceHttpEndpoint));
+        message.awsV1HttpEndpoint !== undefined &&
+            (obj.awsV1HttpEndpoint = metadataOptionToJSON(message.awsV1HttpEndpoint));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MetadataOptions>, I>>(object: I): MetadataOptions {
+        const message = { ...baseMetadataOptions } as MetadataOptions;
+        message.gceHttpEndpoint = object.gceHttpEndpoint ?? 0;
+        message.awsV1HttpEndpoint = object.awsV1HttpEndpoint ?? 0;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(MetadataOptions.$type, MetadataOptions);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

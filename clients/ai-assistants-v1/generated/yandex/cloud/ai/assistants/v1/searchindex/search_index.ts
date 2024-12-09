@@ -3,26 +3,57 @@ import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { ExpirationConfig } from '../../../../../../yandex/cloud/ai/common/common';
-import { ChunkingStrategy } from '../../../../../../yandex/cloud/ai/assistants/v1/searchindex/common';
+import {
+    ChunkingStrategy,
+    NormalizationStrategy,
+    CombinationStrategy,
+    normalizationStrategyFromJSON,
+    normalizationStrategyToJSON,
+} from '../../../../../../yandex/cloud/ai/assistants/v1/searchindex/common';
 import { Timestamp } from '../../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.searchindex';
 
+/** Represents a search index used to store and query data, either using traditional keyword-based text search or vector-based search mechanisms. */
 export interface SearchIndex {
     $type: 'yandex.cloud.ai.assistants.v1.searchindex.SearchIndex';
+    /** Unique identifier of the search index. */
     id: string;
+    /** ID of the folder that the search index belongs to. */
     folderId: string;
+    /** Name of the search index. */
     name: string;
+    /** Description of the search index. */
     description: string;
+    /** Identifier of the subject who created this search index. */
     createdBy: string;
+    /** Timestamp representing when the search index was created. */
     createdAt?: Date;
+    /** Identifier of the subject who last updated this search index. */
     updatedBy: string;
+    /** Timestamp representing the last time this search index was updated. */
     updatedAt?: Date;
+    /** Configuration for the expiration of the search index, defining when and how the search index will expire. */
     expirationConfig?: ExpirationConfig;
+    /** Timestamp representing when the search index will expire. */
     expiresAt?: Date;
+    /** Set of key-value pairs that can be used to organize and categorize the search index. */
     labels: { [key: string]: string };
+    /**
+     * Keyword-based text search index configuration.
+     * This type of index is used for traditional text search, where documents are indexed based on their keywords.
+     */
     textSearchIndex?: TextSearchIndex | undefined;
+    /**
+     * Vector-based search index configuration.
+     * This type is used for vector search, where documents are indexed using vector embeddings.
+     */
     vectorSearchIndex?: VectorSearchIndex | undefined;
+    /**
+     * Hybrid (vector-based + keyword-based) search index configuration
+     * This type is used for hybrid search, where documents are indexed using both keyword-based and vector-based search mechanisms.
+     */
+    hybridSearchIndex?: HybridSearchIndex | undefined;
 }
 
 export interface SearchIndex_LabelsEntry {
@@ -31,16 +62,47 @@ export interface SearchIndex_LabelsEntry {
     value: string;
 }
 
+/** Defines the configuration for a traditional keyword-based text search index. */
 export interface TextSearchIndex {
     $type: 'yandex.cloud.ai.assistants.v1.searchindex.TextSearchIndex';
+    /**
+     * Chunking strategy used to split text into smaller chunks before indexing.
+     * In the case of text search, tokens are individual text characters.
+     */
     chunkingStrategy?: ChunkingStrategy;
 }
 
+/** Defines the configuration for a vector-based search index. This type uses embeddings to represent documents and queries. */
 export interface VectorSearchIndex {
     $type: 'yandex.cloud.ai.assistants.v1.searchindex.VectorSearchIndex';
+    /** The [ID of the model](/docs/foundation-models/concepts/embeddings) to be used for obtaining document text embeddings. */
     docEmbedderUri: string;
+    /** The [ID of the model](/docs/foundation-models/concepts/embeddings) to be used for obtaining query text embeddings. */
     queryEmbedderUri: string;
+    /**
+     * Chunking strategy used to split text into smaller chunks before indexing.
+     * In the case of vector search, tokens are produced by the tokenizer from the embedding model.
+     */
     chunkingStrategy?: ChunkingStrategy;
+}
+
+/** Defines the configuration for a hybrid (vector-based + keyword-based) search index. This type uses both embeddings and keyword-based search to represent documents and queries. */
+export interface HybridSearchIndex {
+    $type: 'yandex.cloud.ai.assistants.v1.searchindex.HybridSearchIndex';
+    /** Configuration for a traditional keyword-based text search index. */
+    textSearchIndex?: TextSearchIndex;
+    /** Configuration for a vector-based search index. */
+    vectorSearchIndex?: VectorSearchIndex;
+    /**
+     * Common chunking strategy that applies to both text and vector search indexes.
+     * If provided, it overrides the individual chunking strategies in both `text_search_index` and `vector_search_index`.
+     * In this case, both text and vector search will use token-based chunking, where tokens are produced by the tokenizer of the embedding model.
+     */
+    chunkingStrategy?: ChunkingStrategy;
+    /** Normalization strategy for relevance scores from different indices. Default is MIN_MAX_STRATEGY */
+    normalizationStrategy: NormalizationStrategy;
+    /** Combination strategy for merging rankings from different indices. Default is arithmetic mean */
+    combinationStrategy?: CombinationStrategy;
 }
 
 const baseSearchIndex: object = {
@@ -103,6 +165,9 @@ export const SearchIndex = {
         if (message.vectorSearchIndex !== undefined) {
             VectorSearchIndex.encode(message.vectorSearchIndex, writer.uint32(106).fork()).ldelim();
         }
+        if (message.hybridSearchIndex !== undefined) {
+            HybridSearchIndex.encode(message.hybridSearchIndex, writer.uint32(114).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -155,6 +220,9 @@ export const SearchIndex = {
                     break;
                 case 13:
                     message.vectorSearchIndex = VectorSearchIndex.decode(reader, reader.uint32());
+                    break;
+                case 14:
+                    message.hybridSearchIndex = HybridSearchIndex.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -215,6 +283,10 @@ export const SearchIndex = {
             object.vectorSearchIndex !== undefined && object.vectorSearchIndex !== null
                 ? VectorSearchIndex.fromJSON(object.vectorSearchIndex)
                 : undefined;
+        message.hybridSearchIndex =
+            object.hybridSearchIndex !== undefined && object.hybridSearchIndex !== null
+                ? HybridSearchIndex.fromJSON(object.hybridSearchIndex)
+                : undefined;
         return message;
     },
 
@@ -246,6 +318,10 @@ export const SearchIndex = {
         message.vectorSearchIndex !== undefined &&
             (obj.vectorSearchIndex = message.vectorSearchIndex
                 ? VectorSearchIndex.toJSON(message.vectorSearchIndex)
+                : undefined);
+        message.hybridSearchIndex !== undefined &&
+            (obj.hybridSearchIndex = message.hybridSearchIndex
+                ? HybridSearchIndex.toJSON(message.hybridSearchIndex)
                 : undefined);
         return obj;
     },
@@ -281,6 +357,10 @@ export const SearchIndex = {
         message.vectorSearchIndex =
             object.vectorSearchIndex !== undefined && object.vectorSearchIndex !== null
                 ? VectorSearchIndex.fromPartial(object.vectorSearchIndex)
+                : undefined;
+        message.hybridSearchIndex =
+            object.hybridSearchIndex !== undefined && object.hybridSearchIndex !== null
+                ? HybridSearchIndex.fromPartial(object.hybridSearchIndex)
                 : undefined;
         return message;
     },
@@ -504,6 +584,144 @@ export const VectorSearchIndex = {
 };
 
 messageTypeRegistry.set(VectorSearchIndex.$type, VectorSearchIndex);
+
+const baseHybridSearchIndex: object = {
+    $type: 'yandex.cloud.ai.assistants.v1.searchindex.HybridSearchIndex',
+    normalizationStrategy: 0,
+};
+
+export const HybridSearchIndex = {
+    $type: 'yandex.cloud.ai.assistants.v1.searchindex.HybridSearchIndex' as const,
+
+    encode(message: HybridSearchIndex, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.textSearchIndex !== undefined) {
+            TextSearchIndex.encode(message.textSearchIndex, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.vectorSearchIndex !== undefined) {
+            VectorSearchIndex.encode(message.vectorSearchIndex, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.chunkingStrategy !== undefined) {
+            ChunkingStrategy.encode(message.chunkingStrategy, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.normalizationStrategy !== 0) {
+            writer.uint32(32).int32(message.normalizationStrategy);
+        }
+        if (message.combinationStrategy !== undefined) {
+            CombinationStrategy.encode(
+                message.combinationStrategy,
+                writer.uint32(42).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): HybridSearchIndex {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseHybridSearchIndex } as HybridSearchIndex;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.textSearchIndex = TextSearchIndex.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.vectorSearchIndex = VectorSearchIndex.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.chunkingStrategy = ChunkingStrategy.decode(reader, reader.uint32());
+                    break;
+                case 4:
+                    message.normalizationStrategy = reader.int32() as any;
+                    break;
+                case 5:
+                    message.combinationStrategy = CombinationStrategy.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): HybridSearchIndex {
+        const message = { ...baseHybridSearchIndex } as HybridSearchIndex;
+        message.textSearchIndex =
+            object.textSearchIndex !== undefined && object.textSearchIndex !== null
+                ? TextSearchIndex.fromJSON(object.textSearchIndex)
+                : undefined;
+        message.vectorSearchIndex =
+            object.vectorSearchIndex !== undefined && object.vectorSearchIndex !== null
+                ? VectorSearchIndex.fromJSON(object.vectorSearchIndex)
+                : undefined;
+        message.chunkingStrategy =
+            object.chunkingStrategy !== undefined && object.chunkingStrategy !== null
+                ? ChunkingStrategy.fromJSON(object.chunkingStrategy)
+                : undefined;
+        message.normalizationStrategy =
+            object.normalizationStrategy !== undefined && object.normalizationStrategy !== null
+                ? normalizationStrategyFromJSON(object.normalizationStrategy)
+                : 0;
+        message.combinationStrategy =
+            object.combinationStrategy !== undefined && object.combinationStrategy !== null
+                ? CombinationStrategy.fromJSON(object.combinationStrategy)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: HybridSearchIndex): unknown {
+        const obj: any = {};
+        message.textSearchIndex !== undefined &&
+            (obj.textSearchIndex = message.textSearchIndex
+                ? TextSearchIndex.toJSON(message.textSearchIndex)
+                : undefined);
+        message.vectorSearchIndex !== undefined &&
+            (obj.vectorSearchIndex = message.vectorSearchIndex
+                ? VectorSearchIndex.toJSON(message.vectorSearchIndex)
+                : undefined);
+        message.chunkingStrategy !== undefined &&
+            (obj.chunkingStrategy = message.chunkingStrategy
+                ? ChunkingStrategy.toJSON(message.chunkingStrategy)
+                : undefined);
+        message.normalizationStrategy !== undefined &&
+            (obj.normalizationStrategy = normalizationStrategyToJSON(
+                message.normalizationStrategy,
+            ));
+        message.combinationStrategy !== undefined &&
+            (obj.combinationStrategy = message.combinationStrategy
+                ? CombinationStrategy.toJSON(message.combinationStrategy)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<HybridSearchIndex>, I>>(object: I): HybridSearchIndex {
+        const message = { ...baseHybridSearchIndex } as HybridSearchIndex;
+        message.textSearchIndex =
+            object.textSearchIndex !== undefined && object.textSearchIndex !== null
+                ? TextSearchIndex.fromPartial(object.textSearchIndex)
+                : undefined;
+        message.vectorSearchIndex =
+            object.vectorSearchIndex !== undefined && object.vectorSearchIndex !== null
+                ? VectorSearchIndex.fromPartial(object.vectorSearchIndex)
+                : undefined;
+        message.chunkingStrategy =
+            object.chunkingStrategy !== undefined && object.chunkingStrategy !== null
+                ? ChunkingStrategy.fromPartial(object.chunkingStrategy)
+                : undefined;
+        message.normalizationStrategy = object.normalizationStrategy ?? 0;
+        message.combinationStrategy =
+            object.combinationStrategy !== undefined && object.combinationStrategy !== null
+                ? CombinationStrategy.fromPartial(object.combinationStrategy)
+                : undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(HybridSearchIndex.$type, HybridSearchIndex);
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 

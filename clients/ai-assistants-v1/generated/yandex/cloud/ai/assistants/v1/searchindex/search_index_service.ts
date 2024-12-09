@@ -19,22 +19,33 @@ import { FieldMask } from '../../../../../../google/protobuf/field_mask';
 import {
     TextSearchIndex,
     VectorSearchIndex,
+    HybridSearchIndex,
     SearchIndex,
 } from '../../../../../../yandex/cloud/ai/assistants/v1/searchindex/search_index';
 import { Operation } from '../../../../../../yandex/cloud/operation/operation';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.searchindex';
 
+/** Request to create a new search index. */
 export interface CreateSearchIndexRequest {
     $type: 'yandex.cloud.ai.assistants.v1.searchindex.CreateSearchIndexRequest';
     folderId: string;
+    /** List of file IDs to be indexed. */
     fileIds: string[];
+    /** Name of the search index. */
     name: string;
+    /** Description of the search index. */
     description: string;
+    /** Expiration configuration for the search index. */
     expirationConfig?: ExpirationConfig;
+    /** Set of key-value pairs to label the search index. */
     labels: { [key: string]: string };
+    /** Configuration for a traditional keyword-based text search index. */
     textSearchIndex?: TextSearchIndex | undefined;
+    /** Configuration for a vector-based search index using embeddings. */
     vectorSearchIndex?: VectorSearchIndex | undefined;
+    /** Configuration for a hybrid (vector-based + keyword-based) search index. */
+    hybridSearchIndex?: HybridSearchIndex | undefined;
 }
 
 export interface CreateSearchIndexRequest_LabelsEntry {
@@ -43,18 +54,27 @@ export interface CreateSearchIndexRequest_LabelsEntry {
     value: string;
 }
 
+/** Request message for retrieving a search index by ID. */
 export interface GetSearchIndexRequest {
     $type: 'yandex.cloud.ai.assistants.v1.searchindex.GetSearchIndexRequest';
+    /** ID of the search index to retrieve. */
     searchIndexId: string;
 }
 
+/** Request message for updating an existing search index. */
 export interface UpdateSearchIndexRequest {
     $type: 'yandex.cloud.ai.assistants.v1.searchindex.UpdateSearchIndexRequest';
+    /** ID of the search index to update. */
     searchIndexId: string;
+    /** Field mask specifying which fields to update. */
     updateMask?: FieldMask;
+    /** New name for the search index. */
     name: string;
+    /** New description for the search index. */
     description: string;
+    /** New expiration configuration for the search index. */
     expirationConfig?: ExpirationConfig;
+    /** New set of labels for the search index. */
     labels: { [key: string]: string };
 }
 
@@ -64,25 +84,35 @@ export interface UpdateSearchIndexRequest_LabelsEntry {
     value: string;
 }
 
+/** Request message for deleting a search index by ID. */
 export interface DeleteSearchIndexRequest {
     $type: 'yandex.cloud.ai.assistants.v1.searchindex.DeleteSearchIndexRequest';
+    /** ID of the search index to delete. */
     searchIndexId: string;
 }
 
+/** Response message for the delete operation. */
 export interface DeleteSearchIndexResponse {
     $type: 'yandex.cloud.ai.assistants.v1.searchindex.DeleteSearchIndexResponse';
 }
 
+/** Request message for listing search indexes in a specific folder. */
 export interface ListSearchIndicesRequest {
     $type: 'yandex.cloud.ai.assistants.v1.searchindex.ListSearchIndicesRequest';
+    /** Folder ID from which to list search indexes. */
     folderId: string;
+    /** Maximum number of threads to return per page. */
     pageSize: number;
+    /** Token to retrieve the next page of results. */
     pageToken: string;
 }
 
+/** Response message for the list operation. */
 export interface ListSearchIndicesResponse {
     $type: 'yandex.cloud.ai.assistants.v1.searchindex.ListSearchIndicesResponse';
+    /** List of search indexes in the specified folder. */
     indices: SearchIndex[];
+    /** Token to retrieve the next page of results. */
     nextPageToken: string;
 }
 
@@ -132,6 +162,9 @@ export const CreateSearchIndexRequest = {
         if (message.vectorSearchIndex !== undefined) {
             VectorSearchIndex.encode(message.vectorSearchIndex, writer.uint32(66).fork()).ldelim();
         }
+        if (message.hybridSearchIndex !== undefined) {
+            HybridSearchIndex.encode(message.hybridSearchIndex, writer.uint32(74).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -174,6 +207,9 @@ export const CreateSearchIndexRequest = {
                 case 8:
                     message.vectorSearchIndex = VectorSearchIndex.decode(reader, reader.uint32());
                     break;
+                case 9:
+                    message.hybridSearchIndex = HybridSearchIndex.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -213,6 +249,10 @@ export const CreateSearchIndexRequest = {
             object.vectorSearchIndex !== undefined && object.vectorSearchIndex !== null
                 ? VectorSearchIndex.fromJSON(object.vectorSearchIndex)
                 : undefined;
+        message.hybridSearchIndex =
+            object.hybridSearchIndex !== undefined && object.hybridSearchIndex !== null
+                ? HybridSearchIndex.fromJSON(object.hybridSearchIndex)
+                : undefined;
         return message;
     },
 
@@ -243,6 +283,10 @@ export const CreateSearchIndexRequest = {
         message.vectorSearchIndex !== undefined &&
             (obj.vectorSearchIndex = message.vectorSearchIndex
                 ? VectorSearchIndex.toJSON(message.vectorSearchIndex)
+                : undefined);
+        message.hybridSearchIndex !== undefined &&
+            (obj.hybridSearchIndex = message.hybridSearchIndex
+                ? HybridSearchIndex.toJSON(message.hybridSearchIndex)
                 : undefined);
         return obj;
     },
@@ -275,6 +319,10 @@ export const CreateSearchIndexRequest = {
         message.vectorSearchIndex =
             object.vectorSearchIndex !== undefined && object.vectorSearchIndex !== null
                 ? VectorSearchIndex.fromPartial(object.vectorSearchIndex)
+                : undefined;
+        message.hybridSearchIndex =
+            object.hybridSearchIndex !== undefined && object.hybridSearchIndex !== null
+                ? HybridSearchIndex.fromPartial(object.hybridSearchIndex)
                 : undefined;
         return message;
     },
@@ -932,7 +980,9 @@ export const ListSearchIndicesResponse = {
 
 messageTypeRegistry.set(ListSearchIndicesResponse.$type, ListSearchIndicesResponse);
 
+/** ThreadService provides operations for managing search indexes. */
 export const SearchIndexServiceService = {
+    /** Create a new search index in [asynchronous mode](/docs/foundation-models/concepts/#working-mode). */
     create: {
         path: '/yandex.cloud.ai.assistants.v1.searchindex.SearchIndexService/Create',
         requestStream: false,
@@ -943,6 +993,7 @@ export const SearchIndexServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Retrieve details of a specific search index by its ID. */
     get: {
         path: '/yandex.cloud.ai.assistants.v1.searchindex.SearchIndexService/Get',
         requestStream: false,
@@ -953,6 +1004,7 @@ export const SearchIndexServiceService = {
         responseSerialize: (value: SearchIndex) => Buffer.from(SearchIndex.encode(value).finish()),
         responseDeserialize: (value: Buffer) => SearchIndex.decode(value),
     },
+    /** Update an existing search index. */
     update: {
         path: '/yandex.cloud.ai.assistants.v1.searchindex.SearchIndexService/Update',
         requestStream: false,
@@ -963,6 +1015,7 @@ export const SearchIndexServiceService = {
         responseSerialize: (value: SearchIndex) => Buffer.from(SearchIndex.encode(value).finish()),
         responseDeserialize: (value: Buffer) => SearchIndex.decode(value),
     },
+    /** Delete a search index by its ID. */
     delete: {
         path: '/yandex.cloud.ai.assistants.v1.searchindex.SearchIndexService/Delete',
         requestStream: false,
@@ -974,6 +1027,7 @@ export const SearchIndexServiceService = {
             Buffer.from(DeleteSearchIndexResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => DeleteSearchIndexResponse.decode(value),
     },
+    /** List search indexes in a specific folder. */
     list: {
         path: '/yandex.cloud.ai.assistants.v1.searchindex.SearchIndexService/List',
         requestStream: false,
@@ -988,14 +1042,20 @@ export const SearchIndexServiceService = {
 } as const;
 
 export interface SearchIndexServiceServer extends UntypedServiceImplementation {
+    /** Create a new search index in [asynchronous mode](/docs/foundation-models/concepts/#working-mode). */
     create: handleUnaryCall<CreateSearchIndexRequest, Operation>;
+    /** Retrieve details of a specific search index by its ID. */
     get: handleUnaryCall<GetSearchIndexRequest, SearchIndex>;
+    /** Update an existing search index. */
     update: handleUnaryCall<UpdateSearchIndexRequest, SearchIndex>;
+    /** Delete a search index by its ID. */
     delete: handleUnaryCall<DeleteSearchIndexRequest, DeleteSearchIndexResponse>;
+    /** List search indexes in a specific folder. */
     list: handleUnaryCall<ListSearchIndicesRequest, ListSearchIndicesResponse>;
 }
 
 export interface SearchIndexServiceClient extends Client {
+    /** Create a new search index in [asynchronous mode](/docs/foundation-models/concepts/#working-mode). */
     create(
         request: CreateSearchIndexRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1011,6 +1071,7 @@ export interface SearchIndexServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
+    /** Retrieve details of a specific search index by its ID. */
     get(
         request: GetSearchIndexRequest,
         callback: (error: ServiceError | null, response: SearchIndex) => void,
@@ -1026,6 +1087,7 @@ export interface SearchIndexServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: SearchIndex) => void,
     ): ClientUnaryCall;
+    /** Update an existing search index. */
     update(
         request: UpdateSearchIndexRequest,
         callback: (error: ServiceError | null, response: SearchIndex) => void,
@@ -1041,6 +1103,7 @@ export interface SearchIndexServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: SearchIndex) => void,
     ): ClientUnaryCall;
+    /** Delete a search index by its ID. */
     delete(
         request: DeleteSearchIndexRequest,
         callback: (error: ServiceError | null, response: DeleteSearchIndexResponse) => void,
@@ -1056,6 +1119,7 @@ export interface SearchIndexServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: DeleteSearchIndexResponse) => void,
     ): ClientUnaryCall;
+    /** List search indexes in a specific folder. */
     list(
         request: ListSearchIndicesRequest,
         callback: (error: ServiceError | null, response: ListSearchIndicesResponse) => void,

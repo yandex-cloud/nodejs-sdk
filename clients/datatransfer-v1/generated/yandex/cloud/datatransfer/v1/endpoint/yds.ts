@@ -93,6 +93,7 @@ export interface YDSTarget {
      * Incompatible with setting Topic prefix, only with Topic full name.
      */
     saveTxOrder: boolean;
+    compressionCodec: YdsCompressionCodec;
     /** Data serialization format */
     serializer?: Serializer;
     /** for dedicated db */
@@ -299,6 +300,7 @@ const baseYDSTarget: object = {
     stream: '',
     serviceAccountId: '',
     saveTxOrder: false,
+    compressionCodec: 0,
     endpoint: '',
     subnetId: '',
     securityGroups: '',
@@ -319,6 +321,9 @@ export const YDSTarget = {
         }
         if (message.saveTxOrder === true) {
             writer.uint32(32).bool(message.saveTxOrder);
+        }
+        if (message.compressionCodec !== 0) {
+            writer.uint32(40).int32(message.compressionCodec);
         }
         if (message.serializer !== undefined) {
             Serializer.encode(message.serializer, writer.uint32(66).fork()).ldelim();
@@ -354,6 +359,9 @@ export const YDSTarget = {
                     break;
                 case 4:
                     message.saveTxOrder = reader.bool();
+                    break;
+                case 5:
+                    message.compressionCodec = reader.int32() as any;
                     break;
                 case 8:
                     message.serializer = Serializer.decode(reader, reader.uint32());
@@ -391,6 +399,10 @@ export const YDSTarget = {
             object.saveTxOrder !== undefined && object.saveTxOrder !== null
                 ? Boolean(object.saveTxOrder)
                 : false;
+        message.compressionCodec =
+            object.compressionCodec !== undefined && object.compressionCodec !== null
+                ? ydsCompressionCodecFromJSON(object.compressionCodec)
+                : 0;
         message.serializer =
             object.serializer !== undefined && object.serializer !== null
                 ? Serializer.fromJSON(object.serializer)
@@ -413,6 +425,8 @@ export const YDSTarget = {
         message.stream !== undefined && (obj.stream = message.stream);
         message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
         message.saveTxOrder !== undefined && (obj.saveTxOrder = message.saveTxOrder);
+        message.compressionCodec !== undefined &&
+            (obj.compressionCodec = ydsCompressionCodecToJSON(message.compressionCodec));
         message.serializer !== undefined &&
             (obj.serializer = message.serializer
                 ? Serializer.toJSON(message.serializer)
@@ -433,6 +447,7 @@ export const YDSTarget = {
         message.stream = object.stream ?? '';
         message.serviceAccountId = object.serviceAccountId ?? '';
         message.saveTxOrder = object.saveTxOrder ?? false;
+        message.compressionCodec = object.compressionCodec ?? 0;
         message.serializer =
             object.serializer !== undefined && object.serializer !== null
                 ? Serializer.fromPartial(object.serializer)

@@ -49,6 +49,8 @@ export interface Cluster {
      * To prevent logs from being sent to the cloud set cluster property dataproc:disable_cloud_logging = true
      */
     logGroupId: string;
+    /** Environment of the cluster */
+    environment: Cluster_Environment;
 }
 
 export enum Cluster_Status {
@@ -115,6 +117,44 @@ export function cluster_StatusToJSON(object: Cluster_Status): string {
             return 'STOPPED';
         case Cluster_Status.STARTING:
             return 'STARTING';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export enum Cluster_Environment {
+    ENVIRONMENT_UNSPECIFIED = 0,
+    PRODUCTION = 1,
+    PRESTABLE = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function cluster_EnvironmentFromJSON(object: any): Cluster_Environment {
+    switch (object) {
+        case 0:
+        case 'ENVIRONMENT_UNSPECIFIED':
+            return Cluster_Environment.ENVIRONMENT_UNSPECIFIED;
+        case 1:
+        case 'PRODUCTION':
+            return Cluster_Environment.PRODUCTION;
+        case 2:
+        case 'PRESTABLE':
+            return Cluster_Environment.PRESTABLE;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return Cluster_Environment.UNRECOGNIZED;
+    }
+}
+
+export function cluster_EnvironmentToJSON(object: Cluster_Environment): string {
+    switch (object) {
+        case Cluster_Environment.ENVIRONMENT_UNSPECIFIED:
+            return 'ENVIRONMENT_UNSPECIFIED';
+        case Cluster_Environment.PRODUCTION:
+            return 'PRODUCTION';
+        case Cluster_Environment.PRESTABLE:
+            return 'PRESTABLE';
         default:
             return 'UNKNOWN';
     }
@@ -306,6 +346,7 @@ const baseCluster: object = {
     hostGroupIds: '',
     deletionProtection: false,
     logGroupId: '',
+    environment: 0,
 };
 
 export const Cluster = {
@@ -368,6 +409,9 @@ export const Cluster = {
         }
         if (message.logGroupId !== '') {
             writer.uint32(146).string(message.logGroupId);
+        }
+        if (message.environment !== 0) {
+            writer.uint32(152).int32(message.environment);
         }
         return writer;
     },
@@ -440,6 +484,9 @@ export const Cluster = {
                 case 18:
                     message.logGroupId = reader.string();
                     break;
+                case 19:
+                    message.environment = reader.int32() as any;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -506,6 +553,10 @@ export const Cluster = {
             object.logGroupId !== undefined && object.logGroupId !== null
                 ? String(object.logGroupId)
                 : '';
+        message.environment =
+            object.environment !== undefined && object.environment !== null
+                ? cluster_EnvironmentFromJSON(object.environment)
+                : 0;
         return message;
     },
 
@@ -548,6 +599,8 @@ export const Cluster = {
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
         message.logGroupId !== undefined && (obj.logGroupId = message.logGroupId);
+        message.environment !== undefined &&
+            (obj.environment = cluster_EnvironmentToJSON(message.environment));
         return obj;
     },
 
@@ -582,6 +635,7 @@ export const Cluster = {
         message.hostGroupIds = object.hostGroupIds?.map((e) => e) || [];
         message.deletionProtection = object.deletionProtection ?? false;
         message.logGroupId = object.logGroupId ?? '';
+        message.environment = object.environment ?? 0;
         return message;
     },
 };

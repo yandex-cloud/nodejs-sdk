@@ -2,6 +2,7 @@
 import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
+import { RateLimit } from '../../../../yandex/cloud/apploadbalancer/v1/rate_limit';
 import { Payload } from '../../../../yandex/cloud/apploadbalancer/v1/payload';
 import { Duration } from '../../../../google/protobuf/duration';
 
@@ -46,6 +47,8 @@ export interface VirtualHost {
     /** Deprecated, use route_options.modify_response_headers. */
     modifyResponseHeaders: HeaderModification[];
     routeOptions?: RouteOptions;
+    /** RateLimit is a rate limit configuration applied for a whole virtual host. */
+    rateLimit?: RateLimit;
 }
 
 export interface RouteOptions {
@@ -490,6 +493,8 @@ export interface HttpRouteAction {
     prefixRewrite: string;
     /** Supported values for HTTP `Upgrade` header. E.g. `websocket`. */
     upgradeTypes: string[];
+    /** RateLimit is a rate limit configuration applied for route. */
+    rateLimit?: RateLimit;
 }
 
 /** A gRPC route action resource. */
@@ -525,6 +530,8 @@ export interface GrpcRouteAction {
     hostRewrite: string | undefined;
     /** Automatically replaces the host with that of the target. */
     autoHostRewrite: boolean | undefined;
+    /** RateLimit is a rate limit configuration applied for route. */
+    rateLimit?: RateLimit;
 }
 
 const baseVirtualHost: object = {
@@ -554,6 +561,9 @@ export const VirtualHost = {
         }
         if (message.routeOptions !== undefined) {
             RouteOptions.encode(message.routeOptions, writer.uint32(50).fork()).ldelim();
+        }
+        if (message.rateLimit !== undefined) {
+            RateLimit.encode(message.rateLimit, writer.uint32(58).fork()).ldelim();
         }
         return writer;
     },
@@ -591,6 +601,9 @@ export const VirtualHost = {
                 case 6:
                     message.routeOptions = RouteOptions.decode(reader, reader.uint32());
                     break;
+                case 7:
+                    message.rateLimit = RateLimit.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -613,6 +626,10 @@ export const VirtualHost = {
         message.routeOptions =
             object.routeOptions !== undefined && object.routeOptions !== null
                 ? RouteOptions.fromJSON(object.routeOptions)
+                : undefined;
+        message.rateLimit =
+            object.rateLimit !== undefined && object.rateLimit !== null
+                ? RateLimit.fromJSON(object.rateLimit)
                 : undefined;
         return message;
     },
@@ -648,6 +665,8 @@ export const VirtualHost = {
             (obj.routeOptions = message.routeOptions
                 ? RouteOptions.toJSON(message.routeOptions)
                 : undefined);
+        message.rateLimit !== undefined &&
+            (obj.rateLimit = message.rateLimit ? RateLimit.toJSON(message.rateLimit) : undefined);
         return obj;
     },
 
@@ -663,6 +682,10 @@ export const VirtualHost = {
         message.routeOptions =
             object.routeOptions !== undefined && object.routeOptions !== null
                 ? RouteOptions.fromPartial(object.routeOptions)
+                : undefined;
+        message.rateLimit =
+            object.rateLimit !== undefined && object.rateLimit !== null
+                ? RateLimit.fromPartial(object.rateLimit)
                 : undefined;
         return message;
     },
@@ -1990,6 +2013,9 @@ export const HttpRouteAction = {
         for (const v of message.upgradeTypes) {
             writer.uint32(58).string(v!);
         }
+        if (message.rateLimit !== undefined) {
+            RateLimit.encode(message.rateLimit, writer.uint32(66).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -2021,6 +2047,9 @@ export const HttpRouteAction = {
                     break;
                 case 7:
                     message.upgradeTypes.push(reader.string());
+                    break;
+                case 8:
+                    message.rateLimit = RateLimit.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2057,6 +2086,10 @@ export const HttpRouteAction = {
                 ? String(object.prefixRewrite)
                 : '';
         message.upgradeTypes = (object.upgradeTypes ?? []).map((e: any) => String(e));
+        message.rateLimit =
+            object.rateLimit !== undefined && object.rateLimit !== null
+                ? RateLimit.fromJSON(object.rateLimit)
+                : undefined;
         return message;
     },
 
@@ -2077,6 +2110,8 @@ export const HttpRouteAction = {
         } else {
             obj.upgradeTypes = [];
         }
+        message.rateLimit !== undefined &&
+            (obj.rateLimit = message.rateLimit ? RateLimit.toJSON(message.rateLimit) : undefined);
         return obj;
     },
 
@@ -2095,6 +2130,10 @@ export const HttpRouteAction = {
         message.autoHostRewrite = object.autoHostRewrite ?? undefined;
         message.prefixRewrite = object.prefixRewrite ?? '';
         message.upgradeTypes = object.upgradeTypes?.map((e) => e) || [];
+        message.rateLimit =
+            object.rateLimit !== undefined && object.rateLimit !== null
+                ? RateLimit.fromPartial(object.rateLimit)
+                : undefined;
         return message;
     },
 };
@@ -2125,6 +2164,9 @@ export const GrpcRouteAction = {
         if (message.autoHostRewrite !== undefined) {
             writer.uint32(40).bool(message.autoHostRewrite);
         }
+        if (message.rateLimit !== undefined) {
+            RateLimit.encode(message.rateLimit, writer.uint32(50).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -2149,6 +2191,9 @@ export const GrpcRouteAction = {
                     break;
                 case 5:
                     message.autoHostRewrite = reader.bool();
+                    break;
+                case 6:
+                    message.rateLimit = RateLimit.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2180,6 +2225,10 @@ export const GrpcRouteAction = {
             object.autoHostRewrite !== undefined && object.autoHostRewrite !== null
                 ? Boolean(object.autoHostRewrite)
                 : undefined;
+        message.rateLimit =
+            object.rateLimit !== undefined && object.rateLimit !== null
+                ? RateLimit.fromJSON(object.rateLimit)
+                : undefined;
         return message;
     },
 
@@ -2194,6 +2243,8 @@ export const GrpcRouteAction = {
                 : undefined);
         message.hostRewrite !== undefined && (obj.hostRewrite = message.hostRewrite);
         message.autoHostRewrite !== undefined && (obj.autoHostRewrite = message.autoHostRewrite);
+        message.rateLimit !== undefined &&
+            (obj.rateLimit = message.rateLimit ? RateLimit.toJSON(message.rateLimit) : undefined);
         return obj;
     },
 
@@ -2210,6 +2261,10 @@ export const GrpcRouteAction = {
                 : undefined;
         message.hostRewrite = object.hostRewrite ?? undefined;
         message.autoHostRewrite = object.autoHostRewrite ?? undefined;
+        message.rateLimit =
+            object.rateLimit !== undefined && object.rateLimit !== null
+                ? RateLimit.fromPartial(object.rateLimit)
+                : undefined;
         return message;
     },
 };

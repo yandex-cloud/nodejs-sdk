@@ -295,11 +295,32 @@ export interface RegionalDatabase {
 export interface ScalePolicy {
     $type: 'yandex.cloud.ydb.v1.ScalePolicy';
     fixedScale?: ScalePolicy_FixedScale | undefined;
+    autoScale?: ScalePolicy_AutoScale | undefined;
 }
 
 export interface ScalePolicy_FixedScale {
     $type: 'yandex.cloud.ydb.v1.ScalePolicy.FixedScale';
     size: number;
+}
+
+/** Scale policy that dynamically changes the number of database nodes within a user-defined range. */
+export interface ScalePolicy_AutoScale {
+    $type: 'yandex.cloud.ydb.v1.ScalePolicy.AutoScale';
+    /** Minimum number of nodes to which autoscaling can scale the database. */
+    minSize: number;
+    /** Maximum number of nodes to which autoscaling can scale the database. */
+    maxSize: number;
+    targetTracking?: ScalePolicy_AutoScale_TargetTracking | undefined;
+}
+
+/**
+ * Autoscaling algorithm that tracks metric and reactively scale database nodes to keep metric
+ * close to the specified target value.
+ */
+export interface ScalePolicy_AutoScale_TargetTracking {
+    $type: 'yandex.cloud.ydb.v1.ScalePolicy.AutoScale.TargetTracking';
+    /** A percentage of database nodes average CPU utilization. */
+    cpuUtilizationPercent: number | undefined;
 }
 
 export interface StorageConfig {
@@ -2056,6 +2077,9 @@ export const ScalePolicy = {
         if (message.fixedScale !== undefined) {
             ScalePolicy_FixedScale.encode(message.fixedScale, writer.uint32(10).fork()).ldelim();
         }
+        if (message.autoScale !== undefined) {
+            ScalePolicy_AutoScale.encode(message.autoScale, writer.uint32(18).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -2068,6 +2092,9 @@ export const ScalePolicy = {
             switch (tag >>> 3) {
                 case 1:
                     message.fixedScale = ScalePolicy_FixedScale.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.autoScale = ScalePolicy_AutoScale.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2083,6 +2110,10 @@ export const ScalePolicy = {
             object.fixedScale !== undefined && object.fixedScale !== null
                 ? ScalePolicy_FixedScale.fromJSON(object.fixedScale)
                 : undefined;
+        message.autoScale =
+            object.autoScale !== undefined && object.autoScale !== null
+                ? ScalePolicy_AutoScale.fromJSON(object.autoScale)
+                : undefined;
         return message;
     },
 
@@ -2092,6 +2123,10 @@ export const ScalePolicy = {
             (obj.fixedScale = message.fixedScale
                 ? ScalePolicy_FixedScale.toJSON(message.fixedScale)
                 : undefined);
+        message.autoScale !== undefined &&
+            (obj.autoScale = message.autoScale
+                ? ScalePolicy_AutoScale.toJSON(message.autoScale)
+                : undefined);
         return obj;
     },
 
@@ -2100,6 +2135,10 @@ export const ScalePolicy = {
         message.fixedScale =
             object.fixedScale !== undefined && object.fixedScale !== null
                 ? ScalePolicy_FixedScale.fromPartial(object.fixedScale)
+                : undefined;
+        message.autoScale =
+            object.autoScale !== undefined && object.autoScale !== null
+                ? ScalePolicy_AutoScale.fromPartial(object.autoScale)
                 : undefined;
         return message;
     },
@@ -2162,6 +2201,169 @@ export const ScalePolicy_FixedScale = {
 };
 
 messageTypeRegistry.set(ScalePolicy_FixedScale.$type, ScalePolicy_FixedScale);
+
+const baseScalePolicy_AutoScale: object = {
+    $type: 'yandex.cloud.ydb.v1.ScalePolicy.AutoScale',
+    minSize: 0,
+    maxSize: 0,
+};
+
+export const ScalePolicy_AutoScale = {
+    $type: 'yandex.cloud.ydb.v1.ScalePolicy.AutoScale' as const,
+
+    encode(message: ScalePolicy_AutoScale, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.minSize !== 0) {
+            writer.uint32(8).int64(message.minSize);
+        }
+        if (message.maxSize !== 0) {
+            writer.uint32(16).int64(message.maxSize);
+        }
+        if (message.targetTracking !== undefined) {
+            ScalePolicy_AutoScale_TargetTracking.encode(
+                message.targetTracking,
+                writer.uint32(26).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy_AutoScale {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseScalePolicy_AutoScale } as ScalePolicy_AutoScale;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.minSize = longToNumber(reader.int64() as Long);
+                    break;
+                case 2:
+                    message.maxSize = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.targetTracking = ScalePolicy_AutoScale_TargetTracking.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ScalePolicy_AutoScale {
+        const message = { ...baseScalePolicy_AutoScale } as ScalePolicy_AutoScale;
+        message.minSize =
+            object.minSize !== undefined && object.minSize !== null ? Number(object.minSize) : 0;
+        message.maxSize =
+            object.maxSize !== undefined && object.maxSize !== null ? Number(object.maxSize) : 0;
+        message.targetTracking =
+            object.targetTracking !== undefined && object.targetTracking !== null
+                ? ScalePolicy_AutoScale_TargetTracking.fromJSON(object.targetTracking)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: ScalePolicy_AutoScale): unknown {
+        const obj: any = {};
+        message.minSize !== undefined && (obj.minSize = Math.round(message.minSize));
+        message.maxSize !== undefined && (obj.maxSize = Math.round(message.maxSize));
+        message.targetTracking !== undefined &&
+            (obj.targetTracking = message.targetTracking
+                ? ScalePolicy_AutoScale_TargetTracking.toJSON(message.targetTracking)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy_AutoScale>, I>>(
+        object: I,
+    ): ScalePolicy_AutoScale {
+        const message = { ...baseScalePolicy_AutoScale } as ScalePolicy_AutoScale;
+        message.minSize = object.minSize ?? 0;
+        message.maxSize = object.maxSize ?? 0;
+        message.targetTracking =
+            object.targetTracking !== undefined && object.targetTracking !== null
+                ? ScalePolicy_AutoScale_TargetTracking.fromPartial(object.targetTracking)
+                : undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ScalePolicy_AutoScale.$type, ScalePolicy_AutoScale);
+
+const baseScalePolicy_AutoScale_TargetTracking: object = {
+    $type: 'yandex.cloud.ydb.v1.ScalePolicy.AutoScale.TargetTracking',
+};
+
+export const ScalePolicy_AutoScale_TargetTracking = {
+    $type: 'yandex.cloud.ydb.v1.ScalePolicy.AutoScale.TargetTracking' as const,
+
+    encode(
+        message: ScalePolicy_AutoScale_TargetTracking,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.cpuUtilizationPercent !== undefined) {
+            writer.uint32(8).int64(message.cpuUtilizationPercent);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy_AutoScale_TargetTracking {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseScalePolicy_AutoScale_TargetTracking,
+        } as ScalePolicy_AutoScale_TargetTracking;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.cpuUtilizationPercent = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ScalePolicy_AutoScale_TargetTracking {
+        const message = {
+            ...baseScalePolicy_AutoScale_TargetTracking,
+        } as ScalePolicy_AutoScale_TargetTracking;
+        message.cpuUtilizationPercent =
+            object.cpuUtilizationPercent !== undefined && object.cpuUtilizationPercent !== null
+                ? Number(object.cpuUtilizationPercent)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: ScalePolicy_AutoScale_TargetTracking): unknown {
+        const obj: any = {};
+        message.cpuUtilizationPercent !== undefined &&
+            (obj.cpuUtilizationPercent = Math.round(message.cpuUtilizationPercent));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy_AutoScale_TargetTracking>, I>>(
+        object: I,
+    ): ScalePolicy_AutoScale_TargetTracking {
+        const message = {
+            ...baseScalePolicy_AutoScale_TargetTracking,
+        } as ScalePolicy_AutoScale_TargetTracking;
+        message.cpuUtilizationPercent = object.cpuUtilizationPercent ?? undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(
+    ScalePolicy_AutoScale_TargetTracking.$type,
+    ScalePolicy_AutoScale_TargetTracking,
+);
 
 const baseStorageConfig: object = {
     $type: 'yandex.cloud.ydb.v1.StorageConfig',

@@ -22,7 +22,13 @@ import {
     roleToJSON,
 } from '../../../../yandex/cloud/dataproc/v1/subcluster';
 import { Resources } from '../../../../yandex/cloud/dataproc/v1/common';
-import { HadoopConfig, Cluster } from '../../../../yandex/cloud/dataproc/v1/cluster';
+import {
+    HadoopConfig,
+    Cluster_Environment,
+    Cluster,
+    cluster_EnvironmentFromJSON,
+    cluster_EnvironmentToJSON,
+} from '../../../../yandex/cloud/dataproc/v1/cluster';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Operation } from '../../../../yandex/cloud/operation/operation';
 
@@ -181,6 +187,8 @@ export interface CreateClusterRequest {
     deletionProtection: boolean;
     /** ID of the cloud logging log group to write logs. If not set, logs will not be sent to logging service */
     logGroupId: string;
+    /** Environment of the cluster */
+    environment: Cluster_Environment;
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -1064,6 +1072,7 @@ const baseCreateClusterRequest: object = {
     hostGroupIds: '',
     deletionProtection: false,
     logGroupId: '',
+    environment: 0,
 };
 
 export const CreateClusterRequest = {
@@ -1115,6 +1124,9 @@ export const CreateClusterRequest = {
         }
         if (message.logGroupId !== '') {
             writer.uint32(114).string(message.logGroupId);
+        }
+        if (message.environment !== 0) {
+            writer.uint32(120).int32(message.environment);
         }
         return writer;
     },
@@ -1171,6 +1183,9 @@ export const CreateClusterRequest = {
                 case 14:
                     message.logGroupId = reader.string();
                     break;
+                case 15:
+                    message.environment = reader.int32() as any;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1223,6 +1238,10 @@ export const CreateClusterRequest = {
             object.logGroupId !== undefined && object.logGroupId !== null
                 ? String(object.logGroupId)
                 : '';
+        message.environment =
+            object.environment !== undefined && object.environment !== null
+                ? cluster_EnvironmentFromJSON(object.environment)
+                : 0;
         return message;
     },
 
@@ -1258,6 +1277,8 @@ export const CreateClusterRequest = {
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
         message.logGroupId !== undefined && (obj.logGroupId = message.logGroupId);
+        message.environment !== undefined &&
+            (obj.environment = cluster_EnvironmentToJSON(message.environment));
         return obj;
     },
 
@@ -1289,6 +1310,7 @@ export const CreateClusterRequest = {
         message.hostGroupIds = object.hostGroupIds?.map((e) => e) || [];
         message.deletionProtection = object.deletionProtection ?? false;
         message.logGroupId = object.logGroupId ?? '';
+        message.environment = object.environment ?? 0;
         return message;
     },
 };

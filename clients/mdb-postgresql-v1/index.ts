@@ -18,6 +18,8 @@ export * as host15 from './generated/yandex/cloud/mdb/postgresql/v1/config/host1
 export * as host15_1c from './generated/yandex/cloud/mdb/postgresql/v1/config/host15_1c';
 export * as host16 from './generated/yandex/cloud/mdb/postgresql/v1/config/host16';
 export * as host16_1c from './generated/yandex/cloud/mdb/postgresql/v1/config/host16_1c';
+export * as host17 from './generated/yandex/cloud/mdb/postgresql/v1/config/host17';
+export * as host17_1c from './generated/yandex/cloud/mdb/postgresql/v1/config/host17_1c';
 export * as host9_6 from './generated/yandex/cloud/mdb/postgresql/v1/config/host9_6';
 export * as postgresql10 from './generated/yandex/cloud/mdb/postgresql/v1/config/postgresql10';
 export * as postgresql10_1c from './generated/yandex/cloud/mdb/postgresql/v1/config/postgresql10_1c';
@@ -33,6 +35,8 @@ export * as postgresql15 from './generated/yandex/cloud/mdb/postgresql/v1/config
 export * as postgresql15_1c from './generated/yandex/cloud/mdb/postgresql/v1/config/postgresql15_1c';
 export * as postgresql16 from './generated/yandex/cloud/mdb/postgresql/v1/config/postgresql16';
 export * as postgresql16_1c from './generated/yandex/cloud/mdb/postgresql/v1/config/postgresql16_1c';
+export * as postgresql17 from './generated/yandex/cloud/mdb/postgresql/v1/config/postgresql17';
+export * as postgresql17_1c from './generated/yandex/cloud/mdb/postgresql/v1/config/postgresql17_1c';
 export * as postgresql9_6 from './generated/yandex/cloud/mdb/postgresql/v1/config/postgresql9_6';
 export * as database from './generated/yandex/cloud/mdb/postgresql/v1/database';
 export * as databaseService from './generated/yandex/cloud/mdb/postgresql/v1/database_service';

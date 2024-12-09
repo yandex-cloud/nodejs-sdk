@@ -21,32 +21,49 @@ import {
 
 export const protobufPackage = 'yandex.cloud.ai.foundation_models.v1.text_classification';
 
-/** Request for the service to classify text. */
+/**
+ * Request for the service to classify text with tuned model.
+ *
+ * The names of the classes between which the model will be distributing requests must be specified during model tuning;
+ * therefore, they are not provided in the request.
+ *
+ * For examples of usage, see [step-by-step guides](/docs/operations/classifier/additionally-trained).
+ */
 export interface TextClassificationRequest {
     $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.TextClassificationRequest';
-    /** The identifier of the classification model. */
+    /** The [URI](/docs/foundation-models/concepts/classifier/models) of your tuned classifier model. */
     modelUri: string;
     /** Text for classification. */
     text: string;
 }
 
-/** Response containing classifier predictions. */
+/** Response with classifier predictions. */
 export interface TextClassificationResponse {
     $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.TextClassificationResponse';
-    /** Result of classification - a list of label-confidence pairs. */
+    /**
+     * The classification results with the `confidence`` values
+     * for the probability of classifying the request text into each class.
+     */
     predictions: ClassificationLabel[];
-    /** Model version (changes with model releases). */
+    /** The model version changes with each new releases. */
     modelVersion: string;
 }
 
-/** Request for the service to classify text. */
+/**
+ * Request for the service to classify text.
+ * For examples of usage, see [step-by-step guides](/docs/operations/classifier/readymade).
+ */
 export interface FewShotTextClassificationRequest {
     $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.FewShotTextClassificationRequest';
-    /** The identifier of the classification model. */
+    /** The [URI](/docs/foundation-models/concepts/classifier/models) of the classifier model. */
     modelUri: string;
     /** Text description of the classification task. */
     taskDescription: string;
-    /** List of available labels for the classification result. */
+    /**
+     * List of available labels for the classification result.
+     * Give meaningful names to label classes: this is essential for correct classification results.
+     * For example, use ``chemistry`` and ``physics`` rather than ``chm`` and ``phs`` for class names.
+     */
     labels: string[];
     /** Text for classification. */
     text: string;
@@ -57,9 +74,12 @@ export interface FewShotTextClassificationRequest {
 /** Response containing classifier predictions. */
 export interface FewShotTextClassificationResponse {
     $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.FewShotTextClassificationResponse';
-    /** Result of classification - a list of label-confidence pairs. */
+    /**
+     * The classification results with the `confidence`` values
+     * for the probability of classifying the request text into each class.
+     */
     predictions: ClassificationLabel[];
-    /** Model version (changes with model releases). */
+    /** The model version changes with each new releases. */
     modelVersion: string;
 }
 
@@ -425,9 +445,14 @@ export const FewShotTextClassificationResponse = {
 
 messageTypeRegistry.set(FewShotTextClassificationResponse.$type, FewShotTextClassificationResponse);
 
-/** Service for classifying text from input text. */
+/** Service for classifying the text requests provided in prompts. */
 export const TextClassificationServiceService = {
-    /** RPC method for text classification. */
+    /**
+     * RPC method to classify text with tuned model.
+     *
+     * The names of the classes between which the model will be distributing requests
+     * must be specified during model tuning and are not provided in the request.
+     */
     classify: {
         path: '/yandex.cloud.ai.foundation_models.v1.text_classification.TextClassificationService/Classify',
         requestStream: false,
@@ -439,7 +464,12 @@ export const TextClassificationServiceService = {
             Buffer.from(TextClassificationResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => TextClassificationResponse.decode(value),
     },
-    /** RPC method for few-shot text classification. */
+    /**
+     * RPC method for binary and multi-class classification.
+     *
+     * You can provide up to 20 classes for few-shot text classification
+     * with optional examples.
+     */
     fewShotClassify: {
         path: '/yandex.cloud.ai.foundation_models.v1.text_classification.TextClassificationService/FewShotClassify',
         requestStream: false,
@@ -454,9 +484,19 @@ export const TextClassificationServiceService = {
 } as const;
 
 export interface TextClassificationServiceServer extends UntypedServiceImplementation {
-    /** RPC method for text classification. */
+    /**
+     * RPC method to classify text with tuned model.
+     *
+     * The names of the classes between which the model will be distributing requests
+     * must be specified during model tuning and are not provided in the request.
+     */
     classify: handleUnaryCall<TextClassificationRequest, TextClassificationResponse>;
-    /** RPC method for few-shot text classification. */
+    /**
+     * RPC method for binary and multi-class classification.
+     *
+     * You can provide up to 20 classes for few-shot text classification
+     * with optional examples.
+     */
     fewShotClassify: handleUnaryCall<
         FewShotTextClassificationRequest,
         FewShotTextClassificationResponse
@@ -464,7 +504,12 @@ export interface TextClassificationServiceServer extends UntypedServiceImplement
 }
 
 export interface TextClassificationServiceClient extends Client {
-    /** RPC method for text classification. */
+    /**
+     * RPC method to classify text with tuned model.
+     *
+     * The names of the classes between which the model will be distributing requests
+     * must be specified during model tuning and are not provided in the request.
+     */
     classify(
         request: TextClassificationRequest,
         callback: (error: ServiceError | null, response: TextClassificationResponse) => void,
@@ -480,7 +525,12 @@ export interface TextClassificationServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: TextClassificationResponse) => void,
     ): ClientUnaryCall;
-    /** RPC method for few-shot text classification. */
+    /**
+     * RPC method for binary and multi-class classification.
+     *
+     * You can provide up to 20 classes for few-shot text classification
+     * with optional examples.
+     */
     fewShotClassify(
         request: FewShotTextClassificationRequest,
         callback: (error: ServiceError | null, response: FewShotTextClassificationResponse) => void,

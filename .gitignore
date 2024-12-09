@@ -4,6 +4,7 @@ dist
 
 # generate_services start
 /ai-assistants-v1
+/ai-dataset-v1
 /ai-files-v1
 /ai-foundation_models-v1
 /ai-llm-v1alpha
@@ -12,6 +13,7 @@ dist
 /ai-stt-v3
 /ai-translate-v2
 /ai-tts-v3
+/ai-tuning-v1
 /ai-vision-v1
 /ai-vision-v2
 /airflow-v1
@@ -23,6 +25,7 @@ dist
 /certificatemanager-v1
 /cic-v1
 /cloudapps-workload-v1
+/cloudregistry-v1
 /cloudrouter-v1
 /compute-v1
 /containerregistry-v1
@@ -47,6 +50,7 @@ dist
 /marketplace-licensemanager-saas-v1
 /marketplace-licensemanager-v1
 /marketplace-metering-v1
+/marketplace-pim-v1
 /marketplace-v1
 /mdb-clickhouse-v1
 /mdb-elasticsearch-v1
@@ -63,6 +67,7 @@ dist
 /operation
 /organizationmanager-v1
 /resourcemanager-v1
+/searchapi-v2
 /serverless-apigateway-v1
 /serverless-apigateway-websocket-v1
 /serverless-containers-v1

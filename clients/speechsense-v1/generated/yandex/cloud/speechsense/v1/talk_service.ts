@@ -80,6 +80,8 @@ export interface StreamTalkRequest {
 /** request to create audio dialog */
 export interface UploadTalkRequest {
     $type: 'yandex.cloud.speechsense.v1.UploadTalkRequest';
+    /** talk_id, blank if initial upload request and present on metadata update */
+    talkId: string;
     metadata?: TalkMetadata;
     /** audio payload */
     audio?: AudioRequest;
@@ -94,6 +96,8 @@ export interface UploadTalkResponse {
 /** request to create text based dialog */
 export interface UploadTextRequest {
     $type: 'yandex.cloud.speechsense.v1.UploadTextRequest';
+    /** talk_id, blank if initial upload request and present on metadata update */
+    talkId: string;
     metadata?: TalkMetadata;
     textContent?: TextContent;
 }
@@ -263,12 +267,18 @@ export const StreamTalkRequest = {
 
 messageTypeRegistry.set(StreamTalkRequest.$type, StreamTalkRequest);
 
-const baseUploadTalkRequest: object = { $type: 'yandex.cloud.speechsense.v1.UploadTalkRequest' };
+const baseUploadTalkRequest: object = {
+    $type: 'yandex.cloud.speechsense.v1.UploadTalkRequest',
+    talkId: '',
+};
 
 export const UploadTalkRequest = {
     $type: 'yandex.cloud.speechsense.v1.UploadTalkRequest' as const,
 
     encode(message: UploadTalkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.talkId !== '') {
+            writer.uint32(26).string(message.talkId);
+        }
         if (message.metadata !== undefined) {
             TalkMetadata.encode(message.metadata, writer.uint32(10).fork()).ldelim();
         }
@@ -285,6 +295,9 @@ export const UploadTalkRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 3:
+                    message.talkId = reader.string();
+                    break;
                 case 1:
                     message.metadata = TalkMetadata.decode(reader, reader.uint32());
                     break;
@@ -301,6 +314,8 @@ export const UploadTalkRequest = {
 
     fromJSON(object: any): UploadTalkRequest {
         const message = { ...baseUploadTalkRequest } as UploadTalkRequest;
+        message.talkId =
+            object.talkId !== undefined && object.talkId !== null ? String(object.talkId) : '';
         message.metadata =
             object.metadata !== undefined && object.metadata !== null
                 ? TalkMetadata.fromJSON(object.metadata)
@@ -314,6 +329,7 @@ export const UploadTalkRequest = {
 
     toJSON(message: UploadTalkRequest): unknown {
         const obj: any = {};
+        message.talkId !== undefined && (obj.talkId = message.talkId);
         message.metadata !== undefined &&
             (obj.metadata = message.metadata ? TalkMetadata.toJSON(message.metadata) : undefined);
         message.audio !== undefined &&
@@ -323,6 +339,7 @@ export const UploadTalkRequest = {
 
     fromPartial<I extends Exact<DeepPartial<UploadTalkRequest>, I>>(object: I): UploadTalkRequest {
         const message = { ...baseUploadTalkRequest } as UploadTalkRequest;
+        message.talkId = object.talkId ?? '';
         message.metadata =
             object.metadata !== undefined && object.metadata !== null
                 ? TalkMetadata.fromPartial(object.metadata)
@@ -394,12 +411,18 @@ export const UploadTalkResponse = {
 
 messageTypeRegistry.set(UploadTalkResponse.$type, UploadTalkResponse);
 
-const baseUploadTextRequest: object = { $type: 'yandex.cloud.speechsense.v1.UploadTextRequest' };
+const baseUploadTextRequest: object = {
+    $type: 'yandex.cloud.speechsense.v1.UploadTextRequest',
+    talkId: '',
+};
 
 export const UploadTextRequest = {
     $type: 'yandex.cloud.speechsense.v1.UploadTextRequest' as const,
 
     encode(message: UploadTextRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.talkId !== '') {
+            writer.uint32(26).string(message.talkId);
+        }
         if (message.metadata !== undefined) {
             TalkMetadata.encode(message.metadata, writer.uint32(10).fork()).ldelim();
         }
@@ -416,6 +439,9 @@ export const UploadTextRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 3:
+                    message.talkId = reader.string();
+                    break;
                 case 1:
                     message.metadata = TalkMetadata.decode(reader, reader.uint32());
                     break;
@@ -432,6 +458,8 @@ export const UploadTextRequest = {
 
     fromJSON(object: any): UploadTextRequest {
         const message = { ...baseUploadTextRequest } as UploadTextRequest;
+        message.talkId =
+            object.talkId !== undefined && object.talkId !== null ? String(object.talkId) : '';
         message.metadata =
             object.metadata !== undefined && object.metadata !== null
                 ? TalkMetadata.fromJSON(object.metadata)
@@ -445,6 +473,7 @@ export const UploadTextRequest = {
 
     toJSON(message: UploadTextRequest): unknown {
         const obj: any = {};
+        message.talkId !== undefined && (obj.talkId = message.talkId);
         message.metadata !== undefined &&
             (obj.metadata = message.metadata ? TalkMetadata.toJSON(message.metadata) : undefined);
         message.textContent !== undefined &&
@@ -456,6 +485,7 @@ export const UploadTextRequest = {
 
     fromPartial<I extends Exact<DeepPartial<UploadTextRequest>, I>>(object: I): UploadTextRequest {
         const message = { ...baseUploadTextRequest } as UploadTextRequest;
+        message.talkId = object.talkId ?? '';
         message.metadata =
             object.metadata !== undefined && object.metadata !== null
                 ? TalkMetadata.fromPartial(object.metadata)

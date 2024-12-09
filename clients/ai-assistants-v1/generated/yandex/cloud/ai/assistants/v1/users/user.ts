@@ -9,17 +9,28 @@ export const protobufPackage = 'yandex.cloud.ai.assistants.v1.users';
 
 export interface User {
     $type: 'yandex.cloud.ai.assistants.v1.users.User';
+    /** Unique identifier of the user. */
     id: string;
+    /** ID of the folder that the user belongs to. */
     folderId: string;
+    /** Name of the user. */
     name: string;
+    /** Description of the user. */
     description: string;
     source: string;
+    /** Identifier of the subject who created this user. */
     createdBy: string;
+    /** Timestamp representing when the user was created. */
     createdAt?: Date;
+    /** Identifier of the subject who last updated this user. */
     updatedBy: string;
+    /** Timestamp representing the last time this user was updated. */
     updatedAt?: Date;
+    /** Configuration for the expiration of the user, defining when and how the user will expire. */
     expirationConfig?: ExpirationConfig;
+    /** Timestamp representing when the user will expire. */
     expiresAt?: Date;
+    /** Set of key-value pairs that can be used to organize and categorize the user. */
     labels: { [key: string]: string };
 }
 

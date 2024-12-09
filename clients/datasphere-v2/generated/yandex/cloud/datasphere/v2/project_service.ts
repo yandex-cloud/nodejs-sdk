@@ -25,7 +25,6 @@ import {
     resourceTypeFromJSON,
     resourceTypeToJSON,
 } from '../../../../yandex/cloud/datasphere/v2/resource_types';
-import { Timestamp } from '../../../../google/protobuf/timestamp';
 import {
     Restriction,
     GetRestrictionsMetaResponse,
@@ -196,8 +195,6 @@ export enum OpenProjectMetadata_OpenProjectStatus {
     OPEN_PROJECT_STATUS_ALLOCATING_RESOURCES = 4,
     /** OPEN_PROJECT_STATUS_STARTING_IDE - Starting IDE. */
     OPEN_PROJECT_STATUS_STARTING_IDE = 5,
-    /** OPEN_PROJECT_STATUS_APPLYING_CHECKPOINT - Applying checkpoint to project. */
-    OPEN_PROJECT_STATUS_APPLYING_CHECKPOINT = 6,
     /** OPEN_PROJECT_STATUS_UNKNOWN - Unknown open project status. */
     OPEN_PROJECT_STATUS_UNKNOWN = 7,
     UNRECOGNIZED = -1,
@@ -225,9 +222,6 @@ export function openProjectMetadata_OpenProjectStatusFromJSON(
         case 5:
         case 'OPEN_PROJECT_STATUS_STARTING_IDE':
             return OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_STARTING_IDE;
-        case 6:
-        case 'OPEN_PROJECT_STATUS_APPLYING_CHECKPOINT':
-            return OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_APPLYING_CHECKPOINT;
         case 7:
         case 'OPEN_PROJECT_STATUS_UNKNOWN':
             return OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_UNKNOWN;
@@ -254,8 +248,6 @@ export function openProjectMetadata_OpenProjectStatusToJSON(
             return 'OPEN_PROJECT_STATUS_ALLOCATING_RESOURCES';
         case OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_STARTING_IDE:
             return 'OPEN_PROJECT_STATUS_STARTING_IDE';
-        case OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_APPLYING_CHECKPOINT:
-            return 'OPEN_PROJECT_STATUS_APPLYING_CHECKPOINT';
         case OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_UNKNOWN:
             return 'OPEN_PROJECT_STATUS_UNKNOWN';
         default:
@@ -393,53 +385,8 @@ export interface ProjectExecutionMetadata {
 
 export interface ProjectExecutionResponse {
     $type: 'yandex.cloud.datasphere.v2.ProjectExecutionResponse';
-    /** ID of the checkpoint resulting from the execution. */
-    checkpointId: string;
-    /**
-     * Values of output variables resulting from the execution.
-     * Deprecated
-     *
-     * @deprecated
-     */
-    outputVariables?: { [key: string]: any };
     /** Execution final status. */
     executionStatus: ExecutionStatus;
-}
-
-export interface CellOutputsRequest {
-    $type: 'yandex.cloud.datasphere.v2.CellOutputsRequest';
-    /** ID of the project to return cell outputs for. */
-    projectId: string;
-    /** ID of the cell to return outputs for. */
-    cellId: string;
-    /** ID of the checkpoint to return cell outputs for. */
-    checkpointId: string;
-    /** Timestamp from which to return outputs. */
-    startAt?: Date;
-}
-
-export interface CellOutputsResponse {
-    $type: 'yandex.cloud.datasphere.v2.CellOutputsResponse';
-    /** List of outputs. */
-    outputs: string[];
-}
-
-export interface GetStateVariablesRequest {
-    $type: 'yandex.cloud.datasphere.v2.GetStateVariablesRequest';
-    /** ID of the project, for which to return state variables. */
-    projectId: string;
-    /** ID of the notebook, for which to return state variables. */
-    notebookId: string;
-    /** Names of variables to return. */
-    variableNames: string[];
-    /** ID of the checkpoint, for which to return state variables. */
-    checkpointId: string;
-}
-
-export interface GetStateVariablesResponse {
-    $type: 'yandex.cloud.datasphere.v2.GetStateVariablesResponse';
-    /** Values of the specified variables. */
-    variables?: { [key: string]: any };
 }
 
 export interface SetProjectAccessBindingsMetadata {
@@ -480,6 +427,48 @@ export interface SetProjectRestrictionsRequest {
     projectId: string;
     /** List of restrictions to set. */
     restrictions: Restriction[];
+}
+
+export interface ResizeProjectDiskRequest {
+    $type: 'yandex.cloud.datasphere.v2.ResizeProjectDiskRequest';
+    /** ID of the project. */
+    projectId: string;
+    /** Set new size project disk in gigabytes. */
+    newDiskSizeGb: number;
+}
+
+export interface ResizeProjectDiskMetadata {
+    $type: 'yandex.cloud.datasphere.v2.ResizeProjectDiskMetadata';
+    /** ID of the project which resized project disk. */
+    projectId: string;
+    /** Old size project disk in gigabytes. */
+    oldDiskSizeGb: number;
+    /** New size project disk in gigabytes. */
+    newDiskSizeGb: number;
+}
+
+export interface DiskInfo {
+    $type: 'yandex.cloud.datasphere.v2.DiskInfo';
+    /** ID of the project. */
+    projectId: string;
+    /** Project disk size in gigabytes. */
+    diskSizeGb: number;
+    /** Used project disk in gigabytes. */
+    diskUsedGb: number;
+    /** Detailed information about the project disk. */
+    detailedUsage?: DiskInfo_DetailedDiskInfo;
+}
+
+export interface DiskInfo_DetailedDiskInfo {
+    $type: 'yandex.cloud.datasphere.v2.DiskInfo.DetailedDiskInfo';
+    /** Used project disk for user data in gigabytes. */
+    userDataGb: number;
+    /** Used project disk for packages in gigabytes. */
+    packagesGb: number;
+    /** Used project disk for system data in gigabytes. */
+    systemDataGb: number;
+    /** Free space project disk in gigabytes. */
+    freeSpaceGb: number;
 }
 
 const baseCreateProjectRequest: object = {
@@ -2114,7 +2103,6 @@ messageTypeRegistry.set(ProjectExecutionMetadata.$type, ProjectExecutionMetadata
 
 const baseProjectExecutionResponse: object = {
     $type: 'yandex.cloud.datasphere.v2.ProjectExecutionResponse',
-    checkpointId: '',
     executionStatus: 0,
 };
 
@@ -2125,12 +2113,6 @@ export const ProjectExecutionResponse = {
         message: ProjectExecutionResponse,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
-        if (message.checkpointId !== '') {
-            writer.uint32(10).string(message.checkpointId);
-        }
-        if (message.outputVariables !== undefined) {
-            Struct.encode(Struct.wrap(message.outputVariables), writer.uint32(18).fork()).ldelim();
-        }
         if (message.executionStatus !== 0) {
             writer.uint32(24).int32(message.executionStatus);
         }
@@ -2144,12 +2126,6 @@ export const ProjectExecutionResponse = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.checkpointId = reader.string();
-                    break;
-                case 2:
-                    message.outputVariables = Struct.unwrap(Struct.decode(reader, reader.uint32()));
-                    break;
                 case 3:
                     message.executionStatus = reader.int32() as any;
                     break;
@@ -2163,12 +2139,6 @@ export const ProjectExecutionResponse = {
 
     fromJSON(object: any): ProjectExecutionResponse {
         const message = { ...baseProjectExecutionResponse } as ProjectExecutionResponse;
-        message.checkpointId =
-            object.checkpointId !== undefined && object.checkpointId !== null
-                ? String(object.checkpointId)
-                : '';
-        message.outputVariables =
-            typeof object.outputVariables === 'object' ? object.outputVariables : undefined;
         message.executionStatus =
             object.executionStatus !== undefined && object.executionStatus !== null
                 ? executionStatusFromJSON(object.executionStatus)
@@ -2178,8 +2148,6 @@ export const ProjectExecutionResponse = {
 
     toJSON(message: ProjectExecutionResponse): unknown {
         const obj: any = {};
-        message.checkpointId !== undefined && (obj.checkpointId = message.checkpointId);
-        message.outputVariables !== undefined && (obj.outputVariables = message.outputVariables);
         message.executionStatus !== undefined &&
             (obj.executionStatus = executionStatusToJSON(message.executionStatus));
         return obj;
@@ -2189,331 +2157,12 @@ export const ProjectExecutionResponse = {
         object: I,
     ): ProjectExecutionResponse {
         const message = { ...baseProjectExecutionResponse } as ProjectExecutionResponse;
-        message.checkpointId = object.checkpointId ?? '';
-        message.outputVariables = object.outputVariables ?? undefined;
         message.executionStatus = object.executionStatus ?? 0;
         return message;
     },
 };
 
 messageTypeRegistry.set(ProjectExecutionResponse.$type, ProjectExecutionResponse);
-
-const baseCellOutputsRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.CellOutputsRequest',
-    projectId: '',
-    cellId: '',
-    checkpointId: '',
-};
-
-export const CellOutputsRequest = {
-    $type: 'yandex.cloud.datasphere.v2.CellOutputsRequest' as const,
-
-    encode(message: CellOutputsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.projectId !== '') {
-            writer.uint32(10).string(message.projectId);
-        }
-        if (message.cellId !== '') {
-            writer.uint32(18).string(message.cellId);
-        }
-        if (message.checkpointId !== '') {
-            writer.uint32(26).string(message.checkpointId);
-        }
-        if (message.startAt !== undefined) {
-            Timestamp.encode(toTimestamp(message.startAt), writer.uint32(34).fork()).ldelim();
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): CellOutputsRequest {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseCellOutputsRequest } as CellOutputsRequest;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.projectId = reader.string();
-                    break;
-                case 2:
-                    message.cellId = reader.string();
-                    break;
-                case 3:
-                    message.checkpointId = reader.string();
-                    break;
-                case 4:
-                    message.startAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): CellOutputsRequest {
-        const message = { ...baseCellOutputsRequest } as CellOutputsRequest;
-        message.projectId =
-            object.projectId !== undefined && object.projectId !== null
-                ? String(object.projectId)
-                : '';
-        message.cellId =
-            object.cellId !== undefined && object.cellId !== null ? String(object.cellId) : '';
-        message.checkpointId =
-            object.checkpointId !== undefined && object.checkpointId !== null
-                ? String(object.checkpointId)
-                : '';
-        message.startAt =
-            object.startAt !== undefined && object.startAt !== null
-                ? fromJsonTimestamp(object.startAt)
-                : undefined;
-        return message;
-    },
-
-    toJSON(message: CellOutputsRequest): unknown {
-        const obj: any = {};
-        message.projectId !== undefined && (obj.projectId = message.projectId);
-        message.cellId !== undefined && (obj.cellId = message.cellId);
-        message.checkpointId !== undefined && (obj.checkpointId = message.checkpointId);
-        message.startAt !== undefined && (obj.startAt = message.startAt.toISOString());
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<CellOutputsRequest>, I>>(
-        object: I,
-    ): CellOutputsRequest {
-        const message = { ...baseCellOutputsRequest } as CellOutputsRequest;
-        message.projectId = object.projectId ?? '';
-        message.cellId = object.cellId ?? '';
-        message.checkpointId = object.checkpointId ?? '';
-        message.startAt = object.startAt ?? undefined;
-        return message;
-    },
-};
-
-messageTypeRegistry.set(CellOutputsRequest.$type, CellOutputsRequest);
-
-const baseCellOutputsResponse: object = {
-    $type: 'yandex.cloud.datasphere.v2.CellOutputsResponse',
-    outputs: '',
-};
-
-export const CellOutputsResponse = {
-    $type: 'yandex.cloud.datasphere.v2.CellOutputsResponse' as const,
-
-    encode(message: CellOutputsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        for (const v of message.outputs) {
-            writer.uint32(10).string(v!);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): CellOutputsResponse {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseCellOutputsResponse } as CellOutputsResponse;
-        message.outputs = [];
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.outputs.push(reader.string());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): CellOutputsResponse {
-        const message = { ...baseCellOutputsResponse } as CellOutputsResponse;
-        message.outputs = (object.outputs ?? []).map((e: any) => String(e));
-        return message;
-    },
-
-    toJSON(message: CellOutputsResponse): unknown {
-        const obj: any = {};
-        if (message.outputs) {
-            obj.outputs = message.outputs.map((e) => e);
-        } else {
-            obj.outputs = [];
-        }
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<CellOutputsResponse>, I>>(
-        object: I,
-    ): CellOutputsResponse {
-        const message = { ...baseCellOutputsResponse } as CellOutputsResponse;
-        message.outputs = object.outputs?.map((e) => e) || [];
-        return message;
-    },
-};
-
-messageTypeRegistry.set(CellOutputsResponse.$type, CellOutputsResponse);
-
-const baseGetStateVariablesRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.GetStateVariablesRequest',
-    projectId: '',
-    notebookId: '',
-    variableNames: '',
-    checkpointId: '',
-};
-
-export const GetStateVariablesRequest = {
-    $type: 'yandex.cloud.datasphere.v2.GetStateVariablesRequest' as const,
-
-    encode(
-        message: GetStateVariablesRequest,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.projectId !== '') {
-            writer.uint32(10).string(message.projectId);
-        }
-        if (message.notebookId !== '') {
-            writer.uint32(18).string(message.notebookId);
-        }
-        for (const v of message.variableNames) {
-            writer.uint32(26).string(v!);
-        }
-        if (message.checkpointId !== '') {
-            writer.uint32(34).string(message.checkpointId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): GetStateVariablesRequest {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseGetStateVariablesRequest } as GetStateVariablesRequest;
-        message.variableNames = [];
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.projectId = reader.string();
-                    break;
-                case 2:
-                    message.notebookId = reader.string();
-                    break;
-                case 3:
-                    message.variableNames.push(reader.string());
-                    break;
-                case 4:
-                    message.checkpointId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): GetStateVariablesRequest {
-        const message = { ...baseGetStateVariablesRequest } as GetStateVariablesRequest;
-        message.projectId =
-            object.projectId !== undefined && object.projectId !== null
-                ? String(object.projectId)
-                : '';
-        message.notebookId =
-            object.notebookId !== undefined && object.notebookId !== null
-                ? String(object.notebookId)
-                : '';
-        message.variableNames = (object.variableNames ?? []).map((e: any) => String(e));
-        message.checkpointId =
-            object.checkpointId !== undefined && object.checkpointId !== null
-                ? String(object.checkpointId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: GetStateVariablesRequest): unknown {
-        const obj: any = {};
-        message.projectId !== undefined && (obj.projectId = message.projectId);
-        message.notebookId !== undefined && (obj.notebookId = message.notebookId);
-        if (message.variableNames) {
-            obj.variableNames = message.variableNames.map((e) => e);
-        } else {
-            obj.variableNames = [];
-        }
-        message.checkpointId !== undefined && (obj.checkpointId = message.checkpointId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<GetStateVariablesRequest>, I>>(
-        object: I,
-    ): GetStateVariablesRequest {
-        const message = { ...baseGetStateVariablesRequest } as GetStateVariablesRequest;
-        message.projectId = object.projectId ?? '';
-        message.notebookId = object.notebookId ?? '';
-        message.variableNames = object.variableNames?.map((e) => e) || [];
-        message.checkpointId = object.checkpointId ?? '';
-        return message;
-    },
-};
-
-messageTypeRegistry.set(GetStateVariablesRequest.$type, GetStateVariablesRequest);
-
-const baseGetStateVariablesResponse: object = {
-    $type: 'yandex.cloud.datasphere.v2.GetStateVariablesResponse',
-};
-
-export const GetStateVariablesResponse = {
-    $type: 'yandex.cloud.datasphere.v2.GetStateVariablesResponse' as const,
-
-    encode(
-        message: GetStateVariablesResponse,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.variables !== undefined) {
-            Struct.encode(Struct.wrap(message.variables), writer.uint32(10).fork()).ldelim();
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): GetStateVariablesResponse {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseGetStateVariablesResponse } as GetStateVariablesResponse;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.variables = Struct.unwrap(Struct.decode(reader, reader.uint32()));
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): GetStateVariablesResponse {
-        const message = { ...baseGetStateVariablesResponse } as GetStateVariablesResponse;
-        message.variables = typeof object.variables === 'object' ? object.variables : undefined;
-        return message;
-    },
-
-    toJSON(message: GetStateVariablesResponse): unknown {
-        const obj: any = {};
-        message.variables !== undefined && (obj.variables = message.variables);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<GetStateVariablesResponse>, I>>(
-        object: I,
-    ): GetStateVariablesResponse {
-        const message = { ...baseGetStateVariablesResponse } as GetStateVariablesResponse;
-        message.variables = object.variables ?? undefined;
-        return message;
-    },
-};
-
-messageTypeRegistry.set(GetStateVariablesResponse.$type, GetStateVariablesResponse);
 
 const baseSetProjectAccessBindingsMetadata: object = {
     $type: 'yandex.cloud.datasphere.v2.SetProjectAccessBindingsMetadata',
@@ -2978,6 +2627,380 @@ export const SetProjectRestrictionsRequest = {
 
 messageTypeRegistry.set(SetProjectRestrictionsRequest.$type, SetProjectRestrictionsRequest);
 
+const baseResizeProjectDiskRequest: object = {
+    $type: 'yandex.cloud.datasphere.v2.ResizeProjectDiskRequest',
+    projectId: '',
+    newDiskSizeGb: 0,
+};
+
+export const ResizeProjectDiskRequest = {
+    $type: 'yandex.cloud.datasphere.v2.ResizeProjectDiskRequest' as const,
+
+    encode(
+        message: ResizeProjectDiskRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        if (message.newDiskSizeGb !== 0) {
+            writer.uint32(16).int64(message.newDiskSizeGb);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResizeProjectDiskRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseResizeProjectDiskRequest } as ResizeProjectDiskRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                case 2:
+                    message.newDiskSizeGb = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ResizeProjectDiskRequest {
+        const message = { ...baseResizeProjectDiskRequest } as ResizeProjectDiskRequest;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.newDiskSizeGb =
+            object.newDiskSizeGb !== undefined && object.newDiskSizeGb !== null
+                ? Number(object.newDiskSizeGb)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: ResizeProjectDiskRequest): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        message.newDiskSizeGb !== undefined &&
+            (obj.newDiskSizeGb = Math.round(message.newDiskSizeGb));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ResizeProjectDiskRequest>, I>>(
+        object: I,
+    ): ResizeProjectDiskRequest {
+        const message = { ...baseResizeProjectDiskRequest } as ResizeProjectDiskRequest;
+        message.projectId = object.projectId ?? '';
+        message.newDiskSizeGb = object.newDiskSizeGb ?? 0;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ResizeProjectDiskRequest.$type, ResizeProjectDiskRequest);
+
+const baseResizeProjectDiskMetadata: object = {
+    $type: 'yandex.cloud.datasphere.v2.ResizeProjectDiskMetadata',
+    projectId: '',
+    oldDiskSizeGb: 0,
+    newDiskSizeGb: 0,
+};
+
+export const ResizeProjectDiskMetadata = {
+    $type: 'yandex.cloud.datasphere.v2.ResizeProjectDiskMetadata' as const,
+
+    encode(
+        message: ResizeProjectDiskMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        if (message.oldDiskSizeGb !== 0) {
+            writer.uint32(16).int64(message.oldDiskSizeGb);
+        }
+        if (message.newDiskSizeGb !== 0) {
+            writer.uint32(24).int64(message.newDiskSizeGb);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResizeProjectDiskMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseResizeProjectDiskMetadata } as ResizeProjectDiskMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                case 2:
+                    message.oldDiskSizeGb = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.newDiskSizeGb = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ResizeProjectDiskMetadata {
+        const message = { ...baseResizeProjectDiskMetadata } as ResizeProjectDiskMetadata;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.oldDiskSizeGb =
+            object.oldDiskSizeGb !== undefined && object.oldDiskSizeGb !== null
+                ? Number(object.oldDiskSizeGb)
+                : 0;
+        message.newDiskSizeGb =
+            object.newDiskSizeGb !== undefined && object.newDiskSizeGb !== null
+                ? Number(object.newDiskSizeGb)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: ResizeProjectDiskMetadata): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        message.oldDiskSizeGb !== undefined &&
+            (obj.oldDiskSizeGb = Math.round(message.oldDiskSizeGb));
+        message.newDiskSizeGb !== undefined &&
+            (obj.newDiskSizeGb = Math.round(message.newDiskSizeGb));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ResizeProjectDiskMetadata>, I>>(
+        object: I,
+    ): ResizeProjectDiskMetadata {
+        const message = { ...baseResizeProjectDiskMetadata } as ResizeProjectDiskMetadata;
+        message.projectId = object.projectId ?? '';
+        message.oldDiskSizeGb = object.oldDiskSizeGb ?? 0;
+        message.newDiskSizeGb = object.newDiskSizeGb ?? 0;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ResizeProjectDiskMetadata.$type, ResizeProjectDiskMetadata);
+
+const baseDiskInfo: object = {
+    $type: 'yandex.cloud.datasphere.v2.DiskInfo',
+    projectId: '',
+    diskSizeGb: 0,
+    diskUsedGb: 0,
+};
+
+export const DiskInfo = {
+    $type: 'yandex.cloud.datasphere.v2.DiskInfo' as const,
+
+    encode(message: DiskInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        if (message.diskSizeGb !== 0) {
+            writer.uint32(17).double(message.diskSizeGb);
+        }
+        if (message.diskUsedGb !== 0) {
+            writer.uint32(25).double(message.diskUsedGb);
+        }
+        if (message.detailedUsage !== undefined) {
+            DiskInfo_DetailedDiskInfo.encode(
+                message.detailedUsage,
+                writer.uint32(34).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskInfo {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDiskInfo } as DiskInfo;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                case 2:
+                    message.diskSizeGb = reader.double();
+                    break;
+                case 3:
+                    message.diskUsedGb = reader.double();
+                    break;
+                case 4:
+                    message.detailedUsage = DiskInfo_DetailedDiskInfo.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DiskInfo {
+        const message = { ...baseDiskInfo } as DiskInfo;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.diskSizeGb =
+            object.diskSizeGb !== undefined && object.diskSizeGb !== null
+                ? Number(object.diskSizeGb)
+                : 0;
+        message.diskUsedGb =
+            object.diskUsedGb !== undefined && object.diskUsedGb !== null
+                ? Number(object.diskUsedGb)
+                : 0;
+        message.detailedUsage =
+            object.detailedUsage !== undefined && object.detailedUsage !== null
+                ? DiskInfo_DetailedDiskInfo.fromJSON(object.detailedUsage)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: DiskInfo): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        message.diskSizeGb !== undefined && (obj.diskSizeGb = message.diskSizeGb);
+        message.diskUsedGb !== undefined && (obj.diskUsedGb = message.diskUsedGb);
+        message.detailedUsage !== undefined &&
+            (obj.detailedUsage = message.detailedUsage
+                ? DiskInfo_DetailedDiskInfo.toJSON(message.detailedUsage)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DiskInfo>, I>>(object: I): DiskInfo {
+        const message = { ...baseDiskInfo } as DiskInfo;
+        message.projectId = object.projectId ?? '';
+        message.diskSizeGb = object.diskSizeGb ?? 0;
+        message.diskUsedGb = object.diskUsedGb ?? 0;
+        message.detailedUsage =
+            object.detailedUsage !== undefined && object.detailedUsage !== null
+                ? DiskInfo_DetailedDiskInfo.fromPartial(object.detailedUsage)
+                : undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(DiskInfo.$type, DiskInfo);
+
+const baseDiskInfo_DetailedDiskInfo: object = {
+    $type: 'yandex.cloud.datasphere.v2.DiskInfo.DetailedDiskInfo',
+    userDataGb: 0,
+    packagesGb: 0,
+    systemDataGb: 0,
+    freeSpaceGb: 0,
+};
+
+export const DiskInfo_DetailedDiskInfo = {
+    $type: 'yandex.cloud.datasphere.v2.DiskInfo.DetailedDiskInfo' as const,
+
+    encode(
+        message: DiskInfo_DetailedDiskInfo,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.userDataGb !== 0) {
+            writer.uint32(9).double(message.userDataGb);
+        }
+        if (message.packagesGb !== 0) {
+            writer.uint32(17).double(message.packagesGb);
+        }
+        if (message.systemDataGb !== 0) {
+            writer.uint32(25).double(message.systemDataGb);
+        }
+        if (message.freeSpaceGb !== 0) {
+            writer.uint32(33).double(message.freeSpaceGb);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskInfo_DetailedDiskInfo {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDiskInfo_DetailedDiskInfo } as DiskInfo_DetailedDiskInfo;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.userDataGb = reader.double();
+                    break;
+                case 2:
+                    message.packagesGb = reader.double();
+                    break;
+                case 3:
+                    message.systemDataGb = reader.double();
+                    break;
+                case 4:
+                    message.freeSpaceGb = reader.double();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DiskInfo_DetailedDiskInfo {
+        const message = { ...baseDiskInfo_DetailedDiskInfo } as DiskInfo_DetailedDiskInfo;
+        message.userDataGb =
+            object.userDataGb !== undefined && object.userDataGb !== null
+                ? Number(object.userDataGb)
+                : 0;
+        message.packagesGb =
+            object.packagesGb !== undefined && object.packagesGb !== null
+                ? Number(object.packagesGb)
+                : 0;
+        message.systemDataGb =
+            object.systemDataGb !== undefined && object.systemDataGb !== null
+                ? Number(object.systemDataGb)
+                : 0;
+        message.freeSpaceGb =
+            object.freeSpaceGb !== undefined && object.freeSpaceGb !== null
+                ? Number(object.freeSpaceGb)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: DiskInfo_DetailedDiskInfo): unknown {
+        const obj: any = {};
+        message.userDataGb !== undefined && (obj.userDataGb = message.userDataGb);
+        message.packagesGb !== undefined && (obj.packagesGb = message.packagesGb);
+        message.systemDataGb !== undefined && (obj.systemDataGb = message.systemDataGb);
+        message.freeSpaceGb !== undefined && (obj.freeSpaceGb = message.freeSpaceGb);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DiskInfo_DetailedDiskInfo>, I>>(
+        object: I,
+    ): DiskInfo_DetailedDiskInfo {
+        const message = { ...baseDiskInfo_DetailedDiskInfo } as DiskInfo_DetailedDiskInfo;
+        message.userDataGb = object.userDataGb ?? 0;
+        message.packagesGb = object.packagesGb ?? 0;
+        message.systemDataGb = object.systemDataGb ?? 0;
+        message.freeSpaceGb = object.freeSpaceGb ?? 0;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(DiskInfo_DetailedDiskInfo.$type, DiskInfo_DetailedDiskInfo);
+
 /** A set of methods for managing Project resources. */
 export const ProjectServiceService = {
     /** Creates a project in the specified folder. */
@@ -3081,36 +3104,6 @@ export const ProjectServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /**
-     * Returns outputs of the specified cell.
-     * Deprecated
-     */
-    getCellOutputs: {
-        path: '/yandex.cloud.datasphere.v2.ProjectService/GetCellOutputs',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: CellOutputsRequest) =>
-            Buffer.from(CellOutputsRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => CellOutputsRequest.decode(value),
-        responseSerialize: (value: CellOutputsResponse) =>
-            Buffer.from(CellOutputsResponse.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => CellOutputsResponse.decode(value),
-    },
-    /**
-     * Returns state variables of the specified notebook.
-     * Deprecated
-     */
-    getStateVariables: {
-        path: '/yandex.cloud.datasphere.v2.ProjectService/GetStateVariables',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: GetStateVariablesRequest) =>
-            Buffer.from(GetStateVariablesRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => GetStateVariablesRequest.decode(value),
-        responseSerialize: (value: GetStateVariablesResponse) =>
-            Buffer.from(GetStateVariablesResponse.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => GetStateVariablesResponse.decode(value),
-    },
     /** Lists access bindings for the project. */
     listAccessBindings: {
         path: '/yandex.cloud.datasphere.v2.ProjectService/ListAccessBindings',
@@ -3164,6 +3157,17 @@ export const ProjectServiceService = {
         requestSerialize: (value: RemoveResourceFromProjectRequest) =>
             Buffer.from(RemoveResourceFromProjectRequest.encode(value).finish()),
         requestDeserialize: (value: Buffer) => RemoveResourceFromProjectRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Resizes project disk */
+    resizeDisk: {
+        path: '/yandex.cloud.datasphere.v2.ProjectService/ResizeDisk',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ResizeProjectDiskRequest) =>
+            Buffer.from(ResizeProjectDiskRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ResizeProjectDiskRequest.decode(value),
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
@@ -3222,16 +3226,6 @@ export interface ProjectServiceServer extends UntypedServiceImplementation {
     setUnitBalance: handleUnaryCall<SetUnitBalanceRequest, Operation>;
     /** Executes code of the specified notebook using configuration defined in the project settings. If the default project configuration is not specified, `c1.4` is used. */
     execute: handleUnaryCall<ProjectExecutionRequest, Operation>;
-    /**
-     * Returns outputs of the specified cell.
-     * Deprecated
-     */
-    getCellOutputs: handleUnaryCall<CellOutputsRequest, CellOutputsResponse>;
-    /**
-     * Returns state variables of the specified notebook.
-     * Deprecated
-     */
-    getStateVariables: handleUnaryCall<GetStateVariablesRequest, GetStateVariablesResponse>;
     /** Lists access bindings for the project. */
     listAccessBindings: handleUnaryCall<ListAccessBindingsRequest, ListAccessBindingsResponse>;
     /** Sets access bindings for the project. */
@@ -3242,6 +3236,8 @@ export interface ProjectServiceServer extends UntypedServiceImplementation {
     addResource: handleUnaryCall<AddResourceToProjectRequest, Operation>;
     /** Removes shared resource from project */
     removeResource: handleUnaryCall<RemoveResourceFromProjectRequest, Operation>;
+    /** Resizes project disk */
+    resizeDisk: handleUnaryCall<ResizeProjectDiskRequest, Operation>;
     /** Get meta information about available restrictions. */
     getRestrictionsMeta: handleUnaryCall<Empty, GetRestrictionsMetaResponse>;
     /** Get current project restrictions. */
@@ -3395,44 +3391,6 @@ export interface ProjectServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /**
-     * Returns outputs of the specified cell.
-     * Deprecated
-     */
-    getCellOutputs(
-        request: CellOutputsRequest,
-        callback: (error: ServiceError | null, response: CellOutputsResponse) => void,
-    ): ClientUnaryCall;
-    getCellOutputs(
-        request: CellOutputsRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: CellOutputsResponse) => void,
-    ): ClientUnaryCall;
-    getCellOutputs(
-        request: CellOutputsRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: CellOutputsResponse) => void,
-    ): ClientUnaryCall;
-    /**
-     * Returns state variables of the specified notebook.
-     * Deprecated
-     */
-    getStateVariables(
-        request: GetStateVariablesRequest,
-        callback: (error: ServiceError | null, response: GetStateVariablesResponse) => void,
-    ): ClientUnaryCall;
-    getStateVariables(
-        request: GetStateVariablesRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: GetStateVariablesResponse) => void,
-    ): ClientUnaryCall;
-    getStateVariables(
-        request: GetStateVariablesRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: GetStateVariablesResponse) => void,
-    ): ClientUnaryCall;
     /** Lists access bindings for the project. */
     listAccessBindings(
         request: ListAccessBindingsRequest,
@@ -3509,6 +3467,22 @@ export interface ProjectServiceClient extends Client {
     ): ClientUnaryCall;
     removeResource(
         request: RemoveResourceFromProjectRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Resizes project disk */
+    resizeDisk(
+        request: ResizeProjectDiskRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    resizeDisk(
+        request: ResizeProjectDiskRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    resizeDisk(
+        request: ResizeProjectDiskRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -3605,28 +3579,6 @@ export type Exact<P, I extends P> = P extends Builtin
               Exclude<keyof I, KeysOfUnion<P> | '$type'>,
               never
           >;
-
-function toTimestamp(date: Date): Timestamp {
-    const seconds = date.getTime() / 1_000;
-    const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
-}
-
-function fromTimestamp(t: Timestamp): Date {
-    let millis = t.seconds * 1_000;
-    millis += t.nanos / 1_000_000;
-    return new Date(millis);
-}
-
-function fromJsonTimestamp(o: any): Date {
-    if (o instanceof Date) {
-        return o;
-    } else if (typeof o === 'string') {
-        return new Date(o);
-    } else {
-        return fromTimestamp(Timestamp.fromJSON(o));
-    }
-}
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

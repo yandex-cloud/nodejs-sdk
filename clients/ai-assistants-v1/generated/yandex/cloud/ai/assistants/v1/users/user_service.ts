@@ -20,13 +20,18 @@ import { User } from '../../../../../../yandex/cloud/ai/assistants/v1/users/user
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.users';
 
+/** Request message for creating a new user. */
 export interface CreateUserRequest {
     $type: 'yandex.cloud.ai.assistants.v1.users.CreateUserRequest';
     folderId: string;
+    /** Name of the user. */
     name: string;
+    /** Description of the user. */
     description: string;
     source: string;
+    /** Expiration configuration for the user. */
     expirationConfig?: ExpirationConfig;
+    /** Set of key-value pairs to label the user. */
     labels: { [key: string]: string };
 }
 
@@ -36,18 +41,27 @@ export interface CreateUserRequest_LabelsEntry {
     value: string;
 }
 
+/** Request message for retrieving a user by ID. */
 export interface GetUserRequest {
     $type: 'yandex.cloud.ai.assistants.v1.users.GetUserRequest';
+    /** ID of the user to retrieve. */
     userId: string;
 }
 
+/** Request message for updating an existing user. */
 export interface UpdateUserRequest {
     $type: 'yandex.cloud.ai.assistants.v1.users.UpdateUserRequest';
+    /** ID of the user to update. */
     userId: string;
+    /** A field mask specifying which fields to update. */
     updateMask?: FieldMask;
+    /** New name for the user. */
     name: string;
+    /** New description for the user. */
     description: string;
+    /** New expiration configuration for the user. */
     expirationConfig?: ExpirationConfig;
+    /** New set of labels for the user. */
     labels: { [key: string]: string };
 }
 
@@ -57,25 +71,35 @@ export interface UpdateUserRequest_LabelsEntry {
     value: string;
 }
 
+/** Request message for deleting a user by ID. */
 export interface DeleteUserRequest {
     $type: 'yandex.cloud.ai.assistants.v1.users.DeleteUserRequest';
+    /** ID of the user to delete. */
     userId: string;
 }
 
+/** Response message for the delete operation. */
 export interface DeleteUserResponse {
     $type: 'yandex.cloud.ai.assistants.v1.users.DeleteUserResponse';
 }
 
+/** Request message for listing users in a specific folder. */
 export interface ListUsersRequest {
     $type: 'yandex.cloud.ai.assistants.v1.users.ListUsersRequest';
+    /** Folder ID from which to list users. */
     folderId: string;
+    /** Maximum number of users to return per page. */
     pageSize: number;
+    /** Token to retrieve the next page of results. */
     pageToken: string;
 }
 
+/** Response message for the list operation. */
 export interface ListUsersResponse {
     $type: 'yandex.cloud.ai.assistants.v1.users.ListUsersResponse';
+    /** List of users in the specified folder. */
     users: User[];
+    /** Token to retrieve the next page of results. */
     nextPageToken: string;
 }
 
@@ -826,7 +850,9 @@ export const ListUsersResponse = {
 
 messageTypeRegistry.set(ListUsersResponse.$type, ListUsersResponse);
 
+/** UserService provides operations for managing users. */
 export const UserServiceService = {
+    /** Create a new user. */
     create: {
         path: '/yandex.cloud.ai.assistants.v1.users.UserService/Create',
         requestStream: false,
@@ -837,6 +863,7 @@ export const UserServiceService = {
         responseSerialize: (value: User) => Buffer.from(User.encode(value).finish()),
         responseDeserialize: (value: Buffer) => User.decode(value),
     },
+    /** Retrieve details of a specific user by its ID. */
     get: {
         path: '/yandex.cloud.ai.assistants.v1.users.UserService/Get',
         requestStream: false,
@@ -847,6 +874,7 @@ export const UserServiceService = {
         responseSerialize: (value: User) => Buffer.from(User.encode(value).finish()),
         responseDeserialize: (value: Buffer) => User.decode(value),
     },
+    /** Update an existing user. */
     update: {
         path: '/yandex.cloud.ai.assistants.v1.users.UserService/Update',
         requestStream: false,
@@ -857,6 +885,7 @@ export const UserServiceService = {
         responseSerialize: (value: User) => Buffer.from(User.encode(value).finish()),
         responseDeserialize: (value: Buffer) => User.decode(value),
     },
+    /** Delete a user by its ID. */
     delete: {
         path: '/yandex.cloud.ai.assistants.v1.users.UserService/Delete',
         requestStream: false,
@@ -868,6 +897,7 @@ export const UserServiceService = {
             Buffer.from(DeleteUserResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => DeleteUserResponse.decode(value),
     },
+    /** List users in a specific folder. */
     list: {
         path: '/yandex.cloud.ai.assistants.v1.users.UserService/List',
         requestStream: false,
@@ -882,14 +912,20 @@ export const UserServiceService = {
 } as const;
 
 export interface UserServiceServer extends UntypedServiceImplementation {
+    /** Create a new user. */
     create: handleUnaryCall<CreateUserRequest, User>;
+    /** Retrieve details of a specific user by its ID. */
     get: handleUnaryCall<GetUserRequest, User>;
+    /** Update an existing user. */
     update: handleUnaryCall<UpdateUserRequest, User>;
+    /** Delete a user by its ID. */
     delete: handleUnaryCall<DeleteUserRequest, DeleteUserResponse>;
+    /** List users in a specific folder. */
     list: handleUnaryCall<ListUsersRequest, ListUsersResponse>;
 }
 
 export interface UserServiceClient extends Client {
+    /** Create a new user. */
     create(
         request: CreateUserRequest,
         callback: (error: ServiceError | null, response: User) => void,
@@ -905,6 +941,7 @@ export interface UserServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: User) => void,
     ): ClientUnaryCall;
+    /** Retrieve details of a specific user by its ID. */
     get(
         request: GetUserRequest,
         callback: (error: ServiceError | null, response: User) => void,
@@ -920,6 +957,7 @@ export interface UserServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: User) => void,
     ): ClientUnaryCall;
+    /** Update an existing user. */
     update(
         request: UpdateUserRequest,
         callback: (error: ServiceError | null, response: User) => void,
@@ -935,6 +973,7 @@ export interface UserServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: User) => void,
     ): ClientUnaryCall;
+    /** Delete a user by its ID. */
     delete(
         request: DeleteUserRequest,
         callback: (error: ServiceError | null, response: DeleteUserResponse) => void,
@@ -950,6 +989,7 @@ export interface UserServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: DeleteUserResponse) => void,
     ): ClientUnaryCall;
+    /** List users in a specific folder. */
     list(
         request: ListUsersRequest,
         callback: (error: ServiceError | null, response: ListUsersResponse) => void,
