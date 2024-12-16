@@ -16,3 +16,5 @@ export * as thread from './generated/yandex/cloud/ai/assistants/v1/threads/threa
 export * as threadService from './generated/yandex/cloud/ai/assistants/v1/threads/thread_service';
 export * as user from './generated/yandex/cloud/ai/assistants/v1/users/user';
 export * as userService from './generated/yandex/cloud/ai/assistants/v1/users/user_service';
+
+export * as SDK from './sdk';
