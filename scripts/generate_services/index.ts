@@ -157,7 +157,7 @@ const modifyPackageJSON = async (serviceList: string[]) => {
     const data = fs.readFileSync(path, 'utf8');
     const jsonData = JSON.parse(data);
 
-    const newServiceList = [...new Set([...jsonData.files, serviceList])].sort();
+    const newServiceList = [...new Set([...jsonData.files, ...serviceList])].sort();
 
     jsonData.files = newServiceList;
 
