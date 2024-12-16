@@ -26,7 +26,6 @@
     "import/prefer-default-export": "off",
     "comma-dangle": ["error", "always-multiline"],
     "indent": "off",
-    "@typescript-eslint/indent": ["error", 4],
     "max-len": ["error", 140],
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/prefer-optional-chain": "error",
@@ -51,6 +50,7 @@
         "devDependencies": true
       }
     ],
-    "import/no-cycle": "off"
+    "import/no-cycle": "off",
+    "@typescript-eslint/no-explicit-any": 1
   }
 }
