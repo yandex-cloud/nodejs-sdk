@@ -1,5 +1,5 @@
 import { Client } from 'nice-grpc';
-import { AssistantWithSdk, CreateRunProps, initRunSdk, RunSdk, threadService } from '..';
+import { threadService } from '..';
 import { Thread } from '../generated/yandex/cloud/ai/assistants/v1/threads/thread';
 import {
     CreateThreadRequest,
@@ -24,6 +24,8 @@ import {
 } from '../generated/yandex/cloud/ai/assistants/v1/threads/message';
 import { StreamEvent } from '../generated/yandex/cloud/ai/assistants/v1/runs/run_service';
 import { isString } from 'lodash';
+import { CreateRunProps, initRunSdk, RunSdk } from './runSdk';
+import { AssistantWithSdk } from './assistantSdk';
 
 export type CreateThreadProps = TypeFromProtoc<CreateThreadRequest, 'folderId' | 'name'>;
 
