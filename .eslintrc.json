@@ -27,6 +27,7 @@
     "comma-dangle": ["error", "always-multiline"],
     "indent": "off",
     "max-len": ["error", 140],
+    "@typescript-eslint/indent": ["error", 4],
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/prefer-optional-chain": "error",
     "prefer-arrow-functions/prefer-arrow-functions": ["error"],
