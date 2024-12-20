@@ -115,6 +115,12 @@ export class ThreadWithSdk {
         return Object.assign(p, { getAssistantResponse });
     }
 
+    getLastRun() {
+        return this.runSdk
+            .getLastByThread({ threadId: this.thread.id })
+            .then((run) => this.runSdk.listen({ runId: run.id }));
+    }
+
     listMessages(props: Omit<ListMessagesProps, 'threadId'>, args?: ClientCallArgs) {
         return this.messageSdk.list({ threadId: this.thread.id, ...props }, args);
     }
