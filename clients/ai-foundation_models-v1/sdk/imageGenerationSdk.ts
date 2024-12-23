@@ -20,15 +20,16 @@ export class ImageGenerationSdk {
         ClientCallArgs
     >;
 
-    constructor(session: SessionArg) {
+    constructor(session: SessionArg, endpoint = 'llm.api.cloud.yandex.net:443') {
         this.imageGenerationClient = session.client(
             imageGenerationService.ImageGenerationAsyncServiceClient,
+            endpoint,
         );
     }
 
     generateImage(params: GenerateImageProps, args?: ClientCallArgs) {
         const { modelId, folderId, ...restParams } = params;
-        const modelUri = `gpt://${folderId}/${modelId}`;
+        const modelUri = `art://${folderId}/${modelId}`;
 
         return this.imageGenerationClient.generate(
             imageGenerationService.ImageGenerationRequest.fromPartial({ ...restParams, modelUri }),
