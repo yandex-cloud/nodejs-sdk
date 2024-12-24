@@ -22,7 +22,6 @@
     "ai-dataset-v1",
     "ai-files-v1",
     "ai-foundation_models-v1",
-    "ai-foundation_models-v1/sdk",
     "ai-llm-v1alpha",
     "ai-ocr-v1",
     "ai-stt-v2",
