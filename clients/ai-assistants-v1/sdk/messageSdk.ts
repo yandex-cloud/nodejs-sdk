@@ -18,8 +18,10 @@ export type ListMessagesProps = TypeFromProtoc<ListMessagesRequest, 'threadId'>;
 export class MessageSdk {
     private messageClient: Client<typeof MessageServiceService, ClientCallArgs>;
 
-    constructor(session: SessionArg) {
-        this.messageClient = session.client(messageService.MessageServiceClient);
+    static ENDPOINT = 'assistant.api.cloud.yandex.net:443';
+
+    constructor(session: SessionArg, endpoint = MessageSdk.ENDPOINT) {
+        this.messageClient = session.client(messageService.MessageServiceClient, endpoint);
     }
 
     static getMessageContent(...args: string[]): TypeFromProtoc<MessageContent> {
@@ -66,6 +68,6 @@ export class MessageSdk {
     }
 }
 
-export const initMessageSdk = (session: SessionArg) => {
-    return new MessageSdk(session);
+export const initMessageSdk = (session: SessionArg, endpoint = MessageSdk.ENDPOINT) => {
+    return new MessageSdk(session, endpoint);
 };

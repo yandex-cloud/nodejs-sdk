@@ -64,8 +64,10 @@ export class AssistantWithSdk {
 export class AssistantSdk {
     private assistantClient: Client<typeof AssistantServiceService, ClientCallArgs>;
 
-    constructor(session: SessionArg) {
-        this.assistantClient = session.client(assistantService.AssistantServiceClient);
+    static ENDPOINT = 'assistant.api.cloud.yandex.net:443';
+
+    constructor(session: SessionArg, endpoint = AssistantSdk.ENDPOINT) {
+        this.assistantClient = session.client(assistantService.AssistantServiceClient, endpoint);
     }
 
     private static _withSdk(this: AssistantSdk, assistantP: Promise<Assistant>) {
@@ -134,6 +136,6 @@ export class AssistantSdk {
     }
 }
 
-export const initAssistantSdk = (session: SessionArg) => {
-    return new AssistantSdk(session);
+export const initAssistantSdk = (session: SessionArg, endpoint = AssistantSdk.ENDPOINT) => {
+    return new AssistantSdk(session, endpoint);
 };

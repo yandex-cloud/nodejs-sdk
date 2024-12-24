@@ -143,9 +143,11 @@ export class ThreadSdk {
     private session: SessionArg;
     private threadClient: Client<typeof ThreadServiceService, ClientCallArgs>;
 
-    constructor(session: SessionArg) {
+    static ENDPOINT = 'assistant.api.cloud.yandex.net:443';
+
+    constructor(session: SessionArg, endpoint = ThreadSdk.ENDPOINT) {
         this.session = session;
-        this.threadClient = session.client(threadService.ThreadServiceClient);
+        this.threadClient = session.client(threadService.ThreadServiceClient, endpoint);
     }
 
     private static _withSdk(this: ThreadSdk, threadP: Promise<Thread>) {
@@ -194,6 +196,6 @@ export class ThreadSdk {
     }
 }
 
-export const initThreadSdk = (session: SessionArg) => {
-    return new ThreadSdk(session);
+export const initThreadSdk = (session: SessionArg, endpoint = ThreadSdk.ENDPOINT) => {
+    return new ThreadSdk(session, endpoint);
 };

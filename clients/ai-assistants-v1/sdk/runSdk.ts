@@ -46,8 +46,10 @@ export class RunWithSdk {
 export class RunSdk {
     private runClient: RunClientType;
 
-    constructor(session: SessionArg) {
-        this.runClient = session.client(runService.RunServiceClient);
+    static ENDPOINT = 'assistant.api.cloud.yandex.net:443';
+
+    constructor(session: SessionArg, endpoint = RunSdk.ENDPOINT) {
+        this.runClient = session.client(runService.RunServiceClient, endpoint);
     }
 
     private static _withSdk(this: RunSdk, runP: Promise<Run>) {
@@ -87,6 +89,6 @@ export class RunSdk {
     }
 }
 
-export const initRunSdk = (session: SessionArg) => {
-    return new RunSdk(session);
+export const initRunSdk = (session: SessionArg, endpoint = RunSdk.ENDPOINT) => {
+    return new RunSdk(session, endpoint);
 };
