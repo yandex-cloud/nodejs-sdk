@@ -58,7 +58,7 @@ export class ThreadWithSdk {
         return this.threadP || this.thread;
     }
 
-    public refreshData() {
+    refreshData() {
         if (this.threadP === null) {
             this.threadP = this.threadSdk
                 .get({ threadId: this.thread.id })

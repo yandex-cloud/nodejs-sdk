@@ -22,11 +22,11 @@ export class MessageSdk {
         this.messageClient = session.client(messageService.MessageServiceClient);
     }
 
-    public static getMessageContent(...args: string[]): TypeFromProtoc<MessageContent> {
+    static getMessageContent(...args: string[]): TypeFromProtoc<MessageContent> {
         return { content: args.map((content) => ({ text: { content } })) };
     }
 
-    public static messageContentToString(messageContent?: MessageContent): string {
+    static messageContentToString(messageContent?: MessageContent): string {
         return (
             messageContent?.content.reduce((res, { text }) => {
                 if (text?.content) {
@@ -38,7 +38,7 @@ export class MessageSdk {
         );
     }
 
-    public send(params: SendMessageProps, args?: ClientCallArgs) {
+    send(params: SendMessageProps, args?: ClientCallArgs) {
         const p = this.messageClient.create(
             messageService.CreateMessageRequest.fromPartial(params),
             args,
