@@ -9,13 +9,15 @@ import {
 import { ClientCallArgs, SessionArg, TypeFromProtoc } from './types';
 import { Client } from 'nice-grpc';
 import { Operation } from '../generated/yandex/cloud/operation/operation';
+import { Reader } from 'protobufjs';
 
 export type GetOperationProps = TypeFromProtoc<GetOperationRequest, 'operationId'>;
 
 export type CancelOperationProps = TypeFromProtoc<CancelOperationRequest, 'operationId'>;
 
-type PollArgs = {
+type PollArgs<DecoderT> = {
     operationCallback?: (operation: Operation) => void;
+    decoder?: (input: Reader | Uint8Array, length?: number) => DecoderT;
 };
 
 interface CancellablePromise<T> extends Promise<T> {
@@ -23,6 +25,13 @@ interface CancellablePromise<T> extends Promise<T> {
 }
 
 export class PollOperationWasCanceled {
+    operation?: Operation;
+    constructor(operation?: Operation) {
+        this.operation = operation;
+    }
+}
+
+export class PollOperationEmptyResponseForDecoder {
     operation?: Operation;
     constructor(operation?: Operation) {
         this.operation = operation;
@@ -37,12 +46,13 @@ export class OperationSdk {
     }
 
     static PollOperationWasCanceled = PollOperationWasCanceled;
+    static PollOperationEmptyResponseForDecoder = PollOperationEmptyResponseForDecoder;
 
-    public pollOperation(
+    public pollOperation<DecoderT = Operation>(
         operation: Operation | string,
         intervalMs: number,
-        args?: PollArgs,
-    ): CancellablePromise<Operation> {
+        args?: PollArgs<DecoderT>,
+    ): CancellablePromise<DecoderT> {
         let outputReject: (reason?: unknown) => void = noop;
         let timeoutId: NodeJS.Timeout | undefined;
 
@@ -55,8 +65,20 @@ export class OperationSdk {
             return false;
         };
 
+        const operationDecoderHandler = (operation: Operation): DecoderT => {
+            if (args?.decoder) {
+                if (operation.response === undefined) {
+                    throw new PollOperationEmptyResponseForDecoder(operation);
+                }
+
+                return args.decoder(operation.response.value);
+            }
+
+            return operation as DecoderT;
+        };
+
         if (isObject(operation) && operationStatusHandler(operation)) {
-            return Promise.resolve(operation);
+            return Promise.resolve(operation).then(operationDecoderHandler);
         }
 
         const p = new Promise<Operation>((resolver, reject) => {
@@ -88,7 +110,7 @@ export class OperationSdk {
             if (timeoutId !== undefined) clearTimeout(timeoutId);
         };
 
-        return p as CancellablePromise<Operation>;
+        return p.then(operationDecoderHandler);
     }
 
     public get(params: GetOperationProps, args?: ClientCallArgs) {
