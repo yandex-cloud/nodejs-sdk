@@ -28,15 +28,22 @@ export class TextGenerationSdk {
         ClientCallArgs
     >;
 
-    constructor(session: SessionArg) {
+    static ENDPOINT = 'llm.api.cloud.yandex.net:443';
+
+    constructor(session: SessionArg, endpoint = TextGenerationSdk.ENDPOINT) {
         this.textGenerationClient = session.client(
             textGenerationService.TextGenerationServiceClient,
+            endpoint,
         );
 
-        this.tokenizerClient = session.client(textGenerationService.TokenizerServiceClient);
+        this.tokenizerClient = session.client(
+            textGenerationService.TokenizerServiceClient,
+            endpoint,
+        );
 
         this.textGenerationAsyncClient = session.client(
             textGenerationService.TextGenerationAsyncServiceClient,
+            endpoint,
         );
     }
 
@@ -82,3 +89,10 @@ export class TextGenerationSdk {
         return operationP;
     }
 }
+
+export const initTextGenerationSdk = (
+    session: SessionArg,
+    endpoint = TextGenerationSdk.ENDPOINT,
+) => {
+    return new TextGenerationSdk(session, endpoint);
+};

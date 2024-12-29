@@ -20,7 +20,9 @@ export class ImageGenerationSdk {
         ClientCallArgs
     >;
 
-    constructor(session: SessionArg, endpoint = 'llm.api.cloud.yandex.net:443') {
+    static ENDPOINT = 'llm.api.cloud.yandex.net:443';
+
+    constructor(session: SessionArg, endpoint = ImageGenerationSdk.ENDPOINT) {
         this.imageGenerationClient = session.client(
             imageGenerationService.ImageGenerationAsyncServiceClient,
             endpoint,
@@ -37,3 +39,10 @@ export class ImageGenerationSdk {
         );
     }
 }
+
+export const initImageGenerationSdk = (
+    session: SessionArg,
+    endpoint = ImageGenerationSdk.ENDPOINT,
+) => {
+    return new ImageGenerationSdk(session, endpoint);
+};

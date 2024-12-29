@@ -14,8 +14,10 @@ export type TextEmbeddingProps = Omit<TypeFromProtoc<TextEmbeddingRequest, 'text
 export class EmbeddingSdk {
     private embeddingClient: Client<typeof EmbeddingsServiceService, ClientCallArgs>;
 
-    constructor(session: SessionArg) {
-        this.embeddingClient = session.client(embeddingService.EmbeddingsServiceClient);
+    static ENDPOINT = 'llm.api.cloud.yandex.net:443';
+
+    constructor(session: SessionArg, endpoint = EmbeddingSdk.ENDPOINT) {
+        this.embeddingClient = session.client(embeddingService.EmbeddingsServiceClient, endpoint);
     }
 
     textEmbedding(params: TextEmbeddingProps, args?: ClientCallArgs) {
@@ -28,3 +30,7 @@ export class EmbeddingSdk {
         );
     }
 }
+
+export const initEmbeddingSdk = (session: SessionArg, endpoint = EmbeddingSdk.ENDPOINT) => {
+    return new EmbeddingSdk(session, endpoint);
+};
