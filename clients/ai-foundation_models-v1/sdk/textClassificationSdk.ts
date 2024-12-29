@@ -29,9 +29,12 @@ export class TextClassificationSdk {
         ClientCallArgs
     >;
 
-    constructor(session: SessionArg) {
+    static ENDPOINT = 'llm.api.cloud.yandex.net:443';
+
+    constructor(session: SessionArg, endpoint = TextClassificationSdk.ENDPOINT) {
         this.textClassificationClient = session.client(
             textClassificationService.TextClassificationServiceClient,
+            endpoint,
         );
     }
 
@@ -61,3 +64,10 @@ export class TextClassificationSdk {
         );
     }
 }
+
+export const initTextClassificationSdk = (
+    session: SessionArg,
+    endpoint = TextClassificationSdk.ENDPOINT,
+) => {
+    return new TextClassificationSdk(session, endpoint);
+};
