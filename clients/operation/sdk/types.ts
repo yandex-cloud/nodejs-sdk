@@ -2,7 +2,6 @@ import { ChannelCredentials, ChannelOptions, Client, ServiceDefinition } from '@
 import { ClientError, RawClient, Status } from 'nice-grpc';
 import { DeadlineOptions } from 'nice-grpc-client-middleware-deadline';
 import { NormalizedServiceDefinition } from 'nice-grpc/lib/service-definitions';
-import { Operation as YandexCloudOperation } from '../generated/yandex/cloud/operation/operation';
 
 import { DeepPartial } from '../generated/typeRegistry';
 
