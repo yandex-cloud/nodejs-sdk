@@ -12,7 +12,6 @@ import {
     initThreadSdk,
     MessageSdk,
 } from '@yandex-cloud/nodejs-sdk/ai-assistants-v1/sdk';
-import { SearchIndex } from '@yandex-cloud/nodejs-sdk/ai-assistants-v1/generated/yandex/cloud/ai/assistants/v1/searchindex/search_index';
 
 import { initOperationSdk } from '@yandex-cloud/nodejs-sdk/operation/sdk';
 
@@ -70,9 +69,7 @@ const createSearchIndex = async (fileId: string) => {
 
     const operationSdk = initOperationSdk(session);
 
-    const searchIndex = await operationSdk.pollOperation(createSearchIndexOperation, 500, {
-        decoder: SearchIndex.decode,
-    });
+    const searchIndex = await operationSdk.pollOperation(createSearchIndexOperation, 500);
 
     return searchIndex;
 };

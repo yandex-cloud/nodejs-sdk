@@ -9,7 +9,6 @@ import {
     initImageGenerationSdk,
     imageGeneration,
 } from '@yandex-cloud/nodejs-sdk/ai-foundation_models-v1/sdk';
-import { ImageGenerationResponse } from '@yandex-cloud/nodejs-sdk/ai-foundation_models-v1/generated/yandex/cloud/ai/foundation_models/v1/image_generation/image_generation_service';
 import { writeFile } from 'fs';
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
@@ -53,7 +52,6 @@ const folderId = getEnv('YC_FOLDER_ID');
         1_000,
         {
             operationCallback: console.log,
-            decoder: ImageGenerationResponse.decode,
         },
     );
 

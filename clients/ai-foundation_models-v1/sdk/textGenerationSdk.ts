@@ -1,9 +1,10 @@
 import { Client } from 'nice-grpc';
 import { textGenerationService } from '..';
 
-import { ClientCallArgs, SessionArg, TypeFromProtoc } from './types';
+import { ClientCallArgs, OperationWithDecoder, SessionArg, TypeFromProtoc } from './types';
 import {
     CompletionRequest,
+    CompletionResponse,
     TextGenerationAsyncServiceService,
     TextGenerationServiceService,
     TokenizeRequest,
@@ -81,12 +82,14 @@ export class TextGenerationSdk {
         const { modelId, folderId, ...restParams } = params;
         const modelUri = `gpt://${folderId}/${modelId}`;
 
-        const operationP = this.textGenerationAsyncClient.completion(
-            textGenerationService.CompletionRequest.fromPartial({ ...restParams, modelUri }),
-            args,
-        );
-
-        return operationP;
+        return this.textGenerationAsyncClient
+            .completion(
+                textGenerationService.CompletionRequest.fromPartial({ ...restParams, modelUri }),
+                args,
+            )
+            .then<OperationWithDecoder<CompletionResponse>>((operation) => {
+                return Object.assign(operation, { decoder: CompletionResponse.decode });
+            });
     }
 }
 

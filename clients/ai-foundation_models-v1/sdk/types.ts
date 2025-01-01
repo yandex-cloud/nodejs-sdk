@@ -4,6 +4,8 @@ import { DeadlineOptions } from 'nice-grpc-client-middleware-deadline';
 import { NormalizedServiceDefinition } from 'nice-grpc/lib/service-definitions';
 
 import { DeepPartial } from '../generated/typeRegistry';
+import { Operation } from '../generated/yandex/cloud/operation/operation';
+import { Reader } from 'protobufjs';
 
 type RetryOptions = {
     /**
@@ -136,3 +138,7 @@ export type TypeFromProtoc<
 > = {
     [Key in NotPartialKey]: T[Key];
 } & DeepPartial<T>;
+
+export type OperationWithDecoder<DecoderT> = Operation & {
+    decoder: (input: Reader | Uint8Array, length?: number) => DecoderT;
+};

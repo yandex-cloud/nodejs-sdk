@@ -1,9 +1,10 @@
 import { Client } from 'nice-grpc';
 import { searchIndexFileService } from '..';
 
-import { ClientCallArgs, SessionArg, TypeFromProtoc } from './types';
+import { ClientCallArgs, OperationWithDecoder, SessionArg, TypeFromProtoc } from './types';
 import {
     BatchCreateSearchIndexFileRequest,
+    BatchCreateSearchIndexFileResponse,
     GetSearchIndexFileRequest,
     ListSearchIndexFilesRequest,
     SearchIndexFileServiceService,
@@ -34,10 +35,16 @@ export class SearchIndexFileSdk {
     }
 
     batchCreate(params: CreateSearchIndexFileProps, args?: ClientCallArgs) {
-        return this.searchIndexFileClient.batchCreate(
-            searchIndexFileService.BatchCreateSearchIndexFileRequest.fromPartial(params),
-            args,
-        );
+        return this.searchIndexFileClient
+            .batchCreate(
+                searchIndexFileService.BatchCreateSearchIndexFileRequest.fromPartial(params),
+                args,
+            )
+            .then<OperationWithDecoder<BatchCreateSearchIndexFileResponse>>((operation) => {
+                return Object.assign(operation, {
+                    decoder: BatchCreateSearchIndexFileResponse.decode,
+                });
+            });
     }
 
     get(params: GetSearchIndexFileProps, args?: ClientCallArgs) {

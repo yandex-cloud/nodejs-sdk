@@ -3,8 +3,9 @@ import { imageGenerationService } from '..';
 import {
     ImageGenerationAsyncServiceService,
     ImageGenerationRequest,
+    ImageGenerationResponse,
 } from '../generated/yandex/cloud/ai/foundation_models/v1/image_generation/image_generation_service';
-import { ClientCallArgs, SessionArg, TypeFromProtoc } from './types';
+import { ClientCallArgs, OperationWithDecoder, SessionArg, TypeFromProtoc } from './types';
 
 export type GenerateImageProps = Omit<
     TypeFromProtoc<ImageGenerationRequest, 'messages'>,
@@ -33,10 +34,17 @@ export class ImageGenerationSdk {
         const { modelId, folderId, ...restParams } = params;
         const modelUri = `art://${folderId}/${modelId}`;
 
-        return this.imageGenerationClient.generate(
-            imageGenerationService.ImageGenerationRequest.fromPartial({ ...restParams, modelUri }),
-            args,
-        );
+        return this.imageGenerationClient
+            .generate(
+                imageGenerationService.ImageGenerationRequest.fromPartial({
+                    ...restParams,
+                    modelUri,
+                }),
+                args,
+            )
+            .then<OperationWithDecoder<ImageGenerationResponse>>((operation) => {
+                return Object.assign(operation, { decoder: ImageGenerationResponse.decode });
+            });
     }
 }
 

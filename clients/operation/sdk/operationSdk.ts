@@ -15,9 +15,15 @@ export type GetOperationProps = TypeFromProtoc<GetOperationRequest, 'operationId
 
 export type CancelOperationProps = TypeFromProtoc<CancelOperationRequest, 'operationId'>;
 
+type DecoderFuncType<DecoderT> = (input: Reader | Uint8Array, length?: number) => DecoderT;
+
+type OperationWithDecoder<DecoderT> = Operation & {
+    decoder?: DecoderFuncType<DecoderT>;
+};
+
 type PollArgs<DecoderT> = {
     operationCallback?: (operation: Operation) => void;
-    decoder?: (input: Reader | Uint8Array, length?: number) => DecoderT;
+    decoder?: DecoderFuncType<DecoderT>;
 };
 
 interface CancellablePromise<T> extends Promise<T> {
@@ -49,7 +55,7 @@ export class OperationSdk {
     static PollOperationEmptyResponseForDecoder = PollOperationEmptyResponseForDecoder;
 
     public pollOperation<DecoderT = Operation>(
-        operation: Operation | string,
+        operation: string | OperationWithDecoder<DecoderT>,
         intervalMs: number,
         args?: PollArgs<DecoderT>,
     ): CancellablePromise<DecoderT> {
@@ -65,13 +71,16 @@ export class OperationSdk {
             return false;
         };
 
+        const decoderFromOperation = isObject(operation) ? operation.decoder : null;
         const operationDecoderHandler = (operation: Operation): DecoderT => {
-            if (args?.decoder) {
+            const decoder = args?.decoder ?? decoderFromOperation;
+
+            if (decoder) {
                 if (operation.response === undefined) {
                     throw new PollOperationEmptyResponseForDecoder(operation);
                 }
 
-                return args.decoder(operation.response.value);
+                return decoder(operation.response.value);
             }
 
             return operation as DecoderT;
