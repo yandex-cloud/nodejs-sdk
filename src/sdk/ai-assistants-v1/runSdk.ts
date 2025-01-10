@@ -1,17 +1,17 @@
-import { ClientCallArgs, SessionArg, TypeFromProtoc } from './types';
+import { ClientCallArgs, SessionArg, TypeFromProtoc } from '../types';
 
+import { CallOptions } from '@grpc/grpc-js';
+import { Client } from 'nice-grpc';
 import {
     CreateRunRequest,
+    RunServiceClient,
     GetLastRunByThreadRequest,
     GetRunRequest,
     ListenRunRequest,
     ListRunsRequest,
     RunServiceService,
-} from '../generated/yandex/cloud/ai/assistants/v1/runs/run_service';
-import { Run } from '../generated/yandex/cloud/ai/assistants/v1/runs/run';
-import { CallOptions } from '@grpc/grpc-js';
-import { runService } from '..';
-import { Client } from 'nice-grpc';
+} from '../../generated/yandex/cloud/ai/assistants/v1/runs/run_service';
+import { Run } from '../../generated/yandex/cloud/ai/assistants/v1/runs/run';
 
 export type GetRunProps = TypeFromProtoc<GetRunRequest, 'runId'>;
 
@@ -49,7 +49,7 @@ export class RunSdk {
     static ENDPOINT = 'assistant.api.cloud.yandex.net:443';
 
     constructor(session: SessionArg, endpoint = RunSdk.ENDPOINT) {
-        this.runClient = session.client(runService.RunServiceClient, endpoint);
+        this.runClient = session.client(RunServiceClient, endpoint);
     }
 
     private static _withSdk(this: RunSdk, runP: Promise<Run>) {
@@ -62,30 +62,30 @@ export class RunSdk {
     }
 
     create(params: CreateRunProps, args?: ClientCallArgs) {
-        const p = this.runClient.create(runService.CreateRunRequest.fromPartial(params), args);
+        const p = this.runClient.create(CreateRunRequest.fromPartial(params), args);
         return RunSdk._withSdk.call(this, p);
     }
 
     get(params: GetRunProps, args?: ClientCallArgs) {
-        const p = this.runClient.get(runService.GetRunRequest.fromPartial(params), args);
+        const p = this.runClient.get(GetRunRequest.fromPartial(params), args);
         return RunSdk._withSdk.call(this, p);
     }
 
     getLastByThread(params: GetLastRunByThreadProps, args?: ClientCallArgs) {
         const p = this.runClient.getLastByThread(
-            runService.GetLastRunByThreadRequest.fromPartial(params),
+            GetLastRunByThreadRequest.fromPartial(params),
             args,
         );
         return RunSdk._withSdk.call(this, p);
     }
 
     list(params: ListRunsProps, args?: ClientCallArgs) {
-        const p = this.runClient.list(runService.ListRunsRequest.fromPartial(params), args);
+        const p = this.runClient.list(ListRunsRequest.fromPartial(params), args);
         return p;
     }
 
     listen(params: ListenRunProps, args?: ClientCallArgs & CallOptions) {
-        return this.runClient.listen(runService.ListenRunRequest.fromPartial(params), args);
+        return this.runClient.listen(ListenRunRequest.fromPartial(params), args);
     }
 }
 

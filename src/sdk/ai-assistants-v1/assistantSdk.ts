@@ -1,7 +1,7 @@
 import { Client } from 'nice-grpc';
-import { assistantService } from '..';
-import { Assistant } from '../generated/yandex/cloud/ai/assistants/v1/assistant';
+
 import {
+    AssistantServiceClient,
     AssistantServiceService,
     CreateAssistantRequest,
     DeleteAssistantRequest,
@@ -9,8 +9,9 @@ import {
     ListAssistantsRequest,
     ListAssistantVersionsRequest,
     UpdateAssistantRequest,
-} from '../generated/yandex/cloud/ai/assistants/v1/assistant_service';
-import { ClientCallArgs, SessionArg, TypeFromProtoc } from './types';
+} from '../../generated/yandex/cloud/ai/assistants/v1/assistant_service';
+import { ClientCallArgs, SessionArg, TypeFromProtoc } from '../types';
+import { Assistant } from '../../generated/yandex/cloud/ai/assistants/v1/assistant';
 
 export type CreateAssistantProps = Omit<
     TypeFromProtoc<CreateAssistantRequest, 'folderId'>,
@@ -67,7 +68,7 @@ export class AssistantSdk {
     static ENDPOINT = 'assistant.api.cloud.yandex.net:443';
 
     constructor(session: SessionArg, endpoint = AssistantSdk.ENDPOINT) {
-        this.assistantClient = session.client(assistantService.AssistantServiceClient, endpoint);
+        this.assistantClient = session.client(AssistantServiceClient, endpoint);
     }
 
     private static _withSdk(this: AssistantSdk, assistantP: Promise<Assistant>) {
@@ -83,7 +84,7 @@ export class AssistantSdk {
         const { modelId, ...restParams } = params;
 
         const p = this.assistantClient.create(
-            assistantService.CreateAssistantRequest.fromPartial({
+            CreateAssistantRequest.fromPartial({
                 ...restParams,
                 modelUri: `gpt://${params.folderId}/${modelId}`,
             }),
@@ -94,43 +95,31 @@ export class AssistantSdk {
     }
 
     get(params: GetAssistantProps, args?: ClientCallArgs) {
-        const p = this.assistantClient.get(
-            assistantService.GetAssistantRequest.fromPartial(params),
-            args,
-        );
+        const p = this.assistantClient.get(GetAssistantRequest.fromPartial(params), args);
         return AssistantSdk._withSdk.call(this, p);
     }
 
     list(params: ListAssistantProps, args?: ClientCallArgs) {
-        const p = this.assistantClient.list(
-            assistantService.ListAssistantsRequest.fromPartial(params),
-            args,
-        );
+        const p = this.assistantClient.list(ListAssistantsRequest.fromPartial(params), args);
 
         return p;
     }
 
     delete(params: DeleteAssistantProps, args?: ClientCallArgs) {
-        const p = this.assistantClient.delete(
-            assistantService.DeleteAssistantRequest.fromPartial(params),
-            args,
-        );
+        const p = this.assistantClient.delete(DeleteAssistantRequest.fromPartial(params), args);
         return p;
     }
 
     listVersions(params: ListAssistantVersionsProps, args?: ClientCallArgs) {
         const p = this.assistantClient.listVersions(
-            assistantService.ListAssistantVersionsRequest.fromPartial(params),
+            ListAssistantVersionsRequest.fromPartial(params),
             args,
         );
         return p;
     }
 
     update(params: UpdateAssistantProps, args?: ClientCallArgs) {
-        const p = this.assistantClient.update(
-            assistantService.UpdateAssistantRequest.fromPartial(params),
-            args,
-        );
+        const p = this.assistantClient.update(UpdateAssistantRequest.fromPartial(params), args);
 
         return AssistantSdk._withSdk.call(this, p);
     }

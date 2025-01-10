@@ -1,14 +1,15 @@
 import { Client } from 'nice-grpc';
-import { searchIndexFileService } from '..';
 
-import { ClientCallArgs, OperationWithDecoder, SessionArg, TypeFromProtoc } from './types';
+import { ClientCallArgs, OperationWithDecoder, SessionArg, TypeFromProtoc } from '../types';
+
 import {
     BatchCreateSearchIndexFileRequest,
     BatchCreateSearchIndexFileResponse,
     GetSearchIndexFileRequest,
     ListSearchIndexFilesRequest,
+    SearchIndexFileServiceClient,
     SearchIndexFileServiceService,
-} from '../generated/yandex/cloud/ai/assistants/v1/searchindex/search_index_file_service';
+} from '../../generated/yandex/cloud/ai/assistants/v1/searchindex/search_index_file_service';
 
 export type CreateSearchIndexFileProps = TypeFromProtoc<
     BatchCreateSearchIndexFileRequest,
@@ -28,18 +29,12 @@ export class SearchIndexFileSdk {
     static ENDPOINT = 'assistant.api.cloud.yandex.net:443';
 
     constructor(session: SessionArg, endpoint = SearchIndexFileSdk.ENDPOINT) {
-        this.searchIndexFileClient = session.client(
-            searchIndexFileService.SearchIndexFileServiceClient,
-            endpoint,
-        );
+        this.searchIndexFileClient = session.client(SearchIndexFileServiceClient, endpoint);
     }
 
     batchCreate(params: CreateSearchIndexFileProps, args?: ClientCallArgs) {
         return this.searchIndexFileClient
-            .batchCreate(
-                searchIndexFileService.BatchCreateSearchIndexFileRequest.fromPartial(params),
-                args,
-            )
+            .batchCreate(BatchCreateSearchIndexFileRequest.fromPartial(params), args)
             .then<OperationWithDecoder<BatchCreateSearchIndexFileResponse>>((operation) => {
                 return Object.assign(operation, {
                     decoder: BatchCreateSearchIndexFileResponse.decode,
@@ -48,15 +43,12 @@ export class SearchIndexFileSdk {
     }
 
     get(params: GetSearchIndexFileProps, args?: ClientCallArgs) {
-        return this.searchIndexFileClient.get(
-            searchIndexFileService.GetSearchIndexFileRequest.fromPartial(params),
-            args,
-        );
+        return this.searchIndexFileClient.get(GetSearchIndexFileRequest.fromPartial(params), args);
     }
 
     list(params: ListSearchIndexFileProps, args?: ClientCallArgs) {
         return this.searchIndexFileClient.list(
-            searchIndexFileService.ListSearchIndexFilesRequest.fromPartial(params),
+            ListSearchIndexFilesRequest.fromPartial(params),
             args,
         );
     }

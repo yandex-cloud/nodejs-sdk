@@ -1,15 +1,17 @@
 import { Client } from 'nice-grpc';
-import { textGenerationService } from '..';
 
-import { ClientCallArgs, OperationWithDecoder, SessionArg, TypeFromProtoc } from './types';
+import { ClientCallArgs, OperationWithDecoder, SessionArg, TypeFromProtoc } from '../types';
 import {
     CompletionRequest,
     CompletionResponse,
+    TextGenerationAsyncServiceClient,
     TextGenerationAsyncServiceService,
+    TextGenerationServiceClient,
     TextGenerationServiceService,
     TokenizeRequest,
+    TokenizerServiceClient,
     TokenizerServiceService,
-} from '../generated/yandex/cloud/ai/foundation_models/v1/text_generation/text_generation_service';
+} from '../../generated/yandex/cloud/ai/foundation_models/v1/text_generation/text_generation_service';
 
 export type CompletionProps = Omit<TypeFromProtoc<CompletionRequest, 'messages'>, 'modelUri'> & {
     modelId: string;
@@ -32,20 +34,11 @@ export class TextGenerationSdk {
     static ENDPOINT = 'llm.api.cloud.yandex.net:443';
 
     constructor(session: SessionArg, endpoint = TextGenerationSdk.ENDPOINT) {
-        this.textGenerationClient = session.client(
-            textGenerationService.TextGenerationServiceClient,
-            endpoint,
-        );
+        this.textGenerationClient = session.client(TextGenerationServiceClient, endpoint);
 
-        this.tokenizerClient = session.client(
-            textGenerationService.TokenizerServiceClient,
-            endpoint,
-        );
+        this.tokenizerClient = session.client(TokenizerServiceClient, endpoint);
 
-        this.textGenerationAsyncClient = session.client(
-            textGenerationService.TextGenerationAsyncServiceClient,
-            endpoint,
-        );
+        this.textGenerationAsyncClient = session.client(TextGenerationAsyncServiceClient, endpoint);
     }
 
     tokenize(params: TokenizeProps, args?: ClientCallArgs) {
@@ -53,7 +46,7 @@ export class TextGenerationSdk {
         const modelUri = `gpt://${folderId}/${modelId}`;
 
         return this.tokenizerClient.tokenize(
-            textGenerationService.TokenizeRequest.fromPartial({ ...restParams, modelUri }),
+            TokenizeRequest.fromPartial({ ...restParams, modelUri }),
             args,
         );
     }
@@ -63,7 +56,7 @@ export class TextGenerationSdk {
         const modelUri = `gpt://${folderId}/${modelId}`;
 
         return this.tokenizerClient.tokenizeCompletion(
-            textGenerationService.CompletionRequest.fromPartial({ ...restParams, modelUri }),
+            CompletionRequest.fromPartial({ ...restParams, modelUri }),
             args,
         );
     }
@@ -73,7 +66,7 @@ export class TextGenerationSdk {
         const modelUri = `gpt://${folderId}/${modelId}`;
 
         return this.textGenerationClient.completion(
-            textGenerationService.CompletionRequest.fromPartial({ ...restParams, modelUri }),
+            CompletionRequest.fromPartial({ ...restParams, modelUri }),
             args,
         );
     }
@@ -83,10 +76,7 @@ export class TextGenerationSdk {
         const modelUri = `gpt://${folderId}/${modelId}`;
 
         return this.textGenerationAsyncClient
-            .completion(
-                textGenerationService.CompletionRequest.fromPartial({ ...restParams, modelUri }),
-                args,
-            )
+            .completion(CompletionRequest.fromPartial({ ...restParams, modelUri }), args)
             .then<OperationWithDecoder<CompletionResponse>>((operation) => {
                 return Object.assign(operation, { decoder: CompletionResponse.decode });
             });

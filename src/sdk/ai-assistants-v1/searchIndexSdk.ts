@@ -1,16 +1,17 @@
 import { Client } from 'nice-grpc';
-import { searchIndexService } from '..';
 
-import { ClientCallArgs, OperationWithDecoder, SessionArg, TypeFromProtoc } from './types';
+import { ClientCallArgs, OperationWithDecoder, SessionArg, TypeFromProtoc } from '../types';
+
 import {
     CreateSearchIndexRequest,
+    SearchIndexServiceClient,
     DeleteSearchIndexRequest,
     GetSearchIndexRequest,
     ListSearchIndicesRequest,
     SearchIndexServiceService,
     UpdateSearchIndexRequest,
-} from '../generated/yandex/cloud/ai/assistants/v1/searchindex/search_index_service';
-import { SearchIndex } from '../generated/yandex/cloud/ai/assistants/v1/searchindex/search_index';
+} from '../../generated/yandex/cloud/ai/assistants/v1/searchindex/search_index_service';
+import { SearchIndex } from '../../generated/yandex/cloud/ai/assistants/v1/searchindex/search_index';
 
 export type CreateSearchIndexProps = TypeFromProtoc<
     CreateSearchIndexRequest,
@@ -34,46 +35,31 @@ export class SearchIndexSdk {
     static ENDPOINT = 'assistant.api.cloud.yandex.net:443';
 
     constructor(session: SessionArg, endpoint = SearchIndexSdk.ENDPOINT) {
-        this.searchIndexClient = session.client(
-            searchIndexService.SearchIndexServiceClient,
-            endpoint,
-        );
+        this.searchIndexClient = session.client(SearchIndexServiceClient, endpoint);
     }
 
     create(params: CreateSearchIndexProps, args?: ClientCallArgs) {
         return this.searchIndexClient
-            .create(searchIndexService.CreateSearchIndexRequest.fromPartial(params), args)
+            .create(CreateSearchIndexRequest.fromPartial(params), args)
             .then<OperationWithDecoder<SearchIndex>>((operation) => {
                 return Object.assign(operation, { decoder: SearchIndex.decode });
             });
     }
 
     get(params: GetSearchIndexProps, args?: ClientCallArgs) {
-        return this.searchIndexClient.get(
-            searchIndexService.GetSearchIndexRequest.fromPartial(params),
-            args,
-        );
+        return this.searchIndexClient.get(GetSearchIndexRequest.fromPartial(params), args);
     }
 
     list(params: ListSearchIndexProps, args?: ClientCallArgs) {
-        return this.searchIndexClient.list(
-            searchIndexService.ListSearchIndicesRequest.fromPartial(params),
-            args,
-        );
+        return this.searchIndexClient.list(ListSearchIndicesRequest.fromPartial(params), args);
     }
 
     delete(params: DeleteSearchIndexProps, args?: ClientCallArgs) {
-        return this.searchIndexClient.delete(
-            searchIndexService.DeleteSearchIndexRequest.fromPartial(params),
-            args,
-        );
+        return this.searchIndexClient.delete(DeleteSearchIndexRequest.fromPartial(params), args);
     }
 
     update(params: UpdateSearchIndexProps, args?: ClientCallArgs) {
-        return this.searchIndexClient.update(
-            searchIndexService.UpdateSearchIndexRequest.fromPartial(params),
-            args,
-        );
+        return this.searchIndexClient.update(UpdateSearchIndexRequest.fromPartial(params), args);
     }
 }
 

@@ -1,10 +1,10 @@
 import { Client } from 'nice-grpc';
-import { embeddingService } from '..';
+import { ClientCallArgs, SessionArg, TypeFromProtoc } from '../types';
 import {
+    EmbeddingsServiceClient,
     EmbeddingsServiceService,
     TextEmbeddingRequest,
-} from '../generated/yandex/cloud/ai/foundation_models/v1/embedding/embedding_service';
-import { ClientCallArgs, SessionArg, TypeFromProtoc } from './types';
+} from '../../generated/yandex/cloud/ai/foundation_models/v1/embedding/embedding_service';
 
 export type TextEmbeddingProps = Omit<TypeFromProtoc<TextEmbeddingRequest, 'text'>, 'modelUri'> & {
     modelId: string;
@@ -17,7 +17,7 @@ export class EmbeddingSdk {
     static ENDPOINT = 'llm.api.cloud.yandex.net:443';
 
     constructor(session: SessionArg, endpoint = EmbeddingSdk.ENDPOINT) {
-        this.embeddingClient = session.client(embeddingService.EmbeddingsServiceClient, endpoint);
+        this.embeddingClient = session.client(EmbeddingsServiceClient, endpoint);
     }
 
     textEmbedding(params: TextEmbeddingProps, args?: ClientCallArgs) {
@@ -25,7 +25,7 @@ export class EmbeddingSdk {
         const modelUri = `gpt://${folderId}/${modelId}`;
 
         return this.embeddingClient.textEmbedding(
-            embeddingService.TextEmbeddingRequest.fromPartial({ ...restParams, modelUri }),
+            TextEmbeddingRequest.fromPartial({ ...restParams, modelUri }),
             args,
         );
     }

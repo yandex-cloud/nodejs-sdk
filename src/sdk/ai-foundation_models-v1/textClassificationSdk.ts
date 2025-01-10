@@ -1,11 +1,12 @@
 import { Client } from 'nice-grpc';
-import { ClientCallArgs, SessionArg, TypeFromProtoc } from './types';
+import { ClientCallArgs, SessionArg, TypeFromProtoc } from '../types';
+
 import {
     FewShotTextClassificationRequest,
     TextClassificationRequest,
+    TextClassificationServiceClient,
     TextClassificationServiceService,
-} from '../generated/yandex/cloud/ai/foundation_models/v1/text_classification/text_classification_service';
-import { textClassificationService } from '..';
+} from '../../generated/yandex/cloud/ai/foundation_models/v1/text_classification/text_classification_service';
 
 export type TextClassificationProps = Omit<
     TypeFromProtoc<TextClassificationRequest, 'text'>,
@@ -32,10 +33,7 @@ export class TextClassificationSdk {
     static ENDPOINT = 'llm.api.cloud.yandex.net:443';
 
     constructor(session: SessionArg, endpoint = TextClassificationSdk.ENDPOINT) {
-        this.textClassificationClient = session.client(
-            textClassificationService.TextClassificationServiceClient,
-            endpoint,
-        );
+        this.textClassificationClient = session.client(TextClassificationServiceClient, endpoint);
     }
 
     classifyText(params: TextClassificationProps, args?: ClientCallArgs) {
@@ -43,7 +41,7 @@ export class TextClassificationSdk {
         const modelUri = `gpt://${folderId}/${modelId}`;
 
         return this.textClassificationClient.classify(
-            textClassificationService.TextClassificationRequest.fromPartial({
+            TextClassificationRequest.fromPartial({
                 ...restParams,
                 modelUri,
             }),
@@ -56,7 +54,7 @@ export class TextClassificationSdk {
         const modelUri = `gpt://${folderId}/${modelId}`;
 
         return this.textClassificationClient.fewShotClassify(
-            textClassificationService.FewShotTextClassificationRequest.fromPartial({
+            FewShotTextClassificationRequest.fromPartial({
                 ...restParams,
                 modelUri,
             }),

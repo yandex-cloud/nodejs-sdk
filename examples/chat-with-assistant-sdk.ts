@@ -7,7 +7,7 @@ import {
     initAssistantSdk,
     initThreadSdk,
     MessageSdk,
-} from '@yandex-cloud/nodejs-sdk/ai-assistants-v1/sdk';
+} from '@yandex-cloud/nodejs-sdk/dist/sdk/ai-assistants-v1';
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
@@ -35,9 +35,7 @@ const folderId = getEnv('YC_FOLDER_ID');
         modelId: 'yandexgpt/latest',
     });
 
-    const thread = await threadSdk
-        .create({ name: "Thread name", folderId })
-        .withSdk();
+    const thread = await threadSdk.create({ name: 'Thread name', folderId }).withSdk();
 
     const asyncIterableForStreamEvent = await thread
         .sendMessage({

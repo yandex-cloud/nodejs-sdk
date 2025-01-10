@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 import { Session } from '@yandex-cloud/nodejs-sdk/dist/session';
 
-import { initFileSdk } from '@yandex-cloud/nodejs-sdk/ai-files-v1/sdk';
+import { initFileSdk } from '@yandex-cloud/nodejs-sdk/dist/sdk/ai-files-v1';
 import { ExpirationConfig_ExpirationPolicy } from '@yandex-cloud/nodejs-sdk/ai-files-v1/generated/yandex/cloud/ai/common/common';
 
 import { readFile } from 'fs/promises';

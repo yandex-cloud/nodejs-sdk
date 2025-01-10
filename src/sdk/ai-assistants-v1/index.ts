@@ -5,4 +5,3 @@ export * from './threadSdk';
 export * from './searchIndexFileSdk';
 export * from './searchIndexSdk';
 export * from './userSdk';
-export * from '..';

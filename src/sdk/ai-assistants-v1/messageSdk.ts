@@ -1,12 +1,13 @@
-import { messageService } from '..';
-import { MessageContent } from '../generated/yandex/cloud/ai/assistants/v1/threads/message';
+import { MessageContent } from '../../generated/yandex/cloud/ai/assistants/v1/threads/message';
 import {
     CreateMessageRequest,
     GetMessageRequest,
     ListMessagesRequest,
     MessageServiceService,
-} from '../generated/yandex/cloud/ai/assistants/v1/threads/message_service';
-import { ClientCallArgs, SessionArg, TypeFromProtoc } from './types';
+    MessageServiceClient,
+} from '../../generated/yandex/cloud/ai/assistants/v1/threads/message_service';
+
+import { ClientCallArgs, SessionArg, TypeFromProtoc } from '../types';
 import { Client } from 'nice-grpc';
 
 export type SendMessageProps = TypeFromProtoc<CreateMessageRequest, 'threadId'>;
@@ -21,7 +22,7 @@ export class MessageSdk {
     static ENDPOINT = 'assistant.api.cloud.yandex.net:443';
 
     constructor(session: SessionArg, endpoint = MessageSdk.ENDPOINT) {
-        this.messageClient = session.client(messageService.MessageServiceClient, endpoint);
+        this.messageClient = session.client(MessageServiceClient, endpoint);
     }
 
     static getMessageContent(...args: string[]): TypeFromProtoc<MessageContent> {
@@ -41,28 +42,19 @@ export class MessageSdk {
     }
 
     send(params: SendMessageProps, args?: ClientCallArgs) {
-        const p = this.messageClient.create(
-            messageService.CreateMessageRequest.fromPartial(params),
-            args,
-        );
+        const p = this.messageClient.create(CreateMessageRequest.fromPartial(params), args);
 
         return p;
     }
 
     get(params: GetMessageProps, args?: ClientCallArgs) {
-        const p = this.messageClient.get(
-            messageService.GetMessageRequest.fromPartial(params),
-            args,
-        );
+        const p = this.messageClient.get(GetMessageRequest.fromPartial(params), args);
 
         return p;
     }
 
     list(params: ListMessagesProps, args?: ClientCallArgs) {
-        const p = this.messageClient.list(
-            messageService.ListMessagesRequest.fromPartial(params),
-            args,
-        );
+        const p = this.messageClient.list(ListMessagesRequest.fromPartial(params), args);
 
         return p;
     }

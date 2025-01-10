@@ -1,11 +1,12 @@
 import { Client } from 'nice-grpc';
-import { imageGenerationService } from '..';
+
+import { ClientCallArgs, OperationWithDecoder, SessionArg, TypeFromProtoc } from '../types';
 import {
+    ImageGenerationAsyncServiceClient,
     ImageGenerationAsyncServiceService,
     ImageGenerationRequest,
     ImageGenerationResponse,
-} from '../generated/yandex/cloud/ai/foundation_models/v1/image_generation/image_generation_service';
-import { ClientCallArgs, OperationWithDecoder, SessionArg, TypeFromProtoc } from './types';
+} from '../../generated/yandex/cloud/ai/foundation_models/v1/image_generation/image_generation_service';
 
 export type GenerateImageProps = Omit<
     TypeFromProtoc<ImageGenerationRequest, 'messages'>,
@@ -24,10 +25,7 @@ export class ImageGenerationSdk {
     static ENDPOINT = 'llm.api.cloud.yandex.net:443';
 
     constructor(session: SessionArg, endpoint = ImageGenerationSdk.ENDPOINT) {
-        this.imageGenerationClient = session.client(
-            imageGenerationService.ImageGenerationAsyncServiceClient,
-            endpoint,
-        );
+        this.imageGenerationClient = session.client(ImageGenerationAsyncServiceClient, endpoint);
     }
 
     generateImage(params: GenerateImageProps, args?: ClientCallArgs) {
@@ -36,7 +34,7 @@ export class ImageGenerationSdk {
 
         return this.imageGenerationClient
             .generate(
-                imageGenerationService.ImageGenerationRequest.fromPartial({
+                ImageGenerationRequest.fromPartial({
                     ...restParams,
                     modelUri,
                 }),

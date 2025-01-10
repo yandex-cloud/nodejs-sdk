@@ -1,14 +1,5 @@
 import { Client } from 'nice-grpc';
-import { threadService } from '..';
-import { Thread } from '../generated/yandex/cloud/ai/assistants/v1/threads/thread';
-import {
-    CreateThreadRequest,
-    DeleteThreadRequest,
-    GetThreadRequest,
-    ListThreadsRequest,
-    ThreadServiceService,
-    UpdateThreadRequest,
-} from '../generated/yandex/cloud/ai/assistants/v1/threads/thread_service';
+
 import {
     GetMessageProps,
     initMessageSdk,
@@ -16,16 +7,24 @@ import {
     MessageSdk,
     SendMessageProps,
 } from './messageSdk';
-import { ClientCallArgs, SessionArg, TypeFromProtoc } from './types';
-import { Assistant } from '../generated/yandex/cloud/ai/assistants/v1/assistant';
-import {
-    Message,
-    Message_MessageStatus,
-} from '../generated/yandex/cloud/ai/assistants/v1/threads/message';
-import { StreamEvent } from '../generated/yandex/cloud/ai/assistants/v1/runs/run_service';
+import { ClientCallArgs, SessionArg, TypeFromProtoc } from '../types';
+
 import { isString } from 'lodash';
 import { CreateRunProps, initRunSdk, RunSdk } from './runSdk';
 import { AssistantWithSdk } from './assistantSdk';
+import { Thread } from '../../generated/yandex/cloud/ai/assistants/v1/threads/thread';
+import {
+    CreateThreadRequest,
+    DeleteThreadRequest,
+    GetThreadRequest,
+    ListThreadsRequest,
+    ThreadServiceClient,
+    ThreadServiceService,
+    UpdateThreadRequest,
+} from '../../generated/yandex/cloud/ai/assistants/v1/threads/thread_service';
+import { Assistant } from '../../generated/yandex/cloud/ai/assistants/v1/assistant';
+import { StreamEvent } from '../../generated/yandex/cloud/ai/assistants/v1/runs/run_service';
+import { Message, Message_MessageStatus } from '../../generated/yandex/cloud/ai/assistants/v1/threads/message';
 
 export type CreateThreadProps = TypeFromProtoc<CreateThreadRequest, 'folderId' | 'name'>;
 
@@ -147,7 +146,7 @@ export class ThreadSdk {
 
     constructor(session: SessionArg, endpoint = ThreadSdk.ENDPOINT) {
         this.session = session;
-        this.threadClient = session.client(threadService.ThreadServiceClient, endpoint);
+        this.threadClient = session.client(ThreadServiceClient, endpoint);
     }
 
     private static _withSdk(this: ThreadSdk, threadP: Promise<Thread>) {
@@ -164,34 +163,25 @@ export class ThreadSdk {
     }
 
     get(params: GetThreadProps, args?: ClientCallArgs) {
-        const p = this.threadClient.get(threadService.GetThreadRequest.fromPartial(params), args);
+        const p = this.threadClient.get(GetThreadRequest.fromPartial(params), args);
         return ThreadSdk._withSdk.call(this, p);
     }
 
     list(params: ListThreadProps, args?: ClientCallArgs) {
-        return this.threadClient.list(threadService.ListThreadsRequest.fromPartial(params), args);
+        return this.threadClient.list(ListThreadsRequest.fromPartial(params), args);
     }
 
     delete(params: DeleteThreadProps, args?: ClientCallArgs) {
-        return this.threadClient.delete(
-            threadService.DeleteThreadRequest.fromPartial(params),
-            args,
-        );
+        return this.threadClient.delete(DeleteThreadRequest.fromPartial(params), args);
     }
 
     update(params: UpdateThreadProps, args?: ClientCallArgs) {
-        const p = this.threadClient.update(
-            threadService.UpdateThreadRequest.fromPartial(params),
-            args,
-        );
+        const p = this.threadClient.update(UpdateThreadRequest.fromPartial(params), args);
         return ThreadSdk._withSdk.call(this, p);
     }
 
     create(params: CreateThreadProps, args?: ClientCallArgs) {
-        const p = this.threadClient.create(
-            threadService.CreateThreadRequest.fromPartial(params),
-            args,
-        );
+        const p = this.threadClient.create(CreateThreadRequest.fromPartial(params), args);
         return ThreadSdk._withSdk.call(this, p);
     }
 }
