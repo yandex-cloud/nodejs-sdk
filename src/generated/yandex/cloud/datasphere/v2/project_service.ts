@@ -1,4058 +1,3593 @@
 /* eslint-disable */
-import { messageTypeRegistry } from "../../../../typeRegistry";
-import Long from "long";
+import { messageTypeRegistry } from '../../../../typeRegistry';
+import Long from 'long';
 import {
-  makeGenericClientConstructor,
-  ChannelCredentials,
-  ChannelOptions,
-  UntypedServiceImplementation,
-  handleUnaryCall,
-  Client,
-  ClientUnaryCall,
-  Metadata,
-  CallOptions,
-  ServiceError,
-} from "@grpc/grpc-js";
-import _m0 from "protobufjs/minimal";
+    makeGenericClientConstructor,
+    ChannelCredentials,
+    ChannelOptions,
+    UntypedServiceImplementation,
+    handleUnaryCall,
+    Client,
+    ClientUnaryCall,
+    Metadata,
+    CallOptions,
+    ServiceError,
+} from '@grpc/grpc-js';
+import _m0 from 'protobufjs/minimal';
 import {
-  Project_Settings,
-  Project_Limits,
-  Project,
-} from "../../../../yandex/cloud/datasphere/v2/project";
-import { FieldMask } from "../../../../google/protobuf/field_mask";
+    Project_Settings,
+    Project_Limits,
+    Project,
+} from '../../../../yandex/cloud/datasphere/v2/project';
+import { FieldMask } from '../../../../google/protobuf/field_mask';
 import {
-  ResourceType,
-  resourceTypeFromJSON,
-  resourceTypeToJSON,
-} from "../../../../yandex/cloud/datasphere/v2/resource_types";
-import { Timestamp } from "../../../../google/protobuf/timestamp";
+    ResourceType,
+    resourceTypeFromJSON,
+    resourceTypeToJSON,
+} from '../../../../yandex/cloud/datasphere/v2/resource_types';
 import {
-  Restriction,
-  GetRestrictionsMetaResponse,
-  RestrictionsResponse,
-} from "../../../../yandex/cloud/datasphere/v2/restrictions";
-import { Operation } from "../../../../yandex/cloud/operation/operation";
+    Restriction,
+    GetRestrictionsMetaResponse,
+    RestrictionsResponse,
+} from '../../../../yandex/cloud/datasphere/v2/restrictions';
+import { Operation } from '../../../../yandex/cloud/operation/operation';
 import {
-  ListAccessBindingsRequest,
-  ListAccessBindingsResponse,
-  SetAccessBindingsRequest,
-  UpdateAccessBindingsRequest,
-} from "../../../../yandex/cloud/access/access";
-import { Empty } from "../../../../google/protobuf/empty";
-import { Int64Value } from "../../../../google/protobuf/wrappers";
-import { Struct } from "../../../../google/protobuf/struct";
+    ListAccessBindingsRequest,
+    ListAccessBindingsResponse,
+    SetAccessBindingsRequest,
+    UpdateAccessBindingsRequest,
+} from '../../../../yandex/cloud/access/access';
+import { Empty } from '../../../../google/protobuf/empty';
+import { Int64Value } from '../../../../google/protobuf/wrappers';
+import { Struct } from '../../../../google/protobuf/struct';
 
-export const protobufPackage = "yandex.cloud.datasphere.v2";
+export const protobufPackage = 'yandex.cloud.datasphere.v2';
 
 export enum ExecutionStatus {
-  EXECUTION_STATUS_UNSPECIFIED = 0,
-  /** OK - Execution finished successfully. */
-  OK = 1,
-  /** ERROR - Execution ended with error. */
-  ERROR = 2,
-  /** ABORTED - Execution was aborted. */
-  ABORTED = 3,
-  UNRECOGNIZED = -1,
+    EXECUTION_STATUS_UNSPECIFIED = 0,
+    /** OK - Execution finished successfully. */
+    OK = 1,
+    /** ERROR - Execution ended with error. */
+    ERROR = 2,
+    /** ABORTED - Execution was aborted. */
+    ABORTED = 3,
+    UNRECOGNIZED = -1,
 }
 
 export function executionStatusFromJSON(object: any): ExecutionStatus {
-  switch (object) {
-    case 0:
-    case "EXECUTION_STATUS_UNSPECIFIED":
-      return ExecutionStatus.EXECUTION_STATUS_UNSPECIFIED;
-    case 1:
-    case "OK":
-      return ExecutionStatus.OK;
-    case 2:
-    case "ERROR":
-      return ExecutionStatus.ERROR;
-    case 3:
-    case "ABORTED":
-      return ExecutionStatus.ABORTED;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return ExecutionStatus.UNRECOGNIZED;
-  }
+    switch (object) {
+        case 0:
+        case 'EXECUTION_STATUS_UNSPECIFIED':
+            return ExecutionStatus.EXECUTION_STATUS_UNSPECIFIED;
+        case 1:
+        case 'OK':
+            return ExecutionStatus.OK;
+        case 2:
+        case 'ERROR':
+            return ExecutionStatus.ERROR;
+        case 3:
+        case 'ABORTED':
+            return ExecutionStatus.ABORTED;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return ExecutionStatus.UNRECOGNIZED;
+    }
 }
 
 export function executionStatusToJSON(object: ExecutionStatus): string {
-  switch (object) {
-    case ExecutionStatus.EXECUTION_STATUS_UNSPECIFIED:
-      return "EXECUTION_STATUS_UNSPECIFIED";
-    case ExecutionStatus.OK:
-      return "OK";
-    case ExecutionStatus.ERROR:
-      return "ERROR";
-    case ExecutionStatus.ABORTED:
-      return "ABORTED";
-    default:
-      return "UNKNOWN";
-  }
+    switch (object) {
+        case ExecutionStatus.EXECUTION_STATUS_UNSPECIFIED:
+            return 'EXECUTION_STATUS_UNSPECIFIED';
+        case ExecutionStatus.OK:
+            return 'OK';
+        case ExecutionStatus.ERROR:
+            return 'ERROR';
+        case ExecutionStatus.ABORTED:
+            return 'ABORTED';
+        default:
+            return 'UNKNOWN';
+    }
 }
 
 export interface CreateProjectRequest {
-  $type: "yandex.cloud.datasphere.v2.CreateProjectRequest";
-  /** ID of the community to create a project in. */
-  communityId: string;
-  /** Name of the project. 0-63 characters long. */
-  name: string;
-  /** Description of the project. 0-256 characters long. */
-  description: string;
-  /** Labels of the project. */
-  labels: { [key: string]: string };
-  /** Settings of the project. */
-  settings?: Project_Settings;
-  /** Limits of the project. */
-  limits?: Project_Limits;
+    $type: 'yandex.cloud.datasphere.v2.CreateProjectRequest';
+    /** ID of the community to create a project in. */
+    communityId: string;
+    /** Name of the project. 0-63 characters long. */
+    name: string;
+    /** Description of the project. 0-256 characters long. */
+    description: string;
+    /** Labels of the project. */
+    labels: { [key: string]: string };
+    /** Settings of the project. */
+    settings?: Project_Settings;
+    /** Limits of the project. */
+    limits?: Project_Limits;
 }
 
 export interface CreateProjectRequest_LabelsEntry {
-  $type: "yandex.cloud.datasphere.v2.CreateProjectRequest.LabelsEntry";
-  key: string;
-  value: string;
+    $type: 'yandex.cloud.datasphere.v2.CreateProjectRequest.LabelsEntry';
+    key: string;
+    value: string;
 }
 
 export interface CreateProjectMetadata {
-  $type: "yandex.cloud.datasphere.v2.CreateProjectMetadata";
-  /** ID of the project that is being created. */
-  projectId: string;
+    $type: 'yandex.cloud.datasphere.v2.CreateProjectMetadata';
+    /** ID of the project that is being created. */
+    projectId: string;
 }
 
 export interface UpdateProjectRequest {
-  $type: "yandex.cloud.datasphere.v2.UpdateProjectRequest";
-  /**
-   * ID of the Project resource to update.
-   * To get the project ID use a [ProjectService.List] request.
-   */
-  projectId: string;
-  /** Field mask that specifies which fields of the Project resource are going to be updated. */
-  updateMask?: FieldMask;
-  /** Name of the project. 0-63 characters long. */
-  name: string;
-  /** Description of the project. 0-256 characters long. */
-  description: string;
-  /** Labels of the project. */
-  labels: { [key: string]: string };
-  /** Settings of the project. */
-  settings?: Project_Settings;
-  /** Limits of the project. */
-  limits?: Project_Limits;
+    $type: 'yandex.cloud.datasphere.v2.UpdateProjectRequest';
+    /**
+     * ID of the Project resource to update.
+     * To get the project ID use a [ProjectService.List] request.
+     */
+    projectId: string;
+    /** Field mask that specifies which fields of the Project resource are going to be updated. */
+    updateMask?: FieldMask;
+    /** Name of the project. 0-63 characters long. */
+    name: string;
+    /** Description of the project. 0-256 characters long. */
+    description: string;
+    /** Labels of the project. */
+    labels: { [key: string]: string };
+    /** Settings of the project. */
+    settings?: Project_Settings;
+    /** Limits of the project. */
+    limits?: Project_Limits;
 }
 
 export interface UpdateProjectRequest_LabelsEntry {
-  $type: "yandex.cloud.datasphere.v2.UpdateProjectRequest.LabelsEntry";
-  key: string;
-  value: string;
+    $type: 'yandex.cloud.datasphere.v2.UpdateProjectRequest.LabelsEntry';
+    key: string;
+    value: string;
 }
 
 export interface UpdateProjectMetadata {
-  $type: "yandex.cloud.datasphere.v2.UpdateProjectMetadata";
-  /** ID of the project that is being updated. */
-  projectId: string;
+    $type: 'yandex.cloud.datasphere.v2.UpdateProjectMetadata';
+    /** ID of the project that is being updated. */
+    projectId: string;
 }
 
 export interface DeleteProjectRequest {
-  $type: "yandex.cloud.datasphere.v2.DeleteProjectRequest";
-  /**
-   * ID of the Project resource to delete.
-   * To get the project ID use a [ProjectService.List] request.
-   */
-  projectId: string;
+    $type: 'yandex.cloud.datasphere.v2.DeleteProjectRequest';
+    /**
+     * ID of the Project resource to delete.
+     * To get the project ID use a [ProjectService.List] request.
+     */
+    projectId: string;
 }
 
 export interface DeleteProjectMetadata {
-  $type: "yandex.cloud.datasphere.v2.DeleteProjectMetadata";
-  /** ID of the project that is being deleted. */
-  projectId: string;
+    $type: 'yandex.cloud.datasphere.v2.DeleteProjectMetadata';
+    /** ID of the project that is being deleted. */
+    projectId: string;
 }
 
 export interface OpenProjectRequest {
-  $type: "yandex.cloud.datasphere.v2.OpenProjectRequest";
-  /**
-   * ID of the Project resource to open.
-   * To get the project ID use a [ProjectService.List] request.
-   */
-  projectId: string;
+    $type: 'yandex.cloud.datasphere.v2.OpenProjectRequest';
+    /**
+     * ID of the Project resource to open.
+     * To get the project ID use a [ProjectService.List] request.
+     */
+    projectId: string;
 }
 
 export interface OpenProjectMetadata {
-  $type: "yandex.cloud.datasphere.v2.OpenProjectMetadata";
-  /** ID of the project that is being opened. */
-  projectId: string;
-  /** Project opening status. */
-  status: OpenProjectMetadata_OpenProjectStatus;
+    $type: 'yandex.cloud.datasphere.v2.OpenProjectMetadata';
+    /** ID of the project that is being opened. */
+    projectId: string;
+    /** Project opening status. */
+    status: OpenProjectMetadata_OpenProjectStatus;
 }
 
 export enum OpenProjectMetadata_OpenProjectStatus {
-  OPEN_PROJECT_STATUS_UNSPECIFIED = 0,
-  /** OPEN_PROJECT_STATUS_CLOSING_IDE - Closing previous IDE instance. */
-  OPEN_PROJECT_STATUS_CLOSING_IDE = 1,
-  /** OPEN_PROJECT_STATUS_UNZIPPING_PROJECT - Unzipping project. */
-  OPEN_PROJECT_STATUS_UNZIPPING_PROJECT = 2,
-  /** OPEN_PROJECT_STATUS_ALLOCATING_VM - Allocating VM for the project. */
-  OPEN_PROJECT_STATUS_ALLOCATING_VM = 3,
-  /** OPEN_PROJECT_STATUS_ALLOCATING_RESOURCES - Allocating resources for the project. */
-  OPEN_PROJECT_STATUS_ALLOCATING_RESOURCES = 4,
-  /** OPEN_PROJECT_STATUS_STARTING_IDE - Starting IDE. */
-  OPEN_PROJECT_STATUS_STARTING_IDE = 5,
-  /** OPEN_PROJECT_STATUS_APPLYING_CHECKPOINT - Applying checkpoint to project. */
-  OPEN_PROJECT_STATUS_APPLYING_CHECKPOINT = 6,
-  /** OPEN_PROJECT_STATUS_UNKNOWN - Unknown open project status. */
-  OPEN_PROJECT_STATUS_UNKNOWN = 7,
-  UNRECOGNIZED = -1,
+    OPEN_PROJECT_STATUS_UNSPECIFIED = 0,
+    /** OPEN_PROJECT_STATUS_CLOSING_IDE - Closing previous IDE instance. */
+    OPEN_PROJECT_STATUS_CLOSING_IDE = 1,
+    /** OPEN_PROJECT_STATUS_UNZIPPING_PROJECT - Unzipping project. */
+    OPEN_PROJECT_STATUS_UNZIPPING_PROJECT = 2,
+    /** OPEN_PROJECT_STATUS_ALLOCATING_VM - Allocating VM for the project. */
+    OPEN_PROJECT_STATUS_ALLOCATING_VM = 3,
+    /** OPEN_PROJECT_STATUS_ALLOCATING_RESOURCES - Allocating resources for the project. */
+    OPEN_PROJECT_STATUS_ALLOCATING_RESOURCES = 4,
+    /** OPEN_PROJECT_STATUS_STARTING_IDE - Starting IDE. */
+    OPEN_PROJECT_STATUS_STARTING_IDE = 5,
+    /** OPEN_PROJECT_STATUS_UNKNOWN - Unknown open project status. */
+    OPEN_PROJECT_STATUS_UNKNOWN = 7,
+    UNRECOGNIZED = -1,
 }
 
 export function openProjectMetadata_OpenProjectStatusFromJSON(
-  object: any
+    object: any,
 ): OpenProjectMetadata_OpenProjectStatus {
-  switch (object) {
-    case 0:
-    case "OPEN_PROJECT_STATUS_UNSPECIFIED":
-      return OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_UNSPECIFIED;
-    case 1:
-    case "OPEN_PROJECT_STATUS_CLOSING_IDE":
-      return OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_CLOSING_IDE;
-    case 2:
-    case "OPEN_PROJECT_STATUS_UNZIPPING_PROJECT":
-      return OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_UNZIPPING_PROJECT;
-    case 3:
-    case "OPEN_PROJECT_STATUS_ALLOCATING_VM":
-      return OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_ALLOCATING_VM;
-    case 4:
-    case "OPEN_PROJECT_STATUS_ALLOCATING_RESOURCES":
-      return OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_ALLOCATING_RESOURCES;
-    case 5:
-    case "OPEN_PROJECT_STATUS_STARTING_IDE":
-      return OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_STARTING_IDE;
-    case 6:
-    case "OPEN_PROJECT_STATUS_APPLYING_CHECKPOINT":
-      return OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_APPLYING_CHECKPOINT;
-    case 7:
-    case "OPEN_PROJECT_STATUS_UNKNOWN":
-      return OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_UNKNOWN;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return OpenProjectMetadata_OpenProjectStatus.UNRECOGNIZED;
-  }
+    switch (object) {
+        case 0:
+        case 'OPEN_PROJECT_STATUS_UNSPECIFIED':
+            return OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_UNSPECIFIED;
+        case 1:
+        case 'OPEN_PROJECT_STATUS_CLOSING_IDE':
+            return OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_CLOSING_IDE;
+        case 2:
+        case 'OPEN_PROJECT_STATUS_UNZIPPING_PROJECT':
+            return OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_UNZIPPING_PROJECT;
+        case 3:
+        case 'OPEN_PROJECT_STATUS_ALLOCATING_VM':
+            return OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_ALLOCATING_VM;
+        case 4:
+        case 'OPEN_PROJECT_STATUS_ALLOCATING_RESOURCES':
+            return OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_ALLOCATING_RESOURCES;
+        case 5:
+        case 'OPEN_PROJECT_STATUS_STARTING_IDE':
+            return OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_STARTING_IDE;
+        case 7:
+        case 'OPEN_PROJECT_STATUS_UNKNOWN':
+            return OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_UNKNOWN;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return OpenProjectMetadata_OpenProjectStatus.UNRECOGNIZED;
+    }
 }
 
 export function openProjectMetadata_OpenProjectStatusToJSON(
-  object: OpenProjectMetadata_OpenProjectStatus
+    object: OpenProjectMetadata_OpenProjectStatus,
 ): string {
-  switch (object) {
-    case OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_UNSPECIFIED:
-      return "OPEN_PROJECT_STATUS_UNSPECIFIED";
-    case OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_CLOSING_IDE:
-      return "OPEN_PROJECT_STATUS_CLOSING_IDE";
-    case OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_UNZIPPING_PROJECT:
-      return "OPEN_PROJECT_STATUS_UNZIPPING_PROJECT";
-    case OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_ALLOCATING_VM:
-      return "OPEN_PROJECT_STATUS_ALLOCATING_VM";
-    case OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_ALLOCATING_RESOURCES:
-      return "OPEN_PROJECT_STATUS_ALLOCATING_RESOURCES";
-    case OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_STARTING_IDE:
-      return "OPEN_PROJECT_STATUS_STARTING_IDE";
-    case OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_APPLYING_CHECKPOINT:
-      return "OPEN_PROJECT_STATUS_APPLYING_CHECKPOINT";
-    case OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_UNKNOWN:
-      return "OPEN_PROJECT_STATUS_UNKNOWN";
-    default:
-      return "UNKNOWN";
-  }
+    switch (object) {
+        case OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_UNSPECIFIED:
+            return 'OPEN_PROJECT_STATUS_UNSPECIFIED';
+        case OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_CLOSING_IDE:
+            return 'OPEN_PROJECT_STATUS_CLOSING_IDE';
+        case OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_UNZIPPING_PROJECT:
+            return 'OPEN_PROJECT_STATUS_UNZIPPING_PROJECT';
+        case OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_ALLOCATING_VM:
+            return 'OPEN_PROJECT_STATUS_ALLOCATING_VM';
+        case OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_ALLOCATING_RESOURCES:
+            return 'OPEN_PROJECT_STATUS_ALLOCATING_RESOURCES';
+        case OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_STARTING_IDE:
+            return 'OPEN_PROJECT_STATUS_STARTING_IDE';
+        case OpenProjectMetadata_OpenProjectStatus.OPEN_PROJECT_STATUS_UNKNOWN:
+            return 'OPEN_PROJECT_STATUS_UNKNOWN';
+        default:
+            return 'UNKNOWN';
+    }
 }
 
 export interface OpenProjectResponse {
-  $type: "yandex.cloud.datasphere.v2.OpenProjectResponse";
-  /**
-   * URL of the project that is being opened.
-   * Make GET request to [project_url] with sessionToken query parameter equals to [session_token]
-   * or POST request to [project_url] with sessionToken body parameter equals to [session_token]
-   * to fetch DataSphere web interface.
-   */
-  projectUrl: string;
-  /** Session token of the project that is being opened. */
-  sessionToken: string;
+    $type: 'yandex.cloud.datasphere.v2.OpenProjectResponse';
+    /**
+     * URL of the project that is being opened.
+     * Make GET request to [project_url] with sessionToken query parameter equals to [session_token]
+     * or POST request to [project_url] with sessionToken body parameter equals to [session_token]
+     * to fetch DataSphere web interface.
+     */
+    projectUrl: string;
+    /** Session token of the project that is being opened. */
+    sessionToken: string;
 }
 
 export interface GetProjectRequest {
-  $type: "yandex.cloud.datasphere.v2.GetProjectRequest";
-  /**
-   * ID of the Project resource to return.
-   * To get the project ID use a [ProjectService.List] request.
-   */
-  projectId: string;
+    $type: 'yandex.cloud.datasphere.v2.GetProjectRequest';
+    /**
+     * ID of the Project resource to return.
+     * To get the project ID use a [ProjectService.List] request.
+     */
+    projectId: string;
 }
 
 export interface ListProjectsRequest {
-  $type: "yandex.cloud.datasphere.v2.ListProjectsRequest";
-  /** ID of the community to list projects in. */
-  communityId: string;
-  /**
-   * The maximum number of results per page to return. If the number of available
-   * results is larger than [page_size],
-   * the service returns a [ListProjectsResponse.next_page_token]
-   * that can be used to get the next page of results in subsequent list requests.
-   */
-  pageSize: number;
-  /**
-   * Page token. To get the next page of results, set [page_token] to the
-   * [ListProjectsResponse.next_page_token] returned by a previous list request.
-   */
-  pageToken: string;
-  /**
-   * Name pattern to filter projects that are returned.
-   * Only projects with names matching the pattern will be returned.
-   */
-  projectNamePattern: string;
-  /**
-   * User ID to filter projects that are returned.
-   * Only projects that are owned by specified user will be returned.
-   */
-  ownedById: string;
+    $type: 'yandex.cloud.datasphere.v2.ListProjectsRequest';
+    /** ID of the community to list projects in. */
+    communityId: string;
+    /**
+     * The maximum number of results per page to return. If the number of available
+     * results is larger than [page_size],
+     * the service returns a [ListProjectsResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     */
+    pageSize: number;
+    /**
+     * Page token. To get the next page of results, set [page_token] to the
+     * [ListProjectsResponse.next_page_token] returned by a previous list request.
+     */
+    pageToken: string;
+    /**
+     * Name pattern to filter projects that are returned.
+     * Only projects with names matching the pattern will be returned.
+     */
+    projectNamePattern: string;
+    /**
+     * User ID to filter projects that are returned.
+     * Only projects that are owned by specified user will be returned.
+     */
+    ownedById: string;
 }
 
 export interface ListProjectsResponse {
-  $type: "yandex.cloud.datasphere.v2.ListProjectsResponse";
-  /** List of Project resources. */
-  projects: Project[];
-  /**
-   * This token allows you to get the next page of results for list requests. If the number of results
-   * is larger than [ListProjectsRequest.page_size], use
-   * the [next_page_token] as the value
-   * for the [ListProjectsRequest.page_token] query parameter
-   * in the next list request. Each subsequent list request will have its own
-   * [next_page_token] to continue paging through the results.
-   */
-  nextPageToken: string;
+    $type: 'yandex.cloud.datasphere.v2.ListProjectsResponse';
+    /** List of Project resources. */
+    projects: Project[];
+    /**
+     * This token allows you to get the next page of results for list requests. If the number of results
+     * is larger than [ListProjectsRequest.page_size], use
+     * the [next_page_token] as the value
+     * for the [ListProjectsRequest.page_token] query parameter
+     * in the next list request. Each subsequent list request will have its own
+     * [next_page_token] to continue paging through the results.
+     */
+    nextPageToken: string;
 }
 
 export interface GetUnitBalanceRequest {
-  $type: "yandex.cloud.datasphere.v2.GetUnitBalanceRequest";
-  /** ID of the project to return the unit balance for. */
-  projectId: string;
+    $type: 'yandex.cloud.datasphere.v2.GetUnitBalanceRequest';
+    /** ID of the project to return the unit balance for. */
+    projectId: string;
 }
 
 export interface GetUnitBalanceResponse {
-  $type: "yandex.cloud.datasphere.v2.GetUnitBalanceResponse";
-  /** The number of units available to the project. */
-  unitBalance?: number;
+    $type: 'yandex.cloud.datasphere.v2.GetUnitBalanceResponse';
+    /** The number of units available to the project. */
+    unitBalance?: number;
 }
 
 export interface SetUnitBalanceRequest {
-  $type: "yandex.cloud.datasphere.v2.SetUnitBalanceRequest";
-  /** ID of the project to set the unit balance for. */
-  projectId: string;
-  /** The number of units available to the project. */
-  unitBalance?: number;
+    $type: 'yandex.cloud.datasphere.v2.SetUnitBalanceRequest';
+    /** ID of the project to set the unit balance for. */
+    projectId: string;
+    /** The number of units available to the project. */
+    unitBalance?: number;
 }
 
 export interface SetUnitBalanceMetadata {
-  $type: "yandex.cloud.datasphere.v2.SetUnitBalanceMetadata";
-  /** ID of the project which unit balance is set. */
-  projectId: string;
+    $type: 'yandex.cloud.datasphere.v2.SetUnitBalanceMetadata';
+    /** ID of the project which unit balance is set. */
+    projectId: string;
 }
 
 export interface ProjectExecutionRequest {
-  $type: "yandex.cloud.datasphere.v2.ProjectExecutionRequest";
-  /** ID of the project to execute notebook/cell in. */
-  projectId: string;
-  /**
-   * The path to the executable notebook in the project storage. The maximum string length is 200 characters.
-   *
-   * To get the path, right-click on the notebook in JupyterLab and select `Copy path`.
-   */
-  notebookId: string | undefined;
-  /**
-   * ID of the cell to execute.
-   * Deprecated
-   *
-   * @deprecated
-   */
-  cellId: string | undefined;
-  /** Values of input variables. Input variables will be available in the project as environment variables. */
-  inputVariables?: { [key: string]: any };
-  /** Names of output variables. */
-  outputVariableNames: string[];
-  /** Specification of the VM */
-  spec: string;
-  /** ID of the Spark Connector */
-  sparkConnectorId: string;
+    $type: 'yandex.cloud.datasphere.v2.ProjectExecutionRequest';
+    /** ID of the project to execute notebook/cell in. */
+    projectId: string;
+    /**
+     * The path to the executable notebook in the project storage. The maximum string length is 200 characters.
+     *
+     * To get the path, right-click on the notebook in JupyterLab and select `Copy path`.
+     */
+    notebookId: string | undefined;
+    /**
+     * ID of the cell to execute.
+     * Deprecated
+     *
+     * @deprecated
+     */
+    cellId: string | undefined;
+    /** Values of input variables. Input variables will be available in the project as environment variables. */
+    inputVariables?: { [key: string]: any };
+    /** Names of output variables. */
+    outputVariableNames: string[];
+    /** Specification of the VM */
+    spec: string;
+    /** ID of the Spark Connector */
+    sparkConnectorId: string;
 }
 
 export interface ProjectExecutionMetadata {
-  $type: "yandex.cloud.datasphere.v2.ProjectExecutionMetadata";
-  /** ID of the project in which notebook is being executed. */
-  projectId: string;
-  /** ID of the notebook that is being executed */
-  notebookId: string | undefined;
-  /** ID of the cell that is being executed */
-  cellId: string | undefined;
+    $type: 'yandex.cloud.datasphere.v2.ProjectExecutionMetadata';
+    /** ID of the project in which notebook is being executed. */
+    projectId: string;
+    /** ID of the notebook that is being executed */
+    notebookId: string | undefined;
+    /** ID of the cell that is being executed */
+    cellId: string | undefined;
 }
 
 export interface ProjectExecutionResponse {
-  $type: "yandex.cloud.datasphere.v2.ProjectExecutionResponse";
-  /** ID of the checkpoint resulting from the execution. */
-  checkpointId: string;
-  /**
-   * Values of output variables resulting from the execution.
-   * Deprecated
-   *
-   * @deprecated
-   */
-  outputVariables?: { [key: string]: any };
-  /** Execution final status. */
-  executionStatus: ExecutionStatus;
-}
-
-export interface CellOutputsRequest {
-  $type: "yandex.cloud.datasphere.v2.CellOutputsRequest";
-  /** ID of the project to return cell outputs for. */
-  projectId: string;
-  /** ID of the cell to return outputs for. */
-  cellId: string;
-  /** ID of the checkpoint to return cell outputs for. */
-  checkpointId: string;
-  /** Timestamp from which to return outputs. */
-  startAt?: Date;
-}
-
-export interface CellOutputsResponse {
-  $type: "yandex.cloud.datasphere.v2.CellOutputsResponse";
-  /** List of outputs. */
-  outputs: string[];
-}
-
-export interface GetStateVariablesRequest {
-  $type: "yandex.cloud.datasphere.v2.GetStateVariablesRequest";
-  /** ID of the project, for which to return state variables. */
-  projectId: string;
-  /** ID of the notebook, for which to return state variables. */
-  notebookId: string;
-  /** Names of variables to return. */
-  variableNames: string[];
-  /** ID of the checkpoint, for which to return state variables. */
-  checkpointId: string;
-}
-
-export interface GetStateVariablesResponse {
-  $type: "yandex.cloud.datasphere.v2.GetStateVariablesResponse";
-  /** Values of the specified variables. */
-  variables?: { [key: string]: any };
+    $type: 'yandex.cloud.datasphere.v2.ProjectExecutionResponse';
+    /** Execution final status. */
+    executionStatus: ExecutionStatus;
 }
 
 export interface SetProjectAccessBindingsMetadata {
-  $type: "yandex.cloud.datasphere.v2.SetProjectAccessBindingsMetadata";
-  /** ID of the project which access bindings are set. */
-  projectId: string;
+    $type: 'yandex.cloud.datasphere.v2.SetProjectAccessBindingsMetadata';
+    /** ID of the project which access bindings are set. */
+    projectId: string;
 }
 
 export interface UpdateProjectAccessBindingsMetadata {
-  $type: "yandex.cloud.datasphere.v2.UpdateProjectAccessBindingsMetadata";
-  /** ID of the project which access bindings are updated. */
-  projectId: string;
+    $type: 'yandex.cloud.datasphere.v2.UpdateProjectAccessBindingsMetadata';
+    /** ID of the project which access bindings are updated. */
+    projectId: string;
 }
 
 export interface AddResourceToProjectRequest {
-  $type: "yandex.cloud.datasphere.v2.AddResourceToProjectRequest";
-  projectId: string;
-  resourceType: ResourceType;
-  resourceId: string;
+    $type: 'yandex.cloud.datasphere.v2.AddResourceToProjectRequest';
+    projectId: string;
+    resourceType: ResourceType;
+    resourceId: string;
 }
 
 export interface RemoveResourceFromProjectRequest {
-  $type: "yandex.cloud.datasphere.v2.RemoveResourceFromProjectRequest";
-  projectId: string;
-  resourceType: ResourceType;
-  resourceId: string;
+    $type: 'yandex.cloud.datasphere.v2.RemoveResourceFromProjectRequest';
+    projectId: string;
+    resourceType: ResourceType;
+    resourceId: string;
 }
 
 export interface GetProjectRestrictionsRequest {
-  $type: "yandex.cloud.datasphere.v2.GetProjectRestrictionsRequest";
-  /** ID of the project. */
-  projectId: string;
+    $type: 'yandex.cloud.datasphere.v2.GetProjectRestrictionsRequest';
+    /** ID of the project. */
+    projectId: string;
 }
 
 export interface SetProjectRestrictionsRequest {
-  $type: "yandex.cloud.datasphere.v2.SetProjectRestrictionsRequest";
-  /** ID of the project. */
-  projectId: string;
-  /** List of restrictions to set. */
-  restrictions: Restriction[];
+    $type: 'yandex.cloud.datasphere.v2.SetProjectRestrictionsRequest';
+    /** ID of the project. */
+    projectId: string;
+    /** List of restrictions to set. */
+    restrictions: Restriction[];
+}
+
+export interface ResizeProjectDiskRequest {
+    $type: 'yandex.cloud.datasphere.v2.ResizeProjectDiskRequest';
+    /** ID of the project. */
+    projectId: string;
+    /** Set new size project disk in gigabytes. */
+    newDiskSizeGb: number;
+}
+
+export interface ResizeProjectDiskMetadata {
+    $type: 'yandex.cloud.datasphere.v2.ResizeProjectDiskMetadata';
+    /** ID of the project which resized project disk. */
+    projectId: string;
+    /** Old size project disk in gigabytes. */
+    oldDiskSizeGb: number;
+    /** New size project disk in gigabytes. */
+    newDiskSizeGb: number;
+}
+
+export interface DiskInfo {
+    $type: 'yandex.cloud.datasphere.v2.DiskInfo';
+    /** ID of the project. */
+    projectId: string;
+    /** Project disk size in gigabytes. */
+    diskSizeGb: number;
+    /** Used project disk in gigabytes. */
+    diskUsedGb: number;
+    /** Detailed information about the project disk. */
+    detailedUsage?: DiskInfo_DetailedDiskInfo;
+}
+
+export interface DiskInfo_DetailedDiskInfo {
+    $type: 'yandex.cloud.datasphere.v2.DiskInfo.DetailedDiskInfo';
+    /** Used project disk for user data in gigabytes. */
+    userDataGb: number;
+    /** Used project disk for packages in gigabytes. */
+    packagesGb: number;
+    /** Used project disk for system data in gigabytes. */
+    systemDataGb: number;
+    /** Free space project disk in gigabytes. */
+    freeSpaceGb: number;
 }
 
 const baseCreateProjectRequest: object = {
-  $type: "yandex.cloud.datasphere.v2.CreateProjectRequest",
-  communityId: "",
-  name: "",
-  description: "",
+    $type: 'yandex.cloud.datasphere.v2.CreateProjectRequest',
+    communityId: '',
+    name: '',
+    description: '',
 };
 
 export const CreateProjectRequest = {
-  $type: "yandex.cloud.datasphere.v2.CreateProjectRequest" as const,
+    $type: 'yandex.cloud.datasphere.v2.CreateProjectRequest' as const,
 
-  encode(
-    message: CreateProjectRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.communityId !== "") {
-      writer.uint32(10).string(message.communityId);
-    }
-    if (message.name !== "") {
-      writer.uint32(18).string(message.name);
-    }
-    if (message.description !== "") {
-      writer.uint32(26).string(message.description);
-    }
-    Object.entries(message.labels).forEach(([key, value]) => {
-      CreateProjectRequest_LabelsEntry.encode(
-        {
-          $type: "yandex.cloud.datasphere.v2.CreateProjectRequest.LabelsEntry",
-          key: key as any,
-          value,
-        },
-        writer.uint32(34).fork()
-      ).ldelim();
-    });
-    if (message.settings !== undefined) {
-      Project_Settings.encode(
-        message.settings,
-        writer.uint32(42).fork()
-      ).ldelim();
-    }
-    if (message.limits !== undefined) {
-      Project_Limits.encode(message.limits, writer.uint32(50).fork()).ldelim();
-    }
-    return writer;
-  },
+    encode(message: CreateProjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.communityId !== '') {
+            writer.uint32(10).string(message.communityId);
+        }
+        if (message.name !== '') {
+            writer.uint32(18).string(message.name);
+        }
+        if (message.description !== '') {
+            writer.uint32(26).string(message.description);
+        }
+        Object.entries(message.labels).forEach(([key, value]) => {
+            CreateProjectRequest_LabelsEntry.encode(
+                {
+                    $type: 'yandex.cloud.datasphere.v2.CreateProjectRequest.LabelsEntry',
+                    key: key as any,
+                    value,
+                },
+                writer.uint32(34).fork(),
+            ).ldelim();
+        });
+        if (message.settings !== undefined) {
+            Project_Settings.encode(message.settings, writer.uint32(42).fork()).ldelim();
+        }
+        if (message.limits !== undefined) {
+            Project_Limits.encode(message.limits, writer.uint32(50).fork()).ldelim();
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): CreateProjectRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseCreateProjectRequest } as CreateProjectRequest;
-    message.labels = {};
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.communityId = reader.string();
-          break;
-        case 2:
-          message.name = reader.string();
-          break;
-        case 3:
-          message.description = reader.string();
-          break;
-        case 4:
-          const entry4 = CreateProjectRequest_LabelsEntry.decode(
-            reader,
-            reader.uint32()
-          );
-          if (entry4.value !== undefined) {
-            message.labels[entry4.key] = entry4.value;
-          }
-          break;
-        case 5:
-          message.settings = Project_Settings.decode(reader, reader.uint32());
-          break;
-        case 6:
-          message.limits = Project_Limits.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateProjectRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseCreateProjectRequest } as CreateProjectRequest;
+        message.labels = {};
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.communityId = reader.string();
+                    break;
+                case 2:
+                    message.name = reader.string();
+                    break;
+                case 3:
+                    message.description = reader.string();
+                    break;
+                case 4:
+                    const entry4 = CreateProjectRequest_LabelsEntry.decode(reader, reader.uint32());
+                    if (entry4.value !== undefined) {
+                        message.labels[entry4.key] = entry4.value;
+                    }
+                    break;
+                case 5:
+                    message.settings = Project_Settings.decode(reader, reader.uint32());
+                    break;
+                case 6:
+                    message.limits = Project_Limits.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): CreateProjectRequest {
-    const message = { ...baseCreateProjectRequest } as CreateProjectRequest;
-    message.communityId =
-      object.communityId !== undefined && object.communityId !== null
-        ? String(object.communityId)
-        : "";
-    message.name =
-      object.name !== undefined && object.name !== null
-        ? String(object.name)
-        : "";
-    message.description =
-      object.description !== undefined && object.description !== null
-        ? String(object.description)
-        : "";
-    message.labels = Object.entries(object.labels ?? {}).reduce<{
-      [key: string]: string;
-    }>((acc, [key, value]) => {
-      acc[key] = String(value);
-      return acc;
-    }, {});
-    message.settings =
-      object.settings !== undefined && object.settings !== null
-        ? Project_Settings.fromJSON(object.settings)
-        : undefined;
-    message.limits =
-      object.limits !== undefined && object.limits !== null
-        ? Project_Limits.fromJSON(object.limits)
-        : undefined;
-    return message;
-  },
+    fromJSON(object: any): CreateProjectRequest {
+        const message = { ...baseCreateProjectRequest } as CreateProjectRequest;
+        message.communityId =
+            object.communityId !== undefined && object.communityId !== null
+                ? String(object.communityId)
+                : '';
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
+        message.settings =
+            object.settings !== undefined && object.settings !== null
+                ? Project_Settings.fromJSON(object.settings)
+                : undefined;
+        message.limits =
+            object.limits !== undefined && object.limits !== null
+                ? Project_Limits.fromJSON(object.limits)
+                : undefined;
+        return message;
+    },
 
-  toJSON(message: CreateProjectRequest): unknown {
-    const obj: any = {};
-    message.communityId !== undefined &&
-      (obj.communityId = message.communityId);
-    message.name !== undefined && (obj.name = message.name);
-    message.description !== undefined &&
-      (obj.description = message.description);
-    obj.labels = {};
-    if (message.labels) {
-      Object.entries(message.labels).forEach(([k, v]) => {
-        obj.labels[k] = v;
-      });
-    }
-    message.settings !== undefined &&
-      (obj.settings = message.settings
-        ? Project_Settings.toJSON(message.settings)
-        : undefined);
-    message.limits !== undefined &&
-      (obj.limits = message.limits
-        ? Project_Limits.toJSON(message.limits)
-        : undefined);
-    return obj;
-  },
+    toJSON(message: CreateProjectRequest): unknown {
+        const obj: any = {};
+        message.communityId !== undefined && (obj.communityId = message.communityId);
+        message.name !== undefined && (obj.name = message.name);
+        message.description !== undefined && (obj.description = message.description);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
+        message.settings !== undefined &&
+            (obj.settings = message.settings
+                ? Project_Settings.toJSON(message.settings)
+                : undefined);
+        message.limits !== undefined &&
+            (obj.limits = message.limits ? Project_Limits.toJSON(message.limits) : undefined);
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<CreateProjectRequest>, I>>(
-    object: I
-  ): CreateProjectRequest {
-    const message = { ...baseCreateProjectRequest } as CreateProjectRequest;
-    message.communityId = object.communityId ?? "";
-    message.name = object.name ?? "";
-    message.description = object.description ?? "";
-    message.labels = Object.entries(object.labels ?? {}).reduce<{
-      [key: string]: string;
-    }>((acc, [key, value]) => {
-      if (value !== undefined) {
-        acc[key] = String(value);
-      }
-      return acc;
-    }, {});
-    message.settings =
-      object.settings !== undefined && object.settings !== null
-        ? Project_Settings.fromPartial(object.settings)
-        : undefined;
-    message.limits =
-      object.limits !== undefined && object.limits !== null
-        ? Project_Limits.fromPartial(object.limits)
-        : undefined;
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<CreateProjectRequest>, I>>(
+        object: I,
+    ): CreateProjectRequest {
+        const message = { ...baseCreateProjectRequest } as CreateProjectRequest;
+        message.communityId = object.communityId ?? '';
+        message.name = object.name ?? '';
+        message.description = object.description ?? '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
+        message.settings =
+            object.settings !== undefined && object.settings !== null
+                ? Project_Settings.fromPartial(object.settings)
+                : undefined;
+        message.limits =
+            object.limits !== undefined && object.limits !== null
+                ? Project_Limits.fromPartial(object.limits)
+                : undefined;
+        return message;
+    },
 };
 
 messageTypeRegistry.set(CreateProjectRequest.$type, CreateProjectRequest);
 
 const baseCreateProjectRequest_LabelsEntry: object = {
-  $type: "yandex.cloud.datasphere.v2.CreateProjectRequest.LabelsEntry",
-  key: "",
-  value: "",
+    $type: 'yandex.cloud.datasphere.v2.CreateProjectRequest.LabelsEntry',
+    key: '',
+    value: '',
 };
 
 export const CreateProjectRequest_LabelsEntry = {
-  $type: "yandex.cloud.datasphere.v2.CreateProjectRequest.LabelsEntry" as const,
+    $type: 'yandex.cloud.datasphere.v2.CreateProjectRequest.LabelsEntry' as const,
 
-  encode(
-    message: CreateProjectRequest_LabelsEntry,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.key !== "") {
-      writer.uint32(10).string(message.key);
-    }
-    if (message.value !== "") {
-      writer.uint32(18).string(message.value);
-    }
-    return writer;
-  },
+    encode(
+        message: CreateProjectRequest_LabelsEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): CreateProjectRequest_LabelsEntry {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseCreateProjectRequest_LabelsEntry,
-    } as CreateProjectRequest_LabelsEntry;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.key = reader.string();
-          break;
-        case 2:
-          message.value = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateProjectRequest_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseCreateProjectRequest_LabelsEntry,
+        } as CreateProjectRequest_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): CreateProjectRequest_LabelsEntry {
-    const message = {
-      ...baseCreateProjectRequest_LabelsEntry,
-    } as CreateProjectRequest_LabelsEntry;
-    message.key =
-      object.key !== undefined && object.key !== null ? String(object.key) : "";
-    message.value =
-      object.value !== undefined && object.value !== null
-        ? String(object.value)
-        : "";
-    return message;
-  },
+    fromJSON(object: any): CreateProjectRequest_LabelsEntry {
+        const message = {
+            ...baseCreateProjectRequest_LabelsEntry,
+        } as CreateProjectRequest_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
 
-  toJSON(message: CreateProjectRequest_LabelsEntry): unknown {
-    const obj: any = {};
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = message.value);
-    return obj;
-  },
+    toJSON(message: CreateProjectRequest_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
 
-  fromPartial<
-    I extends Exact<DeepPartial<CreateProjectRequest_LabelsEntry>, I>
-  >(object: I): CreateProjectRequest_LabelsEntry {
-    const message = {
-      ...baseCreateProjectRequest_LabelsEntry,
-    } as CreateProjectRequest_LabelsEntry;
-    message.key = object.key ?? "";
-    message.value = object.value ?? "";
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<CreateProjectRequest_LabelsEntry>, I>>(
+        object: I,
+    ): CreateProjectRequest_LabelsEntry {
+        const message = {
+            ...baseCreateProjectRequest_LabelsEntry,
+        } as CreateProjectRequest_LabelsEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
 };
 
-messageTypeRegistry.set(
-  CreateProjectRequest_LabelsEntry.$type,
-  CreateProjectRequest_LabelsEntry
-);
+messageTypeRegistry.set(CreateProjectRequest_LabelsEntry.$type, CreateProjectRequest_LabelsEntry);
 
 const baseCreateProjectMetadata: object = {
-  $type: "yandex.cloud.datasphere.v2.CreateProjectMetadata",
-  projectId: "",
+    $type: 'yandex.cloud.datasphere.v2.CreateProjectMetadata',
+    projectId: '',
 };
 
 export const CreateProjectMetadata = {
-  $type: "yandex.cloud.datasphere.v2.CreateProjectMetadata" as const,
+    $type: 'yandex.cloud.datasphere.v2.CreateProjectMetadata' as const,
 
-  encode(
-    message: CreateProjectMetadata,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    return writer;
-  },
+    encode(message: CreateProjectMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): CreateProjectMetadata {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseCreateProjectMetadata } as CreateProjectMetadata;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateProjectMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseCreateProjectMetadata } as CreateProjectMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): CreateProjectMetadata {
-    const message = { ...baseCreateProjectMetadata } as CreateProjectMetadata;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    return message;
-  },
+    fromJSON(object: any): CreateProjectMetadata {
+        const message = { ...baseCreateProjectMetadata } as CreateProjectMetadata;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        return message;
+    },
 
-  toJSON(message: CreateProjectMetadata): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    return obj;
-  },
+    toJSON(message: CreateProjectMetadata): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<CreateProjectMetadata>, I>>(
-    object: I
-  ): CreateProjectMetadata {
-    const message = { ...baseCreateProjectMetadata } as CreateProjectMetadata;
-    message.projectId = object.projectId ?? "";
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<CreateProjectMetadata>, I>>(
+        object: I,
+    ): CreateProjectMetadata {
+        const message = { ...baseCreateProjectMetadata } as CreateProjectMetadata;
+        message.projectId = object.projectId ?? '';
+        return message;
+    },
 };
 
 messageTypeRegistry.set(CreateProjectMetadata.$type, CreateProjectMetadata);
 
 const baseUpdateProjectRequest: object = {
-  $type: "yandex.cloud.datasphere.v2.UpdateProjectRequest",
-  projectId: "",
-  name: "",
-  description: "",
+    $type: 'yandex.cloud.datasphere.v2.UpdateProjectRequest',
+    projectId: '',
+    name: '',
+    description: '',
 };
 
 export const UpdateProjectRequest = {
-  $type: "yandex.cloud.datasphere.v2.UpdateProjectRequest" as const,
+    $type: 'yandex.cloud.datasphere.v2.UpdateProjectRequest' as const,
 
-  encode(
-    message: UpdateProjectRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    if (message.updateMask !== undefined) {
-      FieldMask.encode(message.updateMask, writer.uint32(18).fork()).ldelim();
-    }
-    if (message.name !== "") {
-      writer.uint32(26).string(message.name);
-    }
-    if (message.description !== "") {
-      writer.uint32(34).string(message.description);
-    }
-    Object.entries(message.labels).forEach(([key, value]) => {
-      UpdateProjectRequest_LabelsEntry.encode(
-        {
-          $type: "yandex.cloud.datasphere.v2.UpdateProjectRequest.LabelsEntry",
-          key: key as any,
-          value,
-        },
-        writer.uint32(42).fork()
-      ).ldelim();
-    });
-    if (message.settings !== undefined) {
-      Project_Settings.encode(
-        message.settings,
-        writer.uint32(50).fork()
-      ).ldelim();
-    }
-    if (message.limits !== undefined) {
-      Project_Limits.encode(message.limits, writer.uint32(58).fork()).ldelim();
-    }
-    return writer;
-  },
+    encode(message: UpdateProjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        if (message.updateMask !== undefined) {
+            FieldMask.encode(message.updateMask, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.name !== '') {
+            writer.uint32(26).string(message.name);
+        }
+        if (message.description !== '') {
+            writer.uint32(34).string(message.description);
+        }
+        Object.entries(message.labels).forEach(([key, value]) => {
+            UpdateProjectRequest_LabelsEntry.encode(
+                {
+                    $type: 'yandex.cloud.datasphere.v2.UpdateProjectRequest.LabelsEntry',
+                    key: key as any,
+                    value,
+                },
+                writer.uint32(42).fork(),
+            ).ldelim();
+        });
+        if (message.settings !== undefined) {
+            Project_Settings.encode(message.settings, writer.uint32(50).fork()).ldelim();
+        }
+        if (message.limits !== undefined) {
+            Project_Limits.encode(message.limits, writer.uint32(58).fork()).ldelim();
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): UpdateProjectRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseUpdateProjectRequest } as UpdateProjectRequest;
-    message.labels = {};
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        case 2:
-          message.updateMask = FieldMask.decode(reader, reader.uint32());
-          break;
-        case 3:
-          message.name = reader.string();
-          break;
-        case 4:
-          message.description = reader.string();
-          break;
-        case 5:
-          const entry5 = UpdateProjectRequest_LabelsEntry.decode(
-            reader,
-            reader.uint32()
-          );
-          if (entry5.value !== undefined) {
-            message.labels[entry5.key] = entry5.value;
-          }
-          break;
-        case 6:
-          message.settings = Project_Settings.decode(reader, reader.uint32());
-          break;
-        case 7:
-          message.limits = Project_Limits.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateProjectRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateProjectRequest } as UpdateProjectRequest;
+        message.labels = {};
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                case 2:
+                    message.updateMask = FieldMask.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.name = reader.string();
+                    break;
+                case 4:
+                    message.description = reader.string();
+                    break;
+                case 5:
+                    const entry5 = UpdateProjectRequest_LabelsEntry.decode(reader, reader.uint32());
+                    if (entry5.value !== undefined) {
+                        message.labels[entry5.key] = entry5.value;
+                    }
+                    break;
+                case 6:
+                    message.settings = Project_Settings.decode(reader, reader.uint32());
+                    break;
+                case 7:
+                    message.limits = Project_Limits.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): UpdateProjectRequest {
-    const message = { ...baseUpdateProjectRequest } as UpdateProjectRequest;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    message.updateMask =
-      object.updateMask !== undefined && object.updateMask !== null
-        ? FieldMask.fromJSON(object.updateMask)
-        : undefined;
-    message.name =
-      object.name !== undefined && object.name !== null
-        ? String(object.name)
-        : "";
-    message.description =
-      object.description !== undefined && object.description !== null
-        ? String(object.description)
-        : "";
-    message.labels = Object.entries(object.labels ?? {}).reduce<{
-      [key: string]: string;
-    }>((acc, [key, value]) => {
-      acc[key] = String(value);
-      return acc;
-    }, {});
-    message.settings =
-      object.settings !== undefined && object.settings !== null
-        ? Project_Settings.fromJSON(object.settings)
-        : undefined;
-    message.limits =
-      object.limits !== undefined && object.limits !== null
-        ? Project_Limits.fromJSON(object.limits)
-        : undefined;
-    return message;
-  },
+    fromJSON(object: any): UpdateProjectRequest {
+        const message = { ...baseUpdateProjectRequest } as UpdateProjectRequest;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.updateMask =
+            object.updateMask !== undefined && object.updateMask !== null
+                ? FieldMask.fromJSON(object.updateMask)
+                : undefined;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
+        message.settings =
+            object.settings !== undefined && object.settings !== null
+                ? Project_Settings.fromJSON(object.settings)
+                : undefined;
+        message.limits =
+            object.limits !== undefined && object.limits !== null
+                ? Project_Limits.fromJSON(object.limits)
+                : undefined;
+        return message;
+    },
 
-  toJSON(message: UpdateProjectRequest): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    message.updateMask !== undefined &&
-      (obj.updateMask = message.updateMask
-        ? FieldMask.toJSON(message.updateMask)
-        : undefined);
-    message.name !== undefined && (obj.name = message.name);
-    message.description !== undefined &&
-      (obj.description = message.description);
-    obj.labels = {};
-    if (message.labels) {
-      Object.entries(message.labels).forEach(([k, v]) => {
-        obj.labels[k] = v;
-      });
-    }
-    message.settings !== undefined &&
-      (obj.settings = message.settings
-        ? Project_Settings.toJSON(message.settings)
-        : undefined);
-    message.limits !== undefined &&
-      (obj.limits = message.limits
-        ? Project_Limits.toJSON(message.limits)
-        : undefined);
-    return obj;
-  },
+    toJSON(message: UpdateProjectRequest): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        message.updateMask !== undefined &&
+            (obj.updateMask = message.updateMask
+                ? FieldMask.toJSON(message.updateMask)
+                : undefined);
+        message.name !== undefined && (obj.name = message.name);
+        message.description !== undefined && (obj.description = message.description);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
+        message.settings !== undefined &&
+            (obj.settings = message.settings
+                ? Project_Settings.toJSON(message.settings)
+                : undefined);
+        message.limits !== undefined &&
+            (obj.limits = message.limits ? Project_Limits.toJSON(message.limits) : undefined);
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<UpdateProjectRequest>, I>>(
-    object: I
-  ): UpdateProjectRequest {
-    const message = { ...baseUpdateProjectRequest } as UpdateProjectRequest;
-    message.projectId = object.projectId ?? "";
-    message.updateMask =
-      object.updateMask !== undefined && object.updateMask !== null
-        ? FieldMask.fromPartial(object.updateMask)
-        : undefined;
-    message.name = object.name ?? "";
-    message.description = object.description ?? "";
-    message.labels = Object.entries(object.labels ?? {}).reduce<{
-      [key: string]: string;
-    }>((acc, [key, value]) => {
-      if (value !== undefined) {
-        acc[key] = String(value);
-      }
-      return acc;
-    }, {});
-    message.settings =
-      object.settings !== undefined && object.settings !== null
-        ? Project_Settings.fromPartial(object.settings)
-        : undefined;
-    message.limits =
-      object.limits !== undefined && object.limits !== null
-        ? Project_Limits.fromPartial(object.limits)
-        : undefined;
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<UpdateProjectRequest>, I>>(
+        object: I,
+    ): UpdateProjectRequest {
+        const message = { ...baseUpdateProjectRequest } as UpdateProjectRequest;
+        message.projectId = object.projectId ?? '';
+        message.updateMask =
+            object.updateMask !== undefined && object.updateMask !== null
+                ? FieldMask.fromPartial(object.updateMask)
+                : undefined;
+        message.name = object.name ?? '';
+        message.description = object.description ?? '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
+        message.settings =
+            object.settings !== undefined && object.settings !== null
+                ? Project_Settings.fromPartial(object.settings)
+                : undefined;
+        message.limits =
+            object.limits !== undefined && object.limits !== null
+                ? Project_Limits.fromPartial(object.limits)
+                : undefined;
+        return message;
+    },
 };
 
 messageTypeRegistry.set(UpdateProjectRequest.$type, UpdateProjectRequest);
 
 const baseUpdateProjectRequest_LabelsEntry: object = {
-  $type: "yandex.cloud.datasphere.v2.UpdateProjectRequest.LabelsEntry",
-  key: "",
-  value: "",
+    $type: 'yandex.cloud.datasphere.v2.UpdateProjectRequest.LabelsEntry',
+    key: '',
+    value: '',
 };
 
 export const UpdateProjectRequest_LabelsEntry = {
-  $type: "yandex.cloud.datasphere.v2.UpdateProjectRequest.LabelsEntry" as const,
+    $type: 'yandex.cloud.datasphere.v2.UpdateProjectRequest.LabelsEntry' as const,
 
-  encode(
-    message: UpdateProjectRequest_LabelsEntry,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.key !== "") {
-      writer.uint32(10).string(message.key);
-    }
-    if (message.value !== "") {
-      writer.uint32(18).string(message.value);
-    }
-    return writer;
-  },
+    encode(
+        message: UpdateProjectRequest_LabelsEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): UpdateProjectRequest_LabelsEntry {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseUpdateProjectRequest_LabelsEntry,
-    } as UpdateProjectRequest_LabelsEntry;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.key = reader.string();
-          break;
-        case 2:
-          message.value = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateProjectRequest_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseUpdateProjectRequest_LabelsEntry,
+        } as UpdateProjectRequest_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): UpdateProjectRequest_LabelsEntry {
-    const message = {
-      ...baseUpdateProjectRequest_LabelsEntry,
-    } as UpdateProjectRequest_LabelsEntry;
-    message.key =
-      object.key !== undefined && object.key !== null ? String(object.key) : "";
-    message.value =
-      object.value !== undefined && object.value !== null
-        ? String(object.value)
-        : "";
-    return message;
-  },
+    fromJSON(object: any): UpdateProjectRequest_LabelsEntry {
+        const message = {
+            ...baseUpdateProjectRequest_LabelsEntry,
+        } as UpdateProjectRequest_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
 
-  toJSON(message: UpdateProjectRequest_LabelsEntry): unknown {
-    const obj: any = {};
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = message.value);
-    return obj;
-  },
+    toJSON(message: UpdateProjectRequest_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
 
-  fromPartial<
-    I extends Exact<DeepPartial<UpdateProjectRequest_LabelsEntry>, I>
-  >(object: I): UpdateProjectRequest_LabelsEntry {
-    const message = {
-      ...baseUpdateProjectRequest_LabelsEntry,
-    } as UpdateProjectRequest_LabelsEntry;
-    message.key = object.key ?? "";
-    message.value = object.value ?? "";
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<UpdateProjectRequest_LabelsEntry>, I>>(
+        object: I,
+    ): UpdateProjectRequest_LabelsEntry {
+        const message = {
+            ...baseUpdateProjectRequest_LabelsEntry,
+        } as UpdateProjectRequest_LabelsEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
 };
 
-messageTypeRegistry.set(
-  UpdateProjectRequest_LabelsEntry.$type,
-  UpdateProjectRequest_LabelsEntry
-);
+messageTypeRegistry.set(UpdateProjectRequest_LabelsEntry.$type, UpdateProjectRequest_LabelsEntry);
 
 const baseUpdateProjectMetadata: object = {
-  $type: "yandex.cloud.datasphere.v2.UpdateProjectMetadata",
-  projectId: "",
+    $type: 'yandex.cloud.datasphere.v2.UpdateProjectMetadata',
+    projectId: '',
 };
 
 export const UpdateProjectMetadata = {
-  $type: "yandex.cloud.datasphere.v2.UpdateProjectMetadata" as const,
+    $type: 'yandex.cloud.datasphere.v2.UpdateProjectMetadata' as const,
 
-  encode(
-    message: UpdateProjectMetadata,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    return writer;
-  },
+    encode(message: UpdateProjectMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): UpdateProjectMetadata {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseUpdateProjectMetadata } as UpdateProjectMetadata;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateProjectMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateProjectMetadata } as UpdateProjectMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): UpdateProjectMetadata {
-    const message = { ...baseUpdateProjectMetadata } as UpdateProjectMetadata;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    return message;
-  },
+    fromJSON(object: any): UpdateProjectMetadata {
+        const message = { ...baseUpdateProjectMetadata } as UpdateProjectMetadata;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        return message;
+    },
 
-  toJSON(message: UpdateProjectMetadata): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    return obj;
-  },
+    toJSON(message: UpdateProjectMetadata): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<UpdateProjectMetadata>, I>>(
-    object: I
-  ): UpdateProjectMetadata {
-    const message = { ...baseUpdateProjectMetadata } as UpdateProjectMetadata;
-    message.projectId = object.projectId ?? "";
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<UpdateProjectMetadata>, I>>(
+        object: I,
+    ): UpdateProjectMetadata {
+        const message = { ...baseUpdateProjectMetadata } as UpdateProjectMetadata;
+        message.projectId = object.projectId ?? '';
+        return message;
+    },
 };
 
 messageTypeRegistry.set(UpdateProjectMetadata.$type, UpdateProjectMetadata);
 
 const baseDeleteProjectRequest: object = {
-  $type: "yandex.cloud.datasphere.v2.DeleteProjectRequest",
-  projectId: "",
+    $type: 'yandex.cloud.datasphere.v2.DeleteProjectRequest',
+    projectId: '',
 };
 
 export const DeleteProjectRequest = {
-  $type: "yandex.cloud.datasphere.v2.DeleteProjectRequest" as const,
+    $type: 'yandex.cloud.datasphere.v2.DeleteProjectRequest' as const,
 
-  encode(
-    message: DeleteProjectRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    return writer;
-  },
+    encode(message: DeleteProjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): DeleteProjectRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseDeleteProjectRequest } as DeleteProjectRequest;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteProjectRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDeleteProjectRequest } as DeleteProjectRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): DeleteProjectRequest {
-    const message = { ...baseDeleteProjectRequest } as DeleteProjectRequest;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    return message;
-  },
+    fromJSON(object: any): DeleteProjectRequest {
+        const message = { ...baseDeleteProjectRequest } as DeleteProjectRequest;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        return message;
+    },
 
-  toJSON(message: DeleteProjectRequest): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    return obj;
-  },
+    toJSON(message: DeleteProjectRequest): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<DeleteProjectRequest>, I>>(
-    object: I
-  ): DeleteProjectRequest {
-    const message = { ...baseDeleteProjectRequest } as DeleteProjectRequest;
-    message.projectId = object.projectId ?? "";
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<DeleteProjectRequest>, I>>(
+        object: I,
+    ): DeleteProjectRequest {
+        const message = { ...baseDeleteProjectRequest } as DeleteProjectRequest;
+        message.projectId = object.projectId ?? '';
+        return message;
+    },
 };
 
 messageTypeRegistry.set(DeleteProjectRequest.$type, DeleteProjectRequest);
 
 const baseDeleteProjectMetadata: object = {
-  $type: "yandex.cloud.datasphere.v2.DeleteProjectMetadata",
-  projectId: "",
+    $type: 'yandex.cloud.datasphere.v2.DeleteProjectMetadata',
+    projectId: '',
 };
 
 export const DeleteProjectMetadata = {
-  $type: "yandex.cloud.datasphere.v2.DeleteProjectMetadata" as const,
+    $type: 'yandex.cloud.datasphere.v2.DeleteProjectMetadata' as const,
 
-  encode(
-    message: DeleteProjectMetadata,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    return writer;
-  },
+    encode(message: DeleteProjectMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): DeleteProjectMetadata {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseDeleteProjectMetadata } as DeleteProjectMetadata;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteProjectMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDeleteProjectMetadata } as DeleteProjectMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): DeleteProjectMetadata {
-    const message = { ...baseDeleteProjectMetadata } as DeleteProjectMetadata;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    return message;
-  },
+    fromJSON(object: any): DeleteProjectMetadata {
+        const message = { ...baseDeleteProjectMetadata } as DeleteProjectMetadata;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        return message;
+    },
 
-  toJSON(message: DeleteProjectMetadata): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    return obj;
-  },
+    toJSON(message: DeleteProjectMetadata): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<DeleteProjectMetadata>, I>>(
-    object: I
-  ): DeleteProjectMetadata {
-    const message = { ...baseDeleteProjectMetadata } as DeleteProjectMetadata;
-    message.projectId = object.projectId ?? "";
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<DeleteProjectMetadata>, I>>(
+        object: I,
+    ): DeleteProjectMetadata {
+        const message = { ...baseDeleteProjectMetadata } as DeleteProjectMetadata;
+        message.projectId = object.projectId ?? '';
+        return message;
+    },
 };
 
 messageTypeRegistry.set(DeleteProjectMetadata.$type, DeleteProjectMetadata);
 
 const baseOpenProjectRequest: object = {
-  $type: "yandex.cloud.datasphere.v2.OpenProjectRequest",
-  projectId: "",
+    $type: 'yandex.cloud.datasphere.v2.OpenProjectRequest',
+    projectId: '',
 };
 
 export const OpenProjectRequest = {
-  $type: "yandex.cloud.datasphere.v2.OpenProjectRequest" as const,
+    $type: 'yandex.cloud.datasphere.v2.OpenProjectRequest' as const,
 
-  encode(
-    message: OpenProjectRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    return writer;
-  },
+    encode(message: OpenProjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        return writer;
+    },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): OpenProjectRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseOpenProjectRequest } as OpenProjectRequest;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): OpenProjectRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseOpenProjectRequest } as OpenProjectRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): OpenProjectRequest {
-    const message = { ...baseOpenProjectRequest } as OpenProjectRequest;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    return message;
-  },
+    fromJSON(object: any): OpenProjectRequest {
+        const message = { ...baseOpenProjectRequest } as OpenProjectRequest;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        return message;
+    },
 
-  toJSON(message: OpenProjectRequest): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    return obj;
-  },
+    toJSON(message: OpenProjectRequest): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<OpenProjectRequest>, I>>(
-    object: I
-  ): OpenProjectRequest {
-    const message = { ...baseOpenProjectRequest } as OpenProjectRequest;
-    message.projectId = object.projectId ?? "";
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<OpenProjectRequest>, I>>(
+        object: I,
+    ): OpenProjectRequest {
+        const message = { ...baseOpenProjectRequest } as OpenProjectRequest;
+        message.projectId = object.projectId ?? '';
+        return message;
+    },
 };
 
 messageTypeRegistry.set(OpenProjectRequest.$type, OpenProjectRequest);
 
 const baseOpenProjectMetadata: object = {
-  $type: "yandex.cloud.datasphere.v2.OpenProjectMetadata",
-  projectId: "",
-  status: 0,
+    $type: 'yandex.cloud.datasphere.v2.OpenProjectMetadata',
+    projectId: '',
+    status: 0,
 };
 
 export const OpenProjectMetadata = {
-  $type: "yandex.cloud.datasphere.v2.OpenProjectMetadata" as const,
+    $type: 'yandex.cloud.datasphere.v2.OpenProjectMetadata' as const,
 
-  encode(
-    message: OpenProjectMetadata,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    if (message.status !== 0) {
-      writer.uint32(16).int32(message.status);
-    }
-    return writer;
-  },
+    encode(message: OpenProjectMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        if (message.status !== 0) {
+            writer.uint32(16).int32(message.status);
+        }
+        return writer;
+    },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): OpenProjectMetadata {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseOpenProjectMetadata } as OpenProjectMetadata;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        case 2:
-          message.status = reader.int32() as any;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): OpenProjectMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseOpenProjectMetadata } as OpenProjectMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                case 2:
+                    message.status = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): OpenProjectMetadata {
-    const message = { ...baseOpenProjectMetadata } as OpenProjectMetadata;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    message.status =
-      object.status !== undefined && object.status !== null
-        ? openProjectMetadata_OpenProjectStatusFromJSON(object.status)
-        : 0;
-    return message;
-  },
+    fromJSON(object: any): OpenProjectMetadata {
+        const message = { ...baseOpenProjectMetadata } as OpenProjectMetadata;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.status =
+            object.status !== undefined && object.status !== null
+                ? openProjectMetadata_OpenProjectStatusFromJSON(object.status)
+                : 0;
+        return message;
+    },
 
-  toJSON(message: OpenProjectMetadata): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    message.status !== undefined &&
-      (obj.status = openProjectMetadata_OpenProjectStatusToJSON(
-        message.status
-      ));
-    return obj;
-  },
+    toJSON(message: OpenProjectMetadata): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        message.status !== undefined &&
+            (obj.status = openProjectMetadata_OpenProjectStatusToJSON(message.status));
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<OpenProjectMetadata>, I>>(
-    object: I
-  ): OpenProjectMetadata {
-    const message = { ...baseOpenProjectMetadata } as OpenProjectMetadata;
-    message.projectId = object.projectId ?? "";
-    message.status = object.status ?? 0;
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<OpenProjectMetadata>, I>>(
+        object: I,
+    ): OpenProjectMetadata {
+        const message = { ...baseOpenProjectMetadata } as OpenProjectMetadata;
+        message.projectId = object.projectId ?? '';
+        message.status = object.status ?? 0;
+        return message;
+    },
 };
 
 messageTypeRegistry.set(OpenProjectMetadata.$type, OpenProjectMetadata);
 
 const baseOpenProjectResponse: object = {
-  $type: "yandex.cloud.datasphere.v2.OpenProjectResponse",
-  projectUrl: "",
-  sessionToken: "",
+    $type: 'yandex.cloud.datasphere.v2.OpenProjectResponse',
+    projectUrl: '',
+    sessionToken: '',
 };
 
 export const OpenProjectResponse = {
-  $type: "yandex.cloud.datasphere.v2.OpenProjectResponse" as const,
+    $type: 'yandex.cloud.datasphere.v2.OpenProjectResponse' as const,
 
-  encode(
-    message: OpenProjectResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectUrl !== "") {
-      writer.uint32(10).string(message.projectUrl);
-    }
-    if (message.sessionToken !== "") {
-      writer.uint32(18).string(message.sessionToken);
-    }
-    return writer;
-  },
+    encode(message: OpenProjectResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.projectUrl !== '') {
+            writer.uint32(10).string(message.projectUrl);
+        }
+        if (message.sessionToken !== '') {
+            writer.uint32(18).string(message.sessionToken);
+        }
+        return writer;
+    },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): OpenProjectResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseOpenProjectResponse } as OpenProjectResponse;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectUrl = reader.string();
-          break;
-        case 2:
-          message.sessionToken = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): OpenProjectResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseOpenProjectResponse } as OpenProjectResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectUrl = reader.string();
+                    break;
+                case 2:
+                    message.sessionToken = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): OpenProjectResponse {
-    const message = { ...baseOpenProjectResponse } as OpenProjectResponse;
-    message.projectUrl =
-      object.projectUrl !== undefined && object.projectUrl !== null
-        ? String(object.projectUrl)
-        : "";
-    message.sessionToken =
-      object.sessionToken !== undefined && object.sessionToken !== null
-        ? String(object.sessionToken)
-        : "";
-    return message;
-  },
+    fromJSON(object: any): OpenProjectResponse {
+        const message = { ...baseOpenProjectResponse } as OpenProjectResponse;
+        message.projectUrl =
+            object.projectUrl !== undefined && object.projectUrl !== null
+                ? String(object.projectUrl)
+                : '';
+        message.sessionToken =
+            object.sessionToken !== undefined && object.sessionToken !== null
+                ? String(object.sessionToken)
+                : '';
+        return message;
+    },
 
-  toJSON(message: OpenProjectResponse): unknown {
-    const obj: any = {};
-    message.projectUrl !== undefined && (obj.projectUrl = message.projectUrl);
-    message.sessionToken !== undefined &&
-      (obj.sessionToken = message.sessionToken);
-    return obj;
-  },
+    toJSON(message: OpenProjectResponse): unknown {
+        const obj: any = {};
+        message.projectUrl !== undefined && (obj.projectUrl = message.projectUrl);
+        message.sessionToken !== undefined && (obj.sessionToken = message.sessionToken);
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<OpenProjectResponse>, I>>(
-    object: I
-  ): OpenProjectResponse {
-    const message = { ...baseOpenProjectResponse } as OpenProjectResponse;
-    message.projectUrl = object.projectUrl ?? "";
-    message.sessionToken = object.sessionToken ?? "";
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<OpenProjectResponse>, I>>(
+        object: I,
+    ): OpenProjectResponse {
+        const message = { ...baseOpenProjectResponse } as OpenProjectResponse;
+        message.projectUrl = object.projectUrl ?? '';
+        message.sessionToken = object.sessionToken ?? '';
+        return message;
+    },
 };
 
 messageTypeRegistry.set(OpenProjectResponse.$type, OpenProjectResponse);
 
 const baseGetProjectRequest: object = {
-  $type: "yandex.cloud.datasphere.v2.GetProjectRequest",
-  projectId: "",
+    $type: 'yandex.cloud.datasphere.v2.GetProjectRequest',
+    projectId: '',
 };
 
 export const GetProjectRequest = {
-  $type: "yandex.cloud.datasphere.v2.GetProjectRequest" as const,
+    $type: 'yandex.cloud.datasphere.v2.GetProjectRequest' as const,
 
-  encode(
-    message: GetProjectRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    return writer;
-  },
+    encode(message: GetProjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        return writer;
+    },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetProjectRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseGetProjectRequest } as GetProjectRequest;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetProjectRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGetProjectRequest } as GetProjectRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): GetProjectRequest {
-    const message = { ...baseGetProjectRequest } as GetProjectRequest;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    return message;
-  },
+    fromJSON(object: any): GetProjectRequest {
+        const message = { ...baseGetProjectRequest } as GetProjectRequest;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        return message;
+    },
 
-  toJSON(message: GetProjectRequest): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    return obj;
-  },
+    toJSON(message: GetProjectRequest): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<GetProjectRequest>, I>>(
-    object: I
-  ): GetProjectRequest {
-    const message = { ...baseGetProjectRequest } as GetProjectRequest;
-    message.projectId = object.projectId ?? "";
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<GetProjectRequest>, I>>(object: I): GetProjectRequest {
+        const message = { ...baseGetProjectRequest } as GetProjectRequest;
+        message.projectId = object.projectId ?? '';
+        return message;
+    },
 };
 
 messageTypeRegistry.set(GetProjectRequest.$type, GetProjectRequest);
 
 const baseListProjectsRequest: object = {
-  $type: "yandex.cloud.datasphere.v2.ListProjectsRequest",
-  communityId: "",
-  pageSize: 0,
-  pageToken: "",
-  projectNamePattern: "",
-  ownedById: "",
+    $type: 'yandex.cloud.datasphere.v2.ListProjectsRequest',
+    communityId: '',
+    pageSize: 0,
+    pageToken: '',
+    projectNamePattern: '',
+    ownedById: '',
 };
 
 export const ListProjectsRequest = {
-  $type: "yandex.cloud.datasphere.v2.ListProjectsRequest" as const,
+    $type: 'yandex.cloud.datasphere.v2.ListProjectsRequest' as const,
 
-  encode(
-    message: ListProjectsRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.communityId !== "") {
-      writer.uint32(10).string(message.communityId);
-    }
-    if (message.pageSize !== 0) {
-      writer.uint32(16).int64(message.pageSize);
-    }
-    if (message.pageToken !== "") {
-      writer.uint32(26).string(message.pageToken);
-    }
-    if (message.projectNamePattern !== "") {
-      writer.uint32(34).string(message.projectNamePattern);
-    }
-    if (message.ownedById !== "") {
-      writer.uint32(42).string(message.ownedById);
-    }
-    return writer;
-  },
+    encode(message: ListProjectsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.communityId !== '') {
+            writer.uint32(10).string(message.communityId);
+        }
+        if (message.pageSize !== 0) {
+            writer.uint32(16).int64(message.pageSize);
+        }
+        if (message.pageToken !== '') {
+            writer.uint32(26).string(message.pageToken);
+        }
+        if (message.projectNamePattern !== '') {
+            writer.uint32(34).string(message.projectNamePattern);
+        }
+        if (message.ownedById !== '') {
+            writer.uint32(42).string(message.ownedById);
+        }
+        return writer;
+    },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListProjectsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseListProjectsRequest } as ListProjectsRequest;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.communityId = reader.string();
-          break;
-        case 2:
-          message.pageSize = longToNumber(reader.int64() as Long);
-          break;
-        case 3:
-          message.pageToken = reader.string();
-          break;
-        case 4:
-          message.projectNamePattern = reader.string();
-          break;
-        case 5:
-          message.ownedById = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListProjectsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListProjectsRequest } as ListProjectsRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.communityId = reader.string();
+                    break;
+                case 2:
+                    message.pageSize = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.pageToken = reader.string();
+                    break;
+                case 4:
+                    message.projectNamePattern = reader.string();
+                    break;
+                case 5:
+                    message.ownedById = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): ListProjectsRequest {
-    const message = { ...baseListProjectsRequest } as ListProjectsRequest;
-    message.communityId =
-      object.communityId !== undefined && object.communityId !== null
-        ? String(object.communityId)
-        : "";
-    message.pageSize =
-      object.pageSize !== undefined && object.pageSize !== null
-        ? Number(object.pageSize)
-        : 0;
-    message.pageToken =
-      object.pageToken !== undefined && object.pageToken !== null
-        ? String(object.pageToken)
-        : "";
-    message.projectNamePattern =
-      object.projectNamePattern !== undefined &&
-      object.projectNamePattern !== null
-        ? String(object.projectNamePattern)
-        : "";
-    message.ownedById =
-      object.ownedById !== undefined && object.ownedById !== null
-        ? String(object.ownedById)
-        : "";
-    return message;
-  },
+    fromJSON(object: any): ListProjectsRequest {
+        const message = { ...baseListProjectsRequest } as ListProjectsRequest;
+        message.communityId =
+            object.communityId !== undefined && object.communityId !== null
+                ? String(object.communityId)
+                : '';
+        message.pageSize =
+            object.pageSize !== undefined && object.pageSize !== null ? Number(object.pageSize) : 0;
+        message.pageToken =
+            object.pageToken !== undefined && object.pageToken !== null
+                ? String(object.pageToken)
+                : '';
+        message.projectNamePattern =
+            object.projectNamePattern !== undefined && object.projectNamePattern !== null
+                ? String(object.projectNamePattern)
+                : '';
+        message.ownedById =
+            object.ownedById !== undefined && object.ownedById !== null
+                ? String(object.ownedById)
+                : '';
+        return message;
+    },
 
-  toJSON(message: ListProjectsRequest): unknown {
-    const obj: any = {};
-    message.communityId !== undefined &&
-      (obj.communityId = message.communityId);
-    message.pageSize !== undefined &&
-      (obj.pageSize = Math.round(message.pageSize));
-    message.pageToken !== undefined && (obj.pageToken = message.pageToken);
-    message.projectNamePattern !== undefined &&
-      (obj.projectNamePattern = message.projectNamePattern);
-    message.ownedById !== undefined && (obj.ownedById = message.ownedById);
-    return obj;
-  },
+    toJSON(message: ListProjectsRequest): unknown {
+        const obj: any = {};
+        message.communityId !== undefined && (obj.communityId = message.communityId);
+        message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
+        message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+        message.projectNamePattern !== undefined &&
+            (obj.projectNamePattern = message.projectNamePattern);
+        message.ownedById !== undefined && (obj.ownedById = message.ownedById);
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<ListProjectsRequest>, I>>(
-    object: I
-  ): ListProjectsRequest {
-    const message = { ...baseListProjectsRequest } as ListProjectsRequest;
-    message.communityId = object.communityId ?? "";
-    message.pageSize = object.pageSize ?? 0;
-    message.pageToken = object.pageToken ?? "";
-    message.projectNamePattern = object.projectNamePattern ?? "";
-    message.ownedById = object.ownedById ?? "";
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<ListProjectsRequest>, I>>(
+        object: I,
+    ): ListProjectsRequest {
+        const message = { ...baseListProjectsRequest } as ListProjectsRequest;
+        message.communityId = object.communityId ?? '';
+        message.pageSize = object.pageSize ?? 0;
+        message.pageToken = object.pageToken ?? '';
+        message.projectNamePattern = object.projectNamePattern ?? '';
+        message.ownedById = object.ownedById ?? '';
+        return message;
+    },
 };
 
 messageTypeRegistry.set(ListProjectsRequest.$type, ListProjectsRequest);
 
 const baseListProjectsResponse: object = {
-  $type: "yandex.cloud.datasphere.v2.ListProjectsResponse",
-  nextPageToken: "",
+    $type: 'yandex.cloud.datasphere.v2.ListProjectsResponse',
+    nextPageToken: '',
 };
 
 export const ListProjectsResponse = {
-  $type: "yandex.cloud.datasphere.v2.ListProjectsResponse" as const,
+    $type: 'yandex.cloud.datasphere.v2.ListProjectsResponse' as const,
 
-  encode(
-    message: ListProjectsResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    for (const v of message.projects) {
-      Project.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-    if (message.nextPageToken !== "") {
-      writer.uint32(18).string(message.nextPageToken);
-    }
-    return writer;
-  },
+    encode(message: ListProjectsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.projects) {
+            Project.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.nextPageToken !== '') {
+            writer.uint32(18).string(message.nextPageToken);
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): ListProjectsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseListProjectsResponse } as ListProjectsResponse;
-    message.projects = [];
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projects.push(Project.decode(reader, reader.uint32()));
-          break;
-        case 2:
-          message.nextPageToken = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListProjectsResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListProjectsResponse } as ListProjectsResponse;
+        message.projects = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projects.push(Project.decode(reader, reader.uint32()));
+                    break;
+                case 2:
+                    message.nextPageToken = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): ListProjectsResponse {
-    const message = { ...baseListProjectsResponse } as ListProjectsResponse;
-    message.projects = (object.projects ?? []).map((e: any) =>
-      Project.fromJSON(e)
-    );
-    message.nextPageToken =
-      object.nextPageToken !== undefined && object.nextPageToken !== null
-        ? String(object.nextPageToken)
-        : "";
-    return message;
-  },
+    fromJSON(object: any): ListProjectsResponse {
+        const message = { ...baseListProjectsResponse } as ListProjectsResponse;
+        message.projects = (object.projects ?? []).map((e: any) => Project.fromJSON(e));
+        message.nextPageToken =
+            object.nextPageToken !== undefined && object.nextPageToken !== null
+                ? String(object.nextPageToken)
+                : '';
+        return message;
+    },
 
-  toJSON(message: ListProjectsResponse): unknown {
-    const obj: any = {};
-    if (message.projects) {
-      obj.projects = message.projects.map((e) =>
-        e ? Project.toJSON(e) : undefined
-      );
-    } else {
-      obj.projects = [];
-    }
-    message.nextPageToken !== undefined &&
-      (obj.nextPageToken = message.nextPageToken);
-    return obj;
-  },
+    toJSON(message: ListProjectsResponse): unknown {
+        const obj: any = {};
+        if (message.projects) {
+            obj.projects = message.projects.map((e) => (e ? Project.toJSON(e) : undefined));
+        } else {
+            obj.projects = [];
+        }
+        message.nextPageToken !== undefined && (obj.nextPageToken = message.nextPageToken);
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<ListProjectsResponse>, I>>(
-    object: I
-  ): ListProjectsResponse {
-    const message = { ...baseListProjectsResponse } as ListProjectsResponse;
-    message.projects =
-      object.projects?.map((e) => Project.fromPartial(e)) || [];
-    message.nextPageToken = object.nextPageToken ?? "";
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<ListProjectsResponse>, I>>(
+        object: I,
+    ): ListProjectsResponse {
+        const message = { ...baseListProjectsResponse } as ListProjectsResponse;
+        message.projects = object.projects?.map((e) => Project.fromPartial(e)) || [];
+        message.nextPageToken = object.nextPageToken ?? '';
+        return message;
+    },
 };
 
 messageTypeRegistry.set(ListProjectsResponse.$type, ListProjectsResponse);
 
 const baseGetUnitBalanceRequest: object = {
-  $type: "yandex.cloud.datasphere.v2.GetUnitBalanceRequest",
-  projectId: "",
+    $type: 'yandex.cloud.datasphere.v2.GetUnitBalanceRequest',
+    projectId: '',
 };
 
 export const GetUnitBalanceRequest = {
-  $type: "yandex.cloud.datasphere.v2.GetUnitBalanceRequest" as const,
+    $type: 'yandex.cloud.datasphere.v2.GetUnitBalanceRequest' as const,
 
-  encode(
-    message: GetUnitBalanceRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    return writer;
-  },
+    encode(message: GetUnitBalanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetUnitBalanceRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseGetUnitBalanceRequest } as GetUnitBalanceRequest;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetUnitBalanceRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGetUnitBalanceRequest } as GetUnitBalanceRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): GetUnitBalanceRequest {
-    const message = { ...baseGetUnitBalanceRequest } as GetUnitBalanceRequest;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    return message;
-  },
+    fromJSON(object: any): GetUnitBalanceRequest {
+        const message = { ...baseGetUnitBalanceRequest } as GetUnitBalanceRequest;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        return message;
+    },
 
-  toJSON(message: GetUnitBalanceRequest): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    return obj;
-  },
+    toJSON(message: GetUnitBalanceRequest): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<GetUnitBalanceRequest>, I>>(
-    object: I
-  ): GetUnitBalanceRequest {
-    const message = { ...baseGetUnitBalanceRequest } as GetUnitBalanceRequest;
-    message.projectId = object.projectId ?? "";
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<GetUnitBalanceRequest>, I>>(
+        object: I,
+    ): GetUnitBalanceRequest {
+        const message = { ...baseGetUnitBalanceRequest } as GetUnitBalanceRequest;
+        message.projectId = object.projectId ?? '';
+        return message;
+    },
 };
 
 messageTypeRegistry.set(GetUnitBalanceRequest.$type, GetUnitBalanceRequest);
 
 const baseGetUnitBalanceResponse: object = {
-  $type: "yandex.cloud.datasphere.v2.GetUnitBalanceResponse",
+    $type: 'yandex.cloud.datasphere.v2.GetUnitBalanceResponse',
 };
 
 export const GetUnitBalanceResponse = {
-  $type: "yandex.cloud.datasphere.v2.GetUnitBalanceResponse" as const,
+    $type: 'yandex.cloud.datasphere.v2.GetUnitBalanceResponse' as const,
 
-  encode(
-    message: GetUnitBalanceResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.unitBalance !== undefined) {
-      Int64Value.encode(
-        { $type: "google.protobuf.Int64Value", value: message.unitBalance! },
-        writer.uint32(10).fork()
-      ).ldelim();
-    }
-    return writer;
-  },
+    encode(message: GetUnitBalanceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.unitBalance !== undefined) {
+            Int64Value.encode(
+                { $type: 'google.protobuf.Int64Value', value: message.unitBalance! },
+                writer.uint32(10).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetUnitBalanceResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseGetUnitBalanceResponse } as GetUnitBalanceResponse;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.unitBalance = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetUnitBalanceResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGetUnitBalanceResponse } as GetUnitBalanceResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.unitBalance = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): GetUnitBalanceResponse {
-    const message = { ...baseGetUnitBalanceResponse } as GetUnitBalanceResponse;
-    message.unitBalance =
-      object.unitBalance !== undefined && object.unitBalance !== null
-        ? Number(object.unitBalance)
-        : undefined;
-    return message;
-  },
+    fromJSON(object: any): GetUnitBalanceResponse {
+        const message = { ...baseGetUnitBalanceResponse } as GetUnitBalanceResponse;
+        message.unitBalance =
+            object.unitBalance !== undefined && object.unitBalance !== null
+                ? Number(object.unitBalance)
+                : undefined;
+        return message;
+    },
 
-  toJSON(message: GetUnitBalanceResponse): unknown {
-    const obj: any = {};
-    message.unitBalance !== undefined &&
-      (obj.unitBalance = message.unitBalance);
-    return obj;
-  },
+    toJSON(message: GetUnitBalanceResponse): unknown {
+        const obj: any = {};
+        message.unitBalance !== undefined && (obj.unitBalance = message.unitBalance);
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<GetUnitBalanceResponse>, I>>(
-    object: I
-  ): GetUnitBalanceResponse {
-    const message = { ...baseGetUnitBalanceResponse } as GetUnitBalanceResponse;
-    message.unitBalance = object.unitBalance ?? undefined;
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<GetUnitBalanceResponse>, I>>(
+        object: I,
+    ): GetUnitBalanceResponse {
+        const message = { ...baseGetUnitBalanceResponse } as GetUnitBalanceResponse;
+        message.unitBalance = object.unitBalance ?? undefined;
+        return message;
+    },
 };
 
 messageTypeRegistry.set(GetUnitBalanceResponse.$type, GetUnitBalanceResponse);
 
 const baseSetUnitBalanceRequest: object = {
-  $type: "yandex.cloud.datasphere.v2.SetUnitBalanceRequest",
-  projectId: "",
+    $type: 'yandex.cloud.datasphere.v2.SetUnitBalanceRequest',
+    projectId: '',
 };
 
 export const SetUnitBalanceRequest = {
-  $type: "yandex.cloud.datasphere.v2.SetUnitBalanceRequest" as const,
+    $type: 'yandex.cloud.datasphere.v2.SetUnitBalanceRequest' as const,
 
-  encode(
-    message: SetUnitBalanceRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    if (message.unitBalance !== undefined) {
-      Int64Value.encode(
-        { $type: "google.protobuf.Int64Value", value: message.unitBalance! },
-        writer.uint32(18).fork()
-      ).ldelim();
-    }
-    return writer;
-  },
+    encode(message: SetUnitBalanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        if (message.unitBalance !== undefined) {
+            Int64Value.encode(
+                { $type: 'google.protobuf.Int64Value', value: message.unitBalance! },
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): SetUnitBalanceRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseSetUnitBalanceRequest } as SetUnitBalanceRequest;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        case 2:
-          message.unitBalance = Int64Value.decode(
-            reader,
-            reader.uint32()
-          ).value;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetUnitBalanceRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSetUnitBalanceRequest } as SetUnitBalanceRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                case 2:
+                    message.unitBalance = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): SetUnitBalanceRequest {
-    const message = { ...baseSetUnitBalanceRequest } as SetUnitBalanceRequest;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    message.unitBalance =
-      object.unitBalance !== undefined && object.unitBalance !== null
-        ? Number(object.unitBalance)
-        : undefined;
-    return message;
-  },
+    fromJSON(object: any): SetUnitBalanceRequest {
+        const message = { ...baseSetUnitBalanceRequest } as SetUnitBalanceRequest;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.unitBalance =
+            object.unitBalance !== undefined && object.unitBalance !== null
+                ? Number(object.unitBalance)
+                : undefined;
+        return message;
+    },
 
-  toJSON(message: SetUnitBalanceRequest): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    message.unitBalance !== undefined &&
-      (obj.unitBalance = message.unitBalance);
-    return obj;
-  },
+    toJSON(message: SetUnitBalanceRequest): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        message.unitBalance !== undefined && (obj.unitBalance = message.unitBalance);
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<SetUnitBalanceRequest>, I>>(
-    object: I
-  ): SetUnitBalanceRequest {
-    const message = { ...baseSetUnitBalanceRequest } as SetUnitBalanceRequest;
-    message.projectId = object.projectId ?? "";
-    message.unitBalance = object.unitBalance ?? undefined;
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<SetUnitBalanceRequest>, I>>(
+        object: I,
+    ): SetUnitBalanceRequest {
+        const message = { ...baseSetUnitBalanceRequest } as SetUnitBalanceRequest;
+        message.projectId = object.projectId ?? '';
+        message.unitBalance = object.unitBalance ?? undefined;
+        return message;
+    },
 };
 
 messageTypeRegistry.set(SetUnitBalanceRequest.$type, SetUnitBalanceRequest);
 
 const baseSetUnitBalanceMetadata: object = {
-  $type: "yandex.cloud.datasphere.v2.SetUnitBalanceMetadata",
-  projectId: "",
+    $type: 'yandex.cloud.datasphere.v2.SetUnitBalanceMetadata',
+    projectId: '',
 };
 
 export const SetUnitBalanceMetadata = {
-  $type: "yandex.cloud.datasphere.v2.SetUnitBalanceMetadata" as const,
+    $type: 'yandex.cloud.datasphere.v2.SetUnitBalanceMetadata' as const,
 
-  encode(
-    message: SetUnitBalanceMetadata,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    return writer;
-  },
+    encode(message: SetUnitBalanceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): SetUnitBalanceMetadata {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseSetUnitBalanceMetadata } as SetUnitBalanceMetadata;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetUnitBalanceMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSetUnitBalanceMetadata } as SetUnitBalanceMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): SetUnitBalanceMetadata {
-    const message = { ...baseSetUnitBalanceMetadata } as SetUnitBalanceMetadata;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    return message;
-  },
+    fromJSON(object: any): SetUnitBalanceMetadata {
+        const message = { ...baseSetUnitBalanceMetadata } as SetUnitBalanceMetadata;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        return message;
+    },
 
-  toJSON(message: SetUnitBalanceMetadata): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    return obj;
-  },
+    toJSON(message: SetUnitBalanceMetadata): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<SetUnitBalanceMetadata>, I>>(
-    object: I
-  ): SetUnitBalanceMetadata {
-    const message = { ...baseSetUnitBalanceMetadata } as SetUnitBalanceMetadata;
-    message.projectId = object.projectId ?? "";
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<SetUnitBalanceMetadata>, I>>(
+        object: I,
+    ): SetUnitBalanceMetadata {
+        const message = { ...baseSetUnitBalanceMetadata } as SetUnitBalanceMetadata;
+        message.projectId = object.projectId ?? '';
+        return message;
+    },
 };
 
 messageTypeRegistry.set(SetUnitBalanceMetadata.$type, SetUnitBalanceMetadata);
 
 const baseProjectExecutionRequest: object = {
-  $type: "yandex.cloud.datasphere.v2.ProjectExecutionRequest",
-  projectId: "",
-  outputVariableNames: "",
-  spec: "",
-  sparkConnectorId: "",
+    $type: 'yandex.cloud.datasphere.v2.ProjectExecutionRequest',
+    projectId: '',
+    outputVariableNames: '',
+    spec: '',
+    sparkConnectorId: '',
 };
 
 export const ProjectExecutionRequest = {
-  $type: "yandex.cloud.datasphere.v2.ProjectExecutionRequest" as const,
+    $type: 'yandex.cloud.datasphere.v2.ProjectExecutionRequest' as const,
 
-  encode(
-    message: ProjectExecutionRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    if (message.notebookId !== undefined) {
-      writer.uint32(18).string(message.notebookId);
-    }
-    if (message.cellId !== undefined) {
-      writer.uint32(26).string(message.cellId);
-    }
-    if (message.inputVariables !== undefined) {
-      Struct.encode(
-        Struct.wrap(message.inputVariables),
-        writer.uint32(34).fork()
-      ).ldelim();
-    }
-    for (const v of message.outputVariableNames) {
-      writer.uint32(42).string(v!);
-    }
-    if (message.spec !== "") {
-      writer.uint32(50).string(message.spec);
-    }
-    if (message.sparkConnectorId !== "") {
-      writer.uint32(58).string(message.sparkConnectorId);
-    }
-    return writer;
-  },
+    encode(message: ProjectExecutionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        if (message.notebookId !== undefined) {
+            writer.uint32(18).string(message.notebookId);
+        }
+        if (message.cellId !== undefined) {
+            writer.uint32(26).string(message.cellId);
+        }
+        if (message.inputVariables !== undefined) {
+            Struct.encode(Struct.wrap(message.inputVariables), writer.uint32(34).fork()).ldelim();
+        }
+        for (const v of message.outputVariableNames) {
+            writer.uint32(42).string(v!);
+        }
+        if (message.spec !== '') {
+            writer.uint32(50).string(message.spec);
+        }
+        if (message.sparkConnectorId !== '') {
+            writer.uint32(58).string(message.sparkConnectorId);
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): ProjectExecutionRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseProjectExecutionRequest,
-    } as ProjectExecutionRequest;
-    message.outputVariableNames = [];
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        case 2:
-          message.notebookId = reader.string();
-          break;
-        case 3:
-          message.cellId = reader.string();
-          break;
-        case 4:
-          message.inputVariables = Struct.unwrap(
-            Struct.decode(reader, reader.uint32())
-          );
-          break;
-        case 5:
-          message.outputVariableNames.push(reader.string());
-          break;
-        case 6:
-          message.spec = reader.string();
-          break;
-        case 7:
-          message.sparkConnectorId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): ProjectExecutionRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseProjectExecutionRequest } as ProjectExecutionRequest;
+        message.outputVariableNames = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                case 2:
+                    message.notebookId = reader.string();
+                    break;
+                case 3:
+                    message.cellId = reader.string();
+                    break;
+                case 4:
+                    message.inputVariables = Struct.unwrap(Struct.decode(reader, reader.uint32()));
+                    break;
+                case 5:
+                    message.outputVariableNames.push(reader.string());
+                    break;
+                case 6:
+                    message.spec = reader.string();
+                    break;
+                case 7:
+                    message.sparkConnectorId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): ProjectExecutionRequest {
-    const message = {
-      ...baseProjectExecutionRequest,
-    } as ProjectExecutionRequest;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    message.notebookId =
-      object.notebookId !== undefined && object.notebookId !== null
-        ? String(object.notebookId)
-        : undefined;
-    message.cellId =
-      object.cellId !== undefined && object.cellId !== null
-        ? String(object.cellId)
-        : undefined;
-    message.inputVariables =
-      typeof object.inputVariables === "object"
-        ? object.inputVariables
-        : undefined;
-    message.outputVariableNames = (object.outputVariableNames ?? []).map(
-      (e: any) => String(e)
-    );
-    message.spec =
-      object.spec !== undefined && object.spec !== null
-        ? String(object.spec)
-        : "";
-    message.sparkConnectorId =
-      object.sparkConnectorId !== undefined && object.sparkConnectorId !== null
-        ? String(object.sparkConnectorId)
-        : "";
-    return message;
-  },
+    fromJSON(object: any): ProjectExecutionRequest {
+        const message = { ...baseProjectExecutionRequest } as ProjectExecutionRequest;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.notebookId =
+            object.notebookId !== undefined && object.notebookId !== null
+                ? String(object.notebookId)
+                : undefined;
+        message.cellId =
+            object.cellId !== undefined && object.cellId !== null
+                ? String(object.cellId)
+                : undefined;
+        message.inputVariables =
+            typeof object.inputVariables === 'object' ? object.inputVariables : undefined;
+        message.outputVariableNames = (object.outputVariableNames ?? []).map((e: any) => String(e));
+        message.spec = object.spec !== undefined && object.spec !== null ? String(object.spec) : '';
+        message.sparkConnectorId =
+            object.sparkConnectorId !== undefined && object.sparkConnectorId !== null
+                ? String(object.sparkConnectorId)
+                : '';
+        return message;
+    },
 
-  toJSON(message: ProjectExecutionRequest): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    message.notebookId !== undefined && (obj.notebookId = message.notebookId);
-    message.cellId !== undefined && (obj.cellId = message.cellId);
-    message.inputVariables !== undefined &&
-      (obj.inputVariables = message.inputVariables);
-    if (message.outputVariableNames) {
-      obj.outputVariableNames = message.outputVariableNames.map((e) => e);
-    } else {
-      obj.outputVariableNames = [];
-    }
-    message.spec !== undefined && (obj.spec = message.spec);
-    message.sparkConnectorId !== undefined &&
-      (obj.sparkConnectorId = message.sparkConnectorId);
-    return obj;
-  },
+    toJSON(message: ProjectExecutionRequest): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        message.notebookId !== undefined && (obj.notebookId = message.notebookId);
+        message.cellId !== undefined && (obj.cellId = message.cellId);
+        message.inputVariables !== undefined && (obj.inputVariables = message.inputVariables);
+        if (message.outputVariableNames) {
+            obj.outputVariableNames = message.outputVariableNames.map((e) => e);
+        } else {
+            obj.outputVariableNames = [];
+        }
+        message.spec !== undefined && (obj.spec = message.spec);
+        message.sparkConnectorId !== undefined && (obj.sparkConnectorId = message.sparkConnectorId);
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<ProjectExecutionRequest>, I>>(
-    object: I
-  ): ProjectExecutionRequest {
-    const message = {
-      ...baseProjectExecutionRequest,
-    } as ProjectExecutionRequest;
-    message.projectId = object.projectId ?? "";
-    message.notebookId = object.notebookId ?? undefined;
-    message.cellId = object.cellId ?? undefined;
-    message.inputVariables = object.inputVariables ?? undefined;
-    message.outputVariableNames =
-      object.outputVariableNames?.map((e) => e) || [];
-    message.spec = object.spec ?? "";
-    message.sparkConnectorId = object.sparkConnectorId ?? "";
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<ProjectExecutionRequest>, I>>(
+        object: I,
+    ): ProjectExecutionRequest {
+        const message = { ...baseProjectExecutionRequest } as ProjectExecutionRequest;
+        message.projectId = object.projectId ?? '';
+        message.notebookId = object.notebookId ?? undefined;
+        message.cellId = object.cellId ?? undefined;
+        message.inputVariables = object.inputVariables ?? undefined;
+        message.outputVariableNames = object.outputVariableNames?.map((e) => e) || [];
+        message.spec = object.spec ?? '';
+        message.sparkConnectorId = object.sparkConnectorId ?? '';
+        return message;
+    },
 };
 
 messageTypeRegistry.set(ProjectExecutionRequest.$type, ProjectExecutionRequest);
 
 const baseProjectExecutionMetadata: object = {
-  $type: "yandex.cloud.datasphere.v2.ProjectExecutionMetadata",
-  projectId: "",
+    $type: 'yandex.cloud.datasphere.v2.ProjectExecutionMetadata',
+    projectId: '',
 };
 
 export const ProjectExecutionMetadata = {
-  $type: "yandex.cloud.datasphere.v2.ProjectExecutionMetadata" as const,
+    $type: 'yandex.cloud.datasphere.v2.ProjectExecutionMetadata' as const,
 
-  encode(
-    message: ProjectExecutionMetadata,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    if (message.notebookId !== undefined) {
-      writer.uint32(18).string(message.notebookId);
-    }
-    if (message.cellId !== undefined) {
-      writer.uint32(26).string(message.cellId);
-    }
-    return writer;
-  },
+    encode(
+        message: ProjectExecutionMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        if (message.notebookId !== undefined) {
+            writer.uint32(18).string(message.notebookId);
+        }
+        if (message.cellId !== undefined) {
+            writer.uint32(26).string(message.cellId);
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): ProjectExecutionMetadata {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseProjectExecutionMetadata,
-    } as ProjectExecutionMetadata;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        case 2:
-          message.notebookId = reader.string();
-          break;
-        case 3:
-          message.cellId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): ProjectExecutionMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseProjectExecutionMetadata } as ProjectExecutionMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                case 2:
+                    message.notebookId = reader.string();
+                    break;
+                case 3:
+                    message.cellId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): ProjectExecutionMetadata {
-    const message = {
-      ...baseProjectExecutionMetadata,
-    } as ProjectExecutionMetadata;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    message.notebookId =
-      object.notebookId !== undefined && object.notebookId !== null
-        ? String(object.notebookId)
-        : undefined;
-    message.cellId =
-      object.cellId !== undefined && object.cellId !== null
-        ? String(object.cellId)
-        : undefined;
-    return message;
-  },
+    fromJSON(object: any): ProjectExecutionMetadata {
+        const message = { ...baseProjectExecutionMetadata } as ProjectExecutionMetadata;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.notebookId =
+            object.notebookId !== undefined && object.notebookId !== null
+                ? String(object.notebookId)
+                : undefined;
+        message.cellId =
+            object.cellId !== undefined && object.cellId !== null
+                ? String(object.cellId)
+                : undefined;
+        return message;
+    },
 
-  toJSON(message: ProjectExecutionMetadata): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    message.notebookId !== undefined && (obj.notebookId = message.notebookId);
-    message.cellId !== undefined && (obj.cellId = message.cellId);
-    return obj;
-  },
+    toJSON(message: ProjectExecutionMetadata): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        message.notebookId !== undefined && (obj.notebookId = message.notebookId);
+        message.cellId !== undefined && (obj.cellId = message.cellId);
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<ProjectExecutionMetadata>, I>>(
-    object: I
-  ): ProjectExecutionMetadata {
-    const message = {
-      ...baseProjectExecutionMetadata,
-    } as ProjectExecutionMetadata;
-    message.projectId = object.projectId ?? "";
-    message.notebookId = object.notebookId ?? undefined;
-    message.cellId = object.cellId ?? undefined;
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<ProjectExecutionMetadata>, I>>(
+        object: I,
+    ): ProjectExecutionMetadata {
+        const message = { ...baseProjectExecutionMetadata } as ProjectExecutionMetadata;
+        message.projectId = object.projectId ?? '';
+        message.notebookId = object.notebookId ?? undefined;
+        message.cellId = object.cellId ?? undefined;
+        return message;
+    },
 };
 
-messageTypeRegistry.set(
-  ProjectExecutionMetadata.$type,
-  ProjectExecutionMetadata
-);
+messageTypeRegistry.set(ProjectExecutionMetadata.$type, ProjectExecutionMetadata);
 
 const baseProjectExecutionResponse: object = {
-  $type: "yandex.cloud.datasphere.v2.ProjectExecutionResponse",
-  checkpointId: "",
-  executionStatus: 0,
+    $type: 'yandex.cloud.datasphere.v2.ProjectExecutionResponse',
+    executionStatus: 0,
 };
 
 export const ProjectExecutionResponse = {
-  $type: "yandex.cloud.datasphere.v2.ProjectExecutionResponse" as const,
+    $type: 'yandex.cloud.datasphere.v2.ProjectExecutionResponse' as const,
 
-  encode(
-    message: ProjectExecutionResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.checkpointId !== "") {
-      writer.uint32(10).string(message.checkpointId);
-    }
-    if (message.outputVariables !== undefined) {
-      Struct.encode(
-        Struct.wrap(message.outputVariables),
-        writer.uint32(18).fork()
-      ).ldelim();
-    }
-    if (message.executionStatus !== 0) {
-      writer.uint32(24).int32(message.executionStatus);
-    }
-    return writer;
-  },
+    encode(
+        message: ProjectExecutionResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.executionStatus !== 0) {
+            writer.uint32(24).int32(message.executionStatus);
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): ProjectExecutionResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseProjectExecutionResponse,
-    } as ProjectExecutionResponse;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.checkpointId = reader.string();
-          break;
-        case 2:
-          message.outputVariables = Struct.unwrap(
-            Struct.decode(reader, reader.uint32())
-          );
-          break;
-        case 3:
-          message.executionStatus = reader.int32() as any;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): ProjectExecutionResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseProjectExecutionResponse } as ProjectExecutionResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 3:
+                    message.executionStatus = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): ProjectExecutionResponse {
-    const message = {
-      ...baseProjectExecutionResponse,
-    } as ProjectExecutionResponse;
-    message.checkpointId =
-      object.checkpointId !== undefined && object.checkpointId !== null
-        ? String(object.checkpointId)
-        : "";
-    message.outputVariables =
-      typeof object.outputVariables === "object"
-        ? object.outputVariables
-        : undefined;
-    message.executionStatus =
-      object.executionStatus !== undefined && object.executionStatus !== null
-        ? executionStatusFromJSON(object.executionStatus)
-        : 0;
-    return message;
-  },
+    fromJSON(object: any): ProjectExecutionResponse {
+        const message = { ...baseProjectExecutionResponse } as ProjectExecutionResponse;
+        message.executionStatus =
+            object.executionStatus !== undefined && object.executionStatus !== null
+                ? executionStatusFromJSON(object.executionStatus)
+                : 0;
+        return message;
+    },
 
-  toJSON(message: ProjectExecutionResponse): unknown {
-    const obj: any = {};
-    message.checkpointId !== undefined &&
-      (obj.checkpointId = message.checkpointId);
-    message.outputVariables !== undefined &&
-      (obj.outputVariables = message.outputVariables);
-    message.executionStatus !== undefined &&
-      (obj.executionStatus = executionStatusToJSON(message.executionStatus));
-    return obj;
-  },
+    toJSON(message: ProjectExecutionResponse): unknown {
+        const obj: any = {};
+        message.executionStatus !== undefined &&
+            (obj.executionStatus = executionStatusToJSON(message.executionStatus));
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<ProjectExecutionResponse>, I>>(
-    object: I
-  ): ProjectExecutionResponse {
-    const message = {
-      ...baseProjectExecutionResponse,
-    } as ProjectExecutionResponse;
-    message.checkpointId = object.checkpointId ?? "";
-    message.outputVariables = object.outputVariables ?? undefined;
-    message.executionStatus = object.executionStatus ?? 0;
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<ProjectExecutionResponse>, I>>(
+        object: I,
+    ): ProjectExecutionResponse {
+        const message = { ...baseProjectExecutionResponse } as ProjectExecutionResponse;
+        message.executionStatus = object.executionStatus ?? 0;
+        return message;
+    },
 };
 
-messageTypeRegistry.set(
-  ProjectExecutionResponse.$type,
-  ProjectExecutionResponse
-);
-
-const baseCellOutputsRequest: object = {
-  $type: "yandex.cloud.datasphere.v2.CellOutputsRequest",
-  projectId: "",
-  cellId: "",
-  checkpointId: "",
-};
-
-export const CellOutputsRequest = {
-  $type: "yandex.cloud.datasphere.v2.CellOutputsRequest" as const,
-
-  encode(
-    message: CellOutputsRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    if (message.cellId !== "") {
-      writer.uint32(18).string(message.cellId);
-    }
-    if (message.checkpointId !== "") {
-      writer.uint32(26).string(message.checkpointId);
-    }
-    if (message.startAt !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.startAt),
-        writer.uint32(34).fork()
-      ).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): CellOutputsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseCellOutputsRequest } as CellOutputsRequest;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        case 2:
-          message.cellId = reader.string();
-          break;
-        case 3:
-          message.checkpointId = reader.string();
-          break;
-        case 4:
-          message.startAt = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): CellOutputsRequest {
-    const message = { ...baseCellOutputsRequest } as CellOutputsRequest;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    message.cellId =
-      object.cellId !== undefined && object.cellId !== null
-        ? String(object.cellId)
-        : "";
-    message.checkpointId =
-      object.checkpointId !== undefined && object.checkpointId !== null
-        ? String(object.checkpointId)
-        : "";
-    message.startAt =
-      object.startAt !== undefined && object.startAt !== null
-        ? fromJsonTimestamp(object.startAt)
-        : undefined;
-    return message;
-  },
-
-  toJSON(message: CellOutputsRequest): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    message.cellId !== undefined && (obj.cellId = message.cellId);
-    message.checkpointId !== undefined &&
-      (obj.checkpointId = message.checkpointId);
-    message.startAt !== undefined &&
-      (obj.startAt = message.startAt.toISOString());
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<CellOutputsRequest>, I>>(
-    object: I
-  ): CellOutputsRequest {
-    const message = { ...baseCellOutputsRequest } as CellOutputsRequest;
-    message.projectId = object.projectId ?? "";
-    message.cellId = object.cellId ?? "";
-    message.checkpointId = object.checkpointId ?? "";
-    message.startAt = object.startAt ?? undefined;
-    return message;
-  },
-};
-
-messageTypeRegistry.set(CellOutputsRequest.$type, CellOutputsRequest);
-
-const baseCellOutputsResponse: object = {
-  $type: "yandex.cloud.datasphere.v2.CellOutputsResponse",
-  outputs: "",
-};
-
-export const CellOutputsResponse = {
-  $type: "yandex.cloud.datasphere.v2.CellOutputsResponse" as const,
-
-  encode(
-    message: CellOutputsResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    for (const v of message.outputs) {
-      writer.uint32(10).string(v!);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): CellOutputsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseCellOutputsResponse } as CellOutputsResponse;
-    message.outputs = [];
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.outputs.push(reader.string());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): CellOutputsResponse {
-    const message = { ...baseCellOutputsResponse } as CellOutputsResponse;
-    message.outputs = (object.outputs ?? []).map((e: any) => String(e));
-    return message;
-  },
-
-  toJSON(message: CellOutputsResponse): unknown {
-    const obj: any = {};
-    if (message.outputs) {
-      obj.outputs = message.outputs.map((e) => e);
-    } else {
-      obj.outputs = [];
-    }
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<CellOutputsResponse>, I>>(
-    object: I
-  ): CellOutputsResponse {
-    const message = { ...baseCellOutputsResponse } as CellOutputsResponse;
-    message.outputs = object.outputs?.map((e) => e) || [];
-    return message;
-  },
-};
-
-messageTypeRegistry.set(CellOutputsResponse.$type, CellOutputsResponse);
-
-const baseGetStateVariablesRequest: object = {
-  $type: "yandex.cloud.datasphere.v2.GetStateVariablesRequest",
-  projectId: "",
-  notebookId: "",
-  variableNames: "",
-  checkpointId: "",
-};
-
-export const GetStateVariablesRequest = {
-  $type: "yandex.cloud.datasphere.v2.GetStateVariablesRequest" as const,
-
-  encode(
-    message: GetStateVariablesRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    if (message.notebookId !== "") {
-      writer.uint32(18).string(message.notebookId);
-    }
-    for (const v of message.variableNames) {
-      writer.uint32(26).string(v!);
-    }
-    if (message.checkpointId !== "") {
-      writer.uint32(34).string(message.checkpointId);
-    }
-    return writer;
-  },
-
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetStateVariablesRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseGetStateVariablesRequest,
-    } as GetStateVariablesRequest;
-    message.variableNames = [];
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        case 2:
-          message.notebookId = reader.string();
-          break;
-        case 3:
-          message.variableNames.push(reader.string());
-          break;
-        case 4:
-          message.checkpointId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetStateVariablesRequest {
-    const message = {
-      ...baseGetStateVariablesRequest,
-    } as GetStateVariablesRequest;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    message.notebookId =
-      object.notebookId !== undefined && object.notebookId !== null
-        ? String(object.notebookId)
-        : "";
-    message.variableNames = (object.variableNames ?? []).map((e: any) =>
-      String(e)
-    );
-    message.checkpointId =
-      object.checkpointId !== undefined && object.checkpointId !== null
-        ? String(object.checkpointId)
-        : "";
-    return message;
-  },
-
-  toJSON(message: GetStateVariablesRequest): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    message.notebookId !== undefined && (obj.notebookId = message.notebookId);
-    if (message.variableNames) {
-      obj.variableNames = message.variableNames.map((e) => e);
-    } else {
-      obj.variableNames = [];
-    }
-    message.checkpointId !== undefined &&
-      (obj.checkpointId = message.checkpointId);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<GetStateVariablesRequest>, I>>(
-    object: I
-  ): GetStateVariablesRequest {
-    const message = {
-      ...baseGetStateVariablesRequest,
-    } as GetStateVariablesRequest;
-    message.projectId = object.projectId ?? "";
-    message.notebookId = object.notebookId ?? "";
-    message.variableNames = object.variableNames?.map((e) => e) || [];
-    message.checkpointId = object.checkpointId ?? "";
-    return message;
-  },
-};
-
-messageTypeRegistry.set(
-  GetStateVariablesRequest.$type,
-  GetStateVariablesRequest
-);
-
-const baseGetStateVariablesResponse: object = {
-  $type: "yandex.cloud.datasphere.v2.GetStateVariablesResponse",
-};
-
-export const GetStateVariablesResponse = {
-  $type: "yandex.cloud.datasphere.v2.GetStateVariablesResponse" as const,
-
-  encode(
-    message: GetStateVariablesResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.variables !== undefined) {
-      Struct.encode(
-        Struct.wrap(message.variables),
-        writer.uint32(10).fork()
-      ).ldelim();
-    }
-    return writer;
-  },
-
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetStateVariablesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseGetStateVariablesResponse,
-    } as GetStateVariablesResponse;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.variables = Struct.unwrap(
-            Struct.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetStateVariablesResponse {
-    const message = {
-      ...baseGetStateVariablesResponse,
-    } as GetStateVariablesResponse;
-    message.variables =
-      typeof object.variables === "object" ? object.variables : undefined;
-    return message;
-  },
-
-  toJSON(message: GetStateVariablesResponse): unknown {
-    const obj: any = {};
-    message.variables !== undefined && (obj.variables = message.variables);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<GetStateVariablesResponse>, I>>(
-    object: I
-  ): GetStateVariablesResponse {
-    const message = {
-      ...baseGetStateVariablesResponse,
-    } as GetStateVariablesResponse;
-    message.variables = object.variables ?? undefined;
-    return message;
-  },
-};
-
-messageTypeRegistry.set(
-  GetStateVariablesResponse.$type,
-  GetStateVariablesResponse
-);
+messageTypeRegistry.set(ProjectExecutionResponse.$type, ProjectExecutionResponse);
 
 const baseSetProjectAccessBindingsMetadata: object = {
-  $type: "yandex.cloud.datasphere.v2.SetProjectAccessBindingsMetadata",
-  projectId: "",
+    $type: 'yandex.cloud.datasphere.v2.SetProjectAccessBindingsMetadata',
+    projectId: '',
 };
 
 export const SetProjectAccessBindingsMetadata = {
-  $type: "yandex.cloud.datasphere.v2.SetProjectAccessBindingsMetadata" as const,
+    $type: 'yandex.cloud.datasphere.v2.SetProjectAccessBindingsMetadata' as const,
 
-  encode(
-    message: SetProjectAccessBindingsMetadata,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    return writer;
-  },
+    encode(
+        message: SetProjectAccessBindingsMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): SetProjectAccessBindingsMetadata {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseSetProjectAccessBindingsMetadata,
-    } as SetProjectAccessBindingsMetadata;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetProjectAccessBindingsMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseSetProjectAccessBindingsMetadata,
+        } as SetProjectAccessBindingsMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): SetProjectAccessBindingsMetadata {
-    const message = {
-      ...baseSetProjectAccessBindingsMetadata,
-    } as SetProjectAccessBindingsMetadata;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    return message;
-  },
+    fromJSON(object: any): SetProjectAccessBindingsMetadata {
+        const message = {
+            ...baseSetProjectAccessBindingsMetadata,
+        } as SetProjectAccessBindingsMetadata;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        return message;
+    },
 
-  toJSON(message: SetProjectAccessBindingsMetadata): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    return obj;
-  },
+    toJSON(message: SetProjectAccessBindingsMetadata): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        return obj;
+    },
 
-  fromPartial<
-    I extends Exact<DeepPartial<SetProjectAccessBindingsMetadata>, I>
-  >(object: I): SetProjectAccessBindingsMetadata {
-    const message = {
-      ...baseSetProjectAccessBindingsMetadata,
-    } as SetProjectAccessBindingsMetadata;
-    message.projectId = object.projectId ?? "";
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<SetProjectAccessBindingsMetadata>, I>>(
+        object: I,
+    ): SetProjectAccessBindingsMetadata {
+        const message = {
+            ...baseSetProjectAccessBindingsMetadata,
+        } as SetProjectAccessBindingsMetadata;
+        message.projectId = object.projectId ?? '';
+        return message;
+    },
 };
 
-messageTypeRegistry.set(
-  SetProjectAccessBindingsMetadata.$type,
-  SetProjectAccessBindingsMetadata
-);
+messageTypeRegistry.set(SetProjectAccessBindingsMetadata.$type, SetProjectAccessBindingsMetadata);
 
 const baseUpdateProjectAccessBindingsMetadata: object = {
-  $type: "yandex.cloud.datasphere.v2.UpdateProjectAccessBindingsMetadata",
-  projectId: "",
+    $type: 'yandex.cloud.datasphere.v2.UpdateProjectAccessBindingsMetadata',
+    projectId: '',
 };
 
 export const UpdateProjectAccessBindingsMetadata = {
-  $type:
-    "yandex.cloud.datasphere.v2.UpdateProjectAccessBindingsMetadata" as const,
+    $type: 'yandex.cloud.datasphere.v2.UpdateProjectAccessBindingsMetadata' as const,
 
-  encode(
-    message: UpdateProjectAccessBindingsMetadata,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    return writer;
-  },
+    encode(
+        message: UpdateProjectAccessBindingsMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): UpdateProjectAccessBindingsMetadata {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseUpdateProjectAccessBindingsMetadata,
-    } as UpdateProjectAccessBindingsMetadata;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateProjectAccessBindingsMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseUpdateProjectAccessBindingsMetadata,
+        } as UpdateProjectAccessBindingsMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): UpdateProjectAccessBindingsMetadata {
-    const message = {
-      ...baseUpdateProjectAccessBindingsMetadata,
-    } as UpdateProjectAccessBindingsMetadata;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    return message;
-  },
+    fromJSON(object: any): UpdateProjectAccessBindingsMetadata {
+        const message = {
+            ...baseUpdateProjectAccessBindingsMetadata,
+        } as UpdateProjectAccessBindingsMetadata;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        return message;
+    },
 
-  toJSON(message: UpdateProjectAccessBindingsMetadata): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    return obj;
-  },
+    toJSON(message: UpdateProjectAccessBindingsMetadata): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        return obj;
+    },
 
-  fromPartial<
-    I extends Exact<DeepPartial<UpdateProjectAccessBindingsMetadata>, I>
-  >(object: I): UpdateProjectAccessBindingsMetadata {
-    const message = {
-      ...baseUpdateProjectAccessBindingsMetadata,
-    } as UpdateProjectAccessBindingsMetadata;
-    message.projectId = object.projectId ?? "";
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<UpdateProjectAccessBindingsMetadata>, I>>(
+        object: I,
+    ): UpdateProjectAccessBindingsMetadata {
+        const message = {
+            ...baseUpdateProjectAccessBindingsMetadata,
+        } as UpdateProjectAccessBindingsMetadata;
+        message.projectId = object.projectId ?? '';
+        return message;
+    },
 };
 
 messageTypeRegistry.set(
-  UpdateProjectAccessBindingsMetadata.$type,
-  UpdateProjectAccessBindingsMetadata
+    UpdateProjectAccessBindingsMetadata.$type,
+    UpdateProjectAccessBindingsMetadata,
 );
 
 const baseAddResourceToProjectRequest: object = {
-  $type: "yandex.cloud.datasphere.v2.AddResourceToProjectRequest",
-  projectId: "",
-  resourceType: 0,
-  resourceId: "",
+    $type: 'yandex.cloud.datasphere.v2.AddResourceToProjectRequest',
+    projectId: '',
+    resourceType: 0,
+    resourceId: '',
 };
 
 export const AddResourceToProjectRequest = {
-  $type: "yandex.cloud.datasphere.v2.AddResourceToProjectRequest" as const,
+    $type: 'yandex.cloud.datasphere.v2.AddResourceToProjectRequest' as const,
 
-  encode(
-    message: AddResourceToProjectRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    if (message.resourceType !== 0) {
-      writer.uint32(16).int32(message.resourceType);
-    }
-    if (message.resourceId !== "") {
-      writer.uint32(26).string(message.resourceId);
-    }
-    return writer;
-  },
+    encode(
+        message: AddResourceToProjectRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        if (message.resourceType !== 0) {
+            writer.uint32(16).int32(message.resourceType);
+        }
+        if (message.resourceId !== '') {
+            writer.uint32(26).string(message.resourceId);
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): AddResourceToProjectRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseAddResourceToProjectRequest,
-    } as AddResourceToProjectRequest;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        case 2:
-          message.resourceType = reader.int32() as any;
-          break;
-        case 3:
-          message.resourceId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddResourceToProjectRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseAddResourceToProjectRequest } as AddResourceToProjectRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                case 2:
+                    message.resourceType = reader.int32() as any;
+                    break;
+                case 3:
+                    message.resourceId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): AddResourceToProjectRequest {
-    const message = {
-      ...baseAddResourceToProjectRequest,
-    } as AddResourceToProjectRequest;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    message.resourceType =
-      object.resourceType !== undefined && object.resourceType !== null
-        ? resourceTypeFromJSON(object.resourceType)
-        : 0;
-    message.resourceId =
-      object.resourceId !== undefined && object.resourceId !== null
-        ? String(object.resourceId)
-        : "";
-    return message;
-  },
+    fromJSON(object: any): AddResourceToProjectRequest {
+        const message = { ...baseAddResourceToProjectRequest } as AddResourceToProjectRequest;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.resourceType =
+            object.resourceType !== undefined && object.resourceType !== null
+                ? resourceTypeFromJSON(object.resourceType)
+                : 0;
+        message.resourceId =
+            object.resourceId !== undefined && object.resourceId !== null
+                ? String(object.resourceId)
+                : '';
+        return message;
+    },
 
-  toJSON(message: AddResourceToProjectRequest): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    message.resourceType !== undefined &&
-      (obj.resourceType = resourceTypeToJSON(message.resourceType));
-    message.resourceId !== undefined && (obj.resourceId = message.resourceId);
-    return obj;
-  },
+    toJSON(message: AddResourceToProjectRequest): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        message.resourceType !== undefined &&
+            (obj.resourceType = resourceTypeToJSON(message.resourceType));
+        message.resourceId !== undefined && (obj.resourceId = message.resourceId);
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<AddResourceToProjectRequest>, I>>(
-    object: I
-  ): AddResourceToProjectRequest {
-    const message = {
-      ...baseAddResourceToProjectRequest,
-    } as AddResourceToProjectRequest;
-    message.projectId = object.projectId ?? "";
-    message.resourceType = object.resourceType ?? 0;
-    message.resourceId = object.resourceId ?? "";
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<AddResourceToProjectRequest>, I>>(
+        object: I,
+    ): AddResourceToProjectRequest {
+        const message = { ...baseAddResourceToProjectRequest } as AddResourceToProjectRequest;
+        message.projectId = object.projectId ?? '';
+        message.resourceType = object.resourceType ?? 0;
+        message.resourceId = object.resourceId ?? '';
+        return message;
+    },
 };
 
-messageTypeRegistry.set(
-  AddResourceToProjectRequest.$type,
-  AddResourceToProjectRequest
-);
+messageTypeRegistry.set(AddResourceToProjectRequest.$type, AddResourceToProjectRequest);
 
 const baseRemoveResourceFromProjectRequest: object = {
-  $type: "yandex.cloud.datasphere.v2.RemoveResourceFromProjectRequest",
-  projectId: "",
-  resourceType: 0,
-  resourceId: "",
+    $type: 'yandex.cloud.datasphere.v2.RemoveResourceFromProjectRequest',
+    projectId: '',
+    resourceType: 0,
+    resourceId: '',
 };
 
 export const RemoveResourceFromProjectRequest = {
-  $type: "yandex.cloud.datasphere.v2.RemoveResourceFromProjectRequest" as const,
+    $type: 'yandex.cloud.datasphere.v2.RemoveResourceFromProjectRequest' as const,
 
-  encode(
-    message: RemoveResourceFromProjectRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    if (message.resourceType !== 0) {
-      writer.uint32(16).int32(message.resourceType);
-    }
-    if (message.resourceId !== "") {
-      writer.uint32(26).string(message.resourceId);
-    }
-    return writer;
-  },
+    encode(
+        message: RemoveResourceFromProjectRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        if (message.resourceType !== 0) {
+            writer.uint32(16).int32(message.resourceType);
+        }
+        if (message.resourceId !== '') {
+            writer.uint32(26).string(message.resourceId);
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): RemoveResourceFromProjectRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseRemoveResourceFromProjectRequest,
-    } as RemoveResourceFromProjectRequest;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        case 2:
-          message.resourceType = reader.int32() as any;
-          break;
-        case 3:
-          message.resourceId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveResourceFromProjectRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseRemoveResourceFromProjectRequest,
+        } as RemoveResourceFromProjectRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                case 2:
+                    message.resourceType = reader.int32() as any;
+                    break;
+                case 3:
+                    message.resourceId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): RemoveResourceFromProjectRequest {
-    const message = {
-      ...baseRemoveResourceFromProjectRequest,
-    } as RemoveResourceFromProjectRequest;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    message.resourceType =
-      object.resourceType !== undefined && object.resourceType !== null
-        ? resourceTypeFromJSON(object.resourceType)
-        : 0;
-    message.resourceId =
-      object.resourceId !== undefined && object.resourceId !== null
-        ? String(object.resourceId)
-        : "";
-    return message;
-  },
+    fromJSON(object: any): RemoveResourceFromProjectRequest {
+        const message = {
+            ...baseRemoveResourceFromProjectRequest,
+        } as RemoveResourceFromProjectRequest;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.resourceType =
+            object.resourceType !== undefined && object.resourceType !== null
+                ? resourceTypeFromJSON(object.resourceType)
+                : 0;
+        message.resourceId =
+            object.resourceId !== undefined && object.resourceId !== null
+                ? String(object.resourceId)
+                : '';
+        return message;
+    },
 
-  toJSON(message: RemoveResourceFromProjectRequest): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    message.resourceType !== undefined &&
-      (obj.resourceType = resourceTypeToJSON(message.resourceType));
-    message.resourceId !== undefined && (obj.resourceId = message.resourceId);
-    return obj;
-  },
+    toJSON(message: RemoveResourceFromProjectRequest): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        message.resourceType !== undefined &&
+            (obj.resourceType = resourceTypeToJSON(message.resourceType));
+        message.resourceId !== undefined && (obj.resourceId = message.resourceId);
+        return obj;
+    },
 
-  fromPartial<
-    I extends Exact<DeepPartial<RemoveResourceFromProjectRequest>, I>
-  >(object: I): RemoveResourceFromProjectRequest {
-    const message = {
-      ...baseRemoveResourceFromProjectRequest,
-    } as RemoveResourceFromProjectRequest;
-    message.projectId = object.projectId ?? "";
-    message.resourceType = object.resourceType ?? 0;
-    message.resourceId = object.resourceId ?? "";
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<RemoveResourceFromProjectRequest>, I>>(
+        object: I,
+    ): RemoveResourceFromProjectRequest {
+        const message = {
+            ...baseRemoveResourceFromProjectRequest,
+        } as RemoveResourceFromProjectRequest;
+        message.projectId = object.projectId ?? '';
+        message.resourceType = object.resourceType ?? 0;
+        message.resourceId = object.resourceId ?? '';
+        return message;
+    },
 };
 
-messageTypeRegistry.set(
-  RemoveResourceFromProjectRequest.$type,
-  RemoveResourceFromProjectRequest
-);
+messageTypeRegistry.set(RemoveResourceFromProjectRequest.$type, RemoveResourceFromProjectRequest);
 
 const baseGetProjectRestrictionsRequest: object = {
-  $type: "yandex.cloud.datasphere.v2.GetProjectRestrictionsRequest",
-  projectId: "",
+    $type: 'yandex.cloud.datasphere.v2.GetProjectRestrictionsRequest',
+    projectId: '',
 };
 
 export const GetProjectRestrictionsRequest = {
-  $type: "yandex.cloud.datasphere.v2.GetProjectRestrictionsRequest" as const,
+    $type: 'yandex.cloud.datasphere.v2.GetProjectRestrictionsRequest' as const,
 
-  encode(
-    message: GetProjectRestrictionsRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    return writer;
-  },
+    encode(
+        message: GetProjectRestrictionsRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetProjectRestrictionsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseGetProjectRestrictionsRequest,
-    } as GetProjectRestrictionsRequest;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetProjectRestrictionsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGetProjectRestrictionsRequest } as GetProjectRestrictionsRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): GetProjectRestrictionsRequest {
-    const message = {
-      ...baseGetProjectRestrictionsRequest,
-    } as GetProjectRestrictionsRequest;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    return message;
-  },
+    fromJSON(object: any): GetProjectRestrictionsRequest {
+        const message = { ...baseGetProjectRestrictionsRequest } as GetProjectRestrictionsRequest;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        return message;
+    },
 
-  toJSON(message: GetProjectRestrictionsRequest): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    return obj;
-  },
+    toJSON(message: GetProjectRestrictionsRequest): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<GetProjectRestrictionsRequest>, I>>(
-    object: I
-  ): GetProjectRestrictionsRequest {
-    const message = {
-      ...baseGetProjectRestrictionsRequest,
-    } as GetProjectRestrictionsRequest;
-    message.projectId = object.projectId ?? "";
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<GetProjectRestrictionsRequest>, I>>(
+        object: I,
+    ): GetProjectRestrictionsRequest {
+        const message = { ...baseGetProjectRestrictionsRequest } as GetProjectRestrictionsRequest;
+        message.projectId = object.projectId ?? '';
+        return message;
+    },
 };
 
-messageTypeRegistry.set(
-  GetProjectRestrictionsRequest.$type,
-  GetProjectRestrictionsRequest
-);
+messageTypeRegistry.set(GetProjectRestrictionsRequest.$type, GetProjectRestrictionsRequest);
 
 const baseSetProjectRestrictionsRequest: object = {
-  $type: "yandex.cloud.datasphere.v2.SetProjectRestrictionsRequest",
-  projectId: "",
+    $type: 'yandex.cloud.datasphere.v2.SetProjectRestrictionsRequest',
+    projectId: '',
 };
 
 export const SetProjectRestrictionsRequest = {
-  $type: "yandex.cloud.datasphere.v2.SetProjectRestrictionsRequest" as const,
+    $type: 'yandex.cloud.datasphere.v2.SetProjectRestrictionsRequest' as const,
 
-  encode(
-    message: SetProjectRestrictionsRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
-    }
-    for (const v of message.restrictions) {
-      Restriction.encode(v!, writer.uint32(18).fork()).ldelim();
-    }
-    return writer;
-  },
+    encode(
+        message: SetProjectRestrictionsRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        for (const v of message.restrictions) {
+            Restriction.encode(v!, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): SetProjectRestrictionsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseSetProjectRestrictionsRequest,
-    } as SetProjectRestrictionsRequest;
-    message.restrictions = [];
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectId = reader.string();
-          break;
-        case 2:
-          message.restrictions.push(
-            Restriction.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetProjectRestrictionsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSetProjectRestrictionsRequest } as SetProjectRestrictionsRequest;
+        message.restrictions = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                case 2:
+                    message.restrictions.push(Restriction.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): SetProjectRestrictionsRequest {
-    const message = {
-      ...baseSetProjectRestrictionsRequest,
-    } as SetProjectRestrictionsRequest;
-    message.projectId =
-      object.projectId !== undefined && object.projectId !== null
-        ? String(object.projectId)
-        : "";
-    message.restrictions = (object.restrictions ?? []).map((e: any) =>
-      Restriction.fromJSON(e)
-    );
-    return message;
-  },
+    fromJSON(object: any): SetProjectRestrictionsRequest {
+        const message = { ...baseSetProjectRestrictionsRequest } as SetProjectRestrictionsRequest;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.restrictions = (object.restrictions ?? []).map((e: any) => Restriction.fromJSON(e));
+        return message;
+    },
 
-  toJSON(message: SetProjectRestrictionsRequest): unknown {
-    const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = message.projectId);
-    if (message.restrictions) {
-      obj.restrictions = message.restrictions.map((e) =>
-        e ? Restriction.toJSON(e) : undefined
-      );
-    } else {
-      obj.restrictions = [];
-    }
-    return obj;
-  },
+    toJSON(message: SetProjectRestrictionsRequest): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        if (message.restrictions) {
+            obj.restrictions = message.restrictions.map((e) =>
+                e ? Restriction.toJSON(e) : undefined,
+            );
+        } else {
+            obj.restrictions = [];
+        }
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<SetProjectRestrictionsRequest>, I>>(
-    object: I
-  ): SetProjectRestrictionsRequest {
-    const message = {
-      ...baseSetProjectRestrictionsRequest,
-    } as SetProjectRestrictionsRequest;
-    message.projectId = object.projectId ?? "";
-    message.restrictions =
-      object.restrictions?.map((e) => Restriction.fromPartial(e)) || [];
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<SetProjectRestrictionsRequest>, I>>(
+        object: I,
+    ): SetProjectRestrictionsRequest {
+        const message = { ...baseSetProjectRestrictionsRequest } as SetProjectRestrictionsRequest;
+        message.projectId = object.projectId ?? '';
+        message.restrictions = object.restrictions?.map((e) => Restriction.fromPartial(e)) || [];
+        return message;
+    },
 };
 
-messageTypeRegistry.set(
-  SetProjectRestrictionsRequest.$type,
-  SetProjectRestrictionsRequest
-);
+messageTypeRegistry.set(SetProjectRestrictionsRequest.$type, SetProjectRestrictionsRequest);
+
+const baseResizeProjectDiskRequest: object = {
+    $type: 'yandex.cloud.datasphere.v2.ResizeProjectDiskRequest',
+    projectId: '',
+    newDiskSizeGb: 0,
+};
+
+export const ResizeProjectDiskRequest = {
+    $type: 'yandex.cloud.datasphere.v2.ResizeProjectDiskRequest' as const,
+
+    encode(
+        message: ResizeProjectDiskRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        if (message.newDiskSizeGb !== 0) {
+            writer.uint32(16).int64(message.newDiskSizeGb);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResizeProjectDiskRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseResizeProjectDiskRequest } as ResizeProjectDiskRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                case 2:
+                    message.newDiskSizeGb = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ResizeProjectDiskRequest {
+        const message = { ...baseResizeProjectDiskRequest } as ResizeProjectDiskRequest;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.newDiskSizeGb =
+            object.newDiskSizeGb !== undefined && object.newDiskSizeGb !== null
+                ? Number(object.newDiskSizeGb)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: ResizeProjectDiskRequest): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        message.newDiskSizeGb !== undefined &&
+            (obj.newDiskSizeGb = Math.round(message.newDiskSizeGb));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ResizeProjectDiskRequest>, I>>(
+        object: I,
+    ): ResizeProjectDiskRequest {
+        const message = { ...baseResizeProjectDiskRequest } as ResizeProjectDiskRequest;
+        message.projectId = object.projectId ?? '';
+        message.newDiskSizeGb = object.newDiskSizeGb ?? 0;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ResizeProjectDiskRequest.$type, ResizeProjectDiskRequest);
+
+const baseResizeProjectDiskMetadata: object = {
+    $type: 'yandex.cloud.datasphere.v2.ResizeProjectDiskMetadata',
+    projectId: '',
+    oldDiskSizeGb: 0,
+    newDiskSizeGb: 0,
+};
+
+export const ResizeProjectDiskMetadata = {
+    $type: 'yandex.cloud.datasphere.v2.ResizeProjectDiskMetadata' as const,
+
+    encode(
+        message: ResizeProjectDiskMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        if (message.oldDiskSizeGb !== 0) {
+            writer.uint32(16).int64(message.oldDiskSizeGb);
+        }
+        if (message.newDiskSizeGb !== 0) {
+            writer.uint32(24).int64(message.newDiskSizeGb);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResizeProjectDiskMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseResizeProjectDiskMetadata } as ResizeProjectDiskMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                case 2:
+                    message.oldDiskSizeGb = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.newDiskSizeGb = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ResizeProjectDiskMetadata {
+        const message = { ...baseResizeProjectDiskMetadata } as ResizeProjectDiskMetadata;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.oldDiskSizeGb =
+            object.oldDiskSizeGb !== undefined && object.oldDiskSizeGb !== null
+                ? Number(object.oldDiskSizeGb)
+                : 0;
+        message.newDiskSizeGb =
+            object.newDiskSizeGb !== undefined && object.newDiskSizeGb !== null
+                ? Number(object.newDiskSizeGb)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: ResizeProjectDiskMetadata): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        message.oldDiskSizeGb !== undefined &&
+            (obj.oldDiskSizeGb = Math.round(message.oldDiskSizeGb));
+        message.newDiskSizeGb !== undefined &&
+            (obj.newDiskSizeGb = Math.round(message.newDiskSizeGb));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ResizeProjectDiskMetadata>, I>>(
+        object: I,
+    ): ResizeProjectDiskMetadata {
+        const message = { ...baseResizeProjectDiskMetadata } as ResizeProjectDiskMetadata;
+        message.projectId = object.projectId ?? '';
+        message.oldDiskSizeGb = object.oldDiskSizeGb ?? 0;
+        message.newDiskSizeGb = object.newDiskSizeGb ?? 0;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ResizeProjectDiskMetadata.$type, ResizeProjectDiskMetadata);
+
+const baseDiskInfo: object = {
+    $type: 'yandex.cloud.datasphere.v2.DiskInfo',
+    projectId: '',
+    diskSizeGb: 0,
+    diskUsedGb: 0,
+};
+
+export const DiskInfo = {
+    $type: 'yandex.cloud.datasphere.v2.DiskInfo' as const,
+
+    encode(message: DiskInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        if (message.diskSizeGb !== 0) {
+            writer.uint32(17).double(message.diskSizeGb);
+        }
+        if (message.diskUsedGb !== 0) {
+            writer.uint32(25).double(message.diskUsedGb);
+        }
+        if (message.detailedUsage !== undefined) {
+            DiskInfo_DetailedDiskInfo.encode(
+                message.detailedUsage,
+                writer.uint32(34).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskInfo {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDiskInfo } as DiskInfo;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                case 2:
+                    message.diskSizeGb = reader.double();
+                    break;
+                case 3:
+                    message.diskUsedGb = reader.double();
+                    break;
+                case 4:
+                    message.detailedUsage = DiskInfo_DetailedDiskInfo.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DiskInfo {
+        const message = { ...baseDiskInfo } as DiskInfo;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.diskSizeGb =
+            object.diskSizeGb !== undefined && object.diskSizeGb !== null
+                ? Number(object.diskSizeGb)
+                : 0;
+        message.diskUsedGb =
+            object.diskUsedGb !== undefined && object.diskUsedGb !== null
+                ? Number(object.diskUsedGb)
+                : 0;
+        message.detailedUsage =
+            object.detailedUsage !== undefined && object.detailedUsage !== null
+                ? DiskInfo_DetailedDiskInfo.fromJSON(object.detailedUsage)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: DiskInfo): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        message.diskSizeGb !== undefined && (obj.diskSizeGb = message.diskSizeGb);
+        message.diskUsedGb !== undefined && (obj.diskUsedGb = message.diskUsedGb);
+        message.detailedUsage !== undefined &&
+            (obj.detailedUsage = message.detailedUsage
+                ? DiskInfo_DetailedDiskInfo.toJSON(message.detailedUsage)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DiskInfo>, I>>(object: I): DiskInfo {
+        const message = { ...baseDiskInfo } as DiskInfo;
+        message.projectId = object.projectId ?? '';
+        message.diskSizeGb = object.diskSizeGb ?? 0;
+        message.diskUsedGb = object.diskUsedGb ?? 0;
+        message.detailedUsage =
+            object.detailedUsage !== undefined && object.detailedUsage !== null
+                ? DiskInfo_DetailedDiskInfo.fromPartial(object.detailedUsage)
+                : undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(DiskInfo.$type, DiskInfo);
+
+const baseDiskInfo_DetailedDiskInfo: object = {
+    $type: 'yandex.cloud.datasphere.v2.DiskInfo.DetailedDiskInfo',
+    userDataGb: 0,
+    packagesGb: 0,
+    systemDataGb: 0,
+    freeSpaceGb: 0,
+};
+
+export const DiskInfo_DetailedDiskInfo = {
+    $type: 'yandex.cloud.datasphere.v2.DiskInfo.DetailedDiskInfo' as const,
+
+    encode(
+        message: DiskInfo_DetailedDiskInfo,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.userDataGb !== 0) {
+            writer.uint32(9).double(message.userDataGb);
+        }
+        if (message.packagesGb !== 0) {
+            writer.uint32(17).double(message.packagesGb);
+        }
+        if (message.systemDataGb !== 0) {
+            writer.uint32(25).double(message.systemDataGb);
+        }
+        if (message.freeSpaceGb !== 0) {
+            writer.uint32(33).double(message.freeSpaceGb);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskInfo_DetailedDiskInfo {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDiskInfo_DetailedDiskInfo } as DiskInfo_DetailedDiskInfo;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.userDataGb = reader.double();
+                    break;
+                case 2:
+                    message.packagesGb = reader.double();
+                    break;
+                case 3:
+                    message.systemDataGb = reader.double();
+                    break;
+                case 4:
+                    message.freeSpaceGb = reader.double();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DiskInfo_DetailedDiskInfo {
+        const message = { ...baseDiskInfo_DetailedDiskInfo } as DiskInfo_DetailedDiskInfo;
+        message.userDataGb =
+            object.userDataGb !== undefined && object.userDataGb !== null
+                ? Number(object.userDataGb)
+                : 0;
+        message.packagesGb =
+            object.packagesGb !== undefined && object.packagesGb !== null
+                ? Number(object.packagesGb)
+                : 0;
+        message.systemDataGb =
+            object.systemDataGb !== undefined && object.systemDataGb !== null
+                ? Number(object.systemDataGb)
+                : 0;
+        message.freeSpaceGb =
+            object.freeSpaceGb !== undefined && object.freeSpaceGb !== null
+                ? Number(object.freeSpaceGb)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: DiskInfo_DetailedDiskInfo): unknown {
+        const obj: any = {};
+        message.userDataGb !== undefined && (obj.userDataGb = message.userDataGb);
+        message.packagesGb !== undefined && (obj.packagesGb = message.packagesGb);
+        message.systemDataGb !== undefined && (obj.systemDataGb = message.systemDataGb);
+        message.freeSpaceGb !== undefined && (obj.freeSpaceGb = message.freeSpaceGb);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DiskInfo_DetailedDiskInfo>, I>>(
+        object: I,
+    ): DiskInfo_DetailedDiskInfo {
+        const message = { ...baseDiskInfo_DetailedDiskInfo } as DiskInfo_DetailedDiskInfo;
+        message.userDataGb = object.userDataGb ?? 0;
+        message.packagesGb = object.packagesGb ?? 0;
+        message.systemDataGb = object.systemDataGb ?? 0;
+        message.freeSpaceGb = object.freeSpaceGb ?? 0;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(DiskInfo_DetailedDiskInfo.$type, DiskInfo_DetailedDiskInfo);
 
 /** A set of methods for managing Project resources. */
 export const ProjectServiceService = {
-  /** Creates a project in the specified folder. */
-  create: {
-    path: "/yandex.cloud.datasphere.v2.ProjectService/Create",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: CreateProjectRequest) =>
-      Buffer.from(CreateProjectRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) => CreateProjectRequest.decode(value),
-    responseSerialize: (value: Operation) =>
-      Buffer.from(Operation.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => Operation.decode(value),
-  },
-  /** Updates the specified project. */
-  update: {
-    path: "/yandex.cloud.datasphere.v2.ProjectService/Update",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: UpdateProjectRequest) =>
-      Buffer.from(UpdateProjectRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) => UpdateProjectRequest.decode(value),
-    responseSerialize: (value: Operation) =>
-      Buffer.from(Operation.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => Operation.decode(value),
-  },
-  /** Deletes the specified project. */
-  delete: {
-    path: "/yandex.cloud.datasphere.v2.ProjectService/Delete",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: DeleteProjectRequest) =>
-      Buffer.from(DeleteProjectRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) => DeleteProjectRequest.decode(value),
-    responseSerialize: (value: Operation) =>
-      Buffer.from(Operation.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => Operation.decode(value),
-  },
-  /** Opens the specified project. */
-  open: {
-    path: "/yandex.cloud.datasphere.v2.ProjectService/Open",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: OpenProjectRequest) =>
-      Buffer.from(OpenProjectRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) => OpenProjectRequest.decode(value),
-    responseSerialize: (value: Operation) =>
-      Buffer.from(Operation.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => Operation.decode(value),
-  },
-  /** Returns the specified project. */
-  get: {
-    path: "/yandex.cloud.datasphere.v2.ProjectService/Get",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: GetProjectRequest) =>
-      Buffer.from(GetProjectRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) => GetProjectRequest.decode(value),
-    responseSerialize: (value: Project) =>
-      Buffer.from(Project.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => Project.decode(value),
-  },
-  /** Lists projects for the specified community. */
-  list: {
-    path: "/yandex.cloud.datasphere.v2.ProjectService/List",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: ListProjectsRequest) =>
-      Buffer.from(ListProjectsRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) => ListProjectsRequest.decode(value),
-    responseSerialize: (value: ListProjectsResponse) =>
-      Buffer.from(ListProjectsResponse.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => ListProjectsResponse.decode(value),
-  },
-  /** Returns the unit balance of the specified project. */
-  getUnitBalance: {
-    path: "/yandex.cloud.datasphere.v2.ProjectService/GetUnitBalance",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: GetUnitBalanceRequest) =>
-      Buffer.from(GetUnitBalanceRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) => GetUnitBalanceRequest.decode(value),
-    responseSerialize: (value: GetUnitBalanceResponse) =>
-      Buffer.from(GetUnitBalanceResponse.encode(value).finish()),
-    responseDeserialize: (value: Buffer) =>
-      GetUnitBalanceResponse.decode(value),
-  },
-  /** Sets the unit balance of the specified project. */
-  setUnitBalance: {
-    path: "/yandex.cloud.datasphere.v2.ProjectService/SetUnitBalance",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: SetUnitBalanceRequest) =>
-      Buffer.from(SetUnitBalanceRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) => SetUnitBalanceRequest.decode(value),
-    responseSerialize: (value: Operation) =>
-      Buffer.from(Operation.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => Operation.decode(value),
-  },
-  /** Executes code of the specified notebook using configuration defined in the project settings. If the default project configuration is not specified, `c1.4` is used. */
-  execute: {
-    path: "/yandex.cloud.datasphere.v2.ProjectService/Execute",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: ProjectExecutionRequest) =>
-      Buffer.from(ProjectExecutionRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) =>
-      ProjectExecutionRequest.decode(value),
-    responseSerialize: (value: Operation) =>
-      Buffer.from(Operation.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => Operation.decode(value),
-  },
-  /**
-   * Returns outputs of the specified cell.
-   * Deprecated
-   */
-  getCellOutputs: {
-    path: "/yandex.cloud.datasphere.v2.ProjectService/GetCellOutputs",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: CellOutputsRequest) =>
-      Buffer.from(CellOutputsRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) => CellOutputsRequest.decode(value),
-    responseSerialize: (value: CellOutputsResponse) =>
-      Buffer.from(CellOutputsResponse.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => CellOutputsResponse.decode(value),
-  },
-  /**
-   * Returns state variables of the specified notebook.
-   * Deprecated
-   */
-  getStateVariables: {
-    path: "/yandex.cloud.datasphere.v2.ProjectService/GetStateVariables",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: GetStateVariablesRequest) =>
-      Buffer.from(GetStateVariablesRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) =>
-      GetStateVariablesRequest.decode(value),
-    responseSerialize: (value: GetStateVariablesResponse) =>
-      Buffer.from(GetStateVariablesResponse.encode(value).finish()),
-    responseDeserialize: (value: Buffer) =>
-      GetStateVariablesResponse.decode(value),
-  },
-  /** Lists access bindings for the project. */
-  listAccessBindings: {
-    path: "/yandex.cloud.datasphere.v2.ProjectService/ListAccessBindings",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: ListAccessBindingsRequest) =>
-      Buffer.from(ListAccessBindingsRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) =>
-      ListAccessBindingsRequest.decode(value),
-    responseSerialize: (value: ListAccessBindingsResponse) =>
-      Buffer.from(ListAccessBindingsResponse.encode(value).finish()),
-    responseDeserialize: (value: Buffer) =>
-      ListAccessBindingsResponse.decode(value),
-  },
-  /** Sets access bindings for the project. */
-  setAccessBindings: {
-    path: "/yandex.cloud.datasphere.v2.ProjectService/SetAccessBindings",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: SetAccessBindingsRequest) =>
-      Buffer.from(SetAccessBindingsRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) =>
-      SetAccessBindingsRequest.decode(value),
-    responseSerialize: (value: Operation) =>
-      Buffer.from(Operation.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => Operation.decode(value),
-  },
-  /** Updates access bindings for the project. */
-  updateAccessBindings: {
-    path: "/yandex.cloud.datasphere.v2.ProjectService/UpdateAccessBindings",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: UpdateAccessBindingsRequest) =>
-      Buffer.from(UpdateAccessBindingsRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) =>
-      UpdateAccessBindingsRequest.decode(value),
-    responseSerialize: (value: Operation) =>
-      Buffer.from(Operation.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => Operation.decode(value),
-  },
-  /** Adds shared resource to project */
-  addResource: {
-    path: "/yandex.cloud.datasphere.v2.ProjectService/AddResource",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: AddResourceToProjectRequest) =>
-      Buffer.from(AddResourceToProjectRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) =>
-      AddResourceToProjectRequest.decode(value),
-    responseSerialize: (value: Operation) =>
-      Buffer.from(Operation.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => Operation.decode(value),
-  },
-  /** Removes shared resource from project */
-  removeResource: {
-    path: "/yandex.cloud.datasphere.v2.ProjectService/RemoveResource",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: RemoveResourceFromProjectRequest) =>
-      Buffer.from(RemoveResourceFromProjectRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) =>
-      RemoveResourceFromProjectRequest.decode(value),
-    responseSerialize: (value: Operation) =>
-      Buffer.from(Operation.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => Operation.decode(value),
-  },
-  /** Get meta information about available restrictions. */
-  getRestrictionsMeta: {
-    path: "/yandex.cloud.datasphere.v2.ProjectService/GetRestrictionsMeta",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: Empty) =>
-      Buffer.from(Empty.encode(value).finish()),
-    requestDeserialize: (value: Buffer) => Empty.decode(value),
-    responseSerialize: (value: GetRestrictionsMetaResponse) =>
-      Buffer.from(GetRestrictionsMetaResponse.encode(value).finish()),
-    responseDeserialize: (value: Buffer) =>
-      GetRestrictionsMetaResponse.decode(value),
-  },
-  /** Get current project restrictions. */
-  getRestrictions: {
-    path: "/yandex.cloud.datasphere.v2.ProjectService/GetRestrictions",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: GetProjectRestrictionsRequest) =>
-      Buffer.from(GetProjectRestrictionsRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) =>
-      GetProjectRestrictionsRequest.decode(value),
-    responseSerialize: (value: RestrictionsResponse) =>
-      Buffer.from(RestrictionsResponse.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => RestrictionsResponse.decode(value),
-  },
-  /** Set project restrictions. */
-  setRestrictions: {
-    path: "/yandex.cloud.datasphere.v2.ProjectService/SetRestrictions",
-    requestStream: false,
-    responseStream: false,
-    requestSerialize: (value: SetProjectRestrictionsRequest) =>
-      Buffer.from(SetProjectRestrictionsRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) =>
-      SetProjectRestrictionsRequest.decode(value),
-    responseSerialize: (value: Operation) =>
-      Buffer.from(Operation.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => Operation.decode(value),
-  },
+    /** Creates a project in the specified folder. */
+    create: {
+        path: '/yandex.cloud.datasphere.v2.ProjectService/Create',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: CreateProjectRequest) =>
+            Buffer.from(CreateProjectRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => CreateProjectRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Updates the specified project. */
+    update: {
+        path: '/yandex.cloud.datasphere.v2.ProjectService/Update',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateProjectRequest) =>
+            Buffer.from(UpdateProjectRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdateProjectRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Deletes the specified project. */
+    delete: {
+        path: '/yandex.cloud.datasphere.v2.ProjectService/Delete',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: DeleteProjectRequest) =>
+            Buffer.from(DeleteProjectRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => DeleteProjectRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Opens the specified project. */
+    open: {
+        path: '/yandex.cloud.datasphere.v2.ProjectService/Open',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: OpenProjectRequest) =>
+            Buffer.from(OpenProjectRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => OpenProjectRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Returns the specified project. */
+    get: {
+        path: '/yandex.cloud.datasphere.v2.ProjectService/Get',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: GetProjectRequest) =>
+            Buffer.from(GetProjectRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => GetProjectRequest.decode(value),
+        responseSerialize: (value: Project) => Buffer.from(Project.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Project.decode(value),
+    },
+    /** Lists projects for the specified community. */
+    list: {
+        path: '/yandex.cloud.datasphere.v2.ProjectService/List',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListProjectsRequest) =>
+            Buffer.from(ListProjectsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListProjectsRequest.decode(value),
+        responseSerialize: (value: ListProjectsResponse) =>
+            Buffer.from(ListProjectsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListProjectsResponse.decode(value),
+    },
+    /** Returns the unit balance of the specified project. */
+    getUnitBalance: {
+        path: '/yandex.cloud.datasphere.v2.ProjectService/GetUnitBalance',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: GetUnitBalanceRequest) =>
+            Buffer.from(GetUnitBalanceRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => GetUnitBalanceRequest.decode(value),
+        responseSerialize: (value: GetUnitBalanceResponse) =>
+            Buffer.from(GetUnitBalanceResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => GetUnitBalanceResponse.decode(value),
+    },
+    /** Sets the unit balance of the specified project. */
+    setUnitBalance: {
+        path: '/yandex.cloud.datasphere.v2.ProjectService/SetUnitBalance',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: SetUnitBalanceRequest) =>
+            Buffer.from(SetUnitBalanceRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => SetUnitBalanceRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Executes code of the specified notebook using configuration defined in the project settings. If the default project configuration is not specified, `c1.4` is used. */
+    execute: {
+        path: '/yandex.cloud.datasphere.v2.ProjectService/Execute',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ProjectExecutionRequest) =>
+            Buffer.from(ProjectExecutionRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ProjectExecutionRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Lists access bindings for the project. */
+    listAccessBindings: {
+        path: '/yandex.cloud.datasphere.v2.ProjectService/ListAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListAccessBindingsRequest) =>
+            Buffer.from(ListAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListAccessBindingsRequest.decode(value),
+        responseSerialize: (value: ListAccessBindingsResponse) =>
+            Buffer.from(ListAccessBindingsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListAccessBindingsResponse.decode(value),
+    },
+    /** Sets access bindings for the project. */
+    setAccessBindings: {
+        path: '/yandex.cloud.datasphere.v2.ProjectService/SetAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: SetAccessBindingsRequest) =>
+            Buffer.from(SetAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => SetAccessBindingsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Updates access bindings for the project. */
+    updateAccessBindings: {
+        path: '/yandex.cloud.datasphere.v2.ProjectService/UpdateAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateAccessBindingsRequest) =>
+            Buffer.from(UpdateAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdateAccessBindingsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Adds shared resource to project */
+    addResource: {
+        path: '/yandex.cloud.datasphere.v2.ProjectService/AddResource',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: AddResourceToProjectRequest) =>
+            Buffer.from(AddResourceToProjectRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => AddResourceToProjectRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Removes shared resource from project */
+    removeResource: {
+        path: '/yandex.cloud.datasphere.v2.ProjectService/RemoveResource',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: RemoveResourceFromProjectRequest) =>
+            Buffer.from(RemoveResourceFromProjectRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => RemoveResourceFromProjectRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Resizes project disk */
+    resizeDisk: {
+        path: '/yandex.cloud.datasphere.v2.ProjectService/ResizeDisk',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ResizeProjectDiskRequest) =>
+            Buffer.from(ResizeProjectDiskRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ResizeProjectDiskRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Get meta information about available restrictions. */
+    getRestrictionsMeta: {
+        path: '/yandex.cloud.datasphere.v2.ProjectService/GetRestrictionsMeta',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: Empty) => Buffer.from(Empty.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => Empty.decode(value),
+        responseSerialize: (value: GetRestrictionsMetaResponse) =>
+            Buffer.from(GetRestrictionsMetaResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => GetRestrictionsMetaResponse.decode(value),
+    },
+    /** Get current project restrictions. */
+    getRestrictions: {
+        path: '/yandex.cloud.datasphere.v2.ProjectService/GetRestrictions',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: GetProjectRestrictionsRequest) =>
+            Buffer.from(GetProjectRestrictionsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => GetProjectRestrictionsRequest.decode(value),
+        responseSerialize: (value: RestrictionsResponse) =>
+            Buffer.from(RestrictionsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => RestrictionsResponse.decode(value),
+    },
+    /** Set project restrictions. */
+    setRestrictions: {
+        path: '/yandex.cloud.datasphere.v2.ProjectService/SetRestrictions',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: SetProjectRestrictionsRequest) =>
+            Buffer.from(SetProjectRestrictionsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => SetProjectRestrictionsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
 } as const;
 
 export interface ProjectServiceServer extends UntypedServiceImplementation {
-  /** Creates a project in the specified folder. */
-  create: handleUnaryCall<CreateProjectRequest, Operation>;
-  /** Updates the specified project. */
-  update: handleUnaryCall<UpdateProjectRequest, Operation>;
-  /** Deletes the specified project. */
-  delete: handleUnaryCall<DeleteProjectRequest, Operation>;
-  /** Opens the specified project. */
-  open: handleUnaryCall<OpenProjectRequest, Operation>;
-  /** Returns the specified project. */
-  get: handleUnaryCall<GetProjectRequest, Project>;
-  /** Lists projects for the specified community. */
-  list: handleUnaryCall<ListProjectsRequest, ListProjectsResponse>;
-  /** Returns the unit balance of the specified project. */
-  getUnitBalance: handleUnaryCall<
-    GetUnitBalanceRequest,
-    GetUnitBalanceResponse
-  >;
-  /** Sets the unit balance of the specified project. */
-  setUnitBalance: handleUnaryCall<SetUnitBalanceRequest, Operation>;
-  /** Executes code of the specified notebook using configuration defined in the project settings. If the default project configuration is not specified, `c1.4` is used. */
-  execute: handleUnaryCall<ProjectExecutionRequest, Operation>;
-  /**
-   * Returns outputs of the specified cell.
-   * Deprecated
-   */
-  getCellOutputs: handleUnaryCall<CellOutputsRequest, CellOutputsResponse>;
-  /**
-   * Returns state variables of the specified notebook.
-   * Deprecated
-   */
-  getStateVariables: handleUnaryCall<
-    GetStateVariablesRequest,
-    GetStateVariablesResponse
-  >;
-  /** Lists access bindings for the project. */
-  listAccessBindings: handleUnaryCall<
-    ListAccessBindingsRequest,
-    ListAccessBindingsResponse
-  >;
-  /** Sets access bindings for the project. */
-  setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
-  /** Updates access bindings for the project. */
-  updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
-  /** Adds shared resource to project */
-  addResource: handleUnaryCall<AddResourceToProjectRequest, Operation>;
-  /** Removes shared resource from project */
-  removeResource: handleUnaryCall<RemoveResourceFromProjectRequest, Operation>;
-  /** Get meta information about available restrictions. */
-  getRestrictionsMeta: handleUnaryCall<Empty, GetRestrictionsMetaResponse>;
-  /** Get current project restrictions. */
-  getRestrictions: handleUnaryCall<
-    GetProjectRestrictionsRequest,
-    RestrictionsResponse
-  >;
-  /** Set project restrictions. */
-  setRestrictions: handleUnaryCall<SetProjectRestrictionsRequest, Operation>;
+    /** Creates a project in the specified folder. */
+    create: handleUnaryCall<CreateProjectRequest, Operation>;
+    /** Updates the specified project. */
+    update: handleUnaryCall<UpdateProjectRequest, Operation>;
+    /** Deletes the specified project. */
+    delete: handleUnaryCall<DeleteProjectRequest, Operation>;
+    /** Opens the specified project. */
+    open: handleUnaryCall<OpenProjectRequest, Operation>;
+    /** Returns the specified project. */
+    get: handleUnaryCall<GetProjectRequest, Project>;
+    /** Lists projects for the specified community. */
+    list: handleUnaryCall<ListProjectsRequest, ListProjectsResponse>;
+    /** Returns the unit balance of the specified project. */
+    getUnitBalance: handleUnaryCall<GetUnitBalanceRequest, GetUnitBalanceResponse>;
+    /** Sets the unit balance of the specified project. */
+    setUnitBalance: handleUnaryCall<SetUnitBalanceRequest, Operation>;
+    /** Executes code of the specified notebook using configuration defined in the project settings. If the default project configuration is not specified, `c1.4` is used. */
+    execute: handleUnaryCall<ProjectExecutionRequest, Operation>;
+    /** Lists access bindings for the project. */
+    listAccessBindings: handleUnaryCall<ListAccessBindingsRequest, ListAccessBindingsResponse>;
+    /** Sets access bindings for the project. */
+    setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
+    /** Updates access bindings for the project. */
+    updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
+    /** Adds shared resource to project */
+    addResource: handleUnaryCall<AddResourceToProjectRequest, Operation>;
+    /** Removes shared resource from project */
+    removeResource: handleUnaryCall<RemoveResourceFromProjectRequest, Operation>;
+    /** Resizes project disk */
+    resizeDisk: handleUnaryCall<ResizeProjectDiskRequest, Operation>;
+    /** Get meta information about available restrictions. */
+    getRestrictionsMeta: handleUnaryCall<Empty, GetRestrictionsMetaResponse>;
+    /** Get current project restrictions. */
+    getRestrictions: handleUnaryCall<GetProjectRestrictionsRequest, RestrictionsResponse>;
+    /** Set project restrictions. */
+    setRestrictions: handleUnaryCall<SetProjectRestrictionsRequest, Operation>;
 }
 
 export interface ProjectServiceClient extends Client {
-  /** Creates a project in the specified folder. */
-  create(
-    request: CreateProjectRequest,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  create(
-    request: CreateProjectRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  create(
-    request: CreateProjectRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  /** Updates the specified project. */
-  update(
-    request: UpdateProjectRequest,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  update(
-    request: UpdateProjectRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  update(
-    request: UpdateProjectRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  /** Deletes the specified project. */
-  delete(
-    request: DeleteProjectRequest,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  delete(
-    request: DeleteProjectRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  delete(
-    request: DeleteProjectRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  /** Opens the specified project. */
-  open(
-    request: OpenProjectRequest,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  open(
-    request: OpenProjectRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  open(
-    request: OpenProjectRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  /** Returns the specified project. */
-  get(
-    request: GetProjectRequest,
-    callback: (error: ServiceError | null, response: Project) => void
-  ): ClientUnaryCall;
-  get(
-    request: GetProjectRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: Project) => void
-  ): ClientUnaryCall;
-  get(
-    request: GetProjectRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Project) => void
-  ): ClientUnaryCall;
-  /** Lists projects for the specified community. */
-  list(
-    request: ListProjectsRequest,
-    callback: (
-      error: ServiceError | null,
-      response: ListProjectsResponse
-    ) => void
-  ): ClientUnaryCall;
-  list(
-    request: ListProjectsRequest,
-    metadata: Metadata,
-    callback: (
-      error: ServiceError | null,
-      response: ListProjectsResponse
-    ) => void
-  ): ClientUnaryCall;
-  list(
-    request: ListProjectsRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (
-      error: ServiceError | null,
-      response: ListProjectsResponse
-    ) => void
-  ): ClientUnaryCall;
-  /** Returns the unit balance of the specified project. */
-  getUnitBalance(
-    request: GetUnitBalanceRequest,
-    callback: (
-      error: ServiceError | null,
-      response: GetUnitBalanceResponse
-    ) => void
-  ): ClientUnaryCall;
-  getUnitBalance(
-    request: GetUnitBalanceRequest,
-    metadata: Metadata,
-    callback: (
-      error: ServiceError | null,
-      response: GetUnitBalanceResponse
-    ) => void
-  ): ClientUnaryCall;
-  getUnitBalance(
-    request: GetUnitBalanceRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (
-      error: ServiceError | null,
-      response: GetUnitBalanceResponse
-    ) => void
-  ): ClientUnaryCall;
-  /** Sets the unit balance of the specified project. */
-  setUnitBalance(
-    request: SetUnitBalanceRequest,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  setUnitBalance(
-    request: SetUnitBalanceRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  setUnitBalance(
-    request: SetUnitBalanceRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  /** Executes code of the specified notebook using configuration defined in the project settings. If the default project configuration is not specified, `c1.4` is used. */
-  execute(
-    request: ProjectExecutionRequest,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  execute(
-    request: ProjectExecutionRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  execute(
-    request: ProjectExecutionRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  /**
-   * Returns outputs of the specified cell.
-   * Deprecated
-   */
-  getCellOutputs(
-    request: CellOutputsRequest,
-    callback: (
-      error: ServiceError | null,
-      response: CellOutputsResponse
-    ) => void
-  ): ClientUnaryCall;
-  getCellOutputs(
-    request: CellOutputsRequest,
-    metadata: Metadata,
-    callback: (
-      error: ServiceError | null,
-      response: CellOutputsResponse
-    ) => void
-  ): ClientUnaryCall;
-  getCellOutputs(
-    request: CellOutputsRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (
-      error: ServiceError | null,
-      response: CellOutputsResponse
-    ) => void
-  ): ClientUnaryCall;
-  /**
-   * Returns state variables of the specified notebook.
-   * Deprecated
-   */
-  getStateVariables(
-    request: GetStateVariablesRequest,
-    callback: (
-      error: ServiceError | null,
-      response: GetStateVariablesResponse
-    ) => void
-  ): ClientUnaryCall;
-  getStateVariables(
-    request: GetStateVariablesRequest,
-    metadata: Metadata,
-    callback: (
-      error: ServiceError | null,
-      response: GetStateVariablesResponse
-    ) => void
-  ): ClientUnaryCall;
-  getStateVariables(
-    request: GetStateVariablesRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (
-      error: ServiceError | null,
-      response: GetStateVariablesResponse
-    ) => void
-  ): ClientUnaryCall;
-  /** Lists access bindings for the project. */
-  listAccessBindings(
-    request: ListAccessBindingsRequest,
-    callback: (
-      error: ServiceError | null,
-      response: ListAccessBindingsResponse
-    ) => void
-  ): ClientUnaryCall;
-  listAccessBindings(
-    request: ListAccessBindingsRequest,
-    metadata: Metadata,
-    callback: (
-      error: ServiceError | null,
-      response: ListAccessBindingsResponse
-    ) => void
-  ): ClientUnaryCall;
-  listAccessBindings(
-    request: ListAccessBindingsRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (
-      error: ServiceError | null,
-      response: ListAccessBindingsResponse
-    ) => void
-  ): ClientUnaryCall;
-  /** Sets access bindings for the project. */
-  setAccessBindings(
-    request: SetAccessBindingsRequest,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  setAccessBindings(
-    request: SetAccessBindingsRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  setAccessBindings(
-    request: SetAccessBindingsRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  /** Updates access bindings for the project. */
-  updateAccessBindings(
-    request: UpdateAccessBindingsRequest,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  updateAccessBindings(
-    request: UpdateAccessBindingsRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  updateAccessBindings(
-    request: UpdateAccessBindingsRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  /** Adds shared resource to project */
-  addResource(
-    request: AddResourceToProjectRequest,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  addResource(
-    request: AddResourceToProjectRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  addResource(
-    request: AddResourceToProjectRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  /** Removes shared resource from project */
-  removeResource(
-    request: RemoveResourceFromProjectRequest,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  removeResource(
-    request: RemoveResourceFromProjectRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  removeResource(
-    request: RemoveResourceFromProjectRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  /** Get meta information about available restrictions. */
-  getRestrictionsMeta(
-    request: Empty,
-    callback: (
-      error: ServiceError | null,
-      response: GetRestrictionsMetaResponse
-    ) => void
-  ): ClientUnaryCall;
-  getRestrictionsMeta(
-    request: Empty,
-    metadata: Metadata,
-    callback: (
-      error: ServiceError | null,
-      response: GetRestrictionsMetaResponse
-    ) => void
-  ): ClientUnaryCall;
-  getRestrictionsMeta(
-    request: Empty,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (
-      error: ServiceError | null,
-      response: GetRestrictionsMetaResponse
-    ) => void
-  ): ClientUnaryCall;
-  /** Get current project restrictions. */
-  getRestrictions(
-    request: GetProjectRestrictionsRequest,
-    callback: (
-      error: ServiceError | null,
-      response: RestrictionsResponse
-    ) => void
-  ): ClientUnaryCall;
-  getRestrictions(
-    request: GetProjectRestrictionsRequest,
-    metadata: Metadata,
-    callback: (
-      error: ServiceError | null,
-      response: RestrictionsResponse
-    ) => void
-  ): ClientUnaryCall;
-  getRestrictions(
-    request: GetProjectRestrictionsRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (
-      error: ServiceError | null,
-      response: RestrictionsResponse
-    ) => void
-  ): ClientUnaryCall;
-  /** Set project restrictions. */
-  setRestrictions(
-    request: SetProjectRestrictionsRequest,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  setRestrictions(
-    request: SetProjectRestrictionsRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
-  setRestrictions(
-    request: SetProjectRestrictionsRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Operation) => void
-  ): ClientUnaryCall;
+    /** Creates a project in the specified folder. */
+    create(
+        request: CreateProjectRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    create(
+        request: CreateProjectRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    create(
+        request: CreateProjectRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Updates the specified project. */
+    update(
+        request: UpdateProjectRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    update(
+        request: UpdateProjectRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    update(
+        request: UpdateProjectRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Deletes the specified project. */
+    delete(
+        request: DeleteProjectRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    delete(
+        request: DeleteProjectRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    delete(
+        request: DeleteProjectRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Opens the specified project. */
+    open(
+        request: OpenProjectRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    open(
+        request: OpenProjectRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    open(
+        request: OpenProjectRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Returns the specified project. */
+    get(
+        request: GetProjectRequest,
+        callback: (error: ServiceError | null, response: Project) => void,
+    ): ClientUnaryCall;
+    get(
+        request: GetProjectRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Project) => void,
+    ): ClientUnaryCall;
+    get(
+        request: GetProjectRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Project) => void,
+    ): ClientUnaryCall;
+    /** Lists projects for the specified community. */
+    list(
+        request: ListProjectsRequest,
+        callback: (error: ServiceError | null, response: ListProjectsResponse) => void,
+    ): ClientUnaryCall;
+    list(
+        request: ListProjectsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListProjectsResponse) => void,
+    ): ClientUnaryCall;
+    list(
+        request: ListProjectsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListProjectsResponse) => void,
+    ): ClientUnaryCall;
+    /** Returns the unit balance of the specified project. */
+    getUnitBalance(
+        request: GetUnitBalanceRequest,
+        callback: (error: ServiceError | null, response: GetUnitBalanceResponse) => void,
+    ): ClientUnaryCall;
+    getUnitBalance(
+        request: GetUnitBalanceRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: GetUnitBalanceResponse) => void,
+    ): ClientUnaryCall;
+    getUnitBalance(
+        request: GetUnitBalanceRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: GetUnitBalanceResponse) => void,
+    ): ClientUnaryCall;
+    /** Sets the unit balance of the specified project. */
+    setUnitBalance(
+        request: SetUnitBalanceRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setUnitBalance(
+        request: SetUnitBalanceRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setUnitBalance(
+        request: SetUnitBalanceRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Executes code of the specified notebook using configuration defined in the project settings. If the default project configuration is not specified, `c1.4` is used. */
+    execute(
+        request: ProjectExecutionRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    execute(
+        request: ProjectExecutionRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    execute(
+        request: ProjectExecutionRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Lists access bindings for the project. */
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    /** Sets access bindings for the project. */
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Updates access bindings for the project. */
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Adds shared resource to project */
+    addResource(
+        request: AddResourceToProjectRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    addResource(
+        request: AddResourceToProjectRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    addResource(
+        request: AddResourceToProjectRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Removes shared resource from project */
+    removeResource(
+        request: RemoveResourceFromProjectRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    removeResource(
+        request: RemoveResourceFromProjectRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    removeResource(
+        request: RemoveResourceFromProjectRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Resizes project disk */
+    resizeDisk(
+        request: ResizeProjectDiskRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    resizeDisk(
+        request: ResizeProjectDiskRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    resizeDisk(
+        request: ResizeProjectDiskRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Get meta information about available restrictions. */
+    getRestrictionsMeta(
+        request: Empty,
+        callback: (error: ServiceError | null, response: GetRestrictionsMetaResponse) => void,
+    ): ClientUnaryCall;
+    getRestrictionsMeta(
+        request: Empty,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: GetRestrictionsMetaResponse) => void,
+    ): ClientUnaryCall;
+    getRestrictionsMeta(
+        request: Empty,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: GetRestrictionsMetaResponse) => void,
+    ): ClientUnaryCall;
+    /** Get current project restrictions. */
+    getRestrictions(
+        request: GetProjectRestrictionsRequest,
+        callback: (error: ServiceError | null, response: RestrictionsResponse) => void,
+    ): ClientUnaryCall;
+    getRestrictions(
+        request: GetProjectRestrictionsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: RestrictionsResponse) => void,
+    ): ClientUnaryCall;
+    getRestrictions(
+        request: GetProjectRestrictionsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: RestrictionsResponse) => void,
+    ): ClientUnaryCall;
+    /** Set project restrictions. */
+    setRestrictions(
+        request: SetProjectRestrictionsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setRestrictions(
+        request: SetProjectRestrictionsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setRestrictions(
+        request: SetProjectRestrictionsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
 }
 
 export const ProjectServiceClient = makeGenericClientConstructor(
-  ProjectServiceService,
-  "yandex.cloud.datasphere.v2.ProjectService"
+    ProjectServiceService,
+    'yandex.cloud.datasphere.v2.ProjectService',
 ) as unknown as {
-  new (
-    address: string,
-    credentials: ChannelCredentials,
-    options?: Partial<ChannelOptions>
-  ): ProjectServiceClient;
-  service: typeof ProjectServiceService;
+    new (
+        address: string,
+        credentials: ChannelCredentials,
+        options?: Partial<ChannelOptions>,
+    ): ProjectServiceClient;
+    service: typeof ProjectServiceService;
 };
 
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
 var globalThis: any = (() => {
-  if (typeof globalThis !== "undefined") return globalThis;
-  if (typeof self !== "undefined") return self;
-  if (typeof window !== "undefined") return window;
-  if (typeof global !== "undefined") return global;
-  throw "Unable to locate global object";
+    if (typeof globalThis !== 'undefined') return globalThis;
+    if (typeof self !== 'undefined') return self;
+    if (typeof window !== 'undefined') return window;
+    if (typeof global !== 'undefined') return global;
+    throw 'Unable to locate global object';
 })();
 
-type Builtin =
-  | Date
-  | Function
-  | Uint8Array
-  | string
-  | number
-  | boolean
-  | undefined;
+type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends Array<infer U>
-  ? Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in Exclude<keyof T, "$type">]?: DeepPartial<T[K]> }
-  : Partial<T>;
+    ? T
+    : T extends Array<infer U>
+    ? Array<DeepPartial<U>>
+    : T extends ReadonlyArray<infer U>
+    ? ReadonlyArray<DeepPartial<U>>
+    : T extends {}
+    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
-  ? P
-  : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-        Exclude<keyof I, KeysOfUnion<P> | "$type">,
-        never
-      >;
-
-function toTimestamp(date: Date): Timestamp {
-  const seconds = date.getTime() / 1_000;
-  const nanos = (date.getTime() % 1_000) * 1_000_000;
-  return { $type: "google.protobuf.Timestamp", seconds, nanos };
-}
-
-function fromTimestamp(t: Timestamp): Date {
-  let millis = t.seconds * 1_000;
-  millis += t.nanos / 1_000_000;
-  return new Date(millis);
-}
-
-function fromJsonTimestamp(o: any): Date {
-  if (o instanceof Date) {
-    return o;
-  } else if (typeof o === "string") {
-    return new Date(o);
-  } else {
-    return fromTimestamp(Timestamp.fromJSON(o));
-  }
-}
+    ? P
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
+              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
+              never
+          >;
 
 function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
+    if (long.gt(Number.MAX_SAFE_INTEGER)) {
+        throw new globalThis.Error('Value is larger than Number.MAX_SAFE_INTEGER');
+    }
+    return long.toNumber();
 }
 
 if (_m0.util.Long !== Long) {
-  _m0.util.Long = Long as any;
-  _m0.configure();
+    _m0.util.Long = Long as any;
+    _m0.configure();
 }

@@ -1,9 +1,9 @@
 /* eslint-disable */
-import { messageTypeRegistry } from "../../typeRegistry";
-import Long from "long";
-import _m0 from "protobufjs/minimal";
+import { messageTypeRegistry } from '../../typeRegistry';
+import Long from 'long';
+import _m0 from 'protobufjs/minimal';
 
-export const protobufPackage = "google.protobuf";
+export const protobufPackage = 'google.protobuf';
 
 /**
  * A Timestamp represents a point in time independent of any time zone or local
@@ -99,94 +99,80 @@ export const protobufPackage = "google.protobuf";
  * ) to obtain a formatter capable of generating timestamps in this format.
  */
 export interface Timestamp {
-  $type: "google.protobuf.Timestamp";
-  /**
-   * Represents seconds of UTC time since Unix epoch
-   * 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to
-   * 9999-12-31T23:59:59Z inclusive.
-   */
-  seconds: number;
-  /**
-   * Non-negative fractions of a second at nanosecond resolution. Negative
-   * second values with fractions must still have non-negative nanos values
-   * that count forward in time. Must be from 0 to 999,999,999
-   * inclusive.
-   */
-  nanos: number;
+    $type: 'google.protobuf.Timestamp';
+    /**
+     * Represents seconds of UTC time since Unix epoch
+     * 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to
+     * 9999-12-31T23:59:59Z inclusive.
+     */
+    seconds: number;
+    /**
+     * Non-negative fractions of a second at nanosecond resolution. Negative
+     * second values with fractions must still have non-negative nanos values
+     * that count forward in time. Must be from 0 to 999,999,999
+     * inclusive.
+     */
+    nanos: number;
 }
 
-const baseTimestamp: object = {
-  $type: "google.protobuf.Timestamp",
-  seconds: 0,
-  nanos: 0,
-};
+const baseTimestamp: object = { $type: 'google.protobuf.Timestamp', seconds: 0, nanos: 0 };
 
 export const Timestamp = {
-  $type: "google.protobuf.Timestamp" as const,
+    $type: 'google.protobuf.Timestamp' as const,
 
-  encode(
-    message: Timestamp,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.seconds !== 0) {
-      writer.uint32(8).int64(message.seconds);
-    }
-    if (message.nanos !== 0) {
-      writer.uint32(16).int32(message.nanos);
-    }
-    return writer;
-  },
+    encode(message: Timestamp, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.seconds !== 0) {
+            writer.uint32(8).int64(message.seconds);
+        }
+        if (message.nanos !== 0) {
+            writer.uint32(16).int32(message.nanos);
+        }
+        return writer;
+    },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): Timestamp {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseTimestamp } as Timestamp;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.seconds = longToNumber(reader.int64() as Long);
-          break;
-        case 2:
-          message.nanos = reader.int32();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
+    decode(input: _m0.Reader | Uint8Array, length?: number): Timestamp {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseTimestamp } as Timestamp;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.seconds = longToNumber(reader.int64() as Long);
+                    break;
+                case 2:
+                    message.nanos = reader.int32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
 
-  fromJSON(object: any): Timestamp {
-    const message = { ...baseTimestamp } as Timestamp;
-    message.seconds =
-      object.seconds !== undefined && object.seconds !== null
-        ? Number(object.seconds)
-        : 0;
-    message.nanos =
-      object.nanos !== undefined && object.nanos !== null
-        ? Number(object.nanos)
-        : 0;
-    return message;
-  },
+    fromJSON(object: any): Timestamp {
+        const message = { ...baseTimestamp } as Timestamp;
+        message.seconds =
+            object.seconds !== undefined && object.seconds !== null ? Number(object.seconds) : 0;
+        message.nanos =
+            object.nanos !== undefined && object.nanos !== null ? Number(object.nanos) : 0;
+        return message;
+    },
 
-  toJSON(message: Timestamp): unknown {
-    const obj: any = {};
-    message.seconds !== undefined &&
-      (obj.seconds = Math.round(message.seconds));
-    message.nanos !== undefined && (obj.nanos = Math.round(message.nanos));
-    return obj;
-  },
+    toJSON(message: Timestamp): unknown {
+        const obj: any = {};
+        message.seconds !== undefined && (obj.seconds = Math.round(message.seconds));
+        message.nanos !== undefined && (obj.nanos = Math.round(message.nanos));
+        return obj;
+    },
 
-  fromPartial<I extends Exact<DeepPartial<Timestamp>, I>>(
-    object: I
-  ): Timestamp {
-    const message = { ...baseTimestamp } as Timestamp;
-    message.seconds = object.seconds ?? 0;
-    message.nanos = object.nanos ?? 0;
-    return message;
-  },
+    fromPartial<I extends Exact<DeepPartial<Timestamp>, I>>(object: I): Timestamp {
+        const message = { ...baseTimestamp } as Timestamp;
+        message.seconds = object.seconds ?? 0;
+        message.nanos = object.nanos ?? 0;
+        return message;
+    },
 };
 
 messageTypeRegistry.set(Timestamp.$type, Timestamp);
@@ -195,48 +181,41 @@ declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
 var globalThis: any = (() => {
-  if (typeof globalThis !== "undefined") return globalThis;
-  if (typeof self !== "undefined") return self;
-  if (typeof window !== "undefined") return window;
-  if (typeof global !== "undefined") return global;
-  throw "Unable to locate global object";
+    if (typeof globalThis !== 'undefined') return globalThis;
+    if (typeof self !== 'undefined') return self;
+    if (typeof window !== 'undefined') return window;
+    if (typeof global !== 'undefined') return global;
+    throw 'Unable to locate global object';
 })();
 
-type Builtin =
-  | Date
-  | Function
-  | Uint8Array
-  | string
-  | number
-  | boolean
-  | undefined;
+type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends Array<infer U>
-  ? Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in Exclude<keyof T, "$type">]?: DeepPartial<T[K]> }
-  : Partial<T>;
+    ? T
+    : T extends Array<infer U>
+    ? Array<DeepPartial<U>>
+    : T extends ReadonlyArray<infer U>
+    ? ReadonlyArray<DeepPartial<U>>
+    : T extends {}
+    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
-  ? P
-  : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-        Exclude<keyof I, KeysOfUnion<P> | "$type">,
-        never
-      >;
+    ? P
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
+              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
+              never
+          >;
 
 function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
+    if (long.gt(Number.MAX_SAFE_INTEGER)) {
+        throw new globalThis.Error('Value is larger than Number.MAX_SAFE_INTEGER');
+    }
+    return long.toNumber();
 }
 
 if (_m0.util.Long !== Long) {
-  _m0.util.Long = Long as any;
-  _m0.configure();
+    _m0.util.Long = Long as any;
+    _m0.configure();
 }
