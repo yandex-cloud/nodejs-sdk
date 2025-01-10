@@ -18,7 +18,6 @@
     "url": "https://github.com/yandex-cloud/nodejs-sdk/issues"
   },
   "files": [
-    "dist",
     "ai-assistants-v1",
     "ai-dataset-v1",
     "ai-files-v1",
@@ -50,6 +49,7 @@
     "datasphere-v1",
     "datasphere-v2",
     "datatransfer-v1",
+    "dist",
     "dns-v1",
     "endpoint",
     "iam-v1",
@@ -158,7 +158,7 @@
   },
   "scripts": {
     "test": "cross-env NODE_OPTIONS=\"--max-old-space-size=4096\" jest -c config/jest.ts --passWithNoTests '.*\\.test\\.ts$'",
-    "lint": "eslint src config",
+    "lint": "eslint src config clients",
     "generate-code": "ts-node scripts/generate-code.ts",
     "check-endpoints": "ts-node scripts/check-endpoints.ts",
     "prettier:fix:clients": "prettier clients/ --write",

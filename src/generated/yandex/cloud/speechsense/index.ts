@@ -1,4 +1,6 @@
 export * as audio from './v1/audio'
+export * as classifier from './v1/classifier'
+export * as classifiers_service from './v1/classifiers_service'
 export * as project from './v1/project'
 export * as project_service from './v1/project_service'
 export * as search from './v1/search'
