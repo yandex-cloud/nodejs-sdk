@@ -98,683 +98,175 @@
     "access": "public"
   },
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.js"
-    },
-    "./ai-assistants-v1": {
-      "default": "./ai-assistants-v1/index.js"
-    },
-    "./ai-assistants-v1/*": {
-      "types": "./ai-assistants-v1/*.d.ts",
-      "import": "./ai-assistants-v1/*.js",
-      "require": "./ai-assistants-v1/*.js"
-    },
-    "./ai-dataset-v1": {
-      "default": "./ai-dataset-v1/index.js"
-    },
-    "./ai-dataset-v1/*": {
-      "types": "./ai-dataset-v1/*.d.ts",
-      "import": "./ai-dataset-v1/*.js",
-      "require": "./ai-dataset-v1/*.js"
-    },
-    "./ai-files-v1": {
-      "default": "./ai-files-v1/index.js"
-    },
-    "./ai-files-v1/*": {
-      "types": "./ai-files-v1/*.d.ts",
-      "import": "./ai-files-v1/*.js",
-      "require": "./ai-files-v1/*.js"
-    },
-    "./ai-foundation_models-v1": {
-      "default": "./ai-foundation_models-v1/index.js"
-    },
-    "./ai-foundation_models-v1/*": {
-      "types": "./ai-foundation_models-v1/*.d.ts",
-      "import": "./ai-foundation_models-v1/*.js",
-      "require": "./ai-foundation_models-v1/*.js"
-    },
-    "./ai-llm-v1alpha": {
-      "default": "./ai-llm-v1alpha/index.js"
-    },
-    "./ai-llm-v1alpha/*": {
-      "types": "./ai-llm-v1alpha/*.d.ts",
-      "import": "./ai-llm-v1alpha/*.js",
-      "require": "./ai-llm-v1alpha/*.js"
-    },
-    "./ai-ocr-v1": {
-      "default": "./ai-ocr-v1/index.js"
-    },
-    "./ai-ocr-v1/*": {
-      "types": "./ai-ocr-v1/*.d.ts",
-      "import": "./ai-ocr-v1/*.js",
-      "require": "./ai-ocr-v1/*.js"
-    },
-    "./ai-stt-v2": {
-      "default": "./ai-stt-v2/index.js"
-    },
-    "./ai-stt-v2/*": {
-      "types": "./ai-stt-v2/*.d.ts",
-      "import": "./ai-stt-v2/*.js",
-      "require": "./ai-stt-v2/*.js"
-    },
-    "./ai-stt-v3": {
-      "default": "./ai-stt-v3/index.js"
-    },
-    "./ai-stt-v3/*": {
-      "types": "./ai-stt-v3/*.d.ts",
-      "import": "./ai-stt-v3/*.js",
-      "require": "./ai-stt-v3/*.js"
-    },
-    "./ai-translate-v2": {
-      "default": "./ai-translate-v2/index.js"
-    },
-    "./ai-translate-v2/*": {
-      "types": "./ai-translate-v2/*.d.ts",
-      "import": "./ai-translate-v2/*.js",
-      "require": "./ai-translate-v2/*.js"
-    },
-    "./ai-tts-v3": {
-      "default": "./ai-tts-v3/index.js"
-    },
-    "./ai-tts-v3/*": {
-      "types": "./ai-tts-v3/*.d.ts",
-      "import": "./ai-tts-v3/*.js",
-      "require": "./ai-tts-v3/*.js"
-    },
-    "./ai-tuning-v1": {
-      "default": "./ai-tuning-v1/index.js"
-    },
-    "./ai-tuning-v1/*": {
-      "types": "./ai-tuning-v1/*.d.ts",
-      "import": "./ai-tuning-v1/*.js",
-      "require": "./ai-tuning-v1/*.js"
-    },
-    "./ai-vision-v1": {
-      "default": "./ai-vision-v1/index.js"
-    },
-    "./ai-vision-v1/*": {
-      "types": "./ai-vision-v1/*.d.ts",
-      "import": "./ai-vision-v1/*.js",
-      "require": "./ai-vision-v1/*.js"
-    },
-    "./ai-vision-v2": {
-      "default": "./ai-vision-v2/index.js"
-    },
-    "./ai-vision-v2/*": {
-      "types": "./ai-vision-v2/*.d.ts",
-      "import": "./ai-vision-v2/*.js",
-      "require": "./ai-vision-v2/*.js"
-    },
-    "./airflow-v1": {
-      "default": "./airflow-v1/index.js"
-    },
-    "./airflow-v1/*": {
-      "types": "./airflow-v1/*.d.ts",
-      "import": "./airflow-v1/*.js",
-      "require": "./airflow-v1/*.js"
-    },
-    "./apploadbalancer-v1": {
-      "default": "./apploadbalancer-v1/index.js"
-    },
-    "./apploadbalancer-v1/*": {
-      "types": "./apploadbalancer-v1/*.d.ts",
-      "import": "./apploadbalancer-v1/*.js",
-      "require": "./apploadbalancer-v1/*.js"
-    },
-    "./audittrails-v1": {
-      "default": "./audittrails-v1/index.js"
-    },
-    "./audittrails-v1/*": {
-      "types": "./audittrails-v1/*.d.ts",
-      "import": "./audittrails-v1/*.js",
-      "require": "./audittrails-v1/*.js"
-    },
-    "./backup-v1": {
-      "default": "./backup-v1/index.js"
-    },
-    "./backup-v1/*": {
-      "types": "./backup-v1/*.d.ts",
-      "import": "./backup-v1/*.js",
-      "require": "./backup-v1/*.js"
-    },
-    "./billing-v1": {
-      "default": "./billing-v1/index.js"
-    },
-    "./billing-v1/*": {
-      "types": "./billing-v1/*.d.ts",
-      "import": "./billing-v1/*.js",
-      "require": "./billing-v1/*.js"
-    },
-    "./cdn-v1": {
-      "default": "./cdn-v1/index.js"
-    },
-    "./cdn-v1/*": {
-      "types": "./cdn-v1/*.d.ts",
-      "import": "./cdn-v1/*.js",
-      "require": "./cdn-v1/*.js"
-    },
-    "./certificatemanager-v1": {
-      "default": "./certificatemanager-v1/index.js"
-    },
-    "./certificatemanager-v1/*": {
-      "types": "./certificatemanager-v1/*.d.ts",
-      "import": "./certificatemanager-v1/*.js",
-      "require": "./certificatemanager-v1/*.js"
-    },
-    "./cic-v1": {
-      "default": "./cic-v1/index.js"
-    },
-    "./cic-v1/*": {
-      "types": "./cic-v1/*.d.ts",
-      "import": "./cic-v1/*.js",
-      "require": "./cic-v1/*.js"
-    },
-    "./cloudapps-workload-v1": {
-      "default": "./cloudapps-workload-v1/index.js"
-    },
-    "./cloudapps-workload-v1/*": {
-      "types": "./cloudapps-workload-v1/*.d.ts",
-      "import": "./cloudapps-workload-v1/*.js",
-      "require": "./cloudapps-workload-v1/*.js"
-    },
-    "./cloudregistry-v1": {
-      "default": "./cloudregistry-v1/index.js"
-    },
-    "./cloudregistry-v1/*": {
-      "types": "./cloudregistry-v1/*.d.ts",
-      "import": "./cloudregistry-v1/*.js",
-      "require": "./cloudregistry-v1/*.js"
-    },
-    "./cloudrouter-v1": {
-      "default": "./cloudrouter-v1/index.js"
-    },
-    "./cloudrouter-v1/*": {
-      "types": "./cloudrouter-v1/*.d.ts",
-      "import": "./cloudrouter-v1/*.js",
-      "require": "./cloudrouter-v1/*.js"
-    },
-    "./compute-v1": {
-      "default": "./compute-v1/index.js"
-    },
-    "./compute-v1/*": {
-      "types": "./compute-v1/*.d.ts",
-      "import": "./compute-v1/*.js",
-      "require": "./compute-v1/*.js"
-    },
-    "./containerregistry-v1": {
-      "default": "./containerregistry-v1/index.js"
-    },
-    "./containerregistry-v1/*": {
-      "types": "./containerregistry-v1/*.d.ts",
-      "import": "./containerregistry-v1/*.js",
-      "require": "./containerregistry-v1/*.js"
-    },
-    "./dataproc-manager-v1": {
-      "default": "./dataproc-manager-v1/index.js"
-    },
-    "./dataproc-manager-v1/*": {
-      "types": "./dataproc-manager-v1/*.d.ts",
-      "import": "./dataproc-manager-v1/*.js",
-      "require": "./dataproc-manager-v1/*.js"
-    },
-    "./dataproc-v1": {
-      "default": "./dataproc-v1/index.js"
-    },
-    "./dataproc-v1/*": {
-      "types": "./dataproc-v1/*.d.ts",
-      "import": "./dataproc-v1/*.js",
-      "require": "./dataproc-v1/*.js"
-    },
-    "./datasphere-v1": {
-      "default": "./datasphere-v1/index.js"
-    },
-    "./datasphere-v1/*": {
-      "types": "./datasphere-v1/*.d.ts",
-      "import": "./datasphere-v1/*.js",
-      "require": "./datasphere-v1/*.js"
-    },
-    "./datasphere-v2": {
-      "default": "./datasphere-v2/index.js"
-    },
-    "./datasphere-v2/*": {
-      "types": "./datasphere-v2/*.d.ts",
-      "import": "./datasphere-v2/*.js",
-      "require": "./datasphere-v2/*.js"
-    },
-    "./datatransfer-v1": {
-      "default": "./datatransfer-v1/index.js"
-    },
-    "./datatransfer-v1/*": {
-      "types": "./datatransfer-v1/*.d.ts",
-      "import": "./datatransfer-v1/*.js",
-      "require": "./datatransfer-v1/*.js"
-    },
-    "./dist/*": {
-      "types": "./dist/*.d.ts",
-      "import": "./dist/*.js",
-      "require": "./dist/*.js"
-    },
-    "./dist/sdk/ai-assistants-v1": {
-      "default": "./dist/sdk/ai-assistants-v1/index.js"
-    },
-    "./dist/sdk/ai-assistants-v1/*": {
-      "types": "./dist/sdk/ai-assistants-v1/*.d.ts",
-      "import": "./dist/sdk/ai-assistants-v1/*.js"
-    },
-    "./dist/sdk/ai-files-v1": {
-      "default": "./dist/sdk/ai-files-v1/index.js"
-    },
-    "./dist/sdk/ai-files-v1/*": {
-      "types": "./dist/sdk/ai-files-v1/*.d.ts",
-      "import": "./dist/sdk/ai-files-v1/*.js"
-    },
-    "./dist/sdk/ai-foundation_models-v1": {
-      "default": "./dist/sdk/ai-foundation_models-v1/index.js"
-    },
-    "./dist/sdk/ai-foundation_models-v1/*": {
-      "types": "./dist/sdk/ai-foundation_models-v1/*.d.ts",
-      "import": "./dist/sdk/ai-foundation_models-v1/*.js"
-    },
-    "./dist/sdk/operation": {
-      "default": "./dist/sdk/operation/index.js"
-    },
-    "./dist/sdk/operation/*": {
-      "types": "./dist/sdk/operation/*.d.ts",
-      "import": "./dist/sdk/operation/*.js"
-    },
-    "./dns-v1": {
-      "default": "./dns-v1/index.js"
-    },
-    "./dns-v1/*": {
-      "types": "./dns-v1/*.d.ts",
-      "import": "./dns-v1/*.js",
-      "require": "./dns-v1/*.js"
-    },
-    "./endpoint": {
-      "default": "./endpoint/index.js"
-    },
-    "./endpoint/*": {
-      "types": "./endpoint/*.d.ts",
-      "import": "./endpoint/*.js",
-      "require": "./endpoint/*.js"
-    },
-    "./iam-v1": {
-      "default": "./iam-v1/index.js"
-    },
-    "./iam-v1/*": {
-      "types": "./iam-v1/*.d.ts",
-      "import": "./iam-v1/*.js",
-      "require": "./iam-v1/*.js"
-    },
-    "./iot-broker-v1": {
-      "default": "./iot-broker-v1/index.js"
-    },
-    "./iot-broker-v1/*": {
-      "types": "./iot-broker-v1/*.d.ts",
-      "import": "./iot-broker-v1/*.js",
-      "require": "./iot-broker-v1/*.js"
-    },
-    "./iot-devices-v1": {
-      "default": "./iot-devices-v1/index.js"
-    },
-    "./iot-devices-v1/*": {
-      "types": "./iot-devices-v1/*.d.ts",
-      "import": "./iot-devices-v1/*.js",
-      "require": "./iot-devices-v1/*.js"
-    },
-    "./k8s-marketplace-v1": {
-      "default": "./k8s-marketplace-v1/index.js"
-    },
-    "./k8s-marketplace-v1/*": {
-      "types": "./k8s-marketplace-v1/*.d.ts",
-      "import": "./k8s-marketplace-v1/*.js",
-      "require": "./k8s-marketplace-v1/*.js"
-    },
-    "./k8s-v1": {
-      "default": "./k8s-v1/index.js"
-    },
-    "./k8s-v1/*": {
-      "types": "./k8s-v1/*.d.ts",
-      "import": "./k8s-v1/*.js",
-      "require": "./k8s-v1/*.js"
-    },
-    "./kms-v1": {
-      "default": "./kms-v1/index.js"
-    },
-    "./kms-v1/*": {
-      "types": "./kms-v1/*.d.ts",
-      "import": "./kms-v1/*.js",
-      "require": "./kms-v1/*.js"
-    },
-    "./loadbalancer-v1": {
-      "default": "./loadbalancer-v1/index.js"
-    },
-    "./loadbalancer-v1/*": {
-      "types": "./loadbalancer-v1/*.d.ts",
-      "import": "./loadbalancer-v1/*.js",
-      "require": "./loadbalancer-v1/*.js"
-    },
-    "./loadtesting-agent-v1": {
-      "default": "./loadtesting-agent-v1/index.js"
-    },
-    "./loadtesting-agent-v1/*": {
-      "types": "./loadtesting-agent-v1/*.d.ts",
-      "import": "./loadtesting-agent-v1/*.js",
-      "require": "./loadtesting-agent-v1/*.js"
-    },
-    "./loadtesting-api-v1": {
-      "default": "./loadtesting-api-v1/index.js"
-    },
-    "./loadtesting-api-v1/*": {
-      "types": "./loadtesting-api-v1/*.d.ts",
-      "import": "./loadtesting-api-v1/*.js",
-      "require": "./loadtesting-api-v1/*.js"
-    },
-    "./lockbox-v1": {
-      "default": "./lockbox-v1/index.js"
-    },
-    "./lockbox-v1/*": {
-      "types": "./lockbox-v1/*.d.ts",
-      "import": "./lockbox-v1/*.js",
-      "require": "./lockbox-v1/*.js"
-    },
-    "./logging-v1": {
-      "default": "./logging-v1/index.js"
-    },
-    "./logging-v1/*": {
-      "types": "./logging-v1/*.d.ts",
-      "import": "./logging-v1/*.js",
-      "require": "./logging-v1/*.js"
-    },
-    "./marketplace-licensemanager-saas-v1": {
-      "default": "./marketplace-licensemanager-saas-v1/index.js"
-    },
-    "./marketplace-licensemanager-saas-v1/*": {
-      "types": "./marketplace-licensemanager-saas-v1/*.d.ts",
-      "import": "./marketplace-licensemanager-saas-v1/*.js",
-      "require": "./marketplace-licensemanager-saas-v1/*.js"
-    },
-    "./marketplace-licensemanager-v1": {
-      "default": "./marketplace-licensemanager-v1/index.js"
-    },
-    "./marketplace-licensemanager-v1/*": {
-      "types": "./marketplace-licensemanager-v1/*.d.ts",
-      "import": "./marketplace-licensemanager-v1/*.js",
-      "require": "./marketplace-licensemanager-v1/*.js"
-    },
-    "./marketplace-metering-v1": {
-      "default": "./marketplace-metering-v1/index.js"
-    },
-    "./marketplace-metering-v1/*": {
-      "types": "./marketplace-metering-v1/*.d.ts",
-      "import": "./marketplace-metering-v1/*.js",
-      "require": "./marketplace-metering-v1/*.js"
-    },
-    "./marketplace-pim-v1": {
-      "default": "./marketplace-pim-v1/index.js"
-    },
-    "./marketplace-pim-v1/*": {
-      "types": "./marketplace-pim-v1/*.d.ts",
-      "import": "./marketplace-pim-v1/*.js",
-      "require": "./marketplace-pim-v1/*.js"
-    },
-    "./marketplace-v1": {
-      "default": "./marketplace-v1/index.js"
-    },
-    "./marketplace-v1/*": {
-      "types": "./marketplace-v1/*.d.ts",
-      "import": "./marketplace-v1/*.js",
-      "require": "./marketplace-v1/*.js"
-    },
-    "./mdb-clickhouse-v1": {
-      "default": "./mdb-clickhouse-v1/index.js"
-    },
-    "./mdb-clickhouse-v1/*": {
-      "types": "./mdb-clickhouse-v1/*.d.ts",
-      "import": "./mdb-clickhouse-v1/*.js",
-      "require": "./mdb-clickhouse-v1/*.js"
-    },
-    "./mdb-elasticsearch-v1": {
-      "default": "./mdb-elasticsearch-v1/index.js"
-    },
-    "./mdb-elasticsearch-v1/*": {
-      "types": "./mdb-elasticsearch-v1/*.d.ts",
-      "import": "./mdb-elasticsearch-v1/*.js",
-      "require": "./mdb-elasticsearch-v1/*.js"
-    },
-    "./mdb-greenplum-v1": {
-      "default": "./mdb-greenplum-v1/index.js"
-    },
-    "./mdb-greenplum-v1/*": {
-      "types": "./mdb-greenplum-v1/*.d.ts",
-      "import": "./mdb-greenplum-v1/*.js",
-      "require": "./mdb-greenplum-v1/*.js"
-    },
-    "./mdb-kafka-v1": {
-      "default": "./mdb-kafka-v1/index.js"
-    },
-    "./mdb-kafka-v1/*": {
-      "types": "./mdb-kafka-v1/*.d.ts",
-      "import": "./mdb-kafka-v1/*.js",
-      "require": "./mdb-kafka-v1/*.js"
-    },
-    "./mdb-mongodb-v1": {
-      "default": "./mdb-mongodb-v1/index.js"
-    },
-    "./mdb-mongodb-v1/*": {
-      "types": "./mdb-mongodb-v1/*.d.ts",
-      "import": "./mdb-mongodb-v1/*.js",
-      "require": "./mdb-mongodb-v1/*.js"
-    },
-    "./mdb-mysql-v1": {
-      "default": "./mdb-mysql-v1/index.js"
-    },
-    "./mdb-mysql-v1/*": {
-      "types": "./mdb-mysql-v1/*.d.ts",
-      "import": "./mdb-mysql-v1/*.js",
-      "require": "./mdb-mysql-v1/*.js"
-    },
-    "./mdb-mysql-v1alpha": {
-      "default": "./mdb-mysql-v1alpha/index.js"
-    },
-    "./mdb-mysql-v1alpha/*": {
-      "types": "./mdb-mysql-v1alpha/*.d.ts",
-      "import": "./mdb-mysql-v1alpha/*.js",
-      "require": "./mdb-mysql-v1alpha/*.js"
-    },
-    "./mdb-opensearch-v1": {
-      "default": "./mdb-opensearch-v1/index.js"
-    },
-    "./mdb-opensearch-v1/*": {
-      "types": "./mdb-opensearch-v1/*.d.ts",
-      "import": "./mdb-opensearch-v1/*.js",
-      "require": "./mdb-opensearch-v1/*.js"
-    },
-    "./mdb-postgresql-v1": {
-      "default": "./mdb-postgresql-v1/index.js"
-    },
-    "./mdb-postgresql-v1/*": {
-      "types": "./mdb-postgresql-v1/*.d.ts",
-      "import": "./mdb-postgresql-v1/*.js",
-      "require": "./mdb-postgresql-v1/*.js"
-    },
-    "./mdb-redis-v1": {
-      "default": "./mdb-redis-v1/index.js"
-    },
-    "./mdb-redis-v1/*": {
-      "types": "./mdb-redis-v1/*.d.ts",
-      "import": "./mdb-redis-v1/*.js",
-      "require": "./mdb-redis-v1/*.js"
-    },
-    "./mdb-sqlserver-v1": {
-      "default": "./mdb-sqlserver-v1/index.js"
-    },
-    "./mdb-sqlserver-v1/*": {
-      "types": "./mdb-sqlserver-v1/*.d.ts",
-      "import": "./mdb-sqlserver-v1/*.js",
-      "require": "./mdb-sqlserver-v1/*.js"
-    },
-    "./monitoring-v3": {
-      "default": "./monitoring-v3/index.js"
-    },
-    "./monitoring-v3/*": {
-      "types": "./monitoring-v3/*.d.ts",
-      "import": "./monitoring-v3/*.js",
-      "require": "./monitoring-v3/*.js"
-    },
-    "./operation": {
-      "default": "./operation/index.js"
-    },
-    "./operation/*": {
-      "types": "./operation/*.d.ts",
-      "import": "./operation/*.js",
-      "require": "./operation/*.js"
-    },
-    "./organizationmanager-v1": {
-      "default": "./organizationmanager-v1/index.js"
-    },
-    "./organizationmanager-v1/*": {
-      "types": "./organizationmanager-v1/*.d.ts",
-      "import": "./organizationmanager-v1/*.js",
-      "require": "./organizationmanager-v1/*.js"
-    },
-    "./resourcemanager-v1": {
-      "default": "./resourcemanager-v1/index.js"
-    },
-    "./resourcemanager-v1/*": {
-      "types": "./resourcemanager-v1/*.d.ts",
-      "import": "./resourcemanager-v1/*.js",
-      "require": "./resourcemanager-v1/*.js"
-    },
-    "./searchapi-v2": {
-      "default": "./searchapi-v2/index.js"
-    },
-    "./searchapi-v2/*": {
-      "types": "./searchapi-v2/*.d.ts",
-      "import": "./searchapi-v2/*.js",
-      "require": "./searchapi-v2/*.js"
-    },
-    "./serverless-apigateway-v1": {
-      "default": "./serverless-apigateway-v1/index.js"
-    },
-    "./serverless-apigateway-v1/*": {
-      "types": "./serverless-apigateway-v1/*.d.ts",
-      "import": "./serverless-apigateway-v1/*.js",
-      "require": "./serverless-apigateway-v1/*.js"
-    },
-    "./serverless-apigateway-websocket-v1": {
-      "default": "./serverless-apigateway-websocket-v1/index.js"
-    },
-    "./serverless-apigateway-websocket-v1/*": {
-      "types": "./serverless-apigateway-websocket-v1/*.d.ts",
-      "import": "./serverless-apigateway-websocket-v1/*.js",
-      "require": "./serverless-apigateway-websocket-v1/*.js"
-    },
-    "./serverless-containers-v1": {
-      "default": "./serverless-containers-v1/index.js"
-    },
-    "./serverless-containers-v1/*": {
-      "types": "./serverless-containers-v1/*.d.ts",
-      "import": "./serverless-containers-v1/*.js",
-      "require": "./serverless-containers-v1/*.js"
-    },
-    "./serverless-eventrouter-v1": {
-      "default": "./serverless-eventrouter-v1/index.js"
-    },
-    "./serverless-eventrouter-v1/*": {
-      "types": "./serverless-eventrouter-v1/*.d.ts",
-      "import": "./serverless-eventrouter-v1/*.js",
-      "require": "./serverless-eventrouter-v1/*.js"
-    },
-    "./serverless-functions-v1": {
-      "default": "./serverless-functions-v1/index.js"
-    },
-    "./serverless-functions-v1/*": {
-      "types": "./serverless-functions-v1/*.d.ts",
-      "import": "./serverless-functions-v1/*.js",
-      "require": "./serverless-functions-v1/*.js"
-    },
-    "./serverless-mdbproxy-v1": {
-      "default": "./serverless-mdbproxy-v1/index.js"
-    },
-    "./serverless-mdbproxy-v1/*": {
-      "types": "./serverless-mdbproxy-v1/*.d.ts",
-      "import": "./serverless-mdbproxy-v1/*.js",
-      "require": "./serverless-mdbproxy-v1/*.js"
-    },
-    "./serverless-triggers-v1": {
-      "default": "./serverless-triggers-v1/index.js"
-    },
-    "./serverless-triggers-v1/*": {
-      "types": "./serverless-triggers-v1/*.d.ts",
-      "import": "./serverless-triggers-v1/*.js",
-      "require": "./serverless-triggers-v1/*.js"
-    },
-    "./serverless-workflows-v1": {
-      "default": "./serverless-workflows-v1/index.js"
-    },
-    "./serverless-workflows-v1/*": {
-      "types": "./serverless-workflows-v1/*.d.ts",
-      "import": "./serverless-workflows-v1/*.js",
-      "require": "./serverless-workflows-v1/*.js"
-    },
-    "./smartcaptcha-v1": {
-      "default": "./smartcaptcha-v1/index.js"
-    },
-    "./smartcaptcha-v1/*": {
-      "types": "./smartcaptcha-v1/*.d.ts",
-      "import": "./smartcaptcha-v1/*.js",
-      "require": "./smartcaptcha-v1/*.js"
-    },
-    "./smartwebsecurity-v1": {
-      "default": "./smartwebsecurity-v1/index.js"
-    },
-    "./smartwebsecurity-v1/*": {
-      "types": "./smartwebsecurity-v1/*.d.ts",
-      "import": "./smartwebsecurity-v1/*.js",
-      "require": "./smartwebsecurity-v1/*.js"
-    },
-    "./speechsense-v1": {
-      "default": "./speechsense-v1/index.js"
-    },
-    "./speechsense-v1/*": {
-      "types": "./speechsense-v1/*.d.ts",
-      "import": "./speechsense-v1/*.js",
-      "require": "./speechsense-v1/*.js"
-    },
-    "./storage-v1": {
-      "default": "./storage-v1/index.js"
-    },
-    "./storage-v1/*": {
-      "types": "./storage-v1/*.d.ts",
-      "import": "./storage-v1/*.js",
-      "require": "./storage-v1/*.js"
-    },
-    "./video-v1": {
-      "default": "./video-v1/index.js"
-    },
-    "./video-v1/*": {
-      "types": "./video-v1/*.d.ts",
-      "import": "./video-v1/*.js",
-      "require": "./video-v1/*.js"
-    },
-    "./vpc-v1": {
-      "default": "./vpc-v1/index.js"
-    },
-    "./vpc-v1/*": {
-      "types": "./vpc-v1/*.d.ts",
-      "import": "./vpc-v1/*.js",
-      "require": "./vpc-v1/*.js"
-    },
-    "./ydb-v1": {
-      "default": "./ydb-v1/index.js"
-    },
-    "./ydb-v1/*": {
-      "types": "./ydb-v1/*.d.ts",
-      "import": "./ydb-v1/*.js",
-      "require": "./ydb-v1/*.js"
-    }
+    ".": "./dist/index.js",
+    "./ai-assistants-v1": "./ai-assistants-v1/index.js",
+    "./ai-assistants-v1/*": "./ai-assistants-v1/*.js",
+    "./ai-dataset-v1": "./ai-dataset-v1/index.js",
+    "./ai-dataset-v1/*": "./ai-dataset-v1/*.js",
+    "./ai-files-v1": "./ai-files-v1/index.js",
+    "./ai-files-v1/*": "./ai-files-v1/*.js",
+    "./ai-foundation_models-v1": "./ai-foundation_models-v1/index.js",
+    "./ai-foundation_models-v1/*": "./ai-foundation_models-v1/*.js",
+    "./ai-llm-v1alpha": "./ai-llm-v1alpha/index.js",
+    "./ai-llm-v1alpha/*": "./ai-llm-v1alpha/*.js",
+    "./ai-ocr-v1": "./ai-ocr-v1/index.js",
+    "./ai-ocr-v1/*": "./ai-ocr-v1/*.js",
+    "./ai-stt-v2": "./ai-stt-v2/index.js",
+    "./ai-stt-v2/*": "./ai-stt-v2/*.js",
+    "./ai-stt-v3": "./ai-stt-v3/index.js",
+    "./ai-stt-v3/*": "./ai-stt-v3/*.js",
+    "./ai-translate-v2": "./ai-translate-v2/index.js",
+    "./ai-translate-v2/*": "./ai-translate-v2/*.js",
+    "./ai-tts-v3": "./ai-tts-v3/index.js",
+    "./ai-tts-v3/*": "./ai-tts-v3/*.js",
+    "./ai-tuning-v1": "./ai-tuning-v1/index.js",
+    "./ai-tuning-v1/*": "./ai-tuning-v1/*.js",
+    "./ai-vision-v1": "./ai-vision-v1/index.js",
+    "./ai-vision-v1/*": "./ai-vision-v1/*.js",
+    "./ai-vision-v2": "./ai-vision-v2/index.js",
+    "./ai-vision-v2/*": "./ai-vision-v2/*.js",
+    "./airflow-v1": "./airflow-v1/index.js",
+    "./airflow-v1/*": "./airflow-v1/*.js",
+    "./apploadbalancer-v1": "./apploadbalancer-v1/index.js",
+    "./apploadbalancer-v1/*": "./apploadbalancer-v1/*.js",
+    "./audittrails-v1": "./audittrails-v1/index.js",
+    "./audittrails-v1/*": "./audittrails-v1/*.js",
+    "./backup-v1": "./backup-v1/index.js",
+    "./backup-v1/*": "./backup-v1/*.js",
+    "./billing-v1": "./billing-v1/index.js",
+    "./billing-v1/*": "./billing-v1/*.js",
+    "./cdn-v1": "./cdn-v1/index.js",
+    "./cdn-v1/*": "./cdn-v1/*.js",
+    "./certificatemanager-v1": "./certificatemanager-v1/index.js",
+    "./certificatemanager-v1/*": "./certificatemanager-v1/*.js",
+    "./cic-v1": "./cic-v1/index.js",
+    "./cic-v1/*": "./cic-v1/*.js",
+    "./cloudapps-workload-v1": "./cloudapps-workload-v1/index.js",
+    "./cloudapps-workload-v1/*": "./cloudapps-workload-v1/*.js",
+    "./cloudregistry-v1": "./cloudregistry-v1/index.js",
+    "./cloudregistry-v1/*": "./cloudregistry-v1/*.js",
+    "./cloudrouter-v1": "./cloudrouter-v1/index.js",
+    "./cloudrouter-v1/*": "./cloudrouter-v1/*.js",
+    "./compute-v1": "./compute-v1/index.js",
+    "./compute-v1/*": "./compute-v1/*.js",
+    "./containerregistry-v1": "./containerregistry-v1/index.js",
+    "./containerregistry-v1/*": "./containerregistry-v1/*.js",
+    "./dataproc-manager-v1": "./dataproc-manager-v1/index.js",
+    "./dataproc-manager-v1/*": "./dataproc-manager-v1/*.js",
+    "./dataproc-v1": "./dataproc-v1/index.js",
+    "./dataproc-v1/*": "./dataproc-v1/*.js",
+    "./datasphere-v1": "./datasphere-v1/index.js",
+    "./datasphere-v1/*": "./datasphere-v1/*.js",
+    "./datasphere-v2": "./datasphere-v2/index.js",
+    "./datasphere-v2/*": "./datasphere-v2/*.js",
+    "./datatransfer-v1": "./datatransfer-v1/index.js",
+    "./datatransfer-v1/*": "./datatransfer-v1/*.js",
+    "./dist/*": "./dist/*.js",
+    "./dist/sdk/ai-assistants-v1": "./dist/sdk/ai-assistants-v1/index.js",
+    "./dist/sdk/ai-assistants-v1/*": "./dist/sdk/ai-assistants-v1/*.js",
+    "./dist/sdk/ai-files-v1": "./dist/sdk/ai-files-v1/index.js",
+    "./dist/sdk/ai-files-v1/*": "./dist/sdk/ai-files-v1/*.js",
+    "./dist/sdk/ai-foundation_models-v1": "./dist/sdk/ai-foundation_models-v1/index.js",
+    "./dist/sdk/ai-foundation_models-v1/*": "./dist/sdk/ai-foundation_models-v1/*.js",
+    "./dist/sdk/operation": "./dist/sdk/operation/index.js",
+    "./dist/sdk/operation/*": "./dist/sdk/operation/*.js",
+    "./dns-v1": "./dns-v1/index.js",
+    "./dns-v1/*": "./dns-v1/*.js",
+    "./endpoint": "./endpoint/index.js",
+    "./endpoint/*": "./endpoint/*.js",
+    "./iam-v1": "./iam-v1/index.js",
+    "./iam-v1/*": "./iam-v1/*.js",
+    "./iot-broker-v1": "./iot-broker-v1/index.js",
+    "./iot-broker-v1/*": "./iot-broker-v1/*.js",
+    "./iot-devices-v1": "./iot-devices-v1/index.js",
+    "./iot-devices-v1/*": "./iot-devices-v1/*.js",
+    "./k8s-marketplace-v1": "./k8s-marketplace-v1/index.js",
+    "./k8s-marketplace-v1/*": "./k8s-marketplace-v1/*.js",
+    "./k8s-v1": "./k8s-v1/index.js",
+    "./k8s-v1/*": "./k8s-v1/*.js",
+    "./kms-v1": "./kms-v1/index.js",
+    "./kms-v1/*": "./kms-v1/*.js",
+    "./loadbalancer-v1": "./loadbalancer-v1/index.js",
+    "./loadbalancer-v1/*": "./loadbalancer-v1/*.js",
+    "./loadtesting-agent-v1": "./loadtesting-agent-v1/index.js",
+    "./loadtesting-agent-v1/*": "./loadtesting-agent-v1/*.js",
+    "./loadtesting-api-v1": "./loadtesting-api-v1/index.js",
+    "./loadtesting-api-v1/*": "./loadtesting-api-v1/*.js",
+    "./lockbox-v1": "./lockbox-v1/index.js",
+    "./lockbox-v1/*": "./lockbox-v1/*.js",
+    "./logging-v1": "./logging-v1/index.js",
+    "./logging-v1/*": "./logging-v1/*.js",
+    "./marketplace-licensemanager-saas-v1": "./marketplace-licensemanager-saas-v1/index.js",
+    "./marketplace-licensemanager-saas-v1/*": "./marketplace-licensemanager-saas-v1/*.js",
+    "./marketplace-licensemanager-v1": "./marketplace-licensemanager-v1/index.js",
+    "./marketplace-licensemanager-v1/*": "./marketplace-licensemanager-v1/*.js",
+    "./marketplace-metering-v1": "./marketplace-metering-v1/index.js",
+    "./marketplace-metering-v1/*": "./marketplace-metering-v1/*.js",
+    "./marketplace-pim-v1": "./marketplace-pim-v1/index.js",
+    "./marketplace-pim-v1/*": "./marketplace-pim-v1/*.js",
+    "./marketplace-v1": "./marketplace-v1/index.js",
+    "./marketplace-v1/*": "./marketplace-v1/*.js",
+    "./mdb-clickhouse-v1": "./mdb-clickhouse-v1/index.js",
+    "./mdb-clickhouse-v1/*": "./mdb-clickhouse-v1/*.js",
+    "./mdb-elasticsearch-v1": "./mdb-elasticsearch-v1/index.js",
+    "./mdb-elasticsearch-v1/*": "./mdb-elasticsearch-v1/*.js",
+    "./mdb-greenplum-v1": "./mdb-greenplum-v1/index.js",
+    "./mdb-greenplum-v1/*": "./mdb-greenplum-v1/*.js",
+    "./mdb-kafka-v1": "./mdb-kafka-v1/index.js",
+    "./mdb-kafka-v1/*": "./mdb-kafka-v1/*.js",
+    "./mdb-mongodb-v1": "./mdb-mongodb-v1/index.js",
+    "./mdb-mongodb-v1/*": "./mdb-mongodb-v1/*.js",
+    "./mdb-mysql-v1": "./mdb-mysql-v1/index.js",
+    "./mdb-mysql-v1/*": "./mdb-mysql-v1/*.js",
+    "./mdb-mysql-v1alpha": "./mdb-mysql-v1alpha/index.js",
+    "./mdb-mysql-v1alpha/*": "./mdb-mysql-v1alpha/*.js",
+    "./mdb-opensearch-v1": "./mdb-opensearch-v1/index.js",
+    "./mdb-opensearch-v1/*": "./mdb-opensearch-v1/*.js",
+    "./mdb-postgresql-v1": "./mdb-postgresql-v1/index.js",
+    "./mdb-postgresql-v1/*": "./mdb-postgresql-v1/*.js",
+    "./mdb-redis-v1": "./mdb-redis-v1/index.js",
+    "./mdb-redis-v1/*": "./mdb-redis-v1/*.js",
+    "./mdb-sqlserver-v1": "./mdb-sqlserver-v1/index.js",
+    "./mdb-sqlserver-v1/*": "./mdb-sqlserver-v1/*.js",
+    "./monitoring-v3": "./monitoring-v3/index.js",
+    "./monitoring-v3/*": "./monitoring-v3/*.js",
+    "./operation": "./operation/index.js",
+    "./operation/*": "./operation/*.js",
+    "./organizationmanager-v1": "./organizationmanager-v1/index.js",
+    "./organizationmanager-v1/*": "./organizationmanager-v1/*.js",
+    "./resourcemanager-v1": "./resourcemanager-v1/index.js",
+    "./resourcemanager-v1/*": "./resourcemanager-v1/*.js",
+    "./searchapi-v2": "./searchapi-v2/index.js",
+    "./searchapi-v2/*": "./searchapi-v2/*.js",
+    "./serverless-apigateway-v1": "./serverless-apigateway-v1/index.js",
+    "./serverless-apigateway-v1/*": "./serverless-apigateway-v1/*.js",
+    "./serverless-apigateway-websocket-v1": "./serverless-apigateway-websocket-v1/index.js",
+    "./serverless-apigateway-websocket-v1/*": "./serverless-apigateway-websocket-v1/*.js",
+    "./serverless-containers-v1": "./serverless-containers-v1/index.js",
+    "./serverless-containers-v1/*": "./serverless-containers-v1/*.js",
+    "./serverless-eventrouter-v1": "./serverless-eventrouter-v1/index.js",
+    "./serverless-eventrouter-v1/*": "./serverless-eventrouter-v1/*.js",
+    "./serverless-functions-v1": "./serverless-functions-v1/index.js",
+    "./serverless-functions-v1/*": "./serverless-functions-v1/*.js",
+    "./serverless-mdbproxy-v1": "./serverless-mdbproxy-v1/index.js",
+    "./serverless-mdbproxy-v1/*": "./serverless-mdbproxy-v1/*.js",
+    "./serverless-triggers-v1": "./serverless-triggers-v1/index.js",
+    "./serverless-triggers-v1/*": "./serverless-triggers-v1/*.js",
+    "./serverless-workflows-v1": "./serverless-workflows-v1/index.js",
+    "./serverless-workflows-v1/*": "./serverless-workflows-v1/*.js",
+    "./smartcaptcha-v1": "./smartcaptcha-v1/index.js",
+    "./smartcaptcha-v1/*": "./smartcaptcha-v1/*.js",
+    "./smartwebsecurity-v1": "./smartwebsecurity-v1/index.js",
+    "./smartwebsecurity-v1/*": "./smartwebsecurity-v1/*.js",
+    "./speechsense-v1": "./speechsense-v1/index.js",
+    "./speechsense-v1/*": "./speechsense-v1/*.js",
+    "./storage-v1": "./storage-v1/index.js",
+    "./storage-v1/*": "./storage-v1/*.js",
+    "./video-v1": "./video-v1/index.js",
+    "./video-v1/*": "./video-v1/*.js",
+    "./vpc-v1": "./vpc-v1/index.js",
+    "./vpc-v1/*": "./vpc-v1/*.js",
+    "./ydb-v1": "./ydb-v1/index.js",
+    "./ydb-v1/*": "./ydb-v1/*.js"
   }
 }

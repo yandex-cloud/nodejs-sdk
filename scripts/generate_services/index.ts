@@ -152,12 +152,6 @@ const modifyGitignore = async (serviceList: string[]) => {
     fs.writeFileSync(path, newContent, 'utf8');
 };
 
-type PackageExportType = {
-    types?: string;
-    default?: string;
-    import?: string;
-    require?: string;
-};
 const modifyPackageJSON = async (serviceList: string[]) => {
     const path = PATH.resolve('package.json');
     const data = fs.readFileSync(path, 'utf8');
@@ -166,27 +160,20 @@ const modifyPackageJSON = async (serviceList: string[]) => {
     jsonData.exports = jsonData.exports || {};
 
     serviceList.forEach((serviceName) => {
-        jsonData.exports[`./${serviceName}`] = {
-            default: `./${serviceName}/index.js`,
-        } satisfies PackageExportType;
-
-        jsonData.exports[`./${serviceName}/*`] = {
-            types: `./${serviceName}/*.d.ts`,
-            import: `./${serviceName}/*.js`,
-            require: `./${serviceName}/*.js`,
-        } satisfies PackageExportType;
+        jsonData.exports[`./${serviceName}`] = `./${serviceName}/index.js`;
+        jsonData.exports[`./${serviceName}/*`] = `./${serviceName}/*.js`;
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const replacer = (key: string, value: any) => {
         return value && typeof value === 'object' && key === 'exports'
             ? Object.keys(value)
-                .sort()
-                .reduce((sorted, key) => {
-                    sorted[key] = value[key];
-                    return sorted;
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                }, {} as any)
+                  .sort()
+                  .reduce((sorted, key) => {
+                      sorted[key] = value[key];
+                      return sorted;
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  }, {} as any)
             : value;
     };
 
