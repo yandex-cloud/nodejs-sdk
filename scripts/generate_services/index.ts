@@ -5,6 +5,7 @@ import { detectRootServices, writeToFile } from '../detect_services';
 
 import { promisify } from 'node:util';
 import child_process from 'node:child_process';
+import { uniq } from 'lodash';
 
 const exec = promisify(child_process.exec);
 
@@ -158,11 +159,16 @@ const modifyPackageJSON = async (serviceList: string[]) => {
     const jsonData = JSON.parse(data);
 
     jsonData.exports = jsonData.exports || {};
+    jsonData.files = jsonData.files || [];
 
     serviceList.forEach((serviceName) => {
         jsonData.exports[`./${serviceName}`] = `./${serviceName}/index.js`;
         jsonData.exports[`./${serviceName}/*`] = `./${serviceName}/*.js`;
+        jsonData.files.push(serviceName);
     });
+
+    jsonData.files.sort();
+    jsonData.files = uniq(jsonData.files);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const replacer = (key: string, value: any) => {
