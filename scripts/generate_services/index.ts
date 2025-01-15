@@ -5,6 +5,7 @@ import { detectRootServices, writeToFile } from '../detect_services';
 
 import { promisify } from 'node:util';
 import child_process from 'node:child_process';
+import { uniq } from 'lodash';
 
 const exec = promisify(child_process.exec);
 
@@ -157,11 +158,32 @@ const modifyPackageJSON = async (serviceList: string[]) => {
     const data = fs.readFileSync(path, 'utf8');
     const jsonData = JSON.parse(data);
 
-    const newServiceList = [...new Set([...jsonData.files, ...serviceList])].sort();
+    jsonData.exports = jsonData.exports || {};
+    jsonData.files = jsonData.files || [];
 
-    jsonData.files = newServiceList;
+    serviceList.forEach((serviceName) => {
+        jsonData.exports[`./${serviceName}`] = `./${serviceName}/index.js`;
+        jsonData.exports[`./${serviceName}/*`] = `./${serviceName}/*.js`;
+        jsonData.files.push(serviceName);
+    });
 
-    fs.writeFileSync(path, JSON.stringify(jsonData, null, 2) + '\n', 'utf8');
+    jsonData.files.sort();
+    jsonData.files = uniq(jsonData.files);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const replacer = (key: string, value: any) => {
+        return value && typeof value === 'object' && key === 'exports'
+            ? Object.keys(value)
+                  .sort()
+                  .reduce((sorted, key) => {
+                      sorted[key] = value[key];
+                      return sorted;
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  }, {} as any)
+            : value;
+    };
+
+    fs.writeFileSync(path, JSON.stringify(jsonData, replacer, 2) + '\n', 'utf8');
 };
 
 const main = async () => {
