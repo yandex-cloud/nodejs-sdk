@@ -15,8 +15,8 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import {
-    TuningTask,
     TuningTask_Status,
+    TuningTask,
     tuningTask_StatusFromJSON,
     tuningTask_StatusToJSON,
 } from '../../../../../yandex/cloud/ai/tuning/v1/tuning_task';
@@ -30,6 +30,7 @@ import {
     SchedulerCosine,
 } from '../../../../../yandex/cloud/ai/tuning/v1/tuning_schedulers';
 import { OptimizerAdamw } from '../../../../../yandex/cloud/ai/tuning/v1/tuning_optimizers';
+import { TuningError } from '../../../../../yandex/cloud/ai/tuning/v1/tuning_error';
 import { Operation } from '../../../../../yandex/cloud/operation/operation';
 
 export const protobufPackage = 'yandex.cloud.ai.tuning.v1';
@@ -42,6 +43,7 @@ export interface ListTuningsRequest {
     pageSize: number;
     /** Token to retrieve the next page of results. */
     pageToken: string;
+    status: TuningTask_Status;
 }
 
 export interface ListTuningsResponse {
@@ -83,18 +85,19 @@ export interface TuningMetadata {
     $type: 'yandex.cloud.ai.tuning.v1.TuningMetadata';
     tuningTaskId: string;
     status: TuningTask_Status;
+    totalSteps: number;
+    currentStep: number;
 }
 
 export interface TuningRequest {
     $type: 'yandex.cloud.ai.tuning.v1.TuningRequest';
-    /** Format like a gpt://{folder_id}/yandex-gpt/latest */
+    /** Format like a `gpt://{folder_id}/yandex-gpt/latest` */
     baseModelUri: string;
     trainDatasets: TuningRequest_WeightedDataset[];
     validationDatasets: TuningRequest_WeightedDataset[];
     textToTextCompletion?: TextToTextCompletionTuningParams | undefined;
     textClassificationMultilabel?: TextClassificationMultilabelParams | undefined;
     textClassificationMulticlass?: TextClassificationMulticlassParams | undefined;
-    /** common params */
     name: string;
     description: string;
     labels: { [key: string]: string };
@@ -213,11 +216,22 @@ export interface GetOptionsResponse {
     textClassificationMulticlass?: TextClassificationMulticlassParams | undefined;
 }
 
+export interface ListErrorsRequest {
+    $type: 'yandex.cloud.ai.tuning.v1.ListErrorsRequest';
+    tuningTaskId: string;
+}
+
+export interface ListErrorsResponse {
+    $type: 'yandex.cloud.ai.tuning.v1.ListErrorsResponse';
+    tuningError: TuningError[];
+}
+
 const baseListTuningsRequest: object = {
     $type: 'yandex.cloud.ai.tuning.v1.ListTuningsRequest',
     folderId: '',
     pageSize: 0,
     pageToken: '',
+    status: 0,
 };
 
 export const ListTuningsRequest = {
@@ -232,6 +246,9 @@ export const ListTuningsRequest = {
         }
         if (message.pageToken !== '') {
             writer.uint32(26).string(message.pageToken);
+        }
+        if (message.status !== 0) {
+            writer.uint32(32).int32(message.status);
         }
         return writer;
     },
@@ -251,6 +268,9 @@ export const ListTuningsRequest = {
                     break;
                 case 3:
                     message.pageToken = reader.string();
+                    break;
+                case 4:
+                    message.status = reader.int32() as any;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -272,6 +292,10 @@ export const ListTuningsRequest = {
             object.pageToken !== undefined && object.pageToken !== null
                 ? String(object.pageToken)
                 : '';
+        message.status =
+            object.status !== undefined && object.status !== null
+                ? tuningTask_StatusFromJSON(object.status)
+                : 0;
         return message;
     },
 
@@ -280,6 +304,7 @@ export const ListTuningsRequest = {
         message.folderId !== undefined && (obj.folderId = message.folderId);
         message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
         message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+        message.status !== undefined && (obj.status = tuningTask_StatusToJSON(message.status));
         return obj;
     },
 
@@ -290,6 +315,7 @@ export const ListTuningsRequest = {
         message.folderId = object.folderId ?? '';
         message.pageSize = object.pageSize ?? 0;
         message.pageToken = object.pageToken ?? '';
+        message.status = object.status ?? 0;
         return message;
     },
 };
@@ -699,6 +725,8 @@ const baseTuningMetadata: object = {
     $type: 'yandex.cloud.ai.tuning.v1.TuningMetadata',
     tuningTaskId: '',
     status: 0,
+    totalSteps: 0,
+    currentStep: 0,
 };
 
 export const TuningMetadata = {
@@ -710,6 +738,12 @@ export const TuningMetadata = {
         }
         if (message.status !== 0) {
             writer.uint32(16).int32(message.status);
+        }
+        if (message.totalSteps !== 0) {
+            writer.uint32(24).int64(message.totalSteps);
+        }
+        if (message.currentStep !== 0) {
+            writer.uint32(32).int64(message.currentStep);
         }
         return writer;
     },
@@ -726,6 +760,12 @@ export const TuningMetadata = {
                     break;
                 case 2:
                     message.status = reader.int32() as any;
+                    break;
+                case 3:
+                    message.totalSteps = longToNumber(reader.int64() as Long);
+                    break;
+                case 4:
+                    message.currentStep = longToNumber(reader.int64() as Long);
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -745,6 +785,14 @@ export const TuningMetadata = {
             object.status !== undefined && object.status !== null
                 ? tuningTask_StatusFromJSON(object.status)
                 : 0;
+        message.totalSteps =
+            object.totalSteps !== undefined && object.totalSteps !== null
+                ? Number(object.totalSteps)
+                : 0;
+        message.currentStep =
+            object.currentStep !== undefined && object.currentStep !== null
+                ? Number(object.currentStep)
+                : 0;
         return message;
     },
 
@@ -752,6 +800,8 @@ export const TuningMetadata = {
         const obj: any = {};
         message.tuningTaskId !== undefined && (obj.tuningTaskId = message.tuningTaskId);
         message.status !== undefined && (obj.status = tuningTask_StatusToJSON(message.status));
+        message.totalSteps !== undefined && (obj.totalSteps = Math.round(message.totalSteps));
+        message.currentStep !== undefined && (obj.currentStep = Math.round(message.currentStep));
         return obj;
     },
 
@@ -759,6 +809,8 @@ export const TuningMetadata = {
         const message = { ...baseTuningMetadata } as TuningMetadata;
         message.tuningTaskId = object.tuningTaskId ?? '';
         message.status = object.status ?? 0;
+        message.totalSteps = object.totalSteps ?? 0;
+        message.currentStep = object.currentStep ?? 0;
         return message;
     },
 };
@@ -2659,6 +2711,123 @@ export const GetOptionsResponse = {
 
 messageTypeRegistry.set(GetOptionsResponse.$type, GetOptionsResponse);
 
+const baseListErrorsRequest: object = {
+    $type: 'yandex.cloud.ai.tuning.v1.ListErrorsRequest',
+    tuningTaskId: '',
+};
+
+export const ListErrorsRequest = {
+    $type: 'yandex.cloud.ai.tuning.v1.ListErrorsRequest' as const,
+
+    encode(message: ListErrorsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.tuningTaskId !== '') {
+            writer.uint32(10).string(message.tuningTaskId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListErrorsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListErrorsRequest } as ListErrorsRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.tuningTaskId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListErrorsRequest {
+        const message = { ...baseListErrorsRequest } as ListErrorsRequest;
+        message.tuningTaskId =
+            object.tuningTaskId !== undefined && object.tuningTaskId !== null
+                ? String(object.tuningTaskId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListErrorsRequest): unknown {
+        const obj: any = {};
+        message.tuningTaskId !== undefined && (obj.tuningTaskId = message.tuningTaskId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListErrorsRequest>, I>>(object: I): ListErrorsRequest {
+        const message = { ...baseListErrorsRequest } as ListErrorsRequest;
+        message.tuningTaskId = object.tuningTaskId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ListErrorsRequest.$type, ListErrorsRequest);
+
+const baseListErrorsResponse: object = { $type: 'yandex.cloud.ai.tuning.v1.ListErrorsResponse' };
+
+export const ListErrorsResponse = {
+    $type: 'yandex.cloud.ai.tuning.v1.ListErrorsResponse' as const,
+
+    encode(message: ListErrorsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.tuningError) {
+            TuningError.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListErrorsResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListErrorsResponse } as ListErrorsResponse;
+        message.tuningError = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.tuningError.push(TuningError.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListErrorsResponse {
+        const message = { ...baseListErrorsResponse } as ListErrorsResponse;
+        message.tuningError = (object.tuningError ?? []).map((e: any) => TuningError.fromJSON(e));
+        return message;
+    },
+
+    toJSON(message: ListErrorsResponse): unknown {
+        const obj: any = {};
+        if (message.tuningError) {
+            obj.tuningError = message.tuningError.map((e) =>
+                e ? TuningError.toJSON(e) : undefined,
+            );
+        } else {
+            obj.tuningError = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListErrorsResponse>, I>>(
+        object: I,
+    ): ListErrorsResponse {
+        const message = { ...baseListErrorsResponse } as ListErrorsResponse;
+        message.tuningError = object.tuningError?.map((e) => TuningError.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ListErrorsResponse.$type, ListErrorsResponse);
+
 export const TuningServiceService = {
     tune: {
         path: '/yandex.cloud.ai.tuning.v1.TuningService/Tune',
@@ -2725,6 +2894,17 @@ export const TuningServiceService = {
             Buffer.from(GetOptionsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => GetOptionsResponse.decode(value),
     },
+    listErrors: {
+        path: '/yandex.cloud.ai.tuning.v1.TuningService/ListErrors',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListErrorsRequest) =>
+            Buffer.from(ListErrorsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListErrorsRequest.decode(value),
+        responseSerialize: (value: ListErrorsResponse) =>
+            Buffer.from(ListErrorsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListErrorsResponse.decode(value),
+    },
 } as const;
 
 export interface TuningServiceServer extends UntypedServiceImplementation {
@@ -2734,6 +2914,7 @@ export interface TuningServiceServer extends UntypedServiceImplementation {
     cancel: handleUnaryCall<CancelTuningRequest, CancelTuningResponse>;
     getMetricsUrl: handleUnaryCall<GetMetricsUrlRequest, GetMetricsUrlResponse>;
     getOptions: handleUnaryCall<GetOptionsRequest, GetOptionsResponse>;
+    listErrors: handleUnaryCall<ListErrorsRequest, ListErrorsResponse>;
 }
 
 export interface TuningServiceClient extends Client {
@@ -2826,6 +3007,21 @@ export interface TuningServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: GetOptionsResponse) => void,
+    ): ClientUnaryCall;
+    listErrors(
+        request: ListErrorsRequest,
+        callback: (error: ServiceError | null, response: ListErrorsResponse) => void,
+    ): ClientUnaryCall;
+    listErrors(
+        request: ListErrorsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListErrorsResponse) => void,
+    ): ClientUnaryCall;
+    listErrors(
+        request: ListErrorsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListErrorsResponse) => void,
     ): ClientUnaryCall;
 }
 

@@ -6820,10 +6820,7 @@ export const ClusterServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /**
-     * Retrieves logs for the specified OpenSearch cluster.
-     * For detailed description, see the [Logs](/yandex-mdb-guide/concepts/logs.html) section in the developer's guide.
-     */
+    /** Retrieves logs for the specified OpenSearch cluster. */
     listLogs: {
         path: '/yandex.cloud.mdb.opensearch.v1.ClusterService/ListLogs',
         requestStream: false,
@@ -6993,10 +6990,7 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
     start: handleUnaryCall<StartClusterRequest, Operation>;
     /** Stops the specified OpenSearch cluster. */
     stop: handleUnaryCall<StopClusterRequest, Operation>;
-    /**
-     * Retrieves logs for the specified OpenSearch cluster.
-     * For detailed description, see the [Logs](/yandex-mdb-guide/concepts/logs.html) section in the developer's guide.
-     */
+    /** Retrieves logs for the specified OpenSearch cluster. */
     listLogs: handleUnaryCall<ListClusterLogsRequest, ListClusterLogsResponse>;
     /** Same as ListLogs but using server-side streaming. Also allows for 'tail -f' semantics. */
     streamLogs: handleServerStreamingCall<StreamClusterLogsRequest, StreamLogRecord>;
@@ -7235,10 +7229,7 @@ export interface ClusterServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /**
-     * Retrieves logs for the specified OpenSearch cluster.
-     * For detailed description, see the [Logs](/yandex-mdb-guide/concepts/logs.html) section in the developer's guide.
-     */
+    /** Retrieves logs for the specified OpenSearch cluster. */
     listLogs(
         request: ListClusterLogsRequest,
         callback: (error: ServiceError | null, response: ListClusterLogsResponse) => void,

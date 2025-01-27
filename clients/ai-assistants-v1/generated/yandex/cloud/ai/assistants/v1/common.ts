@@ -3,6 +3,7 @@ import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Int64Value, DoubleValue } from '../../../../../google/protobuf/wrappers';
+import { Struct } from '../../../../../google/protobuf/struct';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1';
 
@@ -15,6 +16,27 @@ export interface PromptTruncationOptions {
      * Default max_prompt_tokens: 7000
      */
     maxPromptTokens?: number;
+    autoStrategy?: PromptTruncationOptions_AutoStrategy | undefined;
+    /**
+     * Retains only the last `num_messages` messages in the thread.
+     * If these messages exceed `max_prompt_tokens`, older messages will be further truncated to fit the limit.
+     */
+    lastMessagesStrategy?: PromptTruncationOptions_LastMessagesStrategy | undefined;
+}
+
+/** Auto truncation strategy. */
+export interface PromptTruncationOptions_AutoStrategy {
+    $type: 'yandex.cloud.ai.assistants.v1.PromptTruncationOptions.AutoStrategy';
+}
+
+/** Truncates the prompt by retaining only the last `num_messages` messages in the thread. */
+export interface PromptTruncationOptions_LastMessagesStrategy {
+    $type: 'yandex.cloud.ai.assistants.v1.PromptTruncationOptions.LastMessagesStrategy';
+    /**
+     * The number of most recent messages to retain in the prompt.
+     * If these messages exceed `max_prompt_tokens`, older messages will be further truncated to fit the limit.
+     */
+    numMessages: number;
 }
 
 /** Defines the options for completion generation. */
@@ -33,6 +55,43 @@ export interface CompletionOptions {
     temperature?: number;
 }
 
+/** Represents a general tool that can be one of several types. */
+export interface Tool {
+    $type: 'yandex.cloud.ai.assistants.v1.Tool';
+    /** SearchIndexTool tool that performs search across specified indexes. */
+    searchIndex?: SearchIndexTool | undefined;
+    /** Function tool that can be invoked by the assistant. */
+    function?: FunctionTool | undefined;
+}
+
+/** Represents a call to a tool. */
+export interface ToolCall {
+    $type: 'yandex.cloud.ai.assistants.v1.ToolCall';
+    /** Represents a call to a function. */
+    functionCall?: FunctionCall | undefined;
+}
+
+/** Represents a list of tool calls. */
+export interface ToolCallList {
+    $type: 'yandex.cloud.ai.assistants.v1.ToolCallList';
+    /** A list of tool calls to be executed. */
+    toolCalls: ToolCall[];
+}
+
+/** Represents the result of a tool call. */
+export interface ToolResult {
+    $type: 'yandex.cloud.ai.assistants.v1.ToolResult';
+    /** Represents the result of a function call. */
+    functionResult?: FunctionResult | undefined;
+}
+
+/** Represents a list of tool results. */
+export interface ToolResultList {
+    $type: 'yandex.cloud.ai.assistants.v1.ToolResultList';
+    /** A list of tool results. */
+    toolResults: ToolResult[];
+}
+
 /** Configures a tool that enables Retrieval-Augmented Generation (RAG) by allowing the assistant to search across a specified search index. */
 export interface SearchIndexTool {
     $type: 'yandex.cloud.ai.assistants.v1.SearchIndexTool';
@@ -46,11 +105,42 @@ export interface SearchIndexTool {
     maxNumResults?: number;
 }
 
-/** Represents a general tool that can be one of several types. */
-export interface Tool {
-    $type: 'yandex.cloud.ai.assistants.v1.Tool';
-    /** SearchIndexTool tool that performs search across specified indexes. */
-    searchIndex?: SearchIndexTool | undefined;
+/** Represents a function tool that can be invoked by the assistant. */
+export interface FunctionTool {
+    $type: 'yandex.cloud.ai.assistants.v1.FunctionTool';
+    /** The name of the function. */
+    name: string;
+    /** A description of the function's purpose or behavior. */
+    description: string;
+    /**
+     * A JSON Schema that defines the expected parameters for the function.
+     * The schema should describe the required fields, their types, and any constraints or default values.
+     */
+    parameters?: { [key: string]: any };
+}
+
+/** Represents the invocation of a function with specific arguments. */
+export interface FunctionCall {
+    $type: 'yandex.cloud.ai.assistants.v1.FunctionCall';
+    /** The name of the function being called. */
+    name: string;
+    /**
+     * The structured arguments passed to the function.
+     * These arguments must adhere to the JSON Schema defined in the corresponding function's parameters.
+     */
+    arguments?: { [key: string]: any };
+}
+
+/** Represents the result of a function call. */
+export interface FunctionResult {
+    $type: 'yandex.cloud.ai.assistants.v1.FunctionResult';
+    /** The name of the function that was executed. */
+    name: string;
+    /**
+     * The result of the function call, represented as a string.
+     * This field can be used to store the output of the function.
+     */
+    content: string | undefined;
 }
 
 const basePromptTruncationOptions: object = {
@@ -67,6 +157,18 @@ export const PromptTruncationOptions = {
                 writer.uint32(10).fork(),
             ).ldelim();
         }
+        if (message.autoStrategy !== undefined) {
+            PromptTruncationOptions_AutoStrategy.encode(
+                message.autoStrategy,
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        if (message.lastMessagesStrategy !== undefined) {
+            PromptTruncationOptions_LastMessagesStrategy.encode(
+                message.lastMessagesStrategy,
+                writer.uint32(26).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -79,6 +181,19 @@ export const PromptTruncationOptions = {
             switch (tag >>> 3) {
                 case 1:
                     message.maxPromptTokens = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 2:
+                    message.autoStrategy = PromptTruncationOptions_AutoStrategy.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 3:
+                    message.lastMessagesStrategy =
+                        PromptTruncationOptions_LastMessagesStrategy.decode(
+                            reader,
+                            reader.uint32(),
+                        );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -94,12 +209,28 @@ export const PromptTruncationOptions = {
             object.maxPromptTokens !== undefined && object.maxPromptTokens !== null
                 ? Number(object.maxPromptTokens)
                 : undefined;
+        message.autoStrategy =
+            object.autoStrategy !== undefined && object.autoStrategy !== null
+                ? PromptTruncationOptions_AutoStrategy.fromJSON(object.autoStrategy)
+                : undefined;
+        message.lastMessagesStrategy =
+            object.lastMessagesStrategy !== undefined && object.lastMessagesStrategy !== null
+                ? PromptTruncationOptions_LastMessagesStrategy.fromJSON(object.lastMessagesStrategy)
+                : undefined;
         return message;
     },
 
     toJSON(message: PromptTruncationOptions): unknown {
         const obj: any = {};
         message.maxPromptTokens !== undefined && (obj.maxPromptTokens = message.maxPromptTokens);
+        message.autoStrategy !== undefined &&
+            (obj.autoStrategy = message.autoStrategy
+                ? PromptTruncationOptions_AutoStrategy.toJSON(message.autoStrategy)
+                : undefined);
+        message.lastMessagesStrategy !== undefined &&
+            (obj.lastMessagesStrategy = message.lastMessagesStrategy
+                ? PromptTruncationOptions_LastMessagesStrategy.toJSON(message.lastMessagesStrategy)
+                : undefined);
         return obj;
     },
 
@@ -108,11 +239,153 @@ export const PromptTruncationOptions = {
     ): PromptTruncationOptions {
         const message = { ...basePromptTruncationOptions } as PromptTruncationOptions;
         message.maxPromptTokens = object.maxPromptTokens ?? undefined;
+        message.autoStrategy =
+            object.autoStrategy !== undefined && object.autoStrategy !== null
+                ? PromptTruncationOptions_AutoStrategy.fromPartial(object.autoStrategy)
+                : undefined;
+        message.lastMessagesStrategy =
+            object.lastMessagesStrategy !== undefined && object.lastMessagesStrategy !== null
+                ? PromptTruncationOptions_LastMessagesStrategy.fromPartial(
+                      object.lastMessagesStrategy,
+                  )
+                : undefined;
         return message;
     },
 };
 
 messageTypeRegistry.set(PromptTruncationOptions.$type, PromptTruncationOptions);
+
+const basePromptTruncationOptions_AutoStrategy: object = {
+    $type: 'yandex.cloud.ai.assistants.v1.PromptTruncationOptions.AutoStrategy',
+};
+
+export const PromptTruncationOptions_AutoStrategy = {
+    $type: 'yandex.cloud.ai.assistants.v1.PromptTruncationOptions.AutoStrategy' as const,
+
+    encode(
+        _: PromptTruncationOptions_AutoStrategy,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): PromptTruncationOptions_AutoStrategy {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...basePromptTruncationOptions_AutoStrategy,
+        } as PromptTruncationOptions_AutoStrategy;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): PromptTruncationOptions_AutoStrategy {
+        const message = {
+            ...basePromptTruncationOptions_AutoStrategy,
+        } as PromptTruncationOptions_AutoStrategy;
+        return message;
+    },
+
+    toJSON(_: PromptTruncationOptions_AutoStrategy): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<PromptTruncationOptions_AutoStrategy>, I>>(
+        _: I,
+    ): PromptTruncationOptions_AutoStrategy {
+        const message = {
+            ...basePromptTruncationOptions_AutoStrategy,
+        } as PromptTruncationOptions_AutoStrategy;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(
+    PromptTruncationOptions_AutoStrategy.$type,
+    PromptTruncationOptions_AutoStrategy,
+);
+
+const basePromptTruncationOptions_LastMessagesStrategy: object = {
+    $type: 'yandex.cloud.ai.assistants.v1.PromptTruncationOptions.LastMessagesStrategy',
+    numMessages: 0,
+};
+
+export const PromptTruncationOptions_LastMessagesStrategy = {
+    $type: 'yandex.cloud.ai.assistants.v1.PromptTruncationOptions.LastMessagesStrategy' as const,
+
+    encode(
+        message: PromptTruncationOptions_LastMessagesStrategy,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.numMessages !== 0) {
+            writer.uint32(8).int64(message.numMessages);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): PromptTruncationOptions_LastMessagesStrategy {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...basePromptTruncationOptions_LastMessagesStrategy,
+        } as PromptTruncationOptions_LastMessagesStrategy;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.numMessages = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): PromptTruncationOptions_LastMessagesStrategy {
+        const message = {
+            ...basePromptTruncationOptions_LastMessagesStrategy,
+        } as PromptTruncationOptions_LastMessagesStrategy;
+        message.numMessages =
+            object.numMessages !== undefined && object.numMessages !== null
+                ? Number(object.numMessages)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: PromptTruncationOptions_LastMessagesStrategy): unknown {
+        const obj: any = {};
+        message.numMessages !== undefined && (obj.numMessages = Math.round(message.numMessages));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<PromptTruncationOptions_LastMessagesStrategy>, I>>(
+        object: I,
+    ): PromptTruncationOptions_LastMessagesStrategy {
+        const message = {
+            ...basePromptTruncationOptions_LastMessagesStrategy,
+        } as PromptTruncationOptions_LastMessagesStrategy;
+        message.numMessages = object.numMessages ?? 0;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(
+    PromptTruncationOptions_LastMessagesStrategy.$type,
+    PromptTruncationOptions_LastMessagesStrategy,
+);
 
 const baseCompletionOptions: object = { $type: 'yandex.cloud.ai.assistants.v1.CompletionOptions' };
 
@@ -185,6 +458,316 @@ export const CompletionOptions = {
 };
 
 messageTypeRegistry.set(CompletionOptions.$type, CompletionOptions);
+
+const baseTool: object = { $type: 'yandex.cloud.ai.assistants.v1.Tool' };
+
+export const Tool = {
+    $type: 'yandex.cloud.ai.assistants.v1.Tool' as const,
+
+    encode(message: Tool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.searchIndex !== undefined) {
+            SearchIndexTool.encode(message.searchIndex, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.function !== undefined) {
+            FunctionTool.encode(message.function, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Tool {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseTool } as Tool;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.searchIndex = SearchIndexTool.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.function = FunctionTool.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Tool {
+        const message = { ...baseTool } as Tool;
+        message.searchIndex =
+            object.searchIndex !== undefined && object.searchIndex !== null
+                ? SearchIndexTool.fromJSON(object.searchIndex)
+                : undefined;
+        message.function =
+            object.function !== undefined && object.function !== null
+                ? FunctionTool.fromJSON(object.function)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: Tool): unknown {
+        const obj: any = {};
+        message.searchIndex !== undefined &&
+            (obj.searchIndex = message.searchIndex
+                ? SearchIndexTool.toJSON(message.searchIndex)
+                : undefined);
+        message.function !== undefined &&
+            (obj.function = message.function ? FunctionTool.toJSON(message.function) : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Tool>, I>>(object: I): Tool {
+        const message = { ...baseTool } as Tool;
+        message.searchIndex =
+            object.searchIndex !== undefined && object.searchIndex !== null
+                ? SearchIndexTool.fromPartial(object.searchIndex)
+                : undefined;
+        message.function =
+            object.function !== undefined && object.function !== null
+                ? FunctionTool.fromPartial(object.function)
+                : undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(Tool.$type, Tool);
+
+const baseToolCall: object = { $type: 'yandex.cloud.ai.assistants.v1.ToolCall' };
+
+export const ToolCall = {
+    $type: 'yandex.cloud.ai.assistants.v1.ToolCall' as const,
+
+    encode(message: ToolCall, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.functionCall !== undefined) {
+            FunctionCall.encode(message.functionCall, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ToolCall {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseToolCall } as ToolCall;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.functionCall = FunctionCall.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ToolCall {
+        const message = { ...baseToolCall } as ToolCall;
+        message.functionCall =
+            object.functionCall !== undefined && object.functionCall !== null
+                ? FunctionCall.fromJSON(object.functionCall)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: ToolCall): unknown {
+        const obj: any = {};
+        message.functionCall !== undefined &&
+            (obj.functionCall = message.functionCall
+                ? FunctionCall.toJSON(message.functionCall)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ToolCall>, I>>(object: I): ToolCall {
+        const message = { ...baseToolCall } as ToolCall;
+        message.functionCall =
+            object.functionCall !== undefined && object.functionCall !== null
+                ? FunctionCall.fromPartial(object.functionCall)
+                : undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ToolCall.$type, ToolCall);
+
+const baseToolCallList: object = { $type: 'yandex.cloud.ai.assistants.v1.ToolCallList' };
+
+export const ToolCallList = {
+    $type: 'yandex.cloud.ai.assistants.v1.ToolCallList' as const,
+
+    encode(message: ToolCallList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.toolCalls) {
+            ToolCall.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ToolCallList {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseToolCallList } as ToolCallList;
+        message.toolCalls = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.toolCalls.push(ToolCall.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ToolCallList {
+        const message = { ...baseToolCallList } as ToolCallList;
+        message.toolCalls = (object.toolCalls ?? []).map((e: any) => ToolCall.fromJSON(e));
+        return message;
+    },
+
+    toJSON(message: ToolCallList): unknown {
+        const obj: any = {};
+        if (message.toolCalls) {
+            obj.toolCalls = message.toolCalls.map((e) => (e ? ToolCall.toJSON(e) : undefined));
+        } else {
+            obj.toolCalls = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ToolCallList>, I>>(object: I): ToolCallList {
+        const message = { ...baseToolCallList } as ToolCallList;
+        message.toolCalls = object.toolCalls?.map((e) => ToolCall.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ToolCallList.$type, ToolCallList);
+
+const baseToolResult: object = { $type: 'yandex.cloud.ai.assistants.v1.ToolResult' };
+
+export const ToolResult = {
+    $type: 'yandex.cloud.ai.assistants.v1.ToolResult' as const,
+
+    encode(message: ToolResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.functionResult !== undefined) {
+            FunctionResult.encode(message.functionResult, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ToolResult {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseToolResult } as ToolResult;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.functionResult = FunctionResult.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ToolResult {
+        const message = { ...baseToolResult } as ToolResult;
+        message.functionResult =
+            object.functionResult !== undefined && object.functionResult !== null
+                ? FunctionResult.fromJSON(object.functionResult)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: ToolResult): unknown {
+        const obj: any = {};
+        message.functionResult !== undefined &&
+            (obj.functionResult = message.functionResult
+                ? FunctionResult.toJSON(message.functionResult)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ToolResult>, I>>(object: I): ToolResult {
+        const message = { ...baseToolResult } as ToolResult;
+        message.functionResult =
+            object.functionResult !== undefined && object.functionResult !== null
+                ? FunctionResult.fromPartial(object.functionResult)
+                : undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ToolResult.$type, ToolResult);
+
+const baseToolResultList: object = { $type: 'yandex.cloud.ai.assistants.v1.ToolResultList' };
+
+export const ToolResultList = {
+    $type: 'yandex.cloud.ai.assistants.v1.ToolResultList' as const,
+
+    encode(message: ToolResultList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.toolResults) {
+            ToolResult.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ToolResultList {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseToolResultList } as ToolResultList;
+        message.toolResults = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.toolResults.push(ToolResult.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ToolResultList {
+        const message = { ...baseToolResultList } as ToolResultList;
+        message.toolResults = (object.toolResults ?? []).map((e: any) => ToolResult.fromJSON(e));
+        return message;
+    },
+
+    toJSON(message: ToolResultList): unknown {
+        const obj: any = {};
+        if (message.toolResults) {
+            obj.toolResults = message.toolResults.map((e) =>
+                e ? ToolResult.toJSON(e) : undefined,
+            );
+        } else {
+            obj.toolResults = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ToolResultList>, I>>(object: I): ToolResultList {
+        const message = { ...baseToolResultList } as ToolResultList;
+        message.toolResults = object.toolResults?.map((e) => ToolResult.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ToolResultList.$type, ToolResultList);
 
 const baseSearchIndexTool: object = {
     $type: 'yandex.cloud.ai.assistants.v1.SearchIndexTool',
@@ -260,27 +843,43 @@ export const SearchIndexTool = {
 
 messageTypeRegistry.set(SearchIndexTool.$type, SearchIndexTool);
 
-const baseTool: object = { $type: 'yandex.cloud.ai.assistants.v1.Tool' };
+const baseFunctionTool: object = {
+    $type: 'yandex.cloud.ai.assistants.v1.FunctionTool',
+    name: '',
+    description: '',
+};
 
-export const Tool = {
-    $type: 'yandex.cloud.ai.assistants.v1.Tool' as const,
+export const FunctionTool = {
+    $type: 'yandex.cloud.ai.assistants.v1.FunctionTool' as const,
 
-    encode(message: Tool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.searchIndex !== undefined) {
-            SearchIndexTool.encode(message.searchIndex, writer.uint32(10).fork()).ldelim();
+    encode(message: FunctionTool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.name !== '') {
+            writer.uint32(10).string(message.name);
+        }
+        if (message.description !== '') {
+            writer.uint32(18).string(message.description);
+        }
+        if (message.parameters !== undefined) {
+            Struct.encode(Struct.wrap(message.parameters), writer.uint32(26).fork()).ldelim();
         }
         return writer;
     },
 
-    decode(input: _m0.Reader | Uint8Array, length?: number): Tool {
+    decode(input: _m0.Reader | Uint8Array, length?: number): FunctionTool {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseTool } as Tool;
+        const message = { ...baseFunctionTool } as FunctionTool;
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    message.searchIndex = SearchIndexTool.decode(reader, reader.uint32());
+                    message.name = reader.string();
+                    break;
+                case 2:
+                    message.description = reader.string();
+                    break;
+                case 3:
+                    message.parameters = Struct.unwrap(Struct.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -290,35 +889,172 @@ export const Tool = {
         return message;
     },
 
-    fromJSON(object: any): Tool {
-        const message = { ...baseTool } as Tool;
-        message.searchIndex =
-            object.searchIndex !== undefined && object.searchIndex !== null
-                ? SearchIndexTool.fromJSON(object.searchIndex)
-                : undefined;
+    fromJSON(object: any): FunctionTool {
+        const message = { ...baseFunctionTool } as FunctionTool;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
+        message.parameters = typeof object.parameters === 'object' ? object.parameters : undefined;
         return message;
     },
 
-    toJSON(message: Tool): unknown {
+    toJSON(message: FunctionTool): unknown {
         const obj: any = {};
-        message.searchIndex !== undefined &&
-            (obj.searchIndex = message.searchIndex
-                ? SearchIndexTool.toJSON(message.searchIndex)
-                : undefined);
+        message.name !== undefined && (obj.name = message.name);
+        message.description !== undefined && (obj.description = message.description);
+        message.parameters !== undefined && (obj.parameters = message.parameters);
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<Tool>, I>>(object: I): Tool {
-        const message = { ...baseTool } as Tool;
-        message.searchIndex =
-            object.searchIndex !== undefined && object.searchIndex !== null
-                ? SearchIndexTool.fromPartial(object.searchIndex)
-                : undefined;
+    fromPartial<I extends Exact<DeepPartial<FunctionTool>, I>>(object: I): FunctionTool {
+        const message = { ...baseFunctionTool } as FunctionTool;
+        message.name = object.name ?? '';
+        message.description = object.description ?? '';
+        message.parameters = object.parameters ?? undefined;
         return message;
     },
 };
 
-messageTypeRegistry.set(Tool.$type, Tool);
+messageTypeRegistry.set(FunctionTool.$type, FunctionTool);
+
+const baseFunctionCall: object = { $type: 'yandex.cloud.ai.assistants.v1.FunctionCall', name: '' };
+
+export const FunctionCall = {
+    $type: 'yandex.cloud.ai.assistants.v1.FunctionCall' as const,
+
+    encode(message: FunctionCall, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.name !== '') {
+            writer.uint32(10).string(message.name);
+        }
+        if (message.arguments !== undefined) {
+            Struct.encode(Struct.wrap(message.arguments), writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): FunctionCall {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseFunctionCall } as FunctionCall;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.name = reader.string();
+                    break;
+                case 2:
+                    message.arguments = Struct.unwrap(Struct.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): FunctionCall {
+        const message = { ...baseFunctionCall } as FunctionCall;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.arguments = typeof object.arguments === 'object' ? object.arguments : undefined;
+        return message;
+    },
+
+    toJSON(message: FunctionCall): unknown {
+        const obj: any = {};
+        message.name !== undefined && (obj.name = message.name);
+        message.arguments !== undefined && (obj.arguments = message.arguments);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<FunctionCall>, I>>(object: I): FunctionCall {
+        const message = { ...baseFunctionCall } as FunctionCall;
+        message.name = object.name ?? '';
+        message.arguments = object.arguments ?? undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(FunctionCall.$type, FunctionCall);
+
+const baseFunctionResult: object = {
+    $type: 'yandex.cloud.ai.assistants.v1.FunctionResult',
+    name: '',
+};
+
+export const FunctionResult = {
+    $type: 'yandex.cloud.ai.assistants.v1.FunctionResult' as const,
+
+    encode(message: FunctionResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.name !== '') {
+            writer.uint32(10).string(message.name);
+        }
+        if (message.content !== undefined) {
+            writer.uint32(18).string(message.content);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): FunctionResult {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseFunctionResult } as FunctionResult;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.name = reader.string();
+                    break;
+                case 2:
+                    message.content = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): FunctionResult {
+        const message = { ...baseFunctionResult } as FunctionResult;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.content =
+            object.content !== undefined && object.content !== null
+                ? String(object.content)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: FunctionResult): unknown {
+        const obj: any = {};
+        message.name !== undefined && (obj.name = message.name);
+        message.content !== undefined && (obj.content = message.content);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<FunctionResult>, I>>(object: I): FunctionResult {
+        const message = { ...baseFunctionResult } as FunctionResult;
+        message.name = object.name ?? '';
+        message.content = object.content ?? undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(FunctionResult.$type, FunctionResult);
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+    if (typeof globalThis !== 'undefined') return globalThis;
+    if (typeof self !== 'undefined') return self;
+    if (typeof window !== 'undefined') return window;
+    if (typeof global !== 'undefined') return global;
+    throw 'Unable to locate global object';
+})();
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
@@ -339,6 +1075,13 @@ export type Exact<P, I extends P> = P extends Builtin
               Exclude<keyof I, KeysOfUnion<P> | '$type'>,
               never
           >;
+
+function longToNumber(long: Long): number {
+    if (long.gt(Number.MAX_SAFE_INTEGER)) {
+        throw new globalThis.Error('Value is larger than Number.MAX_SAFE_INTEGER');
+    }
+    return long.toNumber();
+}
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

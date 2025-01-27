@@ -39,7 +39,7 @@ export function gpuInterconnectTypeToJSON(object: GpuInterconnectType): string {
     }
 }
 
-/** A GPU cluster. For details about the concept, see [documentation](/docs/compute/concepts/gpu-cluster). */
+/** A GPU cluster. For details about the concept, see [documentation](/docs/compute/concepts/gpus#gpu-clusters). */
 export interface GpuCluster {
     $type: 'yandex.cloud.compute.v1.GpuCluster';
     /** ID of GPU cluster. */

@@ -1177,6 +1177,8 @@ export interface Access {
     $type: 'yandex.cloud.mdb.mongodb.v1.Access';
     /** Allow access for DataLens. */
     dataLens: boolean;
+    /** Allow access for Web SQL. */
+    webSql: boolean;
     /** Allow access for DataTransfer. */
     dataTransfer: boolean;
 }
@@ -8029,6 +8031,7 @@ messageTypeRegistry.set(Resources.$type, Resources);
 const baseAccess: object = {
     $type: 'yandex.cloud.mdb.mongodb.v1.Access',
     dataLens: false,
+    webSql: false,
     dataTransfer: false,
 };
 
@@ -8038,6 +8041,9 @@ export const Access = {
     encode(message: Access, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataLens === true) {
             writer.uint32(8).bool(message.dataLens);
+        }
+        if (message.webSql === true) {
+            writer.uint32(16).bool(message.webSql);
         }
         if (message.dataTransfer === true) {
             writer.uint32(24).bool(message.dataTransfer);
@@ -8054,6 +8060,9 @@ export const Access = {
             switch (tag >>> 3) {
                 case 1:
                     message.dataLens = reader.bool();
+                    break;
+                case 2:
+                    message.webSql = reader.bool();
                     break;
                 case 3:
                     message.dataTransfer = reader.bool();
@@ -8072,6 +8081,8 @@ export const Access = {
             object.dataLens !== undefined && object.dataLens !== null
                 ? Boolean(object.dataLens)
                 : false;
+        message.webSql =
+            object.webSql !== undefined && object.webSql !== null ? Boolean(object.webSql) : false;
         message.dataTransfer =
             object.dataTransfer !== undefined && object.dataTransfer !== null
                 ? Boolean(object.dataTransfer)
@@ -8082,6 +8093,7 @@ export const Access = {
     toJSON(message: Access): unknown {
         const obj: any = {};
         message.dataLens !== undefined && (obj.dataLens = message.dataLens);
+        message.webSql !== undefined && (obj.webSql = message.webSql);
         message.dataTransfer !== undefined && (obj.dataTransfer = message.dataTransfer);
         return obj;
     },
@@ -8089,6 +8101,7 @@ export const Access = {
     fromPartial<I extends Exact<DeepPartial<Access>, I>>(object: I): Access {
         const message = { ...baseAccess } as Access;
         message.dataLens = object.dataLens ?? false;
+        message.webSql = object.webSql ?? false;
         message.dataTransfer = object.dataTransfer ?? false;
         return message;
     },

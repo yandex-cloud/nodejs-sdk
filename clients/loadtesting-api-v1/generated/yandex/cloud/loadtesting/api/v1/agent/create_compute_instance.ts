@@ -49,7 +49,7 @@ export interface CreateComputeInstance {
      */
     serviceAccountId: string;
     /**
-     * ID of the [Compute VM platform](docs/compute/concepts/vm-platforms) on which the agent will be created.
+     * ID of the [Compute VM platform](/docs/compute/concepts/vm-platforms) on which the agent will be created.
      * Default value: "standard-v2"
      */
     platformId: string;

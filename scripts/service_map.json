@@ -286,6 +286,7 @@
       "cluster_service.proto",
       "hba_rule_service.proto",
       "pxf_service.proto",
+      "resource_groups_service.proto",
       "resource_preset_service.proto"
     ]
   },
@@ -346,7 +347,8 @@
     "rootServiceList": [
       "backup_service.proto",
       "cluster_service.proto",
-      "resource_preset_service.proto"
+      "resource_preset_service.proto",
+      "user_service.proto"
     ]
   },
   "mdb/sqlserver/v1": {

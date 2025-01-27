@@ -21,6 +21,7 @@ import {
     autoTranscodeToJSON,
 } from '../../../../yandex/cloud/video/v1/video';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
+import { Duration } from '../../../../google/protobuf/duration';
 import { Manifest } from '../../../../yandex/cloud/video/v1/manifest';
 import { Operation } from '../../../../yandex/cloud/operation/operation';
 
@@ -241,6 +242,8 @@ export interface GetVideoPlayerURLRequest {
     /** ID of the video. */
     videoId: string;
     params?: VideoPlayerParams;
+    /** Optional field, used to set custom url expiration duration for videos with sign_url_access */
+    signedUrlExpirationDuration?: Duration;
 }
 
 export interface VideoPlayerParams {
@@ -2216,6 +2219,9 @@ export const GetVideoPlayerURLRequest = {
         if (message.params !== undefined) {
             VideoPlayerParams.encode(message.params, writer.uint32(18).fork()).ldelim();
         }
+        if (message.signedUrlExpirationDuration !== undefined) {
+            Duration.encode(message.signedUrlExpirationDuration, writer.uint32(26).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -2231,6 +2237,9 @@ export const GetVideoPlayerURLRequest = {
                     break;
                 case 2:
                     message.params = VideoPlayerParams.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.signedUrlExpirationDuration = Duration.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2248,6 +2257,11 @@ export const GetVideoPlayerURLRequest = {
             object.params !== undefined && object.params !== null
                 ? VideoPlayerParams.fromJSON(object.params)
                 : undefined;
+        message.signedUrlExpirationDuration =
+            object.signedUrlExpirationDuration !== undefined &&
+            object.signedUrlExpirationDuration !== null
+                ? Duration.fromJSON(object.signedUrlExpirationDuration)
+                : undefined;
         return message;
     },
 
@@ -2256,6 +2270,10 @@ export const GetVideoPlayerURLRequest = {
         message.videoId !== undefined && (obj.videoId = message.videoId);
         message.params !== undefined &&
             (obj.params = message.params ? VideoPlayerParams.toJSON(message.params) : undefined);
+        message.signedUrlExpirationDuration !== undefined &&
+            (obj.signedUrlExpirationDuration = message.signedUrlExpirationDuration
+                ? Duration.toJSON(message.signedUrlExpirationDuration)
+                : undefined);
         return obj;
     },
 
@@ -2267,6 +2285,11 @@ export const GetVideoPlayerURLRequest = {
         message.params =
             object.params !== undefined && object.params !== null
                 ? VideoPlayerParams.fromPartial(object.params)
+                : undefined;
+        message.signedUrlExpirationDuration =
+            object.signedUrlExpirationDuration !== undefined &&
+            object.signedUrlExpirationDuration !== null
+                ? Duration.fromPartial(object.signedUrlExpirationDuration)
                 : undefined;
         return message;
     },

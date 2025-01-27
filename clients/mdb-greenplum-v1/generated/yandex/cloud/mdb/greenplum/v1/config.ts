@@ -258,6 +258,18 @@ export interface GreenplumConfig6 {
     logStatement: LogStatement;
     /** https://docs.vmware.com/en/VMware-Tanzu-Greenplum/6/greenplum-database/GUID-ref_guide-config_params-guc-list.html#gp_add_column_inherits_table_setting */
     gpAddColumnInheritsTableSetting?: boolean;
+    /**
+     * Controls whether the Greenplum Database Global Deadlock Detector is enabled to manage concurrent UPDATE and DELETE operations on heap tables to improve performance. See Inserting, Updating, and Deleting Datain the Greenplum Database Administrator Guide. The default is off, the Global Deadlock Detector is deactivated.
+     * If the Global Deadlock Detector is deactivated (the default), Greenplum Database runs concurrent update and delete operations on a heap table serially.
+     * If the Global Deadlock Detector is enabled, concurrent updates are permitted and the Global Deadlock Detector determines when a deadlock exists, and breaks the deadlock by cancelling one or more backend processes associated with the youngest transaction(s) involved.
+     * https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-greenplum/6/greenplum-database/ref_guide-config_params-guc-list.html#gp_enable_global_deadlock_detector
+     */
+    gpEnableGlobalDeadlockDetector?: boolean;
+    /**
+     * Specifies the executing interval (in seconds) of the global deadlock detector background worker process.
+     * https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-greenplum/6/greenplum-database/ref_guide-config_params-guc-list.html#gp_global_deadlock_detector_period
+     */
+    gpGlobalDeadlockDetectorPeriod?: number;
 }
 
 export interface Greenplumconfig617 {
@@ -1461,6 +1473,24 @@ export const GreenplumConfig6 = {
                 writer.uint32(82).fork(),
             ).ldelim();
         }
+        if (message.gpEnableGlobalDeadlockDetector !== undefined) {
+            BoolValue.encode(
+                {
+                    $type: 'google.protobuf.BoolValue',
+                    value: message.gpEnableGlobalDeadlockDetector!,
+                },
+                writer.uint32(90).fork(),
+            ).ldelim();
+        }
+        if (message.gpGlobalDeadlockDetectorPeriod !== undefined) {
+            Int64Value.encode(
+                {
+                    $type: 'google.protobuf.Int64Value',
+                    value: message.gpGlobalDeadlockDetectorPeriod!,
+                },
+                writer.uint32(98).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -1512,6 +1542,18 @@ export const GreenplumConfig6 = {
                     break;
                 case 10:
                     message.gpAddColumnInheritsTableSetting = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 11:
+                    message.gpEnableGlobalDeadlockDetector = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 12:
+                    message.gpGlobalDeadlockDetectorPeriod = Int64Value.decode(
                         reader,
                         reader.uint32(),
                     ).value;
@@ -1569,6 +1611,16 @@ export const GreenplumConfig6 = {
             object.gpAddColumnInheritsTableSetting !== null
                 ? Boolean(object.gpAddColumnInheritsTableSetting)
                 : undefined;
+        message.gpEnableGlobalDeadlockDetector =
+            object.gpEnableGlobalDeadlockDetector !== undefined &&
+            object.gpEnableGlobalDeadlockDetector !== null
+                ? Boolean(object.gpEnableGlobalDeadlockDetector)
+                : undefined;
+        message.gpGlobalDeadlockDetectorPeriod =
+            object.gpGlobalDeadlockDetectorPeriod !== undefined &&
+            object.gpGlobalDeadlockDetectorPeriod !== null
+                ? Number(object.gpGlobalDeadlockDetectorPeriod)
+                : undefined;
         return message;
     },
 
@@ -1592,6 +1644,10 @@ export const GreenplumConfig6 = {
             (obj.logStatement = logStatementToJSON(message.logStatement));
         message.gpAddColumnInheritsTableSetting !== undefined &&
             (obj.gpAddColumnInheritsTableSetting = message.gpAddColumnInheritsTableSetting);
+        message.gpEnableGlobalDeadlockDetector !== undefined &&
+            (obj.gpEnableGlobalDeadlockDetector = message.gpEnableGlobalDeadlockDetector);
+        message.gpGlobalDeadlockDetectorPeriod !== undefined &&
+            (obj.gpGlobalDeadlockDetectorPeriod = message.gpGlobalDeadlockDetectorPeriod);
         return obj;
     },
 
@@ -1608,6 +1664,8 @@ export const GreenplumConfig6 = {
         message.logStatement = object.logStatement ?? 0;
         message.gpAddColumnInheritsTableSetting =
             object.gpAddColumnInheritsTableSetting ?? undefined;
+        message.gpEnableGlobalDeadlockDetector = object.gpEnableGlobalDeadlockDetector ?? undefined;
+        message.gpGlobalDeadlockDetectorPeriod = object.gpGlobalDeadlockDetectorPeriod ?? undefined;
         return message;
     },
 };

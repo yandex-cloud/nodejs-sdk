@@ -980,7 +980,7 @@ export const ListSearchIndicesResponse = {
 
 messageTypeRegistry.set(ListSearchIndicesResponse.$type, ListSearchIndicesResponse);
 
-/** ThreadService provides operations for managing search indexes. */
+/** SearchIndexService provides operations for managing search indexes. */
 export const SearchIndexServiceService = {
     /** Create a new search index in [asynchronous mode](/docs/foundation-models/concepts/#working-mode). */
     create: {

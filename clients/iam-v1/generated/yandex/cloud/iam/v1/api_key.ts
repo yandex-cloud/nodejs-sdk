@@ -19,8 +19,14 @@ export interface ApiKey {
     description: string;
     /** Timestamp for the last authentication using this API key. */
     lastUsedAt?: Date;
-    /** Scope of the API key. 0-256 characters long. */
+    /**
+     * Scope of the API key. 0-256 characters long.
+     *
+     * @deprecated
+     */
     scope: string;
+    /** Scopes of the API key. 0-256 characters long. */
+    scopes: string[];
     /** API key expiration timestamp. */
     expiresAt?: Date;
 }
@@ -31,6 +37,7 @@ const baseApiKey: object = {
     serviceAccountId: '',
     description: '',
     scope: '',
+    scopes: '',
 };
 
 export const ApiKey = {
@@ -55,6 +62,9 @@ export const ApiKey = {
         if (message.scope !== '') {
             writer.uint32(50).string(message.scope);
         }
+        for (const v of message.scopes) {
+            writer.uint32(66).string(v!);
+        }
         if (message.expiresAt !== undefined) {
             Timestamp.encode(toTimestamp(message.expiresAt), writer.uint32(58).fork()).ldelim();
         }
@@ -65,6 +75,7 @@ export const ApiKey = {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseApiKey } as ApiKey;
+        message.scopes = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -85,6 +96,9 @@ export const ApiKey = {
                     break;
                 case 6:
                     message.scope = reader.string();
+                    break;
+                case 8:
+                    message.scopes.push(reader.string());
                     break;
                 case 7:
                     message.expiresAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
@@ -118,6 +132,7 @@ export const ApiKey = {
                 : undefined;
         message.scope =
             object.scope !== undefined && object.scope !== null ? String(object.scope) : '';
+        message.scopes = (object.scopes ?? []).map((e: any) => String(e));
         message.expiresAt =
             object.expiresAt !== undefined && object.expiresAt !== null
                 ? fromJsonTimestamp(object.expiresAt)
@@ -133,6 +148,11 @@ export const ApiKey = {
         message.description !== undefined && (obj.description = message.description);
         message.lastUsedAt !== undefined && (obj.lastUsedAt = message.lastUsedAt.toISOString());
         message.scope !== undefined && (obj.scope = message.scope);
+        if (message.scopes) {
+            obj.scopes = message.scopes.map((e) => e);
+        } else {
+            obj.scopes = [];
+        }
         message.expiresAt !== undefined && (obj.expiresAt = message.expiresAt.toISOString());
         return obj;
     },
@@ -145,6 +165,7 @@ export const ApiKey = {
         message.description = object.description ?? '';
         message.lastUsedAt = object.lastUsedAt ?? undefined;
         message.scope = object.scope ?? '';
+        message.scopes = object.scopes?.map((e) => e) || [];
         message.expiresAt = object.expiresAt ?? undefined;
         return message;
     },

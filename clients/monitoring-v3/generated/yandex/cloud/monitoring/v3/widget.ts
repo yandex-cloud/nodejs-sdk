@@ -58,7 +58,7 @@ export const Widget = {
         if (message.multiSourceChart !== undefined) {
             MultiSourceChartWidget.encode(
                 message.multiSourceChart,
-                writer.uint32(50).fork(),
+                writer.uint32(82).fork(),
             ).ldelim();
         }
         return writer;
@@ -83,7 +83,7 @@ export const Widget = {
                 case 5:
                     message.chart = ChartWidget.decode(reader, reader.uint32());
                     break;
-                case 6:
+                case 10:
                     message.multiSourceChart = MultiSourceChartWidget.decode(
                         reader,
                         reader.uint32(),

@@ -44,6 +44,8 @@ export interface DatasetInfo {
     /** User ID of the dataset's last updater. */
     updatedBy: string;
     validationError: ValidationError[];
+    /** Allow to use the dataset to improve the models quality. Default false. */
+    allowDataLog: boolean;
 }
 
 /** Status of the dataset. */
@@ -120,6 +122,19 @@ export interface ValidationError {
     rowNumbers: number[];
 }
 
+export interface DatasetUploadSchema {
+    $type: 'yandex.cloud.ai.dataset.v1.DatasetUploadSchema';
+    taskType: string;
+    uploadFormat: string;
+    schema: string;
+}
+
+export interface DatasetFileDownloadUrl {
+    $type: 'yandex.cloud.ai.dataset.v1.DatasetFileDownloadUrl';
+    key: string;
+    url: string;
+}
+
 const baseDatasetInfo: object = {
     $type: 'yandex.cloud.ai.dataset.v1.DatasetInfo',
     datasetId: '',
@@ -134,6 +149,7 @@ const baseDatasetInfo: object = {
     createdById: '',
     createdBy: '',
     updatedBy: '',
+    allowDataLog: false,
 };
 
 export const DatasetInfo = {
@@ -194,6 +210,9 @@ export const DatasetInfo = {
         }
         for (const v of message.validationError) {
             ValidationError.encode(v!, writer.uint32(170).fork()).ldelim();
+        }
+        if (message.allowDataLog === true) {
+            writer.uint32(176).bool(message.allowDataLog);
         }
         return writer;
     },
@@ -257,6 +276,9 @@ export const DatasetInfo = {
                     break;
                 case 21:
                     message.validationError.push(ValidationError.decode(reader, reader.uint32()));
+                    break;
+                case 22:
+                    message.allowDataLog = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -328,6 +350,10 @@ export const DatasetInfo = {
         message.validationError = (object.validationError ?? []).map((e: any) =>
             ValidationError.fromJSON(e),
         );
+        message.allowDataLog =
+            object.allowDataLog !== undefined && object.allowDataLog !== null
+                ? Boolean(object.allowDataLog)
+                : false;
         return message;
     },
 
@@ -360,6 +386,7 @@ export const DatasetInfo = {
         } else {
             obj.validationError = [];
         }
+        message.allowDataLog !== undefined && (obj.allowDataLog = message.allowDataLog);
         return obj;
     },
 
@@ -390,6 +417,7 @@ export const DatasetInfo = {
         message.updatedBy = object.updatedBy ?? '';
         message.validationError =
             object.validationError?.map((e) => ValidationError.fromPartial(e)) || [];
+        message.allowDataLog = object.allowDataLog ?? false;
         return message;
     },
 };
@@ -554,6 +582,155 @@ export const ValidationError = {
 };
 
 messageTypeRegistry.set(ValidationError.$type, ValidationError);
+
+const baseDatasetUploadSchema: object = {
+    $type: 'yandex.cloud.ai.dataset.v1.DatasetUploadSchema',
+    taskType: '',
+    uploadFormat: '',
+    schema: '',
+};
+
+export const DatasetUploadSchema = {
+    $type: 'yandex.cloud.ai.dataset.v1.DatasetUploadSchema' as const,
+
+    encode(message: DatasetUploadSchema, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.taskType !== '') {
+            writer.uint32(10).string(message.taskType);
+        }
+        if (message.uploadFormat !== '') {
+            writer.uint32(18).string(message.uploadFormat);
+        }
+        if (message.schema !== '') {
+            writer.uint32(26).string(message.schema);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DatasetUploadSchema {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDatasetUploadSchema } as DatasetUploadSchema;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.taskType = reader.string();
+                    break;
+                case 2:
+                    message.uploadFormat = reader.string();
+                    break;
+                case 3:
+                    message.schema = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DatasetUploadSchema {
+        const message = { ...baseDatasetUploadSchema } as DatasetUploadSchema;
+        message.taskType =
+            object.taskType !== undefined && object.taskType !== null
+                ? String(object.taskType)
+                : '';
+        message.uploadFormat =
+            object.uploadFormat !== undefined && object.uploadFormat !== null
+                ? String(object.uploadFormat)
+                : '';
+        message.schema =
+            object.schema !== undefined && object.schema !== null ? String(object.schema) : '';
+        return message;
+    },
+
+    toJSON(message: DatasetUploadSchema): unknown {
+        const obj: any = {};
+        message.taskType !== undefined && (obj.taskType = message.taskType);
+        message.uploadFormat !== undefined && (obj.uploadFormat = message.uploadFormat);
+        message.schema !== undefined && (obj.schema = message.schema);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DatasetUploadSchema>, I>>(
+        object: I,
+    ): DatasetUploadSchema {
+        const message = { ...baseDatasetUploadSchema } as DatasetUploadSchema;
+        message.taskType = object.taskType ?? '';
+        message.uploadFormat = object.uploadFormat ?? '';
+        message.schema = object.schema ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(DatasetUploadSchema.$type, DatasetUploadSchema);
+
+const baseDatasetFileDownloadUrl: object = {
+    $type: 'yandex.cloud.ai.dataset.v1.DatasetFileDownloadUrl',
+    key: '',
+    url: '',
+};
+
+export const DatasetFileDownloadUrl = {
+    $type: 'yandex.cloud.ai.dataset.v1.DatasetFileDownloadUrl' as const,
+
+    encode(message: DatasetFileDownloadUrl, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.url !== '') {
+            writer.uint32(18).string(message.url);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DatasetFileDownloadUrl {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDatasetFileDownloadUrl } as DatasetFileDownloadUrl;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.url = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DatasetFileDownloadUrl {
+        const message = { ...baseDatasetFileDownloadUrl } as DatasetFileDownloadUrl;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.url = object.url !== undefined && object.url !== null ? String(object.url) : '';
+        return message;
+    },
+
+    toJSON(message: DatasetFileDownloadUrl): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.url !== undefined && (obj.url = message.url);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DatasetFileDownloadUrl>, I>>(
+        object: I,
+    ): DatasetFileDownloadUrl {
+        const message = { ...baseDatasetFileDownloadUrl } as DatasetFileDownloadUrl;
+        message.key = object.key ?? '';
+        message.url = object.url ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(DatasetFileDownloadUrl.$type, DatasetFileDownloadUrl);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

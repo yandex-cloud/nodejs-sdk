@@ -158,7 +158,12 @@ export interface Monitoring {
 
 export interface ClusterConfig {
     $type: 'yandex.cloud.airflow.v1.ClusterConfig';
-    /** Version of Apache that runs on the cluster. */
+    /**
+     * Version of Apache Airflow that runs on the cluster.
+     * Use `airlow_version` instead.
+     *
+     * @deprecated
+     */
     versionId: string;
     /** Configuration of the Apache Airflow application itself. */
     airflow?: AirflowConfig;
@@ -174,6 +179,10 @@ export interface ClusterConfig {
     dependencies?: Dependencies;
     /** Configuration of Lockbox Secret Backend. */
     lockbox?: LockboxConfig;
+    /** Apache Airflow version. Format: "Major.Minor" */
+    airflowVersion: string;
+    /** Python version. Format: "Major.Minor" */
+    pythonVersion: string;
 }
 
 export interface AirflowConfig {
@@ -696,7 +705,12 @@ export const Monitoring = {
 
 messageTypeRegistry.set(Monitoring.$type, Monitoring);
 
-const baseClusterConfig: object = { $type: 'yandex.cloud.airflow.v1.ClusterConfig', versionId: '' };
+const baseClusterConfig: object = {
+    $type: 'yandex.cloud.airflow.v1.ClusterConfig',
+    versionId: '',
+    airflowVersion: '',
+    pythonVersion: '',
+};
 
 export const ClusterConfig = {
     $type: 'yandex.cloud.airflow.v1.ClusterConfig' as const,
@@ -725,6 +739,12 @@ export const ClusterConfig = {
         }
         if (message.lockbox !== undefined) {
             LockboxConfig.encode(message.lockbox, writer.uint32(66).fork()).ldelim();
+        }
+        if (message.airflowVersion !== '') {
+            writer.uint32(74).string(message.airflowVersion);
+        }
+        if (message.pythonVersion !== '') {
+            writer.uint32(82).string(message.pythonVersion);
         }
         return writer;
     },
@@ -759,6 +779,12 @@ export const ClusterConfig = {
                     break;
                 case 8:
                     message.lockbox = LockboxConfig.decode(reader, reader.uint32());
+                    break;
+                case 9:
+                    message.airflowVersion = reader.string();
+                    break;
+                case 10:
+                    message.pythonVersion = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -802,6 +828,14 @@ export const ClusterConfig = {
             object.lockbox !== undefined && object.lockbox !== null
                 ? LockboxConfig.fromJSON(object.lockbox)
                 : undefined;
+        message.airflowVersion =
+            object.airflowVersion !== undefined && object.airflowVersion !== null
+                ? String(object.airflowVersion)
+                : '';
+        message.pythonVersion =
+            object.pythonVersion !== undefined && object.pythonVersion !== null
+                ? String(object.pythonVersion)
+                : '';
         return message;
     },
 
@@ -830,6 +864,8 @@ export const ClusterConfig = {
                 : undefined);
         message.lockbox !== undefined &&
             (obj.lockbox = message.lockbox ? LockboxConfig.toJSON(message.lockbox) : undefined);
+        message.airflowVersion !== undefined && (obj.airflowVersion = message.airflowVersion);
+        message.pythonVersion !== undefined && (obj.pythonVersion = message.pythonVersion);
         return obj;
     },
 
@@ -864,6 +900,8 @@ export const ClusterConfig = {
             object.lockbox !== undefined && object.lockbox !== null
                 ? LockboxConfig.fromPartial(object.lockbox)
                 : undefined;
+        message.airflowVersion = object.airflowVersion ?? '';
+        message.pythonVersion = object.pythonVersion ?? '';
         return message;
     },
 };

@@ -134,6 +134,10 @@ export interface UpdateClusterConfigSpec {
     dependencies?: Dependencies;
     /** Configuration of Lockbox Secret Backend. */
     lockbox?: LockboxConfig;
+    /** Apache Airflow version. Format: "Major.Minor" */
+    airflowVersion: string;
+    /** Python version. Format: "Major.Minor" */
+    pythonVersion: string;
 }
 
 export interface UpdateNetworkConfigSpec {
@@ -840,6 +844,8 @@ messageTypeRegistry.set(CreateClusterMetadata.$type, CreateClusterMetadata);
 
 const baseUpdateClusterConfigSpec: object = {
     $type: 'yandex.cloud.airflow.v1.UpdateClusterConfigSpec',
+    airflowVersion: '',
+    pythonVersion: '',
 };
 
 export const UpdateClusterConfigSpec = {
@@ -866,6 +872,12 @@ export const UpdateClusterConfigSpec = {
         }
         if (message.lockbox !== undefined) {
             LockboxConfig.encode(message.lockbox, writer.uint32(66).fork()).ldelim();
+        }
+        if (message.airflowVersion !== '') {
+            writer.uint32(74).string(message.airflowVersion);
+        }
+        if (message.pythonVersion !== '') {
+            writer.uint32(82).string(message.pythonVersion);
         }
         return writer;
     },
@@ -897,6 +909,12 @@ export const UpdateClusterConfigSpec = {
                     break;
                 case 8:
                     message.lockbox = LockboxConfig.decode(reader, reader.uint32());
+                    break;
+                case 9:
+                    message.airflowVersion = reader.string();
+                    break;
+                case 10:
+                    message.pythonVersion = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -936,6 +954,14 @@ export const UpdateClusterConfigSpec = {
             object.lockbox !== undefined && object.lockbox !== null
                 ? LockboxConfig.fromJSON(object.lockbox)
                 : undefined;
+        message.airflowVersion =
+            object.airflowVersion !== undefined && object.airflowVersion !== null
+                ? String(object.airflowVersion)
+                : '';
+        message.pythonVersion =
+            object.pythonVersion !== undefined && object.pythonVersion !== null
+                ? String(object.pythonVersion)
+                : '';
         return message;
     },
 
@@ -963,6 +989,8 @@ export const UpdateClusterConfigSpec = {
                 : undefined);
         message.lockbox !== undefined &&
             (obj.lockbox = message.lockbox ? LockboxConfig.toJSON(message.lockbox) : undefined);
+        message.airflowVersion !== undefined && (obj.airflowVersion = message.airflowVersion);
+        message.pythonVersion !== undefined && (obj.pythonVersion = message.pythonVersion);
         return obj;
     },
 
@@ -998,6 +1026,8 @@ export const UpdateClusterConfigSpec = {
             object.lockbox !== undefined && object.lockbox !== null
                 ? LockboxConfig.fromPartial(object.lockbox)
                 : undefined;
+        message.airflowVersion = object.airflowVersion ?? '';
+        message.pythonVersion = object.pythonVersion ?? '';
         return message;
     },
 };

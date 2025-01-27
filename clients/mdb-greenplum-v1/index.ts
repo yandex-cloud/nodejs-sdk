@@ -11,5 +11,7 @@ export * as host from './generated/yandex/cloud/mdb/greenplum/v1/host';
 export * as maintenance from './generated/yandex/cloud/mdb/greenplum/v1/maintenance';
 export * as pxf from './generated/yandex/cloud/mdb/greenplum/v1/pxf';
 export * as pxfService from './generated/yandex/cloud/mdb/greenplum/v1/pxf_service';
+export * as resourceGroups from './generated/yandex/cloud/mdb/greenplum/v1/resource_groups';
+export * as resourceGroupsService from './generated/yandex/cloud/mdb/greenplum/v1/resource_groups_service';
 export * as resourcePreset from './generated/yandex/cloud/mdb/greenplum/v1/resource_preset';
 export * as resourcePresetService from './generated/yandex/cloud/mdb/greenplum/v1/resource_preset_service';

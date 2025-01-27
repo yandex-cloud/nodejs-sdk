@@ -12,3 +12,5 @@ export * as redis7_0 from './generated/yandex/cloud/mdb/redis/v1/config/redis7_0
 export * as maintenance from './generated/yandex/cloud/mdb/redis/v1/maintenance';
 export * as resourcePreset from './generated/yandex/cloud/mdb/redis/v1/resource_preset';
 export * as resourcePresetService from './generated/yandex/cloud/mdb/redis/v1/resource_preset_service';
+export * as user from './generated/yandex/cloud/mdb/redis/v1/user';
+export * as userService from './generated/yandex/cloud/mdb/redis/v1/user_service';

@@ -28,8 +28,8 @@ import {
     cluster_EnvironmentFromJSON,
     cluster_EnvironmentToJSON,
 } from '../../../../../yandex/cloud/mdb/postgresql/v1/cluster';
-import { FieldMask } from '../../../../../google/protobuf/field_mask';
 import { MaintenanceWindow } from '../../../../../yandex/cloud/mdb/postgresql/v1/maintenance';
+import { FieldMask } from '../../../../../google/protobuf/field_mask';
 import { TimeOfDay } from '../../../../../google/type/timeofday';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
 import { DatabaseSpec } from '../../../../../yandex/cloud/mdb/postgresql/v1/database';
@@ -155,6 +155,8 @@ export interface CreateClusterRequest {
     deletionProtection: boolean;
     /** Host groups hosting VMs of the cluster. */
     hostGroupIds: string[];
+    /** Window of maintenance operations. */
+    maintenanceWindow?: MaintenanceWindow;
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -1232,6 +1234,9 @@ export const CreateClusterRequest = {
         for (const v of message.hostGroupIds) {
             writer.uint32(106).string(v!);
         }
+        if (message.maintenanceWindow !== undefined) {
+            MaintenanceWindow.encode(message.maintenanceWindow, writer.uint32(114).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -1290,6 +1295,9 @@ export const CreateClusterRequest = {
                 case 13:
                     message.hostGroupIds.push(reader.string());
                     break;
+                case 14:
+                    message.maintenanceWindow = MaintenanceWindow.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1339,6 +1347,10 @@ export const CreateClusterRequest = {
                 ? Boolean(object.deletionProtection)
                 : false;
         message.hostGroupIds = (object.hostGroupIds ?? []).map((e: any) => String(e));
+        message.maintenanceWindow =
+            object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
+                ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
+                : undefined;
         return message;
     },
 
@@ -1389,6 +1401,10 @@ export const CreateClusterRequest = {
         } else {
             obj.hostGroupIds = [];
         }
+        message.maintenanceWindow !== undefined &&
+            (obj.maintenanceWindow = message.maintenanceWindow
+                ? MaintenanceWindow.toJSON(message.maintenanceWindow)
+                : undefined);
         return obj;
     },
 
@@ -1420,6 +1436,10 @@ export const CreateClusterRequest = {
         message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         message.deletionProtection = object.deletionProtection ?? false;
         message.hostGroupIds = object.hostGroupIds?.map((e) => e) || [];
+        message.maintenanceWindow =
+            object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
+                ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
+                : undefined;
         return message;
     },
 };

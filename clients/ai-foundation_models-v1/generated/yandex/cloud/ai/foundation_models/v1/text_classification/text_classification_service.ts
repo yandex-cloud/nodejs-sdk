@@ -27,7 +27,7 @@ export const protobufPackage = 'yandex.cloud.ai.foundation_models.v1.text_classi
  * The names of the classes between which the model will be distributing requests must be specified during model tuning;
  * therefore, they are not provided in the request.
  *
- * For examples of usage, see [step-by-step guides](/docs/operations/classifier/additionally-trained).
+ * For examples of usage, see [step-by-step guides](/docs/foundation-models/operations/classifier/additionally-trained).
  */
 export interface TextClassificationRequest {
     $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.TextClassificationRequest';
