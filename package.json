@@ -88,7 +88,8 @@
     "typecheck:src": "tsc --noEmit -p ./tsconfig.prod.json",
     "typecheck:examples": "tsc --noEmit -p ./examples/tsconfig.json",
     "typecheck": "npm run typecheck:src && npm run typecheck:examples",
-    "cloudapi:update": "git submodule update --remote"
+    "cloudapi:update": "git submodule update --remote",
+    "try_find_clients_endpoints": "ts-node scripts/try_find_clients_endpoints"
   },
   "engines": {
     "node": ">=18.0.0"

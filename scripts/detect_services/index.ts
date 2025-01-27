@@ -138,11 +138,11 @@ export const writeToFile = (serviceMap: ServiceMapType) => {
     });
 };
 
+export type ClientsMapType = Record<string, undefined | { rootServiceList: string[] }>;
 export const readFile = () => {
     const data = fs.readFileSync(FILE_PATH, 'utf8');
     const jsonData = JSON.parse(data);
-
-    return jsonData as Record<string, undefined | { rootServiceList: string[] }>;
+    return jsonData as ClientsMapType;
 };
 
 const main = async () => {
