@@ -4,4 +4,4 @@ export * from './session';
 export * from './utils/operation';
 export * from './utils/decode-message';
 export * as errors from './errors';
-export { WrappedServiceClientType } from './types';
+export { WrappedServiceClientType, ClientCallArgs } from './types';

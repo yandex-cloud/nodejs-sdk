@@ -1,8 +1,9 @@
 import { ChannelCredentials, ChannelOptions, Client, ServiceDefinition } from '@grpc/grpc-js';
 import { RawClient } from 'nice-grpc';
-import { DeadlineOptions } from 'nice-grpc-client-middleware-deadline';
 import { NormalizedServiceDefinition } from 'nice-grpc/lib/service-definitions';
-import { RetryOptions } from './middleware/retry';
+
+import { ClientCallArgs } from './utils/client-factory';
+export { ClientCallArgs } from './utils/client-factory';
 
 export interface TokenService {
     getToken: () => Promise<string>;
@@ -62,5 +63,5 @@ export type SessionConfig =
 
 export type WrappedServiceClientType<S extends ServiceDefinition> = RawClient<
     NormalizedServiceDefinition<S>,
-    DeadlineOptions & RetryOptions
+    ClientCallArgs
 >;
