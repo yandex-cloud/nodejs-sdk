@@ -25,7 +25,9 @@ export interface GetApiEndpointRequest {
 
 export interface ListApiEndpointsRequest {
     $type: 'yandex.cloud.endpoint.ListApiEndpointsRequest';
+    /** @deprecated */
     pageSize: number;
+    /** @deprecated */
     pageToken: string;
 }
 

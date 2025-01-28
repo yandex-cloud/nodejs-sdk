@@ -22,17 +22,17 @@ export interface TranslateRequest {
     $type: 'yandex.cloud.ai.translate.v2.TranslateRequest';
     /**
      * The text language to translate from.
-     * Specified in [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) format (for example, `` ru ``).
+     * Most languages are specified in [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) format (for example, `` ru ``), but the field are not limited to it.
      *
-     * Required for translating with glossary.
+     * Required for translating with [glossary](/docs/translate/concepts/glossary).
      */
     sourceLanguageCode: string;
     /**
      * The target language to translate the text.
-     * Specified in [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) format (for example, `` en ``).
+     * Most languages are specified in [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) format (for example, `` ru ``), but the field are not limited to it.
      */
     targetLanguageCode: string;
-    /** Format of the text. */
+    /** Format of the text to be translated. */
     format: TranslateRequest_Format;
     /**
      * Array of the strings to translate.
@@ -41,15 +41,15 @@ export interface TranslateRequest {
     texts: string[];
     /**
      * ID of the folder to which you have access.
-     * Required for authorization with a user account (see [yandex.cloud.iam.v1.UserAccount] resource).
-     * Don't specify this field if you make the request on behalf of a service account.
+     * Required for authorization with a [user account](/docs/iam/concepts/users/accounts).
+     * Do not specify this field if you make the request on behalf of a [service account](/docs/iam/concepts/users/accounts#sa).
      */
     folderId: string;
-    /** Do not specify this field, custom models are not supported yet. */
+    /** Model ID if you use custom model. */
     model: string;
     /** Glossary to be applied for the translation. For more information, see [Glossaries](/docs/translate/concepts/glossary). */
     glossaryConfig?: TranslateGlossaryConfig;
-    /** use speller */
+    /** Enable spell checking. */
     speller: boolean;
 }
 
@@ -95,7 +95,7 @@ export function translateRequest_FormatToJSON(object: TranslateRequest_Format): 
 
 export interface TranslateGlossaryConfig {
     $type: 'yandex.cloud.ai.translate.v2.TranslateGlossaryConfig';
-    /** Pass glossary data in the request. Currently, only this way to pass glossary is supported. */
+    /** Pass glossary data in the request. Currently, the only way to pass glossary. */
     glossaryData?: GlossaryData | undefined;
 }
 
@@ -116,6 +116,7 @@ export interface GlossaryPair {
     sourceText: string;
     /** Text in the target language. */
     translatedText: string;
+    /** Allows to add translations for specific terms to [neuroglossaries](/docs/translate/concepts/glossary#word-forms). */
     exact: boolean;
 }
 
@@ -131,7 +132,7 @@ export interface DetectLanguageRequest {
     text: string;
     /**
      * List of the most likely languages. These languages will be given preference when detecting the text language.
-     * Specified in [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) format (for example, `` ru ``).
+     * Most languages are specified in [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) format (for example, `` ru ``), but the field are not limited to it.
      *
      * To get the list of supported languages, use a [TranslationService.ListLanguages] request.
      */
@@ -147,7 +148,7 @@ export interface DetectLanguageRequest {
 export interface DetectLanguageResponse {
     $type: 'yandex.cloud.ai.translate.v2.DetectLanguageResponse';
     /**
-     * The text language in [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) format (for example, `` ru ``).
+     * Most languages are specified in [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) format (for example, `` ru ``), but the field are not limited to it.
      *
      * To get the language name, use a [TranslationService.ListLanguages] request.
      */
@@ -158,8 +159,8 @@ export interface ListLanguagesRequest {
     $type: 'yandex.cloud.ai.translate.v2.ListLanguagesRequest';
     /**
      * ID of the folder to which you have access.
-     * Required for authorization with a user account (see [yandex.cloud.iam.v1.UserAccount] resource).
-     * Don't specify this field if you make the request on behalf of a service account.
+     * Required for authorization with a [user account](/docs/iam/concepts/users/accounts).
+     * Do not specify this field if you make the request on behalf of a [service account](/docs/iam/concepts/users/accounts#sa).
      */
     folderId: string;
 }

@@ -151,9 +151,11 @@ export interface Bucket {
     objectLock?: ObjectLock;
     /**
      * Configuration for bucket's encryption
-     * For detauls, see [documentation](/docs/storage/concepts/encryption)
+     * For details, see [documentation](/docs/storage/concepts/encryption)
      */
     encryption?: Encryption;
+    /** Bucket allowed private endpoints. */
+    allowedPrivateEndpoints?: BucketAllowedPrivateEndpoints;
 }
 
 export interface Tag {
@@ -1055,6 +1057,17 @@ export interface Encryption_EncryptionRule {
     sseAlgorithm: string;
 }
 
+export interface BucketAllowedPrivateEndpoints {
+    $type: 'yandex.cloud.storage.v1.BucketAllowedPrivateEndpoints';
+    /**
+     * if true, private endpoints white list check is enabled
+     * even if private_endpoints list is empty
+     */
+    enabled: boolean;
+    /** white list of private endpoints bucket accessible from */
+    privateEndpoints: string[];
+}
+
 const baseBucket: object = {
     $type: 'yandex.cloud.storage.v1.Bucket',
     id: '',
@@ -1120,6 +1133,12 @@ export const Bucket = {
         if (message.encryption !== undefined) {
             Encryption.encode(message.encryption, writer.uint32(130).fork()).ldelim();
         }
+        if (message.allowedPrivateEndpoints !== undefined) {
+            BucketAllowedPrivateEndpoints.encode(
+                message.allowedPrivateEndpoints,
+                writer.uint32(138).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -1184,6 +1203,12 @@ export const Bucket = {
                 case 16:
                     message.encryption = Encryption.decode(reader, reader.uint32());
                     break;
+                case 17:
+                    message.allowedPrivateEndpoints = BucketAllowedPrivateEndpoints.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1238,6 +1263,10 @@ export const Bucket = {
             object.encryption !== undefined && object.encryption !== null
                 ? Encryption.fromJSON(object.encryption)
                 : undefined;
+        message.allowedPrivateEndpoints =
+            object.allowedPrivateEndpoints !== undefined && object.allowedPrivateEndpoints !== null
+                ? BucketAllowedPrivateEndpoints.fromJSON(object.allowedPrivateEndpoints)
+                : undefined;
         return message;
     },
 
@@ -1286,6 +1315,10 @@ export const Bucket = {
             (obj.encryption = message.encryption
                 ? Encryption.toJSON(message.encryption)
                 : undefined);
+        message.allowedPrivateEndpoints !== undefined &&
+            (obj.allowedPrivateEndpoints = message.allowedPrivateEndpoints
+                ? BucketAllowedPrivateEndpoints.toJSON(message.allowedPrivateEndpoints)
+                : undefined);
         return obj;
     },
 
@@ -1322,6 +1355,10 @@ export const Bucket = {
         message.encryption =
             object.encryption !== undefined && object.encryption !== null
                 ? Encryption.fromPartial(object.encryption)
+                : undefined;
+        message.allowedPrivateEndpoints =
+            object.allowedPrivateEndpoints !== undefined && object.allowedPrivateEndpoints !== null
+                ? BucketAllowedPrivateEndpoints.fromPartial(object.allowedPrivateEndpoints)
                 : undefined;
         return message;
     },
@@ -4165,6 +4202,83 @@ export const Encryption_EncryptionRule = {
 };
 
 messageTypeRegistry.set(Encryption_EncryptionRule.$type, Encryption_EncryptionRule);
+
+const baseBucketAllowedPrivateEndpoints: object = {
+    $type: 'yandex.cloud.storage.v1.BucketAllowedPrivateEndpoints',
+    enabled: false,
+    privateEndpoints: '',
+};
+
+export const BucketAllowedPrivateEndpoints = {
+    $type: 'yandex.cloud.storage.v1.BucketAllowedPrivateEndpoints' as const,
+
+    encode(
+        message: BucketAllowedPrivateEndpoints,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.enabled === true) {
+            writer.uint32(8).bool(message.enabled);
+        }
+        for (const v of message.privateEndpoints) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BucketAllowedPrivateEndpoints {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBucketAllowedPrivateEndpoints } as BucketAllowedPrivateEndpoints;
+        message.privateEndpoints = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enabled = reader.bool();
+                    break;
+                case 2:
+                    message.privateEndpoints.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BucketAllowedPrivateEndpoints {
+        const message = { ...baseBucketAllowedPrivateEndpoints } as BucketAllowedPrivateEndpoints;
+        message.enabled =
+            object.enabled !== undefined && object.enabled !== null
+                ? Boolean(object.enabled)
+                : false;
+        message.privateEndpoints = (object.privateEndpoints ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: BucketAllowedPrivateEndpoints): unknown {
+        const obj: any = {};
+        message.enabled !== undefined && (obj.enabled = message.enabled);
+        if (message.privateEndpoints) {
+            obj.privateEndpoints = message.privateEndpoints.map((e) => e);
+        } else {
+            obj.privateEndpoints = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BucketAllowedPrivateEndpoints>, I>>(
+        object: I,
+    ): BucketAllowedPrivateEndpoints {
+        const message = { ...baseBucketAllowedPrivateEndpoints } as BucketAllowedPrivateEndpoints;
+        message.enabled = object.enabled ?? false;
+        message.privateEndpoints = object.privateEndpoints?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BucketAllowedPrivateEndpoints.$type, BucketAllowedPrivateEndpoints);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

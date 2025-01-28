@@ -27,6 +27,7 @@ export enum TuningTask_Status {
     IN_PROGRESS = 3,
     COMPLETED = 4,
     FAILED = 5,
+    CANCELED = 6,
     UNRECOGNIZED = -1,
 }
 
@@ -50,6 +51,9 @@ export function tuningTask_StatusFromJSON(object: any): TuningTask_Status {
         case 5:
         case 'FAILED':
             return TuningTask_Status.FAILED;
+        case 6:
+        case 'CANCELED':
+            return TuningTask_Status.CANCELED;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -71,6 +75,8 @@ export function tuningTask_StatusToJSON(object: TuningTask_Status): string {
             return 'COMPLETED';
         case TuningTask_Status.FAILED:
             return 'FAILED';
+        case TuningTask_Status.CANCELED:
+            return 'CANCELED';
         default:
             return 'UNKNOWN';
     }

@@ -18,6 +18,8 @@ import {
     DatasetInfo,
     DatasetInfo_Status,
     ValidationError,
+    DatasetUploadSchema,
+    DatasetFileDownloadUrl,
     datasetInfo_StatusFromJSON,
     datasetInfo_StatusToJSON,
 } from '../../../../../yandex/cloud/ai/dataset/v1/dataset';
@@ -93,6 +95,8 @@ export interface CreateDatasetRequest {
      * The list of supported upload formats can be retrieved via ListUploadFormats method.
      */
     uploadFormat: string;
+    /** Allow to use the dataset to improve the models quality. Default false. */
+    allowDataLog: boolean;
 }
 
 export interface CreateDatasetRequest_LabelsEntry {
@@ -245,6 +249,18 @@ export interface ListUploadFormatsResponse {
     formats: string[];
 }
 
+export interface ListUploadSchemasRequest {
+    $type: 'yandex.cloud.ai.dataset.v1.ListUploadSchemasRequest';
+    /** Dataset task type to list schemas. */
+    taskType: string;
+}
+
+export interface ListUploadSchemasResponse {
+    $type: 'yandex.cloud.ai.dataset.v1.ListUploadSchemasResponse';
+    /** List of dataset schemas for the specified dataset task type. */
+    schemas: DatasetUploadSchema[];
+}
+
 export interface ListTypesRequest {
     $type: 'yandex.cloud.ai.dataset.v1.ListTypesRequest';
 }
@@ -253,6 +269,49 @@ export interface ListTypesResponse {
     $type: 'yandex.cloud.ai.dataset.v1.ListTypesResponse';
     /** List of dataset type */
     types: string[];
+}
+
+export interface GetDatasetPreviewRequest {
+    $type: 'yandex.cloud.ai.dataset.v1.GetDatasetPreviewRequest';
+    /** ID of the dataset. */
+    datasetId: string;
+}
+
+export interface GetDatasetPreviewResponse {
+    $type: 'yandex.cloud.ai.dataset.v1.GetDatasetPreviewResponse';
+    /** ID of the dataset. */
+    datasetId: string;
+    /** List of dataset preview lines */
+    previewLines: string[];
+}
+
+export interface GetDownloadUrlsRequest {
+    $type: 'yandex.cloud.ai.dataset.v1.GetDownloadUrlsRequest';
+    /** ID of the dataset. */
+    datasetId: string;
+}
+
+export interface GetDownloadUrlsResponse {
+    $type: 'yandex.cloud.ai.dataset.v1.GetDownloadUrlsResponse';
+    /** ID of the dataset. */
+    datasetId: string;
+    downloadUrls: DatasetFileDownloadUrl[];
+}
+
+export interface ListOperationsIdsRequest {
+    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsRequest';
+    datasetId: string[];
+}
+
+export interface ListOperationsIdsResponse {
+    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsResponse';
+    datasetIdToOperationId: { [key: string]: string };
+}
+
+export interface ListOperationsIdsResponse_DatasetIdToOperationIdEntry {
+    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsResponse.DatasetIdToOperationIdEntry';
+    key: string;
+    value: string;
 }
 
 const baseDescribeDatasetRequest: object = {
@@ -720,6 +779,7 @@ const baseCreateDatasetRequest: object = {
     metadata: '',
     taskType: '',
     uploadFormat: '',
+    allowDataLog: false,
 };
 
 export const CreateDatasetRequest = {
@@ -753,6 +813,9 @@ export const CreateDatasetRequest = {
         });
         if (message.uploadFormat !== '') {
             writer.uint32(58).string(message.uploadFormat);
+        }
+        if (message.allowDataLog === true) {
+            writer.uint32(64).bool(message.allowDataLog);
         }
         return writer;
     },
@@ -788,6 +851,9 @@ export const CreateDatasetRequest = {
                     break;
                 case 7:
                     message.uploadFormat = reader.string();
+                    break;
+                case 8:
+                    message.allowDataLog = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -827,6 +893,10 @@ export const CreateDatasetRequest = {
             object.uploadFormat !== undefined && object.uploadFormat !== null
                 ? String(object.uploadFormat)
                 : '';
+        message.allowDataLog =
+            object.allowDataLog !== undefined && object.allowDataLog !== null
+                ? Boolean(object.allowDataLog)
+                : false;
         return message;
     },
 
@@ -844,6 +914,7 @@ export const CreateDatasetRequest = {
             });
         }
         message.uploadFormat !== undefined && (obj.uploadFormat = message.uploadFormat);
+        message.allowDataLog !== undefined && (obj.allowDataLog = message.allowDataLog);
         return obj;
     },
 
@@ -866,6 +937,7 @@ export const CreateDatasetRequest = {
             {},
         );
         message.uploadFormat = object.uploadFormat ?? '';
+        message.allowDataLog = object.allowDataLog ?? false;
         return message;
     },
 };
@@ -2170,6 +2242,133 @@ export const ListUploadFormatsResponse = {
 
 messageTypeRegistry.set(ListUploadFormatsResponse.$type, ListUploadFormatsResponse);
 
+const baseListUploadSchemasRequest: object = {
+    $type: 'yandex.cloud.ai.dataset.v1.ListUploadSchemasRequest',
+    taskType: '',
+};
+
+export const ListUploadSchemasRequest = {
+    $type: 'yandex.cloud.ai.dataset.v1.ListUploadSchemasRequest' as const,
+
+    encode(
+        message: ListUploadSchemasRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.taskType !== '') {
+            writer.uint32(10).string(message.taskType);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListUploadSchemasRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListUploadSchemasRequest } as ListUploadSchemasRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.taskType = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListUploadSchemasRequest {
+        const message = { ...baseListUploadSchemasRequest } as ListUploadSchemasRequest;
+        message.taskType =
+            object.taskType !== undefined && object.taskType !== null
+                ? String(object.taskType)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListUploadSchemasRequest): unknown {
+        const obj: any = {};
+        message.taskType !== undefined && (obj.taskType = message.taskType);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListUploadSchemasRequest>, I>>(
+        object: I,
+    ): ListUploadSchemasRequest {
+        const message = { ...baseListUploadSchemasRequest } as ListUploadSchemasRequest;
+        message.taskType = object.taskType ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ListUploadSchemasRequest.$type, ListUploadSchemasRequest);
+
+const baseListUploadSchemasResponse: object = {
+    $type: 'yandex.cloud.ai.dataset.v1.ListUploadSchemasResponse',
+};
+
+export const ListUploadSchemasResponse = {
+    $type: 'yandex.cloud.ai.dataset.v1.ListUploadSchemasResponse' as const,
+
+    encode(
+        message: ListUploadSchemasResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.schemas) {
+            DatasetUploadSchema.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListUploadSchemasResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListUploadSchemasResponse } as ListUploadSchemasResponse;
+        message.schemas = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.schemas.push(DatasetUploadSchema.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListUploadSchemasResponse {
+        const message = { ...baseListUploadSchemasResponse } as ListUploadSchemasResponse;
+        message.schemas = (object.schemas ?? []).map((e: any) => DatasetUploadSchema.fromJSON(e));
+        return message;
+    },
+
+    toJSON(message: ListUploadSchemasResponse): unknown {
+        const obj: any = {};
+        if (message.schemas) {
+            obj.schemas = message.schemas.map((e) =>
+                e ? DatasetUploadSchema.toJSON(e) : undefined,
+            );
+        } else {
+            obj.schemas = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListUploadSchemasResponse>, I>>(
+        object: I,
+    ): ListUploadSchemasResponse {
+        const message = { ...baseListUploadSchemasResponse } as ListUploadSchemasResponse;
+        message.schemas = object.schemas?.map((e) => DatasetUploadSchema.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ListUploadSchemasResponse.$type, ListUploadSchemasResponse);
+
 const baseListTypesRequest: object = { $type: 'yandex.cloud.ai.dataset.v1.ListTypesRequest' };
 
 export const ListTypesRequest = {
@@ -2271,6 +2470,519 @@ export const ListTypesResponse = {
 
 messageTypeRegistry.set(ListTypesResponse.$type, ListTypesResponse);
 
+const baseGetDatasetPreviewRequest: object = {
+    $type: 'yandex.cloud.ai.dataset.v1.GetDatasetPreviewRequest',
+    datasetId: '',
+};
+
+export const GetDatasetPreviewRequest = {
+    $type: 'yandex.cloud.ai.dataset.v1.GetDatasetPreviewRequest' as const,
+
+    encode(
+        message: GetDatasetPreviewRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.datasetId !== '') {
+            writer.uint32(10).string(message.datasetId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDatasetPreviewRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGetDatasetPreviewRequest } as GetDatasetPreviewRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.datasetId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GetDatasetPreviewRequest {
+        const message = { ...baseGetDatasetPreviewRequest } as GetDatasetPreviewRequest;
+        message.datasetId =
+            object.datasetId !== undefined && object.datasetId !== null
+                ? String(object.datasetId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: GetDatasetPreviewRequest): unknown {
+        const obj: any = {};
+        message.datasetId !== undefined && (obj.datasetId = message.datasetId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GetDatasetPreviewRequest>, I>>(
+        object: I,
+    ): GetDatasetPreviewRequest {
+        const message = { ...baseGetDatasetPreviewRequest } as GetDatasetPreviewRequest;
+        message.datasetId = object.datasetId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(GetDatasetPreviewRequest.$type, GetDatasetPreviewRequest);
+
+const baseGetDatasetPreviewResponse: object = {
+    $type: 'yandex.cloud.ai.dataset.v1.GetDatasetPreviewResponse',
+    datasetId: '',
+    previewLines: '',
+};
+
+export const GetDatasetPreviewResponse = {
+    $type: 'yandex.cloud.ai.dataset.v1.GetDatasetPreviewResponse' as const,
+
+    encode(
+        message: GetDatasetPreviewResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.datasetId !== '') {
+            writer.uint32(10).string(message.datasetId);
+        }
+        for (const v of message.previewLines) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDatasetPreviewResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGetDatasetPreviewResponse } as GetDatasetPreviewResponse;
+        message.previewLines = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.datasetId = reader.string();
+                    break;
+                case 2:
+                    message.previewLines.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GetDatasetPreviewResponse {
+        const message = { ...baseGetDatasetPreviewResponse } as GetDatasetPreviewResponse;
+        message.datasetId =
+            object.datasetId !== undefined && object.datasetId !== null
+                ? String(object.datasetId)
+                : '';
+        message.previewLines = (object.previewLines ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: GetDatasetPreviewResponse): unknown {
+        const obj: any = {};
+        message.datasetId !== undefined && (obj.datasetId = message.datasetId);
+        if (message.previewLines) {
+            obj.previewLines = message.previewLines.map((e) => e);
+        } else {
+            obj.previewLines = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GetDatasetPreviewResponse>, I>>(
+        object: I,
+    ): GetDatasetPreviewResponse {
+        const message = { ...baseGetDatasetPreviewResponse } as GetDatasetPreviewResponse;
+        message.datasetId = object.datasetId ?? '';
+        message.previewLines = object.previewLines?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(GetDatasetPreviewResponse.$type, GetDatasetPreviewResponse);
+
+const baseGetDownloadUrlsRequest: object = {
+    $type: 'yandex.cloud.ai.dataset.v1.GetDownloadUrlsRequest',
+    datasetId: '',
+};
+
+export const GetDownloadUrlsRequest = {
+    $type: 'yandex.cloud.ai.dataset.v1.GetDownloadUrlsRequest' as const,
+
+    encode(message: GetDownloadUrlsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.datasetId !== '') {
+            writer.uint32(10).string(message.datasetId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDownloadUrlsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGetDownloadUrlsRequest } as GetDownloadUrlsRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.datasetId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GetDownloadUrlsRequest {
+        const message = { ...baseGetDownloadUrlsRequest } as GetDownloadUrlsRequest;
+        message.datasetId =
+            object.datasetId !== undefined && object.datasetId !== null
+                ? String(object.datasetId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: GetDownloadUrlsRequest): unknown {
+        const obj: any = {};
+        message.datasetId !== undefined && (obj.datasetId = message.datasetId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GetDownloadUrlsRequest>, I>>(
+        object: I,
+    ): GetDownloadUrlsRequest {
+        const message = { ...baseGetDownloadUrlsRequest } as GetDownloadUrlsRequest;
+        message.datasetId = object.datasetId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(GetDownloadUrlsRequest.$type, GetDownloadUrlsRequest);
+
+const baseGetDownloadUrlsResponse: object = {
+    $type: 'yandex.cloud.ai.dataset.v1.GetDownloadUrlsResponse',
+    datasetId: '',
+};
+
+export const GetDownloadUrlsResponse = {
+    $type: 'yandex.cloud.ai.dataset.v1.GetDownloadUrlsResponse' as const,
+
+    encode(message: GetDownloadUrlsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.datasetId !== '') {
+            writer.uint32(10).string(message.datasetId);
+        }
+        for (const v of message.downloadUrls) {
+            DatasetFileDownloadUrl.encode(v!, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDownloadUrlsResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGetDownloadUrlsResponse } as GetDownloadUrlsResponse;
+        message.downloadUrls = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.datasetId = reader.string();
+                    break;
+                case 2:
+                    message.downloadUrls.push(
+                        DatasetFileDownloadUrl.decode(reader, reader.uint32()),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GetDownloadUrlsResponse {
+        const message = { ...baseGetDownloadUrlsResponse } as GetDownloadUrlsResponse;
+        message.datasetId =
+            object.datasetId !== undefined && object.datasetId !== null
+                ? String(object.datasetId)
+                : '';
+        message.downloadUrls = (object.downloadUrls ?? []).map((e: any) =>
+            DatasetFileDownloadUrl.fromJSON(e),
+        );
+        return message;
+    },
+
+    toJSON(message: GetDownloadUrlsResponse): unknown {
+        const obj: any = {};
+        message.datasetId !== undefined && (obj.datasetId = message.datasetId);
+        if (message.downloadUrls) {
+            obj.downloadUrls = message.downloadUrls.map((e) =>
+                e ? DatasetFileDownloadUrl.toJSON(e) : undefined,
+            );
+        } else {
+            obj.downloadUrls = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GetDownloadUrlsResponse>, I>>(
+        object: I,
+    ): GetDownloadUrlsResponse {
+        const message = { ...baseGetDownloadUrlsResponse } as GetDownloadUrlsResponse;
+        message.datasetId = object.datasetId ?? '';
+        message.downloadUrls =
+            object.downloadUrls?.map((e) => DatasetFileDownloadUrl.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(GetDownloadUrlsResponse.$type, GetDownloadUrlsResponse);
+
+const baseListOperationsIdsRequest: object = {
+    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsRequest',
+    datasetId: '',
+};
+
+export const ListOperationsIdsRequest = {
+    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsRequest' as const,
+
+    encode(
+        message: ListOperationsIdsRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.datasetId) {
+            writer.uint32(10).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOperationsIdsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListOperationsIdsRequest } as ListOperationsIdsRequest;
+        message.datasetId = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.datasetId.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListOperationsIdsRequest {
+        const message = { ...baseListOperationsIdsRequest } as ListOperationsIdsRequest;
+        message.datasetId = (object.datasetId ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: ListOperationsIdsRequest): unknown {
+        const obj: any = {};
+        if (message.datasetId) {
+            obj.datasetId = message.datasetId.map((e) => e);
+        } else {
+            obj.datasetId = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListOperationsIdsRequest>, I>>(
+        object: I,
+    ): ListOperationsIdsRequest {
+        const message = { ...baseListOperationsIdsRequest } as ListOperationsIdsRequest;
+        message.datasetId = object.datasetId?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ListOperationsIdsRequest.$type, ListOperationsIdsRequest);
+
+const baseListOperationsIdsResponse: object = {
+    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsResponse',
+};
+
+export const ListOperationsIdsResponse = {
+    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsResponse' as const,
+
+    encode(
+        message: ListOperationsIdsResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        Object.entries(message.datasetIdToOperationId).forEach(([key, value]) => {
+            ListOperationsIdsResponse_DatasetIdToOperationIdEntry.encode(
+                {
+                    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsResponse.DatasetIdToOperationIdEntry',
+                    key: key as any,
+                    value,
+                },
+                writer.uint32(10).fork(),
+            ).ldelim();
+        });
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOperationsIdsResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListOperationsIdsResponse } as ListOperationsIdsResponse;
+        message.datasetIdToOperationId = {};
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    const entry1 = ListOperationsIdsResponse_DatasetIdToOperationIdEntry.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    if (entry1.value !== undefined) {
+                        message.datasetIdToOperationId[entry1.key] = entry1.value;
+                    }
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListOperationsIdsResponse {
+        const message = { ...baseListOperationsIdsResponse } as ListOperationsIdsResponse;
+        message.datasetIdToOperationId = Object.entries(
+            object.datasetIdToOperationId ?? {},
+        ).reduce<{ [key: string]: string }>((acc, [key, value]) => {
+            acc[key] = String(value);
+            return acc;
+        }, {});
+        return message;
+    },
+
+    toJSON(message: ListOperationsIdsResponse): unknown {
+        const obj: any = {};
+        obj.datasetIdToOperationId = {};
+        if (message.datasetIdToOperationId) {
+            Object.entries(message.datasetIdToOperationId).forEach(([k, v]) => {
+                obj.datasetIdToOperationId[k] = v;
+            });
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListOperationsIdsResponse>, I>>(
+        object: I,
+    ): ListOperationsIdsResponse {
+        const message = { ...baseListOperationsIdsResponse } as ListOperationsIdsResponse;
+        message.datasetIdToOperationId = Object.entries(
+            object.datasetIdToOperationId ?? {},
+        ).reduce<{ [key: string]: string }>((acc, [key, value]) => {
+            if (value !== undefined) {
+                acc[key] = String(value);
+            }
+            return acc;
+        }, {});
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ListOperationsIdsResponse.$type, ListOperationsIdsResponse);
+
+const baseListOperationsIdsResponse_DatasetIdToOperationIdEntry: object = {
+    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsResponse.DatasetIdToOperationIdEntry',
+    key: '',
+    value: '',
+};
+
+export const ListOperationsIdsResponse_DatasetIdToOperationIdEntry = {
+    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsResponse.DatasetIdToOperationIdEntry' as const,
+
+    encode(
+        message: ListOperationsIdsResponse_DatasetIdToOperationIdEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): ListOperationsIdsResponse_DatasetIdToOperationIdEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseListOperationsIdsResponse_DatasetIdToOperationIdEntry,
+        } as ListOperationsIdsResponse_DatasetIdToOperationIdEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListOperationsIdsResponse_DatasetIdToOperationIdEntry {
+        const message = {
+            ...baseListOperationsIdsResponse_DatasetIdToOperationIdEntry,
+        } as ListOperationsIdsResponse_DatasetIdToOperationIdEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: ListOperationsIdsResponse_DatasetIdToOperationIdEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<
+        I extends Exact<DeepPartial<ListOperationsIdsResponse_DatasetIdToOperationIdEntry>, I>,
+    >(object: I): ListOperationsIdsResponse_DatasetIdToOperationIdEntry {
+        const message = {
+            ...baseListOperationsIdsResponse_DatasetIdToOperationIdEntry,
+        } as ListOperationsIdsResponse_DatasetIdToOperationIdEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(
+    ListOperationsIdsResponse_DatasetIdToOperationIdEntry.$type,
+    ListOperationsIdsResponse_DatasetIdToOperationIdEntry,
+);
+
 /** A set of methods for managing datasets. */
 export const DatasetServiceService = {
     /** Returns dataset information by dataset id. */
@@ -2344,7 +3056,11 @@ export const DatasetServiceService = {
             Buffer.from(ListDatasetsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListDatasetsResponse.decode(value),
     },
-    /** Lists supported upload formats for the specified dataset task type. */
+    /**
+     * Deprecated. Use ListUploadSchemas.
+     *
+     * @deprecated
+     */
     listUploadFormats: {
         path: '/yandex.cloud.ai.dataset.v1.DatasetService/ListUploadFormats',
         requestStream: false,
@@ -2355,6 +3071,18 @@ export const DatasetServiceService = {
         responseSerialize: (value: ListUploadFormatsResponse) =>
             Buffer.from(ListUploadFormatsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListUploadFormatsResponse.decode(value),
+    },
+    /** Lists supported dataset upload formats types and schemas for the specified dataset task type. */
+    listUploadSchemas: {
+        path: '/yandex.cloud.ai.dataset.v1.DatasetService/ListUploadSchemas',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListUploadSchemasRequest) =>
+            Buffer.from(ListUploadSchemasRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListUploadSchemasRequest.decode(value),
+        responseSerialize: (value: ListUploadSchemasResponse) =>
+            Buffer.from(ListUploadSchemasResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListUploadSchemasResponse.decode(value),
     },
     /**
      * Returns an S3 presigned URL for dataset upload.
@@ -2370,6 +3098,18 @@ export const DatasetServiceService = {
         responseSerialize: (value: GetUploadDraftUrlResponse) =>
             Buffer.from(GetUploadDraftUrlResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => GetUploadDraftUrlResponse.decode(value),
+    },
+    /** Get urls to download dataset */
+    getDownloadUrls: {
+        path: '/yandex.cloud.ai.dataset.v1.DatasetService/GetDownloadUrls',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: GetDownloadUrlsRequest) =>
+            Buffer.from(GetDownloadUrlsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => GetDownloadUrlsRequest.decode(value),
+        responseSerialize: (value: GetDownloadUrlsResponse) =>
+            Buffer.from(GetDownloadUrlsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => GetDownloadUrlsResponse.decode(value),
     },
     /** Returns a list of S3 presigned URLs for multipart upload of dataset. */
     startMultipartUploadDraft: {
@@ -2407,6 +3147,29 @@ export const DatasetServiceService = {
             Buffer.from(ListTypesResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListTypesResponse.decode(value),
     },
+    /** Returns a preview of dataset types */
+    getPreview: {
+        path: '/yandex.cloud.ai.dataset.v1.DatasetService/GetPreview',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: GetDatasetPreviewRequest) =>
+            Buffer.from(GetDatasetPreviewRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => GetDatasetPreviewRequest.decode(value),
+        responseSerialize: (value: GetDatasetPreviewResponse) =>
+            Buffer.from(GetDatasetPreviewResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => GetDatasetPreviewResponse.decode(value),
+    },
+    listOperationsIds: {
+        path: '/yandex.cloud.ai.dataset.v1.DatasetService/ListOperationsIds',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListOperationsIdsRequest) =>
+            Buffer.from(ListOperationsIdsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListOperationsIdsRequest.decode(value),
+        responseSerialize: (value: ListOperationsIdsResponse) =>
+            Buffer.from(ListOperationsIdsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListOperationsIdsResponse.decode(value),
+    },
 } as const;
 
 export interface DatasetServiceServer extends UntypedServiceImplementation {
@@ -2422,13 +3185,21 @@ export interface DatasetServiceServer extends UntypedServiceImplementation {
     delete: handleUnaryCall<DeleteDatasetRequest, DeleteDatasetResponse>;
     /** Lists datasets in specified folder. */
     list: handleUnaryCall<ListDatasetsRequest, ListDatasetsResponse>;
-    /** Lists supported upload formats for the specified dataset task type. */
+    /**
+     * Deprecated. Use ListUploadSchemas.
+     *
+     * @deprecated
+     */
     listUploadFormats: handleUnaryCall<ListUploadFormatsRequest, ListUploadFormatsResponse>;
+    /** Lists supported dataset upload formats types and schemas for the specified dataset task type. */
+    listUploadSchemas: handleUnaryCall<ListUploadSchemasRequest, ListUploadSchemasResponse>;
     /**
      * Returns an S3 presigned URL for dataset upload.
      * This method only applicable if the dataset size does not exceed 5GB.
      */
     getUploadDraftUrl: handleUnaryCall<GetUploadDraftUrlRequest, GetUploadDraftUrlResponse>;
+    /** Get urls to download dataset */
+    getDownloadUrls: handleUnaryCall<GetDownloadUrlsRequest, GetDownloadUrlsResponse>;
     /** Returns a list of S3 presigned URLs for multipart upload of dataset. */
     startMultipartUploadDraft: handleUnaryCall<
         StartMultipartUploadDraftRequest,
@@ -2441,6 +3212,9 @@ export interface DatasetServiceServer extends UntypedServiceImplementation {
     >;
     /** Returns a list of dataset types */
     listTypes: handleUnaryCall<ListTypesRequest, ListTypesResponse>;
+    /** Returns a preview of dataset types */
+    getPreview: handleUnaryCall<GetDatasetPreviewRequest, GetDatasetPreviewResponse>;
+    listOperationsIds: handleUnaryCall<ListOperationsIdsRequest, ListOperationsIdsResponse>;
 }
 
 export interface DatasetServiceClient extends Client {
@@ -2540,7 +3314,11 @@ export interface DatasetServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListDatasetsResponse) => void,
     ): ClientUnaryCall;
-    /** Lists supported upload formats for the specified dataset task type. */
+    /**
+     * Deprecated. Use ListUploadSchemas.
+     *
+     * @deprecated
+     */
     listUploadFormats(
         request: ListUploadFormatsRequest,
         callback: (error: ServiceError | null, response: ListUploadFormatsResponse) => void,
@@ -2555,6 +3333,22 @@ export interface DatasetServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListUploadFormatsResponse) => void,
+    ): ClientUnaryCall;
+    /** Lists supported dataset upload formats types and schemas for the specified dataset task type. */
+    listUploadSchemas(
+        request: ListUploadSchemasRequest,
+        callback: (error: ServiceError | null, response: ListUploadSchemasResponse) => void,
+    ): ClientUnaryCall;
+    listUploadSchemas(
+        request: ListUploadSchemasRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListUploadSchemasResponse) => void,
+    ): ClientUnaryCall;
+    listUploadSchemas(
+        request: ListUploadSchemasRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListUploadSchemasResponse) => void,
     ): ClientUnaryCall;
     /**
      * Returns an S3 presigned URL for dataset upload.
@@ -2574,6 +3368,22 @@ export interface DatasetServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: GetUploadDraftUrlResponse) => void,
+    ): ClientUnaryCall;
+    /** Get urls to download dataset */
+    getDownloadUrls(
+        request: GetDownloadUrlsRequest,
+        callback: (error: ServiceError | null, response: GetDownloadUrlsResponse) => void,
+    ): ClientUnaryCall;
+    getDownloadUrls(
+        request: GetDownloadUrlsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: GetDownloadUrlsResponse) => void,
+    ): ClientUnaryCall;
+    getDownloadUrls(
+        request: GetDownloadUrlsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: GetDownloadUrlsResponse) => void,
     ): ClientUnaryCall;
     /** Returns a list of S3 presigned URLs for multipart upload of dataset. */
     startMultipartUploadDraft(
@@ -2631,6 +3441,37 @@ export interface DatasetServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListTypesResponse) => void,
+    ): ClientUnaryCall;
+    /** Returns a preview of dataset types */
+    getPreview(
+        request: GetDatasetPreviewRequest,
+        callback: (error: ServiceError | null, response: GetDatasetPreviewResponse) => void,
+    ): ClientUnaryCall;
+    getPreview(
+        request: GetDatasetPreviewRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: GetDatasetPreviewResponse) => void,
+    ): ClientUnaryCall;
+    getPreview(
+        request: GetDatasetPreviewRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: GetDatasetPreviewResponse) => void,
+    ): ClientUnaryCall;
+    listOperationsIds(
+        request: ListOperationsIdsRequest,
+        callback: (error: ServiceError | null, response: ListOperationsIdsResponse) => void,
+    ): ClientUnaryCall;
+    listOperationsIds(
+        request: ListOperationsIdsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListOperationsIdsResponse) => void,
+    ): ClientUnaryCall;
+    listOperationsIds(
+        request: ListOperationsIdsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListOperationsIdsResponse) => void,
     ): ClientUnaryCall;
 }
 

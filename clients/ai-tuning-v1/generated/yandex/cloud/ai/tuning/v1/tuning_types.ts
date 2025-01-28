@@ -8,6 +8,7 @@ export const protobufPackage = 'yandex.cloud.ai.tuning.v1';
 export interface TuningTypeLora {
     $type: 'yandex.cloud.ai.tuning.v1.TuningTypeLora';
     rank: number;
+    /** Integer value */
     alpha: number;
     initialization: string;
     type: string;

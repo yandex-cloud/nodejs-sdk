@@ -17,6 +17,7 @@ import _m0 from 'protobufjs/minimal';
 import { ExpirationConfig } from '../../../../../../yandex/cloud/ai/common/common';
 import { FieldMask } from '../../../../../../google/protobuf/field_mask';
 import { MessageData } from '../../../../../../yandex/cloud/ai/assistants/v1/threads/message';
+import { Tool } from '../../../../../../yandex/cloud/ai/assistants/v1/common';
 import { Thread } from '../../../../../../yandex/cloud/ai/assistants/v1/threads/thread';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.threads';
@@ -37,6 +38,8 @@ export interface CreateThreadRequest {
     expirationConfig?: ExpirationConfig;
     /** Set of key-value pairs to label the thread. */
     labels: { [key: string]: string };
+    /** List of tools that are available for assistants to use in this thread. */
+    tools: Tool[];
 }
 
 export interface CreateThreadRequest_LabelsEntry {
@@ -67,6 +70,8 @@ export interface UpdateThreadRequest {
     expirationConfig?: ExpirationConfig;
     /** New set of labels for the thread. */
     labels: { [key: string]: string };
+    /** A new list of tools that are available for assistants to use in this thread. */
+    tools: Tool[];
 }
 
 export interface UpdateThreadRequest_LabelsEntry {
@@ -147,6 +152,9 @@ export const CreateThreadRequest = {
                 writer.uint32(58).fork(),
             ).ldelim();
         });
+        for (const v of message.tools) {
+            Tool.encode(v!, writer.uint32(66).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -156,6 +164,7 @@ export const CreateThreadRequest = {
         const message = { ...baseCreateThreadRequest } as CreateThreadRequest;
         message.messages = [];
         message.labels = {};
+        message.tools = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -182,6 +191,9 @@ export const CreateThreadRequest = {
                     if (entry7.value !== undefined) {
                         message.labels[entry7.key] = entry7.value;
                     }
+                    break;
+                case 8:
+                    message.tools.push(Tool.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -218,6 +230,7 @@ export const CreateThreadRequest = {
             },
             {},
         );
+        message.tools = (object.tools ?? []).map((e: any) => Tool.fromJSON(e));
         return message;
     },
 
@@ -242,6 +255,11 @@ export const CreateThreadRequest = {
             Object.entries(message.labels).forEach(([k, v]) => {
                 obj.labels[k] = v;
             });
+        }
+        if (message.tools) {
+            obj.tools = message.tools.map((e) => (e ? Tool.toJSON(e) : undefined));
+        } else {
+            obj.tools = [];
         }
         return obj;
     },
@@ -268,6 +286,7 @@ export const CreateThreadRequest = {
             },
             {},
         );
+        message.tools = object.tools?.map((e) => Tool.fromPartial(e)) || [];
         return message;
     },
 };
@@ -443,6 +462,9 @@ export const UpdateThreadRequest = {
                 writer.uint32(50).fork(),
             ).ldelim();
         });
+        for (const v of message.tools) {
+            Tool.encode(v!, writer.uint32(58).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -451,6 +473,7 @@ export const UpdateThreadRequest = {
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseUpdateThreadRequest } as UpdateThreadRequest;
         message.labels = {};
+        message.tools = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -474,6 +497,9 @@ export const UpdateThreadRequest = {
                     if (entry6.value !== undefined) {
                         message.labels[entry6.key] = entry6.value;
                     }
+                    break;
+                case 7:
+                    message.tools.push(Tool.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -509,6 +535,7 @@ export const UpdateThreadRequest = {
             },
             {},
         );
+        message.tools = (object.tools ?? []).map((e: any) => Tool.fromJSON(e));
         return message;
     },
 
@@ -530,6 +557,11 @@ export const UpdateThreadRequest = {
             Object.entries(message.labels).forEach(([k, v]) => {
                 obj.labels[k] = v;
             });
+        }
+        if (message.tools) {
+            obj.tools = message.tools.map((e) => (e ? Tool.toJSON(e) : undefined));
+        } else {
+            obj.tools = [];
         }
         return obj;
     },
@@ -558,6 +590,7 @@ export const UpdateThreadRequest = {
             },
             {},
         );
+        message.tools = object.tools?.map((e) => Tool.fromPartial(e)) || [];
         return message;
     },
 };

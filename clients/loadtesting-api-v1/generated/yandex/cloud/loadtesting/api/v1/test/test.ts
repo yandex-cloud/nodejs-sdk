@@ -22,7 +22,7 @@ export interface Test {
      *
      * A test can have multiple configurations if it can be
      * executed on multiple agents simultaneously. For more information, see
-     * [Load testing using multiple agents](docs/load-testing/tutorials/loadtesting-multiply).
+     * [Load testing using multiple agents](/docs/load-testing/tutorials/loadtesting-multiply).
      */
     configurations: SingleAgentConfiguration[];
     /** Test meta information. Name, description, etc. */

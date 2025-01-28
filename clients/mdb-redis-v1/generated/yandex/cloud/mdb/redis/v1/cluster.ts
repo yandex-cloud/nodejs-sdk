@@ -315,6 +315,8 @@ export interface ClusterConfig {
     redis?: RedisConfigSet;
     /** Disk size autoscaling settings */
     diskSizeAutoscaling?: DiskSizeAutoscaling;
+    /** Retain period of automatically created backup in days */
+    backupRetainPeriodDays?: number;
 }
 
 export interface Shard {
@@ -1109,6 +1111,12 @@ export const ClusterConfig = {
                 writer.uint32(82).fork(),
             ).ldelim();
         }
+        if (message.backupRetainPeriodDays !== undefined) {
+            Int64Value.encode(
+                { $type: 'google.protobuf.Int64Value', value: message.backupRetainPeriodDays! },
+                writer.uint32(106).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -1151,6 +1159,12 @@ export const ClusterConfig = {
                         reader,
                         reader.uint32(),
                     );
+                    break;
+                case 13:
+                    message.backupRetainPeriodDays = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1200,6 +1214,10 @@ export const ClusterConfig = {
             object.diskSizeAutoscaling !== undefined && object.diskSizeAutoscaling !== null
                 ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
                 : undefined;
+        message.backupRetainPeriodDays =
+            object.backupRetainPeriodDays !== undefined && object.backupRetainPeriodDays !== null
+                ? Number(object.backupRetainPeriodDays)
+                : undefined;
         return message;
     },
 
@@ -1236,6 +1254,8 @@ export const ClusterConfig = {
             (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
                 ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
                 : undefined);
+        message.backupRetainPeriodDays !== undefined &&
+            (obj.backupRetainPeriodDays = message.backupRetainPeriodDays);
         return obj;
     },
 
@@ -1278,6 +1298,7 @@ export const ClusterConfig = {
             object.diskSizeAutoscaling !== undefined && object.diskSizeAutoscaling !== null
                 ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
                 : undefined;
+        message.backupRetainPeriodDays = object.backupRetainPeriodDays ?? undefined;
         return message;
     },
 };

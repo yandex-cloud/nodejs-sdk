@@ -150,6 +150,19 @@ export interface CombinationStrategy {
     rrfCombination?: ReciprocalRankFusionCombinationStrategy | undefined;
 }
 
+/**
+ * Configuration for the NgramTokenizer, which splits text into overlapping character sequences (n-grams) of specified lengths.
+ *
+ * Example:
+ * Input text: `hello`
+ * min_gram = 2, max_gram = 3
+ *
+ * Generated tokens:
+ * * For n = 2 (2-character n-grams): `he`, `el`, `ll`, `lo`
+ * * For n = 3 (3-character n-grams): `hel`, `ell`, `llo`
+ *
+ * Final tokens: `[he, el, ll, lo, hel, ell, llo]`
+ */
 export interface NgramTokenizer {
     $type: 'yandex.cloud.ai.assistants.v1.searchindex.NgramTokenizer';
     /** Minimum length of characters in a gram. Defaults to 3 */

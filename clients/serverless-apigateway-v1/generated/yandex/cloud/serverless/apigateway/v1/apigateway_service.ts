@@ -2300,7 +2300,7 @@ messageTypeRegistry.set(GetOpenapiSpecResponse.$type, GetOpenapiSpecResponse);
 export const ApiGatewayServiceService = {
     /**
      * Returns the specified API gateway. Note that only API gateway basic attributes are returned.
-     * To get associated openapi specification, make a [GetOpenapiSpec](#GetOpenapiSpec) request.
+     * To get associated openapi specification, make a [GetOpenapiSpec] request.
      *
      * To get the list of all available API gateways, make a [List] request.
      */
@@ -2444,7 +2444,7 @@ export const ApiGatewayServiceService = {
 export interface ApiGatewayServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specified API gateway. Note that only API gateway basic attributes are returned.
-     * To get associated openapi specification, make a [GetOpenapiSpec](#GetOpenapiSpec) request.
+     * To get associated openapi specification, make a [GetOpenapiSpec] request.
      *
      * To get the list of all available API gateways, make a [List] request.
      */
@@ -2476,7 +2476,7 @@ export interface ApiGatewayServiceServer extends UntypedServiceImplementation {
 export interface ApiGatewayServiceClient extends Client {
     /**
      * Returns the specified API gateway. Note that only API gateway basic attributes are returned.
-     * To get associated openapi specification, make a [GetOpenapiSpec](#GetOpenapiSpec) request.
+     * To get associated openapi specification, make a [GetOpenapiSpec] request.
      *
      * To get the list of all available API gateways, make a [List] request.
      */

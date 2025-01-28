@@ -11,7 +11,7 @@ export interface TranslatedText {
     text: string;
     /**
      * The language code of the source text.
-     * Specified in [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) format (for example, `` en ``).
+     * Most languages are specified in [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) format (for example, `` ru ``), but the field are not limited to it.
      */
     detectedLanguageCode: string;
 }
@@ -20,7 +20,7 @@ export interface Language {
     $type: 'yandex.cloud.ai.translate.v2.Language';
     /**
      * The language code.
-     * Specified in [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) format (for example, `` en ``).
+     * Most languages are specified in [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) format (for example, `` ru ``), but the field are not limited to it.
      */
     code: string;
     /** The name of the language (for example, `` English ``). */

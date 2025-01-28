@@ -21,6 +21,7 @@ import {
     Versioning,
     ObjectLock,
     Encryption,
+    BucketAllowedPrivateEndpoints,
     Bucket,
     Tag,
     CorsRule,
@@ -251,6 +252,8 @@ export interface UpdateBucketRequest {
      * For detauls, see [documentation](/docs/storage/concepts/encryption)
      */
     encryption?: Encryption;
+    /** requires permission s3:PutBucketAllowedPrivateEndpoints */
+    allowedPrivateEndpoints?: BucketAllowedPrivateEndpoints;
 }
 
 export interface UpdateBucketMetadata {
@@ -787,6 +790,12 @@ export const UpdateBucketRequest = {
         if (message.encryption !== undefined) {
             Encryption.encode(message.encryption, writer.uint32(114).fork()).ldelim();
         }
+        if (message.allowedPrivateEndpoints !== undefined) {
+            BucketAllowedPrivateEndpoints.encode(
+                message.allowedPrivateEndpoints,
+                writer.uint32(122).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -845,6 +854,12 @@ export const UpdateBucketRequest = {
                 case 14:
                     message.encryption = Encryption.decode(reader, reader.uint32());
                     break;
+                case 15:
+                    message.allowedPrivateEndpoints = BucketAllowedPrivateEndpoints.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -893,6 +908,10 @@ export const UpdateBucketRequest = {
         message.encryption =
             object.encryption !== undefined && object.encryption !== null
                 ? Encryption.fromJSON(object.encryption)
+                : undefined;
+        message.allowedPrivateEndpoints =
+            object.allowedPrivateEndpoints !== undefined && object.allowedPrivateEndpoints !== null
+                ? BucketAllowedPrivateEndpoints.fromJSON(object.allowedPrivateEndpoints)
                 : undefined;
         return message;
     },
@@ -943,6 +962,10 @@ export const UpdateBucketRequest = {
             (obj.encryption = message.encryption
                 ? Encryption.toJSON(message.encryption)
                 : undefined);
+        message.allowedPrivateEndpoints !== undefined &&
+            (obj.allowedPrivateEndpoints = message.allowedPrivateEndpoints
+                ? BucketAllowedPrivateEndpoints.toJSON(message.allowedPrivateEndpoints)
+                : undefined);
         return obj;
     },
 
@@ -982,6 +1005,10 @@ export const UpdateBucketRequest = {
         message.encryption =
             object.encryption !== undefined && object.encryption !== null
                 ? Encryption.fromPartial(object.encryption)
+                : undefined;
+        message.allowedPrivateEndpoints =
+            object.allowedPrivateEndpoints !== undefined && object.allowedPrivateEndpoints !== null
+                ? BucketAllowedPrivateEndpoints.fromPartial(object.allowedPrivateEndpoints)
                 : undefined;
         return message;
     },

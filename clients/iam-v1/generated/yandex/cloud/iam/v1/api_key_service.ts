@@ -79,8 +79,14 @@ export interface CreateApiKeyRequest {
     serviceAccountId: string;
     /** Description of the API key. */
     description: string;
-    /** Scope of the API key. */
+    /**
+     * Scope of the API key.
+     *
+     * @deprecated
+     */
     scope: string;
+    /** Scopes of the API key. */
+    scopes: string[];
     /** API key expiration timestamp, if not specified, then the API key doesn't expire */
     expiresAt?: Date;
 }
@@ -104,6 +110,10 @@ export interface UpdateApiKeyRequest {
     updateMask?: FieldMask;
     /** Description of the API key. */
     description: string;
+    /** Scopes of the API key. */
+    scopes: string[];
+    /** API key expiration timestamp, if not specified, then the API key doesn't expire */
+    expiresAt?: Date;
 }
 
 export interface UpdateApiKeyMetadata {
@@ -407,6 +417,7 @@ const baseCreateApiKeyRequest: object = {
     serviceAccountId: '',
     description: '',
     scope: '',
+    scopes: '',
 };
 
 export const CreateApiKeyRequest = {
@@ -422,6 +433,9 @@ export const CreateApiKeyRequest = {
         if (message.scope !== '') {
             writer.uint32(26).string(message.scope);
         }
+        for (const v of message.scopes) {
+            writer.uint32(42).string(v!);
+        }
         if (message.expiresAt !== undefined) {
             Timestamp.encode(toTimestamp(message.expiresAt), writer.uint32(34).fork()).ldelim();
         }
@@ -432,6 +446,7 @@ export const CreateApiKeyRequest = {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseCreateApiKeyRequest } as CreateApiKeyRequest;
+        message.scopes = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -443,6 +458,9 @@ export const CreateApiKeyRequest = {
                     break;
                 case 3:
                     message.scope = reader.string();
+                    break;
+                case 5:
+                    message.scopes.push(reader.string());
                     break;
                 case 4:
                     message.expiresAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
@@ -467,6 +485,7 @@ export const CreateApiKeyRequest = {
                 : '';
         message.scope =
             object.scope !== undefined && object.scope !== null ? String(object.scope) : '';
+        message.scopes = (object.scopes ?? []).map((e: any) => String(e));
         message.expiresAt =
             object.expiresAt !== undefined && object.expiresAt !== null
                 ? fromJsonTimestamp(object.expiresAt)
@@ -479,6 +498,11 @@ export const CreateApiKeyRequest = {
         message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
         message.description !== undefined && (obj.description = message.description);
         message.scope !== undefined && (obj.scope = message.scope);
+        if (message.scopes) {
+            obj.scopes = message.scopes.map((e) => e);
+        } else {
+            obj.scopes = [];
+        }
         message.expiresAt !== undefined && (obj.expiresAt = message.expiresAt.toISOString());
         return obj;
     },
@@ -490,6 +514,7 @@ export const CreateApiKeyRequest = {
         message.serviceAccountId = object.serviceAccountId ?? '';
         message.description = object.description ?? '';
         message.scope = object.scope ?? '';
+        message.scopes = object.scopes?.map((e) => e) || [];
         message.expiresAt = object.expiresAt ?? undefined;
         return message;
     },
@@ -574,6 +599,7 @@ const baseUpdateApiKeyRequest: object = {
     $type: 'yandex.cloud.iam.v1.UpdateApiKeyRequest',
     apiKeyId: '',
     description: '',
+    scopes: '',
 };
 
 export const UpdateApiKeyRequest = {
@@ -589,6 +615,12 @@ export const UpdateApiKeyRequest = {
         if (message.description !== '') {
             writer.uint32(26).string(message.description);
         }
+        for (const v of message.scopes) {
+            writer.uint32(34).string(v!);
+        }
+        if (message.expiresAt !== undefined) {
+            Timestamp.encode(toTimestamp(message.expiresAt), writer.uint32(42).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -596,6 +628,7 @@ export const UpdateApiKeyRequest = {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseUpdateApiKeyRequest } as UpdateApiKeyRequest;
+        message.scopes = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -607,6 +640,12 @@ export const UpdateApiKeyRequest = {
                     break;
                 case 3:
                     message.description = reader.string();
+                    break;
+                case 4:
+                    message.scopes.push(reader.string());
+                    break;
+                case 5:
+                    message.expiresAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -630,6 +669,11 @@ export const UpdateApiKeyRequest = {
             object.description !== undefined && object.description !== null
                 ? String(object.description)
                 : '';
+        message.scopes = (object.scopes ?? []).map((e: any) => String(e));
+        message.expiresAt =
+            object.expiresAt !== undefined && object.expiresAt !== null
+                ? fromJsonTimestamp(object.expiresAt)
+                : undefined;
         return message;
     },
 
@@ -641,6 +685,12 @@ export const UpdateApiKeyRequest = {
                 ? FieldMask.toJSON(message.updateMask)
                 : undefined);
         message.description !== undefined && (obj.description = message.description);
+        if (message.scopes) {
+            obj.scopes = message.scopes.map((e) => e);
+        } else {
+            obj.scopes = [];
+        }
+        message.expiresAt !== undefined && (obj.expiresAt = message.expiresAt.toISOString());
         return obj;
     },
 
@@ -654,6 +704,8 @@ export const UpdateApiKeyRequest = {
                 ? FieldMask.fromPartial(object.updateMask)
                 : undefined;
         message.description = object.description ?? '';
+        message.scopes = object.scopes?.map((e) => e) || [];
+        message.expiresAt = object.expiresAt ?? undefined;
         return message;
     },
 };
