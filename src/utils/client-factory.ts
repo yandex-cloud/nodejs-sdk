@@ -3,7 +3,7 @@ import { deadlineMiddleware, DeadlineOptions } from 'nice-grpc-client-middleware
 import { retryMiddleware, RetryOptions } from '../middleware/retry';
 import { errorMetadataMiddleware } from '../middleware/error-metadata';
 
-export type ClientCallArgs = RetryOptions | DeadlineOptions;
+export type ClientCallArgs = RetryOptions & DeadlineOptions;
 
 export const clientFactory: ClientFactory<ClientCallArgs> = createClientFactory()
     .use(errorMetadataMiddleware)
