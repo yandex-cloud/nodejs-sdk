@@ -167,7 +167,8 @@
     "generate_services": "ts-node scripts/generate_services",
     "clear_generated_services": "ts-node scripts/clear_generated_services",
     "build:services": "ts-node scripts/build_services",
-    "build:mono-service": "cross-env NODE_OPTIONS=\"--max-old-space-size=4096\" tsc -p .",
+    "generate_default_headers": "ts-node scripts/generate_default_headers",
+    "build:mono-service": "npm run generate_default_headers && cross-env NODE_OPTIONS=\"--max-old-space-size=4096\" tsc -p .",
     "build": "npm run build:mono-service && npm run build:services",
     "typecheck:clients": "tsc -p ./clients --noEmit"
   },

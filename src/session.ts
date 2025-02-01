@@ -20,6 +20,9 @@ import {
     IamTokenServiceClient,
 } from './generated/yandex/cloud/iam/v1/iam_token_service';
 
+import { DEFAULT_HEADERS } from './default-headers';
+import { merge } from 'lodash';
+
 const isOAuth = (config: SessionConfig): config is OAuthCredentialsConfig => 'oauthToken' in config;
 
 const isIamToken = (config: SessionConfig): config is IamTokenCredentialsConfig =>
@@ -100,13 +103,12 @@ export class Session {
 
     private static readonly DEFAULT_CONFIG = {
         pollInterval: 1000,
+        headers: DEFAULT_HEADERS,
     };
 
     constructor(config?: SessionConfig) {
-        this.config = {
-            ...Session.DEFAULT_CONFIG,
-            ...config,
-        };
+        this.config = merge(Session.DEFAULT_CONFIG, config);
+
         this.tokenCreator = newTokenCreator(this.config);
         this.channelCredentials = newChannelCredentials(
             this.tokenCreator,
