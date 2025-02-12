@@ -23,6 +23,7 @@ import {
 } from '../../../../../yandex/cloud/mdb/clickhouse/v1/user';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
 import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { BoolValue } from '../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.clickhouse.v1';
 
@@ -112,6 +113,8 @@ export interface UpdateUserRequest {
     permissions: Permission[];
     settings?: UserSettings;
     quotas: UserQuota[];
+    /** Generate password using Connection Manager. */
+    generatePassword?: boolean;
 }
 
 export interface UpdateUserMetadata {
@@ -591,6 +594,12 @@ export const UpdateUserRequest = {
         for (const v of message.quotas) {
             UserQuota.encode(v!, writer.uint32(58).fork()).ldelim();
         }
+        if (message.generatePassword !== undefined) {
+            BoolValue.encode(
+                { $type: 'google.protobuf.BoolValue', value: message.generatePassword! },
+                writer.uint32(66).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -624,6 +633,9 @@ export const UpdateUserRequest = {
                 case 7:
                     message.quotas.push(UserQuota.decode(reader, reader.uint32()));
                     break;
+                case 8:
+                    message.generatePassword = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -656,6 +668,10 @@ export const UpdateUserRequest = {
                 ? UserSettings.fromJSON(object.settings)
                 : undefined;
         message.quotas = (object.quotas ?? []).map((e: any) => UserQuota.fromJSON(e));
+        message.generatePassword =
+            object.generatePassword !== undefined && object.generatePassword !== null
+                ? Boolean(object.generatePassword)
+                : undefined;
         return message;
     },
 
@@ -682,6 +698,7 @@ export const UpdateUserRequest = {
         } else {
             obj.quotas = [];
         }
+        message.generatePassword !== undefined && (obj.generatePassword = message.generatePassword);
         return obj;
     },
 
@@ -700,6 +717,7 @@ export const UpdateUserRequest = {
                 ? UserSettings.fromPartial(object.settings)
                 : undefined;
         message.quotas = object.quotas?.map((e) => UserQuota.fromPartial(e)) || [];
+        message.generatePassword = object.generatePassword ?? undefined;
         return message;
     },
 };

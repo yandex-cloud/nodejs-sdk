@@ -1,0 +1,4 @@
+{
+  "extends": "./node_modules/@yandex-cloud/nodejs-sdk/tsconfig.json",
+  "include": ["./*.ts"]
+}

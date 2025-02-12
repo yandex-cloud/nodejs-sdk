@@ -91,12 +91,20 @@ export interface User {
      * The default is `` password_encryption `` setting for cluster.
      */
     userPasswordEncryption: UserPasswordEncryption;
+    /** Connection Manager Connection and settings associated with user. Read only field. */
+    connectionManager?: ConnectionManager;
 }
 
 export interface Permission {
     $type: 'yandex.cloud.mdb.postgresql.v1.Permission';
     /** Name of the database that the permission grants access to. */
     databaseName: string;
+}
+
+export interface ConnectionManager {
+    $type: 'yandex.cloud.mdb.postgresql.v1.ConnectionManager';
+    /** ID of Connection Manager Connection */
+    connectionId: string;
 }
 
 export interface UserSpec {
@@ -143,6 +151,8 @@ export interface UserSpec {
      * The default is `` password_encryption `` setting for cluster.
      */
     userPasswordEncryption: UserPasswordEncryption;
+    /** Generate password using Connection Manager. */
+    generatePassword?: boolean;
 }
 
 export interface PGAuditSettings {
@@ -631,6 +641,9 @@ export const User = {
         if (message.userPasswordEncryption !== 0) {
             writer.uint32(72).int32(message.userPasswordEncryption);
         }
+        if (message.connectionManager !== undefined) {
+            ConnectionManager.encode(message.connectionManager, writer.uint32(82).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -670,6 +683,9 @@ export const User = {
                 case 9:
                     message.userPasswordEncryption = reader.int32() as any;
                     break;
+                case 10:
+                    message.connectionManager = ConnectionManager.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -705,6 +721,10 @@ export const User = {
             object.userPasswordEncryption !== undefined && object.userPasswordEncryption !== null
                 ? userPasswordEncryptionFromJSON(object.userPasswordEncryption)
                 : 0;
+        message.connectionManager =
+            object.connectionManager !== undefined && object.connectionManager !== null
+                ? ConnectionManager.fromJSON(object.connectionManager)
+                : undefined;
         return message;
     },
 
@@ -734,6 +754,10 @@ export const User = {
             (obj.userPasswordEncryption = userPasswordEncryptionToJSON(
                 message.userPasswordEncryption,
             ));
+        message.connectionManager !== undefined &&
+            (obj.connectionManager = message.connectionManager
+                ? ConnectionManager.toJSON(message.connectionManager)
+                : undefined);
         return obj;
     },
 
@@ -751,6 +775,10 @@ export const User = {
         message.grants = object.grants?.map((e) => e) || [];
         message.deletionProtection = object.deletionProtection ?? undefined;
         message.userPasswordEncryption = object.userPasswordEncryption ?? 0;
+        message.connectionManager =
+            object.connectionManager !== undefined && object.connectionManager !== null
+                ? ConnectionManager.fromPartial(object.connectionManager)
+                : undefined;
         return message;
     },
 };
@@ -814,6 +842,63 @@ export const Permission = {
 
 messageTypeRegistry.set(Permission.$type, Permission);
 
+const baseConnectionManager: object = {
+    $type: 'yandex.cloud.mdb.postgresql.v1.ConnectionManager',
+    connectionId: '',
+};
+
+export const ConnectionManager = {
+    $type: 'yandex.cloud.mdb.postgresql.v1.ConnectionManager' as const,
+
+    encode(message: ConnectionManager, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.connectionId !== '') {
+            writer.uint32(10).string(message.connectionId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConnectionManager {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseConnectionManager } as ConnectionManager;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.connectionId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ConnectionManager {
+        const message = { ...baseConnectionManager } as ConnectionManager;
+        message.connectionId =
+            object.connectionId !== undefined && object.connectionId !== null
+                ? String(object.connectionId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ConnectionManager): unknown {
+        const obj: any = {};
+        message.connectionId !== undefined && (obj.connectionId = message.connectionId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ConnectionManager>, I>>(object: I): ConnectionManager {
+        const message = { ...baseConnectionManager } as ConnectionManager;
+        message.connectionId = object.connectionId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ConnectionManager.$type, ConnectionManager);
+
 const baseUserSpec: object = {
     $type: 'yandex.cloud.mdb.postgresql.v1.UserSpec',
     name: '',
@@ -862,6 +947,12 @@ export const UserSpec = {
         if (message.userPasswordEncryption !== 0) {
             writer.uint32(72).int32(message.userPasswordEncryption);
         }
+        if (message.generatePassword !== undefined) {
+            BoolValue.encode(
+                { $type: 'google.protobuf.BoolValue', value: message.generatePassword! },
+                writer.uint32(82).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -901,6 +992,9 @@ export const UserSpec = {
                 case 9:
                     message.userPasswordEncryption = reader.int32() as any;
                     break;
+                case 10:
+                    message.generatePassword = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -936,6 +1030,10 @@ export const UserSpec = {
             object.userPasswordEncryption !== undefined && object.userPasswordEncryption !== null
                 ? userPasswordEncryptionFromJSON(object.userPasswordEncryption)
                 : 0;
+        message.generatePassword =
+            object.generatePassword !== undefined && object.generatePassword !== null
+                ? Boolean(object.generatePassword)
+                : undefined;
         return message;
     },
 
@@ -965,6 +1063,7 @@ export const UserSpec = {
             (obj.userPasswordEncryption = userPasswordEncryptionToJSON(
                 message.userPasswordEncryption,
             ));
+        message.generatePassword !== undefined && (obj.generatePassword = message.generatePassword);
         return obj;
     },
 
@@ -982,6 +1081,7 @@ export const UserSpec = {
         message.grants = object.grants?.map((e) => e) || [];
         message.deletionProtection = object.deletionProtection ?? undefined;
         message.userPasswordEncryption = object.userPasswordEncryption ?? 0;
+        message.generatePassword = object.generatePassword ?? undefined;
         return message;
     },
 };

@@ -7,6 +7,7 @@ import {
     threadService,
     runService,
 } from '@yandex-cloud/nodejs-sdk/ai-assistants-v1';
+import { ExpirationConfig_ExpirationPolicy } from '@yandex-cloud/nodejs-sdk/ai/common/common';
 
 import { Session } from '@yandex-cloud/nodejs-sdk/dist/session';
 
@@ -20,6 +21,11 @@ const getEnv = (envName: string, defaultValue?: string): string => {
     }
 
     return envValue;
+};
+
+const expirationConfig = {
+    ttlDays: 2,
+    expirationPolicy: ExpirationConfig_ExpirationPolicy.STATIC,
 };
 
 const iamToken = getEnv('YC_IAM_TOKEN');
@@ -37,6 +43,7 @@ const folderId = getEnv('YC_FOLDER_ID');
         threadService.CreateThreadRequest.fromPartial({
             name: 'Thread Name',
             folderId,
+            expirationConfig,
         }),
     );
 
@@ -45,6 +52,7 @@ const folderId = getEnv('YC_FOLDER_ID');
             name: 'Assistant Name',
             folderId,
             modelUri: `gpt://${folderId}/yandexgpt/latest`,
+            expirationConfig,
         }),
     );
 

@@ -2,8 +2,11 @@
 import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
+import {
+    ScheduledMaintenance,
+    MaintenanceWindow,
+} from '../../../../yandex/cloud/k8s/v1/maintenance';
 import { VersionInfo } from '../../../../yandex/cloud/k8s/v1/version';
-import { MaintenanceWindow } from '../../../../yandex/cloud/k8s/v1/maintenance';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.k8s.v1';
@@ -102,6 +105,7 @@ export interface Cluster {
     /** Log group where cluster stores cluster system logs, like audit, events, or controlplane logs. */
     logGroupId: string;
     cilium?: Cilium | undefined;
+    scheduledMaintenance?: ScheduledMaintenance;
 }
 
 export enum Cluster_Status {
@@ -524,6 +528,12 @@ export const Cluster = {
         if (message.cilium !== undefined) {
             Cilium.encode(message.cilium, writer.uint32(154).fork()).ldelim();
         }
+        if (message.scheduledMaintenance !== undefined) {
+            ScheduledMaintenance.encode(
+                message.scheduledMaintenance,
+                writer.uint32(162).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -594,6 +604,12 @@ export const Cluster = {
                     break;
                 case 19:
                     message.cilium = Cilium.decode(reader, reader.uint32());
+                    break;
+                case 20:
+                    message.scheduledMaintenance = ScheduledMaintenance.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -678,6 +694,10 @@ export const Cluster = {
             object.cilium !== undefined && object.cilium !== null
                 ? Cilium.fromJSON(object.cilium)
                 : undefined;
+        message.scheduledMaintenance =
+            object.scheduledMaintenance !== undefined && object.scheduledMaintenance !== null
+                ? ScheduledMaintenance.fromJSON(object.scheduledMaintenance)
+                : undefined;
         return message;
     },
 
@@ -721,6 +741,10 @@ export const Cluster = {
         message.logGroupId !== undefined && (obj.logGroupId = message.logGroupId);
         message.cilium !== undefined &&
             (obj.cilium = message.cilium ? Cilium.toJSON(message.cilium) : undefined);
+        message.scheduledMaintenance !== undefined &&
+            (obj.scheduledMaintenance = message.scheduledMaintenance
+                ? ScheduledMaintenance.toJSON(message.scheduledMaintenance)
+                : undefined);
         return obj;
     },
 
@@ -767,6 +791,10 @@ export const Cluster = {
         message.cilium =
             object.cilium !== undefined && object.cilium !== null
                 ? Cilium.fromPartial(object.cilium)
+                : undefined;
+        message.scheduledMaintenance =
+            object.scheduledMaintenance !== undefined && object.scheduledMaintenance !== null
+                ? ScheduledMaintenance.fromPartial(object.scheduledMaintenance)
                 : undefined;
         return message;
     },

@@ -7,6 +7,7 @@ import {
     ChunkingStrategy,
     NormalizationStrategy,
     CombinationStrategy,
+    NgramTokenizer,
     normalizationStrategyFromJSON,
     normalizationStrategyToJSON,
 } from '../../../../../../yandex/cloud/ai/assistants/v1/searchindex/common';
@@ -70,6 +71,8 @@ export interface TextSearchIndex {
      * In the case of text search, tokens are individual text characters.
      */
     chunkingStrategy?: ChunkingStrategy;
+    /** Tokenizer that generates n-grams. */
+    ngramTokenizer?: NgramTokenizer | undefined;
 }
 
 /** Defines the configuration for a vector-based search index. This type uses embeddings to represent documents and queries. */
@@ -446,6 +449,9 @@ export const TextSearchIndex = {
         if (message.chunkingStrategy !== undefined) {
             ChunkingStrategy.encode(message.chunkingStrategy, writer.uint32(10).fork()).ldelim();
         }
+        if (message.ngramTokenizer !== undefined) {
+            NgramTokenizer.encode(message.ngramTokenizer, writer.uint32(18).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -458,6 +464,9 @@ export const TextSearchIndex = {
             switch (tag >>> 3) {
                 case 1:
                     message.chunkingStrategy = ChunkingStrategy.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.ngramTokenizer = NgramTokenizer.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -473,6 +482,10 @@ export const TextSearchIndex = {
             object.chunkingStrategy !== undefined && object.chunkingStrategy !== null
                 ? ChunkingStrategy.fromJSON(object.chunkingStrategy)
                 : undefined;
+        message.ngramTokenizer =
+            object.ngramTokenizer !== undefined && object.ngramTokenizer !== null
+                ? NgramTokenizer.fromJSON(object.ngramTokenizer)
+                : undefined;
         return message;
     },
 
@@ -482,6 +495,10 @@ export const TextSearchIndex = {
             (obj.chunkingStrategy = message.chunkingStrategy
                 ? ChunkingStrategy.toJSON(message.chunkingStrategy)
                 : undefined);
+        message.ngramTokenizer !== undefined &&
+            (obj.ngramTokenizer = message.ngramTokenizer
+                ? NgramTokenizer.toJSON(message.ngramTokenizer)
+                : undefined);
         return obj;
     },
 
@@ -490,6 +507,10 @@ export const TextSearchIndex = {
         message.chunkingStrategy =
             object.chunkingStrategy !== undefined && object.chunkingStrategy !== null
                 ? ChunkingStrategy.fromPartial(object.chunkingStrategy)
+                : undefined;
+        message.ngramTokenizer =
+            object.ngramTokenizer !== undefined && object.ngramTokenizer !== null
+                ? NgramTokenizer.fromPartial(object.ngramTokenizer)
                 : undefined;
         return message;
     },

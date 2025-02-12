@@ -13416,10 +13416,7 @@ export const ClusterServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /**
-     * Retrieves logs for the specified MongoDB cluster.
-     * See the [Logs](/yandex-mdb-guide/concepts/logs.html) section in the developers guide for detailed logs description.
-     */
+    /** Retrieves logs for the specified MongoDB cluster. */
     listLogs: {
         path: '/yandex.cloud.mdb.mongodb.v1.ClusterService/ListLogs',
         requestStream: false,
@@ -13637,10 +13634,7 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
     restore: handleUnaryCall<RestoreClusterRequest, Operation>;
     /** Reschedules planned maintenance operation. */
     rescheduleMaintenance: handleUnaryCall<RescheduleMaintenanceRequest, Operation>;
-    /**
-     * Retrieves logs for the specified MongoDB cluster.
-     * See the [Logs](/yandex-mdb-guide/concepts/logs.html) section in the developers guide for detailed logs description.
-     */
+    /** Retrieves logs for the specified MongoDB cluster. */
     listLogs: handleUnaryCall<ListClusterLogsRequest, ListClusterLogsResponse>;
     /** Same as ListLogs but using server-side streaming. Also allows for 'tail -f' semantics. */
     streamLogs: handleServerStreamingCall<StreamClusterLogsRequest, StreamLogRecord>;
@@ -13862,10 +13856,7 @@ export interface ClusterServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /**
-     * Retrieves logs for the specified MongoDB cluster.
-     * See the [Logs](/yandex-mdb-guide/concepts/logs.html) section in the developers guide for detailed logs description.
-     */
+    /** Retrieves logs for the specified MongoDB cluster. */
     listLogs(
         request: ListClusterLogsRequest,
         callback: (error: ServiceError | null, response: ListClusterLogsResponse) => void,

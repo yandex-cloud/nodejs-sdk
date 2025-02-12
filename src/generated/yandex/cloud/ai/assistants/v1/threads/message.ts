@@ -2,6 +2,8 @@
 import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
+import { SearchIndex } from '../../../../../../yandex/cloud/ai/assistants/v1/searchindex/search_index';
+import { File } from '../../../../../../yandex/cloud/ai/files/v1/file';
 import { Timestamp } from '../../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.threads';
@@ -24,6 +26,8 @@ export interface Message {
     content?: MessageContent;
     /** Status of the message. */
     status: Message_MessageStatus;
+    /** List of citations used to generate the message. */
+    citations: Citation[];
 }
 
 /** Enum representing the status of a message. */
@@ -131,6 +135,38 @@ export interface Author {
     role: string;
 }
 
+/** Represents a citation used for generating a message. */
+export interface Citation {
+    $type: 'yandex.cloud.ai.assistants.v1.threads.Citation';
+    /** List of sources for citation. */
+    sources: Source[];
+}
+
+/** Represents a source used for generating a message citation. */
+export interface Source {
+    $type: 'yandex.cloud.ai.assistants.v1.threads.Source';
+    /** File chunk source. */
+    chunk?: FileChunk | undefined;
+}
+
+/** FileChunk represents a chunk of a file used as a source. */
+export interface FileChunk {
+    $type: 'yandex.cloud.ai.assistants.v1.threads.FileChunk';
+    /** Search index associated with the file chunk. */
+    searchIndex?: SearchIndex;
+    /** The original file from which the chunk is derived. */
+    sourceFile?: File;
+    /** Content of the file chunk. */
+    content?: ChunkContent;
+}
+
+/** Represents the content of a file chunk. */
+export interface ChunkContent {
+    $type: 'yandex.cloud.ai.assistants.v1.threads.ChunkContent';
+    /** A list of content parts that make up the chunk. */
+    content: ContentPart[];
+}
+
 const baseMessage: object = {
     $type: 'yandex.cloud.ai.assistants.v1.threads.Message',
     id: '',
@@ -174,6 +210,9 @@ export const Message = {
         if (message.status !== 0) {
             writer.uint32(64).int32(message.status);
         }
+        for (const v of message.citations) {
+            Citation.encode(v!, writer.uint32(74).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -182,6 +221,7 @@ export const Message = {
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseMessage } as Message;
         message.labels = {};
+        message.citations = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -211,6 +251,9 @@ export const Message = {
                     break;
                 case 8:
                     message.status = reader.int32() as any;
+                    break;
+                case 9:
+                    message.citations.push(Citation.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -254,6 +297,7 @@ export const Message = {
             object.status !== undefined && object.status !== null
                 ? message_MessageStatusFromJSON(object.status)
                 : 0;
+        message.citations = (object.citations ?? []).map((e: any) => Citation.fromJSON(e));
         return message;
     },
 
@@ -274,6 +318,11 @@ export const Message = {
         message.content !== undefined &&
             (obj.content = message.content ? MessageContent.toJSON(message.content) : undefined);
         message.status !== undefined && (obj.status = message_MessageStatusToJSON(message.status));
+        if (message.citations) {
+            obj.citations = message.citations.map((e) => (e ? Citation.toJSON(e) : undefined));
+        } else {
+            obj.citations = [];
+        }
         return obj;
     },
 
@@ -301,6 +350,7 @@ export const Message = {
                 ? MessageContent.fromPartial(object.content)
                 : undefined;
         message.status = object.status ?? 0;
+        message.citations = object.citations?.map((e) => Citation.fromPartial(e)) || [];
         return message;
     },
 };
@@ -785,6 +835,268 @@ export const Author = {
 };
 
 messageTypeRegistry.set(Author.$type, Author);
+
+const baseCitation: object = { $type: 'yandex.cloud.ai.assistants.v1.threads.Citation' };
+
+export const Citation = {
+    $type: 'yandex.cloud.ai.assistants.v1.threads.Citation' as const,
+
+    encode(message: Citation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.sources) {
+            Source.encode(v!, writer.uint32(34).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Citation {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseCitation } as Citation;
+        message.sources = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 4:
+                    message.sources.push(Source.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Citation {
+        const message = { ...baseCitation } as Citation;
+        message.sources = (object.sources ?? []).map((e: any) => Source.fromJSON(e));
+        return message;
+    },
+
+    toJSON(message: Citation): unknown {
+        const obj: any = {};
+        if (message.sources) {
+            obj.sources = message.sources.map((e) => (e ? Source.toJSON(e) : undefined));
+        } else {
+            obj.sources = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Citation>, I>>(object: I): Citation {
+        const message = { ...baseCitation } as Citation;
+        message.sources = object.sources?.map((e) => Source.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(Citation.$type, Citation);
+
+const baseSource: object = { $type: 'yandex.cloud.ai.assistants.v1.threads.Source' };
+
+export const Source = {
+    $type: 'yandex.cloud.ai.assistants.v1.threads.Source' as const,
+
+    encode(message: Source, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.chunk !== undefined) {
+            FileChunk.encode(message.chunk, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Source {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSource } as Source;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.chunk = FileChunk.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Source {
+        const message = { ...baseSource } as Source;
+        message.chunk =
+            object.chunk !== undefined && object.chunk !== null
+                ? FileChunk.fromJSON(object.chunk)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: Source): unknown {
+        const obj: any = {};
+        message.chunk !== undefined &&
+            (obj.chunk = message.chunk ? FileChunk.toJSON(message.chunk) : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Source>, I>>(object: I): Source {
+        const message = { ...baseSource } as Source;
+        message.chunk =
+            object.chunk !== undefined && object.chunk !== null
+                ? FileChunk.fromPartial(object.chunk)
+                : undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(Source.$type, Source);
+
+const baseFileChunk: object = { $type: 'yandex.cloud.ai.assistants.v1.threads.FileChunk' };
+
+export const FileChunk = {
+    $type: 'yandex.cloud.ai.assistants.v1.threads.FileChunk' as const,
+
+    encode(message: FileChunk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.searchIndex !== undefined) {
+            SearchIndex.encode(message.searchIndex, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.sourceFile !== undefined) {
+            File.encode(message.sourceFile, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.content !== undefined) {
+            ChunkContent.encode(message.content, writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): FileChunk {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseFileChunk } as FileChunk;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.searchIndex = SearchIndex.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.sourceFile = File.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.content = ChunkContent.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): FileChunk {
+        const message = { ...baseFileChunk } as FileChunk;
+        message.searchIndex =
+            object.searchIndex !== undefined && object.searchIndex !== null
+                ? SearchIndex.fromJSON(object.searchIndex)
+                : undefined;
+        message.sourceFile =
+            object.sourceFile !== undefined && object.sourceFile !== null
+                ? File.fromJSON(object.sourceFile)
+                : undefined;
+        message.content =
+            object.content !== undefined && object.content !== null
+                ? ChunkContent.fromJSON(object.content)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: FileChunk): unknown {
+        const obj: any = {};
+        message.searchIndex !== undefined &&
+            (obj.searchIndex = message.searchIndex
+                ? SearchIndex.toJSON(message.searchIndex)
+                : undefined);
+        message.sourceFile !== undefined &&
+            (obj.sourceFile = message.sourceFile ? File.toJSON(message.sourceFile) : undefined);
+        message.content !== undefined &&
+            (obj.content = message.content ? ChunkContent.toJSON(message.content) : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<FileChunk>, I>>(object: I): FileChunk {
+        const message = { ...baseFileChunk } as FileChunk;
+        message.searchIndex =
+            object.searchIndex !== undefined && object.searchIndex !== null
+                ? SearchIndex.fromPartial(object.searchIndex)
+                : undefined;
+        message.sourceFile =
+            object.sourceFile !== undefined && object.sourceFile !== null
+                ? File.fromPartial(object.sourceFile)
+                : undefined;
+        message.content =
+            object.content !== undefined && object.content !== null
+                ? ChunkContent.fromPartial(object.content)
+                : undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(FileChunk.$type, FileChunk);
+
+const baseChunkContent: object = { $type: 'yandex.cloud.ai.assistants.v1.threads.ChunkContent' };
+
+export const ChunkContent = {
+    $type: 'yandex.cloud.ai.assistants.v1.threads.ChunkContent' as const,
+
+    encode(message: ChunkContent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.content) {
+            ContentPart.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChunkContent {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseChunkContent } as ChunkContent;
+        message.content = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.content.push(ContentPart.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ChunkContent {
+        const message = { ...baseChunkContent } as ChunkContent;
+        message.content = (object.content ?? []).map((e: any) => ContentPart.fromJSON(e));
+        return message;
+    },
+
+    toJSON(message: ChunkContent): unknown {
+        const obj: any = {};
+        if (message.content) {
+            obj.content = message.content.map((e) => (e ? ContentPart.toJSON(e) : undefined));
+        } else {
+            obj.content = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ChunkContent>, I>>(object: I): ChunkContent {
+        const message = { ...baseChunkContent } as ChunkContent;
+        message.content = object.content?.map((e) => ContentPart.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ChunkContent.$type, ChunkContent);
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 

@@ -3,19 +3,19 @@ import dotenv from 'dotenv';
 
 import { Session } from '@yandex-cloud/nodejs-sdk/dist/session';
 
-import { initFileSdk } from '@yandex-cloud/nodejs-sdk/dist/sdk/ai-files-v1';
-import { ExpirationConfig_ExpirationPolicy } from '@yandex-cloud/nodejs-sdk/ai-files-v1/generated/yandex/cloud/ai/common/common';
+import { initFileSdk } from '@yandex-cloud/nodejs-sdk/sdk/ai-files-v1';
 
 import {
     initAssistantSdk,
     initSearchIndexSdk,
     initThreadSdk,
     MessageSdk,
-} from '@yandex-cloud/nodejs-sdk/dist/sdk/ai-assistants-v1';
+} from '@yandex-cloud/nodejs-sdk/sdk/ai-assistants-v1';
 
-import { initOperationSdk } from '@yandex-cloud/nodejs-sdk/dist/sdk/operation';
+import { initOperationSdk } from '@yandex-cloud/nodejs-sdk/sdk/operation';
 
 import { readFile } from 'fs/promises';
+import { ExpirationConfig_ExpirationPolicy } from '@yandex-cloud/nodejs-sdk/ai/common/common';
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 

@@ -335,6 +335,7 @@
   },
   "mdb/postgresql/v1": {
     "rootServiceList": [
+      "backup_retention_policy_service.proto",
       "backup_service.proto",
       "cluster_service.proto",
       "database_service.proto",
@@ -376,6 +377,9 @@
       "user_service.proto",
       "user_ssh_key_service.proto"
     ]
+  },
+  "quotamanager/v1": {
+    "rootServiceList": ["quota_limit_service.proto"]
   },
   "resourcemanager/v1": {
     "rootServiceList": ["cloud_service.proto", "folder_service.proto"]

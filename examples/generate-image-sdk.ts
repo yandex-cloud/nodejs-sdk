@@ -1,12 +1,12 @@
 import path from 'path';
 import dotenv from 'dotenv';
+import { writeFile } from 'fs';
 
 import { Session } from '@yandex-cloud/nodejs-sdk/dist/session';
 
-import { initOperationSdk } from '@yandex-cloud/nodejs-sdk/dist/sdk/operation';
+import { initOperationSdk } from '@yandex-cloud/nodejs-sdk/sdk/operation';
 import { imageGeneration } from '@yandex-cloud/nodejs-sdk/ai-foundation_models-v1';
-import { initImageGenerationSdk } from '@yandex-cloud/nodejs-sdk/dist/sdk/ai-foundation_models-v1';
-import { writeFile } from 'fs';
+import { initImageGenerationSdk } from '@yandex-cloud/nodejs-sdk/sdk/ai-foundation_models-v1';
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 

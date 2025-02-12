@@ -7,6 +7,7 @@ import {
     TLSMode,
     Secret,
     CleanupPolicy,
+    ConnectionManagerConnection,
     objectTransferStageFromJSON,
     objectTransferStageToJSON,
     cleanupPolicyFromJSON,
@@ -119,7 +120,11 @@ export interface PostgresObjectTransferSettings {
      * CREATE MATERIALIZED VIEW ...
      */
     materializedView: ObjectTransferStage;
-    /**  */
+    /**
+     * Sequence sets
+     *
+     * CREATE SEQUENCE ...
+     */
     sequenceSet: ObjectTransferStage;
 }
 
@@ -140,6 +145,7 @@ export interface PostgresConnection {
     mdbClusterId: string | undefined;
     /** Connection options for on-premise PostgreSQL */
     onPremise?: OnPremisePostgres | undefined;
+    connectionManagerConnection?: ConnectionManagerConnection | undefined;
 }
 
 export interface PostgresSource {
@@ -606,6 +612,12 @@ export const PostgresConnection = {
         if (message.onPremise !== undefined) {
             OnPremisePostgres.encode(message.onPremise, writer.uint32(18).fork()).ldelim();
         }
+        if (message.connectionManagerConnection !== undefined) {
+            ConnectionManagerConnection.encode(
+                message.connectionManagerConnection,
+                writer.uint32(26).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -621,6 +633,12 @@ export const PostgresConnection = {
                     break;
                 case 2:
                     message.onPremise = OnPremisePostgres.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.connectionManagerConnection = ConnectionManagerConnection.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -640,6 +658,11 @@ export const PostgresConnection = {
             object.onPremise !== undefined && object.onPremise !== null
                 ? OnPremisePostgres.fromJSON(object.onPremise)
                 : undefined;
+        message.connectionManagerConnection =
+            object.connectionManagerConnection !== undefined &&
+            object.connectionManagerConnection !== null
+                ? ConnectionManagerConnection.fromJSON(object.connectionManagerConnection)
+                : undefined;
         return message;
     },
 
@@ -649,6 +672,10 @@ export const PostgresConnection = {
         message.onPremise !== undefined &&
             (obj.onPremise = message.onPremise
                 ? OnPremisePostgres.toJSON(message.onPremise)
+                : undefined);
+        message.connectionManagerConnection !== undefined &&
+            (obj.connectionManagerConnection = message.connectionManagerConnection
+                ? ConnectionManagerConnection.toJSON(message.connectionManagerConnection)
                 : undefined);
         return obj;
     },
@@ -661,6 +688,11 @@ export const PostgresConnection = {
         message.onPremise =
             object.onPremise !== undefined && object.onPremise !== null
                 ? OnPremisePostgres.fromPartial(object.onPremise)
+                : undefined;
+        message.connectionManagerConnection =
+            object.connectionManagerConnection !== undefined &&
+            object.connectionManagerConnection !== null
+                ? ConnectionManagerConnection.fromPartial(object.connectionManagerConnection)
                 : undefined;
         return message;
     },

@@ -3,10 +3,10 @@ import dotenv from 'dotenv';
 
 import { Session } from '@yandex-cloud/nodejs-sdk/dist/session';
 
-import { initFileSdk } from '@yandex-cloud/nodejs-sdk/dist/sdk/ai-files-v1';
-import { ExpirationConfig_ExpirationPolicy } from '@yandex-cloud/nodejs-sdk/ai-files-v1/generated/yandex/cloud/ai/common/common';
+import { initFileSdk } from '@yandex-cloud/nodejs-sdk/sdk/ai-files-v1';
 
 import { readFile } from 'fs/promises';
+import { ExpirationConfig_ExpirationPolicy } from '@yandex-cloud/nodejs-sdk/ai/common/common';
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 

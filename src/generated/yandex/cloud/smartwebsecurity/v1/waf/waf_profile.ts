@@ -29,7 +29,11 @@ export interface WafProfile {
     exclusionRules: WafProfileExclusionRule[];
     /** Core rule set settings. See [Basic rule set](/docs/smartwebsecurity/concepts/waf#rules-set) for details. */
     coreRuleSet?: WafProfile_CoreRuleSet | undefined;
-    /** Parameters for request body analyzer. */
+    /**
+     * The parameter is deprecated. Parameters for request body analyzer.
+     *
+     * @deprecated
+     */
     analyzeRequestBody?: WafProfile_AnalyzeRequestBody;
 }
 

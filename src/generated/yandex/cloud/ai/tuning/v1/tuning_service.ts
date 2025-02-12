@@ -30,6 +30,7 @@ import {
     SchedulerCosine,
 } from '../../../../../yandex/cloud/ai/tuning/v1/tuning_schedulers';
 import { OptimizerAdamw } from '../../../../../yandex/cloud/ai/tuning/v1/tuning_optimizers';
+import { TuningError } from '../../../../../yandex/cloud/ai/tuning/v1/tuning_error';
 import { Operation } from '../../../../../yandex/cloud/operation/operation';
 
 export const protobufPackage = 'yandex.cloud.ai.tuning.v1';
@@ -90,14 +91,17 @@ export interface TuningMetadata {
 
 export interface TuningRequest {
     $type: 'yandex.cloud.ai.tuning.v1.TuningRequest';
-    /** Format like a gpt://{folder_id}/yandex-gpt/latest */
+    /** Format like a `gpt://{folder_id}/yandex-gpt/latest` */
     baseModelUri: string;
     trainDatasets: TuningRequest_WeightedDataset[];
     validationDatasets: TuningRequest_WeightedDataset[];
     textToTextCompletion?: TextToTextCompletionTuningParams | undefined;
     textClassificationMultilabel?: TextClassificationMultilabelParams | undefined;
     textClassificationMulticlass?: TextClassificationMulticlassParams | undefined;
-    /** common params */
+    /** TextEmbeddingPairParams  is unimplemented */
+    textEmbeddingPairParams?: TextEmbeddingPairParams | undefined;
+    /** TextEmbeddingTripletParams  is unimplemented */
+    textEmbeddingTripletParams?: TextEmbeddingTripletParams | undefined;
     name: string;
     description: string;
     labels: { [key: string]: string };
@@ -190,6 +194,58 @@ export interface TextClassificationMulticlassParams_Optimizer {
     adamw?: OptimizerAdamw | undefined;
 }
 
+export interface TextEmbeddingPairParams {
+    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingPairParams';
+    seed: number;
+    lr: number;
+    nSamples: number;
+    additionalArguments: string;
+    embeddingDims: number[];
+    lora?: TuningTypeLora | undefined;
+    promptTune?: TuningTypePromptTune | undefined;
+    scheduler?: TextEmbeddingPairParams_Scheduler;
+    optimizer?: TextEmbeddingPairParams_Optimizer;
+}
+
+export interface TextEmbeddingPairParams_Scheduler {
+    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingPairParams.Scheduler';
+    linear?: SchedulerLinear | undefined;
+    constant?: SchedulerConstant | undefined;
+    cosine?: SchedulerCosine | undefined;
+    warmupRatio: number | undefined;
+}
+
+export interface TextEmbeddingPairParams_Optimizer {
+    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingPairParams.Optimizer';
+    adamw?: OptimizerAdamw | undefined;
+}
+
+export interface TextEmbeddingTripletParams {
+    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingTripletParams';
+    seed: number;
+    lr: number;
+    nSamples: number;
+    additionalArguments: string;
+    embeddingDims: number[];
+    lora?: TuningTypeLora | undefined;
+    promptTune?: TuningTypePromptTune | undefined;
+    scheduler?: TextEmbeddingTripletParams_Scheduler;
+    optimizer?: TextEmbeddingTripletParams_Optimizer;
+}
+
+export interface TextEmbeddingTripletParams_Scheduler {
+    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingTripletParams.Scheduler';
+    linear?: SchedulerLinear | undefined;
+    constant?: SchedulerConstant | undefined;
+    cosine?: SchedulerCosine | undefined;
+    warmupRatio: number | undefined;
+}
+
+export interface TextEmbeddingTripletParams_Optimizer {
+    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingTripletParams.Optimizer';
+    adamw?: OptimizerAdamw | undefined;
+}
+
 export interface GetMetricsUrlRequest {
     $type: 'yandex.cloud.ai.tuning.v1.GetMetricsUrlRequest';
     taskId: string;
@@ -214,6 +270,16 @@ export interface GetOptionsResponse {
     textToTextCompletion?: TextToTextCompletionTuningParams | undefined;
     textClassificationMultilabel?: TextClassificationMultilabelParams | undefined;
     textClassificationMulticlass?: TextClassificationMulticlassParams | undefined;
+}
+
+export interface ListErrorsRequest {
+    $type: 'yandex.cloud.ai.tuning.v1.ListErrorsRequest';
+    tuningTaskId: string;
+}
+
+export interface ListErrorsResponse {
+    $type: 'yandex.cloud.ai.tuning.v1.ListErrorsResponse';
+    tuningError: TuningError[];
 }
 
 const baseListTuningsRequest: object = {
@@ -845,6 +911,18 @@ export const TuningRequest = {
                 writer.uint32(818).fork(),
             ).ldelim();
         }
+        if (message.textEmbeddingPairParams !== undefined) {
+            TextEmbeddingPairParams.encode(
+                message.textEmbeddingPairParams,
+                writer.uint32(826).fork(),
+            ).ldelim();
+        }
+        if (message.textEmbeddingTripletParams !== undefined) {
+            TextEmbeddingTripletParams.encode(
+                message.textEmbeddingTripletParams,
+                writer.uint32(834).fork(),
+            ).ldelim();
+        }
         if (message.name !== '') {
             writer.uint32(1602).string(message.name);
         }
@@ -901,6 +979,18 @@ export const TuningRequest = {
                     message.textClassificationMulticlass =
                         TextClassificationMulticlassParams.decode(reader, reader.uint32());
                     break;
+                case 103:
+                    message.textEmbeddingPairParams = TextEmbeddingPairParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 104:
+                    message.textEmbeddingTripletParams = TextEmbeddingTripletParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 case 200:
                     message.name = reader.string();
                     break;
@@ -947,6 +1037,15 @@ export const TuningRequest = {
             object.textClassificationMulticlass !== null
                 ? TextClassificationMulticlassParams.fromJSON(object.textClassificationMulticlass)
                 : undefined;
+        message.textEmbeddingPairParams =
+            object.textEmbeddingPairParams !== undefined && object.textEmbeddingPairParams !== null
+                ? TextEmbeddingPairParams.fromJSON(object.textEmbeddingPairParams)
+                : undefined;
+        message.textEmbeddingTripletParams =
+            object.textEmbeddingTripletParams !== undefined &&
+            object.textEmbeddingTripletParams !== null
+                ? TextEmbeddingTripletParams.fromJSON(object.textEmbeddingTripletParams)
+                : undefined;
         message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
         message.description =
             object.description !== undefined && object.description !== null
@@ -991,6 +1090,14 @@ export const TuningRequest = {
             (obj.textClassificationMulticlass = message.textClassificationMulticlass
                 ? TextClassificationMulticlassParams.toJSON(message.textClassificationMulticlass)
                 : undefined);
+        message.textEmbeddingPairParams !== undefined &&
+            (obj.textEmbeddingPairParams = message.textEmbeddingPairParams
+                ? TextEmbeddingPairParams.toJSON(message.textEmbeddingPairParams)
+                : undefined);
+        message.textEmbeddingTripletParams !== undefined &&
+            (obj.textEmbeddingTripletParams = message.textEmbeddingTripletParams
+                ? TextEmbeddingTripletParams.toJSON(message.textEmbeddingTripletParams)
+                : undefined);
         message.name !== undefined && (obj.name = message.name);
         message.description !== undefined && (obj.description = message.description);
         obj.labels = {};
@@ -1027,6 +1134,15 @@ export const TuningRequest = {
                 ? TextClassificationMulticlassParams.fromPartial(
                       object.textClassificationMulticlass,
                   )
+                : undefined;
+        message.textEmbeddingPairParams =
+            object.textEmbeddingPairParams !== undefined && object.textEmbeddingPairParams !== null
+                ? TextEmbeddingPairParams.fromPartial(object.textEmbeddingPairParams)
+                : undefined;
+        message.textEmbeddingTripletParams =
+            object.textEmbeddingTripletParams !== undefined &&
+            object.textEmbeddingTripletParams !== null
+                ? TextEmbeddingTripletParams.fromPartial(object.textEmbeddingTripletParams)
                 : undefined;
         message.name = object.name ?? '';
         message.description = object.description ?? '';
@@ -2343,6 +2459,785 @@ messageTypeRegistry.set(
     TextClassificationMulticlassParams_Optimizer,
 );
 
+const baseTextEmbeddingPairParams: object = {
+    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingPairParams',
+    seed: 0,
+    lr: 0,
+    nSamples: 0,
+    additionalArguments: '',
+    embeddingDims: 0,
+};
+
+export const TextEmbeddingPairParams = {
+    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingPairParams' as const,
+
+    encode(message: TextEmbeddingPairParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.seed !== 0) {
+            writer.uint32(8).int64(message.seed);
+        }
+        if (message.lr !== 0) {
+            writer.uint32(17).double(message.lr);
+        }
+        if (message.nSamples !== 0) {
+            writer.uint32(24).int64(message.nSamples);
+        }
+        if (message.additionalArguments !== '') {
+            writer.uint32(58).string(message.additionalArguments);
+        }
+        writer.uint32(66).fork();
+        for (const v of message.embeddingDims) {
+            writer.int64(v);
+        }
+        writer.ldelim();
+        if (message.lora !== undefined) {
+            TuningTypeLora.encode(message.lora, writer.uint32(802).fork()).ldelim();
+        }
+        if (message.promptTune !== undefined) {
+            TuningTypePromptTune.encode(message.promptTune, writer.uint32(810).fork()).ldelim();
+        }
+        if (message.scheduler !== undefined) {
+            TextEmbeddingPairParams_Scheduler.encode(
+                message.scheduler,
+                writer.uint32(1602).fork(),
+            ).ldelim();
+        }
+        if (message.optimizer !== undefined) {
+            TextEmbeddingPairParams_Optimizer.encode(
+                message.optimizer,
+                writer.uint32(1610).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextEmbeddingPairParams {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseTextEmbeddingPairParams } as TextEmbeddingPairParams;
+        message.embeddingDims = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.seed = longToNumber(reader.int64() as Long);
+                    break;
+                case 2:
+                    message.lr = reader.double();
+                    break;
+                case 3:
+                    message.nSamples = longToNumber(reader.int64() as Long);
+                    break;
+                case 7:
+                    message.additionalArguments = reader.string();
+                    break;
+                case 8:
+                    if ((tag & 7) === 2) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.embeddingDims.push(longToNumber(reader.int64() as Long));
+                        }
+                    } else {
+                        message.embeddingDims.push(longToNumber(reader.int64() as Long));
+                    }
+                    break;
+                case 100:
+                    message.lora = TuningTypeLora.decode(reader, reader.uint32());
+                    break;
+                case 101:
+                    message.promptTune = TuningTypePromptTune.decode(reader, reader.uint32());
+                    break;
+                case 200:
+                    message.scheduler = TextEmbeddingPairParams_Scheduler.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 201:
+                    message.optimizer = TextEmbeddingPairParams_Optimizer.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): TextEmbeddingPairParams {
+        const message = { ...baseTextEmbeddingPairParams } as TextEmbeddingPairParams;
+        message.seed = object.seed !== undefined && object.seed !== null ? Number(object.seed) : 0;
+        message.lr = object.lr !== undefined && object.lr !== null ? Number(object.lr) : 0;
+        message.nSamples =
+            object.nSamples !== undefined && object.nSamples !== null ? Number(object.nSamples) : 0;
+        message.additionalArguments =
+            object.additionalArguments !== undefined && object.additionalArguments !== null
+                ? String(object.additionalArguments)
+                : '';
+        message.embeddingDims = (object.embeddingDims ?? []).map((e: any) => Number(e));
+        message.lora =
+            object.lora !== undefined && object.lora !== null
+                ? TuningTypeLora.fromJSON(object.lora)
+                : undefined;
+        message.promptTune =
+            object.promptTune !== undefined && object.promptTune !== null
+                ? TuningTypePromptTune.fromJSON(object.promptTune)
+                : undefined;
+        message.scheduler =
+            object.scheduler !== undefined && object.scheduler !== null
+                ? TextEmbeddingPairParams_Scheduler.fromJSON(object.scheduler)
+                : undefined;
+        message.optimizer =
+            object.optimizer !== undefined && object.optimizer !== null
+                ? TextEmbeddingPairParams_Optimizer.fromJSON(object.optimizer)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: TextEmbeddingPairParams): unknown {
+        const obj: any = {};
+        message.seed !== undefined && (obj.seed = Math.round(message.seed));
+        message.lr !== undefined && (obj.lr = message.lr);
+        message.nSamples !== undefined && (obj.nSamples = Math.round(message.nSamples));
+        message.additionalArguments !== undefined &&
+            (obj.additionalArguments = message.additionalArguments);
+        if (message.embeddingDims) {
+            obj.embeddingDims = message.embeddingDims.map((e) => Math.round(e));
+        } else {
+            obj.embeddingDims = [];
+        }
+        message.lora !== undefined &&
+            (obj.lora = message.lora ? TuningTypeLora.toJSON(message.lora) : undefined);
+        message.promptTune !== undefined &&
+            (obj.promptTune = message.promptTune
+                ? TuningTypePromptTune.toJSON(message.promptTune)
+                : undefined);
+        message.scheduler !== undefined &&
+            (obj.scheduler = message.scheduler
+                ? TextEmbeddingPairParams_Scheduler.toJSON(message.scheduler)
+                : undefined);
+        message.optimizer !== undefined &&
+            (obj.optimizer = message.optimizer
+                ? TextEmbeddingPairParams_Optimizer.toJSON(message.optimizer)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<TextEmbeddingPairParams>, I>>(
+        object: I,
+    ): TextEmbeddingPairParams {
+        const message = { ...baseTextEmbeddingPairParams } as TextEmbeddingPairParams;
+        message.seed = object.seed ?? 0;
+        message.lr = object.lr ?? 0;
+        message.nSamples = object.nSamples ?? 0;
+        message.additionalArguments = object.additionalArguments ?? '';
+        message.embeddingDims = object.embeddingDims?.map((e) => e) || [];
+        message.lora =
+            object.lora !== undefined && object.lora !== null
+                ? TuningTypeLora.fromPartial(object.lora)
+                : undefined;
+        message.promptTune =
+            object.promptTune !== undefined && object.promptTune !== null
+                ? TuningTypePromptTune.fromPartial(object.promptTune)
+                : undefined;
+        message.scheduler =
+            object.scheduler !== undefined && object.scheduler !== null
+                ? TextEmbeddingPairParams_Scheduler.fromPartial(object.scheduler)
+                : undefined;
+        message.optimizer =
+            object.optimizer !== undefined && object.optimizer !== null
+                ? TextEmbeddingPairParams_Optimizer.fromPartial(object.optimizer)
+                : undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(TextEmbeddingPairParams.$type, TextEmbeddingPairParams);
+
+const baseTextEmbeddingPairParams_Scheduler: object = {
+    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingPairParams.Scheduler',
+};
+
+export const TextEmbeddingPairParams_Scheduler = {
+    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingPairParams.Scheduler' as const,
+
+    encode(
+        message: TextEmbeddingPairParams_Scheduler,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.linear !== undefined) {
+            SchedulerLinear.encode(message.linear, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.constant !== undefined) {
+            SchedulerConstant.encode(message.constant, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.cosine !== undefined) {
+            SchedulerCosine.encode(message.cosine, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.warmupRatio !== undefined) {
+            writer.uint32(809).double(message.warmupRatio);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextEmbeddingPairParams_Scheduler {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseTextEmbeddingPairParams_Scheduler,
+        } as TextEmbeddingPairParams_Scheduler;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.linear = SchedulerLinear.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.constant = SchedulerConstant.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.cosine = SchedulerCosine.decode(reader, reader.uint32());
+                    break;
+                case 101:
+                    message.warmupRatio = reader.double();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): TextEmbeddingPairParams_Scheduler {
+        const message = {
+            ...baseTextEmbeddingPairParams_Scheduler,
+        } as TextEmbeddingPairParams_Scheduler;
+        message.linear =
+            object.linear !== undefined && object.linear !== null
+                ? SchedulerLinear.fromJSON(object.linear)
+                : undefined;
+        message.constant =
+            object.constant !== undefined && object.constant !== null
+                ? SchedulerConstant.fromJSON(object.constant)
+                : undefined;
+        message.cosine =
+            object.cosine !== undefined && object.cosine !== null
+                ? SchedulerCosine.fromJSON(object.cosine)
+                : undefined;
+        message.warmupRatio =
+            object.warmupRatio !== undefined && object.warmupRatio !== null
+                ? Number(object.warmupRatio)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: TextEmbeddingPairParams_Scheduler): unknown {
+        const obj: any = {};
+        message.linear !== undefined &&
+            (obj.linear = message.linear ? SchedulerLinear.toJSON(message.linear) : undefined);
+        message.constant !== undefined &&
+            (obj.constant = message.constant
+                ? SchedulerConstant.toJSON(message.constant)
+                : undefined);
+        message.cosine !== undefined &&
+            (obj.cosine = message.cosine ? SchedulerCosine.toJSON(message.cosine) : undefined);
+        message.warmupRatio !== undefined && (obj.warmupRatio = message.warmupRatio);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<TextEmbeddingPairParams_Scheduler>, I>>(
+        object: I,
+    ): TextEmbeddingPairParams_Scheduler {
+        const message = {
+            ...baseTextEmbeddingPairParams_Scheduler,
+        } as TextEmbeddingPairParams_Scheduler;
+        message.linear =
+            object.linear !== undefined && object.linear !== null
+                ? SchedulerLinear.fromPartial(object.linear)
+                : undefined;
+        message.constant =
+            object.constant !== undefined && object.constant !== null
+                ? SchedulerConstant.fromPartial(object.constant)
+                : undefined;
+        message.cosine =
+            object.cosine !== undefined && object.cosine !== null
+                ? SchedulerCosine.fromPartial(object.cosine)
+                : undefined;
+        message.warmupRatio = object.warmupRatio ?? undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(TextEmbeddingPairParams_Scheduler.$type, TextEmbeddingPairParams_Scheduler);
+
+const baseTextEmbeddingPairParams_Optimizer: object = {
+    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingPairParams.Optimizer',
+};
+
+export const TextEmbeddingPairParams_Optimizer = {
+    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingPairParams.Optimizer' as const,
+
+    encode(
+        message: TextEmbeddingPairParams_Optimizer,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.adamw !== undefined) {
+            OptimizerAdamw.encode(message.adamw, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextEmbeddingPairParams_Optimizer {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseTextEmbeddingPairParams_Optimizer,
+        } as TextEmbeddingPairParams_Optimizer;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.adamw = OptimizerAdamw.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): TextEmbeddingPairParams_Optimizer {
+        const message = {
+            ...baseTextEmbeddingPairParams_Optimizer,
+        } as TextEmbeddingPairParams_Optimizer;
+        message.adamw =
+            object.adamw !== undefined && object.adamw !== null
+                ? OptimizerAdamw.fromJSON(object.adamw)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: TextEmbeddingPairParams_Optimizer): unknown {
+        const obj: any = {};
+        message.adamw !== undefined &&
+            (obj.adamw = message.adamw ? OptimizerAdamw.toJSON(message.adamw) : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<TextEmbeddingPairParams_Optimizer>, I>>(
+        object: I,
+    ): TextEmbeddingPairParams_Optimizer {
+        const message = {
+            ...baseTextEmbeddingPairParams_Optimizer,
+        } as TextEmbeddingPairParams_Optimizer;
+        message.adamw =
+            object.adamw !== undefined && object.adamw !== null
+                ? OptimizerAdamw.fromPartial(object.adamw)
+                : undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(TextEmbeddingPairParams_Optimizer.$type, TextEmbeddingPairParams_Optimizer);
+
+const baseTextEmbeddingTripletParams: object = {
+    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingTripletParams',
+    seed: 0,
+    lr: 0,
+    nSamples: 0,
+    additionalArguments: '',
+    embeddingDims: 0,
+};
+
+export const TextEmbeddingTripletParams = {
+    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingTripletParams' as const,
+
+    encode(
+        message: TextEmbeddingTripletParams,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.seed !== 0) {
+            writer.uint32(8).int64(message.seed);
+        }
+        if (message.lr !== 0) {
+            writer.uint32(17).double(message.lr);
+        }
+        if (message.nSamples !== 0) {
+            writer.uint32(24).int64(message.nSamples);
+        }
+        if (message.additionalArguments !== '') {
+            writer.uint32(58).string(message.additionalArguments);
+        }
+        writer.uint32(66).fork();
+        for (const v of message.embeddingDims) {
+            writer.int64(v);
+        }
+        writer.ldelim();
+        if (message.lora !== undefined) {
+            TuningTypeLora.encode(message.lora, writer.uint32(802).fork()).ldelim();
+        }
+        if (message.promptTune !== undefined) {
+            TuningTypePromptTune.encode(message.promptTune, writer.uint32(810).fork()).ldelim();
+        }
+        if (message.scheduler !== undefined) {
+            TextEmbeddingTripletParams_Scheduler.encode(
+                message.scheduler,
+                writer.uint32(1602).fork(),
+            ).ldelim();
+        }
+        if (message.optimizer !== undefined) {
+            TextEmbeddingTripletParams_Optimizer.encode(
+                message.optimizer,
+                writer.uint32(1610).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextEmbeddingTripletParams {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseTextEmbeddingTripletParams } as TextEmbeddingTripletParams;
+        message.embeddingDims = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.seed = longToNumber(reader.int64() as Long);
+                    break;
+                case 2:
+                    message.lr = reader.double();
+                    break;
+                case 3:
+                    message.nSamples = longToNumber(reader.int64() as Long);
+                    break;
+                case 7:
+                    message.additionalArguments = reader.string();
+                    break;
+                case 8:
+                    if ((tag & 7) === 2) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.embeddingDims.push(longToNumber(reader.int64() as Long));
+                        }
+                    } else {
+                        message.embeddingDims.push(longToNumber(reader.int64() as Long));
+                    }
+                    break;
+                case 100:
+                    message.lora = TuningTypeLora.decode(reader, reader.uint32());
+                    break;
+                case 101:
+                    message.promptTune = TuningTypePromptTune.decode(reader, reader.uint32());
+                    break;
+                case 200:
+                    message.scheduler = TextEmbeddingTripletParams_Scheduler.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 201:
+                    message.optimizer = TextEmbeddingTripletParams_Optimizer.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): TextEmbeddingTripletParams {
+        const message = { ...baseTextEmbeddingTripletParams } as TextEmbeddingTripletParams;
+        message.seed = object.seed !== undefined && object.seed !== null ? Number(object.seed) : 0;
+        message.lr = object.lr !== undefined && object.lr !== null ? Number(object.lr) : 0;
+        message.nSamples =
+            object.nSamples !== undefined && object.nSamples !== null ? Number(object.nSamples) : 0;
+        message.additionalArguments =
+            object.additionalArguments !== undefined && object.additionalArguments !== null
+                ? String(object.additionalArguments)
+                : '';
+        message.embeddingDims = (object.embeddingDims ?? []).map((e: any) => Number(e));
+        message.lora =
+            object.lora !== undefined && object.lora !== null
+                ? TuningTypeLora.fromJSON(object.lora)
+                : undefined;
+        message.promptTune =
+            object.promptTune !== undefined && object.promptTune !== null
+                ? TuningTypePromptTune.fromJSON(object.promptTune)
+                : undefined;
+        message.scheduler =
+            object.scheduler !== undefined && object.scheduler !== null
+                ? TextEmbeddingTripletParams_Scheduler.fromJSON(object.scheduler)
+                : undefined;
+        message.optimizer =
+            object.optimizer !== undefined && object.optimizer !== null
+                ? TextEmbeddingTripletParams_Optimizer.fromJSON(object.optimizer)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: TextEmbeddingTripletParams): unknown {
+        const obj: any = {};
+        message.seed !== undefined && (obj.seed = Math.round(message.seed));
+        message.lr !== undefined && (obj.lr = message.lr);
+        message.nSamples !== undefined && (obj.nSamples = Math.round(message.nSamples));
+        message.additionalArguments !== undefined &&
+            (obj.additionalArguments = message.additionalArguments);
+        if (message.embeddingDims) {
+            obj.embeddingDims = message.embeddingDims.map((e) => Math.round(e));
+        } else {
+            obj.embeddingDims = [];
+        }
+        message.lora !== undefined &&
+            (obj.lora = message.lora ? TuningTypeLora.toJSON(message.lora) : undefined);
+        message.promptTune !== undefined &&
+            (obj.promptTune = message.promptTune
+                ? TuningTypePromptTune.toJSON(message.promptTune)
+                : undefined);
+        message.scheduler !== undefined &&
+            (obj.scheduler = message.scheduler
+                ? TextEmbeddingTripletParams_Scheduler.toJSON(message.scheduler)
+                : undefined);
+        message.optimizer !== undefined &&
+            (obj.optimizer = message.optimizer
+                ? TextEmbeddingTripletParams_Optimizer.toJSON(message.optimizer)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<TextEmbeddingTripletParams>, I>>(
+        object: I,
+    ): TextEmbeddingTripletParams {
+        const message = { ...baseTextEmbeddingTripletParams } as TextEmbeddingTripletParams;
+        message.seed = object.seed ?? 0;
+        message.lr = object.lr ?? 0;
+        message.nSamples = object.nSamples ?? 0;
+        message.additionalArguments = object.additionalArguments ?? '';
+        message.embeddingDims = object.embeddingDims?.map((e) => e) || [];
+        message.lora =
+            object.lora !== undefined && object.lora !== null
+                ? TuningTypeLora.fromPartial(object.lora)
+                : undefined;
+        message.promptTune =
+            object.promptTune !== undefined && object.promptTune !== null
+                ? TuningTypePromptTune.fromPartial(object.promptTune)
+                : undefined;
+        message.scheduler =
+            object.scheduler !== undefined && object.scheduler !== null
+                ? TextEmbeddingTripletParams_Scheduler.fromPartial(object.scheduler)
+                : undefined;
+        message.optimizer =
+            object.optimizer !== undefined && object.optimizer !== null
+                ? TextEmbeddingTripletParams_Optimizer.fromPartial(object.optimizer)
+                : undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(TextEmbeddingTripletParams.$type, TextEmbeddingTripletParams);
+
+const baseTextEmbeddingTripletParams_Scheduler: object = {
+    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingTripletParams.Scheduler',
+};
+
+export const TextEmbeddingTripletParams_Scheduler = {
+    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingTripletParams.Scheduler' as const,
+
+    encode(
+        message: TextEmbeddingTripletParams_Scheduler,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.linear !== undefined) {
+            SchedulerLinear.encode(message.linear, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.constant !== undefined) {
+            SchedulerConstant.encode(message.constant, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.cosine !== undefined) {
+            SchedulerCosine.encode(message.cosine, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.warmupRatio !== undefined) {
+            writer.uint32(809).double(message.warmupRatio);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextEmbeddingTripletParams_Scheduler {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseTextEmbeddingTripletParams_Scheduler,
+        } as TextEmbeddingTripletParams_Scheduler;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.linear = SchedulerLinear.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.constant = SchedulerConstant.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.cosine = SchedulerCosine.decode(reader, reader.uint32());
+                    break;
+                case 101:
+                    message.warmupRatio = reader.double();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): TextEmbeddingTripletParams_Scheduler {
+        const message = {
+            ...baseTextEmbeddingTripletParams_Scheduler,
+        } as TextEmbeddingTripletParams_Scheduler;
+        message.linear =
+            object.linear !== undefined && object.linear !== null
+                ? SchedulerLinear.fromJSON(object.linear)
+                : undefined;
+        message.constant =
+            object.constant !== undefined && object.constant !== null
+                ? SchedulerConstant.fromJSON(object.constant)
+                : undefined;
+        message.cosine =
+            object.cosine !== undefined && object.cosine !== null
+                ? SchedulerCosine.fromJSON(object.cosine)
+                : undefined;
+        message.warmupRatio =
+            object.warmupRatio !== undefined && object.warmupRatio !== null
+                ? Number(object.warmupRatio)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: TextEmbeddingTripletParams_Scheduler): unknown {
+        const obj: any = {};
+        message.linear !== undefined &&
+            (obj.linear = message.linear ? SchedulerLinear.toJSON(message.linear) : undefined);
+        message.constant !== undefined &&
+            (obj.constant = message.constant
+                ? SchedulerConstant.toJSON(message.constant)
+                : undefined);
+        message.cosine !== undefined &&
+            (obj.cosine = message.cosine ? SchedulerCosine.toJSON(message.cosine) : undefined);
+        message.warmupRatio !== undefined && (obj.warmupRatio = message.warmupRatio);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<TextEmbeddingTripletParams_Scheduler>, I>>(
+        object: I,
+    ): TextEmbeddingTripletParams_Scheduler {
+        const message = {
+            ...baseTextEmbeddingTripletParams_Scheduler,
+        } as TextEmbeddingTripletParams_Scheduler;
+        message.linear =
+            object.linear !== undefined && object.linear !== null
+                ? SchedulerLinear.fromPartial(object.linear)
+                : undefined;
+        message.constant =
+            object.constant !== undefined && object.constant !== null
+                ? SchedulerConstant.fromPartial(object.constant)
+                : undefined;
+        message.cosine =
+            object.cosine !== undefined && object.cosine !== null
+                ? SchedulerCosine.fromPartial(object.cosine)
+                : undefined;
+        message.warmupRatio = object.warmupRatio ?? undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(
+    TextEmbeddingTripletParams_Scheduler.$type,
+    TextEmbeddingTripletParams_Scheduler,
+);
+
+const baseTextEmbeddingTripletParams_Optimizer: object = {
+    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingTripletParams.Optimizer',
+};
+
+export const TextEmbeddingTripletParams_Optimizer = {
+    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingTripletParams.Optimizer' as const,
+
+    encode(
+        message: TextEmbeddingTripletParams_Optimizer,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.adamw !== undefined) {
+            OptimizerAdamw.encode(message.adamw, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextEmbeddingTripletParams_Optimizer {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseTextEmbeddingTripletParams_Optimizer,
+        } as TextEmbeddingTripletParams_Optimizer;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.adamw = OptimizerAdamw.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): TextEmbeddingTripletParams_Optimizer {
+        const message = {
+            ...baseTextEmbeddingTripletParams_Optimizer,
+        } as TextEmbeddingTripletParams_Optimizer;
+        message.adamw =
+            object.adamw !== undefined && object.adamw !== null
+                ? OptimizerAdamw.fromJSON(object.adamw)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: TextEmbeddingTripletParams_Optimizer): unknown {
+        const obj: any = {};
+        message.adamw !== undefined &&
+            (obj.adamw = message.adamw ? OptimizerAdamw.toJSON(message.adamw) : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<TextEmbeddingTripletParams_Optimizer>, I>>(
+        object: I,
+    ): TextEmbeddingTripletParams_Optimizer {
+        const message = {
+            ...baseTextEmbeddingTripletParams_Optimizer,
+        } as TextEmbeddingTripletParams_Optimizer;
+        message.adamw =
+            object.adamw !== undefined && object.adamw !== null
+                ? OptimizerAdamw.fromPartial(object.adamw)
+                : undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(
+    TextEmbeddingTripletParams_Optimizer.$type,
+    TextEmbeddingTripletParams_Optimizer,
+);
+
 const baseGetMetricsUrlRequest: object = {
     $type: 'yandex.cloud.ai.tuning.v1.GetMetricsUrlRequest',
     taskId: '',
@@ -2701,6 +3596,123 @@ export const GetOptionsResponse = {
 
 messageTypeRegistry.set(GetOptionsResponse.$type, GetOptionsResponse);
 
+const baseListErrorsRequest: object = {
+    $type: 'yandex.cloud.ai.tuning.v1.ListErrorsRequest',
+    tuningTaskId: '',
+};
+
+export const ListErrorsRequest = {
+    $type: 'yandex.cloud.ai.tuning.v1.ListErrorsRequest' as const,
+
+    encode(message: ListErrorsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.tuningTaskId !== '') {
+            writer.uint32(10).string(message.tuningTaskId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListErrorsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListErrorsRequest } as ListErrorsRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.tuningTaskId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListErrorsRequest {
+        const message = { ...baseListErrorsRequest } as ListErrorsRequest;
+        message.tuningTaskId =
+            object.tuningTaskId !== undefined && object.tuningTaskId !== null
+                ? String(object.tuningTaskId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListErrorsRequest): unknown {
+        const obj: any = {};
+        message.tuningTaskId !== undefined && (obj.tuningTaskId = message.tuningTaskId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListErrorsRequest>, I>>(object: I): ListErrorsRequest {
+        const message = { ...baseListErrorsRequest } as ListErrorsRequest;
+        message.tuningTaskId = object.tuningTaskId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ListErrorsRequest.$type, ListErrorsRequest);
+
+const baseListErrorsResponse: object = { $type: 'yandex.cloud.ai.tuning.v1.ListErrorsResponse' };
+
+export const ListErrorsResponse = {
+    $type: 'yandex.cloud.ai.tuning.v1.ListErrorsResponse' as const,
+
+    encode(message: ListErrorsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.tuningError) {
+            TuningError.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListErrorsResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListErrorsResponse } as ListErrorsResponse;
+        message.tuningError = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.tuningError.push(TuningError.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListErrorsResponse {
+        const message = { ...baseListErrorsResponse } as ListErrorsResponse;
+        message.tuningError = (object.tuningError ?? []).map((e: any) => TuningError.fromJSON(e));
+        return message;
+    },
+
+    toJSON(message: ListErrorsResponse): unknown {
+        const obj: any = {};
+        if (message.tuningError) {
+            obj.tuningError = message.tuningError.map((e) =>
+                e ? TuningError.toJSON(e) : undefined,
+            );
+        } else {
+            obj.tuningError = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListErrorsResponse>, I>>(
+        object: I,
+    ): ListErrorsResponse {
+        const message = { ...baseListErrorsResponse } as ListErrorsResponse;
+        message.tuningError = object.tuningError?.map((e) => TuningError.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ListErrorsResponse.$type, ListErrorsResponse);
+
 export const TuningServiceService = {
     tune: {
         path: '/yandex.cloud.ai.tuning.v1.TuningService/Tune',
@@ -2767,6 +3779,17 @@ export const TuningServiceService = {
             Buffer.from(GetOptionsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => GetOptionsResponse.decode(value),
     },
+    listErrors: {
+        path: '/yandex.cloud.ai.tuning.v1.TuningService/ListErrors',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListErrorsRequest) =>
+            Buffer.from(ListErrorsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListErrorsRequest.decode(value),
+        responseSerialize: (value: ListErrorsResponse) =>
+            Buffer.from(ListErrorsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListErrorsResponse.decode(value),
+    },
 } as const;
 
 export interface TuningServiceServer extends UntypedServiceImplementation {
@@ -2776,6 +3799,7 @@ export interface TuningServiceServer extends UntypedServiceImplementation {
     cancel: handleUnaryCall<CancelTuningRequest, CancelTuningResponse>;
     getMetricsUrl: handleUnaryCall<GetMetricsUrlRequest, GetMetricsUrlResponse>;
     getOptions: handleUnaryCall<GetOptionsRequest, GetOptionsResponse>;
+    listErrors: handleUnaryCall<ListErrorsRequest, ListErrorsResponse>;
 }
 
 export interface TuningServiceClient extends Client {
@@ -2868,6 +3892,21 @@ export interface TuningServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: GetOptionsResponse) => void,
+    ): ClientUnaryCall;
+    listErrors(
+        request: ListErrorsRequest,
+        callback: (error: ServiceError | null, response: ListErrorsResponse) => void,
+    ): ClientUnaryCall;
+    listErrors(
+        request: ListErrorsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListErrorsResponse) => void,
+    ): ClientUnaryCall;
+    listErrors(
+        request: ListErrorsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListErrorsResponse) => void,
     ): ClientUnaryCall;
 }
 

@@ -22,6 +22,11 @@ export const protobufPackage = 'yandex.cloud.datatransfer.v1';
 
 export interface GetEndpointRequest {
     $type: 'yandex.cloud.datatransfer.v1.GetEndpointRequest';
+    /**
+     * Identifier of the endpoint to return.
+     *
+     * To get the endpoint ID, make an [EndpointService.List] request.
+     */
     endpointId: string;
 }
 
@@ -67,9 +72,27 @@ export interface ListEndpointsResponse {
 
 export interface CreateEndpointRequest {
     $type: 'yandex.cloud.datatransfer.v1.CreateEndpointRequest';
+    /**
+     * ID of the folder to create the endpoint in.
+     *
+     * To get the folder ID, make a
+     * [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+     */
     folderId: string;
+    /**
+     * Name of the endpoint.
+     *
+     * The name must be unique within the folder.
+     */
     name: string;
+    /** Description of the endpoint. */
     description: string;
+    /**
+     * Endpoint labels as `key:value` pairs.
+     *
+     * For details about the concept, see [documentation]({{ api-url-prefix
+     * }}/resource-manager/concepts/labels).
+     */
     labels: { [key: string]: string };
     settings?: EndpointSettings;
 }
@@ -93,8 +116,14 @@ export interface UpdateEndpointRequest {
     name: string;
     /** The new description for the endpoint. */
     description: string;
+    /**
+     * Endpoint labels as `key:value` pairs.
+     *
+     * For details about the concept, see [documentation]({{ api-url-prefix
+     * }}/resource-manager/concepts/labels).
+     */
     labels: { [key: string]: string };
-    /** The new endpoint name. Must be unique within the folder. */
+    /** The new endpoint settings. */
     settings?: EndpointSettings;
     /**
      * Field mask specifying endpoint fields to be updated. Semantics for this field is
@@ -119,6 +148,11 @@ export interface UpdateEndpointMetadata {
 
 export interface DeleteEndpointRequest {
     $type: 'yandex.cloud.datatransfer.v1.DeleteEndpointRequest';
+    /**
+     * Identifier of the endpoint to delete.
+     *
+     * To get the list of all available endpoints, make a [List] request.
+     */
     endpointId: string;
 }
 
@@ -1032,7 +1066,16 @@ export const DeleteEndpointMetadata = {
 
 messageTypeRegistry.set(DeleteEndpointMetadata.$type, DeleteEndpointMetadata);
 
+/**
+ * A set of methods for managing [endpoints]({{ api-url-prefix
+ * }}/data-transfer/concepts/#endpoint).
+ */
 export const EndpointServiceService = {
+    /**
+     * Returns the specified endpoint.
+     *
+     * To get the list of all available endpoints, make a [List] request.
+     */
     get: {
         path: '/yandex.cloud.datatransfer.v1.EndpointService/Get',
         requestStream: false,
@@ -1043,6 +1086,7 @@ export const EndpointServiceService = {
         responseSerialize: (value: Endpoint) => Buffer.from(Endpoint.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Endpoint.decode(value),
     },
+    /** Lists endpoints in the specified folder. */
     list: {
         path: '/yandex.cloud.datatransfer.v1.EndpointService/List',
         requestStream: false,
@@ -1054,6 +1098,7 @@ export const EndpointServiceService = {
             Buffer.from(ListEndpointsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListEndpointsResponse.decode(value),
     },
+    /** Creates an endpoint in the specified folder. */
     create: {
         path: '/yandex.cloud.datatransfer.v1.EndpointService/Create',
         requestStream: false,
@@ -1064,6 +1109,7 @@ export const EndpointServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Updates the specified endpoint. */
     update: {
         path: '/yandex.cloud.datatransfer.v1.EndpointService/Update',
         requestStream: false,
@@ -1074,6 +1120,7 @@ export const EndpointServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Deletes the specified endpoint. */
     delete: {
         path: '/yandex.cloud.datatransfer.v1.EndpointService/Delete',
         requestStream: false,
@@ -1087,14 +1134,28 @@ export const EndpointServiceService = {
 } as const;
 
 export interface EndpointServiceServer extends UntypedServiceImplementation {
+    /**
+     * Returns the specified endpoint.
+     *
+     * To get the list of all available endpoints, make a [List] request.
+     */
     get: handleUnaryCall<GetEndpointRequest, Endpoint>;
+    /** Lists endpoints in the specified folder. */
     list: handleUnaryCall<ListEndpointsRequest, ListEndpointsResponse>;
+    /** Creates an endpoint in the specified folder. */
     create: handleUnaryCall<CreateEndpointRequest, Operation>;
+    /** Updates the specified endpoint. */
     update: handleUnaryCall<UpdateEndpointRequest, Operation>;
+    /** Deletes the specified endpoint. */
     delete: handleUnaryCall<DeleteEndpointRequest, Operation>;
 }
 
 export interface EndpointServiceClient extends Client {
+    /**
+     * Returns the specified endpoint.
+     *
+     * To get the list of all available endpoints, make a [List] request.
+     */
     get(
         request: GetEndpointRequest,
         callback: (error: ServiceError | null, response: Endpoint) => void,
@@ -1110,6 +1171,7 @@ export interface EndpointServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Endpoint) => void,
     ): ClientUnaryCall;
+    /** Lists endpoints in the specified folder. */
     list(
         request: ListEndpointsRequest,
         callback: (error: ServiceError | null, response: ListEndpointsResponse) => void,
@@ -1125,6 +1187,7 @@ export interface EndpointServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListEndpointsResponse) => void,
     ): ClientUnaryCall;
+    /** Creates an endpoint in the specified folder. */
     create(
         request: CreateEndpointRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1140,6 +1203,7 @@ export interface EndpointServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
+    /** Updates the specified endpoint. */
     update(
         request: UpdateEndpointRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1155,6 +1219,7 @@ export interface EndpointServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
+    /** Deletes the specified endpoint. */
     delete(
         request: DeleteEndpointRequest,
         callback: (error: ServiceError | null, response: Operation) => void,

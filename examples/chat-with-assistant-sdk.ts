@@ -7,7 +7,7 @@ import {
     initAssistantSdk,
     initThreadSdk,
     MessageSdk,
-} from '@yandex-cloud/nodejs-sdk/dist/sdk/ai-assistants-v1';
+} from '@yandex-cloud/nodejs-sdk/sdk/ai-assistants-v1';
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 

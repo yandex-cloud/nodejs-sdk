@@ -150,6 +150,7 @@ export interface Transfer {
     type: TransferType;
     warning: string;
     transformation?: Transformation;
+    dataObjects?: DataObjects;
     prestable: boolean;
 }
 
@@ -386,6 +387,11 @@ export interface Transformation {
     transformers: Transformer[];
 }
 
+export interface DataObjects {
+    $type: 'yandex.cloud.datatransfer.v1.DataObjects';
+    includeObjects: string[];
+}
+
 const baseTransfer: object = {
     $type: 'yandex.cloud.datatransfer.v1.Transfer',
     id: '',
@@ -445,6 +451,9 @@ export const Transfer = {
         if (message.transformation !== undefined) {
             Transformation.encode(message.transformation, writer.uint32(138).fork()).ldelim();
         }
+        if (message.dataObjects !== undefined) {
+            DataObjects.encode(message.dataObjects, writer.uint32(154).fork()).ldelim();
+        }
         if (message.prestable === true) {
             writer.uint32(176).bool(message.prestable);
         }
@@ -497,6 +506,9 @@ export const Transfer = {
                     break;
                 case 17:
                     message.transformation = Transformation.decode(reader, reader.uint32());
+                    break;
+                case 19:
+                    message.dataObjects = DataObjects.decode(reader, reader.uint32());
                     break;
                 case 22:
                     message.prestable = reader.bool();
@@ -554,6 +566,10 @@ export const Transfer = {
             object.transformation !== undefined && object.transformation !== null
                 ? Transformation.fromJSON(object.transformation)
                 : undefined;
+        message.dataObjects =
+            object.dataObjects !== undefined && object.dataObjects !== null
+                ? DataObjects.fromJSON(object.dataObjects)
+                : undefined;
         message.prestable =
             object.prestable !== undefined && object.prestable !== null
                 ? Boolean(object.prestable)
@@ -585,6 +601,10 @@ export const Transfer = {
         message.transformation !== undefined &&
             (obj.transformation = message.transformation
                 ? Transformation.toJSON(message.transformation)
+                : undefined);
+        message.dataObjects !== undefined &&
+            (obj.dataObjects = message.dataObjects
+                ? DataObjects.toJSON(message.dataObjects)
                 : undefined);
         message.prestable !== undefined && (obj.prestable = message.prestable);
         return obj;
@@ -623,6 +643,10 @@ export const Transfer = {
         message.transformation =
             object.transformation !== undefined && object.transformation !== null
                 ? Transformation.fromPartial(object.transformation)
+                : undefined;
+        message.dataObjects =
+            object.dataObjects !== undefined && object.dataObjects !== null
+                ? DataObjects.fromPartial(object.dataObjects)
                 : undefined;
         message.prestable = object.prestable ?? false;
         return message;
@@ -2238,6 +2262,65 @@ export const Transformation = {
 };
 
 messageTypeRegistry.set(Transformation.$type, Transformation);
+
+const baseDataObjects: object = {
+    $type: 'yandex.cloud.datatransfer.v1.DataObjects',
+    includeObjects: '',
+};
+
+export const DataObjects = {
+    $type: 'yandex.cloud.datatransfer.v1.DataObjects' as const,
+
+    encode(message: DataObjects, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.includeObjects) {
+            writer.uint32(10).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DataObjects {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDataObjects } as DataObjects;
+        message.includeObjects = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.includeObjects.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DataObjects {
+        const message = { ...baseDataObjects } as DataObjects;
+        message.includeObjects = (object.includeObjects ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: DataObjects): unknown {
+        const obj: any = {};
+        if (message.includeObjects) {
+            obj.includeObjects = message.includeObjects.map((e) => e);
+        } else {
+            obj.includeObjects = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DataObjects>, I>>(object: I): DataObjects {
+        const message = { ...baseDataObjects } as DataObjects;
+        message.includeObjects = object.includeObjects?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(DataObjects.$type, DataObjects);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

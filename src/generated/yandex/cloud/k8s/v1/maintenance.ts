@@ -4,6 +4,7 @@ import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { TimeOfDay } from '../../../../google/type/timeofday';
 import { Duration } from '../../../../google/protobuf/duration';
+import { Timestamp } from '../../../../google/protobuf/timestamp';
 import { DayOfWeek, dayOfWeekFromJSON, dayOfWeekToJSON } from '../../../../google/type/dayofweek';
 
 export const protobufPackage = 'yandex.cloud.k8s.v1';
@@ -44,6 +45,18 @@ export interface WeeklyMaintenanceWindow {
     $type: 'yandex.cloud.k8s.v1.WeeklyMaintenanceWindow';
     /** Days of the week and the maintenance window for these days when automatic updates are allowed. */
     daysOfWeek: DaysOfWeekMaintenanceWindow[];
+}
+
+export interface ScheduledMaintenance {
+    $type: 'yandex.cloud.k8s.v1.ScheduledMaintenance';
+    /** Time until which the update should be postponed. */
+    delayedUntil?: Date;
+    /** Time when the update became available. */
+    availableFrom?: Date;
+    /** The latest possible date by which a mandatory update must be applied. */
+    noLaterThan?: Date;
+    /** Description of the planned operation, for example, "Infrastructure planned update". */
+    description: string;
 }
 
 const baseMaintenanceWindow: object = { $type: 'yandex.cloud.k8s.v1.MaintenanceWindow' };
@@ -448,6 +461,105 @@ export const WeeklyMaintenanceWindow = {
 
 messageTypeRegistry.set(WeeklyMaintenanceWindow.$type, WeeklyMaintenanceWindow);
 
+const baseScheduledMaintenance: object = {
+    $type: 'yandex.cloud.k8s.v1.ScheduledMaintenance',
+    description: '',
+};
+
+export const ScheduledMaintenance = {
+    $type: 'yandex.cloud.k8s.v1.ScheduledMaintenance' as const,
+
+    encode(message: ScheduledMaintenance, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.delayedUntil !== undefined) {
+            Timestamp.encode(toTimestamp(message.delayedUntil), writer.uint32(10).fork()).ldelim();
+        }
+        if (message.availableFrom !== undefined) {
+            Timestamp.encode(toTimestamp(message.availableFrom), writer.uint32(18).fork()).ldelim();
+        }
+        if (message.noLaterThan !== undefined) {
+            Timestamp.encode(toTimestamp(message.noLaterThan), writer.uint32(26).fork()).ldelim();
+        }
+        if (message.description !== '') {
+            writer.uint32(34).string(message.description);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScheduledMaintenance {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseScheduledMaintenance } as ScheduledMaintenance;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.delayedUntil = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
+                case 2:
+                    message.availableFrom = fromTimestamp(
+                        Timestamp.decode(reader, reader.uint32()),
+                    );
+                    break;
+                case 3:
+                    message.noLaterThan = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
+                case 4:
+                    message.description = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ScheduledMaintenance {
+        const message = { ...baseScheduledMaintenance } as ScheduledMaintenance;
+        message.delayedUntil =
+            object.delayedUntil !== undefined && object.delayedUntil !== null
+                ? fromJsonTimestamp(object.delayedUntil)
+                : undefined;
+        message.availableFrom =
+            object.availableFrom !== undefined && object.availableFrom !== null
+                ? fromJsonTimestamp(object.availableFrom)
+                : undefined;
+        message.noLaterThan =
+            object.noLaterThan !== undefined && object.noLaterThan !== null
+                ? fromJsonTimestamp(object.noLaterThan)
+                : undefined;
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ScheduledMaintenance): unknown {
+        const obj: any = {};
+        message.delayedUntil !== undefined &&
+            (obj.delayedUntil = message.delayedUntil.toISOString());
+        message.availableFrom !== undefined &&
+            (obj.availableFrom = message.availableFrom.toISOString());
+        message.noLaterThan !== undefined && (obj.noLaterThan = message.noLaterThan.toISOString());
+        message.description !== undefined && (obj.description = message.description);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ScheduledMaintenance>, I>>(
+        object: I,
+    ): ScheduledMaintenance {
+        const message = { ...baseScheduledMaintenance } as ScheduledMaintenance;
+        message.delayedUntil = object.delayedUntil ?? undefined;
+        message.availableFrom = object.availableFrom ?? undefined;
+        message.noLaterThan = object.noLaterThan ?? undefined;
+        message.description = object.description ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ScheduledMaintenance.$type, ScheduledMaintenance);
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -467,6 +579,28 @@ export type Exact<P, I extends P> = P extends Builtin
               Exclude<keyof I, KeysOfUnion<P> | '$type'>,
               never
           >;
+
+function toTimestamp(date: Date): Timestamp {
+    const seconds = date.getTime() / 1_000;
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+    let millis = t.seconds * 1_000;
+    millis += t.nanos / 1_000_000;
+    return new Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+    if (o instanceof Date) {
+        return o;
+    } else if (typeof o === 'string') {
+        return new Date(o);
+    } else {
+        return fromTimestamp(Timestamp.fromJSON(o));
+    }
+}
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

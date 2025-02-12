@@ -88,6 +88,8 @@ export enum Registry_Kind {
     NPM = 2,
     /** DOCKER - Registry kind is docker. */
     DOCKER = 3,
+    /** NUGET - Registry kind is nuget. */
+    NUGET = 4,
     UNRECOGNIZED = -1,
 }
 
@@ -105,6 +107,9 @@ export function registry_KindFromJSON(object: any): Registry_Kind {
         case 3:
         case 'DOCKER':
             return Registry_Kind.DOCKER;
+        case 4:
+        case 'NUGET':
+            return Registry_Kind.NUGET;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -122,6 +127,8 @@ export function registry_KindToJSON(object: Registry_Kind): string {
             return 'NPM';
         case Registry_Kind.DOCKER:
             return 'DOCKER';
+        case Registry_Kind.NUGET:
+            return 'NUGET';
         default:
             return 'UNKNOWN';
     }

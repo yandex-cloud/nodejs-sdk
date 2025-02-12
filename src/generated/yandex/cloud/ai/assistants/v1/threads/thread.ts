@@ -4,6 +4,7 @@ import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { ExpirationConfig } from '../../../../../../yandex/cloud/ai/common/common';
 import { Timestamp } from '../../../../../../google/protobuf/timestamp';
+import { Tool } from '../../../../../../yandex/cloud/ai/assistants/v1/common';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.threads';
 
@@ -33,6 +34,8 @@ export interface Thread {
     expiresAt?: Date;
     /** Set of key-value pairs that can be used to organize and categorize the thread. */
     labels: { [key: string]: string };
+    /** List of tools that are available for assistants to use in this thread. */
+    tools: Tool[];
 }
 
 export interface Thread_LabelsEntry {
@@ -99,6 +102,9 @@ export const Thread = {
                 writer.uint32(98).fork(),
             ).ldelim();
         });
+        for (const v of message.tools) {
+            Tool.encode(v!, writer.uint32(106).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -107,6 +113,7 @@ export const Thread = {
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseThread } as Thread;
         message.labels = {};
+        message.tools = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -148,6 +155,9 @@ export const Thread = {
                     if (entry12.value !== undefined) {
                         message.labels[entry12.key] = entry12.value;
                     }
+                    break;
+                case 13:
+                    message.tools.push(Tool.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -204,6 +214,7 @@ export const Thread = {
             },
             {},
         );
+        message.tools = (object.tools ?? []).map((e: any) => Tool.fromJSON(e));
         return message;
     },
 
@@ -229,6 +240,11 @@ export const Thread = {
             Object.entries(message.labels).forEach(([k, v]) => {
                 obj.labels[k] = v;
             });
+        }
+        if (message.tools) {
+            obj.tools = message.tools.map((e) => (e ? Tool.toJSON(e) : undefined));
+        } else {
+            obj.tools = [];
         }
         return obj;
     },
@@ -258,6 +274,7 @@ export const Thread = {
             },
             {},
         );
+        message.tools = object.tools?.map((e) => Tool.fromPartial(e)) || [];
         return message;
     },
 };
