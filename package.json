@@ -99,7 +99,7 @@
   },
   "exports": {
     ".": "./dist/index.js",
-    "./*": "./dist/generated/yandex/cloud/*.js",
+    "./proto/*": "./dist/generated/yandex/cloud/*.js",
     "./ai-assistants-v1": "./dist/clients/ai-assistants-v1/index.js",
     "./ai-dataset-v1": "./dist/clients/ai-dataset-v1/index.js",
     "./ai-files-v1": "./dist/clients/ai-files-v1/index.js",

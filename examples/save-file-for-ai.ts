@@ -6,7 +6,7 @@ import { Session } from '@yandex-cloud/nodejs-sdk/dist/session';
 import { initFileSdk } from '@yandex-cloud/nodejs-sdk/sdk/ai-files-v1';
 
 import { readFile } from 'fs/promises';
-import { ExpirationConfig_ExpirationPolicy } from '@yandex-cloud/nodejs-sdk/ai/common/common';
+import { ExpirationConfig_ExpirationPolicy } from '@yandex-cloud/nodejs-sdk/proto/ai/common/common';
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 

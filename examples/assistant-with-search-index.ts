@@ -15,7 +15,7 @@ import {
 import { initOperationSdk } from '@yandex-cloud/nodejs-sdk/sdk/operation';
 
 import { readFile } from 'fs/promises';
-import { ExpirationConfig_ExpirationPolicy } from '@yandex-cloud/nodejs-sdk/ai/common/common';
+import { ExpirationConfig_ExpirationPolicy } from '@yandex-cloud/nodejs-sdk/proto/ai/common/common';
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 

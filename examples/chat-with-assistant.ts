@@ -7,7 +7,7 @@ import {
     threadService,
     runService,
 } from '@yandex-cloud/nodejs-sdk/ai-assistants-v1';
-import { ExpirationConfig_ExpirationPolicy } from '@yandex-cloud/nodejs-sdk/ai/common/common';
+import { ExpirationConfig_ExpirationPolicy } from '@yandex-cloud/nodejs-sdk/proto/ai/common/common';
 
 import { Session } from '@yandex-cloud/nodejs-sdk/dist/session';
 
