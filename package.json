@@ -18,8 +18,7 @@
     "url": "https://github.com/yandex-cloud/nodejs-sdk/issues"
   },
   "files": [
-    "dist",
-    "tsconfig.json"
+    "dist"
   ],
   "homepage": "https://github.com/yandex-cloud/nodejs-sdk#readme",
   "dependencies": {
