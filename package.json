@@ -84,8 +84,8 @@
     "prepare": "husky install",
     "prepublishOnly": "npm run build",
     "generate_services": "ts-node scripts/generate_services",
-    "build": "cross-env NODE_OPTIONS=\"--max-old-space-size=4096\" tsc -p ./tsconfig.prod.json",
-    "typecheck:src": "tsc --noEmit -p ./tsconfig.prod.json",
+    "build": "cross-env NODE_OPTIONS=\"--max-old-space-size=4096\" tsc -p ./tsconfig.json",
+    "typecheck:src": "tsc --noEmit -p ./tsconfig.json",
     "typecheck:examples": "tsc --noEmit -p ./examples/tsconfig.json",
     "typecheck": "npm run typecheck:src && npm run typecheck:examples",
     "cloudapi:update": "git submodule update --remote"
