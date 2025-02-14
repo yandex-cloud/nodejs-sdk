@@ -1,7 +1,0 @@
-{
-  "extends": "../tsconfig",
-  "compilerOptions": {
-    "outDir": "../../marketplace-pim-v1"
-  },
-  "include": ["."]
-}

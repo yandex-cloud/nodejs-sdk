@@ -1,7 +1,0 @@
-{
-  "extends": "../tsconfig",
-  "compilerOptions": {
-    "outDir": "../../organizationmanager-v1"
-  },
-  "include": ["."]
-}

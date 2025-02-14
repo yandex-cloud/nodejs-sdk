@@ -1,7 +1,0 @@
-{
-  "extends": "../tsconfig",
-  "compilerOptions": {
-    "outDir": "../../loadtesting-agent-v1"
-  },
-  "include": ["."]
-}

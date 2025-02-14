@@ -1,7 +1,0 @@
-{
-  "extends": "../tsconfig",
-  "compilerOptions": {
-    "outDir": "../../backup-v1"
-  },
-  "include": ["."]
-}
