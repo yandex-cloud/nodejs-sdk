@@ -16,7 +16,7 @@
   "include": ["./src"],
   "ts-node": {
     "compilerOptions": {
-      "target": "es6",
+      "target": "ES2021",
       "module": "NodeNext",
       "allowJs": true,
       "declaration": true,
@@ -26,7 +26,7 @@
       "strict": true,
       "skipLibCheck": true,
       "resolveJsonModule": true,
-      "lib": ["es6", "DOM"],
+      "lib": ["ES2021", "DOM"],
       "disableSizeLimit": true
     }
   }

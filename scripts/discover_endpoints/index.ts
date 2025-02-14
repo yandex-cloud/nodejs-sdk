@@ -1,9 +1,9 @@
-import { ClientsMapType, readFile } from '../detect_services';
+import { readFile } from '../detect_services';
 
 type EndpointType = { id: string; address: string };
 
 const buildEndpointsMap = (endpoints: EndpointType[]) => {
-    return new Map(endpoints.map(({ id, address }) => [id.split('-').join(''), { address, id }]));
+    return new Map(endpoints.map(({ id, address }) => [id.replaceAll('-', ''), { address, id }]));
 };
 
 const subsequenceLenghth = (target: string, subsequenceStr: string) => {
