@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { readFile } from '../detect_services';
 
 type EndpointType = { id: string; address: string };
@@ -25,13 +26,15 @@ const subsequenceLenghth = (target: string, subsequenceStr: string) => {
 };
 
 const main = async () => {
-    const resp = await fetch('https://api.cloud.yandex.net/endpoints', {
-        method: 'get',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-    }).then((response) => response.json());
+    const resp = await axios
+        .get('https://api.cloud.yandex.net/endpoints', {
+            method: 'get',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => response.data);
 
     const endpointsMap = buildEndpointsMap(resp.endpoints);
 
