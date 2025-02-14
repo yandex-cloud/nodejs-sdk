@@ -59,12 +59,13 @@ pbRoot.load(protoFiles, { alternateCommentMode: true }).then((loadedRoot) => {
     }
 
     findServices(loadedRoot);
+    console.log('Missing services:');
     for (const s of SERVICES) {
         // full name without leading dot
         const fullName = s.fullName.slice(1);
 
         if (!SERVICE_IDS.has(fullName)) {
-            console.log('Missing service', fullName);
+            console.log(fullName);
             hasMissing = true;
         }
     }
