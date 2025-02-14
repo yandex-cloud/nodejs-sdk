@@ -1,7 +1,0 @@
-{
-  "extends": "../tsconfig",
-  "compilerOptions": {
-    "outDir": "../../ai-translate-v2"
-  },
-  "include": ["."]
-}

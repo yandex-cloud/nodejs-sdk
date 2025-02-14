@@ -1,4 +1,0 @@
-{
-  "./generated/yandex/cloud/loadtesting/api/v1/report/status": "reportStatus",
-  "./generated/yandex/cloud/loadtesting/api/v1/test/status": "testStatus"
-}
