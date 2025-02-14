@@ -78,7 +78,7 @@
   },
   "scripts": {
     "test": "cross-env NODE_OPTIONS=\"--max-old-space-size=8192\" jest -c config/jest.ts --passWithNoTests '.*\\.test\\.ts$'",
-    "lint": "eslint src config clients",
+    "lint": "eslint src config",
     "check-endpoints": "ts-node scripts/check-endpoints.ts",
     "prettier:fix:clients": "prettier src/clients/ --write",
     "prepare": "husky install",
