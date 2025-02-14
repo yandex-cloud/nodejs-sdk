@@ -11,10 +11,12 @@ type ServiceEndpointsList = ServiceEndpoint[];
 // @see https://api.cloud.yandex.net/endpoints
 export const SERVICE_ENDPOINTS_LIST: ServiceEndpointsList = [
     {
-        // TODO: UNKNOWN ENDPOINTS !!!
-        endpoint: '',
+        endpoint: 'airflow.api.cloud.yandex.net:443',
+        serviceIds: ['yandex.cloud.airflow.v1.ClusterService'],
+    },
+    {
+        endpoint: 'api.speechsense.yandexcloud.net:443',
         serviceIds: [
-            'yandex.cloud.airflow.v1.ClusterService',
             'yandex.cloud.speechsense.v1.ClassifiersService',
             'yandex.cloud.speechsense.v1.ProjectService',
             'yandex.cloud.speechsense.v1.TalkService',
