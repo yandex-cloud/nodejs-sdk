@@ -28,6 +28,7 @@ import {
     releaseChannelToJSON,
 } from '../../../../yandex/cloud/k8s/v1/cluster';
 import { UpdateVersionSpec } from '../../../../yandex/cloud/k8s/v1/version';
+import { Timestamp } from '../../../../google/protobuf/timestamp';
 import { Operation } from '../../../../yandex/cloud/operation/operation';
 import { NodeGroup } from '../../../../yandex/cloud/k8s/v1/node_group';
 import { Node } from '../../../../yandex/cloud/k8s/v1/node';
@@ -460,6 +461,19 @@ export interface LocationSpec {
      * If not specified and there is a single subnet in specified zone, address in this subnet will be allocated.
      */
     subnetId: string;
+}
+
+export interface RescheduleMaintenanceRequest {
+    $type: 'yandex.cloud.k8s.v1.RescheduleMaintenanceRequest';
+    /** ID of the Kubernetes cluster to reschedule maintenance. */
+    clusterId: string;
+    /** Time until which the update should be postponed. */
+    delayedUntil?: Date;
+}
+
+export interface RescheduleMaintenanceMetadata {
+    $type: 'yandex.cloud.k8s.v1.RescheduleMaintenanceMetadata';
+    clusterId: string;
 }
 
 const baseGetClusterRequest: object = {
@@ -3257,6 +3271,143 @@ export const LocationSpec = {
 
 messageTypeRegistry.set(LocationSpec.$type, LocationSpec);
 
+const baseRescheduleMaintenanceRequest: object = {
+    $type: 'yandex.cloud.k8s.v1.RescheduleMaintenanceRequest',
+    clusterId: '',
+};
+
+export const RescheduleMaintenanceRequest = {
+    $type: 'yandex.cloud.k8s.v1.RescheduleMaintenanceRequest' as const,
+
+    encode(
+        message: RescheduleMaintenanceRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.clusterId !== '') {
+            writer.uint32(10).string(message.clusterId);
+        }
+        if (message.delayedUntil !== undefined) {
+            Timestamp.encode(toTimestamp(message.delayedUntil), writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): RescheduleMaintenanceRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseRescheduleMaintenanceRequest } as RescheduleMaintenanceRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.clusterId = reader.string();
+                    break;
+                case 2:
+                    message.delayedUntil = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): RescheduleMaintenanceRequest {
+        const message = { ...baseRescheduleMaintenanceRequest } as RescheduleMaintenanceRequest;
+        message.clusterId =
+            object.clusterId !== undefined && object.clusterId !== null
+                ? String(object.clusterId)
+                : '';
+        message.delayedUntil =
+            object.delayedUntil !== undefined && object.delayedUntil !== null
+                ? fromJsonTimestamp(object.delayedUntil)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: RescheduleMaintenanceRequest): unknown {
+        const obj: any = {};
+        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+        message.delayedUntil !== undefined &&
+            (obj.delayedUntil = message.delayedUntil.toISOString());
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<RescheduleMaintenanceRequest>, I>>(
+        object: I,
+    ): RescheduleMaintenanceRequest {
+        const message = { ...baseRescheduleMaintenanceRequest } as RescheduleMaintenanceRequest;
+        message.clusterId = object.clusterId ?? '';
+        message.delayedUntil = object.delayedUntil ?? undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(RescheduleMaintenanceRequest.$type, RescheduleMaintenanceRequest);
+
+const baseRescheduleMaintenanceMetadata: object = {
+    $type: 'yandex.cloud.k8s.v1.RescheduleMaintenanceMetadata',
+    clusterId: '',
+};
+
+export const RescheduleMaintenanceMetadata = {
+    $type: 'yandex.cloud.k8s.v1.RescheduleMaintenanceMetadata' as const,
+
+    encode(
+        message: RescheduleMaintenanceMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.clusterId !== '') {
+            writer.uint32(10).string(message.clusterId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): RescheduleMaintenanceMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseRescheduleMaintenanceMetadata } as RescheduleMaintenanceMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.clusterId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): RescheduleMaintenanceMetadata {
+        const message = { ...baseRescheduleMaintenanceMetadata } as RescheduleMaintenanceMetadata;
+        message.clusterId =
+            object.clusterId !== undefined && object.clusterId !== null
+                ? String(object.clusterId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: RescheduleMaintenanceMetadata): unknown {
+        const obj: any = {};
+        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<RescheduleMaintenanceMetadata>, I>>(
+        object: I,
+    ): RescheduleMaintenanceMetadata {
+        const message = { ...baseRescheduleMaintenanceMetadata } as RescheduleMaintenanceMetadata;
+        message.clusterId = object.clusterId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(RescheduleMaintenanceMetadata.$type, RescheduleMaintenanceMetadata);
+
 /** A set of methods for managing Kubernetes cluster. */
 export const ClusterServiceService = {
     /**
@@ -3341,6 +3492,17 @@ export const ClusterServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Reschedules mandatory maintenance for the specified cluster. */
+    rescheduleMaintenance: {
+        path: '/yandex.cloud.k8s.v1.ClusterService/RescheduleMaintenance',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: RescheduleMaintenanceRequest) =>
+            Buffer.from(RescheduleMaintenanceRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => RescheduleMaintenanceRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
     /** Lists nodegroup for the specified Kubernetes cluster. */
     listNodeGroups: {
         path: '/yandex.cloud.k8s.v1.ClusterService/ListNodeGroups',
@@ -3398,6 +3560,8 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
     stop: handleUnaryCall<StopClusterRequest, Operation>;
     /** Starts the specified Kubernetes cluster. */
     start: handleUnaryCall<StartClusterRequest, Operation>;
+    /** Reschedules mandatory maintenance for the specified cluster. */
+    rescheduleMaintenance: handleUnaryCall<RescheduleMaintenanceRequest, Operation>;
     /** Lists nodegroup for the specified Kubernetes cluster. */
     listNodeGroups: handleUnaryCall<ListClusterNodeGroupsRequest, ListClusterNodeGroupsResponse>;
     /** Lists operations for the specified Kubernetes cluster. */
@@ -3523,6 +3687,22 @@ export interface ClusterServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
+    /** Reschedules mandatory maintenance for the specified cluster. */
+    rescheduleMaintenance(
+        request: RescheduleMaintenanceRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    rescheduleMaintenance(
+        request: RescheduleMaintenanceRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    rescheduleMaintenance(
+        request: RescheduleMaintenanceRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
     /** Lists nodegroup for the specified Kubernetes cluster. */
     listNodeGroups(
         request: ListClusterNodeGroupsRequest,
@@ -3615,6 +3795,28 @@ export type Exact<P, I extends P> = P extends Builtin
               Exclude<keyof I, KeysOfUnion<P> | '$type'>,
               never
           >;
+
+function toTimestamp(date: Date): Timestamp {
+    const seconds = date.getTime() / 1_000;
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+    let millis = t.seconds * 1_000;
+    millis += t.nanos / 1_000_000;
+    return new Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+    if (o instanceof Date) {
+        return o;
+    } else if (typeof o === 'string') {
+        return new Date(o);
+    } else {
+        return fromTimestamp(Timestamp.fromJSON(o));
+    }
+}
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

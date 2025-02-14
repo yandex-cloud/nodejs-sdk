@@ -18,6 +18,7 @@ import {
     Runtime,
     TransferType,
     Transformation,
+    DataObjects,
     Transfer,
     transferTypeFromJSON,
     transferTypeToJSON,
@@ -29,15 +30,32 @@ export const protobufPackage = 'yandex.cloud.datatransfer.v1';
 
 export interface CreateTransferRequest {
     $type: 'yandex.cloud.datatransfer.v1.CreateTransferRequest';
+    /** Identifier of the source endpoint. */
     sourceId: string;
+    /** Identifier of the target endpoint. */
     targetId: string;
+    /** Description of the transfer. */
     description: string;
+    /**
+     * ID of the folder to create the transfer in.
+     *
+     * To get the folder ID, make a
+     * [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+     */
     folderId: string;
     runtime?: Runtime;
     type: TransferType;
+    /** The transfer name. Must be unique within the folder. */
     name: string;
+    /**
+     * Transfer labels as `key:value` pairs.
+     *
+     * For details about the concept, see [documentation]({{ api-url-prefix
+     * }}/resource-manager/concepts/labels).
+     */
     labels: { [key: string]: string };
     transformation?: Transformation;
+    dataObjects?: DataObjects;
 }
 
 export interface CreateTransferRequest_LabelsEntry {
@@ -68,8 +86,15 @@ export interface UpdateTransferRequest {
      * the new value replaces the old one instead of being appended to the old one.
      */
     updateMask?: FieldMask;
+    /**
+     * Transfer labels as `key:value` pairs.
+     *
+     * For details about the concept, see [documentation]({{ api-url-prefix
+     * }}/resource-manager/concepts/labels).
+     */
     labels: { [key: string]: string };
     transformation?: Transformation;
+    dataObjects?: DataObjects;
 }
 
 export interface UpdateTransferRequest_LabelsEntry {
@@ -85,6 +110,7 @@ export interface UpdateTransferMetadata {
 
 export interface DeleteTransferRequest {
     $type: 'yandex.cloud.datatransfer.v1.DeleteTransferRequest';
+    /** Identifier of the transfer to be deleted. */
     transferId: string;
 }
 
@@ -95,7 +121,12 @@ export interface DeleteTransferMetadata {
 
 export interface ListTransfersRequest {
     $type: 'yandex.cloud.datatransfer.v1.ListTransfersRequest';
-    /** Identifier of the folder containing the transfers to be listed. */
+    /**
+     * Identifier of the folder containing the transfers to be listed.
+     *
+     * To get the folder ID, make a
+     * [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+     */
     folderId: string;
     /**
      * The maximum number of transfers to be sent in the response message. If the
@@ -136,11 +167,21 @@ export interface ListTransfersResponse {
 
 export interface GetTransferRequest {
     $type: 'yandex.cloud.datatransfer.v1.GetTransferRequest';
+    /**
+     * Identifier of the transfer to be returned.
+     *
+     * To get the list of all available transfers, make a [List] request.
+     */
     transferId: string;
 }
 
 export interface DeactivateTransferRequest {
     $type: 'yandex.cloud.datatransfer.v1.DeactivateTransferRequest';
+    /**
+     * Identifier of the transfer to be deactivated.
+     *
+     * To get the list of all available transfers, make a [List] request.
+     */
     transferId: string;
 }
 
@@ -151,6 +192,11 @@ export interface DeactivateTransferMetadata {
 
 export interface ActivateTransferRequest {
     $type: 'yandex.cloud.datatransfer.v1.ActivateTransferRequest';
+    /**
+     * Identifier of the transfer to be activated.
+     *
+     * To get the list of all available transfers, make a [List] request.
+     */
     transferId: string;
 }
 
@@ -207,6 +253,9 @@ export const CreateTransferRequest = {
         if (message.transformation !== undefined) {
             Transformation.encode(message.transformation, writer.uint32(82).fork()).ldelim();
         }
+        if (message.dataObjects !== undefined) {
+            DataObjects.encode(message.dataObjects, writer.uint32(98).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -250,6 +299,9 @@ export const CreateTransferRequest = {
                     break;
                 case 10:
                     message.transformation = Transformation.decode(reader, reader.uint32());
+                    break;
+                case 12:
+                    message.dataObjects = DataObjects.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -297,6 +349,10 @@ export const CreateTransferRequest = {
             object.transformation !== undefined && object.transformation !== null
                 ? Transformation.fromJSON(object.transformation)
                 : undefined;
+        message.dataObjects =
+            object.dataObjects !== undefined && object.dataObjects !== null
+                ? DataObjects.fromJSON(object.dataObjects)
+                : undefined;
         return message;
     },
 
@@ -319,6 +375,10 @@ export const CreateTransferRequest = {
         message.transformation !== undefined &&
             (obj.transformation = message.transformation
                 ? Transformation.toJSON(message.transformation)
+                : undefined);
+        message.dataObjects !== undefined &&
+            (obj.dataObjects = message.dataObjects
+                ? DataObjects.toJSON(message.dataObjects)
                 : undefined);
         return obj;
     },
@@ -349,6 +409,10 @@ export const CreateTransferRequest = {
         message.transformation =
             object.transformation !== undefined && object.transformation !== null
                 ? Transformation.fromPartial(object.transformation)
+                : undefined;
+        message.dataObjects =
+            object.dataObjects !== undefined && object.dataObjects !== null
+                ? DataObjects.fromPartial(object.dataObjects)
                 : undefined;
         return message;
     },
@@ -530,6 +594,9 @@ export const UpdateTransferRequest = {
         if (message.transformation !== undefined) {
             Transformation.encode(message.transformation, writer.uint32(66).fork()).ldelim();
         }
+        if (message.dataObjects !== undefined) {
+            DataObjects.encode(message.dataObjects, writer.uint32(82).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -567,6 +634,9 @@ export const UpdateTransferRequest = {
                     break;
                 case 8:
                     message.transformation = Transformation.decode(reader, reader.uint32());
+                    break;
+                case 10:
+                    message.dataObjects = DataObjects.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -606,6 +676,10 @@ export const UpdateTransferRequest = {
             object.transformation !== undefined && object.transformation !== null
                 ? Transformation.fromJSON(object.transformation)
                 : undefined;
+        message.dataObjects =
+            object.dataObjects !== undefined && object.dataObjects !== null
+                ? DataObjects.fromJSON(object.dataObjects)
+                : undefined;
         return message;
     },
 
@@ -629,6 +703,10 @@ export const UpdateTransferRequest = {
         message.transformation !== undefined &&
             (obj.transformation = message.transformation
                 ? Transformation.toJSON(message.transformation)
+                : undefined);
+        message.dataObjects !== undefined &&
+            (obj.dataObjects = message.dataObjects
+                ? DataObjects.toJSON(message.dataObjects)
                 : undefined);
         return obj;
     },
@@ -660,6 +738,10 @@ export const UpdateTransferRequest = {
         message.transformation =
             object.transformation !== undefined && object.transformation !== null
                 ? Transformation.fromPartial(object.transformation)
+                : undefined;
+        message.dataObjects =
+            object.dataObjects !== undefined && object.dataObjects !== null
+                ? DataObjects.fromPartial(object.dataObjects)
                 : undefined;
         return message;
     },
@@ -1381,6 +1463,7 @@ export const ActivateTransferMetadata = {
 messageTypeRegistry.set(ActivateTransferMetadata.$type, ActivateTransferMetadata);
 
 export const TransferServiceService = {
+    /** Creates a transfer in the specified folder. */
     create: {
         path: '/yandex.cloud.datatransfer.v1.TransferService/Create',
         requestStream: false,
@@ -1391,6 +1474,7 @@ export const TransferServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Updates the specified transfer. */
     update: {
         path: '/yandex.cloud.datatransfer.v1.TransferService/Update',
         requestStream: false,
@@ -1401,6 +1485,7 @@ export const TransferServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Deletes the specified transfer. */
     delete: {
         path: '/yandex.cloud.datatransfer.v1.TransferService/Delete',
         requestStream: false,
@@ -1411,6 +1496,7 @@ export const TransferServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Lists transfers in the specified folder. */
     list: {
         path: '/yandex.cloud.datatransfer.v1.TransferService/List',
         requestStream: false,
@@ -1422,6 +1508,11 @@ export const TransferServiceService = {
             Buffer.from(ListTransfersResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListTransfersResponse.decode(value),
     },
+    /**
+     * Returns the specified transfer.
+     *
+     * To get the list of all available transfers, make a [List] request.
+     */
     get: {
         path: '/yandex.cloud.datatransfer.v1.TransferService/Get',
         requestStream: false,
@@ -1432,6 +1523,11 @@ export const TransferServiceService = {
         responseSerialize: (value: Transfer) => Buffer.from(Transfer.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Transfer.decode(value),
     },
+    /**
+     * Deactivates the specified transfer.
+     *
+     * To get the list of all available transfers, make a [List] request.
+     */
     deactivate: {
         path: '/yandex.cloud.datatransfer.v1.TransferService/Deactivate',
         requestStream: false,
@@ -1442,6 +1538,11 @@ export const TransferServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /**
+     * Activates the specified transfer.
+     *
+     * To get the list of all available transfers, make a [List] request.
+     */
     activate: {
         path: '/yandex.cloud.datatransfer.v1.TransferService/Activate',
         requestStream: false,
@@ -1455,16 +1556,36 @@ export const TransferServiceService = {
 } as const;
 
 export interface TransferServiceServer extends UntypedServiceImplementation {
+    /** Creates a transfer in the specified folder. */
     create: handleUnaryCall<CreateTransferRequest, Operation>;
+    /** Updates the specified transfer. */
     update: handleUnaryCall<UpdateTransferRequest, Operation>;
+    /** Deletes the specified transfer. */
     delete: handleUnaryCall<DeleteTransferRequest, Operation>;
+    /** Lists transfers in the specified folder. */
     list: handleUnaryCall<ListTransfersRequest, ListTransfersResponse>;
+    /**
+     * Returns the specified transfer.
+     *
+     * To get the list of all available transfers, make a [List] request.
+     */
     get: handleUnaryCall<GetTransferRequest, Transfer>;
+    /**
+     * Deactivates the specified transfer.
+     *
+     * To get the list of all available transfers, make a [List] request.
+     */
     deactivate: handleUnaryCall<DeactivateTransferRequest, Operation>;
+    /**
+     * Activates the specified transfer.
+     *
+     * To get the list of all available transfers, make a [List] request.
+     */
     activate: handleUnaryCall<ActivateTransferRequest, Operation>;
 }
 
 export interface TransferServiceClient extends Client {
+    /** Creates a transfer in the specified folder. */
     create(
         request: CreateTransferRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1480,6 +1601,7 @@ export interface TransferServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
+    /** Updates the specified transfer. */
     update(
         request: UpdateTransferRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1495,6 +1617,7 @@ export interface TransferServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
+    /** Deletes the specified transfer. */
     delete(
         request: DeleteTransferRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1510,6 +1633,7 @@ export interface TransferServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
+    /** Lists transfers in the specified folder. */
     list(
         request: ListTransfersRequest,
         callback: (error: ServiceError | null, response: ListTransfersResponse) => void,
@@ -1525,6 +1649,11 @@ export interface TransferServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListTransfersResponse) => void,
     ): ClientUnaryCall;
+    /**
+     * Returns the specified transfer.
+     *
+     * To get the list of all available transfers, make a [List] request.
+     */
     get(
         request: GetTransferRequest,
         callback: (error: ServiceError | null, response: Transfer) => void,
@@ -1540,6 +1669,11 @@ export interface TransferServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Transfer) => void,
     ): ClientUnaryCall;
+    /**
+     * Deactivates the specified transfer.
+     *
+     * To get the list of all available transfers, make a [List] request.
+     */
     deactivate(
         request: DeactivateTransferRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1555,6 +1689,11 @@ export interface TransferServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
+    /**
+     * Activates the specified transfer.
+     *
+     * To get the list of all available transfers, make a [List] request.
+     */
     activate(
         request: ActivateTransferRequest,
         callback: (error: ServiceError | null, response: Operation) => void,

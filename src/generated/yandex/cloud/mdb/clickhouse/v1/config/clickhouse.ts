@@ -270,6 +270,11 @@ export interface ClickhouseConfig {
      * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings#query_cache)
      */
     queryCache?: ClickhouseConfig_QueryCache;
+    /**
+     * JDBC bridge for queries to external databases.
+     * https://clickhouse.com/docs/en/integrations/jdbc/jdbc-with-clickhouse
+     */
+    jdbcBridge?: ClickhouseConfig_JdbcBridge;
 }
 
 export enum ClickhouseConfig_LogLevel {
@@ -1341,6 +1346,15 @@ export interface ClickhouseConfig_QueryCache {
     maxEntrySizeInRows?: number;
 }
 
+/** JDBC bridge for queries to external databases. */
+export interface ClickhouseConfig_JdbcBridge {
+    $type: 'yandex.cloud.mdb.clickhouse.v1.config.ClickhouseConfig.JdbcBridge';
+    /** Host of jdbc bridge. */
+    host: string;
+    /** Port of jdbc bridge. */
+    port?: number;
+}
+
 export interface ClickhouseConfigSet {
     $type: 'yandex.cloud.mdb.clickhouse.v1.config.ClickhouseConfigSet';
     /**
@@ -1792,6 +1806,12 @@ export const ClickhouseConfig = {
                 writer.uint32(554).fork(),
             ).ldelim();
         }
+        if (message.jdbcBridge !== undefined) {
+            ClickhouseConfig_JdbcBridge.encode(
+                message.jdbcBridge,
+                writer.uint32(562).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -2135,6 +2155,12 @@ export const ClickhouseConfig = {
                         reader.uint32(),
                     );
                     break;
+                case 70:
+                    message.jdbcBridge = ClickhouseConfig_JdbcBridge.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2440,6 +2466,10 @@ export const ClickhouseConfig = {
             object.queryCache !== undefined && object.queryCache !== null
                 ? ClickhouseConfig_QueryCache.fromJSON(object.queryCache)
                 : undefined;
+        message.jdbcBridge =
+            object.jdbcBridge !== undefined && object.jdbcBridge !== null
+                ? ClickhouseConfig_JdbcBridge.fromJSON(object.jdbcBridge)
+                : undefined;
         return message;
     },
 
@@ -2608,6 +2638,10 @@ export const ClickhouseConfig = {
             (obj.queryCache = message.queryCache
                 ? ClickhouseConfig_QueryCache.toJSON(message.queryCache)
                 : undefined);
+        message.jdbcBridge !== undefined &&
+            (obj.jdbcBridge = message.jdbcBridge
+                ? ClickhouseConfig_JdbcBridge.toJSON(message.jdbcBridge)
+                : undefined);
         return obj;
     },
 
@@ -2713,6 +2747,10 @@ export const ClickhouseConfig = {
         message.queryCache =
             object.queryCache !== undefined && object.queryCache !== null
                 ? ClickhouseConfig_QueryCache.fromPartial(object.queryCache)
+                : undefined;
+        message.jdbcBridge =
+            object.jdbcBridge !== undefined && object.jdbcBridge !== null
+                ? ClickhouseConfig_JdbcBridge.fromPartial(object.jdbcBridge)
                 : undefined;
         return message;
     },
@@ -6234,6 +6272,78 @@ export const ClickhouseConfig_QueryCache = {
 };
 
 messageTypeRegistry.set(ClickhouseConfig_QueryCache.$type, ClickhouseConfig_QueryCache);
+
+const baseClickhouseConfig_JdbcBridge: object = {
+    $type: 'yandex.cloud.mdb.clickhouse.v1.config.ClickhouseConfig.JdbcBridge',
+    host: '',
+};
+
+export const ClickhouseConfig_JdbcBridge = {
+    $type: 'yandex.cloud.mdb.clickhouse.v1.config.ClickhouseConfig.JdbcBridge' as const,
+
+    encode(
+        message: ClickhouseConfig_JdbcBridge,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.host !== '') {
+            writer.uint32(10).string(message.host);
+        }
+        if (message.port !== undefined) {
+            Int64Value.encode(
+                { $type: 'google.protobuf.Int64Value', value: message.port! },
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClickhouseConfig_JdbcBridge {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseClickhouseConfig_JdbcBridge } as ClickhouseConfig_JdbcBridge;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.host = reader.string();
+                    break;
+                case 2:
+                    message.port = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ClickhouseConfig_JdbcBridge {
+        const message = { ...baseClickhouseConfig_JdbcBridge } as ClickhouseConfig_JdbcBridge;
+        message.host = object.host !== undefined && object.host !== null ? String(object.host) : '';
+        message.port =
+            object.port !== undefined && object.port !== null ? Number(object.port) : undefined;
+        return message;
+    },
+
+    toJSON(message: ClickhouseConfig_JdbcBridge): unknown {
+        const obj: any = {};
+        message.host !== undefined && (obj.host = message.host);
+        message.port !== undefined && (obj.port = message.port);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ClickhouseConfig_JdbcBridge>, I>>(
+        object: I,
+    ): ClickhouseConfig_JdbcBridge {
+        const message = { ...baseClickhouseConfig_JdbcBridge } as ClickhouseConfig_JdbcBridge;
+        message.host = object.host ?? '';
+        message.port = object.port ?? undefined;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ClickhouseConfig_JdbcBridge.$type, ClickhouseConfig_JdbcBridge);
 
 const baseClickhouseConfigSet: object = {
     $type: 'yandex.cloud.mdb.clickhouse.v1.config.ClickhouseConfigSet',

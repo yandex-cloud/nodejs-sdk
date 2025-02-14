@@ -41,6 +41,7 @@ export interface FolderAndName {
 
 export interface GetExResponse {
     $type: 'yandex.cloud.lockbox.v1.GetExResponse';
+    secretId: string;
     versionId: string;
     entries: { [key: string]: Buffer };
 }
@@ -275,14 +276,21 @@ export const FolderAndName = {
 
 messageTypeRegistry.set(FolderAndName.$type, FolderAndName);
 
-const baseGetExResponse: object = { $type: 'yandex.cloud.lockbox.v1.GetExResponse', versionId: '' };
+const baseGetExResponse: object = {
+    $type: 'yandex.cloud.lockbox.v1.GetExResponse',
+    secretId: '',
+    versionId: '',
+};
 
 export const GetExResponse = {
     $type: 'yandex.cloud.lockbox.v1.GetExResponse' as const,
 
     encode(message: GetExResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.secretId !== '') {
+            writer.uint32(10).string(message.secretId);
+        }
         if (message.versionId !== '') {
-            writer.uint32(10).string(message.versionId);
+            writer.uint32(18).string(message.versionId);
         }
         Object.entries(message.entries).forEach(([key, value]) => {
             GetExResponse_EntriesEntry.encode(
@@ -291,7 +299,7 @@ export const GetExResponse = {
                     key: key as any,
                     value,
                 },
-                writer.uint32(18).fork(),
+                writer.uint32(26).fork(),
             ).ldelim();
         });
         return writer;
@@ -306,12 +314,15 @@ export const GetExResponse = {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    message.versionId = reader.string();
+                    message.secretId = reader.string();
                     break;
                 case 2:
-                    const entry2 = GetExResponse_EntriesEntry.decode(reader, reader.uint32());
-                    if (entry2.value !== undefined) {
-                        message.entries[entry2.key] = entry2.value;
+                    message.versionId = reader.string();
+                    break;
+                case 3:
+                    const entry3 = GetExResponse_EntriesEntry.decode(reader, reader.uint32());
+                    if (entry3.value !== undefined) {
+                        message.entries[entry3.key] = entry3.value;
                     }
                     break;
                 default:
@@ -324,6 +335,10 @@ export const GetExResponse = {
 
     fromJSON(object: any): GetExResponse {
         const message = { ...baseGetExResponse } as GetExResponse;
+        message.secretId =
+            object.secretId !== undefined && object.secretId !== null
+                ? String(object.secretId)
+                : '';
         message.versionId =
             object.versionId !== undefined && object.versionId !== null
                 ? String(object.versionId)
@@ -340,6 +355,7 @@ export const GetExResponse = {
 
     toJSON(message: GetExResponse): unknown {
         const obj: any = {};
+        message.secretId !== undefined && (obj.secretId = message.secretId);
         message.versionId !== undefined && (obj.versionId = message.versionId);
         obj.entries = {};
         if (message.entries) {
@@ -352,6 +368,7 @@ export const GetExResponse = {
 
     fromPartial<I extends Exact<DeepPartial<GetExResponse>, I>>(object: I): GetExResponse {
         const message = { ...baseGetExResponse } as GetExResponse;
+        message.secretId = object.secretId ?? '';
         message.versionId = object.versionId ?? '';
         message.entries = Object.entries(object.entries ?? {}).reduce<{ [key: string]: Buffer }>(
             (acc, [key, value]) => {

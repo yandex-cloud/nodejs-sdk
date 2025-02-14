@@ -529,6 +529,8 @@ export interface PolicySettings_Scheduling {
     scheme: PolicySettings_Scheduling_Scheme;
     /** A day of week to start weekly backups. */
     weeklyBackupDay: PolicySettings_Day;
+    /** Task failure settings in case of failure of scheduled task, not applicable to  manually launched tasks */
+    taskFailure?: PolicySettings_RetriesConfiguration;
 }
 
 /** Scheme of backups. */
@@ -1991,6 +1993,12 @@ export const PolicySettings_Scheduling = {
         if (message.weeklyBackupDay !== 0) {
             writer.uint32(48).int32(message.weeklyBackupDay);
         }
+        if (message.taskFailure !== undefined) {
+            PolicySettings_RetriesConfiguration.encode(
+                message.taskFailure,
+                writer.uint32(58).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -2021,6 +2029,12 @@ export const PolicySettings_Scheduling = {
                     break;
                 case 6:
                     message.weeklyBackupDay = reader.int32() as any;
+                    break;
+                case 7:
+                    message.taskFailure = PolicySettings_RetriesConfiguration.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2055,6 +2069,10 @@ export const PolicySettings_Scheduling = {
             object.weeklyBackupDay !== undefined && object.weeklyBackupDay !== null
                 ? policySettings_DayFromJSON(object.weeklyBackupDay)
                 : 0;
+        message.taskFailure =
+            object.taskFailure !== undefined && object.taskFailure !== null
+                ? PolicySettings_RetriesConfiguration.fromJSON(object.taskFailure)
+                : undefined;
         return message;
     },
 
@@ -2078,6 +2096,10 @@ export const PolicySettings_Scheduling = {
             (obj.scheme = policySettings_Scheduling_SchemeToJSON(message.scheme));
         message.weeklyBackupDay !== undefined &&
             (obj.weeklyBackupDay = policySettings_DayToJSON(message.weeklyBackupDay));
+        message.taskFailure !== undefined &&
+            (obj.taskFailure = message.taskFailure
+                ? PolicySettings_RetriesConfiguration.toJSON(message.taskFailure)
+                : undefined);
         return obj;
     },
 
@@ -2095,6 +2117,10 @@ export const PolicySettings_Scheduling = {
                 : undefined;
         message.scheme = object.scheme ?? 0;
         message.weeklyBackupDay = object.weeklyBackupDay ?? 0;
+        message.taskFailure =
+            object.taskFailure !== undefined && object.taskFailure !== null
+                ? PolicySettings_RetriesConfiguration.fromPartial(object.taskFailure)
+                : undefined;
         return message;
     },
 };

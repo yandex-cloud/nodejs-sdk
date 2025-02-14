@@ -241,6 +241,30 @@ export interface DeleteBackupMetadata {
     backupId: string;
 }
 
+/**
+ * must be specified archive_id and folder/instance_id
+ * or pair of policy id and instance_id
+ */
+export interface DeleteArchiveRequest {
+    $type: 'yandex.cloud.backup.v1.DeleteArchiveRequest';
+    /** Archive ID that should be deleted. */
+    archiveId: string;
+    /** Folder ID of the archive to delete. */
+    folderId: string;
+    /** Instance ID of the Archive. */
+    instanceId: string;
+    /** Policy ID of the Archive. */
+    policyId: string;
+}
+
+export interface DeleteArchiveMetadata {
+    $type: 'yandex.cloud.backup.v1.DeleteArchiveMetadata';
+    /** Archive ID that should be deleted. */
+    archiveId: string;
+    /** Folder ID of the archive. */
+    folderId: string;
+}
+
 const baseListArchivesRequest: object = { $type: 'yandex.cloud.backup.v1.ListArchivesRequest' };
 
 export const ListArchivesRequest = {
@@ -1697,6 +1721,176 @@ export const DeleteBackupMetadata = {
 
 messageTypeRegistry.set(DeleteBackupMetadata.$type, DeleteBackupMetadata);
 
+const baseDeleteArchiveRequest: object = {
+    $type: 'yandex.cloud.backup.v1.DeleteArchiveRequest',
+    archiveId: '',
+    folderId: '',
+    instanceId: '',
+    policyId: '',
+};
+
+export const DeleteArchiveRequest = {
+    $type: 'yandex.cloud.backup.v1.DeleteArchiveRequest' as const,
+
+    encode(message: DeleteArchiveRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.archiveId !== '') {
+            writer.uint32(10).string(message.archiveId);
+        }
+        if (message.folderId !== '') {
+            writer.uint32(18).string(message.folderId);
+        }
+        if (message.instanceId !== '') {
+            writer.uint32(26).string(message.instanceId);
+        }
+        if (message.policyId !== '') {
+            writer.uint32(34).string(message.policyId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteArchiveRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDeleteArchiveRequest } as DeleteArchiveRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.archiveId = reader.string();
+                    break;
+                case 2:
+                    message.folderId = reader.string();
+                    break;
+                case 3:
+                    message.instanceId = reader.string();
+                    break;
+                case 4:
+                    message.policyId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeleteArchiveRequest {
+        const message = { ...baseDeleteArchiveRequest } as DeleteArchiveRequest;
+        message.archiveId =
+            object.archiveId !== undefined && object.archiveId !== null
+                ? String(object.archiveId)
+                : '';
+        message.folderId =
+            object.folderId !== undefined && object.folderId !== null
+                ? String(object.folderId)
+                : '';
+        message.instanceId =
+            object.instanceId !== undefined && object.instanceId !== null
+                ? String(object.instanceId)
+                : '';
+        message.policyId =
+            object.policyId !== undefined && object.policyId !== null
+                ? String(object.policyId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: DeleteArchiveRequest): unknown {
+        const obj: any = {};
+        message.archiveId !== undefined && (obj.archiveId = message.archiveId);
+        message.folderId !== undefined && (obj.folderId = message.folderId);
+        message.instanceId !== undefined && (obj.instanceId = message.instanceId);
+        message.policyId !== undefined && (obj.policyId = message.policyId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeleteArchiveRequest>, I>>(
+        object: I,
+    ): DeleteArchiveRequest {
+        const message = { ...baseDeleteArchiveRequest } as DeleteArchiveRequest;
+        message.archiveId = object.archiveId ?? '';
+        message.folderId = object.folderId ?? '';
+        message.instanceId = object.instanceId ?? '';
+        message.policyId = object.policyId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(DeleteArchiveRequest.$type, DeleteArchiveRequest);
+
+const baseDeleteArchiveMetadata: object = {
+    $type: 'yandex.cloud.backup.v1.DeleteArchiveMetadata',
+    archiveId: '',
+    folderId: '',
+};
+
+export const DeleteArchiveMetadata = {
+    $type: 'yandex.cloud.backup.v1.DeleteArchiveMetadata' as const,
+
+    encode(message: DeleteArchiveMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.archiveId !== '') {
+            writer.uint32(10).string(message.archiveId);
+        }
+        if (message.folderId !== '') {
+            writer.uint32(18).string(message.folderId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteArchiveMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDeleteArchiveMetadata } as DeleteArchiveMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.archiveId = reader.string();
+                    break;
+                case 2:
+                    message.folderId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeleteArchiveMetadata {
+        const message = { ...baseDeleteArchiveMetadata } as DeleteArchiveMetadata;
+        message.archiveId =
+            object.archiveId !== undefined && object.archiveId !== null
+                ? String(object.archiveId)
+                : '';
+        message.folderId =
+            object.folderId !== undefined && object.folderId !== null
+                ? String(object.folderId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: DeleteArchiveMetadata): unknown {
+        const obj: any = {};
+        message.archiveId !== undefined && (obj.archiveId = message.archiveId);
+        message.folderId !== undefined && (obj.folderId = message.folderId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeleteArchiveMetadata>, I>>(
+        object: I,
+    ): DeleteArchiveMetadata {
+        const message = { ...baseDeleteArchiveMetadata } as DeleteArchiveMetadata;
+        message.archiveId = object.archiveId ?? '';
+        message.folderId = object.folderId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(DeleteArchiveMetadata.$type, DeleteArchiveMetadata);
+
 /** A set of methods for managing [backups](/docs/backup/concepts/backup). */
 export const BackupServiceService = {
     /** List backups using filters. */
@@ -1786,6 +1980,17 @@ export const BackupServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Delete specific archive. */
+    deleteArchive: {
+        path: '/yandex.cloud.backup.v1.BackupService/DeleteArchive',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: DeleteArchiveRequest) =>
+            Buffer.from(DeleteArchiveRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => DeleteArchiveRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
 } as const;
 
 export interface BackupServiceServer extends UntypedServiceImplementation {
@@ -1810,6 +2015,8 @@ export interface BackupServiceServer extends UntypedServiceImplementation {
     startFilesRecovery: handleUnaryCall<StartFilesRecoveryRequest, Operation>;
     /** Delete specific backup. */
     delete: handleUnaryCall<DeleteBackupRequest, Operation>;
+    /** Delete specific archive. */
+    deleteArchive: handleUnaryCall<DeleteArchiveRequest, Operation>;
 }
 
 export interface BackupServiceClient extends Client {
@@ -1928,6 +2135,22 @@ export interface BackupServiceClient extends Client {
     ): ClientUnaryCall;
     delete(
         request: DeleteBackupRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Delete specific archive. */
+    deleteArchive(
+        request: DeleteArchiveRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    deleteArchive(
+        request: DeleteArchiveRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    deleteArchive(
+        request: DeleteArchiveRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

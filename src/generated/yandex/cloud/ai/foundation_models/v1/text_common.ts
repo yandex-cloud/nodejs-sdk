@@ -23,6 +23,61 @@ export interface CompletionOptions {
      * Must be greater than zero. This maximum allowed parameter value may depend on the model being used.
      */
     maxTokens?: number;
+    /** Configures reasoning capabilities for the model, allowing it to perform internal reasoning before responding. */
+    reasoningOptions?: ReasoningOptions;
+}
+
+/** Represents reasoning options that enable the model's ability to perform internal reasoning before generating a response. */
+export interface ReasoningOptions {
+    $type: 'yandex.cloud.ai.foundation_models.v1.ReasoningOptions';
+    /** Specifies the reasoning mode to be used. */
+    mode: ReasoningOptions_ReasoningMode;
+}
+
+/** Enum representing the reasoning mode. */
+export enum ReasoningOptions_ReasoningMode {
+    /** REASONING_MODE_UNSPECIFIED - Unspecified reasoning mode. */
+    REASONING_MODE_UNSPECIFIED = 0,
+    /** DISABLED - Disables reasoning. The model will generate a response without performing any internal reasoning. */
+    DISABLED = 1,
+    /** ENABLED_HIDDEN - Enables reasoning in a hidden manner without exposing the reasoning steps to the user. */
+    ENABLED_HIDDEN = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function reasoningOptions_ReasoningModeFromJSON(
+    object: any,
+): ReasoningOptions_ReasoningMode {
+    switch (object) {
+        case 0:
+        case 'REASONING_MODE_UNSPECIFIED':
+            return ReasoningOptions_ReasoningMode.REASONING_MODE_UNSPECIFIED;
+        case 1:
+        case 'DISABLED':
+            return ReasoningOptions_ReasoningMode.DISABLED;
+        case 2:
+        case 'ENABLED_HIDDEN':
+            return ReasoningOptions_ReasoningMode.ENABLED_HIDDEN;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return ReasoningOptions_ReasoningMode.UNRECOGNIZED;
+    }
+}
+
+export function reasoningOptions_ReasoningModeToJSON(
+    object: ReasoningOptions_ReasoningMode,
+): string {
+    switch (object) {
+        case ReasoningOptions_ReasoningMode.REASONING_MODE_UNSPECIFIED:
+            return 'REASONING_MODE_UNSPECIFIED';
+        case ReasoningOptions_ReasoningMode.DISABLED:
+            return 'DISABLED';
+        case ReasoningOptions_ReasoningMode.ENABLED_HIDDEN:
+            return 'ENABLED_HIDDEN';
+        default:
+            return 'UNKNOWN';
+    }
 }
 
 /** A message object representing a wrapper over the inputs and outputs of the completion model. */
@@ -52,6 +107,15 @@ export interface ContentUsage {
     completionTokens: number;
     /** The total number of tokens, including all input tokens and all generated tokens. */
     totalTokens: number;
+    /** Provides additional information about how the completion tokens were utilized. */
+    completionTokensDetails?: ContentUsage_CompletionTokensDetails;
+}
+
+/** Provides additional information about how the completion tokens were utilized. */
+export interface ContentUsage_CompletionTokensDetails {
+    $type: 'yandex.cloud.ai.foundation_models.v1.ContentUsage.CompletionTokensDetails';
+    /** The number of tokens used specifically for internal reasoning performed by the model. */
+    reasoningTokens: number;
 }
 
 /** Represents a generated completion alternative, including its content and generation status. */
@@ -237,6 +301,9 @@ export const CompletionOptions = {
                 writer.uint32(26).fork(),
             ).ldelim();
         }
+        if (message.reasoningOptions !== undefined) {
+            ReasoningOptions.encode(message.reasoningOptions, writer.uint32(34).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -255,6 +322,9 @@ export const CompletionOptions = {
                     break;
                 case 3:
                     message.maxTokens = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 4:
+                    message.reasoningOptions = ReasoningOptions.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -276,6 +346,10 @@ export const CompletionOptions = {
             object.maxTokens !== undefined && object.maxTokens !== null
                 ? Number(object.maxTokens)
                 : undefined;
+        message.reasoningOptions =
+            object.reasoningOptions !== undefined && object.reasoningOptions !== null
+                ? ReasoningOptions.fromJSON(object.reasoningOptions)
+                : undefined;
         return message;
     },
 
@@ -284,6 +358,10 @@ export const CompletionOptions = {
         message.stream !== undefined && (obj.stream = message.stream);
         message.temperature !== undefined && (obj.temperature = message.temperature);
         message.maxTokens !== undefined && (obj.maxTokens = message.maxTokens);
+        message.reasoningOptions !== undefined &&
+            (obj.reasoningOptions = message.reasoningOptions
+                ? ReasoningOptions.toJSON(message.reasoningOptions)
+                : undefined);
         return obj;
     },
 
@@ -292,11 +370,73 @@ export const CompletionOptions = {
         message.stream = object.stream ?? false;
         message.temperature = object.temperature ?? undefined;
         message.maxTokens = object.maxTokens ?? undefined;
+        message.reasoningOptions =
+            object.reasoningOptions !== undefined && object.reasoningOptions !== null
+                ? ReasoningOptions.fromPartial(object.reasoningOptions)
+                : undefined;
         return message;
     },
 };
 
 messageTypeRegistry.set(CompletionOptions.$type, CompletionOptions);
+
+const baseReasoningOptions: object = {
+    $type: 'yandex.cloud.ai.foundation_models.v1.ReasoningOptions',
+    mode: 0,
+};
+
+export const ReasoningOptions = {
+    $type: 'yandex.cloud.ai.foundation_models.v1.ReasoningOptions' as const,
+
+    encode(message: ReasoningOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.mode !== 0) {
+            writer.uint32(8).int32(message.mode);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReasoningOptions {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseReasoningOptions } as ReasoningOptions;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.mode = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ReasoningOptions {
+        const message = { ...baseReasoningOptions } as ReasoningOptions;
+        message.mode =
+            object.mode !== undefined && object.mode !== null
+                ? reasoningOptions_ReasoningModeFromJSON(object.mode)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: ReasoningOptions): unknown {
+        const obj: any = {};
+        message.mode !== undefined &&
+            (obj.mode = reasoningOptions_ReasoningModeToJSON(message.mode));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ReasoningOptions>, I>>(object: I): ReasoningOptions {
+        const message = { ...baseReasoningOptions } as ReasoningOptions;
+        message.mode = object.mode ?? 0;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ReasoningOptions.$type, ReasoningOptions);
 
 const baseMessage: object = { $type: 'yandex.cloud.ai.foundation_models.v1.Message', role: '' };
 
@@ -415,6 +555,12 @@ export const ContentUsage = {
         if (message.totalTokens !== 0) {
             writer.uint32(24).int64(message.totalTokens);
         }
+        if (message.completionTokensDetails !== undefined) {
+            ContentUsage_CompletionTokensDetails.encode(
+                message.completionTokensDetails,
+                writer.uint32(34).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -433,6 +579,12 @@ export const ContentUsage = {
                     break;
                 case 3:
                     message.totalTokens = longToNumber(reader.int64() as Long);
+                    break;
+                case 4:
+                    message.completionTokensDetails = ContentUsage_CompletionTokensDetails.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -456,6 +608,10 @@ export const ContentUsage = {
             object.totalTokens !== undefined && object.totalTokens !== null
                 ? Number(object.totalTokens)
                 : 0;
+        message.completionTokensDetails =
+            object.completionTokensDetails !== undefined && object.completionTokensDetails !== null
+                ? ContentUsage_CompletionTokensDetails.fromJSON(object.completionTokensDetails)
+                : undefined;
         return message;
     },
 
@@ -466,6 +622,10 @@ export const ContentUsage = {
         message.completionTokens !== undefined &&
             (obj.completionTokens = Math.round(message.completionTokens));
         message.totalTokens !== undefined && (obj.totalTokens = Math.round(message.totalTokens));
+        message.completionTokensDetails !== undefined &&
+            (obj.completionTokensDetails = message.completionTokensDetails
+                ? ContentUsage_CompletionTokensDetails.toJSON(message.completionTokensDetails)
+                : undefined);
         return obj;
     },
 
@@ -474,11 +634,87 @@ export const ContentUsage = {
         message.inputTextTokens = object.inputTextTokens ?? 0;
         message.completionTokens = object.completionTokens ?? 0;
         message.totalTokens = object.totalTokens ?? 0;
+        message.completionTokensDetails =
+            object.completionTokensDetails !== undefined && object.completionTokensDetails !== null
+                ? ContentUsage_CompletionTokensDetails.fromPartial(object.completionTokensDetails)
+                : undefined;
         return message;
     },
 };
 
 messageTypeRegistry.set(ContentUsage.$type, ContentUsage);
+
+const baseContentUsage_CompletionTokensDetails: object = {
+    $type: 'yandex.cloud.ai.foundation_models.v1.ContentUsage.CompletionTokensDetails',
+    reasoningTokens: 0,
+};
+
+export const ContentUsage_CompletionTokensDetails = {
+    $type: 'yandex.cloud.ai.foundation_models.v1.ContentUsage.CompletionTokensDetails' as const,
+
+    encode(
+        message: ContentUsage_CompletionTokensDetails,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.reasoningTokens !== 0) {
+            writer.uint32(8).int64(message.reasoningTokens);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ContentUsage_CompletionTokensDetails {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseContentUsage_CompletionTokensDetails,
+        } as ContentUsage_CompletionTokensDetails;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.reasoningTokens = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ContentUsage_CompletionTokensDetails {
+        const message = {
+            ...baseContentUsage_CompletionTokensDetails,
+        } as ContentUsage_CompletionTokensDetails;
+        message.reasoningTokens =
+            object.reasoningTokens !== undefined && object.reasoningTokens !== null
+                ? Number(object.reasoningTokens)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: ContentUsage_CompletionTokensDetails): unknown {
+        const obj: any = {};
+        message.reasoningTokens !== undefined &&
+            (obj.reasoningTokens = Math.round(message.reasoningTokens));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ContentUsage_CompletionTokensDetails>, I>>(
+        object: I,
+    ): ContentUsage_CompletionTokensDetails {
+        const message = {
+            ...baseContentUsage_CompletionTokensDetails,
+        } as ContentUsage_CompletionTokensDetails;
+        message.reasoningTokens = object.reasoningTokens ?? 0;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(
+    ContentUsage_CompletionTokensDetails.$type,
+    ContentUsage_CompletionTokensDetails,
+);
 
 const baseAlternative: object = {
     $type: 'yandex.cloud.ai.foundation_models.v1.Alternative',

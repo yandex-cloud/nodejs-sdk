@@ -5,13 +5,12 @@ import { detectRootServices, writeToFile } from '../detect_services';
 
 import { promisify } from 'node:util';
 import child_process from 'node:child_process';
-import { uniq } from 'lodash';
 
 const exec = promisify(child_process.exec);
 
 const PROTO_DIR = PATH.resolve('./cloudapi');
 const YANDEX_CLOUD_DIR = PATH.join(PROTO_DIR, 'yandex', 'cloud');
-const CLIENTS_DIR = PATH.resolve('./clients');
+const CLIENTS_DIR = PATH.resolve('./src/clients');
 
 const generateServiceName = (dir: string) => {
     return dir.split('/').join('-');
@@ -34,7 +33,7 @@ const toCamelCase = (str: string) => {
     return res;
 };
 
-const addReExportsForService = async (
+const addReExports = async (
     absoluteServiceDir: string,
     serviceDir: string,
     relativeProtoPathList: string[],
@@ -60,7 +59,7 @@ const addReExportsForService = async (
     };
 
     const protoFileList = relativeProtoPathList.sort().map((pathStr) => {
-        const originProtoSource = `./generated/yandex/cloud/${serviceDir}/${pathStr}`;
+        const originProtoSource = `../../generated/yandex/cloud/${serviceDir}/${pathStr}`;
         const tsImportSource = `${originProtoSource.substring(
             0,
             originProtoSource.indexOf('.proto'),
@@ -82,21 +81,24 @@ const addReExportsForService = async (
     fs.writeFileSync(indexModulePath, indexModuleContent, 'utf8');
 };
 
-const initTsConfig = async (absoluteServiceDir: string, serviceName: string) => {
-    const pathStr = PATH.join(absoluteServiceDir, 'tsconfig.json');
+const generateCloudApi = () => {
+    const YA_PROTO_DIR = PATH.join(PROTO_DIR, 'yandex');
+    const GENERATED_CODE_DIR = PATH.resolve('./src/generated');
 
-    const content = {
-        extends: '../tsconfig',
-        compilerOptions: {
-            outDir: `../../${serviceName}`,
-        },
-        include: ['.'],
-    };
+    const protoFiles = fg.sync('**/*.proto', { cwd: YA_PROTO_DIR, absolute: true });
+    const commandArgs = [
+        'npx --no-install grpc_tools_node_protoc',
+        `--ts_proto_out=${GENERATED_CODE_DIR}`,
+        '--ts_proto_opt=outputServices=grpc-js,esModuleInterop=true,outputTypeRegistry=true,env=node,useOptionals=messages',
+        `-I ${PROTO_DIR} -I ${PROTO_DIR}/third_party/googleapis`,
+        protoFiles.join(' '),
+    ];
+    const command = commandArgs.join(' ');
 
-    fs.writeFileSync(pathStr, JSON.stringify(content, null, 2), 'utf8');
+    return exec(command);
 };
 
-const generateService = async (dir: string) => {
+const generateClient = async (dir: string) => {
     const target = PATH.join(YANDEX_CLOUD_DIR, dir);
 
     const serviceProtoFiles = fg.sync('**/*.proto', { cwd: target, absolute: true });
@@ -104,53 +106,17 @@ const generateService = async (dir: string) => {
     const serviceName = generateServiceName(dir);
 
     const serviceDir = PATH.join(CLIENTS_DIR, serviceName);
-    const generatedCodeDir = PATH.join(serviceDir, 'generated');
-
-    if (!fs.existsSync(generatedCodeDir)) {
-        fs.mkdirSync(generatedCodeDir, { recursive: true });
+    if (!fs.existsSync(serviceDir)) {
+        fs.mkdirSync(serviceDir, { recursive: true });
     }
-
-    const commandArgs = [
-        'npx --no-install grpc_tools_node_protoc',
-        `--ts_proto_out=${generatedCodeDir}`,
-        '--ts_proto_opt=outputServices=grpc-js,esModuleInterop=true,outputTypeRegistry=true,env=node,useOptionals=messages',
-        `-I ${PROTO_DIR} -I ${PROTO_DIR}/third_party/googleapis`,
-        serviceProtoFiles.join(' '),
-    ];
-    const command = commandArgs.join(' ');
-
-    await exec(command);
 
     const relativeProtoPathList = serviceProtoFiles.map((pathStr) => {
         return PATH.relative(target, pathStr);
     });
 
-    await Promise.all([
-        addReExportsForService(serviceDir, dir, relativeProtoPathList),
-        initTsConfig(serviceDir, serviceName),
-    ]);
+    await addReExports(serviceDir, dir, relativeProtoPathList);
 
     return serviceName;
-};
-
-const START_SIGN = '# generate_services start';
-
-const modifyGitignore = async (serviceList: string[]) => {
-    const path = PATH.resolve('.gitignore');
-    const content = fs.readFileSync(path, 'utf8');
-
-    const startIdx = content.indexOf(START_SIGN);
-    const endIdx = content.indexOf('# generate_services end');
-
-    let newContent = content.substring(0, startIdx + START_SIGN.length + 1);
-
-    serviceList.forEach((service) => {
-        newContent += `/${service}\n`;
-    });
-
-    newContent += content.substring(endIdx);
-
-    fs.writeFileSync(path, newContent, 'utf8');
 };
 
 const modifyPackageJSON = async (serviceList: string[]) => {
@@ -159,16 +125,10 @@ const modifyPackageJSON = async (serviceList: string[]) => {
     const jsonData = JSON.parse(data);
 
     jsonData.exports = jsonData.exports || {};
-    jsonData.files = jsonData.files || [];
 
     serviceList.forEach((serviceName) => {
-        jsonData.exports[`./${serviceName}`] = `./${serviceName}/index.js`;
-        jsonData.exports[`./${serviceName}/*`] = `./${serviceName}/*.js`;
-        jsonData.files.push(serviceName);
+        jsonData.exports[`./${serviceName}`] = `./dist/clients/${serviceName}/index.js`;
     });
-
-    jsonData.files.sort();
-    jsonData.files = uniq(jsonData.files);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const replacer = (key: string, value: any) => {
@@ -191,11 +151,13 @@ const main = async () => {
 
     writeToFile(serviceMap);
 
-    const serviceList = await Promise.all(Object.keys(serviceMap).map(generateService));
+    await generateCloudApi();
+
+    const serviceList = await Promise.all(Object.keys(serviceMap).map(generateClient));
 
     serviceList.sort();
 
-    await Promise.all([modifyGitignore(serviceList), modifyPackageJSON(serviceList)]);
+    await modifyPackageJSON(serviceList);
 
     await exec('npm run prettier:fix:clients');
 };

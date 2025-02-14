@@ -2,7 +2,7 @@
 import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Int64Value, BoolValue, DoubleValue } from '../../../../../google/protobuf/wrappers';
+import { BoolValue, Int64Value, DoubleValue } from '../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.clickhouse.v1';
 
@@ -21,12 +21,21 @@ export interface User {
     settings?: UserSettings;
     /** Set of quotas assigned to the user. */
     quotas: UserQuota[];
+    /** Connection Manager connection configuration. Read only field. */
+    connectionManager?: ConnectionManager;
 }
 
 export interface Permission {
     $type: 'yandex.cloud.mdb.clickhouse.v1.Permission';
     /** Name of the database that the permission grants access to. */
     databaseName: string;
+}
+
+/** Connection Manager connection configuration. */
+export interface ConnectionManager {
+    $type: 'yandex.cloud.mdb.clickhouse.v1.ConnectionManager';
+    /** ID of Connection Manager connection. */
+    connectionId: string;
 }
 
 export interface UserSpec {
@@ -40,6 +49,8 @@ export interface UserSpec {
     settings?: UserSettings;
     /** Set of quotas assigned to the user. */
     quotas: UserQuota[];
+    /** Generate password using Connection Manager. */
+    generatePassword?: boolean;
 }
 
 /**
@@ -1698,6 +1709,9 @@ export const User = {
         for (const v of message.quotas) {
             UserQuota.encode(v!, writer.uint32(42).fork()).ldelim();
         }
+        if (message.connectionManager !== undefined) {
+            ConnectionManager.encode(message.connectionManager, writer.uint32(50).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -1725,6 +1739,9 @@ export const User = {
                 case 5:
                     message.quotas.push(UserQuota.decode(reader, reader.uint32()));
                     break;
+                case 6:
+                    message.connectionManager = ConnectionManager.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1746,6 +1763,10 @@ export const User = {
                 ? UserSettings.fromJSON(object.settings)
                 : undefined;
         message.quotas = (object.quotas ?? []).map((e: any) => UserQuota.fromJSON(e));
+        message.connectionManager =
+            object.connectionManager !== undefined && object.connectionManager !== null
+                ? ConnectionManager.fromJSON(object.connectionManager)
+                : undefined;
         return message;
     },
 
@@ -1767,6 +1788,10 @@ export const User = {
         } else {
             obj.quotas = [];
         }
+        message.connectionManager !== undefined &&
+            (obj.connectionManager = message.connectionManager
+                ? ConnectionManager.toJSON(message.connectionManager)
+                : undefined);
         return obj;
     },
 
@@ -1780,6 +1805,10 @@ export const User = {
                 ? UserSettings.fromPartial(object.settings)
                 : undefined;
         message.quotas = object.quotas?.map((e) => UserQuota.fromPartial(e)) || [];
+        message.connectionManager =
+            object.connectionManager !== undefined && object.connectionManager !== null
+                ? ConnectionManager.fromPartial(object.connectionManager)
+                : undefined;
         return message;
     },
 };
@@ -1843,6 +1872,63 @@ export const Permission = {
 
 messageTypeRegistry.set(Permission.$type, Permission);
 
+const baseConnectionManager: object = {
+    $type: 'yandex.cloud.mdb.clickhouse.v1.ConnectionManager',
+    connectionId: '',
+};
+
+export const ConnectionManager = {
+    $type: 'yandex.cloud.mdb.clickhouse.v1.ConnectionManager' as const,
+
+    encode(message: ConnectionManager, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.connectionId !== '') {
+            writer.uint32(10).string(message.connectionId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConnectionManager {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseConnectionManager } as ConnectionManager;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.connectionId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ConnectionManager {
+        const message = { ...baseConnectionManager } as ConnectionManager;
+        message.connectionId =
+            object.connectionId !== undefined && object.connectionId !== null
+                ? String(object.connectionId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ConnectionManager): unknown {
+        const obj: any = {};
+        message.connectionId !== undefined && (obj.connectionId = message.connectionId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ConnectionManager>, I>>(object: I): ConnectionManager {
+        const message = { ...baseConnectionManager } as ConnectionManager;
+        message.connectionId = object.connectionId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ConnectionManager.$type, ConnectionManager);
+
 const baseUserSpec: object = {
     $type: 'yandex.cloud.mdb.clickhouse.v1.UserSpec',
     name: '',
@@ -1867,6 +1953,12 @@ export const UserSpec = {
         }
         for (const v of message.quotas) {
             UserQuota.encode(v!, writer.uint32(42).fork()).ldelim();
+        }
+        if (message.generatePassword !== undefined) {
+            BoolValue.encode(
+                { $type: 'google.protobuf.BoolValue', value: message.generatePassword! },
+                writer.uint32(50).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -1895,6 +1987,9 @@ export const UserSpec = {
                 case 5:
                     message.quotas.push(UserQuota.decode(reader, reader.uint32()));
                     break;
+                case 6:
+                    message.generatePassword = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1916,6 +2011,10 @@ export const UserSpec = {
                 ? UserSettings.fromJSON(object.settings)
                 : undefined;
         message.quotas = (object.quotas ?? []).map((e: any) => UserQuota.fromJSON(e));
+        message.generatePassword =
+            object.generatePassword !== undefined && object.generatePassword !== null
+                ? Boolean(object.generatePassword)
+                : undefined;
         return message;
     },
 
@@ -1937,6 +2036,7 @@ export const UserSpec = {
         } else {
             obj.quotas = [];
         }
+        message.generatePassword !== undefined && (obj.generatePassword = message.generatePassword);
         return obj;
     },
 
@@ -1950,6 +2050,7 @@ export const UserSpec = {
                 ? UserSettings.fromPartial(object.settings)
                 : undefined;
         message.quotas = object.quotas?.map((e) => UserQuota.fromPartial(e)) || [];
+        message.generatePassword = object.generatePassword ?? undefined;
         return message;
     },
 };

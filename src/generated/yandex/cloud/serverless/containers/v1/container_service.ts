@@ -2526,7 +2526,7 @@ export const ContainerServiceService = {
     /**
      * Returns the specified revision of a container.
      *
-     * To get the list of available revision, make a [ListRevisions] request.
+     * To get the list of available revisions, make a [ListRevisions] request.
      */
     getRevision: {
         path: '/yandex.cloud.serverless.containers.v1.ContainerService/GetRevision',
@@ -2623,7 +2623,7 @@ export interface ContainerServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specified revision of a container.
      *
-     * To get the list of available revision, make a [ListRevisions] request.
+     * To get the list of available revisions, make a [ListRevisions] request.
      */
     getRevision: handleUnaryCall<GetContainerRevisionRequest, Revision>;
     /**
@@ -2764,7 +2764,7 @@ export interface ContainerServiceClient extends Client {
     /**
      * Returns the specified revision of a container.
      *
-     * To get the list of available revision, make a [ListRevisions] request.
+     * To get the list of available revisions, make a [ListRevisions] request.
      */
     getRevision(
         request: GetContainerRevisionRequest,

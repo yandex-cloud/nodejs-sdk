@@ -2,7 +2,7 @@
 import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Int64Value } from '../../../../../google/protobuf/wrappers';
+import { Int64Value, BoolValue } from '../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.mysql.v1';
 
@@ -148,6 +148,8 @@ export interface User {
     connectionLimits?: ConnectionLimits;
     /** User authentication plugin. */
     authenticationPlugin: AuthPlugin;
+    /** Connection Manager Connection and settings associated with user. Read only field. */
+    connectionManager?: ConnectionManager;
 }
 
 export interface Permission {
@@ -339,6 +341,12 @@ export interface ConnectionLimits {
     maxUserConnections?: number;
 }
 
+export interface ConnectionManager {
+    $type: 'yandex.cloud.mdb.mysql.v1.ConnectionManager';
+    /** ID of Connection Manager Connection */
+    connectionId: string;
+}
+
 export interface UserSpec {
     $type: 'yandex.cloud.mdb.mysql.v1.UserSpec';
     /** Name of the user. */
@@ -358,6 +366,8 @@ export interface UserSpec {
     connectionLimits?: ConnectionLimits;
     /** User authentication plugin. */
     authenticationPlugin: AuthPlugin;
+    /** Generate password using Connection Manager. */
+    generatePassword?: boolean;
 }
 
 const baseUser: object = {
@@ -391,6 +401,9 @@ export const User = {
         }
         if (message.authenticationPlugin !== 0) {
             writer.uint32(48).int32(message.authenticationPlugin);
+        }
+        if (message.connectionManager !== undefined) {
+            ConnectionManager.encode(message.connectionManager, writer.uint32(58).fork()).ldelim();
         }
         return writer;
     },
@@ -429,6 +442,9 @@ export const User = {
                 case 6:
                     message.authenticationPlugin = reader.int32() as any;
                     break;
+                case 7:
+                    message.connectionManager = ConnectionManager.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -456,6 +472,10 @@ export const User = {
             object.authenticationPlugin !== undefined && object.authenticationPlugin !== null
                 ? authPluginFromJSON(object.authenticationPlugin)
                 : 0;
+        message.connectionManager =
+            object.connectionManager !== undefined && object.connectionManager !== null
+                ? ConnectionManager.fromJSON(object.connectionManager)
+                : undefined;
         return message;
     },
 
@@ -481,6 +501,10 @@ export const User = {
                 : undefined);
         message.authenticationPlugin !== undefined &&
             (obj.authenticationPlugin = authPluginToJSON(message.authenticationPlugin));
+        message.connectionManager !== undefined &&
+            (obj.connectionManager = message.connectionManager
+                ? ConnectionManager.toJSON(message.connectionManager)
+                : undefined);
         return obj;
     },
 
@@ -495,6 +519,10 @@ export const User = {
                 ? ConnectionLimits.fromPartial(object.connectionLimits)
                 : undefined;
         message.authenticationPlugin = object.authenticationPlugin ?? 0;
+        message.connectionManager =
+            object.connectionManager !== undefined && object.connectionManager !== null
+                ? ConnectionManager.fromPartial(object.connectionManager)
+                : undefined;
         return message;
     },
 };
@@ -691,6 +719,63 @@ export const ConnectionLimits = {
 
 messageTypeRegistry.set(ConnectionLimits.$type, ConnectionLimits);
 
+const baseConnectionManager: object = {
+    $type: 'yandex.cloud.mdb.mysql.v1.ConnectionManager',
+    connectionId: '',
+};
+
+export const ConnectionManager = {
+    $type: 'yandex.cloud.mdb.mysql.v1.ConnectionManager' as const,
+
+    encode(message: ConnectionManager, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.connectionId !== '') {
+            writer.uint32(10).string(message.connectionId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConnectionManager {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseConnectionManager } as ConnectionManager;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.connectionId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ConnectionManager {
+        const message = { ...baseConnectionManager } as ConnectionManager;
+        message.connectionId =
+            object.connectionId !== undefined && object.connectionId !== null
+                ? String(object.connectionId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ConnectionManager): unknown {
+        const obj: any = {};
+        message.connectionId !== undefined && (obj.connectionId = message.connectionId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ConnectionManager>, I>>(object: I): ConnectionManager {
+        const message = { ...baseConnectionManager } as ConnectionManager;
+        message.connectionId = object.connectionId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ConnectionManager.$type, ConnectionManager);
+
 const baseUserSpec: object = {
     $type: 'yandex.cloud.mdb.mysql.v1.UserSpec',
     name: '',
@@ -722,6 +807,12 @@ export const UserSpec = {
         }
         if (message.authenticationPlugin !== 0) {
             writer.uint32(48).int32(message.authenticationPlugin);
+        }
+        if (message.generatePassword !== undefined) {
+            BoolValue.encode(
+                { $type: 'google.protobuf.BoolValue', value: message.generatePassword! },
+                writer.uint32(58).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -760,6 +851,9 @@ export const UserSpec = {
                 case 6:
                     message.authenticationPlugin = reader.int32() as any;
                     break;
+                case 7:
+                    message.generatePassword = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -787,6 +881,10 @@ export const UserSpec = {
             object.authenticationPlugin !== undefined && object.authenticationPlugin !== null
                 ? authPluginFromJSON(object.authenticationPlugin)
                 : 0;
+        message.generatePassword =
+            object.generatePassword !== undefined && object.generatePassword !== null
+                ? Boolean(object.generatePassword)
+                : undefined;
         return message;
     },
 
@@ -812,6 +910,7 @@ export const UserSpec = {
                 : undefined);
         message.authenticationPlugin !== undefined &&
             (obj.authenticationPlugin = authPluginToJSON(message.authenticationPlugin));
+        message.generatePassword !== undefined && (obj.generatePassword = message.generatePassword);
         return obj;
     },
 
@@ -826,6 +925,7 @@ export const UserSpec = {
                 ? ConnectionLimits.fromPartial(object.connectionLimits)
                 : undefined;
         message.authenticationPlugin = object.authenticationPlugin ?? 0;
+        message.generatePassword = object.generatePassword ?? undefined;
         return message;
     },
 };

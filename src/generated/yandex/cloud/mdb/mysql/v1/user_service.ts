@@ -28,6 +28,7 @@ import {
 } from '../../../../../yandex/cloud/mdb/mysql/v1/user';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
 import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { BoolValue } from '../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.mysql.v1';
 
@@ -129,6 +130,8 @@ export interface UpdateUserRequest {
     connectionLimits?: ConnectionLimits;
     /** New user authentication plugin. */
     authenticationPlugin: AuthPlugin;
+    /** Generate password using Connection Manager. */
+    generatePassword?: boolean;
 }
 
 export interface UpdateUserMetadata {
@@ -621,6 +624,12 @@ export const UpdateUserRequest = {
         if (message.authenticationPlugin !== 0) {
             writer.uint32(64).int32(message.authenticationPlugin);
         }
+        if (message.generatePassword !== undefined) {
+            BoolValue.encode(
+                { $type: 'google.protobuf.BoolValue', value: message.generatePassword! },
+                writer.uint32(74).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -664,6 +673,9 @@ export const UpdateUserRequest = {
                 case 8:
                     message.authenticationPlugin = reader.int32() as any;
                     break;
+                case 9:
+                    message.generatePassword = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -702,6 +714,10 @@ export const UpdateUserRequest = {
             object.authenticationPlugin !== undefined && object.authenticationPlugin !== null
                 ? authPluginFromJSON(object.authenticationPlugin)
                 : 0;
+        message.generatePassword =
+            object.generatePassword !== undefined && object.generatePassword !== null
+                ? Boolean(object.generatePassword)
+                : undefined;
         return message;
     },
 
@@ -732,6 +748,7 @@ export const UpdateUserRequest = {
                 : undefined);
         message.authenticationPlugin !== undefined &&
             (obj.authenticationPlugin = authPluginToJSON(message.authenticationPlugin));
+        message.generatePassword !== undefined && (obj.generatePassword = message.generatePassword);
         return obj;
     },
 
@@ -751,6 +768,7 @@ export const UpdateUserRequest = {
                 ? ConnectionLimits.fromPartial(object.connectionLimits)
                 : undefined;
         message.authenticationPlugin = object.authenticationPlugin ?? 0;
+        message.generatePassword = object.generatePassword ?? undefined;
         return message;
     },
 };

@@ -16,6 +16,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
+import { CronTab } from '../../../../../yandex/cloud/mdb/postgresql/v1/backup_retention_policy';
 import {
     Cluster_Environment,
     ConnectionPoolerConfig,
@@ -28,8 +29,8 @@ import {
     cluster_EnvironmentFromJSON,
     cluster_EnvironmentToJSON,
 } from '../../../../../yandex/cloud/mdb/postgresql/v1/cluster';
-import { FieldMask } from '../../../../../google/protobuf/field_mask';
 import { MaintenanceWindow } from '../../../../../yandex/cloud/mdb/postgresql/v1/maintenance';
+import { FieldMask } from '../../../../../google/protobuf/field_mask';
 import { TimeOfDay } from '../../../../../google/type/timeofday';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
 import { DatabaseSpec } from '../../../../../yandex/cloud/mdb/postgresql/v1/database';
@@ -124,6 +125,19 @@ export interface ListClustersResponse {
     nextPageToken: string;
 }
 
+/** Message to describe a new retention policy for cluster backups. */
+export interface BackupRetentionPolicySpec {
+    $type: 'yandex.cloud.mdb.postgresql.v1.BackupRetentionPolicySpec';
+    /** Required. Policy name. */
+    policyName: string;
+    /** CronTab schedule. */
+    cron?: CronTab;
+    /** Retention duration. */
+    retainForDays: number;
+    /** Human-readable description. */
+    description: string;
+}
+
 export interface CreateClusterRequest {
     $type: 'yandex.cloud.mdb.postgresql.v1.CreateClusterRequest';
     /** ID of the folder to create the PostgreSQL cluster in. */
@@ -155,6 +169,10 @@ export interface CreateClusterRequest {
     deletionProtection: boolean;
     /** Host groups hosting VMs of the cluster. */
     hostGroupIds: string[];
+    /** Window of maintenance operations. */
+    maintenanceWindow?: MaintenanceWindow;
+    /** Backup long-term retention policies setting. */
+    retentionPolicies: BackupRetentionPolicySpec[];
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -1178,6 +1196,111 @@ export const ListClustersResponse: ListClustersResponseType = {
 
 messageTypeRegistry.set(ListClustersResponse.$type, ListClustersResponse);
 
+const baseBackupRetentionPolicySpec: object = {
+    $type: 'yandex.cloud.mdb.postgresql.v1.BackupRetentionPolicySpec',
+    policyName: '',
+    retainForDays: 0,
+    description: '',
+};
+
+export const BackupRetentionPolicySpec = {
+    $type: 'yandex.cloud.mdb.postgresql.v1.BackupRetentionPolicySpec' as const,
+
+    encode(
+        message: BackupRetentionPolicySpec,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.policyName !== '') {
+            writer.uint32(10).string(message.policyName);
+        }
+        if (message.cron !== undefined) {
+            CronTab.encode(message.cron, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.retainForDays !== 0) {
+            writer.uint32(24).int64(message.retainForDays);
+        }
+        if (message.description !== '') {
+            writer.uint32(34).string(message.description);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BackupRetentionPolicySpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBackupRetentionPolicySpec } as BackupRetentionPolicySpec;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.policyName = reader.string();
+                    break;
+                case 2:
+                    message.cron = CronTab.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.retainForDays = longToNumber(reader.int64() as Long);
+                    break;
+                case 4:
+                    message.description = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BackupRetentionPolicySpec {
+        const message = { ...baseBackupRetentionPolicySpec } as BackupRetentionPolicySpec;
+        message.policyName =
+            object.policyName !== undefined && object.policyName !== null
+                ? String(object.policyName)
+                : '';
+        message.cron =
+            object.cron !== undefined && object.cron !== null
+                ? CronTab.fromJSON(object.cron)
+                : undefined;
+        message.retainForDays =
+            object.retainForDays !== undefined && object.retainForDays !== null
+                ? Number(object.retainForDays)
+                : 0;
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
+        return message;
+    },
+
+    toJSON(message: BackupRetentionPolicySpec): unknown {
+        const obj: any = {};
+        message.policyName !== undefined && (obj.policyName = message.policyName);
+        message.cron !== undefined &&
+            (obj.cron = message.cron ? CronTab.toJSON(message.cron) : undefined);
+        message.retainForDays !== undefined &&
+            (obj.retainForDays = Math.round(message.retainForDays));
+        message.description !== undefined && (obj.description = message.description);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BackupRetentionPolicySpec>, I>>(
+        object: I,
+    ): BackupRetentionPolicySpec {
+        const message = { ...baseBackupRetentionPolicySpec } as BackupRetentionPolicySpec;
+        message.policyName = object.policyName ?? '';
+        message.cron =
+            object.cron !== undefined && object.cron !== null
+                ? CronTab.fromPartial(object.cron)
+                : undefined;
+        message.retainForDays = object.retainForDays ?? 0;
+        message.description = object.description ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BackupRetentionPolicySpec.$type, BackupRetentionPolicySpec);
+
 const baseCreateClusterRequest: object = {
     $type: 'yandex.cloud.mdb.postgresql.v1.CreateClusterRequest',
     folderId: '',
@@ -1248,6 +1371,12 @@ export const CreateClusterRequest: CreateClusterRequestType = {
         for (const v of message.hostGroupIds) {
             writer.uint32(106).string(v!);
         }
+        if (message.maintenanceWindow !== undefined) {
+            MaintenanceWindow.encode(message.maintenanceWindow, writer.uint32(114).fork()).ldelim();
+        }
+        for (const v of message.retentionPolicies) {
+            BackupRetentionPolicySpec.encode(v!, writer.uint32(122).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -1261,6 +1390,7 @@ export const CreateClusterRequest: CreateClusterRequestType = {
         message.hostSpecs = [];
         message.securityGroupIds = [];
         message.hostGroupIds = [];
+        message.retentionPolicies = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1305,6 +1435,14 @@ export const CreateClusterRequest: CreateClusterRequestType = {
                     break;
                 case 13:
                     message.hostGroupIds.push(reader.string());
+                    break;
+                case 14:
+                    message.maintenanceWindow = MaintenanceWindow.decode(reader, reader.uint32());
+                    break;
+                case 15:
+                    message.retentionPolicies.push(
+                        BackupRetentionPolicySpec.decode(reader, reader.uint32()),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1355,6 +1493,13 @@ export const CreateClusterRequest: CreateClusterRequestType = {
                 ? Boolean(object.deletionProtection)
                 : false;
         message.hostGroupIds = (object.hostGroupIds ?? []).map((e: any) => String(e));
+        message.maintenanceWindow =
+            object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
+                ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
+                : undefined;
+        message.retentionPolicies = (object.retentionPolicies ?? []).map((e: any) =>
+            BackupRetentionPolicySpec.fromJSON(e),
+        );
         return message;
     },
 
@@ -1405,6 +1550,17 @@ export const CreateClusterRequest: CreateClusterRequestType = {
         } else {
             obj.hostGroupIds = [];
         }
+        message.maintenanceWindow !== undefined &&
+            (obj.maintenanceWindow = message.maintenanceWindow
+                ? MaintenanceWindow.toJSON(message.maintenanceWindow)
+                : undefined);
+        if (message.retentionPolicies) {
+            obj.retentionPolicies = message.retentionPolicies.map((e) =>
+                e ? BackupRetentionPolicySpec.toJSON(e) : undefined,
+            );
+        } else {
+            obj.retentionPolicies = [];
+        }
         return obj;
     },
 
@@ -1436,6 +1592,12 @@ export const CreateClusterRequest: CreateClusterRequestType = {
         message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         message.deletionProtection = object.deletionProtection ?? false;
         message.hostGroupIds = object.hostGroupIds?.map((e) => e) || [];
+        message.maintenanceWindow =
+            object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
+                ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
+                : undefined;
+        message.retentionPolicies =
+            object.retentionPolicies?.map((e) => BackupRetentionPolicySpec.fromPartial(e)) || [];
         return message;
     },
 };

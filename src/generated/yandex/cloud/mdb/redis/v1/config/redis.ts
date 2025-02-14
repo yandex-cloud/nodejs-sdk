@@ -63,6 +63,8 @@ export interface RedisConfig {
     useLuajit?: boolean;
     /** Allow redis to use io-threads */
     ioThreadsAllowed?: boolean;
+    /** Controls max number of entries in zset before conversion from memory-efficient listpack to CPU-efficient hash table and skiplist */
+    zsetMaxListpackEntries?: number;
 }
 
 export enum RedisConfig_MaxmemoryPolicy {
@@ -307,6 +309,12 @@ export const RedisConfig = {
                 writer.uint32(170).fork(),
             ).ldelim();
         }
+        if (message.zsetMaxListpackEntries !== undefined) {
+            Int64Value.encode(
+                { $type: 'google.protobuf.Int64Value', value: message.zsetMaxListpackEntries! },
+                writer.uint32(178).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -393,6 +401,12 @@ export const RedisConfig = {
                     break;
                 case 21:
                     message.ioThreadsAllowed = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 22:
+                    message.zsetMaxListpackEntries = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -493,6 +507,10 @@ export const RedisConfig = {
             object.ioThreadsAllowed !== undefined && object.ioThreadsAllowed !== null
                 ? Boolean(object.ioThreadsAllowed)
                 : undefined;
+        message.zsetMaxListpackEntries =
+            object.zsetMaxListpackEntries !== undefined && object.zsetMaxListpackEntries !== null
+                ? Number(object.zsetMaxListpackEntries)
+                : undefined;
         return message;
     },
 
@@ -533,6 +551,8 @@ export const RedisConfig = {
         message.allowDataLoss !== undefined && (obj.allowDataLoss = message.allowDataLoss);
         message.useLuajit !== undefined && (obj.useLuajit = message.useLuajit);
         message.ioThreadsAllowed !== undefined && (obj.ioThreadsAllowed = message.ioThreadsAllowed);
+        message.zsetMaxListpackEntries !== undefined &&
+            (obj.zsetMaxListpackEntries = message.zsetMaxListpackEntries);
         return obj;
     },
 
@@ -572,6 +592,7 @@ export const RedisConfig = {
         message.allowDataLoss = object.allowDataLoss ?? undefined;
         message.useLuajit = object.useLuajit ?? undefined;
         message.ioThreadsAllowed = object.ioThreadsAllowed ?? undefined;
+        message.zsetMaxListpackEntries = object.zsetMaxListpackEntries ?? undefined;
         return message;
     },
 };

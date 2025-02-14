@@ -178,6 +178,20 @@ export interface DeleteEpisodeMetadata {
     episodeId: string;
 }
 
+export interface BatchDeleteEpisodesRequest {
+    $type: 'yandex.cloud.video.v1.BatchDeleteEpisodesRequest';
+    /** ID of the stream. */
+    streamId: string | undefined;
+    /** ID of the line. */
+    lineId: string | undefined;
+    episodeIds: string[];
+}
+
+export interface BatchDeleteEpisodesMetadata {
+    $type: 'yandex.cloud.video.v1.BatchDeleteEpisodesMetadata';
+    episodeIds: string[];
+}
+
 export interface PerformEpisodeActionRequest {
     $type: 'yandex.cloud.video.v1.PerformEpisodeActionRequest';
     /** ID of the episode. */
@@ -1430,6 +1444,158 @@ export const DeleteEpisodeMetadata = {
 
 messageTypeRegistry.set(DeleteEpisodeMetadata.$type, DeleteEpisodeMetadata);
 
+const baseBatchDeleteEpisodesRequest: object = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteEpisodesRequest',
+    episodeIds: '',
+};
+
+export const BatchDeleteEpisodesRequest = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteEpisodesRequest' as const,
+
+    encode(
+        message: BatchDeleteEpisodesRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.streamId !== undefined) {
+            writer.uint32(802).string(message.streamId);
+        }
+        if (message.lineId !== undefined) {
+            writer.uint32(810).string(message.lineId);
+        }
+        for (const v of message.episodeIds) {
+            writer.uint32(10).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteEpisodesRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchDeleteEpisodesRequest } as BatchDeleteEpisodesRequest;
+        message.episodeIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 100:
+                    message.streamId = reader.string();
+                    break;
+                case 101:
+                    message.lineId = reader.string();
+                    break;
+                case 1:
+                    message.episodeIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchDeleteEpisodesRequest {
+        const message = { ...baseBatchDeleteEpisodesRequest } as BatchDeleteEpisodesRequest;
+        message.streamId =
+            object.streamId !== undefined && object.streamId !== null
+                ? String(object.streamId)
+                : undefined;
+        message.lineId =
+            object.lineId !== undefined && object.lineId !== null
+                ? String(object.lineId)
+                : undefined;
+        message.episodeIds = (object.episodeIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: BatchDeleteEpisodesRequest): unknown {
+        const obj: any = {};
+        message.streamId !== undefined && (obj.streamId = message.streamId);
+        message.lineId !== undefined && (obj.lineId = message.lineId);
+        if (message.episodeIds) {
+            obj.episodeIds = message.episodeIds.map((e) => e);
+        } else {
+            obj.episodeIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteEpisodesRequest>, I>>(
+        object: I,
+    ): BatchDeleteEpisodesRequest {
+        const message = { ...baseBatchDeleteEpisodesRequest } as BatchDeleteEpisodesRequest;
+        message.streamId = object.streamId ?? undefined;
+        message.lineId = object.lineId ?? undefined;
+        message.episodeIds = object.episodeIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BatchDeleteEpisodesRequest.$type, BatchDeleteEpisodesRequest);
+
+const baseBatchDeleteEpisodesMetadata: object = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteEpisodesMetadata',
+    episodeIds: '',
+};
+
+export const BatchDeleteEpisodesMetadata = {
+    $type: 'yandex.cloud.video.v1.BatchDeleteEpisodesMetadata' as const,
+
+    encode(
+        message: BatchDeleteEpisodesMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.episodeIds) {
+            writer.uint32(10).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteEpisodesMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchDeleteEpisodesMetadata } as BatchDeleteEpisodesMetadata;
+        message.episodeIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.episodeIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchDeleteEpisodesMetadata {
+        const message = { ...baseBatchDeleteEpisodesMetadata } as BatchDeleteEpisodesMetadata;
+        message.episodeIds = (object.episodeIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: BatchDeleteEpisodesMetadata): unknown {
+        const obj: any = {};
+        if (message.episodeIds) {
+            obj.episodeIds = message.episodeIds.map((e) => e);
+        } else {
+            obj.episodeIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteEpisodesMetadata>, I>>(
+        object: I,
+    ): BatchDeleteEpisodesMetadata {
+        const message = { ...baseBatchDeleteEpisodesMetadata } as BatchDeleteEpisodesMetadata;
+        message.episodeIds = object.episodeIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(BatchDeleteEpisodesMetadata.$type, BatchDeleteEpisodesMetadata);
+
 const basePerformEpisodeActionRequest: object = {
     $type: 'yandex.cloud.video.v1.PerformEpisodeActionRequest',
     episodeId: '',
@@ -2104,6 +2270,17 @@ export const EpisodeServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Batch delete episode. */
+    batchDelete: {
+        path: '/yandex.cloud.video.v1.EpisodeService/BatchDelete',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: BatchDeleteEpisodesRequest) =>
+            Buffer.from(BatchDeleteEpisodesRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => BatchDeleteEpisodesRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
     /** Perform an action on the episode. */
     performAction: {
         path: '/yandex.cloud.video.v1.EpisodeService/PerformAction',
@@ -2154,6 +2331,8 @@ export interface EpisodeServiceServer extends UntypedServiceImplementation {
     update: handleUnaryCall<UpdateEpisodeRequest, Operation>;
     /** Delete episode. */
     delete: handleUnaryCall<DeleteEpisodeRequest, Operation>;
+    /** Batch delete episode. */
+    batchDelete: handleUnaryCall<BatchDeleteEpisodesRequest, Operation>;
     /** Perform an action on the episode. */
     performAction: handleUnaryCall<PerformEpisodeActionRequest, Operation>;
     /** Returns url to the player. */
@@ -2255,6 +2434,22 @@ export interface EpisodeServiceClient extends Client {
     ): ClientUnaryCall;
     delete(
         request: DeleteEpisodeRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Batch delete episode. */
+    batchDelete(
+        request: BatchDeleteEpisodesRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    batchDelete(
+        request: BatchDeleteEpisodesRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    batchDelete(
+        request: BatchDeleteEpisodesRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

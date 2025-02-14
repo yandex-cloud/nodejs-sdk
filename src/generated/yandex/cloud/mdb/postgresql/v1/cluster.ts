@@ -1248,7 +1248,6 @@ type ClusterConfigType = {
     toJSON(message: ClusterConfig): unknown;
     fromPartial<I extends Exact<DeepPartial<ClusterConfig>, I>>(object: I): ClusterConfig;
 }
-
 export const ClusterConfig: ClusterConfigType = {
     $type: 'yandex.cloud.mdb.postgresql.v1.ClusterConfig' as const,
 

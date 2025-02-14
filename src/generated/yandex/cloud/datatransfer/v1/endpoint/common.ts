@@ -289,6 +289,13 @@ export interface NoAuth {
     $type: 'yandex.cloud.datatransfer.v1.endpoint.NoAuth';
 }
 
+export interface ConnectionManagerConnection {
+    $type: 'yandex.cloud.datatransfer.v1.endpoint.ConnectionManagerConnection';
+    connectionId: string;
+    /** Network interface for endpoint. If none will assume public ipv4 */
+    subnetId: string;
+}
+
 const baseAltName: object = {
     $type: 'yandex.cloud.datatransfer.v1.endpoint.AltName',
     fromName: '',
@@ -989,6 +996,81 @@ export const NoAuth = {
 };
 
 messageTypeRegistry.set(NoAuth.$type, NoAuth);
+
+const baseConnectionManagerConnection: object = {
+    $type: 'yandex.cloud.datatransfer.v1.endpoint.ConnectionManagerConnection',
+    connectionId: '',
+    subnetId: '',
+};
+
+export const ConnectionManagerConnection = {
+    $type: 'yandex.cloud.datatransfer.v1.endpoint.ConnectionManagerConnection' as const,
+
+    encode(
+        message: ConnectionManagerConnection,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.connectionId !== '') {
+            writer.uint32(10).string(message.connectionId);
+        }
+        if (message.subnetId !== '') {
+            writer.uint32(18).string(message.subnetId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConnectionManagerConnection {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseConnectionManagerConnection } as ConnectionManagerConnection;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.connectionId = reader.string();
+                    break;
+                case 2:
+                    message.subnetId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ConnectionManagerConnection {
+        const message = { ...baseConnectionManagerConnection } as ConnectionManagerConnection;
+        message.connectionId =
+            object.connectionId !== undefined && object.connectionId !== null
+                ? String(object.connectionId)
+                : '';
+        message.subnetId =
+            object.subnetId !== undefined && object.subnetId !== null
+                ? String(object.subnetId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ConnectionManagerConnection): unknown {
+        const obj: any = {};
+        message.connectionId !== undefined && (obj.connectionId = message.connectionId);
+        message.subnetId !== undefined && (obj.subnetId = message.subnetId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ConnectionManagerConnection>, I>>(
+        object: I,
+    ): ConnectionManagerConnection {
+        const message = { ...baseConnectionManagerConnection } as ConnectionManagerConnection;
+        message.connectionId = object.connectionId ?? '';
+        message.subnetId = object.subnetId ?? '';
+        return message;
+    },
+};
+
+messageTypeRegistry.set(ConnectionManagerConnection.$type, ConnectionManagerConnection);
 
 declare var self: any | undefined;
 declare var window: any | undefined;

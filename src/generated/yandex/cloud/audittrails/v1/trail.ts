@@ -308,6 +308,8 @@ export interface Trail_DataEventsFiltering {
      * New events of the service will be delivered by default
      */
     excludedEvents?: Trail_EventTypes | undefined;
+    /** Filter is allowed only if service = dns */
+    dnsFilter?: Trail_DnsDataEventsFilter | undefined;
     /** A list of resources which will be monitored by the trail */
     resourceScopes: Trail_Resource[];
 }
@@ -335,6 +337,12 @@ export interface Trail_FilteringPolicy {
     managementEventsFilter?: Trail_ManagementEventsFiltering;
     /** List of filters describing gathering data events */
     dataEventsFilters: Trail_DataEventsFiltering[];
+}
+
+export interface Trail_DnsDataEventsFilter {
+    $type: 'yandex.cloud.audittrails.v1.Trail.DnsDataEventsFilter';
+    /** Only recursive queries will be delivered */
+    onlyRecursiveQueries: boolean;
 }
 
 const baseTrail: object = {
@@ -1648,6 +1656,9 @@ export const Trail_DataEventsFiltering = {
         if (message.excludedEvents !== undefined) {
             Trail_EventTypes.encode(message.excludedEvents, writer.uint32(26).fork()).ldelim();
         }
+        if (message.dnsFilter !== undefined) {
+            Trail_DnsDataEventsFilter.encode(message.dnsFilter, writer.uint32(42).fork()).ldelim();
+        }
         for (const v of message.resourceScopes) {
             Trail_Resource.encode(v!, writer.uint32(34).fork()).ldelim();
         }
@@ -1670,6 +1681,9 @@ export const Trail_DataEventsFiltering = {
                     break;
                 case 3:
                     message.excludedEvents = Trail_EventTypes.decode(reader, reader.uint32());
+                    break;
+                case 5:
+                    message.dnsFilter = Trail_DnsDataEventsFilter.decode(reader, reader.uint32());
                     break;
                 case 4:
                     message.resourceScopes.push(Trail_Resource.decode(reader, reader.uint32()));
@@ -1694,6 +1708,10 @@ export const Trail_DataEventsFiltering = {
             object.excludedEvents !== undefined && object.excludedEvents !== null
                 ? Trail_EventTypes.fromJSON(object.excludedEvents)
                 : undefined;
+        message.dnsFilter =
+            object.dnsFilter !== undefined && object.dnsFilter !== null
+                ? Trail_DnsDataEventsFilter.fromJSON(object.dnsFilter)
+                : undefined;
         message.resourceScopes = (object.resourceScopes ?? []).map((e: any) =>
             Trail_Resource.fromJSON(e),
         );
@@ -1710,6 +1728,10 @@ export const Trail_DataEventsFiltering = {
         message.excludedEvents !== undefined &&
             (obj.excludedEvents = message.excludedEvents
                 ? Trail_EventTypes.toJSON(message.excludedEvents)
+                : undefined);
+        message.dnsFilter !== undefined &&
+            (obj.dnsFilter = message.dnsFilter
+                ? Trail_DnsDataEventsFilter.toJSON(message.dnsFilter)
                 : undefined);
         if (message.resourceScopes) {
             obj.resourceScopes = message.resourceScopes.map((e) =>
@@ -1733,6 +1755,10 @@ export const Trail_DataEventsFiltering = {
         message.excludedEvents =
             object.excludedEvents !== undefined && object.excludedEvents !== null
                 ? Trail_EventTypes.fromPartial(object.excludedEvents)
+                : undefined;
+        message.dnsFilter =
+            object.dnsFilter !== undefined && object.dnsFilter !== null
+                ? Trail_DnsDataEventsFilter.fromPartial(object.dnsFilter)
                 : undefined;
         message.resourceScopes =
             object.resourceScopes?.map((e) => Trail_Resource.fromPartial(e)) || [];
@@ -1965,6 +1991,69 @@ export const Trail_FilteringPolicy = {
 };
 
 messageTypeRegistry.set(Trail_FilteringPolicy.$type, Trail_FilteringPolicy);
+
+const baseTrail_DnsDataEventsFilter: object = {
+    $type: 'yandex.cloud.audittrails.v1.Trail.DnsDataEventsFilter',
+    onlyRecursiveQueries: false,
+};
+
+export const Trail_DnsDataEventsFilter = {
+    $type: 'yandex.cloud.audittrails.v1.Trail.DnsDataEventsFilter' as const,
+
+    encode(
+        message: Trail_DnsDataEventsFilter,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.onlyRecursiveQueries === true) {
+            writer.uint32(8).bool(message.onlyRecursiveQueries);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_DnsDataEventsFilter {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseTrail_DnsDataEventsFilter } as Trail_DnsDataEventsFilter;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.onlyRecursiveQueries = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Trail_DnsDataEventsFilter {
+        const message = { ...baseTrail_DnsDataEventsFilter } as Trail_DnsDataEventsFilter;
+        message.onlyRecursiveQueries =
+            object.onlyRecursiveQueries !== undefined && object.onlyRecursiveQueries !== null
+                ? Boolean(object.onlyRecursiveQueries)
+                : false;
+        return message;
+    },
+
+    toJSON(message: Trail_DnsDataEventsFilter): unknown {
+        const obj: any = {};
+        message.onlyRecursiveQueries !== undefined &&
+            (obj.onlyRecursiveQueries = message.onlyRecursiveQueries);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Trail_DnsDataEventsFilter>, I>>(
+        object: I,
+    ): Trail_DnsDataEventsFilter {
+        const message = { ...baseTrail_DnsDataEventsFilter } as Trail_DnsDataEventsFilter;
+        message.onlyRecursiveQueries = object.onlyRecursiveQueries ?? false;
+        return message;
+    },
+};
+
+messageTypeRegistry.set(Trail_DnsDataEventsFilter.$type, Trail_DnsDataEventsFilter);
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 

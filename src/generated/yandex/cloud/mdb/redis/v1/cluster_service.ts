@@ -35,6 +35,7 @@ import { FieldMask } from '../../../../../google/protobuf/field_mask';
 import { TimeOfDay } from '../../../../../google/type/timeofday';
 import { RedisConfig } from '../../../../../yandex/cloud/mdb/redis/v1/config/redis';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
+import { UserSpec } from '../../../../../yandex/cloud/mdb/redis/v1/user';
 import { Operation } from '../../../../../yandex/cloud/operation/operation';
 import { Backup } from '../../../../../yandex/cloud/mdb/redis/v1/backup';
 import { Redisconfig50 } from '../../../../../yandex/cloud/mdb/redis/v1/config/redis5_0';
@@ -141,6 +142,10 @@ export interface CreateClusterRequest {
     announceHostnames: boolean;
     /** Window of maintenance operations. */
     maintenanceWindow?: MaintenanceWindow;
+    /** Descriptions of users to be created in the Redis cluster. */
+    userSpecs: UserSpec[];
+    /** Allows to use ACL users to auth in sentinel */
+    authSentinel: boolean;
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -190,6 +195,8 @@ export interface UpdateClusterRequest {
     networkId: string;
     /** Enable FQDN instead of ip */
     announceHostnames: boolean;
+    /** Allows to use ACL users to auth in sentinel */
+    authSentinel: boolean;
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
@@ -336,6 +343,8 @@ export interface RestoreClusterRequest {
     announceHostnames: boolean;
     /** Window of maintenance operations. */
     maintenanceWindow?: MaintenanceWindow;
+    /** Allows to use ACL users to auth in sentinel */
+    authSentinel: boolean;
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
@@ -1297,6 +1306,7 @@ const baseCreateClusterRequest: object = {
     deletionProtection: false,
     persistenceMode: 0,
     announceHostnames: false,
+    authSentinel: false,
 };
 
 export const CreateClusterRequest = {
@@ -1358,6 +1368,12 @@ export const CreateClusterRequest = {
         if (message.maintenanceWindow !== undefined) {
             MaintenanceWindow.encode(message.maintenanceWindow, writer.uint32(138).fork()).ldelim();
         }
+        for (const v of message.userSpecs) {
+            UserSpec.encode(v!, writer.uint32(146).fork()).ldelim();
+        }
+        if (message.authSentinel === true) {
+            writer.uint32(152).bool(message.authSentinel);
+        }
         return writer;
     },
 
@@ -1368,6 +1384,7 @@ export const CreateClusterRequest = {
         message.labels = {};
         message.hostSpecs = [];
         message.securityGroupIds = [];
+        message.userSpecs = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1418,6 +1435,12 @@ export const CreateClusterRequest = {
                     break;
                 case 17:
                     message.maintenanceWindow = MaintenanceWindow.decode(reader, reader.uint32());
+                    break;
+                case 18:
+                    message.userSpecs.push(UserSpec.decode(reader, reader.uint32()));
+                    break;
+                case 19:
+                    message.authSentinel = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1483,6 +1506,11 @@ export const CreateClusterRequest = {
             object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
                 ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
                 : undefined;
+        message.userSpecs = (object.userSpecs ?? []).map((e: any) => UserSpec.fromJSON(e));
+        message.authSentinel =
+            object.authSentinel !== undefined && object.authSentinel !== null
+                ? Boolean(object.authSentinel)
+                : false;
         return message;
     },
 
@@ -1526,6 +1554,12 @@ export const CreateClusterRequest = {
             (obj.maintenanceWindow = message.maintenanceWindow
                 ? MaintenanceWindow.toJSON(message.maintenanceWindow)
                 : undefined);
+        if (message.userSpecs) {
+            obj.userSpecs = message.userSpecs.map((e) => (e ? UserSpec.toJSON(e) : undefined));
+        } else {
+            obj.userSpecs = [];
+        }
+        message.authSentinel !== undefined && (obj.authSentinel = message.authSentinel);
         return obj;
     },
 
@@ -1562,6 +1596,8 @@ export const CreateClusterRequest = {
             object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
                 ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
                 : undefined;
+        message.userSpecs = object.userSpecs?.map((e) => UserSpec.fromPartial(e)) || [];
+        message.authSentinel = object.authSentinel ?? false;
         return message;
     },
 };
@@ -1713,6 +1749,7 @@ const baseUpdateClusterRequest: object = {
     persistenceMode: 0,
     networkId: '',
     announceHostnames: false,
+    authSentinel: false,
 };
 
 export const UpdateClusterRequest = {
@@ -1761,6 +1798,9 @@ export const UpdateClusterRequest = {
         }
         if (message.announceHostnames === true) {
             writer.uint32(96).bool(message.announceHostnames);
+        }
+        if (message.authSentinel === true) {
+            writer.uint32(104).bool(message.authSentinel);
         }
         return writer;
     },
@@ -1812,6 +1852,9 @@ export const UpdateClusterRequest = {
                     break;
                 case 12:
                     message.announceHostnames = reader.bool();
+                    break;
+                case 13:
+                    message.authSentinel = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1868,6 +1911,10 @@ export const UpdateClusterRequest = {
             object.announceHostnames !== undefined && object.announceHostnames !== null
                 ? Boolean(object.announceHostnames)
                 : false;
+        message.authSentinel =
+            object.authSentinel !== undefined && object.authSentinel !== null
+                ? Boolean(object.authSentinel)
+                : false;
         return message;
     },
 
@@ -1906,6 +1953,7 @@ export const UpdateClusterRequest = {
         message.networkId !== undefined && (obj.networkId = message.networkId);
         message.announceHostnames !== undefined &&
             (obj.announceHostnames = message.announceHostnames);
+        message.authSentinel !== undefined && (obj.authSentinel = message.authSentinel);
         return obj;
     },
 
@@ -1942,6 +1990,7 @@ export const UpdateClusterRequest = {
         message.persistenceMode = object.persistenceMode ?? 0;
         message.networkId = object.networkId ?? '';
         message.announceHostnames = object.announceHostnames ?? false;
+        message.authSentinel = object.authSentinel ?? false;
         return message;
     },
 };
@@ -2884,6 +2933,7 @@ const baseRestoreClusterRequest: object = {
     persistenceMode: 0,
     deletionProtection: false,
     announceHostnames: false,
+    authSentinel: false,
 };
 
 export const RestoreClusterRequest = {
@@ -2944,6 +2994,9 @@ export const RestoreClusterRequest = {
         }
         if (message.maintenanceWindow !== undefined) {
             MaintenanceWindow.encode(message.maintenanceWindow, writer.uint32(122).fork()).ldelim();
+        }
+        if (message.authSentinel === true) {
+            writer.uint32(128).bool(message.authSentinel);
         }
         return writer;
     },
@@ -3009,6 +3062,9 @@ export const RestoreClusterRequest = {
                 case 15:
                     message.maintenanceWindow = MaintenanceWindow.decode(reader, reader.uint32());
                     break;
+                case 16:
+                    message.authSentinel = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -3073,6 +3129,10 @@ export const RestoreClusterRequest = {
             object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
                 ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
                 : undefined;
+        message.authSentinel =
+            object.authSentinel !== undefined && object.authSentinel !== null
+                ? Boolean(object.authSentinel)
+                : false;
         return message;
     },
 
@@ -3116,6 +3176,7 @@ export const RestoreClusterRequest = {
             (obj.maintenanceWindow = message.maintenanceWindow
                 ? MaintenanceWindow.toJSON(message.maintenanceWindow)
                 : undefined);
+        message.authSentinel !== undefined && (obj.authSentinel = message.authSentinel);
         return obj;
     },
 
@@ -3152,6 +3213,7 @@ export const RestoreClusterRequest = {
             object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
                 ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
                 : undefined;
+        message.authSentinel = object.authSentinel ?? false;
         return message;
     },
 };

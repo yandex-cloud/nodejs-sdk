@@ -7,6 +7,7 @@ import {
     ObjectTransferStage,
     Secret,
     CleanupPolicy,
+    ConnectionManagerConnection,
     objectTransferStageFromJSON,
     objectTransferStageToJSON,
     cleanupPolicyFromJSON,
@@ -32,6 +33,7 @@ export interface MysqlConnection {
     mdbClusterId: string | undefined;
     /** Connection options for on-premise MySQL */
     onPremise?: OnPremiseMysql | undefined;
+    connectionManagerConnection?: ConnectionManagerConnection | undefined;
 }
 
 export interface MysqlObjectTransferSettings {
@@ -260,6 +262,12 @@ export const MysqlConnection = {
         if (message.onPremise !== undefined) {
             OnPremiseMysql.encode(message.onPremise, writer.uint32(18).fork()).ldelim();
         }
+        if (message.connectionManagerConnection !== undefined) {
+            ConnectionManagerConnection.encode(
+                message.connectionManagerConnection,
+                writer.uint32(26).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -275,6 +283,12 @@ export const MysqlConnection = {
                     break;
                 case 2:
                     message.onPremise = OnPremiseMysql.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.connectionManagerConnection = ConnectionManagerConnection.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -294,6 +308,11 @@ export const MysqlConnection = {
             object.onPremise !== undefined && object.onPremise !== null
                 ? OnPremiseMysql.fromJSON(object.onPremise)
                 : undefined;
+        message.connectionManagerConnection =
+            object.connectionManagerConnection !== undefined &&
+            object.connectionManagerConnection !== null
+                ? ConnectionManagerConnection.fromJSON(object.connectionManagerConnection)
+                : undefined;
         return message;
     },
 
@@ -304,6 +323,10 @@ export const MysqlConnection = {
             (obj.onPremise = message.onPremise
                 ? OnPremiseMysql.toJSON(message.onPremise)
                 : undefined);
+        message.connectionManagerConnection !== undefined &&
+            (obj.connectionManagerConnection = message.connectionManagerConnection
+                ? ConnectionManagerConnection.toJSON(message.connectionManagerConnection)
+                : undefined);
         return obj;
     },
 
@@ -313,6 +336,11 @@ export const MysqlConnection = {
         message.onPremise =
             object.onPremise !== undefined && object.onPremise !== null
                 ? OnPremiseMysql.fromPartial(object.onPremise)
+                : undefined;
+        message.connectionManagerConnection =
+            object.connectionManagerConnection !== undefined &&
+            object.connectionManagerConnection !== null
+                ? ConnectionManagerConnection.fromPartial(object.connectionManagerConnection)
                 : undefined;
         return message;
     },

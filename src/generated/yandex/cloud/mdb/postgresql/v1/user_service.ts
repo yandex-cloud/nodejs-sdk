@@ -147,6 +147,8 @@ export interface UpdateUserRequest {
      * Possible values are `` USER_PASSWORD_ENCRYPTION_MD5 `` or `` USER_PASSWORD_ENCRYPTION_SCRAM_SHA_256 ``.
      */
     userPasswordEncryption: UserPasswordEncryption;
+    /** Generate password using Connection Manager. */
+    generatePassword?: boolean;
 }
 
 export interface UpdateUserMetadata {
@@ -650,6 +652,12 @@ export const UpdateUserRequest = {
         if (message.userPasswordEncryption !== 0) {
             writer.uint32(88).int32(message.userPasswordEncryption);
         }
+        if (message.generatePassword !== undefined) {
+            BoolValue.encode(
+                { $type: 'google.protobuf.BoolValue', value: message.generatePassword! },
+                writer.uint32(98).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -694,6 +702,9 @@ export const UpdateUserRequest = {
                     break;
                 case 11:
                     message.userPasswordEncryption = reader.int32() as any;
+                    break;
+                case 12:
+                    message.generatePassword = BoolValue.decode(reader, reader.uint32()).value;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -741,6 +752,10 @@ export const UpdateUserRequest = {
             object.userPasswordEncryption !== undefined && object.userPasswordEncryption !== null
                 ? userPasswordEncryptionFromJSON(object.userPasswordEncryption)
                 : 0;
+        message.generatePassword =
+            object.generatePassword !== undefined && object.generatePassword !== null
+                ? Boolean(object.generatePassword)
+                : undefined;
         return message;
     },
 
@@ -775,6 +790,7 @@ export const UpdateUserRequest = {
             (obj.userPasswordEncryption = userPasswordEncryptionToJSON(
                 message.userPasswordEncryption,
             ));
+        message.generatePassword !== undefined && (obj.generatePassword = message.generatePassword);
         return obj;
     },
 
@@ -797,6 +813,7 @@ export const UpdateUserRequest = {
         message.grants = object.grants?.map((e) => e) || [];
         message.deletionProtection = object.deletionProtection ?? undefined;
         message.userPasswordEncryption = object.userPasswordEncryption ?? 0;
+        message.generatePassword = object.generatePassword ?? undefined;
         return message;
     },
 };
