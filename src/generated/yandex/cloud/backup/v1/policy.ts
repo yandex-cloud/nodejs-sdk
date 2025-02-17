@@ -113,6 +113,8 @@ export interface PolicySettings {
     fastBackupEnabled: boolean;
     /** If true, a quiesced snapshot of the virtual machine will be taken. */
     quiesceSnapshottingEnabled: boolean;
+    /** File filters to specify masks of files to backup or to exclude of backuping */
+    fileFilters?: PolicySettings_FileFilters;
 }
 
 /** Compression rate of the backups. */
@@ -709,6 +711,14 @@ export interface PolicySettings_Scheduling_BackupSet_SinceLastExecTime {
     delay?: PolicySettings_Interval;
 }
 
+export interface PolicySettings_FileFilters {
+    $type: 'yandex.cloud.backup.v1.PolicySettings.FileFilters';
+    /** Do not backup files that match the following criteria */
+    exclusionMasks: string[];
+    /** Backup only files that match the following criteria */
+    inclusionMasks: string[];
+}
+
 export interface PolicyApplication {
     $type: 'yandex.cloud.backup.v1.PolicyApplication';
     /** Policy ID. */
@@ -981,6 +991,12 @@ export const PolicySettings = {
         if (message.quiesceSnapshottingEnabled === true) {
             writer.uint32(144).bool(message.quiesceSnapshottingEnabled);
         }
+        if (message.fileFilters !== undefined) {
+            PolicySettings_FileFilters.encode(
+                message.fileFilters,
+                writer.uint32(154).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -1053,6 +1069,12 @@ export const PolicySettings = {
                     break;
                 case 18:
                     message.quiesceSnapshottingEnabled = reader.bool();
+                    break;
+                case 19:
+                    message.fileFilters = PolicySettings_FileFilters.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1131,6 +1153,10 @@ export const PolicySettings = {
             object.quiesceSnapshottingEnabled !== null
                 ? Boolean(object.quiesceSnapshottingEnabled)
                 : false;
+        message.fileFilters =
+            object.fileFilters !== undefined && object.fileFilters !== null
+                ? PolicySettings_FileFilters.fromJSON(object.fileFilters)
+                : undefined;
         return message;
     },
 
@@ -1183,6 +1209,10 @@ export const PolicySettings = {
             (obj.fastBackupEnabled = message.fastBackupEnabled);
         message.quiesceSnapshottingEnabled !== undefined &&
             (obj.quiesceSnapshottingEnabled = message.quiesceSnapshottingEnabled);
+        message.fileFilters !== undefined &&
+            (obj.fileFilters = message.fileFilters
+                ? PolicySettings_FileFilters.toJSON(message.fileFilters)
+                : undefined);
         return obj;
     },
 
@@ -1228,6 +1258,10 @@ export const PolicySettings = {
         message.cbt = object.cbt ?? 0;
         message.fastBackupEnabled = object.fastBackupEnabled ?? false;
         message.quiesceSnapshottingEnabled = object.quiesceSnapshottingEnabled ?? false;
+        message.fileFilters =
+            object.fileFilters !== undefined && object.fileFilters !== null
+                ? PolicySettings_FileFilters.fromPartial(object.fileFilters)
+                : undefined;
         return message;
     },
 };
@@ -2563,6 +2597,85 @@ messageTypeRegistry.set(
     PolicySettings_Scheduling_BackupSet_SinceLastExecTime.$type,
     PolicySettings_Scheduling_BackupSet_SinceLastExecTime,
 );
+
+const basePolicySettings_FileFilters: object = {
+    $type: 'yandex.cloud.backup.v1.PolicySettings.FileFilters',
+    exclusionMasks: '',
+    inclusionMasks: '',
+};
+
+export const PolicySettings_FileFilters = {
+    $type: 'yandex.cloud.backup.v1.PolicySettings.FileFilters' as const,
+
+    encode(
+        message: PolicySettings_FileFilters,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.exclusionMasks) {
+            writer.uint32(10).string(v!);
+        }
+        for (const v of message.inclusionMasks) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): PolicySettings_FileFilters {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...basePolicySettings_FileFilters } as PolicySettings_FileFilters;
+        message.exclusionMasks = [];
+        message.inclusionMasks = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.exclusionMasks.push(reader.string());
+                    break;
+                case 2:
+                    message.inclusionMasks.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): PolicySettings_FileFilters {
+        const message = { ...basePolicySettings_FileFilters } as PolicySettings_FileFilters;
+        message.exclusionMasks = (object.exclusionMasks ?? []).map((e: any) => String(e));
+        message.inclusionMasks = (object.inclusionMasks ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: PolicySettings_FileFilters): unknown {
+        const obj: any = {};
+        if (message.exclusionMasks) {
+            obj.exclusionMasks = message.exclusionMasks.map((e) => e);
+        } else {
+            obj.exclusionMasks = [];
+        }
+        if (message.inclusionMasks) {
+            obj.inclusionMasks = message.inclusionMasks.map((e) => e);
+        } else {
+            obj.inclusionMasks = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<PolicySettings_FileFilters>, I>>(
+        object: I,
+    ): PolicySettings_FileFilters {
+        const message = { ...basePolicySettings_FileFilters } as PolicySettings_FileFilters;
+        message.exclusionMasks = object.exclusionMasks?.map((e) => e) || [];
+        message.inclusionMasks = object.inclusionMasks?.map((e) => e) || [];
+        return message;
+    },
+};
+
+messageTypeRegistry.set(PolicySettings_FileFilters.$type, PolicySettings_FileFilters);
 
 const basePolicyApplication: object = {
     $type: 'yandex.cloud.backup.v1.PolicyApplication',

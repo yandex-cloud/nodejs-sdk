@@ -21,6 +21,7 @@ import {
     ContentUsage,
     Message,
     Tool,
+    JsonSchema,
     Alternative,
     Token,
 } from '../../../../../../yandex/cloud/ai/foundation_models/v1/text_common';
@@ -42,6 +43,14 @@ export interface CompletionRequest {
      * Note: This parameter is not yet supported and will be ignored if provided.
      */
     tools: Tool[];
+    /**
+     * When set to true, the model will respond with a valid JSON object.
+     * Be sure to explicitly ask the model for JSON.
+     * Otherwise, it may generate excessive whitespace and run indefinitely until it reaches the token limit.
+     */
+    jsonObject: boolean | undefined;
+    /** Enforces a specific JSON structure for the model's response based on a provided schema. */
+    jsonSchema?: JsonSchema | undefined;
 }
 
 /** Response containing generated text completions. */
@@ -94,6 +103,12 @@ export const CompletionRequest = {
         for (const v of message.tools) {
             Tool.encode(v!, writer.uint32(34).fork()).ldelim();
         }
+        if (message.jsonObject !== undefined) {
+            writer.uint32(40).bool(message.jsonObject);
+        }
+        if (message.jsonSchema !== undefined) {
+            JsonSchema.encode(message.jsonSchema, writer.uint32(50).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -118,6 +133,12 @@ export const CompletionRequest = {
                 case 4:
                     message.tools.push(Tool.decode(reader, reader.uint32()));
                     break;
+                case 5:
+                    message.jsonObject = reader.bool();
+                    break;
+                case 6:
+                    message.jsonSchema = JsonSchema.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -138,6 +159,14 @@ export const CompletionRequest = {
                 : undefined;
         message.messages = (object.messages ?? []).map((e: any) => Message.fromJSON(e));
         message.tools = (object.tools ?? []).map((e: any) => Tool.fromJSON(e));
+        message.jsonObject =
+            object.jsonObject !== undefined && object.jsonObject !== null
+                ? Boolean(object.jsonObject)
+                : undefined;
+        message.jsonSchema =
+            object.jsonSchema !== undefined && object.jsonSchema !== null
+                ? JsonSchema.fromJSON(object.jsonSchema)
+                : undefined;
         return message;
     },
 
@@ -158,6 +187,11 @@ export const CompletionRequest = {
         } else {
             obj.tools = [];
         }
+        message.jsonObject !== undefined && (obj.jsonObject = message.jsonObject);
+        message.jsonSchema !== undefined &&
+            (obj.jsonSchema = message.jsonSchema
+                ? JsonSchema.toJSON(message.jsonSchema)
+                : undefined);
         return obj;
     },
 
@@ -170,6 +204,11 @@ export const CompletionRequest = {
                 : undefined;
         message.messages = object.messages?.map((e) => Message.fromPartial(e)) || [];
         message.tools = object.tools?.map((e) => Tool.fromPartial(e)) || [];
+        message.jsonObject = object.jsonObject ?? undefined;
+        message.jsonSchema =
+            object.jsonSchema !== undefined && object.jsonSchema !== null
+                ? JsonSchema.fromPartial(object.jsonSchema)
+                : undefined;
         return message;
     },
 };
