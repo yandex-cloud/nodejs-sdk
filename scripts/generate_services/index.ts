@@ -103,9 +103,7 @@ const generateClient = async (dir: string) => {
 
     const serviceProtoFiles = fg.sync('**/*.proto', { cwd: target, absolute: true });
 
-    const serviceName = generateServiceName(dir);
-
-    const serviceDir = PATH.join(CLIENTS_DIR, serviceName);
+    const serviceDir = PATH.join(CLIENTS_DIR, generateServiceName(dir));
     if (!fs.existsSync(serviceDir)) {
         fs.mkdirSync(serviceDir, { recursive: true });
     }
@@ -116,18 +114,20 @@ const generateClient = async (dir: string) => {
 
     await addReExports(serviceDir, dir, relativeProtoPathList);
 
-    return serviceName;
+    return dir;
 };
 
-const modifyPackageJSON = async (serviceList: string[]) => {
+const modifyPackageJSON = async (serviceDirList: string[]) => {
     const path = PATH.resolve('package.json');
     const data = fs.readFileSync(path, 'utf8');
     const jsonData = JSON.parse(data);
 
     jsonData.exports = jsonData.exports || {};
 
-    serviceList.forEach((serviceName) => {
+    serviceDirList.forEach((serviceDir) => {
+        const serviceName = generateServiceName(serviceDir);
         jsonData.exports[`./${serviceName}`] = `./dist/clients/${serviceName}/index.js`;
+        jsonData.exports[`./${serviceName}/*`] = `./dist/generated/yandex/cloud/${serviceDir}/*.js`;
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -153,11 +153,11 @@ const main = async () => {
 
     await generateCloudApi();
 
-    const serviceList = await Promise.all(Object.keys(serviceMap).map(generateClient));
+    const clientPromiseList = Object.keys(serviceMap).map(generateClient);
+    const serviceDirList = await Promise.all(clientPromiseList);
+    serviceDirList.sort();
 
-    serviceList.sort();
-
-    await modifyPackageJSON(serviceList);
+    await modifyPackageJSON(serviceDirList);
 
     await exec('npm run prettier:fix:clients');
 };
