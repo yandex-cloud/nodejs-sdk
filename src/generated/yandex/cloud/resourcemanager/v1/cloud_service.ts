@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -28,7 +27,6 @@ import {
 export const protobufPackage = 'yandex.cloud.resourcemanager.v1';
 
 export interface GetCloudRequest {
-    $type: 'yandex.cloud.resourcemanager.v1.GetCloudRequest';
     /**
      * ID of the Cloud resource to return.
      * To get the cloud ID, use a [CloudService.List] request.
@@ -37,7 +35,6 @@ export interface GetCloudRequest {
 }
 
 export interface ListCloudsRequest {
-    $type: 'yandex.cloud.resourcemanager.v1.ListCloudsRequest';
     /**
      * The maximum number of results per page to return. If the number of available
      * results is larger than [page_size],
@@ -68,7 +65,6 @@ export interface ListCloudsRequest {
 }
 
 export interface ListCloudsResponse {
-    $type: 'yandex.cloud.resourcemanager.v1.ListCloudsResponse';
     /** List of Cloud resources. */
     clouds: Cloud[];
     /**
@@ -83,7 +79,6 @@ export interface ListCloudsResponse {
 }
 
 export interface CreateCloudRequest {
-    $type: 'yandex.cloud.resourcemanager.v1.CreateCloudRequest';
     /**
      * ID of the organization to create a cloud in.
      * To get the organization ID, use a [yandex.cloud.organizationmanager.v1.OrganizationService.List] request.
@@ -98,19 +93,16 @@ export interface CreateCloudRequest {
 }
 
 export interface CreateCloudRequest_LabelsEntry {
-    $type: 'yandex.cloud.resourcemanager.v1.CreateCloudRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateCloudMetadata {
-    $type: 'yandex.cloud.resourcemanager.v1.CreateCloudMetadata';
     /** ID of the cloud that is being created. */
     cloudId: string;
 }
 
 export interface ListCloudOperationsRequest {
-    $type: 'yandex.cloud.resourcemanager.v1.ListCloudOperationsRequest';
     /** ID of the Cloud resource to list operations for. */
     cloudId: string;
     /**
@@ -129,7 +121,6 @@ export interface ListCloudOperationsRequest {
 }
 
 export interface ListCloudOperationsResponse {
-    $type: 'yandex.cloud.resourcemanager.v1.ListCloudOperationsResponse';
     /** List of operations for the specified cloud. */
     operations: Operation[];
     /**
@@ -142,7 +133,6 @@ export interface ListCloudOperationsResponse {
 }
 
 export interface UpdateCloudRequest {
-    $type: 'yandex.cloud.resourcemanager.v1.UpdateCloudRequest';
     /**
      * ID of the cloud to update.
      * To get the cloud ID, use a [CloudService.List] request.
@@ -159,19 +149,16 @@ export interface UpdateCloudRequest {
 }
 
 export interface UpdateCloudRequest_LabelsEntry {
-    $type: 'yandex.cloud.resourcemanager.v1.UpdateCloudRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateCloudMetadata {
-    $type: 'yandex.cloud.resourcemanager.v1.UpdateCloudMetadata';
     /** ID of the cloud that is being updated. */
     cloudId: string;
 }
 
 export interface DeleteCloudRequest {
-    $type: 'yandex.cloud.resourcemanager.v1.DeleteCloudRequest';
     /**
      * ID of the cloud to delete.
      * To get the cloud ID, use a [CloudService.List] request.
@@ -189,7 +176,6 @@ export interface DeleteCloudRequest {
 }
 
 export interface DeleteCloudMetadata {
-    $type: 'yandex.cloud.resourcemanager.v1.DeleteCloudMetadata';
     /** ID of the cloud that is being deleted. */
     cloudId: string;
     /** The timestamp after which the process of deleting the cloud should begin. */
@@ -199,14 +185,9 @@ export interface DeleteCloudMetadata {
     cancelledAt?: Date;
 }
 
-const baseGetCloudRequest: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.GetCloudRequest',
-    cloudId: '',
-};
+const baseGetCloudRequest: object = { cloudId: '' };
 
 export const GetCloudRequest = {
-    $type: 'yandex.cloud.resourcemanager.v1.GetCloudRequest' as const,
-
     encode(message: GetCloudRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cloudId !== '') {
             writer.uint32(10).string(message.cloudId);
@@ -252,10 +233,7 @@ export const GetCloudRequest = {
     },
 };
 
-messageTypeRegistry.set(GetCloudRequest.$type, GetCloudRequest);
-
 const baseListCloudsRequest: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.ListCloudsRequest',
     pageSize: 0,
     pageToken: '',
     filter: '',
@@ -263,8 +241,6 @@ const baseListCloudsRequest: object = {
 };
 
 export const ListCloudsRequest = {
-    $type: 'yandex.cloud.resourcemanager.v1.ListCloudsRequest' as const,
-
     encode(message: ListCloudsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -344,16 +320,9 @@ export const ListCloudsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListCloudsRequest.$type, ListCloudsRequest);
-
-const baseListCloudsResponse: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.ListCloudsResponse',
-    nextPageToken: '',
-};
+const baseListCloudsResponse: object = { nextPageToken: '' };
 
 export const ListCloudsResponse = {
-    $type: 'yandex.cloud.resourcemanager.v1.ListCloudsResponse' as const,
-
     encode(message: ListCloudsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.clouds) {
             Cloud.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -417,18 +386,9 @@ export const ListCloudsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListCloudsResponse.$type, ListCloudsResponse);
-
-const baseCreateCloudRequest: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.CreateCloudRequest',
-    organizationId: '',
-    name: '',
-    description: '',
-};
+const baseCreateCloudRequest: object = { organizationId: '', name: '', description: '' };
 
 export const CreateCloudRequest = {
-    $type: 'yandex.cloud.resourcemanager.v1.CreateCloudRequest' as const,
-
     encode(message: CreateCloudRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -441,11 +401,7 @@ export const CreateCloudRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateCloudRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.resourcemanager.v1.CreateCloudRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -538,17 +494,9 @@ export const CreateCloudRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateCloudRequest.$type, CreateCloudRequest);
-
-const baseCreateCloudRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.CreateCloudRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateCloudRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateCloudRequest_LabelsEntry = {
-    $type: 'yandex.cloud.resourcemanager.v1.CreateCloudRequest.LabelsEntry' as const,
-
     encode(
         message: CreateCloudRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -608,16 +556,9 @@ export const CreateCloudRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateCloudRequest_LabelsEntry.$type, CreateCloudRequest_LabelsEntry);
-
-const baseCreateCloudMetadata: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.CreateCloudMetadata',
-    cloudId: '',
-};
+const baseCreateCloudMetadata: object = { cloudId: '' };
 
 export const CreateCloudMetadata = {
-    $type: 'yandex.cloud.resourcemanager.v1.CreateCloudMetadata' as const,
-
     encode(message: CreateCloudMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cloudId !== '') {
             writer.uint32(10).string(message.cloudId);
@@ -665,18 +606,9 @@ export const CreateCloudMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateCloudMetadata.$type, CreateCloudMetadata);
-
-const baseListCloudOperationsRequest: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.ListCloudOperationsRequest',
-    cloudId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListCloudOperationsRequest: object = { cloudId: '', pageSize: 0, pageToken: '' };
 
 export const ListCloudOperationsRequest = {
-    $type: 'yandex.cloud.resourcemanager.v1.ListCloudOperationsRequest' as const,
-
     encode(
         message: ListCloudOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -749,16 +681,9 @@ export const ListCloudOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListCloudOperationsRequest.$type, ListCloudOperationsRequest);
-
-const baseListCloudOperationsResponse: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.ListCloudOperationsResponse',
-    nextPageToken: '',
-};
+const baseListCloudOperationsResponse: object = { nextPageToken: '' };
 
 export const ListCloudOperationsResponse = {
-    $type: 'yandex.cloud.resourcemanager.v1.ListCloudOperationsResponse' as const,
-
     encode(
         message: ListCloudOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -825,18 +750,9 @@ export const ListCloudOperationsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListCloudOperationsResponse.$type, ListCloudOperationsResponse);
-
-const baseUpdateCloudRequest: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.UpdateCloudRequest',
-    cloudId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateCloudRequest: object = { cloudId: '', name: '', description: '' };
 
 export const UpdateCloudRequest = {
-    $type: 'yandex.cloud.resourcemanager.v1.UpdateCloudRequest' as const,
-
     encode(message: UpdateCloudRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cloudId !== '') {
             writer.uint32(10).string(message.cloudId);
@@ -852,11 +768,7 @@ export const UpdateCloudRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateCloudRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.resourcemanager.v1.UpdateCloudRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -962,17 +874,9 @@ export const UpdateCloudRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateCloudRequest.$type, UpdateCloudRequest);
-
-const baseUpdateCloudRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.UpdateCloudRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateCloudRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateCloudRequest_LabelsEntry = {
-    $type: 'yandex.cloud.resourcemanager.v1.UpdateCloudRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateCloudRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1032,16 +936,9 @@ export const UpdateCloudRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateCloudRequest_LabelsEntry.$type, UpdateCloudRequest_LabelsEntry);
-
-const baseUpdateCloudMetadata: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.UpdateCloudMetadata',
-    cloudId: '',
-};
+const baseUpdateCloudMetadata: object = { cloudId: '' };
 
 export const UpdateCloudMetadata = {
-    $type: 'yandex.cloud.resourcemanager.v1.UpdateCloudMetadata' as const,
-
     encode(message: UpdateCloudMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cloudId !== '') {
             writer.uint32(10).string(message.cloudId);
@@ -1089,16 +986,9 @@ export const UpdateCloudMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateCloudMetadata.$type, UpdateCloudMetadata);
-
-const baseDeleteCloudRequest: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.DeleteCloudRequest',
-    cloudId: '',
-};
+const baseDeleteCloudRequest: object = { cloudId: '' };
 
 export const DeleteCloudRequest = {
-    $type: 'yandex.cloud.resourcemanager.v1.DeleteCloudRequest' as const,
-
     encode(message: DeleteCloudRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cloudId !== '') {
             writer.uint32(10).string(message.cloudId);
@@ -1158,17 +1048,9 @@ export const DeleteCloudRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteCloudRequest.$type, DeleteCloudRequest);
-
-const baseDeleteCloudMetadata: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.DeleteCloudMetadata',
-    cloudId: '',
-    cancelledBy: '',
-};
+const baseDeleteCloudMetadata: object = { cloudId: '', cancelledBy: '' };
 
 export const DeleteCloudMetadata = {
-    $type: 'yandex.cloud.resourcemanager.v1.DeleteCloudMetadata' as const,
-
     encode(message: DeleteCloudMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cloudId !== '') {
             writer.uint32(10).string(message.cloudId);
@@ -1251,8 +1133,6 @@ export const DeleteCloudMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteCloudMetadata.$type, DeleteCloudMetadata);
 
 /** A set of methods for managing Cloud resources. */
 export const CloudServiceService = {
@@ -1572,21 +1452,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

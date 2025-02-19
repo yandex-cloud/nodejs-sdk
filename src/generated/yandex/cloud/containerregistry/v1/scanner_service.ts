@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,31 +19,26 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.containerregistry.v1';
 
 export interface ScanRequest {
-    $type: 'yandex.cloud.containerregistry.v1.ScanRequest';
     /** ID of the Image to be scanned for vulnerabilities. */
     imageId: string;
 }
 
 export interface ScanMetadata {
-    $type: 'yandex.cloud.containerregistry.v1.ScanMetadata';
     /** ID of the ScanResult that is being created. */
     scanResultId: string;
 }
 
 export interface GetScanResultRequest {
-    $type: 'yandex.cloud.containerregistry.v1.GetScanResultRequest';
     /** ID of the ScanResult to return. */
     scanResultId: string;
 }
 
 export interface GetLastScanResultRequest {
-    $type: 'yandex.cloud.containerregistry.v1.GetLastScanResultRequest';
     /** ID of the Image to get last finished ScanResult. */
     imageId: string;
 }
 
 export interface ListScanResultsRequest {
-    $type: 'yandex.cloud.containerregistry.v1.ListScanResultsRequest';
     imageId: string | undefined;
     repositoryId: string | undefined;
     /**
@@ -78,7 +72,6 @@ export interface ListScanResultsRequest {
 }
 
 export interface ListScanResultsResponse {
-    $type: 'yandex.cloud.containerregistry.v1.ListScanResultsResponse';
     /** List of ScanResult resources. */
     scanResults: ScanResult[];
     /**
@@ -93,7 +86,6 @@ export interface ListScanResultsResponse {
 }
 
 export interface ListVulnerabilitiesRequest {
-    $type: 'yandex.cloud.containerregistry.v1.ListVulnerabilitiesRequest';
     /** ID of the ScanResult to get list of vulnerabilities for. */
     scanResultId: string;
     /**
@@ -127,7 +119,6 @@ export interface ListVulnerabilitiesRequest {
 }
 
 export interface ListVulnerabilitiesResponse {
-    $type: 'yandex.cloud.containerregistry.v1.ListVulnerabilitiesResponse';
     /** List of Vulnerability resources. */
     vulnerabilities: Vulnerability[];
     /**
@@ -141,14 +132,9 @@ export interface ListVulnerabilitiesResponse {
     nextPageToken: string;
 }
 
-const baseScanRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.ScanRequest',
-    imageId: '',
-};
+const baseScanRequest: object = { imageId: '' };
 
 export const ScanRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.ScanRequest' as const,
-
     encode(message: ScanRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -194,16 +180,9 @@ export const ScanRequest = {
     },
 };
 
-messageTypeRegistry.set(ScanRequest.$type, ScanRequest);
-
-const baseScanMetadata: object = {
-    $type: 'yandex.cloud.containerregistry.v1.ScanMetadata',
-    scanResultId: '',
-};
+const baseScanMetadata: object = { scanResultId: '' };
 
 export const ScanMetadata = {
-    $type: 'yandex.cloud.containerregistry.v1.ScanMetadata' as const,
-
     encode(message: ScanMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.scanResultId !== '') {
             writer.uint32(10).string(message.scanResultId);
@@ -251,16 +230,9 @@ export const ScanMetadata = {
     },
 };
 
-messageTypeRegistry.set(ScanMetadata.$type, ScanMetadata);
-
-const baseGetScanResultRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.GetScanResultRequest',
-    scanResultId: '',
-};
+const baseGetScanResultRequest: object = { scanResultId: '' };
 
 export const GetScanResultRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.GetScanResultRequest' as const,
-
     encode(message: GetScanResultRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.scanResultId !== '') {
             writer.uint32(10).string(message.scanResultId);
@@ -310,16 +282,9 @@ export const GetScanResultRequest = {
     },
 };
 
-messageTypeRegistry.set(GetScanResultRequest.$type, GetScanResultRequest);
-
-const baseGetLastScanResultRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.GetLastScanResultRequest',
-    imageId: '',
-};
+const baseGetLastScanResultRequest: object = { imageId: '' };
 
 export const GetLastScanResultRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.GetLastScanResultRequest' as const,
-
     encode(
         message: GetLastScanResultRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -370,19 +335,9 @@ export const GetLastScanResultRequest = {
     },
 };
 
-messageTypeRegistry.set(GetLastScanResultRequest.$type, GetLastScanResultRequest);
-
-const baseListScanResultsRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.ListScanResultsRequest',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-    orderBy: '',
-};
+const baseListScanResultsRequest: object = { pageSize: 0, pageToken: '', filter: '', orderBy: '' };
 
 export const ListScanResultsRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.ListScanResultsRequest' as const,
-
     encode(message: ListScanResultsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== undefined) {
             writer.uint32(10).string(message.imageId);
@@ -486,16 +441,9 @@ export const ListScanResultsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListScanResultsRequest.$type, ListScanResultsRequest);
-
-const baseListScanResultsResponse: object = {
-    $type: 'yandex.cloud.containerregistry.v1.ListScanResultsResponse',
-    nextPageToken: '',
-};
+const baseListScanResultsResponse: object = { nextPageToken: '' };
 
 export const ListScanResultsResponse = {
-    $type: 'yandex.cloud.containerregistry.v1.ListScanResultsResponse' as const,
-
     encode(message: ListScanResultsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.scanResults) {
             ScanResult.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -561,10 +509,7 @@ export const ListScanResultsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListScanResultsResponse.$type, ListScanResultsResponse);
-
 const baseListVulnerabilitiesRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.ListVulnerabilitiesRequest',
     scanResultId: '',
     pageSize: 0,
     pageToken: '',
@@ -573,8 +518,6 @@ const baseListVulnerabilitiesRequest: object = {
 };
 
 export const ListVulnerabilitiesRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.ListVulnerabilitiesRequest' as const,
-
     encode(
         message: ListVulnerabilitiesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -669,16 +612,9 @@ export const ListVulnerabilitiesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListVulnerabilitiesRequest.$type, ListVulnerabilitiesRequest);
-
-const baseListVulnerabilitiesResponse: object = {
-    $type: 'yandex.cloud.containerregistry.v1.ListVulnerabilitiesResponse',
-    nextPageToken: '',
-};
+const baseListVulnerabilitiesResponse: object = { nextPageToken: '' };
 
 export const ListVulnerabilitiesResponse = {
-    $type: 'yandex.cloud.containerregistry.v1.ListVulnerabilitiesResponse' as const,
-
     encode(
         message: ListVulnerabilitiesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -749,8 +685,6 @@ export const ListVulnerabilitiesResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListVulnerabilitiesResponse.$type, ListVulnerabilitiesResponse);
 
 /** A set of methods for scanning Docker images. */
 export const ScannerServiceService = {
@@ -952,16 +886,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.storage.v1';
 
 /** Represents a response of the get object request to S3. */
 export interface S3APIGetObjectResponse {
-    $type: 'yandex.cloud.storage.v1.S3APIGetObjectResponse';
     /** MD5 hash of the object. */
     etag: string;
     /** Unique request ID. */
@@ -52,14 +50,12 @@ export interface S3APIGetObjectResponse {
 }
 
 export interface S3APIGetObjectResponse_MetadataEntry {
-    $type: 'yandex.cloud.storage.v1.S3APIGetObjectResponse.MetadataEntry';
     key: string;
     value: string;
 }
 
 /** Represents a response of the put object request to S3. */
 export interface S3APIPutObjectResponse {
-    $type: 'yandex.cloud.storage.v1.S3APIPutObjectResponse';
     /** MD5 hash of the object. */
     etag: string;
     /** Unique request ID. */
@@ -70,7 +66,6 @@ export interface S3APIPutObjectResponse {
 
 /** Represents a response of the delete object request to S3. */
 export interface S3APIDeleteObjectResponse {
-    $type: 'yandex.cloud.storage.v1.S3APIDeleteObjectResponse';
     /** Unique request ID. */
     requestId: string;
     /** Version ID of the object. */
@@ -78,7 +73,6 @@ export interface S3APIDeleteObjectResponse {
 }
 
 export interface CopyObjectResult {
-    $type: 'yandex.cloud.storage.v1.CopyObjectResult';
     /** Returns the ETag of the new object. */
     etag: string;
     /** Creation date of the object. */
@@ -87,7 +81,6 @@ export interface CopyObjectResult {
 
 /** Represents a response of the copy object request to S3. */
 export interface S3APICopyObjectResponse {
-    $type: 'yandex.cloud.storage.v1.S3APICopyObjectResponse';
     /** Container for all response elements. */
     copyObjectResult?: CopyObjectResult;
     /** Unique request ID. */
@@ -99,7 +92,6 @@ export interface S3APICopyObjectResponse {
 }
 
 export interface SuccessfullyDeletedObject {
-    $type: 'yandex.cloud.storage.v1.SuccessfullyDeletedObject';
     /** The name of the deleted object. */
     key: string;
     /** The version ID of the deleted object. */
@@ -111,7 +103,6 @@ export interface SuccessfullyDeletedObject {
 }
 
 export interface DeleteObjectError {
-    $type: 'yandex.cloud.storage.v1.DeleteObjectError';
     /** The error key. */
     key: string;
     /** The version ID of the error. */
@@ -124,7 +115,6 @@ export interface DeleteObjectError {
 
 /** Represents a response of the delete objects request to S3. */
 export interface S3APIDeleteObjectsResponse {
-    $type: 'yandex.cloud.storage.v1.S3APIDeleteObjectsResponse';
     /** List of successfully deleted objects */
     deleted: SuccessfullyDeletedObject[];
     /** List of objects that attempted to be deleted but encountered an error */
@@ -135,13 +125,11 @@ export interface S3APIDeleteObjectsResponse {
 
 /** Represents a response of the put object retention request to S3. */
 export interface S3APIPutObjectRetentionResponse {
-    $type: 'yandex.cloud.storage.v1.S3APIPutObjectRetentionResponse';
     /** Unique request ID. */
     requestId: string;
 }
 
 export interface ObjectLockRetention {
-    $type: 'yandex.cloud.storage.v1.ObjectLockRetention';
     /** Indicates the Retention mode for the specified object. */
     mode: string;
     /** The date on which this object lock retention will expire. */
@@ -150,7 +138,6 @@ export interface ObjectLockRetention {
 
 /** Represents a response of the get object retention request to S3. */
 export interface S3APIGetObjectRetentionResponse {
-    $type: 'yandex.cloud.storage.v1.S3APIGetObjectRetentionResponse';
     /** Unique request ID. */
     requestId: string;
     /** An object retention settings. */
@@ -159,20 +146,17 @@ export interface S3APIGetObjectRetentionResponse {
 
 /** Represents a response of the put object retention request to S3. */
 export interface S3APIPutObjectLegalHoldResponse {
-    $type: 'yandex.cloud.storage.v1.S3APIPutObjectLegalHoldResponse';
     /** Unique request ID. */
     requestId: string;
 }
 
 export interface ObjectLockLegalHold {
-    $type: 'yandex.cloud.storage.v1.ObjectLockLegalHold';
     /** Indicates whether the specified object has a legal hold in place. */
     status: string;
 }
 
 /** Represents a response of the get object legal hold request to S3. */
 export interface S3APIGetObjectLegalHoldResponse {
-    $type: 'yandex.cloud.storage.v1.S3APIGetObjectLegalHoldResponse';
     /** Unique request ID. */
     requestId: string;
     /** The current legal hold status for the specified object. */
@@ -181,7 +165,6 @@ export interface S3APIGetObjectLegalHoldResponse {
 
 /** Represents a response of put object tagging request to S3. */
 export interface S3APIPutObjectTaggingResponse {
-    $type: 'yandex.cloud.storage.v1.S3APIPutObjectTaggingResponse';
     /** Unique request ID. */
     requestId: string;
     /** The versionId of the object the tag-set was added to. */
@@ -189,7 +172,6 @@ export interface S3APIPutObjectTaggingResponse {
 }
 
 export interface ObjectTag {
-    $type: 'yandex.cloud.storage.v1.ObjectTag';
     /** Key of the object tag. */
     key: string;
     /** Value of the object tag. */
@@ -198,7 +180,6 @@ export interface ObjectTag {
 
 /** Represents a response of get object tagging request to S3. */
 export interface S3APIGetObjectTaggingResponse {
-    $type: 'yandex.cloud.storage.v1.S3APIGetObjectTaggingResponse';
     /** Unique request ID. */
     requestId: string;
     /** The versionId of the object for which you got the tagging information. */
@@ -209,7 +190,6 @@ export interface S3APIGetObjectTaggingResponse {
 
 /** Represents a response of delete object tagging request to S3. */
 export interface S3APIDeleteObjectTaggingResponse {
-    $type: 'yandex.cloud.storage.v1.S3APIDeleteObjectTaggingResponse';
     /** Unique request ID. */
     requestId: string;
     /** The versionId of the object the tag-set was removed from. */
@@ -218,7 +198,6 @@ export interface S3APIDeleteObjectTaggingResponse {
 
 /** Represents a response of start multipart upload request to S3. */
 export interface S3APIStartMultipartUploadResponse {
-    $type: 'yandex.cloud.storage.v1.S3APIStartMultipartUploadResponse';
     /** Unique request ID. */
     requestId: string;
     /** The name of the bucket in which the initiated multipart upload was initiated. */
@@ -231,7 +210,6 @@ export interface S3APIStartMultipartUploadResponse {
 
 /** Represents a response of upload part request to S3. */
 export interface S3APIUploadPartResponse {
-    $type: 'yandex.cloud.storage.v1.S3APIUploadPartResponse';
     /** Unique request ID. */
     requestId: string;
     /** MD5 hash of the object. */
@@ -240,7 +218,6 @@ export interface S3APIUploadPartResponse {
 
 /** Represents a response of list parts request to S3. */
 export interface S3APIListPartsResponse {
-    $type: 'yandex.cloud.storage.v1.S3APIListPartsResponse';
     /** The name of the bucket to which the multipart upload was initiated. */
     bucket: string;
     /** Object key for which the multipart upload was initiated. */
@@ -277,7 +254,6 @@ export interface S3APIListPartsResponse {
 
 /** Container for elements related to a part. */
 export interface S3APIPart {
-    $type: 'yandex.cloud.storage.v1.S3APIPart';
     /**
      * Part number identifying the part. This is a positive integer between 1 and
      * 10,000.
@@ -293,14 +269,12 @@ export interface S3APIPart {
 
 /** Represents a response of abort multipart upload request to S3. */
 export interface S3APIAbortMultipartUploadResponse {
-    $type: 'yandex.cloud.storage.v1.S3APIAbortMultipartUploadResponse';
     /** Unique request ID. */
     requestId: string;
 }
 
 /** Represents a response of complete multipart upload request to S3. */
 export interface S3APICompleteMultipartUploadResponse {
-    $type: 'yandex.cloud.storage.v1.S3APICompleteMultipartUploadResponse';
     /** Unique request ID. */
     requestId: string;
     /** The name of the bucket that contains the newly created object. */
@@ -320,7 +294,6 @@ export interface S3APICompleteMultipartUploadResponse {
 
 /** Represents a response of list multipart uploads request to S3. */
 export interface S3APIListMultipartUploadsResponse {
-    $type: 'yandex.cloud.storage.v1.S3APIListMultipartUploadsResponse';
     /** The name of the bucket to which the multipart upload was initiated. */
     bucket: string;
     /** The key at or after which the listing began. */
@@ -364,7 +337,6 @@ export interface S3APIListMultipartUploadsResponse {
 
 /** Container for the MultipartUpload for the Amazon S3 object. */
 export interface S3APIMultipartUpload {
-    $type: 'yandex.cloud.storage.v1.S3APIMultipartUpload';
     /** Key of the object for which the multipart upload was initiated. */
     key: string;
     /** Upload ID that identifies the multipart upload. */
@@ -381,7 +353,6 @@ export interface S3APIMultipartUpload {
 
 /** Container for the owner/initiator display name and ID. */
 export interface S3APIOwner {
-    $type: 'yandex.cloud.storage.v1.S3APIOwner';
     /** Container for the ID of the owner/initiator. */
     id: string;
     /** Container for the display name of the owner/initiator. */
@@ -390,7 +361,6 @@ export interface S3APIOwner {
 
 /** Response message for UploadPartCopy operation */
 export interface S3APIUploadPartCopyResponse {
-    $type: 'yandex.cloud.storage.v1.S3APIUploadPartCopyResponse';
     /** Entity tag of the object. */
     etag: string;
     /** Date and time at which the object was uploaded. */
@@ -400,7 +370,6 @@ export interface S3APIUploadPartCopyResponse {
 }
 
 const baseS3APIGetObjectResponse: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIGetObjectResponse',
     etag: '',
     requestId: '',
     acceptRanges: '',
@@ -420,8 +389,6 @@ const baseS3APIGetObjectResponse: object = {
 };
 
 export const S3APIGetObjectResponse = {
-    $type: 'yandex.cloud.storage.v1.S3APIGetObjectResponse' as const,
-
     encode(message: S3APIGetObjectResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.etag !== '') {
             writer.uint32(10).string(message.etag);
@@ -467,11 +434,7 @@ export const S3APIGetObjectResponse = {
         }
         Object.entries(message.metadata).forEach(([key, value]) => {
             S3APIGetObjectResponse_MetadataEntry.encode(
-                {
-                    $type: 'yandex.cloud.storage.v1.S3APIGetObjectResponse.MetadataEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(114).fork(),
             ).ldelim();
         });
@@ -744,17 +707,9 @@ export const S3APIGetObjectResponse = {
     },
 };
 
-messageTypeRegistry.set(S3APIGetObjectResponse.$type, S3APIGetObjectResponse);
-
-const baseS3APIGetObjectResponse_MetadataEntry: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIGetObjectResponse.MetadataEntry',
-    key: '',
-    value: '',
-};
+const baseS3APIGetObjectResponse_MetadataEntry: object = { key: '', value: '' };
 
 export const S3APIGetObjectResponse_MetadataEntry = {
-    $type: 'yandex.cloud.storage.v1.S3APIGetObjectResponse.MetadataEntry' as const,
-
     encode(
         message: S3APIGetObjectResponse_MetadataEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -820,21 +775,9 @@ export const S3APIGetObjectResponse_MetadataEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    S3APIGetObjectResponse_MetadataEntry.$type,
-    S3APIGetObjectResponse_MetadataEntry,
-);
-
-const baseS3APIPutObjectResponse: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIPutObjectResponse',
-    etag: '',
-    requestId: '',
-    versionId: '',
-};
+const baseS3APIPutObjectResponse: object = { etag: '', requestId: '', versionId: '' };
 
 export const S3APIPutObjectResponse = {
-    $type: 'yandex.cloud.storage.v1.S3APIPutObjectResponse' as const,
-
     encode(message: S3APIPutObjectResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.etag !== '') {
             writer.uint32(10).string(message.etag);
@@ -905,17 +848,9 @@ export const S3APIPutObjectResponse = {
     },
 };
 
-messageTypeRegistry.set(S3APIPutObjectResponse.$type, S3APIPutObjectResponse);
-
-const baseS3APIDeleteObjectResponse: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIDeleteObjectResponse',
-    requestId: '',
-    versionId: '',
-};
+const baseS3APIDeleteObjectResponse: object = { requestId: '', versionId: '' };
 
 export const S3APIDeleteObjectResponse = {
-    $type: 'yandex.cloud.storage.v1.S3APIDeleteObjectResponse' as const,
-
     encode(
         message: S3APIDeleteObjectResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -980,16 +915,9 @@ export const S3APIDeleteObjectResponse = {
     },
 };
 
-messageTypeRegistry.set(S3APIDeleteObjectResponse.$type, S3APIDeleteObjectResponse);
-
-const baseCopyObjectResult: object = {
-    $type: 'yandex.cloud.storage.v1.CopyObjectResult',
-    etag: '',
-};
+const baseCopyObjectResult: object = { etag: '' };
 
 export const CopyObjectResult = {
-    $type: 'yandex.cloud.storage.v1.CopyObjectResult' as const,
-
     encode(message: CopyObjectResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.etag !== '') {
             writer.uint32(10).string(message.etag);
@@ -1052,18 +980,13 @@ export const CopyObjectResult = {
     },
 };
 
-messageTypeRegistry.set(CopyObjectResult.$type, CopyObjectResult);
-
 const baseS3APICopyObjectResponse: object = {
-    $type: 'yandex.cloud.storage.v1.S3APICopyObjectResponse',
     requestId: '',
     copySourceVersionId: '',
     versionId: '',
 };
 
 export const S3APICopyObjectResponse = {
-    $type: 'yandex.cloud.storage.v1.S3APICopyObjectResponse' as const,
-
     encode(message: S3APICopyObjectResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.copyObjectResult !== undefined) {
             CopyObjectResult.encode(message.copyObjectResult, writer.uint32(10).fork()).ldelim();
@@ -1156,10 +1079,7 @@ export const S3APICopyObjectResponse = {
     },
 };
 
-messageTypeRegistry.set(S3APICopyObjectResponse.$type, S3APICopyObjectResponse);
-
 const baseSuccessfullyDeletedObject: object = {
-    $type: 'yandex.cloud.storage.v1.SuccessfullyDeletedObject',
     key: '',
     versionId: '',
     deleteMarker: false,
@@ -1167,8 +1087,6 @@ const baseSuccessfullyDeletedObject: object = {
 };
 
 export const SuccessfullyDeletedObject = {
-    $type: 'yandex.cloud.storage.v1.SuccessfullyDeletedObject' as const,
-
     encode(
         message: SuccessfullyDeletedObject,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1255,19 +1173,9 @@ export const SuccessfullyDeletedObject = {
     },
 };
 
-messageTypeRegistry.set(SuccessfullyDeletedObject.$type, SuccessfullyDeletedObject);
-
-const baseDeleteObjectError: object = {
-    $type: 'yandex.cloud.storage.v1.DeleteObjectError',
-    key: '',
-    versionId: '',
-    code: '',
-    msg: '',
-};
+const baseDeleteObjectError: object = { key: '', versionId: '', code: '', msg: '' };
 
 export const DeleteObjectError = {
-    $type: 'yandex.cloud.storage.v1.DeleteObjectError' as const,
-
     encode(message: DeleteObjectError, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1342,16 +1250,9 @@ export const DeleteObjectError = {
     },
 };
 
-messageTypeRegistry.set(DeleteObjectError.$type, DeleteObjectError);
-
-const baseS3APIDeleteObjectsResponse: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIDeleteObjectsResponse',
-    requestId: '',
-};
+const baseS3APIDeleteObjectsResponse: object = { requestId: '' };
 
 export const S3APIDeleteObjectsResponse = {
-    $type: 'yandex.cloud.storage.v1.S3APIDeleteObjectsResponse' as const,
-
     encode(
         message: S3APIDeleteObjectsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1437,16 +1338,9 @@ export const S3APIDeleteObjectsResponse = {
     },
 };
 
-messageTypeRegistry.set(S3APIDeleteObjectsResponse.$type, S3APIDeleteObjectsResponse);
-
-const baseS3APIPutObjectRetentionResponse: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIPutObjectRetentionResponse',
-    requestId: '',
-};
+const baseS3APIPutObjectRetentionResponse: object = { requestId: '' };
 
 export const S3APIPutObjectRetentionResponse = {
-    $type: 'yandex.cloud.storage.v1.S3APIPutObjectRetentionResponse' as const,
-
     encode(
         message: S3APIPutObjectRetentionResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1505,16 +1399,9 @@ export const S3APIPutObjectRetentionResponse = {
     },
 };
 
-messageTypeRegistry.set(S3APIPutObjectRetentionResponse.$type, S3APIPutObjectRetentionResponse);
-
-const baseObjectLockRetention: object = {
-    $type: 'yandex.cloud.storage.v1.ObjectLockRetention',
-    mode: '',
-};
+const baseObjectLockRetention: object = { mode: '' };
 
 export const ObjectLockRetention = {
-    $type: 'yandex.cloud.storage.v1.ObjectLockRetention' as const,
-
     encode(message: ObjectLockRetention, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mode !== '') {
             writer.uint32(10).string(message.mode);
@@ -1579,16 +1466,9 @@ export const ObjectLockRetention = {
     },
 };
 
-messageTypeRegistry.set(ObjectLockRetention.$type, ObjectLockRetention);
-
-const baseS3APIGetObjectRetentionResponse: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIGetObjectRetentionResponse',
-    requestId: '',
-};
+const baseS3APIGetObjectRetentionResponse: object = { requestId: '' };
 
 export const S3APIGetObjectRetentionResponse = {
-    $type: 'yandex.cloud.storage.v1.S3APIGetObjectRetentionResponse' as const,
-
     encode(
         message: S3APIGetObjectRetentionResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1665,16 +1545,9 @@ export const S3APIGetObjectRetentionResponse = {
     },
 };
 
-messageTypeRegistry.set(S3APIGetObjectRetentionResponse.$type, S3APIGetObjectRetentionResponse);
-
-const baseS3APIPutObjectLegalHoldResponse: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIPutObjectLegalHoldResponse',
-    requestId: '',
-};
+const baseS3APIPutObjectLegalHoldResponse: object = { requestId: '' };
 
 export const S3APIPutObjectLegalHoldResponse = {
-    $type: 'yandex.cloud.storage.v1.S3APIPutObjectLegalHoldResponse' as const,
-
     encode(
         message: S3APIPutObjectLegalHoldResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1733,16 +1606,9 @@ export const S3APIPutObjectLegalHoldResponse = {
     },
 };
 
-messageTypeRegistry.set(S3APIPutObjectLegalHoldResponse.$type, S3APIPutObjectLegalHoldResponse);
-
-const baseObjectLockLegalHold: object = {
-    $type: 'yandex.cloud.storage.v1.ObjectLockLegalHold',
-    status: '',
-};
+const baseObjectLockLegalHold: object = { status: '' };
 
 export const ObjectLockLegalHold = {
-    $type: 'yandex.cloud.storage.v1.ObjectLockLegalHold' as const,
-
     encode(message: ObjectLockLegalHold, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== '') {
             writer.uint32(10).string(message.status);
@@ -1790,16 +1656,9 @@ export const ObjectLockLegalHold = {
     },
 };
 
-messageTypeRegistry.set(ObjectLockLegalHold.$type, ObjectLockLegalHold);
-
-const baseS3APIGetObjectLegalHoldResponse: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIGetObjectLegalHoldResponse',
-    requestId: '',
-};
+const baseS3APIGetObjectLegalHoldResponse: object = { requestId: '' };
 
 export const S3APIGetObjectLegalHoldResponse = {
-    $type: 'yandex.cloud.storage.v1.S3APIGetObjectLegalHoldResponse' as const,
-
     encode(
         message: S3APIGetObjectLegalHoldResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1876,17 +1735,9 @@ export const S3APIGetObjectLegalHoldResponse = {
     },
 };
 
-messageTypeRegistry.set(S3APIGetObjectLegalHoldResponse.$type, S3APIGetObjectLegalHoldResponse);
-
-const baseS3APIPutObjectTaggingResponse: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIPutObjectTaggingResponse',
-    requestId: '',
-    versionId: '',
-};
+const baseS3APIPutObjectTaggingResponse: object = { requestId: '', versionId: '' };
 
 export const S3APIPutObjectTaggingResponse = {
-    $type: 'yandex.cloud.storage.v1.S3APIPutObjectTaggingResponse' as const,
-
     encode(
         message: S3APIPutObjectTaggingResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1951,13 +1802,9 @@ export const S3APIPutObjectTaggingResponse = {
     },
 };
 
-messageTypeRegistry.set(S3APIPutObjectTaggingResponse.$type, S3APIPutObjectTaggingResponse);
-
-const baseObjectTag: object = { $type: 'yandex.cloud.storage.v1.ObjectTag', key: '', value: '' };
+const baseObjectTag: object = { key: '', value: '' };
 
 export const ObjectTag = {
-    $type: 'yandex.cloud.storage.v1.ObjectTag' as const,
-
     encode(message: ObjectTag, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -2012,17 +1859,9 @@ export const ObjectTag = {
     },
 };
 
-messageTypeRegistry.set(ObjectTag.$type, ObjectTag);
-
-const baseS3APIGetObjectTaggingResponse: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIGetObjectTaggingResponse',
-    requestId: '',
-    versionId: '',
-};
+const baseS3APIGetObjectTaggingResponse: object = { requestId: '', versionId: '' };
 
 export const S3APIGetObjectTaggingResponse = {
-    $type: 'yandex.cloud.storage.v1.S3APIGetObjectTaggingResponse' as const,
-
     encode(
         message: S3APIGetObjectTaggingResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2101,17 +1940,9 @@ export const S3APIGetObjectTaggingResponse = {
     },
 };
 
-messageTypeRegistry.set(S3APIGetObjectTaggingResponse.$type, S3APIGetObjectTaggingResponse);
-
-const baseS3APIDeleteObjectTaggingResponse: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIDeleteObjectTaggingResponse',
-    requestId: '',
-    versionId: '',
-};
+const baseS3APIDeleteObjectTaggingResponse: object = { requestId: '', versionId: '' };
 
 export const S3APIDeleteObjectTaggingResponse = {
-    $type: 'yandex.cloud.storage.v1.S3APIDeleteObjectTaggingResponse' as const,
-
     encode(
         message: S3APIDeleteObjectTaggingResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2182,10 +2013,7 @@ export const S3APIDeleteObjectTaggingResponse = {
     },
 };
 
-messageTypeRegistry.set(S3APIDeleteObjectTaggingResponse.$type, S3APIDeleteObjectTaggingResponse);
-
 const baseS3APIStartMultipartUploadResponse: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIStartMultipartUploadResponse',
     requestId: '',
     bucket: '',
     key: '',
@@ -2193,8 +2021,6 @@ const baseS3APIStartMultipartUploadResponse: object = {
 };
 
 export const S3APIStartMultipartUploadResponse = {
-    $type: 'yandex.cloud.storage.v1.S3APIStartMultipartUploadResponse' as const,
-
     encode(
         message: S3APIStartMultipartUploadResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2284,17 +2110,9 @@ export const S3APIStartMultipartUploadResponse = {
     },
 };
 
-messageTypeRegistry.set(S3APIStartMultipartUploadResponse.$type, S3APIStartMultipartUploadResponse);
-
-const baseS3APIUploadPartResponse: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIUploadPartResponse',
-    requestId: '',
-    etag: '',
-};
+const baseS3APIUploadPartResponse: object = { requestId: '', etag: '' };
 
 export const S3APIUploadPartResponse = {
-    $type: 'yandex.cloud.storage.v1.S3APIUploadPartResponse' as const,
-
     encode(message: S3APIUploadPartResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.requestId !== '') {
             writer.uint32(10).string(message.requestId);
@@ -2353,10 +2171,7 @@ export const S3APIUploadPartResponse = {
     },
 };
 
-messageTypeRegistry.set(S3APIUploadPartResponse.$type, S3APIUploadPartResponse);
-
 const baseS3APIListPartsResponse: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIListPartsResponse',
     bucket: '',
     key: '',
     uploadId: '',
@@ -2369,8 +2184,6 @@ const baseS3APIListPartsResponse: object = {
 };
 
 export const S3APIListPartsResponse = {
-    $type: 'yandex.cloud.storage.v1.S3APIListPartsResponse' as const,
-
     encode(message: S3APIListPartsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucket !== '') {
             writer.uint32(10).string(message.bucket);
@@ -2556,18 +2369,9 @@ export const S3APIListPartsResponse = {
     },
 };
 
-messageTypeRegistry.set(S3APIListPartsResponse.$type, S3APIListPartsResponse);
-
-const baseS3APIPart: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIPart',
-    partNumber: 0,
-    size: 0,
-    etag: '',
-};
+const baseS3APIPart: object = { partNumber: 0, size: 0, etag: '' };
 
 export const S3APIPart = {
-    $type: 'yandex.cloud.storage.v1.S3APIPart' as const,
-
     encode(message: S3APIPart, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.partNumber !== 0) {
             writer.uint32(8).int64(message.partNumber);
@@ -2651,16 +2455,9 @@ export const S3APIPart = {
     },
 };
 
-messageTypeRegistry.set(S3APIPart.$type, S3APIPart);
-
-const baseS3APIAbortMultipartUploadResponse: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIAbortMultipartUploadResponse',
-    requestId: '',
-};
+const baseS3APIAbortMultipartUploadResponse: object = { requestId: '' };
 
 export const S3APIAbortMultipartUploadResponse = {
-    $type: 'yandex.cloud.storage.v1.S3APIAbortMultipartUploadResponse' as const,
-
     encode(
         message: S3APIAbortMultipartUploadResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2719,10 +2516,7 @@ export const S3APIAbortMultipartUploadResponse = {
     },
 };
 
-messageTypeRegistry.set(S3APIAbortMultipartUploadResponse.$type, S3APIAbortMultipartUploadResponse);
-
 const baseS3APICompleteMultipartUploadResponse: object = {
-    $type: 'yandex.cloud.storage.v1.S3APICompleteMultipartUploadResponse',
     requestId: '',
     bucket: '',
     key: '',
@@ -2732,8 +2526,6 @@ const baseS3APICompleteMultipartUploadResponse: object = {
 };
 
 export const S3APICompleteMultipartUploadResponse = {
-    $type: 'yandex.cloud.storage.v1.S3APICompleteMultipartUploadResponse' as const,
-
     encode(
         message: S3APICompleteMultipartUploadResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2844,13 +2636,7 @@ export const S3APICompleteMultipartUploadResponse = {
     },
 };
 
-messageTypeRegistry.set(
-    S3APICompleteMultipartUploadResponse.$type,
-    S3APICompleteMultipartUploadResponse,
-);
-
 const baseS3APIListMultipartUploadsResponse: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIListMultipartUploadsResponse',
     bucket: '',
     keyMarker: '',
     uploadIdMarker: '',
@@ -2865,8 +2651,6 @@ const baseS3APIListMultipartUploadsResponse: object = {
 };
 
 export const S3APIListMultipartUploadsResponse = {
-    $type: 'yandex.cloud.storage.v1.S3APIListMultipartUploadsResponse' as const,
-
     encode(
         message: S3APIListMultipartUploadsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3060,18 +2844,9 @@ export const S3APIListMultipartUploadsResponse = {
     },
 };
 
-messageTypeRegistry.set(S3APIListMultipartUploadsResponse.$type, S3APIListMultipartUploadsResponse);
-
-const baseS3APIMultipartUpload: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIMultipartUpload',
-    key: '',
-    uploadId: '',
-    storageClass: '',
-};
+const baseS3APIMultipartUpload: object = { key: '', uploadId: '', storageClass: '' };
 
 export const S3APIMultipartUpload = {
-    $type: 'yandex.cloud.storage.v1.S3APIMultipartUpload' as const,
-
     encode(message: S3APIMultipartUpload, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -3186,17 +2961,9 @@ export const S3APIMultipartUpload = {
     },
 };
 
-messageTypeRegistry.set(S3APIMultipartUpload.$type, S3APIMultipartUpload);
-
-const baseS3APIOwner: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIOwner',
-    id: '',
-    displayName: '',
-};
+const baseS3APIOwner: object = { id: '', displayName: '' };
 
 export const S3APIOwner = {
-    $type: 'yandex.cloud.storage.v1.S3APIOwner' as const,
-
     encode(message: S3APIOwner, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -3253,17 +3020,9 @@ export const S3APIOwner = {
     },
 };
 
-messageTypeRegistry.set(S3APIOwner.$type, S3APIOwner);
-
-const baseS3APIUploadPartCopyResponse: object = {
-    $type: 'yandex.cloud.storage.v1.S3APIUploadPartCopyResponse',
-    etag: '',
-    requestId: '',
-};
+const baseS3APIUploadPartCopyResponse: object = { etag: '', requestId: '' };
 
 export const S3APIUploadPartCopyResponse = {
-    $type: 'yandex.cloud.storage.v1.S3APIUploadPartCopyResponse' as const,
-
     encode(
         message: S3APIUploadPartCopyResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3343,8 +3102,6 @@ export const S3APIUploadPartCopyResponse = {
     },
 };
 
-messageTypeRegistry.set(S3APIUploadPartCopyResponse.$type, S3APIUploadPartCopyResponse);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -3365,21 +3122,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

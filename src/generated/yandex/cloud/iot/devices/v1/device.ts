@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
@@ -45,7 +44,6 @@ export function deviceViewToJSON(object: DeviceView): string {
 
 /** A device. For more information, see [Device](/docs/iot-core/concepts/index#device). */
 export interface Device {
-    $type: 'yandex.cloud.iot.devices.v1.Device';
     /** ID of the device. */
     id: string;
     /** ID of the registry that the device belongs to. */
@@ -116,14 +114,12 @@ export function device_StatusToJSON(object: Device_Status): string {
 }
 
 export interface Device_TopicAliasesEntry {
-    $type: 'yandex.cloud.iot.devices.v1.Device.TopicAliasesEntry';
     key: string;
     value: string;
 }
 
 /** A device certificate. For more information, see [Managing device certificates](/docs/iot-core/operations/certificates/device-certificates). */
 export interface DeviceCertificate {
-    $type: 'yandex.cloud.iot.devices.v1.DeviceCertificate';
     /** ID of the device that the certificate belongs to. */
     deviceId: string;
     /** SHA256 hash of the certificate. */
@@ -136,7 +132,6 @@ export interface DeviceCertificate {
 
 /** A device password. */
 export interface DevicePassword {
-    $type: 'yandex.cloud.iot.devices.v1.DevicePassword';
     /** ID of the device that the password belongs to. */
     deviceId: string;
     /** ID of the password. */
@@ -146,7 +141,6 @@ export interface DevicePassword {
 }
 
 export interface DeviceMonitoringData {
-    $type: 'yandex.cloud.iot.devices.v1.DeviceMonitoringData';
     lastAuthIp: string;
     lastAuthTime?: Date;
     lastPubActivityTime?: Date;
@@ -154,18 +148,9 @@ export interface DeviceMonitoringData {
     lastOnlineTime?: Date;
 }
 
-const baseDevice: object = {
-    $type: 'yandex.cloud.iot.devices.v1.Device',
-    id: '',
-    registryId: '',
-    name: '',
-    description: '',
-    status: 0,
-};
+const baseDevice: object = { id: '', registryId: '', name: '', description: '', status: 0 };
 
 export const Device = {
-    $type: 'yandex.cloud.iot.devices.v1.Device' as const,
-
     encode(message: Device, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -184,11 +169,7 @@ export const Device = {
         }
         Object.entries(message.topicAliases).forEach(([key, value]) => {
             Device_TopicAliasesEntry.encode(
-                {
-                    $type: 'yandex.cloud.iot.devices.v1.Device.TopicAliasesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -322,17 +303,9 @@ export const Device = {
     },
 };
 
-messageTypeRegistry.set(Device.$type, Device);
-
-const baseDevice_TopicAliasesEntry: object = {
-    $type: 'yandex.cloud.iot.devices.v1.Device.TopicAliasesEntry',
-    key: '',
-    value: '',
-};
+const baseDevice_TopicAliasesEntry: object = { key: '', value: '' };
 
 export const Device_TopicAliasesEntry = {
-    $type: 'yandex.cloud.iot.devices.v1.Device.TopicAliasesEntry' as const,
-
     encode(
         message: Device_TopicAliasesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -392,18 +365,9 @@ export const Device_TopicAliasesEntry = {
     },
 };
 
-messageTypeRegistry.set(Device_TopicAliasesEntry.$type, Device_TopicAliasesEntry);
-
-const baseDeviceCertificate: object = {
-    $type: 'yandex.cloud.iot.devices.v1.DeviceCertificate',
-    deviceId: '',
-    fingerprint: '',
-    certificateData: '',
-};
+const baseDeviceCertificate: object = { deviceId: '', fingerprint: '', certificateData: '' };
 
 export const DeviceCertificate = {
-    $type: 'yandex.cloud.iot.devices.v1.DeviceCertificate' as const,
-
     encode(message: DeviceCertificate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.deviceId !== '') {
             writer.uint32(10).string(message.deviceId);
@@ -487,17 +451,9 @@ export const DeviceCertificate = {
     },
 };
 
-messageTypeRegistry.set(DeviceCertificate.$type, DeviceCertificate);
-
-const baseDevicePassword: object = {
-    $type: 'yandex.cloud.iot.devices.v1.DevicePassword',
-    deviceId: '',
-    id: '',
-};
+const baseDevicePassword: object = { deviceId: '', id: '' };
 
 export const DevicePassword = {
-    $type: 'yandex.cloud.iot.devices.v1.DevicePassword' as const,
-
     encode(message: DevicePassword, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.deviceId !== '') {
             writer.uint32(10).string(message.deviceId);
@@ -566,16 +522,9 @@ export const DevicePassword = {
     },
 };
 
-messageTypeRegistry.set(DevicePassword.$type, DevicePassword);
-
-const baseDeviceMonitoringData: object = {
-    $type: 'yandex.cloud.iot.devices.v1.DeviceMonitoringData',
-    lastAuthIp: '',
-};
+const baseDeviceMonitoringData: object = { lastAuthIp: '' };
 
 export const DeviceMonitoringData = {
-    $type: 'yandex.cloud.iot.devices.v1.DeviceMonitoringData' as const,
-
     encode(message: DeviceMonitoringData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lastAuthIp !== '') {
             writer.uint32(10).string(message.lastAuthIp);
@@ -692,8 +641,6 @@ export const DeviceMonitoringData = {
     },
 };
 
-messageTypeRegistry.set(DeviceMonitoringData.$type, DeviceMonitoringData);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -703,21 +650,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

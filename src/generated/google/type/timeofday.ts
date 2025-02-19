@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -11,7 +10,6 @@ export const protobufPackage = 'google.type';
  * types are [google.type.Date](https://github.com/googleapis/googleapis/blob/master/google/type/date.proto) and [google.protobuf.Timestamp](https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/timestamp.proto).
  */
 export interface TimeOfDay {
-    $type: 'google.type.TimeOfDay';
     /**
      * Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
      * to allow the value "24:00:00" for scenarios like business closing time.
@@ -28,17 +26,9 @@ export interface TimeOfDay {
     nanos: number;
 }
 
-const baseTimeOfDay: object = {
-    $type: 'google.type.TimeOfDay',
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-    nanos: 0,
-};
+const baseTimeOfDay: object = { hours: 0, minutes: 0, seconds: 0, nanos: 0 };
 
 export const TimeOfDay = {
-    $type: 'google.type.TimeOfDay' as const,
-
     encode(message: TimeOfDay, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hours !== 0) {
             writer.uint32(8).int32(message.hours);
@@ -114,8 +104,6 @@ export const TimeOfDay = {
     },
 };
 
-messageTypeRegistry.set(TimeOfDay.$type, TimeOfDay);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -125,16 +113,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

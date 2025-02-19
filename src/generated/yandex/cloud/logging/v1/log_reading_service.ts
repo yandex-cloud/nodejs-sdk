@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -25,7 +24,6 @@ import {
 export const protobufPackage = 'yandex.cloud.logging.v1';
 
 export interface ReadRequest {
-    $type: 'yandex.cloud.logging.v1.ReadRequest';
     /**
      * Page token. To get the next page of results, set `page_token` to the
      * [ReadResponse.next_page_token] or [ReadResponse.previous_page_token] returned by a previous read request.
@@ -40,7 +38,6 @@ export interface ReadRequest {
 }
 
 export interface ReadResponse {
-    $type: 'yandex.cloud.logging.v1.ReadResponse';
     /** Log group ID the read was performed from. */
     logGroupId: string;
     /** List of matching log entries. */
@@ -67,7 +64,6 @@ export interface ReadResponse {
 
 /** Read criteria. Should be used in initial [ReadRequest]. */
 export interface Criteria {
-    $type: 'yandex.cloud.logging.v1.Criteria';
     /**
      * ID of the log group to return.
      *
@@ -114,11 +110,9 @@ export interface Criteria {
     maxResponseSize: number;
 }
 
-const baseReadRequest: object = { $type: 'yandex.cloud.logging.v1.ReadRequest' };
+const baseReadRequest: object = {};
 
 export const ReadRequest = {
-    $type: 'yandex.cloud.logging.v1.ReadRequest' as const,
-
     encode(message: ReadRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageToken !== undefined) {
             writer.uint32(10).string(message.pageToken);
@@ -182,18 +176,9 @@ export const ReadRequest = {
     },
 };
 
-messageTypeRegistry.set(ReadRequest.$type, ReadRequest);
-
-const baseReadResponse: object = {
-    $type: 'yandex.cloud.logging.v1.ReadResponse',
-    logGroupId: '',
-    nextPageToken: '',
-    previousPageToken: '',
-};
+const baseReadResponse: object = { logGroupId: '', nextPageToken: '', previousPageToken: '' };
 
 export const ReadResponse = {
-    $type: 'yandex.cloud.logging.v1.ReadResponse' as const,
-
     encode(message: ReadResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -280,10 +265,7 @@ export const ReadResponse = {
     },
 };
 
-messageTypeRegistry.set(ReadResponse.$type, ReadResponse);
-
 const baseCriteria: object = {
-    $type: 'yandex.cloud.logging.v1.Criteria',
     logGroupId: '',
     resourceTypes: '',
     resourceIds: '',
@@ -295,8 +277,6 @@ const baseCriteria: object = {
 };
 
 export const Criteria = {
-    $type: 'yandex.cloud.logging.v1.Criteria' as const,
-
     encode(message: Criteria, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -466,8 +446,6 @@ export const Criteria = {
     },
 };
 
-messageTypeRegistry.set(Criteria.$type, Criteria);
-
 /** A set of methods for reading from log groups. */
 export const LogReadingServiceService = {
     /** Read log entries from the specified log group. */
@@ -539,21 +517,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Int64Value, BoolValue } from '../../../../../google/protobuf/wrappers';
@@ -61,7 +60,6 @@ export function logStatementToJSON(object: LogStatement): string {
 }
 
 export interface Resources {
-    $type: 'yandex.cloud.mdb.greenplum.v1.Resources';
     /**
      * ID of the preset for computational resources allocated to a host.
      *
@@ -75,7 +73,6 @@ export interface Resources {
 }
 
 export interface ConnectionPoolerConfig {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ConnectionPoolerConfig';
     /** Route server pool mode. */
     mode: ConnectionPoolerConfig_PoolMode;
     /**
@@ -139,18 +136,15 @@ export function connectionPoolerConfig_PoolModeToJSON(
 }
 
 export interface BackgroundActivityStartAt {
-    $type: 'yandex.cloud.mdb.greenplum.v1.BackgroundActivityStartAt';
     hours: number;
     minutes: number;
 }
 
 export interface TableSizes {
-    $type: 'yandex.cloud.mdb.greenplum.v1.TableSizes';
     starts: BackgroundActivityStartAt[];
 }
 
 export interface AnalyzeAndVacuum {
-    $type: 'yandex.cloud.mdb.greenplum.v1.AnalyzeAndVacuum';
     start?: BackgroundActivityStartAt;
     /** Maximum duration of the `ANALYZE` operation, in seconds. The default value is `36000`. As soon as this period expires, the `ANALYZE` operation will be forced to terminate. */
     analyzeTimeout?: number;
@@ -159,7 +153,6 @@ export interface AnalyzeAndVacuum {
 }
 
 export interface BackgroundActivitiesConfig {
-    $type: 'yandex.cloud.mdb.greenplum.v1.BackgroundActivitiesConfig';
     /** Enables scripts that collects tables sizes to `*_sizes` tables in `mdb_toolkit` schema. */
     tableSizes?: TableSizes;
     /** Configuration for `ANALYZE` and `VACUUM` operations. */
@@ -169,7 +162,6 @@ export interface BackgroundActivitiesConfig {
 }
 
 export interface QueryKiller {
-    $type: 'yandex.cloud.mdb.greenplum.v1.QueryKiller';
     enable?: boolean;
     /** Maximum duration for this type of queries (in seconds). */
     maxAge?: number;
@@ -178,7 +170,6 @@ export interface QueryKiller {
 }
 
 export interface QueryKillerScripts {
-    $type: 'yandex.cloud.mdb.greenplum.v1.QueryKillerScripts';
     /** Configuration of script that kills long running queries that are in `idle` state. */
     idle?: QueryKiller;
     /** Configuration of script that kills long running queries that are in `idle in transaction` state. */
@@ -188,19 +179,16 @@ export interface QueryKillerScripts {
 }
 
 export interface MasterSubclusterConfig {
-    $type: 'yandex.cloud.mdb.greenplum.v1.MasterSubclusterConfig';
     /** Computational resources allocated to Greenplum® master subcluster hosts. */
     resources?: Resources;
 }
 
 export interface SegmentSubclusterConfig {
-    $type: 'yandex.cloud.mdb.greenplum.v1.SegmentSubclusterConfig';
     /** Computational resources allocated to Greenplum® segment subcluster hosts. */
     resources?: Resources;
 }
 
 export interface GreenplumConfig6 {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfig6';
     /** Maximum number of inbound connections on master segment */
     maxConnections?: number;
     /**
@@ -273,7 +261,6 @@ export interface GreenplumConfig6 {
 }
 
 export interface Greenplumconfig617 {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfig6_17';
     /** Maximum number of inbound connections on master segment. */
     maxConnections?: number;
     /**
@@ -329,7 +316,6 @@ export interface Greenplumconfig617 {
 }
 
 export interface Greenplumconfig619 {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfig6_19';
     /** Maximum number of inbound connections on master segment. */
     maxConnections?: number;
     /**
@@ -407,7 +393,6 @@ export interface Greenplumconfig619 {
 }
 
 export interface Greenplumconfig621 {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfig6_21';
     /** Maximum number of inbound connections on master segment */
     maxConnections?: number;
     /**
@@ -468,7 +453,6 @@ export interface Greenplumconfig621 {
 }
 
 export interface Greenplumconfig622 {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfig6_22';
     /** Maximum number of inbound connections on master segment */
     maxConnections?: number;
     /**
@@ -530,7 +514,6 @@ export interface Greenplumconfig622 {
 
 /** Configuration settings version 6.17 */
 export interface Greenplumconfigset617 {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfigSet6_17';
     /** Effective settings for a Greenplum® cluster (a combination of settings defined in [user_config] and [default_config]). */
     effectiveConfig?: Greenplumconfig617;
     /** User-defined settings for a Greenplum® cluster. */
@@ -541,7 +524,6 @@ export interface Greenplumconfigset617 {
 
 /** Configuration settings version 6.19 */
 export interface Greenplumconfigset619 {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfigSet6_19';
     /** Effective settings for a Greenplum® cluster (a combination of settings defined in [user_config] and [default_config]). */
     effectiveConfig?: Greenplumconfig619;
     /** User-defined settings for a Greenplum® cluster. */
@@ -551,7 +533,6 @@ export interface Greenplumconfigset619 {
 }
 
 export interface Greenplumconfigset621 {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfigSet6_21';
     /** Effective settings for a Greenplum®  cluster (a combination of settings defined in [user_config] and [default_config]). */
     effectiveConfig?: Greenplumconfig621;
     /** User-defined settings for a Greenplum® cluster. */
@@ -561,7 +542,6 @@ export interface Greenplumconfigset621 {
 }
 
 export interface Greenplumconfigset622 {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfigSet6_22';
     /** Effective settings for a Greenplum®  cluster (a combination of settings defined in [user_config] and [default_config]). */
     effectiveConfig?: Greenplumconfig622;
     /** User-defined settings for a Greenplum® cluster. */
@@ -571,7 +551,6 @@ export interface Greenplumconfigset622 {
 }
 
 export interface GreenplumConfigSet6 {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfigSet6';
     /**
      * Effective settings for a Greenplum (a combination of settings defined
      * in [user_config] and [default_config]).
@@ -584,7 +563,6 @@ export interface GreenplumConfigSet6 {
 }
 
 export interface ConnectionPoolerConfigSet {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ConnectionPoolerConfigSet';
     /** Effective settings for an Odyssey® pooler (a combination of settings defined in [ConnectionPoolerConfigSet.user_config] and [ConnectionPoolerConfigSet.default_config]). */
     effectiveConfig?: ConnectionPoolerConfig;
     /** User-defined settings for an Odyssey® pooler. */
@@ -593,16 +571,9 @@ export interface ConnectionPoolerConfigSet {
     defaultConfig?: ConnectionPoolerConfig;
 }
 
-const baseResources: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.Resources',
-    resourcePresetId: '',
-    diskSize: 0,
-    diskTypeId: '',
-};
+const baseResources: object = { resourcePresetId: '', diskSize: 0, diskTypeId: '' };
 
 export const Resources = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.Resources' as const,
-
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);
@@ -672,29 +643,19 @@ export const Resources = {
     },
 };
 
-messageTypeRegistry.set(Resources.$type, Resources);
-
-const baseConnectionPoolerConfig: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ConnectionPoolerConfig',
-    mode: 0,
-};
+const baseConnectionPoolerConfig: object = { mode: 0 };
 
 export const ConnectionPoolerConfig = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ConnectionPoolerConfig' as const,
-
     encode(message: ConnectionPoolerConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mode !== 0) {
             writer.uint32(8).int32(message.mode);
         }
         if (message.size !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.size! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.size! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.clientIdleTimeout !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.clientIdleTimeout! },
+                { value: message.clientIdleTimeout! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
@@ -761,17 +722,9 @@ export const ConnectionPoolerConfig = {
     },
 };
 
-messageTypeRegistry.set(ConnectionPoolerConfig.$type, ConnectionPoolerConfig);
-
-const baseBackgroundActivityStartAt: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.BackgroundActivityStartAt',
-    hours: 0,
-    minutes: 0,
-};
+const baseBackgroundActivityStartAt: object = { hours: 0, minutes: 0 };
 
 export const BackgroundActivityStartAt = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.BackgroundActivityStartAt' as const,
-
     encode(
         message: BackgroundActivityStartAt,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -832,13 +785,9 @@ export const BackgroundActivityStartAt = {
     },
 };
 
-messageTypeRegistry.set(BackgroundActivityStartAt.$type, BackgroundActivityStartAt);
-
-const baseTableSizes: object = { $type: 'yandex.cloud.mdb.greenplum.v1.TableSizes' };
+const baseTableSizes: object = {};
 
 export const TableSizes = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.TableSizes' as const,
-
     encode(message: TableSizes, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.starts) {
             BackgroundActivityStartAt.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -892,28 +841,21 @@ export const TableSizes = {
     },
 };
 
-messageTypeRegistry.set(TableSizes.$type, TableSizes);
-
-const baseAnalyzeAndVacuum: object = { $type: 'yandex.cloud.mdb.greenplum.v1.AnalyzeAndVacuum' };
+const baseAnalyzeAndVacuum: object = {};
 
 export const AnalyzeAndVacuum = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.AnalyzeAndVacuum' as const,
-
     encode(message: AnalyzeAndVacuum, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.start !== undefined) {
             BackgroundActivityStartAt.encode(message.start, writer.uint32(10).fork()).ldelim();
         }
         if (message.analyzeTimeout !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.analyzeTimeout! },
+                { value: message.analyzeTimeout! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
         if (message.vacuumTimeout !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.vacuumTimeout! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.vacuumTimeout! }, writer.uint32(26).fork()).ldelim();
         }
         return writer;
     },
@@ -982,15 +924,9 @@ export const AnalyzeAndVacuum = {
     },
 };
 
-messageTypeRegistry.set(AnalyzeAndVacuum.$type, AnalyzeAndVacuum);
-
-const baseBackgroundActivitiesConfig: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.BackgroundActivitiesConfig',
-};
+const baseBackgroundActivitiesConfig: object = {};
 
 export const BackgroundActivitiesConfig = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.BackgroundActivitiesConfig' as const,
-
     encode(
         message: BackgroundActivitiesConfig,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1088,28 +1024,15 @@ export const BackgroundActivitiesConfig = {
     },
 };
 
-messageTypeRegistry.set(BackgroundActivitiesConfig.$type, BackgroundActivitiesConfig);
-
-const baseQueryKiller: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.QueryKiller',
-    ignoreUsers: '',
-};
+const baseQueryKiller: object = { ignoreUsers: '' };
 
 export const QueryKiller = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.QueryKiller' as const,
-
     encode(message: QueryKiller, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enable !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.enable! },
-                writer.uint32(10).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.enable! }, writer.uint32(10).fork()).ldelim();
         }
         if (message.maxAge !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxAge! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.maxAge! }, writer.uint32(18).fork()).ldelim();
         }
         for (const v of message.ignoreUsers) {
             writer.uint32(26).string(v!);
@@ -1177,15 +1100,9 @@ export const QueryKiller = {
     },
 };
 
-messageTypeRegistry.set(QueryKiller.$type, QueryKiller);
-
-const baseQueryKillerScripts: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.QueryKillerScripts',
-};
+const baseQueryKillerScripts: object = {};
 
 export const QueryKillerScripts = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.QueryKillerScripts' as const,
-
     encode(message: QueryKillerScripts, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.idle !== undefined) {
             QueryKiller.encode(message.idle, writer.uint32(10).fork()).ldelim();
@@ -1275,15 +1192,9 @@ export const QueryKillerScripts = {
     },
 };
 
-messageTypeRegistry.set(QueryKillerScripts.$type, QueryKillerScripts);
-
-const baseMasterSubclusterConfig: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.MasterSubclusterConfig',
-};
+const baseMasterSubclusterConfig: object = {};
 
 export const MasterSubclusterConfig = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.MasterSubclusterConfig' as const,
-
     encode(message: MasterSubclusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resources !== undefined) {
             Resources.encode(message.resources, writer.uint32(10).fork()).ldelim();
@@ -1337,15 +1248,9 @@ export const MasterSubclusterConfig = {
     },
 };
 
-messageTypeRegistry.set(MasterSubclusterConfig.$type, MasterSubclusterConfig);
-
-const baseSegmentSubclusterConfig: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.SegmentSubclusterConfig',
-};
+const baseSegmentSubclusterConfig: object = {};
 
 export const SegmentSubclusterConfig = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.SegmentSubclusterConfig' as const,
-
     encode(message: SegmentSubclusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resources !== undefined) {
             Resources.encode(message.resources, writer.uint32(10).fork()).ldelim();
@@ -1399,65 +1304,55 @@ export const SegmentSubclusterConfig = {
     },
 };
 
-messageTypeRegistry.set(SegmentSubclusterConfig.$type, SegmentSubclusterConfig);
-
-const baseGreenplumConfig6: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfig6',
-    logStatement: 0,
-};
+const baseGreenplumConfig6: object = { logStatement: 0 };
 
 export const GreenplumConfig6 = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfig6' as const,
-
     encode(message: GreenplumConfig6, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxConnections !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxConnections! },
+                { value: message.maxConnections! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
         if (message.maxSlotWalKeepSize !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxSlotWalKeepSize! },
+                { value: message.maxSlotWalKeepSize! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileLimitPerSegment !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.gpWorkfileLimitPerSegment! },
+                { value: message.gpWorkfileLimitPerSegment! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileLimitPerQuery !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.gpWorkfileLimitPerQuery! },
+                { value: message.gpWorkfileLimitPerQuery! },
                 writer.uint32(34).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileLimitFilesPerQuery !== undefined) {
             Int64Value.encode(
-                {
-                    $type: 'google.protobuf.Int64Value',
-                    value: message.gpWorkfileLimitFilesPerQuery!,
-                },
+                { value: message.gpWorkfileLimitFilesPerQuery! },
                 writer.uint32(42).fork(),
             ).ldelim();
         }
         if (message.maxPreparedTransactions !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxPreparedTransactions! },
+                { value: message.maxPreparedTransactions! },
                 writer.uint32(50).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileCompression !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.gpWorkfileCompression! },
+                { value: message.gpWorkfileCompression! },
                 writer.uint32(58).fork(),
             ).ldelim();
         }
         if (message.maxStatementMem !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxStatementMem! },
+                { value: message.maxStatementMem! },
                 writer.uint32(66).fork(),
             ).ldelim();
         }
@@ -1466,28 +1361,19 @@ export const GreenplumConfig6 = {
         }
         if (message.gpAddColumnInheritsTableSetting !== undefined) {
             BoolValue.encode(
-                {
-                    $type: 'google.protobuf.BoolValue',
-                    value: message.gpAddColumnInheritsTableSetting!,
-                },
+                { value: message.gpAddColumnInheritsTableSetting! },
                 writer.uint32(82).fork(),
             ).ldelim();
         }
         if (message.gpEnableGlobalDeadlockDetector !== undefined) {
             BoolValue.encode(
-                {
-                    $type: 'google.protobuf.BoolValue',
-                    value: message.gpEnableGlobalDeadlockDetector!,
-                },
+                { value: message.gpEnableGlobalDeadlockDetector! },
                 writer.uint32(90).fork(),
             ).ldelim();
         }
         if (message.gpGlobalDeadlockDetectorPeriod !== undefined) {
             Int64Value.encode(
-                {
-                    $type: 'google.protobuf.Int64Value',
-                    value: message.gpGlobalDeadlockDetectorPeriod!,
-                },
+                { value: message.gpGlobalDeadlockDetectorPeriod! },
                 writer.uint32(98).fork(),
             ).ldelim();
         }
@@ -1670,58 +1556,49 @@ export const GreenplumConfig6 = {
     },
 };
 
-messageTypeRegistry.set(GreenplumConfig6.$type, GreenplumConfig6);
-
-const baseGreenplumconfig617: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfig6_17',
-};
+const baseGreenplumconfig617: object = {};
 
 export const Greenplumconfig617 = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfig6_17' as const,
-
     encode(message: Greenplumconfig617, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxConnections !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxConnections! },
+                { value: message.maxConnections! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
         if (message.maxSlotWalKeepSize !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxSlotWalKeepSize! },
+                { value: message.maxSlotWalKeepSize! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileLimitPerSegment !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.gpWorkfileLimitPerSegment! },
+                { value: message.gpWorkfileLimitPerSegment! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileLimitPerQuery !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.gpWorkfileLimitPerQuery! },
+                { value: message.gpWorkfileLimitPerQuery! },
                 writer.uint32(34).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileLimitFilesPerQuery !== undefined) {
             Int64Value.encode(
-                {
-                    $type: 'google.protobuf.Int64Value',
-                    value: message.gpWorkfileLimitFilesPerQuery!,
-                },
+                { value: message.gpWorkfileLimitFilesPerQuery! },
                 writer.uint32(42).fork(),
             ).ldelim();
         }
         if (message.maxPreparedTransactions !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxPreparedTransactions! },
+                { value: message.maxPreparedTransactions! },
                 writer.uint32(50).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileCompression !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.gpWorkfileCompression! },
+                { value: message.gpWorkfileCompression! },
                 writer.uint32(58).fork(),
             ).ldelim();
         }
@@ -1844,65 +1721,55 @@ export const Greenplumconfig617 = {
     },
 };
 
-messageTypeRegistry.set(Greenplumconfig617.$type, Greenplumconfig617);
-
-const baseGreenplumconfig619: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfig6_19',
-    logStatement: 0,
-};
+const baseGreenplumconfig619: object = { logStatement: 0 };
 
 export const Greenplumconfig619 = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfig6_19' as const,
-
     encode(message: Greenplumconfig619, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxConnections !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxConnections! },
+                { value: message.maxConnections! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
         if (message.maxSlotWalKeepSize !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxSlotWalKeepSize! },
+                { value: message.maxSlotWalKeepSize! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileLimitPerSegment !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.gpWorkfileLimitPerSegment! },
+                { value: message.gpWorkfileLimitPerSegment! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileLimitPerQuery !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.gpWorkfileLimitPerQuery! },
+                { value: message.gpWorkfileLimitPerQuery! },
                 writer.uint32(34).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileLimitFilesPerQuery !== undefined) {
             Int64Value.encode(
-                {
-                    $type: 'google.protobuf.Int64Value',
-                    value: message.gpWorkfileLimitFilesPerQuery!,
-                },
+                { value: message.gpWorkfileLimitFilesPerQuery! },
                 writer.uint32(42).fork(),
             ).ldelim();
         }
         if (message.maxPreparedTransactions !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxPreparedTransactions! },
+                { value: message.maxPreparedTransactions! },
                 writer.uint32(50).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileCompression !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.gpWorkfileCompression! },
+                { value: message.gpWorkfileCompression! },
                 writer.uint32(58).fork(),
             ).ldelim();
         }
         if (message.maxStatementMem !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxStatementMem! },
+                { value: message.maxStatementMem! },
                 writer.uint32(66).fork(),
             ).ldelim();
         }
@@ -2047,65 +1914,55 @@ export const Greenplumconfig619 = {
     },
 };
 
-messageTypeRegistry.set(Greenplumconfig619.$type, Greenplumconfig619);
-
-const baseGreenplumconfig621: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfig6_21',
-    logStatement: 0,
-};
+const baseGreenplumconfig621: object = { logStatement: 0 };
 
 export const Greenplumconfig621 = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfig6_21' as const,
-
     encode(message: Greenplumconfig621, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxConnections !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxConnections! },
+                { value: message.maxConnections! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
         if (message.maxSlotWalKeepSize !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxSlotWalKeepSize! },
+                { value: message.maxSlotWalKeepSize! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileLimitPerSegment !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.gpWorkfileLimitPerSegment! },
+                { value: message.gpWorkfileLimitPerSegment! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileLimitPerQuery !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.gpWorkfileLimitPerQuery! },
+                { value: message.gpWorkfileLimitPerQuery! },
                 writer.uint32(34).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileLimitFilesPerQuery !== undefined) {
             Int64Value.encode(
-                {
-                    $type: 'google.protobuf.Int64Value',
-                    value: message.gpWorkfileLimitFilesPerQuery!,
-                },
+                { value: message.gpWorkfileLimitFilesPerQuery! },
                 writer.uint32(42).fork(),
             ).ldelim();
         }
         if (message.maxPreparedTransactions !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxPreparedTransactions! },
+                { value: message.maxPreparedTransactions! },
                 writer.uint32(50).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileCompression !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.gpWorkfileCompression! },
+                { value: message.gpWorkfileCompression! },
                 writer.uint32(58).fork(),
             ).ldelim();
         }
         if (message.maxStatementMem !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxStatementMem! },
+                { value: message.maxStatementMem! },
                 writer.uint32(66).fork(),
             ).ldelim();
         }
@@ -2114,10 +1971,7 @@ export const Greenplumconfig621 = {
         }
         if (message.gpAddColumnInheritsTableSetting !== undefined) {
             BoolValue.encode(
-                {
-                    $type: 'google.protobuf.BoolValue',
-                    value: message.gpAddColumnInheritsTableSetting!,
-                },
+                { value: message.gpAddColumnInheritsTableSetting! },
                 writer.uint32(82).fork(),
             ).ldelim();
         }
@@ -2274,65 +2128,55 @@ export const Greenplumconfig621 = {
     },
 };
 
-messageTypeRegistry.set(Greenplumconfig621.$type, Greenplumconfig621);
-
-const baseGreenplumconfig622: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfig6_22',
-    logStatement: 0,
-};
+const baseGreenplumconfig622: object = { logStatement: 0 };
 
 export const Greenplumconfig622 = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfig6_22' as const,
-
     encode(message: Greenplumconfig622, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxConnections !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxConnections! },
+                { value: message.maxConnections! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
         if (message.maxSlotWalKeepSize !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxSlotWalKeepSize! },
+                { value: message.maxSlotWalKeepSize! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileLimitPerSegment !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.gpWorkfileLimitPerSegment! },
+                { value: message.gpWorkfileLimitPerSegment! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileLimitPerQuery !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.gpWorkfileLimitPerQuery! },
+                { value: message.gpWorkfileLimitPerQuery! },
                 writer.uint32(34).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileLimitFilesPerQuery !== undefined) {
             Int64Value.encode(
-                {
-                    $type: 'google.protobuf.Int64Value',
-                    value: message.gpWorkfileLimitFilesPerQuery!,
-                },
+                { value: message.gpWorkfileLimitFilesPerQuery! },
                 writer.uint32(42).fork(),
             ).ldelim();
         }
         if (message.maxPreparedTransactions !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxPreparedTransactions! },
+                { value: message.maxPreparedTransactions! },
                 writer.uint32(50).fork(),
             ).ldelim();
         }
         if (message.gpWorkfileCompression !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.gpWorkfileCompression! },
+                { value: message.gpWorkfileCompression! },
                 writer.uint32(58).fork(),
             ).ldelim();
         }
         if (message.maxStatementMem !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxStatementMem! },
+                { value: message.maxStatementMem! },
                 writer.uint32(66).fork(),
             ).ldelim();
         }
@@ -2341,10 +2185,7 @@ export const Greenplumconfig622 = {
         }
         if (message.gpAddColumnInheritsTableSetting !== undefined) {
             BoolValue.encode(
-                {
-                    $type: 'google.protobuf.BoolValue',
-                    value: message.gpAddColumnInheritsTableSetting!,
-                },
+                { value: message.gpAddColumnInheritsTableSetting! },
                 writer.uint32(82).fork(),
             ).ldelim();
         }
@@ -2501,15 +2342,9 @@ export const Greenplumconfig622 = {
     },
 };
 
-messageTypeRegistry.set(Greenplumconfig622.$type, Greenplumconfig622);
-
-const baseGreenplumconfigset617: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfigSet6_17',
-};
+const baseGreenplumconfigset617: object = {};
 
 export const Greenplumconfigset617 = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfigSet6_17' as const,
-
     encode(message: Greenplumconfigset617, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             Greenplumconfig617.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();
@@ -2601,15 +2436,9 @@ export const Greenplumconfigset617 = {
     },
 };
 
-messageTypeRegistry.set(Greenplumconfigset617.$type, Greenplumconfigset617);
-
-const baseGreenplumconfigset619: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfigSet6_19',
-};
+const baseGreenplumconfigset619: object = {};
 
 export const Greenplumconfigset619 = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfigSet6_19' as const,
-
     encode(message: Greenplumconfigset619, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             Greenplumconfig619.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();
@@ -2701,15 +2530,9 @@ export const Greenplumconfigset619 = {
     },
 };
 
-messageTypeRegistry.set(Greenplumconfigset619.$type, Greenplumconfigset619);
-
-const baseGreenplumconfigset621: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfigSet6_21',
-};
+const baseGreenplumconfigset621: object = {};
 
 export const Greenplumconfigset621 = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfigSet6_21' as const,
-
     encode(message: Greenplumconfigset621, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             Greenplumconfig621.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();
@@ -2801,15 +2624,9 @@ export const Greenplumconfigset621 = {
     },
 };
 
-messageTypeRegistry.set(Greenplumconfigset621.$type, Greenplumconfigset621);
-
-const baseGreenplumconfigset622: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfigSet6_22',
-};
+const baseGreenplumconfigset622: object = {};
 
 export const Greenplumconfigset622 = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfigSet6_22' as const,
-
     encode(message: Greenplumconfigset622, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             Greenplumconfig622.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();
@@ -2901,15 +2718,9 @@ export const Greenplumconfigset622 = {
     },
 };
 
-messageTypeRegistry.set(Greenplumconfigset622.$type, Greenplumconfigset622);
-
-const baseGreenplumConfigSet6: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfigSet6',
-};
+const baseGreenplumConfigSet6: object = {};
 
 export const GreenplumConfigSet6 = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfigSet6' as const,
-
     encode(message: GreenplumConfigSet6, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             GreenplumConfig6.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();
@@ -3001,15 +2812,9 @@ export const GreenplumConfigSet6 = {
     },
 };
 
-messageTypeRegistry.set(GreenplumConfigSet6.$type, GreenplumConfigSet6);
-
-const baseConnectionPoolerConfigSet: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ConnectionPoolerConfigSet',
-};
+const baseConnectionPoolerConfigSet: object = {};
 
 export const ConnectionPoolerConfigSet = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ConnectionPoolerConfigSet' as const,
-
     encode(
         message: ConnectionPoolerConfigSet,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3110,8 +2915,6 @@ export const ConnectionPoolerConfigSet = {
     },
 };
 
-messageTypeRegistry.set(ConnectionPoolerConfigSet.$type, ConnectionPoolerConfigSet);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -3132,16 +2935,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

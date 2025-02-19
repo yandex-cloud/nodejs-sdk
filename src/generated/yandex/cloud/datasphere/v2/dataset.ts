@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -7,7 +6,6 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.datasphere.v2';
 
 export interface Dataset {
-    $type: 'yandex.cloud.datasphere.v2.Dataset';
     /** ID of the dataset. */
     id: string;
     /** ID of the project. */
@@ -35,13 +33,11 @@ export interface Dataset {
 }
 
 export interface Dataset_LabelsEntry {
-    $type: 'yandex.cloud.datasphere.v2.Dataset.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface DatasetStatus {
-    $type: 'yandex.cloud.datasphere.v2.DatasetStatus';
     /** Dataset is activated. */
     statusActive?: DatasetStatus_StatusActive | undefined;
     /** Dataset is inactive. */
@@ -50,22 +46,16 @@ export interface DatasetStatus {
     statusError?: DatasetStatus_StatusError | undefined;
 }
 
-export interface DatasetStatus_StatusActive {
-    $type: 'yandex.cloud.datasphere.v2.DatasetStatus.StatusActive';
-}
+export interface DatasetStatus_StatusActive {}
 
-export interface DatasetStatus_StatusInactive {
-    $type: 'yandex.cloud.datasphere.v2.DatasetStatus.StatusInactive';
-}
+export interface DatasetStatus_StatusInactive {}
 
 export interface DatasetStatus_StatusError {
-    $type: 'yandex.cloud.datasphere.v2.DatasetStatus.StatusError';
     /** Text of the error. */
     error: string;
 }
 
 const baseDataset: object = {
-    $type: 'yandex.cloud.datasphere.v2.Dataset',
     id: '',
     projectId: '',
     name: '',
@@ -79,8 +69,6 @@ const baseDataset: object = {
 };
 
 export const Dataset = {
-    $type: 'yandex.cloud.datasphere.v2.Dataset' as const,
-
     encode(message: Dataset, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -99,7 +87,7 @@ export const Dataset = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Dataset_LabelsEntry.encode(
-                { $type: 'yandex.cloud.datasphere.v2.Dataset.LabelsEntry', key: key as any, value },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -274,17 +262,9 @@ export const Dataset = {
     },
 };
 
-messageTypeRegistry.set(Dataset.$type, Dataset);
-
-const baseDataset_LabelsEntry: object = {
-    $type: 'yandex.cloud.datasphere.v2.Dataset.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseDataset_LabelsEntry: object = { key: '', value: '' };
 
 export const Dataset_LabelsEntry = {
-    $type: 'yandex.cloud.datasphere.v2.Dataset.LabelsEntry' as const,
-
     encode(message: Dataset_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -341,13 +321,9 @@ export const Dataset_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Dataset_LabelsEntry.$type, Dataset_LabelsEntry);
-
-const baseDatasetStatus: object = { $type: 'yandex.cloud.datasphere.v2.DatasetStatus' };
+const baseDatasetStatus: object = {};
 
 export const DatasetStatus = {
-    $type: 'yandex.cloud.datasphere.v2.DatasetStatus' as const,
-
     encode(message: DatasetStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.statusActive !== undefined) {
             DatasetStatus_StatusActive.encode(
@@ -452,15 +428,9 @@ export const DatasetStatus = {
     },
 };
 
-messageTypeRegistry.set(DatasetStatus.$type, DatasetStatus);
-
-const baseDatasetStatus_StatusActive: object = {
-    $type: 'yandex.cloud.datasphere.v2.DatasetStatus.StatusActive',
-};
+const baseDatasetStatus_StatusActive: object = {};
 
 export const DatasetStatus_StatusActive = {
-    $type: 'yandex.cloud.datasphere.v2.DatasetStatus.StatusActive' as const,
-
     encode(_: DatasetStatus_StatusActive, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -498,15 +468,9 @@ export const DatasetStatus_StatusActive = {
     },
 };
 
-messageTypeRegistry.set(DatasetStatus_StatusActive.$type, DatasetStatus_StatusActive);
-
-const baseDatasetStatus_StatusInactive: object = {
-    $type: 'yandex.cloud.datasphere.v2.DatasetStatus.StatusInactive',
-};
+const baseDatasetStatus_StatusInactive: object = {};
 
 export const DatasetStatus_StatusInactive = {
-    $type: 'yandex.cloud.datasphere.v2.DatasetStatus.StatusInactive' as const,
-
     encode(_: DatasetStatus_StatusInactive, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -544,16 +508,9 @@ export const DatasetStatus_StatusInactive = {
     },
 };
 
-messageTypeRegistry.set(DatasetStatus_StatusInactive.$type, DatasetStatus_StatusInactive);
-
-const baseDatasetStatus_StatusError: object = {
-    $type: 'yandex.cloud.datasphere.v2.DatasetStatus.StatusError',
-    error: '',
-};
+const baseDatasetStatus_StatusError: object = { error: '' };
 
 export const DatasetStatus_StatusError = {
-    $type: 'yandex.cloud.datasphere.v2.DatasetStatus.StatusError' as const,
-
     encode(
         message: DatasetStatus_StatusError,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -604,8 +561,6 @@ export const DatasetStatus_StatusError = {
     },
 };
 
-messageTypeRegistry.set(DatasetStatus_StatusError.$type, DatasetStatus_StatusError);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -626,21 +581,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

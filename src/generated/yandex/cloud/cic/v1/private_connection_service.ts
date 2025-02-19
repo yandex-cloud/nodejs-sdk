@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ import { PrivateConnection } from '../../../../yandex/cloud/cic/v1/private_conne
 export const protobufPackage = 'yandex.cloud.cic.v1';
 
 export interface GetPrivateConnectionRequest {
-    $type: 'yandex.cloud.cic.v1.GetPrivateConnectionRequest';
     /**
      * ID of the PrivateConnection resource to return.
      * To get the privateConnection ID use a [PrivateConnectionService.List] request.
@@ -28,7 +26,6 @@ export interface GetPrivateConnectionRequest {
 }
 
 export interface ListPrivateConnectionsRequest {
-    $type: 'yandex.cloud.cic.v1.ListPrivateConnectionsRequest';
     /**
      * ID of the folder to list privateConnections in.
      * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -57,7 +54,6 @@ export interface ListPrivateConnectionsRequest {
 }
 
 export interface ListPrivateConnectionsResponse {
-    $type: 'yandex.cloud.cic.v1.ListPrivateConnectionsResponse';
     /** List of PrivateConnection resources. */
     privateConnections: PrivateConnection[];
     /**
@@ -71,14 +67,9 @@ export interface ListPrivateConnectionsResponse {
     nextPageToken: string;
 }
 
-const baseGetPrivateConnectionRequest: object = {
-    $type: 'yandex.cloud.cic.v1.GetPrivateConnectionRequest',
-    privateConnectionId: '',
-};
+const baseGetPrivateConnectionRequest: object = { privateConnectionId: '' };
 
 export const GetPrivateConnectionRequest = {
-    $type: 'yandex.cloud.cic.v1.GetPrivateConnectionRequest' as const,
-
     encode(
         message: GetPrivateConnectionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -132,10 +123,7 @@ export const GetPrivateConnectionRequest = {
     },
 };
 
-messageTypeRegistry.set(GetPrivateConnectionRequest.$type, GetPrivateConnectionRequest);
-
 const baseListPrivateConnectionsRequest: object = {
-    $type: 'yandex.cloud.cic.v1.ListPrivateConnectionsRequest',
     folderId: '',
     pageSize: 0,
     pageToken: '',
@@ -143,8 +131,6 @@ const baseListPrivateConnectionsRequest: object = {
 };
 
 export const ListPrivateConnectionsRequest = {
-    $type: 'yandex.cloud.cic.v1.ListPrivateConnectionsRequest' as const,
-
     encode(
         message: ListPrivateConnectionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -229,16 +215,9 @@ export const ListPrivateConnectionsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListPrivateConnectionsRequest.$type, ListPrivateConnectionsRequest);
-
-const baseListPrivateConnectionsResponse: object = {
-    $type: 'yandex.cloud.cic.v1.ListPrivateConnectionsResponse',
-    nextPageToken: '',
-};
+const baseListPrivateConnectionsResponse: object = { nextPageToken: '' };
 
 export const ListPrivateConnectionsResponse = {
-    $type: 'yandex.cloud.cic.v1.ListPrivateConnectionsResponse' as const,
-
     encode(
         message: ListPrivateConnectionsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -311,8 +290,6 @@ export const ListPrivateConnectionsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListPrivateConnectionsResponse.$type, ListPrivateConnectionsResponse);
 
 /** A set of methods for managing PrivateConnection resources. */
 export const PrivateConnectionServiceService = {
@@ -428,16 +405,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

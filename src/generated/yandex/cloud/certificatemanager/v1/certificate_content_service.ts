@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -56,7 +55,6 @@ export function privateKeyFormatToJSON(object: PrivateKeyFormat): string {
 }
 
 export interface GetCertificateContentResponse {
-    $type: 'yandex.cloud.certificatemanager.v1.GetCertificateContentResponse';
     /** ID of the certificate. */
     certificateId: string;
     /** PEM-encoded certificate chain content of the certificate. */
@@ -66,7 +64,6 @@ export interface GetCertificateContentResponse {
 }
 
 export interface GetCertificateContentRequest {
-    $type: 'yandex.cloud.certificatemanager.v1.GetCertificateContentRequest';
     /** ID of the certificate to download content. */
     certificateId: string;
     /** Optional ID of the version. */
@@ -76,15 +73,12 @@ export interface GetCertificateContentRequest {
 }
 
 const baseGetCertificateContentResponse: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.GetCertificateContentResponse',
     certificateId: '',
     certificateChain: '',
     privateKey: '',
 };
 
 export const GetCertificateContentResponse = {
-    $type: 'yandex.cloud.certificatemanager.v1.GetCertificateContentResponse' as const,
-
     encode(
         message: GetCertificateContentResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -163,18 +157,13 @@ export const GetCertificateContentResponse = {
     },
 };
 
-messageTypeRegistry.set(GetCertificateContentResponse.$type, GetCertificateContentResponse);
-
 const baseGetCertificateContentRequest: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.GetCertificateContentRequest',
     certificateId: '',
     versionId: '',
     privateKeyFormat: 0,
 };
 
 export const GetCertificateContentRequest = {
-    $type: 'yandex.cloud.certificatemanager.v1.GetCertificateContentRequest' as const,
-
     encode(
         message: GetCertificateContentRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -252,8 +241,6 @@ export const GetCertificateContentRequest = {
     },
 };
 
-messageTypeRegistry.set(GetCertificateContentRequest.$type, GetCertificateContentRequest);
-
 /** A set of methods for managing certificate content. */
 export const CertificateContentServiceService = {
     /** Returns chain and private key of the specified certificate. */
@@ -315,16 +302,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

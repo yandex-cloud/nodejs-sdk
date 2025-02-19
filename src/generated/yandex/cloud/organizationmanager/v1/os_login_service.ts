@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,29 +19,24 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.organizationmanager.v1';
 
 export interface GetOsLoginSettingsRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.GetOsLoginSettingsRequest';
     organizationId: string;
 }
 
 export interface OsLoginSettings {
-    $type: 'yandex.cloud.organizationmanager.v1.OsLoginSettings';
     userSshKeySettings?: UserSshKeySettings;
     sshCertificateSettings?: SshCertificateSettings;
 }
 
 export interface UserSshKeySettings {
-    $type: 'yandex.cloud.organizationmanager.v1.UserSshKeySettings';
     enabled: boolean;
     allowManageOwnKeys: boolean;
 }
 
 export interface SshCertificateSettings {
-    $type: 'yandex.cloud.organizationmanager.v1.SshCertificateSettings';
     enabled: boolean;
 }
 
 export interface UpdateOsLoginSettingsRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOsLoginSettingsRequest';
     organizationId: string;
     userSshKeySettings?: UpdateOsLoginSettingsRequest_UserSshKeySettings;
     sshCertificateSettings?: UpdateOsLoginSettingsRequest_SshCertificateSettings;
@@ -50,28 +44,23 @@ export interface UpdateOsLoginSettingsRequest {
 }
 
 export interface UpdateOsLoginSettingsRequest_UserSshKeySettings {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOsLoginSettingsRequest.UserSshKeySettings';
     enabled: boolean;
     allowManageOwnKeys: boolean;
 }
 
 export interface UpdateOsLoginSettingsRequest_SshCertificateSettings {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOsLoginSettingsRequest.SshCertificateSettings';
     enabled: boolean;
 }
 
 export interface SetDefaultOsLoginProfileRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.SetDefaultOsLoginProfileRequest';
     osLoginProfileId: string;
 }
 
 export interface GetOsLoginProfileRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.GetOsLoginProfileRequest';
     osLoginProfileId: string;
 }
 
 export interface ListOsLoginProfilesRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.ListOsLoginProfilesRequest';
     organizationId: string;
     pageSize: number;
     pageToken: string;
@@ -87,13 +76,11 @@ export interface ListOsLoginProfilesRequest {
 }
 
 export interface ListOsLoginProfilesResponse {
-    $type: 'yandex.cloud.organizationmanager.v1.ListOsLoginProfilesResponse';
     profiles: OsLoginProfile[];
     nextPageToken: string;
 }
 
 export interface OsLoginProfile {
-    $type: 'yandex.cloud.organizationmanager.v1.OsLoginProfile';
     id: string;
     organizationId: string;
     subjectId: string;
@@ -105,7 +92,6 @@ export interface OsLoginProfile {
 }
 
 export interface UpdateOsLoginProfileRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOsLoginProfileRequest';
     osLoginProfileId: string;
     /** must not contain . or end in ~ */
     login: string;
@@ -117,12 +103,10 @@ export interface UpdateOsLoginProfileRequest {
 }
 
 export interface DeleteOsLoginProfileRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteOsLoginProfileRequest';
     id: string;
 }
 
 export interface CreateOsLoginProfileRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateOsLoginProfileRequest';
     organizationId: string;
     subjectId: string;
     /** must not contain . or end in ~ */
@@ -134,41 +118,31 @@ export interface CreateOsLoginProfileRequest {
 }
 
 export interface UpdateOsLoginProfileMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOsLoginProfileMetadata';
     osLoginProfileId: string;
 }
 
 export interface DeleteOsLoginProfileMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteOsLoginProfileMetadata';
     osLoginProfileId: string;
 }
 
 export interface CreateOsLoginProfileMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateOsLoginProfileMetadata';
     osLoginProfileId: string;
     organizationId: string;
     subjectId: string;
 }
 
 export interface UpdateOsLoginSettingsMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOsLoginSettingsMetadata';
     organizationId: string;
 }
 
 export interface SetDefaultOsLoginProfileMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.SetDefaultOsLoginProfileMetadata';
     previousDefaultProfileId: string;
     currentDefaultProfileId: string;
 }
 
-const baseGetOsLoginSettingsRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.GetOsLoginSettingsRequest',
-    organizationId: '',
-};
+const baseGetOsLoginSettingsRequest: object = { organizationId: '' };
 
 export const GetOsLoginSettingsRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.GetOsLoginSettingsRequest' as const,
-
     encode(
         message: GetOsLoginSettingsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -221,15 +195,9 @@ export const GetOsLoginSettingsRequest = {
     },
 };
 
-messageTypeRegistry.set(GetOsLoginSettingsRequest.$type, GetOsLoginSettingsRequest);
-
-const baseOsLoginSettings: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.OsLoginSettings',
-};
+const baseOsLoginSettings: object = {};
 
 export const OsLoginSettings = {
-    $type: 'yandex.cloud.organizationmanager.v1.OsLoginSettings' as const,
-
     encode(message: OsLoginSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.userSshKeySettings !== undefined) {
             UserSshKeySettings.encode(
@@ -310,17 +278,9 @@ export const OsLoginSettings = {
     },
 };
 
-messageTypeRegistry.set(OsLoginSettings.$type, OsLoginSettings);
-
-const baseUserSshKeySettings: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UserSshKeySettings',
-    enabled: false,
-    allowManageOwnKeys: false,
-};
+const baseUserSshKeySettings: object = { enabled: false, allowManageOwnKeys: false };
 
 export const UserSshKeySettings = {
-    $type: 'yandex.cloud.organizationmanager.v1.UserSshKeySettings' as const,
-
     encode(message: UserSshKeySettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enabled === true) {
             writer.uint32(8).bool(message.enabled);
@@ -383,16 +343,9 @@ export const UserSshKeySettings = {
     },
 };
 
-messageTypeRegistry.set(UserSshKeySettings.$type, UserSshKeySettings);
-
-const baseSshCertificateSettings: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.SshCertificateSettings',
-    enabled: false,
-};
+const baseSshCertificateSettings: object = { enabled: false };
 
 export const SshCertificateSettings = {
-    $type: 'yandex.cloud.organizationmanager.v1.SshCertificateSettings' as const,
-
     encode(message: SshCertificateSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enabled === true) {
             writer.uint32(8).bool(message.enabled);
@@ -442,16 +395,9 @@ export const SshCertificateSettings = {
     },
 };
 
-messageTypeRegistry.set(SshCertificateSettings.$type, SshCertificateSettings);
-
-const baseUpdateOsLoginSettingsRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOsLoginSettingsRequest',
-    organizationId: '',
-};
+const baseUpdateOsLoginSettingsRequest: object = { organizationId: '' };
 
 export const UpdateOsLoginSettingsRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOsLoginSettingsRequest' as const,
-
     encode(
         message: UpdateOsLoginSettingsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -582,17 +528,12 @@ export const UpdateOsLoginSettingsRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateOsLoginSettingsRequest.$type, UpdateOsLoginSettingsRequest);
-
 const baseUpdateOsLoginSettingsRequest_UserSshKeySettings: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOsLoginSettingsRequest.UserSshKeySettings',
     enabled: false,
     allowManageOwnKeys: false,
 };
 
 export const UpdateOsLoginSettingsRequest_UserSshKeySettings = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOsLoginSettingsRequest.UserSshKeySettings' as const,
-
     encode(
         message: UpdateOsLoginSettingsRequest_UserSshKeySettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -667,19 +608,9 @@ export const UpdateOsLoginSettingsRequest_UserSshKeySettings = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateOsLoginSettingsRequest_UserSshKeySettings.$type,
-    UpdateOsLoginSettingsRequest_UserSshKeySettings,
-);
-
-const baseUpdateOsLoginSettingsRequest_SshCertificateSettings: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOsLoginSettingsRequest.SshCertificateSettings',
-    enabled: false,
-};
+const baseUpdateOsLoginSettingsRequest_SshCertificateSettings: object = { enabled: false };
 
 export const UpdateOsLoginSettingsRequest_SshCertificateSettings = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOsLoginSettingsRequest.SshCertificateSettings' as const,
-
     encode(
         message: UpdateOsLoginSettingsRequest_SshCertificateSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -741,19 +672,9 @@ export const UpdateOsLoginSettingsRequest_SshCertificateSettings = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateOsLoginSettingsRequest_SshCertificateSettings.$type,
-    UpdateOsLoginSettingsRequest_SshCertificateSettings,
-);
-
-const baseSetDefaultOsLoginProfileRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.SetDefaultOsLoginProfileRequest',
-    osLoginProfileId: '',
-};
+const baseSetDefaultOsLoginProfileRequest: object = { osLoginProfileId: '' };
 
 export const SetDefaultOsLoginProfileRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.SetDefaultOsLoginProfileRequest' as const,
-
     encode(
         message: SetDefaultOsLoginProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -812,16 +733,9 @@ export const SetDefaultOsLoginProfileRequest = {
     },
 };
 
-messageTypeRegistry.set(SetDefaultOsLoginProfileRequest.$type, SetDefaultOsLoginProfileRequest);
-
-const baseGetOsLoginProfileRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.GetOsLoginProfileRequest',
-    osLoginProfileId: '',
-};
+const baseGetOsLoginProfileRequest: object = { osLoginProfileId: '' };
 
 export const GetOsLoginProfileRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.GetOsLoginProfileRequest' as const,
-
     encode(
         message: GetOsLoginProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -874,10 +788,7 @@ export const GetOsLoginProfileRequest = {
     },
 };
 
-messageTypeRegistry.set(GetOsLoginProfileRequest.$type, GetOsLoginProfileRequest);
-
 const baseListOsLoginProfilesRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListOsLoginProfilesRequest',
     organizationId: '',
     pageSize: 0,
     pageToken: '',
@@ -885,8 +796,6 @@ const baseListOsLoginProfilesRequest: object = {
 };
 
 export const ListOsLoginProfilesRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListOsLoginProfilesRequest' as const,
-
     encode(
         message: ListOsLoginProfilesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -971,16 +880,9 @@ export const ListOsLoginProfilesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListOsLoginProfilesRequest.$type, ListOsLoginProfilesRequest);
-
-const baseListOsLoginProfilesResponse: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListOsLoginProfilesResponse',
-    nextPageToken: '',
-};
+const baseListOsLoginProfilesResponse: object = { nextPageToken: '' };
 
 export const ListOsLoginProfilesResponse = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListOsLoginProfilesResponse' as const,
-
     encode(
         message: ListOsLoginProfilesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1047,10 +949,7 @@ export const ListOsLoginProfilesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListOsLoginProfilesResponse.$type, ListOsLoginProfilesResponse);
-
 const baseOsLoginProfile: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.OsLoginProfile',
     id: '',
     organizationId: '',
     subjectId: '',
@@ -1062,8 +961,6 @@ const baseOsLoginProfile: object = {
 };
 
 export const OsLoginProfile = {
-    $type: 'yandex.cloud.organizationmanager.v1.OsLoginProfile' as const,
-
     encode(message: OsLoginProfile, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1185,10 +1082,7 @@ export const OsLoginProfile = {
     },
 };
 
-messageTypeRegistry.set(OsLoginProfile.$type, OsLoginProfile);
-
 const baseUpdateOsLoginProfileRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOsLoginProfileRequest',
     osLoginProfileId: '',
     login: '',
     uid: 0,
@@ -1197,8 +1091,6 @@ const baseUpdateOsLoginProfileRequest: object = {
 };
 
 export const UpdateOsLoginProfileRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOsLoginProfileRequest' as const,
-
     encode(
         message: UpdateOsLoginProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1310,16 +1202,9 @@ export const UpdateOsLoginProfileRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateOsLoginProfileRequest.$type, UpdateOsLoginProfileRequest);
-
-const baseDeleteOsLoginProfileRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteOsLoginProfileRequest',
-    id: '',
-};
+const baseDeleteOsLoginProfileRequest: object = { id: '' };
 
 export const DeleteOsLoginProfileRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteOsLoginProfileRequest' as const,
-
     encode(
         message: DeleteOsLoginProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1369,10 +1254,7 @@ export const DeleteOsLoginProfileRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteOsLoginProfileRequest.$type, DeleteOsLoginProfileRequest);
-
 const baseCreateOsLoginProfileRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateOsLoginProfileRequest',
     organizationId: '',
     subjectId: '',
     login: '',
@@ -1382,8 +1264,6 @@ const baseCreateOsLoginProfileRequest: object = {
 };
 
 export const CreateOsLoginProfileRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateOsLoginProfileRequest' as const,
-
     encode(
         message: CreateOsLoginProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1489,16 +1369,9 @@ export const CreateOsLoginProfileRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateOsLoginProfileRequest.$type, CreateOsLoginProfileRequest);
-
-const baseUpdateOsLoginProfileMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOsLoginProfileMetadata',
-    osLoginProfileId: '',
-};
+const baseUpdateOsLoginProfileMetadata: object = { osLoginProfileId: '' };
 
 export const UpdateOsLoginProfileMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOsLoginProfileMetadata' as const,
-
     encode(
         message: UpdateOsLoginProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1551,16 +1424,9 @@ export const UpdateOsLoginProfileMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateOsLoginProfileMetadata.$type, UpdateOsLoginProfileMetadata);
-
-const baseDeleteOsLoginProfileMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteOsLoginProfileMetadata',
-    osLoginProfileId: '',
-};
+const baseDeleteOsLoginProfileMetadata: object = { osLoginProfileId: '' };
 
 export const DeleteOsLoginProfileMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteOsLoginProfileMetadata' as const,
-
     encode(
         message: DeleteOsLoginProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1613,18 +1479,13 @@ export const DeleteOsLoginProfileMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteOsLoginProfileMetadata.$type, DeleteOsLoginProfileMetadata);
-
 const baseCreateOsLoginProfileMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateOsLoginProfileMetadata',
     osLoginProfileId: '',
     organizationId: '',
     subjectId: '',
 };
 
 export const CreateOsLoginProfileMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateOsLoginProfileMetadata' as const,
-
     encode(
         message: CreateOsLoginProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1701,16 +1562,9 @@ export const CreateOsLoginProfileMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateOsLoginProfileMetadata.$type, CreateOsLoginProfileMetadata);
-
-const baseUpdateOsLoginSettingsMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOsLoginSettingsMetadata',
-    organizationId: '',
-};
+const baseUpdateOsLoginSettingsMetadata: object = { organizationId: '' };
 
 export const UpdateOsLoginSettingsMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOsLoginSettingsMetadata' as const,
-
     encode(
         message: UpdateOsLoginSettingsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1763,17 +1617,12 @@ export const UpdateOsLoginSettingsMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateOsLoginSettingsMetadata.$type, UpdateOsLoginSettingsMetadata);
-
 const baseSetDefaultOsLoginProfileMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.SetDefaultOsLoginProfileMetadata',
     previousDefaultProfileId: '',
     currentDefaultProfileId: '',
 };
 
 export const SetDefaultOsLoginProfileMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.SetDefaultOsLoginProfileMetadata' as const,
-
     encode(
         message: SetDefaultOsLoginProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1846,8 +1695,6 @@ export const SetDefaultOsLoginProfileMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(SetDefaultOsLoginProfileMetadata.$type, SetDefaultOsLoginProfileMetadata);
 
 export const OsLoginServiceService = {
     /** OsLogin settings */
@@ -2110,16 +1957,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

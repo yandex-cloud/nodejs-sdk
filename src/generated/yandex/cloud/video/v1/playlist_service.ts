@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -21,13 +20,11 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.video.v1';
 
 export interface GetPlaylistRequest {
-    $type: 'yandex.cloud.video.v1.GetPlaylistRequest';
     /** ID of the playlist. */
     playlistId: string;
 }
 
 export interface ListPlaylistsRequest {
-    $type: 'yandex.cloud.video.v1.ListPlaylistsRequest';
     /** ID of the channel. */
     channelId: string;
     /** The maximum number of the results per page to return. */
@@ -53,7 +50,6 @@ export interface ListPlaylistsRequest {
 }
 
 export interface ListPlaylistsResponse {
-    $type: 'yandex.cloud.video.v1.ListPlaylistsResponse';
     /** List of playlists for specific channel. */
     playlists: Playlist[];
     /** Token for getting the next page. */
@@ -61,7 +57,6 @@ export interface ListPlaylistsResponse {
 }
 
 export interface CreatePlaylistRequest {
-    $type: 'yandex.cloud.video.v1.CreatePlaylistRequest';
     /** ID of the channel. */
     channelId: string;
     /** Playlist title. */
@@ -73,13 +68,11 @@ export interface CreatePlaylistRequest {
 }
 
 export interface CreatePlaylistMetadata {
-    $type: 'yandex.cloud.video.v1.CreatePlaylistMetadata';
     /** ID of the playlist. */
     playlistId: string;
 }
 
 export interface UpdatePlaylistRequest {
-    $type: 'yandex.cloud.video.v1.UpdatePlaylistRequest';
     /** ID of the playlist. */
     playlistId: string;
     /** Field mask that specifies which fields of the playlist are going to be updated. */
@@ -93,25 +86,21 @@ export interface UpdatePlaylistRequest {
 }
 
 export interface UpdatePlaylistMetadata {
-    $type: 'yandex.cloud.video.v1.UpdatePlaylistMetadata';
     /** ID of the playlist. */
     playlistId: string;
 }
 
 export interface DeletePlaylistRequest {
-    $type: 'yandex.cloud.video.v1.DeletePlaylistRequest';
     /** ID of the playlist. */
     playlistId: string;
 }
 
 export interface DeletePlaylistMetadata {
-    $type: 'yandex.cloud.video.v1.DeletePlaylistMetadata';
     /** ID of the playlist. */
     playlistId: string;
 }
 
 export interface BatchDeletePlaylistsRequest {
-    $type: 'yandex.cloud.video.v1.BatchDeletePlaylistsRequest';
     /** ID of the channel. */
     channelId: string;
     /** List of playlist IDs. */
@@ -119,20 +108,17 @@ export interface BatchDeletePlaylistsRequest {
 }
 
 export interface BatchDeletePlaylistsMetadata {
-    $type: 'yandex.cloud.video.v1.BatchDeletePlaylistsMetadata';
     /** List of playlist IDs. */
     playlistIds: string[];
 }
 
 export interface GetPlaylistPlayerURLRequest {
-    $type: 'yandex.cloud.video.v1.GetPlaylistPlayerURLRequest';
     /** ID of the playlist. */
     playlistId: string;
     params?: PlaylistPlayerParams;
 }
 
 export interface PlaylistPlayerParams {
-    $type: 'yandex.cloud.video.v1.PlaylistPlayerParams';
     /** If true, a player will be muted by default. */
     mute: boolean;
     /** If true, playback will start automatically. */
@@ -142,21 +128,15 @@ export interface PlaylistPlayerParams {
 }
 
 export interface GetPlaylistPlayerURLResponse {
-    $type: 'yandex.cloud.video.v1.GetPlaylistPlayerURLResponse';
     /** Direct link to the playlist. */
     playerUrl: string;
     /** HTML embed code in Iframe format. */
     html: string;
 }
 
-const baseGetPlaylistRequest: object = {
-    $type: 'yandex.cloud.video.v1.GetPlaylistRequest',
-    playlistId: '',
-};
+const baseGetPlaylistRequest: object = { playlistId: '' };
 
 export const GetPlaylistRequest = {
-    $type: 'yandex.cloud.video.v1.GetPlaylistRequest' as const,
-
     encode(message: GetPlaylistRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.playlistId !== '') {
             writer.uint32(10).string(message.playlistId);
@@ -206,10 +186,7 @@ export const GetPlaylistRequest = {
     },
 };
 
-messageTypeRegistry.set(GetPlaylistRequest.$type, GetPlaylistRequest);
-
 const baseListPlaylistsRequest: object = {
-    $type: 'yandex.cloud.video.v1.ListPlaylistsRequest',
     channelId: '',
     pageSize: 0,
     pageToken: '',
@@ -218,8 +195,6 @@ const baseListPlaylistsRequest: object = {
 };
 
 export const ListPlaylistsRequest = {
-    $type: 'yandex.cloud.video.v1.ListPlaylistsRequest' as const,
-
     encode(message: ListPlaylistsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -311,16 +286,9 @@ export const ListPlaylistsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListPlaylistsRequest.$type, ListPlaylistsRequest);
-
-const baseListPlaylistsResponse: object = {
-    $type: 'yandex.cloud.video.v1.ListPlaylistsResponse',
-    nextPageToken: '',
-};
+const baseListPlaylistsResponse: object = { nextPageToken: '' };
 
 export const ListPlaylistsResponse = {
-    $type: 'yandex.cloud.video.v1.ListPlaylistsResponse' as const,
-
     encode(message: ListPlaylistsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.playlists) {
             Playlist.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -384,18 +352,9 @@ export const ListPlaylistsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListPlaylistsResponse.$type, ListPlaylistsResponse);
-
-const baseCreatePlaylistRequest: object = {
-    $type: 'yandex.cloud.video.v1.CreatePlaylistRequest',
-    channelId: '',
-    title: '',
-    description: '',
-};
+const baseCreatePlaylistRequest: object = { channelId: '', title: '', description: '' };
 
 export const CreatePlaylistRequest = {
-    $type: 'yandex.cloud.video.v1.CreatePlaylistRequest' as const,
-
     encode(message: CreatePlaylistRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -481,16 +440,9 @@ export const CreatePlaylistRequest = {
     },
 };
 
-messageTypeRegistry.set(CreatePlaylistRequest.$type, CreatePlaylistRequest);
-
-const baseCreatePlaylistMetadata: object = {
-    $type: 'yandex.cloud.video.v1.CreatePlaylistMetadata',
-    playlistId: '',
-};
+const baseCreatePlaylistMetadata: object = { playlistId: '' };
 
 export const CreatePlaylistMetadata = {
-    $type: 'yandex.cloud.video.v1.CreatePlaylistMetadata' as const,
-
     encode(message: CreatePlaylistMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.playlistId !== '') {
             writer.uint32(10).string(message.playlistId);
@@ -540,18 +492,9 @@ export const CreatePlaylistMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreatePlaylistMetadata.$type, CreatePlaylistMetadata);
-
-const baseUpdatePlaylistRequest: object = {
-    $type: 'yandex.cloud.video.v1.UpdatePlaylistRequest',
-    playlistId: '',
-    title: '',
-    description: '',
-};
+const baseUpdatePlaylistRequest: object = { playlistId: '', title: '', description: '' };
 
 export const UpdatePlaylistRequest = {
-    $type: 'yandex.cloud.video.v1.UpdatePlaylistRequest' as const,
-
     encode(message: UpdatePlaylistRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.playlistId !== '') {
             writer.uint32(10).string(message.playlistId);
@@ -653,16 +596,9 @@ export const UpdatePlaylistRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdatePlaylistRequest.$type, UpdatePlaylistRequest);
-
-const baseUpdatePlaylistMetadata: object = {
-    $type: 'yandex.cloud.video.v1.UpdatePlaylistMetadata',
-    playlistId: '',
-};
+const baseUpdatePlaylistMetadata: object = { playlistId: '' };
 
 export const UpdatePlaylistMetadata = {
-    $type: 'yandex.cloud.video.v1.UpdatePlaylistMetadata' as const,
-
     encode(message: UpdatePlaylistMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.playlistId !== '') {
             writer.uint32(10).string(message.playlistId);
@@ -712,16 +648,9 @@ export const UpdatePlaylistMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdatePlaylistMetadata.$type, UpdatePlaylistMetadata);
-
-const baseDeletePlaylistRequest: object = {
-    $type: 'yandex.cloud.video.v1.DeletePlaylistRequest',
-    playlistId: '',
-};
+const baseDeletePlaylistRequest: object = { playlistId: '' };
 
 export const DeletePlaylistRequest = {
-    $type: 'yandex.cloud.video.v1.DeletePlaylistRequest' as const,
-
     encode(message: DeletePlaylistRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.playlistId !== '') {
             writer.uint32(10).string(message.playlistId);
@@ -771,16 +700,9 @@ export const DeletePlaylistRequest = {
     },
 };
 
-messageTypeRegistry.set(DeletePlaylistRequest.$type, DeletePlaylistRequest);
-
-const baseDeletePlaylistMetadata: object = {
-    $type: 'yandex.cloud.video.v1.DeletePlaylistMetadata',
-    playlistId: '',
-};
+const baseDeletePlaylistMetadata: object = { playlistId: '' };
 
 export const DeletePlaylistMetadata = {
-    $type: 'yandex.cloud.video.v1.DeletePlaylistMetadata' as const,
-
     encode(message: DeletePlaylistMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.playlistId !== '') {
             writer.uint32(10).string(message.playlistId);
@@ -830,17 +752,9 @@ export const DeletePlaylistMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeletePlaylistMetadata.$type, DeletePlaylistMetadata);
-
-const baseBatchDeletePlaylistsRequest: object = {
-    $type: 'yandex.cloud.video.v1.BatchDeletePlaylistsRequest',
-    channelId: '',
-    playlistIds: '',
-};
+const baseBatchDeletePlaylistsRequest: object = { channelId: '', playlistIds: '' };
 
 export const BatchDeletePlaylistsRequest = {
-    $type: 'yandex.cloud.video.v1.BatchDeletePlaylistsRequest' as const,
-
     encode(
         message: BatchDeletePlaylistsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -907,16 +821,9 @@ export const BatchDeletePlaylistsRequest = {
     },
 };
 
-messageTypeRegistry.set(BatchDeletePlaylistsRequest.$type, BatchDeletePlaylistsRequest);
-
-const baseBatchDeletePlaylistsMetadata: object = {
-    $type: 'yandex.cloud.video.v1.BatchDeletePlaylistsMetadata',
-    playlistIds: '',
-};
+const baseBatchDeletePlaylistsMetadata: object = { playlistIds: '' };
 
 export const BatchDeletePlaylistsMetadata = {
-    $type: 'yandex.cloud.video.v1.BatchDeletePlaylistsMetadata' as const,
-
     encode(
         message: BatchDeletePlaylistsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -971,16 +878,9 @@ export const BatchDeletePlaylistsMetadata = {
     },
 };
 
-messageTypeRegistry.set(BatchDeletePlaylistsMetadata.$type, BatchDeletePlaylistsMetadata);
-
-const baseGetPlaylistPlayerURLRequest: object = {
-    $type: 'yandex.cloud.video.v1.GetPlaylistPlayerURLRequest',
-    playlistId: '',
-};
+const baseGetPlaylistPlayerURLRequest: object = { playlistId: '' };
 
 export const GetPlaylistPlayerURLRequest = {
-    $type: 'yandex.cloud.video.v1.GetPlaylistPlayerURLRequest' as const,
-
     encode(
         message: GetPlaylistPlayerURLRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1049,18 +949,9 @@ export const GetPlaylistPlayerURLRequest = {
     },
 };
 
-messageTypeRegistry.set(GetPlaylistPlayerURLRequest.$type, GetPlaylistPlayerURLRequest);
-
-const basePlaylistPlayerParams: object = {
-    $type: 'yandex.cloud.video.v1.PlaylistPlayerParams',
-    mute: false,
-    autoplay: false,
-    hidden: false,
-};
+const basePlaylistPlayerParams: object = { mute: false, autoplay: false, hidden: false };
 
 export const PlaylistPlayerParams = {
-    $type: 'yandex.cloud.video.v1.PlaylistPlayerParams' as const,
-
     encode(message: PlaylistPlayerParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mute === true) {
             writer.uint32(8).bool(message.mute);
@@ -1130,17 +1021,9 @@ export const PlaylistPlayerParams = {
     },
 };
 
-messageTypeRegistry.set(PlaylistPlayerParams.$type, PlaylistPlayerParams);
-
-const baseGetPlaylistPlayerURLResponse: object = {
-    $type: 'yandex.cloud.video.v1.GetPlaylistPlayerURLResponse',
-    playerUrl: '',
-    html: '',
-};
+const baseGetPlaylistPlayerURLResponse: object = { playerUrl: '', html: '' };
 
 export const GetPlaylistPlayerURLResponse = {
-    $type: 'yandex.cloud.video.v1.GetPlaylistPlayerURLResponse' as const,
-
     encode(
         message: GetPlaylistPlayerURLResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1201,8 +1084,6 @@ export const GetPlaylistPlayerURLResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(GetPlaylistPlayerURLResponse.$type, GetPlaylistPlayerURLResponse);
 
 /** Playlist management service. */
 export const PlaylistServiceService = {
@@ -1451,16 +1332,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

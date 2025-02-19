@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Peering } from '../../../../yandex/cloud/cic/v1/peering';
@@ -9,7 +8,6 @@ export const protobufPackage = 'yandex.cloud.cic.v1';
 
 /** A PublicConnection resource. */
 export interface PublicConnection {
-    $type: 'yandex.cloud.cic.v1.PublicConnection';
     /** ID of the publicConnection. */
     id: string;
     /**
@@ -150,13 +148,11 @@ export function publicConnection_CloudServiceTypeToJSON(
 }
 
 export interface PublicConnection_LabelsEntry {
-    $type: 'yandex.cloud.cic.v1.PublicConnection.LabelsEntry';
     key: string;
     value: string;
 }
 
 const basePublicConnection: object = {
-    $type: 'yandex.cloud.cic.v1.PublicConnection',
     id: '',
     name: '',
     description: '',
@@ -168,8 +164,6 @@ const basePublicConnection: object = {
 };
 
 export const PublicConnection = {
-    $type: 'yandex.cloud.cic.v1.PublicConnection' as const,
-
     encode(message: PublicConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -190,10 +184,7 @@ export const PublicConnection = {
             writer.uint32(58).string(message.trunkConnectionId);
         }
         if (message.vlanId !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.vlanId! },
-                writer.uint32(66).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.vlanId! }, writer.uint32(66).fork()).ldelim();
         }
         if (message.ipv4Peering !== undefined) {
             Peering.encode(message.ipv4Peering, writer.uint32(74).fork()).ldelim();
@@ -208,11 +199,7 @@ export const PublicConnection = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             PublicConnection_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.cic.v1.PublicConnection.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(146).fork(),
             ).ldelim();
         });
@@ -387,17 +374,9 @@ export const PublicConnection = {
     },
 };
 
-messageTypeRegistry.set(PublicConnection.$type, PublicConnection);
-
-const basePublicConnection_LabelsEntry: object = {
-    $type: 'yandex.cloud.cic.v1.PublicConnection.LabelsEntry',
-    key: '',
-    value: '',
-};
+const basePublicConnection_LabelsEntry: object = { key: '', value: '' };
 
 export const PublicConnection_LabelsEntry = {
-    $type: 'yandex.cloud.cic.v1.PublicConnection.LabelsEntry' as const,
-
     encode(
         message: PublicConnection_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -457,8 +436,6 @@ export const PublicConnection_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(PublicConnection_LabelsEntry.$type, PublicConnection_LabelsEntry);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -468,16 +445,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

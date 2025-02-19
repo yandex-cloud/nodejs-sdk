@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -32,7 +31,6 @@ import {
 export const protobufPackage = 'yandex.cloud.dns.v1';
 
 export interface UpdateDnsZonePrivateNetworksRequest {
-    $type: 'yandex.cloud.dns.v1.UpdateDnsZonePrivateNetworksRequest';
     /** ID of the DNS zone which private networks will be updated */
     dnsZoneId: string;
     /** Network IDs to remove */
@@ -42,13 +40,11 @@ export interface UpdateDnsZonePrivateNetworksRequest {
 }
 
 export interface UpdateDnsZonePrivateNetworksMetadata {
-    $type: 'yandex.cloud.dns.v1.UpdateDnsZonePrivateNetworksMetadata';
     /** ID of the DNS zone which private networks was updated */
     dnsZoneId: string;
 }
 
 export interface GetDnsZoneRequest {
-    $type: 'yandex.cloud.dns.v1.GetDnsZoneRequest';
     /**
      * ID of the DNS zone to return.
      *
@@ -58,7 +54,6 @@ export interface GetDnsZoneRequest {
 }
 
 export interface ListDnsZonesRequest {
-    $type: 'yandex.cloud.dns.v1.ListDnsZonesRequest';
     /**
      * ID of the folder to list DNS zones in.
      *
@@ -89,7 +84,6 @@ export interface ListDnsZonesRequest {
 }
 
 export interface ListDnsZonesResponse {
-    $type: 'yandex.cloud.dns.v1.ListDnsZonesResponse';
     /** List of DNS zones in the specified folder. */
     dnsZones: DnsZone[];
     /**
@@ -103,7 +97,6 @@ export interface ListDnsZonesResponse {
 }
 
 export interface CreateDnsZoneRequest {
-    $type: 'yandex.cloud.dns.v1.CreateDnsZoneRequest';
     /**
      * ID of the folder to create DNS zones in.
      *
@@ -136,19 +129,16 @@ export interface CreateDnsZoneRequest {
 }
 
 export interface CreateDnsZoneRequest_LabelsEntry {
-    $type: 'yandex.cloud.dns.v1.CreateDnsZoneRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateDnsZoneMetadata {
-    $type: 'yandex.cloud.dns.v1.CreateDnsZoneMetadata';
     /** ID of the DNS zone that is being created. */
     dnsZoneId: string;
 }
 
 export interface UpdateDnsZoneRequest {
-    $type: 'yandex.cloud.dns.v1.UpdateDnsZoneRequest';
     /**
      * ID of the DNS zone to update.
      *
@@ -183,19 +173,16 @@ export interface UpdateDnsZoneRequest {
 }
 
 export interface UpdateDnsZoneRequest_LabelsEntry {
-    $type: 'yandex.cloud.dns.v1.UpdateDnsZoneRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateDnsZoneMetadata {
-    $type: 'yandex.cloud.dns.v1.UpdateDnsZoneMetadata';
     /** ID of the DNS zone that is being updated. */
     dnsZoneId: string;
 }
 
 export interface DeleteDnsZoneRequest {
-    $type: 'yandex.cloud.dns.v1.DeleteDnsZoneRequest';
     /**
      * ID of the DNS zone to delete.
      *
@@ -205,13 +192,11 @@ export interface DeleteDnsZoneRequest {
 }
 
 export interface DeleteDnsZoneMetadata {
-    $type: 'yandex.cloud.dns.v1.DeleteDnsZoneMetadata';
     /** ID of the DNS zone that is being deleted. */
     dnsZoneId: string;
 }
 
 export interface GetDnsZoneRecordSetRequest {
-    $type: 'yandex.cloud.dns.v1.GetDnsZoneRecordSetRequest';
     /**
      * ID of the DNS zone to get record set from.
      *
@@ -225,7 +210,6 @@ export interface GetDnsZoneRecordSetRequest {
 }
 
 export interface ListDnsZoneRecordSetsRequest {
-    $type: 'yandex.cloud.dns.v1.ListDnsZoneRecordSetsRequest';
     /**
      * ID of the DNS zone to list record sets in.
      *
@@ -259,7 +243,6 @@ export interface ListDnsZoneRecordSetsRequest {
 }
 
 export interface ListDnsZoneRecordSetsResponse {
-    $type: 'yandex.cloud.dns.v1.ListDnsZoneRecordSetsResponse';
     /** List of record sets in the specified DNS zone. */
     recordSets: RecordSet[];
     /**
@@ -273,7 +256,6 @@ export interface ListDnsZoneRecordSetsResponse {
 }
 
 export interface UpdateRecordSetsRequest {
-    $type: 'yandex.cloud.dns.v1.UpdateRecordSetsRequest';
     /**
      * ID of the DNS zone to update record sets in.
      *
@@ -286,12 +268,9 @@ export interface UpdateRecordSetsRequest {
     additions: RecordSet[];
 }
 
-export interface UpdateRecordSetsMetadata {
-    $type: 'yandex.cloud.dns.v1.UpdateRecordSetsMetadata';
-}
+export interface UpdateRecordSetsMetadata {}
 
 export interface UpsertRecordSetsRequest {
-    $type: 'yandex.cloud.dns.v1.UpsertRecordSetsRequest';
     /**
      * ID of the DNS zone to upsert record sets to.
      *
@@ -306,12 +285,9 @@ export interface UpsertRecordSetsRequest {
     merges: RecordSet[];
 }
 
-export interface UpsertRecordSetsMetadata {
-    $type: 'yandex.cloud.dns.v1.UpsertRecordSetsMetadata';
-}
+export interface UpsertRecordSetsMetadata {}
 
 export interface RecordSetDiff {
-    $type: 'yandex.cloud.dns.v1.RecordSetDiff';
     /** List of record sets that were added */
     additions: RecordSet[];
     /** List of record sets that were deleted */
@@ -319,7 +295,6 @@ export interface RecordSetDiff {
 }
 
 export interface ListDnsZoneOperationsRequest {
-    $type: 'yandex.cloud.dns.v1.ListDnsZoneOperationsRequest';
     /**
      * ID of the DNS zone to list operations for.
      *
@@ -350,7 +325,6 @@ export interface ListDnsZoneOperationsRequest {
 }
 
 export interface ListDnsZoneOperationsResponse {
-    $type: 'yandex.cloud.dns.v1.ListDnsZoneOperationsResponse';
     /** List of operations for the specified DNS zone. */
     operations: Operation[];
     /**
@@ -364,15 +338,12 @@ export interface ListDnsZoneOperationsResponse {
 }
 
 const baseUpdateDnsZonePrivateNetworksRequest: object = {
-    $type: 'yandex.cloud.dns.v1.UpdateDnsZonePrivateNetworksRequest',
     dnsZoneId: '',
     privateNetworkIdAdditions: '',
     privateNetworkIdDeletions: '',
 };
 
 export const UpdateDnsZonePrivateNetworksRequest = {
-    $type: 'yandex.cloud.dns.v1.UpdateDnsZonePrivateNetworksRequest' as const,
-
     encode(
         message: UpdateDnsZonePrivateNetworksRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -463,19 +434,9 @@ export const UpdateDnsZonePrivateNetworksRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateDnsZonePrivateNetworksRequest.$type,
-    UpdateDnsZonePrivateNetworksRequest,
-);
-
-const baseUpdateDnsZonePrivateNetworksMetadata: object = {
-    $type: 'yandex.cloud.dns.v1.UpdateDnsZonePrivateNetworksMetadata',
-    dnsZoneId: '',
-};
+const baseUpdateDnsZonePrivateNetworksMetadata: object = { dnsZoneId: '' };
 
 export const UpdateDnsZonePrivateNetworksMetadata = {
-    $type: 'yandex.cloud.dns.v1.UpdateDnsZonePrivateNetworksMetadata' as const,
-
     encode(
         message: UpdateDnsZonePrivateNetworksMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -534,19 +495,9 @@ export const UpdateDnsZonePrivateNetworksMetadata = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateDnsZonePrivateNetworksMetadata.$type,
-    UpdateDnsZonePrivateNetworksMetadata,
-);
-
-const baseGetDnsZoneRequest: object = {
-    $type: 'yandex.cloud.dns.v1.GetDnsZoneRequest',
-    dnsZoneId: '',
-};
+const baseGetDnsZoneRequest: object = { dnsZoneId: '' };
 
 export const GetDnsZoneRequest = {
-    $type: 'yandex.cloud.dns.v1.GetDnsZoneRequest' as const,
-
     encode(message: GetDnsZoneRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dnsZoneId !== '') {
             writer.uint32(10).string(message.dnsZoneId);
@@ -594,19 +545,9 @@ export const GetDnsZoneRequest = {
     },
 };
 
-messageTypeRegistry.set(GetDnsZoneRequest.$type, GetDnsZoneRequest);
-
-const baseListDnsZonesRequest: object = {
-    $type: 'yandex.cloud.dns.v1.ListDnsZonesRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListDnsZonesRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListDnsZonesRequest = {
-    $type: 'yandex.cloud.dns.v1.ListDnsZonesRequest' as const,
-
     encode(message: ListDnsZonesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -688,16 +629,9 @@ export const ListDnsZonesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListDnsZonesRequest.$type, ListDnsZonesRequest);
-
-const baseListDnsZonesResponse: object = {
-    $type: 'yandex.cloud.dns.v1.ListDnsZonesResponse',
-    nextPageToken: '',
-};
+const baseListDnsZonesResponse: object = { nextPageToken: '' };
 
 export const ListDnsZonesResponse = {
-    $type: 'yandex.cloud.dns.v1.ListDnsZonesResponse' as const,
-
     encode(message: ListDnsZonesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.dnsZones) {
             DnsZone.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -761,10 +695,7 @@ export const ListDnsZonesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListDnsZonesResponse.$type, ListDnsZonesResponse);
-
 const baseCreateDnsZoneRequest: object = {
-    $type: 'yandex.cloud.dns.v1.CreateDnsZoneRequest',
     folderId: '',
     name: '',
     description: '',
@@ -773,8 +704,6 @@ const baseCreateDnsZoneRequest: object = {
 };
 
 export const CreateDnsZoneRequest = {
-    $type: 'yandex.cloud.dns.v1.CreateDnsZoneRequest' as const,
-
     encode(message: CreateDnsZoneRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -787,11 +716,7 @@ export const CreateDnsZoneRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateDnsZoneRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.dns.v1.CreateDnsZoneRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -942,17 +867,9 @@ export const CreateDnsZoneRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateDnsZoneRequest.$type, CreateDnsZoneRequest);
-
-const baseCreateDnsZoneRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.dns.v1.CreateDnsZoneRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateDnsZoneRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateDnsZoneRequest_LabelsEntry = {
-    $type: 'yandex.cloud.dns.v1.CreateDnsZoneRequest.LabelsEntry' as const,
-
     encode(
         message: CreateDnsZoneRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1018,16 +935,9 @@ export const CreateDnsZoneRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateDnsZoneRequest_LabelsEntry.$type, CreateDnsZoneRequest_LabelsEntry);
-
-const baseCreateDnsZoneMetadata: object = {
-    $type: 'yandex.cloud.dns.v1.CreateDnsZoneMetadata',
-    dnsZoneId: '',
-};
+const baseCreateDnsZoneMetadata: object = { dnsZoneId: '' };
 
 export const CreateDnsZoneMetadata = {
-    $type: 'yandex.cloud.dns.v1.CreateDnsZoneMetadata' as const,
-
     encode(message: CreateDnsZoneMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dnsZoneId !== '') {
             writer.uint32(10).string(message.dnsZoneId);
@@ -1077,10 +987,7 @@ export const CreateDnsZoneMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateDnsZoneMetadata.$type, CreateDnsZoneMetadata);
-
 const baseUpdateDnsZoneRequest: object = {
-    $type: 'yandex.cloud.dns.v1.UpdateDnsZoneRequest',
     dnsZoneId: '',
     name: '',
     description: '',
@@ -1088,8 +995,6 @@ const baseUpdateDnsZoneRequest: object = {
 };
 
 export const UpdateDnsZoneRequest = {
-    $type: 'yandex.cloud.dns.v1.UpdateDnsZoneRequest' as const,
-
     encode(message: UpdateDnsZoneRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dnsZoneId !== '') {
             writer.uint32(10).string(message.dnsZoneId);
@@ -1105,11 +1010,7 @@ export const UpdateDnsZoneRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateDnsZoneRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.dns.v1.UpdateDnsZoneRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -1266,17 +1167,9 @@ export const UpdateDnsZoneRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateDnsZoneRequest.$type, UpdateDnsZoneRequest);
-
-const baseUpdateDnsZoneRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.dns.v1.UpdateDnsZoneRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateDnsZoneRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateDnsZoneRequest_LabelsEntry = {
-    $type: 'yandex.cloud.dns.v1.UpdateDnsZoneRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateDnsZoneRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1342,16 +1235,9 @@ export const UpdateDnsZoneRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateDnsZoneRequest_LabelsEntry.$type, UpdateDnsZoneRequest_LabelsEntry);
-
-const baseUpdateDnsZoneMetadata: object = {
-    $type: 'yandex.cloud.dns.v1.UpdateDnsZoneMetadata',
-    dnsZoneId: '',
-};
+const baseUpdateDnsZoneMetadata: object = { dnsZoneId: '' };
 
 export const UpdateDnsZoneMetadata = {
-    $type: 'yandex.cloud.dns.v1.UpdateDnsZoneMetadata' as const,
-
     encode(message: UpdateDnsZoneMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dnsZoneId !== '') {
             writer.uint32(10).string(message.dnsZoneId);
@@ -1401,16 +1287,9 @@ export const UpdateDnsZoneMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateDnsZoneMetadata.$type, UpdateDnsZoneMetadata);
-
-const baseDeleteDnsZoneRequest: object = {
-    $type: 'yandex.cloud.dns.v1.DeleteDnsZoneRequest',
-    dnsZoneId: '',
-};
+const baseDeleteDnsZoneRequest: object = { dnsZoneId: '' };
 
 export const DeleteDnsZoneRequest = {
-    $type: 'yandex.cloud.dns.v1.DeleteDnsZoneRequest' as const,
-
     encode(message: DeleteDnsZoneRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dnsZoneId !== '') {
             writer.uint32(10).string(message.dnsZoneId);
@@ -1460,16 +1339,9 @@ export const DeleteDnsZoneRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteDnsZoneRequest.$type, DeleteDnsZoneRequest);
-
-const baseDeleteDnsZoneMetadata: object = {
-    $type: 'yandex.cloud.dns.v1.DeleteDnsZoneMetadata',
-    dnsZoneId: '',
-};
+const baseDeleteDnsZoneMetadata: object = { dnsZoneId: '' };
 
 export const DeleteDnsZoneMetadata = {
-    $type: 'yandex.cloud.dns.v1.DeleteDnsZoneMetadata' as const,
-
     encode(message: DeleteDnsZoneMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dnsZoneId !== '') {
             writer.uint32(10).string(message.dnsZoneId);
@@ -1519,18 +1391,9 @@ export const DeleteDnsZoneMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteDnsZoneMetadata.$type, DeleteDnsZoneMetadata);
-
-const baseGetDnsZoneRecordSetRequest: object = {
-    $type: 'yandex.cloud.dns.v1.GetDnsZoneRecordSetRequest',
-    dnsZoneId: '',
-    name: '',
-    type: '',
-};
+const baseGetDnsZoneRecordSetRequest: object = { dnsZoneId: '', name: '', type: '' };
 
 export const GetDnsZoneRecordSetRequest = {
-    $type: 'yandex.cloud.dns.v1.GetDnsZoneRecordSetRequest' as const,
-
     encode(
         message: GetDnsZoneRecordSetRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1601,10 +1464,7 @@ export const GetDnsZoneRecordSetRequest = {
     },
 };
 
-messageTypeRegistry.set(GetDnsZoneRecordSetRequest.$type, GetDnsZoneRecordSetRequest);
-
 const baseListDnsZoneRecordSetsRequest: object = {
-    $type: 'yandex.cloud.dns.v1.ListDnsZoneRecordSetsRequest',
     dnsZoneId: '',
     pageSize: 0,
     pageToken: '',
@@ -1612,8 +1472,6 @@ const baseListDnsZoneRecordSetsRequest: object = {
 };
 
 export const ListDnsZoneRecordSetsRequest = {
-    $type: 'yandex.cloud.dns.v1.ListDnsZoneRecordSetsRequest' as const,
-
     encode(
         message: ListDnsZoneRecordSetsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1698,16 +1556,9 @@ export const ListDnsZoneRecordSetsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListDnsZoneRecordSetsRequest.$type, ListDnsZoneRecordSetsRequest);
-
-const baseListDnsZoneRecordSetsResponse: object = {
-    $type: 'yandex.cloud.dns.v1.ListDnsZoneRecordSetsResponse',
-    nextPageToken: '',
-};
+const baseListDnsZoneRecordSetsResponse: object = { nextPageToken: '' };
 
 export const ListDnsZoneRecordSetsResponse = {
-    $type: 'yandex.cloud.dns.v1.ListDnsZoneRecordSetsResponse' as const,
-
     encode(
         message: ListDnsZoneRecordSetsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1774,16 +1625,9 @@ export const ListDnsZoneRecordSetsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListDnsZoneRecordSetsResponse.$type, ListDnsZoneRecordSetsResponse);
-
-const baseUpdateRecordSetsRequest: object = {
-    $type: 'yandex.cloud.dns.v1.UpdateRecordSetsRequest',
-    dnsZoneId: '',
-};
+const baseUpdateRecordSetsRequest: object = { dnsZoneId: '' };
 
 export const UpdateRecordSetsRequest = {
-    $type: 'yandex.cloud.dns.v1.UpdateRecordSetsRequest' as const,
-
     encode(message: UpdateRecordSetsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dnsZoneId !== '') {
             writer.uint32(10).string(message.dnsZoneId);
@@ -1861,15 +1705,9 @@ export const UpdateRecordSetsRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateRecordSetsRequest.$type, UpdateRecordSetsRequest);
-
-const baseUpdateRecordSetsMetadata: object = {
-    $type: 'yandex.cloud.dns.v1.UpdateRecordSetsMetadata',
-};
+const baseUpdateRecordSetsMetadata: object = {};
 
 export const UpdateRecordSetsMetadata = {
-    $type: 'yandex.cloud.dns.v1.UpdateRecordSetsMetadata' as const,
-
     encode(_: UpdateRecordSetsMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1907,16 +1745,9 @@ export const UpdateRecordSetsMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateRecordSetsMetadata.$type, UpdateRecordSetsMetadata);
-
-const baseUpsertRecordSetsRequest: object = {
-    $type: 'yandex.cloud.dns.v1.UpsertRecordSetsRequest',
-    dnsZoneId: '',
-};
+const baseUpsertRecordSetsRequest: object = { dnsZoneId: '' };
 
 export const UpsertRecordSetsRequest = {
-    $type: 'yandex.cloud.dns.v1.UpsertRecordSetsRequest' as const,
-
     encode(message: UpsertRecordSetsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dnsZoneId !== '') {
             writer.uint32(10).string(message.dnsZoneId);
@@ -2010,15 +1841,9 @@ export const UpsertRecordSetsRequest = {
     },
 };
 
-messageTypeRegistry.set(UpsertRecordSetsRequest.$type, UpsertRecordSetsRequest);
-
-const baseUpsertRecordSetsMetadata: object = {
-    $type: 'yandex.cloud.dns.v1.UpsertRecordSetsMetadata',
-};
+const baseUpsertRecordSetsMetadata: object = {};
 
 export const UpsertRecordSetsMetadata = {
-    $type: 'yandex.cloud.dns.v1.UpsertRecordSetsMetadata' as const,
-
     encode(_: UpsertRecordSetsMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2056,13 +1881,9 @@ export const UpsertRecordSetsMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpsertRecordSetsMetadata.$type, UpsertRecordSetsMetadata);
-
-const baseRecordSetDiff: object = { $type: 'yandex.cloud.dns.v1.RecordSetDiff' };
+const baseRecordSetDiff: object = {};
 
 export const RecordSetDiff = {
-    $type: 'yandex.cloud.dns.v1.RecordSetDiff' as const,
-
     encode(message: RecordSetDiff, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.additions) {
             RecordSet.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -2126,10 +1947,7 @@ export const RecordSetDiff = {
     },
 };
 
-messageTypeRegistry.set(RecordSetDiff.$type, RecordSetDiff);
-
 const baseListDnsZoneOperationsRequest: object = {
-    $type: 'yandex.cloud.dns.v1.ListDnsZoneOperationsRequest',
     dnsZoneId: '',
     pageSize: 0,
     pageToken: '',
@@ -2137,8 +1955,6 @@ const baseListDnsZoneOperationsRequest: object = {
 };
 
 export const ListDnsZoneOperationsRequest = {
-    $type: 'yandex.cloud.dns.v1.ListDnsZoneOperationsRequest' as const,
-
     encode(
         message: ListDnsZoneOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2223,16 +2039,9 @@ export const ListDnsZoneOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListDnsZoneOperationsRequest.$type, ListDnsZoneOperationsRequest);
-
-const baseListDnsZoneOperationsResponse: object = {
-    $type: 'yandex.cloud.dns.v1.ListDnsZoneOperationsResponse',
-    nextPageToken: '',
-};
+const baseListDnsZoneOperationsResponse: object = { nextPageToken: '' };
 
 export const ListDnsZoneOperationsResponse = {
-    $type: 'yandex.cloud.dns.v1.ListDnsZoneOperationsResponse' as const,
-
     encode(
         message: ListDnsZoneOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2298,8 +2107,6 @@ export const ListDnsZoneOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListDnsZoneOperationsResponse.$type, ListDnsZoneOperationsResponse);
 
 /** A set of methods for managing DNS zones. */
 export const DnsZoneServiceService = {
@@ -2795,16 +2602,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

@@ -1,32 +1,22 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.ai.tuning.v1';
 
 export interface SchedulerLinear {
-    $type: 'yandex.cloud.ai.tuning.v1.SchedulerLinear';
     minLr: number;
 }
 
-export interface SchedulerConstant {
-    $type: 'yandex.cloud.ai.tuning.v1.SchedulerConstant';
-}
+export interface SchedulerConstant {}
 
 export interface SchedulerCosine {
-    $type: 'yandex.cloud.ai.tuning.v1.SchedulerCosine';
     minLr: number;
 }
 
-const baseSchedulerLinear: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.SchedulerLinear',
-    minLr: 0,
-};
+const baseSchedulerLinear: object = { minLr: 0 };
 
 export const SchedulerLinear = {
-    $type: 'yandex.cloud.ai.tuning.v1.SchedulerLinear' as const,
-
     encode(message: SchedulerLinear, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.minLr !== 0) {
             writer.uint32(9).double(message.minLr);
@@ -72,13 +62,9 @@ export const SchedulerLinear = {
     },
 };
 
-messageTypeRegistry.set(SchedulerLinear.$type, SchedulerLinear);
-
-const baseSchedulerConstant: object = { $type: 'yandex.cloud.ai.tuning.v1.SchedulerConstant' };
+const baseSchedulerConstant: object = {};
 
 export const SchedulerConstant = {
-    $type: 'yandex.cloud.ai.tuning.v1.SchedulerConstant' as const,
-
     encode(_: SchedulerConstant, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -114,16 +100,9 @@ export const SchedulerConstant = {
     },
 };
 
-messageTypeRegistry.set(SchedulerConstant.$type, SchedulerConstant);
-
-const baseSchedulerCosine: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.SchedulerCosine',
-    minLr: 0,
-};
+const baseSchedulerCosine: object = { minLr: 0 };
 
 export const SchedulerCosine = {
-    $type: 'yandex.cloud.ai.tuning.v1.SchedulerCosine' as const,
-
     encode(message: SchedulerCosine, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.minLr !== 0) {
             writer.uint32(9).double(message.minLr);
@@ -169,8 +148,6 @@ export const SchedulerCosine = {
     },
 };
 
-messageTypeRegistry.set(SchedulerCosine.$type, SchedulerCosine);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -180,16 +157,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

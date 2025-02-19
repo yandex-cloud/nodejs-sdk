@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.ai.dataset.v1';
 
 /** Information about the dataset. */
 export interface DatasetInfo {
-    $type: 'yandex.cloud.ai.dataset.v1.DatasetInfo';
     /** ID of the dataset. */
     datasetId: string;
     /** Folder ID of the dataset. */
@@ -106,14 +104,12 @@ export function datasetInfo_StatusToJSON(object: DatasetInfo_Status): string {
 }
 
 export interface DatasetInfo_LabelsEntry {
-    $type: 'yandex.cloud.ai.dataset.v1.DatasetInfo.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Information about dataset validation error. */
 export interface ValidationError {
-    $type: 'yandex.cloud.ai.dataset.v1.ValidationError';
     /** Name of the validation error. */
     error: string;
     /** Description of the validation error. */
@@ -123,20 +119,17 @@ export interface ValidationError {
 }
 
 export interface DatasetUploadSchema {
-    $type: 'yandex.cloud.ai.dataset.v1.DatasetUploadSchema';
     taskType: string;
     uploadFormat: string;
     schema: string;
 }
 
 export interface DatasetFileDownloadUrl {
-    $type: 'yandex.cloud.ai.dataset.v1.DatasetFileDownloadUrl';
     key: string;
     url: string;
 }
 
 const baseDatasetInfo: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.DatasetInfo',
     datasetId: '',
     folderId: '',
     name: '',
@@ -153,8 +146,6 @@ const baseDatasetInfo: object = {
 };
 
 export const DatasetInfo = {
-    $type: 'yandex.cloud.ai.dataset.v1.DatasetInfo' as const,
-
     encode(message: DatasetInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -194,11 +185,7 @@ export const DatasetInfo = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             DatasetInfo_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.dataset.v1.DatasetInfo.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(106).fork(),
             ).ldelim();
         });
@@ -422,17 +409,9 @@ export const DatasetInfo = {
     },
 };
 
-messageTypeRegistry.set(DatasetInfo.$type, DatasetInfo);
-
-const baseDatasetInfo_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.DatasetInfo.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseDatasetInfo_LabelsEntry: object = { key: '', value: '' };
 
 export const DatasetInfo_LabelsEntry = {
-    $type: 'yandex.cloud.ai.dataset.v1.DatasetInfo.LabelsEntry' as const,
-
     encode(message: DatasetInfo_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -489,18 +468,9 @@ export const DatasetInfo_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(DatasetInfo_LabelsEntry.$type, DatasetInfo_LabelsEntry);
-
-const baseValidationError: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.ValidationError',
-    error: '',
-    errorDescription: '',
-    rowNumbers: 0,
-};
+const baseValidationError: object = { error: '', errorDescription: '', rowNumbers: 0 };
 
 export const ValidationError = {
-    $type: 'yandex.cloud.ai.dataset.v1.ValidationError' as const,
-
     encode(message: ValidationError, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.error !== '') {
             writer.uint32(10).string(message.error);
@@ -581,18 +551,9 @@ export const ValidationError = {
     },
 };
 
-messageTypeRegistry.set(ValidationError.$type, ValidationError);
-
-const baseDatasetUploadSchema: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.DatasetUploadSchema',
-    taskType: '',
-    uploadFormat: '',
-    schema: '',
-};
+const baseDatasetUploadSchema: object = { taskType: '', uploadFormat: '', schema: '' };
 
 export const DatasetUploadSchema = {
-    $type: 'yandex.cloud.ai.dataset.v1.DatasetUploadSchema' as const,
-
     encode(message: DatasetUploadSchema, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.taskType !== '') {
             writer.uint32(10).string(message.taskType);
@@ -664,17 +625,9 @@ export const DatasetUploadSchema = {
     },
 };
 
-messageTypeRegistry.set(DatasetUploadSchema.$type, DatasetUploadSchema);
-
-const baseDatasetFileDownloadUrl: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.DatasetFileDownloadUrl',
-    key: '',
-    url: '',
-};
+const baseDatasetFileDownloadUrl: object = { key: '', url: '' };
 
 export const DatasetFileDownloadUrl = {
-    $type: 'yandex.cloud.ai.dataset.v1.DatasetFileDownloadUrl' as const,
-
     encode(message: DatasetFileDownloadUrl, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -730,8 +683,6 @@ export const DatasetFileDownloadUrl = {
     },
 };
 
-messageTypeRegistry.set(DatasetFileDownloadUrl.$type, DatasetFileDownloadUrl);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -752,21 +703,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

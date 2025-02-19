@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -26,7 +25,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.mdb.clickhouse.v1';
 
 export interface GetFormatSchemaRequest {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.GetFormatSchemaRequest';
     /**
      * ClickHouse cluster ID.
      *
@@ -42,7 +40,6 @@ export interface GetFormatSchemaRequest {
 }
 
 export interface ListFormatSchemasRequest {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListFormatSchemasRequest';
     /**
      * ClickHouse cluster ID.
      *
@@ -56,7 +53,6 @@ export interface ListFormatSchemasRequest {
 }
 
 export interface ListFormatSchemasResponse {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListFormatSchemasResponse';
     /** List of format schemas. */
     formatSchemas: FormatSchema[];
     /** This token allows you to get the next page of results when requesting the format schema list. If the number of the results is larger than [ListFormatSchemasRequest.page_size], use the [next_page_token] as the value for the [ListFormatSchemasRequest.page_token] parameter in the next request. Each subsequent request will have its own [next_page_token] to continue paging through the results. */
@@ -64,7 +60,6 @@ export interface ListFormatSchemasResponse {
 }
 
 export interface CreateFormatSchemaRequest {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.CreateFormatSchemaRequest';
     /**
      * ClickHouse cluster ID.
      *
@@ -85,7 +80,6 @@ export interface CreateFormatSchemaRequest {
 }
 
 export interface CreateFormatSchemaMetadata {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.CreateFormatSchemaMetadata';
     /** ClickHouse cluster ID. */
     clusterId: string;
     /** Format schema name. */
@@ -93,7 +87,6 @@ export interface CreateFormatSchemaMetadata {
 }
 
 export interface UpdateFormatSchemaRequest {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.UpdateFormatSchemaRequest';
     /**
      * ClickHouse cluster ID.
      *
@@ -112,7 +105,6 @@ export interface UpdateFormatSchemaRequest {
 }
 
 export interface UpdateFormatSchemaMetadata {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.UpdateFormatSchemaMetadata';
     /** ClickHouse cluster ID. */
     clusterId: string;
     /** Format schema name. */
@@ -120,7 +112,6 @@ export interface UpdateFormatSchemaMetadata {
 }
 
 export interface DeleteFormatSchemaRequest {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DeleteFormatSchemaRequest';
     /**
      * ClickHouse cluster ID.
      *
@@ -136,22 +127,15 @@ export interface DeleteFormatSchemaRequest {
 }
 
 export interface DeleteFormatSchemaMetadata {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DeleteFormatSchemaMetadata';
     /** ClickHouse cluster ID. */
     clusterId: string;
     /** Format schema name. */
     formatSchemaName: string;
 }
 
-const baseGetFormatSchemaRequest: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.GetFormatSchemaRequest',
-    clusterId: '',
-    formatSchemaName: '',
-};
+const baseGetFormatSchemaRequest: object = { clusterId: '', formatSchemaName: '' };
 
 export const GetFormatSchemaRequest = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.GetFormatSchemaRequest' as const,
-
     encode(message: GetFormatSchemaRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -213,18 +197,9 @@ export const GetFormatSchemaRequest = {
     },
 };
 
-messageTypeRegistry.set(GetFormatSchemaRequest.$type, GetFormatSchemaRequest);
-
-const baseListFormatSchemasRequest: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListFormatSchemasRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListFormatSchemasRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListFormatSchemasRequest = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListFormatSchemasRequest' as const,
-
     encode(
         message: ListFormatSchemasRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -299,16 +274,9 @@ export const ListFormatSchemasRequest = {
     },
 };
 
-messageTypeRegistry.set(ListFormatSchemasRequest.$type, ListFormatSchemasRequest);
-
-const baseListFormatSchemasResponse: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListFormatSchemasResponse',
-    nextPageToken: '',
-};
+const baseListFormatSchemasResponse: object = { nextPageToken: '' };
 
 export const ListFormatSchemasResponse = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListFormatSchemasResponse' as const,
-
     encode(
         message: ListFormatSchemasResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -379,10 +347,7 @@ export const ListFormatSchemasResponse = {
     },
 };
 
-messageTypeRegistry.set(ListFormatSchemasResponse.$type, ListFormatSchemasResponse);
-
 const baseCreateFormatSchemaRequest: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.CreateFormatSchemaRequest',
     clusterId: '',
     formatSchemaName: '',
     type: 0,
@@ -390,8 +355,6 @@ const baseCreateFormatSchemaRequest: object = {
 };
 
 export const CreateFormatSchemaRequest = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.CreateFormatSchemaRequest' as const,
-
     encode(
         message: CreateFormatSchemaRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -477,17 +440,9 @@ export const CreateFormatSchemaRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateFormatSchemaRequest.$type, CreateFormatSchemaRequest);
-
-const baseCreateFormatSchemaMetadata: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.CreateFormatSchemaMetadata',
-    clusterId: '',
-    formatSchemaName: '',
-};
+const baseCreateFormatSchemaMetadata: object = { clusterId: '', formatSchemaName: '' };
 
 export const CreateFormatSchemaMetadata = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.CreateFormatSchemaMetadata' as const,
-
     encode(
         message: CreateFormatSchemaMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -552,18 +507,9 @@ export const CreateFormatSchemaMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateFormatSchemaMetadata.$type, CreateFormatSchemaMetadata);
-
-const baseUpdateFormatSchemaRequest: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.UpdateFormatSchemaRequest',
-    clusterId: '',
-    formatSchemaName: '',
-    uri: '',
-};
+const baseUpdateFormatSchemaRequest: object = { clusterId: '', formatSchemaName: '', uri: '' };
 
 export const UpdateFormatSchemaRequest = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.UpdateFormatSchemaRequest' as const,
-
     encode(
         message: UpdateFormatSchemaRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -655,17 +601,9 @@ export const UpdateFormatSchemaRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateFormatSchemaRequest.$type, UpdateFormatSchemaRequest);
-
-const baseUpdateFormatSchemaMetadata: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.UpdateFormatSchemaMetadata',
-    clusterId: '',
-    formatSchemaName: '',
-};
+const baseUpdateFormatSchemaMetadata: object = { clusterId: '', formatSchemaName: '' };
 
 export const UpdateFormatSchemaMetadata = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.UpdateFormatSchemaMetadata' as const,
-
     encode(
         message: UpdateFormatSchemaMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -730,17 +668,9 @@ export const UpdateFormatSchemaMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateFormatSchemaMetadata.$type, UpdateFormatSchemaMetadata);
-
-const baseDeleteFormatSchemaRequest: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DeleteFormatSchemaRequest',
-    clusterId: '',
-    formatSchemaName: '',
-};
+const baseDeleteFormatSchemaRequest: object = { clusterId: '', formatSchemaName: '' };
 
 export const DeleteFormatSchemaRequest = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DeleteFormatSchemaRequest' as const,
-
     encode(
         message: DeleteFormatSchemaRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -805,17 +735,9 @@ export const DeleteFormatSchemaRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteFormatSchemaRequest.$type, DeleteFormatSchemaRequest);
-
-const baseDeleteFormatSchemaMetadata: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DeleteFormatSchemaMetadata',
-    clusterId: '',
-    formatSchemaName: '',
-};
+const baseDeleteFormatSchemaMetadata: object = { clusterId: '', formatSchemaName: '' };
 
 export const DeleteFormatSchemaMetadata = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DeleteFormatSchemaMetadata' as const,
-
     encode(
         message: DeleteFormatSchemaMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -879,8 +801,6 @@ export const DeleteFormatSchemaMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteFormatSchemaMetadata.$type, DeleteFormatSchemaMetadata);
 
 /** A set of methods for managing [format schemas](https://clickhouse.com/docs/en/interfaces/formats) for input and output data. */
 export const FormatSchemaServiceService = {
@@ -1071,16 +991,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

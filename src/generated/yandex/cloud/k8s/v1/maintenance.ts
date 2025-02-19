@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { TimeOfDay } from '../../../../google/type/timeofday';
@@ -10,7 +9,6 @@ import { DayOfWeek, dayOfWeekFromJSON, dayOfWeekToJSON } from '../../../../googl
 export const protobufPackage = 'yandex.cloud.k8s.v1';
 
 export interface MaintenanceWindow {
-    $type: 'yandex.cloud.k8s.v1.MaintenanceWindow';
     /** Updating the master at any time. */
     anytime?: AnytimeMaintenanceWindow | undefined;
     /** Updating the master on any day during the specified time window. */
@@ -19,12 +17,9 @@ export interface MaintenanceWindow {
     weeklyMaintenanceWindow?: WeeklyMaintenanceWindow | undefined;
 }
 
-export interface AnytimeMaintenanceWindow {
-    $type: 'yandex.cloud.k8s.v1.AnytimeMaintenanceWindow';
-}
+export interface AnytimeMaintenanceWindow {}
 
 export interface DailyMaintenanceWindow {
-    $type: 'yandex.cloud.k8s.v1.DailyMaintenanceWindow';
     /** Window start time, in the UTC timezone. */
     startTime?: TimeOfDay;
     /** Window duration. */
@@ -32,7 +27,6 @@ export interface DailyMaintenanceWindow {
 }
 
 export interface DaysOfWeekMaintenanceWindow {
-    $type: 'yandex.cloud.k8s.v1.DaysOfWeekMaintenanceWindow';
     /** Days of the week when automatic updates are allowed. */
     days: DayOfWeek[];
     /** Window start time, in the UTC timezone. */
@@ -42,13 +36,11 @@ export interface DaysOfWeekMaintenanceWindow {
 }
 
 export interface WeeklyMaintenanceWindow {
-    $type: 'yandex.cloud.k8s.v1.WeeklyMaintenanceWindow';
     /** Days of the week and the maintenance window for these days when automatic updates are allowed. */
     daysOfWeek: DaysOfWeekMaintenanceWindow[];
 }
 
 export interface ScheduledMaintenance {
-    $type: 'yandex.cloud.k8s.v1.ScheduledMaintenance';
     /** Time until which the update should be postponed. */
     delayedUntil?: Date;
     /** Time when the update became available. */
@@ -59,11 +51,9 @@ export interface ScheduledMaintenance {
     description: string;
 }
 
-const baseMaintenanceWindow: object = { $type: 'yandex.cloud.k8s.v1.MaintenanceWindow' };
+const baseMaintenanceWindow: object = {};
 
 export const MaintenanceWindow = {
-    $type: 'yandex.cloud.k8s.v1.MaintenanceWindow' as const,
-
     encode(message: MaintenanceWindow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.anytime !== undefined) {
             AnytimeMaintenanceWindow.encode(message.anytime, writer.uint32(10).fork()).ldelim();
@@ -165,15 +155,9 @@ export const MaintenanceWindow = {
     },
 };
 
-messageTypeRegistry.set(MaintenanceWindow.$type, MaintenanceWindow);
-
-const baseAnytimeMaintenanceWindow: object = {
-    $type: 'yandex.cloud.k8s.v1.AnytimeMaintenanceWindow',
-};
+const baseAnytimeMaintenanceWindow: object = {};
 
 export const AnytimeMaintenanceWindow = {
-    $type: 'yandex.cloud.k8s.v1.AnytimeMaintenanceWindow' as const,
-
     encode(_: AnytimeMaintenanceWindow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -211,13 +195,9 @@ export const AnytimeMaintenanceWindow = {
     },
 };
 
-messageTypeRegistry.set(AnytimeMaintenanceWindow.$type, AnytimeMaintenanceWindow);
-
-const baseDailyMaintenanceWindow: object = { $type: 'yandex.cloud.k8s.v1.DailyMaintenanceWindow' };
+const baseDailyMaintenanceWindow: object = {};
 
 export const DailyMaintenanceWindow = {
-    $type: 'yandex.cloud.k8s.v1.DailyMaintenanceWindow' as const,
-
     encode(message: DailyMaintenanceWindow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.startTime !== undefined) {
             TimeOfDay.encode(message.startTime, writer.uint32(10).fork()).ldelim();
@@ -287,16 +267,9 @@ export const DailyMaintenanceWindow = {
     },
 };
 
-messageTypeRegistry.set(DailyMaintenanceWindow.$type, DailyMaintenanceWindow);
-
-const baseDaysOfWeekMaintenanceWindow: object = {
-    $type: 'yandex.cloud.k8s.v1.DaysOfWeekMaintenanceWindow',
-    days: 0,
-};
+const baseDaysOfWeekMaintenanceWindow: object = { days: 0 };
 
 export const DaysOfWeekMaintenanceWindow = {
-    $type: 'yandex.cloud.k8s.v1.DaysOfWeekMaintenanceWindow' as const,
-
     encode(
         message: DaysOfWeekMaintenanceWindow,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -392,15 +365,9 @@ export const DaysOfWeekMaintenanceWindow = {
     },
 };
 
-messageTypeRegistry.set(DaysOfWeekMaintenanceWindow.$type, DaysOfWeekMaintenanceWindow);
-
-const baseWeeklyMaintenanceWindow: object = {
-    $type: 'yandex.cloud.k8s.v1.WeeklyMaintenanceWindow',
-};
+const baseWeeklyMaintenanceWindow: object = {};
 
 export const WeeklyMaintenanceWindow = {
-    $type: 'yandex.cloud.k8s.v1.WeeklyMaintenanceWindow' as const,
-
     encode(message: WeeklyMaintenanceWindow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.daysOfWeek) {
             DaysOfWeekMaintenanceWindow.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -459,16 +426,9 @@ export const WeeklyMaintenanceWindow = {
     },
 };
 
-messageTypeRegistry.set(WeeklyMaintenanceWindow.$type, WeeklyMaintenanceWindow);
-
-const baseScheduledMaintenance: object = {
-    $type: 'yandex.cloud.k8s.v1.ScheduledMaintenance',
-    description: '',
-};
+const baseScheduledMaintenance: object = { description: '' };
 
 export const ScheduledMaintenance = {
-    $type: 'yandex.cloud.k8s.v1.ScheduledMaintenance' as const,
-
     encode(message: ScheduledMaintenance, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.delayedUntil !== undefined) {
             Timestamp.encode(toTimestamp(message.delayedUntil), writer.uint32(10).fork()).ldelim();
@@ -558,8 +518,6 @@ export const ScheduledMaintenance = {
     },
 };
 
-messageTypeRegistry.set(ScheduledMaintenance.$type, ScheduledMaintenance);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -569,21 +527,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

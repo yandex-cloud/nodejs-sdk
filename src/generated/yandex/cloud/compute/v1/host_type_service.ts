@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ import { HostType } from '../../../../yandex/cloud/compute/v1/host_type';
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
 export interface GetHostTypeRequest {
-    $type: 'yandex.cloud.compute.v1.GetHostTypeRequest';
     /**
      * ID of the host type to return.
      *
@@ -29,7 +27,6 @@ export interface GetHostTypeRequest {
 }
 
 export interface ListHostTypesRequest {
-    $type: 'yandex.cloud.compute.v1.ListHostTypesRequest';
     /**
      * The maximum number of results per page to return. If the number of available
      * results is larger than [page_size],
@@ -46,7 +43,6 @@ export interface ListHostTypesRequest {
 }
 
 export interface ListHostTypesResponse {
-    $type: 'yandex.cloud.compute.v1.ListHostTypesResponse';
     /** Lists host types. */
     hostTypes: HostType[];
     /**
@@ -59,14 +55,9 @@ export interface ListHostTypesResponse {
     nextPageToken: string;
 }
 
-const baseGetHostTypeRequest: object = {
-    $type: 'yandex.cloud.compute.v1.GetHostTypeRequest',
-    hostTypeId: '',
-};
+const baseGetHostTypeRequest: object = { hostTypeId: '' };
 
 export const GetHostTypeRequest = {
-    $type: 'yandex.cloud.compute.v1.GetHostTypeRequest' as const,
-
     encode(message: GetHostTypeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hostTypeId !== '') {
             writer.uint32(10).string(message.hostTypeId);
@@ -116,17 +107,9 @@ export const GetHostTypeRequest = {
     },
 };
 
-messageTypeRegistry.set(GetHostTypeRequest.$type, GetHostTypeRequest);
-
-const baseListHostTypesRequest: object = {
-    $type: 'yandex.cloud.compute.v1.ListHostTypesRequest',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListHostTypesRequest: object = { pageSize: 0, pageToken: '' };
 
 export const ListHostTypesRequest = {
-    $type: 'yandex.cloud.compute.v1.ListHostTypesRequest' as const,
-
     encode(message: ListHostTypesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -186,16 +169,9 @@ export const ListHostTypesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListHostTypesRequest.$type, ListHostTypesRequest);
-
-const baseListHostTypesResponse: object = {
-    $type: 'yandex.cloud.compute.v1.ListHostTypesResponse',
-    nextPageToken: '',
-};
+const baseListHostTypesResponse: object = { nextPageToken: '' };
 
 export const ListHostTypesResponse = {
-    $type: 'yandex.cloud.compute.v1.ListHostTypesResponse' as const,
-
     encode(message: ListHostTypesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.hostTypes) {
             HostType.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -258,8 +234,6 @@ export const ListHostTypesResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListHostTypesResponse.$type, ListHostTypesResponse);
 
 /** Set of methods to view possible host configurations. */
 export const HostTypeServiceService = {
@@ -362,16 +336,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

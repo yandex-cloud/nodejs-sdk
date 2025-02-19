@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.cdn.v1';
 
 export interface PurgeCacheRequest {
-    $type: 'yandex.cloud.cdn.v1.PurgeCacheRequest';
     /** ID of the resource to perform purge operation on. */
     resourceId: string;
     /**
@@ -34,13 +32,11 @@ export interface PurgeCacheRequest {
 }
 
 export interface PurgeCacheMetadata {
-    $type: 'yandex.cloud.cdn.v1.PurgeCacheMetadata';
     /** ID of the resource. */
     resourceId: string;
 }
 
 export interface PrefetchCacheRequest {
-    $type: 'yandex.cloud.cdn.v1.PrefetchCacheRequest';
     /** ID of the resource to perform prefetch operation on. */
     resourceId: string;
     /** Set of paths to prefetch. */
@@ -48,20 +44,13 @@ export interface PrefetchCacheRequest {
 }
 
 export interface PrefetchCacheMetadata {
-    $type: 'yandex.cloud.cdn.v1.PrefetchCacheMetadata';
     /** ID of the resource. */
     resourceId: string;
 }
 
-const basePurgeCacheRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.PurgeCacheRequest',
-    resourceId: '',
-    paths: '',
-};
+const basePurgeCacheRequest: object = { resourceId: '', paths: '' };
 
 export const PurgeCacheRequest = {
-    $type: 'yandex.cloud.cdn.v1.PurgeCacheRequest' as const,
-
     encode(message: PurgeCacheRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -123,16 +112,9 @@ export const PurgeCacheRequest = {
     },
 };
 
-messageTypeRegistry.set(PurgeCacheRequest.$type, PurgeCacheRequest);
-
-const basePurgeCacheMetadata: object = {
-    $type: 'yandex.cloud.cdn.v1.PurgeCacheMetadata',
-    resourceId: '',
-};
+const basePurgeCacheMetadata: object = { resourceId: '' };
 
 export const PurgeCacheMetadata = {
-    $type: 'yandex.cloud.cdn.v1.PurgeCacheMetadata' as const,
-
     encode(message: PurgeCacheMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -182,17 +164,9 @@ export const PurgeCacheMetadata = {
     },
 };
 
-messageTypeRegistry.set(PurgeCacheMetadata.$type, PurgeCacheMetadata);
-
-const basePrefetchCacheRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.PrefetchCacheRequest',
-    resourceId: '',
-    paths: '',
-};
+const basePrefetchCacheRequest: object = { resourceId: '', paths: '' };
 
 export const PrefetchCacheRequest = {
-    $type: 'yandex.cloud.cdn.v1.PrefetchCacheRequest' as const,
-
     encode(message: PrefetchCacheRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -256,16 +230,9 @@ export const PrefetchCacheRequest = {
     },
 };
 
-messageTypeRegistry.set(PrefetchCacheRequest.$type, PrefetchCacheRequest);
-
-const basePrefetchCacheMetadata: object = {
-    $type: 'yandex.cloud.cdn.v1.PrefetchCacheMetadata',
-    resourceId: '',
-};
+const basePrefetchCacheMetadata: object = { resourceId: '' };
 
 export const PrefetchCacheMetadata = {
-    $type: 'yandex.cloud.cdn.v1.PrefetchCacheMetadata' as const,
-
     encode(message: PrefetchCacheMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -314,8 +281,6 @@ export const PrefetchCacheMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(PrefetchCacheMetadata.$type, PrefetchCacheMetadata);
 
 /** A set of methods for managing Cache Service resources. */
 export const CacheServiceService = {
@@ -418,16 +383,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

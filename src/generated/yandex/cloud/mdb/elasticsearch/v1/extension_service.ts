@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,7 +19,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.mdb.elasticsearch.v1';
 
 export interface GetExtensionRequest {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.GetExtensionRequest';
     /** ID of the cluster. */
     clusterId: string;
     /** ID of the extension to return. */
@@ -28,7 +26,6 @@ export interface GetExtensionRequest {
 }
 
 export interface ListExtensionsRequest {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.ListExtensionsRequest';
     /** ID of the cluster to list extensions in. */
     clusterId: string;
     /**
@@ -46,7 +43,6 @@ export interface ListExtensionsRequest {
 }
 
 export interface ListExtensionsResponse {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.ListExtensionsResponse';
     /** Requested list of extensions. */
     extensions: Extension[];
     /**
@@ -60,7 +56,6 @@ export interface ListExtensionsResponse {
 }
 
 export interface DeleteExtensionRequest {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.DeleteExtensionRequest';
     /** ID of the cluster. */
     clusterId: string;
     /** ID of the extension to delete. */
@@ -68,7 +63,6 @@ export interface DeleteExtensionRequest {
 }
 
 export interface DeleteExtensionMetadata {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.DeleteExtensionMetadata';
     /** ID of the cluster. */
     clusterId: string;
     /** ID of the extension to delete. */
@@ -76,7 +70,6 @@ export interface DeleteExtensionMetadata {
 }
 
 export interface UpdateExtensionRequest {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.UpdateExtensionRequest';
     /** ID of the cluster. */
     clusterId: string;
     /** ID of the extension to update. */
@@ -86,7 +79,6 @@ export interface UpdateExtensionRequest {
 }
 
 export interface UpdateExtensionMetadata {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.UpdateExtensionMetadata';
     /** ID of the cluster. */
     clusterId: string;
     /** ID of the extension. */
@@ -94,7 +86,6 @@ export interface UpdateExtensionMetadata {
 }
 
 export interface CreateExtensionRequest {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.CreateExtensionRequest';
     /** ID of the cluster. */
     clusterId: string;
     /** Name of the extension. */
@@ -106,22 +97,15 @@ export interface CreateExtensionRequest {
 }
 
 export interface CreateExtensionMetadata {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.CreateExtensionMetadata';
     /** ID of the cluster. */
     clusterId: string;
     /** ID of the extension. */
     extensionId: string;
 }
 
-const baseGetExtensionRequest: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.GetExtensionRequest',
-    clusterId: '',
-    extensionId: '',
-};
+const baseGetExtensionRequest: object = { clusterId: '', extensionId: '' };
 
 export const GetExtensionRequest = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.GetExtensionRequest' as const,
-
     encode(message: GetExtensionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -183,18 +167,9 @@ export const GetExtensionRequest = {
     },
 };
 
-messageTypeRegistry.set(GetExtensionRequest.$type, GetExtensionRequest);
-
-const baseListExtensionsRequest: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.ListExtensionsRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListExtensionsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListExtensionsRequest = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.ListExtensionsRequest' as const,
-
     encode(message: ListExtensionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -266,16 +241,9 @@ export const ListExtensionsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListExtensionsRequest.$type, ListExtensionsRequest);
-
-const baseListExtensionsResponse: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.ListExtensionsResponse',
-    nextPageToken: '',
-};
+const baseListExtensionsResponse: object = { nextPageToken: '' };
 
 export const ListExtensionsResponse = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.ListExtensionsResponse' as const,
-
     encode(message: ListExtensionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.extensions) {
             Extension.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -339,17 +307,9 @@ export const ListExtensionsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListExtensionsResponse.$type, ListExtensionsResponse);
-
-const baseDeleteExtensionRequest: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.DeleteExtensionRequest',
-    clusterId: '',
-    extensionId: '',
-};
+const baseDeleteExtensionRequest: object = { clusterId: '', extensionId: '' };
 
 export const DeleteExtensionRequest = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.DeleteExtensionRequest' as const,
-
     encode(message: DeleteExtensionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -411,17 +371,9 @@ export const DeleteExtensionRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteExtensionRequest.$type, DeleteExtensionRequest);
-
-const baseDeleteExtensionMetadata: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.DeleteExtensionMetadata',
-    clusterId: '',
-    extensionId: '',
-};
+const baseDeleteExtensionMetadata: object = { clusterId: '', extensionId: '' };
 
 export const DeleteExtensionMetadata = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.DeleteExtensionMetadata' as const,
-
     encode(message: DeleteExtensionMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -483,18 +435,9 @@ export const DeleteExtensionMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteExtensionMetadata.$type, DeleteExtensionMetadata);
-
-const baseUpdateExtensionRequest: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.UpdateExtensionRequest',
-    clusterId: '',
-    extensionId: '',
-    active: false,
-};
+const baseUpdateExtensionRequest: object = { clusterId: '', extensionId: '', active: false };
 
 export const UpdateExtensionRequest = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.UpdateExtensionRequest' as const,
-
     encode(message: UpdateExtensionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -566,17 +509,9 @@ export const UpdateExtensionRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateExtensionRequest.$type, UpdateExtensionRequest);
-
-const baseUpdateExtensionMetadata: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.UpdateExtensionMetadata',
-    clusterId: '',
-    extensionId: '',
-};
+const baseUpdateExtensionMetadata: object = { clusterId: '', extensionId: '' };
 
 export const UpdateExtensionMetadata = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.UpdateExtensionMetadata' as const,
-
     encode(message: UpdateExtensionMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -638,19 +573,9 @@ export const UpdateExtensionMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateExtensionMetadata.$type, UpdateExtensionMetadata);
-
-const baseCreateExtensionRequest: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.CreateExtensionRequest',
-    clusterId: '',
-    name: '',
-    uri: '',
-    disabled: false,
-};
+const baseCreateExtensionRequest: object = { clusterId: '', name: '', uri: '', disabled: false };
 
 export const CreateExtensionRequest = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.CreateExtensionRequest' as const,
-
     encode(message: CreateExtensionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -730,17 +655,9 @@ export const CreateExtensionRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateExtensionRequest.$type, CreateExtensionRequest);
-
-const baseCreateExtensionMetadata: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.CreateExtensionMetadata',
-    clusterId: '',
-    extensionId: '',
-};
+const baseCreateExtensionMetadata: object = { clusterId: '', extensionId: '' };
 
 export const CreateExtensionMetadata = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.CreateExtensionMetadata' as const,
-
     encode(message: CreateExtensionMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -801,8 +718,6 @@ export const CreateExtensionMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(CreateExtensionMetadata.$type, CreateExtensionMetadata);
 
 export const ExtensionServiceService = {
     /** Returns the specified extension of Elasticsearch cluster. */
@@ -991,16 +906,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

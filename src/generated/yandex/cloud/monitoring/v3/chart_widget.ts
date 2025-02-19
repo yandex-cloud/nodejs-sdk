@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Downsampling } from '../../../../yandex/cloud/monitoring/v3/downsampling';
@@ -14,7 +13,6 @@ export const protobufPackage = 'yandex.cloud.monitoring.v3';
 
 /** Chart widget. */
 export interface ChartWidget {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget';
     /** Required. Chart ID. */
     id: string;
     /** Queries. */
@@ -93,7 +91,6 @@ export function chartWidget_FreezeDurationToJSON(object: ChartWidget_FreezeDurat
 
 /** Query settings. */
 export interface ChartWidget_Queries {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.Queries';
     /** Required. List of targets. */
     targets: ChartWidget_Queries_Target[];
     /** Required. Downsampling settings. */
@@ -102,7 +99,6 @@ export interface ChartWidget_Queries {
 
 /** Query target. */
 export interface ChartWidget_Queries_Target {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.Queries.Target';
     /** Required. Query. */
     query: string;
     /** Text mode. */
@@ -115,7 +111,6 @@ export interface ChartWidget_Queries_Target {
 
 /** Visualization settings. */
 export interface ChartWidget_VisualizationSettings {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings';
     /** Visualization type. */
     type: ChartWidget_VisualizationSettings_VisualizationType;
     /** Normalize. */
@@ -392,7 +387,6 @@ export function chartWidget_VisualizationSettings_SeriesAggregationToJSON(
 }
 
 export interface ChartWidget_VisualizationSettings_ColorSchemeSettings {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.ColorSchemeSettings';
     /** Automatic color scheme. */
     automatic?:
         | ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme
@@ -409,16 +403,11 @@ export interface ChartWidget_VisualizationSettings_ColorSchemeSettings {
     hash?: ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme | undefined;
 }
 
-export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.ColorSchemeSettings.AutomaticColorScheme';
-}
+export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme {}
 
-export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.ColorSchemeSettings.StandardColorScheme';
-}
+export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme {}
 
 export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.ColorSchemeSettings.GradientColorScheme';
     /** Gradient green value. */
     greenValue: string;
     /** Gradient yellow value. */
@@ -429,12 +418,9 @@ export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientC
     violetValue: string;
 }
 
-export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.ColorSchemeSettings.HashColorScheme';
-}
+export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme {}
 
 export interface ChartWidget_VisualizationSettings_HeatmapSettings {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.HeatmapSettings';
     /** Heatmap green value. */
     greenValue: string;
     /** Heatmap yellow value. */
@@ -447,7 +433,6 @@ export interface ChartWidget_VisualizationSettings_HeatmapSettings {
 
 /** Y axis settings. */
 export interface ChartWidget_VisualizationSettings_Yaxis {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.Yaxis';
     /** Type. */
     type: ChartWidget_VisualizationSettings_YaxisType;
     /** Title or empty. */
@@ -463,7 +448,6 @@ export interface ChartWidget_VisualizationSettings_Yaxis {
 }
 
 export interface ChartWidget_VisualizationSettings_YaxisSettings {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.YaxisSettings';
     /** Left Y axis settings. */
     left?: ChartWidget_VisualizationSettings_Yaxis;
     /** Right Y axis settings. */
@@ -472,7 +456,6 @@ export interface ChartWidget_VisualizationSettings_YaxisSettings {
 
 /** Series override settings. */
 export interface ChartWidget_SeriesOverrides {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.SeriesOverrides';
     /** Series name. */
     name: string | undefined;
     /** Target index. */
@@ -586,7 +569,6 @@ export function chartWidget_SeriesOverrides_SeriesVisualizationTypeToJSON(
 }
 
 export interface ChartWidget_SeriesOverrides_SeriesOverrideSettings {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.SeriesOverrides.SeriesOverrideSettings';
     /** Series name or empty. */
     name: string;
     /** Series color or empty. */
@@ -603,7 +585,6 @@ export interface ChartWidget_SeriesOverrides_SeriesOverrideSettings {
 
 /** Name hiding settings. */
 export interface ChartWidget_NameHidingSettings {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.NameHidingSettings';
     /** True if we want to show concrete series names only, false if we want to hide concrete series names. */
     positive: boolean;
     /** Series names to show or hide. */
@@ -611,7 +592,6 @@ export interface ChartWidget_NameHidingSettings {
 }
 
 export interface ChartWidget_RepeatSettings {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.RepeatSettings';
     /** Parameters to repeat by. */
     repeatBy: string[];
     /** Max number of chart in one row. */
@@ -619,7 +599,6 @@ export interface ChartWidget_RepeatSettings {
 }
 
 const baseChartWidget: object = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget',
     id: '',
     description: '',
     title: '',
@@ -628,8 +607,6 @@ const baseChartWidget: object = {
 };
 
 export const ChartWidget = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget' as const,
-
     encode(message: ChartWidget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -826,13 +803,9 @@ export const ChartWidget = {
     },
 };
 
-messageTypeRegistry.set(ChartWidget.$type, ChartWidget);
-
-const baseChartWidget_Queries: object = { $type: 'yandex.cloud.monitoring.v3.ChartWidget.Queries' };
+const baseChartWidget_Queries: object = {};
 
 export const ChartWidget_Queries = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.Queries' as const,
-
     encode(message: ChartWidget_Queries, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.targets) {
             ChartWidget_Queries_Target.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -909,10 +882,7 @@ export const ChartWidget_Queries = {
     },
 };
 
-messageTypeRegistry.set(ChartWidget_Queries.$type, ChartWidget_Queries);
-
 const baseChartWidget_Queries_Target: object = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.Queries.Target',
     query: '',
     textMode: false,
     hidden: false,
@@ -920,8 +890,6 @@ const baseChartWidget_Queries_Target: object = {
 };
 
 export const ChartWidget_Queries_Target = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.Queries.Target' as const,
-
     encode(
         message: ChartWidget_Queries_Target,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1003,10 +971,7 @@ export const ChartWidget_Queries_Target = {
     },
 };
 
-messageTypeRegistry.set(ChartWidget_Queries_Target.$type, ChartWidget_Queries_Target);
-
 const baseChartWidget_VisualizationSettings: object = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings',
     type: 0,
     normalize: false,
     interpolate: 0,
@@ -1016,8 +981,6 @@ const baseChartWidget_VisualizationSettings: object = {
 };
 
 export const ChartWidget_VisualizationSettings = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings' as const,
-
     encode(
         message: ChartWidget_VisualizationSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1223,15 +1186,9 @@ export const ChartWidget_VisualizationSettings = {
     },
 };
 
-messageTypeRegistry.set(ChartWidget_VisualizationSettings.$type, ChartWidget_VisualizationSettings);
-
-const baseChartWidget_VisualizationSettings_ColorSchemeSettings: object = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.ColorSchemeSettings',
-};
+const baseChartWidget_VisualizationSettings_ColorSchemeSettings: object = {};
 
 export const ChartWidget_VisualizationSettings_ColorSchemeSettings = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.ColorSchemeSettings' as const,
-
     encode(
         message: ChartWidget_VisualizationSettings_ColorSchemeSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1405,18 +1362,9 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings = {
     },
 };
 
-messageTypeRegistry.set(
-    ChartWidget_VisualizationSettings_ColorSchemeSettings.$type,
-    ChartWidget_VisualizationSettings_ColorSchemeSettings,
-);
-
-const baseChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme: object = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.ColorSchemeSettings.AutomaticColorScheme',
-};
+const baseChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme: object = {};
 
 export const ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.ColorSchemeSettings.AutomaticColorScheme' as const,
-
     encode(
         _: ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1469,18 +1417,9 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColo
     },
 };
 
-messageTypeRegistry.set(
-    ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme.$type,
-    ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme,
-);
-
-const baseChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme: object = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.ColorSchemeSettings.StandardColorScheme',
-};
+const baseChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme: object = {};
 
 export const ChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.ColorSchemeSettings.StandardColorScheme' as const,
-
     encode(
         _: ChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1533,13 +1472,7 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColor
     },
 };
 
-messageTypeRegistry.set(
-    ChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme.$type,
-    ChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme,
-);
-
 const baseChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme: object = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.ColorSchemeSettings.GradientColorScheme',
     greenValue: '',
     yellowValue: '',
     redValue: '',
@@ -1547,8 +1480,6 @@ const baseChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorSch
 };
 
 export const ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.ColorSchemeSettings.GradientColorScheme' as const,
-
     encode(
         message: ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1653,18 +1584,9 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColor
     },
 };
 
-messageTypeRegistry.set(
-    ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme.$type,
-    ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme,
-);
-
-const baseChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme: object = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.ColorSchemeSettings.HashColorScheme',
-};
+const baseChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme: object = {};
 
 export const ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.ColorSchemeSettings.HashColorScheme' as const,
-
     encode(
         _: ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1717,13 +1639,7 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorSche
     },
 };
 
-messageTypeRegistry.set(
-    ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme.$type,
-    ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme,
-);
-
 const baseChartWidget_VisualizationSettings_HeatmapSettings: object = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.HeatmapSettings',
     greenValue: '',
     yellowValue: '',
     redValue: '',
@@ -1731,8 +1647,6 @@ const baseChartWidget_VisualizationSettings_HeatmapSettings: object = {
 };
 
 export const ChartWidget_VisualizationSettings_HeatmapSettings = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.HeatmapSettings' as const,
-
     encode(
         message: ChartWidget_VisualizationSettings_HeatmapSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1830,13 +1744,7 @@ export const ChartWidget_VisualizationSettings_HeatmapSettings = {
     },
 };
 
-messageTypeRegistry.set(
-    ChartWidget_VisualizationSettings_HeatmapSettings.$type,
-    ChartWidget_VisualizationSettings_HeatmapSettings,
-);
-
 const baseChartWidget_VisualizationSettings_Yaxis: object = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.Yaxis',
     type: 0,
     title: '',
     min: '',
@@ -1845,8 +1753,6 @@ const baseChartWidget_VisualizationSettings_Yaxis: object = {
 };
 
 export const ChartWidget_VisualizationSettings_Yaxis = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.Yaxis' as const,
-
     encode(
         message: ChartWidget_VisualizationSettings_Yaxis,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1867,10 +1773,7 @@ export const ChartWidget_VisualizationSettings_Yaxis = {
             writer.uint32(40).int32(message.unitFormat);
         }
         if (message.precision !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.precision! },
-                writer.uint32(50).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.precision! }, writer.uint32(50).fork()).ldelim();
         }
         return writer;
     },
@@ -1964,18 +1867,9 @@ export const ChartWidget_VisualizationSettings_Yaxis = {
     },
 };
 
-messageTypeRegistry.set(
-    ChartWidget_VisualizationSettings_Yaxis.$type,
-    ChartWidget_VisualizationSettings_Yaxis,
-);
-
-const baseChartWidget_VisualizationSettings_YaxisSettings: object = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.YaxisSettings',
-};
+const baseChartWidget_VisualizationSettings_YaxisSettings: object = {};
 
 export const ChartWidget_VisualizationSettings_YaxisSettings = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.VisualizationSettings.YaxisSettings' as const,
-
     encode(
         message: ChartWidget_VisualizationSettings_YaxisSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2073,18 +1967,9 @@ export const ChartWidget_VisualizationSettings_YaxisSettings = {
     },
 };
 
-messageTypeRegistry.set(
-    ChartWidget_VisualizationSettings_YaxisSettings.$type,
-    ChartWidget_VisualizationSettings_YaxisSettings,
-);
-
-const baseChartWidget_SeriesOverrides: object = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.SeriesOverrides',
-};
+const baseChartWidget_SeriesOverrides: object = {};
 
 export const ChartWidget_SeriesOverrides = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.SeriesOverrides' as const,
-
     encode(
         message: ChartWidget_SeriesOverrides,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2171,10 +2056,7 @@ export const ChartWidget_SeriesOverrides = {
     },
 };
 
-messageTypeRegistry.set(ChartWidget_SeriesOverrides.$type, ChartWidget_SeriesOverrides);
-
 const baseChartWidget_SeriesOverrides_SeriesOverrideSettings: object = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.SeriesOverrides.SeriesOverrideSettings',
     name: '',
     color: '',
     type: 0,
@@ -2184,8 +2066,6 @@ const baseChartWidget_SeriesOverrides_SeriesOverrideSettings: object = {
 };
 
 export const ChartWidget_SeriesOverrides_SeriesOverrideSettings = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.SeriesOverrides.SeriesOverrideSettings' as const,
-
     encode(
         message: ChartWidget_SeriesOverrides_SeriesOverrideSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2306,20 +2186,9 @@ export const ChartWidget_SeriesOverrides_SeriesOverrideSettings = {
     },
 };
 
-messageTypeRegistry.set(
-    ChartWidget_SeriesOverrides_SeriesOverrideSettings.$type,
-    ChartWidget_SeriesOverrides_SeriesOverrideSettings,
-);
-
-const baseChartWidget_NameHidingSettings: object = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.NameHidingSettings',
-    positive: false,
-    names: '',
-};
+const baseChartWidget_NameHidingSettings: object = { positive: false, names: '' };
 
 export const ChartWidget_NameHidingSettings = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.NameHidingSettings' as const,
-
     encode(
         message: ChartWidget_NameHidingSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2386,17 +2255,9 @@ export const ChartWidget_NameHidingSettings = {
     },
 };
 
-messageTypeRegistry.set(ChartWidget_NameHidingSettings.$type, ChartWidget_NameHidingSettings);
-
-const baseChartWidget_RepeatSettings: object = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.RepeatSettings',
-    repeatBy: '',
-    maxChartsInRow: 0,
-};
+const baseChartWidget_RepeatSettings: object = { repeatBy: '', maxChartsInRow: 0 };
 
 export const ChartWidget_RepeatSettings = {
-    $type: 'yandex.cloud.monitoring.v3.ChartWidget.RepeatSettings' as const,
-
     encode(
         message: ChartWidget_RepeatSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2464,8 +2325,6 @@ export const ChartWidget_RepeatSettings = {
     },
 };
 
-messageTypeRegistry.set(ChartWidget_RepeatSettings.$type, ChartWidget_RepeatSettings);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -2486,16 +2345,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

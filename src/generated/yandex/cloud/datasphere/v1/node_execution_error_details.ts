@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -7,7 +6,6 @@ export const protobufPackage = 'yandex.cloud.datasphere.v1';
 
 /** User code python execution's error details */
 export interface NodeExecutionErrorDetails {
-    $type: 'yandex.cloud.datasphere.v1.NodeExecutionErrorDetails';
     /** Error name */
     errorName: string;
     /** Error message */
@@ -16,16 +14,9 @@ export interface NodeExecutionErrorDetails {
     traceback: string[];
 }
 
-const baseNodeExecutionErrorDetails: object = {
-    $type: 'yandex.cloud.datasphere.v1.NodeExecutionErrorDetails',
-    errorName: '',
-    errorMessage: '',
-    traceback: '',
-};
+const baseNodeExecutionErrorDetails: object = { errorName: '', errorMessage: '', traceback: '' };
 
 export const NodeExecutionErrorDetails = {
-    $type: 'yandex.cloud.datasphere.v1.NodeExecutionErrorDetails' as const,
-
     encode(
         message: NodeExecutionErrorDetails,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -104,8 +95,6 @@ export const NodeExecutionErrorDetails = {
     },
 };
 
-messageTypeRegistry.set(NodeExecutionErrorDetails.$type, NodeExecutionErrorDetails);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -115,16 +104,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

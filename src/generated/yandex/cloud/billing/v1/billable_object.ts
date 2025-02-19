@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -11,7 +10,6 @@ export const protobufPackage = 'yandex.cloud.billing.v1';
  * This object is being billed in the scope of a billing account.
  */
 export interface BillableObject {
-    $type: 'yandex.cloud.billing.v1.BillableObject';
     /** ID of the object in other service. */
     id: string;
     /**
@@ -23,22 +21,15 @@ export interface BillableObject {
 
 /** Represents a binding of the BillableObject to a BillingAccount. */
 export interface BillableObjectBinding {
-    $type: 'yandex.cloud.billing.v1.BillableObjectBinding';
     /** Timestamp when binding was created. */
     effectiveTime?: Date;
     /** Object that is bound to billing account. */
     billableObject?: BillableObject;
 }
 
-const baseBillableObject: object = {
-    $type: 'yandex.cloud.billing.v1.BillableObject',
-    id: '',
-    type: '',
-};
+const baseBillableObject: object = { id: '', type: '' };
 
 export const BillableObject = {
-    $type: 'yandex.cloud.billing.v1.BillableObject' as const,
-
     encode(message: BillableObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -92,15 +83,9 @@ export const BillableObject = {
     },
 };
 
-messageTypeRegistry.set(BillableObject.$type, BillableObject);
-
-const baseBillableObjectBinding: object = {
-    $type: 'yandex.cloud.billing.v1.BillableObjectBinding',
-};
+const baseBillableObjectBinding: object = {};
 
 export const BillableObjectBinding = {
-    $type: 'yandex.cloud.billing.v1.BillableObjectBinding' as const,
-
     encode(message: BillableObjectBinding, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveTime !== undefined) {
             Timestamp.encode(toTimestamp(message.effectiveTime), writer.uint32(10).fork()).ldelim();
@@ -171,8 +156,6 @@ export const BillableObjectBinding = {
     },
 };
 
-messageTypeRegistry.set(BillableObjectBinding.$type, BillableObjectBinding);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -182,21 +165,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

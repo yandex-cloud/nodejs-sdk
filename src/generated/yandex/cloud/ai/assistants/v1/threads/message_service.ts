@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -26,7 +25,6 @@ export const protobufPackage = 'yandex.cloud.ai.assistants.v1.threads';
 
 /** Request to create a new message in a specific thread. */
 export interface CreateMessageRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.CreateMessageRequest';
     /** ID of the thread to which the message will be added. */
     threadId: string;
     /**
@@ -41,14 +39,12 @@ export interface CreateMessageRequest {
 }
 
 export interface CreateMessageRequest_LabelsEntry {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.CreateMessageRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Request message for retrieving a message from a thread. */
 export interface GetMessageRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.GetMessageRequest';
     /** ID of the thread that contains the message. */
     threadId: string;
     /** ID of the message to retrieve. */
@@ -57,19 +53,13 @@ export interface GetMessageRequest {
 
 /** Request message for listing messages in a specific thread. */
 export interface ListMessagesRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.ListMessagesRequest';
     /** ID of the thread whose messages will be listed. */
     threadId: string;
 }
 
-const baseCreateMessageRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.CreateMessageRequest',
-    threadId: '',
-};
+const baseCreateMessageRequest: object = { threadId: '' };
 
 export const CreateMessageRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.CreateMessageRequest' as const,
-
     encode(message: CreateMessageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.threadId !== '') {
             writer.uint32(10).string(message.threadId);
@@ -79,11 +69,7 @@ export const CreateMessageRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateMessageRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.assistants.v1.threads.CreateMessageRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(26).fork(),
             ).ldelim();
         });
@@ -190,17 +176,9 @@ export const CreateMessageRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateMessageRequest.$type, CreateMessageRequest);
-
-const baseCreateMessageRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.CreateMessageRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateMessageRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateMessageRequest_LabelsEntry = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.CreateMessageRequest.LabelsEntry' as const,
-
     encode(
         message: CreateMessageRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -266,17 +244,9 @@ export const CreateMessageRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateMessageRequest_LabelsEntry.$type, CreateMessageRequest_LabelsEntry);
-
-const baseGetMessageRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.GetMessageRequest',
-    threadId: '',
-    messageId: '',
-};
+const baseGetMessageRequest: object = { threadId: '', messageId: '' };
 
 export const GetMessageRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.GetMessageRequest' as const,
-
     encode(message: GetMessageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.threadId !== '') {
             writer.uint32(10).string(message.threadId);
@@ -336,16 +306,9 @@ export const GetMessageRequest = {
     },
 };
 
-messageTypeRegistry.set(GetMessageRequest.$type, GetMessageRequest);
-
-const baseListMessagesRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.ListMessagesRequest',
-    threadId: '',
-};
+const baseListMessagesRequest: object = { threadId: '' };
 
 export const ListMessagesRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.ListMessagesRequest' as const,
-
     encode(message: ListMessagesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.threadId !== '') {
             writer.uint32(10).string(message.threadId);
@@ -394,8 +357,6 @@ export const ListMessagesRequest = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListMessagesRequest.$type, ListMessagesRequest);
 
 /** MessageService provides operations for managing messages. */
 export const MessageServiceService = {
@@ -518,16 +479,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

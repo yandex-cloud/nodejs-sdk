@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -75,7 +74,6 @@ export function standardStreamToJSON(object: StandardStream): string {
 }
 
 export interface CreateProjectJobRequest {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CreateProjectJobRequest';
     /** ID of the project. */
     projectId: string;
     /** Parameters of the job. */
@@ -91,7 +89,6 @@ export interface CreateProjectJobRequest {
 }
 
 export interface CreateProjectJobMetadata {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CreateProjectJobMetadata';
     /** ID of the project. */
     projectId: string;
     /** Job ID. */
@@ -99,7 +96,6 @@ export interface CreateProjectJobMetadata {
 }
 
 export interface CreateProjectJobResponse {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CreateProjectJobResponse';
     /** ID of the job. */
     jobId: string;
     /** Files to upload with their presigned URLs for upload. */
@@ -107,7 +103,6 @@ export interface CreateProjectJobResponse {
 }
 
 export interface CloneProjectJobRequest {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CloneProjectJobRequest';
     /** ID of job to be cloned. */
     sourceJobId: string;
     /** Parameters overrides. */
@@ -121,7 +116,6 @@ export interface CloneProjectJobRequest {
 }
 
 export interface CloneProjectJobResponse {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CloneProjectJobResponse';
     /** Job ID. */
     jobId: string;
     /**
@@ -136,19 +130,16 @@ export interface CloneProjectJobResponse {
 }
 
 export interface CloneProjectJobMetadata {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CloneProjectJobMetadata';
     projectId: string;
     jobId: string;
 }
 
 export interface ExecuteProjectJobRequest {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ExecuteProjectJobRequest';
     /** ID of the job. */
     jobId: string;
 }
 
 export interface ExecuteProjectJobResponse {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ExecuteProjectJobResponse';
     /** Uploaded output files with URLs. */
     outputFiles: StorageFile[];
     /** Output file errors */
@@ -160,7 +151,6 @@ export interface ExecuteProjectJobResponse {
 }
 
 export interface ExecuteProjectJobMetadata {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ExecuteProjectJobMetadata';
     /**
      * Instance of the job.
      *
@@ -174,7 +164,6 @@ export interface ExecuteProjectJobMetadata {
 }
 
 export interface CancelProjectJobRequest {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CancelProjectJobRequest';
     /** ID of the job. */
     jobId: string;
     /** Optional cancellation reason. */
@@ -184,7 +173,6 @@ export interface CancelProjectJobRequest {
 }
 
 export interface ReadProjectJobStdLogsRequest {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ReadProjectJobStdLogsRequest';
     /** ID of the job. */
     jobId: string;
     /** Log offset. */
@@ -192,14 +180,12 @@ export interface ReadProjectJobStdLogsRequest {
 }
 
 export interface ReadProjectJobStdLogsResponse {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ReadProjectJobStdLogsResponse';
     logs: StdLog[];
     /** Log offset. */
     offset: number;
 }
 
 export interface ReadProjectJobLogsRequest {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ReadProjectJobLogsRequest';
     /** ID of the job. */
     jobId: string;
     /** Log offset. */
@@ -207,25 +193,21 @@ export interface ReadProjectJobLogsRequest {
 }
 
 export interface ReadProjectJobLogsResponse {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ReadProjectJobLogsResponse';
     logs: LogMessage[];
     /** Log offset. */
     offset: number;
 }
 
 export interface DownloadProjectJobFilesRequest {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DownloadProjectJobFilesRequest';
     jobId: string;
     files: File[];
 }
 
 export interface DownloadProjectJobFilesResponse {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DownloadProjectJobFilesResponse';
     downloadFiles: StorageFile[];
 }
 
 export interface ListProjectJobRequest {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ListProjectJobRequest';
     /** ID of the project. */
     projectId: string;
     /**
@@ -251,7 +233,6 @@ export interface ListProjectJobRequest {
 }
 
 export interface ListProjectJobResponse {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ListProjectJobResponse';
     /** Instances of the jobs. */
     jobs: Job[];
     /**
@@ -266,65 +247,50 @@ export interface ListProjectJobResponse {
 }
 
 export interface GetProjectJobRequest {
-    $type: 'yandex.cloud.datasphere.v2.jobs.GetProjectJobRequest';
     /** ID of the job. */
     jobId: string;
 }
 
 export interface DeleteProjectJobRequest {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteProjectJobRequest';
     /** ID of the job. */
     jobId: string;
 }
 
 export interface DeleteProjectJobMetadata {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteProjectJobMetadata';
     /** ID of the job. */
     jobId: string;
 }
 
 export interface DeleteProjectJobDataRequest {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteProjectJobDataRequest';
     /** ID of the job. */
     jobId: string;
 }
 
 export interface DeleteProjectJobDataMetadata {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteProjectJobDataMetadata';
     /** ID of the job. */
     jobId: string;
 }
 
-export interface DeleteProjectJobDataResponse {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteProjectJobDataResponse';
-}
+export interface DeleteProjectJobDataResponse {}
 
 export interface DeleteAllProjectJobDataRequest {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteAllProjectJobDataRequest';
     projectId: string;
 }
 
 export interface DeleteAllProjectJobDataMetadata {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteAllProjectJobDataMetadata';
     projectId: string;
 }
 
-export interface DeleteAllProjectJobDataResponse {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteAllProjectJobDataResponse';
-}
+export interface DeleteAllProjectJobDataResponse {}
 
 export interface SetProjectJobDataTtlRequest {
-    $type: 'yandex.cloud.datasphere.v2.jobs.SetProjectJobDataTtlRequest';
     jobId: string;
     ttl?: Duration;
 }
 
-export interface SetProjectJobDataTtlResponse {
-    $type: 'yandex.cloud.datasphere.v2.jobs.SetProjectJobDataTtlResponse';
-}
+export interface SetProjectJobDataTtlResponse {}
 
 export interface StdLog {
-    $type: 'yandex.cloud.datasphere.v2.jobs.StdLog';
     /** Log contents. */
     content: Buffer;
     /** Log type. */
@@ -372,7 +338,6 @@ export function stdLog_TypeToJSON(object: StdLog_Type): string {
 }
 
 export interface LogMessage {
-    $type: 'yandex.cloud.datasphere.v2.jobs.LogMessage';
     /** Log message contents. */
     content: Buffer;
     /** Log message creation timestamp. */
@@ -383,17 +348,9 @@ export interface LogMessage {
     filePath: string | undefined;
 }
 
-const baseCreateProjectJobRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CreateProjectJobRequest',
-    projectId: '',
-    config: '',
-    name: '',
-    desc: '',
-};
+const baseCreateProjectJobRequest: object = { projectId: '', config: '', name: '', desc: '' };
 
 export const CreateProjectJobRequest = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CreateProjectJobRequest' as const,
-
     encode(message: CreateProjectJobRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -505,17 +462,9 @@ export const CreateProjectJobRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateProjectJobRequest.$type, CreateProjectJobRequest);
-
-const baseCreateProjectJobMetadata: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CreateProjectJobMetadata',
-    projectId: '',
-    jobId: '',
-};
+const baseCreateProjectJobMetadata: object = { projectId: '', jobId: '' };
 
 export const CreateProjectJobMetadata = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CreateProjectJobMetadata' as const,
-
     encode(
         message: CreateProjectJobMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -578,16 +527,9 @@ export const CreateProjectJobMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateProjectJobMetadata.$type, CreateProjectJobMetadata);
-
-const baseCreateProjectJobResponse: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CreateProjectJobResponse',
-    jobId: '',
-};
+const baseCreateProjectJobResponse: object = { jobId: '' };
 
 export const CreateProjectJobResponse = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CreateProjectJobResponse' as const,
-
     encode(
         message: CreateProjectJobResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -654,18 +596,9 @@ export const CreateProjectJobResponse = {
     },
 };
 
-messageTypeRegistry.set(CreateProjectJobResponse.$type, CreateProjectJobResponse);
-
-const baseCloneProjectJobRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CloneProjectJobRequest',
-    sourceJobId: '',
-    name: '',
-    desc: '',
-};
+const baseCloneProjectJobRequest: object = { sourceJobId: '', name: '', desc: '' };
 
 export const CloneProjectJobRequest = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CloneProjectJobRequest' as const,
-
     encode(message: CloneProjectJobRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sourceJobId !== '') {
             writer.uint32(10).string(message.sourceJobId);
@@ -767,16 +700,9 @@ export const CloneProjectJobRequest = {
     },
 };
 
-messageTypeRegistry.set(CloneProjectJobRequest.$type, CloneProjectJobRequest);
-
-const baseCloneProjectJobResponse: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CloneProjectJobResponse',
-    jobId: '',
-};
+const baseCloneProjectJobResponse: object = { jobId: '' };
 
 export const CloneProjectJobResponse = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CloneProjectJobResponse' as const,
-
     encode(message: CloneProjectJobResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jobId !== '') {
             writer.uint32(10).string(message.jobId);
@@ -840,17 +766,9 @@ export const CloneProjectJobResponse = {
     },
 };
 
-messageTypeRegistry.set(CloneProjectJobResponse.$type, CloneProjectJobResponse);
-
-const baseCloneProjectJobMetadata: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CloneProjectJobMetadata',
-    projectId: '',
-    jobId: '',
-};
+const baseCloneProjectJobMetadata: object = { projectId: '', jobId: '' };
 
 export const CloneProjectJobMetadata = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CloneProjectJobMetadata' as const,
-
     encode(message: CloneProjectJobMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -910,16 +828,9 @@ export const CloneProjectJobMetadata = {
     },
 };
 
-messageTypeRegistry.set(CloneProjectJobMetadata.$type, CloneProjectJobMetadata);
-
-const baseExecuteProjectJobRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ExecuteProjectJobRequest',
-    jobId: '',
-};
+const baseExecuteProjectJobRequest: object = { jobId: '' };
 
 export const ExecuteProjectJobRequest = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ExecuteProjectJobRequest' as const,
-
     encode(
         message: ExecuteProjectJobRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -970,15 +881,9 @@ export const ExecuteProjectJobRequest = {
     },
 };
 
-messageTypeRegistry.set(ExecuteProjectJobRequest.$type, ExecuteProjectJobRequest);
-
-const baseExecuteProjectJobResponse: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ExecuteProjectJobResponse',
-};
+const baseExecuteProjectJobResponse: object = {};
 
 export const ExecuteProjectJobResponse = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ExecuteProjectJobResponse' as const,
-
     encode(
         message: ExecuteProjectJobResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1089,15 +994,9 @@ export const ExecuteProjectJobResponse = {
     },
 };
 
-messageTypeRegistry.set(ExecuteProjectJobResponse.$type, ExecuteProjectJobResponse);
-
-const baseExecuteProjectJobMetadata: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ExecuteProjectJobMetadata',
-};
+const baseExecuteProjectJobMetadata: object = {};
 
 export const ExecuteProjectJobMetadata = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ExecuteProjectJobMetadata' as const,
-
     encode(
         message: ExecuteProjectJobMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1183,18 +1082,9 @@ export const ExecuteProjectJobMetadata = {
     },
 };
 
-messageTypeRegistry.set(ExecuteProjectJobMetadata.$type, ExecuteProjectJobMetadata);
-
-const baseCancelProjectJobRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CancelProjectJobRequest',
-    jobId: '',
-    reason: '',
-    graceful: false,
-};
+const baseCancelProjectJobRequest: object = { jobId: '', reason: '', graceful: false };
 
 export const CancelProjectJobRequest = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CancelProjectJobRequest' as const,
-
     encode(message: CancelProjectJobRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jobId !== '') {
             writer.uint32(10).string(message.jobId);
@@ -1264,17 +1154,9 @@ export const CancelProjectJobRequest = {
     },
 };
 
-messageTypeRegistry.set(CancelProjectJobRequest.$type, CancelProjectJobRequest);
-
-const baseReadProjectJobStdLogsRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ReadProjectJobStdLogsRequest',
-    jobId: '',
-    offset: 0,
-};
+const baseReadProjectJobStdLogsRequest: object = { jobId: '', offset: 0 };
 
 export const ReadProjectJobStdLogsRequest = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ReadProjectJobStdLogsRequest' as const,
-
     encode(
         message: ReadProjectJobStdLogsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1335,16 +1217,9 @@ export const ReadProjectJobStdLogsRequest = {
     },
 };
 
-messageTypeRegistry.set(ReadProjectJobStdLogsRequest.$type, ReadProjectJobStdLogsRequest);
-
-const baseReadProjectJobStdLogsResponse: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ReadProjectJobStdLogsResponse',
-    offset: 0,
-};
+const baseReadProjectJobStdLogsResponse: object = { offset: 0 };
 
 export const ReadProjectJobStdLogsResponse = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ReadProjectJobStdLogsResponse' as const,
-
     encode(
         message: ReadProjectJobStdLogsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1409,17 +1284,9 @@ export const ReadProjectJobStdLogsResponse = {
     },
 };
 
-messageTypeRegistry.set(ReadProjectJobStdLogsResponse.$type, ReadProjectJobStdLogsResponse);
-
-const baseReadProjectJobLogsRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ReadProjectJobLogsRequest',
-    jobId: '',
-    offset: 0,
-};
+const baseReadProjectJobLogsRequest: object = { jobId: '', offset: 0 };
 
 export const ReadProjectJobLogsRequest = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ReadProjectJobLogsRequest' as const,
-
     encode(
         message: ReadProjectJobLogsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1480,16 +1347,9 @@ export const ReadProjectJobLogsRequest = {
     },
 };
 
-messageTypeRegistry.set(ReadProjectJobLogsRequest.$type, ReadProjectJobLogsRequest);
-
-const baseReadProjectJobLogsResponse: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ReadProjectJobLogsResponse',
-    offset: 0,
-};
+const baseReadProjectJobLogsResponse: object = { offset: 0 };
 
 export const ReadProjectJobLogsResponse = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ReadProjectJobLogsResponse' as const,
-
     encode(
         message: ReadProjectJobLogsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1554,16 +1414,9 @@ export const ReadProjectJobLogsResponse = {
     },
 };
 
-messageTypeRegistry.set(ReadProjectJobLogsResponse.$type, ReadProjectJobLogsResponse);
-
-const baseDownloadProjectJobFilesRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DownloadProjectJobFilesRequest',
-    jobId: '',
-};
+const baseDownloadProjectJobFilesRequest: object = { jobId: '' };
 
 export const DownloadProjectJobFilesRequest = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DownloadProjectJobFilesRequest' as const,
-
     encode(
         message: DownloadProjectJobFilesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1628,15 +1481,9 @@ export const DownloadProjectJobFilesRequest = {
     },
 };
 
-messageTypeRegistry.set(DownloadProjectJobFilesRequest.$type, DownloadProjectJobFilesRequest);
-
-const baseDownloadProjectJobFilesResponse: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DownloadProjectJobFilesResponse',
-};
+const baseDownloadProjectJobFilesResponse: object = {};
 
 export const DownloadProjectJobFilesResponse = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DownloadProjectJobFilesResponse' as const,
-
     encode(
         message: DownloadProjectJobFilesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1701,19 +1548,9 @@ export const DownloadProjectJobFilesResponse = {
     },
 };
 
-messageTypeRegistry.set(DownloadProjectJobFilesResponse.$type, DownloadProjectJobFilesResponse);
-
-const baseListProjectJobRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ListProjectJobRequest',
-    projectId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListProjectJobRequest: object = { projectId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListProjectJobRequest = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ListProjectJobRequest' as const,
-
     encode(message: ListProjectJobRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -1795,16 +1632,9 @@ export const ListProjectJobRequest = {
     },
 };
 
-messageTypeRegistry.set(ListProjectJobRequest.$type, ListProjectJobRequest);
-
-const baseListProjectJobResponse: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ListProjectJobResponse',
-    nextPageToken: '',
-};
+const baseListProjectJobResponse: object = { nextPageToken: '' };
 
 export const ListProjectJobResponse = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ListProjectJobResponse' as const,
-
     encode(message: ListProjectJobResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.jobs) {
             Job.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1868,16 +1698,9 @@ export const ListProjectJobResponse = {
     },
 };
 
-messageTypeRegistry.set(ListProjectJobResponse.$type, ListProjectJobResponse);
-
-const baseGetProjectJobRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.GetProjectJobRequest',
-    jobId: '',
-};
+const baseGetProjectJobRequest: object = { jobId: '' };
 
 export const GetProjectJobRequest = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.GetProjectJobRequest' as const,
-
     encode(message: GetProjectJobRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jobId !== '') {
             writer.uint32(10).string(message.jobId);
@@ -1925,16 +1748,9 @@ export const GetProjectJobRequest = {
     },
 };
 
-messageTypeRegistry.set(GetProjectJobRequest.$type, GetProjectJobRequest);
-
-const baseDeleteProjectJobRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteProjectJobRequest',
-    jobId: '',
-};
+const baseDeleteProjectJobRequest: object = { jobId: '' };
 
 export const DeleteProjectJobRequest = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteProjectJobRequest' as const,
-
     encode(message: DeleteProjectJobRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jobId !== '') {
             writer.uint32(10).string(message.jobId);
@@ -1982,16 +1798,9 @@ export const DeleteProjectJobRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteProjectJobRequest.$type, DeleteProjectJobRequest);
-
-const baseDeleteProjectJobMetadata: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteProjectJobMetadata',
-    jobId: '',
-};
+const baseDeleteProjectJobMetadata: object = { jobId: '' };
 
 export const DeleteProjectJobMetadata = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteProjectJobMetadata' as const,
-
     encode(
         message: DeleteProjectJobMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2042,16 +1851,9 @@ export const DeleteProjectJobMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteProjectJobMetadata.$type, DeleteProjectJobMetadata);
-
-const baseDeleteProjectJobDataRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteProjectJobDataRequest',
-    jobId: '',
-};
+const baseDeleteProjectJobDataRequest: object = { jobId: '' };
 
 export const DeleteProjectJobDataRequest = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteProjectJobDataRequest' as const,
-
     encode(
         message: DeleteProjectJobDataRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2102,16 +1904,9 @@ export const DeleteProjectJobDataRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteProjectJobDataRequest.$type, DeleteProjectJobDataRequest);
-
-const baseDeleteProjectJobDataMetadata: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteProjectJobDataMetadata',
-    jobId: '',
-};
+const baseDeleteProjectJobDataMetadata: object = { jobId: '' };
 
 export const DeleteProjectJobDataMetadata = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteProjectJobDataMetadata' as const,
-
     encode(
         message: DeleteProjectJobDataMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2162,15 +1957,9 @@ export const DeleteProjectJobDataMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteProjectJobDataMetadata.$type, DeleteProjectJobDataMetadata);
-
-const baseDeleteProjectJobDataResponse: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteProjectJobDataResponse',
-};
+const baseDeleteProjectJobDataResponse: object = {};
 
 export const DeleteProjectJobDataResponse = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteProjectJobDataResponse' as const,
-
     encode(_: DeleteProjectJobDataResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2208,16 +1997,9 @@ export const DeleteProjectJobDataResponse = {
     },
 };
 
-messageTypeRegistry.set(DeleteProjectJobDataResponse.$type, DeleteProjectJobDataResponse);
-
-const baseDeleteAllProjectJobDataRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteAllProjectJobDataRequest',
-    projectId: '',
-};
+const baseDeleteAllProjectJobDataRequest: object = { projectId: '' };
 
 export const DeleteAllProjectJobDataRequest = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteAllProjectJobDataRequest' as const,
-
     encode(
         message: DeleteAllProjectJobDataRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2270,16 +2052,9 @@ export const DeleteAllProjectJobDataRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteAllProjectJobDataRequest.$type, DeleteAllProjectJobDataRequest);
-
-const baseDeleteAllProjectJobDataMetadata: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteAllProjectJobDataMetadata',
-    projectId: '',
-};
+const baseDeleteAllProjectJobDataMetadata: object = { projectId: '' };
 
 export const DeleteAllProjectJobDataMetadata = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteAllProjectJobDataMetadata' as const,
-
     encode(
         message: DeleteAllProjectJobDataMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2338,15 +2113,9 @@ export const DeleteAllProjectJobDataMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteAllProjectJobDataMetadata.$type, DeleteAllProjectJobDataMetadata);
-
-const baseDeleteAllProjectJobDataResponse: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteAllProjectJobDataResponse',
-};
+const baseDeleteAllProjectJobDataResponse: object = {};
 
 export const DeleteAllProjectJobDataResponse = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DeleteAllProjectJobDataResponse' as const,
-
     encode(
         _: DeleteAllProjectJobDataResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2393,16 +2162,9 @@ export const DeleteAllProjectJobDataResponse = {
     },
 };
 
-messageTypeRegistry.set(DeleteAllProjectJobDataResponse.$type, DeleteAllProjectJobDataResponse);
-
-const baseSetProjectJobDataTtlRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.SetProjectJobDataTtlRequest',
-    jobId: '',
-};
+const baseSetProjectJobDataTtlRequest: object = { jobId: '' };
 
 export const SetProjectJobDataTtlRequest = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.SetProjectJobDataTtlRequest' as const,
-
     encode(
         message: SetProjectJobDataTtlRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2469,15 +2231,9 @@ export const SetProjectJobDataTtlRequest = {
     },
 };
 
-messageTypeRegistry.set(SetProjectJobDataTtlRequest.$type, SetProjectJobDataTtlRequest);
-
-const baseSetProjectJobDataTtlResponse: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.SetProjectJobDataTtlResponse',
-};
+const baseSetProjectJobDataTtlResponse: object = {};
 
 export const SetProjectJobDataTtlResponse = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.SetProjectJobDataTtlResponse' as const,
-
     encode(_: SetProjectJobDataTtlResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2515,13 +2271,9 @@ export const SetProjectJobDataTtlResponse = {
     },
 };
 
-messageTypeRegistry.set(SetProjectJobDataTtlResponse.$type, SetProjectJobDataTtlResponse);
-
-const baseStdLog: object = { $type: 'yandex.cloud.datasphere.v2.jobs.StdLog', type: 0 };
+const baseStdLog: object = { type: 0 };
 
 export const StdLog = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.StdLog' as const,
-
     encode(message: StdLog, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.content.length !== 0) {
             writer.uint32(10).bytes(message.content);
@@ -2585,13 +2337,9 @@ export const StdLog = {
     },
 };
 
-messageTypeRegistry.set(StdLog.$type, StdLog);
-
-const baseLogMessage: object = { $type: 'yandex.cloud.datasphere.v2.jobs.LogMessage' };
+const baseLogMessage: object = {};
 
 export const LogMessage = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.LogMessage' as const,
-
     encode(message: LogMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.content.length !== 0) {
             writer.uint32(10).bytes(message.content);
@@ -2682,8 +2430,6 @@ export const LogMessage = {
         return message;
     },
 };
-
-messageTypeRegistry.set(LogMessage.$type, LogMessage);
 
 /**
  * A set of methods for managing Project Jobs. Do not use these methods manually.
@@ -3139,21 +2885,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -22,7 +21,6 @@ import { BoolValue, StringValue } from '../../../../google/protobuf/wrappers';
 export const protobufPackage = 'yandex.cloud.cdn.v1';
 
 export interface GetOriginGroupRequest {
-    $type: 'yandex.cloud.cdn.v1.GetOriginGroupRequest';
     /** ID of the folder that the origin group belongs to. */
     folderId: string;
     /**
@@ -34,7 +32,6 @@ export interface GetOriginGroupRequest {
 }
 
 export interface ListOriginGroupsRequest {
-    $type: 'yandex.cloud.cdn.v1.ListOriginGroupsRequest';
     /** ID of the folder that the origin group belongs to.. */
     folderId: string;
     /**
@@ -53,7 +50,6 @@ export interface ListOriginGroupsRequest {
 }
 
 export interface ListOriginGroupsResponse {
-    $type: 'yandex.cloud.cdn.v1.ListOriginGroupsResponse';
     /** List of all Origin Groups associated with folder. */
     originGroups: OriginGroup[];
     /**
@@ -67,7 +63,6 @@ export interface ListOriginGroupsResponse {
 }
 
 export interface CreateOriginGroupRequest {
-    $type: 'yandex.cloud.cdn.v1.CreateOriginGroupRequest';
     /** ID of the folder that the origin group belongs to. */
     folderId: string;
     /** Name of the origin group. */
@@ -89,13 +84,11 @@ export interface CreateOriginGroupRequest {
 }
 
 export interface CreateOriginGroupMetadata {
-    $type: 'yandex.cloud.cdn.v1.CreateOriginGroupMetadata';
     /** ID of created origin group. */
     originGroupId: number;
 }
 
 export interface UpdateOriginGroupRequest {
-    $type: 'yandex.cloud.cdn.v1.UpdateOriginGroupRequest';
     /** ID of the folder that the origin group belongs to. */
     folderId: string;
     /** ID of the origin group. */
@@ -118,13 +111,11 @@ export interface UpdateOriginGroupRequest {
 }
 
 export interface UpdateOriginGroupMetadata {
-    $type: 'yandex.cloud.cdn.v1.UpdateOriginGroupMetadata';
     /** ID of the origin group. */
     originGroupId: number;
 }
 
 export interface DeleteOriginGroupRequest {
-    $type: 'yandex.cloud.cdn.v1.DeleteOriginGroupRequest';
     /** ID of the folder that the origin group belongs to. */
     folderId: string;
     /** ID of the origin group. */
@@ -132,20 +123,13 @@ export interface DeleteOriginGroupRequest {
 }
 
 export interface DeleteOriginGroupMetadata {
-    $type: 'yandex.cloud.cdn.v1.DeleteOriginGroupMetadata';
     /** ID of the origin group. */
     originGroupId: number;
 }
 
-const baseGetOriginGroupRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.GetOriginGroupRequest',
-    folderId: '',
-    originGroupId: 0,
-};
+const baseGetOriginGroupRequest: object = { folderId: '', originGroupId: 0 };
 
 export const GetOriginGroupRequest = {
-    $type: 'yandex.cloud.cdn.v1.GetOriginGroupRequest' as const,
-
     encode(message: GetOriginGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -208,18 +192,9 @@ export const GetOriginGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(GetOriginGroupRequest.$type, GetOriginGroupRequest);
-
-const baseListOriginGroupsRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.ListOriginGroupsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListOriginGroupsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
 export const ListOriginGroupsRequest = {
-    $type: 'yandex.cloud.cdn.v1.ListOriginGroupsRequest' as const,
-
     encode(message: ListOriginGroupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -291,16 +266,9 @@ export const ListOriginGroupsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListOriginGroupsRequest.$type, ListOriginGroupsRequest);
-
-const baseListOriginGroupsResponse: object = {
-    $type: 'yandex.cloud.cdn.v1.ListOriginGroupsResponse',
-    nextPageToken: '',
-};
+const baseListOriginGroupsResponse: object = { nextPageToken: '' };
 
 export const ListOriginGroupsResponse = {
-    $type: 'yandex.cloud.cdn.v1.ListOriginGroupsResponse' as const,
-
     encode(
         message: ListOriginGroupsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -369,17 +337,9 @@ export const ListOriginGroupsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListOriginGroupsResponse.$type, ListOriginGroupsResponse);
-
-const baseCreateOriginGroupRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.CreateOriginGroupRequest',
-    folderId: '',
-    name: '',
-};
+const baseCreateOriginGroupRequest: object = { folderId: '', name: '' };
 
 export const CreateOriginGroupRequest = {
-    $type: 'yandex.cloud.cdn.v1.CreateOriginGroupRequest' as const,
-
     encode(
         message: CreateOriginGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -391,10 +351,7 @@ export const CreateOriginGroupRequest = {
             writer.uint32(18).string(message.name);
         }
         if (message.useNext !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.useNext! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.useNext! }, writer.uint32(26).fork()).ldelim();
         }
         for (const v of message.origins) {
             OriginParams.encode(v!, writer.uint32(34).fork()).ldelim();
@@ -470,16 +427,9 @@ export const CreateOriginGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateOriginGroupRequest.$type, CreateOriginGroupRequest);
-
-const baseCreateOriginGroupMetadata: object = {
-    $type: 'yandex.cloud.cdn.v1.CreateOriginGroupMetadata',
-    originGroupId: 0,
-};
+const baseCreateOriginGroupMetadata: object = { originGroupId: 0 };
 
 export const CreateOriginGroupMetadata = {
-    $type: 'yandex.cloud.cdn.v1.CreateOriginGroupMetadata' as const,
-
     encode(
         message: CreateOriginGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -533,17 +483,9 @@ export const CreateOriginGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateOriginGroupMetadata.$type, CreateOriginGroupMetadata);
-
-const baseUpdateOriginGroupRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.UpdateOriginGroupRequest',
-    folderId: '',
-    originGroupId: 0,
-};
+const baseUpdateOriginGroupRequest: object = { folderId: '', originGroupId: 0 };
 
 export const UpdateOriginGroupRequest = {
-    $type: 'yandex.cloud.cdn.v1.UpdateOriginGroupRequest' as const,
-
     encode(
         message: UpdateOriginGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -555,16 +497,10 @@ export const UpdateOriginGroupRequest = {
             writer.uint32(16).int64(message.originGroupId);
         }
         if (message.groupName !== undefined) {
-            StringValue.encode(
-                { $type: 'google.protobuf.StringValue', value: message.groupName! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            StringValue.encode({ value: message.groupName! }, writer.uint32(26).fork()).ldelim();
         }
         if (message.useNext !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.useNext! },
-                writer.uint32(34).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.useNext! }, writer.uint32(34).fork()).ldelim();
         }
         for (const v of message.origins) {
             OriginParams.encode(v!, writer.uint32(42).fork()).ldelim();
@@ -653,16 +589,9 @@ export const UpdateOriginGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateOriginGroupRequest.$type, UpdateOriginGroupRequest);
-
-const baseUpdateOriginGroupMetadata: object = {
-    $type: 'yandex.cloud.cdn.v1.UpdateOriginGroupMetadata',
-    originGroupId: 0,
-};
+const baseUpdateOriginGroupMetadata: object = { originGroupId: 0 };
 
 export const UpdateOriginGroupMetadata = {
-    $type: 'yandex.cloud.cdn.v1.UpdateOriginGroupMetadata' as const,
-
     encode(
         message: UpdateOriginGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -716,17 +645,9 @@ export const UpdateOriginGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateOriginGroupMetadata.$type, UpdateOriginGroupMetadata);
-
-const baseDeleteOriginGroupRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.DeleteOriginGroupRequest',
-    folderId: '',
-    originGroupId: 0,
-};
+const baseDeleteOriginGroupRequest: object = { folderId: '', originGroupId: 0 };
 
 export const DeleteOriginGroupRequest = {
-    $type: 'yandex.cloud.cdn.v1.DeleteOriginGroupRequest' as const,
-
     encode(
         message: DeleteOriginGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -792,16 +713,9 @@ export const DeleteOriginGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteOriginGroupRequest.$type, DeleteOriginGroupRequest);
-
-const baseDeleteOriginGroupMetadata: object = {
-    $type: 'yandex.cloud.cdn.v1.DeleteOriginGroupMetadata',
-    originGroupId: 0,
-};
+const baseDeleteOriginGroupMetadata: object = { originGroupId: 0 };
 
 export const DeleteOriginGroupMetadata = {
-    $type: 'yandex.cloud.cdn.v1.DeleteOriginGroupMetadata' as const,
-
     encode(
         message: DeleteOriginGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -854,8 +768,6 @@ export const DeleteOriginGroupMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteOriginGroupMetadata.$type, DeleteOriginGroupMetadata);
 
 /** Origin Groups management service. */
 export const OriginGroupServiceService = {
@@ -1060,16 +972,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

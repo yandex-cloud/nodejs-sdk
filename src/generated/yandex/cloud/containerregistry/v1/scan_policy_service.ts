@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -21,19 +20,16 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.containerregistry.v1';
 
 export interface GetScanPolicyRequest {
-    $type: 'yandex.cloud.containerregistry.v1.GetScanPolicyRequest';
     /** ID of the scan policy. */
     scanPolicyId: string;
 }
 
 export interface GetScanPolicyByRegistryRequest {
-    $type: 'yandex.cloud.containerregistry.v1.GetScanPolicyByRegistryRequest';
     /** ID of the registry with scan policy. */
     registryId: string;
 }
 
 export interface CreateScanPolicyRequest {
-    $type: 'yandex.cloud.containerregistry.v1.CreateScanPolicyRequest';
     /** ID of the scan policy registry. */
     registryId: string;
     /** Name of the scan policy. */
@@ -45,7 +41,6 @@ export interface CreateScanPolicyRequest {
 }
 
 export interface UpdateScanPolicyRequest {
-    $type: 'yandex.cloud.containerregistry.v1.UpdateScanPolicyRequest';
     /** ID of the scan policy. */
     scanPolicyId: string;
     /** Field mask that specifies which fields of the scan policy resource are going to be updated. */
@@ -59,37 +54,28 @@ export interface UpdateScanPolicyRequest {
 }
 
 export interface DeleteScanPolicyRequest {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteScanPolicyRequest';
     /** ID of the scan policy. */
     scanPolicyId: string;
 }
 
 export interface CreateScanPolicyMetadata {
-    $type: 'yandex.cloud.containerregistry.v1.CreateScanPolicyMetadata';
     /** ID of created scan policy resource. */
     scanPolicyId: string;
 }
 
 export interface UpdateScanPolicyMetadata {
-    $type: 'yandex.cloud.containerregistry.v1.UpdateScanPolicyMetadata';
     /** ID of the scan policy resource that is updated. */
     scanPolicyId: string;
 }
 
 export interface DeleteScanPolicyMetadata {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteScanPolicyMetadata';
     /** ID of the scan policy resource that is deleted. */
     scanPolicyId: string;
 }
 
-const baseGetScanPolicyRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.GetScanPolicyRequest',
-    scanPolicyId: '',
-};
+const baseGetScanPolicyRequest: object = { scanPolicyId: '' };
 
 export const GetScanPolicyRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.GetScanPolicyRequest' as const,
-
     encode(message: GetScanPolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.scanPolicyId !== '') {
             writer.uint32(10).string(message.scanPolicyId);
@@ -139,16 +125,9 @@ export const GetScanPolicyRequest = {
     },
 };
 
-messageTypeRegistry.set(GetScanPolicyRequest.$type, GetScanPolicyRequest);
-
-const baseGetScanPolicyByRegistryRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.GetScanPolicyByRegistryRequest',
-    registryId: '',
-};
+const baseGetScanPolicyByRegistryRequest: object = { registryId: '' };
 
 export const GetScanPolicyByRegistryRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.GetScanPolicyByRegistryRequest' as const,
-
     encode(
         message: GetScanPolicyByRegistryRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -201,18 +180,9 @@ export const GetScanPolicyByRegistryRequest = {
     },
 };
 
-messageTypeRegistry.set(GetScanPolicyByRegistryRequest.$type, GetScanPolicyByRegistryRequest);
-
-const baseCreateScanPolicyRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.CreateScanPolicyRequest',
-    registryId: '',
-    name: '',
-    description: '',
-};
+const baseCreateScanPolicyRequest: object = { registryId: '', name: '', description: '' };
 
 export const CreateScanPolicyRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.CreateScanPolicyRequest' as const,
-
     encode(message: CreateScanPolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -299,18 +269,9 @@ export const CreateScanPolicyRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateScanPolicyRequest.$type, CreateScanPolicyRequest);
-
-const baseUpdateScanPolicyRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.UpdateScanPolicyRequest',
-    scanPolicyId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateScanPolicyRequest: object = { scanPolicyId: '', name: '', description: '' };
 
 export const UpdateScanPolicyRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.UpdateScanPolicyRequest' as const,
-
     encode(message: UpdateScanPolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.scanPolicyId !== '') {
             writer.uint32(10).string(message.scanPolicyId);
@@ -415,16 +376,9 @@ export const UpdateScanPolicyRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateScanPolicyRequest.$type, UpdateScanPolicyRequest);
-
-const baseDeleteScanPolicyRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteScanPolicyRequest',
-    scanPolicyId: '',
-};
+const baseDeleteScanPolicyRequest: object = { scanPolicyId: '' };
 
 export const DeleteScanPolicyRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteScanPolicyRequest' as const,
-
     encode(message: DeleteScanPolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.scanPolicyId !== '') {
             writer.uint32(10).string(message.scanPolicyId);
@@ -474,16 +428,9 @@ export const DeleteScanPolicyRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteScanPolicyRequest.$type, DeleteScanPolicyRequest);
-
-const baseCreateScanPolicyMetadata: object = {
-    $type: 'yandex.cloud.containerregistry.v1.CreateScanPolicyMetadata',
-    scanPolicyId: '',
-};
+const baseCreateScanPolicyMetadata: object = { scanPolicyId: '' };
 
 export const CreateScanPolicyMetadata = {
-    $type: 'yandex.cloud.containerregistry.v1.CreateScanPolicyMetadata' as const,
-
     encode(
         message: CreateScanPolicyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -536,16 +483,9 @@ export const CreateScanPolicyMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateScanPolicyMetadata.$type, CreateScanPolicyMetadata);
-
-const baseUpdateScanPolicyMetadata: object = {
-    $type: 'yandex.cloud.containerregistry.v1.UpdateScanPolicyMetadata',
-    scanPolicyId: '',
-};
+const baseUpdateScanPolicyMetadata: object = { scanPolicyId: '' };
 
 export const UpdateScanPolicyMetadata = {
-    $type: 'yandex.cloud.containerregistry.v1.UpdateScanPolicyMetadata' as const,
-
     encode(
         message: UpdateScanPolicyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -598,16 +538,9 @@ export const UpdateScanPolicyMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateScanPolicyMetadata.$type, UpdateScanPolicyMetadata);
-
-const baseDeleteScanPolicyMetadata: object = {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteScanPolicyMetadata',
-    scanPolicyId: '',
-};
+const baseDeleteScanPolicyMetadata: object = { scanPolicyId: '' };
 
 export const DeleteScanPolicyMetadata = {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteScanPolicyMetadata' as const,
-
     encode(
         message: DeleteScanPolicyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -659,8 +592,6 @@ export const DeleteScanPolicyMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteScanPolicyMetadata.$type, DeleteScanPolicyMetadata);
 
 /** A set of methods for managing scan policy resources. */
 export const ScanPolicyServiceService = {
@@ -838,16 +769,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

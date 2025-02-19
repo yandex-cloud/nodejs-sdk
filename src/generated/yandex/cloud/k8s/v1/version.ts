@@ -1,12 +1,10 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.k8s.v1';
 
 export interface VersionInfo {
-    $type: 'yandex.cloud.k8s.v1.VersionInfo';
     /** Current Kubernetes version, format: major.minor (e.g. 1.15). */
     currentVersion: string;
     /**
@@ -28,7 +26,6 @@ export interface VersionInfo {
 }
 
 export interface UpdateVersionSpec {
-    $type: 'yandex.cloud.k8s.v1.UpdateVersionSpec';
     /** Request update to a newer version of Kubernetes (1.x -> 1.y). */
     version: string | undefined;
     /** Request update to the latest revision for the current version. */
@@ -36,7 +33,6 @@ export interface UpdateVersionSpec {
 }
 
 const baseVersionInfo: object = {
-    $type: 'yandex.cloud.k8s.v1.VersionInfo',
     currentVersion: '',
     newRevisionAvailable: false,
     newRevisionSummary: '',
@@ -44,8 +40,6 @@ const baseVersionInfo: object = {
 };
 
 export const VersionInfo = {
-    $type: 'yandex.cloud.k8s.v1.VersionInfo' as const,
-
     encode(message: VersionInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.currentVersion !== '') {
             writer.uint32(10).string(message.currentVersion);
@@ -132,13 +126,9 @@ export const VersionInfo = {
     },
 };
 
-messageTypeRegistry.set(VersionInfo.$type, VersionInfo);
-
-const baseUpdateVersionSpec: object = { $type: 'yandex.cloud.k8s.v1.UpdateVersionSpec' };
+const baseUpdateVersionSpec: object = {};
 
 export const UpdateVersionSpec = {
-    $type: 'yandex.cloud.k8s.v1.UpdateVersionSpec' as const,
-
     encode(message: UpdateVersionSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== undefined) {
             writer.uint32(10).string(message.version);
@@ -198,8 +188,6 @@ export const UpdateVersionSpec = {
     },
 };
 
-messageTypeRegistry.set(UpdateVersionSpec.$type, UpdateVersionSpec);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -209,16 +197,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

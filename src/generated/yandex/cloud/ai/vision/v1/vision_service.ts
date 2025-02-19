@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -23,7 +22,6 @@ import { ImageCopySearchAnnotation } from '../../../../../yandex/cloud/ai/vision
 export const protobufPackage = 'yandex.cloud.ai.vision.v1';
 
 export interface BatchAnalyzeRequest {
-    $type: 'yandex.cloud.ai.vision.v1.BatchAnalyzeRequest';
     /**
      * A list of specifications. Each specification contains the file to analyze and features to use for analysis.
      *
@@ -42,7 +40,6 @@ export interface BatchAnalyzeRequest {
 }
 
 export interface AnalyzeSpec {
-    $type: 'yandex.cloud.ai.vision.v1.AnalyzeSpec';
     /**
      * Image content, represented as a stream of bytes.
      * Note: As with all bytes fields, protobuffers use a pure binary representation, whereas JSON representations use base64.
@@ -60,7 +57,6 @@ export interface AnalyzeSpec {
 }
 
 export interface Feature {
-    $type: 'yandex.cloud.ai.vision.v1.Feature';
     /** Type of requested feature. */
     type: Feature_Type;
     /** Required for the `CLASSIFICATION` type. Specifies configuration for the classification feature. */
@@ -124,13 +120,11 @@ export function feature_TypeToJSON(object: Feature_Type): string {
 }
 
 export interface FeatureClassificationConfig {
-    $type: 'yandex.cloud.ai.vision.v1.FeatureClassificationConfig';
     /** Model to use for image classification. */
     model: string;
 }
 
 export interface FeatureTextDetectionConfig {
-    $type: 'yandex.cloud.ai.vision.v1.FeatureTextDetectionConfig';
     /**
      * List of the languages to recognize text.
      * Specified in [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) format (for example, `ru`).
@@ -146,7 +140,6 @@ export interface FeatureTextDetectionConfig {
 }
 
 export interface BatchAnalyzeResponse {
-    $type: 'yandex.cloud.ai.vision.v1.BatchAnalyzeResponse';
     /**
      * Request results.
      * Results have the same order as specifications in the request.
@@ -155,7 +148,6 @@ export interface BatchAnalyzeResponse {
 }
 
 export interface AnalyzeResult {
-    $type: 'yandex.cloud.ai.vision.v1.AnalyzeResult';
     /**
      * Results for each requested feature.
      * Feature results have the same order as in the request.
@@ -166,7 +158,6 @@ export interface AnalyzeResult {
 }
 
 export interface FeatureResult {
-    $type: 'yandex.cloud.ai.vision.v1.FeatureResult';
     /** Text detection (OCR) result. */
     textDetection?: TextAnnotation | undefined;
     /** Classification result. */
@@ -179,14 +170,9 @@ export interface FeatureResult {
     error?: Status;
 }
 
-const baseBatchAnalyzeRequest: object = {
-    $type: 'yandex.cloud.ai.vision.v1.BatchAnalyzeRequest',
-    folderId: '',
-};
+const baseBatchAnalyzeRequest: object = { folderId: '' };
 
 export const BatchAnalyzeRequest = {
-    $type: 'yandex.cloud.ai.vision.v1.BatchAnalyzeRequest' as const,
-
     encode(message: BatchAnalyzeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.analyzeSpecs) {
             AnalyzeSpec.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -252,13 +238,9 @@ export const BatchAnalyzeRequest = {
     },
 };
 
-messageTypeRegistry.set(BatchAnalyzeRequest.$type, BatchAnalyzeRequest);
-
-const baseAnalyzeSpec: object = { $type: 'yandex.cloud.ai.vision.v1.AnalyzeSpec', mimeType: '' };
+const baseAnalyzeSpec: object = { mimeType: '' };
 
 export const AnalyzeSpec = {
-    $type: 'yandex.cloud.ai.vision.v1.AnalyzeSpec' as const,
-
     encode(message: AnalyzeSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.content !== undefined) {
             writer.uint32(10).bytes(message.content);
@@ -346,13 +328,9 @@ export const AnalyzeSpec = {
     },
 };
 
-messageTypeRegistry.set(AnalyzeSpec.$type, AnalyzeSpec);
-
-const baseFeature: object = { $type: 'yandex.cloud.ai.vision.v1.Feature', type: 0 };
+const baseFeature: object = { type: 0 };
 
 export const Feature = {
-    $type: 'yandex.cloud.ai.vision.v1.Feature' as const,
-
     encode(message: Feature, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -448,16 +426,9 @@ export const Feature = {
     },
 };
 
-messageTypeRegistry.set(Feature.$type, Feature);
-
-const baseFeatureClassificationConfig: object = {
-    $type: 'yandex.cloud.ai.vision.v1.FeatureClassificationConfig',
-    model: '',
-};
+const baseFeatureClassificationConfig: object = { model: '' };
 
 export const FeatureClassificationConfig = {
-    $type: 'yandex.cloud.ai.vision.v1.FeatureClassificationConfig' as const,
-
     encode(
         message: FeatureClassificationConfig,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -508,17 +479,9 @@ export const FeatureClassificationConfig = {
     },
 };
 
-messageTypeRegistry.set(FeatureClassificationConfig.$type, FeatureClassificationConfig);
-
-const baseFeatureTextDetectionConfig: object = {
-    $type: 'yandex.cloud.ai.vision.v1.FeatureTextDetectionConfig',
-    languageCodes: '',
-    model: '',
-};
+const baseFeatureTextDetectionConfig: object = { languageCodes: '', model: '' };
 
 export const FeatureTextDetectionConfig = {
-    $type: 'yandex.cloud.ai.vision.v1.FeatureTextDetectionConfig' as const,
-
     encode(
         message: FeatureTextDetectionConfig,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -583,15 +546,9 @@ export const FeatureTextDetectionConfig = {
     },
 };
 
-messageTypeRegistry.set(FeatureTextDetectionConfig.$type, FeatureTextDetectionConfig);
-
-const baseBatchAnalyzeResponse: object = {
-    $type: 'yandex.cloud.ai.vision.v1.BatchAnalyzeResponse',
-};
+const baseBatchAnalyzeResponse: object = {};
 
 export const BatchAnalyzeResponse = {
-    $type: 'yandex.cloud.ai.vision.v1.BatchAnalyzeResponse' as const,
-
     encode(message: BatchAnalyzeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.results) {
             AnalyzeResult.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -643,13 +600,9 @@ export const BatchAnalyzeResponse = {
     },
 };
 
-messageTypeRegistry.set(BatchAnalyzeResponse.$type, BatchAnalyzeResponse);
-
-const baseAnalyzeResult: object = { $type: 'yandex.cloud.ai.vision.v1.AnalyzeResult' };
+const baseAnalyzeResult: object = {};
 
 export const AnalyzeResult = {
-    $type: 'yandex.cloud.ai.vision.v1.AnalyzeResult' as const,
-
     encode(message: AnalyzeResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.results) {
             FeatureResult.encode(v!, writer.uint32(18).fork()).ldelim();
@@ -715,13 +668,9 @@ export const AnalyzeResult = {
     },
 };
 
-messageTypeRegistry.set(AnalyzeResult.$type, AnalyzeResult);
-
-const baseFeatureResult: object = { $type: 'yandex.cloud.ai.vision.v1.FeatureResult' };
+const baseFeatureResult: object = {};
 
 export const FeatureResult = {
-    $type: 'yandex.cloud.ai.vision.v1.FeatureResult' as const,
-
     encode(message: FeatureResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.textDetection !== undefined) {
             TextAnnotation.encode(message.textDetection, writer.uint32(18).fork()).ldelim();
@@ -851,8 +800,6 @@ export const FeatureResult = {
     },
 };
 
-messageTypeRegistry.set(FeatureResult.$type, FeatureResult);
-
 /** A set of methods for the Vision service. */
 export const VisionServiceService = {
     /** Analyzes a batch of images and returns results with annotations. */
@@ -946,16 +893,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

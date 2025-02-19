@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -25,7 +24,6 @@ import { Status } from '../../../../google/rpc/status';
 export const protobufPackage = 'yandex.cloud.logging.v1';
 
 export interface WriteRequest {
-    $type: 'yandex.cloud.logging.v1.WriteRequest';
     /**
      * Log entries destination.
      *
@@ -45,7 +43,6 @@ export interface WriteRequest {
 }
 
 export interface WriteResponse {
-    $type: 'yandex.cloud.logging.v1.WriteResponse';
     /**
      * Map<idx, status> of ingest failures.
      *
@@ -55,16 +52,13 @@ export interface WriteResponse {
 }
 
 export interface WriteResponse_ErrorsEntry {
-    $type: 'yandex.cloud.logging.v1.WriteResponse.ErrorsEntry';
     key: number;
     value?: Status;
 }
 
-const baseWriteRequest: object = { $type: 'yandex.cloud.logging.v1.WriteRequest' };
+const baseWriteRequest: object = {};
 
 export const WriteRequest = {
-    $type: 'yandex.cloud.logging.v1.WriteRequest' as const,
-
     encode(message: WriteRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.destination !== undefined) {
             Destination.encode(message.destination, writer.uint32(10).fork()).ldelim();
@@ -168,21 +162,13 @@ export const WriteRequest = {
     },
 };
 
-messageTypeRegistry.set(WriteRequest.$type, WriteRequest);
-
-const baseWriteResponse: object = { $type: 'yandex.cloud.logging.v1.WriteResponse' };
+const baseWriteResponse: object = {};
 
 export const WriteResponse = {
-    $type: 'yandex.cloud.logging.v1.WriteResponse' as const,
-
     encode(message: WriteResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         Object.entries(message.errors).forEach(([key, value]) => {
             WriteResponse_ErrorsEntry.encode(
-                {
-                    $type: 'yandex.cloud.logging.v1.WriteResponse.ErrorsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(10).fork(),
             ).ldelim();
         });
@@ -249,16 +235,9 @@ export const WriteResponse = {
     },
 };
 
-messageTypeRegistry.set(WriteResponse.$type, WriteResponse);
-
-const baseWriteResponse_ErrorsEntry: object = {
-    $type: 'yandex.cloud.logging.v1.WriteResponse.ErrorsEntry',
-    key: 0,
-};
+const baseWriteResponse_ErrorsEntry: object = { key: 0 };
 
 export const WriteResponse_ErrorsEntry = {
-    $type: 'yandex.cloud.logging.v1.WriteResponse.ErrorsEntry' as const,
-
     encode(
         message: WriteResponse_ErrorsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -323,8 +302,6 @@ export const WriteResponse_ErrorsEntry = {
         return message;
     },
 };
-
-messageTypeRegistry.set(WriteResponse_ErrorsEntry.$type, WriteResponse_ErrorsEntry);
 
 /** A set of methods for writing to log groups. */
 export const LogIngestionServiceService = {
@@ -397,16 +374,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

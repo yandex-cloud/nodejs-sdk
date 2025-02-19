@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -49,7 +48,6 @@ export function pricingVersionTypeToJSON(object: PricingVersionType): string {
 
 /** A Stock keeping unit resource. */
 export interface Sku {
-    $type: 'yandex.cloud.billing.v1.Sku';
     /** ID of the SKU. */
     id: string;
     /** Name of the SKU. */
@@ -69,7 +67,6 @@ export interface Sku {
  * Defines current and past prices for the sku.
  */
 export interface PricingVersion {
-    $type: 'yandex.cloud.billing.v1.PricingVersion';
     /** Type of the pricing version. */
     type: PricingVersionType;
     /**
@@ -86,7 +83,6 @@ export interface PricingVersion {
  * Defines price for the sku.
  */
 export interface PricingExpression {
-    $type: 'yandex.cloud.billing.v1.PricingExpression';
     /** List of rates. */
     rates: Rate[];
 }
@@ -96,7 +92,6 @@ export interface PricingExpression {
  * Define unit price for pricing quantity interval.
  */
 export interface Rate {
-    $type: 'yandex.cloud.billing.v1.Rate';
     /** Start of the pricing quantity interval. The end of the interval is the start pricing quantity of the next rate. */
     startPricingQuantity: string;
     /** Unit price for the pricing quantity interval. */
@@ -111,18 +106,9 @@ export interface Rate {
     currency: string;
 }
 
-const baseSku: object = {
-    $type: 'yandex.cloud.billing.v1.Sku',
-    id: '',
-    name: '',
-    description: '',
-    serviceId: '',
-    pricingUnit: '',
-};
+const baseSku: object = { id: '', name: '', description: '', serviceId: '', pricingUnit: '' };
 
 export const Sku = {
-    $type: 'yandex.cloud.billing.v1.Sku' as const,
-
     encode(message: Sku, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -231,13 +217,9 @@ export const Sku = {
     },
 };
 
-messageTypeRegistry.set(Sku.$type, Sku);
-
-const basePricingVersion: object = { $type: 'yandex.cloud.billing.v1.PricingVersion', type: 0 };
+const basePricingVersion: object = { type: 0 };
 
 export const PricingVersion = {
-    $type: 'yandex.cloud.billing.v1.PricingVersion' as const,
-
     encode(message: PricingVersion, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -321,13 +303,9 @@ export const PricingVersion = {
     },
 };
 
-messageTypeRegistry.set(PricingVersion.$type, PricingVersion);
-
-const basePricingExpression: object = { $type: 'yandex.cloud.billing.v1.PricingExpression' };
+const basePricingExpression: object = {};
 
 export const PricingExpression = {
-    $type: 'yandex.cloud.billing.v1.PricingExpression' as const,
-
     encode(message: PricingExpression, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.rates) {
             Rate.encode(v!, writer.uint32(18).fork()).ldelim();
@@ -377,18 +355,9 @@ export const PricingExpression = {
     },
 };
 
-messageTypeRegistry.set(PricingExpression.$type, PricingExpression);
-
-const baseRate: object = {
-    $type: 'yandex.cloud.billing.v1.Rate',
-    startPricingQuantity: '',
-    unitPrice: '',
-    currency: '',
-};
+const baseRate: object = { startPricingQuantity: '', unitPrice: '', currency: '' };
 
 export const Rate = {
-    $type: 'yandex.cloud.billing.v1.Rate' as const,
-
     encode(message: Rate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.startPricingQuantity !== '') {
             writer.uint32(10).string(message.startPricingQuantity);
@@ -461,8 +430,6 @@ export const Rate = {
     },
 };
 
-messageTypeRegistry.set(Rate.$type, Rate);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -472,21 +439,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Condition } from '../../../../../yandex/cloud/smartwebsecurity/v1/security_profile';
@@ -8,7 +7,6 @@ import { Timestamp } from '../../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.smartwebsecurity.v1.waf';
 
 export interface WafProfile {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfile';
     /** ID of the WAF profile. */
     id: string;
     /** ID of the folder that the WAF profile belongs to. */
@@ -38,13 +36,11 @@ export interface WafProfile {
 }
 
 export interface WafProfile_LabelsEntry {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfile.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface WafProfile_CoreRuleSet {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfile.CoreRuleSet';
     /**
      * Anomaly score.
      * Enter an integer within the range of 2 and 10000.
@@ -67,7 +63,6 @@ export interface WafProfile_CoreRuleSet {
 }
 
 export interface WafProfile_AnalyzeRequestBody {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfile.AnalyzeRequestBody';
     /** Possible to turn analyzer on and turn if off. */
     isEnabled: boolean;
     /** Maximum size of body to pass to analyzer. In kilobytes. */
@@ -123,7 +118,6 @@ export function wafProfile_AnalyzeRequestBody_ActionToJSON(
 
 /** WafProfileRule object. Determines settings for each rule_id in rule set. */
 export interface WafProfileRule {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfileRule';
     /** Rule ID. */
     ruleId: string;
     /** Determines is it rule enabled or not. */
@@ -134,7 +128,6 @@ export interface WafProfileRule {
 
 /** A WafProfileExclusionRule object. See [Exclusion rules](/docs/smartwebsecurity/concepts/waf#exclusion-rules). */
 export interface WafProfileExclusionRule {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfileExclusionRule';
     /** Name of exclusion rule. */
     name: string;
     /** Optional description of the rule. 0-512 characters long. */
@@ -149,7 +142,6 @@ export interface WafProfileExclusionRule {
 
 /** Determines list of excluded rules. */
 export interface WafProfileExclusionRule_ExcludeRules {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfileExclusionRule.ExcludeRules';
     /** Set this option true to exclude all rules. */
     excludeAll: boolean;
     /** List of rules to exclude. */
@@ -158,25 +150,15 @@ export interface WafProfileExclusionRule_ExcludeRules {
 
 /** A RuleSet object. Determines name and version of rule set. */
 export interface RuleSet {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.RuleSet';
     /** Name of rule set. */
     name: string;
     /** Version of rule set. */
     version: string;
 }
 
-const baseWafProfile: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfile',
-    id: '',
-    folderId: '',
-    cloudId: '',
-    name: '',
-    description: '',
-};
+const baseWafProfile: object = { id: '', folderId: '', cloudId: '', name: '', description: '' };
 
 export const WafProfile = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfile' as const,
-
     encode(message: WafProfile, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -195,11 +177,7 @@ export const WafProfile = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             WafProfile_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfile.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -392,17 +370,9 @@ export const WafProfile = {
     },
 };
 
-messageTypeRegistry.set(WafProfile.$type, WafProfile);
-
-const baseWafProfile_LabelsEntry: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfile.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseWafProfile_LabelsEntry: object = { key: '', value: '' };
 
 export const WafProfile_LabelsEntry = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfile.LabelsEntry' as const,
-
     encode(message: WafProfile_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -459,17 +429,9 @@ export const WafProfile_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(WafProfile_LabelsEntry.$type, WafProfile_LabelsEntry);
-
-const baseWafProfile_CoreRuleSet: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfile.CoreRuleSet',
-    inboundAnomalyScore: 0,
-    paranoiaLevel: 0,
-};
+const baseWafProfile_CoreRuleSet: object = { inboundAnomalyScore: 0, paranoiaLevel: 0 };
 
 export const WafProfile_CoreRuleSet = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfile.CoreRuleSet' as const,
-
     encode(message: WafProfile_CoreRuleSet, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.inboundAnomalyScore !== 0) {
             writer.uint32(8).int64(message.inboundAnomalyScore);
@@ -549,18 +511,13 @@ export const WafProfile_CoreRuleSet = {
     },
 };
 
-messageTypeRegistry.set(WafProfile_CoreRuleSet.$type, WafProfile_CoreRuleSet);
-
 const baseWafProfile_AnalyzeRequestBody: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfile.AnalyzeRequestBody',
     isEnabled: false,
     sizeLimit: 0,
     sizeLimitAction: 0,
 };
 
 export const WafProfile_AnalyzeRequestBody = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfile.AnalyzeRequestBody' as const,
-
     encode(
         message: WafProfile_AnalyzeRequestBody,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -640,18 +597,9 @@ export const WafProfile_AnalyzeRequestBody = {
     },
 };
 
-messageTypeRegistry.set(WafProfile_AnalyzeRequestBody.$type, WafProfile_AnalyzeRequestBody);
-
-const baseWafProfileRule: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfileRule',
-    ruleId: '',
-    isEnabled: false,
-    isBlocking: false,
-};
+const baseWafProfileRule: object = { ruleId: '', isEnabled: false, isBlocking: false };
 
 export const WafProfileRule = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfileRule' as const,
-
     encode(message: WafProfileRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -721,18 +669,9 @@ export const WafProfileRule = {
     },
 };
 
-messageTypeRegistry.set(WafProfileRule.$type, WafProfileRule);
-
-const baseWafProfileExclusionRule: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfileExclusionRule',
-    name: '',
-    description: '',
-    logExcluded: false,
-};
+const baseWafProfileExclusionRule: object = { name: '', description: '', logExcluded: false };
 
 export const WafProfileExclusionRule = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfileExclusionRule' as const,
-
     encode(message: WafProfileExclusionRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -843,17 +782,9 @@ export const WafProfileExclusionRule = {
     },
 };
 
-messageTypeRegistry.set(WafProfileExclusionRule.$type, WafProfileExclusionRule);
-
-const baseWafProfileExclusionRule_ExcludeRules: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfileExclusionRule.ExcludeRules',
-    excludeAll: false,
-    ruleIds: '',
-};
+const baseWafProfileExclusionRule_ExcludeRules: object = { excludeAll: false, ruleIds: '' };
 
 export const WafProfileExclusionRule_ExcludeRules = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.WafProfileExclusionRule.ExcludeRules' as const,
-
     encode(
         message: WafProfileExclusionRule_ExcludeRules,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -926,20 +857,9 @@ export const WafProfileExclusionRule_ExcludeRules = {
     },
 };
 
-messageTypeRegistry.set(
-    WafProfileExclusionRule_ExcludeRules.$type,
-    WafProfileExclusionRule_ExcludeRules,
-);
-
-const baseRuleSet: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.RuleSet',
-    name: '',
-    version: '',
-};
+const baseRuleSet: object = { name: '', version: '' };
 
 export const RuleSet = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.RuleSet' as const,
-
     encode(message: RuleSet, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -994,8 +914,6 @@ export const RuleSet = {
     },
 };
 
-messageTypeRegistry.set(RuleSet.$type, RuleSet);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1016,21 +934,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

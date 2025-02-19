@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -22,29 +21,23 @@ import {
 
 export const protobufPackage = 'yandex.cloud.k8s.v1';
 
-export interface ListVersionsRequest {
-    $type: 'yandex.cloud.k8s.v1.ListVersionsRequest';
-}
+export interface ListVersionsRequest {}
 
 export interface ListVersionsResponse {
-    $type: 'yandex.cloud.k8s.v1.ListVersionsResponse';
     /** Versions available in the specified release channel. */
     availableVersions: AvailableVersions[];
 }
 
 export interface AvailableVersions {
-    $type: 'yandex.cloud.k8s.v1.AvailableVersions';
     /** Release channel: `RAPID`, `REGULAR` or `STABLE`. For more details see [documentation](/docs/managed-kubernetes/concepts/release-channels-and-updates). */
     releaseChannel: ReleaseChannel;
     /** Version of Kubernetes components. */
     versions: string[];
 }
 
-const baseListVersionsRequest: object = { $type: 'yandex.cloud.k8s.v1.ListVersionsRequest' };
+const baseListVersionsRequest: object = {};
 
 export const ListVersionsRequest = {
-    $type: 'yandex.cloud.k8s.v1.ListVersionsRequest' as const,
-
     encode(_: ListVersionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -80,13 +73,9 @@ export const ListVersionsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListVersionsRequest.$type, ListVersionsRequest);
-
-const baseListVersionsResponse: object = { $type: 'yandex.cloud.k8s.v1.ListVersionsResponse' };
+const baseListVersionsResponse: object = {};
 
 export const ListVersionsResponse = {
-    $type: 'yandex.cloud.k8s.v1.ListVersionsResponse' as const,
-
     encode(message: ListVersionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.availableVersions) {
             AvailableVersions.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -145,17 +134,9 @@ export const ListVersionsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListVersionsResponse.$type, ListVersionsResponse);
-
-const baseAvailableVersions: object = {
-    $type: 'yandex.cloud.k8s.v1.AvailableVersions',
-    releaseChannel: 0,
-    versions: '',
-};
+const baseAvailableVersions: object = { releaseChannel: 0, versions: '' };
 
 export const AvailableVersions = {
-    $type: 'yandex.cloud.k8s.v1.AvailableVersions' as const,
-
     encode(message: AvailableVersions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.releaseChannel !== 0) {
             writer.uint32(8).int32(message.releaseChannel);
@@ -218,8 +199,6 @@ export const AvailableVersions = {
     },
 };
 
-messageTypeRegistry.set(AvailableVersions.$type, AvailableVersions);
-
 /** A set of methods for managing Kubernetes versions. */
 export const VersionServiceService = {
     /** Retrieves the list of versions in the specified release channel. */
@@ -281,16 +260,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

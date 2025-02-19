@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -7,7 +6,6 @@ export const protobufPackage = 'yandex.cloud.apploadbalancer.v1';
 
 /** RateLimit is a set of settings for global rate limiting. */
 export interface RateLimit {
-    $type: 'yandex.cloud.apploadbalancer.v1.RateLimit';
     /** AllRequests is a rate limit configuration applied to all incoming requests. */
     allRequests?: RateLimit_Limit;
     /**
@@ -19,18 +17,15 @@ export interface RateLimit {
 
 /** Limit is a rate limit value settings. */
 export interface RateLimit_Limit {
-    $type: 'yandex.cloud.apploadbalancer.v1.RateLimit.Limit';
     /** PerSecond is a limit value specified with per second time unit. */
     perSecond: number | undefined;
     /** PerMinute is a limit value specified with per minute time unit. */
     perMinute: number | undefined;
 }
 
-const baseRateLimit: object = { $type: 'yandex.cloud.apploadbalancer.v1.RateLimit' };
+const baseRateLimit: object = {};
 
 export const RateLimit = {
-    $type: 'yandex.cloud.apploadbalancer.v1.RateLimit' as const,
-
     encode(message: RateLimit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.allRequests !== undefined) {
             RateLimit_Limit.encode(message.allRequests, writer.uint32(26).fork()).ldelim();
@@ -102,13 +97,9 @@ export const RateLimit = {
     },
 };
 
-messageTypeRegistry.set(RateLimit.$type, RateLimit);
-
-const baseRateLimit_Limit: object = { $type: 'yandex.cloud.apploadbalancer.v1.RateLimit.Limit' };
+const baseRateLimit_Limit: object = {};
 
 export const RateLimit_Limit = {
-    $type: 'yandex.cloud.apploadbalancer.v1.RateLimit.Limit' as const,
-
     encode(message: RateLimit_Limit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.perSecond !== undefined) {
             writer.uint32(8).int64(message.perSecond);
@@ -168,8 +159,6 @@ export const RateLimit_Limit = {
     },
 };
 
-messageTypeRegistry.set(RateLimit_Limit.$type, RateLimit_Limit);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -190,16 +179,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

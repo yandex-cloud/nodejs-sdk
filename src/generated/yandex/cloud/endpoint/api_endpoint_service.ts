@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,12 +18,10 @@ import { ApiEndpoint } from '../../../yandex/cloud/endpoint/api_endpoint';
 export const protobufPackage = 'yandex.cloud.endpoint';
 
 export interface GetApiEndpointRequest {
-    $type: 'yandex.cloud.endpoint.GetApiEndpointRequest';
     apiEndpointId: string;
 }
 
 export interface ListApiEndpointsRequest {
-    $type: 'yandex.cloud.endpoint.ListApiEndpointsRequest';
     /** @deprecated */
     pageSize: number;
     /** @deprecated */
@@ -32,19 +29,13 @@ export interface ListApiEndpointsRequest {
 }
 
 export interface ListApiEndpointsResponse {
-    $type: 'yandex.cloud.endpoint.ListApiEndpointsResponse';
     endpoints: ApiEndpoint[];
     nextPageToken: string;
 }
 
-const baseGetApiEndpointRequest: object = {
-    $type: 'yandex.cloud.endpoint.GetApiEndpointRequest',
-    apiEndpointId: '',
-};
+const baseGetApiEndpointRequest: object = { apiEndpointId: '' };
 
 export const GetApiEndpointRequest = {
-    $type: 'yandex.cloud.endpoint.GetApiEndpointRequest' as const,
-
     encode(message: GetApiEndpointRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.apiEndpointId !== '') {
             writer.uint32(10).string(message.apiEndpointId);
@@ -94,17 +85,9 @@ export const GetApiEndpointRequest = {
     },
 };
 
-messageTypeRegistry.set(GetApiEndpointRequest.$type, GetApiEndpointRequest);
-
-const baseListApiEndpointsRequest: object = {
-    $type: 'yandex.cloud.endpoint.ListApiEndpointsRequest',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListApiEndpointsRequest: object = { pageSize: 0, pageToken: '' };
 
 export const ListApiEndpointsRequest = {
-    $type: 'yandex.cloud.endpoint.ListApiEndpointsRequest' as const,
-
     encode(message: ListApiEndpointsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -164,16 +147,9 @@ export const ListApiEndpointsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListApiEndpointsRequest.$type, ListApiEndpointsRequest);
-
-const baseListApiEndpointsResponse: object = {
-    $type: 'yandex.cloud.endpoint.ListApiEndpointsResponse',
-    nextPageToken: '',
-};
+const baseListApiEndpointsResponse: object = { nextPageToken: '' };
 
 export const ListApiEndpointsResponse = {
-    $type: 'yandex.cloud.endpoint.ListApiEndpointsResponse' as const,
-
     encode(
         message: ListApiEndpointsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -239,8 +215,6 @@ export const ListApiEndpointsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListApiEndpointsResponse.$type, ListApiEndpointsResponse);
 
 export const ApiEndpointServiceService = {
     get: {
@@ -336,16 +310,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

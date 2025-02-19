@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ import { Version } from '../../../../../yandex/cloud/mdb/clickhouse/v1/version';
 export const protobufPackage = 'yandex.cloud.mdb.clickhouse.v1';
 
 export interface ListVersionsRequest {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListVersionsRequest';
     /**
      * The maximum number of results per page that should be returned. If the number of available
      * results is larger than [page_size], the service returns a [ListVersionsResponse.next_page_token] that can be used
@@ -35,7 +33,6 @@ export interface ListVersionsRequest {
 }
 
 export interface ListVersionsResponse {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListVersionsResponse';
     /** Requested list of available versions. */
     version: Version[];
     /**
@@ -48,15 +45,9 @@ export interface ListVersionsResponse {
     nextPageToken: string;
 }
 
-const baseListVersionsRequest: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListVersionsRequest',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListVersionsRequest: object = { pageSize: 0, pageToken: '' };
 
 export const ListVersionsRequest = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListVersionsRequest' as const,
-
     encode(message: ListVersionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -116,16 +107,9 @@ export const ListVersionsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListVersionsRequest.$type, ListVersionsRequest);
-
-const baseListVersionsResponse: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListVersionsResponse',
-    nextPageToken: '',
-};
+const baseListVersionsResponse: object = { nextPageToken: '' };
 
 export const ListVersionsResponse = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListVersionsResponse' as const,
-
     encode(message: ListVersionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.version) {
             Version.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -188,8 +172,6 @@ export const ListVersionsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListVersionsResponse.$type, ListVersionsResponse);
 
 /** A set of methods for managing ClickHouse versions. */
 export const VersionsServiceService = {
@@ -263,16 +245,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

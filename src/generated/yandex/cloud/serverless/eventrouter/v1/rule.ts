@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../../google/protobuf/duration';
@@ -8,7 +7,6 @@ import { Timestamp } from '../../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.serverless.eventrouter.v1';
 
 export interface Rule {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Rule';
     /** ID of the rule. */
     id: string;
     /** ID of the bus that the rule belongs to. */
@@ -97,25 +95,21 @@ export function rule_StatusToJSON(object: Rule_Status): string {
 }
 
 export interface Rule_LabelsEntry {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Rule.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface Filter {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Filter';
     /** JQ filter for matching events. */
     jqFilter: string | undefined;
 }
 
 export interface Transformer {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Transformer';
     /** JQ string inrerpolation expression for changing event format. */
     jqTransformer: string | undefined;
 }
 
 export interface Target {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Target';
     yds?: YdsTarget | undefined;
     ymq?: YmqTarget | undefined;
     function?: FunctionTarget | undefined;
@@ -196,7 +190,6 @@ export function target_StatusToJSON(object: Target_Status): string {
 }
 
 export interface YdsTarget {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.YdsTarget';
     /** Stream database. */
     database: string;
     /** Full stream name, like /ru-central1/aoegtvhtp8ob******** /cc8004q4lbo6******** /test. */
@@ -206,7 +199,6 @@ export interface YdsTarget {
 }
 
 export interface YmqTarget {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.YmqTarget';
     /**
      * Queue ARN.
      * Example: yrn:yc:ymq:ru-central1:aoe***:test
@@ -217,7 +209,6 @@ export interface YmqTarget {
 }
 
 export interface FunctionTarget {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.FunctionTarget';
     /** Function ID. */
     functionId: string;
     /** Function tag, optional. */
@@ -229,7 +220,6 @@ export interface FunctionTarget {
 }
 
 export interface ContainerTarget {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ContainerTarget';
     /** Container ID. */
     containerId: string;
     /** Container revision ID. */
@@ -243,7 +233,6 @@ export interface ContainerTarget {
 }
 
 export interface GatewayWebsocketBroadcastTarget {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.GatewayWebsocketBroadcastTarget';
     /** Gateway ID. */
     gatewayId: string;
     /** Path. */
@@ -255,7 +244,6 @@ export interface GatewayWebsocketBroadcastTarget {
 }
 
 export interface LoggingTarget {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.LoggingTarget';
     logGroupId: string | undefined;
     folderId: string | undefined;
     /** Service account which has permission for writing logs. */
@@ -263,7 +251,6 @@ export interface LoggingTarget {
 }
 
 export interface WorkflowTarget {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.WorkflowTarget';
     /** Workflow ID. */
     workflowId: string;
     /** SA which should be used to start workflow. */
@@ -273,7 +260,6 @@ export interface WorkflowTarget {
 }
 
 export interface RetrySettings {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.RetrySettings';
     /** Maximum number of retries (extra calls) before an action fails. */
     retryAttempts: number;
     /** Event goes to dlq when its age exceeds this value. Default is 24h. */
@@ -281,7 +267,6 @@ export interface RetrySettings {
 }
 
 export interface PutQueueMessage {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.PutQueueMessage';
     /** ID of the queue. */
     queueArn: string;
     /** Service account which has write permission on the queue. */
@@ -289,7 +274,6 @@ export interface PutQueueMessage {
 }
 
 export interface BatchSettings {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.BatchSettings';
     /** Maximum batch size: trigger will send a batch if number of events exceeds this value. */
     maxCount: number;
     /** Maximum batch size: trigger will send a batch if total size of events exceeds this value. */
@@ -299,7 +283,6 @@ export interface BatchSettings {
 }
 
 const baseRule: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Rule',
     id: '',
     busId: '',
     folderId: '',
@@ -311,8 +294,6 @@ const baseRule: object = {
 };
 
 export const Rule = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Rule' as const,
-
     encode(message: Rule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -336,14 +317,7 @@ export const Rule = {
             writer.uint32(58).string(message.description);
         }
         Object.entries(message.labels).forEach(([key, value]) => {
-            Rule_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.eventrouter.v1.Rule.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
-                writer.uint32(66).fork(),
-            ).ldelim();
+            Rule_LabelsEntry.encode({ key: key as any, value }, writer.uint32(66).fork()).ldelim();
         });
         if (message.filter !== undefined) {
             Filter.encode(message.filter, writer.uint32(90).fork()).ldelim();
@@ -516,17 +490,9 @@ export const Rule = {
     },
 };
 
-messageTypeRegistry.set(Rule.$type, Rule);
-
-const baseRule_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Rule.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseRule_LabelsEntry: object = { key: '', value: '' };
 
 export const Rule_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Rule.LabelsEntry' as const,
-
     encode(message: Rule_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -581,13 +547,9 @@ export const Rule_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Rule_LabelsEntry.$type, Rule_LabelsEntry);
-
-const baseFilter: object = { $type: 'yandex.cloud.serverless.eventrouter.v1.Filter' };
+const baseFilter: object = {};
 
 export const Filter = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Filter' as const,
-
     encode(message: Filter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jqFilter !== undefined) {
             writer.uint32(10).string(message.jqFilter);
@@ -635,13 +597,9 @@ export const Filter = {
     },
 };
 
-messageTypeRegistry.set(Filter.$type, Filter);
-
-const baseTransformer: object = { $type: 'yandex.cloud.serverless.eventrouter.v1.Transformer' };
+const baseTransformer: object = {};
 
 export const Transformer = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Transformer' as const,
-
     encode(message: Transformer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jqTransformer !== undefined) {
             writer.uint32(10).string(message.jqTransformer);
@@ -689,13 +647,9 @@ export const Transformer = {
     },
 };
 
-messageTypeRegistry.set(Transformer.$type, Transformer);
-
-const baseTarget: object = { $type: 'yandex.cloud.serverless.eventrouter.v1.Target', status: 0 };
+const baseTarget: object = { status: 0 };
 
 export const Target = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Target' as const,
-
     encode(message: Target, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.yds !== undefined) {
             YdsTarget.encode(message.yds, writer.uint32(10).fork()).ldelim();
@@ -919,18 +873,9 @@ export const Target = {
     },
 };
 
-messageTypeRegistry.set(Target.$type, Target);
-
-const baseYdsTarget: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.YdsTarget',
-    database: '',
-    streamName: '',
-    serviceAccountId: '',
-};
+const baseYdsTarget: object = { database: '', streamName: '', serviceAccountId: '' };
 
 export const YdsTarget = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.YdsTarget' as const,
-
     encode(message: YdsTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.database !== '') {
             writer.uint32(10).string(message.database);
@@ -1002,17 +947,9 @@ export const YdsTarget = {
     },
 };
 
-messageTypeRegistry.set(YdsTarget.$type, YdsTarget);
-
-const baseYmqTarget: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.YmqTarget',
-    queueArn: '',
-    serviceAccountId: '',
-};
+const baseYmqTarget: object = { queueArn: '', serviceAccountId: '' };
 
 export const YmqTarget = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.YmqTarget' as const,
-
     encode(message: YmqTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.queueArn !== '') {
             writer.uint32(10).string(message.queueArn);
@@ -1072,18 +1009,9 @@ export const YmqTarget = {
     },
 };
 
-messageTypeRegistry.set(YmqTarget.$type, YmqTarget);
-
-const baseFunctionTarget: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.FunctionTarget',
-    functionId: '',
-    functionTag: '',
-    serviceAccountId: '',
-};
+const baseFunctionTarget: object = { functionId: '', functionTag: '', serviceAccountId: '' };
 
 export const FunctionTarget = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.FunctionTarget' as const,
-
     encode(message: FunctionTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -1173,10 +1101,7 @@ export const FunctionTarget = {
     },
 };
 
-messageTypeRegistry.set(FunctionTarget.$type, FunctionTarget);
-
 const baseContainerTarget: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ContainerTarget',
     containerId: '',
     containerRevisionId: '',
     path: '',
@@ -1184,8 +1109,6 @@ const baseContainerTarget: object = {
 };
 
 export const ContainerTarget = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ContainerTarget' as const,
-
     encode(message: ContainerTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerId !== '') {
             writer.uint32(10).string(message.containerId);
@@ -1285,18 +1208,13 @@ export const ContainerTarget = {
     },
 };
 
-messageTypeRegistry.set(ContainerTarget.$type, ContainerTarget);
-
 const baseGatewayWebsocketBroadcastTarget: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.GatewayWebsocketBroadcastTarget',
     gatewayId: '',
     path: '',
     serviceAccountId: '',
 };
 
 export const GatewayWebsocketBroadcastTarget = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.GatewayWebsocketBroadcastTarget' as const,
-
     encode(
         message: GatewayWebsocketBroadcastTarget,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1394,16 +1312,9 @@ export const GatewayWebsocketBroadcastTarget = {
     },
 };
 
-messageTypeRegistry.set(GatewayWebsocketBroadcastTarget.$type, GatewayWebsocketBroadcastTarget);
-
-const baseLoggingTarget: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.LoggingTarget',
-    serviceAccountId: '',
-};
+const baseLoggingTarget: object = { serviceAccountId: '' };
 
 export const LoggingTarget = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.LoggingTarget' as const,
-
     encode(message: LoggingTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== undefined) {
             writer.uint32(10).string(message.logGroupId);
@@ -1475,17 +1386,9 @@ export const LoggingTarget = {
     },
 };
 
-messageTypeRegistry.set(LoggingTarget.$type, LoggingTarget);
-
-const baseWorkflowTarget: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.WorkflowTarget',
-    workflowId: '',
-    serviceAccountId: '',
-};
+const baseWorkflowTarget: object = { workflowId: '', serviceAccountId: '' };
 
 export const WorkflowTarget = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.WorkflowTarget' as const,
-
     encode(message: WorkflowTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -1563,16 +1466,9 @@ export const WorkflowTarget = {
     },
 };
 
-messageTypeRegistry.set(WorkflowTarget.$type, WorkflowTarget);
-
-const baseRetrySettings: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.RetrySettings',
-    retryAttempts: 0,
-};
+const baseRetrySettings: object = { retryAttempts: 0 };
 
 export const RetrySettings = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.RetrySettings' as const,
-
     encode(message: RetrySettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.retryAttempts !== 0) {
             writer.uint32(8).int64(message.retryAttempts);
@@ -1637,17 +1533,9 @@ export const RetrySettings = {
     },
 };
 
-messageTypeRegistry.set(RetrySettings.$type, RetrySettings);
-
-const basePutQueueMessage: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.PutQueueMessage',
-    queueArn: '',
-    serviceAccountId: '',
-};
+const basePutQueueMessage: object = { queueArn: '', serviceAccountId: '' };
 
 export const PutQueueMessage = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.PutQueueMessage' as const,
-
     encode(message: PutQueueMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.queueArn !== '') {
             writer.uint32(10).string(message.queueArn);
@@ -1707,17 +1595,9 @@ export const PutQueueMessage = {
     },
 };
 
-messageTypeRegistry.set(PutQueueMessage.$type, PutQueueMessage);
-
-const baseBatchSettings: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.BatchSettings',
-    maxCount: 0,
-    maxBytes: 0,
-};
+const baseBatchSettings: object = { maxCount: 0, maxBytes: 0 };
 
 export const BatchSettings = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.BatchSettings' as const,
-
     encode(message: BatchSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxCount !== 0) {
             writer.uint32(8).int64(message.maxCount);
@@ -1789,8 +1669,6 @@ export const BatchSettings = {
     },
 };
 
-messageTypeRegistry.set(BatchSettings.$type, BatchSettings);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1811,21 +1689,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

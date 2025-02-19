@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -30,7 +29,6 @@ export const protobufPackage = 'yandex.cloud.ai.foundation_models.v1.text_classi
  * For examples of usage, see [step-by-step guides](/docs/foundation-models/operations/classifier/additionally-trained).
  */
 export interface TextClassificationRequest {
-    $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.TextClassificationRequest';
     /** The [URI](/docs/foundation-models/concepts/classifier/models) of your tuned classifier model. */
     modelUri: string;
     /** Text for classification. */
@@ -39,7 +37,6 @@ export interface TextClassificationRequest {
 
 /** Response with classifier predictions. */
 export interface TextClassificationResponse {
-    $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.TextClassificationResponse';
     /**
      * The classification results with the `confidence`` values
      * for the probability of classifying the request text into each class.
@@ -54,7 +51,6 @@ export interface TextClassificationResponse {
  * For examples of usage, see [step-by-step guides](/docs/operations/classifier/readymade).
  */
 export interface FewShotTextClassificationRequest {
-    $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.FewShotTextClassificationRequest';
     /** The [URI](/docs/foundation-models/concepts/classifier/models) of the classifier model. */
     modelUri: string;
     /** Text description of the classification task. */
@@ -73,7 +69,6 @@ export interface FewShotTextClassificationRequest {
 
 /** Response containing classifier predictions. */
 export interface FewShotTextClassificationResponse {
-    $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.FewShotTextClassificationResponse';
     /**
      * The classification results with the `confidence`` values
      * for the probability of classifying the request text into each class.
@@ -83,15 +78,9 @@ export interface FewShotTextClassificationResponse {
     modelVersion: string;
 }
 
-const baseTextClassificationRequest: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.TextClassificationRequest',
-    modelUri: '',
-    text: '',
-};
+const baseTextClassificationRequest: object = { modelUri: '', text: '' };
 
 export const TextClassificationRequest = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.TextClassificationRequest' as const,
-
     encode(
         message: TextClassificationRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -153,16 +142,9 @@ export const TextClassificationRequest = {
     },
 };
 
-messageTypeRegistry.set(TextClassificationRequest.$type, TextClassificationRequest);
-
-const baseTextClassificationResponse: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.TextClassificationResponse',
-    modelVersion: '',
-};
+const baseTextClassificationResponse: object = { modelVersion: '' };
 
 export const TextClassificationResponse = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.TextClassificationResponse' as const,
-
     encode(
         message: TextClassificationResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -234,10 +216,7 @@ export const TextClassificationResponse = {
     },
 };
 
-messageTypeRegistry.set(TextClassificationResponse.$type, TextClassificationResponse);
-
 const baseFewShotTextClassificationRequest: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.FewShotTextClassificationRequest',
     modelUri: '',
     taskDescription: '',
     labels: '',
@@ -245,8 +224,6 @@ const baseFewShotTextClassificationRequest: object = {
 };
 
 export const FewShotTextClassificationRequest = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.FewShotTextClassificationRequest' as const,
-
     encode(
         message: FewShotTextClassificationRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -356,16 +333,9 @@ export const FewShotTextClassificationRequest = {
     },
 };
 
-messageTypeRegistry.set(FewShotTextClassificationRequest.$type, FewShotTextClassificationRequest);
-
-const baseFewShotTextClassificationResponse: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.FewShotTextClassificationResponse',
-    modelVersion: '',
-};
+const baseFewShotTextClassificationResponse: object = { modelVersion: '' };
 
 export const FewShotTextClassificationResponse = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.FewShotTextClassificationResponse' as const,
-
     encode(
         message: FewShotTextClassificationResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -442,8 +412,6 @@ export const FewShotTextClassificationResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(FewShotTextClassificationResponse.$type, FewShotTextClassificationResponse);
 
 /** Service for classifying the text requests provided in prompts. */
 export const TextClassificationServiceService = {
@@ -569,16 +537,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

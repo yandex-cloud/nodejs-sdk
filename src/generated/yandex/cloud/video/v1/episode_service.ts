@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -23,13 +22,11 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.video.v1';
 
 export interface GetEpisodeRequest {
-    $type: 'yandex.cloud.video.v1.GetEpisodeRequest';
     /** ID of the episode. */
     episodeId: string;
 }
 
 export interface ListEpisodesRequest {
-    $type: 'yandex.cloud.video.v1.ListEpisodesRequest';
     /** ID of the stream. */
     streamId: string | undefined;
     /** ID of the line. */
@@ -58,7 +55,6 @@ export interface ListEpisodesRequest {
 }
 
 export interface ListEpisodesResponse {
-    $type: 'yandex.cloud.video.v1.ListEpisodesResponse';
     /** List of episodes for specific parent_id. */
     episodes: Episode[];
     /** Token for getting the next page. */
@@ -66,7 +62,6 @@ export interface ListEpisodesResponse {
 }
 
 export interface BatchGetEpisodesRequest {
-    $type: 'yandex.cloud.video.v1.BatchGetEpisodesRequest';
     /** ID of the channel. */
     channelId: string;
     /** List of requested episode IDs. */
@@ -74,13 +69,11 @@ export interface BatchGetEpisodesRequest {
 }
 
 export interface BatchGetEpisodesResponse {
-    $type: 'yandex.cloud.video.v1.BatchGetEpisodesResponse';
     /** List of episodes for specific channel. */
     episodes: Episode[];
 }
 
 export interface CreateEpisodeRequest {
-    $type: 'yandex.cloud.video.v1.CreateEpisodeRequest';
     /** ID of the stream. */
     streamId: string | undefined;
     /** ID of the line. */
@@ -111,26 +104,18 @@ export interface CreateEpisodeRequest {
     signUrlAccess?: EpisodeSignURLAccessParams | undefined;
 }
 
-export interface EpisodePublicAccessParams {
-    $type: 'yandex.cloud.video.v1.EpisodePublicAccessParams';
-}
+export interface EpisodePublicAccessParams {}
 
-export interface EpisodeAuthSystemAccessParams {
-    $type: 'yandex.cloud.video.v1.EpisodeAuthSystemAccessParams';
-}
+export interface EpisodeAuthSystemAccessParams {}
 
-export interface EpisodeSignURLAccessParams {
-    $type: 'yandex.cloud.video.v1.EpisodeSignURLAccessParams';
-}
+export interface EpisodeSignURLAccessParams {}
 
 export interface CreateEpisodeMetadata {
-    $type: 'yandex.cloud.video.v1.CreateEpisodeMetadata';
     /** ID of the episode. */
     episodeId: string;
 }
 
 export interface UpdateEpisodeRequest {
-    $type: 'yandex.cloud.video.v1.UpdateEpisodeRequest';
     /** ID of the episode. */
     episodeId: string;
     /** Field mask that specifies which fields of the episode are going to be updated. */
@@ -161,25 +146,21 @@ export interface UpdateEpisodeRequest {
 }
 
 export interface UpdateEpisodeMetadata {
-    $type: 'yandex.cloud.video.v1.UpdateEpisodeMetadata';
     /** ID of the episode. */
     episodeId: string;
 }
 
 export interface DeleteEpisodeRequest {
-    $type: 'yandex.cloud.video.v1.DeleteEpisodeRequest';
     /** ID of the episode. */
     episodeId: string;
 }
 
 export interface DeleteEpisodeMetadata {
-    $type: 'yandex.cloud.video.v1.DeleteEpisodeMetadata';
     /** ID of the episode. */
     episodeId: string;
 }
 
 export interface BatchDeleteEpisodesRequest {
-    $type: 'yandex.cloud.video.v1.BatchDeleteEpisodesRequest';
     /** ID of the stream. */
     streamId: string | undefined;
     /** ID of the line. */
@@ -188,41 +169,32 @@ export interface BatchDeleteEpisodesRequest {
 }
 
 export interface BatchDeleteEpisodesMetadata {
-    $type: 'yandex.cloud.video.v1.BatchDeleteEpisodesMetadata';
     episodeIds: string[];
 }
 
 export interface PerformEpisodeActionRequest {
-    $type: 'yandex.cloud.video.v1.PerformEpisodeActionRequest';
     /** ID of the episode. */
     episodeId: string;
     publish?: PublishEpisodeAction | undefined;
     unpublish?: UnpublishEpisodeAction | undefined;
 }
 
-export interface PublishEpisodeAction {
-    $type: 'yandex.cloud.video.v1.PublishEpisodeAction';
-}
+export interface PublishEpisodeAction {}
 
-export interface UnpublishEpisodeAction {
-    $type: 'yandex.cloud.video.v1.UnpublishEpisodeAction';
-}
+export interface UnpublishEpisodeAction {}
 
 export interface PerformEpisodeActionMetadata {
-    $type: 'yandex.cloud.video.v1.PerformEpisodeActionMetadata';
     /** ID of the episode. */
     episodeId: string;
 }
 
 export interface GetEpisodePlayerURLRequest {
-    $type: 'yandex.cloud.video.v1.GetEpisodePlayerURLRequest';
     /** ID of the episode. */
     episodeId: string;
     params?: EpisodePlayerParams;
 }
 
 export interface EpisodePlayerParams {
-    $type: 'yandex.cloud.video.v1.EpisodePlayerParams';
     /** If true, a player will be muted by default. */
     mute: boolean;
     /** If true, playback will start automatically. */
@@ -232,7 +204,6 @@ export interface EpisodePlayerParams {
 }
 
 export interface GetEpisodePlayerURLResponse {
-    $type: 'yandex.cloud.video.v1.GetEpisodePlayerURLResponse';
     /** Direct link to the video. */
     playerUrl: string;
     /** HTML embed code in Iframe format. */
@@ -240,24 +211,17 @@ export interface GetEpisodePlayerURLResponse {
 }
 
 export interface GetEpisodeManifestsRequest {
-    $type: 'yandex.cloud.video.v1.GetEpisodeManifestsRequest';
     /** ID of the episode. */
     episodeId: string;
 }
 
 export interface GetEpisodeManifestsResponse {
-    $type: 'yandex.cloud.video.v1.GetEpisodeManifestsResponse';
     manifests: Manifest[];
 }
 
-const baseGetEpisodeRequest: object = {
-    $type: 'yandex.cloud.video.v1.GetEpisodeRequest',
-    episodeId: '',
-};
+const baseGetEpisodeRequest: object = { episodeId: '' };
 
 export const GetEpisodeRequest = {
-    $type: 'yandex.cloud.video.v1.GetEpisodeRequest' as const,
-
     encode(message: GetEpisodeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.episodeId !== '') {
             writer.uint32(10).string(message.episodeId);
@@ -305,19 +269,9 @@ export const GetEpisodeRequest = {
     },
 };
 
-messageTypeRegistry.set(GetEpisodeRequest.$type, GetEpisodeRequest);
-
-const baseListEpisodesRequest: object = {
-    $type: 'yandex.cloud.video.v1.ListEpisodesRequest',
-    pageSize: 0,
-    pageToken: '',
-    orderBy: '',
-    filter: '',
-};
+const baseListEpisodesRequest: object = { pageSize: 0, pageToken: '', orderBy: '', filter: '' };
 
 export const ListEpisodesRequest = {
-    $type: 'yandex.cloud.video.v1.ListEpisodesRequest' as const,
-
     encode(message: ListEpisodesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamId !== undefined) {
             writer.uint32(10).string(message.streamId);
@@ -421,16 +375,9 @@ export const ListEpisodesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListEpisodesRequest.$type, ListEpisodesRequest);
-
-const baseListEpisodesResponse: object = {
-    $type: 'yandex.cloud.video.v1.ListEpisodesResponse',
-    nextPageToken: '',
-};
+const baseListEpisodesResponse: object = { nextPageToken: '' };
 
 export const ListEpisodesResponse = {
-    $type: 'yandex.cloud.video.v1.ListEpisodesResponse' as const,
-
     encode(message: ListEpisodesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.episodes) {
             Episode.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -494,17 +441,9 @@ export const ListEpisodesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListEpisodesResponse.$type, ListEpisodesResponse);
-
-const baseBatchGetEpisodesRequest: object = {
-    $type: 'yandex.cloud.video.v1.BatchGetEpisodesRequest',
-    channelId: '',
-    episodeIds: '',
-};
+const baseBatchGetEpisodesRequest: object = { channelId: '', episodeIds: '' };
 
 export const BatchGetEpisodesRequest = {
-    $type: 'yandex.cloud.video.v1.BatchGetEpisodesRequest' as const,
-
     encode(message: BatchGetEpisodesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -568,15 +507,9 @@ export const BatchGetEpisodesRequest = {
     },
 };
 
-messageTypeRegistry.set(BatchGetEpisodesRequest.$type, BatchGetEpisodesRequest);
-
-const baseBatchGetEpisodesResponse: object = {
-    $type: 'yandex.cloud.video.v1.BatchGetEpisodesResponse',
-};
+const baseBatchGetEpisodesResponse: object = {};
 
 export const BatchGetEpisodesResponse = {
-    $type: 'yandex.cloud.video.v1.BatchGetEpisodesResponse' as const,
-
     encode(
         message: BatchGetEpisodesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -631,10 +564,7 @@ export const BatchGetEpisodesResponse = {
     },
 };
 
-messageTypeRegistry.set(BatchGetEpisodesResponse.$type, BatchGetEpisodesResponse);
-
 const baseCreateEpisodeRequest: object = {
-    $type: 'yandex.cloud.video.v1.CreateEpisodeRequest',
     title: '',
     description: '',
     thumbnailId: '',
@@ -642,8 +572,6 @@ const baseCreateEpisodeRequest: object = {
 };
 
 export const CreateEpisodeRequest = {
-    $type: 'yandex.cloud.video.v1.CreateEpisodeRequest' as const,
-
     encode(message: CreateEpisodeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamId !== undefined) {
             writer.uint32(802).string(message.streamId);
@@ -847,15 +775,9 @@ export const CreateEpisodeRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateEpisodeRequest.$type, CreateEpisodeRequest);
-
-const baseEpisodePublicAccessParams: object = {
-    $type: 'yandex.cloud.video.v1.EpisodePublicAccessParams',
-};
+const baseEpisodePublicAccessParams: object = {};
 
 export const EpisodePublicAccessParams = {
-    $type: 'yandex.cloud.video.v1.EpisodePublicAccessParams' as const,
-
     encode(_: EpisodePublicAccessParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -893,15 +815,9 @@ export const EpisodePublicAccessParams = {
     },
 };
 
-messageTypeRegistry.set(EpisodePublicAccessParams.$type, EpisodePublicAccessParams);
-
-const baseEpisodeAuthSystemAccessParams: object = {
-    $type: 'yandex.cloud.video.v1.EpisodeAuthSystemAccessParams',
-};
+const baseEpisodeAuthSystemAccessParams: object = {};
 
 export const EpisodeAuthSystemAccessParams = {
-    $type: 'yandex.cloud.video.v1.EpisodeAuthSystemAccessParams' as const,
-
     encode(_: EpisodeAuthSystemAccessParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -939,15 +855,9 @@ export const EpisodeAuthSystemAccessParams = {
     },
 };
 
-messageTypeRegistry.set(EpisodeAuthSystemAccessParams.$type, EpisodeAuthSystemAccessParams);
-
-const baseEpisodeSignURLAccessParams: object = {
-    $type: 'yandex.cloud.video.v1.EpisodeSignURLAccessParams',
-};
+const baseEpisodeSignURLAccessParams: object = {};
 
 export const EpisodeSignURLAccessParams = {
-    $type: 'yandex.cloud.video.v1.EpisodeSignURLAccessParams' as const,
-
     encode(_: EpisodeSignURLAccessParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -985,16 +895,9 @@ export const EpisodeSignURLAccessParams = {
     },
 };
 
-messageTypeRegistry.set(EpisodeSignURLAccessParams.$type, EpisodeSignURLAccessParams);
-
-const baseCreateEpisodeMetadata: object = {
-    $type: 'yandex.cloud.video.v1.CreateEpisodeMetadata',
-    episodeId: '',
-};
+const baseCreateEpisodeMetadata: object = { episodeId: '' };
 
 export const CreateEpisodeMetadata = {
-    $type: 'yandex.cloud.video.v1.CreateEpisodeMetadata' as const,
-
     encode(message: CreateEpisodeMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.episodeId !== '') {
             writer.uint32(10).string(message.episodeId);
@@ -1044,10 +947,7 @@ export const CreateEpisodeMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateEpisodeMetadata.$type, CreateEpisodeMetadata);
-
 const baseUpdateEpisodeRequest: object = {
-    $type: 'yandex.cloud.video.v1.UpdateEpisodeRequest',
     episodeId: '',
     title: '',
     description: '',
@@ -1056,8 +956,6 @@ const baseUpdateEpisodeRequest: object = {
 };
 
 export const UpdateEpisodeRequest = {
-    $type: 'yandex.cloud.video.v1.UpdateEpisodeRequest' as const,
-
     encode(message: UpdateEpisodeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.episodeId !== '') {
             writer.uint32(10).string(message.episodeId);
@@ -1265,16 +1163,9 @@ export const UpdateEpisodeRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateEpisodeRequest.$type, UpdateEpisodeRequest);
-
-const baseUpdateEpisodeMetadata: object = {
-    $type: 'yandex.cloud.video.v1.UpdateEpisodeMetadata',
-    episodeId: '',
-};
+const baseUpdateEpisodeMetadata: object = { episodeId: '' };
 
 export const UpdateEpisodeMetadata = {
-    $type: 'yandex.cloud.video.v1.UpdateEpisodeMetadata' as const,
-
     encode(message: UpdateEpisodeMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.episodeId !== '') {
             writer.uint32(10).string(message.episodeId);
@@ -1324,16 +1215,9 @@ export const UpdateEpisodeMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateEpisodeMetadata.$type, UpdateEpisodeMetadata);
-
-const baseDeleteEpisodeRequest: object = {
-    $type: 'yandex.cloud.video.v1.DeleteEpisodeRequest',
-    episodeId: '',
-};
+const baseDeleteEpisodeRequest: object = { episodeId: '' };
 
 export const DeleteEpisodeRequest = {
-    $type: 'yandex.cloud.video.v1.DeleteEpisodeRequest' as const,
-
     encode(message: DeleteEpisodeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.episodeId !== '') {
             writer.uint32(10).string(message.episodeId);
@@ -1383,16 +1267,9 @@ export const DeleteEpisodeRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteEpisodeRequest.$type, DeleteEpisodeRequest);
-
-const baseDeleteEpisodeMetadata: object = {
-    $type: 'yandex.cloud.video.v1.DeleteEpisodeMetadata',
-    episodeId: '',
-};
+const baseDeleteEpisodeMetadata: object = { episodeId: '' };
 
 export const DeleteEpisodeMetadata = {
-    $type: 'yandex.cloud.video.v1.DeleteEpisodeMetadata' as const,
-
     encode(message: DeleteEpisodeMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.episodeId !== '') {
             writer.uint32(10).string(message.episodeId);
@@ -1442,16 +1319,9 @@ export const DeleteEpisodeMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteEpisodeMetadata.$type, DeleteEpisodeMetadata);
-
-const baseBatchDeleteEpisodesRequest: object = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteEpisodesRequest',
-    episodeIds: '',
-};
+const baseBatchDeleteEpisodesRequest: object = { episodeIds: '' };
 
 export const BatchDeleteEpisodesRequest = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteEpisodesRequest' as const,
-
     encode(
         message: BatchDeleteEpisodesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1530,16 +1400,9 @@ export const BatchDeleteEpisodesRequest = {
     },
 };
 
-messageTypeRegistry.set(BatchDeleteEpisodesRequest.$type, BatchDeleteEpisodesRequest);
-
-const baseBatchDeleteEpisodesMetadata: object = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteEpisodesMetadata',
-    episodeIds: '',
-};
+const baseBatchDeleteEpisodesMetadata: object = { episodeIds: '' };
 
 export const BatchDeleteEpisodesMetadata = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteEpisodesMetadata' as const,
-
     encode(
         message: BatchDeleteEpisodesMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1594,16 +1457,9 @@ export const BatchDeleteEpisodesMetadata = {
     },
 };
 
-messageTypeRegistry.set(BatchDeleteEpisodesMetadata.$type, BatchDeleteEpisodesMetadata);
-
-const basePerformEpisodeActionRequest: object = {
-    $type: 'yandex.cloud.video.v1.PerformEpisodeActionRequest',
-    episodeId: '',
-};
+const basePerformEpisodeActionRequest: object = { episodeId: '' };
 
 export const PerformEpisodeActionRequest = {
-    $type: 'yandex.cloud.video.v1.PerformEpisodeActionRequest' as const,
-
     encode(
         message: PerformEpisodeActionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1692,13 +1548,9 @@ export const PerformEpisodeActionRequest = {
     },
 };
 
-messageTypeRegistry.set(PerformEpisodeActionRequest.$type, PerformEpisodeActionRequest);
-
-const basePublishEpisodeAction: object = { $type: 'yandex.cloud.video.v1.PublishEpisodeAction' };
+const basePublishEpisodeAction: object = {};
 
 export const PublishEpisodeAction = {
-    $type: 'yandex.cloud.video.v1.PublishEpisodeAction' as const,
-
     encode(_: PublishEpisodeAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1734,15 +1586,9 @@ export const PublishEpisodeAction = {
     },
 };
 
-messageTypeRegistry.set(PublishEpisodeAction.$type, PublishEpisodeAction);
-
-const baseUnpublishEpisodeAction: object = {
-    $type: 'yandex.cloud.video.v1.UnpublishEpisodeAction',
-};
+const baseUnpublishEpisodeAction: object = {};
 
 export const UnpublishEpisodeAction = {
-    $type: 'yandex.cloud.video.v1.UnpublishEpisodeAction' as const,
-
     encode(_: UnpublishEpisodeAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1780,16 +1626,9 @@ export const UnpublishEpisodeAction = {
     },
 };
 
-messageTypeRegistry.set(UnpublishEpisodeAction.$type, UnpublishEpisodeAction);
-
-const basePerformEpisodeActionMetadata: object = {
-    $type: 'yandex.cloud.video.v1.PerformEpisodeActionMetadata',
-    episodeId: '',
-};
+const basePerformEpisodeActionMetadata: object = { episodeId: '' };
 
 export const PerformEpisodeActionMetadata = {
-    $type: 'yandex.cloud.video.v1.PerformEpisodeActionMetadata' as const,
-
     encode(
         message: PerformEpisodeActionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1842,16 +1681,9 @@ export const PerformEpisodeActionMetadata = {
     },
 };
 
-messageTypeRegistry.set(PerformEpisodeActionMetadata.$type, PerformEpisodeActionMetadata);
-
-const baseGetEpisodePlayerURLRequest: object = {
-    $type: 'yandex.cloud.video.v1.GetEpisodePlayerURLRequest',
-    episodeId: '',
-};
+const baseGetEpisodePlayerURLRequest: object = { episodeId: '' };
 
 export const GetEpisodePlayerURLRequest = {
-    $type: 'yandex.cloud.video.v1.GetEpisodePlayerURLRequest' as const,
-
     encode(
         message: GetEpisodePlayerURLRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1920,18 +1752,9 @@ export const GetEpisodePlayerURLRequest = {
     },
 };
 
-messageTypeRegistry.set(GetEpisodePlayerURLRequest.$type, GetEpisodePlayerURLRequest);
-
-const baseEpisodePlayerParams: object = {
-    $type: 'yandex.cloud.video.v1.EpisodePlayerParams',
-    mute: false,
-    autoplay: false,
-    hidden: false,
-};
+const baseEpisodePlayerParams: object = { mute: false, autoplay: false, hidden: false };
 
 export const EpisodePlayerParams = {
-    $type: 'yandex.cloud.video.v1.EpisodePlayerParams' as const,
-
     encode(message: EpisodePlayerParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mute === true) {
             writer.uint32(8).bool(message.mute);
@@ -2001,17 +1824,9 @@ export const EpisodePlayerParams = {
     },
 };
 
-messageTypeRegistry.set(EpisodePlayerParams.$type, EpisodePlayerParams);
-
-const baseGetEpisodePlayerURLResponse: object = {
-    $type: 'yandex.cloud.video.v1.GetEpisodePlayerURLResponse',
-    playerUrl: '',
-    html: '',
-};
+const baseGetEpisodePlayerURLResponse: object = { playerUrl: '', html: '' };
 
 export const GetEpisodePlayerURLResponse = {
-    $type: 'yandex.cloud.video.v1.GetEpisodePlayerURLResponse' as const,
-
     encode(
         message: GetEpisodePlayerURLResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2073,16 +1888,9 @@ export const GetEpisodePlayerURLResponse = {
     },
 };
 
-messageTypeRegistry.set(GetEpisodePlayerURLResponse.$type, GetEpisodePlayerURLResponse);
-
-const baseGetEpisodeManifestsRequest: object = {
-    $type: 'yandex.cloud.video.v1.GetEpisodeManifestsRequest',
-    episodeId: '',
-};
+const baseGetEpisodeManifestsRequest: object = { episodeId: '' };
 
 export const GetEpisodeManifestsRequest = {
-    $type: 'yandex.cloud.video.v1.GetEpisodeManifestsRequest' as const,
-
     encode(
         message: GetEpisodeManifestsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2135,15 +1943,9 @@ export const GetEpisodeManifestsRequest = {
     },
 };
 
-messageTypeRegistry.set(GetEpisodeManifestsRequest.$type, GetEpisodeManifestsRequest);
-
-const baseGetEpisodeManifestsResponse: object = {
-    $type: 'yandex.cloud.video.v1.GetEpisodeManifestsResponse',
-};
+const baseGetEpisodeManifestsResponse: object = {};
 
 export const GetEpisodeManifestsResponse = {
-    $type: 'yandex.cloud.video.v1.GetEpisodeManifestsResponse' as const,
-
     encode(
         message: GetEpisodeManifestsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2197,8 +1999,6 @@ export const GetEpisodeManifestsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(GetEpisodeManifestsResponse.$type, GetEpisodeManifestsResponse);
 
 /** Episode management service. */
 export const EpisodeServiceService = {
@@ -2536,21 +2336,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

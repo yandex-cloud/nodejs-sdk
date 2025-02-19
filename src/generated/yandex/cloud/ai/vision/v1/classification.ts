@@ -1,12 +1,10 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.ai.vision.v1';
 
 export interface ClassAnnotation {
-    $type: 'yandex.cloud.ai.vision.v1.ClassAnnotation';
     /**
      * Properties extracted by a specified model.
      *
@@ -17,18 +15,15 @@ export interface ClassAnnotation {
 }
 
 export interface Property {
-    $type: 'yandex.cloud.ai.vision.v1.Property';
     /** Property name. */
     name: string;
     /** Probability of the property, from 0 to 1. */
     probability: number;
 }
 
-const baseClassAnnotation: object = { $type: 'yandex.cloud.ai.vision.v1.ClassAnnotation' };
+const baseClassAnnotation: object = {};
 
 export const ClassAnnotation = {
-    $type: 'yandex.cloud.ai.vision.v1.ClassAnnotation' as const,
-
     encode(message: ClassAnnotation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.properties) {
             Property.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -78,17 +73,9 @@ export const ClassAnnotation = {
     },
 };
 
-messageTypeRegistry.set(ClassAnnotation.$type, ClassAnnotation);
-
-const baseProperty: object = {
-    $type: 'yandex.cloud.ai.vision.v1.Property',
-    name: '',
-    probability: 0,
-};
+const baseProperty: object = { name: '', probability: 0 };
 
 export const Property = {
-    $type: 'yandex.cloud.ai.vision.v1.Property' as const,
-
     encode(message: Property, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -145,8 +132,6 @@ export const Property = {
     },
 };
 
-messageTypeRegistry.set(Property.$type, Property);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -156,16 +141,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

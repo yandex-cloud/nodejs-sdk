@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { DataSchema } from '../../../../../yandex/cloud/datatransfer/v1/endpoint/common';
@@ -7,7 +6,6 @@ import { DataSchema } from '../../../../../yandex/cloud/datatransfer/v1/endpoint
 export const protobufPackage = 'yandex.cloud.datatransfer.v1.endpoint';
 
 export interface Parser {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.Parser';
     jsonParser?: GenericParserCommon | undefined;
     auditTrailsV1Parser?: AuditTrailsV1Parser | undefined;
     cloudLoggingParser?: CloudLoggingParser | undefined;
@@ -15,7 +13,6 @@ export interface Parser {
 }
 
 export interface GenericParserCommon {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.GenericParserCommon';
     dataSchema?: DataSchema;
     /** Allow null keys, if no - null keys will be putted to unparsed data */
     nullKeysAllowed: boolean;
@@ -25,19 +22,13 @@ export interface GenericParserCommon {
     unescapeStringValues: boolean;
 }
 
-export interface AuditTrailsV1Parser {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.AuditTrailsV1Parser';
-}
+export interface AuditTrailsV1Parser {}
 
-export interface CloudLoggingParser {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.CloudLoggingParser';
-}
+export interface CloudLoggingParser {}
 
-const baseParser: object = { $type: 'yandex.cloud.datatransfer.v1.endpoint.Parser' };
+const baseParser: object = {};
 
 export const Parser = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.Parser' as const,
-
     encode(message: Parser, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jsonParser !== undefined) {
             GenericParserCommon.encode(message.jsonParser, writer.uint32(10).fork()).ldelim();
@@ -154,18 +145,13 @@ export const Parser = {
     },
 };
 
-messageTypeRegistry.set(Parser.$type, Parser);
-
 const baseGenericParserCommon: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.GenericParserCommon',
     nullKeysAllowed: false,
     addRestColumn: false,
     unescapeStringValues: false,
 };
 
 export const GenericParserCommon = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.GenericParserCommon' as const,
-
     encode(message: GenericParserCommon, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataSchema !== undefined) {
             DataSchema.encode(message.dataSchema, writer.uint32(10).fork()).ldelim();
@@ -258,15 +244,9 @@ export const GenericParserCommon = {
     },
 };
 
-messageTypeRegistry.set(GenericParserCommon.$type, GenericParserCommon);
-
-const baseAuditTrailsV1Parser: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.AuditTrailsV1Parser',
-};
+const baseAuditTrailsV1Parser: object = {};
 
 export const AuditTrailsV1Parser = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.AuditTrailsV1Parser' as const,
-
     encode(_: AuditTrailsV1Parser, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -302,15 +282,9 @@ export const AuditTrailsV1Parser = {
     },
 };
 
-messageTypeRegistry.set(AuditTrailsV1Parser.$type, AuditTrailsV1Parser);
-
-const baseCloudLoggingParser: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.CloudLoggingParser',
-};
+const baseCloudLoggingParser: object = {};
 
 export const CloudLoggingParser = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.CloudLoggingParser' as const,
-
     encode(_: CloudLoggingParser, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -346,8 +320,6 @@ export const CloudLoggingParser = {
     },
 };
 
-messageTypeRegistry.set(CloudLoggingParser.$type, CloudLoggingParser);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -357,16 +329,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

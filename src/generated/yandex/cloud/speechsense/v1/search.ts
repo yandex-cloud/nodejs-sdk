@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../google/protobuf/duration';
@@ -47,7 +46,6 @@ export function sortOrderToJSON(object: SortOrder): string {
 }
 
 export interface Filter {
-    $type: 'yandex.cloud.speechsense.v1.Filter';
     /** metadata key (user.some_key / system.created_at / analysis.speechkit.duration) */
     key: string;
     /** find talk matched by any text filters */
@@ -68,7 +66,6 @@ export interface Filter {
 }
 
 export interface Query {
-    $type: 'yandex.cloud.speechsense.v1.Query';
     text: string;
     /** should or should NOT match */
     inverse: boolean;
@@ -77,14 +74,12 @@ export interface Query {
 }
 
 export interface AnyMatchFilter {
-    $type: 'yandex.cloud.speechsense.v1.AnyMatchFilter';
     /** values list to match with "OR" operator */
     values: string[];
 }
 
 /** indicates whether to include range boundaries */
 export interface BoundsInclusive {
-    $type: 'yandex.cloud.speechsense.v1.BoundsInclusive';
     /** include from bound */
     fromInclusive: boolean;
     /** include to bound */
@@ -92,45 +87,38 @@ export interface BoundsInclusive {
 }
 
 export interface IntRangeFilter {
-    $type: 'yandex.cloud.speechsense.v1.IntRangeFilter';
     fromValue?: number;
     toValue?: number;
     boundsInclusive?: BoundsInclusive;
 }
 
 export interface DoubleRangeFilter {
-    $type: 'yandex.cloud.speechsense.v1.DoubleRangeFilter';
     fromValue?: number;
     toValue?: number;
     boundsInclusive?: BoundsInclusive;
 }
 
 export interface DateRangeFilter {
-    $type: 'yandex.cloud.speechsense.v1.DateRangeFilter';
     fromValue?: Date;
     toValue?: Date;
     boundsInclusive?: BoundsInclusive;
 }
 
 export interface DurationRangeFilter {
-    $type: 'yandex.cloud.speechsense.v1.DurationRangeFilter';
     fromValue?: Duration;
     toValue?: Duration;
     boundsInclusive?: BoundsInclusive;
 }
 
 export interface BooleanFilter {
-    $type: 'yandex.cloud.speechsense.v1.BooleanFilter';
     value: boolean;
 }
 
 export interface SortData {
-    $type: 'yandex.cloud.speechsense.v1.SortData';
     fields: SortField[];
 }
 
 export interface SortField {
-    $type: 'yandex.cloud.speechsense.v1.SortField';
     /** sorting key */
     field: string;
     /** sorting order by current `field` */
@@ -139,11 +127,9 @@ export interface SortField {
     position: number;
 }
 
-const baseFilter: object = { $type: 'yandex.cloud.speechsense.v1.Filter', key: '', inverse: false };
+const baseFilter: object = { key: '', inverse: false };
 
 export const Filter = {
-    $type: 'yandex.cloud.speechsense.v1.Filter' as const,
-
     encode(message: Filter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -170,10 +156,7 @@ export const Filter = {
             writer.uint32(56).bool(message.inverse);
         }
         if (message.channelNumber !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.channelNumber! },
-                writer.uint32(66).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.channelNumber! }, writer.uint32(66).fork()).ldelim();
         }
         return writer;
     },
@@ -319,13 +302,9 @@ export const Filter = {
     },
 };
 
-messageTypeRegistry.set(Filter.$type, Filter);
-
-const baseQuery: object = { $type: 'yandex.cloud.speechsense.v1.Query', text: '', inverse: false };
+const baseQuery: object = { text: '', inverse: false };
 
 export const Query = {
-    $type: 'yandex.cloud.speechsense.v1.Query' as const,
-
     encode(message: Query, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -334,10 +313,7 @@ export const Query = {
             writer.uint32(16).bool(message.inverse);
         }
         if (message.channelNumber !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.channelNumber! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.channelNumber! }, writer.uint32(26).fork()).ldelim();
         }
         return writer;
     },
@@ -397,16 +373,9 @@ export const Query = {
     },
 };
 
-messageTypeRegistry.set(Query.$type, Query);
-
-const baseAnyMatchFilter: object = {
-    $type: 'yandex.cloud.speechsense.v1.AnyMatchFilter',
-    values: '',
-};
+const baseAnyMatchFilter: object = { values: '' };
 
 export const AnyMatchFilter = {
-    $type: 'yandex.cloud.speechsense.v1.AnyMatchFilter' as const,
-
     encode(message: AnyMatchFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.values) {
             writer.uint32(10).string(v!);
@@ -456,17 +425,9 @@ export const AnyMatchFilter = {
     },
 };
 
-messageTypeRegistry.set(AnyMatchFilter.$type, AnyMatchFilter);
-
-const baseBoundsInclusive: object = {
-    $type: 'yandex.cloud.speechsense.v1.BoundsInclusive',
-    fromInclusive: false,
-    toInclusive: false,
-};
+const baseBoundsInclusive: object = { fromInclusive: false, toInclusive: false };
 
 export const BoundsInclusive = {
-    $type: 'yandex.cloud.speechsense.v1.BoundsInclusive' as const,
-
     encode(message: BoundsInclusive, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fromInclusive === true) {
             writer.uint32(8).bool(message.fromInclusive);
@@ -526,25 +487,15 @@ export const BoundsInclusive = {
     },
 };
 
-messageTypeRegistry.set(BoundsInclusive.$type, BoundsInclusive);
-
-const baseIntRangeFilter: object = { $type: 'yandex.cloud.speechsense.v1.IntRangeFilter' };
+const baseIntRangeFilter: object = {};
 
 export const IntRangeFilter = {
-    $type: 'yandex.cloud.speechsense.v1.IntRangeFilter' as const,
-
     encode(message: IntRangeFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fromValue !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.fromValue! },
-                writer.uint32(10).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.fromValue! }, writer.uint32(10).fork()).ldelim();
         }
         if (message.toValue !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.toValue! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.toValue! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.boundsInclusive !== undefined) {
             BoundsInclusive.encode(message.boundsInclusive, writer.uint32(26).fork()).ldelim();
@@ -616,25 +567,15 @@ export const IntRangeFilter = {
     },
 };
 
-messageTypeRegistry.set(IntRangeFilter.$type, IntRangeFilter);
-
-const baseDoubleRangeFilter: object = { $type: 'yandex.cloud.speechsense.v1.DoubleRangeFilter' };
+const baseDoubleRangeFilter: object = {};
 
 export const DoubleRangeFilter = {
-    $type: 'yandex.cloud.speechsense.v1.DoubleRangeFilter' as const,
-
     encode(message: DoubleRangeFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fromValue !== undefined) {
-            DoubleValue.encode(
-                { $type: 'google.protobuf.DoubleValue', value: message.fromValue! },
-                writer.uint32(10).fork(),
-            ).ldelim();
+            DoubleValue.encode({ value: message.fromValue! }, writer.uint32(10).fork()).ldelim();
         }
         if (message.toValue !== undefined) {
-            DoubleValue.encode(
-                { $type: 'google.protobuf.DoubleValue', value: message.toValue! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            DoubleValue.encode({ value: message.toValue! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.boundsInclusive !== undefined) {
             BoundsInclusive.encode(message.boundsInclusive, writer.uint32(26).fork()).ldelim();
@@ -706,13 +647,9 @@ export const DoubleRangeFilter = {
     },
 };
 
-messageTypeRegistry.set(DoubleRangeFilter.$type, DoubleRangeFilter);
-
-const baseDateRangeFilter: object = { $type: 'yandex.cloud.speechsense.v1.DateRangeFilter' };
+const baseDateRangeFilter: object = {};
 
 export const DateRangeFilter = {
-    $type: 'yandex.cloud.speechsense.v1.DateRangeFilter' as const,
-
     encode(message: DateRangeFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fromValue !== undefined) {
             Timestamp.encode(toTimestamp(message.fromValue), writer.uint32(10).fork()).ldelim();
@@ -790,15 +727,9 @@ export const DateRangeFilter = {
     },
 };
 
-messageTypeRegistry.set(DateRangeFilter.$type, DateRangeFilter);
-
-const baseDurationRangeFilter: object = {
-    $type: 'yandex.cloud.speechsense.v1.DurationRangeFilter',
-};
+const baseDurationRangeFilter: object = {};
 
 export const DurationRangeFilter = {
-    $type: 'yandex.cloud.speechsense.v1.DurationRangeFilter' as const,
-
     encode(message: DurationRangeFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fromValue !== undefined) {
             Duration.encode(message.fromValue, writer.uint32(10).fork()).ldelim();
@@ -886,16 +817,9 @@ export const DurationRangeFilter = {
     },
 };
 
-messageTypeRegistry.set(DurationRangeFilter.$type, DurationRangeFilter);
-
-const baseBooleanFilter: object = {
-    $type: 'yandex.cloud.speechsense.v1.BooleanFilter',
-    value: false,
-};
+const baseBooleanFilter: object = { value: false };
 
 export const BooleanFilter = {
-    $type: 'yandex.cloud.speechsense.v1.BooleanFilter' as const,
-
     encode(message: BooleanFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.value === true) {
             writer.uint32(8).bool(message.value);
@@ -941,13 +865,9 @@ export const BooleanFilter = {
     },
 };
 
-messageTypeRegistry.set(BooleanFilter.$type, BooleanFilter);
-
-const baseSortData: object = { $type: 'yandex.cloud.speechsense.v1.SortData' };
+const baseSortData: object = {};
 
 export const SortData = {
-    $type: 'yandex.cloud.speechsense.v1.SortData' as const,
-
     encode(message: SortData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.fields) {
             SortField.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -997,18 +917,9 @@ export const SortData = {
     },
 };
 
-messageTypeRegistry.set(SortData.$type, SortData);
-
-const baseSortField: object = {
-    $type: 'yandex.cloud.speechsense.v1.SortField',
-    field: '',
-    order: 0,
-    position: 0,
-};
+const baseSortField: object = { field: '', order: 0, position: 0 };
 
 export const SortField = {
-    $type: 'yandex.cloud.speechsense.v1.SortField' as const,
-
     encode(message: SortField, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.field !== '') {
             writer.uint32(10).string(message.field);
@@ -1076,8 +987,6 @@ export const SortField = {
     },
 };
 
-messageTypeRegistry.set(SortField.$type, SortField);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1098,21 +1007,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

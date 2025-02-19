@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -18,7 +17,6 @@ import _m0 from 'protobufjs/minimal';
 export const protobufPackage = 'yandex.cloud.kms.v1.asymmetricencryption';
 
 export interface AsymmetricDecryptRequest {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.AsymmetricDecryptRequest';
     /** ID of the asymmetric KMS key to use for decryption. */
     keyId: string;
     /**
@@ -29,7 +27,6 @@ export interface AsymmetricDecryptRequest {
 }
 
 export interface AsymmetricDecryptResponse {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.AsymmetricDecryptResponse';
     /** ID of the asymmetric KMS key that was used for decryption. */
     keyId: string;
     /** Decrypted plaintext. */
@@ -37,13 +34,11 @@ export interface AsymmetricDecryptResponse {
 }
 
 export interface AsymmetricGetPublicKeyRequest {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.AsymmetricGetPublicKeyRequest';
     /** ID of the asymmetric KMS key to be used for public key retrieval. */
     keyId: string;
 }
 
 export interface AsymmetricGetPublicKeyResponse {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.AsymmetricGetPublicKeyResponse';
     /** ID of the asymmetric KMS key to get public key of. */
     keyId: string;
     /**
@@ -54,14 +49,9 @@ export interface AsymmetricGetPublicKeyResponse {
     publicKey: string;
 }
 
-const baseAsymmetricDecryptRequest: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.AsymmetricDecryptRequest',
-    keyId: '',
-};
+const baseAsymmetricDecryptRequest: object = { keyId: '' };
 
 export const AsymmetricDecryptRequest = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.AsymmetricDecryptRequest' as const,
-
     encode(
         message: AsymmetricDecryptRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -128,16 +118,9 @@ export const AsymmetricDecryptRequest = {
     },
 };
 
-messageTypeRegistry.set(AsymmetricDecryptRequest.$type, AsymmetricDecryptRequest);
-
-const baseAsymmetricDecryptResponse: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.AsymmetricDecryptResponse',
-    keyId: '',
-};
+const baseAsymmetricDecryptResponse: object = { keyId: '' };
 
 export const AsymmetricDecryptResponse = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.AsymmetricDecryptResponse' as const,
-
     encode(
         message: AsymmetricDecryptResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -204,16 +187,9 @@ export const AsymmetricDecryptResponse = {
     },
 };
 
-messageTypeRegistry.set(AsymmetricDecryptResponse.$type, AsymmetricDecryptResponse);
-
-const baseAsymmetricGetPublicKeyRequest: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.AsymmetricGetPublicKeyRequest',
-    keyId: '',
-};
+const baseAsymmetricGetPublicKeyRequest: object = { keyId: '' };
 
 export const AsymmetricGetPublicKeyRequest = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.AsymmetricGetPublicKeyRequest' as const,
-
     encode(
         message: AsymmetricGetPublicKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -264,17 +240,9 @@ export const AsymmetricGetPublicKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(AsymmetricGetPublicKeyRequest.$type, AsymmetricGetPublicKeyRequest);
-
-const baseAsymmetricGetPublicKeyResponse: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.AsymmetricGetPublicKeyResponse',
-    keyId: '',
-    publicKey: '',
-};
+const baseAsymmetricGetPublicKeyResponse: object = { keyId: '', publicKey: '' };
 
 export const AsymmetricGetPublicKeyResponse = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.AsymmetricGetPublicKeyResponse' as const,
-
     encode(
         message: AsymmetricGetPublicKeyResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -336,8 +304,6 @@ export const AsymmetricGetPublicKeyResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(AsymmetricGetPublicKeyResponse.$type, AsymmetricGetPublicKeyResponse);
 
 /** Set of methods that perform asymmetric decryption. */
 export const AsymmetricEncryptionCryptoServiceService = {
@@ -462,16 +428,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

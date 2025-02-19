@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -26,7 +25,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.dataproc.v1';
 
 export interface GetJobRequest {
-    $type: 'yandex.cloud.dataproc.v1.GetJobRequest';
     /** ID of the cluster to request a job from. */
     clusterId: string;
     /**
@@ -38,7 +36,6 @@ export interface GetJobRequest {
 }
 
 export interface ListJobsRequest {
-    $type: 'yandex.cloud.dataproc.v1.ListJobsRequest';
     /** ID of the cluster to list jobs for. */
     clusterId: string;
     /**
@@ -66,7 +63,6 @@ export interface ListJobsRequest {
 }
 
 export interface ListJobsResponse {
-    $type: 'yandex.cloud.dataproc.v1.ListJobsResponse';
     /** List of jobs for the specified cluster. */
     jobs: Job[];
     /**
@@ -80,7 +76,6 @@ export interface ListJobsResponse {
 }
 
 export interface CreateJobRequest {
-    $type: 'yandex.cloud.dataproc.v1.CreateJobRequest';
     /** ID of the cluster to create a job for. */
     clusterId: string;
     /** Name of the job. */
@@ -96,7 +91,6 @@ export interface CreateJobRequest {
 }
 
 export interface CreateJobMetadata {
-    $type: 'yandex.cloud.dataproc.v1.CreateJobMetadata';
     /** ID of the cluster that the job is being created for. */
     clusterId: string;
     /** ID of the job being created. */
@@ -104,7 +98,6 @@ export interface CreateJobMetadata {
 }
 
 export interface CancelJobRequest {
-    $type: 'yandex.cloud.dataproc.v1.CancelJobRequest';
     /** Required. ID of the Dataproc cluster. */
     clusterId: string;
     /** Required. ID of the Dataproc job to cancel. */
@@ -112,7 +105,6 @@ export interface CancelJobRequest {
 }
 
 export interface ListJobLogRequest {
-    $type: 'yandex.cloud.dataproc.v1.ListJobLogRequest';
     /** ID of the cluster that the job is being created for. */
     clusterId: string;
     /** ID of the job being created. */
@@ -132,7 +124,6 @@ export interface ListJobLogRequest {
 }
 
 export interface ListJobLogResponse {
-    $type: 'yandex.cloud.dataproc.v1.ListJobLogResponse';
     /** Requested part of Data Proc Job log. */
     content: string;
     /**
@@ -145,15 +136,9 @@ export interface ListJobLogResponse {
     nextPageToken: string;
 }
 
-const baseGetJobRequest: object = {
-    $type: 'yandex.cloud.dataproc.v1.GetJobRequest',
-    clusterId: '',
-    jobId: '',
-};
+const baseGetJobRequest: object = { clusterId: '', jobId: '' };
 
 export const GetJobRequest = {
-    $type: 'yandex.cloud.dataproc.v1.GetJobRequest' as const,
-
     encode(message: GetJobRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -211,19 +196,9 @@ export const GetJobRequest = {
     },
 };
 
-messageTypeRegistry.set(GetJobRequest.$type, GetJobRequest);
-
-const baseListJobsRequest: object = {
-    $type: 'yandex.cloud.dataproc.v1.ListJobsRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListJobsRequest: object = { clusterId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListJobsRequest = {
-    $type: 'yandex.cloud.dataproc.v1.ListJobsRequest' as const,
-
     encode(message: ListJobsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -303,16 +278,9 @@ export const ListJobsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListJobsRequest.$type, ListJobsRequest);
-
-const baseListJobsResponse: object = {
-    $type: 'yandex.cloud.dataproc.v1.ListJobsResponse',
-    nextPageToken: '',
-};
+const baseListJobsResponse: object = { nextPageToken: '' };
 
 export const ListJobsResponse = {
-    $type: 'yandex.cloud.dataproc.v1.ListJobsResponse' as const,
-
     encode(message: ListJobsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.jobs) {
             Job.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -374,17 +342,9 @@ export const ListJobsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListJobsResponse.$type, ListJobsResponse);
-
-const baseCreateJobRequest: object = {
-    $type: 'yandex.cloud.dataproc.v1.CreateJobRequest',
-    clusterId: '',
-    name: '',
-};
+const baseCreateJobRequest: object = { clusterId: '', name: '' };
 
 export const CreateJobRequest = {
-    $type: 'yandex.cloud.dataproc.v1.CreateJobRequest' as const,
-
     encode(message: CreateJobRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -509,17 +469,9 @@ export const CreateJobRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateJobRequest.$type, CreateJobRequest);
-
-const baseCreateJobMetadata: object = {
-    $type: 'yandex.cloud.dataproc.v1.CreateJobMetadata',
-    clusterId: '',
-    jobId: '',
-};
+const baseCreateJobMetadata: object = { clusterId: '', jobId: '' };
 
 export const CreateJobMetadata = {
-    $type: 'yandex.cloud.dataproc.v1.CreateJobMetadata' as const,
-
     encode(message: CreateJobMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -577,17 +529,9 @@ export const CreateJobMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateJobMetadata.$type, CreateJobMetadata);
-
-const baseCancelJobRequest: object = {
-    $type: 'yandex.cloud.dataproc.v1.CancelJobRequest',
-    clusterId: '',
-    jobId: '',
-};
+const baseCancelJobRequest: object = { clusterId: '', jobId: '' };
 
 export const CancelJobRequest = {
-    $type: 'yandex.cloud.dataproc.v1.CancelJobRequest' as const,
-
     encode(message: CancelJobRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -645,19 +589,9 @@ export const CancelJobRequest = {
     },
 };
 
-messageTypeRegistry.set(CancelJobRequest.$type, CancelJobRequest);
-
-const baseListJobLogRequest: object = {
-    $type: 'yandex.cloud.dataproc.v1.ListJobLogRequest',
-    clusterId: '',
-    jobId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListJobLogRequest: object = { clusterId: '', jobId: '', pageSize: 0, pageToken: '' };
 
 export const ListJobLogRequest = {
-    $type: 'yandex.cloud.dataproc.v1.ListJobLogRequest' as const,
-
     encode(message: ListJobLogRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -737,17 +671,9 @@ export const ListJobLogRequest = {
     },
 };
 
-messageTypeRegistry.set(ListJobLogRequest.$type, ListJobLogRequest);
-
-const baseListJobLogResponse: object = {
-    $type: 'yandex.cloud.dataproc.v1.ListJobLogResponse',
-    content: '',
-    nextPageToken: '',
-};
+const baseListJobLogResponse: object = { content: '', nextPageToken: '' };
 
 export const ListJobLogResponse = {
-    $type: 'yandex.cloud.dataproc.v1.ListJobLogResponse' as const,
-
     encode(message: ListJobLogResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.content !== '') {
             writer.uint32(10).string(message.content);
@@ -806,8 +732,6 @@ export const ListJobLogResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListJobLogResponse.$type, ListJobLogResponse);
 
 /** A set of methods for managing Data Proc jobs. */
 export const JobServiceService = {
@@ -998,16 +922,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

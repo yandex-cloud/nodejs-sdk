@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -26,7 +25,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.mdb.clickhouse.v1';
 
 export interface GetMlModelRequest {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.GetMlModelRequest';
     /** ID of the cluster that the model belongs to. */
     clusterId: string;
     /**
@@ -38,7 +36,6 @@ export interface GetMlModelRequest {
 }
 
 export interface ListMlModelsRequest {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListMlModelsRequest';
     /** ID of the cluster that models belongs to. */
     clusterId: string;
     /**
@@ -56,7 +53,6 @@ export interface ListMlModelsRequest {
 }
 
 export interface ListMlModelsResponse {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListMlModelsResponse';
     /** List of models in the specified cluster. */
     mlModels: MlModel[];
     /**
@@ -70,7 +66,6 @@ export interface ListMlModelsResponse {
 }
 
 export interface CreateMlModelRequest {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.CreateMlModelRequest';
     /**
      * ID of the cluster to create a model in.
      *
@@ -86,7 +81,6 @@ export interface CreateMlModelRequest {
 }
 
 export interface CreateMlModelMetadata {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.CreateMlModelMetadata';
     /** ID of the cluster that a model is being added to. */
     clusterId: string;
     /** Name of the the model that is being created. */
@@ -94,7 +88,6 @@ export interface CreateMlModelMetadata {
 }
 
 export interface UpdateMlModelRequest {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.UpdateMlModelRequest';
     /**
      * ID of the cluster to update the model in.
      *
@@ -109,7 +102,6 @@ export interface UpdateMlModelRequest {
 }
 
 export interface UpdateMlModelMetadata {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.UpdateMlModelMetadata';
     /** ID of the cluster that contains the model being updated. */
     clusterId: string;
     /** Name of the the model that is being updated. */
@@ -117,7 +109,6 @@ export interface UpdateMlModelMetadata {
 }
 
 export interface DeleteMlModelRequest {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DeleteMlModelRequest';
     /**
      * ID of the cluster to delete the model in.
      *
@@ -129,22 +120,15 @@ export interface DeleteMlModelRequest {
 }
 
 export interface DeleteMlModelMetadata {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DeleteMlModelMetadata';
     /** ID of the cluster that contains the model being deleted. */
     clusterId: string;
     /** Name of the the model that is being deleted. */
     mlModelName: string;
 }
 
-const baseGetMlModelRequest: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.GetMlModelRequest',
-    clusterId: '',
-    mlModelName: '',
-};
+const baseGetMlModelRequest: object = { clusterId: '', mlModelName: '' };
 
 export const GetMlModelRequest = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.GetMlModelRequest' as const,
-
     encode(message: GetMlModelRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -204,18 +188,9 @@ export const GetMlModelRequest = {
     },
 };
 
-messageTypeRegistry.set(GetMlModelRequest.$type, GetMlModelRequest);
-
-const baseListMlModelsRequest: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListMlModelsRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListMlModelsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListMlModelsRequest = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListMlModelsRequest' as const,
-
     encode(message: ListMlModelsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -287,16 +262,9 @@ export const ListMlModelsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListMlModelsRequest.$type, ListMlModelsRequest);
-
-const baseListMlModelsResponse: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListMlModelsResponse',
-    nextPageToken: '',
-};
+const baseListMlModelsResponse: object = { nextPageToken: '' };
 
 export const ListMlModelsResponse = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListMlModelsResponse' as const,
-
     encode(message: ListMlModelsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.mlModels) {
             MlModel.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -360,19 +328,9 @@ export const ListMlModelsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListMlModelsResponse.$type, ListMlModelsResponse);
-
-const baseCreateMlModelRequest: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.CreateMlModelRequest',
-    clusterId: '',
-    mlModelName: '',
-    type: 0,
-    uri: '',
-};
+const baseCreateMlModelRequest: object = { clusterId: '', mlModelName: '', type: 0, uri: '' };
 
 export const CreateMlModelRequest = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.CreateMlModelRequest' as const,
-
     encode(message: CreateMlModelRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -455,17 +413,9 @@ export const CreateMlModelRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateMlModelRequest.$type, CreateMlModelRequest);
-
-const baseCreateMlModelMetadata: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.CreateMlModelMetadata',
-    clusterId: '',
-    mlModelName: '',
-};
+const baseCreateMlModelMetadata: object = { clusterId: '', mlModelName: '' };
 
 export const CreateMlModelMetadata = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.CreateMlModelMetadata' as const,
-
     encode(message: CreateMlModelMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -527,18 +477,9 @@ export const CreateMlModelMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateMlModelMetadata.$type, CreateMlModelMetadata);
-
-const baseUpdateMlModelRequest: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.UpdateMlModelRequest',
-    clusterId: '',
-    mlModelName: '',
-    uri: '',
-};
+const baseUpdateMlModelRequest: object = { clusterId: '', mlModelName: '', uri: '' };
 
 export const UpdateMlModelRequest = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.UpdateMlModelRequest' as const,
-
     encode(message: UpdateMlModelRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -627,17 +568,9 @@ export const UpdateMlModelRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateMlModelRequest.$type, UpdateMlModelRequest);
-
-const baseUpdateMlModelMetadata: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.UpdateMlModelMetadata',
-    clusterId: '',
-    mlModelName: '',
-};
+const baseUpdateMlModelMetadata: object = { clusterId: '', mlModelName: '' };
 
 export const UpdateMlModelMetadata = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.UpdateMlModelMetadata' as const,
-
     encode(message: UpdateMlModelMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -699,17 +632,9 @@ export const UpdateMlModelMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateMlModelMetadata.$type, UpdateMlModelMetadata);
-
-const baseDeleteMlModelRequest: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DeleteMlModelRequest',
-    clusterId: '',
-    mlModelName: '',
-};
+const baseDeleteMlModelRequest: object = { clusterId: '', mlModelName: '' };
 
 export const DeleteMlModelRequest = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DeleteMlModelRequest' as const,
-
     encode(message: DeleteMlModelRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -771,17 +696,9 @@ export const DeleteMlModelRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteMlModelRequest.$type, DeleteMlModelRequest);
-
-const baseDeleteMlModelMetadata: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DeleteMlModelMetadata',
-    clusterId: '',
-    mlModelName: '',
-};
+const baseDeleteMlModelMetadata: object = { clusterId: '', mlModelName: '' };
 
 export const DeleteMlModelMetadata = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DeleteMlModelMetadata' as const,
-
     encode(message: DeleteMlModelMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -842,8 +759,6 @@ export const DeleteMlModelMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteMlModelMetadata.$type, DeleteMlModelMetadata);
 
 /** A set of methods for managing machine learning models. */
 export const MlModelServiceService = {
@@ -1045,16 +960,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

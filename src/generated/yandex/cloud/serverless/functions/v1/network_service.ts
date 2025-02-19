@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,7 +19,6 @@ export const protobufPackage = 'yandex.cloud.serverless.functions.v1';
 
 /** A VPC network used in serverless resources. */
 export interface UsedNetwork {
-    $type: 'yandex.cloud.serverless.functions.v1.UsedNetwork';
     /** ID of the VPC network. */
     networkId: string;
     /** ID of the cloud that the network belongs to. */
@@ -86,13 +84,11 @@ export function usedNetwork_StatusToJSON(object: UsedNetwork_Status): string {
 }
 
 export interface GetUsedNetworkRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.GetUsedNetworkRequest';
     /** ID of the network to return. */
     networkId: string;
 }
 
 export interface ListUsedNetworksRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.ListUsedNetworksRequest';
     /**
      * The maximum number of results per page to return. If the number of available
      * results is larger than `pageSize`, the service returns a [ListUsedNetworksResponse.next_page_token]
@@ -113,7 +109,6 @@ export interface ListUsedNetworksRequest {
 }
 
 export interface ListUsedNetworksResponse {
-    $type: 'yandex.cloud.serverless.functions.v1.ListUsedNetworksResponse';
     /** List of used networks in the specified scope. */
     networks: UsedNetwork[];
     /**
@@ -127,7 +122,6 @@ export interface ListUsedNetworksResponse {
 }
 
 export interface ListConnectedResourcesRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.ListConnectedResourcesRequest';
     /**
      * The maximum number of results per page to return. If the number of available
      * results is larger than `pageSize`, the service returns a [ListConnectedResourcesResponse.next_page_token]
@@ -150,7 +144,6 @@ export interface ListConnectedResourcesRequest {
 }
 
 export interface ListConnectedResourcesResponse {
-    $type: 'yandex.cloud.serverless.functions.v1.ListConnectedResourcesResponse';
     /** List of serverless resources connected to any network from the specified scope. */
     resources: ListConnectedResourcesResponse_ConnectedResource[];
     /**
@@ -165,7 +158,6 @@ export interface ListConnectedResourcesResponse {
 
 /** Serverless resource connected to VPC network. */
 export interface ListConnectedResourcesResponse_ConnectedResource {
-    $type: 'yandex.cloud.serverless.functions.v1.ListConnectedResourcesResponse.ConnectedResource';
     /** ID of the network to which the resource is connected. */
     networkId: string;
     /** Type of the serverless resource. */
@@ -183,19 +175,16 @@ export interface ListConnectedResourcesResponse_ConnectedResource {
 }
 
 export interface TriggerUsedNetworkCleanupRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.TriggerUsedNetworkCleanupRequest';
     /** ID of the obsolete network to start the cleanup process for. */
     networkId: string;
 }
 
 export interface TriggerUsedNetworkCleanupResponse {
-    $type: 'yandex.cloud.serverless.functions.v1.TriggerUsedNetworkCleanupResponse';
     /** Timestamp when cleanup of the specified network will be started. */
     networkCleanupTime?: Date;
 }
 
 const baseUsedNetwork: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.UsedNetwork',
     networkId: '',
     cloudId: '',
     folderId: '',
@@ -204,8 +193,6 @@ const baseUsedNetwork: object = {
 };
 
 export const UsedNetwork = {
-    $type: 'yandex.cloud.serverless.functions.v1.UsedNetwork' as const,
-
     encode(message: UsedNetwork, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);
@@ -318,16 +305,9 @@ export const UsedNetwork = {
     },
 };
 
-messageTypeRegistry.set(UsedNetwork.$type, UsedNetwork);
-
-const baseGetUsedNetworkRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.GetUsedNetworkRequest',
-    networkId: '',
-};
+const baseGetUsedNetworkRequest: object = { networkId: '' };
 
 export const GetUsedNetworkRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.GetUsedNetworkRequest' as const,
-
     encode(message: GetUsedNetworkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);
@@ -377,17 +357,9 @@ export const GetUsedNetworkRequest = {
     },
 };
 
-messageTypeRegistry.set(GetUsedNetworkRequest.$type, GetUsedNetworkRequest);
-
-const baseListUsedNetworksRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListUsedNetworksRequest',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListUsedNetworksRequest: object = { pageSize: 0, pageToken: '' };
 
 export const ListUsedNetworksRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListUsedNetworksRequest' as const,
-
     encode(message: ListUsedNetworksRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -471,16 +443,9 @@ export const ListUsedNetworksRequest = {
     },
 };
 
-messageTypeRegistry.set(ListUsedNetworksRequest.$type, ListUsedNetworksRequest);
-
-const baseListUsedNetworksResponse: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListUsedNetworksResponse',
-    nextPageToken: '',
-};
+const baseListUsedNetworksResponse: object = { nextPageToken: '' };
 
 export const ListUsedNetworksResponse = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListUsedNetworksResponse' as const,
-
     encode(
         message: ListUsedNetworksResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -547,17 +512,9 @@ export const ListUsedNetworksResponse = {
     },
 };
 
-messageTypeRegistry.set(ListUsedNetworksResponse.$type, ListUsedNetworksResponse);
-
-const baseListConnectedResourcesRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListConnectedResourcesRequest',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListConnectedResourcesRequest: object = { pageSize: 0, pageToken: '' };
 
 export const ListConnectedResourcesRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListConnectedResourcesRequest' as const,
-
     encode(
         message: ListConnectedResourcesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -656,16 +613,9 @@ export const ListConnectedResourcesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListConnectedResourcesRequest.$type, ListConnectedResourcesRequest);
-
-const baseListConnectedResourcesResponse: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListConnectedResourcesResponse',
-    nextPageToken: '',
-};
+const baseListConnectedResourcesResponse: object = { nextPageToken: '' };
 
 export const ListConnectedResourcesResponse = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListConnectedResourcesResponse' as const,
-
     encode(
         message: ListConnectedResourcesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -747,10 +697,7 @@ export const ListConnectedResourcesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListConnectedResourcesResponse.$type, ListConnectedResourcesResponse);
-
 const baseListConnectedResourcesResponse_ConnectedResource: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListConnectedResourcesResponse.ConnectedResource',
     networkId: '',
     resourceType: '',
     resourceId: '',
@@ -761,8 +708,6 @@ const baseListConnectedResourcesResponse_ConnectedResource: object = {
 };
 
 export const ListConnectedResourcesResponse_ConnectedResource = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListConnectedResourcesResponse.ConnectedResource' as const,
-
     encode(
         message: ListConnectedResourcesResponse_ConnectedResource,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -896,19 +841,9 @@ export const ListConnectedResourcesResponse_ConnectedResource = {
     },
 };
 
-messageTypeRegistry.set(
-    ListConnectedResourcesResponse_ConnectedResource.$type,
-    ListConnectedResourcesResponse_ConnectedResource,
-);
-
-const baseTriggerUsedNetworkCleanupRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.TriggerUsedNetworkCleanupRequest',
-    networkId: '',
-};
+const baseTriggerUsedNetworkCleanupRequest: object = { networkId: '' };
 
 export const TriggerUsedNetworkCleanupRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.TriggerUsedNetworkCleanupRequest' as const,
-
     encode(
         message: TriggerUsedNetworkCleanupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -967,15 +902,9 @@ export const TriggerUsedNetworkCleanupRequest = {
     },
 };
 
-messageTypeRegistry.set(TriggerUsedNetworkCleanupRequest.$type, TriggerUsedNetworkCleanupRequest);
-
-const baseTriggerUsedNetworkCleanupResponse: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.TriggerUsedNetworkCleanupResponse',
-};
+const baseTriggerUsedNetworkCleanupResponse: object = {};
 
 export const TriggerUsedNetworkCleanupResponse = {
-    $type: 'yandex.cloud.serverless.functions.v1.TriggerUsedNetworkCleanupResponse' as const,
-
     encode(
         message: TriggerUsedNetworkCleanupResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1039,8 +968,6 @@ export const TriggerUsedNetworkCleanupResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(TriggerUsedNetworkCleanupResponse.$type, TriggerUsedNetworkCleanupResponse);
 
 /** A set of methods for managing VPC networks connected to serverless resources. */
 export const NetworkServiceService = {
@@ -1221,21 +1148,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

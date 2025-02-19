@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Polygon } from '../../../../../yandex/cloud/ai/vision/v1/primitives';
@@ -7,7 +6,6 @@ import { Polygon } from '../../../../../yandex/cloud/ai/vision/v1/primitives';
 export const protobufPackage = 'yandex.cloud.ai.vision.v1';
 
 export interface TextAnnotation {
-    $type: 'yandex.cloud.ai.vision.v1.TextAnnotation';
     /**
      * Pages of the recognized file.
      *
@@ -17,7 +15,6 @@ export interface TextAnnotation {
 }
 
 export interface Page {
-    $type: 'yandex.cloud.ai.vision.v1.Page';
     /** Page width in pixels. */
     width: number;
     /** Page height in pixels. */
@@ -29,7 +26,6 @@ export interface Page {
 }
 
 export interface Entity {
-    $type: 'yandex.cloud.ai.vision.v1.Entity';
     /** Entity name */
     name: string;
     /** Recognized entity text */
@@ -37,7 +33,6 @@ export interface Entity {
 }
 
 export interface Block {
-    $type: 'yandex.cloud.ai.vision.v1.Block';
     /** Area on the page where the text block is located. */
     boundingBox?: Polygon;
     /** Recognized lines in this block. */
@@ -45,7 +40,6 @@ export interface Block {
 }
 
 export interface Line {
-    $type: 'yandex.cloud.ai.vision.v1.Line';
     /** Area on the page where the line is located. */
     boundingBox?: Polygon;
     /** Recognized words in this line. */
@@ -55,7 +49,6 @@ export interface Line {
 }
 
 export interface Word {
-    $type: 'yandex.cloud.ai.vision.v1.Word';
     /** Area on the page where the word is located. */
     boundingBox?: Polygon;
     /** Recognized word value. */
@@ -69,18 +62,15 @@ export interface Word {
 }
 
 export interface Word_DetectedLanguage {
-    $type: 'yandex.cloud.ai.vision.v1.Word.DetectedLanguage';
     /** Detected language code. */
     languageCode: string;
     /** Confidence of detected language. Range [0, 1]. */
     confidence: number;
 }
 
-const baseTextAnnotation: object = { $type: 'yandex.cloud.ai.vision.v1.TextAnnotation' };
+const baseTextAnnotation: object = {};
 
 export const TextAnnotation = {
-    $type: 'yandex.cloud.ai.vision.v1.TextAnnotation' as const,
-
     encode(message: TextAnnotation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.pages) {
             Page.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -130,13 +120,9 @@ export const TextAnnotation = {
     },
 };
 
-messageTypeRegistry.set(TextAnnotation.$type, TextAnnotation);
-
-const basePage: object = { $type: 'yandex.cloud.ai.vision.v1.Page', width: 0, height: 0 };
+const basePage: object = { width: 0, height: 0 };
 
 export const Page = {
-    $type: 'yandex.cloud.ai.vision.v1.Page' as const,
-
     encode(message: Page, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.width !== 0) {
             writer.uint32(8).int64(message.width);
@@ -220,13 +206,9 @@ export const Page = {
     },
 };
 
-messageTypeRegistry.set(Page.$type, Page);
-
-const baseEntity: object = { $type: 'yandex.cloud.ai.vision.v1.Entity', name: '', text: '' };
+const baseEntity: object = { name: '', text: '' };
 
 export const Entity = {
-    $type: 'yandex.cloud.ai.vision.v1.Entity' as const,
-
     encode(message: Entity, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -280,13 +262,9 @@ export const Entity = {
     },
 };
 
-messageTypeRegistry.set(Entity.$type, Entity);
-
-const baseBlock: object = { $type: 'yandex.cloud.ai.vision.v1.Block' };
+const baseBlock: object = {};
 
 export const Block = {
-    $type: 'yandex.cloud.ai.vision.v1.Block' as const,
-
     encode(message: Block, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.boundingBox !== undefined) {
             Polygon.encode(message.boundingBox, writer.uint32(10).fork()).ldelim();
@@ -354,13 +332,9 @@ export const Block = {
     },
 };
 
-messageTypeRegistry.set(Block.$type, Block);
-
-const baseLine: object = { $type: 'yandex.cloud.ai.vision.v1.Line', confidence: 0 };
+const baseLine: object = { confidence: 0 };
 
 export const Line = {
-    $type: 'yandex.cloud.ai.vision.v1.Line' as const,
-
     encode(message: Line, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.boundingBox !== undefined) {
             Polygon.encode(message.boundingBox, writer.uint32(10).fork()).ldelim();
@@ -440,18 +414,9 @@ export const Line = {
     },
 };
 
-messageTypeRegistry.set(Line.$type, Line);
-
-const baseWord: object = {
-    $type: 'yandex.cloud.ai.vision.v1.Word',
-    text: '',
-    confidence: 0,
-    entityIndex: 0,
-};
+const baseWord: object = { text: '', confidence: 0, entityIndex: 0 };
 
 export const Word = {
-    $type: 'yandex.cloud.ai.vision.v1.Word' as const,
-
     encode(message: Word, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.boundingBox !== undefined) {
             Polygon.encode(message.boundingBox, writer.uint32(10).fork()).ldelim();
@@ -557,17 +522,9 @@ export const Word = {
     },
 };
 
-messageTypeRegistry.set(Word.$type, Word);
-
-const baseWord_DetectedLanguage: object = {
-    $type: 'yandex.cloud.ai.vision.v1.Word.DetectedLanguage',
-    languageCode: '',
-    confidence: 0,
-};
+const baseWord_DetectedLanguage: object = { languageCode: '', confidence: 0 };
 
 export const Word_DetectedLanguage = {
-    $type: 'yandex.cloud.ai.vision.v1.Word.DetectedLanguage' as const,
-
     encode(message: Word_DetectedLanguage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.languageCode !== '') {
             writer.uint32(10).string(message.languageCode);
@@ -629,8 +586,6 @@ export const Word_DetectedLanguage = {
     },
 };
 
-messageTypeRegistry.set(Word_DetectedLanguage.$type, Word_DetectedLanguage);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -651,16 +606,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,7 +19,6 @@ import { Lock } from '../../../../../../yandex/cloud/marketplace/licensemanager/
 export const protobufPackage = 'yandex.cloud.marketplace.licensemanager.saas.v1';
 
 export interface EnsureLockRequest {
-    $type: 'yandex.cloud.marketplace.licensemanager.saas.v1.EnsureLockRequest';
     /** Signed JWT token which contains information about subscription. */
     instanceToken: string;
     /** ID of the resource to which the subscription will be locked. */
@@ -28,26 +26,18 @@ export interface EnsureLockRequest {
 }
 
 export interface EnsureLockMetadata {
-    $type: 'yandex.cloud.marketplace.licensemanager.saas.v1.EnsureLockMetadata';
     /** ID of the subscription lock. */
     lockId: string;
 }
 
 export interface GetLockRequest {
-    $type: 'yandex.cloud.marketplace.licensemanager.saas.v1.GetLockRequest';
     /** ID of the subscription lock. */
     lockId: string;
 }
 
-const baseEnsureLockRequest: object = {
-    $type: 'yandex.cloud.marketplace.licensemanager.saas.v1.EnsureLockRequest',
-    instanceToken: '',
-    resourceId: '',
-};
+const baseEnsureLockRequest: object = { instanceToken: '', resourceId: '' };
 
 export const EnsureLockRequest = {
-    $type: 'yandex.cloud.marketplace.licensemanager.saas.v1.EnsureLockRequest' as const,
-
     encode(message: EnsureLockRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceToken !== '') {
             writer.uint32(10).string(message.instanceToken);
@@ -107,16 +97,9 @@ export const EnsureLockRequest = {
     },
 };
 
-messageTypeRegistry.set(EnsureLockRequest.$type, EnsureLockRequest);
-
-const baseEnsureLockMetadata: object = {
-    $type: 'yandex.cloud.marketplace.licensemanager.saas.v1.EnsureLockMetadata',
-    lockId: '',
-};
+const baseEnsureLockMetadata: object = { lockId: '' };
 
 export const EnsureLockMetadata = {
-    $type: 'yandex.cloud.marketplace.licensemanager.saas.v1.EnsureLockMetadata' as const,
-
     encode(message: EnsureLockMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lockId !== '') {
             writer.uint32(10).string(message.lockId);
@@ -164,16 +147,9 @@ export const EnsureLockMetadata = {
     },
 };
 
-messageTypeRegistry.set(EnsureLockMetadata.$type, EnsureLockMetadata);
-
-const baseGetLockRequest: object = {
-    $type: 'yandex.cloud.marketplace.licensemanager.saas.v1.GetLockRequest',
-    lockId: '',
-};
+const baseGetLockRequest: object = { lockId: '' };
 
 export const GetLockRequest = {
-    $type: 'yandex.cloud.marketplace.licensemanager.saas.v1.GetLockRequest' as const,
-
     encode(message: GetLockRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lockId !== '') {
             writer.uint32(10).string(message.lockId);
@@ -218,8 +194,6 @@ export const GetLockRequest = {
         return message;
     },
 };
-
-messageTypeRegistry.set(GetLockRequest.$type, GetLockRequest);
 
 /** A set of methods for managing subscription locks. */
 export const LockServiceService = {
@@ -319,16 +293,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,7 +19,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.iam.v1.workload';
 
 export interface GetFederatedCredentialRequest {
-    $type: 'yandex.cloud.iam.v1.workload.GetFederatedCredentialRequest';
     /**
      * ID of the federated credential to return.
      * To get the federated credential ID, make a [FederatedCredentialService.List] request.
@@ -29,7 +27,6 @@ export interface GetFederatedCredentialRequest {
 }
 
 export interface ListFederatedCredentialsRequest {
-    $type: 'yandex.cloud.iam.v1.workload.ListFederatedCredentialsRequest';
     /**
      * ID of the service account to list federated credentials for.
      * To get the the service account ID make a [yandex.cloud.iam.v1.ServiceAccountService.List] request.
@@ -52,7 +49,6 @@ export interface ListFederatedCredentialsRequest {
 }
 
 export interface ListFederatedCredentialsResponse {
-    $type: 'yandex.cloud.iam.v1.workload.ListFederatedCredentialsResponse';
     /** List of federated credentials. */
     federatedCredentials: FederatedCredential[];
     /**
@@ -67,7 +63,6 @@ export interface ListFederatedCredentialsResponse {
 }
 
 export interface CreateFederatedCredentialRequest {
-    $type: 'yandex.cloud.iam.v1.workload.CreateFederatedCredentialRequest';
     /**
      * ID of the service account to create a federated credential for.
      * To get the service account ID, use a [yandex.cloud.iam.v1.ServiceAccountService.List] request.
@@ -80,13 +75,11 @@ export interface CreateFederatedCredentialRequest {
 }
 
 export interface CreateFederatedCredentialMetadata {
-    $type: 'yandex.cloud.iam.v1.workload.CreateFederatedCredentialMetadata';
     /** ID of the federated credential that is being created. */
     federatedCredentialId: string;
 }
 
 export interface DeleteFederatedCredentialRequest {
-    $type: 'yandex.cloud.iam.v1.workload.DeleteFederatedCredentialRequest';
     /**
      * ID of the federated credential key to delete.
      * To get the federated credential ID, use a [FederatedCredentialService.List] request.
@@ -95,19 +88,13 @@ export interface DeleteFederatedCredentialRequest {
 }
 
 export interface DeleteFederatedCredentialMetadata {
-    $type: 'yandex.cloud.iam.v1.workload.DeleteFederatedCredentialMetadata';
     /** ID of the federated credential that is being deleted. */
     federatedCredentialId: string;
 }
 
-const baseGetFederatedCredentialRequest: object = {
-    $type: 'yandex.cloud.iam.v1.workload.GetFederatedCredentialRequest',
-    federatedCredentialId: '',
-};
+const baseGetFederatedCredentialRequest: object = { federatedCredentialId: '' };
 
 export const GetFederatedCredentialRequest = {
-    $type: 'yandex.cloud.iam.v1.workload.GetFederatedCredentialRequest' as const,
-
     encode(
         message: GetFederatedCredentialRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -161,18 +148,13 @@ export const GetFederatedCredentialRequest = {
     },
 };
 
-messageTypeRegistry.set(GetFederatedCredentialRequest.$type, GetFederatedCredentialRequest);
-
 const baseListFederatedCredentialsRequest: object = {
-    $type: 'yandex.cloud.iam.v1.workload.ListFederatedCredentialsRequest',
     serviceAccountId: '',
     pageSize: 0,
     pageToken: '',
 };
 
 export const ListFederatedCredentialsRequest = {
-    $type: 'yandex.cloud.iam.v1.workload.ListFederatedCredentialsRequest' as const,
-
     encode(
         message: ListFederatedCredentialsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -253,16 +235,9 @@ export const ListFederatedCredentialsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListFederatedCredentialsRequest.$type, ListFederatedCredentialsRequest);
-
-const baseListFederatedCredentialsResponse: object = {
-    $type: 'yandex.cloud.iam.v1.workload.ListFederatedCredentialsResponse',
-    nextPageToken: '',
-};
+const baseListFederatedCredentialsResponse: object = { nextPageToken: '' };
 
 export const ListFederatedCredentialsResponse = {
-    $type: 'yandex.cloud.iam.v1.workload.ListFederatedCredentialsResponse' as const,
-
     encode(
         message: ListFederatedCredentialsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -342,18 +317,13 @@ export const ListFederatedCredentialsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListFederatedCredentialsResponse.$type, ListFederatedCredentialsResponse);
-
 const baseCreateFederatedCredentialRequest: object = {
-    $type: 'yandex.cloud.iam.v1.workload.CreateFederatedCredentialRequest',
     serviceAccountId: '',
     federationId: '',
     externalSubjectId: '',
 };
 
 export const CreateFederatedCredentialRequest = {
-    $type: 'yandex.cloud.iam.v1.workload.CreateFederatedCredentialRequest' as const,
-
     encode(
         message: CreateFederatedCredentialRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -437,16 +407,9 @@ export const CreateFederatedCredentialRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateFederatedCredentialRequest.$type, CreateFederatedCredentialRequest);
-
-const baseCreateFederatedCredentialMetadata: object = {
-    $type: 'yandex.cloud.iam.v1.workload.CreateFederatedCredentialMetadata',
-    federatedCredentialId: '',
-};
+const baseCreateFederatedCredentialMetadata: object = { federatedCredentialId: '' };
 
 export const CreateFederatedCredentialMetadata = {
-    $type: 'yandex.cloud.iam.v1.workload.CreateFederatedCredentialMetadata' as const,
-
     encode(
         message: CreateFederatedCredentialMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -506,16 +469,9 @@ export const CreateFederatedCredentialMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateFederatedCredentialMetadata.$type, CreateFederatedCredentialMetadata);
-
-const baseDeleteFederatedCredentialRequest: object = {
-    $type: 'yandex.cloud.iam.v1.workload.DeleteFederatedCredentialRequest',
-    federatedCredentialId: '',
-};
+const baseDeleteFederatedCredentialRequest: object = { federatedCredentialId: '' };
 
 export const DeleteFederatedCredentialRequest = {
-    $type: 'yandex.cloud.iam.v1.workload.DeleteFederatedCredentialRequest' as const,
-
     encode(
         message: DeleteFederatedCredentialRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -575,16 +531,9 @@ export const DeleteFederatedCredentialRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteFederatedCredentialRequest.$type, DeleteFederatedCredentialRequest);
-
-const baseDeleteFederatedCredentialMetadata: object = {
-    $type: 'yandex.cloud.iam.v1.workload.DeleteFederatedCredentialMetadata',
-    federatedCredentialId: '',
-};
+const baseDeleteFederatedCredentialMetadata: object = { federatedCredentialId: '' };
 
 export const DeleteFederatedCredentialMetadata = {
-    $type: 'yandex.cloud.iam.v1.workload.DeleteFederatedCredentialMetadata' as const,
-
     encode(
         message: DeleteFederatedCredentialMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -643,8 +592,6 @@ export const DeleteFederatedCredentialMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteFederatedCredentialMetadata.$type, DeleteFederatedCredentialMetadata);
 
 /** A set of methods for managing federated credentials. */
 export const FederatedCredentialServiceService = {
@@ -818,16 +765,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

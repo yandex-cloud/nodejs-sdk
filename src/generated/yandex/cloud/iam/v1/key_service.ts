@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -53,7 +52,6 @@ export function keyFormatToJSON(object: KeyFormat): string {
 }
 
 export interface GetKeyRequest {
-    $type: 'yandex.cloud.iam.v1.GetKeyRequest';
     /**
      * ID of the Key resource to return.
      * To get the ID use a [KeyService.List] request.
@@ -64,7 +62,6 @@ export interface GetKeyRequest {
 }
 
 export interface ListKeysRequest {
-    $type: 'yandex.cloud.iam.v1.ListKeysRequest';
     /** Output format of the key. */
     format: KeyFormat;
     /**
@@ -89,7 +86,6 @@ export interface ListKeysRequest {
 }
 
 export interface ListKeysResponse {
-    $type: 'yandex.cloud.iam.v1.ListKeysResponse';
     /** List of Key resources. */
     keys: Key[];
     /**
@@ -104,7 +100,6 @@ export interface ListKeysResponse {
 }
 
 export interface CreateKeyRequest {
-    $type: 'yandex.cloud.iam.v1.CreateKeyRequest';
     /**
      * ID of the service account to create a key pair for.
      * To get the service account ID, use a [yandex.cloud.iam.v1.ServiceAccountService.List] request.
@@ -120,7 +115,6 @@ export interface CreateKeyRequest {
 }
 
 export interface CreateKeyResponse {
-    $type: 'yandex.cloud.iam.v1.CreateKeyResponse';
     /** Key resource. */
     key?: Key;
     /**
@@ -131,7 +125,6 @@ export interface CreateKeyResponse {
 }
 
 export interface UpdateKeyRequest {
-    $type: 'yandex.cloud.iam.v1.UpdateKeyRequest';
     /**
      * ID of the Key resource to update.
      * To get key pair ID, use a [KeyService.List] request.
@@ -144,13 +137,11 @@ export interface UpdateKeyRequest {
 }
 
 export interface UpdateKeyMetadata {
-    $type: 'yandex.cloud.iam.v1.UpdateKeyMetadata';
     /** ID of the Key resource that is being updated. */
     keyId: string;
 }
 
 export interface DeleteKeyRequest {
-    $type: 'yandex.cloud.iam.v1.DeleteKeyRequest';
     /**
      * ID of the key to delete.
      * To get key ID use a [KeyService.List] request.
@@ -159,13 +150,11 @@ export interface DeleteKeyRequest {
 }
 
 export interface DeleteKeyMetadata {
-    $type: 'yandex.cloud.iam.v1.DeleteKeyMetadata';
     /** ID of the key that is being deleted. */
     keyId: string;
 }
 
 export interface ListKeyOperationsRequest {
-    $type: 'yandex.cloud.iam.v1.ListKeyOperationsRequest';
     /** ID of the key to list operations for. */
     keyId: string;
     /**
@@ -184,7 +173,6 @@ export interface ListKeyOperationsRequest {
 }
 
 export interface ListKeyOperationsResponse {
-    $type: 'yandex.cloud.iam.v1.ListKeyOperationsResponse';
     /** List of operations for the specified key. */
     operations: Operation[];
     /**
@@ -196,15 +184,9 @@ export interface ListKeyOperationsResponse {
     nextPageToken: string;
 }
 
-const baseGetKeyRequest: object = {
-    $type: 'yandex.cloud.iam.v1.GetKeyRequest',
-    keyId: '',
-    format: 0,
-};
+const baseGetKeyRequest: object = { keyId: '', format: 0 };
 
 export const GetKeyRequest = {
-    $type: 'yandex.cloud.iam.v1.GetKeyRequest' as const,
-
     encode(message: GetKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -262,19 +244,9 @@ export const GetKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(GetKeyRequest.$type, GetKeyRequest);
-
-const baseListKeysRequest: object = {
-    $type: 'yandex.cloud.iam.v1.ListKeysRequest',
-    format: 0,
-    serviceAccountId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListKeysRequest: object = { format: 0, serviceAccountId: '', pageSize: 0, pageToken: '' };
 
 export const ListKeysRequest = {
-    $type: 'yandex.cloud.iam.v1.ListKeysRequest' as const,
-
     encode(message: ListKeysRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.format !== 0) {
             writer.uint32(8).int32(message.format);
@@ -356,16 +328,9 @@ export const ListKeysRequest = {
     },
 };
 
-messageTypeRegistry.set(ListKeysRequest.$type, ListKeysRequest);
-
-const baseListKeysResponse: object = {
-    $type: 'yandex.cloud.iam.v1.ListKeysResponse',
-    nextPageToken: '',
-};
+const baseListKeysResponse: object = { nextPageToken: '' };
 
 export const ListKeysResponse = {
-    $type: 'yandex.cloud.iam.v1.ListKeysResponse' as const,
-
     encode(message: ListKeysResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.keys) {
             Key.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -427,10 +392,7 @@ export const ListKeysResponse = {
     },
 };
 
-messageTypeRegistry.set(ListKeysResponse.$type, ListKeysResponse);
-
 const baseCreateKeyRequest: object = {
-    $type: 'yandex.cloud.iam.v1.CreateKeyRequest',
     serviceAccountId: '',
     description: '',
     format: 0,
@@ -438,8 +400,6 @@ const baseCreateKeyRequest: object = {
 };
 
 export const CreateKeyRequest = {
-    $type: 'yandex.cloud.iam.v1.CreateKeyRequest' as const,
-
     encode(message: CreateKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceAccountId !== '') {
             writer.uint32(10).string(message.serviceAccountId);
@@ -524,16 +484,9 @@ export const CreateKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateKeyRequest.$type, CreateKeyRequest);
-
-const baseCreateKeyResponse: object = {
-    $type: 'yandex.cloud.iam.v1.CreateKeyResponse',
-    privateKey: '',
-};
+const baseCreateKeyResponse: object = { privateKey: '' };
 
 export const CreateKeyResponse = {
-    $type: 'yandex.cloud.iam.v1.CreateKeyResponse' as const,
-
     encode(message: CreateKeyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== undefined) {
             Key.encode(message.key, writer.uint32(10).fork()).ldelim();
@@ -594,17 +547,9 @@ export const CreateKeyResponse = {
     },
 };
 
-messageTypeRegistry.set(CreateKeyResponse.$type, CreateKeyResponse);
-
-const baseUpdateKeyRequest: object = {
-    $type: 'yandex.cloud.iam.v1.UpdateKeyRequest',
-    keyId: '',
-    description: '',
-};
+const baseUpdateKeyRequest: object = { keyId: '', description: '' };
 
 export const UpdateKeyRequest = {
-    $type: 'yandex.cloud.iam.v1.UpdateKeyRequest' as const,
-
     encode(message: UpdateKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -680,13 +625,9 @@ export const UpdateKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateKeyRequest.$type, UpdateKeyRequest);
-
-const baseUpdateKeyMetadata: object = { $type: 'yandex.cloud.iam.v1.UpdateKeyMetadata', keyId: '' };
+const baseUpdateKeyMetadata: object = { keyId: '' };
 
 export const UpdateKeyMetadata = {
-    $type: 'yandex.cloud.iam.v1.UpdateKeyMetadata' as const,
-
     encode(message: UpdateKeyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -732,13 +673,9 @@ export const UpdateKeyMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateKeyMetadata.$type, UpdateKeyMetadata);
-
-const baseDeleteKeyRequest: object = { $type: 'yandex.cloud.iam.v1.DeleteKeyRequest', keyId: '' };
+const baseDeleteKeyRequest: object = { keyId: '' };
 
 export const DeleteKeyRequest = {
-    $type: 'yandex.cloud.iam.v1.DeleteKeyRequest' as const,
-
     encode(message: DeleteKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -784,13 +721,9 @@ export const DeleteKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteKeyRequest.$type, DeleteKeyRequest);
-
-const baseDeleteKeyMetadata: object = { $type: 'yandex.cloud.iam.v1.DeleteKeyMetadata', keyId: '' };
+const baseDeleteKeyMetadata: object = { keyId: '' };
 
 export const DeleteKeyMetadata = {
-    $type: 'yandex.cloud.iam.v1.DeleteKeyMetadata' as const,
-
     encode(message: DeleteKeyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -836,18 +769,9 @@ export const DeleteKeyMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteKeyMetadata.$type, DeleteKeyMetadata);
-
-const baseListKeyOperationsRequest: object = {
-    $type: 'yandex.cloud.iam.v1.ListKeyOperationsRequest',
-    keyId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListKeyOperationsRequest: object = { keyId: '', pageSize: 0, pageToken: '' };
 
 export const ListKeyOperationsRequest = {
-    $type: 'yandex.cloud.iam.v1.ListKeyOperationsRequest' as const,
-
     encode(
         message: ListKeyOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -920,16 +844,9 @@ export const ListKeyOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListKeyOperationsRequest.$type, ListKeyOperationsRequest);
-
-const baseListKeyOperationsResponse: object = {
-    $type: 'yandex.cloud.iam.v1.ListKeyOperationsResponse',
-    nextPageToken: '',
-};
+const baseListKeyOperationsResponse: object = { nextPageToken: '' };
 
 export const ListKeyOperationsResponse = {
-    $type: 'yandex.cloud.iam.v1.ListKeyOperationsResponse' as const,
-
     encode(
         message: ListKeyOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -995,8 +912,6 @@ export const ListKeyOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListKeyOperationsResponse.$type, ListKeyOperationsResponse);
 
 /** A set of methods for managing Key resources. */
 export const KeyServiceService = {
@@ -1229,16 +1144,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

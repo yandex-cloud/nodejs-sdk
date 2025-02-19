@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -23,7 +22,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1';
 
 export interface CreateAgentRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateAgentRequest';
     /** ID of the folder to create an agent in. */
     folderId: string;
     /**
@@ -53,37 +51,31 @@ export interface CreateAgentRequest {
 }
 
 export interface CreateAgentRequest_LabelsEntry {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateAgentRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateAgentMetadata {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateAgentMetadata';
     /** ID of the agent that is being created. */
     agentId: string;
 }
 
 export interface GetAgentRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetAgentRequest';
     /** ID of the agent to return. */
     agentId: string;
 }
 
 export interface DeleteAgentRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteAgentRequest';
     /** ID of the agent to delete. */
     agentId: string;
 }
 
 export interface DeleteAgentMetadata {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteAgentMetadata';
     /** ID of the agent that is being deleted. */
     agentId: string;
 }
 
 export interface ListAgentsRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListAgentsRequest';
     /** ID of the folder to list agents in. */
     folderId: string;
     /**
@@ -123,7 +115,6 @@ export interface ListAgentsRequest {
 }
 
 export interface ListAgentsResponse {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListAgentsResponse';
     /** List of agents in the specified folder. */
     agents: Agent[];
     /**
@@ -137,7 +128,6 @@ export interface ListAgentsResponse {
 }
 
 export interface UpdateAgentRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.UpdateAgentRequest';
     /** ID of the agent to update. */
     agentId: string;
     /** Field mask that specifies which attributes of the agent are going to be updated. */
@@ -153,19 +143,16 @@ export interface UpdateAgentRequest {
 }
 
 export interface UpdateAgentRequest_LabelsEntry {
-    $type: 'yandex.cloud.loadtesting.api.v1.UpdateAgentRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateAgentMetadata {
-    $type: 'yandex.cloud.loadtesting.api.v1.UpdateAgentMetadata';
     /** ID of the agent that is being updated. */
     agentId: string;
 }
 
 const baseCreateAgentRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateAgentRequest',
     folderId: '',
     name: '',
     description: '',
@@ -173,8 +160,6 @@ const baseCreateAgentRequest: object = {
 };
 
 export const CreateAgentRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateAgentRequest' as const,
-
     encode(message: CreateAgentRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -196,11 +181,7 @@ export const CreateAgentRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateAgentRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.loadtesting.api.v1.CreateAgentRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -338,17 +319,9 @@ export const CreateAgentRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateAgentRequest.$type, CreateAgentRequest);
-
-const baseCreateAgentRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateAgentRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateAgentRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateAgentRequest_LabelsEntry = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateAgentRequest.LabelsEntry' as const,
-
     encode(
         message: CreateAgentRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -408,16 +381,9 @@ export const CreateAgentRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateAgentRequest_LabelsEntry.$type, CreateAgentRequest_LabelsEntry);
-
-const baseCreateAgentMetadata: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateAgentMetadata',
-    agentId: '',
-};
+const baseCreateAgentMetadata: object = { agentId: '' };
 
 export const CreateAgentMetadata = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateAgentMetadata' as const,
-
     encode(message: CreateAgentMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentId !== '') {
             writer.uint32(10).string(message.agentId);
@@ -465,16 +431,9 @@ export const CreateAgentMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateAgentMetadata.$type, CreateAgentMetadata);
-
-const baseGetAgentRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetAgentRequest',
-    agentId: '',
-};
+const baseGetAgentRequest: object = { agentId: '' };
 
 export const GetAgentRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetAgentRequest' as const,
-
     encode(message: GetAgentRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentId !== '') {
             writer.uint32(18).string(message.agentId);
@@ -520,16 +479,9 @@ export const GetAgentRequest = {
     },
 };
 
-messageTypeRegistry.set(GetAgentRequest.$type, GetAgentRequest);
-
-const baseDeleteAgentRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteAgentRequest',
-    agentId: '',
-};
+const baseDeleteAgentRequest: object = { agentId: '' };
 
 export const DeleteAgentRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteAgentRequest' as const,
-
     encode(message: DeleteAgentRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentId !== '') {
             writer.uint32(10).string(message.agentId);
@@ -577,16 +529,9 @@ export const DeleteAgentRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteAgentRequest.$type, DeleteAgentRequest);
-
-const baseDeleteAgentMetadata: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteAgentMetadata',
-    agentId: '',
-};
+const baseDeleteAgentMetadata: object = { agentId: '' };
 
 export const DeleteAgentMetadata = {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteAgentMetadata' as const,
-
     encode(message: DeleteAgentMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentId !== '') {
             writer.uint32(10).string(message.agentId);
@@ -634,19 +579,9 @@ export const DeleteAgentMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteAgentMetadata.$type, DeleteAgentMetadata);
-
-const baseListAgentsRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListAgentsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListAgentsRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListAgentsRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListAgentsRequest' as const,
-
     encode(message: ListAgentsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -726,16 +661,9 @@ export const ListAgentsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListAgentsRequest.$type, ListAgentsRequest);
-
-const baseListAgentsResponse: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListAgentsResponse',
-    nextPageToken: '',
-};
+const baseListAgentsResponse: object = { nextPageToken: '' };
 
 export const ListAgentsResponse = {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListAgentsResponse' as const,
-
     encode(message: ListAgentsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.agents) {
             Agent.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -799,18 +727,9 @@ export const ListAgentsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListAgentsResponse.$type, ListAgentsResponse);
-
-const baseUpdateAgentRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.UpdateAgentRequest',
-    agentId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateAgentRequest: object = { agentId: '', name: '', description: '' };
 
 export const UpdateAgentRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.UpdateAgentRequest' as const,
-
     encode(message: UpdateAgentRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentId !== '') {
             writer.uint32(10).string(message.agentId);
@@ -832,11 +751,7 @@ export const UpdateAgentRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateAgentRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.loadtesting.api.v1.UpdateAgentRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -960,17 +875,9 @@ export const UpdateAgentRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateAgentRequest.$type, UpdateAgentRequest);
-
-const baseUpdateAgentRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.UpdateAgentRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateAgentRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateAgentRequest_LabelsEntry = {
-    $type: 'yandex.cloud.loadtesting.api.v1.UpdateAgentRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateAgentRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1030,16 +937,9 @@ export const UpdateAgentRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateAgentRequest_LabelsEntry.$type, UpdateAgentRequest_LabelsEntry);
-
-const baseUpdateAgentMetadata: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.UpdateAgentMetadata',
-    agentId: '',
-};
+const baseUpdateAgentMetadata: object = { agentId: '' };
 
 export const UpdateAgentMetadata = {
-    $type: 'yandex.cloud.loadtesting.api.v1.UpdateAgentMetadata' as const,
-
     encode(message: UpdateAgentMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentId !== '') {
             writer.uint32(10).string(message.agentId);
@@ -1086,8 +986,6 @@ export const UpdateAgentMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(UpdateAgentMetadata.$type, UpdateAgentMetadata);
 
 /** A set of methods for managing Load Testing agents. */
 export const AgentServiceService = {
@@ -1313,16 +1211,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

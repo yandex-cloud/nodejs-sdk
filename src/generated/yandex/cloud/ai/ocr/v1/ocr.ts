@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -56,13 +55,11 @@ export function angleToJSON(object: Angle): string {
 }
 
 export interface Polygon {
-    $type: 'yandex.cloud.ai.ocr.v1.Polygon';
     /** The bounding polygon vertices. */
     vertices: Vertex[];
 }
 
 export interface Vertex {
-    $type: 'yandex.cloud.ai.ocr.v1.Vertex';
     /** X coordinate in pixels. */
     x: number;
     /** Y coordinate in pixels. */
@@ -70,7 +67,6 @@ export interface Vertex {
 }
 
 export interface TextAnnotation {
-    $type: 'yandex.cloud.ai.ocr.v1.TextAnnotation';
     /** Page width in pixels. */
     width: number;
     /** Page height in pixels. */
@@ -87,7 +83,6 @@ export interface TextAnnotation {
 }
 
 export interface Entity {
-    $type: 'yandex.cloud.ai.ocr.v1.Entity';
     /** Entity name. */
     name: string;
     /** Recognized entity text. */
@@ -95,7 +90,6 @@ export interface Entity {
 }
 
 export interface Block {
-    $type: 'yandex.cloud.ai.ocr.v1.Block';
     /** Area on the page where the text block is located. */
     boundingBox?: Polygon;
     /** Recognized lines in this block. */
@@ -107,13 +101,11 @@ export interface Block {
 }
 
 export interface Block_DetectedLanguage {
-    $type: 'yandex.cloud.ai.ocr.v1.Block.DetectedLanguage';
     /** Detected language code. */
     languageCode: string;
 }
 
 export interface Line {
-    $type: 'yandex.cloud.ai.ocr.v1.Line';
     /** Area on the page where the line is located. */
     boundingBox?: Polygon;
     /** Recognized text. */
@@ -127,7 +119,6 @@ export interface Line {
 }
 
 export interface Word {
-    $type: 'yandex.cloud.ai.ocr.v1.Word';
     /** Area on the page where the word is located. */
     boundingBox?: Polygon;
     /** Recognized word value. */
@@ -139,7 +130,6 @@ export interface Word {
 }
 
 export interface TextSegments {
-    $type: 'yandex.cloud.ai.ocr.v1.TextSegments';
     /** Start character position from full_text string. */
     startIndex: number;
     /** Text segment length. */
@@ -147,7 +137,6 @@ export interface TextSegments {
 }
 
 export interface Table {
-    $type: 'yandex.cloud.ai.ocr.v1.Table';
     /** Area on the page where the table is located. */
     boundingBox?: Polygon;
     /** Number of rows in table. */
@@ -159,7 +148,6 @@ export interface Table {
 }
 
 export interface TableCell {
-    $type: 'yandex.cloud.ai.ocr.v1.TableCell';
     /** Area on the page where the table cell is located. */
     boundingBox?: Polygon;
     /** Row index. */
@@ -176,11 +164,9 @@ export interface TableCell {
     textSegments: TextSegments[];
 }
 
-const basePolygon: object = { $type: 'yandex.cloud.ai.ocr.v1.Polygon' };
+const basePolygon: object = {};
 
 export const Polygon = {
-    $type: 'yandex.cloud.ai.ocr.v1.Polygon' as const,
-
     encode(message: Polygon, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.vertices) {
             Vertex.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -230,13 +216,9 @@ export const Polygon = {
     },
 };
 
-messageTypeRegistry.set(Polygon.$type, Polygon);
-
-const baseVertex: object = { $type: 'yandex.cloud.ai.ocr.v1.Vertex', x: 0, y: 0 };
+const baseVertex: object = { x: 0, y: 0 };
 
 export const Vertex = {
-    $type: 'yandex.cloud.ai.ocr.v1.Vertex' as const,
-
     encode(message: Vertex, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.x !== 0) {
             writer.uint32(8).int64(message.x);
@@ -290,19 +272,9 @@ export const Vertex = {
     },
 };
 
-messageTypeRegistry.set(Vertex.$type, Vertex);
-
-const baseTextAnnotation: object = {
-    $type: 'yandex.cloud.ai.ocr.v1.TextAnnotation',
-    width: 0,
-    height: 0,
-    fullText: '',
-    rotate: 0,
-};
+const baseTextAnnotation: object = { width: 0, height: 0, fullText: '', rotate: 0 };
 
 export const TextAnnotation = {
-    $type: 'yandex.cloud.ai.ocr.v1.TextAnnotation' as const,
-
     encode(message: TextAnnotation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.width !== 0) {
             writer.uint32(8).int64(message.width);
@@ -424,13 +396,9 @@ export const TextAnnotation = {
     },
 };
 
-messageTypeRegistry.set(TextAnnotation.$type, TextAnnotation);
-
-const baseEntity: object = { $type: 'yandex.cloud.ai.ocr.v1.Entity', name: '', text: '' };
+const baseEntity: object = { name: '', text: '' };
 
 export const Entity = {
-    $type: 'yandex.cloud.ai.ocr.v1.Entity' as const,
-
     encode(message: Entity, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -484,13 +452,9 @@ export const Entity = {
     },
 };
 
-messageTypeRegistry.set(Entity.$type, Entity);
-
-const baseBlock: object = { $type: 'yandex.cloud.ai.ocr.v1.Block' };
+const baseBlock: object = {};
 
 export const Block = {
-    $type: 'yandex.cloud.ai.ocr.v1.Block' as const,
-
     encode(message: Block, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.boundingBox !== undefined) {
             Polygon.encode(message.boundingBox, writer.uint32(10).fork()).ldelim();
@@ -595,16 +559,9 @@ export const Block = {
     },
 };
 
-messageTypeRegistry.set(Block.$type, Block);
-
-const baseBlock_DetectedLanguage: object = {
-    $type: 'yandex.cloud.ai.ocr.v1.Block.DetectedLanguage',
-    languageCode: '',
-};
+const baseBlock_DetectedLanguage: object = { languageCode: '' };
 
 export const Block_DetectedLanguage = {
-    $type: 'yandex.cloud.ai.ocr.v1.Block.DetectedLanguage' as const,
-
     encode(message: Block_DetectedLanguage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.languageCode !== '') {
             writer.uint32(10).string(message.languageCode);
@@ -654,13 +611,9 @@ export const Block_DetectedLanguage = {
     },
 };
 
-messageTypeRegistry.set(Block_DetectedLanguage.$type, Block_DetectedLanguage);
-
-const baseLine: object = { $type: 'yandex.cloud.ai.ocr.v1.Line', text: '', orientation: 0 };
+const baseLine: object = { text: '', orientation: 0 };
 
 export const Line = {
-    $type: 'yandex.cloud.ai.ocr.v1.Line' as const,
-
     encode(message: Line, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.boundingBox !== undefined) {
             Polygon.encode(message.boundingBox, writer.uint32(10).fork()).ldelim();
@@ -767,13 +720,9 @@ export const Line = {
     },
 };
 
-messageTypeRegistry.set(Line.$type, Line);
-
-const baseWord: object = { $type: 'yandex.cloud.ai.ocr.v1.Word', text: '', entityIndex: 0 };
+const baseWord: object = { text: '', entityIndex: 0 };
 
 export const Word = {
-    $type: 'yandex.cloud.ai.ocr.v1.Word' as const,
-
     encode(message: Word, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.boundingBox !== undefined) {
             Polygon.encode(message.boundingBox, writer.uint32(10).fork()).ldelim();
@@ -866,17 +815,9 @@ export const Word = {
     },
 };
 
-messageTypeRegistry.set(Word.$type, Word);
-
-const baseTextSegments: object = {
-    $type: 'yandex.cloud.ai.ocr.v1.TextSegments',
-    startIndex: 0,
-    length: 0,
-};
+const baseTextSegments: object = { startIndex: 0, length: 0 };
 
 export const TextSegments = {
-    $type: 'yandex.cloud.ai.ocr.v1.TextSegments' as const,
-
     encode(message: TextSegments, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.startIndex !== 0) {
             writer.uint32(8).int64(message.startIndex);
@@ -934,13 +875,9 @@ export const TextSegments = {
     },
 };
 
-messageTypeRegistry.set(TextSegments.$type, TextSegments);
-
-const baseTable: object = { $type: 'yandex.cloud.ai.ocr.v1.Table', rowCount: 0, columnCount: 0 };
+const baseTable: object = { rowCount: 0, columnCount: 0 };
 
 export const Table = {
-    $type: 'yandex.cloud.ai.ocr.v1.Table' as const,
-
     encode(message: Table, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.boundingBox !== undefined) {
             Polygon.encode(message.boundingBox, writer.uint32(10).fork()).ldelim();
@@ -1030,20 +967,9 @@ export const Table = {
     },
 };
 
-messageTypeRegistry.set(Table.$type, Table);
-
-const baseTableCell: object = {
-    $type: 'yandex.cloud.ai.ocr.v1.TableCell',
-    rowIndex: 0,
-    columnIndex: 0,
-    columnSpan: 0,
-    rowSpan: 0,
-    text: '',
-};
+const baseTableCell: object = { rowIndex: 0, columnIndex: 0, columnSpan: 0, rowSpan: 0, text: '' };
 
 export const TableCell = {
-    $type: 'yandex.cloud.ai.ocr.v1.TableCell' as const,
-
     encode(message: TableCell, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.boundingBox !== undefined) {
             Polygon.encode(message.boundingBox, writer.uint32(10).fork()).ldelim();
@@ -1168,8 +1094,6 @@ export const TableCell = {
     },
 };
 
-messageTypeRegistry.set(TableCell.$type, TableCell);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1190,16 +1114,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

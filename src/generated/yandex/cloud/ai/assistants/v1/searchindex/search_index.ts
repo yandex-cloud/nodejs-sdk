@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { ExpirationConfig } from '../../../../../../yandex/cloud/ai/common/common';
@@ -17,7 +16,6 @@ export const protobufPackage = 'yandex.cloud.ai.assistants.v1.searchindex';
 
 /** Represents a search index used to store and query data, either using traditional keyword-based text search or vector-based search mechanisms. */
 export interface SearchIndex {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.SearchIndex';
     /** Unique identifier of the search index. */
     id: string;
     /** ID of the folder that the search index belongs to. */
@@ -58,14 +56,12 @@ export interface SearchIndex {
 }
 
 export interface SearchIndex_LabelsEntry {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.SearchIndex.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Defines the configuration for a traditional keyword-based text search index. */
 export interface TextSearchIndex {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.TextSearchIndex';
     /**
      * Chunking strategy used to split text into smaller chunks before indexing.
      * In the case of text search, tokens are individual text characters.
@@ -77,7 +73,6 @@ export interface TextSearchIndex {
 
 /** Defines the configuration for a vector-based search index. This type uses embeddings to represent documents and queries. */
 export interface VectorSearchIndex {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.VectorSearchIndex';
     /** The [ID of the model](/docs/foundation-models/concepts/embeddings) to be used for obtaining document text embeddings. */
     docEmbedderUri: string;
     /** The [ID of the model](/docs/foundation-models/concepts/embeddings) to be used for obtaining query text embeddings. */
@@ -91,7 +86,6 @@ export interface VectorSearchIndex {
 
 /** Defines the configuration for a hybrid (vector-based + keyword-based) search index. This type uses both embeddings and keyword-based search to represent documents and queries. */
 export interface HybridSearchIndex {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.HybridSearchIndex';
     /** Configuration for a traditional keyword-based text search index. */
     textSearchIndex?: TextSearchIndex;
     /** Configuration for a vector-based search index. */
@@ -109,7 +103,6 @@ export interface HybridSearchIndex {
 }
 
 const baseSearchIndex: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.SearchIndex',
     id: '',
     folderId: '',
     name: '',
@@ -119,8 +112,6 @@ const baseSearchIndex: object = {
 };
 
 export const SearchIndex = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.SearchIndex' as const,
-
     encode(message: SearchIndex, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -154,11 +145,7 @@ export const SearchIndex = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             SearchIndex_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.assistants.v1.searchindex.SearchIndex.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(90).fork(),
             ).ldelim();
         });
@@ -369,17 +356,9 @@ export const SearchIndex = {
     },
 };
 
-messageTypeRegistry.set(SearchIndex.$type, SearchIndex);
-
-const baseSearchIndex_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.SearchIndex.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseSearchIndex_LabelsEntry: object = { key: '', value: '' };
 
 export const SearchIndex_LabelsEntry = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.SearchIndex.LabelsEntry' as const,
-
     encode(message: SearchIndex_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -436,15 +415,9 @@ export const SearchIndex_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(SearchIndex_LabelsEntry.$type, SearchIndex_LabelsEntry);
-
-const baseTextSearchIndex: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.TextSearchIndex',
-};
+const baseTextSearchIndex: object = {};
 
 export const TextSearchIndex = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.TextSearchIndex' as const,
-
     encode(message: TextSearchIndex, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.chunkingStrategy !== undefined) {
             ChunkingStrategy.encode(message.chunkingStrategy, writer.uint32(10).fork()).ldelim();
@@ -516,17 +489,9 @@ export const TextSearchIndex = {
     },
 };
 
-messageTypeRegistry.set(TextSearchIndex.$type, TextSearchIndex);
-
-const baseVectorSearchIndex: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.VectorSearchIndex',
-    docEmbedderUri: '',
-    queryEmbedderUri: '',
-};
+const baseVectorSearchIndex: object = { docEmbedderUri: '', queryEmbedderUri: '' };
 
 export const VectorSearchIndex = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.VectorSearchIndex' as const,
-
     encode(message: VectorSearchIndex, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.docEmbedderUri !== '') {
             writer.uint32(10).string(message.docEmbedderUri);
@@ -604,16 +569,9 @@ export const VectorSearchIndex = {
     },
 };
 
-messageTypeRegistry.set(VectorSearchIndex.$type, VectorSearchIndex);
-
-const baseHybridSearchIndex: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.HybridSearchIndex',
-    normalizationStrategy: 0,
-};
+const baseHybridSearchIndex: object = { normalizationStrategy: 0 };
 
 export const HybridSearchIndex = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.HybridSearchIndex' as const,
-
     encode(message: HybridSearchIndex, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.textSearchIndex !== undefined) {
             TextSearchIndex.encode(message.textSearchIndex, writer.uint32(10).fork()).ldelim();
@@ -742,8 +700,6 @@ export const HybridSearchIndex = {
     },
 };
 
-messageTypeRegistry.set(HybridSearchIndex.$type, HybridSearchIndex);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -753,21 +709,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

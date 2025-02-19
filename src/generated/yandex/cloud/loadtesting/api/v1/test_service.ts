@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -22,7 +21,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1';
 
 export interface CreateTestRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateTestRequest';
     /** ID of the folder to create a test in. */
     folderId: string;
     /**
@@ -35,43 +33,36 @@ export interface CreateTestRequest {
 }
 
 export interface CreateTestMetadata {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateTestMetadata';
     /** ID of the test that is being created. */
     testId: string;
 }
 
 export interface GetTestRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetTestRequest';
     /** ID of the test to return. */
     testId: string;
 }
 
 export interface StopTestRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.StopTestRequest';
     /** ID of the test to stop. */
     testId: string;
 }
 
 export interface StopTestMetadata {
-    $type: 'yandex.cloud.loadtesting.api.v1.StopTestMetadata';
     /** ID of the test that is being stopped. */
     testId: string;
 }
 
 export interface DeleteTestRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteTestRequest';
     /** ID of the test to delete. */
     testId: string;
 }
 
 export interface DeleteTestMetadata {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteTestMetadata';
     /** ID of the test that is being deleted. */
     testId: string;
 }
 
 export interface ListTestsRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListTestsRequest';
     /** ID of the folder to list tests in. */
     folderId: string;
     /**
@@ -121,7 +112,6 @@ export interface ListTestsRequest {
 }
 
 export interface ListTestsResponse {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListTestsResponse';
     /** List of tests in the specified folder. */
     tests: Test[];
     /**
@@ -134,14 +124,9 @@ export interface ListTestsResponse {
     nextPageToken: string;
 }
 
-const baseCreateTestRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateTestRequest',
-    folderId: '',
-};
+const baseCreateTestRequest: object = { folderId: '' };
 
 export const CreateTestRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateTestRequest' as const,
-
     encode(message: CreateTestRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -228,16 +213,9 @@ export const CreateTestRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateTestRequest.$type, CreateTestRequest);
-
-const baseCreateTestMetadata: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateTestMetadata',
-    testId: '',
-};
+const baseCreateTestMetadata: object = { testId: '' };
 
 export const CreateTestMetadata = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateTestMetadata' as const,
-
     encode(message: CreateTestMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -285,16 +263,9 @@ export const CreateTestMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateTestMetadata.$type, CreateTestMetadata);
-
-const baseGetTestRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetTestRequest',
-    testId: '',
-};
+const baseGetTestRequest: object = { testId: '' };
 
 export const GetTestRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetTestRequest' as const,
-
     encode(message: GetTestRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -340,16 +311,9 @@ export const GetTestRequest = {
     },
 };
 
-messageTypeRegistry.set(GetTestRequest.$type, GetTestRequest);
-
-const baseStopTestRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.StopTestRequest',
-    testId: '',
-};
+const baseStopTestRequest: object = { testId: '' };
 
 export const StopTestRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.StopTestRequest' as const,
-
     encode(message: StopTestRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -395,16 +359,9 @@ export const StopTestRequest = {
     },
 };
 
-messageTypeRegistry.set(StopTestRequest.$type, StopTestRequest);
-
-const baseStopTestMetadata: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.StopTestMetadata',
-    testId: '',
-};
+const baseStopTestMetadata: object = { testId: '' };
 
 export const StopTestMetadata = {
-    $type: 'yandex.cloud.loadtesting.api.v1.StopTestMetadata' as const,
-
     encode(message: StopTestMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -450,16 +407,9 @@ export const StopTestMetadata = {
     },
 };
 
-messageTypeRegistry.set(StopTestMetadata.$type, StopTestMetadata);
-
-const baseDeleteTestRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteTestRequest',
-    testId: '',
-};
+const baseDeleteTestRequest: object = { testId: '' };
 
 export const DeleteTestRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteTestRequest' as const,
-
     encode(message: DeleteTestRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -505,16 +455,9 @@ export const DeleteTestRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteTestRequest.$type, DeleteTestRequest);
-
-const baseDeleteTestMetadata: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteTestMetadata',
-    testId: '',
-};
+const baseDeleteTestMetadata: object = { testId: '' };
 
 export const DeleteTestMetadata = {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteTestMetadata' as const,
-
     encode(message: DeleteTestMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -562,19 +505,9 @@ export const DeleteTestMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteTestMetadata.$type, DeleteTestMetadata);
-
-const baseListTestsRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListTestsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListTestsRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListTestsRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListTestsRequest' as const,
-
     encode(message: ListTestsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -654,16 +587,9 @@ export const ListTestsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListTestsRequest.$type, ListTestsRequest);
-
-const baseListTestsResponse: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListTestsResponse',
-    nextPageToken: '',
-};
+const baseListTestsResponse: object = { nextPageToken: '' };
 
 export const ListTestsResponse = {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListTestsResponse' as const,
-
     encode(message: ListTestsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.tests) {
             Test.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -724,8 +650,6 @@ export const ListTestsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListTestsResponse.$type, ListTestsResponse);
 
 /** A set of methods for managing tests. */
 export const TestServiceService = {
@@ -927,16 +851,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -27,7 +26,6 @@ import {
 export const protobufPackage = 'yandex.cloud.logging.v1';
 
 export interface GetSinkRequest {
-    $type: 'yandex.cloud.logging.v1.GetSinkRequest';
     /**
      * ID of the sink to return.
      *
@@ -37,7 +35,6 @@ export interface GetSinkRequest {
 }
 
 export interface ListSinksRequest {
-    $type: 'yandex.cloud.logging.v1.ListSinksRequest';
     /**
      * Folder ID of the sinks to return.
      *
@@ -70,7 +67,6 @@ export interface ListSinksRequest {
 }
 
 export interface ListSinksResponse {
-    $type: 'yandex.cloud.logging.v1.ListSinksResponse';
     /** List of sinks in the specified folder. */
     sinks: Sink[];
     /**
@@ -84,7 +80,6 @@ export interface ListSinksResponse {
 }
 
 export interface CreateSinkRequest {
-    $type: 'yandex.cloud.logging.v1.CreateSinkRequest';
     /**
      * ID of the folder to create a sink in.
      *
@@ -109,19 +104,16 @@ export interface CreateSinkRequest {
 }
 
 export interface CreateSinkRequest_LabelsEntry {
-    $type: 'yandex.cloud.logging.v1.CreateSinkRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateSinkMetadata {
-    $type: 'yandex.cloud.logging.v1.CreateSinkMetadata';
     /** ID of the sink being created. */
     sinkId: string;
 }
 
 export interface UpdateSinkRequest {
-    $type: 'yandex.cloud.logging.v1.UpdateSinkRequest';
     /**
      * ID of the sink to update.
      *
@@ -148,19 +140,16 @@ export interface UpdateSinkRequest {
 }
 
 export interface UpdateSinkRequest_LabelsEntry {
-    $type: 'yandex.cloud.logging.v1.UpdateSinkRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateSinkMetadata {
-    $type: 'yandex.cloud.logging.v1.UpdateSinkMetadata';
     /** ID of the sink being updated. */
     sinkId: string;
 }
 
 export interface DeleteSinkRequest {
-    $type: 'yandex.cloud.logging.v1.DeleteSinkRequest';
     /**
      * ID of the sink to delete.
      *
@@ -170,13 +159,11 @@ export interface DeleteSinkRequest {
 }
 
 export interface DeleteSinkMetadata {
-    $type: 'yandex.cloud.logging.v1.DeleteSinkMetadata';
     /** ID of the sink being deleted. */
     sinkId: string;
 }
 
 export interface ListSinkOperationsRequest {
-    $type: 'yandex.cloud.logging.v1.ListSinkOperationsRequest';
     /**
      * ID of the sink to list operations for.
      *
@@ -209,7 +196,6 @@ export interface ListSinkOperationsRequest {
 }
 
 export interface ListSinkOperationsResponse {
-    $type: 'yandex.cloud.logging.v1.ListSinkOperationsResponse';
     /** List of operations for the specified sink. */
     operations: Operation[];
     /**
@@ -222,11 +208,9 @@ export interface ListSinkOperationsResponse {
     nextPageToken: string;
 }
 
-const baseGetSinkRequest: object = { $type: 'yandex.cloud.logging.v1.GetSinkRequest', sinkId: '' };
+const baseGetSinkRequest: object = { sinkId: '' };
 
 export const GetSinkRequest = {
-    $type: 'yandex.cloud.logging.v1.GetSinkRequest' as const,
-
     encode(message: GetSinkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sinkId !== '') {
             writer.uint32(10).string(message.sinkId);
@@ -272,19 +256,9 @@ export const GetSinkRequest = {
     },
 };
 
-messageTypeRegistry.set(GetSinkRequest.$type, GetSinkRequest);
-
-const baseListSinksRequest: object = {
-    $type: 'yandex.cloud.logging.v1.ListSinksRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListSinksRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListSinksRequest = {
-    $type: 'yandex.cloud.logging.v1.ListSinksRequest' as const,
-
     encode(message: ListSinksRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -364,16 +338,9 @@ export const ListSinksRequest = {
     },
 };
 
-messageTypeRegistry.set(ListSinksRequest.$type, ListSinksRequest);
-
-const baseListSinksResponse: object = {
-    $type: 'yandex.cloud.logging.v1.ListSinksResponse',
-    nextPageToken: '',
-};
+const baseListSinksResponse: object = { nextPageToken: '' };
 
 export const ListSinksResponse = {
-    $type: 'yandex.cloud.logging.v1.ListSinksResponse' as const,
-
     encode(message: ListSinksResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.sinks) {
             Sink.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -435,10 +402,7 @@ export const ListSinksResponse = {
     },
 };
 
-messageTypeRegistry.set(ListSinksResponse.$type, ListSinksResponse);
-
 const baseCreateSinkRequest: object = {
-    $type: 'yandex.cloud.logging.v1.CreateSinkRequest',
     folderId: '',
     name: '',
     description: '',
@@ -446,8 +410,6 @@ const baseCreateSinkRequest: object = {
 };
 
 export const CreateSinkRequest = {
-    $type: 'yandex.cloud.logging.v1.CreateSinkRequest' as const,
-
     encode(message: CreateSinkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -460,11 +422,7 @@ export const CreateSinkRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateSinkRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.logging.v1.CreateSinkRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -596,17 +554,9 @@ export const CreateSinkRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateSinkRequest.$type, CreateSinkRequest);
-
-const baseCreateSinkRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.logging.v1.CreateSinkRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateSinkRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateSinkRequest_LabelsEntry = {
-    $type: 'yandex.cloud.logging.v1.CreateSinkRequest.LabelsEntry' as const,
-
     encode(
         message: CreateSinkRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -666,16 +616,9 @@ export const CreateSinkRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateSinkRequest_LabelsEntry.$type, CreateSinkRequest_LabelsEntry);
-
-const baseCreateSinkMetadata: object = {
-    $type: 'yandex.cloud.logging.v1.CreateSinkMetadata',
-    sinkId: '',
-};
+const baseCreateSinkMetadata: object = { sinkId: '' };
 
 export const CreateSinkMetadata = {
-    $type: 'yandex.cloud.logging.v1.CreateSinkMetadata' as const,
-
     encode(message: CreateSinkMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sinkId !== '') {
             writer.uint32(10).string(message.sinkId);
@@ -723,10 +666,7 @@ export const CreateSinkMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateSinkMetadata.$type, CreateSinkMetadata);
-
 const baseUpdateSinkRequest: object = {
-    $type: 'yandex.cloud.logging.v1.UpdateSinkRequest',
     sinkId: '',
     name: '',
     description: '',
@@ -734,8 +674,6 @@ const baseUpdateSinkRequest: object = {
 };
 
 export const UpdateSinkRequest = {
-    $type: 'yandex.cloud.logging.v1.UpdateSinkRequest' as const,
-
     encode(message: UpdateSinkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sinkId !== '') {
             writer.uint32(10).string(message.sinkId);
@@ -751,11 +689,7 @@ export const UpdateSinkRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateSinkRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.logging.v1.UpdateSinkRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -900,17 +834,9 @@ export const UpdateSinkRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateSinkRequest.$type, UpdateSinkRequest);
-
-const baseUpdateSinkRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.logging.v1.UpdateSinkRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateSinkRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateSinkRequest_LabelsEntry = {
-    $type: 'yandex.cloud.logging.v1.UpdateSinkRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateSinkRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -970,16 +896,9 @@ export const UpdateSinkRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateSinkRequest_LabelsEntry.$type, UpdateSinkRequest_LabelsEntry);
-
-const baseUpdateSinkMetadata: object = {
-    $type: 'yandex.cloud.logging.v1.UpdateSinkMetadata',
-    sinkId: '',
-};
+const baseUpdateSinkMetadata: object = { sinkId: '' };
 
 export const UpdateSinkMetadata = {
-    $type: 'yandex.cloud.logging.v1.UpdateSinkMetadata' as const,
-
     encode(message: UpdateSinkMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sinkId !== '') {
             writer.uint32(10).string(message.sinkId);
@@ -1027,16 +946,9 @@ export const UpdateSinkMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateSinkMetadata.$type, UpdateSinkMetadata);
-
-const baseDeleteSinkRequest: object = {
-    $type: 'yandex.cloud.logging.v1.DeleteSinkRequest',
-    sinkId: '',
-};
+const baseDeleteSinkRequest: object = { sinkId: '' };
 
 export const DeleteSinkRequest = {
-    $type: 'yandex.cloud.logging.v1.DeleteSinkRequest' as const,
-
     encode(message: DeleteSinkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sinkId !== '') {
             writer.uint32(10).string(message.sinkId);
@@ -1082,16 +994,9 @@ export const DeleteSinkRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteSinkRequest.$type, DeleteSinkRequest);
-
-const baseDeleteSinkMetadata: object = {
-    $type: 'yandex.cloud.logging.v1.DeleteSinkMetadata',
-    sinkId: '',
-};
+const baseDeleteSinkMetadata: object = { sinkId: '' };
 
 export const DeleteSinkMetadata = {
-    $type: 'yandex.cloud.logging.v1.DeleteSinkMetadata' as const,
-
     encode(message: DeleteSinkMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sinkId !== '') {
             writer.uint32(10).string(message.sinkId);
@@ -1139,10 +1044,7 @@ export const DeleteSinkMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteSinkMetadata.$type, DeleteSinkMetadata);
-
 const baseListSinkOperationsRequest: object = {
-    $type: 'yandex.cloud.logging.v1.ListSinkOperationsRequest',
     sinkId: '',
     pageSize: 0,
     pageToken: '',
@@ -1150,8 +1052,6 @@ const baseListSinkOperationsRequest: object = {
 };
 
 export const ListSinkOperationsRequest = {
-    $type: 'yandex.cloud.logging.v1.ListSinkOperationsRequest' as const,
-
     encode(
         message: ListSinkOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1234,16 +1134,9 @@ export const ListSinkOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListSinkOperationsRequest.$type, ListSinkOperationsRequest);
-
-const baseListSinkOperationsResponse: object = {
-    $type: 'yandex.cloud.logging.v1.ListSinkOperationsResponse',
-    nextPageToken: '',
-};
+const baseListSinkOperationsResponse: object = { nextPageToken: '' };
 
 export const ListSinkOperationsResponse = {
-    $type: 'yandex.cloud.logging.v1.ListSinkOperationsResponse' as const,
-
     encode(
         message: ListSinkOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1309,8 +1202,6 @@ export const ListSinkOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListSinkOperationsResponse.$type, ListSinkOperationsResponse);
 
 /** A set of methods for managing log sinks. */
 export const SinkServiceService = {
@@ -1630,16 +1521,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

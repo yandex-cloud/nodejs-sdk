@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -29,7 +28,6 @@ import {
 export const protobufPackage = 'yandex.cloud.dataproc.manager.v1';
 
 export interface ListJobsRequest {
-    $type: 'yandex.cloud.dataproc.manager.v1.ListJobsRequest';
     /** Required. ID of the cluster to list Data Proc jobs of. */
     clusterId: string;
     /**
@@ -49,7 +47,6 @@ export interface ListJobsRequest {
 }
 
 export interface ListJobsResponse {
-    $type: 'yandex.cloud.dataproc.manager.v1.ListJobsResponse';
     /** Requested list of Data Proc jobs. */
     jobs: Job[];
     /**
@@ -63,7 +60,6 @@ export interface ListJobsResponse {
 }
 
 export interface UpdateJobStatusRequest {
-    $type: 'yandex.cloud.dataproc.manager.v1.UpdateJobStatusRequest';
     /** Required. ID of the Data Proc cluster. */
     clusterId: string;
     /** Required. ID of the Data Proc job to update. */
@@ -74,12 +70,9 @@ export interface UpdateJobStatusRequest {
     applicationInfo?: ApplicationInfo;
 }
 
-export interface UpdateJobStatusResponse {
-    $type: 'yandex.cloud.dataproc.manager.v1.UpdateJobStatusResponse';
-}
+export interface UpdateJobStatusResponse {}
 
 export interface ListSupportJobsResponse {
-    $type: 'yandex.cloud.dataproc.manager.v1.ListSupportJobsResponse';
     /** Requested list of Data Proc jobs. */
     jobs: SupportJob[];
     /**
@@ -93,7 +86,6 @@ export interface ListSupportJobsResponse {
 }
 
 export interface UpdateSupportJobStatusRequest {
-    $type: 'yandex.cloud.dataproc.manager.v1.UpdateSupportJobStatusRequest';
     /** Required. ID of the Data Proc cluster. */
     clusterId: string;
     /** Required. ID of the Data Proc job to update. */
@@ -103,7 +95,6 @@ export interface UpdateSupportJobStatusRequest {
 }
 
 export interface SaveSupportJobLogRequest {
-    $type: 'yandex.cloud.dataproc.manager.v1.SaveSupportJobLogRequest';
     /** ID of the cluster. */
     clusterId: string;
     /** ID of the support job. */
@@ -112,21 +103,11 @@ export interface SaveSupportJobLogRequest {
     output: string;
 }
 
-export interface SaveSupportJobLogResponse {
-    $type: 'yandex.cloud.dataproc.manager.v1.SaveSupportJobLogResponse';
-}
+export interface SaveSupportJobLogResponse {}
 
-const baseListJobsRequest: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.ListJobsRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListJobsRequest: object = { clusterId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListJobsRequest = {
-    $type: 'yandex.cloud.dataproc.manager.v1.ListJobsRequest' as const,
-
     encode(message: ListJobsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -206,16 +187,9 @@ export const ListJobsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListJobsRequest.$type, ListJobsRequest);
-
-const baseListJobsResponse: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.ListJobsResponse',
-    nextPageToken: '',
-};
+const baseListJobsResponse: object = { nextPageToken: '' };
 
 export const ListJobsResponse = {
-    $type: 'yandex.cloud.dataproc.manager.v1.ListJobsResponse' as const,
-
     encode(message: ListJobsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.jobs) {
             Job.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -277,18 +251,9 @@ export const ListJobsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListJobsResponse.$type, ListJobsResponse);
-
-const baseUpdateJobStatusRequest: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.UpdateJobStatusRequest',
-    clusterId: '',
-    jobId: '',
-    status: 0,
-};
+const baseUpdateJobStatusRequest: object = { clusterId: '', jobId: '', status: 0 };
 
 export const UpdateJobStatusRequest = {
-    $type: 'yandex.cloud.dataproc.manager.v1.UpdateJobStatusRequest' as const,
-
     encode(message: UpdateJobStatusRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -378,15 +343,9 @@ export const UpdateJobStatusRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateJobStatusRequest.$type, UpdateJobStatusRequest);
-
-const baseUpdateJobStatusResponse: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.UpdateJobStatusResponse',
-};
+const baseUpdateJobStatusResponse: object = {};
 
 export const UpdateJobStatusResponse = {
-    $type: 'yandex.cloud.dataproc.manager.v1.UpdateJobStatusResponse' as const,
-
     encode(_: UpdateJobStatusResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -424,16 +383,9 @@ export const UpdateJobStatusResponse = {
     },
 };
 
-messageTypeRegistry.set(UpdateJobStatusResponse.$type, UpdateJobStatusResponse);
-
-const baseListSupportJobsResponse: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.ListSupportJobsResponse',
-    nextPageToken: '',
-};
+const baseListSupportJobsResponse: object = { nextPageToken: '' };
 
 export const ListSupportJobsResponse = {
-    $type: 'yandex.cloud.dataproc.manager.v1.ListSupportJobsResponse' as const,
-
     encode(message: ListSupportJobsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.jobs) {
             SupportJob.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -497,18 +449,9 @@ export const ListSupportJobsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListSupportJobsResponse.$type, ListSupportJobsResponse);
-
-const baseUpdateSupportJobStatusRequest: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.UpdateSupportJobStatusRequest',
-    clusterId: '',
-    jobId: '',
-    status: 0,
-};
+const baseUpdateSupportJobStatusRequest: object = { clusterId: '', jobId: '', status: 0 };
 
 export const UpdateSupportJobStatusRequest = {
-    $type: 'yandex.cloud.dataproc.manager.v1.UpdateSupportJobStatusRequest' as const,
-
     encode(
         message: UpdateSupportJobStatusRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -583,18 +526,9 @@ export const UpdateSupportJobStatusRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateSupportJobStatusRequest.$type, UpdateSupportJobStatusRequest);
-
-const baseSaveSupportJobLogRequest: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.SaveSupportJobLogRequest',
-    clusterId: '',
-    jobId: '',
-    output: '',
-};
+const baseSaveSupportJobLogRequest: object = { clusterId: '', jobId: '', output: '' };
 
 export const SaveSupportJobLogRequest = {
-    $type: 'yandex.cloud.dataproc.manager.v1.SaveSupportJobLogRequest' as const,
-
     encode(
         message: SaveSupportJobLogRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -667,15 +601,9 @@ export const SaveSupportJobLogRequest = {
     },
 };
 
-messageTypeRegistry.set(SaveSupportJobLogRequest.$type, SaveSupportJobLogRequest);
-
-const baseSaveSupportJobLogResponse: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.SaveSupportJobLogResponse',
-};
+const baseSaveSupportJobLogResponse: object = {};
 
 export const SaveSupportJobLogResponse = {
-    $type: 'yandex.cloud.dataproc.manager.v1.SaveSupportJobLogResponse' as const,
-
     encode(_: SaveSupportJobLogResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -712,8 +640,6 @@ export const SaveSupportJobLogResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(SaveSupportJobLogResponse.$type, SaveSupportJobLogResponse);
 
 export const JobServiceService = {
     /** Retrieves a list of jobs for Data Proc cluster. */
@@ -906,16 +832,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

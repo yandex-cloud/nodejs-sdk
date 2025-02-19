@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -11,7 +10,6 @@ export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.test';
  * The structure is used by service to determine on which agents a specific test should be executed.
  */
 export interface AgentSelector {
-    $type: 'yandex.cloud.loadtesting.api.v1.test.AgentSelector';
     /** Selection by agent ID. */
     agentId: string | undefined;
     /** Selection by filter string. */
@@ -20,11 +18,9 @@ export interface AgentSelector {
     anonymousAgent: boolean | undefined;
 }
 
-const baseAgentSelector: object = { $type: 'yandex.cloud.loadtesting.api.v1.test.AgentSelector' };
+const baseAgentSelector: object = {};
 
 export const AgentSelector = {
-    $type: 'yandex.cloud.loadtesting.api.v1.test.AgentSelector' as const,
-
     encode(message: AgentSelector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentId !== undefined) {
             writer.uint32(10).string(message.agentId);
@@ -96,8 +92,6 @@ export const AgentSelector = {
     },
 };
 
-messageTypeRegistry.set(AgentSelector.$type, AgentSelector);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -107,16 +101,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

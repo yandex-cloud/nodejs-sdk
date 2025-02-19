@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -21,61 +20,47 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.mdb.greenplum.v1';
 
 export interface CreatePXFDatasourceMetadata {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreatePXFDatasourceMetadata';
     clusterId: string;
     datasourceName: string;
 }
 
 export interface UpdatePXFDatasourceMetadata {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdatePXFDatasourceMetadata';
     clusterId: string;
     datasourceName: string;
 }
 
 export interface DeletePXFDatasourceMetadata {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeletePXFDatasourceMetadata';
     clusterId: string;
     datasourceName: string;
 }
 
 export interface ListPXFDatasourcesRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListPXFDatasourcesRequest';
     clusterId: string;
 }
 
 export interface ListPXFDatasourcesResponse {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListPXFDatasourcesResponse';
     datasources: PXFDatasource[];
 }
 
 export interface CreatePXFDatasourceRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreatePXFDatasourceRequest';
     clusterId: string;
     datasource?: PXFDatasource;
 }
 
 export interface UpdatePXFDatasourceRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdatePXFDatasourceRequest';
     clusterId: string;
     updateMask?: FieldMask;
     datasource?: PXFDatasource;
 }
 
 export interface DeletePXFDatasourceRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeletePXFDatasourceRequest';
     clusterId: string;
     datasourceName: string;
 }
 
-const baseCreatePXFDatasourceMetadata: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreatePXFDatasourceMetadata',
-    clusterId: '',
-    datasourceName: '',
-};
+const baseCreatePXFDatasourceMetadata: object = { clusterId: '', datasourceName: '' };
 
 export const CreatePXFDatasourceMetadata = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreatePXFDatasourceMetadata' as const,
-
     encode(
         message: CreatePXFDatasourceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -140,17 +125,9 @@ export const CreatePXFDatasourceMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreatePXFDatasourceMetadata.$type, CreatePXFDatasourceMetadata);
-
-const baseUpdatePXFDatasourceMetadata: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdatePXFDatasourceMetadata',
-    clusterId: '',
-    datasourceName: '',
-};
+const baseUpdatePXFDatasourceMetadata: object = { clusterId: '', datasourceName: '' };
 
 export const UpdatePXFDatasourceMetadata = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdatePXFDatasourceMetadata' as const,
-
     encode(
         message: UpdatePXFDatasourceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -215,17 +192,9 @@ export const UpdatePXFDatasourceMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdatePXFDatasourceMetadata.$type, UpdatePXFDatasourceMetadata);
-
-const baseDeletePXFDatasourceMetadata: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeletePXFDatasourceMetadata',
-    clusterId: '',
-    datasourceName: '',
-};
+const baseDeletePXFDatasourceMetadata: object = { clusterId: '', datasourceName: '' };
 
 export const DeletePXFDatasourceMetadata = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeletePXFDatasourceMetadata' as const,
-
     encode(
         message: DeletePXFDatasourceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -290,16 +259,9 @@ export const DeletePXFDatasourceMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeletePXFDatasourceMetadata.$type, DeletePXFDatasourceMetadata);
-
-const baseListPXFDatasourcesRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListPXFDatasourcesRequest',
-    clusterId: '',
-};
+const baseListPXFDatasourcesRequest: object = { clusterId: '' };
 
 export const ListPXFDatasourcesRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListPXFDatasourcesRequest' as const,
-
     encode(
         message: ListPXFDatasourcesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -352,15 +314,9 @@ export const ListPXFDatasourcesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListPXFDatasourcesRequest.$type, ListPXFDatasourcesRequest);
-
-const baseListPXFDatasourcesResponse: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListPXFDatasourcesResponse',
-};
+const baseListPXFDatasourcesResponse: object = {};
 
 export const ListPXFDatasourcesResponse = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListPXFDatasourcesResponse' as const,
-
     encode(
         message: ListPXFDatasourcesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -417,16 +373,9 @@ export const ListPXFDatasourcesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListPXFDatasourcesResponse.$type, ListPXFDatasourcesResponse);
-
-const baseCreatePXFDatasourceRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreatePXFDatasourceRequest',
-    clusterId: '',
-};
+const baseCreatePXFDatasourceRequest: object = { clusterId: '' };
 
 export const CreatePXFDatasourceRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreatePXFDatasourceRequest' as const,
-
     encode(
         message: CreatePXFDatasourceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -497,16 +446,9 @@ export const CreatePXFDatasourceRequest = {
     },
 };
 
-messageTypeRegistry.set(CreatePXFDatasourceRequest.$type, CreatePXFDatasourceRequest);
-
-const baseUpdatePXFDatasourceRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdatePXFDatasourceRequest',
-    clusterId: '',
-};
+const baseUpdatePXFDatasourceRequest: object = { clusterId: '' };
 
 export const UpdatePXFDatasourceRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdatePXFDatasourceRequest' as const,
-
     encode(
         message: UpdatePXFDatasourceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -595,17 +537,9 @@ export const UpdatePXFDatasourceRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdatePXFDatasourceRequest.$type, UpdatePXFDatasourceRequest);
-
-const baseDeletePXFDatasourceRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeletePXFDatasourceRequest',
-    clusterId: '',
-    datasourceName: '',
-};
+const baseDeletePXFDatasourceRequest: object = { clusterId: '', datasourceName: '' };
 
 export const DeletePXFDatasourceRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeletePXFDatasourceRequest' as const,
-
     encode(
         message: DeletePXFDatasourceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -669,8 +603,6 @@ export const DeletePXFDatasourceRequest = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeletePXFDatasourceRequest.$type, DeletePXFDatasourceRequest);
 
 export const PXFDatasourceServiceService = {
     /** List all PXF datasources */
@@ -819,16 +751,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

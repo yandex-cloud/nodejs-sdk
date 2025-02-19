@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.cdn.v1';
 
 export interface ActivateProviderRequest {
-    $type: 'yandex.cloud.cdn.v1.ActivateProviderRequest';
     /** ID of the folder that the activate provider belongs to. */
     folderId: string;
     /**
@@ -31,32 +29,23 @@ export interface ActivateProviderRequest {
 }
 
 export interface ActivateProviderMetadata {
-    $type: 'yandex.cloud.cdn.v1.ActivateProviderMetadata';
     /** ID of the folder that the activate provider belongs to. */
     folderId: string;
 }
 
 export interface ListActivatedProvidersRequest {
-    $type: 'yandex.cloud.cdn.v1.ListActivatedProvidersRequest';
     /** ID of the folder that the activate provider belongs to. */
     folderId: string;
 }
 
 export interface ListActivatedProvidersResponse {
-    $type: 'yandex.cloud.cdn.v1.ListActivatedProvidersResponse';
     /** Creates a list of providers. */
     providers: string[];
 }
 
-const baseActivateProviderRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.ActivateProviderRequest',
-    folderId: '',
-    providerType: '',
-};
+const baseActivateProviderRequest: object = { folderId: '', providerType: '' };
 
 export const ActivateProviderRequest = {
-    $type: 'yandex.cloud.cdn.v1.ActivateProviderRequest' as const,
-
     encode(message: ActivateProviderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -118,16 +107,9 @@ export const ActivateProviderRequest = {
     },
 };
 
-messageTypeRegistry.set(ActivateProviderRequest.$type, ActivateProviderRequest);
-
-const baseActivateProviderMetadata: object = {
-    $type: 'yandex.cloud.cdn.v1.ActivateProviderMetadata',
-    folderId: '',
-};
+const baseActivateProviderMetadata: object = { folderId: '' };
 
 export const ActivateProviderMetadata = {
-    $type: 'yandex.cloud.cdn.v1.ActivateProviderMetadata' as const,
-
     encode(
         message: ActivateProviderMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -180,16 +162,9 @@ export const ActivateProviderMetadata = {
     },
 };
 
-messageTypeRegistry.set(ActivateProviderMetadata.$type, ActivateProviderMetadata);
-
-const baseListActivatedProvidersRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.ListActivatedProvidersRequest',
-    folderId: '',
-};
+const baseListActivatedProvidersRequest: object = { folderId: '' };
 
 export const ListActivatedProvidersRequest = {
-    $type: 'yandex.cloud.cdn.v1.ListActivatedProvidersRequest' as const,
-
     encode(
         message: ListActivatedProvidersRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -242,16 +217,9 @@ export const ListActivatedProvidersRequest = {
     },
 };
 
-messageTypeRegistry.set(ListActivatedProvidersRequest.$type, ListActivatedProvidersRequest);
-
-const baseListActivatedProvidersResponse: object = {
-    $type: 'yandex.cloud.cdn.v1.ListActivatedProvidersResponse',
-    providers: '',
-};
+const baseListActivatedProvidersResponse: object = { providers: '' };
 
 export const ListActivatedProvidersResponse = {
-    $type: 'yandex.cloud.cdn.v1.ListActivatedProvidersResponse' as const,
-
     encode(
         message: ListActivatedProvidersResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -305,8 +273,6 @@ export const ListActivatedProvidersResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListActivatedProvidersResponse.$type, ListActivatedProvidersResponse);
 
 /** A set of methods for managing Provider Service resources. */
 export const ProviderServiceService = {
@@ -398,16 +364,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

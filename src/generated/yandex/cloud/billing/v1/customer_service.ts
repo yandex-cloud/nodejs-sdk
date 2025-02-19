@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,7 +19,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.billing.v1';
 
 export interface ListCustomersRequest {
-    $type: 'yandex.cloud.billing.v1.ListCustomersRequest';
     /** ID of the reseller. */
     resellerId: string;
     /**
@@ -39,7 +37,6 @@ export interface ListCustomersRequest {
 }
 
 export interface ListCustomersResponse {
-    $type: 'yandex.cloud.billing.v1.ListCustomersResponse';
     /** List of customers. */
     customers: Customer[];
     /**
@@ -54,7 +51,6 @@ export interface ListCustomersResponse {
 }
 
 export interface InviteCustomerRequest {
-    $type: 'yandex.cloud.billing.v1.InviteCustomerRequest';
     /** Billing account ID of the reseller that the customer will be associated with. */
     resellerId: string;
     /** Name of the customer. */
@@ -66,7 +62,6 @@ export interface InviteCustomerRequest {
 }
 
 export interface CreateResellerServedCustomerRequest {
-    $type: 'yandex.cloud.billing.v1.CreateResellerServedCustomerRequest';
     /**
      * ID of the reseller that customer will be associated with.</br>
      *
@@ -87,7 +82,6 @@ export interface CreateResellerServedCustomerRequest {
 }
 
 export interface ActivateCustomerRequest {
-    $type: 'yandex.cloud.billing.v1.ActivateCustomerRequest';
     /**
      * ID of the customer.
      * To get the customer ID, use [CustomerService.List] request.
@@ -96,7 +90,6 @@ export interface ActivateCustomerRequest {
 }
 
 export interface SuspendCustomerRequest {
-    $type: 'yandex.cloud.billing.v1.SuspendCustomerRequest';
     /**
      * ID of the customer.
      * To get the customer ID, use [CustomerService.List] request.
@@ -105,23 +98,15 @@ export interface SuspendCustomerRequest {
 }
 
 export interface CustomerMetadata {
-    $type: 'yandex.cloud.billing.v1.CustomerMetadata';
     /** ID of the reseller. */
     resellerId: string;
     /** ID of the customer. */
     customerId: string;
 }
 
-const baseListCustomersRequest: object = {
-    $type: 'yandex.cloud.billing.v1.ListCustomersRequest',
-    resellerId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListCustomersRequest: object = { resellerId: '', pageSize: 0, pageToken: '' };
 
 export const ListCustomersRequest = {
-    $type: 'yandex.cloud.billing.v1.ListCustomersRequest' as const,
-
     encode(message: ListCustomersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resellerId !== '') {
             writer.uint32(10).string(message.resellerId);
@@ -193,16 +178,9 @@ export const ListCustomersRequest = {
     },
 };
 
-messageTypeRegistry.set(ListCustomersRequest.$type, ListCustomersRequest);
-
-const baseListCustomersResponse: object = {
-    $type: 'yandex.cloud.billing.v1.ListCustomersResponse',
-    nextPageToken: '',
-};
+const baseListCustomersResponse: object = { nextPageToken: '' };
 
 export const ListCustomersResponse = {
-    $type: 'yandex.cloud.billing.v1.ListCustomersResponse' as const,
-
     encode(message: ListCustomersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.customers) {
             Customer.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -266,18 +244,9 @@ export const ListCustomersResponse = {
     },
 };
 
-messageTypeRegistry.set(ListCustomersResponse.$type, ListCustomersResponse);
-
-const baseInviteCustomerRequest: object = {
-    $type: 'yandex.cloud.billing.v1.InviteCustomerRequest',
-    resellerId: '',
-    name: '',
-    invitationEmail: '',
-};
+const baseInviteCustomerRequest: object = { resellerId: '', name: '', invitationEmail: '' };
 
 export const InviteCustomerRequest = {
-    $type: 'yandex.cloud.billing.v1.InviteCustomerRequest' as const,
-
     encode(message: InviteCustomerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resellerId !== '') {
             writer.uint32(10).string(message.resellerId);
@@ -364,17 +333,9 @@ export const InviteCustomerRequest = {
     },
 };
 
-messageTypeRegistry.set(InviteCustomerRequest.$type, InviteCustomerRequest);
-
-const baseCreateResellerServedCustomerRequest: object = {
-    $type: 'yandex.cloud.billing.v1.CreateResellerServedCustomerRequest',
-    resellerId: '',
-    name: '',
-};
+const baseCreateResellerServedCustomerRequest: object = { resellerId: '', name: '' };
 
 export const CreateResellerServedCustomerRequest = {
-    $type: 'yandex.cloud.billing.v1.CreateResellerServedCustomerRequest' as const,
-
     encode(
         message: CreateResellerServedCustomerRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -458,19 +419,9 @@ export const CreateResellerServedCustomerRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateResellerServedCustomerRequest.$type,
-    CreateResellerServedCustomerRequest,
-);
-
-const baseActivateCustomerRequest: object = {
-    $type: 'yandex.cloud.billing.v1.ActivateCustomerRequest',
-    customerId: '',
-};
+const baseActivateCustomerRequest: object = { customerId: '' };
 
 export const ActivateCustomerRequest = {
-    $type: 'yandex.cloud.billing.v1.ActivateCustomerRequest' as const,
-
     encode(message: ActivateCustomerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.customerId !== '') {
             writer.uint32(10).string(message.customerId);
@@ -520,16 +471,9 @@ export const ActivateCustomerRequest = {
     },
 };
 
-messageTypeRegistry.set(ActivateCustomerRequest.$type, ActivateCustomerRequest);
-
-const baseSuspendCustomerRequest: object = {
-    $type: 'yandex.cloud.billing.v1.SuspendCustomerRequest',
-    customerId: '',
-};
+const baseSuspendCustomerRequest: object = { customerId: '' };
 
 export const SuspendCustomerRequest = {
-    $type: 'yandex.cloud.billing.v1.SuspendCustomerRequest' as const,
-
     encode(message: SuspendCustomerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.customerId !== '') {
             writer.uint32(10).string(message.customerId);
@@ -579,17 +523,9 @@ export const SuspendCustomerRequest = {
     },
 };
 
-messageTypeRegistry.set(SuspendCustomerRequest.$type, SuspendCustomerRequest);
-
-const baseCustomerMetadata: object = {
-    $type: 'yandex.cloud.billing.v1.CustomerMetadata',
-    resellerId: '',
-    customerId: '',
-};
+const baseCustomerMetadata: object = { resellerId: '', customerId: '' };
 
 export const CustomerMetadata = {
-    $type: 'yandex.cloud.billing.v1.CustomerMetadata' as const,
-
     encode(message: CustomerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resellerId !== '') {
             writer.uint32(10).string(message.resellerId);
@@ -648,8 +584,6 @@ export const CustomerMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(CustomerMetadata.$type, CustomerMetadata);
 
 /** A set of methods for managing Customer resources. */
 export const CustomerServiceService = {
@@ -839,16 +773,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

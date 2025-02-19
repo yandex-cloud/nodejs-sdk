@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ import { PublicConnection } from '../../../../yandex/cloud/cic/v1/public_connect
 export const protobufPackage = 'yandex.cloud.cic.v1';
 
 export interface GetPublicConnectionRequest {
-    $type: 'yandex.cloud.cic.v1.GetPublicConnectionRequest';
     /**
      * ID of the PublicConnection resource to return.
      * To get the publicConnection ID use a [PublicConnectionService.List] request.
@@ -28,7 +26,6 @@ export interface GetPublicConnectionRequest {
 }
 
 export interface ListPublicConnectionsRequest {
-    $type: 'yandex.cloud.cic.v1.ListPublicConnectionsRequest';
     /**
      * ID of the folder to list publicConnections in.
      * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -57,7 +54,6 @@ export interface ListPublicConnectionsRequest {
 }
 
 export interface ListPublicConnectionsResponse {
-    $type: 'yandex.cloud.cic.v1.ListPublicConnectionsResponse';
     /** List of PublicConnection resources. */
     publicConnections: PublicConnection[];
     /**
@@ -71,14 +67,9 @@ export interface ListPublicConnectionsResponse {
     nextPageToken: string;
 }
 
-const baseGetPublicConnectionRequest: object = {
-    $type: 'yandex.cloud.cic.v1.GetPublicConnectionRequest',
-    publicConnectionId: '',
-};
+const baseGetPublicConnectionRequest: object = { publicConnectionId: '' };
 
 export const GetPublicConnectionRequest = {
-    $type: 'yandex.cloud.cic.v1.GetPublicConnectionRequest' as const,
-
     encode(
         message: GetPublicConnectionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -132,10 +123,7 @@ export const GetPublicConnectionRequest = {
     },
 };
 
-messageTypeRegistry.set(GetPublicConnectionRequest.$type, GetPublicConnectionRequest);
-
 const baseListPublicConnectionsRequest: object = {
-    $type: 'yandex.cloud.cic.v1.ListPublicConnectionsRequest',
     folderId: '',
     pageSize: 0,
     pageToken: '',
@@ -143,8 +131,6 @@ const baseListPublicConnectionsRequest: object = {
 };
 
 export const ListPublicConnectionsRequest = {
-    $type: 'yandex.cloud.cic.v1.ListPublicConnectionsRequest' as const,
-
     encode(
         message: ListPublicConnectionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -229,16 +215,9 @@ export const ListPublicConnectionsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListPublicConnectionsRequest.$type, ListPublicConnectionsRequest);
-
-const baseListPublicConnectionsResponse: object = {
-    $type: 'yandex.cloud.cic.v1.ListPublicConnectionsResponse',
-    nextPageToken: '',
-};
+const baseListPublicConnectionsResponse: object = { nextPageToken: '' };
 
 export const ListPublicConnectionsResponse = {
-    $type: 'yandex.cloud.cic.v1.ListPublicConnectionsResponse' as const,
-
     encode(
         message: ListPublicConnectionsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -311,8 +290,6 @@ export const ListPublicConnectionsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListPublicConnectionsResponse.$type, ListPublicConnectionsResponse);
 
 /** A set of methods for managing PublicConnection resources. */
 export const PublicConnectionServiceService = {
@@ -428,16 +405,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

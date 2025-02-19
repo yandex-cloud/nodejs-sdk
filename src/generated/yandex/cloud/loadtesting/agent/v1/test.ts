@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
@@ -7,7 +6,6 @@ import { Timestamp } from '../../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.loadtesting.agent.v1';
 
 export interface Test {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Test';
     id: string;
     folderId: string;
     name: string;
@@ -190,13 +188,11 @@ export function test_GeneratorToJSON(object: Test_Generator): string {
 }
 
 export interface Test_LabelsEntry {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Test.LabelsEntry';
     key: string;
     value: string;
 }
 
 const baseTest: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Test',
     id: '',
     folderId: '',
     name: '',
@@ -214,8 +210,6 @@ const baseTest: object = {
 };
 
 export const Test = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Test' as const,
-
     encode(message: Test, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -230,14 +224,7 @@ export const Test = {
             writer.uint32(34).string(message.description);
         }
         Object.entries(message.labels).forEach(([key, value]) => {
-            Test_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.loadtesting.agent.v1.Test.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
-                writer.uint32(42).fork(),
-            ).ldelim();
+            Test_LabelsEntry.encode({ key: key as any, value }, writer.uint32(42).fork()).ldelim();
         });
         if (message.createdAt !== undefined) {
             Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(50).fork()).ldelim();
@@ -527,17 +514,9 @@ export const Test = {
     },
 };
 
-messageTypeRegistry.set(Test.$type, Test);
-
-const baseTest_LabelsEntry: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Test.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseTest_LabelsEntry: object = { key: '', value: '' };
 
 export const Test_LabelsEntry = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Test.LabelsEntry' as const,
-
     encode(message: Test_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -592,8 +571,6 @@ export const Test_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Test_LabelsEntry.$type, Test_LabelsEntry);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -614,21 +591,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

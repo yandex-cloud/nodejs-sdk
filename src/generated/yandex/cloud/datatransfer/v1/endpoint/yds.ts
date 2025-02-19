@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Parser } from '../../../../../yandex/cloud/datatransfer/v1/endpoint/parsers';
@@ -52,7 +51,6 @@ export function ydsCompressionCodecToJSON(object: YdsCompressionCodec): string {
 }
 
 export interface YDSSource {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.YDSSource';
     /** Database */
     database: string;
     /** Stream */
@@ -80,7 +78,6 @@ export interface YDSSource {
 }
 
 export interface YDSTarget {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.YDSTarget';
     /** Database */
     database: string;
     /** Stream */
@@ -105,7 +102,6 @@ export interface YDSTarget {
 }
 
 const baseYDSSource: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.YDSSource',
     database: '',
     stream: '',
     serviceAccountId: '',
@@ -118,8 +114,6 @@ const baseYDSSource: object = {
 };
 
 export const YDSSource = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.YDSSource' as const,
-
     encode(message: YDSSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.database !== '') {
             writer.uint32(10).string(message.database);
@@ -292,10 +286,7 @@ export const YDSSource = {
     },
 };
 
-messageTypeRegistry.set(YDSSource.$type, YDSSource);
-
 const baseYDSTarget: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.YDSTarget',
     database: '',
     stream: '',
     serviceAccountId: '',
@@ -307,8 +298,6 @@ const baseYDSTarget: object = {
 };
 
 export const YDSTarget = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.YDSTarget' as const,
-
     encode(message: YDSTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.database !== '') {
             writer.uint32(10).string(message.database);
@@ -459,8 +448,6 @@ export const YDSTarget = {
     },
 };
 
-messageTypeRegistry.set(YDSTarget.$type, YDSTarget);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -470,16 +457,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

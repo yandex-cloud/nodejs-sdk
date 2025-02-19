@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Int64Value, BoolValue } from '../../../../../../google/protobuf/wrappers';
@@ -14,7 +13,6 @@ export const protobufPackage = 'yandex.cloud.mdb.sqlserver.v1.config';
  * Any options that are not listed here are not supported.
  */
 export interface SQLServerConfig2017std {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.config.SQLServerConfig2017std';
     /**
      * Limits the number of processors to use in parallel plan execution per task.
      *
@@ -62,7 +60,6 @@ export interface SQLServerConfig2017std {
 }
 
 export interface SQLServerConfigSet2017std {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.config.SQLServerConfigSet2017std';
     /** Effective settings for an SQL Server 2017 cluster (a combination of settings defined in [user_config] and [default_config]). */
     effectiveConfig?: SQLServerConfig2017std;
     /** User-defined settings for an SQL Server 2017 cluster. */
@@ -79,7 +76,6 @@ export interface SQLServerConfigSet2017std {
  * Any options that are not listed here are not supported.
  */
 export interface SQLServerConfig2017ent {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.config.SQLServerConfig2017ent';
     /**
      * Limits the number of processors to use in parallel plan execution per task.
      *
@@ -126,7 +122,6 @@ export interface SQLServerConfig2017ent {
 }
 
 export interface SQLServerConfigSet2017ent {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.config.SQLServerConfigSet2017ent';
     /** Effective settings for an SQL Server 2017 cluster (a combination of settings defined in [user_config] and [default_config]). */
     effectiveConfig?: SQLServerConfig2017ent;
     /** User-defined settings for an SQL Server 2017 cluster. */
@@ -135,44 +130,34 @@ export interface SQLServerConfigSet2017ent {
     defaultConfig?: SQLServerConfig2017ent;
 }
 
-const baseSQLServerConfig2017std: object = {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.config.SQLServerConfig2017std',
-};
+const baseSQLServerConfig2017std: object = {};
 
 export const SQLServerConfig2017std = {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.config.SQLServerConfig2017std' as const,
-
     encode(message: SQLServerConfig2017std, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxDegreeOfParallelism !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxDegreeOfParallelism! },
+                { value: message.maxDegreeOfParallelism! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
         if (message.costThresholdForParallelism !== undefined) {
             Int64Value.encode(
-                {
-                    $type: 'google.protobuf.Int64Value',
-                    value: message.costThresholdForParallelism!,
-                },
+                { value: message.costThresholdForParallelism! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
         if (message.auditLevel !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.auditLevel! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.auditLevel! }, writer.uint32(26).fork()).ldelim();
         }
         if (message.fillFactorPercent !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.fillFactorPercent! },
+                { value: message.fillFactorPercent! },
                 writer.uint32(34).fork(),
             ).ldelim();
         }
         if (message.optimizeForAdHocWorkloads !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.optimizeForAdHocWorkloads! },
+                { value: message.optimizeForAdHocWorkloads! },
                 writer.uint32(42).fork(),
             ).ldelim();
         }
@@ -272,15 +257,9 @@ export const SQLServerConfig2017std = {
     },
 };
 
-messageTypeRegistry.set(SQLServerConfig2017std.$type, SQLServerConfig2017std);
-
-const baseSQLServerConfigSet2017std: object = {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.config.SQLServerConfigSet2017std',
-};
+const baseSQLServerConfigSet2017std: object = {};
 
 export const SQLServerConfigSet2017std = {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.config.SQLServerConfigSet2017std' as const,
-
     encode(
         message: SQLServerConfigSet2017std,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -381,46 +360,34 @@ export const SQLServerConfigSet2017std = {
     },
 };
 
-messageTypeRegistry.set(SQLServerConfigSet2017std.$type, SQLServerConfigSet2017std);
-
-const baseSQLServerConfig2017ent: object = {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.config.SQLServerConfig2017ent',
-};
+const baseSQLServerConfig2017ent: object = {};
 
 export const SQLServerConfig2017ent = {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.config.SQLServerConfig2017ent' as const,
-
     encode(message: SQLServerConfig2017ent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxDegreeOfParallelism !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxDegreeOfParallelism! },
+                { value: message.maxDegreeOfParallelism! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
         if (message.costThresholdForParallelism !== undefined) {
             Int64Value.encode(
-                {
-                    $type: 'google.protobuf.Int64Value',
-                    value: message.costThresholdForParallelism!,
-                },
+                { value: message.costThresholdForParallelism! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
         if (message.auditLevel !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.auditLevel! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.auditLevel! }, writer.uint32(26).fork()).ldelim();
         }
         if (message.fillFactorPercent !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.fillFactorPercent! },
+                { value: message.fillFactorPercent! },
                 writer.uint32(34).fork(),
             ).ldelim();
         }
         if (message.optimizeForAdHocWorkloads !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.optimizeForAdHocWorkloads! },
+                { value: message.optimizeForAdHocWorkloads! },
                 writer.uint32(42).fork(),
             ).ldelim();
         }
@@ -520,15 +487,9 @@ export const SQLServerConfig2017ent = {
     },
 };
 
-messageTypeRegistry.set(SQLServerConfig2017ent.$type, SQLServerConfig2017ent);
-
-const baseSQLServerConfigSet2017ent: object = {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.config.SQLServerConfigSet2017ent',
-};
+const baseSQLServerConfigSet2017ent: object = {};
 
 export const SQLServerConfigSet2017ent = {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.config.SQLServerConfigSet2017ent' as const,
-
     encode(
         message: SQLServerConfigSet2017ent,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -629,8 +590,6 @@ export const SQLServerConfigSet2017ent = {
     },
 };
 
-messageTypeRegistry.set(SQLServerConfigSet2017ent.$type, SQLServerConfigSet2017ent);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -640,16 +599,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

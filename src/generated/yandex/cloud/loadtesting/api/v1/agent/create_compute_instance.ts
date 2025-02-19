@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -11,7 +10,6 @@ import {
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.agent';
 
 export interface CreateComputeInstance {
-    $type: 'yandex.cloud.loadtesting.api.v1.agent.CreateComputeInstance';
     /** Resource labels as `key:value` pairs. */
     labels: { [key: string]: string };
     /**
@@ -56,35 +54,22 @@ export interface CreateComputeInstance {
 }
 
 export interface CreateComputeInstance_LabelsEntry {
-    $type: 'yandex.cloud.loadtesting.api.v1.agent.CreateComputeInstance.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateComputeInstance_MetadataEntry {
-    $type: 'yandex.cloud.loadtesting.api.v1.agent.CreateComputeInstance.MetadataEntry';
     key: string;
     value: string;
 }
 
-const baseCreateComputeInstance: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.agent.CreateComputeInstance',
-    zoneId: '',
-    serviceAccountId: '',
-    platformId: '',
-};
+const baseCreateComputeInstance: object = { zoneId: '', serviceAccountId: '', platformId: '' };
 
 export const CreateComputeInstance = {
-    $type: 'yandex.cloud.loadtesting.api.v1.agent.CreateComputeInstance' as const,
-
     encode(message: CreateComputeInstance, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateComputeInstance_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.loadtesting.api.v1.agent.CreateComputeInstance.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -96,11 +81,7 @@ export const CreateComputeInstance = {
         }
         Object.entries(message.metadata).forEach(([key, value]) => {
             CreateComputeInstance_MetadataEntry.encode(
-                {
-                    $type: 'yandex.cloud.loadtesting.api.v1.agent.CreateComputeInstance.MetadataEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(66).fork(),
             ).ldelim();
         });
@@ -289,17 +270,9 @@ export const CreateComputeInstance = {
     },
 };
 
-messageTypeRegistry.set(CreateComputeInstance.$type, CreateComputeInstance);
-
-const baseCreateComputeInstance_LabelsEntry: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.agent.CreateComputeInstance.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateComputeInstance_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateComputeInstance_LabelsEntry = {
-    $type: 'yandex.cloud.loadtesting.api.v1.agent.CreateComputeInstance.LabelsEntry' as const,
-
     encode(
         message: CreateComputeInstance_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -365,17 +338,9 @@ export const CreateComputeInstance_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateComputeInstance_LabelsEntry.$type, CreateComputeInstance_LabelsEntry);
-
-const baseCreateComputeInstance_MetadataEntry: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.agent.CreateComputeInstance.MetadataEntry',
-    key: '',
-    value: '',
-};
+const baseCreateComputeInstance_MetadataEntry: object = { key: '', value: '' };
 
 export const CreateComputeInstance_MetadataEntry = {
-    $type: 'yandex.cloud.loadtesting.api.v1.agent.CreateComputeInstance.MetadataEntry' as const,
-
     encode(
         message: CreateComputeInstance_MetadataEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -441,11 +406,6 @@ export const CreateComputeInstance_MetadataEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateComputeInstance_MetadataEntry.$type,
-    CreateComputeInstance_MetadataEntry,
-);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -455,16 +415,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

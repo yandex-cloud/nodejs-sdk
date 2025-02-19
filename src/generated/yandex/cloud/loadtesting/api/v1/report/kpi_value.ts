@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -7,7 +6,6 @@ export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.report';
 
 /** An actual value of test's KPI. */
 export interface KpiValue {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiValue';
     /** ID of a test. */
     testId: string;
     /** Value of KPI. */
@@ -16,16 +14,9 @@ export interface KpiValue {
     isOk: boolean;
 }
 
-const baseKpiValue: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiValue',
-    testId: '',
-    value: 0,
-    isOk: false,
-};
+const baseKpiValue: object = { testId: '', value: 0, isOk: false };
 
 export const KpiValue = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiValue' as const,
-
     encode(message: KpiValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -91,8 +82,6 @@ export const KpiValue = {
     },
 };
 
-messageTypeRegistry.set(KpiValue.$type, KpiValue);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -102,16 +91,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

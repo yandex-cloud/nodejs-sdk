@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,13 +18,11 @@ import { Location } from '../../../../yandex/cloud/ydb/v1/location';
 export const protobufPackage = 'yandex.cloud.ydb.v1';
 
 export interface GetLocationRequest {
-    $type: 'yandex.cloud.ydb.v1.GetLocationRequest';
     /** Required. ID of the location to return. */
     locationId: string;
 }
 
 export interface ListLocationsRequest {
-    $type: 'yandex.cloud.ydb.v1.ListLocationsRequest';
     /**
      * The maximum number of results per page that should be returned. If the number of available
      * results is larger than `page_size`, the service returns a `next_page_token` that can be used
@@ -41,7 +38,6 @@ export interface ListLocationsRequest {
 }
 
 export interface ListLocationsResponse {
-    $type: 'yandex.cloud.ydb.v1.ListLocationsResponse';
     /** Requested list of locations. */
     locations: Location[];
     /**
@@ -54,14 +50,9 @@ export interface ListLocationsResponse {
     nextPageToken: string;
 }
 
-const baseGetLocationRequest: object = {
-    $type: 'yandex.cloud.ydb.v1.GetLocationRequest',
-    locationId: '',
-};
+const baseGetLocationRequest: object = { locationId: '' };
 
 export const GetLocationRequest = {
-    $type: 'yandex.cloud.ydb.v1.GetLocationRequest' as const,
-
     encode(message: GetLocationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.locationId !== '') {
             writer.uint32(10).string(message.locationId);
@@ -111,17 +102,9 @@ export const GetLocationRequest = {
     },
 };
 
-messageTypeRegistry.set(GetLocationRequest.$type, GetLocationRequest);
-
-const baseListLocationsRequest: object = {
-    $type: 'yandex.cloud.ydb.v1.ListLocationsRequest',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListLocationsRequest: object = { pageSize: 0, pageToken: '' };
 
 export const ListLocationsRequest = {
-    $type: 'yandex.cloud.ydb.v1.ListLocationsRequest' as const,
-
     encode(message: ListLocationsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -181,16 +164,9 @@ export const ListLocationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListLocationsRequest.$type, ListLocationsRequest);
-
-const baseListLocationsResponse: object = {
-    $type: 'yandex.cloud.ydb.v1.ListLocationsResponse',
-    nextPageToken: '',
-};
+const baseListLocationsResponse: object = { nextPageToken: '' };
 
 export const ListLocationsResponse = {
-    $type: 'yandex.cloud.ydb.v1.ListLocationsResponse' as const,
-
     encode(message: ListLocationsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.locations) {
             Location.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -253,8 +229,6 @@ export const ListLocationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListLocationsResponse.$type, ListLocationsResponse);
 
 export const LocationServiceService = {
     /** Returns the specified location. */
@@ -356,16 +330,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

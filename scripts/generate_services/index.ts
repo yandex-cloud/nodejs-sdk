@@ -86,13 +86,15 @@ const generateCloudApi = () => {
     const GENERATED_CODE_DIR = PATH.resolve('./src/generated');
 
     const protoFiles = fg.sync('**/*.proto', { cwd: YA_PROTO_DIR, absolute: true });
+
     const commandArgs = [
         'npx --no-install grpc_tools_node_protoc',
         `--ts_proto_out=${GENERATED_CODE_DIR}`,
-        '--ts_proto_opt=outputServices=grpc-js,esModuleInterop=true,outputTypeRegistry=true,env=node,useOptionals=messages',
+        '--ts_proto_opt=outputServices=grpc-js,esModuleInterop=true,env=node,useOptionals=messages',
         `-I ${PROTO_DIR} -I ${PROTO_DIR}/third_party/googleapis`,
         protoFiles.join(' '),
     ];
+
     const command = commandArgs.join(' ');
 
     return exec(command);

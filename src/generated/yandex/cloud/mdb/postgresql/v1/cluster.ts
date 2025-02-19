@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -51,7 +50,6 @@ export const protobufPackage = 'yandex.cloud.mdb.postgresql.v1';
  * the [Concepts](/docs/managed-postgresql/concepts) section of the documentation.
  */
 export interface Cluster {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Cluster';
     /**
      * ID of the PostgreSQL cluster.
      * This ID is assigned by MDB at creation time.
@@ -268,14 +266,12 @@ export function cluster_StatusToJSON(object: Cluster_Status): string {
 }
 
 export interface Cluster_LabelsEntry {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Cluster.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Monitoring system. */
 export interface Monitoring {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Monitoring';
     /** Name of the monitoring system. */
     name: string;
     /** Description of the monitoring system. */
@@ -285,7 +281,6 @@ export interface Monitoring {
 }
 
 export interface ClusterConfig {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ClusterConfig';
     /** Version of PostgreSQL server software. */
     version: string;
     /** Configuration of a PostgreSQL 9.6 server. */
@@ -341,7 +336,6 @@ export interface ClusterConfig {
 }
 
 export interface ConnectionPoolerConfig {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ConnectionPoolerConfig';
     /**
      * Mode that the connection pooler is working in.
      * See descriptions of all modes in the [documentation for PgBouncer](https://pgbouncer.github.io/usage).
@@ -403,7 +397,6 @@ export function connectionPoolerConfig_PoolingModeToJSON(
 }
 
 export interface Host {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Host';
     /**
      * Name of the PostgreSQL host. The host name is assigned by MDB at creation time, and cannot be changed.
      * 1-63 characters long.
@@ -585,7 +578,6 @@ export function host_HealthToJSON(object: Host_Health): string {
 }
 
 export interface HostConfig {
-    $type: 'yandex.cloud.mdb.postgresql.v1.HostConfig';
     /** Configuration for a host with PostgreSQL 9.6 server deployed. */
     postgresqlConfig96?: Postgresqlhostconfig96 | undefined;
     /** Configuration for a host with PostgreSQL 10 1C server deployed. */
@@ -623,7 +615,6 @@ export interface HostConfig {
 }
 
 export interface Service {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Service';
     /** Type of the service provided by the host. If the field has default value, it is not returned in the response. */
     type: Service_Type;
     /** Aggregated health of the service. If the field has default value, it is not returned in the response. */
@@ -720,7 +711,6 @@ export function service_HealthToJSON(object: Service_Health): string {
 }
 
 export interface Resources {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Resources';
     /**
      * ID of the preset for computational resources available to a host (CPU, memory etc.).
      * All available presets are listed in the [documentation](/docs/managed-postgresql/concepts/instance-types).
@@ -739,7 +729,6 @@ export interface Resources {
 }
 
 export interface Access {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Access';
     /** Allow access for DataLens */
     dataLens: boolean;
     /**
@@ -757,7 +746,6 @@ export interface Access {
 }
 
 export interface PerformanceDiagnostics {
-    $type: 'yandex.cloud.mdb.postgresql.v1.PerformanceDiagnostics';
     /** Configuration setting which enables/disables performance diagnostics service in cluster. */
     enabled: boolean;
     /** Interval (in seconds) for pg_stat_activity sampling */
@@ -767,7 +755,6 @@ export interface PerformanceDiagnostics {
 }
 
 export interface DiskSizeAutoscaling {
-    $type: 'yandex.cloud.mdb.postgresql.v1.DiskSizeAutoscaling';
     /** Threshold of storage usage (in percent) that triggers automatic scaling of the storage during the maintenance window. Zero value means disabled threshold. */
     plannedUsageThreshold: number;
     /** Threshold of storage usage (in percent) that triggers immediate automatic scaling of the storage. Zero value means disabled threshold. */
@@ -777,7 +764,6 @@ export interface DiskSizeAutoscaling {
 }
 
 const baseCluster: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Cluster',
     id: '',
     folderId: '',
     name: '',
@@ -792,7 +778,6 @@ const baseCluster: object = {
 };
 
 type ClusterType = {
-    $type: "yandex.cloud.mdb.postgresql.v1.Cluster";
     encode(message: Cluster, writer?: _m0.Writer): _m0.Writer;
     decode(input: _m0.Reader | Uint8Array, length?: number): Cluster;
     fromJSON(object: any): Cluster;
@@ -800,8 +785,6 @@ type ClusterType = {
     fromPartial<I extends Exact<DeepPartial<Cluster>, I>>(object: I): Cluster;
 }
 export const Cluster: ClusterType = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Cluster' as const,
-
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -820,11 +803,7 @@ export const Cluster: ClusterType = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Cluster_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.postgresql.v1.Cluster.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -1089,17 +1068,9 @@ export const Cluster: ClusterType = {
     },
 };
 
-messageTypeRegistry.set(Cluster.$type, Cluster);
-
-const baseCluster_LabelsEntry: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Cluster.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
 export const Cluster_LabelsEntry = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Cluster.LabelsEntry' as const,
-
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1156,18 +1127,9 @@ export const Cluster_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Cluster_LabelsEntry.$type, Cluster_LabelsEntry);
-
-const baseMonitoring: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Monitoring',
-    name: '',
-    description: '',
-    link: '',
-};
+const baseMonitoring: object = { name: '', description: '', link: '' };
 
 export const Monitoring = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Monitoring' as const,
-
     encode(message: Monitoring, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1233,15 +1195,9 @@ export const Monitoring = {
     },
 };
 
-messageTypeRegistry.set(Monitoring.$type, Monitoring);
-
-const baseClusterConfig: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ClusterConfig',
-    version: '',
-};
+const baseClusterConfig: object = { version: '' };
 
 type ClusterConfigType = {
-    $type: "yandex.cloud.mdb.postgresql.v1.ClusterConfig";
     encode(message: ClusterConfig, writer?: _m0.Writer): _m0.Writer;
     decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConfig;
     fromJSON(object: any): ClusterConfig;
@@ -1249,8 +1205,6 @@ type ClusterConfigType = {
     fromPartial<I extends Exact<DeepPartial<ClusterConfig>, I>>(object: I): ClusterConfig;
 }
 export const ClusterConfig: ClusterConfigType = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ClusterConfig' as const,
-
     encode(message: ClusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -1364,17 +1318,14 @@ export const ClusterConfig: ClusterConfigType = {
             Resources.encode(message.resources, writer.uint32(42).fork()).ldelim();
         }
         if (message.autofailover !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.autofailover! },
-                writer.uint32(50).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.autofailover! }, writer.uint32(50).fork()).ldelim();
         }
         if (message.backupWindowStart !== undefined) {
             TimeOfDay.encode(message.backupWindowStart, writer.uint32(58).fork()).ldelim();
         }
         if (message.backupRetainPeriodDays !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.backupRetainPeriodDays! },
+                { value: message.backupRetainPeriodDays! },
                 writer.uint32(138).fork(),
             ).ldelim();
         }
@@ -1854,25 +1805,15 @@ export const ClusterConfig: ClusterConfigType = {
     },
 };
 
-messageTypeRegistry.set(ClusterConfig.$type, ClusterConfig);
-
-const baseConnectionPoolerConfig: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ConnectionPoolerConfig',
-    poolingMode: 0,
-};
+const baseConnectionPoolerConfig: object = { poolingMode: 0 };
 
 export const ConnectionPoolerConfig = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ConnectionPoolerConfig' as const,
-
     encode(message: ConnectionPoolerConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.poolingMode !== 0) {
             writer.uint32(8).int32(message.poolingMode);
         }
         if (message.poolDiscard !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.poolDiscard! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.poolDiscard! }, writer.uint32(18).fork()).ldelim();
         }
         return writer;
     },
@@ -1929,10 +1870,7 @@ export const ConnectionPoolerConfig = {
     },
 };
 
-messageTypeRegistry.set(ConnectionPoolerConfig.$type, ConnectionPoolerConfig);
-
 const baseHost: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Host',
     name: '',
     clusterId: '',
     zoneId: '',
@@ -1945,8 +1883,6 @@ const baseHost: object = {
 };
 
 export const Host = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Host' as const,
-
     encode(message: Host, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1976,10 +1912,7 @@ export const Host = {
             writer.uint32(74).string(message.replicationSource);
         }
         if (message.priority !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.priority! },
-                writer.uint32(82).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.priority! }, writer.uint32(82).fork()).ldelim();
         }
         if (message.config !== undefined) {
             HostConfig.encode(message.config, writer.uint32(90).fork()).ldelim();
@@ -2146,13 +2079,9 @@ export const Host = {
     },
 };
 
-messageTypeRegistry.set(Host.$type, Host);
-
-const baseHostConfig: object = { $type: 'yandex.cloud.mdb.postgresql.v1.HostConfig' };
+const baseHostConfig: object = {};
 
 export const HostConfig = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.HostConfig' as const,
-
     encode(message: HostConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.postgresqlConfig96 !== undefined) {
             Postgresqlhostconfig96.encode(
@@ -2605,13 +2534,9 @@ export const HostConfig = {
     },
 };
 
-messageTypeRegistry.set(HostConfig.$type, HostConfig);
-
-const baseService: object = { $type: 'yandex.cloud.mdb.postgresql.v1.Service', type: 0, health: 0 };
+const baseService: object = { type: 0, health: 0 };
 
 export const Service = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Service' as const,
-
     encode(message: Service, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -2671,18 +2596,9 @@ export const Service = {
     },
 };
 
-messageTypeRegistry.set(Service.$type, Service);
-
-const baseResources: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Resources',
-    resourcePresetId: '',
-    diskSize: 0,
-    diskTypeId: '',
-};
+const baseResources: object = { resourcePresetId: '', diskSize: 0, diskTypeId: '' };
 
 export const Resources = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Resources' as const,
-
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);
@@ -2752,10 +2668,7 @@ export const Resources = {
     },
 };
 
-messageTypeRegistry.set(Resources.$type, Resources);
-
 const baseAccess: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Access',
     dataLens: false,
     webSql: false,
     serverless: false,
@@ -2764,8 +2677,6 @@ const baseAccess: object = {
 };
 
 export const Access = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Access' as const,
-
     encode(message: Access, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataLens === true) {
             writer.uint32(8).bool(message.dataLens);
@@ -2859,18 +2770,13 @@ export const Access = {
     },
 };
 
-messageTypeRegistry.set(Access.$type, Access);
-
 const basePerformanceDiagnostics: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.PerformanceDiagnostics',
     enabled: false,
     sessionsSamplingInterval: 0,
     statementsSamplingInterval: 0,
 };
 
 export const PerformanceDiagnostics = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.PerformanceDiagnostics' as const,
-
     encode(message: PerformanceDiagnostics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enabled === true) {
             writer.uint32(8).bool(message.enabled);
@@ -2948,18 +2854,13 @@ export const PerformanceDiagnostics = {
     },
 };
 
-messageTypeRegistry.set(PerformanceDiagnostics.$type, PerformanceDiagnostics);
-
 const baseDiskSizeAutoscaling: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.DiskSizeAutoscaling',
     plannedUsageThreshold: 0,
     emergencyUsageThreshold: 0,
     diskSizeLimit: 0,
 };
 
 export const DiskSizeAutoscaling = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.DiskSizeAutoscaling' as const,
-
     encode(message: DiskSizeAutoscaling, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.plannedUsageThreshold !== 0) {
             writer.uint32(8).int64(message.plannedUsageThreshold);
@@ -3036,8 +2937,6 @@ export const DiskSizeAutoscaling = {
     },
 };
 
-messageTypeRegistry.set(DiskSizeAutoscaling.$type, DiskSizeAutoscaling);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -3058,21 +2957,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -26,7 +25,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.containerregistry.v1';
 
 export interface GetRepositoryRequest {
-    $type: 'yandex.cloud.containerregistry.v1.GetRepositoryRequest';
     /**
      * ID of the Repository resource to return.
      *
@@ -36,7 +34,6 @@ export interface GetRepositoryRequest {
 }
 
 export interface GetRepositoryByNameRequest {
-    $type: 'yandex.cloud.containerregistry.v1.GetRepositoryByNameRequest';
     /**
      * Name of the Repository resource to return.
      *
@@ -46,7 +43,6 @@ export interface GetRepositoryByNameRequest {
 }
 
 export interface ListRepositoriesRequest {
-    $type: 'yandex.cloud.containerregistry.v1.ListRepositoriesRequest';
     /**
      * ID of the registry to list repositories in.
      *
@@ -86,7 +82,6 @@ export interface ListRepositoriesRequest {
 }
 
 export interface ListRepositoriesResponse {
-    $type: 'yandex.cloud.containerregistry.v1.ListRepositoriesResponse';
     /** List of Repository resources. */
     repositories: Repository[];
     /**
@@ -101,7 +96,6 @@ export interface ListRepositoriesResponse {
 }
 
 export interface UpsertRepositoryRequest {
-    $type: 'yandex.cloud.containerregistry.v1.UpsertRepositoryRequest';
     /**
      * Name of the repository.
      *
@@ -111,31 +105,23 @@ export interface UpsertRepositoryRequest {
 }
 
 export interface UpsertRepositoryMetadata {
-    $type: 'yandex.cloud.containerregistry.v1.UpsertRepositoryMetadata';
     /** ID of the repository that is being upserted. */
     repositoryId: string;
 }
 
 export interface DeleteRepositoryRequest {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteRepositoryRequest';
     /** ID of the repository to delete. */
     repositoryId: string;
 }
 
 export interface DeleteRepositoryMetadata {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteRepositoryMetadata';
     /** ID of the repository that is being deleted. */
     repositoryId: string;
 }
 
-const baseGetRepositoryRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.GetRepositoryRequest',
-    repositoryId: '',
-};
+const baseGetRepositoryRequest: object = { repositoryId: '' };
 
 export const GetRepositoryRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.GetRepositoryRequest' as const,
-
     encode(message: GetRepositoryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.repositoryId !== '') {
             writer.uint32(10).string(message.repositoryId);
@@ -185,16 +171,9 @@ export const GetRepositoryRequest = {
     },
 };
 
-messageTypeRegistry.set(GetRepositoryRequest.$type, GetRepositoryRequest);
-
-const baseGetRepositoryByNameRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.GetRepositoryByNameRequest',
-    repositoryName: '',
-};
+const baseGetRepositoryByNameRequest: object = { repositoryName: '' };
 
 export const GetRepositoryByNameRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.GetRepositoryByNameRequest' as const,
-
     encode(
         message: GetRepositoryByNameRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -247,10 +226,7 @@ export const GetRepositoryByNameRequest = {
     },
 };
 
-messageTypeRegistry.set(GetRepositoryByNameRequest.$type, GetRepositoryByNameRequest);
-
 const baseListRepositoriesRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.ListRepositoriesRequest',
     registryId: '',
     folderId: '',
     pageSize: 0,
@@ -260,8 +236,6 @@ const baseListRepositoriesRequest: object = {
 };
 
 export const ListRepositoriesRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.ListRepositoriesRequest' as const,
-
     encode(message: ListRepositoriesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -365,16 +339,9 @@ export const ListRepositoriesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListRepositoriesRequest.$type, ListRepositoriesRequest);
-
-const baseListRepositoriesResponse: object = {
-    $type: 'yandex.cloud.containerregistry.v1.ListRepositoriesResponse',
-    nextPageToken: '',
-};
+const baseListRepositoriesResponse: object = { nextPageToken: '' };
 
 export const ListRepositoriesResponse = {
-    $type: 'yandex.cloud.containerregistry.v1.ListRepositoriesResponse' as const,
-
     encode(
         message: ListRepositoriesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -443,16 +410,9 @@ export const ListRepositoriesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListRepositoriesResponse.$type, ListRepositoriesResponse);
-
-const baseUpsertRepositoryRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.UpsertRepositoryRequest',
-    name: '',
-};
+const baseUpsertRepositoryRequest: object = { name: '' };
 
 export const UpsertRepositoryRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.UpsertRepositoryRequest' as const,
-
     encode(message: UpsertRepositoryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -499,16 +459,9 @@ export const UpsertRepositoryRequest = {
     },
 };
 
-messageTypeRegistry.set(UpsertRepositoryRequest.$type, UpsertRepositoryRequest);
-
-const baseUpsertRepositoryMetadata: object = {
-    $type: 'yandex.cloud.containerregistry.v1.UpsertRepositoryMetadata',
-    repositoryId: '',
-};
+const baseUpsertRepositoryMetadata: object = { repositoryId: '' };
 
 export const UpsertRepositoryMetadata = {
-    $type: 'yandex.cloud.containerregistry.v1.UpsertRepositoryMetadata' as const,
-
     encode(
         message: UpsertRepositoryMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -561,16 +514,9 @@ export const UpsertRepositoryMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpsertRepositoryMetadata.$type, UpsertRepositoryMetadata);
-
-const baseDeleteRepositoryRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteRepositoryRequest',
-    repositoryId: '',
-};
+const baseDeleteRepositoryRequest: object = { repositoryId: '' };
 
 export const DeleteRepositoryRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteRepositoryRequest' as const,
-
     encode(message: DeleteRepositoryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.repositoryId !== '') {
             writer.uint32(10).string(message.repositoryId);
@@ -620,16 +566,9 @@ export const DeleteRepositoryRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteRepositoryRequest.$type, DeleteRepositoryRequest);
-
-const baseDeleteRepositoryMetadata: object = {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteRepositoryMetadata',
-    repositoryId: '',
-};
+const baseDeleteRepositoryMetadata: object = { repositoryId: '' };
 
 export const DeleteRepositoryMetadata = {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteRepositoryMetadata' as const,
-
     encode(
         message: DeleteRepositoryMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -681,8 +620,6 @@ export const DeleteRepositoryMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteRepositoryMetadata.$type, DeleteRepositoryMetadata);
 
 /** A set of methods for managing Repository resources. */
 export const RepositoryServiceService = {
@@ -984,16 +921,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

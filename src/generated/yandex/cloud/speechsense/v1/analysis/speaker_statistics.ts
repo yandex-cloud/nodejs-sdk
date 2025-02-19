@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { UtteranceStatistics } from '../../../../../yandex/cloud/speechsense/v1/analysis/utterance_statistics';
@@ -8,7 +7,6 @@ import { DescriptiveStatistics } from '../../../../../yandex/cloud/speechsense/v
 export const protobufPackage = 'yandex.cloud.speechsense.v1.analysis';
 
 export interface SpeakerStatistics {
-    $type: 'yandex.cloud.speechsense.v1.analysis.SpeakerStatistics';
     /** Speaker tag */
     speakerTag: string;
     /** analysis of all phrases in format of single utterance */
@@ -23,15 +21,9 @@ export interface SpeakerStatistics {
     utteranceDurationEstimation?: DescriptiveStatistics;
 }
 
-const baseSpeakerStatistics: object = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.SpeakerStatistics',
-    speakerTag: '',
-    utteranceCount: 0,
-};
+const baseSpeakerStatistics: object = { speakerTag: '', utteranceCount: 0 };
 
 export const SpeakerStatistics = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.SpeakerStatistics' as const,
-
     encode(message: SpeakerStatistics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.speakerTag !== '') {
             writer.uint32(10).string(message.speakerTag);
@@ -190,8 +182,6 @@ export const SpeakerStatistics = {
     },
 };
 
-messageTypeRegistry.set(SpeakerStatistics.$type, SpeakerStatistics);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -212,16 +202,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

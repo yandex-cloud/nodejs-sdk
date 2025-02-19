@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -27,7 +26,6 @@ import {
 export const protobufPackage = 'yandex.cloud.serverless.mdbproxy.v1';
 
 export interface GetProxyRequest {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.GetProxyRequest';
     /**
      * ID of the proxy to return.
      *
@@ -37,7 +35,6 @@ export interface GetProxyRequest {
 }
 
 export interface ListProxyRequest {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.ListProxyRequest';
     /**
      * ID of the folder to list proxies in.
      *
@@ -70,7 +67,6 @@ export interface ListProxyRequest {
 }
 
 export interface ListProxyResponse {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.ListProxyResponse';
     /** List of proxies in the specified folder. */
     proxies: Proxy[];
     /**
@@ -84,7 +80,6 @@ export interface ListProxyResponse {
 }
 
 export interface CreateProxyRequest {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.CreateProxyRequest';
     /**
      * ID of the folder to create a proxy in.
      *
@@ -105,19 +100,16 @@ export interface CreateProxyRequest {
 }
 
 export interface CreateProxyRequest_LabelsEntry {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.CreateProxyRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateProxyMetadata {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.CreateProxyMetadata';
     /** ID of the proxy. */
     proxyId: string;
 }
 
 export interface UpdateProxyRequest {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.UpdateProxyRequest';
     /** ID of the proxy to update. */
     proxyId: string;
     /** Field mask that specifies which attributes of the proxy should be updated. */
@@ -136,31 +128,26 @@ export interface UpdateProxyRequest {
 }
 
 export interface UpdateProxyRequest_LabelsEntry {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.UpdateProxyRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateProxyMetadata {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.UpdateProxyMetadata';
     /** ID of the proxy. */
     proxyId: string;
 }
 
 export interface DeleteProxyRequest {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.DeleteProxyRequest';
     /** ID of the proxy. */
     proxyId: string;
 }
 
 export interface DeleteProxyMetadata {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.DeleteProxyMetadata';
     /** ID of the proxy. */
     proxyId: string;
 }
 
 export interface ListProxyOperationsRequest {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.ListProxyOperationsRequest';
     /** ID of the proxy to list operations for. */
     proxyId: string;
     /**
@@ -189,7 +176,6 @@ export interface ListProxyOperationsRequest {
 }
 
 export interface ListProxyOperationsResponse {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.ListProxyOperationsResponse';
     /** List of operations for the specified proxy. */
     operations: Operation[];
     /**
@@ -202,14 +188,9 @@ export interface ListProxyOperationsResponse {
     nextPageToken: string;
 }
 
-const baseGetProxyRequest: object = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.GetProxyRequest',
-    proxyId: '',
-};
+const baseGetProxyRequest: object = { proxyId: '' };
 
 export const GetProxyRequest = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.GetProxyRequest' as const,
-
     encode(message: GetProxyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.proxyId !== '') {
             writer.uint32(10).string(message.proxyId);
@@ -255,19 +236,9 @@ export const GetProxyRequest = {
     },
 };
 
-messageTypeRegistry.set(GetProxyRequest.$type, GetProxyRequest);
-
-const baseListProxyRequest: object = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.ListProxyRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListProxyRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListProxyRequest = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.ListProxyRequest' as const,
-
     encode(message: ListProxyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -347,16 +318,9 @@ export const ListProxyRequest = {
     },
 };
 
-messageTypeRegistry.set(ListProxyRequest.$type, ListProxyRequest);
-
-const baseListProxyResponse: object = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.ListProxyResponse',
-    nextPageToken: '',
-};
+const baseListProxyResponse: object = { nextPageToken: '' };
 
 export const ListProxyResponse = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.ListProxyResponse' as const,
-
     encode(message: ListProxyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.proxies) {
             Proxy.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -418,18 +382,9 @@ export const ListProxyResponse = {
     },
 };
 
-messageTypeRegistry.set(ListProxyResponse.$type, ListProxyResponse);
-
-const baseCreateProxyRequest: object = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.CreateProxyRequest',
-    folderId: '',
-    name: '',
-    description: '',
-};
+const baseCreateProxyRequest: object = { folderId: '', name: '', description: '' };
 
 export const CreateProxyRequest = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.CreateProxyRequest' as const,
-
     encode(message: CreateProxyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -442,11 +397,7 @@ export const CreateProxyRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateProxyRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.mdbproxy.v1.CreateProxyRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -555,17 +506,9 @@ export const CreateProxyRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateProxyRequest.$type, CreateProxyRequest);
-
-const baseCreateProxyRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.CreateProxyRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateProxyRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateProxyRequest_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.CreateProxyRequest.LabelsEntry' as const,
-
     encode(
         message: CreateProxyRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -625,16 +568,9 @@ export const CreateProxyRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateProxyRequest_LabelsEntry.$type, CreateProxyRequest_LabelsEntry);
-
-const baseCreateProxyMetadata: object = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.CreateProxyMetadata',
-    proxyId: '',
-};
+const baseCreateProxyMetadata: object = { proxyId: '' };
 
 export const CreateProxyMetadata = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.CreateProxyMetadata' as const,
-
     encode(message: CreateProxyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.proxyId !== '') {
             writer.uint32(10).string(message.proxyId);
@@ -682,18 +618,9 @@ export const CreateProxyMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateProxyMetadata.$type, CreateProxyMetadata);
-
-const baseUpdateProxyRequest: object = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.UpdateProxyRequest',
-    proxyId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateProxyRequest: object = { proxyId: '', name: '', description: '' };
 
 export const UpdateProxyRequest = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.UpdateProxyRequest' as const,
-
     encode(message: UpdateProxyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.proxyId !== '') {
             writer.uint32(10).string(message.proxyId);
@@ -709,11 +636,7 @@ export const UpdateProxyRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateProxyRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.mdbproxy.v1.UpdateProxyRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -835,17 +758,9 @@ export const UpdateProxyRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateProxyRequest.$type, UpdateProxyRequest);
-
-const baseUpdateProxyRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.UpdateProxyRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateProxyRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateProxyRequest_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.UpdateProxyRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateProxyRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -905,16 +820,9 @@ export const UpdateProxyRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateProxyRequest_LabelsEntry.$type, UpdateProxyRequest_LabelsEntry);
-
-const baseUpdateProxyMetadata: object = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.UpdateProxyMetadata',
-    proxyId: '',
-};
+const baseUpdateProxyMetadata: object = { proxyId: '' };
 
 export const UpdateProxyMetadata = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.UpdateProxyMetadata' as const,
-
     encode(message: UpdateProxyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.proxyId !== '') {
             writer.uint32(10).string(message.proxyId);
@@ -962,16 +870,9 @@ export const UpdateProxyMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateProxyMetadata.$type, UpdateProxyMetadata);
-
-const baseDeleteProxyRequest: object = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.DeleteProxyRequest',
-    proxyId: '',
-};
+const baseDeleteProxyRequest: object = { proxyId: '' };
 
 export const DeleteProxyRequest = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.DeleteProxyRequest' as const,
-
     encode(message: DeleteProxyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.proxyId !== '') {
             writer.uint32(10).string(message.proxyId);
@@ -1019,16 +920,9 @@ export const DeleteProxyRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteProxyRequest.$type, DeleteProxyRequest);
-
-const baseDeleteProxyMetadata: object = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.DeleteProxyMetadata',
-    proxyId: '',
-};
+const baseDeleteProxyMetadata: object = { proxyId: '' };
 
 export const DeleteProxyMetadata = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.DeleteProxyMetadata' as const,
-
     encode(message: DeleteProxyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.proxyId !== '') {
             writer.uint32(10).string(message.proxyId);
@@ -1076,10 +970,7 @@ export const DeleteProxyMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteProxyMetadata.$type, DeleteProxyMetadata);
-
 const baseListProxyOperationsRequest: object = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.ListProxyOperationsRequest',
     proxyId: '',
     pageSize: 0,
     pageToken: '',
@@ -1087,8 +978,6 @@ const baseListProxyOperationsRequest: object = {
 };
 
 export const ListProxyOperationsRequest = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.ListProxyOperationsRequest' as const,
-
     encode(
         message: ListProxyOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1171,16 +1060,9 @@ export const ListProxyOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListProxyOperationsRequest.$type, ListProxyOperationsRequest);
-
-const baseListProxyOperationsResponse: object = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.ListProxyOperationsResponse',
-    nextPageToken: '',
-};
+const baseListProxyOperationsResponse: object = { nextPageToken: '' };
 
 export const ListProxyOperationsResponse = {
-    $type: 'yandex.cloud.serverless.mdbproxy.v1.ListProxyOperationsResponse' as const,
-
     encode(
         message: ListProxyOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1246,8 +1128,6 @@ export const ListProxyOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListProxyOperationsResponse.$type, ListProxyOperationsResponse);
 
 /** A set of methods for managing serverless MDB proxy. */
 export const ProxyServiceService = {
@@ -1567,16 +1447,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

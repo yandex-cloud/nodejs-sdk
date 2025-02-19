@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Condition } from '../../../../../yandex/cloud/smartwebsecurity/v1/security_profile';
@@ -9,7 +8,6 @@ export const protobufPackage = 'yandex.cloud.smartwebsecurity.v1.advanced_rate_l
 
 /** A AdvancedRateLimiterProfile (ARL) resource. */
 export interface AdvancedRateLimiterProfile {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterProfile';
     /** ID of the ARL profile. */
     id: string;
     /** ID of the folder that the ARL profile belongs to. */
@@ -29,14 +27,12 @@ export interface AdvancedRateLimiterProfile {
 }
 
 export interface AdvancedRateLimiterProfile_LabelsEntry {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterProfile.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** A AdvancedRateLimiterRule object, see [Rules](/docs/smartwebsecurity/concepts/arl#traffic-conditions). */
 export interface AdvancedRateLimiterRule {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterRule';
     /** Name of the rule. The name is unique within the ARL profile. 1-50 characters long. */
     name: string;
     /**
@@ -99,7 +95,6 @@ export function advancedRateLimiterRule_ActionToJSON(
 
 /** StaticQuota object. */
 export interface AdvancedRateLimiterRule_StaticQuota {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterRule.StaticQuota';
     /** Action in case of exceeding this quota. */
     action: AdvancedRateLimiterRule_Action;
     /** The condition for matching the quota. */
@@ -115,7 +110,6 @@ export interface AdvancedRateLimiterRule_StaticQuota {
 
 /** DynamicQuota object. */
 export interface AdvancedRateLimiterRule_DynamicQuota {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterRule.DynamicQuota';
     /** Action in case of exceeding this quota. */
     action: AdvancedRateLimiterRule_Action;
     /** The condition for matching the quota. */
@@ -132,7 +126,6 @@ export interface AdvancedRateLimiterRule_DynamicQuota {
 }
 
 export interface AdvancedRateLimiterRule_DynamicQuota_Characteristic {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterRule.DynamicQuota.Characteristic';
     /**
      * Characteristic automatically based on the Request path, HTTP method, IP address, Region, and Host attributes.
      * See [Rules](/docs/smartwebsecurity/concepts/arl#requests-counting) for more details.
@@ -152,7 +145,6 @@ export interface AdvancedRateLimiterRule_DynamicQuota_Characteristic {
 }
 
 export interface AdvancedRateLimiterRule_DynamicQuota_Characteristic_SimpleCharacteristic {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterRule.DynamicQuota.Characteristic.SimpleCharacteristic';
     /** Type of simple characteristic. */
     type: AdvancedRateLimiterRule_DynamicQuota_Characteristic_SimpleCharacteristic_Type;
 }
@@ -224,7 +216,6 @@ export function advancedRateLimiterRule_DynamicQuota_Characteristic_SimpleCharac
 }
 
 export interface AdvancedRateLimiterRule_DynamicQuota_Characteristic_KeyCharacteristic {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterRule.DynamicQuota.Characteristic.KeyCharacteristic';
     /** Type of key characteristic. */
     type: AdvancedRateLimiterRule_DynamicQuota_Characteristic_KeyCharacteristic_Type;
     /** String value of the key. */
@@ -284,7 +275,6 @@ export function advancedRateLimiterRule_DynamicQuota_Characteristic_KeyCharacter
 }
 
 const baseAdvancedRateLimiterProfile: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterProfile',
     id: '',
     folderId: '',
     name: '',
@@ -293,8 +283,6 @@ const baseAdvancedRateLimiterProfile: object = {
 };
 
 export const AdvancedRateLimiterProfile = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterProfile' as const,
-
     encode(
         message: AdvancedRateLimiterProfile,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -307,11 +295,7 @@ export const AdvancedRateLimiterProfile = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             AdvancedRateLimiterProfile_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterProfile.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(26).fork(),
             ).ldelim();
         });
@@ -463,17 +447,9 @@ export const AdvancedRateLimiterProfile = {
     },
 };
 
-messageTypeRegistry.set(AdvancedRateLimiterProfile.$type, AdvancedRateLimiterProfile);
-
-const baseAdvancedRateLimiterProfile_LabelsEntry: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterProfile.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseAdvancedRateLimiterProfile_LabelsEntry: object = { key: '', value: '' };
 
 export const AdvancedRateLimiterProfile_LabelsEntry = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterProfile.LabelsEntry' as const,
-
     encode(
         message: AdvancedRateLimiterProfile_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -542,13 +518,7 @@ export const AdvancedRateLimiterProfile_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    AdvancedRateLimiterProfile_LabelsEntry.$type,
-    AdvancedRateLimiterProfile_LabelsEntry,
-);
-
 const baseAdvancedRateLimiterRule: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterRule',
     name: '',
     priority: 0,
     description: '',
@@ -556,8 +526,6 @@ const baseAdvancedRateLimiterRule: object = {
 };
 
 export const AdvancedRateLimiterRule = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterRule' as const,
-
     encode(message: AdvancedRateLimiterRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -684,18 +652,9 @@ export const AdvancedRateLimiterRule = {
     },
 };
 
-messageTypeRegistry.set(AdvancedRateLimiterRule.$type, AdvancedRateLimiterRule);
-
-const baseAdvancedRateLimiterRule_StaticQuota: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterRule.StaticQuota',
-    action: 0,
-    limit: 0,
-    period: 0,
-};
+const baseAdvancedRateLimiterRule_StaticQuota: object = { action: 0, limit: 0, period: 0 };
 
 export const AdvancedRateLimiterRule_StaticQuota = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterRule.StaticQuota' as const,
-
     encode(
         message: AdvancedRateLimiterRule_StaticQuota,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -791,21 +750,9 @@ export const AdvancedRateLimiterRule_StaticQuota = {
     },
 };
 
-messageTypeRegistry.set(
-    AdvancedRateLimiterRule_StaticQuota.$type,
-    AdvancedRateLimiterRule_StaticQuota,
-);
-
-const baseAdvancedRateLimiterRule_DynamicQuota: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterRule.DynamicQuota',
-    action: 0,
-    limit: 0,
-    period: 0,
-};
+const baseAdvancedRateLimiterRule_DynamicQuota: object = { action: 0, limit: 0, period: 0 };
 
 export const AdvancedRateLimiterRule_DynamicQuota = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterRule.DynamicQuota' as const,
-
     encode(
         message: AdvancedRateLimiterRule_DynamicQuota,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -930,19 +877,9 @@ export const AdvancedRateLimiterRule_DynamicQuota = {
     },
 };
 
-messageTypeRegistry.set(
-    AdvancedRateLimiterRule_DynamicQuota.$type,
-    AdvancedRateLimiterRule_DynamicQuota,
-);
-
-const baseAdvancedRateLimiterRule_DynamicQuota_Characteristic: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterRule.DynamicQuota.Characteristic',
-    caseInsensitive: false,
-};
+const baseAdvancedRateLimiterRule_DynamicQuota_Characteristic: object = { caseInsensitive: false };
 
 export const AdvancedRateLimiterRule_DynamicQuota_Characteristic = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterRule.DynamicQuota.Characteristic' as const,
-
     encode(
         message: AdvancedRateLimiterRule_DynamicQuota_Characteristic,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1066,19 +1003,11 @@ export const AdvancedRateLimiterRule_DynamicQuota_Characteristic = {
     },
 };
 
-messageTypeRegistry.set(
-    AdvancedRateLimiterRule_DynamicQuota_Characteristic.$type,
-    AdvancedRateLimiterRule_DynamicQuota_Characteristic,
-);
-
 const baseAdvancedRateLimiterRule_DynamicQuota_Characteristic_SimpleCharacteristic: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterRule.DynamicQuota.Characteristic.SimpleCharacteristic',
     type: 0,
 };
 
 export const AdvancedRateLimiterRule_DynamicQuota_Characteristic_SimpleCharacteristic = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterRule.DynamicQuota.Characteristic.SimpleCharacteristic' as const,
-
     encode(
         message: AdvancedRateLimiterRule_DynamicQuota_Characteristic_SimpleCharacteristic,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1153,20 +1082,12 @@ export const AdvancedRateLimiterRule_DynamicQuota_Characteristic_SimpleCharacter
     },
 };
 
-messageTypeRegistry.set(
-    AdvancedRateLimiterRule_DynamicQuota_Characteristic_SimpleCharacteristic.$type,
-    AdvancedRateLimiterRule_DynamicQuota_Characteristic_SimpleCharacteristic,
-);
-
 const baseAdvancedRateLimiterRule_DynamicQuota_Characteristic_KeyCharacteristic: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterRule.DynamicQuota.Characteristic.KeyCharacteristic',
     type: 0,
     value: '',
 };
 
 export const AdvancedRateLimiterRule_DynamicQuota_Characteristic_KeyCharacteristic = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.AdvancedRateLimiterRule.DynamicQuota.Characteristic.KeyCharacteristic' as const,
-
     encode(
         message: AdvancedRateLimiterRule_DynamicQuota_Characteristic_KeyCharacteristic,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1249,11 +1170,6 @@ export const AdvancedRateLimiterRule_DynamicQuota_Characteristic_KeyCharacterist
     },
 };
 
-messageTypeRegistry.set(
-    AdvancedRateLimiterRule_DynamicQuota_Characteristic_KeyCharacteristic.$type,
-    AdvancedRateLimiterRule_DynamicQuota_Characteristic_KeyCharacteristic,
-);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1274,21 +1190,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

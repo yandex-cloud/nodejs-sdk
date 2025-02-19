@@ -1,12 +1,10 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.datasphere.v2';
 
 export interface RestrictionMeta {
-    $type: 'yandex.cloud.datasphere.v2.RestrictionMeta';
     /** Name of restriction. */
     name: string;
     /** Value type of restriction. */
@@ -62,7 +60,6 @@ export function restrictionMeta_RestrictionValueTypeToJSON(
 }
 
 export interface Restriction {
-    $type: 'yandex.cloud.datasphere.v2.Restriction';
     /** Name of restriction. */
     name: string;
     /** List of boolean restriction values. Empty if value type is not boolean. */
@@ -74,26 +71,18 @@ export interface Restriction {
 }
 
 export interface GetRestrictionsMetaResponse {
-    $type: 'yandex.cloud.datasphere.v2.GetRestrictionsMetaResponse';
     /** List of restrictions. */
     restrictionsMeta: RestrictionMeta[];
 }
 
 export interface RestrictionsResponse {
-    $type: 'yandex.cloud.datasphere.v2.RestrictionsResponse';
     /** List of restrictions. */
     restrictions: Restriction[];
 }
 
-const baseRestrictionMeta: object = {
-    $type: 'yandex.cloud.datasphere.v2.RestrictionMeta',
-    name: '',
-    valueType: 0,
-};
+const baseRestrictionMeta: object = { name: '', valueType: 0 };
 
 export const RestrictionMeta = {
-    $type: 'yandex.cloud.datasphere.v2.RestrictionMeta' as const,
-
     encode(message: RestrictionMeta, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -151,19 +140,9 @@ export const RestrictionMeta = {
     },
 };
 
-messageTypeRegistry.set(RestrictionMeta.$type, RestrictionMeta);
-
-const baseRestriction: object = {
-    $type: 'yandex.cloud.datasphere.v2.Restriction',
-    name: '',
-    boolValue: false,
-    longValue: 0,
-    stringValue: '',
-};
+const baseRestriction: object = { name: '', boolValue: false, longValue: 0, stringValue: '' };
 
 export const Restriction = {
-    $type: 'yandex.cloud.datasphere.v2.Restriction' as const,
-
     encode(message: Restriction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -268,15 +247,9 @@ export const Restriction = {
     },
 };
 
-messageTypeRegistry.set(Restriction.$type, Restriction);
-
-const baseGetRestrictionsMetaResponse: object = {
-    $type: 'yandex.cloud.datasphere.v2.GetRestrictionsMetaResponse',
-};
+const baseGetRestrictionsMetaResponse: object = {};
 
 export const GetRestrictionsMetaResponse = {
-    $type: 'yandex.cloud.datasphere.v2.GetRestrictionsMetaResponse' as const,
-
     encode(
         message: GetRestrictionsMetaResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -336,15 +309,9 @@ export const GetRestrictionsMetaResponse = {
     },
 };
 
-messageTypeRegistry.set(GetRestrictionsMetaResponse.$type, GetRestrictionsMetaResponse);
-
-const baseRestrictionsResponse: object = {
-    $type: 'yandex.cloud.datasphere.v2.RestrictionsResponse',
-};
+const baseRestrictionsResponse: object = {};
 
 export const RestrictionsResponse = {
-    $type: 'yandex.cloud.datasphere.v2.RestrictionsResponse' as const,
-
     encode(message: RestrictionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.restrictions) {
             Restriction.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -398,8 +365,6 @@ export const RestrictionsResponse = {
     },
 };
 
-messageTypeRegistry.set(RestrictionsResponse.$type, RestrictionsResponse);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -420,16 +385,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

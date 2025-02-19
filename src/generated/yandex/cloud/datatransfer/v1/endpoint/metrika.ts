@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Secret } from '../../../../../yandex/cloud/datatransfer/v1/endpoint/common';
@@ -51,27 +50,19 @@ export function metrikaStreamTypeToJSON(object: MetrikaStreamType): string {
 }
 
 export interface MetrikaStream {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MetrikaStream';
     type: MetrikaStreamType;
     columns: string[];
 }
 
 export interface MetrikaSource {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MetrikaSource';
     counterIds: number[];
     token?: Secret;
     streams: MetrikaStream[];
 }
 
-const baseMetrikaStream: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MetrikaStream',
-    type: 0,
-    columns: '',
-};
+const baseMetrikaStream: object = { type: 0, columns: '' };
 
 export const MetrikaStream = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MetrikaStream' as const,
-
     encode(message: MetrikaStream, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -133,16 +124,9 @@ export const MetrikaStream = {
     },
 };
 
-messageTypeRegistry.set(MetrikaStream.$type, MetrikaStream);
-
-const baseMetrikaSource: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MetrikaSource',
-    counterIds: 0,
-};
+const baseMetrikaSource: object = { counterIds: 0 };
 
 export const MetrikaSource = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MetrikaSource' as const,
-
     encode(message: MetrikaSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         writer.uint32(10).fork();
         for (const v of message.counterIds) {
@@ -231,8 +215,6 @@ export const MetrikaSource = {
     },
 };
 
-messageTypeRegistry.set(MetrikaSource.$type, MetrikaSource);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -253,16 +235,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

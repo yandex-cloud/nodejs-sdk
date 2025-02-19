@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Int64Value } from '../../../../../google/protobuf/wrappers';
@@ -7,7 +6,6 @@ import { Int64Value } from '../../../../../google/protobuf/wrappers';
 export const protobufPackage = 'yandex.cloud.cic.v1.common';
 
 export interface LagInfo {
-    $type: 'yandex.cloud.cic.v1.common.LagInfo';
     /**
      * ID of LAG.
      * Optional.
@@ -18,17 +16,12 @@ export interface LagInfo {
     portNames: string[];
 }
 
-const baseLagInfo: object = { $type: 'yandex.cloud.cic.v1.common.LagInfo', portNames: '' };
+const baseLagInfo: object = { portNames: '' };
 
 export const LagInfo = {
-    $type: 'yandex.cloud.cic.v1.common.LagInfo' as const,
-
     encode(message: LagInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lagId !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.lagId! },
-                writer.uint32(10).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.lagId! }, writer.uint32(10).fork()).ldelim();
         }
         for (const v of message.portNames) {
             writer.uint32(18).string(v!);
@@ -85,8 +78,6 @@ export const LagInfo = {
     },
 };
 
-messageTypeRegistry.set(LagInfo.$type, LagInfo);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -96,16 +87,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

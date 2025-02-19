@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -28,7 +27,6 @@ import {
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
 export interface GetImageRequest {
-    $type: 'yandex.cloud.compute.v1.GetImageRequest';
     /**
      * ID of the Image resource to return.
      * To get the image ID, use a [ImageService.List] request.
@@ -37,7 +35,6 @@ export interface GetImageRequest {
 }
 
 export interface GetImageLatestByFamilyRequest {
-    $type: 'yandex.cloud.compute.v1.GetImageLatestByFamilyRequest';
     /**
      * ID of the folder to get the image from.
      * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -48,7 +45,6 @@ export interface GetImageLatestByFamilyRequest {
 }
 
 export interface ListImagesRequest {
-    $type: 'yandex.cloud.compute.v1.ListImagesRequest';
     /**
      * ID of the folder to list images in.
      * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -86,7 +82,6 @@ export interface ListImagesRequest {
 }
 
 export interface ListImagesResponse {
-    $type: 'yandex.cloud.compute.v1.ListImagesResponse';
     /** List of images. */
     images: Image[];
     /**
@@ -101,7 +96,6 @@ export interface ListImagesResponse {
 }
 
 export interface CreateImageRequest {
-    $type: 'yandex.cloud.compute.v1.CreateImageRequest';
     /**
      * ID of the folder to create an image in.
      * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -164,19 +158,16 @@ export interface CreateImageRequest {
 }
 
 export interface CreateImageRequest_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.CreateImageRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateImageMetadata {
-    $type: 'yandex.cloud.compute.v1.CreateImageMetadata';
     /** ID of the image that is being created. */
     imageId: string;
 }
 
 export interface UpdateImageRequest {
-    $type: 'yandex.cloud.compute.v1.UpdateImageRequest';
     /**
      * ID of the Image resource to update.
      * To get the image ID, use a [ImageService.List] request.
@@ -202,19 +193,16 @@ export interface UpdateImageRequest {
 }
 
 export interface UpdateImageRequest_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.UpdateImageRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateImageMetadata {
-    $type: 'yandex.cloud.compute.v1.UpdateImageMetadata';
     /** ID of the Image resource that is being updated. */
     imageId: string;
 }
 
 export interface DeleteImageRequest {
-    $type: 'yandex.cloud.compute.v1.DeleteImageRequest';
     /**
      * ID of the image to delete.
      * To get the image ID, use a [ImageService.List] request.
@@ -223,13 +211,11 @@ export interface DeleteImageRequest {
 }
 
 export interface DeleteImageMetadata {
-    $type: 'yandex.cloud.compute.v1.DeleteImageMetadata';
     /** ID of the image that is being deleted. */
     imageId: string;
 }
 
 export interface ListImageOperationsRequest {
-    $type: 'yandex.cloud.compute.v1.ListImageOperationsRequest';
     /** ID of the Image resource to list operations for. */
     imageId: string;
     /**
@@ -246,7 +232,6 @@ export interface ListImageOperationsRequest {
 }
 
 export interface ListImageOperationsResponse {
-    $type: 'yandex.cloud.compute.v1.ListImageOperationsResponse';
     /** List of operations for the specified image. */
     operations: Operation[];
     /**
@@ -258,14 +243,9 @@ export interface ListImageOperationsResponse {
     nextPageToken: string;
 }
 
-const baseGetImageRequest: object = {
-    $type: 'yandex.cloud.compute.v1.GetImageRequest',
-    imageId: '',
-};
+const baseGetImageRequest: object = { imageId: '' };
 
 export const GetImageRequest = {
-    $type: 'yandex.cloud.compute.v1.GetImageRequest' as const,
-
     encode(message: GetImageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -311,17 +291,9 @@ export const GetImageRequest = {
     },
 };
 
-messageTypeRegistry.set(GetImageRequest.$type, GetImageRequest);
-
-const baseGetImageLatestByFamilyRequest: object = {
-    $type: 'yandex.cloud.compute.v1.GetImageLatestByFamilyRequest',
-    folderId: '',
-    family: '',
-};
+const baseGetImageLatestByFamilyRequest: object = { folderId: '', family: '' };
 
 export const GetImageLatestByFamilyRequest = {
-    $type: 'yandex.cloud.compute.v1.GetImageLatestByFamilyRequest' as const,
-
     encode(
         message: GetImageLatestByFamilyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -384,10 +356,7 @@ export const GetImageLatestByFamilyRequest = {
     },
 };
 
-messageTypeRegistry.set(GetImageLatestByFamilyRequest.$type, GetImageLatestByFamilyRequest);
-
 const baseListImagesRequest: object = {
-    $type: 'yandex.cloud.compute.v1.ListImagesRequest',
     folderId: '',
     pageSize: 0,
     pageToken: '',
@@ -396,8 +365,6 @@ const baseListImagesRequest: object = {
 };
 
 export const ListImagesRequest = {
-    $type: 'yandex.cloud.compute.v1.ListImagesRequest' as const,
-
     encode(message: ListImagesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -487,16 +454,9 @@ export const ListImagesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListImagesRequest.$type, ListImagesRequest);
-
-const baseListImagesResponse: object = {
-    $type: 'yandex.cloud.compute.v1.ListImagesResponse',
-    nextPageToken: '',
-};
+const baseListImagesResponse: object = { nextPageToken: '' };
 
 export const ListImagesResponse = {
-    $type: 'yandex.cloud.compute.v1.ListImagesResponse' as const,
-
     encode(message: ListImagesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.images) {
             Image.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -560,10 +520,7 @@ export const ListImagesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListImagesResponse.$type, ListImagesResponse);
-
 const baseCreateImageRequest: object = {
-    $type: 'yandex.cloud.compute.v1.CreateImageRequest',
     folderId: '',
     name: '',
     description: '',
@@ -574,8 +531,6 @@ const baseCreateImageRequest: object = {
 };
 
 export const CreateImageRequest = {
-    $type: 'yandex.cloud.compute.v1.CreateImageRequest' as const,
-
     encode(message: CreateImageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -588,11 +543,7 @@ export const CreateImageRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateImageRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.compute.v1.CreateImageRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -809,17 +760,9 @@ export const CreateImageRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateImageRequest.$type, CreateImageRequest);
-
-const baseCreateImageRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.CreateImageRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateImageRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateImageRequest_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.CreateImageRequest.LabelsEntry' as const,
-
     encode(
         message: CreateImageRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -879,16 +822,9 @@ export const CreateImageRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateImageRequest_LabelsEntry.$type, CreateImageRequest_LabelsEntry);
-
-const baseCreateImageMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.CreateImageMetadata',
-    imageId: '',
-};
+const baseCreateImageMetadata: object = { imageId: '' };
 
 export const CreateImageMetadata = {
-    $type: 'yandex.cloud.compute.v1.CreateImageMetadata' as const,
-
     encode(message: CreateImageMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -936,19 +872,9 @@ export const CreateImageMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateImageMetadata.$type, CreateImageMetadata);
-
-const baseUpdateImageRequest: object = {
-    $type: 'yandex.cloud.compute.v1.UpdateImageRequest',
-    imageId: '',
-    name: '',
-    description: '',
-    minDiskSize: 0,
-};
+const baseUpdateImageRequest: object = { imageId: '', name: '', description: '', minDiskSize: 0 };
 
 export const UpdateImageRequest = {
-    $type: 'yandex.cloud.compute.v1.UpdateImageRequest' as const,
-
     encode(message: UpdateImageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -967,11 +893,7 @@ export const UpdateImageRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateImageRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.compute.v1.UpdateImageRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -1086,17 +1008,9 @@ export const UpdateImageRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateImageRequest.$type, UpdateImageRequest);
-
-const baseUpdateImageRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.UpdateImageRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateImageRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateImageRequest_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.UpdateImageRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateImageRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1156,16 +1070,9 @@ export const UpdateImageRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateImageRequest_LabelsEntry.$type, UpdateImageRequest_LabelsEntry);
-
-const baseUpdateImageMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.UpdateImageMetadata',
-    imageId: '',
-};
+const baseUpdateImageMetadata: object = { imageId: '' };
 
 export const UpdateImageMetadata = {
-    $type: 'yandex.cloud.compute.v1.UpdateImageMetadata' as const,
-
     encode(message: UpdateImageMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -1213,16 +1120,9 @@ export const UpdateImageMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateImageMetadata.$type, UpdateImageMetadata);
-
-const baseDeleteImageRequest: object = {
-    $type: 'yandex.cloud.compute.v1.DeleteImageRequest',
-    imageId: '',
-};
+const baseDeleteImageRequest: object = { imageId: '' };
 
 export const DeleteImageRequest = {
-    $type: 'yandex.cloud.compute.v1.DeleteImageRequest' as const,
-
     encode(message: DeleteImageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -1270,16 +1170,9 @@ export const DeleteImageRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteImageRequest.$type, DeleteImageRequest);
-
-const baseDeleteImageMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.DeleteImageMetadata',
-    imageId: '',
-};
+const baseDeleteImageMetadata: object = { imageId: '' };
 
 export const DeleteImageMetadata = {
-    $type: 'yandex.cloud.compute.v1.DeleteImageMetadata' as const,
-
     encode(message: DeleteImageMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -1327,18 +1220,9 @@ export const DeleteImageMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteImageMetadata.$type, DeleteImageMetadata);
-
-const baseListImageOperationsRequest: object = {
-    $type: 'yandex.cloud.compute.v1.ListImageOperationsRequest',
-    imageId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListImageOperationsRequest: object = { imageId: '', pageSize: 0, pageToken: '' };
 
 export const ListImageOperationsRequest = {
-    $type: 'yandex.cloud.compute.v1.ListImageOperationsRequest' as const,
-
     encode(
         message: ListImageOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1411,16 +1295,9 @@ export const ListImageOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListImageOperationsRequest.$type, ListImageOperationsRequest);
-
-const baseListImageOperationsResponse: object = {
-    $type: 'yandex.cloud.compute.v1.ListImageOperationsResponse',
-    nextPageToken: '',
-};
+const baseListImageOperationsResponse: object = { nextPageToken: '' };
 
 export const ListImageOperationsResponse = {
-    $type: 'yandex.cloud.compute.v1.ListImageOperationsResponse' as const,
-
     encode(
         message: ListImageOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1486,8 +1363,6 @@ export const ListImageOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListImageOperationsResponse.$type, ListImageOperationsResponse);
 
 /** A set of methods for managing Image resources. */
 export const ImageServiceService = {
@@ -1863,16 +1738,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

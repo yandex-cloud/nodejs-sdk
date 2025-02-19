@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -16,7 +15,6 @@ export const protobufPackage = 'yandex.cloud.ai.assistants.v1.runs';
 
 /** Represents a run of an assistant over a specific thread of messages. */
 export interface Run {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.Run';
     /** Unique identifier of the run. */
     id: string;
     /** Identifier for the assistant that is being run. */
@@ -48,14 +46,12 @@ export interface Run {
 }
 
 export interface Run_LabelsEntry {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.Run.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Represents the current state of a run. */
 export interface RunState {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.RunState';
     /** Current status of a run. */
     status: RunState_RunStatus;
     /** Error information if a run has failed. */
@@ -131,7 +127,6 @@ export function runState_RunStatusToJSON(object: RunState_RunStatus): string {
 
 /** Represents the content usage during a run, such as the number of [tokens](/docs/foundation-models/concepts/yandexgpt/tokens) used by the completion model. */
 export interface ContentUsage {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.ContentUsage';
     /** The number of tokens used in the prompt. */
     promptTokens: number;
     /** The number of tokens used in the completion response. */
@@ -140,17 +135,9 @@ export interface ContentUsage {
     totalTokens: number;
 }
 
-const baseRun: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.Run',
-    id: '',
-    assistantId: '',
-    threadId: '',
-    createdBy: '',
-};
+const baseRun: object = { id: '', assistantId: '', threadId: '', createdBy: '' };
 
 export const Run = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.Run' as const,
-
     encode(message: Run, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -168,14 +155,7 @@ export const Run = {
             Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(42).fork()).ldelim();
         }
         Object.entries(message.labels).forEach(([key, value]) => {
-            Run_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.assistants.v1.runs.Run.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
-                writer.uint32(50).fork(),
-            ).ldelim();
+            Run_LabelsEntry.encode({ key: key as any, value }, writer.uint32(50).fork()).ldelim();
         });
         if (message.state !== undefined) {
             RunState.encode(message.state, writer.uint32(58).fork()).ldelim();
@@ -378,17 +358,9 @@ export const Run = {
     },
 };
 
-messageTypeRegistry.set(Run.$type, Run);
-
-const baseRun_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.Run.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseRun_LabelsEntry: object = { key: '', value: '' };
 
 export const Run_LabelsEntry = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.Run.LabelsEntry' as const,
-
     encode(message: Run_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -443,13 +415,9 @@ export const Run_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Run_LabelsEntry.$type, Run_LabelsEntry);
-
-const baseRunState: object = { $type: 'yandex.cloud.ai.assistants.v1.runs.RunState', status: 0 };
+const baseRunState: object = { status: 0 };
 
 export const RunState = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.RunState' as const,
-
     encode(message: RunState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== 0) {
             writer.uint32(8).int32(message.status);
@@ -549,18 +517,9 @@ export const RunState = {
     },
 };
 
-messageTypeRegistry.set(RunState.$type, RunState);
-
-const baseContentUsage: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.ContentUsage',
-    promptTokens: 0,
-    completionTokens: 0,
-    totalTokens: 0,
-};
+const baseContentUsage: object = { promptTokens: 0, completionTokens: 0, totalTokens: 0 };
 
 export const ContentUsage = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.ContentUsage' as const,
-
     encode(message: ContentUsage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.promptTokens !== 0) {
             writer.uint32(8).int64(message.promptTokens);
@@ -633,8 +592,6 @@ export const ContentUsage = {
     },
 };
 
-messageTypeRegistry.set(ContentUsage.$type, ContentUsage);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -655,21 +612,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

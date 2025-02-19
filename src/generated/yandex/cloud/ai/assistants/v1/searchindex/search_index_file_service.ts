@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -21,20 +20,17 @@ export const protobufPackage = 'yandex.cloud.ai.assistants.v1.searchindex';
 
 /** Request message for creating multiple files within a search index. */
 export interface BatchCreateSearchIndexFileRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.BatchCreateSearchIndexFileRequest';
     fileIds: string[];
     searchIndexId: string;
 }
 
 /** Response message for the BatchCreate operation. */
 export interface BatchCreateSearchIndexFileResponse {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.BatchCreateSearchIndexFileResponse';
     files: SearchIndexFile[];
 }
 
 /** Request message for retrieving a file from a search index. */
 export interface GetSearchIndexFileRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.GetSearchIndexFileRequest';
     /** ID of the file to retrieve. */
     fileId: string;
     /** ID of the search index that contains the file. */
@@ -43,7 +39,6 @@ export interface GetSearchIndexFileRequest {
 
 /** Request message for listing files in a specific search index. */
 export interface ListSearchIndexFilesRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.ListSearchIndexFilesRequest';
     /** ID of the search index whose files will be listed. */
     searchIndexId: string;
     /** Maximum number of files to return per page. */
@@ -54,22 +49,15 @@ export interface ListSearchIndexFilesRequest {
 
 /** Response message for the list operation. */
 export interface ListSearchIndexFilesResponse {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.ListSearchIndexFilesResponse';
     /** List of files in the specified search index. */
     files: SearchIndexFile[];
     /** Token to retrieve the next page of results. */
     nextPageToken: string;
 }
 
-const baseBatchCreateSearchIndexFileRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.BatchCreateSearchIndexFileRequest',
-    fileIds: '',
-    searchIndexId: '',
-};
+const baseBatchCreateSearchIndexFileRequest: object = { fileIds: '', searchIndexId: '' };
 
 export const BatchCreateSearchIndexFileRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.BatchCreateSearchIndexFileRequest' as const,
-
     encode(
         message: BatchCreateSearchIndexFileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -142,15 +130,9 @@ export const BatchCreateSearchIndexFileRequest = {
     },
 };
 
-messageTypeRegistry.set(BatchCreateSearchIndexFileRequest.$type, BatchCreateSearchIndexFileRequest);
-
-const baseBatchCreateSearchIndexFileResponse: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.BatchCreateSearchIndexFileResponse',
-};
+const baseBatchCreateSearchIndexFileResponse: object = {};
 
 export const BatchCreateSearchIndexFileResponse = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.BatchCreateSearchIndexFileResponse' as const,
-
     encode(
         message: BatchCreateSearchIndexFileResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -211,20 +193,9 @@ export const BatchCreateSearchIndexFileResponse = {
     },
 };
 
-messageTypeRegistry.set(
-    BatchCreateSearchIndexFileResponse.$type,
-    BatchCreateSearchIndexFileResponse,
-);
-
-const baseGetSearchIndexFileRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.GetSearchIndexFileRequest',
-    fileId: '',
-    searchIndexId: '',
-};
+const baseGetSearchIndexFileRequest: object = { fileId: '', searchIndexId: '' };
 
 export const GetSearchIndexFileRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.GetSearchIndexFileRequest' as const,
-
     encode(
         message: GetSearchIndexFileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -287,18 +258,9 @@ export const GetSearchIndexFileRequest = {
     },
 };
 
-messageTypeRegistry.set(GetSearchIndexFileRequest.$type, GetSearchIndexFileRequest);
-
-const baseListSearchIndexFilesRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.ListSearchIndexFilesRequest',
-    searchIndexId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListSearchIndexFilesRequest: object = { searchIndexId: '', pageSize: 0, pageToken: '' };
 
 export const ListSearchIndexFilesRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.ListSearchIndexFilesRequest' as const,
-
     encode(
         message: ListSearchIndexFilesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -373,16 +335,9 @@ export const ListSearchIndexFilesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListSearchIndexFilesRequest.$type, ListSearchIndexFilesRequest);
-
-const baseListSearchIndexFilesResponse: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.ListSearchIndexFilesResponse',
-    nextPageToken: '',
-};
+const baseListSearchIndexFilesResponse: object = { nextPageToken: '' };
 
 export const ListSearchIndexFilesResponse = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.ListSearchIndexFilesResponse' as const,
-
     encode(
         message: ListSearchIndexFilesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -448,8 +403,6 @@ export const ListSearchIndexFilesResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListSearchIndexFilesResponse.$type, ListSearchIndexFilesResponse);
 
 /** SearchIndexFileService provides operations for managing files within search indexes. */
 export const SearchIndexFileServiceService = {
@@ -582,16 +535,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

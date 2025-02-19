@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -13,7 +12,6 @@ export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.agent';
 
 /** Load testing agent on which tests are executed. */
 export interface Agent {
-    $type: 'yandex.cloud.loadtesting.api.v1.agent.Agent';
     /** ID of the agent. Generated at creation time. */
     id: string;
     /** ID of the folder that the agent belongs to. */
@@ -43,13 +41,11 @@ export interface Agent {
 }
 
 export interface Agent_LabelsEntry {
-    $type: 'yandex.cloud.loadtesting.api.v1.agent.Agent.LabelsEntry';
     key: string;
     value: string;
 }
 
 const baseAgent: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.agent.Agent',
     id: '',
     folderId: '',
     name: '',
@@ -62,8 +58,6 @@ const baseAgent: object = {
 };
 
 export const Agent = {
-    $type: 'yandex.cloud.loadtesting.api.v1.agent.Agent' as const,
-
     encode(message: Agent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -93,14 +87,7 @@ export const Agent = {
             writer.uint32(82).string(message.agentVersionId);
         }
         Object.entries(message.labels).forEach(([key, value]) => {
-            Agent_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.loadtesting.api.v1.agent.Agent.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
-                writer.uint32(98).fork(),
-            ).ldelim();
+            Agent_LabelsEntry.encode({ key: key as any, value }, writer.uint32(98).fork()).ldelim();
         });
         if (message.logSettings !== undefined) {
             LogSettings.encode(message.logSettings, writer.uint32(106).fork()).ldelim();
@@ -261,17 +248,9 @@ export const Agent = {
     },
 };
 
-messageTypeRegistry.set(Agent.$type, Agent);
-
-const baseAgent_LabelsEntry: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.agent.Agent.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseAgent_LabelsEntry: object = { key: '', value: '' };
 
 export const Agent_LabelsEntry = {
-    $type: 'yandex.cloud.loadtesting.api.v1.agent.Agent.LabelsEntry' as const,
-
     encode(message: Agent_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -326,8 +305,6 @@ export const Agent_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Agent_LabelsEntry.$type, Agent_LabelsEntry);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -337,16 +314,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

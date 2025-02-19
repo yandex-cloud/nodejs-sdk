@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -26,7 +25,6 @@ export const protobufPackage = 'yandex.cloud.mdb.greenplum.v1';
 
 /** A Greenplum® cluster resource. */
 export interface Cluster {
-    $type: 'yandex.cloud.mdb.greenplum.v1.Cluster';
     /**
      * ID of the Greenplum® cluster.
      * This ID is assigned by the platform at the moment of cluster creation.
@@ -261,13 +259,11 @@ export function cluster_StatusToJSON(object: Cluster_Status): string {
 }
 
 export interface Cluster_LabelsEntry {
-    $type: 'yandex.cloud.mdb.greenplum.v1.Cluster.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface ClusterConfigSet {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ClusterConfigSet';
     greenplumConfigSet617?: Greenplumconfigset617 | undefined;
     greenplumConfigSet619?: Greenplumconfigset619 | undefined;
     greenplumConfigSet621?: Greenplumconfigset621 | undefined;
@@ -282,7 +278,6 @@ export interface ClusterConfigSet {
 
 /** Monitoring system metadata. */
 export interface Monitoring {
-    $type: 'yandex.cloud.mdb.greenplum.v1.Monitoring';
     /** Name of the monitoring system. */
     name: string;
     /** Description of the monitoring system. */
@@ -292,7 +287,6 @@ export interface Monitoring {
 }
 
 export interface GreenplumConfig {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfig';
     /** Version of the Greenplum® server software. */
     version: string;
     /** Time to start the daily backup, in the UTC timezone. */
@@ -317,7 +311,6 @@ export interface GreenplumConfig {
 }
 
 export interface Access {
-    $type: 'yandex.cloud.mdb.greenplum.v1.Access';
     /** Allows data export from the cluster to DataLens. */
     dataLens: boolean;
     /** Allows SQL queries to the cluster databases from the management console. */
@@ -329,7 +322,6 @@ export interface Access {
 }
 
 export interface GreenplumRestoreConfig {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumRestoreConfig';
     /** Time to start the daily backup, in the UTC timezone. */
     backupWindowStart?: TimeOfDay;
     /** Access policy for external services. */
@@ -360,7 +352,6 @@ export interface GreenplumRestoreConfig {
 }
 
 export interface RestoreResources {
-    $type: 'yandex.cloud.mdb.greenplum.v1.RestoreResources';
     /** ID of the preset for computational resources available to a host (CPU, memory, etc.). */
     resourcePresetId: string;
     /** Volume of the storage available to a host. */
@@ -369,13 +360,11 @@ export interface RestoreResources {
 
 /** Cloud Storage Settings */
 export interface CloudStorage {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CloudStorage';
     /** enable Cloud Storage for cluster */
     enable: boolean;
 }
 
 const baseCluster: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.Cluster',
     id: '',
     folderId: '',
     name: '',
@@ -396,8 +385,6 @@ const baseCluster: object = {
 };
 
 export const Cluster = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.Cluster' as const,
-
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -419,11 +406,7 @@ export const Cluster = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Cluster_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.greenplum.v1.Cluster.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(58).fork(),
             ).ldelim();
         });
@@ -839,17 +822,9 @@ export const Cluster = {
     },
 };
 
-messageTypeRegistry.set(Cluster.$type, Cluster);
-
-const baseCluster_LabelsEntry: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.Cluster.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
 export const Cluster_LabelsEntry = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.Cluster.LabelsEntry' as const,
-
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -906,13 +881,9 @@ export const Cluster_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Cluster_LabelsEntry.$type, Cluster_LabelsEntry);
-
-const baseClusterConfigSet: object = { $type: 'yandex.cloud.mdb.greenplum.v1.ClusterConfigSet' };
+const baseClusterConfigSet: object = {};
 
 export const ClusterConfigSet = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ClusterConfigSet' as const,
-
     encode(message: ClusterConfigSet, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.greenplumConfigSet617 !== undefined) {
             Greenplumconfigset617.encode(
@@ -1126,18 +1097,9 @@ export const ClusterConfigSet = {
     },
 };
 
-messageTypeRegistry.set(ClusterConfigSet.$type, ClusterConfigSet);
-
-const baseMonitoring: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.Monitoring',
-    name: '',
-    description: '',
-    link: '',
-};
+const baseMonitoring: object = { name: '', description: '', link: '' };
 
 export const Monitoring = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.Monitoring' as const,
-
     encode(message: Monitoring, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1203,10 +1165,7 @@ export const Monitoring = {
     },
 };
 
-messageTypeRegistry.set(Monitoring.$type, Monitoring);
-
 const baseGreenplumConfig: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfig',
     version: '',
     zoneId: '',
     subnetId: '',
@@ -1214,8 +1173,6 @@ const baseGreenplumConfig: object = {
 };
 
 export const GreenplumConfig = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumConfig' as const,
-
     encode(message: GreenplumConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -1225,7 +1182,7 @@ export const GreenplumConfig = {
         }
         if (message.backupRetainPeriodDays !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.backupRetainPeriodDays! },
+                { value: message.backupRetainPeriodDays! },
                 writer.uint32(74).fork(),
             ).ldelim();
         }
@@ -1348,10 +1305,7 @@ export const GreenplumConfig = {
     },
 };
 
-messageTypeRegistry.set(GreenplumConfig.$type, GreenplumConfig);
-
 const baseAccess: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.Access',
     dataLens: false,
     webSql: false,
     dataTransfer: false,
@@ -1359,8 +1313,6 @@ const baseAccess: object = {
 };
 
 export const Access = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.Access' as const,
-
     encode(message: Access, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataLens === true) {
             writer.uint32(8).bool(message.dataLens);
@@ -1442,18 +1394,9 @@ export const Access = {
     },
 };
 
-messageTypeRegistry.set(Access.$type, Access);
-
-const baseGreenplumRestoreConfig: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumRestoreConfig',
-    zoneId: '',
-    subnetId: '',
-    assignPublicIp: false,
-};
+const baseGreenplumRestoreConfig: object = { zoneId: '', subnetId: '', assignPublicIp: false };
 
 export const GreenplumRestoreConfig = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GreenplumRestoreConfig' as const,
-
     encode(message: GreenplumRestoreConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupWindowStart !== undefined) {
             TimeOfDay.encode(message.backupWindowStart, writer.uint32(10).fork()).ldelim();
@@ -1559,17 +1502,9 @@ export const GreenplumRestoreConfig = {
     },
 };
 
-messageTypeRegistry.set(GreenplumRestoreConfig.$type, GreenplumRestoreConfig);
-
-const baseRestoreResources: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.RestoreResources',
-    resourcePresetId: '',
-    diskSize: 0,
-};
+const baseRestoreResources: object = { resourcePresetId: '', diskSize: 0 };
 
 export const RestoreResources = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.RestoreResources' as const,
-
     encode(message: RestoreResources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);
@@ -1627,16 +1562,9 @@ export const RestoreResources = {
     },
 };
 
-messageTypeRegistry.set(RestoreResources.$type, RestoreResources);
-
-const baseCloudStorage: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CloudStorage',
-    enable: false,
-};
+const baseCloudStorage: object = { enable: false };
 
 export const CloudStorage = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CloudStorage' as const,
-
     encode(message: CloudStorage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enable === true) {
             writer.uint32(8).bool(message.enable);
@@ -1682,8 +1610,6 @@ export const CloudStorage = {
     },
 };
 
-messageTypeRegistry.set(CloudStorage.$type, CloudStorage);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1704,21 +1630,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

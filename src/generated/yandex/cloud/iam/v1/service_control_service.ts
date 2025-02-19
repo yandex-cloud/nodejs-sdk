@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -21,7 +20,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.iam.v1';
 
 export interface GetServiceRequest {
-    $type: 'yandex.cloud.iam.v1.GetServiceRequest';
     /** ID of the Service. */
     serviceId: string;
     /**
@@ -33,7 +31,6 @@ export interface GetServiceRequest {
 }
 
 export interface ListServicesRequest {
-    $type: 'yandex.cloud.iam.v1.ListServicesRequest';
     /**
      * Resource container to list a services.
      *
@@ -57,7 +54,6 @@ export interface ListServicesRequest {
 }
 
 export interface ListServicesResponse {
-    $type: 'yandex.cloud.iam.v1.ListServicesResponse';
     /** List of Services. */
     services: Service[];
     /**
@@ -72,7 +68,6 @@ export interface ListServicesResponse {
 }
 
 export interface EnableServiceRequest {
-    $type: 'yandex.cloud.iam.v1.EnableServiceRequest';
     /** ID of the Service. */
     serviceId: string;
     /**
@@ -84,7 +79,6 @@ export interface EnableServiceRequest {
 }
 
 export interface EnableServiceMetadata {
-    $type: 'yandex.cloud.iam.v1.EnableServiceMetadata';
     /** ID of the Service. */
     serviceId: string;
     /** Resource container. */
@@ -92,7 +86,6 @@ export interface EnableServiceMetadata {
 }
 
 export interface DisableServiceRequest {
-    $type: 'yandex.cloud.iam.v1.DisableServiceRequest';
     /** ID of the Service. */
     serviceId: string;
     /**
@@ -104,7 +97,6 @@ export interface DisableServiceRequest {
 }
 
 export interface DisableServiceMetadata {
-    $type: 'yandex.cloud.iam.v1.DisableServiceMetadata';
     /** ID of the Service. */
     serviceId: string;
     /** Resource container. */
@@ -112,7 +104,6 @@ export interface DisableServiceMetadata {
 }
 
 export interface ResolveServiceAgentRequest {
-    $type: 'yandex.cloud.iam.v1.ResolveServiceAgentRequest';
     /** ID of the Service. */
     serviceId: string;
     /** ID of the Microservice. */
@@ -121,14 +112,9 @@ export interface ResolveServiceAgentRequest {
     resource?: Resource;
 }
 
-const baseGetServiceRequest: object = {
-    $type: 'yandex.cloud.iam.v1.GetServiceRequest',
-    serviceId: '',
-};
+const baseGetServiceRequest: object = { serviceId: '' };
 
 export const GetServiceRequest = {
-    $type: 'yandex.cloud.iam.v1.GetServiceRequest' as const,
-
     encode(message: GetServiceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceId !== '') {
             writer.uint32(10).string(message.serviceId);
@@ -192,17 +178,9 @@ export const GetServiceRequest = {
     },
 };
 
-messageTypeRegistry.set(GetServiceRequest.$type, GetServiceRequest);
-
-const baseListServicesRequest: object = {
-    $type: 'yandex.cloud.iam.v1.ListServicesRequest',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListServicesRequest: object = { pageSize: 0, pageToken: '' };
 
 export const ListServicesRequest = {
-    $type: 'yandex.cloud.iam.v1.ListServicesRequest' as const,
-
     encode(message: ListServicesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resource !== undefined) {
             Resource.encode(message.resource, writer.uint32(10).fork()).ldelim();
@@ -278,16 +256,9 @@ export const ListServicesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListServicesRequest.$type, ListServicesRequest);
-
-const baseListServicesResponse: object = {
-    $type: 'yandex.cloud.iam.v1.ListServicesResponse',
-    nextPageToken: '',
-};
+const baseListServicesResponse: object = { nextPageToken: '' };
 
 export const ListServicesResponse = {
-    $type: 'yandex.cloud.iam.v1.ListServicesResponse' as const,
-
     encode(message: ListServicesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.services) {
             Service.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -351,16 +322,9 @@ export const ListServicesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListServicesResponse.$type, ListServicesResponse);
-
-const baseEnableServiceRequest: object = {
-    $type: 'yandex.cloud.iam.v1.EnableServiceRequest',
-    serviceId: '',
-};
+const baseEnableServiceRequest: object = { serviceId: '' };
 
 export const EnableServiceRequest = {
-    $type: 'yandex.cloud.iam.v1.EnableServiceRequest' as const,
-
     encode(message: EnableServiceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceId !== '') {
             writer.uint32(10).string(message.serviceId);
@@ -426,16 +390,9 @@ export const EnableServiceRequest = {
     },
 };
 
-messageTypeRegistry.set(EnableServiceRequest.$type, EnableServiceRequest);
-
-const baseEnableServiceMetadata: object = {
-    $type: 'yandex.cloud.iam.v1.EnableServiceMetadata',
-    serviceId: '',
-};
+const baseEnableServiceMetadata: object = { serviceId: '' };
 
 export const EnableServiceMetadata = {
-    $type: 'yandex.cloud.iam.v1.EnableServiceMetadata' as const,
-
     encode(message: EnableServiceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceId !== '') {
             writer.uint32(10).string(message.serviceId);
@@ -501,16 +458,9 @@ export const EnableServiceMetadata = {
     },
 };
 
-messageTypeRegistry.set(EnableServiceMetadata.$type, EnableServiceMetadata);
-
-const baseDisableServiceRequest: object = {
-    $type: 'yandex.cloud.iam.v1.DisableServiceRequest',
-    serviceId: '',
-};
+const baseDisableServiceRequest: object = { serviceId: '' };
 
 export const DisableServiceRequest = {
-    $type: 'yandex.cloud.iam.v1.DisableServiceRequest' as const,
-
     encode(message: DisableServiceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceId !== '') {
             writer.uint32(10).string(message.serviceId);
@@ -576,16 +526,9 @@ export const DisableServiceRequest = {
     },
 };
 
-messageTypeRegistry.set(DisableServiceRequest.$type, DisableServiceRequest);
-
-const baseDisableServiceMetadata: object = {
-    $type: 'yandex.cloud.iam.v1.DisableServiceMetadata',
-    serviceId: '',
-};
+const baseDisableServiceMetadata: object = { serviceId: '' };
 
 export const DisableServiceMetadata = {
-    $type: 'yandex.cloud.iam.v1.DisableServiceMetadata' as const,
-
     encode(message: DisableServiceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceId !== '') {
             writer.uint32(10).string(message.serviceId);
@@ -651,17 +594,9 @@ export const DisableServiceMetadata = {
     },
 };
 
-messageTypeRegistry.set(DisableServiceMetadata.$type, DisableServiceMetadata);
-
-const baseResolveServiceAgentRequest: object = {
-    $type: 'yandex.cloud.iam.v1.ResolveServiceAgentRequest',
-    serviceId: '',
-    microserviceId: '',
-};
+const baseResolveServiceAgentRequest: object = { serviceId: '', microserviceId: '' };
 
 export const ResolveServiceAgentRequest = {
-    $type: 'yandex.cloud.iam.v1.ResolveServiceAgentRequest' as const,
-
     encode(
         message: ResolveServiceAgentRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -741,8 +676,6 @@ export const ResolveServiceAgentRequest = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ResolveServiceAgentRequest.$type, ResolveServiceAgentRequest);
 
 /** A set of methods for managing Service resources. */
 export const ServiceControlServiceService = {
@@ -945,16 +878,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

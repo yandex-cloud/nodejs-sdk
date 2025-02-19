@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -7,7 +6,6 @@ export const protobufPackage = 'yandex.cloud.organizationmanager.v1';
 
 /** Group mapping represents which external (federated) groups should match which internal (cloud) groups */
 export interface GroupMappingItem {
-    $type: 'yandex.cloud.organizationmanager.v1.GroupMappingItem';
     /** External group id (received from identity provider) */
     externalGroupId: string;
     /** Internal cloud group id */
@@ -19,22 +17,15 @@ export interface GroupMappingItem {
  * Absence of this object for a federation means that there is no group synchronization set of for the federation.
  */
 export interface GroupMapping {
-    $type: 'yandex.cloud.organizationmanager.v1.GroupMapping';
     /** Federation id */
     federationId: string;
     /** Flag to show whether group synchronization should be enabled for this federation. */
     enabled: boolean;
 }
 
-const baseGroupMappingItem: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.GroupMappingItem',
-    externalGroupId: '',
-    internalGroupId: '',
-};
+const baseGroupMappingItem: object = { externalGroupId: '', internalGroupId: '' };
 
 export const GroupMappingItem = {
-    $type: 'yandex.cloud.organizationmanager.v1.GroupMappingItem' as const,
-
     encode(message: GroupMappingItem, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.externalGroupId !== '') {
             writer.uint32(10).string(message.externalGroupId);
@@ -94,17 +85,9 @@ export const GroupMappingItem = {
     },
 };
 
-messageTypeRegistry.set(GroupMappingItem.$type, GroupMappingItem);
-
-const baseGroupMapping: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.GroupMapping',
-    federationId: '',
-    enabled: false,
-};
+const baseGroupMapping: object = { federationId: '', enabled: false };
 
 export const GroupMapping = {
-    $type: 'yandex.cloud.organizationmanager.v1.GroupMapping' as const,
-
     encode(message: GroupMapping, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.federationId !== '') {
             writer.uint32(10).string(message.federationId);
@@ -164,8 +147,6 @@ export const GroupMapping = {
     },
 };
 
-messageTypeRegistry.set(GroupMapping.$type, GroupMapping);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -175,16 +156,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

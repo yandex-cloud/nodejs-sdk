@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Int64Value, DoubleValue } from '../../../../../google/protobuf/wrappers';
@@ -9,7 +8,6 @@ export const protobufPackage = 'yandex.cloud.ai.assistants.v1';
 
 /** Defines the options for truncating thread messages within a prompt. */
 export interface PromptTruncationOptions {
-    $type: 'yandex.cloud.ai.assistants.v1.PromptTruncationOptions';
     /**
      * The maximum number of tokens allowed in the prompt.
      * If the prompt exceeds this limit, the thread messages will be truncated.
@@ -25,13 +23,10 @@ export interface PromptTruncationOptions {
 }
 
 /** Auto truncation strategy. */
-export interface PromptTruncationOptions_AutoStrategy {
-    $type: 'yandex.cloud.ai.assistants.v1.PromptTruncationOptions.AutoStrategy';
-}
+export interface PromptTruncationOptions_AutoStrategy {}
 
 /** Truncates the prompt by retaining only the last `num_messages` messages in the thread. */
 export interface PromptTruncationOptions_LastMessagesStrategy {
-    $type: 'yandex.cloud.ai.assistants.v1.PromptTruncationOptions.LastMessagesStrategy';
     /**
      * The number of most recent messages to retain in the prompt.
      * If these messages exceed `max_prompt_tokens`, older messages will be further truncated to fit the limit.
@@ -41,7 +36,6 @@ export interface PromptTruncationOptions_LastMessagesStrategy {
 
 /** Defines the options for completion generation. */
 export interface CompletionOptions {
-    $type: 'yandex.cloud.ai.assistants.v1.CompletionOptions';
     /**
      * The limit on the number of tokens used for single completion generation.
      * Must be greater than zero. This maximum allowed parameter value may depend on the model being used.
@@ -57,7 +51,6 @@ export interface CompletionOptions {
 
 /** Represents a general tool that can be one of several types. */
 export interface Tool {
-    $type: 'yandex.cloud.ai.assistants.v1.Tool';
     /** SearchIndexTool tool that performs search across specified indexes. */
     searchIndex?: SearchIndexTool | undefined;
     /** Function tool that can be invoked by the assistant. */
@@ -66,35 +59,30 @@ export interface Tool {
 
 /** Represents a call to a tool. */
 export interface ToolCall {
-    $type: 'yandex.cloud.ai.assistants.v1.ToolCall';
     /** Represents a call to a function. */
     functionCall?: FunctionCall | undefined;
 }
 
 /** Represents a list of tool calls. */
 export interface ToolCallList {
-    $type: 'yandex.cloud.ai.assistants.v1.ToolCallList';
     /** A list of tool calls to be executed. */
     toolCalls: ToolCall[];
 }
 
 /** Represents the result of a tool call. */
 export interface ToolResult {
-    $type: 'yandex.cloud.ai.assistants.v1.ToolResult';
     /** Represents the result of a function call. */
     functionResult?: FunctionResult | undefined;
 }
 
 /** Represents a list of tool results. */
 export interface ToolResultList {
-    $type: 'yandex.cloud.ai.assistants.v1.ToolResultList';
     /** A list of tool results. */
     toolResults: ToolResult[];
 }
 
 /** Configures a tool that enables Retrieval-Augmented Generation (RAG) by allowing the assistant to search across a specified search index. */
 export interface SearchIndexTool {
-    $type: 'yandex.cloud.ai.assistants.v1.SearchIndexTool';
     /** A list of search index IDs that this tool will query. Currently, only a single index ID is supported. */
     searchIndexIds: string[];
     /**
@@ -107,7 +95,6 @@ export interface SearchIndexTool {
 
 /** Represents a function tool that can be invoked by the assistant. */
 export interface FunctionTool {
-    $type: 'yandex.cloud.ai.assistants.v1.FunctionTool';
     /** The name of the function. */
     name: string;
     /** A description of the function's purpose or behavior. */
@@ -121,7 +108,6 @@ export interface FunctionTool {
 
 /** Represents the invocation of a function with specific arguments. */
 export interface FunctionCall {
-    $type: 'yandex.cloud.ai.assistants.v1.FunctionCall';
     /** The name of the function being called. */
     name: string;
     /**
@@ -133,7 +119,6 @@ export interface FunctionCall {
 
 /** Represents the result of a function call. */
 export interface FunctionResult {
-    $type: 'yandex.cloud.ai.assistants.v1.FunctionResult';
     /** The name of the function that was executed. */
     name: string;
     /**
@@ -143,17 +128,13 @@ export interface FunctionResult {
     content: string | undefined;
 }
 
-const basePromptTruncationOptions: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.PromptTruncationOptions',
-};
+const basePromptTruncationOptions: object = {};
 
 export const PromptTruncationOptions = {
-    $type: 'yandex.cloud.ai.assistants.v1.PromptTruncationOptions' as const,
-
     encode(message: PromptTruncationOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxPromptTokens !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxPromptTokens! },
+                { value: message.maxPromptTokens! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
@@ -253,15 +234,9 @@ export const PromptTruncationOptions = {
     },
 };
 
-messageTypeRegistry.set(PromptTruncationOptions.$type, PromptTruncationOptions);
-
-const basePromptTruncationOptions_AutoStrategy: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.PromptTruncationOptions.AutoStrategy',
-};
+const basePromptTruncationOptions_AutoStrategy: object = {};
 
 export const PromptTruncationOptions_AutoStrategy = {
-    $type: 'yandex.cloud.ai.assistants.v1.PromptTruncationOptions.AutoStrategy' as const,
-
     encode(
         _: PromptTruncationOptions_AutoStrategy,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -308,19 +283,9 @@ export const PromptTruncationOptions_AutoStrategy = {
     },
 };
 
-messageTypeRegistry.set(
-    PromptTruncationOptions_AutoStrategy.$type,
-    PromptTruncationOptions_AutoStrategy,
-);
-
-const basePromptTruncationOptions_LastMessagesStrategy: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.PromptTruncationOptions.LastMessagesStrategy',
-    numMessages: 0,
-};
+const basePromptTruncationOptions_LastMessagesStrategy: object = { numMessages: 0 };
 
 export const PromptTruncationOptions_LastMessagesStrategy = {
-    $type: 'yandex.cloud.ai.assistants.v1.PromptTruncationOptions.LastMessagesStrategy' as const,
-
     encode(
         message: PromptTruncationOptions_LastMessagesStrategy,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -382,28 +347,15 @@ export const PromptTruncationOptions_LastMessagesStrategy = {
     },
 };
 
-messageTypeRegistry.set(
-    PromptTruncationOptions_LastMessagesStrategy.$type,
-    PromptTruncationOptions_LastMessagesStrategy,
-);
-
-const baseCompletionOptions: object = { $type: 'yandex.cloud.ai.assistants.v1.CompletionOptions' };
+const baseCompletionOptions: object = {};
 
 export const CompletionOptions = {
-    $type: 'yandex.cloud.ai.assistants.v1.CompletionOptions' as const,
-
     encode(message: CompletionOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxTokens !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxTokens! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.maxTokens! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.temperature !== undefined) {
-            DoubleValue.encode(
-                { $type: 'google.protobuf.DoubleValue', value: message.temperature! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            DoubleValue.encode({ value: message.temperature! }, writer.uint32(26).fork()).ldelim();
         }
         return writer;
     },
@@ -457,13 +409,9 @@ export const CompletionOptions = {
     },
 };
 
-messageTypeRegistry.set(CompletionOptions.$type, CompletionOptions);
-
-const baseTool: object = { $type: 'yandex.cloud.ai.assistants.v1.Tool' };
+const baseTool: object = {};
 
 export const Tool = {
-    $type: 'yandex.cloud.ai.assistants.v1.Tool' as const,
-
     encode(message: Tool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.searchIndex !== undefined) {
             SearchIndexTool.encode(message.searchIndex, writer.uint32(10).fork()).ldelim();
@@ -533,13 +481,9 @@ export const Tool = {
     },
 };
 
-messageTypeRegistry.set(Tool.$type, Tool);
-
-const baseToolCall: object = { $type: 'yandex.cloud.ai.assistants.v1.ToolCall' };
+const baseToolCall: object = {};
 
 export const ToolCall = {
-    $type: 'yandex.cloud.ai.assistants.v1.ToolCall' as const,
-
     encode(message: ToolCall, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionCall !== undefined) {
             FunctionCall.encode(message.functionCall, writer.uint32(10).fork()).ldelim();
@@ -593,13 +537,9 @@ export const ToolCall = {
     },
 };
 
-messageTypeRegistry.set(ToolCall.$type, ToolCall);
-
-const baseToolCallList: object = { $type: 'yandex.cloud.ai.assistants.v1.ToolCallList' };
+const baseToolCallList: object = {};
 
 export const ToolCallList = {
-    $type: 'yandex.cloud.ai.assistants.v1.ToolCallList' as const,
-
     encode(message: ToolCallList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.toolCalls) {
             ToolCall.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -649,13 +589,9 @@ export const ToolCallList = {
     },
 };
 
-messageTypeRegistry.set(ToolCallList.$type, ToolCallList);
-
-const baseToolResult: object = { $type: 'yandex.cloud.ai.assistants.v1.ToolResult' };
+const baseToolResult: object = {};
 
 export const ToolResult = {
-    $type: 'yandex.cloud.ai.assistants.v1.ToolResult' as const,
-
     encode(message: ToolResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionResult !== undefined) {
             FunctionResult.encode(message.functionResult, writer.uint32(10).fork()).ldelim();
@@ -709,13 +645,9 @@ export const ToolResult = {
     },
 };
 
-messageTypeRegistry.set(ToolResult.$type, ToolResult);
-
-const baseToolResultList: object = { $type: 'yandex.cloud.ai.assistants.v1.ToolResultList' };
+const baseToolResultList: object = {};
 
 export const ToolResultList = {
-    $type: 'yandex.cloud.ai.assistants.v1.ToolResultList' as const,
-
     encode(message: ToolResultList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.toolResults) {
             ToolResult.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -767,25 +699,15 @@ export const ToolResultList = {
     },
 };
 
-messageTypeRegistry.set(ToolResultList.$type, ToolResultList);
-
-const baseSearchIndexTool: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.SearchIndexTool',
-    searchIndexIds: '',
-};
+const baseSearchIndexTool: object = { searchIndexIds: '' };
 
 export const SearchIndexTool = {
-    $type: 'yandex.cloud.ai.assistants.v1.SearchIndexTool' as const,
-
     encode(message: SearchIndexTool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.searchIndexIds) {
             writer.uint32(10).string(v!);
         }
         if (message.maxNumResults !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxNumResults! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.maxNumResults! }, writer.uint32(18).fork()).ldelim();
         }
         return writer;
     },
@@ -841,17 +763,9 @@ export const SearchIndexTool = {
     },
 };
 
-messageTypeRegistry.set(SearchIndexTool.$type, SearchIndexTool);
-
-const baseFunctionTool: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.FunctionTool',
-    name: '',
-    description: '',
-};
+const baseFunctionTool: object = { name: '', description: '' };
 
 export const FunctionTool = {
-    $type: 'yandex.cloud.ai.assistants.v1.FunctionTool' as const,
-
     encode(message: FunctionTool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -917,13 +831,9 @@ export const FunctionTool = {
     },
 };
 
-messageTypeRegistry.set(FunctionTool.$type, FunctionTool);
-
-const baseFunctionCall: object = { $type: 'yandex.cloud.ai.assistants.v1.FunctionCall', name: '' };
+const baseFunctionCall: object = { name: '' };
 
 export const FunctionCall = {
-    $type: 'yandex.cloud.ai.assistants.v1.FunctionCall' as const,
-
     encode(message: FunctionCall, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -977,16 +887,9 @@ export const FunctionCall = {
     },
 };
 
-messageTypeRegistry.set(FunctionCall.$type, FunctionCall);
-
-const baseFunctionResult: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.FunctionResult',
-    name: '',
-};
+const baseFunctionResult: object = { name: '' };
 
 export const FunctionResult = {
-    $type: 'yandex.cloud.ai.assistants.v1.FunctionResult' as const,
-
     encode(message: FunctionResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1043,8 +946,6 @@ export const FunctionResult = {
     },
 };
 
-messageTypeRegistry.set(FunctionResult.$type, FunctionResult);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1065,16 +966,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

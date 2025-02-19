@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -22,12 +21,10 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.organizationmanager.v1';
 
 export interface GetUserSshKeyRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.GetUserSshKeyRequest';
     userSshKeyId: string;
 }
 
 export interface ListUserSshKeysRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.ListUserSshKeysRequest';
     organizationId: string;
     /** if empty, list all organization keys */
     subjectId: string;
@@ -36,13 +33,11 @@ export interface ListUserSshKeysRequest {
 }
 
 export interface ListUserSshKeysResponse {
-    $type: 'yandex.cloud.organizationmanager.v1.ListUserSshKeysResponse';
     sshKeys: UserSshKey[];
     nextPageToken: string;
 }
 
 export interface CreateUserSshKeyRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateUserSshKeyRequest';
     organizationId: string;
     subjectId: string;
     name: string;
@@ -51,13 +46,11 @@ export interface CreateUserSshKeyRequest {
 }
 
 export interface CreateUserSshKeyMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateUserSshKeyMetadata';
     userSshKeyId: string;
     organizationId: string;
 }
 
 export interface UpdateUserSshKeyRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateUserSshKeyRequest';
     userSshKeyId: string;
     name: string;
     updateMask?: FieldMask;
@@ -65,28 +58,20 @@ export interface UpdateUserSshKeyRequest {
 }
 
 export interface UpdateUserSshKeyMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateUserSshKeyMetadata';
     userSshKeyId: string;
 }
 
 export interface DeleteUserSshKeyRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteUserSshKeyRequest';
     userSshKeyId: string;
 }
 
 export interface DeleteUserSshKeyMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteUserSshKeyMetadata';
     userSshKeyId: string;
 }
 
-const baseGetUserSshKeyRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.GetUserSshKeyRequest',
-    userSshKeyId: '',
-};
+const baseGetUserSshKeyRequest: object = { userSshKeyId: '' };
 
 export const GetUserSshKeyRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.GetUserSshKeyRequest' as const,
-
     encode(message: GetUserSshKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.userSshKeyId !== '') {
             writer.uint32(10).string(message.userSshKeyId);
@@ -136,10 +121,7 @@ export const GetUserSshKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(GetUserSshKeyRequest.$type, GetUserSshKeyRequest);
-
 const baseListUserSshKeysRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListUserSshKeysRequest',
     organizationId: '',
     subjectId: '',
     pageSize: 0,
@@ -147,8 +129,6 @@ const baseListUserSshKeysRequest: object = {
 };
 
 export const ListUserSshKeysRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListUserSshKeysRequest' as const,
-
     encode(message: ListUserSshKeysRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -232,16 +212,9 @@ export const ListUserSshKeysRequest = {
     },
 };
 
-messageTypeRegistry.set(ListUserSshKeysRequest.$type, ListUserSshKeysRequest);
-
-const baseListUserSshKeysResponse: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListUserSshKeysResponse',
-    nextPageToken: '',
-};
+const baseListUserSshKeysResponse: object = { nextPageToken: '' };
 
 export const ListUserSshKeysResponse = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListUserSshKeysResponse' as const,
-
     encode(message: ListUserSshKeysResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.sshKeys) {
             UserSshKey.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -305,10 +278,7 @@ export const ListUserSshKeysResponse = {
     },
 };
 
-messageTypeRegistry.set(ListUserSshKeysResponse.$type, ListUserSshKeysResponse);
-
 const baseCreateUserSshKeyRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateUserSshKeyRequest',
     organizationId: '',
     subjectId: '',
     name: '',
@@ -316,8 +286,6 @@ const baseCreateUserSshKeyRequest: object = {
 };
 
 export const CreateUserSshKeyRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateUserSshKeyRequest' as const,
-
     encode(message: CreateUserSshKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -409,17 +377,9 @@ export const CreateUserSshKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateUserSshKeyRequest.$type, CreateUserSshKeyRequest);
-
-const baseCreateUserSshKeyMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateUserSshKeyMetadata',
-    userSshKeyId: '',
-    organizationId: '',
-};
+const baseCreateUserSshKeyMetadata: object = { userSshKeyId: '', organizationId: '' };
 
 export const CreateUserSshKeyMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateUserSshKeyMetadata' as const,
-
     encode(
         message: CreateUserSshKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -484,17 +444,9 @@ export const CreateUserSshKeyMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateUserSshKeyMetadata.$type, CreateUserSshKeyMetadata);
-
-const baseUpdateUserSshKeyRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateUserSshKeyRequest',
-    userSshKeyId: '',
-    name: '',
-};
+const baseUpdateUserSshKeyRequest: object = { userSshKeyId: '', name: '' };
 
 export const UpdateUserSshKeyRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateUserSshKeyRequest' as const,
-
     encode(message: UpdateUserSshKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.userSshKeyId !== '') {
             writer.uint32(10).string(message.userSshKeyId);
@@ -583,16 +535,9 @@ export const UpdateUserSshKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateUserSshKeyRequest.$type, UpdateUserSshKeyRequest);
-
-const baseUpdateUserSshKeyMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateUserSshKeyMetadata',
-    userSshKeyId: '',
-};
+const baseUpdateUserSshKeyMetadata: object = { userSshKeyId: '' };
 
 export const UpdateUserSshKeyMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateUserSshKeyMetadata' as const,
-
     encode(
         message: UpdateUserSshKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -645,16 +590,9 @@ export const UpdateUserSshKeyMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateUserSshKeyMetadata.$type, UpdateUserSshKeyMetadata);
-
-const baseDeleteUserSshKeyRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteUserSshKeyRequest',
-    userSshKeyId: '',
-};
+const baseDeleteUserSshKeyRequest: object = { userSshKeyId: '' };
 
 export const DeleteUserSshKeyRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteUserSshKeyRequest' as const,
-
     encode(message: DeleteUserSshKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.userSshKeyId !== '') {
             writer.uint32(10).string(message.userSshKeyId);
@@ -704,16 +642,9 @@ export const DeleteUserSshKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteUserSshKeyRequest.$type, DeleteUserSshKeyRequest);
-
-const baseDeleteUserSshKeyMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteUserSshKeyMetadata',
-    userSshKeyId: '',
-};
+const baseDeleteUserSshKeyMetadata: object = { userSshKeyId: '' };
 
 export const DeleteUserSshKeyMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteUserSshKeyMetadata' as const,
-
     encode(
         message: DeleteUserSshKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -765,8 +696,6 @@ export const DeleteUserSshKeyMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteUserSshKeyMetadata.$type, DeleteUserSshKeyMetadata);
 
 export const UserSshKeyServiceService = {
     get: {
@@ -940,21 +869,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

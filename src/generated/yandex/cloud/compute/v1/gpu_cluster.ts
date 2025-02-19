@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -41,7 +40,6 @@ export function gpuInterconnectTypeToJSON(object: GpuInterconnectType): string {
 
 /** A GPU cluster. For details about the concept, see [documentation](/docs/compute/concepts/gpus#gpu-clusters). */
 export interface GpuCluster {
-    $type: 'yandex.cloud.compute.v1.GpuCluster';
     /** ID of GPU cluster. */
     id: string;
     /** ID of the folder that the GPU cluster belongs to. */
@@ -121,13 +119,11 @@ export function gpuCluster_StatusToJSON(object: GpuCluster_Status): string {
 }
 
 export interface GpuCluster_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.GpuCluster.LabelsEntry';
     key: string;
     value: string;
 }
 
 const baseGpuCluster: object = {
-    $type: 'yandex.cloud.compute.v1.GpuCluster',
     id: '',
     folderId: '',
     name: '',
@@ -138,8 +134,6 @@ const baseGpuCluster: object = {
 };
 
 export const GpuCluster = {
-    $type: 'yandex.cloud.compute.v1.GpuCluster' as const,
-
     encode(message: GpuCluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -158,7 +152,7 @@ export const GpuCluster = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             GpuCluster_LabelsEntry.encode(
-                { $type: 'yandex.cloud.compute.v1.GpuCluster.LabelsEntry', key: key as any, value },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -299,17 +293,9 @@ export const GpuCluster = {
     },
 };
 
-messageTypeRegistry.set(GpuCluster.$type, GpuCluster);
-
-const baseGpuCluster_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.GpuCluster.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseGpuCluster_LabelsEntry: object = { key: '', value: '' };
 
 export const GpuCluster_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.GpuCluster.LabelsEntry' as const,
-
     encode(message: GpuCluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -366,8 +352,6 @@ export const GpuCluster_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(GpuCluster_LabelsEntry.$type, GpuCluster_LabelsEntry);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -377,21 +361,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

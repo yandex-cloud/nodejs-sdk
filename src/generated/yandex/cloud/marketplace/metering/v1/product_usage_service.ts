@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -23,7 +22,6 @@ import {
 export const protobufPackage = 'yandex.cloud.marketplace.metering.v1';
 
 export interface WriteUsageRequest {
-    $type: 'yandex.cloud.marketplace.metering.v1.WriteUsageRequest';
     /** Do not write usage, only validate */
     dryRun: boolean;
     /** Marketplace Product Instance's ID */
@@ -33,22 +31,15 @@ export interface WriteUsageRequest {
 }
 
 export interface WriteUsageResponse {
-    $type: 'yandex.cloud.marketplace.metering.v1.WriteUsageResponse';
     /** List of accepted product usage records */
     accepted: AcceptedUsageRecord[];
     /** List of rejected product usage records (with reason) */
     rejected: RejectedUsageRecord[];
 }
 
-const baseWriteUsageRequest: object = {
-    $type: 'yandex.cloud.marketplace.metering.v1.WriteUsageRequest',
-    dryRun: false,
-    productInstanceId: '',
-};
+const baseWriteUsageRequest: object = { dryRun: false, productInstanceId: '' };
 
 export const WriteUsageRequest = {
-    $type: 'yandex.cloud.marketplace.metering.v1.WriteUsageRequest' as const,
-
     encode(message: WriteUsageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dryRun === true) {
             writer.uint32(8).bool(message.dryRun);
@@ -123,15 +114,9 @@ export const WriteUsageRequest = {
     },
 };
 
-messageTypeRegistry.set(WriteUsageRequest.$type, WriteUsageRequest);
-
-const baseWriteUsageResponse: object = {
-    $type: 'yandex.cloud.marketplace.metering.v1.WriteUsageResponse',
-};
+const baseWriteUsageResponse: object = {};
 
 export const WriteUsageResponse = {
-    $type: 'yandex.cloud.marketplace.metering.v1.WriteUsageResponse' as const,
-
     encode(message: WriteUsageResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.accepted) {
             AcceptedUsageRecord.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -201,8 +186,6 @@ export const WriteUsageResponse = {
     },
 };
 
-messageTypeRegistry.set(WriteUsageResponse.$type, WriteUsageResponse);
-
 export const ProductUsageServiceService = {
     /** Writes product's usage (authenticated by publisher's service account) */
     write: {
@@ -263,16 +246,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

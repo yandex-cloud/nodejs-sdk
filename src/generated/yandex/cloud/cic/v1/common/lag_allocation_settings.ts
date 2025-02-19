@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { LagInfo } from '../../../../../yandex/cloud/cic/v1/common/lag_info';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.cic.v1.common';
 
 /** Structure for create and update requests that describes LAG allocation settings */
 export interface LagAllocationSettingsRequest {
-    $type: 'yandex.cloud.cic.v1.common.LagAllocationSettingsRequest';
     /**
      * Size of LAG.
      * Must be from 1 to 10 inclusively.
@@ -20,18 +18,13 @@ export interface LagAllocationSettingsRequest {
 
 /** Structure that describes LAG allocation settings */
 export interface LagAllocationSettings {
-    $type: 'yandex.cloud.cic.v1.common.LagAllocationSettings';
     /** LagInfo */
     lagInfo?: LagInfo;
 }
 
-const baseLagAllocationSettingsRequest: object = {
-    $type: 'yandex.cloud.cic.v1.common.LagAllocationSettingsRequest',
-};
+const baseLagAllocationSettingsRequest: object = {};
 
 export const LagAllocationSettingsRequest = {
-    $type: 'yandex.cloud.cic.v1.common.LagAllocationSettingsRequest' as const,
-
     encode(
         message: LagAllocationSettingsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -100,15 +93,9 @@ export const LagAllocationSettingsRequest = {
     },
 };
 
-messageTypeRegistry.set(LagAllocationSettingsRequest.$type, LagAllocationSettingsRequest);
-
-const baseLagAllocationSettings: object = {
-    $type: 'yandex.cloud.cic.v1.common.LagAllocationSettings',
-};
+const baseLagAllocationSettings: object = {};
 
 export const LagAllocationSettings = {
-    $type: 'yandex.cloud.cic.v1.common.LagAllocationSettings' as const,
-
     encode(message: LagAllocationSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lagInfo !== undefined) {
             LagInfo.encode(message.lagInfo, writer.uint32(114).fork()).ldelim();
@@ -162,8 +149,6 @@ export const LagAllocationSettings = {
     },
 };
 
-messageTypeRegistry.set(LagAllocationSettings.$type, LagAllocationSettings);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -184,16 +169,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

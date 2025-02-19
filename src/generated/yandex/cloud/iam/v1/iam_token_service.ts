@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.iam.v1';
 
 export interface CreateIamTokenRequest {
-    $type: 'yandex.cloud.iam.v1.CreateIamTokenRequest';
     /**
      * OAuth token for a Yandex account.
      * For more information, see [OAuth token](/docs/iam/concepts/authorization/oauth-token).
@@ -33,7 +31,6 @@ export interface CreateIamTokenRequest {
 }
 
 export interface CreateIamTokenResponse {
-    $type: 'yandex.cloud.iam.v1.CreateIamTokenResponse';
     /**
      * IAM token for the specified identity.
      *
@@ -46,25 +43,20 @@ export interface CreateIamTokenResponse {
 }
 
 export interface CreateIamTokenForServiceAccountRequest {
-    $type: 'yandex.cloud.iam.v1.CreateIamTokenForServiceAccountRequest';
     serviceAccountId: string;
 }
 
 export interface RevokeIamTokenRequest {
-    $type: 'yandex.cloud.iam.v1.RevokeIamTokenRequest';
     iamToken: string;
 }
 
 export interface RevokeIamTokenResponse {
-    $type: 'yandex.cloud.iam.v1.RevokeIamTokenResponse';
     subjectId: string;
 }
 
-const baseCreateIamTokenRequest: object = { $type: 'yandex.cloud.iam.v1.CreateIamTokenRequest' };
+const baseCreateIamTokenRequest: object = {};
 
 export const CreateIamTokenRequest = {
-    $type: 'yandex.cloud.iam.v1.CreateIamTokenRequest' as const,
-
     encode(message: CreateIamTokenRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.yandexPassportOauthToken !== undefined) {
             writer.uint32(10).string(message.yandexPassportOauthToken);
@@ -126,16 +118,9 @@ export const CreateIamTokenRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateIamTokenRequest.$type, CreateIamTokenRequest);
-
-const baseCreateIamTokenResponse: object = {
-    $type: 'yandex.cloud.iam.v1.CreateIamTokenResponse',
-    iamToken: '',
-};
+const baseCreateIamTokenResponse: object = { iamToken: '' };
 
 export const CreateIamTokenResponse = {
-    $type: 'yandex.cloud.iam.v1.CreateIamTokenResponse' as const,
-
     encode(message: CreateIamTokenResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.iamToken !== '') {
             writer.uint32(10).string(message.iamToken);
@@ -197,16 +182,9 @@ export const CreateIamTokenResponse = {
     },
 };
 
-messageTypeRegistry.set(CreateIamTokenResponse.$type, CreateIamTokenResponse);
-
-const baseCreateIamTokenForServiceAccountRequest: object = {
-    $type: 'yandex.cloud.iam.v1.CreateIamTokenForServiceAccountRequest',
-    serviceAccountId: '',
-};
+const baseCreateIamTokenForServiceAccountRequest: object = { serviceAccountId: '' };
 
 export const CreateIamTokenForServiceAccountRequest = {
-    $type: 'yandex.cloud.iam.v1.CreateIamTokenForServiceAccountRequest' as const,
-
     encode(
         message: CreateIamTokenForServiceAccountRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -268,19 +246,9 @@ export const CreateIamTokenForServiceAccountRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateIamTokenForServiceAccountRequest.$type,
-    CreateIamTokenForServiceAccountRequest,
-);
-
-const baseRevokeIamTokenRequest: object = {
-    $type: 'yandex.cloud.iam.v1.RevokeIamTokenRequest',
-    iamToken: '',
-};
+const baseRevokeIamTokenRequest: object = { iamToken: '' };
 
 export const RevokeIamTokenRequest = {
-    $type: 'yandex.cloud.iam.v1.RevokeIamTokenRequest' as const,
-
     encode(message: RevokeIamTokenRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.iamToken !== '') {
             writer.uint32(10).string(message.iamToken);
@@ -330,16 +298,9 @@ export const RevokeIamTokenRequest = {
     },
 };
 
-messageTypeRegistry.set(RevokeIamTokenRequest.$type, RevokeIamTokenRequest);
-
-const baseRevokeIamTokenResponse: object = {
-    $type: 'yandex.cloud.iam.v1.RevokeIamTokenResponse',
-    subjectId: '',
-};
+const baseRevokeIamTokenResponse: object = { subjectId: '' };
 
 export const RevokeIamTokenResponse = {
-    $type: 'yandex.cloud.iam.v1.RevokeIamTokenResponse' as const,
-
     encode(message: RevokeIamTokenResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subjectId !== '') {
             writer.uint32(10).string(message.subjectId);
@@ -388,8 +349,6 @@ export const RevokeIamTokenResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(RevokeIamTokenResponse.$type, RevokeIamTokenResponse);
 
 /** A set of methods for managing IAM tokens. */
 export const IamTokenServiceService = {
@@ -515,21 +474,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

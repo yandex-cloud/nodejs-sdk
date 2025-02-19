@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,7 +19,6 @@ import _m0 from 'protobufjs/minimal';
 export const protobufPackage = 'yandex.cloud.datasphere.v1';
 
 export interface FileMetadata {
-    $type: 'yandex.cloud.datasphere.v1.FileMetadata';
     /** ID of the Project resource associated with the file. */
     projectId: string;
     /** File path. */
@@ -30,7 +28,6 @@ export interface FileMetadata {
 }
 
 export interface UploadFileRequest {
-    $type: 'yandex.cloud.datasphere.v1.UploadFileRequest';
     /** Metadata of the file to upload. */
     metadata?: FileMetadata | undefined;
     /** Byte chunk of the file to upload. */
@@ -38,13 +35,11 @@ export interface UploadFileRequest {
 }
 
 export interface UploadFileResponse {
-    $type: 'yandex.cloud.datasphere.v1.UploadFileResponse';
     /** Metadata of the uploaded file. */
     metadata?: FileMetadata;
 }
 
 export interface DownloadFileRequest {
-    $type: 'yandex.cloud.datasphere.v1.DownloadFileRequest';
     /** ID of the Project resource to download the file from. */
     projectId: string;
     /** Path of the file to download. */
@@ -52,23 +47,15 @@ export interface DownloadFileRequest {
 }
 
 export interface DownloadFileResponse {
-    $type: 'yandex.cloud.datasphere.v1.DownloadFileResponse';
     /** Metadata of the downloaded file. */
     metadata?: FileMetadata | undefined;
     /** Byte chunk of the downloaded file. */
     chunk: Buffer | undefined;
 }
 
-const baseFileMetadata: object = {
-    $type: 'yandex.cloud.datasphere.v1.FileMetadata',
-    projectId: '',
-    path: '',
-    sizeBytes: 0,
-};
+const baseFileMetadata: object = { projectId: '', path: '', sizeBytes: 0 };
 
 export const FileMetadata = {
-    $type: 'yandex.cloud.datasphere.v1.FileMetadata' as const,
-
     encode(message: FileMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -137,13 +124,9 @@ export const FileMetadata = {
     },
 };
 
-messageTypeRegistry.set(FileMetadata.$type, FileMetadata);
-
-const baseUploadFileRequest: object = { $type: 'yandex.cloud.datasphere.v1.UploadFileRequest' };
+const baseUploadFileRequest: object = {};
 
 export const UploadFileRequest = {
-    $type: 'yandex.cloud.datasphere.v1.UploadFileRequest' as const,
-
     encode(message: UploadFileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.metadata !== undefined) {
             FileMetadata.encode(message.metadata, writer.uint32(10).fork()).ldelim();
@@ -208,13 +191,9 @@ export const UploadFileRequest = {
     },
 };
 
-messageTypeRegistry.set(UploadFileRequest.$type, UploadFileRequest);
-
-const baseUploadFileResponse: object = { $type: 'yandex.cloud.datasphere.v1.UploadFileResponse' };
+const baseUploadFileResponse: object = {};
 
 export const UploadFileResponse = {
-    $type: 'yandex.cloud.datasphere.v1.UploadFileResponse' as const,
-
     encode(message: UploadFileResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.metadata !== undefined) {
             FileMetadata.encode(message.metadata, writer.uint32(10).fork()).ldelim();
@@ -268,17 +247,9 @@ export const UploadFileResponse = {
     },
 };
 
-messageTypeRegistry.set(UploadFileResponse.$type, UploadFileResponse);
-
-const baseDownloadFileRequest: object = {
-    $type: 'yandex.cloud.datasphere.v1.DownloadFileRequest',
-    projectId: '',
-    filePath: '',
-};
+const baseDownloadFileRequest: object = { projectId: '', filePath: '' };
 
 export const DownloadFileRequest = {
-    $type: 'yandex.cloud.datasphere.v1.DownloadFileRequest' as const,
-
     encode(message: DownloadFileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -340,15 +311,9 @@ export const DownloadFileRequest = {
     },
 };
 
-messageTypeRegistry.set(DownloadFileRequest.$type, DownloadFileRequest);
-
-const baseDownloadFileResponse: object = {
-    $type: 'yandex.cloud.datasphere.v1.DownloadFileResponse',
-};
+const baseDownloadFileResponse: object = {};
 
 export const DownloadFileResponse = {
-    $type: 'yandex.cloud.datasphere.v1.DownloadFileResponse' as const,
-
     encode(message: DownloadFileResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.metadata !== undefined) {
             FileMetadata.encode(message.metadata, writer.uint32(10).fork()).ldelim();
@@ -414,8 +379,6 @@ export const DownloadFileResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DownloadFileResponse.$type, DownloadFileResponse);
 
 /** A set of methods for managing data of the Project resource. */
 export const ProjectDataServiceService = {
@@ -535,16 +498,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

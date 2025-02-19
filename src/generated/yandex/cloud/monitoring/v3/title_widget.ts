@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -7,7 +6,6 @@ export const protobufPackage = 'yandex.cloud.monitoring.v3';
 
 /** Title widget. */
 export interface TitleWidget {
-    $type: 'yandex.cloud.monitoring.v3.TitleWidget';
     /** Title text. */
     text: string;
     /** Title size. */
@@ -69,15 +67,9 @@ export function titleWidget_TitleSizeToJSON(object: TitleWidget_TitleSize): stri
     }
 }
 
-const baseTitleWidget: object = {
-    $type: 'yandex.cloud.monitoring.v3.TitleWidget',
-    text: '',
-    size: 0,
-};
+const baseTitleWidget: object = { text: '', size: 0 };
 
 export const TitleWidget = {
-    $type: 'yandex.cloud.monitoring.v3.TitleWidget' as const,
-
     encode(message: TitleWidget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -134,8 +126,6 @@ export const TitleWidget = {
     },
 };
 
-messageTypeRegistry.set(TitleWidget.$type, TitleWidget);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -145,16 +135,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

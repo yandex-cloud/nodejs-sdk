@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -57,13 +56,11 @@ export function clickhouseCleanupPolicyToJSON(object: ClickhouseCleanupPolicy): 
 }
 
 export interface ClickhouseShard {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseShard';
     name: string;
     hosts: string[];
 }
 
 export interface OnPremiseClickhouse {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.OnPremiseClickhouse';
     shards: ClickhouseShard[];
     httpPort: number;
     nativePort: number;
@@ -71,7 +68,6 @@ export interface OnPremiseClickhouse {
 }
 
 export interface ClickhouseConnectionOptions {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseConnectionOptions';
     onPremise?: OnPremiseClickhouse | undefined;
     mdbClusterId: string | undefined;
     user: string;
@@ -81,12 +77,10 @@ export interface ClickhouseConnectionOptions {
 }
 
 export interface ClickhouseConnection {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseConnection';
     connectionOptions?: ClickhouseConnectionOptions | undefined;
 }
 
 export interface ClickhouseSharding {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseSharding';
     columnValueHash?: ClickhouseSharding_ColumnValueHash | undefined;
     customMapping?: ClickhouseSharding_ColumnValueMapping | undefined;
     transferId?: Empty | undefined;
@@ -94,24 +88,20 @@ export interface ClickhouseSharding {
 }
 
 export interface ClickhouseSharding_ColumnValueHash {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseSharding.ColumnValueHash';
     columnName: string;
 }
 
 export interface ClickhouseSharding_ColumnValueMapping {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseSharding.ColumnValueMapping';
     columnName: string;
     mapping: ClickhouseSharding_ColumnValueMapping_ValueToShard[];
 }
 
 export interface ClickhouseSharding_ColumnValueMapping_ValueToShard {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseSharding.ColumnValueMapping.ValueToShard';
     columnValue?: ColumnValue;
     shardName: string;
 }
 
 export interface ClickhouseSource {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseSource';
     connection?: ClickhouseConnection;
     /**
      * White list of tables for replication. If none or empty list is presented - will
@@ -133,7 +123,6 @@ export interface ClickhouseSource {
 }
 
 export interface ClickhouseTarget {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseTarget';
     connection?: ClickhouseConnection;
     subnetId: string;
     /** Alternative table names in target */
@@ -148,15 +137,9 @@ export interface ClickhouseTarget {
     securityGroups: string[];
 }
 
-const baseClickhouseShard: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseShard',
-    name: '',
-    hosts: '',
-};
+const baseClickhouseShard: object = { name: '', hosts: '' };
 
 export const ClickhouseShard = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseShard' as const,
-
     encode(message: ClickhouseShard, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -215,17 +198,9 @@ export const ClickhouseShard = {
     },
 };
 
-messageTypeRegistry.set(ClickhouseShard.$type, ClickhouseShard);
-
-const baseOnPremiseClickhouse: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.OnPremiseClickhouse',
-    httpPort: 0,
-    nativePort: 0,
-};
+const baseOnPremiseClickhouse: object = { httpPort: 0, nativePort: 0 };
 
 export const OnPremiseClickhouse = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.OnPremiseClickhouse' as const,
-
     encode(message: OnPremiseClickhouse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.shards) {
             ClickhouseShard.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -315,17 +290,9 @@ export const OnPremiseClickhouse = {
     },
 };
 
-messageTypeRegistry.set(OnPremiseClickhouse.$type, OnPremiseClickhouse);
-
-const baseClickhouseConnectionOptions: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseConnectionOptions',
-    user: '',
-    database: '',
-};
+const baseClickhouseConnectionOptions: object = { user: '', database: '' };
 
 export const ClickhouseConnectionOptions = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseConnectionOptions' as const,
-
     encode(
         message: ClickhouseConnectionOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -433,15 +400,9 @@ export const ClickhouseConnectionOptions = {
     },
 };
 
-messageTypeRegistry.set(ClickhouseConnectionOptions.$type, ClickhouseConnectionOptions);
-
-const baseClickhouseConnection: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseConnection',
-};
+const baseClickhouseConnection: object = {};
 
 export const ClickhouseConnection = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseConnection' as const,
-
     encode(message: ClickhouseConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectionOptions !== undefined) {
             ClickhouseConnectionOptions.encode(
@@ -503,15 +464,9 @@ export const ClickhouseConnection = {
     },
 };
 
-messageTypeRegistry.set(ClickhouseConnection.$type, ClickhouseConnection);
-
-const baseClickhouseSharding: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseSharding',
-};
+const baseClickhouseSharding: object = {};
 
 export const ClickhouseSharding = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseSharding' as const,
-
     encode(message: ClickhouseSharding, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.columnValueHash !== undefined) {
             ClickhouseSharding_ColumnValueHash.encode(
@@ -629,16 +584,9 @@ export const ClickhouseSharding = {
     },
 };
 
-messageTypeRegistry.set(ClickhouseSharding.$type, ClickhouseSharding);
-
-const baseClickhouseSharding_ColumnValueHash: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseSharding.ColumnValueHash',
-    columnName: '',
-};
+const baseClickhouseSharding_ColumnValueHash: object = { columnName: '' };
 
 export const ClickhouseSharding_ColumnValueHash = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseSharding.ColumnValueHash' as const,
-
     encode(
         message: ClickhouseSharding_ColumnValueHash,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -697,19 +645,9 @@ export const ClickhouseSharding_ColumnValueHash = {
     },
 };
 
-messageTypeRegistry.set(
-    ClickhouseSharding_ColumnValueHash.$type,
-    ClickhouseSharding_ColumnValueHash,
-);
-
-const baseClickhouseSharding_ColumnValueMapping: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseSharding.ColumnValueMapping',
-    columnName: '',
-};
+const baseClickhouseSharding_ColumnValueMapping: object = { columnName: '' };
 
 export const ClickhouseSharding_ColumnValueMapping = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseSharding.ColumnValueMapping' as const,
-
     encode(
         message: ClickhouseSharding_ColumnValueMapping,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -797,19 +735,9 @@ export const ClickhouseSharding_ColumnValueMapping = {
     },
 };
 
-messageTypeRegistry.set(
-    ClickhouseSharding_ColumnValueMapping.$type,
-    ClickhouseSharding_ColumnValueMapping,
-);
-
-const baseClickhouseSharding_ColumnValueMapping_ValueToShard: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseSharding.ColumnValueMapping.ValueToShard',
-    shardName: '',
-};
+const baseClickhouseSharding_ColumnValueMapping_ValueToShard: object = { shardName: '' };
 
 export const ClickhouseSharding_ColumnValueMapping_ValueToShard = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseSharding.ColumnValueMapping.ValueToShard' as const,
-
     encode(
         message: ClickhouseSharding_ColumnValueMapping_ValueToShard,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -889,13 +817,7 @@ export const ClickhouseSharding_ColumnValueMapping_ValueToShard = {
     },
 };
 
-messageTypeRegistry.set(
-    ClickhouseSharding_ColumnValueMapping_ValueToShard.$type,
-    ClickhouseSharding_ColumnValueMapping_ValueToShard,
-);
-
 const baseClickhouseSource: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseSource',
     includeTables: '',
     excludeTables: '',
     subnetId: '',
@@ -904,8 +826,6 @@ const baseClickhouseSource: object = {
 };
 
 export const ClickhouseSource = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseSource' as const,
-
     encode(message: ClickhouseSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             ClickhouseConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -1026,10 +946,7 @@ export const ClickhouseSource = {
     },
 };
 
-messageTypeRegistry.set(ClickhouseSource.$type, ClickhouseSource);
-
 const baseClickhouseTarget: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseTarget',
     subnetId: '',
     cleanupPolicy: 0,
     clickhouseClusterName: '',
@@ -1037,8 +954,6 @@ const baseClickhouseTarget: object = {
 };
 
 export const ClickhouseTarget = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ClickhouseTarget' as const,
-
     encode(message: ClickhouseTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             ClickhouseConnection.encode(message.connection, writer.uint32(18).fork()).ldelim();
@@ -1176,8 +1091,6 @@ export const ClickhouseTarget = {
     },
 };
 
-messageTypeRegistry.set(ClickhouseTarget.$type, ClickhouseTarget);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1198,16 +1111,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

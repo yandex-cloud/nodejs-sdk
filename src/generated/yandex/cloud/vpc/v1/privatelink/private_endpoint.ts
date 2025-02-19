@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
@@ -7,7 +6,6 @@ import { Timestamp } from '../../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.vpc.v1.privatelink';
 
 export interface PrivateEndpoint {
-    $type: 'yandex.cloud.vpc.v1.privatelink.PrivateEndpoint';
     /** ID of the private endpoint. Generated at creation time. */
     id: string;
     /** ID of the folder that the private endpoint belongs to. */
@@ -93,25 +91,20 @@ export function privateEndpoint_StatusToJSON(object: PrivateEndpoint_Status): st
 }
 
 export interface PrivateEndpoint_LabelsEntry {
-    $type: 'yandex.cloud.vpc.v1.privatelink.PrivateEndpoint.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Yandex Cloud Object Storage. */
-export interface PrivateEndpoint_ObjectStorage {
-    $type: 'yandex.cloud.vpc.v1.privatelink.PrivateEndpoint.ObjectStorage';
-}
+export interface PrivateEndpoint_ObjectStorage {}
 
 export interface PrivateEndpoint_DnsOptions {
-    $type: 'yandex.cloud.vpc.v1.privatelink.PrivateEndpoint.DnsOptions';
     /** If enabled - vpc will create private dns records for specified service. */
     privateDnsRecordsEnabled: boolean;
 }
 
 /** Private endpoint ip address details. */
 export interface PrivateEndpoint_EndpointAddress {
-    $type: 'yandex.cloud.vpc.v1.privatelink.PrivateEndpoint.EndpointAddress';
     /** ID of the subnet that the private endpoint address belongs to. */
     subnetId: string;
     /** IP address of the private endpoint. */
@@ -121,7 +114,6 @@ export interface PrivateEndpoint_EndpointAddress {
 }
 
 const basePrivateEndpoint: object = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.PrivateEndpoint',
     id: '',
     folderId: '',
     name: '',
@@ -131,8 +123,6 @@ const basePrivateEndpoint: object = {
 };
 
 export const PrivateEndpoint = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.PrivateEndpoint' as const,
-
     encode(message: PrivateEndpoint, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -151,11 +141,7 @@ export const PrivateEndpoint = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             PrivateEndpoint_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.vpc.v1.privatelink.PrivateEndpoint.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -354,17 +340,9 @@ export const PrivateEndpoint = {
     },
 };
 
-messageTypeRegistry.set(PrivateEndpoint.$type, PrivateEndpoint);
-
-const basePrivateEndpoint_LabelsEntry: object = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.PrivateEndpoint.LabelsEntry',
-    key: '',
-    value: '',
-};
+const basePrivateEndpoint_LabelsEntry: object = { key: '', value: '' };
 
 export const PrivateEndpoint_LabelsEntry = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.PrivateEndpoint.LabelsEntry' as const,
-
     encode(
         message: PrivateEndpoint_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -424,15 +402,9 @@ export const PrivateEndpoint_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(PrivateEndpoint_LabelsEntry.$type, PrivateEndpoint_LabelsEntry);
-
-const basePrivateEndpoint_ObjectStorage: object = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.PrivateEndpoint.ObjectStorage',
-};
+const basePrivateEndpoint_ObjectStorage: object = {};
 
 export const PrivateEndpoint_ObjectStorage = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.PrivateEndpoint.ObjectStorage' as const,
-
     encode(_: PrivateEndpoint_ObjectStorage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -470,16 +442,9 @@ export const PrivateEndpoint_ObjectStorage = {
     },
 };
 
-messageTypeRegistry.set(PrivateEndpoint_ObjectStorage.$type, PrivateEndpoint_ObjectStorage);
-
-const basePrivateEndpoint_DnsOptions: object = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.PrivateEndpoint.DnsOptions',
-    privateDnsRecordsEnabled: false,
-};
+const basePrivateEndpoint_DnsOptions: object = { privateDnsRecordsEnabled: false };
 
 export const PrivateEndpoint_DnsOptions = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.PrivateEndpoint.DnsOptions' as const,
-
     encode(
         message: PrivateEndpoint_DnsOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -534,18 +499,9 @@ export const PrivateEndpoint_DnsOptions = {
     },
 };
 
-messageTypeRegistry.set(PrivateEndpoint_DnsOptions.$type, PrivateEndpoint_DnsOptions);
-
-const basePrivateEndpoint_EndpointAddress: object = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.PrivateEndpoint.EndpointAddress',
-    subnetId: '',
-    address: '',
-    addressId: '',
-};
+const basePrivateEndpoint_EndpointAddress: object = { subnetId: '', address: '', addressId: '' };
 
 export const PrivateEndpoint_EndpointAddress = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.PrivateEndpoint.EndpointAddress' as const,
-
     encode(
         message: PrivateEndpoint_EndpointAddress,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -626,8 +582,6 @@ export const PrivateEndpoint_EndpointAddress = {
     },
 };
 
-messageTypeRegistry.set(PrivateEndpoint_EndpointAddress.$type, PrivateEndpoint_EndpointAddress);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -637,21 +591,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

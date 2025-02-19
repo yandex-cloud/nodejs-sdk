@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -27,13 +26,11 @@ import {
 export const protobufPackage = 'yandex.cloud.serverless.eventrouter.v1';
 
 export interface GetConnectorRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.GetConnectorRequest';
     /** ID of the connector to return. */
     connectorId: string;
 }
 
 export interface ListConnectorsRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListConnectorsRequest';
     /** ID of the bus to list connectors in. */
     busId: string | undefined;
     /** ID of the folder to list connectors in. */
@@ -54,7 +51,6 @@ export interface ListConnectorsRequest {
 }
 
 export interface ListConnectorsResponse {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListConnectorsResponse';
     /** List of connectors. */
     connectors: Connector[];
     /** Token for getting the next page of the list of results. */
@@ -62,7 +58,6 @@ export interface ListConnectorsResponse {
 }
 
 export interface CreateConnectorRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateConnectorRequest';
     /** ID of the bus to create a connector in. */
     busId: string;
     /** Name of the connector. */
@@ -78,13 +73,11 @@ export interface CreateConnectorRequest {
 }
 
 export interface CreateConnectorRequest_LabelsEntry {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateConnectorRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateConnectorMetadata {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateConnectorMetadata';
     /** ID of the connector that is being created. */
     connectorId: string;
     /** ID of the bus that the connector is created in. */
@@ -92,7 +85,6 @@ export interface CreateConnectorMetadata {
 }
 
 export interface UpdateConnectorRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateConnectorRequest';
     /** ID of the connector to update. */
     connectorId: string;
     /** Field mask that specifies which fields of the connector are going to be updated. */
@@ -108,31 +100,26 @@ export interface UpdateConnectorRequest {
 }
 
 export interface UpdateConnectorRequest_LabelsEntry {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateConnectorRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateConnectorMetadata {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateConnectorMetadata';
     /** ID of the connector that is being updated. */
     connectorId: string;
 }
 
 export interface DeleteConnectorRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DeleteConnectorRequest';
     /** ID of the connector to delete. */
     connectorId: string;
 }
 
 export interface DeleteConnectorMetadata {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DeleteConnectorMetadata';
     /** ID of the connector that is being deleted. */
     connectorId: string;
 }
 
 export interface ListConnectorOperationsRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListConnectorOperationsRequest';
     /** ID of the connector to list operations for. */
     connectorId: string;
     /** The maximum number of results per response. */
@@ -154,7 +141,6 @@ export interface ListConnectorOperationsRequest {
 }
 
 export interface ListConnectorOperationsResponse {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListConnectorOperationsResponse';
     /** List of operations for the specified connector. */
     operations: Operation[];
     /** Token for getting the next page of the list of results. */
@@ -162,37 +148,28 @@ export interface ListConnectorOperationsResponse {
 }
 
 export interface StartConnectorRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.StartConnectorRequest';
     /** ID of the connector to start. */
     connectorId: string;
 }
 
 export interface StartConnectorMetadata {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.StartConnectorMetadata';
     /** ID of the connector that is being started. */
     connectorId: string;
 }
 
 export interface StopConnectorRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.StopConnectorRequest';
     /** ID of the connector to stop. */
     connectorId: string;
 }
 
 export interface StopConnectorMetadata {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.StopConnectorMetadata';
     /** ID of the connector that is being stopped. */
     connectorId: string;
 }
 
-const baseGetConnectorRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.GetConnectorRequest',
-    connectorId: '',
-};
+const baseGetConnectorRequest: object = { connectorId: '' };
 
 export const GetConnectorRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.GetConnectorRequest' as const,
-
     encode(message: GetConnectorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -242,18 +219,9 @@ export const GetConnectorRequest = {
     },
 };
 
-messageTypeRegistry.set(GetConnectorRequest.$type, GetConnectorRequest);
-
-const baseListConnectorsRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListConnectorsRequest',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListConnectorsRequest: object = { pageSize: 0, pageToken: '', filter: '' };
 
 export const ListConnectorsRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListConnectorsRequest' as const,
-
     encode(message: ListConnectorsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== undefined) {
             writer.uint32(10).string(message.busId);
@@ -345,16 +313,9 @@ export const ListConnectorsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListConnectorsRequest.$type, ListConnectorsRequest);
-
-const baseListConnectorsResponse: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListConnectorsResponse',
-    nextPageToken: '',
-};
+const baseListConnectorsResponse: object = { nextPageToken: '' };
 
 export const ListConnectorsResponse = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListConnectorsResponse' as const,
-
     encode(message: ListConnectorsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.connectors) {
             Connector.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -418,10 +379,7 @@ export const ListConnectorsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListConnectorsResponse.$type, ListConnectorsResponse);
-
 const baseCreateConnectorRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateConnectorRequest',
     busId: '',
     name: '',
     description: '',
@@ -429,8 +387,6 @@ const baseCreateConnectorRequest: object = {
 };
 
 export const CreateConnectorRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateConnectorRequest' as const,
-
     encode(message: CreateConnectorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== '') {
             writer.uint32(10).string(message.busId);
@@ -443,11 +399,7 @@ export const CreateConnectorRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateConnectorRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateConnectorRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -570,17 +522,9 @@ export const CreateConnectorRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateConnectorRequest.$type, CreateConnectorRequest);
-
-const baseCreateConnectorRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateConnectorRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateConnectorRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateConnectorRequest_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateConnectorRequest.LabelsEntry' as const,
-
     encode(
         message: CreateConnectorRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -646,20 +590,9 @@ export const CreateConnectorRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateConnectorRequest_LabelsEntry.$type,
-    CreateConnectorRequest_LabelsEntry,
-);
-
-const baseCreateConnectorMetadata: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateConnectorMetadata',
-    connectorId: '',
-    busId: '',
-};
+const baseCreateConnectorMetadata: object = { connectorId: '', busId: '' };
 
 export const CreateConnectorMetadata = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateConnectorMetadata' as const,
-
     encode(message: CreateConnectorMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -719,10 +652,7 @@ export const CreateConnectorMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateConnectorMetadata.$type, CreateConnectorMetadata);
-
 const baseUpdateConnectorRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateConnectorRequest',
     connectorId: '',
     name: '',
     description: '',
@@ -730,8 +660,6 @@ const baseUpdateConnectorRequest: object = {
 };
 
 export const UpdateConnectorRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateConnectorRequest' as const,
-
     encode(message: UpdateConnectorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -747,11 +675,7 @@ export const UpdateConnectorRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateConnectorRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateConnectorRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -875,17 +799,9 @@ export const UpdateConnectorRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateConnectorRequest.$type, UpdateConnectorRequest);
-
-const baseUpdateConnectorRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateConnectorRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateConnectorRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateConnectorRequest_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateConnectorRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateConnectorRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -951,19 +867,9 @@ export const UpdateConnectorRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateConnectorRequest_LabelsEntry.$type,
-    UpdateConnectorRequest_LabelsEntry,
-);
-
-const baseUpdateConnectorMetadata: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateConnectorMetadata',
-    connectorId: '',
-};
+const baseUpdateConnectorMetadata: object = { connectorId: '' };
 
 export const UpdateConnectorMetadata = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateConnectorMetadata' as const,
-
     encode(message: UpdateConnectorMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -1013,16 +919,9 @@ export const UpdateConnectorMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateConnectorMetadata.$type, UpdateConnectorMetadata);
-
-const baseDeleteConnectorRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DeleteConnectorRequest',
-    connectorId: '',
-};
+const baseDeleteConnectorRequest: object = { connectorId: '' };
 
 export const DeleteConnectorRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DeleteConnectorRequest' as const,
-
     encode(message: DeleteConnectorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -1072,16 +971,9 @@ export const DeleteConnectorRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteConnectorRequest.$type, DeleteConnectorRequest);
-
-const baseDeleteConnectorMetadata: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DeleteConnectorMetadata',
-    connectorId: '',
-};
+const baseDeleteConnectorMetadata: object = { connectorId: '' };
 
 export const DeleteConnectorMetadata = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DeleteConnectorMetadata' as const,
-
     encode(message: DeleteConnectorMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -1131,10 +1023,7 @@ export const DeleteConnectorMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteConnectorMetadata.$type, DeleteConnectorMetadata);
-
 const baseListConnectorOperationsRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListConnectorOperationsRequest',
     connectorId: '',
     pageSize: 0,
     pageToken: '',
@@ -1142,8 +1031,6 @@ const baseListConnectorOperationsRequest: object = {
 };
 
 export const ListConnectorOperationsRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListConnectorOperationsRequest' as const,
-
     encode(
         message: ListConnectorOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1228,16 +1115,9 @@ export const ListConnectorOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListConnectorOperationsRequest.$type, ListConnectorOperationsRequest);
-
-const baseListConnectorOperationsResponse: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListConnectorOperationsResponse',
-    nextPageToken: '',
-};
+const baseListConnectorOperationsResponse: object = { nextPageToken: '' };
 
 export const ListConnectorOperationsResponse = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListConnectorOperationsResponse' as const,
-
     encode(
         message: ListConnectorOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1310,16 +1190,9 @@ export const ListConnectorOperationsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListConnectorOperationsResponse.$type, ListConnectorOperationsResponse);
-
-const baseStartConnectorRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.StartConnectorRequest',
-    connectorId: '',
-};
+const baseStartConnectorRequest: object = { connectorId: '' };
 
 export const StartConnectorRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.StartConnectorRequest' as const,
-
     encode(message: StartConnectorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -1369,16 +1242,9 @@ export const StartConnectorRequest = {
     },
 };
 
-messageTypeRegistry.set(StartConnectorRequest.$type, StartConnectorRequest);
-
-const baseStartConnectorMetadata: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.StartConnectorMetadata',
-    connectorId: '',
-};
+const baseStartConnectorMetadata: object = { connectorId: '' };
 
 export const StartConnectorMetadata = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.StartConnectorMetadata' as const,
-
     encode(message: StartConnectorMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -1428,16 +1294,9 @@ export const StartConnectorMetadata = {
     },
 };
 
-messageTypeRegistry.set(StartConnectorMetadata.$type, StartConnectorMetadata);
-
-const baseStopConnectorRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.StopConnectorRequest',
-    connectorId: '',
-};
+const baseStopConnectorRequest: object = { connectorId: '' };
 
 export const StopConnectorRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.StopConnectorRequest' as const,
-
     encode(message: StopConnectorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -1487,16 +1346,9 @@ export const StopConnectorRequest = {
     },
 };
 
-messageTypeRegistry.set(StopConnectorRequest.$type, StopConnectorRequest);
-
-const baseStopConnectorMetadata: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.StopConnectorMetadata',
-    connectorId: '',
-};
+const baseStopConnectorMetadata: object = { connectorId: '' };
 
 export const StopConnectorMetadata = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.StopConnectorMetadata' as const,
-
     encode(message: StopConnectorMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -1545,8 +1397,6 @@ export const StopConnectorMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(StopConnectorMetadata.$type, StopConnectorMetadata);
 
 /** A set of methods for managing connectors for serverless eventrouter. */
 export const ConnectorServiceService = {
@@ -1924,16 +1774,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

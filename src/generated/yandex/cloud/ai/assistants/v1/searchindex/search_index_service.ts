@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -28,7 +27,6 @@ export const protobufPackage = 'yandex.cloud.ai.assistants.v1.searchindex';
 
 /** Request to create a new search index. */
 export interface CreateSearchIndexRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.CreateSearchIndexRequest';
     folderId: string;
     /** List of file IDs to be indexed. */
     fileIds: string[];
@@ -49,21 +47,18 @@ export interface CreateSearchIndexRequest {
 }
 
 export interface CreateSearchIndexRequest_LabelsEntry {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.CreateSearchIndexRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Request message for retrieving a search index by ID. */
 export interface GetSearchIndexRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.GetSearchIndexRequest';
     /** ID of the search index to retrieve. */
     searchIndexId: string;
 }
 
 /** Request message for updating an existing search index. */
 export interface UpdateSearchIndexRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.UpdateSearchIndexRequest';
     /** ID of the search index to update. */
     searchIndexId: string;
     /** Field mask specifying which fields to update. */
@@ -79,26 +74,21 @@ export interface UpdateSearchIndexRequest {
 }
 
 export interface UpdateSearchIndexRequest_LabelsEntry {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.UpdateSearchIndexRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Request message for deleting a search index by ID. */
 export interface DeleteSearchIndexRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.DeleteSearchIndexRequest';
     /** ID of the search index to delete. */
     searchIndexId: string;
 }
 
 /** Response message for the delete operation. */
-export interface DeleteSearchIndexResponse {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.DeleteSearchIndexResponse';
-}
+export interface DeleteSearchIndexResponse {}
 
 /** Request message for listing search indexes in a specific folder. */
 export interface ListSearchIndicesRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.ListSearchIndicesRequest';
     /** Folder ID from which to list search indexes. */
     folderId: string;
     /** Maximum number of threads to return per page. */
@@ -109,7 +99,6 @@ export interface ListSearchIndicesRequest {
 
 /** Response message for the list operation. */
 export interface ListSearchIndicesResponse {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.ListSearchIndicesResponse';
     /** List of search indexes in the specified folder. */
     indices: SearchIndex[];
     /** Token to retrieve the next page of results. */
@@ -117,7 +106,6 @@ export interface ListSearchIndicesResponse {
 }
 
 const baseCreateSearchIndexRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.CreateSearchIndexRequest',
     folderId: '',
     fileIds: '',
     name: '',
@@ -125,8 +113,6 @@ const baseCreateSearchIndexRequest: object = {
 };
 
 export const CreateSearchIndexRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.CreateSearchIndexRequest' as const,
-
     encode(
         message: CreateSearchIndexRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -148,11 +134,7 @@ export const CreateSearchIndexRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateSearchIndexRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.assistants.v1.searchindex.CreateSearchIndexRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -328,17 +310,9 @@ export const CreateSearchIndexRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateSearchIndexRequest.$type, CreateSearchIndexRequest);
-
-const baseCreateSearchIndexRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.CreateSearchIndexRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateSearchIndexRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateSearchIndexRequest_LabelsEntry = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.CreateSearchIndexRequest.LabelsEntry' as const,
-
     encode(
         message: CreateSearchIndexRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -404,19 +378,9 @@ export const CreateSearchIndexRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateSearchIndexRequest_LabelsEntry.$type,
-    CreateSearchIndexRequest_LabelsEntry,
-);
-
-const baseGetSearchIndexRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.GetSearchIndexRequest',
-    searchIndexId: '',
-};
+const baseGetSearchIndexRequest: object = { searchIndexId: '' };
 
 export const GetSearchIndexRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.GetSearchIndexRequest' as const,
-
     encode(message: GetSearchIndexRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.searchIndexId !== '') {
             writer.uint32(10).string(message.searchIndexId);
@@ -466,18 +430,9 @@ export const GetSearchIndexRequest = {
     },
 };
 
-messageTypeRegistry.set(GetSearchIndexRequest.$type, GetSearchIndexRequest);
-
-const baseUpdateSearchIndexRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.UpdateSearchIndexRequest',
-    searchIndexId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateSearchIndexRequest: object = { searchIndexId: '', name: '', description: '' };
 
 export const UpdateSearchIndexRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.UpdateSearchIndexRequest' as const,
-
     encode(
         message: UpdateSearchIndexRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -499,11 +454,7 @@ export const UpdateSearchIndexRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateSearchIndexRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.assistants.v1.searchindex.UpdateSearchIndexRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -629,17 +580,9 @@ export const UpdateSearchIndexRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateSearchIndexRequest.$type, UpdateSearchIndexRequest);
-
-const baseUpdateSearchIndexRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.UpdateSearchIndexRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateSearchIndexRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateSearchIndexRequest_LabelsEntry = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.UpdateSearchIndexRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateSearchIndexRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -705,19 +648,9 @@ export const UpdateSearchIndexRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateSearchIndexRequest_LabelsEntry.$type,
-    UpdateSearchIndexRequest_LabelsEntry,
-);
-
-const baseDeleteSearchIndexRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.DeleteSearchIndexRequest',
-    searchIndexId: '',
-};
+const baseDeleteSearchIndexRequest: object = { searchIndexId: '' };
 
 export const DeleteSearchIndexRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.DeleteSearchIndexRequest' as const,
-
     encode(
         message: DeleteSearchIndexRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -770,15 +703,9 @@ export const DeleteSearchIndexRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteSearchIndexRequest.$type, DeleteSearchIndexRequest);
-
-const baseDeleteSearchIndexResponse: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.DeleteSearchIndexResponse',
-};
+const baseDeleteSearchIndexResponse: object = {};
 
 export const DeleteSearchIndexResponse = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.DeleteSearchIndexResponse' as const,
-
     encode(_: DeleteSearchIndexResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -816,18 +743,9 @@ export const DeleteSearchIndexResponse = {
     },
 };
 
-messageTypeRegistry.set(DeleteSearchIndexResponse.$type, DeleteSearchIndexResponse);
-
-const baseListSearchIndicesRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.ListSearchIndicesRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListSearchIndicesRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
 export const ListSearchIndicesRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.ListSearchIndicesRequest' as const,
-
     encode(
         message: ListSearchIndicesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -902,16 +820,9 @@ export const ListSearchIndicesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListSearchIndicesRequest.$type, ListSearchIndicesRequest);
-
-const baseListSearchIndicesResponse: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.ListSearchIndicesResponse',
-    nextPageToken: '',
-};
+const baseListSearchIndicesResponse: object = { nextPageToken: '' };
 
 export const ListSearchIndicesResponse = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.ListSearchIndicesResponse' as const,
-
     encode(
         message: ListSearchIndicesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -977,8 +888,6 @@ export const ListSearchIndicesResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListSearchIndicesResponse.$type, ListSearchIndicesResponse);
 
 /** SearchIndexService provides operations for managing search indexes. */
 export const SearchIndexServiceService = {
@@ -1169,16 +1078,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

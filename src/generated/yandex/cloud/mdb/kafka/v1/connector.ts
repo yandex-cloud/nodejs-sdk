@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Int64Value } from '../../../../../google/protobuf/wrappers';
@@ -12,7 +11,6 @@ export const protobufPackage = 'yandex.cloud.mdb.kafka.v1';
  * See [the documentation](/docs/managed-kafka/concepts/connectors) for details.
  */
 export interface ConnectorSpec {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConnectorSpec';
     /** Name of the connector. */
     name: string;
     /** Maximum number of connector tasks. Default value is the number of brokers. */
@@ -29,13 +27,11 @@ export interface ConnectorSpec {
 }
 
 export interface ConnectorSpec_PropertiesEntry {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConnectorSpec.PropertiesEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateConnectorSpec {
-    $type: 'yandex.cloud.mdb.kafka.v1.UpdateConnectorSpec';
     /** Maximum number of connector tasks to update. */
     tasksMax?: number;
     /**
@@ -50,13 +46,11 @@ export interface UpdateConnectorSpec {
 }
 
 export interface UpdateConnectorSpec_PropertiesEntry {
-    $type: 'yandex.cloud.mdb.kafka.v1.UpdateConnectorSpec.PropertiesEntry';
     key: string;
     value: string;
 }
 
 export interface ConnectorConfigMirrorMakerSpec {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConnectorConfigMirrorMakerSpec';
     /** Source cluster configuration for the MirrorMaker connector. */
     sourceCluster?: ClusterConnectionSpec;
     /** Target cluster configuration for the MirrorMaker connector. */
@@ -68,7 +62,6 @@ export interface ConnectorConfigMirrorMakerSpec {
 }
 
 export interface ClusterConnectionSpec {
-    $type: 'yandex.cloud.mdb.kafka.v1.ClusterConnectionSpec';
     /**
      * Alias of cluster connection configuration.
      * Examples: `source`, `target`.
@@ -80,12 +73,9 @@ export interface ClusterConnectionSpec {
     externalCluster?: ExternalClusterConnectionSpec | undefined;
 }
 
-export interface ThisClusterSpec {
-    $type: 'yandex.cloud.mdb.kafka.v1.ThisClusterSpec';
-}
+export interface ThisClusterSpec {}
 
 export interface ExternalClusterConnectionSpec {
-    $type: 'yandex.cloud.mdb.kafka.v1.ExternalClusterConnectionSpec';
     /** List of bootstrap servers of the cluster, separated by `,`. */
     bootstrapServers: string;
     /** SASL username to use for connection to the cluster. */
@@ -105,7 +95,6 @@ export interface ExternalClusterConnectionSpec {
 
 /** Specification for Kafka S3-Sink Connector. */
 export interface ConnectorConfigS3SinkSpec {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConnectorConfigS3SinkSpec';
     /** List of Kafka topics, separated by ','. */
     topics: string;
     /**
@@ -122,7 +111,6 @@ export interface ConnectorConfigS3SinkSpec {
 
 /** Specification for update Kafka S3-Sink Connector. */
 export interface UpdateConnectorConfigS3SinkSpec {
-    $type: 'yandex.cloud.mdb.kafka.v1.UpdateConnectorConfigS3SinkSpec';
     /** List of Kafka topics, separated by ','. */
     topics: string;
     /** Max records per file. */
@@ -138,13 +126,11 @@ export interface UpdateConnectorConfigS3SinkSpec {
  * YC Object Storage is AWS-compatible.
  */
 export interface S3ConnectionSpec {
-    $type: 'yandex.cloud.mdb.kafka.v1.S3ConnectionSpec';
     bucketName: string;
     externalS3?: ExternalS3StorageSpec | undefined;
 }
 
 export interface ExternalS3StorageSpec {
-    $type: 'yandex.cloud.mdb.kafka.v1.ExternalS3StorageSpec';
     accessKeyId: string;
     secretAccessKey: string;
     endpoint: string;
@@ -153,7 +139,6 @@ export interface ExternalS3StorageSpec {
 }
 
 export interface Connector {
-    $type: 'yandex.cloud.mdb.kafka.v1.Connector';
     /** Name of the connector. */
     name: string;
     /** Maximum number of connector tasks. Default value is the number of brokers. */
@@ -265,13 +250,11 @@ export function connector_StatusToJSON(object: Connector_Status): string {
 }
 
 export interface Connector_PropertiesEntry {
-    $type: 'yandex.cloud.mdb.kafka.v1.Connector.PropertiesEntry';
     key: string;
     value: string;
 }
 
 export interface ConnectorConfigMirrorMaker {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConnectorConfigMirrorMaker';
     /** Source cluster connection configuration. */
     sourceCluster?: ClusterConnection;
     /** Target cluster connection configuration. */
@@ -283,7 +266,6 @@ export interface ConnectorConfigMirrorMaker {
 }
 
 export interface ClusterConnection {
-    $type: 'yandex.cloud.mdb.kafka.v1.ClusterConnection';
     /**
      * Alias of cluster connection configuration.
      * Examples: `source`, `target`.
@@ -295,12 +277,9 @@ export interface ClusterConnection {
     externalCluster?: ExternalClusterConnection | undefined;
 }
 
-export interface ThisCluster {
-    $type: 'yandex.cloud.mdb.kafka.v1.ThisCluster';
-}
+export interface ThisCluster {}
 
 export interface ExternalClusterConnection {
-    $type: 'yandex.cloud.mdb.kafka.v1.ExternalClusterConnection';
     /** List of bootstrap servers of the cluster, separated by `,`. */
     bootstrapServers: string;
     /** SASL username to use for connection to the cluster. */
@@ -316,7 +295,6 @@ export interface ExternalClusterConnection {
  * connector resource.
  */
 export interface ConnectorConfigS3Sink {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConnectorConfigS3Sink';
     /** List of Kafka topics, separated by ','. */
     topics: string;
     /**
@@ -338,41 +316,30 @@ export interface ConnectorConfigS3Sink {
  * YC Object Storage is AWS-compatible.
  */
 export interface S3Connection {
-    $type: 'yandex.cloud.mdb.kafka.v1.S3Connection';
     bucketName: string;
     externalS3?: ExternalS3Storage | undefined;
 }
 
 export interface ExternalS3Storage {
-    $type: 'yandex.cloud.mdb.kafka.v1.ExternalS3Storage';
     accessKeyId: string;
     endpoint: string;
     /** Default is 'us-east-1' */
     region: string;
 }
 
-const baseConnectorSpec: object = { $type: 'yandex.cloud.mdb.kafka.v1.ConnectorSpec', name: '' };
+const baseConnectorSpec: object = { name: '' };
 
 export const ConnectorSpec = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConnectorSpec' as const,
-
     encode(message: ConnectorSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
         }
         if (message.tasksMax !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.tasksMax! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.tasksMax! }, writer.uint32(18).fork()).ldelim();
         }
         Object.entries(message.properties).forEach(([key, value]) => {
             ConnectorSpec_PropertiesEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.kafka.v1.ConnectorSpec.PropertiesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(26).fork(),
             ).ldelim();
         });
@@ -502,17 +469,9 @@ export const ConnectorSpec = {
     },
 };
 
-messageTypeRegistry.set(ConnectorSpec.$type, ConnectorSpec);
-
-const baseConnectorSpec_PropertiesEntry: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConnectorSpec.PropertiesEntry',
-    key: '',
-    value: '',
-};
+const baseConnectorSpec_PropertiesEntry: object = { key: '', value: '' };
 
 export const ConnectorSpec_PropertiesEntry = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConnectorSpec.PropertiesEntry' as const,
-
     encode(
         message: ConnectorSpec_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -572,27 +531,16 @@ export const ConnectorSpec_PropertiesEntry = {
     },
 };
 
-messageTypeRegistry.set(ConnectorSpec_PropertiesEntry.$type, ConnectorSpec_PropertiesEntry);
-
-const baseUpdateConnectorSpec: object = { $type: 'yandex.cloud.mdb.kafka.v1.UpdateConnectorSpec' };
+const baseUpdateConnectorSpec: object = {};
 
 export const UpdateConnectorSpec = {
-    $type: 'yandex.cloud.mdb.kafka.v1.UpdateConnectorSpec' as const,
-
     encode(message: UpdateConnectorSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tasksMax !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.tasksMax! },
-                writer.uint32(10).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.tasksMax! }, writer.uint32(10).fork()).ldelim();
         }
         Object.entries(message.properties).forEach(([key, value]) => {
             UpdateConnectorSpec_PropertiesEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.kafka.v1.UpdateConnectorSpec.PropertiesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(18).fork(),
             ).ldelim();
         });
@@ -721,17 +669,9 @@ export const UpdateConnectorSpec = {
     },
 };
 
-messageTypeRegistry.set(UpdateConnectorSpec.$type, UpdateConnectorSpec);
-
-const baseUpdateConnectorSpec_PropertiesEntry: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.UpdateConnectorSpec.PropertiesEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateConnectorSpec_PropertiesEntry: object = { key: '', value: '' };
 
 export const UpdateConnectorSpec_PropertiesEntry = {
-    $type: 'yandex.cloud.mdb.kafka.v1.UpdateConnectorSpec.PropertiesEntry' as const,
-
     encode(
         message: UpdateConnectorSpec_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -797,19 +737,9 @@ export const UpdateConnectorSpec_PropertiesEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateConnectorSpec_PropertiesEntry.$type,
-    UpdateConnectorSpec_PropertiesEntry,
-);
-
-const baseConnectorConfigMirrorMakerSpec: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConnectorConfigMirrorMakerSpec',
-    topics: '',
-};
+const baseConnectorConfigMirrorMakerSpec: object = { topics: '' };
 
 export const ConnectorConfigMirrorMakerSpec = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConnectorConfigMirrorMakerSpec' as const,
-
     encode(
         message: ConnectorConfigMirrorMakerSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -825,7 +755,7 @@ export const ConnectorConfigMirrorMakerSpec = {
         }
         if (message.replicationFactor !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.replicationFactor! },
+                { value: message.replicationFactor! },
                 writer.uint32(34).fork(),
             ).ldelim();
         }
@@ -912,16 +842,9 @@ export const ConnectorConfigMirrorMakerSpec = {
     },
 };
 
-messageTypeRegistry.set(ConnectorConfigMirrorMakerSpec.$type, ConnectorConfigMirrorMakerSpec);
-
-const baseClusterConnectionSpec: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ClusterConnectionSpec',
-    alias: '',
-};
+const baseClusterConnectionSpec: object = { alias: '' };
 
 export const ClusterConnectionSpec = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ClusterConnectionSpec' as const,
-
     encode(message: ClusterConnectionSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.alias !== '') {
             writer.uint32(10).string(message.alias);
@@ -1011,13 +934,9 @@ export const ClusterConnectionSpec = {
     },
 };
 
-messageTypeRegistry.set(ClusterConnectionSpec.$type, ClusterConnectionSpec);
-
-const baseThisClusterSpec: object = { $type: 'yandex.cloud.mdb.kafka.v1.ThisClusterSpec' };
+const baseThisClusterSpec: object = {};
 
 export const ThisClusterSpec = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ThisClusterSpec' as const,
-
     encode(_: ThisClusterSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1053,10 +972,7 @@ export const ThisClusterSpec = {
     },
 };
 
-messageTypeRegistry.set(ThisClusterSpec.$type, ThisClusterSpec);
-
 const baseExternalClusterConnectionSpec: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ExternalClusterConnectionSpec',
     bootstrapServers: '',
     saslUsername: '',
     saslPassword: '',
@@ -1066,8 +982,6 @@ const baseExternalClusterConnectionSpec: object = {
 };
 
 export const ExternalClusterConnectionSpec = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ExternalClusterConnectionSpec' as const,
-
     encode(
         message: ExternalClusterConnectionSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1182,17 +1096,9 @@ export const ExternalClusterConnectionSpec = {
     },
 };
 
-messageTypeRegistry.set(ExternalClusterConnectionSpec.$type, ExternalClusterConnectionSpec);
-
-const baseConnectorConfigS3SinkSpec: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConnectorConfigS3SinkSpec',
-    topics: '',
-    fileCompressionType: '',
-};
+const baseConnectorConfigS3SinkSpec: object = { topics: '', fileCompressionType: '' };
 
 export const ConnectorConfigS3SinkSpec = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConnectorConfigS3SinkSpec' as const,
-
     encode(
         message: ConnectorConfigS3SinkSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1205,7 +1111,7 @@ export const ConnectorConfigS3SinkSpec = {
         }
         if (message.fileMaxRecords !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.fileMaxRecords! },
+                { value: message.fileMaxRecords! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
@@ -1289,16 +1195,9 @@ export const ConnectorConfigS3SinkSpec = {
     },
 };
 
-messageTypeRegistry.set(ConnectorConfigS3SinkSpec.$type, ConnectorConfigS3SinkSpec);
-
-const baseUpdateConnectorConfigS3SinkSpec: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.UpdateConnectorConfigS3SinkSpec',
-    topics: '',
-};
+const baseUpdateConnectorConfigS3SinkSpec: object = { topics: '' };
 
 export const UpdateConnectorConfigS3SinkSpec = {
-    $type: 'yandex.cloud.mdb.kafka.v1.UpdateConnectorConfigS3SinkSpec' as const,
-
     encode(
         message: UpdateConnectorConfigS3SinkSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1308,7 +1207,7 @@ export const UpdateConnectorConfigS3SinkSpec = {
         }
         if (message.fileMaxRecords !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.fileMaxRecords! },
+                { value: message.fileMaxRecords! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
@@ -1388,16 +1287,9 @@ export const UpdateConnectorConfigS3SinkSpec = {
     },
 };
 
-messageTypeRegistry.set(UpdateConnectorConfigS3SinkSpec.$type, UpdateConnectorConfigS3SinkSpec);
-
-const baseS3ConnectionSpec: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.S3ConnectionSpec',
-    bucketName: '',
-};
+const baseS3ConnectionSpec: object = { bucketName: '' };
 
 export const S3ConnectionSpec = {
-    $type: 'yandex.cloud.mdb.kafka.v1.S3ConnectionSpec' as const,
-
     encode(message: S3ConnectionSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucketName !== '') {
             writer.uint32(10).string(message.bucketName);
@@ -1463,10 +1355,7 @@ export const S3ConnectionSpec = {
     },
 };
 
-messageTypeRegistry.set(S3ConnectionSpec.$type, S3ConnectionSpec);
-
 const baseExternalS3StorageSpec: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ExternalS3StorageSpec',
     accessKeyId: '',
     secretAccessKey: '',
     endpoint: '',
@@ -1474,8 +1363,6 @@ const baseExternalS3StorageSpec: object = {
 };
 
 export const ExternalS3StorageSpec = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ExternalS3StorageSpec' as const,
-
     encode(message: ExternalS3StorageSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.accessKeyId !== '') {
             writer.uint32(10).string(message.accessKeyId);
@@ -1559,36 +1446,19 @@ export const ExternalS3StorageSpec = {
     },
 };
 
-messageTypeRegistry.set(ExternalS3StorageSpec.$type, ExternalS3StorageSpec);
-
-const baseConnector: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.Connector',
-    name: '',
-    health: 0,
-    status: 0,
-    clusterId: '',
-};
+const baseConnector: object = { name: '', health: 0, status: 0, clusterId: '' };
 
 export const Connector = {
-    $type: 'yandex.cloud.mdb.kafka.v1.Connector' as const,
-
     encode(message: Connector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
         }
         if (message.tasksMax !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.tasksMax! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.tasksMax! }, writer.uint32(18).fork()).ldelim();
         }
         Object.entries(message.properties).forEach(([key, value]) => {
             Connector_PropertiesEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.kafka.v1.Connector.PropertiesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(26).fork(),
             ).ldelim();
         });
@@ -1754,17 +1624,9 @@ export const Connector = {
     },
 };
 
-messageTypeRegistry.set(Connector.$type, Connector);
-
-const baseConnector_PropertiesEntry: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.Connector.PropertiesEntry',
-    key: '',
-    value: '',
-};
+const baseConnector_PropertiesEntry: object = { key: '', value: '' };
 
 export const Connector_PropertiesEntry = {
-    $type: 'yandex.cloud.mdb.kafka.v1.Connector.PropertiesEntry' as const,
-
     encode(
         message: Connector_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1824,16 +1686,9 @@ export const Connector_PropertiesEntry = {
     },
 };
 
-messageTypeRegistry.set(Connector_PropertiesEntry.$type, Connector_PropertiesEntry);
-
-const baseConnectorConfigMirrorMaker: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConnectorConfigMirrorMaker',
-    topics: '',
-};
+const baseConnectorConfigMirrorMaker: object = { topics: '' };
 
 export const ConnectorConfigMirrorMaker = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConnectorConfigMirrorMaker' as const,
-
     encode(
         message: ConnectorConfigMirrorMaker,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1849,7 +1704,7 @@ export const ConnectorConfigMirrorMaker = {
         }
         if (message.replicationFactor !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.replicationFactor! },
+                { value: message.replicationFactor! },
                 writer.uint32(34).fork(),
             ).ldelim();
         }
@@ -1936,16 +1791,9 @@ export const ConnectorConfigMirrorMaker = {
     },
 };
 
-messageTypeRegistry.set(ConnectorConfigMirrorMaker.$type, ConnectorConfigMirrorMaker);
-
-const baseClusterConnection: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ClusterConnection',
-    alias: '',
-};
+const baseClusterConnection: object = { alias: '' };
 
 export const ClusterConnection = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ClusterConnection' as const,
-
     encode(message: ClusterConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.alias !== '') {
             writer.uint32(10).string(message.alias);
@@ -2033,13 +1881,9 @@ export const ClusterConnection = {
     },
 };
 
-messageTypeRegistry.set(ClusterConnection.$type, ClusterConnection);
-
-const baseThisCluster: object = { $type: 'yandex.cloud.mdb.kafka.v1.ThisCluster' };
+const baseThisCluster: object = {};
 
 export const ThisCluster = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ThisCluster' as const,
-
     encode(_: ThisCluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2075,10 +1919,7 @@ export const ThisCluster = {
     },
 };
 
-messageTypeRegistry.set(ThisCluster.$type, ThisCluster);
-
 const baseExternalClusterConnection: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ExternalClusterConnection',
     bootstrapServers: '',
     saslUsername: '',
     saslMechanism: '',
@@ -2086,8 +1927,6 @@ const baseExternalClusterConnection: object = {
 };
 
 export const ExternalClusterConnection = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ExternalClusterConnection' as const,
-
     encode(
         message: ExternalClusterConnection,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2176,17 +2015,9 @@ export const ExternalClusterConnection = {
     },
 };
 
-messageTypeRegistry.set(ExternalClusterConnection.$type, ExternalClusterConnection);
-
-const baseConnectorConfigS3Sink: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConnectorConfigS3Sink',
-    topics: '',
-    fileCompressionType: '',
-};
+const baseConnectorConfigS3Sink: object = { topics: '', fileCompressionType: '' };
 
 export const ConnectorConfigS3Sink = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConnectorConfigS3Sink' as const,
-
     encode(message: ConnectorConfigS3Sink, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.topics !== '') {
             writer.uint32(10).string(message.topics);
@@ -2196,7 +2027,7 @@ export const ConnectorConfigS3Sink = {
         }
         if (message.fileMaxRecords !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.fileMaxRecords! },
+                { value: message.fileMaxRecords! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
@@ -2280,16 +2111,9 @@ export const ConnectorConfigS3Sink = {
     },
 };
 
-messageTypeRegistry.set(ConnectorConfigS3Sink.$type, ConnectorConfigS3Sink);
-
-const baseS3Connection: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.S3Connection',
-    bucketName: '',
-};
+const baseS3Connection: object = { bucketName: '' };
 
 export const S3Connection = {
-    $type: 'yandex.cloud.mdb.kafka.v1.S3Connection' as const,
-
     encode(message: S3Connection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucketName !== '') {
             writer.uint32(10).string(message.bucketName);
@@ -2355,18 +2179,9 @@ export const S3Connection = {
     },
 };
 
-messageTypeRegistry.set(S3Connection.$type, S3Connection);
-
-const baseExternalS3Storage: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ExternalS3Storage',
-    accessKeyId: '',
-    endpoint: '',
-    region: '',
-};
+const baseExternalS3Storage: object = { accessKeyId: '', endpoint: '', region: '' };
 
 export const ExternalS3Storage = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ExternalS3Storage' as const,
-
     encode(message: ExternalS3Storage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.accessKeyId !== '') {
             writer.uint32(10).string(message.accessKeyId);
@@ -2436,8 +2251,6 @@ export const ExternalS3Storage = {
     },
 };
 
-messageTypeRegistry.set(ExternalS3Storage.$type, ExternalS3Storage);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -2447,16 +2260,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

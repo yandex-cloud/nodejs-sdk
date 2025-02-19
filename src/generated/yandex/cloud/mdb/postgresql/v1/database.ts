@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { BoolValue } from '../../../../../google/protobuf/wrappers';
@@ -11,7 +10,6 @@ export const protobufPackage = 'yandex.cloud.mdb.postgresql.v1';
  * the [Developer's Guide](/docs/managed-postgresql/concepts).
  */
 export interface Database {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Database';
     /** Name of the database. */
     name: string;
     /** ID of the PostgreSQL cluster that the database belongs to. */
@@ -41,7 +39,6 @@ export interface Database {
 }
 
 export interface Extension {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Extension';
     /**
      * Name of the extension, e.g. `pg_trgm` or `pg_btree`.
      * Extensions supported by Managed Service for PostgreSQL are [listed in the Developer's Guide](/docs/managed-postgresql/operations/extensions/cluster-extensions).
@@ -52,7 +49,6 @@ export interface Extension {
 }
 
 export interface DatabaseSpec {
-    $type: 'yandex.cloud.mdb.postgresql.v1.DatabaseSpec';
     /** Name of the PostgreSQL database. 1-63 characters long. */
     name: string;
     /**
@@ -83,7 +79,6 @@ export interface DatabaseSpec {
 }
 
 const baseDatabase: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Database',
     name: '',
     clusterId: '',
     owner: '',
@@ -93,8 +88,6 @@ const baseDatabase: object = {
 };
 
 export const Database = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Database' as const,
-
     encode(message: Database, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -119,7 +112,7 @@ export const Database = {
         }
         if (message.deletionProtection !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.deletionProtection! },
+                { value: message.deletionProtection! },
                 writer.uint32(66).fork(),
             ).ldelim();
         }
@@ -225,17 +218,9 @@ export const Database = {
     },
 };
 
-messageTypeRegistry.set(Database.$type, Database);
-
-const baseExtension: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Extension',
-    name: '',
-    version: '',
-};
+const baseExtension: object = { name: '', version: '' };
 
 export const Extension = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Extension' as const,
-
     encode(message: Extension, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -290,10 +275,7 @@ export const Extension = {
     },
 };
 
-messageTypeRegistry.set(Extension.$type, Extension);
-
 const baseDatabaseSpec: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.DatabaseSpec',
     name: '',
     owner: '',
     lcCollate: '',
@@ -302,8 +284,6 @@ const baseDatabaseSpec: object = {
 };
 
 export const DatabaseSpec = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.DatabaseSpec' as const,
-
     encode(message: DatabaseSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -325,7 +305,7 @@ export const DatabaseSpec = {
         }
         if (message.deletionProtection !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.deletionProtection! },
+                { value: message.deletionProtection! },
                 writer.uint32(58).fork(),
             ).ldelim();
         }
@@ -422,8 +402,6 @@ export const DatabaseSpec = {
     },
 };
 
-messageTypeRegistry.set(DatabaseSpec.$type, DatabaseSpec);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -433,16 +411,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

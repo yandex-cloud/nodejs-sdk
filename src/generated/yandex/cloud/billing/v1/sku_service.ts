@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ import { Sku } from '../../../../yandex/cloud/billing/v1/sku';
 export const protobufPackage = 'yandex.cloud.billing.v1';
 
 export interface GetSkuRequest {
-    $type: 'yandex.cloud.billing.v1.GetSkuRequest';
     /**
      * ID of the SKU to return.
      * To get the SKU ID, use [SkuService.List] request.
@@ -42,7 +40,6 @@ export interface GetSkuRequest {
 }
 
 export interface ListSkusRequest {
-    $type: 'yandex.cloud.billing.v1.ListSkusRequest';
     /**
      * Currency of the prices.
      * Can be one of the following:
@@ -82,7 +79,6 @@ export interface ListSkusRequest {
 }
 
 export interface ListSkusResponse {
-    $type: 'yandex.cloud.billing.v1.ListSkusResponse';
     /** List of skus. */
     skus: Sku[];
     /**
@@ -96,16 +92,9 @@ export interface ListSkusResponse {
     nextPageToken: string;
 }
 
-const baseGetSkuRequest: object = {
-    $type: 'yandex.cloud.billing.v1.GetSkuRequest',
-    id: '',
-    currency: '',
-    billingAccountId: '',
-};
+const baseGetSkuRequest: object = { id: '', currency: '', billingAccountId: '' };
 
 export const GetSkuRequest = {
-    $type: 'yandex.cloud.billing.v1.GetSkuRequest' as const,
-
     encode(message: GetSkuRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -174,10 +163,7 @@ export const GetSkuRequest = {
     },
 };
 
-messageTypeRegistry.set(GetSkuRequest.$type, GetSkuRequest);
-
 const baseListSkusRequest: object = {
-    $type: 'yandex.cloud.billing.v1.ListSkusRequest',
     currency: '',
     billingAccountId: '',
     filter: '',
@@ -186,8 +172,6 @@ const baseListSkusRequest: object = {
 };
 
 export const ListSkusRequest = {
-    $type: 'yandex.cloud.billing.v1.ListSkusRequest' as const,
-
     encode(message: ListSkusRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.currency !== '') {
             writer.uint32(10).string(message.currency);
@@ -279,16 +263,9 @@ export const ListSkusRequest = {
     },
 };
 
-messageTypeRegistry.set(ListSkusRequest.$type, ListSkusRequest);
-
-const baseListSkusResponse: object = {
-    $type: 'yandex.cloud.billing.v1.ListSkusResponse',
-    nextPageToken: '',
-};
+const baseListSkusResponse: object = { nextPageToken: '' };
 
 export const ListSkusResponse = {
-    $type: 'yandex.cloud.billing.v1.ListSkusResponse' as const,
-
     encode(message: ListSkusResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.skus) {
             Sku.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -349,8 +326,6 @@ export const ListSkusResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListSkusResponse.$type, ListSkusResponse);
 
 /** A set of methods for managing Sku resources. */
 export const SkuServiceService = {
@@ -453,16 +428,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

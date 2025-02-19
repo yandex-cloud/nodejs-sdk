@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -47,7 +46,6 @@ export function resourceTypeToJSON(object: ResourceType): string {
 }
 
 export interface Resource {
-    $type: 'yandex.cloud.backup.v1.Resource';
     /** Compute Cloud instance ID. */
     computeInstanceId: string;
     createdAt?: Date;
@@ -210,13 +208,11 @@ export function resource_InitStatusToJSON(object: Resource_InitStatus): string {
 }
 
 export interface Progress {
-    $type: 'yandex.cloud.backup.v1.Progress';
     current: number;
     total: number;
 }
 
 export interface Task {
-    $type: 'yandex.cloud.backup.v1.Task';
     /** Task ID. */
     id: number;
     /**
@@ -421,7 +417,6 @@ export function task_CodeToJSON(object: Task_Code): string {
 }
 
 const baseResource: object = {
-    $type: 'yandex.cloud.backup.v1.Resource',
     computeInstanceId: '',
     online: false,
     enabled: false,
@@ -436,8 +431,6 @@ const baseResource: object = {
 };
 
 export const Resource = {
-    $type: 'yandex.cloud.backup.v1.Resource' as const,
-
     encode(message: Resource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -666,13 +659,9 @@ export const Resource = {
     },
 };
 
-messageTypeRegistry.set(Resource.$type, Resource);
-
-const baseProgress: object = { $type: 'yandex.cloud.backup.v1.Progress', current: 0, total: 0 };
+const baseProgress: object = { current: 0, total: 0 };
 
 export const Progress = {
-    $type: 'yandex.cloud.backup.v1.Progress' as const,
-
     encode(message: Progress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.current !== 0) {
             writer.uint32(8).int64(message.current);
@@ -728,10 +717,7 @@ export const Progress = {
     },
 };
 
-messageTypeRegistry.set(Progress.$type, Progress);
-
 const baseTask: object = {
-    $type: 'yandex.cloud.backup.v1.Task',
     id: 0,
     cancellable: false,
     policyId: '',
@@ -743,8 +729,6 @@ const baseTask: object = {
 };
 
 export const Task = {
-    $type: 'yandex.cloud.backup.v1.Task' as const,
-
     encode(message: Task, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== 0) {
             writer.uint32(8).int64(message.id);
@@ -934,8 +918,6 @@ export const Task = {
     },
 };
 
-messageTypeRegistry.set(Task.$type, Task);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -956,21 +938,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

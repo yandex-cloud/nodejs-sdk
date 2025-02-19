@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,7 +19,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.containerregistry.v1';
 
 export interface ListImagesRequest {
-    $type: 'yandex.cloud.containerregistry.v1.ListImagesRequest';
     /**
      * ID of the registry to list Docker images in.
      *
@@ -68,7 +66,6 @@ export interface ListImagesRequest {
 }
 
 export interface ListImagesResponse {
-    $type: 'yandex.cloud.containerregistry.v1.ListImagesResponse';
     /** List of Image resources. */
     images: Image[];
     /**
@@ -83,7 +80,6 @@ export interface ListImagesResponse {
 }
 
 export interface GetImageRequest {
-    $type: 'yandex.cloud.containerregistry.v1.GetImageRequest';
     /**
      * ID of the Docker image resource to return.
      *
@@ -93,7 +89,6 @@ export interface GetImageRequest {
 }
 
 export interface DeleteImageRequest {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteImageRequest';
     /**
      * ID of the Docker image to delete.
      *
@@ -103,13 +98,11 @@ export interface DeleteImageRequest {
 }
 
 export interface DeleteImageMetadata {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteImageMetadata';
     /** ID of the Docker image that is being deleted. */
     imageId: string;
 }
 
 const baseListImagesRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.ListImagesRequest',
     registryId: '',
     repositoryName: '',
     folderId: '',
@@ -120,8 +113,6 @@ const baseListImagesRequest: object = {
 };
 
 export const ListImagesRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.ListImagesRequest' as const,
-
     encode(message: ListImagesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -235,16 +226,9 @@ export const ListImagesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListImagesRequest.$type, ListImagesRequest);
-
-const baseListImagesResponse: object = {
-    $type: 'yandex.cloud.containerregistry.v1.ListImagesResponse',
-    nextPageToken: '',
-};
+const baseListImagesResponse: object = { nextPageToken: '' };
 
 export const ListImagesResponse = {
-    $type: 'yandex.cloud.containerregistry.v1.ListImagesResponse' as const,
-
     encode(message: ListImagesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.images) {
             Image.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -308,16 +292,9 @@ export const ListImagesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListImagesResponse.$type, ListImagesResponse);
-
-const baseGetImageRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.GetImageRequest',
-    imageId: '',
-};
+const baseGetImageRequest: object = { imageId: '' };
 
 export const GetImageRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.GetImageRequest' as const,
-
     encode(message: GetImageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -363,16 +340,9 @@ export const GetImageRequest = {
     },
 };
 
-messageTypeRegistry.set(GetImageRequest.$type, GetImageRequest);
-
-const baseDeleteImageRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteImageRequest',
-    imageId: '',
-};
+const baseDeleteImageRequest: object = { imageId: '' };
 
 export const DeleteImageRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteImageRequest' as const,
-
     encode(message: DeleteImageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -420,16 +390,9 @@ export const DeleteImageRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteImageRequest.$type, DeleteImageRequest);
-
-const baseDeleteImageMetadata: object = {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteImageMetadata',
-    imageId: '',
-};
+const baseDeleteImageMetadata: object = { imageId: '' };
 
 export const DeleteImageMetadata = {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteImageMetadata' as const,
-
     encode(message: DeleteImageMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -476,8 +439,6 @@ export const DeleteImageMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteImageMetadata.$type, DeleteImageMetadata);
 
 /** A set of methods for managing Image resources. */
 export const ImageServiceService = {
@@ -621,16 +582,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ import { TrunkConnection } from '../../../../yandex/cloud/cic/v1/trunk_connectio
 export const protobufPackage = 'yandex.cloud.cic.v1';
 
 export interface GetTrunkConnectionRequest {
-    $type: 'yandex.cloud.cic.v1.GetTrunkConnectionRequest';
     /**
      * ID of the TrunkConnection resource to return.
      * To get the trunkConnection ID use a [TrunkConnectionService.List] request.
@@ -28,7 +26,6 @@ export interface GetTrunkConnectionRequest {
 }
 
 export interface ListTrunkConnectionsRequest {
-    $type: 'yandex.cloud.cic.v1.ListTrunkConnectionsRequest';
     /**
      * ID of the folder to list trunkConnections in.
      * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -57,7 +54,6 @@ export interface ListTrunkConnectionsRequest {
 }
 
 export interface ListTrunkConnectionsResponse {
-    $type: 'yandex.cloud.cic.v1.ListTrunkConnectionsResponse';
     /** List of TrunkConnection resources. */
     trunkConnections: TrunkConnection[];
     /**
@@ -71,14 +67,9 @@ export interface ListTrunkConnectionsResponse {
     nextPageToken: string;
 }
 
-const baseGetTrunkConnectionRequest: object = {
-    $type: 'yandex.cloud.cic.v1.GetTrunkConnectionRequest',
-    trunkConnectionId: '',
-};
+const baseGetTrunkConnectionRequest: object = { trunkConnectionId: '' };
 
 export const GetTrunkConnectionRequest = {
-    $type: 'yandex.cloud.cic.v1.GetTrunkConnectionRequest' as const,
-
     encode(
         message: GetTrunkConnectionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -132,10 +123,7 @@ export const GetTrunkConnectionRequest = {
     },
 };
 
-messageTypeRegistry.set(GetTrunkConnectionRequest.$type, GetTrunkConnectionRequest);
-
 const baseListTrunkConnectionsRequest: object = {
-    $type: 'yandex.cloud.cic.v1.ListTrunkConnectionsRequest',
     folderId: '',
     pageSize: 0,
     pageToken: '',
@@ -143,8 +131,6 @@ const baseListTrunkConnectionsRequest: object = {
 };
 
 export const ListTrunkConnectionsRequest = {
-    $type: 'yandex.cloud.cic.v1.ListTrunkConnectionsRequest' as const,
-
     encode(
         message: ListTrunkConnectionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -229,16 +215,9 @@ export const ListTrunkConnectionsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListTrunkConnectionsRequest.$type, ListTrunkConnectionsRequest);
-
-const baseListTrunkConnectionsResponse: object = {
-    $type: 'yandex.cloud.cic.v1.ListTrunkConnectionsResponse',
-    nextPageToken: '',
-};
+const baseListTrunkConnectionsResponse: object = { nextPageToken: '' };
 
 export const ListTrunkConnectionsResponse = {
-    $type: 'yandex.cloud.cic.v1.ListTrunkConnectionsResponse' as const,
-
     encode(
         message: ListTrunkConnectionsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -309,8 +288,6 @@ export const ListTrunkConnectionsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListTrunkConnectionsResponse.$type, ListTrunkConnectionsResponse);
 
 /** A set of methods for managing TrunkConnection resources. */
 export const TrunkConnectionServiceService = {
@@ -426,16 +403,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

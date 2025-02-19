@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -21,13 +20,11 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.video.v1';
 
 export interface GetChannelRequest {
-    $type: 'yandex.cloud.video.v1.GetChannelRequest';
     /** ID of the channel. */
     channelId: string;
 }
 
 export interface ListChannelsRequest {
-    $type: 'yandex.cloud.video.v1.ListChannelsRequest';
     /** ID of the organization. */
     organizationId: string;
     /** The maximum number of the results per page to return. Default value: 100. */
@@ -54,7 +51,6 @@ export interface ListChannelsRequest {
 }
 
 export interface ListChannelsResponse {
-    $type: 'yandex.cloud.video.v1.ListChannelsResponse';
     /** List of channels for specific organization. */
     channels: Channel[];
     /** Token for getting the next page. */
@@ -62,7 +58,6 @@ export interface ListChannelsResponse {
 }
 
 export interface CreateChannelRequest {
-    $type: 'yandex.cloud.video.v1.CreateChannelRequest';
     /** ID of the organization. */
     organizationId: string;
     /** Channel title. */
@@ -74,19 +69,16 @@ export interface CreateChannelRequest {
 }
 
 export interface CreateChannelRequest_LabelsEntry {
-    $type: 'yandex.cloud.video.v1.CreateChannelRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateChannelMetadata {
-    $type: 'yandex.cloud.video.v1.CreateChannelMetadata';
     /** ID of the channel. */
     channelId: string;
 }
 
 export interface UpdateChannelRequest {
-    $type: 'yandex.cloud.video.v1.UpdateChannelRequest';
     /** ID of the channel. */
     channelId: string;
     /** Field mask that specifies which fields of the channel are going to be updated. */
@@ -100,31 +92,26 @@ export interface UpdateChannelRequest {
 }
 
 export interface UpdateChannelRequest_LabelsEntry {
-    $type: 'yandex.cloud.video.v1.UpdateChannelRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateChannelMetadata {
-    $type: 'yandex.cloud.video.v1.UpdateChannelMetadata';
     /** ID of the channel. */
     channelId: string;
 }
 
 export interface DeleteChannelRequest {
-    $type: 'yandex.cloud.video.v1.DeleteChannelRequest';
     /** ID of the channel. */
     channelId: string;
 }
 
 export interface DeleteChannelMetadata {
-    $type: 'yandex.cloud.video.v1.DeleteChannelMetadata';
     /** ID of the channel. */
     channelId: string;
 }
 
 export interface BatchDeleteChannelsRequest {
-    $type: 'yandex.cloud.video.v1.BatchDeleteChannelsRequest';
     /** ID of the organization. */
     organizationId: string;
     /** List of channel IDs. */
@@ -132,19 +119,13 @@ export interface BatchDeleteChannelsRequest {
 }
 
 export interface BatchDeleteChannelsMetadata {
-    $type: 'yandex.cloud.video.v1.BatchDeleteChannelsMetadata';
     /** List of channel IDs. */
     channelIds: string[];
 }
 
-const baseGetChannelRequest: object = {
-    $type: 'yandex.cloud.video.v1.GetChannelRequest',
-    channelId: '',
-};
+const baseGetChannelRequest: object = { channelId: '' };
 
 export const GetChannelRequest = {
-    $type: 'yandex.cloud.video.v1.GetChannelRequest' as const,
-
     encode(message: GetChannelRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -192,10 +173,7 @@ export const GetChannelRequest = {
     },
 };
 
-messageTypeRegistry.set(GetChannelRequest.$type, GetChannelRequest);
-
 const baseListChannelsRequest: object = {
-    $type: 'yandex.cloud.video.v1.ListChannelsRequest',
     organizationId: '',
     pageSize: 0,
     pageToken: '',
@@ -204,8 +182,6 @@ const baseListChannelsRequest: object = {
 };
 
 export const ListChannelsRequest = {
-    $type: 'yandex.cloud.video.v1.ListChannelsRequest' as const,
-
     encode(message: ListChannelsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -297,16 +273,9 @@ export const ListChannelsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListChannelsRequest.$type, ListChannelsRequest);
-
-const baseListChannelsResponse: object = {
-    $type: 'yandex.cloud.video.v1.ListChannelsResponse',
-    nextPageToken: '',
-};
+const baseListChannelsResponse: object = { nextPageToken: '' };
 
 export const ListChannelsResponse = {
-    $type: 'yandex.cloud.video.v1.ListChannelsResponse' as const,
-
     encode(message: ListChannelsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.channels) {
             Channel.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -370,18 +339,9 @@ export const ListChannelsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListChannelsResponse.$type, ListChannelsResponse);
-
-const baseCreateChannelRequest: object = {
-    $type: 'yandex.cloud.video.v1.CreateChannelRequest',
-    organizationId: '',
-    title: '',
-    description: '',
-};
+const baseCreateChannelRequest: object = { organizationId: '', title: '', description: '' };
 
 export const CreateChannelRequest = {
-    $type: 'yandex.cloud.video.v1.CreateChannelRequest' as const,
-
     encode(message: CreateChannelRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -394,11 +354,7 @@ export const CreateChannelRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateChannelRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.video.v1.CreateChannelRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(1602).fork(),
             ).ldelim();
         });
@@ -495,17 +451,9 @@ export const CreateChannelRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateChannelRequest.$type, CreateChannelRequest);
-
-const baseCreateChannelRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.video.v1.CreateChannelRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateChannelRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateChannelRequest_LabelsEntry = {
-    $type: 'yandex.cloud.video.v1.CreateChannelRequest.LabelsEntry' as const,
-
     encode(
         message: CreateChannelRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -571,16 +519,9 @@ export const CreateChannelRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateChannelRequest_LabelsEntry.$type, CreateChannelRequest_LabelsEntry);
-
-const baseCreateChannelMetadata: object = {
-    $type: 'yandex.cloud.video.v1.CreateChannelMetadata',
-    channelId: '',
-};
+const baseCreateChannelMetadata: object = { channelId: '' };
 
 export const CreateChannelMetadata = {
-    $type: 'yandex.cloud.video.v1.CreateChannelMetadata' as const,
-
     encode(message: CreateChannelMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -630,18 +571,9 @@ export const CreateChannelMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateChannelMetadata.$type, CreateChannelMetadata);
-
-const baseUpdateChannelRequest: object = {
-    $type: 'yandex.cloud.video.v1.UpdateChannelRequest',
-    channelId: '',
-    title: '',
-    description: '',
-};
+const baseUpdateChannelRequest: object = { channelId: '', title: '', description: '' };
 
 export const UpdateChannelRequest = {
-    $type: 'yandex.cloud.video.v1.UpdateChannelRequest' as const,
-
     encode(message: UpdateChannelRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -657,11 +589,7 @@ export const UpdateChannelRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateChannelRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.video.v1.UpdateChannelRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(1602).fork(),
             ).ldelim();
         });
@@ -771,17 +699,9 @@ export const UpdateChannelRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateChannelRequest.$type, UpdateChannelRequest);
-
-const baseUpdateChannelRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.video.v1.UpdateChannelRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateChannelRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateChannelRequest_LabelsEntry = {
-    $type: 'yandex.cloud.video.v1.UpdateChannelRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateChannelRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -847,16 +767,9 @@ export const UpdateChannelRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateChannelRequest_LabelsEntry.$type, UpdateChannelRequest_LabelsEntry);
-
-const baseUpdateChannelMetadata: object = {
-    $type: 'yandex.cloud.video.v1.UpdateChannelMetadata',
-    channelId: '',
-};
+const baseUpdateChannelMetadata: object = { channelId: '' };
 
 export const UpdateChannelMetadata = {
-    $type: 'yandex.cloud.video.v1.UpdateChannelMetadata' as const,
-
     encode(message: UpdateChannelMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -906,16 +819,9 @@ export const UpdateChannelMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateChannelMetadata.$type, UpdateChannelMetadata);
-
-const baseDeleteChannelRequest: object = {
-    $type: 'yandex.cloud.video.v1.DeleteChannelRequest',
-    channelId: '',
-};
+const baseDeleteChannelRequest: object = { channelId: '' };
 
 export const DeleteChannelRequest = {
-    $type: 'yandex.cloud.video.v1.DeleteChannelRequest' as const,
-
     encode(message: DeleteChannelRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -965,16 +871,9 @@ export const DeleteChannelRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteChannelRequest.$type, DeleteChannelRequest);
-
-const baseDeleteChannelMetadata: object = {
-    $type: 'yandex.cloud.video.v1.DeleteChannelMetadata',
-    channelId: '',
-};
+const baseDeleteChannelMetadata: object = { channelId: '' };
 
 export const DeleteChannelMetadata = {
-    $type: 'yandex.cloud.video.v1.DeleteChannelMetadata' as const,
-
     encode(message: DeleteChannelMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -1024,17 +923,9 @@ export const DeleteChannelMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteChannelMetadata.$type, DeleteChannelMetadata);
-
-const baseBatchDeleteChannelsRequest: object = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteChannelsRequest',
-    organizationId: '',
-    channelIds: '',
-};
+const baseBatchDeleteChannelsRequest: object = { organizationId: '', channelIds: '' };
 
 export const BatchDeleteChannelsRequest = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteChannelsRequest' as const,
-
     encode(
         message: BatchDeleteChannelsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1101,16 +992,9 @@ export const BatchDeleteChannelsRequest = {
     },
 };
 
-messageTypeRegistry.set(BatchDeleteChannelsRequest.$type, BatchDeleteChannelsRequest);
-
-const baseBatchDeleteChannelsMetadata: object = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteChannelsMetadata',
-    channelIds: '',
-};
+const baseBatchDeleteChannelsMetadata: object = { channelIds: '' };
 
 export const BatchDeleteChannelsMetadata = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteChannelsMetadata' as const,
-
     encode(
         message: BatchDeleteChannelsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1164,8 +1048,6 @@ export const BatchDeleteChannelsMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(BatchDeleteChannelsMetadata.$type, BatchDeleteChannelsMetadata);
 
 /** Channel management service. */
 export const ChannelServiceService = {
@@ -1384,16 +1266,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

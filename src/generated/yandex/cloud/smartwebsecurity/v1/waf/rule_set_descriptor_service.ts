@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,22 +18,15 @@ import { RuleSetDescriptor } from '../../../../../yandex/cloud/smartwebsecurity/
 export const protobufPackage = 'yandex.cloud.smartwebsecurity.v1.waf';
 
 export interface GetRuleSetDescriptorRequest {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.GetRuleSetDescriptorRequest';
     /** Name of the RuleSetDescriptor resource to return. */
     name: string;
     /** Version of the RuleSetDescriptor resource to return. */
     version: string;
 }
 
-const baseGetRuleSetDescriptorRequest: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.GetRuleSetDescriptorRequest',
-    name: '',
-    version: '',
-};
+const baseGetRuleSetDescriptorRequest: object = { name: '', version: '' };
 
 export const GetRuleSetDescriptorRequest = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.GetRuleSetDescriptorRequest' as const,
-
     encode(
         message: GetRuleSetDescriptorRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -93,8 +85,6 @@ export const GetRuleSetDescriptorRequest = {
         return message;
     },
 };
-
-messageTypeRegistry.set(GetRuleSetDescriptorRequest.$type, GetRuleSetDescriptorRequest);
 
 /** A set of methods for managing RuleSetDescriptor resources. */
 export const RuleSetDescriptorServiceService = {
@@ -157,16 +147,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

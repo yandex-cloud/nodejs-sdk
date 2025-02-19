@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -26,7 +25,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.backup.v1';
 
 export interface ListResourcesRequest {
-    $type: 'yandex.cloud.backup.v1.ListResourcesRequest';
     /** Folder ID. */
     folderId: string;
     /** Number of results per page. */
@@ -38,7 +36,6 @@ export interface ListResourcesRequest {
 }
 
 export interface ListResourcesResponse {
-    $type: 'yandex.cloud.backup.v1.ListResourcesResponse';
     /** Set of resource parameters. */
     resources: Resource[];
     /** Token for the next results page. */
@@ -46,19 +43,16 @@ export interface ListResourcesResponse {
 }
 
 export interface GetResourceRequest {
-    $type: 'yandex.cloud.backup.v1.GetResourceRequest';
     /** Compute Cloud instance ID. */
     computeInstanceId: string;
 }
 
 export interface GetResourceResponse {
-    $type: 'yandex.cloud.backup.v1.GetResourceResponse';
     /** Set of resource parameters. */
     resource?: Resource;
 }
 
 export interface DeleteResourceRequest {
-    $type: 'yandex.cloud.backup.v1.DeleteResourceRequest';
     /** Compute Cloud instance ID. */
     computeInstanceId: string;
     /** Resource ID is used to identify Compute Cloud instance in backup service. */
@@ -66,13 +60,11 @@ export interface DeleteResourceRequest {
 }
 
 export interface DeleteResourceMetadata {
-    $type: 'yandex.cloud.backup.v1.DeleteResourceMetadata';
     /** Compute Cloud instance ID. */
     computeInstanceId: string;
 }
 
 export interface ListTasksRequest {
-    $type: 'yandex.cloud.backup.v1.ListTasksRequest';
     /** Compute Cloud instance ID. */
     computeInstanceId: string;
     /** Number of results per page. */
@@ -82,7 +74,6 @@ export interface ListTasksRequest {
 }
 
 export interface ListTasksResponse {
-    $type: 'yandex.cloud.backup.v1.ListTasksResponse';
     /** Set of tasks parameters. */
     tasks: Task[];
     /** Token for the next results page. */
@@ -90,7 +81,6 @@ export interface ListTasksResponse {
 }
 
 export interface ListDirectoryRequest {
-    $type: 'yandex.cloud.backup.v1.ListDirectoryRequest';
     /** Folder ID. */
     folderId: string;
     /** Compute Cloud instance ID. */
@@ -100,12 +90,10 @@ export interface ListDirectoryRequest {
 }
 
 export interface ListDirectoryResponse {
-    $type: 'yandex.cloud.backup.v1.ListDirectoryResponse';
     items: ListDirectoryResponse_FilesystemItem[];
 }
 
 export interface ListDirectoryResponse_FilesystemItem {
-    $type: 'yandex.cloud.backup.v1.ListDirectoryResponse.FilesystemItem';
     /** Item name. */
     name: string;
     /** Might be Volume, Directory of File. */
@@ -164,7 +152,6 @@ export function listDirectoryResponse_FilesystemItem_TypeToJSON(
 }
 
 export interface CreateDirectoryRequest {
-    $type: 'yandex.cloud.backup.v1.CreateDirectoryRequest';
     /** Folder ID. */
     folderId: string;
     /** Compute Cloud instance ID. */
@@ -174,7 +161,6 @@ export interface CreateDirectoryRequest {
 }
 
 export interface CreateDirectoryMetadata {
-    $type: 'yandex.cloud.backup.v1.CreateDirectoryMetadata';
     /** Compute Cloud instance ID. */
     computeInstanceId: string;
     /** Path to create directory metadata in. */
@@ -182,7 +168,6 @@ export interface CreateDirectoryMetadata {
 }
 
 export interface ListResourceOperationsRequest {
-    $type: 'yandex.cloud.backup.v1.ListResourceOperationsRequest';
     /** Compute Cloud instance ID. */
     computeInstanceId: string;
     /** Number of results per page. */
@@ -192,24 +177,15 @@ export interface ListResourceOperationsRequest {
 }
 
 export interface ListResourceOperationsResponse {
-    $type: 'yandex.cloud.backup.v1.ListResourceOperationsResponse';
     /** List of operations for the specified instance. */
     operations: Operation[];
     /** Token for the next results page. */
     nextPageToken: string;
 }
 
-const baseListResourcesRequest: object = {
-    $type: 'yandex.cloud.backup.v1.ListResourcesRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    type: 0,
-};
+const baseListResourcesRequest: object = { folderId: '', pageSize: 0, pageToken: '', type: 0 };
 
 export const ListResourcesRequest = {
-    $type: 'yandex.cloud.backup.v1.ListResourcesRequest' as const,
-
     encode(message: ListResourcesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -293,16 +269,9 @@ export const ListResourcesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListResourcesRequest.$type, ListResourcesRequest);
-
-const baseListResourcesResponse: object = {
-    $type: 'yandex.cloud.backup.v1.ListResourcesResponse',
-    nextPageToken: '',
-};
+const baseListResourcesResponse: object = { nextPageToken: '' };
 
 export const ListResourcesResponse = {
-    $type: 'yandex.cloud.backup.v1.ListResourcesResponse' as const,
-
     encode(message: ListResourcesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.resources) {
             Resource.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -366,16 +335,9 @@ export const ListResourcesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListResourcesResponse.$type, ListResourcesResponse);
-
-const baseGetResourceRequest: object = {
-    $type: 'yandex.cloud.backup.v1.GetResourceRequest',
-    computeInstanceId: '',
-};
+const baseGetResourceRequest: object = { computeInstanceId: '' };
 
 export const GetResourceRequest = {
-    $type: 'yandex.cloud.backup.v1.GetResourceRequest' as const,
-
     encode(message: GetResourceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -426,13 +388,9 @@ export const GetResourceRequest = {
     },
 };
 
-messageTypeRegistry.set(GetResourceRequest.$type, GetResourceRequest);
-
-const baseGetResourceResponse: object = { $type: 'yandex.cloud.backup.v1.GetResourceResponse' };
+const baseGetResourceResponse: object = {};
 
 export const GetResourceResponse = {
-    $type: 'yandex.cloud.backup.v1.GetResourceResponse' as const,
-
     encode(message: GetResourceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resource !== undefined) {
             Resource.encode(message.resource, writer.uint32(10).fork()).ldelim();
@@ -486,17 +444,9 @@ export const GetResourceResponse = {
     },
 };
 
-messageTypeRegistry.set(GetResourceResponse.$type, GetResourceResponse);
-
-const baseDeleteResourceRequest: object = {
-    $type: 'yandex.cloud.backup.v1.DeleteResourceRequest',
-    computeInstanceId: '',
-    resourceId: '',
-};
+const baseDeleteResourceRequest: object = { computeInstanceId: '', resourceId: '' };
 
 export const DeleteResourceRequest = {
-    $type: 'yandex.cloud.backup.v1.DeleteResourceRequest' as const,
-
     encode(message: DeleteResourceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -559,16 +509,9 @@ export const DeleteResourceRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteResourceRequest.$type, DeleteResourceRequest);
-
-const baseDeleteResourceMetadata: object = {
-    $type: 'yandex.cloud.backup.v1.DeleteResourceMetadata',
-    computeInstanceId: '',
-};
+const baseDeleteResourceMetadata: object = { computeInstanceId: '' };
 
 export const DeleteResourceMetadata = {
-    $type: 'yandex.cloud.backup.v1.DeleteResourceMetadata' as const,
-
     encode(message: DeleteResourceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -619,18 +562,9 @@ export const DeleteResourceMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteResourceMetadata.$type, DeleteResourceMetadata);
-
-const baseListTasksRequest: object = {
-    $type: 'yandex.cloud.backup.v1.ListTasksRequest',
-    computeInstanceId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListTasksRequest: object = { computeInstanceId: '', pageSize: 0, pageToken: '' };
 
 export const ListTasksRequest = {
-    $type: 'yandex.cloud.backup.v1.ListTasksRequest' as const,
-
     encode(message: ListTasksRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -701,16 +635,9 @@ export const ListTasksRequest = {
     },
 };
 
-messageTypeRegistry.set(ListTasksRequest.$type, ListTasksRequest);
-
-const baseListTasksResponse: object = {
-    $type: 'yandex.cloud.backup.v1.ListTasksResponse',
-    nextPageToken: '',
-};
+const baseListTasksResponse: object = { nextPageToken: '' };
 
 export const ListTasksResponse = {
-    $type: 'yandex.cloud.backup.v1.ListTasksResponse' as const,
-
     encode(message: ListTasksResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.tasks) {
             Task.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -772,18 +699,9 @@ export const ListTasksResponse = {
     },
 };
 
-messageTypeRegistry.set(ListTasksResponse.$type, ListTasksResponse);
-
-const baseListDirectoryRequest: object = {
-    $type: 'yandex.cloud.backup.v1.ListDirectoryRequest',
-    folderId: '',
-    computeInstanceId: '',
-    path: '',
-};
+const baseListDirectoryRequest: object = { folderId: '', computeInstanceId: '', path: '' };
 
 export const ListDirectoryRequest = {
-    $type: 'yandex.cloud.backup.v1.ListDirectoryRequest' as const,
-
     encode(message: ListDirectoryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -855,13 +773,9 @@ export const ListDirectoryRequest = {
     },
 };
 
-messageTypeRegistry.set(ListDirectoryRequest.$type, ListDirectoryRequest);
-
-const baseListDirectoryResponse: object = { $type: 'yandex.cloud.backup.v1.ListDirectoryResponse' };
+const baseListDirectoryResponse: object = {};
 
 export const ListDirectoryResponse = {
-    $type: 'yandex.cloud.backup.v1.ListDirectoryResponse' as const,
-
     encode(message: ListDirectoryResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.items) {
             ListDirectoryResponse_FilesystemItem.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -920,10 +834,7 @@ export const ListDirectoryResponse = {
     },
 };
 
-messageTypeRegistry.set(ListDirectoryResponse.$type, ListDirectoryResponse);
-
 const baseListDirectoryResponse_FilesystemItem: object = {
-    $type: 'yandex.cloud.backup.v1.ListDirectoryResponse.FilesystemItem',
     name: '',
     type: 0,
     fileType: 0,
@@ -931,8 +842,6 @@ const baseListDirectoryResponse_FilesystemItem: object = {
 };
 
 export const ListDirectoryResponse_FilesystemItem = {
-    $type: 'yandex.cloud.backup.v1.ListDirectoryResponse.FilesystemItem' as const,
-
     encode(
         message: ListDirectoryResponse_FilesystemItem,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1023,21 +932,9 @@ export const ListDirectoryResponse_FilesystemItem = {
     },
 };
 
-messageTypeRegistry.set(
-    ListDirectoryResponse_FilesystemItem.$type,
-    ListDirectoryResponse_FilesystemItem,
-);
-
-const baseCreateDirectoryRequest: object = {
-    $type: 'yandex.cloud.backup.v1.CreateDirectoryRequest',
-    folderId: '',
-    computeInstanceId: '',
-    path: '',
-};
+const baseCreateDirectoryRequest: object = { folderId: '', computeInstanceId: '', path: '' };
 
 export const CreateDirectoryRequest = {
-    $type: 'yandex.cloud.backup.v1.CreateDirectoryRequest' as const,
-
     encode(message: CreateDirectoryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1109,17 +1006,9 @@ export const CreateDirectoryRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateDirectoryRequest.$type, CreateDirectoryRequest);
-
-const baseCreateDirectoryMetadata: object = {
-    $type: 'yandex.cloud.backup.v1.CreateDirectoryMetadata',
-    computeInstanceId: '',
-    path: '',
-};
+const baseCreateDirectoryMetadata: object = { computeInstanceId: '', path: '' };
 
 export const CreateDirectoryMetadata = {
-    $type: 'yandex.cloud.backup.v1.CreateDirectoryMetadata' as const,
-
     encode(message: CreateDirectoryMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -1179,18 +1068,13 @@ export const CreateDirectoryMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateDirectoryMetadata.$type, CreateDirectoryMetadata);
-
 const baseListResourceOperationsRequest: object = {
-    $type: 'yandex.cloud.backup.v1.ListResourceOperationsRequest',
     computeInstanceId: '',
     pageSize: 0,
     pageToken: '',
 };
 
 export const ListResourceOperationsRequest = {
-    $type: 'yandex.cloud.backup.v1.ListResourceOperationsRequest' as const,
-
     encode(
         message: ListResourceOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1266,16 +1150,9 @@ export const ListResourceOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListResourceOperationsRequest.$type, ListResourceOperationsRequest);
-
-const baseListResourceOperationsResponse: object = {
-    $type: 'yandex.cloud.backup.v1.ListResourceOperationsResponse',
-    nextPageToken: '',
-};
+const baseListResourceOperationsResponse: object = { nextPageToken: '' };
 
 export const ListResourceOperationsResponse = {
-    $type: 'yandex.cloud.backup.v1.ListResourceOperationsResponse' as const,
-
     encode(
         message: ListResourceOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1341,8 +1218,6 @@ export const ListResourceOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListResourceOperationsResponse.$type, ListResourceOperationsResponse);
 
 /** A set of methods for managing backup resources: [Compute Cloud instances](/docs/backup/concepts/vm-connection#os). */
 export const ResourceServiceService = {
@@ -1612,16 +1487,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

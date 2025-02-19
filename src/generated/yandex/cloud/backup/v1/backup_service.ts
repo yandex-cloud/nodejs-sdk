@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -25,7 +24,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.backup.v1';
 
 export interface ListArchivesRequest {
-    $type: 'yandex.cloud.backup.v1.ListArchivesRequest';
     /** List of archives in specified folder. */
     folderId: string | undefined;
     /** List of archives of the specified Compute Cloud instance. */
@@ -33,12 +31,10 @@ export interface ListArchivesRequest {
 }
 
 export interface ListArchivesResponse {
-    $type: 'yandex.cloud.backup.v1.ListArchivesResponse';
     archives: Archive[];
 }
 
 export interface ListBackupsRequest {
-    $type: 'yandex.cloud.backup.v1.ListBackupsRequest';
     /** List backups that belongs to specific Compute Cloud instance. */
     computeInstanceId: string | undefined;
     /** List backups that belongs to specific archive of specific folder. */
@@ -70,7 +66,6 @@ export interface ListBackupsRequest {
 }
 
 export interface ListBackupsRequest_ArchiveParameters {
-    $type: 'yandex.cloud.backup.v1.ListBackupsRequest.ArchiveParameters';
     /** Archive ID. */
     archiveId: string;
     /** Folder ID. */
@@ -78,7 +73,6 @@ export interface ListBackupsRequest_ArchiveParameters {
 }
 
 export interface ListBackupsRequest_InstancePolicy {
-    $type: 'yandex.cloud.backup.v1.ListBackupsRequest.InstancePolicy';
     /** Compute Cloud instance ID. */
     computeInstanceId: string;
     /** Policy ID. */
@@ -86,12 +80,10 @@ export interface ListBackupsRequest_InstancePolicy {
 }
 
 export interface ListBackupsResponse {
-    $type: 'yandex.cloud.backup.v1.ListBackupsResponse';
     backups: Backup[];
 }
 
 export interface ListFilesRequest {
-    $type: 'yandex.cloud.backup.v1.ListFilesRequest';
     /** Folder ID. */
     folderId: string;
     /** Backup ID. */
@@ -101,12 +93,10 @@ export interface ListFilesRequest {
 }
 
 export interface ListFilesResponse {
-    $type: 'yandex.cloud.backup.v1.ListFilesResponse';
     files: BackupFile[];
 }
 
 export interface GetBackupRequest {
-    $type: 'yandex.cloud.backup.v1.GetBackupRequest';
     /** Backup ID. */
     backupId: string;
     /** Folder ID. */
@@ -114,7 +104,6 @@ export interface GetBackupRequest {
 }
 
 export interface StartRecoveryRequest {
-    $type: 'yandex.cloud.backup.v1.StartRecoveryRequest';
     /** Destination Compute Cloud instance ID to which backup should be applied. */
     computeInstanceId: string;
     /** Backup ID that will be applied to destination Compute Cloud instance. */
@@ -122,7 +111,6 @@ export interface StartRecoveryRequest {
 }
 
 export interface StartRecoveryMetadata {
-    $type: 'yandex.cloud.backup.v1.StartRecoveryMetadata';
     /** Progress of the backup process. */
     progressPercentage: number;
     /** Source Backup ID that will be applied. */
@@ -131,18 +119,14 @@ export interface StartRecoveryMetadata {
     dstComputeInstanceId: string;
 }
 
-export interface TargetPathOriginal {
-    $type: 'yandex.cloud.backup.v1.TargetPathOriginal';
-}
+export interface TargetPathOriginal {}
 
 export interface TargetPathCustom {
-    $type: 'yandex.cloud.backup.v1.TargetPathCustom';
     /** Custom folder for file recovery. */
     path: string;
 }
 
 export interface FilesRecoveryOptions {
-    $type: 'yandex.cloud.backup.v1.FilesRecoveryOptions';
     /** Overwrite options declares the behavior for files that already exists on the file system. */
     overwrite: FilesRecoveryOptions_Overwrite;
     /** specifies whether the recovery plan is able to reboot host if needed. */
@@ -206,7 +190,6 @@ export function filesRecoveryOptions_OverwriteToJSON(
 }
 
 export interface StartFilesRecoveryRequest {
-    $type: 'yandex.cloud.backup.v1.StartFilesRecoveryRequest';
     /** Destination instance ID. */
     computeInstanceId: string;
     /** Backup ID. */
@@ -216,7 +199,6 @@ export interface StartFilesRecoveryRequest {
 }
 
 export interface StartFilesRecoveryMetadata {
-    $type: 'yandex.cloud.backup.v1.StartFilesRecoveryMetadata';
     progressPercentage: number;
     /** Destination instance ID. */
     computeInstanceId: string;
@@ -226,7 +208,6 @@ export interface StartFilesRecoveryMetadata {
 }
 
 export interface DeleteBackupRequest {
-    $type: 'yandex.cloud.backup.v1.DeleteBackupRequest';
     /** Compute Cloud instance ID of the Backup. */
     computeInstanceId: string;
     /** Backup ID that should be deleted. */
@@ -234,7 +215,6 @@ export interface DeleteBackupRequest {
 }
 
 export interface DeleteBackupMetadata {
-    $type: 'yandex.cloud.backup.v1.DeleteBackupMetadata';
     /** Compute Cloud instance ID of the Backup. */
     computeInstanceId: string;
     /** Backup ID that should be deleted. */
@@ -246,7 +226,6 @@ export interface DeleteBackupMetadata {
  * or pair of policy id and instance_id
  */
 export interface DeleteArchiveRequest {
-    $type: 'yandex.cloud.backup.v1.DeleteArchiveRequest';
     /** Archive ID that should be deleted. */
     archiveId: string;
     /** Folder ID of the archive to delete. */
@@ -258,18 +237,15 @@ export interface DeleteArchiveRequest {
 }
 
 export interface DeleteArchiveMetadata {
-    $type: 'yandex.cloud.backup.v1.DeleteArchiveMetadata';
     /** Archive ID that should be deleted. */
     archiveId: string;
     /** Folder ID of the archive. */
     folderId: string;
 }
 
-const baseListArchivesRequest: object = { $type: 'yandex.cloud.backup.v1.ListArchivesRequest' };
+const baseListArchivesRequest: object = {};
 
 export const ListArchivesRequest = {
-    $type: 'yandex.cloud.backup.v1.ListArchivesRequest' as const,
-
     encode(message: ListArchivesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== undefined) {
             writer.uint32(10).string(message.folderId);
@@ -332,13 +308,9 @@ export const ListArchivesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListArchivesRequest.$type, ListArchivesRequest);
-
-const baseListArchivesResponse: object = { $type: 'yandex.cloud.backup.v1.ListArchivesResponse' };
+const baseListArchivesResponse: object = {};
 
 export const ListArchivesResponse = {
-    $type: 'yandex.cloud.backup.v1.ListArchivesResponse' as const,
-
     encode(message: ListArchivesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.archives) {
             Archive.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -390,18 +362,9 @@ export const ListArchivesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListArchivesResponse.$type, ListArchivesResponse);
-
-const baseListBackupsRequest: object = {
-    $type: 'yandex.cloud.backup.v1.ListBackupsRequest',
-    orderBy: '',
-    filter: '',
-    type: 0,
-};
+const baseListBackupsRequest: object = { orderBy: '', filter: '', type: 0 };
 
 export const ListBackupsRequest = {
-    $type: 'yandex.cloud.backup.v1.ListBackupsRequest' as const,
-
     encode(message: ListBackupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== undefined) {
             writer.uint32(10).string(message.computeInstanceId);
@@ -568,17 +531,9 @@ export const ListBackupsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListBackupsRequest.$type, ListBackupsRequest);
-
-const baseListBackupsRequest_ArchiveParameters: object = {
-    $type: 'yandex.cloud.backup.v1.ListBackupsRequest.ArchiveParameters',
-    archiveId: '',
-    folderId: '',
-};
+const baseListBackupsRequest_ArchiveParameters: object = { archiveId: '', folderId: '' };
 
 export const ListBackupsRequest_ArchiveParameters = {
-    $type: 'yandex.cloud.backup.v1.ListBackupsRequest.ArchiveParameters' as const,
-
     encode(
         message: ListBackupsRequest_ArchiveParameters,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -649,20 +604,9 @@ export const ListBackupsRequest_ArchiveParameters = {
     },
 };
 
-messageTypeRegistry.set(
-    ListBackupsRequest_ArchiveParameters.$type,
-    ListBackupsRequest_ArchiveParameters,
-);
-
-const baseListBackupsRequest_InstancePolicy: object = {
-    $type: 'yandex.cloud.backup.v1.ListBackupsRequest.InstancePolicy',
-    computeInstanceId: '',
-    policyId: '',
-};
+const baseListBackupsRequest_InstancePolicy: object = { computeInstanceId: '', policyId: '' };
 
 export const ListBackupsRequest_InstancePolicy = {
-    $type: 'yandex.cloud.backup.v1.ListBackupsRequest.InstancePolicy' as const,
-
     encode(
         message: ListBackupsRequest_InstancePolicy,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -734,13 +678,9 @@ export const ListBackupsRequest_InstancePolicy = {
     },
 };
 
-messageTypeRegistry.set(ListBackupsRequest_InstancePolicy.$type, ListBackupsRequest_InstancePolicy);
-
-const baseListBackupsResponse: object = { $type: 'yandex.cloud.backup.v1.ListBackupsResponse' };
+const baseListBackupsResponse: object = {};
 
 export const ListBackupsResponse = {
-    $type: 'yandex.cloud.backup.v1.ListBackupsResponse' as const,
-
     encode(message: ListBackupsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.backups) {
             Backup.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -792,18 +732,9 @@ export const ListBackupsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListBackupsResponse.$type, ListBackupsResponse);
-
-const baseListFilesRequest: object = {
-    $type: 'yandex.cloud.backup.v1.ListFilesRequest',
-    folderId: '',
-    backupId: '',
-    sourceId: '',
-};
+const baseListFilesRequest: object = { folderId: '', backupId: '', sourceId: '' };
 
 export const ListFilesRequest = {
-    $type: 'yandex.cloud.backup.v1.ListFilesRequest' as const,
-
     encode(message: ListFilesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -875,13 +806,9 @@ export const ListFilesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListFilesRequest.$type, ListFilesRequest);
-
-const baseListFilesResponse: object = { $type: 'yandex.cloud.backup.v1.ListFilesResponse' };
+const baseListFilesResponse: object = {};
 
 export const ListFilesResponse = {
-    $type: 'yandex.cloud.backup.v1.ListFilesResponse' as const,
-
     encode(message: ListFilesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.files) {
             BackupFile.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -931,17 +858,9 @@ export const ListFilesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListFilesResponse.$type, ListFilesResponse);
-
-const baseGetBackupRequest: object = {
-    $type: 'yandex.cloud.backup.v1.GetBackupRequest',
-    backupId: '',
-    folderId: '',
-};
+const baseGetBackupRequest: object = { backupId: '', folderId: '' };
 
 export const GetBackupRequest = {
-    $type: 'yandex.cloud.backup.v1.GetBackupRequest' as const,
-
     encode(message: GetBackupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);
@@ -1001,17 +920,9 @@ export const GetBackupRequest = {
     },
 };
 
-messageTypeRegistry.set(GetBackupRequest.$type, GetBackupRequest);
-
-const baseStartRecoveryRequest: object = {
-    $type: 'yandex.cloud.backup.v1.StartRecoveryRequest',
-    computeInstanceId: '',
-    backupId: '',
-};
+const baseStartRecoveryRequest: object = { computeInstanceId: '', backupId: '' };
 
 export const StartRecoveryRequest = {
-    $type: 'yandex.cloud.backup.v1.StartRecoveryRequest' as const,
-
     encode(message: StartRecoveryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -1074,18 +985,13 @@ export const StartRecoveryRequest = {
     },
 };
 
-messageTypeRegistry.set(StartRecoveryRequest.$type, StartRecoveryRequest);
-
 const baseStartRecoveryMetadata: object = {
-    $type: 'yandex.cloud.backup.v1.StartRecoveryMetadata',
     progressPercentage: 0,
     srcBackupId: '',
     dstComputeInstanceId: '',
 };
 
 export const StartRecoveryMetadata = {
-    $type: 'yandex.cloud.backup.v1.StartRecoveryMetadata' as const,
-
     encode(message: StartRecoveryMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.progressPercentage !== 0) {
             writer.uint32(9).double(message.progressPercentage);
@@ -1161,13 +1067,9 @@ export const StartRecoveryMetadata = {
     },
 };
 
-messageTypeRegistry.set(StartRecoveryMetadata.$type, StartRecoveryMetadata);
-
-const baseTargetPathOriginal: object = { $type: 'yandex.cloud.backup.v1.TargetPathOriginal' };
+const baseTargetPathOriginal: object = {};
 
 export const TargetPathOriginal = {
-    $type: 'yandex.cloud.backup.v1.TargetPathOriginal' as const,
-
     encode(_: TargetPathOriginal, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1203,13 +1105,9 @@ export const TargetPathOriginal = {
     },
 };
 
-messageTypeRegistry.set(TargetPathOriginal.$type, TargetPathOriginal);
-
-const baseTargetPathCustom: object = { $type: 'yandex.cloud.backup.v1.TargetPathCustom', path: '' };
+const baseTargetPathCustom: object = { path: '' };
 
 export const TargetPathCustom = {
-    $type: 'yandex.cloud.backup.v1.TargetPathCustom' as const,
-
     encode(message: TargetPathCustom, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.path !== '') {
             writer.uint32(10).string(message.path);
@@ -1254,17 +1152,9 @@ export const TargetPathCustom = {
     },
 };
 
-messageTypeRegistry.set(TargetPathCustom.$type, TargetPathCustom);
-
-const baseFilesRecoveryOptions: object = {
-    $type: 'yandex.cloud.backup.v1.FilesRecoveryOptions',
-    overwrite: 0,
-    rebootIfNeeded: false,
-};
+const baseFilesRecoveryOptions: object = { overwrite: 0, rebootIfNeeded: false };
 
 export const FilesRecoveryOptions = {
-    $type: 'yandex.cloud.backup.v1.FilesRecoveryOptions' as const,
-
     encode(message: FilesRecoveryOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.overwrite !== 0) {
             writer.uint32(8).int32(message.overwrite);
@@ -1361,18 +1251,13 @@ export const FilesRecoveryOptions = {
     },
 };
 
-messageTypeRegistry.set(FilesRecoveryOptions.$type, FilesRecoveryOptions);
-
 const baseStartFilesRecoveryRequest: object = {
-    $type: 'yandex.cloud.backup.v1.StartFilesRecoveryRequest',
     computeInstanceId: '',
     backupId: '',
     sourceIds: '',
 };
 
 export const StartFilesRecoveryRequest = {
-    $type: 'yandex.cloud.backup.v1.StartFilesRecoveryRequest' as const,
-
     encode(
         message: StartFilesRecoveryRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1468,10 +1353,7 @@ export const StartFilesRecoveryRequest = {
     },
 };
 
-messageTypeRegistry.set(StartFilesRecoveryRequest.$type, StartFilesRecoveryRequest);
-
 const baseStartFilesRecoveryMetadata: object = {
-    $type: 'yandex.cloud.backup.v1.StartFilesRecoveryMetadata',
     progressPercentage: 0,
     computeInstanceId: '',
     backupId: '',
@@ -1479,8 +1361,6 @@ const baseStartFilesRecoveryMetadata: object = {
 };
 
 export const StartFilesRecoveryMetadata = {
-    $type: 'yandex.cloud.backup.v1.StartFilesRecoveryMetadata' as const,
-
     encode(
         message: StartFilesRecoveryMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1573,17 +1453,9 @@ export const StartFilesRecoveryMetadata = {
     },
 };
 
-messageTypeRegistry.set(StartFilesRecoveryMetadata.$type, StartFilesRecoveryMetadata);
-
-const baseDeleteBackupRequest: object = {
-    $type: 'yandex.cloud.backup.v1.DeleteBackupRequest',
-    computeInstanceId: '',
-    backupId: '',
-};
+const baseDeleteBackupRequest: object = { computeInstanceId: '', backupId: '' };
 
 export const DeleteBackupRequest = {
-    $type: 'yandex.cloud.backup.v1.DeleteBackupRequest' as const,
-
     encode(message: DeleteBackupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -1646,17 +1518,9 @@ export const DeleteBackupRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteBackupRequest.$type, DeleteBackupRequest);
-
-const baseDeleteBackupMetadata: object = {
-    $type: 'yandex.cloud.backup.v1.DeleteBackupMetadata',
-    computeInstanceId: '',
-    backupId: '',
-};
+const baseDeleteBackupMetadata: object = { computeInstanceId: '', backupId: '' };
 
 export const DeleteBackupMetadata = {
-    $type: 'yandex.cloud.backup.v1.DeleteBackupMetadata' as const,
-
     encode(message: DeleteBackupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -1719,10 +1583,7 @@ export const DeleteBackupMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteBackupMetadata.$type, DeleteBackupMetadata);
-
 const baseDeleteArchiveRequest: object = {
-    $type: 'yandex.cloud.backup.v1.DeleteArchiveRequest',
     archiveId: '',
     folderId: '',
     instanceId: '',
@@ -1730,8 +1591,6 @@ const baseDeleteArchiveRequest: object = {
 };
 
 export const DeleteArchiveRequest = {
-    $type: 'yandex.cloud.backup.v1.DeleteArchiveRequest' as const,
-
     encode(message: DeleteArchiveRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.archiveId !== '') {
             writer.uint32(10).string(message.archiveId);
@@ -1817,17 +1676,9 @@ export const DeleteArchiveRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteArchiveRequest.$type, DeleteArchiveRequest);
-
-const baseDeleteArchiveMetadata: object = {
-    $type: 'yandex.cloud.backup.v1.DeleteArchiveMetadata',
-    archiveId: '',
-    folderId: '',
-};
+const baseDeleteArchiveMetadata: object = { archiveId: '', folderId: '' };
 
 export const DeleteArchiveMetadata = {
-    $type: 'yandex.cloud.backup.v1.DeleteArchiveMetadata' as const,
-
     encode(message: DeleteArchiveMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.archiveId !== '') {
             writer.uint32(10).string(message.archiveId);
@@ -1888,8 +1739,6 @@ export const DeleteArchiveMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteArchiveMetadata.$type, DeleteArchiveMetadata);
 
 /** A set of methods for managing [backups](/docs/backup/concepts/backup). */
 export const BackupServiceService = {
@@ -2178,16 +2027,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

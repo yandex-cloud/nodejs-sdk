@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Origin } from '../../../../yandex/cloud/cdn/v1/origin';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.cdn.v1';
 
 /** Origin group parameters. For details about the concept, see [documentation](/docs/cdn/concepts/origins#groups). */
 export interface OriginGroup {
-    $type: 'yandex.cloud.cdn.v1.OriginGroup';
     /** ID of the origin group. Generated at creation time. */
     id: number;
     /** ID of the folder that the origin group belongs to. */
@@ -26,17 +24,9 @@ export interface OriginGroup {
     origins: Origin[];
 }
 
-const baseOriginGroup: object = {
-    $type: 'yandex.cloud.cdn.v1.OriginGroup',
-    id: 0,
-    folderId: '',
-    name: '',
-    useNext: false,
-};
+const baseOriginGroup: object = { id: 0, folderId: '', name: '', useNext: false };
 
 export const OriginGroup = {
-    $type: 'yandex.cloud.cdn.v1.OriginGroup' as const,
-
     encode(message: OriginGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== 0) {
             writer.uint32(8).int64(message.id);
@@ -128,8 +118,6 @@ export const OriginGroup = {
     },
 };
 
-messageTypeRegistry.set(OriginGroup.$type, OriginGroup);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -150,16 +138,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

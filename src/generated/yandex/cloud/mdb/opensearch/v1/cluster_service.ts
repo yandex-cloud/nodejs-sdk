@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -40,7 +39,6 @@ import { Backup } from '../../../../../yandex/cloud/mdb/opensearch/v1/backup';
 export const protobufPackage = 'yandex.cloud.mdb.opensearch.v1';
 
 export interface GetClusterRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.GetClusterRequest';
     /**
      * ID of the OpenSearch cluster to return.
      *
@@ -50,7 +48,6 @@ export interface GetClusterRequest {
 }
 
 export interface ListClustersRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClustersRequest';
     /**
      * ID of the folder to list OpenSearch clusters in.
      *
@@ -84,7 +81,6 @@ export interface ListClustersRequest {
 }
 
 export interface ListClustersResponse {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClustersResponse';
     /** List of OpenSearch clusters. */
     clusters: Cluster[];
     /**
@@ -99,7 +95,6 @@ export interface ListClustersResponse {
 }
 
 export interface CreateClusterRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.CreateClusterRequest';
     /** ID of the folder to create the OpenSearch cluster in. */
     folderId: string;
     /** Name of the OpenSearch cluster. The name must be unique within the folder. */
@@ -128,19 +123,16 @@ export interface CreateClusterRequest {
 }
 
 export interface CreateClusterRequest_LabelsEntry {
-    $type: 'yandex.cloud.mdb.opensearch.v1.CreateClusterRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateClusterMetadata {
-    $type: 'yandex.cloud.mdb.opensearch.v1.CreateClusterMetadata';
     /** ID of the OpenSearch cluster that is being created. */
     clusterId: string;
 }
 
 export interface UpdateClusterRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateClusterRequest';
     /**
      * ID of the OpenSearch cluster resource to update.
      * To get the OpenSearch cluster ID, use a [ClusterService.List] request.
@@ -175,19 +167,16 @@ export interface UpdateClusterRequest {
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateClusterRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateClusterMetadata {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateClusterMetadata';
     /** ID of the OpenSearch cluster resource that is being updated. */
     clusterId: string;
 }
 
 export interface DeleteClusterRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteClusterRequest';
     /**
      * ID of the OpenSearch cluster to delete.
      * To get the OpenSearch cluster ID, use a [ClusterService.List] request.
@@ -196,13 +185,11 @@ export interface DeleteClusterRequest {
 }
 
 export interface DeleteClusterMetadata {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteClusterMetadata';
     /** ID of the OpenSearch cluster that is being deleted. */
     clusterId: string;
 }
 
 export interface ListClusterLogsRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterLogsRequest';
     /**
      * ID of the OpenSearch cluster to request logs for.
      *
@@ -298,7 +285,6 @@ export function listClusterLogsRequest_ServiceTypeToJSON(
 }
 
 export interface LogRecord {
-    $type: 'yandex.cloud.mdb.opensearch.v1.LogRecord';
     /** Time when the log was recorded. */
     timestamp?: Date;
     /** Contents of the log record. */
@@ -306,13 +292,11 @@ export interface LogRecord {
 }
 
 export interface LogRecord_MessageEntry {
-    $type: 'yandex.cloud.mdb.opensearch.v1.LogRecord.MessageEntry';
     key: string;
     value: string;
 }
 
 export interface ListClusterLogsResponse {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterLogsResponse';
     /** Requested log records. */
     logs: LogRecord[];
     /**
@@ -329,7 +313,6 @@ export interface ListClusterLogsResponse {
 }
 
 export interface StreamLogRecord {
-    $type: 'yandex.cloud.mdb.opensearch.v1.StreamLogRecord';
     /** One of the requested log records. */
     record?: LogRecord;
     /**
@@ -343,7 +326,6 @@ export interface StreamLogRecord {
 }
 
 export interface StreamClusterLogsRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.StreamClusterLogsRequest';
     /** ID of the OpenSearch cluster. */
     clusterId: string;
     /**
@@ -432,7 +414,6 @@ export function streamClusterLogsRequest_ServiceTypeToJSON(
 }
 
 export interface ListClusterOperationsRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterOperationsRequest';
     /** ID of the OpenSearch cluster resource to list operations for. */
     clusterId: string;
     /**
@@ -447,7 +428,6 @@ export interface ListClusterOperationsRequest {
 }
 
 export interface ListClusterOperationsResponse {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterOperationsResponse';
     /** List of Operation resources for the specified OpenSearch cluster. */
     operations: Operation[];
     /**
@@ -461,7 +441,6 @@ export interface ListClusterOperationsResponse {
 }
 
 export interface ListClusterHostsRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterHostsRequest';
     /**
      * ID of the OpenSearch cluster.
      * To get the OpenSearch cluster ID use a [ClusterService.List] request.
@@ -482,7 +461,6 @@ export interface ListClusterHostsRequest {
 }
 
 export interface ListClusterHostsResponse {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterHostsResponse';
     /** Requested list of hosts for the cluster. */
     hosts: Host[];
     /**
@@ -497,7 +475,6 @@ export interface ListClusterHostsResponse {
 }
 
 export interface MoveClusterRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.MoveClusterRequest';
     /** ID of the OpenSearch cluster to move. */
     clusterId: string;
     /** ID of the destination folder. */
@@ -505,7 +482,6 @@ export interface MoveClusterRequest {
 }
 
 export interface MoveClusterMetadata {
-    $type: 'yandex.cloud.mdb.opensearch.v1.MoveClusterMetadata';
     /** ID of the OpenSearch cluster being moved. */
     clusterId: string;
     /** ID of the source folder. */
@@ -515,7 +491,6 @@ export interface MoveClusterMetadata {
 }
 
 export interface StartClusterRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.StartClusterRequest';
     /**
      * ID of the OpenSearch cluster to start.
      * To get the cluster ID, use a [ClusterService.List] request.
@@ -524,13 +499,11 @@ export interface StartClusterRequest {
 }
 
 export interface StartClusterMetadata {
-    $type: 'yandex.cloud.mdb.opensearch.v1.StartClusterMetadata';
     /** ID of the OpenSearch cluster being started. */
     clusterId: string;
 }
 
 export interface StopClusterRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.StopClusterRequest';
     /**
      * ID of the OpenSearch cluster to stop.
      * To get the cluster ID, use a [ClusterService.List] request.
@@ -539,13 +512,11 @@ export interface StopClusterRequest {
 }
 
 export interface StopClusterMetadata {
-    $type: 'yandex.cloud.mdb.opensearch.v1.StopClusterMetadata';
     /** ID of the OpenSearch cluster being stopped. */
     clusterId: string;
 }
 
 export interface ConfigCreateSpec {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ConfigCreateSpec';
     /** OpenSearch version. */
     version: string;
     /** OpenSearch admin password. */
@@ -560,7 +531,6 @@ export interface ConfigCreateSpec {
 
 /** Single keystore entry. */
 export interface KeystoreSetting {
-    $type: 'yandex.cloud.mdb.opensearch.v1.KeystoreSetting';
     /** Keystore entry name. */
     name: string;
     /** Keystore entry value. */
@@ -569,7 +539,6 @@ export interface KeystoreSetting {
 
 /** OpenSearch create-time configuration. */
 export interface OpenSearchCreateSpec {
-    $type: 'yandex.cloud.mdb.opensearch.v1.OpenSearchCreateSpec';
     /** Names of the cluster plugins. */
     plugins: string[];
     /** OpenSearch type host groups of the cluster. */
@@ -581,7 +550,6 @@ export interface OpenSearchCreateSpec {
 
 /** Configuration of the host group. */
 export interface OpenSearchCreateSpec_NodeGroup {
-    $type: 'yandex.cloud.mdb.opensearch.v1.OpenSearchCreateSpec.NodeGroup';
     /** Name of the group. */
     name: string;
     /** Resources allocated to the hosts. */
@@ -602,13 +570,11 @@ export interface OpenSearchCreateSpec_NodeGroup {
 
 /** Dashboards create-time configuration. */
 export interface DashboardsCreateSpec {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DashboardsCreateSpec';
     /** Dashboards type host groups of the cluster. */
     nodeGroups: DashboardsCreateSpec_NodeGroup[];
 }
 
 export interface DashboardsCreateSpec_NodeGroup {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DashboardsCreateSpec.NodeGroup';
     /** Name of the group. */
     name: string;
     /** Resources allocated to the hosts. */
@@ -626,7 +592,6 @@ export interface DashboardsCreateSpec_NodeGroup {
 }
 
 export interface ConfigUpdateSpec {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ConfigUpdateSpec';
     /** OpenSearch version. */
     version: string;
     /** OpenSearch admin password. */
@@ -640,7 +605,6 @@ export interface ConfigUpdateSpec {
 }
 
 export interface OpenSearchClusterUpdateSpec {
-    $type: 'yandex.cloud.mdb.opensearch.v1.OpenSearchClusterUpdateSpec';
     /** Names of the cluster plugins. */
     plugins: string[];
     opensearchConfig2?: OpenSearchConfig2 | undefined;
@@ -651,12 +615,9 @@ export interface OpenSearchClusterUpdateSpec {
 }
 
 /** Dashboards configuration. */
-export interface DashboardsClusterUpdateSpec {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DashboardsClusterUpdateSpec';
-}
+export interface DashboardsClusterUpdateSpec {}
 
 export interface BackupClusterRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.BackupClusterRequest';
     /**
      * ID of the OpenSearch cluster to back up.
      *
@@ -666,13 +627,11 @@ export interface BackupClusterRequest {
 }
 
 export interface BackupClusterMetadata {
-    $type: 'yandex.cloud.mdb.opensearch.v1.BackupClusterMetadata';
     /** ID of the OpenSearch cluster being backed up. */
     clusterId: string;
 }
 
 export interface DeleteBackupRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteBackupRequest';
     /** Required. ID of the OpenSearch cluster. */
     clusterId: string;
     /** Required. ID of the backup to delete. */
@@ -680,7 +639,6 @@ export interface DeleteBackupRequest {
 }
 
 export interface DeleteBackupMetadata {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteBackupMetadata';
     /** ID of the OpenSearch cluster. */
     clusterId: string;
     /** ID of the backup to delete. */
@@ -688,7 +646,6 @@ export interface DeleteBackupMetadata {
 }
 
 export interface RestoreClusterRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.RestoreClusterRequest';
     /**
      * ID of the backup to create a new cluster from.
      *
@@ -727,13 +684,11 @@ export interface RestoreClusterRequest {
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
-    $type: 'yandex.cloud.mdb.opensearch.v1.RestoreClusterRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface RestoreClusterMetadata {
-    $type: 'yandex.cloud.mdb.opensearch.v1.RestoreClusterMetadata';
     /** ID of the new OpenSearch cluster being created from a backup. */
     clusterId: string;
     /** ID of the backup being used for creating a cluster. */
@@ -741,7 +696,6 @@ export interface RestoreClusterMetadata {
 }
 
 export interface RescheduleMaintenanceRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.RescheduleMaintenanceRequest';
     /**
      * ID of the OpenSearch cluster to reschedule the maintenance operation for.
      *
@@ -811,7 +765,6 @@ export function rescheduleMaintenanceRequest_RescheduleTypeToJSON(
 }
 
 export interface RescheduleMaintenanceMetadata {
-    $type: 'yandex.cloud.mdb.opensearch.v1.RescheduleMaintenanceMetadata';
     /** ID of the OpenSearch cluster where the reschedule is applied. */
     clusterId: string;
     /** The time until which this maintenance operation is to be delayed. */
@@ -819,7 +772,6 @@ export interface RescheduleMaintenanceMetadata {
 }
 
 export interface ListClusterBackupsRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterBackupsRequest';
     /**
      * ID of the OpenSearch cluster.
      *
@@ -840,7 +792,6 @@ export interface ListClusterBackupsRequest {
 }
 
 export interface ListClusterBackupsResponse {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterBackupsResponse';
     /** List of the OpenSearch cluster backups. */
     backups: Backup[];
     /**
@@ -855,7 +806,6 @@ export interface ListClusterBackupsResponse {
 }
 
 export interface DeleteOpenSearchNodeGroupRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteOpenSearchNodeGroupRequest';
     /**
      * ID of the OpenSearch cluster to delete the OpenSearch type host group in.
      *
@@ -867,7 +817,6 @@ export interface DeleteOpenSearchNodeGroupRequest {
 }
 
 export interface UpdateOpenSearchNodeGroupRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateOpenSearchNodeGroupRequest';
     /**
      * ID of the OpenSearch cluster to update the OpenSearch type host group in.
      *
@@ -883,7 +832,6 @@ export interface UpdateOpenSearchNodeGroupRequest {
 }
 
 export interface OpenSearchNodeGroupUpdateSpec {
-    $type: 'yandex.cloud.mdb.opensearch.v1.OpenSearchNodeGroupUpdateSpec';
     /** Resources allocated to the hosts. */
     resources?: Resources;
     /** Number of hosts in the group. */
@@ -901,7 +849,6 @@ export interface OpenSearchNodeGroupUpdateSpec {
 }
 
 export interface AddOpenSearchNodeGroupRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.AddOpenSearchNodeGroupRequest';
     /**
      * ID of the OpenSearch cluster to create the OpenSearch type host group in.
      *
@@ -913,7 +860,6 @@ export interface AddOpenSearchNodeGroupRequest {
 }
 
 export interface DeleteDashboardsNodeGroupRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteDashboardsNodeGroupRequest';
     /**
      * ID of the OpenSearch cluster to delete the Dashboards type host group in.
      *
@@ -925,7 +871,6 @@ export interface DeleteDashboardsNodeGroupRequest {
 }
 
 export interface UpdateDashboardsNodeGroupRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateDashboardsNodeGroupRequest';
     /** ID of the OpenSearch cluster to update the Dashboards type host group in. */
     clusterId: string;
     /** Name of the Dashboards type host group to be updated. */
@@ -937,7 +882,6 @@ export interface UpdateDashboardsNodeGroupRequest {
 }
 
 export interface DashboardsNodeGroupUpdateSpec {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DashboardsNodeGroupUpdateSpec';
     /** Resources allocated to the hosts. */
     resources?: Resources;
     /** Number of hosts in the group. */
@@ -953,7 +897,6 @@ export interface DashboardsNodeGroupUpdateSpec {
 }
 
 export interface AddDashboardsNodeGroupRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.AddDashboardsNodeGroupRequest';
     /**
      * ID of the OpenSearch cluster to create the Dashboards type host group in.
      *
@@ -965,7 +908,6 @@ export interface AddDashboardsNodeGroupRequest {
 }
 
 export interface AddNodeGroupMetadata {
-    $type: 'yandex.cloud.mdb.opensearch.v1.AddNodeGroupMetadata';
     /** ID of the OpenSearch cluster where the host group is being created. */
     clusterId: string;
     /** Name of the host group being created. */
@@ -973,7 +915,6 @@ export interface AddNodeGroupMetadata {
 }
 
 export interface UpdateNodeGroupMetadata {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateNodeGroupMetadata';
     /** ID of the OpenSearch cluster where the host group is being updated. */
     clusterId: string;
     /** Name of the host group being updated. */
@@ -981,7 +922,6 @@ export interface UpdateNodeGroupMetadata {
 }
 
 export interface DeleteNodeGroupMetadata {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteNodeGroupMetadata';
     /** ID of the OpenSearch cluster where the host group is being deleted. */
     clusterId: string;
     /** Name of the host group being deleted. */
@@ -989,13 +929,11 @@ export interface DeleteNodeGroupMetadata {
 }
 
 export interface GetAuthSettingsRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.GetAuthSettingsRequest';
     /** Required. ID of the OpenSearch cluster. */
     clusterId: string;
 }
 
 export interface UpdateAuthSettingsRequest {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateAuthSettingsRequest';
     /** Required. ID of the OpenSearch cluster. */
     clusterId: string;
     /** Required. Auth settings. */
@@ -1003,19 +941,13 @@ export interface UpdateAuthSettingsRequest {
 }
 
 export interface UpdateAuthSettingsMetadata {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateAuthSettingsMetadata';
     /** ID of the OpenSearch cluster. */
     clusterId: string;
 }
 
-const baseGetClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.GetClusterRequest',
-    clusterId: '',
-};
+const baseGetClusterRequest: object = { clusterId: '' };
 
 export const GetClusterRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.GetClusterRequest' as const,
-
     encode(message: GetClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1063,19 +995,9 @@ export const GetClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(GetClusterRequest.$type, GetClusterRequest);
-
-const baseListClustersRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClustersRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListClustersRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListClustersRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClustersRequest' as const,
-
     encode(message: ListClustersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1157,16 +1079,9 @@ export const ListClustersRequest = {
     },
 };
 
-messageTypeRegistry.set(ListClustersRequest.$type, ListClustersRequest);
-
-const baseListClustersResponse: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClustersResponse',
-    nextPageToken: '',
-};
+const baseListClustersResponse: object = { nextPageToken: '' };
 
 export const ListClustersResponse = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClustersResponse' as const,
-
     encode(message: ListClustersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.clusters) {
             Cluster.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1230,10 +1145,7 @@ export const ListClustersResponse = {
     },
 };
 
-messageTypeRegistry.set(ListClustersResponse.$type, ListClustersResponse);
-
 const baseCreateClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.CreateClusterRequest',
     folderId: '',
     name: '',
     description: '',
@@ -1245,8 +1157,6 @@ const baseCreateClusterRequest: object = {
 };
 
 export const CreateClusterRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.CreateClusterRequest' as const,
-
     encode(message: CreateClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1259,11 +1169,7 @@ export const CreateClusterRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateClusterRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.opensearch.v1.CreateClusterRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -1456,17 +1362,9 @@ export const CreateClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateClusterRequest.$type, CreateClusterRequest);
-
-const baseCreateClusterRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.CreateClusterRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateClusterRequest_LabelsEntry = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.CreateClusterRequest.LabelsEntry' as const,
-
     encode(
         message: CreateClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1532,16 +1430,9 @@ export const CreateClusterRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateClusterRequest_LabelsEntry.$type, CreateClusterRequest_LabelsEntry);
-
-const baseCreateClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.CreateClusterMetadata',
-    clusterId: '',
-};
+const baseCreateClusterMetadata: object = { clusterId: '' };
 
 export const CreateClusterMetadata = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.CreateClusterMetadata' as const,
-
     encode(message: CreateClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1591,10 +1482,7 @@ export const CreateClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateClusterMetadata.$type, CreateClusterMetadata);
-
 const baseUpdateClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateClusterRequest',
     clusterId: '',
     description: '',
     name: '',
@@ -1605,8 +1493,6 @@ const baseUpdateClusterRequest: object = {
 };
 
 export const UpdateClusterRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateClusterRequest' as const,
-
     encode(message: UpdateClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1619,11 +1505,7 @@ export const UpdateClusterRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateClusterRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateClusterRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -1821,17 +1703,9 @@ export const UpdateClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateClusterRequest.$type, UpdateClusterRequest);
-
-const baseUpdateClusterRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateClusterRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateClusterRequest_LabelsEntry = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateClusterRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1897,16 +1771,9 @@ export const UpdateClusterRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateClusterRequest_LabelsEntry.$type, UpdateClusterRequest_LabelsEntry);
-
-const baseUpdateClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateClusterMetadata',
-    clusterId: '',
-};
+const baseUpdateClusterMetadata: object = { clusterId: '' };
 
 export const UpdateClusterMetadata = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateClusterMetadata' as const,
-
     encode(message: UpdateClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1956,16 +1823,9 @@ export const UpdateClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateClusterMetadata.$type, UpdateClusterMetadata);
-
-const baseDeleteClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteClusterRequest',
-    clusterId: '',
-};
+const baseDeleteClusterRequest: object = { clusterId: '' };
 
 export const DeleteClusterRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteClusterRequest' as const,
-
     encode(message: DeleteClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2015,16 +1875,9 @@ export const DeleteClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteClusterRequest.$type, DeleteClusterRequest);
-
-const baseDeleteClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteClusterMetadata',
-    clusterId: '',
-};
+const baseDeleteClusterMetadata: object = { clusterId: '' };
 
 export const DeleteClusterMetadata = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteClusterMetadata' as const,
-
     encode(message: DeleteClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2074,10 +1927,7 @@ export const DeleteClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteClusterMetadata.$type, DeleteClusterMetadata);
-
 const baseListClusterLogsRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterLogsRequest',
     clusterId: '',
     columnFilter: '',
     pageSize: 0,
@@ -2088,8 +1938,6 @@ const baseListClusterLogsRequest: object = {
 };
 
 export const ListClusterLogsRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterLogsRequest' as const,
-
     encode(message: ListClusterLogsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2235,24 +2083,16 @@ export const ListClusterLogsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListClusterLogsRequest.$type, ListClusterLogsRequest);
-
-const baseLogRecord: object = { $type: 'yandex.cloud.mdb.opensearch.v1.LogRecord' };
+const baseLogRecord: object = {};
 
 export const LogRecord = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.LogRecord' as const,
-
     encode(message: LogRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timestamp !== undefined) {
             Timestamp.encode(toTimestamp(message.timestamp), writer.uint32(10).fork()).ldelim();
         }
         Object.entries(message.message).forEach(([key, value]) => {
             LogRecord_MessageEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.opensearch.v1.LogRecord.MessageEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(18).fork(),
             ).ldelim();
         });
@@ -2328,17 +2168,9 @@ export const LogRecord = {
     },
 };
 
-messageTypeRegistry.set(LogRecord.$type, LogRecord);
-
-const baseLogRecord_MessageEntry: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.LogRecord.MessageEntry',
-    key: '',
-    value: '',
-};
+const baseLogRecord_MessageEntry: object = { key: '', value: '' };
 
 export const LogRecord_MessageEntry = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.LogRecord.MessageEntry' as const,
-
     encode(message: LogRecord_MessageEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -2395,16 +2227,9 @@ export const LogRecord_MessageEntry = {
     },
 };
 
-messageTypeRegistry.set(LogRecord_MessageEntry.$type, LogRecord_MessageEntry);
-
-const baseListClusterLogsResponse: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterLogsResponse',
-    nextPageToken: '',
-};
+const baseListClusterLogsResponse: object = { nextPageToken: '' };
 
 export const ListClusterLogsResponse = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterLogsResponse' as const,
-
     encode(message: ListClusterLogsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.logs) {
             LogRecord.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -2468,16 +2293,9 @@ export const ListClusterLogsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListClusterLogsResponse.$type, ListClusterLogsResponse);
-
-const baseStreamLogRecord: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.StreamLogRecord',
-    nextRecordToken: '',
-};
+const baseStreamLogRecord: object = { nextRecordToken: '' };
 
 export const StreamLogRecord = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.StreamLogRecord' as const,
-
     encode(message: StreamLogRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.record !== undefined) {
             LogRecord.encode(message.record, writer.uint32(10).fork()).ldelim();
@@ -2541,10 +2359,7 @@ export const StreamLogRecord = {
     },
 };
 
-messageTypeRegistry.set(StreamLogRecord.$type, StreamLogRecord);
-
 const baseStreamClusterLogsRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.StreamClusterLogsRequest',
     clusterId: '',
     columnFilter: '',
     recordToken: '',
@@ -2553,8 +2368,6 @@ const baseStreamClusterLogsRequest: object = {
 };
 
 export const StreamClusterLogsRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.StreamClusterLogsRequest' as const,
-
     encode(
         message: StreamClusterLogsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2680,18 +2493,9 @@ export const StreamClusterLogsRequest = {
     },
 };
 
-messageTypeRegistry.set(StreamClusterLogsRequest.$type, StreamClusterLogsRequest);
-
-const baseListClusterOperationsRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterOperationsRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListClusterOperationsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListClusterOperationsRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterOperationsRequest' as const,
-
     encode(
         message: ListClusterOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2766,16 +2570,9 @@ export const ListClusterOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListClusterOperationsRequest.$type, ListClusterOperationsRequest);
-
-const baseListClusterOperationsResponse: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterOperationsResponse',
-    nextPageToken: '',
-};
+const baseListClusterOperationsResponse: object = { nextPageToken: '' };
 
 export const ListClusterOperationsResponse = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterOperationsResponse' as const,
-
     encode(
         message: ListClusterOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2842,18 +2639,9 @@ export const ListClusterOperationsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListClusterOperationsResponse.$type, ListClusterOperationsResponse);
-
-const baseListClusterHostsRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterHostsRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListClusterHostsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListClusterHostsRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterHostsRequest' as const,
-
     encode(message: ListClusterHostsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2925,16 +2713,9 @@ export const ListClusterHostsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListClusterHostsRequest.$type, ListClusterHostsRequest);
-
-const baseListClusterHostsResponse: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterHostsResponse',
-    nextPageToken: '',
-};
+const baseListClusterHostsResponse: object = { nextPageToken: '' };
 
 export const ListClusterHostsResponse = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterHostsResponse' as const,
-
     encode(
         message: ListClusterHostsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3001,17 +2782,9 @@ export const ListClusterHostsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListClusterHostsResponse.$type, ListClusterHostsResponse);
-
-const baseMoveClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.MoveClusterRequest',
-    clusterId: '',
-    destinationFolderId: '',
-};
+const baseMoveClusterRequest: object = { clusterId: '', destinationFolderId: '' };
 
 export const MoveClusterRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.MoveClusterRequest' as const,
-
     encode(message: MoveClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -3074,18 +2847,13 @@ export const MoveClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(MoveClusterRequest.$type, MoveClusterRequest);
-
 const baseMoveClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.MoveClusterMetadata',
     clusterId: '',
     sourceFolderId: '',
     destinationFolderId: '',
 };
 
 export const MoveClusterMetadata = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.MoveClusterMetadata' as const,
-
     encode(message: MoveClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -3160,16 +2928,9 @@ export const MoveClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(MoveClusterMetadata.$type, MoveClusterMetadata);
-
-const baseStartClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.StartClusterRequest',
-    clusterId: '',
-};
+const baseStartClusterRequest: object = { clusterId: '' };
 
 export const StartClusterRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.StartClusterRequest' as const,
-
     encode(message: StartClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -3219,16 +2980,9 @@ export const StartClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(StartClusterRequest.$type, StartClusterRequest);
-
-const baseStartClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.StartClusterMetadata',
-    clusterId: '',
-};
+const baseStartClusterMetadata: object = { clusterId: '' };
 
 export const StartClusterMetadata = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.StartClusterMetadata' as const,
-
     encode(message: StartClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -3278,16 +3032,9 @@ export const StartClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(StartClusterMetadata.$type, StartClusterMetadata);
-
-const baseStopClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.StopClusterRequest',
-    clusterId: '',
-};
+const baseStopClusterRequest: object = { clusterId: '' };
 
 export const StopClusterRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.StopClusterRequest' as const,
-
     encode(message: StopClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -3337,16 +3084,9 @@ export const StopClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(StopClusterRequest.$type, StopClusterRequest);
-
-const baseStopClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.StopClusterMetadata',
-    clusterId: '',
-};
+const baseStopClusterMetadata: object = { clusterId: '' };
 
 export const StopClusterMetadata = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.StopClusterMetadata' as const,
-
     encode(message: StopClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -3396,17 +3136,9 @@ export const StopClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(StopClusterMetadata.$type, StopClusterMetadata);
-
-const baseConfigCreateSpec: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ConfigCreateSpec',
-    version: '',
-    adminPassword: '',
-};
+const baseConfigCreateSpec: object = { version: '', adminPassword: '' };
 
 export const ConfigCreateSpec = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ConfigCreateSpec' as const,
-
     encode(message: ConfigCreateSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -3516,17 +3248,9 @@ export const ConfigCreateSpec = {
     },
 };
 
-messageTypeRegistry.set(ConfigCreateSpec.$type, ConfigCreateSpec);
-
-const baseKeystoreSetting: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.KeystoreSetting',
-    name: '',
-    value: '',
-};
+const baseKeystoreSetting: object = { name: '', value: '' };
 
 export const KeystoreSetting = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.KeystoreSetting' as const,
-
     encode(message: KeystoreSetting, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -3581,16 +3305,9 @@ export const KeystoreSetting = {
     },
 };
 
-messageTypeRegistry.set(KeystoreSetting.$type, KeystoreSetting);
-
-const baseOpenSearchCreateSpec: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.OpenSearchCreateSpec',
-    plugins: '',
-};
+const baseOpenSearchCreateSpec: object = { plugins: '' };
 
 export const OpenSearchCreateSpec = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.OpenSearchCreateSpec' as const,
-
     encode(message: OpenSearchCreateSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.plugins) {
             writer.uint32(10).string(v!);
@@ -3700,10 +3417,7 @@ export const OpenSearchCreateSpec = {
     },
 };
 
-messageTypeRegistry.set(OpenSearchCreateSpec.$type, OpenSearchCreateSpec);
-
 const baseOpenSearchCreateSpec_NodeGroup: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.OpenSearchCreateSpec.NodeGroup',
     name: '',
     hostsCount: 0,
     zoneIds: '',
@@ -3713,8 +3427,6 @@ const baseOpenSearchCreateSpec_NodeGroup: object = {
 };
 
 export const OpenSearchCreateSpec_NodeGroup = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.OpenSearchCreateSpec.NodeGroup' as const,
-
     encode(
         message: OpenSearchCreateSpec_NodeGroup,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3879,15 +3591,9 @@ export const OpenSearchCreateSpec_NodeGroup = {
     },
 };
 
-messageTypeRegistry.set(OpenSearchCreateSpec_NodeGroup.$type, OpenSearchCreateSpec_NodeGroup);
-
-const baseDashboardsCreateSpec: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DashboardsCreateSpec',
-};
+const baseDashboardsCreateSpec: object = {};
 
 export const DashboardsCreateSpec = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DashboardsCreateSpec' as const,
-
     encode(message: DashboardsCreateSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.nodeGroups) {
             DashboardsCreateSpec_NodeGroup.encode(v!, writer.uint32(18).fork()).ldelim();
@@ -3946,10 +3652,7 @@ export const DashboardsCreateSpec = {
     },
 };
 
-messageTypeRegistry.set(DashboardsCreateSpec.$type, DashboardsCreateSpec);
-
 const baseDashboardsCreateSpec_NodeGroup: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DashboardsCreateSpec.NodeGroup',
     name: '',
     hostsCount: 0,
     zoneIds: '',
@@ -3958,8 +3661,6 @@ const baseDashboardsCreateSpec_NodeGroup: object = {
 };
 
 export const DashboardsCreateSpec_NodeGroup = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DashboardsCreateSpec.NodeGroup' as const,
-
     encode(
         message: DashboardsCreateSpec_NodeGroup,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4101,17 +3802,9 @@ export const DashboardsCreateSpec_NodeGroup = {
     },
 };
 
-messageTypeRegistry.set(DashboardsCreateSpec_NodeGroup.$type, DashboardsCreateSpec_NodeGroup);
-
-const baseConfigUpdateSpec: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ConfigUpdateSpec',
-    version: '',
-    adminPassword: '',
-};
+const baseConfigUpdateSpec: object = { version: '', adminPassword: '' };
 
 export const ConfigUpdateSpec = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ConfigUpdateSpec' as const,
-
     encode(message: ConfigUpdateSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -4233,17 +3926,9 @@ export const ConfigUpdateSpec = {
     },
 };
 
-messageTypeRegistry.set(ConfigUpdateSpec.$type, ConfigUpdateSpec);
-
-const baseOpenSearchClusterUpdateSpec: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.OpenSearchClusterUpdateSpec',
-    plugins: '',
-    removeKeystoreSettings: '',
-};
+const baseOpenSearchClusterUpdateSpec: object = { plugins: '', removeKeystoreSettings: '' };
 
 export const OpenSearchClusterUpdateSpec = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.OpenSearchClusterUpdateSpec' as const,
-
     encode(
         message: OpenSearchClusterUpdateSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4353,15 +4038,9 @@ export const OpenSearchClusterUpdateSpec = {
     },
 };
 
-messageTypeRegistry.set(OpenSearchClusterUpdateSpec.$type, OpenSearchClusterUpdateSpec);
-
-const baseDashboardsClusterUpdateSpec: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DashboardsClusterUpdateSpec',
-};
+const baseDashboardsClusterUpdateSpec: object = {};
 
 export const DashboardsClusterUpdateSpec = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DashboardsClusterUpdateSpec' as const,
-
     encode(_: DashboardsClusterUpdateSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -4399,16 +4078,9 @@ export const DashboardsClusterUpdateSpec = {
     },
 };
 
-messageTypeRegistry.set(DashboardsClusterUpdateSpec.$type, DashboardsClusterUpdateSpec);
-
-const baseBackupClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.BackupClusterRequest',
-    clusterId: '',
-};
+const baseBackupClusterRequest: object = { clusterId: '' };
 
 export const BackupClusterRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.BackupClusterRequest' as const,
-
     encode(message: BackupClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -4458,16 +4130,9 @@ export const BackupClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(BackupClusterRequest.$type, BackupClusterRequest);
-
-const baseBackupClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.BackupClusterMetadata',
-    clusterId: '',
-};
+const baseBackupClusterMetadata: object = { clusterId: '' };
 
 export const BackupClusterMetadata = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.BackupClusterMetadata' as const,
-
     encode(message: BackupClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -4517,17 +4182,9 @@ export const BackupClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(BackupClusterMetadata.$type, BackupClusterMetadata);
-
-const baseDeleteBackupRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteBackupRequest',
-    clusterId: '',
-    backupId: '',
-};
+const baseDeleteBackupRequest: object = { clusterId: '', backupId: '' };
 
 export const DeleteBackupRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteBackupRequest' as const,
-
     encode(message: DeleteBackupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -4589,17 +4246,9 @@ export const DeleteBackupRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteBackupRequest.$type, DeleteBackupRequest);
-
-const baseDeleteBackupMetadata: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteBackupMetadata',
-    clusterId: '',
-    backupId: '',
-};
+const baseDeleteBackupMetadata: object = { clusterId: '', backupId: '' };
 
 export const DeleteBackupMetadata = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteBackupMetadata' as const,
-
     encode(message: DeleteBackupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -4661,10 +4310,7 @@ export const DeleteBackupMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteBackupMetadata.$type, DeleteBackupMetadata);
-
 const baseRestoreClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.RestoreClusterRequest',
     backupId: '',
     name: '',
     description: '',
@@ -4677,8 +4323,6 @@ const baseRestoreClusterRequest: object = {
 };
 
 export const RestoreClusterRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.RestoreClusterRequest' as const,
-
     encode(message: RestoreClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);
@@ -4691,11 +4335,7 @@ export const RestoreClusterRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             RestoreClusterRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.opensearch.v1.RestoreClusterRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -4903,17 +4543,9 @@ export const RestoreClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(RestoreClusterRequest.$type, RestoreClusterRequest);
-
-const baseRestoreClusterRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.RestoreClusterRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseRestoreClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const RestoreClusterRequest_LabelsEntry = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.RestoreClusterRequest.LabelsEntry' as const,
-
     encode(
         message: RestoreClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4979,17 +4611,9 @@ export const RestoreClusterRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(RestoreClusterRequest_LabelsEntry.$type, RestoreClusterRequest_LabelsEntry);
-
-const baseRestoreClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.RestoreClusterMetadata',
-    clusterId: '',
-    backupId: '',
-};
+const baseRestoreClusterMetadata: object = { clusterId: '', backupId: '' };
 
 export const RestoreClusterMetadata = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.RestoreClusterMetadata' as const,
-
     encode(message: RestoreClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -5051,17 +4675,9 @@ export const RestoreClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(RestoreClusterMetadata.$type, RestoreClusterMetadata);
-
-const baseRescheduleMaintenanceRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.RescheduleMaintenanceRequest',
-    clusterId: '',
-    rescheduleType: 0,
-};
+const baseRescheduleMaintenanceRequest: object = { clusterId: '', rescheduleType: 0 };
 
 export const RescheduleMaintenanceRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.RescheduleMaintenanceRequest' as const,
-
     encode(
         message: RescheduleMaintenanceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5142,16 +4758,9 @@ export const RescheduleMaintenanceRequest = {
     },
 };
 
-messageTypeRegistry.set(RescheduleMaintenanceRequest.$type, RescheduleMaintenanceRequest);
-
-const baseRescheduleMaintenanceMetadata: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.RescheduleMaintenanceMetadata',
-    clusterId: '',
-};
+const baseRescheduleMaintenanceMetadata: object = { clusterId: '' };
 
 export const RescheduleMaintenanceMetadata = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.RescheduleMaintenanceMetadata' as const,
-
     encode(
         message: RescheduleMaintenanceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5217,18 +4826,9 @@ export const RescheduleMaintenanceMetadata = {
     },
 };
 
-messageTypeRegistry.set(RescheduleMaintenanceMetadata.$type, RescheduleMaintenanceMetadata);
-
-const baseListClusterBackupsRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterBackupsRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListClusterBackupsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListClusterBackupsRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterBackupsRequest' as const,
-
     encode(
         message: ListClusterBackupsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5303,16 +4903,9 @@ export const ListClusterBackupsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListClusterBackupsRequest.$type, ListClusterBackupsRequest);
-
-const baseListClusterBackupsResponse: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterBackupsResponse',
-    nextPageToken: '',
-};
+const baseListClusterBackupsResponse: object = { nextPageToken: '' };
 
 export const ListClusterBackupsResponse = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ListClusterBackupsResponse' as const,
-
     encode(
         message: ListClusterBackupsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5379,17 +4972,9 @@ export const ListClusterBackupsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListClusterBackupsResponse.$type, ListClusterBackupsResponse);
-
-const baseDeleteOpenSearchNodeGroupRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteOpenSearchNodeGroupRequest',
-    clusterId: '',
-    name: '',
-};
+const baseDeleteOpenSearchNodeGroupRequest: object = { clusterId: '', name: '' };
 
 export const DeleteOpenSearchNodeGroupRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteOpenSearchNodeGroupRequest' as const,
-
     encode(
         message: DeleteOpenSearchNodeGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5457,17 +5042,9 @@ export const DeleteOpenSearchNodeGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteOpenSearchNodeGroupRequest.$type, DeleteOpenSearchNodeGroupRequest);
-
-const baseUpdateOpenSearchNodeGroupRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateOpenSearchNodeGroupRequest',
-    clusterId: '',
-    name: '',
-};
+const baseUpdateOpenSearchNodeGroupRequest: object = { clusterId: '', name: '' };
 
 export const UpdateOpenSearchNodeGroupRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateOpenSearchNodeGroupRequest' as const,
-
     encode(
         message: UpdateOpenSearchNodeGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5577,10 +5154,7 @@ export const UpdateOpenSearchNodeGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateOpenSearchNodeGroupRequest.$type, UpdateOpenSearchNodeGroupRequest);
-
 const baseOpenSearchNodeGroupUpdateSpec: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.OpenSearchNodeGroupUpdateSpec',
     hostsCount: 0,
     roles: 0,
     zoneIds: '',
@@ -5589,8 +5163,6 @@ const baseOpenSearchNodeGroupUpdateSpec: object = {
 };
 
 export const OpenSearchNodeGroupUpdateSpec = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.OpenSearchNodeGroupUpdateSpec' as const,
-
     encode(
         message: OpenSearchNodeGroupUpdateSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5746,16 +5318,9 @@ export const OpenSearchNodeGroupUpdateSpec = {
     },
 };
 
-messageTypeRegistry.set(OpenSearchNodeGroupUpdateSpec.$type, OpenSearchNodeGroupUpdateSpec);
-
-const baseAddOpenSearchNodeGroupRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.AddOpenSearchNodeGroupRequest',
-    clusterId: '',
-};
+const baseAddOpenSearchNodeGroupRequest: object = { clusterId: '' };
 
 export const AddOpenSearchNodeGroupRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.AddOpenSearchNodeGroupRequest' as const,
-
     encode(
         message: AddOpenSearchNodeGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5832,17 +5397,9 @@ export const AddOpenSearchNodeGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(AddOpenSearchNodeGroupRequest.$type, AddOpenSearchNodeGroupRequest);
-
-const baseDeleteDashboardsNodeGroupRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteDashboardsNodeGroupRequest',
-    clusterId: '',
-    name: '',
-};
+const baseDeleteDashboardsNodeGroupRequest: object = { clusterId: '', name: '' };
 
 export const DeleteDashboardsNodeGroupRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteDashboardsNodeGroupRequest' as const,
-
     encode(
         message: DeleteDashboardsNodeGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5910,17 +5467,9 @@ export const DeleteDashboardsNodeGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteDashboardsNodeGroupRequest.$type, DeleteDashboardsNodeGroupRequest);
-
-const baseUpdateDashboardsNodeGroupRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateDashboardsNodeGroupRequest',
-    clusterId: '',
-    name: '',
-};
+const baseUpdateDashboardsNodeGroupRequest: object = { clusterId: '', name: '' };
 
 export const UpdateDashboardsNodeGroupRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateDashboardsNodeGroupRequest' as const,
-
     encode(
         message: UpdateDashboardsNodeGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -6030,10 +5579,7 @@ export const UpdateDashboardsNodeGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateDashboardsNodeGroupRequest.$type, UpdateDashboardsNodeGroupRequest);
-
 const baseDashboardsNodeGroupUpdateSpec: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DashboardsNodeGroupUpdateSpec',
     hostsCount: 0,
     zoneIds: '',
     subnetIds: '',
@@ -6041,8 +5587,6 @@ const baseDashboardsNodeGroupUpdateSpec: object = {
 };
 
 export const DashboardsNodeGroupUpdateSpec = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DashboardsNodeGroupUpdateSpec' as const,
-
     encode(
         message: DashboardsNodeGroupUpdateSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -6175,16 +5719,9 @@ export const DashboardsNodeGroupUpdateSpec = {
     },
 };
 
-messageTypeRegistry.set(DashboardsNodeGroupUpdateSpec.$type, DashboardsNodeGroupUpdateSpec);
-
-const baseAddDashboardsNodeGroupRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.AddDashboardsNodeGroupRequest',
-    clusterId: '',
-};
+const baseAddDashboardsNodeGroupRequest: object = { clusterId: '' };
 
 export const AddDashboardsNodeGroupRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.AddDashboardsNodeGroupRequest' as const,
-
     encode(
         message: AddDashboardsNodeGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -6261,17 +5798,9 @@ export const AddDashboardsNodeGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(AddDashboardsNodeGroupRequest.$type, AddDashboardsNodeGroupRequest);
-
-const baseAddNodeGroupMetadata: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.AddNodeGroupMetadata',
-    clusterId: '',
-    name: '',
-};
+const baseAddNodeGroupMetadata: object = { clusterId: '', name: '' };
 
 export const AddNodeGroupMetadata = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.AddNodeGroupMetadata' as const,
-
     encode(message: AddNodeGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -6330,17 +5859,9 @@ export const AddNodeGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(AddNodeGroupMetadata.$type, AddNodeGroupMetadata);
-
-const baseUpdateNodeGroupMetadata: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateNodeGroupMetadata',
-    clusterId: '',
-    name: '',
-};
+const baseUpdateNodeGroupMetadata: object = { clusterId: '', name: '' };
 
 export const UpdateNodeGroupMetadata = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateNodeGroupMetadata' as const,
-
     encode(message: UpdateNodeGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -6399,17 +5920,9 @@ export const UpdateNodeGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateNodeGroupMetadata.$type, UpdateNodeGroupMetadata);
-
-const baseDeleteNodeGroupMetadata: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteNodeGroupMetadata',
-    clusterId: '',
-    name: '',
-};
+const baseDeleteNodeGroupMetadata: object = { clusterId: '', name: '' };
 
 export const DeleteNodeGroupMetadata = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DeleteNodeGroupMetadata' as const,
-
     encode(message: DeleteNodeGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -6468,16 +5981,9 @@ export const DeleteNodeGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteNodeGroupMetadata.$type, DeleteNodeGroupMetadata);
-
-const baseGetAuthSettingsRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.GetAuthSettingsRequest',
-    clusterId: '',
-};
+const baseGetAuthSettingsRequest: object = { clusterId: '' };
 
 export const GetAuthSettingsRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.GetAuthSettingsRequest' as const,
-
     encode(message: GetAuthSettingsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -6527,16 +6033,9 @@ export const GetAuthSettingsRequest = {
     },
 };
 
-messageTypeRegistry.set(GetAuthSettingsRequest.$type, GetAuthSettingsRequest);
-
-const baseUpdateAuthSettingsRequest: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateAuthSettingsRequest',
-    clusterId: '',
-};
+const baseUpdateAuthSettingsRequest: object = { clusterId: '' };
 
 export const UpdateAuthSettingsRequest = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateAuthSettingsRequest' as const,
-
     encode(
         message: UpdateAuthSettingsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -6605,16 +6104,9 @@ export const UpdateAuthSettingsRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateAuthSettingsRequest.$type, UpdateAuthSettingsRequest);
-
-const baseUpdateAuthSettingsMetadata: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateAuthSettingsMetadata',
-    clusterId: '',
-};
+const baseUpdateAuthSettingsMetadata: object = { clusterId: '' };
 
 export const UpdateAuthSettingsMetadata = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.UpdateAuthSettingsMetadata' as const,
-
     encode(
         message: UpdateAuthSettingsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -6666,8 +6158,6 @@ export const UpdateAuthSettingsMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(UpdateAuthSettingsMetadata.$type, UpdateAuthSettingsMetadata);
 
 /** A set of methods for managing OpenSearch clusters. */
 export const ClusterServiceService = {
@@ -7449,21 +6939,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

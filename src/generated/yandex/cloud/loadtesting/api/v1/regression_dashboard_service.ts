@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -24,7 +23,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1';
 
 export interface CreateRegressionDashboardRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateRegressionDashboardRequest';
     /** ID of the folder to create a regression dashboard in. */
     folderId: string;
     /** Name of the dashboard. */
@@ -36,19 +34,16 @@ export interface CreateRegressionDashboardRequest {
 }
 
 export interface CreateRegressionDashboardMetadata {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateRegressionDashboardMetadata';
     /** ID of the dashboard that is being created. */
     dashboardId: string;
 }
 
 export interface GetRegressionDashboardRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetRegressionDashboardRequest';
     /** ID of the dashboard to return. */
     dashboardId: string;
 }
 
 export interface DeleteRegressionDashboardRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteRegressionDashboardRequest';
     /** ID of the dashboard to delete. */
     dashboardId: string;
     /** The current etag of the dashboard. */
@@ -56,13 +51,11 @@ export interface DeleteRegressionDashboardRequest {
 }
 
 export interface DeleteRegressionDashboardMetadata {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteRegressionDashboardMetadata';
     /** ID of the dashboard that is being deleted. */
     dashboardId: string;
 }
 
 export interface ListRegressionDashboardsRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListRegressionDashboardsRequest';
     /** ID of the folder to list dashboards in. */
     folderId: string;
     /**
@@ -102,7 +95,6 @@ export interface ListRegressionDashboardsRequest {
 }
 
 export interface ListRegressionDashboardsResponse {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListRegressionDashboardsResponse';
     /** List of dashboards in the specified folder. */
     dashboards: Dashboard[];
     /**
@@ -116,7 +108,6 @@ export interface ListRegressionDashboardsResponse {
 }
 
 export interface UpdateRegressionDashboardRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.UpdateRegressionDashboardRequest';
     /** ID of the dashboards to update. */
     dashboardId: string;
     /** The current etag of the dashboard. */
@@ -132,21 +123,13 @@ export interface UpdateRegressionDashboardRequest {
 }
 
 export interface UpdateRegressionDashboardMetadata {
-    $type: 'yandex.cloud.loadtesting.api.v1.UpdateRegressionDashboardMetadata';
     /** ID of the dashboard that is being updated. */
     dashboardId: string;
 }
 
-const baseCreateRegressionDashboardRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateRegressionDashboardRequest',
-    folderId: '',
-    name: '',
-    description: '',
-};
+const baseCreateRegressionDashboardRequest: object = { folderId: '', name: '', description: '' };
 
 export const CreateRegressionDashboardRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateRegressionDashboardRequest' as const,
-
     encode(
         message: CreateRegressionDashboardRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -242,16 +225,9 @@ export const CreateRegressionDashboardRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateRegressionDashboardRequest.$type, CreateRegressionDashboardRequest);
-
-const baseCreateRegressionDashboardMetadata: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateRegressionDashboardMetadata',
-    dashboardId: '',
-};
+const baseCreateRegressionDashboardMetadata: object = { dashboardId: '' };
 
 export const CreateRegressionDashboardMetadata = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateRegressionDashboardMetadata' as const,
-
     encode(
         message: CreateRegressionDashboardMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -310,16 +286,9 @@ export const CreateRegressionDashboardMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateRegressionDashboardMetadata.$type, CreateRegressionDashboardMetadata);
-
-const baseGetRegressionDashboardRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetRegressionDashboardRequest',
-    dashboardId: '',
-};
+const baseGetRegressionDashboardRequest: object = { dashboardId: '' };
 
 export const GetRegressionDashboardRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetRegressionDashboardRequest' as const,
-
     encode(
         message: GetRegressionDashboardRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -372,17 +341,9 @@ export const GetRegressionDashboardRequest = {
     },
 };
 
-messageTypeRegistry.set(GetRegressionDashboardRequest.$type, GetRegressionDashboardRequest);
-
-const baseDeleteRegressionDashboardRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteRegressionDashboardRequest',
-    dashboardId: '',
-    etag: '',
-};
+const baseDeleteRegressionDashboardRequest: object = { dashboardId: '', etag: '' };
 
 export const DeleteRegressionDashboardRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteRegressionDashboardRequest' as const,
-
     encode(
         message: DeleteRegressionDashboardRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -450,16 +411,9 @@ export const DeleteRegressionDashboardRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteRegressionDashboardRequest.$type, DeleteRegressionDashboardRequest);
-
-const baseDeleteRegressionDashboardMetadata: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteRegressionDashboardMetadata',
-    dashboardId: '',
-};
+const baseDeleteRegressionDashboardMetadata: object = { dashboardId: '' };
 
 export const DeleteRegressionDashboardMetadata = {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteRegressionDashboardMetadata' as const,
-
     encode(
         message: DeleteRegressionDashboardMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -518,10 +472,7 @@ export const DeleteRegressionDashboardMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteRegressionDashboardMetadata.$type, DeleteRegressionDashboardMetadata);
-
 const baseListRegressionDashboardsRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListRegressionDashboardsRequest',
     folderId: '',
     pageSize: 0,
     pageToken: '',
@@ -529,8 +480,6 @@ const baseListRegressionDashboardsRequest: object = {
 };
 
 export const ListRegressionDashboardsRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListRegressionDashboardsRequest' as const,
-
     encode(
         message: ListRegressionDashboardsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -621,16 +570,9 @@ export const ListRegressionDashboardsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListRegressionDashboardsRequest.$type, ListRegressionDashboardsRequest);
-
-const baseListRegressionDashboardsResponse: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListRegressionDashboardsResponse',
-    nextPageToken: '',
-};
+const baseListRegressionDashboardsResponse: object = { nextPageToken: '' };
 
 export const ListRegressionDashboardsResponse = {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListRegressionDashboardsResponse' as const,
-
     encode(
         message: ListRegressionDashboardsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -703,10 +645,7 @@ export const ListRegressionDashboardsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListRegressionDashboardsResponse.$type, ListRegressionDashboardsResponse);
-
 const baseUpdateRegressionDashboardRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.UpdateRegressionDashboardRequest',
     dashboardId: '',
     etag: '',
     name: '',
@@ -714,8 +653,6 @@ const baseUpdateRegressionDashboardRequest: object = {
 };
 
 export const UpdateRegressionDashboardRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.UpdateRegressionDashboardRequest' as const,
-
     encode(
         message: UpdateRegressionDashboardRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -838,16 +775,9 @@ export const UpdateRegressionDashboardRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateRegressionDashboardRequest.$type, UpdateRegressionDashboardRequest);
-
-const baseUpdateRegressionDashboardMetadata: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.UpdateRegressionDashboardMetadata',
-    dashboardId: '',
-};
+const baseUpdateRegressionDashboardMetadata: object = { dashboardId: '' };
 
 export const UpdateRegressionDashboardMetadata = {
-    $type: 'yandex.cloud.loadtesting.api.v1.UpdateRegressionDashboardMetadata' as const,
-
     encode(
         message: UpdateRegressionDashboardMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -905,8 +835,6 @@ export const UpdateRegressionDashboardMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(UpdateRegressionDashboardMetadata.$type, UpdateRegressionDashboardMetadata);
 
 /** A set of methods for managing Load Testing Regression Dashboards. */
 export const RegressionDashboardServiceService = {
@@ -1108,16 +1036,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

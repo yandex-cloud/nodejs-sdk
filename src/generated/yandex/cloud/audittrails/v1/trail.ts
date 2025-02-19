@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.audittrails.v1';
 
 /** Trail describes the filtering and destination configuration of the process of sending Audit events */
 export interface Trail {
-    $type: 'yandex.cloud.audittrails.v1.Trail';
     /** ID of the trail */
     id: string;
     /** ID of the folder that the trail belongs to */
@@ -175,13 +173,11 @@ export function trail_EventAccessTypeFilterToJSON(object: Trail_EventAccessTypeF
 }
 
 export interface Trail_LabelsEntry {
-    $type: 'yandex.cloud.audittrails.v1.Trail.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface Trail_Destination {
-    $type: 'yandex.cloud.audittrails.v1.Trail.Destination';
     /**
      * Configuration for event delivery to Object Storage
      *
@@ -195,7 +191,6 @@ export interface Trail_Destination {
 }
 
 export interface Trail_ObjectStorage {
-    $type: 'yandex.cloud.audittrails.v1.Trail.ObjectStorage';
     /** Name of the destination bucket */
     bucketId: string;
     /**
@@ -206,13 +201,11 @@ export interface Trail_ObjectStorage {
 }
 
 export interface Trail_CloudLogging {
-    $type: 'yandex.cloud.audittrails.v1.Trail.CloudLogging';
     /** ID of the Cloud Logging destination group */
     logGroupId: string | undefined;
 }
 
 export interface Trail_DataStream {
-    $type: 'yandex.cloud.audittrails.v1.Trail.DataStream';
     /** ID of the database hosting the destination YDS */
     databaseId: string;
     /** Name of the destination YDS */
@@ -220,7 +213,6 @@ export interface Trail_DataStream {
 }
 
 export interface Trail_Filter {
-    $type: 'yandex.cloud.audittrails.v1.Trail.Filter';
     /**
      * Configuration of default events gathering for the trail
      * If not specified, default events won't be gathered for the trail
@@ -231,7 +223,6 @@ export interface Trail_Filter {
 }
 
 export interface Trail_PathFilter {
-    $type: 'yandex.cloud.audittrails.v1.Trail.PathFilter';
     /**
      * Root element of the resource path filter for the trail
      * Resource described in that filter node must contain the trail itself
@@ -240,7 +231,6 @@ export interface Trail_PathFilter {
 }
 
 export interface Trail_PathFilterElement {
-    $type: 'yandex.cloud.audittrails.v1.Trail.PathFilterElement';
     /** Filter element with ANY type. If used, configures the trail to gather any events from the resource */
     anyFilter?: Trail_PathFilterElementAny | undefined;
     /** Filter element with SOME type. If used, configures the trail to gather some of the events from the resource */
@@ -248,13 +238,11 @@ export interface Trail_PathFilterElement {
 }
 
 export interface Trail_PathFilterElementAny {
-    $type: 'yandex.cloud.audittrails.v1.Trail.PathFilterElementAny';
     /** Resource definition */
     resource?: Trail_Resource;
 }
 
 export interface Trail_PathFilterElementSome {
-    $type: 'yandex.cloud.audittrails.v1.Trail.PathFilterElementSome';
     /** Definition of the resource that contains nested resources */
     resource?: Trail_Resource;
     /** Filters for the resources contained in the parent resource */
@@ -262,7 +250,6 @@ export interface Trail_PathFilterElementSome {
 }
 
 export interface Trail_Resource {
-    $type: 'yandex.cloud.audittrails.v1.Trail.Resource';
     /** ID of the resource */
     id: string;
     /** Type of the resource */
@@ -270,13 +257,11 @@ export interface Trail_Resource {
 }
 
 export interface Trail_EventFilter {
-    $type: 'yandex.cloud.audittrails.v1.Trail.EventFilter';
     /** List of filters for services */
     filters: Trail_EventFilterElement[];
 }
 
 export interface Trail_EventFilterElement {
-    $type: 'yandex.cloud.audittrails.v1.Trail.EventFilterElement';
     /** Service ID of the gathered events */
     service: string;
     /** List of the event categories gathered for a specified service */
@@ -286,7 +271,6 @@ export interface Trail_EventFilterElement {
 }
 
 export interface Trail_EventFilterElementCategory {
-    $type: 'yandex.cloud.audittrails.v1.Trail.EventFilterElementCategory';
     /** Plane of the gathered category */
     plane: Trail_EventCategoryFilter;
     /** Type of the gathered category */
@@ -295,7 +279,6 @@ export interface Trail_EventFilterElementCategory {
 
 /** Policy for gathering data events */
 export interface Trail_DataEventsFiltering {
-    $type: 'yandex.cloud.audittrails.v1.Trail.DataEventsFiltering';
     /** Name of the service whose events will be delivered */
     service: string;
     /**
@@ -316,13 +299,11 @@ export interface Trail_DataEventsFiltering {
 
 /** Policy with explicitly specified event group */
 export interface Trail_EventTypes {
-    $type: 'yandex.cloud.audittrails.v1.Trail.EventTypes';
     eventTypes: string[];
 }
 
 /** Policy for gathering management events */
 export interface Trail_ManagementEventsFiltering {
-    $type: 'yandex.cloud.audittrails.v1.Trail.ManagementEventsFiltering';
     /** A list of resources which will be monitored by the trail */
     resourceScopes: Trail_Resource[];
 }
@@ -332,7 +313,6 @@ export interface Trail_ManagementEventsFiltering {
  * At least one filed must be filled
  */
 export interface Trail_FilteringPolicy {
-    $type: 'yandex.cloud.audittrails.v1.Trail.FilteringPolicy';
     /** Singular filter describing gathering management events */
     managementEventsFilter?: Trail_ManagementEventsFiltering;
     /** List of filters describing gathering data events */
@@ -340,13 +320,11 @@ export interface Trail_FilteringPolicy {
 }
 
 export interface Trail_DnsDataEventsFilter {
-    $type: 'yandex.cloud.audittrails.v1.Trail.DnsDataEventsFilter';
     /** Only recursive queries will be delivered */
     onlyRecursiveQueries: boolean;
 }
 
 const baseTrail: object = {
-    $type: 'yandex.cloud.audittrails.v1.Trail',
     id: '',
     folderId: '',
     name: '',
@@ -358,8 +336,6 @@ const baseTrail: object = {
 };
 
 export const Trail = {
-    $type: 'yandex.cloud.audittrails.v1.Trail' as const,
-
     encode(message: Trail, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -380,10 +356,7 @@ export const Trail = {
             writer.uint32(50).string(message.description);
         }
         Object.entries(message.labels).forEach(([key, value]) => {
-            Trail_LabelsEntry.encode(
-                { $type: 'yandex.cloud.audittrails.v1.Trail.LabelsEntry', key: key as any, value },
-                writer.uint32(58).fork(),
-            ).ldelim();
+            Trail_LabelsEntry.encode({ key: key as any, value }, writer.uint32(58).fork()).ldelim();
         });
         if (message.destination !== undefined) {
             Trail_Destination.encode(message.destination, writer.uint32(66).fork()).ldelim();
@@ -598,17 +571,9 @@ export const Trail = {
     },
 };
 
-messageTypeRegistry.set(Trail.$type, Trail);
-
-const baseTrail_LabelsEntry: object = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseTrail_LabelsEntry: object = { key: '', value: '' };
 
 export const Trail_LabelsEntry = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.LabelsEntry' as const,
-
     encode(message: Trail_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -663,13 +628,9 @@ export const Trail_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Trail_LabelsEntry.$type, Trail_LabelsEntry);
-
-const baseTrail_Destination: object = { $type: 'yandex.cloud.audittrails.v1.Trail.Destination' };
+const baseTrail_Destination: object = {};
 
 export const Trail_Destination = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.Destination' as const,
-
     encode(message: Trail_Destination, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.objectStorage !== undefined) {
             Trail_ObjectStorage.encode(message.objectStorage, writer.uint32(10).fork()).ldelim();
@@ -759,17 +720,9 @@ export const Trail_Destination = {
     },
 };
 
-messageTypeRegistry.set(Trail_Destination.$type, Trail_Destination);
-
-const baseTrail_ObjectStorage: object = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.ObjectStorage',
-    bucketId: '',
-    objectPrefix: '',
-};
+const baseTrail_ObjectStorage: object = { bucketId: '', objectPrefix: '' };
 
 export const Trail_ObjectStorage = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.ObjectStorage' as const,
-
     encode(message: Trail_ObjectStorage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucketId !== '') {
             writer.uint32(10).string(message.bucketId);
@@ -831,13 +784,9 @@ export const Trail_ObjectStorage = {
     },
 };
 
-messageTypeRegistry.set(Trail_ObjectStorage.$type, Trail_ObjectStorage);
-
-const baseTrail_CloudLogging: object = { $type: 'yandex.cloud.audittrails.v1.Trail.CloudLogging' };
+const baseTrail_CloudLogging: object = {};
 
 export const Trail_CloudLogging = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.CloudLogging' as const,
-
     encode(message: Trail_CloudLogging, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== undefined) {
             writer.uint32(10).string(message.logGroupId);
@@ -887,17 +836,9 @@ export const Trail_CloudLogging = {
     },
 };
 
-messageTypeRegistry.set(Trail_CloudLogging.$type, Trail_CloudLogging);
-
-const baseTrail_DataStream: object = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.DataStream',
-    databaseId: '',
-    streamName: '',
-};
+const baseTrail_DataStream: object = { databaseId: '', streamName: '' };
 
 export const Trail_DataStream = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.DataStream' as const,
-
     encode(message: Trail_DataStream, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.databaseId !== '') {
             writer.uint32(10).string(message.databaseId);
@@ -957,13 +898,9 @@ export const Trail_DataStream = {
     },
 };
 
-messageTypeRegistry.set(Trail_DataStream.$type, Trail_DataStream);
-
-const baseTrail_Filter: object = { $type: 'yandex.cloud.audittrails.v1.Trail.Filter' };
+const baseTrail_Filter: object = {};
 
 export const Trail_Filter = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.Filter' as const,
-
     encode(message: Trail_Filter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pathFilter !== undefined) {
             Trail_PathFilter.encode(message.pathFilter, writer.uint32(10).fork()).ldelim();
@@ -1035,13 +972,9 @@ export const Trail_Filter = {
     },
 };
 
-messageTypeRegistry.set(Trail_Filter.$type, Trail_Filter);
-
-const baseTrail_PathFilter: object = { $type: 'yandex.cloud.audittrails.v1.Trail.PathFilter' };
+const baseTrail_PathFilter: object = {};
 
 export const Trail_PathFilter = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.PathFilter' as const,
-
     encode(message: Trail_PathFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.root !== undefined) {
             Trail_PathFilterElement.encode(message.root, writer.uint32(10).fork()).ldelim();
@@ -1093,15 +1026,9 @@ export const Trail_PathFilter = {
     },
 };
 
-messageTypeRegistry.set(Trail_PathFilter.$type, Trail_PathFilter);
-
-const baseTrail_PathFilterElement: object = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.PathFilterElement',
-};
+const baseTrail_PathFilterElement: object = {};
 
 export const Trail_PathFilterElement = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.PathFilterElement' as const,
-
     encode(message: Trail_PathFilterElement, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.anyFilter !== undefined) {
             Trail_PathFilterElementAny.encode(message.anyFilter, writer.uint32(10).fork()).ldelim();
@@ -1181,15 +1108,9 @@ export const Trail_PathFilterElement = {
     },
 };
 
-messageTypeRegistry.set(Trail_PathFilterElement.$type, Trail_PathFilterElement);
-
-const baseTrail_PathFilterElementAny: object = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.PathFilterElementAny',
-};
+const baseTrail_PathFilterElementAny: object = {};
 
 export const Trail_PathFilterElementAny = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.PathFilterElementAny' as const,
-
     encode(
         message: Trail_PathFilterElementAny,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1246,15 +1167,9 @@ export const Trail_PathFilterElementAny = {
     },
 };
 
-messageTypeRegistry.set(Trail_PathFilterElementAny.$type, Trail_PathFilterElementAny);
-
-const baseTrail_PathFilterElementSome: object = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.PathFilterElementSome',
-};
+const baseTrail_PathFilterElementSome: object = {};
 
 export const Trail_PathFilterElementSome = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.PathFilterElementSome' as const,
-
     encode(
         message: Trail_PathFilterElementSome,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1329,17 +1244,9 @@ export const Trail_PathFilterElementSome = {
     },
 };
 
-messageTypeRegistry.set(Trail_PathFilterElementSome.$type, Trail_PathFilterElementSome);
-
-const baseTrail_Resource: object = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.Resource',
-    id: '',
-    type: '',
-};
+const baseTrail_Resource: object = { id: '', type: '' };
 
 export const Trail_Resource = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.Resource' as const,
-
     encode(message: Trail_Resource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1393,13 +1300,9 @@ export const Trail_Resource = {
     },
 };
 
-messageTypeRegistry.set(Trail_Resource.$type, Trail_Resource);
-
-const baseTrail_EventFilter: object = { $type: 'yandex.cloud.audittrails.v1.Trail.EventFilter' };
+const baseTrail_EventFilter: object = {};
 
 export const Trail_EventFilter = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.EventFilter' as const,
-
     encode(message: Trail_EventFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.filters) {
             Trail_EventFilterElement.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1453,16 +1356,9 @@ export const Trail_EventFilter = {
     },
 };
 
-messageTypeRegistry.set(Trail_EventFilter.$type, Trail_EventFilter);
-
-const baseTrail_EventFilterElement: object = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.EventFilterElement',
-    service: '',
-};
+const baseTrail_EventFilterElement: object = { service: '' };
 
 export const Trail_EventFilterElement = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.EventFilterElement' as const,
-
     encode(
         message: Trail_EventFilterElement,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1552,17 +1448,9 @@ export const Trail_EventFilterElement = {
     },
 };
 
-messageTypeRegistry.set(Trail_EventFilterElement.$type, Trail_EventFilterElement);
-
-const baseTrail_EventFilterElementCategory: object = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.EventFilterElementCategory',
-    plane: 0,
-    type: 0,
-};
+const baseTrail_EventFilterElementCategory: object = { plane: 0, type: 0 };
 
 export const Trail_EventFilterElementCategory = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.EventFilterElementCategory' as const,
-
     encode(
         message: Trail_EventFilterElementCategory,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1633,16 +1521,9 @@ export const Trail_EventFilterElementCategory = {
     },
 };
 
-messageTypeRegistry.set(Trail_EventFilterElementCategory.$type, Trail_EventFilterElementCategory);
-
-const baseTrail_DataEventsFiltering: object = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.DataEventsFiltering',
-    service: '',
-};
+const baseTrail_DataEventsFiltering: object = { service: '' };
 
 export const Trail_DataEventsFiltering = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.DataEventsFiltering' as const,
-
     encode(
         message: Trail_DataEventsFiltering,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1766,16 +1647,9 @@ export const Trail_DataEventsFiltering = {
     },
 };
 
-messageTypeRegistry.set(Trail_DataEventsFiltering.$type, Trail_DataEventsFiltering);
-
-const baseTrail_EventTypes: object = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.EventTypes',
-    eventTypes: '',
-};
+const baseTrail_EventTypes: object = { eventTypes: '' };
 
 export const Trail_EventTypes = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.EventTypes' as const,
-
     encode(message: Trail_EventTypes, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.eventTypes) {
             writer.uint32(10).string(v!);
@@ -1825,15 +1699,9 @@ export const Trail_EventTypes = {
     },
 };
 
-messageTypeRegistry.set(Trail_EventTypes.$type, Trail_EventTypes);
-
-const baseTrail_ManagementEventsFiltering: object = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.ManagementEventsFiltering',
-};
+const baseTrail_ManagementEventsFiltering: object = {};
 
 export const Trail_ManagementEventsFiltering = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.ManagementEventsFiltering' as const,
-
     encode(
         message: Trail_ManagementEventsFiltering,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1899,15 +1767,9 @@ export const Trail_ManagementEventsFiltering = {
     },
 };
 
-messageTypeRegistry.set(Trail_ManagementEventsFiltering.$type, Trail_ManagementEventsFiltering);
-
-const baseTrail_FilteringPolicy: object = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.FilteringPolicy',
-};
+const baseTrail_FilteringPolicy: object = {};
 
 export const Trail_FilteringPolicy = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.FilteringPolicy' as const,
-
     encode(message: Trail_FilteringPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.managementEventsFilter !== undefined) {
             Trail_ManagementEventsFiltering.encode(
@@ -1990,16 +1852,9 @@ export const Trail_FilteringPolicy = {
     },
 };
 
-messageTypeRegistry.set(Trail_FilteringPolicy.$type, Trail_FilteringPolicy);
-
-const baseTrail_DnsDataEventsFilter: object = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.DnsDataEventsFilter',
-    onlyRecursiveQueries: false,
-};
+const baseTrail_DnsDataEventsFilter: object = { onlyRecursiveQueries: false };
 
 export const Trail_DnsDataEventsFilter = {
-    $type: 'yandex.cloud.audittrails.v1.Trail.DnsDataEventsFilter' as const,
-
     encode(
         message: Trail_DnsDataEventsFilter,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2053,8 +1908,6 @@ export const Trail_DnsDataEventsFilter = {
     },
 };
 
-messageTypeRegistry.set(Trail_DnsDataEventsFilter.$type, Trail_DnsDataEventsFilter);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -2064,21 +1917,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { StringValue } from '../../../../../google/protobuf/wrappers';
@@ -7,22 +6,18 @@ import { StringValue } from '../../../../../google/protobuf/wrappers';
 export const protobufPackage = 'yandex.cloud.speechsense.v1.analysis';
 
 export interface Points {
-    $type: 'yandex.cloud.speechsense.v1.analysis.Points';
     quiz: Quiz[];
 }
 
 export interface Quiz {
-    $type: 'yandex.cloud.speechsense.v1.analysis.Quiz';
     request: string;
     response?: string;
     id: string;
 }
 
-const basePoints: object = { $type: 'yandex.cloud.speechsense.v1.analysis.Points' };
+const basePoints: object = {};
 
 export const Points = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.Points' as const,
-
     encode(message: Points, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.quiz) {
             Quiz.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -72,26 +67,15 @@ export const Points = {
     },
 };
 
-messageTypeRegistry.set(Points.$type, Points);
-
-const baseQuiz: object = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.Quiz',
-    request: '',
-    id: '',
-};
+const baseQuiz: object = { request: '', id: '' };
 
 export const Quiz = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.Quiz' as const,
-
     encode(message: Quiz, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.request !== '') {
             writer.uint32(10).string(message.request);
         }
         if (message.response !== undefined) {
-            StringValue.encode(
-                { $type: 'google.protobuf.StringValue', value: message.response! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            StringValue.encode({ value: message.response! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.id !== '') {
             writer.uint32(26).string(message.id);
@@ -152,8 +136,6 @@ export const Quiz = {
     },
 };
 
-messageTypeRegistry.set(Quiz.$type, Quiz);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -163,16 +145,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,13 +18,11 @@ import { Connection } from '../../../../../../yandex/cloud/serverless/apigateway
 export const protobufPackage = 'yandex.cloud.serverless.apigateway.websocket.v1';
 
 export interface GetConnectionRequest {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.GetConnectionRequest';
     /** ID of the connection to get. */
     connectionId: string;
 }
 
 export interface SendToConnectionRequest {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.SendToConnectionRequest';
     /** ID of the connection to which send. */
     connectionId: string;
     /** Data to send. */
@@ -78,28 +75,18 @@ export function sendToConnectionRequest_DataTypeToJSON(
     }
 }
 
-export interface SendToConnectionResponse {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.SendToConnectionResponse';
-}
+export interface SendToConnectionResponse {}
 
 export interface DisconnectRequest {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.DisconnectRequest';
     /** ID of the connection to disconnect. */
     connectionId: string;
 }
 
-export interface DisconnectResponse {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.DisconnectResponse';
-}
+export interface DisconnectResponse {}
 
-const baseGetConnectionRequest: object = {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.GetConnectionRequest',
-    connectionId: '',
-};
+const baseGetConnectionRequest: object = { connectionId: '' };
 
 export const GetConnectionRequest = {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.GetConnectionRequest' as const,
-
     encode(message: GetConnectionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectionId !== '') {
             writer.uint32(10).string(message.connectionId);
@@ -149,17 +136,9 @@ export const GetConnectionRequest = {
     },
 };
 
-messageTypeRegistry.set(GetConnectionRequest.$type, GetConnectionRequest);
-
-const baseSendToConnectionRequest: object = {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.SendToConnectionRequest',
-    connectionId: '',
-    type: 0,
-};
+const baseSendToConnectionRequest: object = { connectionId: '', type: 0 };
 
 export const SendToConnectionRequest = {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.SendToConnectionRequest' as const,
-
     encode(message: SendToConnectionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectionId !== '') {
             writer.uint32(10).string(message.connectionId);
@@ -238,15 +217,9 @@ export const SendToConnectionRequest = {
     },
 };
 
-messageTypeRegistry.set(SendToConnectionRequest.$type, SendToConnectionRequest);
-
-const baseSendToConnectionResponse: object = {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.SendToConnectionResponse',
-};
+const baseSendToConnectionResponse: object = {};
 
 export const SendToConnectionResponse = {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.SendToConnectionResponse' as const,
-
     encode(_: SendToConnectionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -284,16 +257,9 @@ export const SendToConnectionResponse = {
     },
 };
 
-messageTypeRegistry.set(SendToConnectionResponse.$type, SendToConnectionResponse);
-
-const baseDisconnectRequest: object = {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.DisconnectRequest',
-    connectionId: '',
-};
+const baseDisconnectRequest: object = { connectionId: '' };
 
 export const DisconnectRequest = {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.DisconnectRequest' as const,
-
     encode(message: DisconnectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectionId !== '') {
             writer.uint32(10).string(message.connectionId);
@@ -341,15 +307,9 @@ export const DisconnectRequest = {
     },
 };
 
-messageTypeRegistry.set(DisconnectRequest.$type, DisconnectRequest);
-
-const baseDisconnectResponse: object = {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.DisconnectResponse',
-};
+const baseDisconnectResponse: object = {};
 
 export const DisconnectResponse = {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.DisconnectResponse' as const,
-
     encode(_: DisconnectResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -384,8 +344,6 @@ export const DisconnectResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DisconnectResponse.$type, DisconnectResponse);
 
 /** A set of methods for managing API Gateway WebSocket connections. */
 export const ConnectionServiceService = {
@@ -539,16 +497,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

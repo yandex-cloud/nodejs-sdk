@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -21,13 +20,11 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.video.v1';
 
 export interface GetStreamLineRequest {
-    $type: 'yandex.cloud.video.v1.GetStreamLineRequest';
     /** ID of the line. */
     streamLineId: string;
 }
 
 export interface ListStreamLinesRequest {
-    $type: 'yandex.cloud.video.v1.ListStreamLinesRequest';
     /** ID of the channel. */
     channelId: string;
     /** The maximum number of the results per page to return. Default value: 100. */
@@ -54,7 +51,6 @@ export interface ListStreamLinesRequest {
 }
 
 export interface ListStreamLinesResponse {
-    $type: 'yandex.cloud.video.v1.ListStreamLinesResponse';
     /** List of lines for channel. */
     streamLines: StreamLine[];
     /** Token for getting the next page. */
@@ -62,7 +58,6 @@ export interface ListStreamLinesResponse {
 }
 
 export interface BatchGetStreamLinesRequest {
-    $type: 'yandex.cloud.video.v1.BatchGetStreamLinesRequest';
     /** ID of the channel. */
     channelId: string;
     /** List of requested stream line IDs. */
@@ -70,13 +65,11 @@ export interface BatchGetStreamLinesRequest {
 }
 
 export interface BatchGetStreamLinesResponse {
-    $type: 'yandex.cloud.video.v1.BatchGetStreamLinesResponse';
     /** List of lines for specific channel. */
     streamLines: StreamLine[];
 }
 
 export interface CreateStreamLineRequest {
-    $type: 'yandex.cloud.video.v1.CreateStreamLineRequest';
     /** ID of the channel. */
     channelId: string;
     /** Line title. */
@@ -104,19 +97,16 @@ export interface CreateStreamLineRequest {
 }
 
 export interface CreateStreamLineRequest_LabelsEntry {
-    $type: 'yandex.cloud.video.v1.CreateStreamLineRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateStreamLineMetadata {
-    $type: 'yandex.cloud.video.v1.CreateStreamLineMetadata';
     /** ID of the line. */
     streamLineId: string;
 }
 
 export interface UpdateStreamLineRequest {
-    $type: 'yandex.cloud.video.v1.UpdateStreamLineRequest';
     /** ID of the line. */
     streamLineId: string;
     /** Field mask that specifies which fields of the line are going to be updated. */
@@ -142,31 +132,26 @@ export interface UpdateStreamLineRequest {
 }
 
 export interface UpdateStreamLineRequest_LabelsEntry {
-    $type: 'yandex.cloud.video.v1.UpdateStreamLineRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateStreamLineMetadata {
-    $type: 'yandex.cloud.video.v1.UpdateStreamLineMetadata';
     /** ID of the line. */
     streamLineId: string;
 }
 
 export interface DeleteStreamLineRequest {
-    $type: 'yandex.cloud.video.v1.DeleteStreamLineRequest';
     /** ID of the line. */
     streamLineId: string;
 }
 
 export interface DeleteStreamLineMetadata {
-    $type: 'yandex.cloud.video.v1.DeleteStreamLineMetadata';
     /** ID of the line. */
     streamLineId: string;
 }
 
 export interface BatchDeleteStreamLinesRequest {
-    $type: 'yandex.cloud.video.v1.BatchDeleteStreamLinesRequest';
     /** ID of the channel. */
     channelId: string;
     /** List of line IDs. */
@@ -174,13 +159,11 @@ export interface BatchDeleteStreamLinesRequest {
 }
 
 export interface BatchDeleteStreamLinesMetadata {
-    $type: 'yandex.cloud.video.v1.BatchDeleteStreamLinesMetadata';
     /** List of line IDs. */
     streamLineIds: string[];
 }
 
 export interface PerformLineActionRequest {
-    $type: 'yandex.cloud.video.v1.PerformLineActionRequest';
     /** ID of the line. */
     streamLineId: string;
     activate?: ActivateAction | undefined;
@@ -188,85 +171,60 @@ export interface PerformLineActionRequest {
 }
 
 export interface PerformLineActionMetadata {
-    $type: 'yandex.cloud.video.v1.PerformLineActionMetadata';
     /** ID of the line. */
     streamLineId: string;
 }
 
-export interface RTMPPushParams {
-    $type: 'yandex.cloud.video.v1.RTMPPushParams';
-}
+export interface RTMPPushParams {}
 
-export interface SRTPushParams {
-    $type: 'yandex.cloud.video.v1.SRTPushParams';
-}
+export interface SRTPushParams {}
 
 export interface RTMPPullParams {
-    $type: 'yandex.cloud.video.v1.RTMPPullParams';
     /** URL of a RTMP streaming server. */
     url: string;
 }
 
 export interface SRTPullParams {
-    $type: 'yandex.cloud.video.v1.SRTPullParams';
     /** URL of a SRT streaming server. */
     url: string;
 }
 
 export interface TCPPullParams {
-    $type: 'yandex.cloud.video.v1.TCPPullParams';
     /** URL of a TCP streaming server. */
     url: string;
 }
 
 export interface RTSPPullParams {
-    $type: 'yandex.cloud.video.v1.RTSPPullParams';
     /** URL of a RTSP streaming server. */
     url: string;
 }
 
-export interface ManualLineParams {
-    $type: 'yandex.cloud.video.v1.ManualLineParams';
-}
+export interface ManualLineParams {}
 
-export interface AutoLineParams {
-    $type: 'yandex.cloud.video.v1.AutoLineParams';
-}
+export interface AutoLineParams {}
 
-export interface ActivateAction {
-    $type: 'yandex.cloud.video.v1.ActivateAction';
-}
+export interface ActivateAction {}
 
-export interface DeactivateAction {
-    $type: 'yandex.cloud.video.v1.DeactivateAction';
-}
+export interface DeactivateAction {}
 
 export interface GetStreamKeyRequest {
-    $type: 'yandex.cloud.video.v1.GetStreamKeyRequest';
     /** ID of the line. */
     streamLineId: string;
 }
 
 export interface UpdateStreamKeyRequest {
-    $type: 'yandex.cloud.video.v1.UpdateStreamKeyRequest';
     /** ID of the line. */
     streamLineId: string;
 }
 
 export interface UpdateStreamKeyMetadata {
-    $type: 'yandex.cloud.video.v1.UpdateStreamKeyMetadata';
     /** ID of the line. */
     streamLineId: string;
 }
 
-const baseGetStreamLineRequest: object = {
-    $type: 'yandex.cloud.video.v1.GetStreamLineRequest',
-    streamLineId: '',
-};
+const baseGetStreamLineRequest: object = { streamLineId: '' };
 
 export const GetStreamLineRequest = {
-    $type: 'yandex.cloud.video.v1.GetStreamLineRequest' as const,
-
     encode(message: GetStreamLineRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamLineId !== '') {
             writer.uint32(10).string(message.streamLineId);
@@ -316,10 +274,7 @@ export const GetStreamLineRequest = {
     },
 };
 
-messageTypeRegistry.set(GetStreamLineRequest.$type, GetStreamLineRequest);
-
 const baseListStreamLinesRequest: object = {
-    $type: 'yandex.cloud.video.v1.ListStreamLinesRequest',
     channelId: '',
     pageSize: 0,
     pageToken: '',
@@ -328,8 +283,6 @@ const baseListStreamLinesRequest: object = {
 };
 
 export const ListStreamLinesRequest = {
-    $type: 'yandex.cloud.video.v1.ListStreamLinesRequest' as const,
-
     encode(message: ListStreamLinesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -421,16 +374,9 @@ export const ListStreamLinesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListStreamLinesRequest.$type, ListStreamLinesRequest);
-
-const baseListStreamLinesResponse: object = {
-    $type: 'yandex.cloud.video.v1.ListStreamLinesResponse',
-    nextPageToken: '',
-};
+const baseListStreamLinesResponse: object = { nextPageToken: '' };
 
 export const ListStreamLinesResponse = {
-    $type: 'yandex.cloud.video.v1.ListStreamLinesResponse' as const,
-
     encode(message: ListStreamLinesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.streamLines) {
             StreamLine.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -496,17 +442,9 @@ export const ListStreamLinesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListStreamLinesResponse.$type, ListStreamLinesResponse);
-
-const baseBatchGetStreamLinesRequest: object = {
-    $type: 'yandex.cloud.video.v1.BatchGetStreamLinesRequest',
-    channelId: '',
-    streamLineIds: '',
-};
+const baseBatchGetStreamLinesRequest: object = { channelId: '', streamLineIds: '' };
 
 export const BatchGetStreamLinesRequest = {
-    $type: 'yandex.cloud.video.v1.BatchGetStreamLinesRequest' as const,
-
     encode(
         message: BatchGetStreamLinesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -573,15 +511,9 @@ export const BatchGetStreamLinesRequest = {
     },
 };
 
-messageTypeRegistry.set(BatchGetStreamLinesRequest.$type, BatchGetStreamLinesRequest);
-
-const baseBatchGetStreamLinesResponse: object = {
-    $type: 'yandex.cloud.video.v1.BatchGetStreamLinesResponse',
-};
+const baseBatchGetStreamLinesResponse: object = {};
 
 export const BatchGetStreamLinesResponse = {
-    $type: 'yandex.cloud.video.v1.BatchGetStreamLinesResponse' as const,
-
     encode(
         message: BatchGetStreamLinesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -638,18 +570,9 @@ export const BatchGetStreamLinesResponse = {
     },
 };
 
-messageTypeRegistry.set(BatchGetStreamLinesResponse.$type, BatchGetStreamLinesResponse);
-
-const baseCreateStreamLineRequest: object = {
-    $type: 'yandex.cloud.video.v1.CreateStreamLineRequest',
-    channelId: '',
-    title: '',
-    thumbnailId: '',
-};
+const baseCreateStreamLineRequest: object = { channelId: '', title: '', thumbnailId: '' };
 
 export const CreateStreamLineRequest = {
-    $type: 'yandex.cloud.video.v1.CreateStreamLineRequest' as const,
-
     encode(message: CreateStreamLineRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -662,11 +585,7 @@ export const CreateStreamLineRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateStreamLineRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.video.v1.CreateStreamLineRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(1602).fork(),
             ).ldelim();
         });
@@ -893,17 +812,9 @@ export const CreateStreamLineRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateStreamLineRequest.$type, CreateStreamLineRequest);
-
-const baseCreateStreamLineRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.video.v1.CreateStreamLineRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateStreamLineRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateStreamLineRequest_LabelsEntry = {
-    $type: 'yandex.cloud.video.v1.CreateStreamLineRequest.LabelsEntry' as const,
-
     encode(
         message: CreateStreamLineRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -969,19 +880,9 @@ export const CreateStreamLineRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateStreamLineRequest_LabelsEntry.$type,
-    CreateStreamLineRequest_LabelsEntry,
-);
-
-const baseCreateStreamLineMetadata: object = {
-    $type: 'yandex.cloud.video.v1.CreateStreamLineMetadata',
-    streamLineId: '',
-};
+const baseCreateStreamLineMetadata: object = { streamLineId: '' };
 
 export const CreateStreamLineMetadata = {
-    $type: 'yandex.cloud.video.v1.CreateStreamLineMetadata' as const,
-
     encode(
         message: CreateStreamLineMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1034,18 +935,9 @@ export const CreateStreamLineMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateStreamLineMetadata.$type, CreateStreamLineMetadata);
-
-const baseUpdateStreamLineRequest: object = {
-    $type: 'yandex.cloud.video.v1.UpdateStreamLineRequest',
-    streamLineId: '',
-    title: '',
-    thumbnailId: '',
-};
+const baseUpdateStreamLineRequest: object = { streamLineId: '', title: '', thumbnailId: '' };
 
 export const UpdateStreamLineRequest = {
-    $type: 'yandex.cloud.video.v1.UpdateStreamLineRequest' as const,
-
     encode(message: UpdateStreamLineRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamLineId !== '') {
             writer.uint32(10).string(message.streamLineId);
@@ -1061,11 +953,7 @@ export const UpdateStreamLineRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateStreamLineRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.video.v1.UpdateStreamLineRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(1602).fork(),
             ).ldelim();
         });
@@ -1271,17 +1159,9 @@ export const UpdateStreamLineRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateStreamLineRequest.$type, UpdateStreamLineRequest);
-
-const baseUpdateStreamLineRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.video.v1.UpdateStreamLineRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateStreamLineRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateStreamLineRequest_LabelsEntry = {
-    $type: 'yandex.cloud.video.v1.UpdateStreamLineRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateStreamLineRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1347,19 +1227,9 @@ export const UpdateStreamLineRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateStreamLineRequest_LabelsEntry.$type,
-    UpdateStreamLineRequest_LabelsEntry,
-);
-
-const baseUpdateStreamLineMetadata: object = {
-    $type: 'yandex.cloud.video.v1.UpdateStreamLineMetadata',
-    streamLineId: '',
-};
+const baseUpdateStreamLineMetadata: object = { streamLineId: '' };
 
 export const UpdateStreamLineMetadata = {
-    $type: 'yandex.cloud.video.v1.UpdateStreamLineMetadata' as const,
-
     encode(
         message: UpdateStreamLineMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1412,16 +1282,9 @@ export const UpdateStreamLineMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateStreamLineMetadata.$type, UpdateStreamLineMetadata);
-
-const baseDeleteStreamLineRequest: object = {
-    $type: 'yandex.cloud.video.v1.DeleteStreamLineRequest',
-    streamLineId: '',
-};
+const baseDeleteStreamLineRequest: object = { streamLineId: '' };
 
 export const DeleteStreamLineRequest = {
-    $type: 'yandex.cloud.video.v1.DeleteStreamLineRequest' as const,
-
     encode(message: DeleteStreamLineRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamLineId !== '') {
             writer.uint32(10).string(message.streamLineId);
@@ -1471,16 +1334,9 @@ export const DeleteStreamLineRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteStreamLineRequest.$type, DeleteStreamLineRequest);
-
-const baseDeleteStreamLineMetadata: object = {
-    $type: 'yandex.cloud.video.v1.DeleteStreamLineMetadata',
-    streamLineId: '',
-};
+const baseDeleteStreamLineMetadata: object = { streamLineId: '' };
 
 export const DeleteStreamLineMetadata = {
-    $type: 'yandex.cloud.video.v1.DeleteStreamLineMetadata' as const,
-
     encode(
         message: DeleteStreamLineMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1533,17 +1389,9 @@ export const DeleteStreamLineMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteStreamLineMetadata.$type, DeleteStreamLineMetadata);
-
-const baseBatchDeleteStreamLinesRequest: object = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteStreamLinesRequest',
-    channelId: '',
-    streamLineIds: '',
-};
+const baseBatchDeleteStreamLinesRequest: object = { channelId: '', streamLineIds: '' };
 
 export const BatchDeleteStreamLinesRequest = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteStreamLinesRequest' as const,
-
     encode(
         message: BatchDeleteStreamLinesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1610,16 +1458,9 @@ export const BatchDeleteStreamLinesRequest = {
     },
 };
 
-messageTypeRegistry.set(BatchDeleteStreamLinesRequest.$type, BatchDeleteStreamLinesRequest);
-
-const baseBatchDeleteStreamLinesMetadata: object = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteStreamLinesMetadata',
-    streamLineIds: '',
-};
+const baseBatchDeleteStreamLinesMetadata: object = { streamLineIds: '' };
 
 export const BatchDeleteStreamLinesMetadata = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteStreamLinesMetadata' as const,
-
     encode(
         message: BatchDeleteStreamLinesMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1674,16 +1515,9 @@ export const BatchDeleteStreamLinesMetadata = {
     },
 };
 
-messageTypeRegistry.set(BatchDeleteStreamLinesMetadata.$type, BatchDeleteStreamLinesMetadata);
-
-const basePerformLineActionRequest: object = {
-    $type: 'yandex.cloud.video.v1.PerformLineActionRequest',
-    streamLineId: '',
-};
+const basePerformLineActionRequest: object = { streamLineId: '' };
 
 export const PerformLineActionRequest = {
-    $type: 'yandex.cloud.video.v1.PerformLineActionRequest' as const,
-
     encode(
         message: PerformLineActionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1770,16 +1604,9 @@ export const PerformLineActionRequest = {
     },
 };
 
-messageTypeRegistry.set(PerformLineActionRequest.$type, PerformLineActionRequest);
-
-const basePerformLineActionMetadata: object = {
-    $type: 'yandex.cloud.video.v1.PerformLineActionMetadata',
-    streamLineId: '',
-};
+const basePerformLineActionMetadata: object = { streamLineId: '' };
 
 export const PerformLineActionMetadata = {
-    $type: 'yandex.cloud.video.v1.PerformLineActionMetadata' as const,
-
     encode(
         message: PerformLineActionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1832,13 +1659,9 @@ export const PerformLineActionMetadata = {
     },
 };
 
-messageTypeRegistry.set(PerformLineActionMetadata.$type, PerformLineActionMetadata);
-
-const baseRTMPPushParams: object = { $type: 'yandex.cloud.video.v1.RTMPPushParams' };
+const baseRTMPPushParams: object = {};
 
 export const RTMPPushParams = {
-    $type: 'yandex.cloud.video.v1.RTMPPushParams' as const,
-
     encode(_: RTMPPushParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1874,13 +1697,9 @@ export const RTMPPushParams = {
     },
 };
 
-messageTypeRegistry.set(RTMPPushParams.$type, RTMPPushParams);
-
-const baseSRTPushParams: object = { $type: 'yandex.cloud.video.v1.SRTPushParams' };
+const baseSRTPushParams: object = {};
 
 export const SRTPushParams = {
-    $type: 'yandex.cloud.video.v1.SRTPushParams' as const,
-
     encode(_: SRTPushParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1916,13 +1735,9 @@ export const SRTPushParams = {
     },
 };
 
-messageTypeRegistry.set(SRTPushParams.$type, SRTPushParams);
-
-const baseRTMPPullParams: object = { $type: 'yandex.cloud.video.v1.RTMPPullParams', url: '' };
+const baseRTMPPullParams: object = { url: '' };
 
 export const RTMPPullParams = {
-    $type: 'yandex.cloud.video.v1.RTMPPullParams' as const,
-
     encode(message: RTMPPullParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(10).string(message.url);
@@ -1967,13 +1782,9 @@ export const RTMPPullParams = {
     },
 };
 
-messageTypeRegistry.set(RTMPPullParams.$type, RTMPPullParams);
-
-const baseSRTPullParams: object = { $type: 'yandex.cloud.video.v1.SRTPullParams', url: '' };
+const baseSRTPullParams: object = { url: '' };
 
 export const SRTPullParams = {
-    $type: 'yandex.cloud.video.v1.SRTPullParams' as const,
-
     encode(message: SRTPullParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(10).string(message.url);
@@ -2018,13 +1829,9 @@ export const SRTPullParams = {
     },
 };
 
-messageTypeRegistry.set(SRTPullParams.$type, SRTPullParams);
-
-const baseTCPPullParams: object = { $type: 'yandex.cloud.video.v1.TCPPullParams', url: '' };
+const baseTCPPullParams: object = { url: '' };
 
 export const TCPPullParams = {
-    $type: 'yandex.cloud.video.v1.TCPPullParams' as const,
-
     encode(message: TCPPullParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(18).string(message.url);
@@ -2069,13 +1876,9 @@ export const TCPPullParams = {
     },
 };
 
-messageTypeRegistry.set(TCPPullParams.$type, TCPPullParams);
-
-const baseRTSPPullParams: object = { $type: 'yandex.cloud.video.v1.RTSPPullParams', url: '' };
+const baseRTSPPullParams: object = { url: '' };
 
 export const RTSPPullParams = {
-    $type: 'yandex.cloud.video.v1.RTSPPullParams' as const,
-
     encode(message: RTSPPullParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(10).string(message.url);
@@ -2120,13 +1923,9 @@ export const RTSPPullParams = {
     },
 };
 
-messageTypeRegistry.set(RTSPPullParams.$type, RTSPPullParams);
-
-const baseManualLineParams: object = { $type: 'yandex.cloud.video.v1.ManualLineParams' };
+const baseManualLineParams: object = {};
 
 export const ManualLineParams = {
-    $type: 'yandex.cloud.video.v1.ManualLineParams' as const,
-
     encode(_: ManualLineParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2162,13 +1961,9 @@ export const ManualLineParams = {
     },
 };
 
-messageTypeRegistry.set(ManualLineParams.$type, ManualLineParams);
-
-const baseAutoLineParams: object = { $type: 'yandex.cloud.video.v1.AutoLineParams' };
+const baseAutoLineParams: object = {};
 
 export const AutoLineParams = {
-    $type: 'yandex.cloud.video.v1.AutoLineParams' as const,
-
     encode(_: AutoLineParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2204,13 +1999,9 @@ export const AutoLineParams = {
     },
 };
 
-messageTypeRegistry.set(AutoLineParams.$type, AutoLineParams);
-
-const baseActivateAction: object = { $type: 'yandex.cloud.video.v1.ActivateAction' };
+const baseActivateAction: object = {};
 
 export const ActivateAction = {
-    $type: 'yandex.cloud.video.v1.ActivateAction' as const,
-
     encode(_: ActivateAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2246,13 +2037,9 @@ export const ActivateAction = {
     },
 };
 
-messageTypeRegistry.set(ActivateAction.$type, ActivateAction);
-
-const baseDeactivateAction: object = { $type: 'yandex.cloud.video.v1.DeactivateAction' };
+const baseDeactivateAction: object = {};
 
 export const DeactivateAction = {
-    $type: 'yandex.cloud.video.v1.DeactivateAction' as const,
-
     encode(_: DeactivateAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2288,16 +2075,9 @@ export const DeactivateAction = {
     },
 };
 
-messageTypeRegistry.set(DeactivateAction.$type, DeactivateAction);
-
-const baseGetStreamKeyRequest: object = {
-    $type: 'yandex.cloud.video.v1.GetStreamKeyRequest',
-    streamLineId: '',
-};
+const baseGetStreamKeyRequest: object = { streamLineId: '' };
 
 export const GetStreamKeyRequest = {
-    $type: 'yandex.cloud.video.v1.GetStreamKeyRequest' as const,
-
     encode(message: GetStreamKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamLineId !== '') {
             writer.uint32(10).string(message.streamLineId);
@@ -2347,16 +2127,9 @@ export const GetStreamKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(GetStreamKeyRequest.$type, GetStreamKeyRequest);
-
-const baseUpdateStreamKeyRequest: object = {
-    $type: 'yandex.cloud.video.v1.UpdateStreamKeyRequest',
-    streamLineId: '',
-};
+const baseUpdateStreamKeyRequest: object = { streamLineId: '' };
 
 export const UpdateStreamKeyRequest = {
-    $type: 'yandex.cloud.video.v1.UpdateStreamKeyRequest' as const,
-
     encode(message: UpdateStreamKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamLineId !== '') {
             writer.uint32(10).string(message.streamLineId);
@@ -2406,16 +2179,9 @@ export const UpdateStreamKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateStreamKeyRequest.$type, UpdateStreamKeyRequest);
-
-const baseUpdateStreamKeyMetadata: object = {
-    $type: 'yandex.cloud.video.v1.UpdateStreamKeyMetadata',
-    streamLineId: '',
-};
+const baseUpdateStreamKeyMetadata: object = { streamLineId: '' };
 
 export const UpdateStreamKeyMetadata = {
-    $type: 'yandex.cloud.video.v1.UpdateStreamKeyMetadata' as const,
-
     encode(message: UpdateStreamKeyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamLineId !== '') {
             writer.uint32(10).string(message.streamLineId);
@@ -2464,8 +2230,6 @@ export const UpdateStreamKeyMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(UpdateStreamKeyMetadata.$type, UpdateStreamKeyMetadata);
 
 /** Stream line management service. */
 export const StreamLineServiceService = {
@@ -2802,16 +2566,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

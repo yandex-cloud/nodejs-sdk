@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -7,7 +6,6 @@ export const protobufPackage = 'yandex.cloud.speechsense.v1';
 
 /** RAW Audio format spec (no container to infer type). Used in AudioFormat options. */
 export interface RawAudio {
-    $type: 'yandex.cloud.speechsense.v1.RawAudio';
     /** Type of audio encoding */
     audioEncoding: RawAudio_AudioEncoding;
     /** PCM sample rate */
@@ -51,7 +49,6 @@ export function rawAudio_AudioEncodingToJSON(object: RawAudio_AudioEncoding): st
 
 /** Audio with fixed type in container. Used in AudioFormat options. */
 export interface ContainerAudio {
-    $type: 'yandex.cloud.speechsense.v1.ContainerAudio';
     /** Type of audio container. */
     containerAudioType: ContainerAudio_ContainerAudioType;
 }
@@ -109,7 +106,6 @@ export function containerAudio_ContainerAudioTypeToJSON(
 
 /** Audio format options. */
 export interface AudioMetadata {
-    $type: 'yandex.cloud.speechsense.v1.AudioMetadata';
     /** Audio without container. */
     rawAudio?: RawAudio | undefined;
     /** Audio is wrapped in container. */
@@ -118,7 +114,6 @@ export interface AudioMetadata {
 
 /** Data chunk with audio. */
 export interface AudioChunk {
-    $type: 'yandex.cloud.speechsense.v1.AudioChunk';
     /** Bytes with audio data. */
     data: Buffer;
 }
@@ -129,7 +124,6 @@ export interface AudioChunk {
  * The next messages are audio data chunks.
  */
 export interface AudioStreamingRequest {
-    $type: 'yandex.cloud.speechsense.v1.AudioStreamingRequest';
     /** Session options. Should be the first message from user. */
     audioMetadata?: AudioMetadata | undefined;
     /** Chunk with audio data. */
@@ -138,23 +132,15 @@ export interface AudioStreamingRequest {
 
 /** request for sending small audios (< 128 mb) in one go */
 export interface AudioRequest {
-    $type: 'yandex.cloud.speechsense.v1.AudioRequest';
     /** audio metadata */
     audioMetadata?: AudioMetadata;
     /** Bytes with audio data. */
     audioData?: AudioChunk;
 }
 
-const baseRawAudio: object = {
-    $type: 'yandex.cloud.speechsense.v1.RawAudio',
-    audioEncoding: 0,
-    sampleRateHertz: 0,
-    audioChannelCount: 0,
-};
+const baseRawAudio: object = { audioEncoding: 0, sampleRateHertz: 0, audioChannelCount: 0 };
 
 export const RawAudio = {
-    $type: 'yandex.cloud.speechsense.v1.RawAudio' as const,
-
     encode(message: RawAudio, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.audioEncoding !== 0) {
             writer.uint32(8).int32(message.audioEncoding);
@@ -229,16 +215,9 @@ export const RawAudio = {
     },
 };
 
-messageTypeRegistry.set(RawAudio.$type, RawAudio);
-
-const baseContainerAudio: object = {
-    $type: 'yandex.cloud.speechsense.v1.ContainerAudio',
-    containerAudioType: 0,
-};
+const baseContainerAudio: object = { containerAudioType: 0 };
 
 export const ContainerAudio = {
-    $type: 'yandex.cloud.speechsense.v1.ContainerAudio' as const,
-
     encode(message: ContainerAudio, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerAudioType !== 0) {
             writer.uint32(8).int32(message.containerAudioType);
@@ -289,13 +268,9 @@ export const ContainerAudio = {
     },
 };
 
-messageTypeRegistry.set(ContainerAudio.$type, ContainerAudio);
-
-const baseAudioMetadata: object = { $type: 'yandex.cloud.speechsense.v1.AudioMetadata' };
+const baseAudioMetadata: object = {};
 
 export const AudioMetadata = {
-    $type: 'yandex.cloud.speechsense.v1.AudioMetadata' as const,
-
     encode(message: AudioMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.rawAudio !== undefined) {
             RawAudio.encode(message.rawAudio, writer.uint32(10).fork()).ldelim();
@@ -365,13 +340,9 @@ export const AudioMetadata = {
     },
 };
 
-messageTypeRegistry.set(AudioMetadata.$type, AudioMetadata);
-
-const baseAudioChunk: object = { $type: 'yandex.cloud.speechsense.v1.AudioChunk' };
+const baseAudioChunk: object = {};
 
 export const AudioChunk = {
-    $type: 'yandex.cloud.speechsense.v1.AudioChunk' as const,
-
     encode(message: AudioChunk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.data.length !== 0) {
             writer.uint32(10).bytes(message.data);
@@ -423,15 +394,9 @@ export const AudioChunk = {
     },
 };
 
-messageTypeRegistry.set(AudioChunk.$type, AudioChunk);
-
-const baseAudioStreamingRequest: object = {
-    $type: 'yandex.cloud.speechsense.v1.AudioStreamingRequest',
-};
+const baseAudioStreamingRequest: object = {};
 
 export const AudioStreamingRequest = {
-    $type: 'yandex.cloud.speechsense.v1.AudioStreamingRequest' as const,
-
     encode(message: AudioStreamingRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.audioMetadata !== undefined) {
             AudioMetadata.encode(message.audioMetadata, writer.uint32(10).fork()).ldelim();
@@ -503,13 +468,9 @@ export const AudioStreamingRequest = {
     },
 };
 
-messageTypeRegistry.set(AudioStreamingRequest.$type, AudioStreamingRequest);
-
-const baseAudioRequest: object = { $type: 'yandex.cloud.speechsense.v1.AudioRequest' };
+const baseAudioRequest: object = {};
 
 export const AudioRequest = {
-    $type: 'yandex.cloud.speechsense.v1.AudioRequest' as const,
-
     encode(message: AudioRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.audioMetadata !== undefined) {
             AudioMetadata.encode(message.audioMetadata, writer.uint32(10).fork()).ldelim();
@@ -579,8 +540,6 @@ export const AudioRequest = {
     },
 };
 
-messageTypeRegistry.set(AudioRequest.$type, AudioRequest);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -622,16 +581,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

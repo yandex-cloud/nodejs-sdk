@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -33,7 +32,6 @@ import {
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
 export interface GetGpuClusterRequest {
-    $type: 'yandex.cloud.compute.v1.GetGpuClusterRequest';
     /**
      * ID of the GPU cluster to return.
      *
@@ -43,7 +41,6 @@ export interface GetGpuClusterRequest {
 }
 
 export interface ListGpuClustersRequest {
-    $type: 'yandex.cloud.compute.v1.ListGpuClustersRequest';
     /**
      * ID of the folder to list GPU clusters in.
      *
@@ -83,7 +80,6 @@ export interface ListGpuClustersRequest {
 }
 
 export interface ListGpuClustersResponse {
-    $type: 'yandex.cloud.compute.v1.ListGpuClustersResponse';
     /** List of GPU clusters in the specified folder. */
     gpuClusters: GpuCluster[];
     /**
@@ -97,7 +93,6 @@ export interface ListGpuClustersResponse {
 }
 
 export interface CreateGpuClusterRequest {
-    $type: 'yandex.cloud.compute.v1.CreateGpuClusterRequest';
     /**
      * ID of the folder to create a GPU cluster in.
      *
@@ -124,19 +119,16 @@ export interface CreateGpuClusterRequest {
 }
 
 export interface CreateGpuClusterRequest_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.CreateGpuClusterRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateGpuClusterMetadata {
-    $type: 'yandex.cloud.compute.v1.CreateGpuClusterMetadata';
     /** ID of the GPU cluster that is being created. */
     gpuClusterId: string;
 }
 
 export interface UpdateGpuClusterRequest {
-    $type: 'yandex.cloud.compute.v1.UpdateGpuClusterRequest';
     /**
      * ID of the GPU cluster to update.
      *
@@ -166,19 +158,16 @@ export interface UpdateGpuClusterRequest {
 }
 
 export interface UpdateGpuClusterRequest_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.UpdateGpuClusterRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateGpuClusterMetadata {
-    $type: 'yandex.cloud.compute.v1.UpdateGpuClusterMetadata';
     /** ID of the GPU cluster that is being updated. */
     gpuClusterId: string;
 }
 
 export interface DeleteGpuClusterRequest {
-    $type: 'yandex.cloud.compute.v1.DeleteGpuClusterRequest';
     /**
      * ID of the GPU cluster to delete.
      *
@@ -188,13 +177,11 @@ export interface DeleteGpuClusterRequest {
 }
 
 export interface DeleteGpuClusterMetadata {
-    $type: 'yandex.cloud.compute.v1.DeleteGpuClusterMetadata';
     /** ID of the GPU cluster that is being deleted. */
     gpuClusterId: string;
 }
 
 export interface ListGpuClusterOperationsRequest {
-    $type: 'yandex.cloud.compute.v1.ListGpuClusterOperationsRequest';
     /**
      * ID of the GPU cluster to list operations for.
      *
@@ -217,7 +204,6 @@ export interface ListGpuClusterOperationsRequest {
 }
 
 export interface ListGpuClusterOperationsResponse {
-    $type: 'yandex.cloud.compute.v1.ListGpuClusterOperationsResponse';
     /** List of operations for the specified GPU cluster. */
     operations: Operation[];
     /**
@@ -231,7 +217,6 @@ export interface ListGpuClusterOperationsResponse {
 }
 
 export interface ListGpuClusterInstancesRequest {
-    $type: 'yandex.cloud.compute.v1.ListGpuClusterInstancesRequest';
     /**
      * ID of the GPU cluster to list instances in.
      *
@@ -259,7 +244,6 @@ export interface ListGpuClusterInstancesRequest {
 }
 
 export interface ListGpuClusterInstancesResponse {
-    $type: 'yandex.cloud.compute.v1.ListGpuClusterInstancesResponse';
     /** List of instances in the specified GPU cluster. */
     instances: Instance[];
     /**
@@ -272,14 +256,9 @@ export interface ListGpuClusterInstancesResponse {
     nextPageToken: string;
 }
 
-const baseGetGpuClusterRequest: object = {
-    $type: 'yandex.cloud.compute.v1.GetGpuClusterRequest',
-    gpuClusterId: '',
-};
+const baseGetGpuClusterRequest: object = { gpuClusterId: '' };
 
 export const GetGpuClusterRequest = {
-    $type: 'yandex.cloud.compute.v1.GetGpuClusterRequest' as const,
-
     encode(message: GetGpuClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gpuClusterId !== '') {
             writer.uint32(10).string(message.gpuClusterId);
@@ -329,10 +308,7 @@ export const GetGpuClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(GetGpuClusterRequest.$type, GetGpuClusterRequest);
-
 const baseListGpuClustersRequest: object = {
-    $type: 'yandex.cloud.compute.v1.ListGpuClustersRequest',
     folderId: '',
     pageSize: 0,
     pageToken: '',
@@ -341,8 +317,6 @@ const baseListGpuClustersRequest: object = {
 };
 
 export const ListGpuClustersRequest = {
-    $type: 'yandex.cloud.compute.v1.ListGpuClustersRequest' as const,
-
     encode(message: ListGpuClustersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -434,16 +408,9 @@ export const ListGpuClustersRequest = {
     },
 };
 
-messageTypeRegistry.set(ListGpuClustersRequest.$type, ListGpuClustersRequest);
-
-const baseListGpuClustersResponse: object = {
-    $type: 'yandex.cloud.compute.v1.ListGpuClustersResponse',
-    nextPageToken: '',
-};
+const baseListGpuClustersResponse: object = { nextPageToken: '' };
 
 export const ListGpuClustersResponse = {
-    $type: 'yandex.cloud.compute.v1.ListGpuClustersResponse' as const,
-
     encode(message: ListGpuClustersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.gpuClusters) {
             GpuCluster.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -509,10 +476,7 @@ export const ListGpuClustersResponse = {
     },
 };
 
-messageTypeRegistry.set(ListGpuClustersResponse.$type, ListGpuClustersResponse);
-
 const baseCreateGpuClusterRequest: object = {
-    $type: 'yandex.cloud.compute.v1.CreateGpuClusterRequest',
     folderId: '',
     name: '',
     description: '',
@@ -521,8 +485,6 @@ const baseCreateGpuClusterRequest: object = {
 };
 
 export const CreateGpuClusterRequest = {
-    $type: 'yandex.cloud.compute.v1.CreateGpuClusterRequest' as const,
-
     encode(message: CreateGpuClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -535,11 +497,7 @@ export const CreateGpuClusterRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateGpuClusterRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.compute.v1.CreateGpuClusterRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -658,17 +616,9 @@ export const CreateGpuClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateGpuClusterRequest.$type, CreateGpuClusterRequest);
-
-const baseCreateGpuClusterRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.CreateGpuClusterRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateGpuClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateGpuClusterRequest_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.CreateGpuClusterRequest.LabelsEntry' as const,
-
     encode(
         message: CreateGpuClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -734,19 +684,9 @@ export const CreateGpuClusterRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateGpuClusterRequest_LabelsEntry.$type,
-    CreateGpuClusterRequest_LabelsEntry,
-);
-
-const baseCreateGpuClusterMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.CreateGpuClusterMetadata',
-    gpuClusterId: '',
-};
+const baseCreateGpuClusterMetadata: object = { gpuClusterId: '' };
 
 export const CreateGpuClusterMetadata = {
-    $type: 'yandex.cloud.compute.v1.CreateGpuClusterMetadata' as const,
-
     encode(
         message: CreateGpuClusterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -799,18 +739,9 @@ export const CreateGpuClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateGpuClusterMetadata.$type, CreateGpuClusterMetadata);
-
-const baseUpdateGpuClusterRequest: object = {
-    $type: 'yandex.cloud.compute.v1.UpdateGpuClusterRequest',
-    gpuClusterId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateGpuClusterRequest: object = { gpuClusterId: '', name: '', description: '' };
 
 export const UpdateGpuClusterRequest = {
-    $type: 'yandex.cloud.compute.v1.UpdateGpuClusterRequest' as const,
-
     encode(message: UpdateGpuClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gpuClusterId !== '') {
             writer.uint32(10).string(message.gpuClusterId);
@@ -826,11 +757,7 @@ export const UpdateGpuClusterRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateGpuClusterRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.compute.v1.UpdateGpuClusterRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -941,17 +868,9 @@ export const UpdateGpuClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateGpuClusterRequest.$type, UpdateGpuClusterRequest);
-
-const baseUpdateGpuClusterRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.UpdateGpuClusterRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateGpuClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateGpuClusterRequest_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.UpdateGpuClusterRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateGpuClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1017,19 +936,9 @@ export const UpdateGpuClusterRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateGpuClusterRequest_LabelsEntry.$type,
-    UpdateGpuClusterRequest_LabelsEntry,
-);
-
-const baseUpdateGpuClusterMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.UpdateGpuClusterMetadata',
-    gpuClusterId: '',
-};
+const baseUpdateGpuClusterMetadata: object = { gpuClusterId: '' };
 
 export const UpdateGpuClusterMetadata = {
-    $type: 'yandex.cloud.compute.v1.UpdateGpuClusterMetadata' as const,
-
     encode(
         message: UpdateGpuClusterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1082,16 +991,9 @@ export const UpdateGpuClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateGpuClusterMetadata.$type, UpdateGpuClusterMetadata);
-
-const baseDeleteGpuClusterRequest: object = {
-    $type: 'yandex.cloud.compute.v1.DeleteGpuClusterRequest',
-    gpuClusterId: '',
-};
+const baseDeleteGpuClusterRequest: object = { gpuClusterId: '' };
 
 export const DeleteGpuClusterRequest = {
-    $type: 'yandex.cloud.compute.v1.DeleteGpuClusterRequest' as const,
-
     encode(message: DeleteGpuClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gpuClusterId !== '') {
             writer.uint32(10).string(message.gpuClusterId);
@@ -1141,16 +1043,9 @@ export const DeleteGpuClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteGpuClusterRequest.$type, DeleteGpuClusterRequest);
-
-const baseDeleteGpuClusterMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.DeleteGpuClusterMetadata',
-    gpuClusterId: '',
-};
+const baseDeleteGpuClusterMetadata: object = { gpuClusterId: '' };
 
 export const DeleteGpuClusterMetadata = {
-    $type: 'yandex.cloud.compute.v1.DeleteGpuClusterMetadata' as const,
-
     encode(
         message: DeleteGpuClusterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1203,18 +1098,13 @@ export const DeleteGpuClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteGpuClusterMetadata.$type, DeleteGpuClusterMetadata);
-
 const baseListGpuClusterOperationsRequest: object = {
-    $type: 'yandex.cloud.compute.v1.ListGpuClusterOperationsRequest',
     gpuClusterId: '',
     pageSize: 0,
     pageToken: '',
 };
 
 export const ListGpuClusterOperationsRequest = {
-    $type: 'yandex.cloud.compute.v1.ListGpuClusterOperationsRequest' as const,
-
     encode(
         message: ListGpuClusterOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1295,16 +1185,9 @@ export const ListGpuClusterOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListGpuClusterOperationsRequest.$type, ListGpuClusterOperationsRequest);
-
-const baseListGpuClusterOperationsResponse: object = {
-    $type: 'yandex.cloud.compute.v1.ListGpuClusterOperationsResponse',
-    nextPageToken: '',
-};
+const baseListGpuClusterOperationsResponse: object = { nextPageToken: '' };
 
 export const ListGpuClusterOperationsResponse = {
-    $type: 'yandex.cloud.compute.v1.ListGpuClusterOperationsResponse' as const,
-
     encode(
         message: ListGpuClusterOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1377,10 +1260,7 @@ export const ListGpuClusterOperationsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListGpuClusterOperationsResponse.$type, ListGpuClusterOperationsResponse);
-
 const baseListGpuClusterInstancesRequest: object = {
-    $type: 'yandex.cloud.compute.v1.ListGpuClusterInstancesRequest',
     gpuClusterId: '',
     pageSize: 0,
     pageToken: '',
@@ -1388,8 +1268,6 @@ const baseListGpuClusterInstancesRequest: object = {
 };
 
 export const ListGpuClusterInstancesRequest = {
-    $type: 'yandex.cloud.compute.v1.ListGpuClusterInstancesRequest' as const,
-
     encode(
         message: ListGpuClusterInstancesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1474,16 +1352,9 @@ export const ListGpuClusterInstancesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListGpuClusterInstancesRequest.$type, ListGpuClusterInstancesRequest);
-
-const baseListGpuClusterInstancesResponse: object = {
-    $type: 'yandex.cloud.compute.v1.ListGpuClusterInstancesResponse',
-    nextPageToken: '',
-};
+const baseListGpuClusterInstancesResponse: object = { nextPageToken: '' };
 
 export const ListGpuClusterInstancesResponse = {
-    $type: 'yandex.cloud.compute.v1.ListGpuClusterInstancesResponse' as const,
-
     encode(
         message: ListGpuClusterInstancesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1555,8 +1426,6 @@ export const ListGpuClusterInstancesResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListGpuClusterInstancesResponse.$type, ListGpuClusterInstancesResponse);
 
 /** A set of methods for managing GPU clusters. */
 export const GpuClusterServiceService = {
@@ -1933,16 +1802,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -24,7 +23,6 @@ export const protobufPackage = 'yandex.cloud.ai.assistants.v1.threads';
 
 /** Request message for creating a new thread. */
 export interface CreateThreadRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.CreateThreadRequest';
     folderId: string;
     /** List of messages to initialize the thread. */
     messages: MessageData[];
@@ -43,21 +41,18 @@ export interface CreateThreadRequest {
 }
 
 export interface CreateThreadRequest_LabelsEntry {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.CreateThreadRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Request message for retrieving a thread by ID. */
 export interface GetThreadRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.GetThreadRequest';
     /** ID of the thread to retrieve. */
     threadId: string;
 }
 
 /** Request message for updating an existing thread. */
 export interface UpdateThreadRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.UpdateThreadRequest';
     /** ID of the thread to update. */
     threadId: string;
     /** Field mask specifying which fields to update. */
@@ -75,26 +70,21 @@ export interface UpdateThreadRequest {
 }
 
 export interface UpdateThreadRequest_LabelsEntry {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.UpdateThreadRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Request message for deleting a thread by ID. */
 export interface DeleteThreadRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.DeleteThreadRequest';
     /** ID of the thread to delete. */
     threadId: string;
 }
 
 /** Response message for the delete operation. */
-export interface DeleteThreadResponse {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.DeleteThreadResponse';
-}
+export interface DeleteThreadResponse {}
 
 /** Request message for listing threads in a specific folder. */
 export interface ListThreadsRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.ListThreadsRequest';
     /** Folder ID from which to list threads. */
     folderId: string;
     /** Maximum number of threads to return per page. */
@@ -105,7 +95,6 @@ export interface ListThreadsRequest {
 
 /** Response message for the list operation. */
 export interface ListThreadsResponse {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.ListThreadsResponse';
     /** List of threads in the specified folder. */
     threads: Thread[];
     /** Token to retrieve the next page of results. */
@@ -113,7 +102,6 @@ export interface ListThreadsResponse {
 }
 
 const baseCreateThreadRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.CreateThreadRequest',
     folderId: '',
     name: '',
     description: '',
@@ -121,8 +109,6 @@ const baseCreateThreadRequest: object = {
 };
 
 export const CreateThreadRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.CreateThreadRequest' as const,
-
     encode(message: CreateThreadRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -144,11 +130,7 @@ export const CreateThreadRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateThreadRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.assistants.v1.threads.CreateThreadRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(58).fork(),
             ).ldelim();
         });
@@ -291,17 +273,9 @@ export const CreateThreadRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateThreadRequest.$type, CreateThreadRequest);
-
-const baseCreateThreadRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.CreateThreadRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateThreadRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateThreadRequest_LabelsEntry = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.CreateThreadRequest.LabelsEntry' as const,
-
     encode(
         message: CreateThreadRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -367,16 +341,9 @@ export const CreateThreadRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateThreadRequest_LabelsEntry.$type, CreateThreadRequest_LabelsEntry);
-
-const baseGetThreadRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.GetThreadRequest',
-    threadId: '',
-};
+const baseGetThreadRequest: object = { threadId: '' };
 
 export const GetThreadRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.GetThreadRequest' as const,
-
     encode(message: GetThreadRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.threadId !== '') {
             writer.uint32(10).string(message.threadId);
@@ -424,18 +391,9 @@ export const GetThreadRequest = {
     },
 };
 
-messageTypeRegistry.set(GetThreadRequest.$type, GetThreadRequest);
-
-const baseUpdateThreadRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.UpdateThreadRequest',
-    threadId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateThreadRequest: object = { threadId: '', name: '', description: '' };
 
 export const UpdateThreadRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.UpdateThreadRequest' as const,
-
     encode(message: UpdateThreadRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.threadId !== '') {
             writer.uint32(10).string(message.threadId);
@@ -454,11 +412,7 @@ export const UpdateThreadRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateThreadRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.assistants.v1.threads.UpdateThreadRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -595,17 +549,9 @@ export const UpdateThreadRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateThreadRequest.$type, UpdateThreadRequest);
-
-const baseUpdateThreadRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.UpdateThreadRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateThreadRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateThreadRequest_LabelsEntry = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.UpdateThreadRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateThreadRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -671,16 +617,9 @@ export const UpdateThreadRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateThreadRequest_LabelsEntry.$type, UpdateThreadRequest_LabelsEntry);
-
-const baseDeleteThreadRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.DeleteThreadRequest',
-    threadId: '',
-};
+const baseDeleteThreadRequest: object = { threadId: '' };
 
 export const DeleteThreadRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.DeleteThreadRequest' as const,
-
     encode(message: DeleteThreadRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.threadId !== '') {
             writer.uint32(10).string(message.threadId);
@@ -730,15 +669,9 @@ export const DeleteThreadRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteThreadRequest.$type, DeleteThreadRequest);
-
-const baseDeleteThreadResponse: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.DeleteThreadResponse',
-};
+const baseDeleteThreadResponse: object = {};
 
 export const DeleteThreadResponse = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.DeleteThreadResponse' as const,
-
     encode(_: DeleteThreadResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -774,18 +707,9 @@ export const DeleteThreadResponse = {
     },
 };
 
-messageTypeRegistry.set(DeleteThreadResponse.$type, DeleteThreadResponse);
-
-const baseListThreadsRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.ListThreadsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListThreadsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
 export const ListThreadsRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.ListThreadsRequest' as const,
-
     encode(message: ListThreadsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -857,16 +781,9 @@ export const ListThreadsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListThreadsRequest.$type, ListThreadsRequest);
-
-const baseListThreadsResponse: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.ListThreadsResponse',
-    nextPageToken: '',
-};
+const baseListThreadsResponse: object = { nextPageToken: '' };
 
 export const ListThreadsResponse = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.ListThreadsResponse' as const,
-
     encode(message: ListThreadsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.threads) {
             Thread.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -929,8 +846,6 @@ export const ListThreadsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListThreadsResponse.$type, ListThreadsResponse);
 
 /** ThreadService provides operations for managing threads. */
 export const ThreadServiceService = {
@@ -1121,16 +1036,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

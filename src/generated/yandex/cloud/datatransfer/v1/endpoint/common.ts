@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Empty } from '../../../../../google/protobuf/empty';
@@ -211,7 +210,6 @@ export function columnTypeToJSON(object: ColumnType): string {
 }
 
 export interface AltName {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.AltName';
     /** Source table name */
     fromName: string;
     /** Target table name */
@@ -219,13 +217,11 @@ export interface AltName {
 }
 
 export interface Secret {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.Secret';
     /** Raw secret value */
     raw: string | undefined;
 }
 
 export interface ColSchema {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ColSchema';
     name: string;
     type: ColumnType;
     key: boolean;
@@ -234,13 +230,11 @@ export interface ColSchema {
 }
 
 export interface TLSMode {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.TLSMode';
     disabled?: Empty | undefined;
     enabled?: TLSConfig | undefined;
 }
 
 export interface TLSConfig {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.TLSConfig';
     /**
      * CA certificate
      *
@@ -252,12 +246,10 @@ export interface TLSConfig {
 }
 
 export interface ColumnValue {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ColumnValue';
     stringValue: string | undefined;
 }
 
 export interface DataTransformationOptions {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.DataTransformationOptions';
     /** Cloud function */
     cloudFunction: string;
     /** Number of retries */
@@ -273,38 +265,27 @@ export interface DataTransformationOptions {
 }
 
 export interface FieldList {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.FieldList';
     /** Column schema */
     fields: ColSchema[];
 }
 
 export interface DataSchema {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.DataSchema';
     jsonFields: string | undefined;
     fields?: FieldList | undefined;
 }
 
 /** No authentication */
-export interface NoAuth {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.NoAuth';
-}
+export interface NoAuth {}
 
 export interface ConnectionManagerConnection {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ConnectionManagerConnection';
     connectionId: string;
     /** Network interface for endpoint. If none will assume public ipv4 */
     subnetId: string;
 }
 
-const baseAltName: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.AltName',
-    fromName: '',
-    toName: '',
-};
+const baseAltName: object = { fromName: '', toName: '' };
 
 export const AltName = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.AltName' as const,
-
     encode(message: AltName, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fromName !== '') {
             writer.uint32(10).string(message.fromName);
@@ -362,13 +343,9 @@ export const AltName = {
     },
 };
 
-messageTypeRegistry.set(AltName.$type, AltName);
-
-const baseSecret: object = { $type: 'yandex.cloud.datatransfer.v1.endpoint.Secret' };
+const baseSecret: object = {};
 
 export const Secret = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.Secret' as const,
-
     encode(message: Secret, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.raw !== undefined) {
             writer.uint32(10).string(message.raw);
@@ -414,20 +391,9 @@ export const Secret = {
     },
 };
 
-messageTypeRegistry.set(Secret.$type, Secret);
-
-const baseColSchema: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ColSchema',
-    name: '',
-    type: 0,
-    key: false,
-    required: false,
-    path: '',
-};
+const baseColSchema: object = { name: '', type: 0, key: false, required: false, path: '' };
 
 export const ColSchema = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ColSchema' as const,
-
     encode(message: ColSchema, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -512,13 +478,9 @@ export const ColSchema = {
     },
 };
 
-messageTypeRegistry.set(ColSchema.$type, ColSchema);
-
-const baseTLSMode: object = { $type: 'yandex.cloud.datatransfer.v1.endpoint.TLSMode' };
+const baseTLSMode: object = {};
 
 export const TLSMode = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.TLSMode' as const,
-
     encode(message: TLSMode, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.disabled !== undefined) {
             Empty.encode(message.disabled, writer.uint32(10).fork()).ldelim();
@@ -586,16 +548,9 @@ export const TLSMode = {
     },
 };
 
-messageTypeRegistry.set(TLSMode.$type, TLSMode);
-
-const baseTLSConfig: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.TLSConfig',
-    caCertificate: '',
-};
+const baseTLSConfig: object = { caCertificate: '' };
 
 export const TLSConfig = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.TLSConfig' as const,
-
     encode(message: TLSConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.caCertificate !== '') {
             writer.uint32(10).string(message.caCertificate);
@@ -643,13 +598,9 @@ export const TLSConfig = {
     },
 };
 
-messageTypeRegistry.set(TLSConfig.$type, TLSConfig);
-
-const baseColumnValue: object = { $type: 'yandex.cloud.datatransfer.v1.endpoint.ColumnValue' };
+const baseColumnValue: object = {};
 
 export const ColumnValue = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ColumnValue' as const,
-
     encode(message: ColumnValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.stringValue !== undefined) {
             writer.uint32(10).string(message.stringValue);
@@ -697,10 +648,7 @@ export const ColumnValue = {
     },
 };
 
-messageTypeRegistry.set(ColumnValue.$type, ColumnValue);
-
 const baseDataTransformationOptions: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.DataTransformationOptions',
     cloudFunction: '',
     numberOfRetries: 0,
     bufferSize: '',
@@ -710,8 +658,6 @@ const baseDataTransformationOptions: object = {
 };
 
 export const DataTransformationOptions = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.DataTransformationOptions' as const,
-
     encode(
         message: DataTransformationOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -827,13 +773,9 @@ export const DataTransformationOptions = {
     },
 };
 
-messageTypeRegistry.set(DataTransformationOptions.$type, DataTransformationOptions);
-
-const baseFieldList: object = { $type: 'yandex.cloud.datatransfer.v1.endpoint.FieldList' };
+const baseFieldList: object = {};
 
 export const FieldList = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.FieldList' as const,
-
     encode(message: FieldList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.fields) {
             ColSchema.encode(v!, writer.uint32(18).fork()).ldelim();
@@ -883,13 +825,9 @@ export const FieldList = {
     },
 };
 
-messageTypeRegistry.set(FieldList.$type, FieldList);
-
-const baseDataSchema: object = { $type: 'yandex.cloud.datatransfer.v1.endpoint.DataSchema' };
+const baseDataSchema: object = {};
 
 export const DataSchema = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.DataSchema' as const,
-
     encode(message: DataSchema, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jsonFields !== undefined) {
             writer.uint32(10).string(message.jsonFields);
@@ -953,13 +891,9 @@ export const DataSchema = {
     },
 };
 
-messageTypeRegistry.set(DataSchema.$type, DataSchema);
-
-const baseNoAuth: object = { $type: 'yandex.cloud.datatransfer.v1.endpoint.NoAuth' };
+const baseNoAuth: object = {};
 
 export const NoAuth = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.NoAuth' as const,
-
     encode(_: NoAuth, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -995,17 +929,9 @@ export const NoAuth = {
     },
 };
 
-messageTypeRegistry.set(NoAuth.$type, NoAuth);
-
-const baseConnectionManagerConnection: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ConnectionManagerConnection',
-    connectionId: '',
-    subnetId: '',
-};
+const baseConnectionManagerConnection: object = { connectionId: '', subnetId: '' };
 
 export const ConnectionManagerConnection = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.ConnectionManagerConnection' as const,
-
     encode(
         message: ConnectionManagerConnection,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1070,8 +996,6 @@ export const ConnectionManagerConnection = {
     },
 };
 
-messageTypeRegistry.set(ConnectionManagerConnection.$type, ConnectionManagerConnection);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1092,16 +1016,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

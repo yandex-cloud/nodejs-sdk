@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -7,7 +6,6 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.speechsense.v1';
 
 export interface Project {
-    $type: 'yandex.cloud.speechsense.v1.Project';
     id: string;
     name: string;
     connectionId: string;
@@ -21,7 +19,6 @@ export interface Project {
 
 /** simple filters to match talks based on their connection metadata */
 export interface FieldFilter {
-    $type: 'yandex.cloud.speechsense.v1.FieldFilter';
     /** connection metadata field key */
     key: string;
     /** connection metadata field value */
@@ -29,7 +26,6 @@ export interface FieldFilter {
 }
 
 const baseProject: object = {
-    $type: 'yandex.cloud.speechsense.v1.Project',
     id: '',
     name: '',
     connectionId: '',
@@ -39,8 +35,6 @@ const baseProject: object = {
 };
 
 export const Project = {
-    $type: 'yandex.cloud.speechsense.v1.Project' as const,
-
     encode(message: Project, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -180,17 +174,9 @@ export const Project = {
     },
 };
 
-messageTypeRegistry.set(Project.$type, Project);
-
-const baseFieldFilter: object = {
-    $type: 'yandex.cloud.speechsense.v1.FieldFilter',
-    key: '',
-    fieldValue: '',
-};
+const baseFieldFilter: object = { key: '', fieldValue: '' };
 
 export const FieldFilter = {
-    $type: 'yandex.cloud.speechsense.v1.FieldFilter' as const,
-
     encode(message: FieldFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -247,8 +233,6 @@ export const FieldFilter = {
     },
 };
 
-messageTypeRegistry.set(FieldFilter.$type, FieldFilter);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -258,21 +242,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

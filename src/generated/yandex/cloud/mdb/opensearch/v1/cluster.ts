@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -13,7 +12,6 @@ export const protobufPackage = 'yandex.cloud.mdb.opensearch.v1';
 
 /** An OpenSearch cluster resource. */
 export interface Cluster {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Cluster';
     /**
      * ID of the OpenSearch cluster.
      * This ID is assigned by the platform at the moment of cluster creation.
@@ -231,14 +229,12 @@ export function cluster_StatusToJSON(object: Cluster_Status): string {
 }
 
 export interface Cluster_LabelsEntry {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Cluster.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Monitoring system metadata. */
 export interface Monitoring {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Monitoring';
     /** Name of the monitoring system. */
     name: string;
     /** Description of the monitoring system. */
@@ -249,7 +245,6 @@ export interface Monitoring {
 
 /** The OpenSearch cluster configuration. */
 export interface ClusterConfig {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ClusterConfig';
     /** Version of the OpenSearch server software. */
     version: string;
     /** OpenSearch configuration. */
@@ -262,7 +257,6 @@ export interface ClusterConfig {
 
 /** The OpenSearch host group type configuration. */
 export interface OpenSearch {
-    $type: 'yandex.cloud.mdb.opensearch.v1.OpenSearch';
     /** Names of the cluster plugins. */
     plugins: string[];
     /** Host groups of the OpenSearch type. */
@@ -312,7 +306,6 @@ export function openSearch_GroupRoleToJSON(object: OpenSearch_GroupRole): string
 
 /** Configuration of the host group. */
 export interface OpenSearch_NodeGroup {
-    $type: 'yandex.cloud.mdb.opensearch.v1.OpenSearch.NodeGroup';
     /** Name of the group. Must be 1-63 characters long. */
     name: string;
     /** Resources allocated to the hosts. */
@@ -333,13 +326,11 @@ export interface OpenSearch_NodeGroup {
 
 /** The Dashboards host group type configuration. */
 export interface Dashboards {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Dashboards';
     /** Host groups of the Dashboards type. */
     nodeGroups: Dashboards_NodeGroup[];
 }
 
 export interface Dashboards_NodeGroup {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Dashboards.NodeGroup';
     /** Name of the group. 1-63 characters long. */
     name: string;
     /** Resources allocated to the hosts. */
@@ -358,7 +349,6 @@ export interface Dashboards_NodeGroup {
 
 /** A list of computational resources allocated to a host. */
 export interface Resources {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Resources';
     /** ID of the preset for computational resources allocated to a host. */
     resourcePresetId: string;
     /** Volume of the storage used by the host, in bytes. */
@@ -369,7 +359,6 @@ export interface Resources {
 
 /** An OpenSearch cluster host resource. */
 export interface Host {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Host';
     /**
      * Required. Name of the OpenSearch host.
      *
@@ -491,7 +480,6 @@ export function host_TypeToJSON(object: Host_Type): string {
 
 /** CPU usage of the host. */
 export interface Host_CPUMetric {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Host.CPUMetric';
     /** Time of the record. */
     timestamp: number;
     /** Percentage of the CPU used. */
@@ -500,7 +488,6 @@ export interface Host_CPUMetric {
 
 /** RAM usage of the host. */
 export interface Host_MemoryMetric {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Host.MemoryMetric';
     /** Time of the record. */
     timestamp: number;
     /** The amount of RAM used, in bytes. */
@@ -511,7 +498,6 @@ export interface Host_MemoryMetric {
 
 /** Disk usage of the host. */
 export interface Host_DiskMetric {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Host.DiskMetric';
     /** Time of the record. */
     timestamp: number;
     /** The amount of disk space used, in bytes. */
@@ -522,7 +508,6 @@ export interface Host_DiskMetric {
 
 /** Resources used by the host. */
 export interface Host_SystemMetrics {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Host.SystemMetrics';
     /** CPU usage of the host. */
     cpu?: Host_CPUMetric;
     /** RAM usage of the host. */
@@ -533,7 +518,6 @@ export interface Host_SystemMetrics {
 
 /** Access policy for external services. */
 export interface Access {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Access';
     /** Determines whether the access to Data Transfer is allowed. */
     dataTransfer: boolean;
     /** Determines whether the access to Serverless is allowed. */
@@ -541,7 +525,6 @@ export interface Access {
 }
 
 export interface DiskSizeAutoscaling {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DiskSizeAutoscaling';
     /** Amount of used storage for automatic disk scaling in the maintenance window, 0 means disabled, in percent. */
     plannedUsageThreshold: number;
     /** Amount of used storage for immediately  automatic disk scaling, 0 means disabled, in percent. */
@@ -551,7 +534,6 @@ export interface DiskSizeAutoscaling {
 }
 
 const baseCluster: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Cluster',
     id: '',
     folderId: '',
     name: '',
@@ -566,8 +548,6 @@ const baseCluster: object = {
 };
 
 export const Cluster = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Cluster' as const,
-
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -586,11 +566,7 @@ export const Cluster = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Cluster_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.opensearch.v1.Cluster.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -853,17 +829,9 @@ export const Cluster = {
     },
 };
 
-messageTypeRegistry.set(Cluster.$type, Cluster);
-
-const baseCluster_LabelsEntry: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Cluster.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
 export const Cluster_LabelsEntry = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Cluster.LabelsEntry' as const,
-
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -920,18 +888,9 @@ export const Cluster_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Cluster_LabelsEntry.$type, Cluster_LabelsEntry);
-
-const baseMonitoring: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Monitoring',
-    name: '',
-    description: '',
-    link: '',
-};
+const baseMonitoring: object = { name: '', description: '', link: '' };
 
 export const Monitoring = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Monitoring' as const,
-
     encode(message: Monitoring, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -997,16 +956,9 @@ export const Monitoring = {
     },
 };
 
-messageTypeRegistry.set(Monitoring.$type, Monitoring);
-
-const baseClusterConfig: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ClusterConfig',
-    version: '',
-};
+const baseClusterConfig: object = { version: '' };
 
 export const ClusterConfig = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.ClusterConfig' as const,
-
     encode(message: ClusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -1104,17 +1056,9 @@ export const ClusterConfig = {
     },
 };
 
-messageTypeRegistry.set(ClusterConfig.$type, ClusterConfig);
-
-const baseOpenSearch: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.OpenSearch',
-    plugins: '',
-    keystoreSettings: '',
-};
+const baseOpenSearch: object = { plugins: '', keystoreSettings: '' };
 
 export const OpenSearch = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.OpenSearch' as const,
-
     encode(message: OpenSearch, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.plugins) {
             writer.uint32(10).string(v!);
@@ -1221,10 +1165,7 @@ export const OpenSearch = {
     },
 };
 
-messageTypeRegistry.set(OpenSearch.$type, OpenSearch);
-
 const baseOpenSearch_NodeGroup: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.OpenSearch.NodeGroup',
     name: '',
     hostsCount: 0,
     zoneIds: '',
@@ -1234,8 +1175,6 @@ const baseOpenSearch_NodeGroup: object = {
 };
 
 export const OpenSearch_NodeGroup = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.OpenSearch.NodeGroup' as const,
-
     encode(message: OpenSearch_NodeGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1397,13 +1336,9 @@ export const OpenSearch_NodeGroup = {
     },
 };
 
-messageTypeRegistry.set(OpenSearch_NodeGroup.$type, OpenSearch_NodeGroup);
-
-const baseDashboards: object = { $type: 'yandex.cloud.mdb.opensearch.v1.Dashboards' };
+const baseDashboards: object = {};
 
 export const Dashboards = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Dashboards' as const,
-
     encode(message: Dashboards, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.nodeGroups) {
             Dashboards_NodeGroup.encode(v!, writer.uint32(18).fork()).ldelim();
@@ -1458,10 +1393,7 @@ export const Dashboards = {
     },
 };
 
-messageTypeRegistry.set(Dashboards.$type, Dashboards);
-
 const baseDashboards_NodeGroup: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Dashboards.NodeGroup',
     name: '',
     hostsCount: 0,
     zoneIds: '',
@@ -1470,8 +1402,6 @@ const baseDashboards_NodeGroup: object = {
 };
 
 export const Dashboards_NodeGroup = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Dashboards.NodeGroup' as const,
-
     encode(message: Dashboards_NodeGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1610,18 +1540,9 @@ export const Dashboards_NodeGroup = {
     },
 };
 
-messageTypeRegistry.set(Dashboards_NodeGroup.$type, Dashboards_NodeGroup);
-
-const baseResources: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Resources',
-    resourcePresetId: '',
-    diskSize: 0,
-    diskTypeId: '',
-};
+const baseResources: object = { resourcePresetId: '', diskSize: 0, diskTypeId: '' };
 
 export const Resources = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Resources' as const,
-
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);
@@ -1691,10 +1612,7 @@ export const Resources = {
     },
 };
 
-messageTypeRegistry.set(Resources.$type, Resources);
-
 const baseHost: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Host',
     name: '',
     clusterId: '',
     zoneId: '',
@@ -1707,8 +1625,6 @@ const baseHost: object = {
 };
 
 export const Host = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Host' as const,
-
     encode(message: Host, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1888,17 +1804,9 @@ export const Host = {
     },
 };
 
-messageTypeRegistry.set(Host.$type, Host);
-
-const baseHost_CPUMetric: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Host.CPUMetric',
-    timestamp: 0,
-    used: 0,
-};
+const baseHost_CPUMetric: object = { timestamp: 0, used: 0 };
 
 export const Host_CPUMetric = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Host.CPUMetric' as const,
-
     encode(message: Host_CPUMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timestamp !== 0) {
             writer.uint32(8).int64(message.timestamp);
@@ -1955,18 +1863,9 @@ export const Host_CPUMetric = {
     },
 };
 
-messageTypeRegistry.set(Host_CPUMetric.$type, Host_CPUMetric);
-
-const baseHost_MemoryMetric: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Host.MemoryMetric',
-    timestamp: 0,
-    used: 0,
-    total: 0,
-};
+const baseHost_MemoryMetric: object = { timestamp: 0, used: 0, total: 0 };
 
 export const Host_MemoryMetric = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Host.MemoryMetric' as const,
-
     encode(message: Host_MemoryMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timestamp !== 0) {
             writer.uint32(8).int64(message.timestamp);
@@ -2033,18 +1932,9 @@ export const Host_MemoryMetric = {
     },
 };
 
-messageTypeRegistry.set(Host_MemoryMetric.$type, Host_MemoryMetric);
-
-const baseHost_DiskMetric: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Host.DiskMetric',
-    timestamp: 0,
-    used: 0,
-    total: 0,
-};
+const baseHost_DiskMetric: object = { timestamp: 0, used: 0, total: 0 };
 
 export const Host_DiskMetric = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Host.DiskMetric' as const,
-
     encode(message: Host_DiskMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timestamp !== 0) {
             writer.uint32(8).int64(message.timestamp);
@@ -2111,15 +2001,9 @@ export const Host_DiskMetric = {
     },
 };
 
-messageTypeRegistry.set(Host_DiskMetric.$type, Host_DiskMetric);
-
-const baseHost_SystemMetrics: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Host.SystemMetrics',
-};
+const baseHost_SystemMetrics: object = {};
 
 export const Host_SystemMetrics = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Host.SystemMetrics' as const,
-
     encode(message: Host_SystemMetrics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cpu !== undefined) {
             Host_CPUMetric.encode(message.cpu, writer.uint32(10).fork()).ldelim();
@@ -2205,17 +2089,9 @@ export const Host_SystemMetrics = {
     },
 };
 
-messageTypeRegistry.set(Host_SystemMetrics.$type, Host_SystemMetrics);
-
-const baseAccess: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Access',
-    dataTransfer: false,
-    serverless: false,
-};
+const baseAccess: object = { dataTransfer: false, serverless: false };
 
 export const Access = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.Access' as const,
-
     encode(message: Access, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataTransfer === true) {
             writer.uint32(8).bool(message.dataTransfer);
@@ -2275,18 +2151,13 @@ export const Access = {
     },
 };
 
-messageTypeRegistry.set(Access.$type, Access);
-
 const baseDiskSizeAutoscaling: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DiskSizeAutoscaling',
     plannedUsageThreshold: 0,
     emergencyUsageThreshold: 0,
     diskSizeLimit: 0,
 };
 
 export const DiskSizeAutoscaling = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.DiskSizeAutoscaling' as const,
-
     encode(message: DiskSizeAutoscaling, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.plannedUsageThreshold !== 0) {
             writer.uint32(8).int64(message.plannedUsageThreshold);
@@ -2363,8 +2234,6 @@ export const DiskSizeAutoscaling = {
     },
 };
 
-messageTypeRegistry.set(DiskSizeAutoscaling.$type, DiskSizeAutoscaling);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -2385,21 +2254,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../google/protobuf/duration';
@@ -8,7 +7,6 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.containerregistry.v1';
 
 export interface LifecyclePolicy {
-    $type: 'yandex.cloud.containerregistry.v1.LifecyclePolicy';
     /** ID of the lifecycle policy. */
     id: string;
     /** Name of the lifecycle policy. */
@@ -75,7 +73,6 @@ export function lifecyclePolicy_StatusToJSON(object: LifecyclePolicy_Status): st
 }
 
 export interface LifecycleRule {
-    $type: 'yandex.cloud.containerregistry.v1.LifecycleRule';
     /** Description of the lifecycle policy rule. */
     description: string;
     /**
@@ -92,7 +89,6 @@ export interface LifecycleRule {
 }
 
 const baseLifecyclePolicy: object = {
-    $type: 'yandex.cloud.containerregistry.v1.LifecyclePolicy',
     id: '',
     name: '',
     repositoryId: '',
@@ -101,8 +97,6 @@ const baseLifecyclePolicy: object = {
 };
 
 export const LifecyclePolicy = {
-    $type: 'yandex.cloud.containerregistry.v1.LifecyclePolicy' as const,
-
     encode(message: LifecyclePolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -218,10 +212,7 @@ export const LifecyclePolicy = {
     },
 };
 
-messageTypeRegistry.set(LifecyclePolicy.$type, LifecyclePolicy);
-
 const baseLifecycleRule: object = {
-    $type: 'yandex.cloud.containerregistry.v1.LifecycleRule',
     description: '',
     tagRegexp: '',
     untagged: false,
@@ -229,8 +220,6 @@ const baseLifecycleRule: object = {
 };
 
 export const LifecycleRule = {
-    $type: 'yandex.cloud.containerregistry.v1.LifecycleRule' as const,
-
     encode(message: LifecycleRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.description !== '') {
             writer.uint32(10).string(message.description);
@@ -332,8 +321,6 @@ export const LifecycleRule = {
     },
 };
 
-messageTypeRegistry.set(LifecycleRule.$type, LifecycleRule);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -354,21 +341,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

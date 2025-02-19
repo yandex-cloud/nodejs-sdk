@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { NodeTemplate, Taint } from '../../../../yandex/cloud/k8s/v1/node';
@@ -10,7 +9,6 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.k8s.v1';
 
 export interface NodeGroup {
-    $type: 'yandex.cloud.k8s.v1.NodeGroup';
     /** ID of the node group. */
     id: string;
     /** ID of the cluster that the node group belongs to. */
@@ -131,19 +129,16 @@ export function nodeGroup_StatusToJSON(object: NodeGroup_Status): string {
 }
 
 export interface NodeGroup_LabelsEntry {
-    $type: 'yandex.cloud.k8s.v1.NodeGroup.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface NodeGroup_NodeLabelsEntry {
-    $type: 'yandex.cloud.k8s.v1.NodeGroup.NodeLabelsEntry';
     key: string;
     value: string;
 }
 
 export interface ScalePolicy {
-    $type: 'yandex.cloud.k8s.v1.ScalePolicy';
     /** Fixed scale policy of the node group. */
     fixedScale?: ScalePolicy_FixedScale | undefined;
     /** Auto scale policy of the node group. */
@@ -151,13 +146,11 @@ export interface ScalePolicy {
 }
 
 export interface ScalePolicy_FixedScale {
-    $type: 'yandex.cloud.k8s.v1.ScalePolicy.FixedScale';
     /** Number of nodes in the node group. */
     size: number;
 }
 
 export interface ScalePolicy_AutoScale {
-    $type: 'yandex.cloud.k8s.v1.ScalePolicy.AutoScale';
     /** Minimum number of nodes in the node group. */
     minSize: number;
     /** Maximum number of nodes in the node group. */
@@ -167,13 +160,11 @@ export interface ScalePolicy_AutoScale {
 }
 
 export interface NodeGroupAllocationPolicy {
-    $type: 'yandex.cloud.k8s.v1.NodeGroupAllocationPolicy';
     /** List of locations where resources for the node group will be allocated. */
     locations: NodeGroupLocation[];
 }
 
 export interface NodeGroupLocation {
-    $type: 'yandex.cloud.k8s.v1.NodeGroupLocation';
     /** ID of the availability zone where the nodes may reside. */
     zoneId: string;
     /** ID of the subnet. If a network chosen for the Kubernetes cluster has only one subnet in the specified zone, subnet ID may be omitted. */
@@ -181,7 +172,6 @@ export interface NodeGroupLocation {
 }
 
 export interface NodeGroupMaintenancePolicy {
-    $type: 'yandex.cloud.k8s.v1.NodeGroupMaintenancePolicy';
     /**
      * If set to true, automatic updates are installed in the specified period of time with no interaction from the user.
      * If set to false, automatic upgrades are disabled.
@@ -197,7 +187,6 @@ export interface NodeGroupMaintenancePolicy {
 }
 
 export interface DeployPolicy {
-    $type: 'yandex.cloud.k8s.v1.DeployPolicy';
     /**
      * The maximum number of running instances that can be taken offline (i.e.,
      * stopped or deleted) at the same time during the update process.
@@ -215,7 +204,6 @@ export interface DeployPolicy {
 }
 
 const baseNodeGroup: object = {
-    $type: 'yandex.cloud.k8s.v1.NodeGroup',
     id: '',
     clusterId: '',
     name: '',
@@ -227,8 +215,6 @@ const baseNodeGroup: object = {
 };
 
 export const NodeGroup = {
-    $type: 'yandex.cloud.k8s.v1.NodeGroup' as const,
-
     encode(message: NodeGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -247,7 +233,7 @@ export const NodeGroup = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             NodeGroup_LabelsEntry.encode(
-                { $type: 'yandex.cloud.k8s.v1.NodeGroup.LabelsEntry', key: key as any, value },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -292,7 +278,7 @@ export const NodeGroup = {
         }
         Object.entries(message.nodeLabels).forEach(([key, value]) => {
             NodeGroup_NodeLabelsEntry.encode(
-                { $type: 'yandex.cloud.k8s.v1.NodeGroup.NodeLabelsEntry', key: key as any, value },
+                { key: key as any, value },
                 writer.uint32(138).fork(),
             ).ldelim();
         });
@@ -572,17 +558,9 @@ export const NodeGroup = {
     },
 };
 
-messageTypeRegistry.set(NodeGroup.$type, NodeGroup);
-
-const baseNodeGroup_LabelsEntry: object = {
-    $type: 'yandex.cloud.k8s.v1.NodeGroup.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseNodeGroup_LabelsEntry: object = { key: '', value: '' };
 
 export const NodeGroup_LabelsEntry = {
-    $type: 'yandex.cloud.k8s.v1.NodeGroup.LabelsEntry' as const,
-
     encode(message: NodeGroup_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -639,17 +617,9 @@ export const NodeGroup_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(NodeGroup_LabelsEntry.$type, NodeGroup_LabelsEntry);
-
-const baseNodeGroup_NodeLabelsEntry: object = {
-    $type: 'yandex.cloud.k8s.v1.NodeGroup.NodeLabelsEntry',
-    key: '',
-    value: '',
-};
+const baseNodeGroup_NodeLabelsEntry: object = { key: '', value: '' };
 
 export const NodeGroup_NodeLabelsEntry = {
-    $type: 'yandex.cloud.k8s.v1.NodeGroup.NodeLabelsEntry' as const,
-
     encode(
         message: NodeGroup_NodeLabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -709,13 +679,9 @@ export const NodeGroup_NodeLabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(NodeGroup_NodeLabelsEntry.$type, NodeGroup_NodeLabelsEntry);
-
-const baseScalePolicy: object = { $type: 'yandex.cloud.k8s.v1.ScalePolicy' };
+const baseScalePolicy: object = {};
 
 export const ScalePolicy = {
-    $type: 'yandex.cloud.k8s.v1.ScalePolicy' as const,
-
     encode(message: ScalePolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fixedScale !== undefined) {
             ScalePolicy_FixedScale.encode(message.fixedScale, writer.uint32(10).fork()).ldelim();
@@ -787,16 +753,9 @@ export const ScalePolicy = {
     },
 };
 
-messageTypeRegistry.set(ScalePolicy.$type, ScalePolicy);
-
-const baseScalePolicy_FixedScale: object = {
-    $type: 'yandex.cloud.k8s.v1.ScalePolicy.FixedScale',
-    size: 0,
-};
+const baseScalePolicy_FixedScale: object = { size: 0 };
 
 export const ScalePolicy_FixedScale = {
-    $type: 'yandex.cloud.k8s.v1.ScalePolicy.FixedScale' as const,
-
     encode(message: ScalePolicy_FixedScale, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.size !== 0) {
             writer.uint32(8).int64(message.size);
@@ -843,18 +802,9 @@ export const ScalePolicy_FixedScale = {
     },
 };
 
-messageTypeRegistry.set(ScalePolicy_FixedScale.$type, ScalePolicy_FixedScale);
-
-const baseScalePolicy_AutoScale: object = {
-    $type: 'yandex.cloud.k8s.v1.ScalePolicy.AutoScale',
-    minSize: 0,
-    maxSize: 0,
-    initialSize: 0,
-};
+const baseScalePolicy_AutoScale: object = { minSize: 0, maxSize: 0, initialSize: 0 };
 
 export const ScalePolicy_AutoScale = {
-    $type: 'yandex.cloud.k8s.v1.ScalePolicy.AutoScale' as const,
-
     encode(message: ScalePolicy_AutoScale, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.minSize !== 0) {
             writer.uint32(8).int64(message.minSize);
@@ -924,15 +874,9 @@ export const ScalePolicy_AutoScale = {
     },
 };
 
-messageTypeRegistry.set(ScalePolicy_AutoScale.$type, ScalePolicy_AutoScale);
-
-const baseNodeGroupAllocationPolicy: object = {
-    $type: 'yandex.cloud.k8s.v1.NodeGroupAllocationPolicy',
-};
+const baseNodeGroupAllocationPolicy: object = {};
 
 export const NodeGroupAllocationPolicy = {
-    $type: 'yandex.cloud.k8s.v1.NodeGroupAllocationPolicy' as const,
-
     encode(
         message: NodeGroupAllocationPolicy,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -989,17 +933,9 @@ export const NodeGroupAllocationPolicy = {
     },
 };
 
-messageTypeRegistry.set(NodeGroupAllocationPolicy.$type, NodeGroupAllocationPolicy);
-
-const baseNodeGroupLocation: object = {
-    $type: 'yandex.cloud.k8s.v1.NodeGroupLocation',
-    zoneId: '',
-    subnetId: '',
-};
+const baseNodeGroupLocation: object = { zoneId: '', subnetId: '' };
 
 export const NodeGroupLocation = {
-    $type: 'yandex.cloud.k8s.v1.NodeGroupLocation' as const,
-
     encode(message: NodeGroupLocation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneId !== '') {
             writer.uint32(10).string(message.zoneId);
@@ -1057,17 +993,9 @@ export const NodeGroupLocation = {
     },
 };
 
-messageTypeRegistry.set(NodeGroupLocation.$type, NodeGroupLocation);
-
-const baseNodeGroupMaintenancePolicy: object = {
-    $type: 'yandex.cloud.k8s.v1.NodeGroupMaintenancePolicy',
-    autoUpgrade: false,
-    autoRepair: false,
-};
+const baseNodeGroupMaintenancePolicy: object = { autoUpgrade: false, autoRepair: false };
 
 export const NodeGroupMaintenancePolicy = {
-    $type: 'yandex.cloud.k8s.v1.NodeGroupMaintenancePolicy' as const,
-
     encode(
         message: NodeGroupMaintenancePolicy,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1150,17 +1078,9 @@ export const NodeGroupMaintenancePolicy = {
     },
 };
 
-messageTypeRegistry.set(NodeGroupMaintenancePolicy.$type, NodeGroupMaintenancePolicy);
-
-const baseDeployPolicy: object = {
-    $type: 'yandex.cloud.k8s.v1.DeployPolicy',
-    maxUnavailable: 0,
-    maxExpansion: 0,
-};
+const baseDeployPolicy: object = { maxUnavailable: 0, maxExpansion: 0 };
 
 export const DeployPolicy = {
-    $type: 'yandex.cloud.k8s.v1.DeployPolicy' as const,
-
     encode(message: DeployPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxUnavailable !== 0) {
             writer.uint32(8).int64(message.maxUnavailable);
@@ -1221,8 +1141,6 @@ export const DeployPolicy = {
     },
 };
 
-messageTypeRegistry.set(DeployPolicy.$type, DeployPolicy);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1243,21 +1161,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

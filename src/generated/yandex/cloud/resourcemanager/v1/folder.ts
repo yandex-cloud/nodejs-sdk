@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.resourcemanager.v1';
 
 /** A Folder resource. For more information, see [Folder](/docs/resource-manager/concepts/resources-hierarchy#folder). */
 export interface Folder {
-    $type: 'yandex.cloud.resourcemanager.v1.Folder';
     /** ID of the folder. */
     id: string;
     /** ID of the cloud that the folder belongs to. */
@@ -76,23 +74,13 @@ export function folder_StatusToJSON(object: Folder_Status): string {
 }
 
 export interface Folder_LabelsEntry {
-    $type: 'yandex.cloud.resourcemanager.v1.Folder.LabelsEntry';
     key: string;
     value: string;
 }
 
-const baseFolder: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.Folder',
-    id: '',
-    cloudId: '',
-    name: '',
-    description: '',
-    status: 0,
-};
+const baseFolder: object = { id: '', cloudId: '', name: '', description: '', status: 0 };
 
 export const Folder = {
-    $type: 'yandex.cloud.resourcemanager.v1.Folder' as const,
-
     encode(message: Folder, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -111,11 +99,7 @@ export const Folder = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Folder_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.resourcemanager.v1.Folder.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -231,17 +215,9 @@ export const Folder = {
     },
 };
 
-messageTypeRegistry.set(Folder.$type, Folder);
-
-const baseFolder_LabelsEntry: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.Folder.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseFolder_LabelsEntry: object = { key: '', value: '' };
 
 export const Folder_LabelsEntry = {
-    $type: 'yandex.cloud.resourcemanager.v1.Folder.LabelsEntry' as const,
-
     encode(message: Folder_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -298,8 +274,6 @@ export const Folder_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Folder_LabelsEntry.$type, Folder_LabelsEntry);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -309,21 +283,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

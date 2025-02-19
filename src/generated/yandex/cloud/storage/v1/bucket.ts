@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -79,7 +78,6 @@ export function versioningToJSON(object: Versioning): string {
  * For details about the concept, see [documentation](/docs/storage/concepts/bucket).
  */
 export interface Bucket {
-    $type: 'yandex.cloud.storage.v1.Bucket';
     /** ID of the bucket. Always equal to [name], which has priority. */
     id: string;
     /**
@@ -159,7 +157,6 @@ export interface Bucket {
 }
 
 export interface Tag {
-    $type: 'yandex.cloud.storage.v1.Tag';
     /** Key of the bucket tag. */
     key: string;
     /** Value of the bucket tag. */
@@ -167,14 +164,12 @@ export interface Tag {
 }
 
 export interface ACL {
-    $type: 'yandex.cloud.storage.v1.ACL';
     /** List of permissions granted and the grantees. */
     grants: ACL_Grant[];
 }
 
 /** A grant resource, used to specify the permission granted and the grantee. */
 export interface ACL_Grant {
-    $type: 'yandex.cloud.storage.v1.ACL.Grant';
     /** Permission granted by the grant. */
     permission: ACL_Grant_Permission;
     /** The grantee type for the grant. */
@@ -340,7 +335,6 @@ export function aCL_Grant_GrantTypeToJSON(object: ACL_Grant_GrantType): string {
 }
 
 export interface AnonymousAccessFlags {
-    $type: 'yandex.cloud.storage.v1.AnonymousAccessFlags';
     /** Specifies whether public (anonymous) access to read objects in the bucket is enabled. */
     read?: boolean;
     /** Specifies whether public (anonymous) access to the list of objects in the bucket is enabled. */
@@ -358,7 +352,6 @@ export interface AnonymousAccessFlags {
  * For details about the concept, see [documentation](/docs/storage/concepts/cors).
  */
 export interface CorsRule {
-    $type: 'yandex.cloud.storage.v1.CorsRule';
     /** ID of the CORS rule. */
     id: string;
     /**
@@ -468,7 +461,6 @@ export function corsRule_MethodToJSON(object: CorsRule_Method): string {
 }
 
 export interface WebsiteSettings {
-    $type: 'yandex.cloud.storage.v1.WebsiteSettings';
     /**
      * Key of the index page object that is returned when a response is made to the root of the website.
      *
@@ -532,7 +524,6 @@ export function websiteSettings_ProtocolToJSON(object: WebsiteSettings_Protocol)
 
 /** A configuration resource for redirecting all requests sent to the website. */
 export interface WebsiteSettings_Scheme {
-    $type: 'yandex.cloud.storage.v1.WebsiteSettings.Scheme';
     /** Scheme of the redirect URI. */
     protocol: WebsiteSettings_Protocol;
     /** Hostname of the redirect URI. */
@@ -540,7 +531,6 @@ export interface WebsiteSettings_Scheme {
 }
 
 export interface WebsiteSettings_Condition {
-    $type: 'yandex.cloud.storage.v1.WebsiteSettings.Condition';
     /** HTTP status code (number only) that must match for the redirect to apply. */
     httpErrorCodeReturnedEquals: string;
     /** Prefix of the object key from which requests are redirected. */
@@ -548,7 +538,6 @@ export interface WebsiteSettings_Condition {
 }
 
 export interface WebsiteSettings_Redirect {
-    $type: 'yandex.cloud.storage.v1.WebsiteSettings.Redirect';
     /** Hostname of the redirect URI. */
     hostname: string;
     /**
@@ -575,7 +564,6 @@ export interface WebsiteSettings_Redirect {
 
 /** List of redirect rules. */
 export interface WebsiteSettings_RoutingRule {
-    $type: 'yandex.cloud.storage.v1.WebsiteSettings.RoutingRule';
     /** Redirect condition. */
     condition?: WebsiteSettings_Condition;
     /** Redirect instructions. */
@@ -587,7 +575,6 @@ export interface WebsiteSettings_RoutingRule {
  * For details about the concept, see [documentation](/docs/storage/concepts/lifecycles).
  */
 export interface LifecycleRule {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule';
     /** ID of the rule. Provided by the client or generated at creation time. */
     id?: string;
     /** Indicates whether the rule is in effect. */
@@ -654,7 +641,6 @@ export interface LifecycleRule {
 }
 
 export interface LifecycleRule_AfterDays {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.AfterDays';
     /**
      * Time period, in number of days from the start of the multipart upload, after which the incomplete upload is
      * aborted.
@@ -663,7 +649,6 @@ export interface LifecycleRule_AfterDays {
 }
 
 export interface LifecycleRule_NoncurrentDeleteMarkers {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.NoncurrentDeleteMarkers';
     /**
      * Time period, in number of days since the version of a delete marker was classified as non-current, after which
      * the delete marker expires.
@@ -672,7 +657,6 @@ export interface LifecycleRule_NoncurrentDeleteMarkers {
 }
 
 export interface LifecycleRule_NoncurrentExpiration {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.NoncurrentExpiration';
     /**
      * Time period, in number of days since the version of an object was classified as non-current, after which the
      * version expires.
@@ -687,7 +671,6 @@ export interface LifecycleRule_NoncurrentExpiration {
  * At transition, the non-current version of the object is transitioned to the specified storage class.
  */
 export interface LifecycleRule_NoncurrentTransition {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.NoncurrentTransition';
     /**
      * Time period, in number of days since the version of an object was classified as non-current, after which the
      * version is transitioned.
@@ -714,7 +697,6 @@ export interface LifecycleRule_NoncurrentTransition {
  * (`VERSIONING_SUSPENDED`), the current version of the object is transitioned to the specified storage class.
  */
 export interface LifecycleRule_Transition {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.Transition';
     /**
      * Specific date of object transition.
      *
@@ -741,7 +723,6 @@ export interface LifecycleRule_Transition {
 }
 
 export interface LifecycleRule_Expiration {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.Expiration';
     /**
      * Specific date of object expiration.
      *
@@ -767,7 +748,6 @@ export interface LifecycleRule_Expiration {
 }
 
 export interface LifecycleRule_RuleFilter {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.RuleFilter';
     /** Key prefix that the object must have in order for the rule to apply. */
     prefix: string;
     /** Size that the object must be greater. */
@@ -781,7 +761,6 @@ export interface LifecycleRule_RuleFilter {
 }
 
 export interface LifecycleRule_RuleFilter_And {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.RuleFilter.And';
     prefix: string;
     objectSizeGreaterThan?: number;
     objectSizeLessThan?: number;
@@ -789,7 +768,6 @@ export interface LifecycleRule_RuleFilter_And {
 }
 
 export interface Counters {
-    $type: 'yandex.cloud.storage.v1.Counters';
     /** Total size of objects uploaded in single operation, in bytes. */
     simpleObjectSize: number;
     /** Number of objects uploaded in single operation. */
@@ -808,7 +786,6 @@ export interface Counters {
 
 /** A resource for size of available space in a bucket for a storage class. */
 export interface OptionalSizeByClass {
-    $type: 'yandex.cloud.storage.v1.OptionalSizeByClass';
     /**
      * Storage class. Supported classes are standard storage (`STANDARD`), cold storage (`COLD`, `STANDARD_IA`, `NEARLINE`
      * all synonyms), and ice storage (`ICE` and `GLACIER` are synonyms).
@@ -821,7 +798,6 @@ export interface OptionalSizeByClass {
 
 /** A resource for size of used space in a bucket for a storage class. */
 export interface SizeByClass {
-    $type: 'yandex.cloud.storage.v1.SizeByClass';
     /**
      * Storage class. Supported classes are standard storage (`STANDARD`), cold storage (`COLD`, `STANDARD_IA`, `NEARLINE`
      * all synonyms), and ice storage (`ICE` and `GLACIER` are synonyms).
@@ -834,7 +810,6 @@ export interface SizeByClass {
 
 /** A resource for object-related statistics for a storage class by type of upload (simple vs. multipart). */
 export interface CountersByClass {
-    $type: 'yandex.cloud.storage.v1.CountersByClass';
     /**
      * Storage class. Supported classes are standard storage (`STANDARD`), cold storage (`COLD`, `STANDARD_IA`, `NEARLINE`
      * all synonyms), and ice storage (`ice` and `GLACIER` are synonyms).
@@ -847,7 +822,6 @@ export interface CountersByClass {
 
 /** A bucket statistics resource. */
 export interface BucketStats {
-    $type: 'yandex.cloud.storage.v1.BucketStats';
     /** Name of the bucket. */
     name: string;
     /** Maximum size of the bucket, in bytes. */
@@ -879,7 +853,6 @@ export interface BucketStats {
 
 /** A resource for HTTPS configuration of a bucket. */
 export interface HTTPSConfig {
-    $type: 'yandex.cloud.storage.v1.HTTPSConfig';
     /** Name of the bucket. */
     name: string;
     /** Type of TLS certificate source. */
@@ -949,7 +922,6 @@ export function hTTPSConfig_SourceTypeToJSON(object: HTTPSConfig_SourceType): st
  * For details about the concept, see [documentation](/docs/storage/concepts/object-lock).
  */
 export interface ObjectLock {
-    $type: 'yandex.cloud.storage.v1.ObjectLock';
     status: ObjectLock_ObjectLockStatus;
     defaultRetention?: ObjectLock_DefaultRetention;
 }
@@ -995,7 +967,6 @@ export function objectLock_ObjectLockStatusToJSON(object: ObjectLock_ObjectLockS
 
 /** Default lock configuration for added objects */
 export interface ObjectLock_DefaultRetention {
-    $type: 'yandex.cloud.storage.v1.ObjectLock.DefaultRetention';
     mode: ObjectLock_DefaultRetention_Mode;
     /** Number of days for locking */
     days: number | undefined;
@@ -1047,18 +1018,15 @@ export function objectLock_DefaultRetention_ModeToJSON(
 }
 
 export interface Encryption {
-    $type: 'yandex.cloud.storage.v1.Encryption';
     rules: Encryption_EncryptionRule[];
 }
 
 export interface Encryption_EncryptionRule {
-    $type: 'yandex.cloud.storage.v1.Encryption.EncryptionRule';
     kmsMasterKeyId: string;
     sseAlgorithm: string;
 }
 
 export interface BucketAllowedPrivateEndpoints {
-    $type: 'yandex.cloud.storage.v1.BucketAllowedPrivateEndpoints';
     /**
      * if true, private endpoints white list check is enabled
      * even if private_endpoints list is empty
@@ -1069,7 +1037,6 @@ export interface BucketAllowedPrivateEndpoints {
 }
 
 const baseBucket: object = {
-    $type: 'yandex.cloud.storage.v1.Bucket',
     id: '',
     name: '',
     folderId: '',
@@ -1079,8 +1046,6 @@ const baseBucket: object = {
 };
 
 export const Bucket = {
-    $type: 'yandex.cloud.storage.v1.Bucket' as const,
-
     encode(message: Bucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1364,13 +1329,9 @@ export const Bucket = {
     },
 };
 
-messageTypeRegistry.set(Bucket.$type, Bucket);
-
-const baseTag: object = { $type: 'yandex.cloud.storage.v1.Tag', key: '', value: '' };
+const baseTag: object = { key: '', value: '' };
 
 export const Tag = {
-    $type: 'yandex.cloud.storage.v1.Tag' as const,
-
     encode(message: Tag, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1425,13 +1386,9 @@ export const Tag = {
     },
 };
 
-messageTypeRegistry.set(Tag.$type, Tag);
-
-const baseACL: object = { $type: 'yandex.cloud.storage.v1.ACL' };
+const baseACL: object = {};
 
 export const ACL = {
-    $type: 'yandex.cloud.storage.v1.ACL' as const,
-
     encode(message: ACL, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.grants) {
             ACL_Grant.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1481,18 +1438,9 @@ export const ACL = {
     },
 };
 
-messageTypeRegistry.set(ACL.$type, ACL);
-
-const baseACL_Grant: object = {
-    $type: 'yandex.cloud.storage.v1.ACL.Grant',
-    permission: 0,
-    grantType: 0,
-    granteeId: '',
-};
+const baseACL_Grant: object = { permission: 0, grantType: 0, granteeId: '' };
 
 export const ACL_Grant = {
-    $type: 'yandex.cloud.storage.v1.ACL.Grant' as const,
-
     encode(message: ACL_Grant, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.permission !== 0) {
             writer.uint32(8).int32(message.permission);
@@ -1566,31 +1514,18 @@ export const ACL_Grant = {
     },
 };
 
-messageTypeRegistry.set(ACL_Grant.$type, ACL_Grant);
-
-const baseAnonymousAccessFlags: object = { $type: 'yandex.cloud.storage.v1.AnonymousAccessFlags' };
+const baseAnonymousAccessFlags: object = {};
 
 export const AnonymousAccessFlags = {
-    $type: 'yandex.cloud.storage.v1.AnonymousAccessFlags' as const,
-
     encode(message: AnonymousAccessFlags, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.read !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.read! },
-                writer.uint32(10).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.read! }, writer.uint32(10).fork()).ldelim();
         }
         if (message.list !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.list! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.list! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.configRead !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.configRead! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.configRead! }, writer.uint32(26).fork()).ldelim();
         }
         return writer;
     },
@@ -1651,10 +1586,7 @@ export const AnonymousAccessFlags = {
     },
 };
 
-messageTypeRegistry.set(AnonymousAccessFlags.$type, AnonymousAccessFlags);
-
 const baseCorsRule: object = {
-    $type: 'yandex.cloud.storage.v1.CorsRule',
     id: '',
     allowedMethods: 0,
     allowedHeaders: '',
@@ -1663,8 +1595,6 @@ const baseCorsRule: object = {
 };
 
 export const CorsRule = {
-    $type: 'yandex.cloud.storage.v1.CorsRule' as const,
-
     encode(message: CorsRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1684,10 +1614,7 @@ export const CorsRule = {
             writer.uint32(42).string(v!);
         }
         if (message.maxAgeSeconds !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxAgeSeconds! },
-                writer.uint32(50).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.maxAgeSeconds! }, writer.uint32(50).fork()).ldelim();
         }
         return writer;
     },
@@ -1791,17 +1718,9 @@ export const CorsRule = {
     },
 };
 
-messageTypeRegistry.set(CorsRule.$type, CorsRule);
-
-const baseWebsiteSettings: object = {
-    $type: 'yandex.cloud.storage.v1.WebsiteSettings',
-    index: '',
-    error: '',
-};
+const baseWebsiteSettings: object = { index: '', error: '' };
 
 export const WebsiteSettings = {
-    $type: 'yandex.cloud.storage.v1.WebsiteSettings' as const,
-
     encode(message: WebsiteSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.index !== '') {
             writer.uint32(10).string(message.index);
@@ -1902,17 +1821,9 @@ export const WebsiteSettings = {
     },
 };
 
-messageTypeRegistry.set(WebsiteSettings.$type, WebsiteSettings);
-
-const baseWebsiteSettings_Scheme: object = {
-    $type: 'yandex.cloud.storage.v1.WebsiteSettings.Scheme',
-    protocol: 0,
-    hostname: '',
-};
+const baseWebsiteSettings_Scheme: object = { protocol: 0, hostname: '' };
 
 export const WebsiteSettings_Scheme = {
-    $type: 'yandex.cloud.storage.v1.WebsiteSettings.Scheme' as const,
-
     encode(message: WebsiteSettings_Scheme, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.protocol !== 0) {
             writer.uint32(8).int32(message.protocol);
@@ -1975,17 +1886,12 @@ export const WebsiteSettings_Scheme = {
     },
 };
 
-messageTypeRegistry.set(WebsiteSettings_Scheme.$type, WebsiteSettings_Scheme);
-
 const baseWebsiteSettings_Condition: object = {
-    $type: 'yandex.cloud.storage.v1.WebsiteSettings.Condition',
     httpErrorCodeReturnedEquals: '',
     keyPrefixEquals: '',
 };
 
 export const WebsiteSettings_Condition = {
-    $type: 'yandex.cloud.storage.v1.WebsiteSettings.Condition' as const,
-
     encode(
         message: WebsiteSettings_Condition,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2052,10 +1958,7 @@ export const WebsiteSettings_Condition = {
     },
 };
 
-messageTypeRegistry.set(WebsiteSettings_Condition.$type, WebsiteSettings_Condition);
-
 const baseWebsiteSettings_Redirect: object = {
-    $type: 'yandex.cloud.storage.v1.WebsiteSettings.Redirect',
     hostname: '',
     httpRedirectCode: '',
     protocol: 0,
@@ -2064,8 +1967,6 @@ const baseWebsiteSettings_Redirect: object = {
 };
 
 export const WebsiteSettings_Redirect = {
-    $type: 'yandex.cloud.storage.v1.WebsiteSettings.Redirect' as const,
-
     encode(
         message: WebsiteSettings_Redirect,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2168,15 +2069,9 @@ export const WebsiteSettings_Redirect = {
     },
 };
 
-messageTypeRegistry.set(WebsiteSettings_Redirect.$type, WebsiteSettings_Redirect);
-
-const baseWebsiteSettings_RoutingRule: object = {
-    $type: 'yandex.cloud.storage.v1.WebsiteSettings.RoutingRule',
-};
+const baseWebsiteSettings_RoutingRule: object = {};
 
 export const WebsiteSettings_RoutingRule = {
-    $type: 'yandex.cloud.storage.v1.WebsiteSettings.RoutingRule' as const,
-
     encode(
         message: WebsiteSettings_RoutingRule,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2253,22 +2148,12 @@ export const WebsiteSettings_RoutingRule = {
     },
 };
 
-messageTypeRegistry.set(WebsiteSettings_RoutingRule.$type, WebsiteSettings_RoutingRule);
-
-const baseLifecycleRule: object = {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule',
-    enabled: false,
-};
+const baseLifecycleRule: object = { enabled: false };
 
 export const LifecycleRule = {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule' as const,
-
     encode(message: LifecycleRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== undefined) {
-            StringValue.encode(
-                { $type: 'google.protobuf.StringValue', value: message.id! },
-                writer.uint32(10).fork(),
-            ).ldelim();
+            StringValue.encode({ value: message.id! }, writer.uint32(10).fork()).ldelim();
         }
         if (message.enabled === true) {
             writer.uint32(16).bool(message.enabled);
@@ -2476,19 +2361,13 @@ export const LifecycleRule = {
     },
 };
 
-messageTypeRegistry.set(LifecycleRule.$type, LifecycleRule);
-
-const baseLifecycleRule_AfterDays: object = {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.AfterDays',
-};
+const baseLifecycleRule_AfterDays: object = {};
 
 export const LifecycleRule_AfterDays = {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.AfterDays' as const,
-
     encode(message: LifecycleRule_AfterDays, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.daysAfterExpiration !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.daysAfterExpiration! },
+                { value: message.daysAfterExpiration! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
@@ -2538,22 +2417,16 @@ export const LifecycleRule_AfterDays = {
     },
 };
 
-messageTypeRegistry.set(LifecycleRule_AfterDays.$type, LifecycleRule_AfterDays);
-
-const baseLifecycleRule_NoncurrentDeleteMarkers: object = {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.NoncurrentDeleteMarkers',
-};
+const baseLifecycleRule_NoncurrentDeleteMarkers: object = {};
 
 export const LifecycleRule_NoncurrentDeleteMarkers = {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.NoncurrentDeleteMarkers' as const,
-
     encode(
         message: LifecycleRule_NoncurrentDeleteMarkers,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.noncurrentDays !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.noncurrentDays! },
+                { value: message.noncurrentDays! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
@@ -2608,25 +2481,16 @@ export const LifecycleRule_NoncurrentDeleteMarkers = {
     },
 };
 
-messageTypeRegistry.set(
-    LifecycleRule_NoncurrentDeleteMarkers.$type,
-    LifecycleRule_NoncurrentDeleteMarkers,
-);
-
-const baseLifecycleRule_NoncurrentExpiration: object = {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.NoncurrentExpiration',
-};
+const baseLifecycleRule_NoncurrentExpiration: object = {};
 
 export const LifecycleRule_NoncurrentExpiration = {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.NoncurrentExpiration' as const,
-
     encode(
         message: LifecycleRule_NoncurrentExpiration,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.noncurrentDays !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.noncurrentDays! },
+                { value: message.noncurrentDays! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
@@ -2681,26 +2545,16 @@ export const LifecycleRule_NoncurrentExpiration = {
     },
 };
 
-messageTypeRegistry.set(
-    LifecycleRule_NoncurrentExpiration.$type,
-    LifecycleRule_NoncurrentExpiration,
-);
-
-const baseLifecycleRule_NoncurrentTransition: object = {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.NoncurrentTransition',
-    storageClass: '',
-};
+const baseLifecycleRule_NoncurrentTransition: object = { storageClass: '' };
 
 export const LifecycleRule_NoncurrentTransition = {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.NoncurrentTransition' as const,
-
     encode(
         message: LifecycleRule_NoncurrentTransition,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.noncurrentDays !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.noncurrentDays! },
+                { value: message.noncurrentDays! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
@@ -2767,19 +2621,9 @@ export const LifecycleRule_NoncurrentTransition = {
     },
 };
 
-messageTypeRegistry.set(
-    LifecycleRule_NoncurrentTransition.$type,
-    LifecycleRule_NoncurrentTransition,
-);
-
-const baseLifecycleRule_Transition: object = {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.Transition',
-    storageClass: '',
-};
+const baseLifecycleRule_Transition: object = { storageClass: '' };
 
 export const LifecycleRule_Transition = {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.Transition' as const,
-
     encode(
         message: LifecycleRule_Transition,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2788,10 +2632,7 @@ export const LifecycleRule_Transition = {
             Timestamp.encode(toTimestamp(message.date), writer.uint32(10).fork()).ldelim();
         }
         if (message.days !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.days! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.days! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.storageClass !== '') {
             writer.uint32(34).string(message.storageClass);
@@ -2857,15 +2698,9 @@ export const LifecycleRule_Transition = {
     },
 };
 
-messageTypeRegistry.set(LifecycleRule_Transition.$type, LifecycleRule_Transition);
-
-const baseLifecycleRule_Expiration: object = {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.Expiration',
-};
+const baseLifecycleRule_Expiration: object = {};
 
 export const LifecycleRule_Expiration = {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.Expiration' as const,
-
     encode(
         message: LifecycleRule_Expiration,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2874,14 +2709,11 @@ export const LifecycleRule_Expiration = {
             Timestamp.encode(toTimestamp(message.date), writer.uint32(10).fork()).ldelim();
         }
         if (message.days !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.days! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.days! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.expiredObjectDeleteMarker !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.expiredObjectDeleteMarker! },
+                { value: message.expiredObjectDeleteMarker! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
@@ -2951,16 +2783,9 @@ export const LifecycleRule_Expiration = {
     },
 };
 
-messageTypeRegistry.set(LifecycleRule_Expiration.$type, LifecycleRule_Expiration);
-
-const baseLifecycleRule_RuleFilter: object = {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.RuleFilter',
-    prefix: '',
-};
+const baseLifecycleRule_RuleFilter: object = { prefix: '' };
 
 export const LifecycleRule_RuleFilter = {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.RuleFilter' as const,
-
     encode(
         message: LifecycleRule_RuleFilter,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2970,13 +2795,13 @@ export const LifecycleRule_RuleFilter = {
         }
         if (message.objectSizeGreaterThan !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.objectSizeGreaterThan! },
+                { value: message.objectSizeGreaterThan! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
         if (message.objectSizeLessThan !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.objectSizeLessThan! },
+                { value: message.objectSizeLessThan! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
@@ -3083,16 +2908,9 @@ export const LifecycleRule_RuleFilter = {
     },
 };
 
-messageTypeRegistry.set(LifecycleRule_RuleFilter.$type, LifecycleRule_RuleFilter);
-
-const baseLifecycleRule_RuleFilter_And: object = {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.RuleFilter.And',
-    prefix: '',
-};
+const baseLifecycleRule_RuleFilter_And: object = { prefix: '' };
 
 export const LifecycleRule_RuleFilter_And = {
-    $type: 'yandex.cloud.storage.v1.LifecycleRule.RuleFilter.And' as const,
-
     encode(
         message: LifecycleRule_RuleFilter_And,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3102,13 +2920,13 @@ export const LifecycleRule_RuleFilter_And = {
         }
         if (message.objectSizeGreaterThan !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.objectSizeGreaterThan! },
+                { value: message.objectSizeGreaterThan! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
         if (message.objectSizeLessThan !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.objectSizeLessThan! },
+                { value: message.objectSizeLessThan! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
@@ -3192,10 +3010,7 @@ export const LifecycleRule_RuleFilter_And = {
     },
 };
 
-messageTypeRegistry.set(LifecycleRule_RuleFilter_And.$type, LifecycleRule_RuleFilter_And);
-
 const baseCounters: object = {
-    $type: 'yandex.cloud.storage.v1.Counters',
     simpleObjectSize: 0,
     simpleObjectCount: 0,
     objectsPartsSize: 0,
@@ -3206,8 +3021,6 @@ const baseCounters: object = {
 };
 
 export const Counters = {
-    $type: 'yandex.cloud.storage.v1.Counters' as const,
-
     encode(message: Counters, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.simpleObjectSize !== 0) {
             writer.uint32(8).int64(message.simpleObjectSize);
@@ -3334,25 +3147,15 @@ export const Counters = {
     },
 };
 
-messageTypeRegistry.set(Counters.$type, Counters);
-
-const baseOptionalSizeByClass: object = {
-    $type: 'yandex.cloud.storage.v1.OptionalSizeByClass',
-    storageClass: '',
-};
+const baseOptionalSizeByClass: object = { storageClass: '' };
 
 export const OptionalSizeByClass = {
-    $type: 'yandex.cloud.storage.v1.OptionalSizeByClass' as const,
-
     encode(message: OptionalSizeByClass, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.storageClass !== '') {
             writer.uint32(10).string(message.storageClass);
         }
         if (message.classSize !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.classSize! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.classSize! }, writer.uint32(18).fork()).ldelim();
         }
         return writer;
     },
@@ -3408,17 +3211,9 @@ export const OptionalSizeByClass = {
     },
 };
 
-messageTypeRegistry.set(OptionalSizeByClass.$type, OptionalSizeByClass);
-
-const baseSizeByClass: object = {
-    $type: 'yandex.cloud.storage.v1.SizeByClass',
-    storageClass: '',
-    classSize: 0,
-};
+const baseSizeByClass: object = { storageClass: '', classSize: 0 };
 
 export const SizeByClass = {
-    $type: 'yandex.cloud.storage.v1.SizeByClass' as const,
-
     encode(message: SizeByClass, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.storageClass !== '') {
             writer.uint32(10).string(message.storageClass);
@@ -3478,16 +3273,9 @@ export const SizeByClass = {
     },
 };
 
-messageTypeRegistry.set(SizeByClass.$type, SizeByClass);
-
-const baseCountersByClass: object = {
-    $type: 'yandex.cloud.storage.v1.CountersByClass',
-    storageClass: '',
-};
+const baseCountersByClass: object = { storageClass: '' };
 
 export const CountersByClass = {
-    $type: 'yandex.cloud.storage.v1.CountersByClass' as const,
-
     encode(message: CountersByClass, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.storageClass !== '') {
             writer.uint32(10).string(message.storageClass);
@@ -3551,26 +3339,15 @@ export const CountersByClass = {
     },
 };
 
-messageTypeRegistry.set(CountersByClass.$type, CountersByClass);
-
-const baseBucketStats: object = {
-    $type: 'yandex.cloud.storage.v1.BucketStats',
-    name: '',
-    usedSize: 0,
-};
+const baseBucketStats: object = { name: '', usedSize: 0 };
 
 export const BucketStats = {
-    $type: 'yandex.cloud.storage.v1.BucketStats' as const,
-
     encode(message: BucketStats, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
         }
         if (message.maxSize !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxSize! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.maxSize! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.usedSize !== 0) {
             writer.uint32(24).int64(message.usedSize);
@@ -3586,7 +3363,7 @@ export const BucketStats = {
         }
         if (message.defaultStorageClass !== undefined) {
             StringValue.encode(
-                { $type: 'google.protobuf.StringValue', value: message.defaultStorageClass! },
+                { value: message.defaultStorageClass! },
                 writer.uint32(58).fork(),
             ).ldelim();
         }
@@ -3756,19 +3533,9 @@ export const BucketStats = {
     },
 };
 
-messageTypeRegistry.set(BucketStats.$type, BucketStats);
-
-const baseHTTPSConfig: object = {
-    $type: 'yandex.cloud.storage.v1.HTTPSConfig',
-    name: '',
-    sourceType: 0,
-    dnsNames: '',
-    certificateId: '',
-};
+const baseHTTPSConfig: object = { name: '', sourceType: 0, dnsNames: '', certificateId: '' };
 
 export const HTTPSConfig = {
-    $type: 'yandex.cloud.storage.v1.HTTPSConfig' as const,
-
     encode(message: HTTPSConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -3777,16 +3544,10 @@ export const HTTPSConfig = {
             writer.uint32(16).int32(message.sourceType);
         }
         if (message.issuer !== undefined) {
-            StringValue.encode(
-                { $type: 'google.protobuf.StringValue', value: message.issuer! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            StringValue.encode({ value: message.issuer! }, writer.uint32(26).fork()).ldelim();
         }
         if (message.subject !== undefined) {
-            StringValue.encode(
-                { $type: 'google.protobuf.StringValue', value: message.subject! },
-                writer.uint32(34).fork(),
-            ).ldelim();
+            StringValue.encode({ value: message.subject! }, writer.uint32(34).fork()).ldelim();
         }
         for (const v of message.dnsNames) {
             writer.uint32(42).string(v!);
@@ -3906,13 +3667,9 @@ export const HTTPSConfig = {
     },
 };
 
-messageTypeRegistry.set(HTTPSConfig.$type, HTTPSConfig);
-
-const baseObjectLock: object = { $type: 'yandex.cloud.storage.v1.ObjectLock', status: 0 };
+const baseObjectLock: object = { status: 0 };
 
 export const ObjectLock = {
-    $type: 'yandex.cloud.storage.v1.ObjectLock' as const,
-
     encode(message: ObjectLock, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== 0) {
             writer.uint32(16).int32(message.status);
@@ -3985,16 +3742,9 @@ export const ObjectLock = {
     },
 };
 
-messageTypeRegistry.set(ObjectLock.$type, ObjectLock);
-
-const baseObjectLock_DefaultRetention: object = {
-    $type: 'yandex.cloud.storage.v1.ObjectLock.DefaultRetention',
-    mode: 0,
-};
+const baseObjectLock_DefaultRetention: object = { mode: 0 };
 
 export const ObjectLock_DefaultRetention = {
-    $type: 'yandex.cloud.storage.v1.ObjectLock.DefaultRetention' as const,
-
     encode(
         message: ObjectLock_DefaultRetention,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4068,13 +3818,9 @@ export const ObjectLock_DefaultRetention = {
     },
 };
 
-messageTypeRegistry.set(ObjectLock_DefaultRetention.$type, ObjectLock_DefaultRetention);
-
-const baseEncryption: object = { $type: 'yandex.cloud.storage.v1.Encryption' };
+const baseEncryption: object = {};
 
 export const Encryption = {
-    $type: 'yandex.cloud.storage.v1.Encryption' as const,
-
     encode(message: Encryption, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.rules) {
             Encryption_EncryptionRule.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -4126,17 +3872,9 @@ export const Encryption = {
     },
 };
 
-messageTypeRegistry.set(Encryption.$type, Encryption);
-
-const baseEncryption_EncryptionRule: object = {
-    $type: 'yandex.cloud.storage.v1.Encryption.EncryptionRule',
-    kmsMasterKeyId: '',
-    sseAlgorithm: '',
-};
+const baseEncryption_EncryptionRule: object = { kmsMasterKeyId: '', sseAlgorithm: '' };
 
 export const Encryption_EncryptionRule = {
-    $type: 'yandex.cloud.storage.v1.Encryption.EncryptionRule' as const,
-
     encode(
         message: Encryption_EncryptionRule,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4201,17 +3939,9 @@ export const Encryption_EncryptionRule = {
     },
 };
 
-messageTypeRegistry.set(Encryption_EncryptionRule.$type, Encryption_EncryptionRule);
-
-const baseBucketAllowedPrivateEndpoints: object = {
-    $type: 'yandex.cloud.storage.v1.BucketAllowedPrivateEndpoints',
-    enabled: false,
-    privateEndpoints: '',
-};
+const baseBucketAllowedPrivateEndpoints: object = { enabled: false, privateEndpoints: '' };
 
 export const BucketAllowedPrivateEndpoints = {
-    $type: 'yandex.cloud.storage.v1.BucketAllowedPrivateEndpoints' as const,
-
     encode(
         message: BucketAllowedPrivateEndpoints,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4278,8 +4008,6 @@ export const BucketAllowedPrivateEndpoints = {
     },
 };
 
-messageTypeRegistry.set(BucketAllowedPrivateEndpoints.$type, BucketAllowedPrivateEndpoints);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -4300,21 +4028,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

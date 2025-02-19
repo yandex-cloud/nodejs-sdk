@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -54,7 +53,6 @@ export function healthToJSON(object: Health): string {
 }
 
 export interface Resources {
-    $type: 'yandex.cloud.dataproc.v1.Resources';
     /**
      * ID of the resource preset for computational resources available to a host (CPU, memory etc.).
      * All available presets are listed in the [documentation](/docs/data-proc/concepts/instance-types).
@@ -71,16 +69,9 @@ export interface Resources {
     diskSize: number;
 }
 
-const baseResources: object = {
-    $type: 'yandex.cloud.dataproc.v1.Resources',
-    resourcePresetId: '',
-    diskTypeId: '',
-    diskSize: 0,
-};
+const baseResources: object = { resourcePresetId: '', diskTypeId: '', diskSize: 0 };
 
 export const Resources = {
-    $type: 'yandex.cloud.dataproc.v1.Resources' as const,
-
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);
@@ -150,8 +141,6 @@ export const Resources = {
     },
 };
 
-messageTypeRegistry.set(Resources.$type, Resources);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -172,16 +161,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

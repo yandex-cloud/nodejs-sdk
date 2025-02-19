@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -63,7 +62,6 @@ export function formatToJSON(object: Format): string {
 }
 
 export interface Policy {
-    $type: 'yandex.cloud.backup.v1.Policy';
     /** Policy ID. */
     id: string;
     /** Policy name. */
@@ -80,7 +78,6 @@ export interface Policy {
 
 /** Set of policy settings */
 export interface PolicySettings {
-    $type: 'yandex.cloud.backup.v1.PolicySettings';
     /** Archive compression level. */
     compression: PolicySettings_Compression;
     /** Format of the Cyberprotect backup archive. */
@@ -333,7 +330,6 @@ export function policySettings_ChangedBlockTrackingToJSON(
 }
 
 export interface PolicySettings_Interval {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Interval';
     /** A type of the interval. */
     type: PolicySettings_Interval_Type;
     /** The amount of value specified in `Interval.Type`. */
@@ -403,7 +399,6 @@ export function policySettings_Interval_TypeToJSON(object: PolicySettings_Interv
 }
 
 export interface PolicySettings_RetriesConfiguration {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.RetriesConfiguration';
     /** If true, enables retry on errors. */
     enabled: boolean;
     /** An interval between retry attempts. */
@@ -416,7 +411,6 @@ export interface PolicySettings_RetriesConfiguration {
 }
 
 export interface PolicySettings_Splitting {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Splitting';
     /** The size of split backup file in bytes. */
     size: number;
 }
@@ -427,7 +421,6 @@ export interface PolicySettings_Splitting {
  * ensure the consistent state of all data used by the applications.
  */
 export interface PolicySettings_VolumeShadowCopyServiceSettings {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.VolumeShadowCopyServiceSettings';
     /** If true, the VSS will be enabled. */
     enabled: boolean;
     /** A type of VSS provider to use in backup. */
@@ -477,7 +470,6 @@ export function policySettings_VolumeShadowCopyServiceSettings_VSSProviderToJSON
 }
 
 export interface PolicySettings_ArchiveProperties {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.ArchiveProperties';
     /**
      * The name of the generated archive. The name may use the following variables: `[Machine Name]`, `[Plan ID]`, `[Plan Name]`, `[Unique ID]`, `[Virtualization Server Type]`.
      * Default value: `[Machine Name]-[Plan ID]-[Unique ID]A`.
@@ -486,13 +478,11 @@ export interface PolicySettings_ArchiveProperties {
 }
 
 export interface PolicySettings_PerformanceWindow {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.PerformanceWindow';
     /** If true, the time windows will be enabled. */
     enabled: boolean;
 }
 
 export interface PolicySettings_TimeOfDay {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.TimeOfDay';
     /** Hours. */
     hour: number;
     /** Minutes. */
@@ -500,7 +490,6 @@ export interface PolicySettings_TimeOfDay {
 }
 
 export interface PolicySettings_Retention {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Retention';
     /** A list of retention rules. */
     rules: PolicySettings_Retention_RetentionRule[];
     /** If true, retention rules will be applied before backup is finished. */
@@ -508,7 +497,6 @@ export interface PolicySettings_Retention {
 }
 
 export interface PolicySettings_Retention_RetentionRule {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Retention.RetentionRule';
     /** A list of backup sets where rules are effective. */
     backupSet: PolicySettings_RepeatePeriod[];
     maxAge?: PolicySettings_Interval | undefined;
@@ -516,7 +504,6 @@ export interface PolicySettings_Retention_RetentionRule {
 }
 
 export interface PolicySettings_Scheduling {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Scheduling';
     /** A list of schedules with backup sets that compose the whole scheme. */
     backupSets: PolicySettings_Scheduling_BackupSet[];
     /** If true, the backup schedule will be enabled. */
@@ -611,7 +598,6 @@ export function policySettings_Scheduling_SchemeToJSON(
 }
 
 export interface PolicySettings_Scheduling_BackupSet {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Scheduling.BackupSet';
     time?: PolicySettings_Scheduling_BackupSet_Time | undefined;
     sinceLastExecTime?: PolicySettings_Scheduling_BackupSet_SinceLastExecTime | undefined;
     /**
@@ -676,7 +662,6 @@ export function policySettings_Scheduling_BackupSet_TypeToJSON(
 }
 
 export interface PolicySettings_Scheduling_BackupSet_Time {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Scheduling.BackupSet.Time';
     /** Days in a week to perform a backup. */
     weekdays: PolicySettings_Day[];
     /** Time to repeat the backup. */
@@ -704,13 +689,11 @@ export interface PolicySettings_Scheduling_BackupSet_Time {
 }
 
 export interface PolicySettings_Scheduling_BackupSet_SinceLastExecTime {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Scheduling.BackupSet.SinceLastExecTime';
     /** The interval between backups. */
     delay?: PolicySettings_Interval;
 }
 
 export interface PolicyApplication {
-    $type: 'yandex.cloud.backup.v1.PolicyApplication';
     /** Policy ID. */
     policyId: string;
     /** Compute Cloud instance ID. */
@@ -769,17 +752,9 @@ export function policyApplication_StatusToJSON(object: PolicyApplication_Status)
     }
 }
 
-const basePolicy: object = {
-    $type: 'yandex.cloud.backup.v1.Policy',
-    id: '',
-    name: '',
-    enabled: false,
-    folderId: '',
-};
+const basePolicy: object = { id: '', name: '', enabled: false, folderId: '' };
 
 export const Policy = {
-    $type: 'yandex.cloud.backup.v1.Policy' as const,
-
     encode(message: Policy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -897,10 +872,7 @@ export const Policy = {
     },
 };
 
-messageTypeRegistry.set(Policy.$type, Policy);
-
 const basePolicySettings: object = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings',
     compression: 0,
     format: 0,
     multiVolumeSnapshottingEnabled: false,
@@ -912,8 +884,6 @@ const basePolicySettings: object = {
 };
 
 export const PolicySettings = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings' as const,
-
     encode(message: PolicySettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.compression !== 0) {
             writer.uint32(8).int32(message.compression);
@@ -1232,17 +1202,9 @@ export const PolicySettings = {
     },
 };
 
-messageTypeRegistry.set(PolicySettings.$type, PolicySettings);
-
-const basePolicySettings_Interval: object = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Interval',
-    type: 0,
-    count: 0,
-};
+const basePolicySettings_Interval: object = { type: 0, count: 0 };
 
 export const PolicySettings_Interval = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Interval' as const,
-
     encode(message: PolicySettings_Interval, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -1302,17 +1264,9 @@ export const PolicySettings_Interval = {
     },
 };
 
-messageTypeRegistry.set(PolicySettings_Interval.$type, PolicySettings_Interval);
-
-const basePolicySettings_RetriesConfiguration: object = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.RetriesConfiguration',
-    enabled: false,
-    maxAttempts: 0,
-};
+const basePolicySettings_RetriesConfiguration: object = { enabled: false, maxAttempts: 0 };
 
 export const PolicySettings_RetriesConfiguration = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.RetriesConfiguration' as const,
-
     encode(
         message: PolicySettings_RetriesConfiguration,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1401,19 +1355,9 @@ export const PolicySettings_RetriesConfiguration = {
     },
 };
 
-messageTypeRegistry.set(
-    PolicySettings_RetriesConfiguration.$type,
-    PolicySettings_RetriesConfiguration,
-);
-
-const basePolicySettings_Splitting: object = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Splitting',
-    size: 0,
-};
+const basePolicySettings_Splitting: object = { size: 0 };
 
 export const PolicySettings_Splitting = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Splitting' as const,
-
     encode(
         message: PolicySettings_Splitting,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1463,17 +1407,9 @@ export const PolicySettings_Splitting = {
     },
 };
 
-messageTypeRegistry.set(PolicySettings_Splitting.$type, PolicySettings_Splitting);
-
-const basePolicySettings_VolumeShadowCopyServiceSettings: object = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.VolumeShadowCopyServiceSettings',
-    enabled: false,
-    provider: 0,
-};
+const basePolicySettings_VolumeShadowCopyServiceSettings: object = { enabled: false, provider: 0 };
 
 export const PolicySettings_VolumeShadowCopyServiceSettings = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.VolumeShadowCopyServiceSettings' as const,
-
     encode(
         message: PolicySettings_VolumeShadowCopyServiceSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1552,19 +1488,9 @@ export const PolicySettings_VolumeShadowCopyServiceSettings = {
     },
 };
 
-messageTypeRegistry.set(
-    PolicySettings_VolumeShadowCopyServiceSettings.$type,
-    PolicySettings_VolumeShadowCopyServiceSettings,
-);
-
-const basePolicySettings_ArchiveProperties: object = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.ArchiveProperties',
-    name: '',
-};
+const basePolicySettings_ArchiveProperties: object = { name: '' };
 
 export const PolicySettings_ArchiveProperties = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.ArchiveProperties' as const,
-
     encode(
         message: PolicySettings_ArchiveProperties,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1620,16 +1546,9 @@ export const PolicySettings_ArchiveProperties = {
     },
 };
 
-messageTypeRegistry.set(PolicySettings_ArchiveProperties.$type, PolicySettings_ArchiveProperties);
-
-const basePolicySettings_PerformanceWindow: object = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.PerformanceWindow',
-    enabled: false,
-};
+const basePolicySettings_PerformanceWindow: object = { enabled: false };
 
 export const PolicySettings_PerformanceWindow = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.PerformanceWindow' as const,
-
     encode(
         message: PolicySettings_PerformanceWindow,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1688,17 +1607,9 @@ export const PolicySettings_PerformanceWindow = {
     },
 };
 
-messageTypeRegistry.set(PolicySettings_PerformanceWindow.$type, PolicySettings_PerformanceWindow);
-
-const basePolicySettings_TimeOfDay: object = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.TimeOfDay',
-    hour: 0,
-    minute: 0,
-};
+const basePolicySettings_TimeOfDay: object = { hour: 0, minute: 0 };
 
 export const PolicySettings_TimeOfDay = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.TimeOfDay' as const,
-
     encode(
         message: PolicySettings_TimeOfDay,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1758,16 +1669,9 @@ export const PolicySettings_TimeOfDay = {
     },
 };
 
-messageTypeRegistry.set(PolicySettings_TimeOfDay.$type, PolicySettings_TimeOfDay);
-
-const basePolicySettings_Retention: object = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Retention',
-    beforeBackup: false,
-};
+const basePolicySettings_Retention: object = { beforeBackup: false };
 
 export const PolicySettings_Retention = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Retention' as const,
-
     encode(
         message: PolicySettings_Retention,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1841,16 +1745,9 @@ export const PolicySettings_Retention = {
     },
 };
 
-messageTypeRegistry.set(PolicySettings_Retention.$type, PolicySettings_Retention);
-
-const basePolicySettings_Retention_RetentionRule: object = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Retention.RetentionRule',
-    backupSet: 0,
-};
+const basePolicySettings_Retention_RetentionRule: object = { backupSet: 0 };
 
 export const PolicySettings_Retention_RetentionRule = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Retention.RetentionRule' as const,
-
     encode(
         message: PolicySettings_Retention_RetentionRule,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1955,13 +1852,7 @@ export const PolicySettings_Retention_RetentionRule = {
     },
 };
 
-messageTypeRegistry.set(
-    PolicySettings_Retention_RetentionRule.$type,
-    PolicySettings_Retention_RetentionRule,
-);
-
 const basePolicySettings_Scheduling: object = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Scheduling',
     enabled: false,
     maxParallelBackups: 0,
     scheme: 0,
@@ -1969,8 +1860,6 @@ const basePolicySettings_Scheduling: object = {
 };
 
 export const PolicySettings_Scheduling = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Scheduling' as const,
-
     encode(
         message: PolicySettings_Scheduling,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2125,16 +2014,9 @@ export const PolicySettings_Scheduling = {
     },
 };
 
-messageTypeRegistry.set(PolicySettings_Scheduling.$type, PolicySettings_Scheduling);
-
-const basePolicySettings_Scheduling_BackupSet: object = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Scheduling.BackupSet',
-    type: 0,
-};
+const basePolicySettings_Scheduling_BackupSet: object = { type: 0 };
 
 export const PolicySettings_Scheduling_BackupSet = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Scheduling.BackupSet' as const,
-
     encode(
         message: PolicySettings_Scheduling_BackupSet,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2249,13 +2131,7 @@ export const PolicySettings_Scheduling_BackupSet = {
     },
 };
 
-messageTypeRegistry.set(
-    PolicySettings_Scheduling_BackupSet.$type,
-    PolicySettings_Scheduling_BackupSet,
-);
-
 const basePolicySettings_Scheduling_BackupSet_Time: object = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Scheduling.BackupSet.Time',
     weekdays: 0,
     monthdays: 0,
     includeLastDayOfMonth: false,
@@ -2264,8 +2140,6 @@ const basePolicySettings_Scheduling_BackupSet_Time: object = {
 };
 
 export const PolicySettings_Scheduling_BackupSet_Time = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Scheduling.BackupSet.Time' as const,
-
     encode(
         message: PolicySettings_Scheduling_BackupSet_Time,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2482,18 +2356,9 @@ export const PolicySettings_Scheduling_BackupSet_Time = {
     },
 };
 
-messageTypeRegistry.set(
-    PolicySettings_Scheduling_BackupSet_Time.$type,
-    PolicySettings_Scheduling_BackupSet_Time,
-);
-
-const basePolicySettings_Scheduling_BackupSet_SinceLastExecTime: object = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Scheduling.BackupSet.SinceLastExecTime',
-};
+const basePolicySettings_Scheduling_BackupSet_SinceLastExecTime: object = {};
 
 export const PolicySettings_Scheduling_BackupSet_SinceLastExecTime = {
-    $type: 'yandex.cloud.backup.v1.PolicySettings.Scheduling.BackupSet.SinceLastExecTime' as const,
-
     encode(
         message: PolicySettings_Scheduling_BackupSet_SinceLastExecTime,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2559,13 +2424,7 @@ export const PolicySettings_Scheduling_BackupSet_SinceLastExecTime = {
     },
 };
 
-messageTypeRegistry.set(
-    PolicySettings_Scheduling_BackupSet_SinceLastExecTime.$type,
-    PolicySettings_Scheduling_BackupSet_SinceLastExecTime,
-);
-
 const basePolicyApplication: object = {
-    $type: 'yandex.cloud.backup.v1.PolicyApplication',
     policyId: '',
     computeInstanceId: '',
     enabled: false,
@@ -2574,8 +2433,6 @@ const basePolicyApplication: object = {
 };
 
 export const PolicyApplication = {
-    $type: 'yandex.cloud.backup.v1.PolicyApplication' as const,
-
     encode(message: PolicyApplication, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -2685,8 +2542,6 @@ export const PolicyApplication = {
     },
 };
 
-messageTypeRegistry.set(PolicyApplication.$type, PolicyApplication);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -2707,21 +2562,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

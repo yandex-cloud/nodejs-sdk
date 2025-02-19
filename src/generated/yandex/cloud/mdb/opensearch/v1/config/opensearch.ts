@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Int64Value } from '../../../../../../google/protobuf/wrappers';
@@ -7,7 +6,6 @@ import { Int64Value } from '../../../../../../google/protobuf/wrappers';
 export const protobufPackage = 'yandex.cloud.mdb.opensearch.v1.config';
 
 export interface OpenSearchConfig2 {
-    $type: 'yandex.cloud.mdb.opensearch.v1.config.OpenSearchConfig2';
     /** the maximum number of allowed boolean clauses in a query */
     maxClauseCount?: number;
     /** the percentage or absolute value (10%, 512mb) of heap space that is allocated to fielddata */
@@ -16,25 +14,18 @@ export interface OpenSearchConfig2 {
 }
 
 export interface OpenSearchConfigSet2 {
-    $type: 'yandex.cloud.mdb.opensearch.v1.config.OpenSearchConfigSet2';
     effectiveConfig?: OpenSearchConfig2;
     userConfig?: OpenSearchConfig2;
     defaultConfig?: OpenSearchConfig2;
 }
 
-const baseOpenSearchConfig2: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.config.OpenSearchConfig2',
-    fielddataCacheSize: '',
-    reindexRemoteWhitelist: '',
-};
+const baseOpenSearchConfig2: object = { fielddataCacheSize: '', reindexRemoteWhitelist: '' };
 
 export const OpenSearchConfig2 = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.config.OpenSearchConfig2' as const,
-
     encode(message: OpenSearchConfig2, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxClauseCount !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxClauseCount! },
+                { value: message.maxClauseCount! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
@@ -107,15 +98,9 @@ export const OpenSearchConfig2 = {
     },
 };
 
-messageTypeRegistry.set(OpenSearchConfig2.$type, OpenSearchConfig2);
-
-const baseOpenSearchConfigSet2: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.config.OpenSearchConfigSet2',
-};
+const baseOpenSearchConfigSet2: object = {};
 
 export const OpenSearchConfigSet2 = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.config.OpenSearchConfigSet2' as const,
-
     encode(message: OpenSearchConfigSet2, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             OpenSearchConfig2.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();
@@ -207,8 +192,6 @@ export const OpenSearchConfigSet2 = {
     },
 };
 
-messageTypeRegistry.set(OpenSearchConfigSet2.$type, OpenSearchConfigSet2);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -218,16 +201,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -73,7 +72,6 @@ export function instanceGroupViewToJSON(object: InstanceGroupView): string {
 }
 
 export interface ResumeInstanceGroupProcessesRequest {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ResumeInstanceGroupProcessesRequest';
     /**
      * ID of the instance group to resume processes in.
      *
@@ -85,13 +83,11 @@ export interface ResumeInstanceGroupProcessesRequest {
 }
 
 export interface ResumeInstanceGroupProcessMetadata {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ResumeInstanceGroupProcessMetadata';
     /** ID of the instance group that processes are being resumed in. */
     instanceGroupId: string;
 }
 
 export interface PauseInstanceGroupProcessesRequest {
-    $type: 'yandex.cloud.compute.v1.instancegroup.PauseInstanceGroupProcessesRequest';
     /**
      * ID of the instance group to pause processes in.
      *
@@ -103,13 +99,11 @@ export interface PauseInstanceGroupProcessesRequest {
 }
 
 export interface PauseInstanceGroupProcessMetadata {
-    $type: 'yandex.cloud.compute.v1.instancegroup.PauseInstanceGroupProcessMetadata';
     /** ID of the instance group that processes are being paused in. */
     instanceGroupId: string;
 }
 
 export interface GetInstanceGroupRequest {
-    $type: 'yandex.cloud.compute.v1.instancegroup.GetInstanceGroupRequest';
     /**
      * ID of the InstanceGroup resource to return.
      * To get the instance group ID, use a [InstanceGroupService.List] request.
@@ -120,7 +114,6 @@ export interface GetInstanceGroupRequest {
 }
 
 export interface CreateInstanceGroupRequest {
-    $type: 'yandex.cloud.compute.v1.instancegroup.CreateInstanceGroupRequest';
     /**
      * ID of the folder to create an instance group in.
      * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -176,13 +169,11 @@ export interface CreateInstanceGroupRequest {
 }
 
 export interface CreateInstanceGroupRequest_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.instancegroup.CreateInstanceGroupRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateInstanceGroupFromYamlRequest {
-    $type: 'yandex.cloud.compute.v1.instancegroup.CreateInstanceGroupFromYamlRequest';
     /**
      * ID of the folder to create an instance group in.
      * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -193,13 +184,11 @@ export interface CreateInstanceGroupFromYamlRequest {
 }
 
 export interface CreateInstanceGroupMetadata {
-    $type: 'yandex.cloud.compute.v1.instancegroup.CreateInstanceGroupMetadata';
     /** ID of the instance group that is being created. */
     instanceGroupId: string;
 }
 
 export interface UpdateInstanceGroupRequest {
-    $type: 'yandex.cloud.compute.v1.instancegroup.UpdateInstanceGroupRequest';
     /**
      * ID of the instance group to update.
      * To get the instance group ID, use a [InstanceGroupService.List] request.
@@ -249,13 +238,11 @@ export interface UpdateInstanceGroupRequest {
 }
 
 export interface UpdateInstanceGroupRequest_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.instancegroup.UpdateInstanceGroupRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateInstanceGroupFromYamlRequest {
-    $type: 'yandex.cloud.compute.v1.instancegroup.UpdateInstanceGroupFromYamlRequest';
     /**
      * ID of the instance group to update.
      * To get the instance group ID, use a [InstanceGroupService.List] request.
@@ -266,7 +253,6 @@ export interface UpdateInstanceGroupFromYamlRequest {
 }
 
 export interface UpdateInstanceGroupMetadata {
-    $type: 'yandex.cloud.compute.v1.instancegroup.UpdateInstanceGroupMetadata';
     /**
      * ID of the InstanceGroup resource that is being updated.
      * To get the instance group ID, use a [InstanceGroupService.List] request.
@@ -275,7 +261,6 @@ export interface UpdateInstanceGroupMetadata {
 }
 
 export interface StartInstanceGroupRequest {
-    $type: 'yandex.cloud.compute.v1.instancegroup.StartInstanceGroupRequest';
     /**
      * ID of the instance group to start.
      * To get the instance group ID, use a [InstanceGroupService.List] request.
@@ -284,13 +269,11 @@ export interface StartInstanceGroupRequest {
 }
 
 export interface StartInstanceGroupMetadata {
-    $type: 'yandex.cloud.compute.v1.instancegroup.StartInstanceGroupMetadata';
     /** ID of the InstanceGroup resource that is being started. */
     instanceGroupId: string;
 }
 
 export interface StopInstanceGroupRequest {
-    $type: 'yandex.cloud.compute.v1.instancegroup.StopInstanceGroupRequest';
     /**
      * ID of the instance group to stop.
      * To get the instance group ID, use a [InstanceGroupService.List] request.
@@ -299,13 +282,11 @@ export interface StopInstanceGroupRequest {
 }
 
 export interface StopInstanceGroupMetadata {
-    $type: 'yandex.cloud.compute.v1.instancegroup.StopInstanceGroupMetadata';
     /** ID of the InstanceGroup resource that is being stopped. */
     instanceGroupId: string;
 }
 
 export interface RollingRestartRequest {
-    $type: 'yandex.cloud.compute.v1.instancegroup.RollingRestartRequest';
     /**
      * ID of the instance group to restart instances in.
      * To get the instance group ID, use a [InstanceGroupService.List] request.
@@ -319,13 +300,11 @@ export interface RollingRestartRequest {
 }
 
 export interface RollingRestartMetadata {
-    $type: 'yandex.cloud.compute.v1.instancegroup.RollingRestartMetadata';
     /** ID of the InstanceGroup resource that is being rolling restarted. */
     instanceGroupId: string;
 }
 
 export interface RollingRecreateRequest {
-    $type: 'yandex.cloud.compute.v1.instancegroup.RollingRecreateRequest';
     /**
      * ID of the instance group to recreate instances in.
      * To get the instance group ID, use a [InstanceGroupService.List] request.
@@ -339,13 +318,11 @@ export interface RollingRecreateRequest {
 }
 
 export interface RollingRecreateMetadata {
-    $type: 'yandex.cloud.compute.v1.instancegroup.RollingRecreateMetadata';
     /** ID of the InstanceGroup resource that is being rolling recreated. */
     instanceGroupId: string;
 }
 
 export interface DeleteInstanceGroupRequest {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DeleteInstanceGroupRequest';
     /**
      * ID of the instance group to delete.
      * To get the instance group ID, use a [InstanceGroupService.List] request.
@@ -354,7 +331,6 @@ export interface DeleteInstanceGroupRequest {
 }
 
 export interface DeleteInstanceGroupMetadata {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DeleteInstanceGroupMetadata';
     /**
      * ID of the instance group that is being deleted.
      * To get the instance group ID, use a [InstanceGroupService.List] request.
@@ -363,19 +339,16 @@ export interface DeleteInstanceGroupMetadata {
 }
 
 export interface DeleteInstancesMetadata {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DeleteInstancesMetadata';
     /** ID of the instance group that the instances are being deleted from. */
     instanceGroupId: string;
 }
 
 export interface StopInstancesMetadata {
-    $type: 'yandex.cloud.compute.v1.instancegroup.StopInstancesMetadata';
     /** ID of the instance group that the instances are being stopped from. */
     instanceGroupId: string;
 }
 
 export interface ListInstanceGroupsRequest {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupsRequest';
     /**
      * ID of the folder to list instance groups in.
      * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -404,7 +377,6 @@ export interface ListInstanceGroupsRequest {
 }
 
 export interface ListInstanceGroupsResponse {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupsResponse';
     /** Lists instance groups for the specified folder. */
     instanceGroups: InstanceGroup[];
     /**
@@ -419,7 +391,6 @@ export interface ListInstanceGroupsResponse {
 }
 
 export interface ListInstanceGroupInstancesRequest {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupInstancesRequest';
     /**
      * ID of the InstanceGroup resource to list instances for.
      * To get the instance group ID, use a [InstanceGroupService.List] request.
@@ -446,7 +417,6 @@ export interface ListInstanceGroupInstancesRequest {
 }
 
 export interface ListInstanceGroupInstancesResponse {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupInstancesResponse';
     /** Lists instances for the specified instance group. */
     instances: ManagedInstance[];
     /**
@@ -461,7 +431,6 @@ export interface ListInstanceGroupInstancesResponse {
 }
 
 export interface DeleteInstancesRequest {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DeleteInstancesRequest';
     /**
      * ID of the instance group that the instances are being deleted from.
      * To get the ID of the instance group, use the [InstanceGroupService.List] request.
@@ -481,7 +450,6 @@ export interface DeleteInstancesRequest {
 }
 
 export interface StopInstancesRequest {
-    $type: 'yandex.cloud.compute.v1.instancegroup.StopInstancesRequest';
     /**
      * ID of the instance group that the instances are being stopped from.
      * To get the ID of the instance group, use the [InstanceGroupService.List] request.
@@ -496,7 +464,6 @@ export interface StopInstancesRequest {
 }
 
 export interface ListInstanceGroupOperationsRequest {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupOperationsRequest';
     /**
      * ID of the InstanceGroup resource to list operations for.
      * To get the instance group ID, use a [InstanceGroupService.List] request.
@@ -521,7 +488,6 @@ export interface ListInstanceGroupOperationsRequest {
 }
 
 export interface ListInstanceGroupOperationsResponse {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupOperationsResponse';
     /** Lists operations for the specified instance group. */
     operations: Operation[];
     /**
@@ -534,7 +500,6 @@ export interface ListInstanceGroupOperationsResponse {
 }
 
 export interface ListInstanceGroupLogRecordsRequest {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupLogRecordsRequest';
     /**
      * ID of the InstanceGroup resource to list logs for.
      * To get the instance group ID, use a [InstanceGroupService.List] request.
@@ -561,7 +526,6 @@ export interface ListInstanceGroupLogRecordsRequest {
 }
 
 export interface ListInstanceGroupLogRecordsResponse {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupLogRecordsResponse';
     /** Lists logs for the specified instance group. */
     logRecords: LogRecord[];
     /**
@@ -575,14 +539,9 @@ export interface ListInstanceGroupLogRecordsResponse {
     nextPageToken: string;
 }
 
-const baseResumeInstanceGroupProcessesRequest: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ResumeInstanceGroupProcessesRequest',
-    instanceGroupId: '',
-};
+const baseResumeInstanceGroupProcessesRequest: object = { instanceGroupId: '' };
 
 export const ResumeInstanceGroupProcessesRequest = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ResumeInstanceGroupProcessesRequest' as const,
-
     encode(
         message: ResumeInstanceGroupProcessesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -641,19 +600,9 @@ export const ResumeInstanceGroupProcessesRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    ResumeInstanceGroupProcessesRequest.$type,
-    ResumeInstanceGroupProcessesRequest,
-);
-
-const baseResumeInstanceGroupProcessMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ResumeInstanceGroupProcessMetadata',
-    instanceGroupId: '',
-};
+const baseResumeInstanceGroupProcessMetadata: object = { instanceGroupId: '' };
 
 export const ResumeInstanceGroupProcessMetadata = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ResumeInstanceGroupProcessMetadata' as const,
-
     encode(
         message: ResumeInstanceGroupProcessMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -712,19 +661,9 @@ export const ResumeInstanceGroupProcessMetadata = {
     },
 };
 
-messageTypeRegistry.set(
-    ResumeInstanceGroupProcessMetadata.$type,
-    ResumeInstanceGroupProcessMetadata,
-);
-
-const basePauseInstanceGroupProcessesRequest: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.PauseInstanceGroupProcessesRequest',
-    instanceGroupId: '',
-};
+const basePauseInstanceGroupProcessesRequest: object = { instanceGroupId: '' };
 
 export const PauseInstanceGroupProcessesRequest = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.PauseInstanceGroupProcessesRequest' as const,
-
     encode(
         message: PauseInstanceGroupProcessesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -783,19 +722,9 @@ export const PauseInstanceGroupProcessesRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    PauseInstanceGroupProcessesRequest.$type,
-    PauseInstanceGroupProcessesRequest,
-);
-
-const basePauseInstanceGroupProcessMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.PauseInstanceGroupProcessMetadata',
-    instanceGroupId: '',
-};
+const basePauseInstanceGroupProcessMetadata: object = { instanceGroupId: '' };
 
 export const PauseInstanceGroupProcessMetadata = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.PauseInstanceGroupProcessMetadata' as const,
-
     encode(
         message: PauseInstanceGroupProcessMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -854,17 +783,9 @@ export const PauseInstanceGroupProcessMetadata = {
     },
 };
 
-messageTypeRegistry.set(PauseInstanceGroupProcessMetadata.$type, PauseInstanceGroupProcessMetadata);
-
-const baseGetInstanceGroupRequest: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.GetInstanceGroupRequest',
-    instanceGroupId: '',
-    view: 0,
-};
+const baseGetInstanceGroupRequest: object = { instanceGroupId: '', view: 0 };
 
 export const GetInstanceGroupRequest = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.GetInstanceGroupRequest' as const,
-
     encode(message: GetInstanceGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceGroupId !== '') {
             writer.uint32(10).string(message.instanceGroupId);
@@ -926,10 +847,7 @@ export const GetInstanceGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(GetInstanceGroupRequest.$type, GetInstanceGroupRequest);
-
 const baseCreateInstanceGroupRequest: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.CreateInstanceGroupRequest',
     folderId: '',
     name: '',
     description: '',
@@ -938,8 +856,6 @@ const baseCreateInstanceGroupRequest: object = {
 };
 
 export const CreateInstanceGroupRequest = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.CreateInstanceGroupRequest' as const,
-
     encode(
         message: CreateInstanceGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -955,11 +871,7 @@ export const CreateInstanceGroupRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateInstanceGroupRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.compute.v1.instancegroup.CreateInstanceGroupRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -1228,17 +1140,9 @@ export const CreateInstanceGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateInstanceGroupRequest.$type, CreateInstanceGroupRequest);
-
-const baseCreateInstanceGroupRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.CreateInstanceGroupRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateInstanceGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateInstanceGroupRequest_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.CreateInstanceGroupRequest.LabelsEntry' as const,
-
     encode(
         message: CreateInstanceGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1307,20 +1211,9 @@ export const CreateInstanceGroupRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateInstanceGroupRequest_LabelsEntry.$type,
-    CreateInstanceGroupRequest_LabelsEntry,
-);
-
-const baseCreateInstanceGroupFromYamlRequest: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.CreateInstanceGroupFromYamlRequest',
-    folderId: '',
-    instanceGroupYaml: '',
-};
+const baseCreateInstanceGroupFromYamlRequest: object = { folderId: '', instanceGroupYaml: '' };
 
 export const CreateInstanceGroupFromYamlRequest = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.CreateInstanceGroupFromYamlRequest' as const,
-
     encode(
         message: CreateInstanceGroupFromYamlRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1392,19 +1285,9 @@ export const CreateInstanceGroupFromYamlRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateInstanceGroupFromYamlRequest.$type,
-    CreateInstanceGroupFromYamlRequest,
-);
-
-const baseCreateInstanceGroupMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.CreateInstanceGroupMetadata',
-    instanceGroupId: '',
-};
+const baseCreateInstanceGroupMetadata: object = { instanceGroupId: '' };
 
 export const CreateInstanceGroupMetadata = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.CreateInstanceGroupMetadata' as const,
-
     encode(
         message: CreateInstanceGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1457,10 +1340,7 @@ export const CreateInstanceGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateInstanceGroupMetadata.$type, CreateInstanceGroupMetadata);
-
 const baseUpdateInstanceGroupRequest: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.UpdateInstanceGroupRequest',
     instanceGroupId: '',
     name: '',
     description: '',
@@ -1469,8 +1349,6 @@ const baseUpdateInstanceGroupRequest: object = {
 };
 
 export const UpdateInstanceGroupRequest = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.UpdateInstanceGroupRequest' as const,
-
     encode(
         message: UpdateInstanceGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1489,11 +1367,7 @@ export const UpdateInstanceGroupRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateInstanceGroupRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.compute.v1.instancegroup.UpdateInstanceGroupRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -1777,17 +1651,9 @@ export const UpdateInstanceGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateInstanceGroupRequest.$type, UpdateInstanceGroupRequest);
-
-const baseUpdateInstanceGroupRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.UpdateInstanceGroupRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateInstanceGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateInstanceGroupRequest_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.UpdateInstanceGroupRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateInstanceGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1856,20 +1722,12 @@ export const UpdateInstanceGroupRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateInstanceGroupRequest_LabelsEntry.$type,
-    UpdateInstanceGroupRequest_LabelsEntry,
-);
-
 const baseUpdateInstanceGroupFromYamlRequest: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.UpdateInstanceGroupFromYamlRequest',
     instanceGroupId: '',
     instanceGroupYaml: '',
 };
 
 export const UpdateInstanceGroupFromYamlRequest = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.UpdateInstanceGroupFromYamlRequest' as const,
-
     encode(
         message: UpdateInstanceGroupFromYamlRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1941,19 +1799,9 @@ export const UpdateInstanceGroupFromYamlRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateInstanceGroupFromYamlRequest.$type,
-    UpdateInstanceGroupFromYamlRequest,
-);
-
-const baseUpdateInstanceGroupMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.UpdateInstanceGroupMetadata',
-    instanceGroupId: '',
-};
+const baseUpdateInstanceGroupMetadata: object = { instanceGroupId: '' };
 
 export const UpdateInstanceGroupMetadata = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.UpdateInstanceGroupMetadata' as const,
-
     encode(
         message: UpdateInstanceGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2006,16 +1854,9 @@ export const UpdateInstanceGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateInstanceGroupMetadata.$type, UpdateInstanceGroupMetadata);
-
-const baseStartInstanceGroupRequest: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.StartInstanceGroupRequest',
-    instanceGroupId: '',
-};
+const baseStartInstanceGroupRequest: object = { instanceGroupId: '' };
 
 export const StartInstanceGroupRequest = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.StartInstanceGroupRequest' as const,
-
     encode(
         message: StartInstanceGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2068,16 +1909,9 @@ export const StartInstanceGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(StartInstanceGroupRequest.$type, StartInstanceGroupRequest);
-
-const baseStartInstanceGroupMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.StartInstanceGroupMetadata',
-    instanceGroupId: '',
-};
+const baseStartInstanceGroupMetadata: object = { instanceGroupId: '' };
 
 export const StartInstanceGroupMetadata = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.StartInstanceGroupMetadata' as const,
-
     encode(
         message: StartInstanceGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2130,16 +1964,9 @@ export const StartInstanceGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(StartInstanceGroupMetadata.$type, StartInstanceGroupMetadata);
-
-const baseStopInstanceGroupRequest: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.StopInstanceGroupRequest',
-    instanceGroupId: '',
-};
+const baseStopInstanceGroupRequest: object = { instanceGroupId: '' };
 
 export const StopInstanceGroupRequest = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.StopInstanceGroupRequest' as const,
-
     encode(
         message: StopInstanceGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2192,16 +2019,9 @@ export const StopInstanceGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(StopInstanceGroupRequest.$type, StopInstanceGroupRequest);
-
-const baseStopInstanceGroupMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.StopInstanceGroupMetadata',
-    instanceGroupId: '',
-};
+const baseStopInstanceGroupMetadata: object = { instanceGroupId: '' };
 
 export const StopInstanceGroupMetadata = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.StopInstanceGroupMetadata' as const,
-
     encode(
         message: StopInstanceGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2254,17 +2074,9 @@ export const StopInstanceGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(StopInstanceGroupMetadata.$type, StopInstanceGroupMetadata);
-
-const baseRollingRestartRequest: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.RollingRestartRequest',
-    instanceGroupId: '',
-    managedInstanceIds: '',
-};
+const baseRollingRestartRequest: object = { instanceGroupId: '', managedInstanceIds: '' };
 
 export const RollingRestartRequest = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.RollingRestartRequest' as const,
-
     encode(message: RollingRestartRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceGroupId !== '') {
             writer.uint32(10).string(message.instanceGroupId);
@@ -2328,16 +2140,9 @@ export const RollingRestartRequest = {
     },
 };
 
-messageTypeRegistry.set(RollingRestartRequest.$type, RollingRestartRequest);
-
-const baseRollingRestartMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.RollingRestartMetadata',
-    instanceGroupId: '',
-};
+const baseRollingRestartMetadata: object = { instanceGroupId: '' };
 
 export const RollingRestartMetadata = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.RollingRestartMetadata' as const,
-
     encode(message: RollingRestartMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceGroupId !== '') {
             writer.uint32(10).string(message.instanceGroupId);
@@ -2387,17 +2192,9 @@ export const RollingRestartMetadata = {
     },
 };
 
-messageTypeRegistry.set(RollingRestartMetadata.$type, RollingRestartMetadata);
-
-const baseRollingRecreateRequest: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.RollingRecreateRequest',
-    instanceGroupId: '',
-    managedInstanceIds: '',
-};
+const baseRollingRecreateRequest: object = { instanceGroupId: '', managedInstanceIds: '' };
 
 export const RollingRecreateRequest = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.RollingRecreateRequest' as const,
-
     encode(message: RollingRecreateRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceGroupId !== '') {
             writer.uint32(10).string(message.instanceGroupId);
@@ -2461,16 +2258,9 @@ export const RollingRecreateRequest = {
     },
 };
 
-messageTypeRegistry.set(RollingRecreateRequest.$type, RollingRecreateRequest);
-
-const baseRollingRecreateMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.RollingRecreateMetadata',
-    instanceGroupId: '',
-};
+const baseRollingRecreateMetadata: object = { instanceGroupId: '' };
 
 export const RollingRecreateMetadata = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.RollingRecreateMetadata' as const,
-
     encode(message: RollingRecreateMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceGroupId !== '') {
             writer.uint32(10).string(message.instanceGroupId);
@@ -2520,16 +2310,9 @@ export const RollingRecreateMetadata = {
     },
 };
 
-messageTypeRegistry.set(RollingRecreateMetadata.$type, RollingRecreateMetadata);
-
-const baseDeleteInstanceGroupRequest: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DeleteInstanceGroupRequest',
-    instanceGroupId: '',
-};
+const baseDeleteInstanceGroupRequest: object = { instanceGroupId: '' };
 
 export const DeleteInstanceGroupRequest = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DeleteInstanceGroupRequest' as const,
-
     encode(
         message: DeleteInstanceGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2582,16 +2365,9 @@ export const DeleteInstanceGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteInstanceGroupRequest.$type, DeleteInstanceGroupRequest);
-
-const baseDeleteInstanceGroupMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DeleteInstanceGroupMetadata',
-    instanceGroupId: '',
-};
+const baseDeleteInstanceGroupMetadata: object = { instanceGroupId: '' };
 
 export const DeleteInstanceGroupMetadata = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DeleteInstanceGroupMetadata' as const,
-
     encode(
         message: DeleteInstanceGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2644,16 +2420,9 @@ export const DeleteInstanceGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteInstanceGroupMetadata.$type, DeleteInstanceGroupMetadata);
-
-const baseDeleteInstancesMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DeleteInstancesMetadata',
-    instanceGroupId: '',
-};
+const baseDeleteInstancesMetadata: object = { instanceGroupId: '' };
 
 export const DeleteInstancesMetadata = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DeleteInstancesMetadata' as const,
-
     encode(message: DeleteInstancesMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceGroupId !== '') {
             writer.uint32(10).string(message.instanceGroupId);
@@ -2703,16 +2472,9 @@ export const DeleteInstancesMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteInstancesMetadata.$type, DeleteInstancesMetadata);
-
-const baseStopInstancesMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.StopInstancesMetadata',
-    instanceGroupId: '',
-};
+const baseStopInstancesMetadata: object = { instanceGroupId: '' };
 
 export const StopInstancesMetadata = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.StopInstancesMetadata' as const,
-
     encode(message: StopInstancesMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceGroupId !== '') {
             writer.uint32(10).string(message.instanceGroupId);
@@ -2762,10 +2524,7 @@ export const StopInstancesMetadata = {
     },
 };
 
-messageTypeRegistry.set(StopInstancesMetadata.$type, StopInstancesMetadata);
-
 const baseListInstanceGroupsRequest: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupsRequest',
     folderId: '',
     pageSize: 0,
     pageToken: '',
@@ -2774,8 +2533,6 @@ const baseListInstanceGroupsRequest: object = {
 };
 
 export const ListInstanceGroupsRequest = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupsRequest' as const,
-
     encode(
         message: ListInstanceGroupsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2872,16 +2629,9 @@ export const ListInstanceGroupsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListInstanceGroupsRequest.$type, ListInstanceGroupsRequest);
-
-const baseListInstanceGroupsResponse: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupsResponse',
-    nextPageToken: '',
-};
+const baseListInstanceGroupsResponse: object = { nextPageToken: '' };
 
 export const ListInstanceGroupsResponse = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupsResponse' as const,
-
     encode(
         message: ListInstanceGroupsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2953,10 +2703,7 @@ export const ListInstanceGroupsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListInstanceGroupsResponse.$type, ListInstanceGroupsResponse);
-
 const baseListInstanceGroupInstancesRequest: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupInstancesRequest',
     instanceGroupId: '',
     pageSize: 0,
     pageToken: '',
@@ -2964,8 +2711,6 @@ const baseListInstanceGroupInstancesRequest: object = {
 };
 
 export const ListInstanceGroupInstancesRequest = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupInstancesRequest' as const,
-
     encode(
         message: ListInstanceGroupInstancesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3056,16 +2801,9 @@ export const ListInstanceGroupInstancesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListInstanceGroupInstancesRequest.$type, ListInstanceGroupInstancesRequest);
-
-const baseListInstanceGroupInstancesResponse: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupInstancesResponse',
-    nextPageToken: '',
-};
+const baseListInstanceGroupInstancesResponse: object = { nextPageToken: '' };
 
 export const ListInstanceGroupInstancesResponse = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupInstancesResponse' as const,
-
     encode(
         message: ListInstanceGroupInstancesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3140,21 +2878,13 @@ export const ListInstanceGroupInstancesResponse = {
     },
 };
 
-messageTypeRegistry.set(
-    ListInstanceGroupInstancesResponse.$type,
-    ListInstanceGroupInstancesResponse,
-);
-
 const baseDeleteInstancesRequest: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DeleteInstancesRequest',
     instanceGroupId: '',
     managedInstanceIds: '',
     createAnother: false,
 };
 
 export const DeleteInstancesRequest = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DeleteInstancesRequest' as const,
-
     encode(message: DeleteInstancesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceGroupId !== '') {
             writer.uint32(10).string(message.instanceGroupId);
@@ -3230,17 +2960,9 @@ export const DeleteInstancesRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteInstancesRequest.$type, DeleteInstancesRequest);
-
-const baseStopInstancesRequest: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.StopInstancesRequest',
-    instanceGroupId: '',
-    managedInstanceIds: '',
-};
+const baseStopInstancesRequest: object = { instanceGroupId: '', managedInstanceIds: '' };
 
 export const StopInstancesRequest = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.StopInstancesRequest' as const,
-
     encode(message: StopInstancesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceGroupId !== '') {
             writer.uint32(10).string(message.instanceGroupId);
@@ -3304,10 +3026,7 @@ export const StopInstancesRequest = {
     },
 };
 
-messageTypeRegistry.set(StopInstancesRequest.$type, StopInstancesRequest);
-
 const baseListInstanceGroupOperationsRequest: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupOperationsRequest',
     instanceGroupId: '',
     pageSize: 0,
     pageToken: '',
@@ -3315,8 +3034,6 @@ const baseListInstanceGroupOperationsRequest: object = {
 };
 
 export const ListInstanceGroupOperationsRequest = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupOperationsRequest' as const,
-
     encode(
         message: ListInstanceGroupOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3407,19 +3124,9 @@ export const ListInstanceGroupOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    ListInstanceGroupOperationsRequest.$type,
-    ListInstanceGroupOperationsRequest,
-);
-
-const baseListInstanceGroupOperationsResponse: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupOperationsResponse',
-    nextPageToken: '',
-};
+const baseListInstanceGroupOperationsResponse: object = { nextPageToken: '' };
 
 export const ListInstanceGroupOperationsResponse = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupOperationsResponse' as const,
-
     encode(
         message: ListInstanceGroupOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3492,13 +3199,7 @@ export const ListInstanceGroupOperationsResponse = {
     },
 };
 
-messageTypeRegistry.set(
-    ListInstanceGroupOperationsResponse.$type,
-    ListInstanceGroupOperationsResponse,
-);
-
 const baseListInstanceGroupLogRecordsRequest: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupLogRecordsRequest',
     instanceGroupId: '',
     pageSize: 0,
     pageToken: '',
@@ -3506,8 +3207,6 @@ const baseListInstanceGroupLogRecordsRequest: object = {
 };
 
 export const ListInstanceGroupLogRecordsRequest = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupLogRecordsRequest' as const,
-
     encode(
         message: ListInstanceGroupLogRecordsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3598,19 +3297,9 @@ export const ListInstanceGroupLogRecordsRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    ListInstanceGroupLogRecordsRequest.$type,
-    ListInstanceGroupLogRecordsRequest,
-);
-
-const baseListInstanceGroupLogRecordsResponse: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupLogRecordsResponse',
-    nextPageToken: '',
-};
+const baseListInstanceGroupLogRecordsResponse: object = { nextPageToken: '' };
 
 export const ListInstanceGroupLogRecordsResponse = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ListInstanceGroupLogRecordsResponse' as const,
-
     encode(
         message: ListInstanceGroupLogRecordsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3682,11 +3371,6 @@ export const ListInstanceGroupLogRecordsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(
-    ListInstanceGroupLogRecordsResponse.$type,
-    ListInstanceGroupLogRecordsResponse,
-);
 
 /** A set of methods for managing InstanceGroup resources. */
 export const InstanceGroupServiceService = {
@@ -4465,16 +4149,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

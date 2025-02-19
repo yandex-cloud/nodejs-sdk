@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -36,7 +35,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.ai.tuning.v1';
 
 export interface ListTuningsRequest {
-    $type: 'yandex.cloud.ai.tuning.v1.ListTuningsRequest';
     /** Required field. ID of the folder to list tunings in. */
     folderId: string;
     /** Maximum number of tuning tasks to return per page. */
@@ -47,7 +45,6 @@ export interface ListTuningsRequest {
 }
 
 export interface ListTuningsResponse {
-    $type: 'yandex.cloud.ai.tuning.v1.ListTuningsResponse';
     /** List of tuning tasks in the specified folder. */
     tuningTasks: TuningTask[];
     /** Token to retrieve the next page of results. */
@@ -55,34 +52,28 @@ export interface ListTuningsResponse {
 }
 
 export interface DescribeTuningRequest {
-    $type: 'yandex.cloud.ai.tuning.v1.DescribeTuningRequest';
     tuningTaskId: string;
 }
 
 export interface DescribeTuningResponse {
-    $type: 'yandex.cloud.ai.tuning.v1.DescribeTuningResponse';
     tuningTask?: TuningTask;
 }
 
 export interface CancelTuningRequest {
-    $type: 'yandex.cloud.ai.tuning.v1.CancelTuningRequest';
     tuningTaskId: string;
 }
 
 export interface CancelTuningResponse {
-    $type: 'yandex.cloud.ai.tuning.v1.CancelTuningResponse';
     tuningTaskId: string;
 }
 
 export interface TuningResponse {
-    $type: 'yandex.cloud.ai.tuning.v1.TuningResponse';
     tuningTaskId: string;
     status: TuningTask_Status;
     targetModelUri: string;
 }
 
 export interface TuningMetadata {
-    $type: 'yandex.cloud.ai.tuning.v1.TuningMetadata';
     tuningTaskId: string;
     status: TuningTask_Status;
     totalSteps: number;
@@ -90,7 +81,6 @@ export interface TuningMetadata {
 }
 
 export interface TuningRequest {
-    $type: 'yandex.cloud.ai.tuning.v1.TuningRequest';
     /** Format like a `gpt://{folder_id}/yandex-gpt/latest` */
     baseModelUri: string;
     trainDatasets: TuningRequest_WeightedDataset[];
@@ -108,19 +98,16 @@ export interface TuningRequest {
 }
 
 export interface TuningRequest_LabelsEntry {
-    $type: 'yandex.cloud.ai.tuning.v1.TuningRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface TuningRequest_WeightedDataset {
-    $type: 'yandex.cloud.ai.tuning.v1.TuningRequest.WeightedDataset';
     datasetId: string;
     weight: number;
 }
 
 export interface TextToTextCompletionTuningParams {
-    $type: 'yandex.cloud.ai.tuning.v1.TextToTextCompletionTuningParams';
     seed: number;
     lr: number;
     nSamples: number;
@@ -132,7 +119,6 @@ export interface TextToTextCompletionTuningParams {
 }
 
 export interface TextToTextCompletionTuningParams_Scheduler {
-    $type: 'yandex.cloud.ai.tuning.v1.TextToTextCompletionTuningParams.Scheduler';
     linear?: SchedulerLinear | undefined;
     constant?: SchedulerConstant | undefined;
     cosine?: SchedulerCosine | undefined;
@@ -140,12 +126,10 @@ export interface TextToTextCompletionTuningParams_Scheduler {
 }
 
 export interface TextToTextCompletionTuningParams_Optimizer {
-    $type: 'yandex.cloud.ai.tuning.v1.TextToTextCompletionTuningParams.Optimizer';
     adamw?: OptimizerAdamw | undefined;
 }
 
 export interface TextClassificationMultilabelParams {
-    $type: 'yandex.cloud.ai.tuning.v1.TextClassificationMultilabelParams';
     seed: number;
     lr: number;
     nSamples: number;
@@ -157,7 +141,6 @@ export interface TextClassificationMultilabelParams {
 }
 
 export interface TextClassificationMultilabelParams_Scheduler {
-    $type: 'yandex.cloud.ai.tuning.v1.TextClassificationMultilabelParams.Scheduler';
     linear?: SchedulerLinear | undefined;
     constant?: SchedulerConstant | undefined;
     cosine?: SchedulerCosine | undefined;
@@ -165,12 +148,10 @@ export interface TextClassificationMultilabelParams_Scheduler {
 }
 
 export interface TextClassificationMultilabelParams_Optimizer {
-    $type: 'yandex.cloud.ai.tuning.v1.TextClassificationMultilabelParams.Optimizer';
     adamw?: OptimizerAdamw | undefined;
 }
 
 export interface TextClassificationMulticlassParams {
-    $type: 'yandex.cloud.ai.tuning.v1.TextClassificationMulticlassParams';
     seed: number;
     lr: number;
     nSamples: number;
@@ -182,7 +163,6 @@ export interface TextClassificationMulticlassParams {
 }
 
 export interface TextClassificationMulticlassParams_Scheduler {
-    $type: 'yandex.cloud.ai.tuning.v1.TextClassificationMulticlassParams.Scheduler';
     linear?: SchedulerLinear | undefined;
     constant?: SchedulerConstant | undefined;
     cosine?: SchedulerCosine | undefined;
@@ -190,12 +170,10 @@ export interface TextClassificationMulticlassParams_Scheduler {
 }
 
 export interface TextClassificationMulticlassParams_Optimizer {
-    $type: 'yandex.cloud.ai.tuning.v1.TextClassificationMulticlassParams.Optimizer';
     adamw?: OptimizerAdamw | undefined;
 }
 
 export interface TextEmbeddingPairParams {
-    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingPairParams';
     seed: number;
     lr: number;
     nSamples: number;
@@ -208,7 +186,6 @@ export interface TextEmbeddingPairParams {
 }
 
 export interface TextEmbeddingPairParams_Scheduler {
-    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingPairParams.Scheduler';
     linear?: SchedulerLinear | undefined;
     constant?: SchedulerConstant | undefined;
     cosine?: SchedulerCosine | undefined;
@@ -216,12 +193,10 @@ export interface TextEmbeddingPairParams_Scheduler {
 }
 
 export interface TextEmbeddingPairParams_Optimizer {
-    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingPairParams.Optimizer';
     adamw?: OptimizerAdamw | undefined;
 }
 
 export interface TextEmbeddingTripletParams {
-    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingTripletParams';
     seed: number;
     lr: number;
     nSamples: number;
@@ -234,7 +209,6 @@ export interface TextEmbeddingTripletParams {
 }
 
 export interface TextEmbeddingTripletParams_Scheduler {
-    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingTripletParams.Scheduler';
     linear?: SchedulerLinear | undefined;
     constant?: SchedulerConstant | undefined;
     cosine?: SchedulerCosine | undefined;
@@ -242,27 +216,22 @@ export interface TextEmbeddingTripletParams_Scheduler {
 }
 
 export interface TextEmbeddingTripletParams_Optimizer {
-    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingTripletParams.Optimizer';
     adamw?: OptimizerAdamw | undefined;
 }
 
 export interface GetMetricsUrlRequest {
-    $type: 'yandex.cloud.ai.tuning.v1.GetMetricsUrlRequest';
     taskId: string;
 }
 
 export interface GetMetricsUrlResponse {
-    $type: 'yandex.cloud.ai.tuning.v1.GetMetricsUrlResponse';
     loadUrl: string;
 }
 
 export interface GetOptionsRequest {
-    $type: 'yandex.cloud.ai.tuning.v1.GetOptionsRequest';
     taskId: string;
 }
 
 export interface GetOptionsResponse {
-    $type: 'yandex.cloud.ai.tuning.v1.GetOptionsResponse';
     taskId: string;
     baseModelUri: string;
     trainDatasets: TuningRequest_WeightedDataset[];
@@ -273,26 +242,16 @@ export interface GetOptionsResponse {
 }
 
 export interface ListErrorsRequest {
-    $type: 'yandex.cloud.ai.tuning.v1.ListErrorsRequest';
     tuningTaskId: string;
 }
 
 export interface ListErrorsResponse {
-    $type: 'yandex.cloud.ai.tuning.v1.ListErrorsResponse';
     tuningError: TuningError[];
 }
 
-const baseListTuningsRequest: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.ListTuningsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    status: 0,
-};
+const baseListTuningsRequest: object = { folderId: '', pageSize: 0, pageToken: '', status: 0 };
 
 export const ListTuningsRequest = {
-    $type: 'yandex.cloud.ai.tuning.v1.ListTuningsRequest' as const,
-
     encode(message: ListTuningsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -376,16 +335,9 @@ export const ListTuningsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListTuningsRequest.$type, ListTuningsRequest);
-
-const baseListTuningsResponse: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.ListTuningsResponse',
-    nextPageToken: '',
-};
+const baseListTuningsResponse: object = { nextPageToken: '' };
 
 export const ListTuningsResponse = {
-    $type: 'yandex.cloud.ai.tuning.v1.ListTuningsResponse' as const,
-
     encode(message: ListTuningsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.tuningTasks) {
             TuningTask.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -451,16 +403,9 @@ export const ListTuningsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListTuningsResponse.$type, ListTuningsResponse);
-
-const baseDescribeTuningRequest: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.DescribeTuningRequest',
-    tuningTaskId: '',
-};
+const baseDescribeTuningRequest: object = { tuningTaskId: '' };
 
 export const DescribeTuningRequest = {
-    $type: 'yandex.cloud.ai.tuning.v1.DescribeTuningRequest' as const,
-
     encode(message: DescribeTuningRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tuningTaskId !== '') {
             writer.uint32(10).string(message.tuningTaskId);
@@ -510,15 +455,9 @@ export const DescribeTuningRequest = {
     },
 };
 
-messageTypeRegistry.set(DescribeTuningRequest.$type, DescribeTuningRequest);
-
-const baseDescribeTuningResponse: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.DescribeTuningResponse',
-};
+const baseDescribeTuningResponse: object = {};
 
 export const DescribeTuningResponse = {
-    $type: 'yandex.cloud.ai.tuning.v1.DescribeTuningResponse' as const,
-
     encode(message: DescribeTuningResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tuningTask !== undefined) {
             TuningTask.encode(message.tuningTask, writer.uint32(10).fork()).ldelim();
@@ -574,16 +513,9 @@ export const DescribeTuningResponse = {
     },
 };
 
-messageTypeRegistry.set(DescribeTuningResponse.$type, DescribeTuningResponse);
-
-const baseCancelTuningRequest: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.CancelTuningRequest',
-    tuningTaskId: '',
-};
+const baseCancelTuningRequest: object = { tuningTaskId: '' };
 
 export const CancelTuningRequest = {
-    $type: 'yandex.cloud.ai.tuning.v1.CancelTuningRequest' as const,
-
     encode(message: CancelTuningRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tuningTaskId !== '') {
             writer.uint32(10).string(message.tuningTaskId);
@@ -633,16 +565,9 @@ export const CancelTuningRequest = {
     },
 };
 
-messageTypeRegistry.set(CancelTuningRequest.$type, CancelTuningRequest);
-
-const baseCancelTuningResponse: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.CancelTuningResponse',
-    tuningTaskId: '',
-};
+const baseCancelTuningResponse: object = { tuningTaskId: '' };
 
 export const CancelTuningResponse = {
-    $type: 'yandex.cloud.ai.tuning.v1.CancelTuningResponse' as const,
-
     encode(message: CancelTuningResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tuningTaskId !== '') {
             writer.uint32(10).string(message.tuningTaskId);
@@ -692,18 +617,9 @@ export const CancelTuningResponse = {
     },
 };
 
-messageTypeRegistry.set(CancelTuningResponse.$type, CancelTuningResponse);
-
-const baseTuningResponse: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TuningResponse',
-    tuningTaskId: '',
-    status: 0,
-    targetModelUri: '',
-};
+const baseTuningResponse: object = { tuningTaskId: '', status: 0, targetModelUri: '' };
 
 export const TuningResponse = {
-    $type: 'yandex.cloud.ai.tuning.v1.TuningResponse' as const,
-
     encode(message: TuningResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tuningTaskId !== '') {
             writer.uint32(26).string(message.tuningTaskId);
@@ -775,19 +691,9 @@ export const TuningResponse = {
     },
 };
 
-messageTypeRegistry.set(TuningResponse.$type, TuningResponse);
-
-const baseTuningMetadata: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TuningMetadata',
-    tuningTaskId: '',
-    status: 0,
-    totalSteps: 0,
-    currentStep: 0,
-};
+const baseTuningMetadata: object = { tuningTaskId: '', status: 0, totalSteps: 0, currentStep: 0 };
 
 export const TuningMetadata = {
-    $type: 'yandex.cloud.ai.tuning.v1.TuningMetadata' as const,
-
     encode(message: TuningMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tuningTaskId !== '') {
             writer.uint32(10).string(message.tuningTaskId);
@@ -871,18 +777,9 @@ export const TuningMetadata = {
     },
 };
 
-messageTypeRegistry.set(TuningMetadata.$type, TuningMetadata);
-
-const baseTuningRequest: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TuningRequest',
-    baseModelUri: '',
-    name: '',
-    description: '',
-};
+const baseTuningRequest: object = { baseModelUri: '', name: '', description: '' };
 
 export const TuningRequest = {
-    $type: 'yandex.cloud.ai.tuning.v1.TuningRequest' as const,
-
     encode(message: TuningRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.baseModelUri !== '') {
             writer.uint32(10).string(message.baseModelUri);
@@ -931,11 +828,7 @@ export const TuningRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             TuningRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.tuning.v1.TuningRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(1618).fork(),
             ).ldelim();
         });
@@ -1159,17 +1052,9 @@ export const TuningRequest = {
     },
 };
 
-messageTypeRegistry.set(TuningRequest.$type, TuningRequest);
-
-const baseTuningRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TuningRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseTuningRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const TuningRequest_LabelsEntry = {
-    $type: 'yandex.cloud.ai.tuning.v1.TuningRequest.LabelsEntry' as const,
-
     encode(
         message: TuningRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1229,17 +1114,9 @@ export const TuningRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(TuningRequest_LabelsEntry.$type, TuningRequest_LabelsEntry);
-
-const baseTuningRequest_WeightedDataset: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TuningRequest.WeightedDataset',
-    datasetId: '',
-    weight: 0,
-};
+const baseTuningRequest_WeightedDataset: object = { datasetId: '', weight: 0 };
 
 export const TuningRequest_WeightedDataset = {
-    $type: 'yandex.cloud.ai.tuning.v1.TuningRequest.WeightedDataset' as const,
-
     encode(
         message: TuningRequest_WeightedDataset,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1302,10 +1179,7 @@ export const TuningRequest_WeightedDataset = {
     },
 };
 
-messageTypeRegistry.set(TuningRequest_WeightedDataset.$type, TuningRequest_WeightedDataset);
-
 const baseTextToTextCompletionTuningParams: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextToTextCompletionTuningParams',
     seed: 0,
     lr: 0,
     nSamples: 0,
@@ -1313,8 +1187,6 @@ const baseTextToTextCompletionTuningParams: object = {
 };
 
 export const TextToTextCompletionTuningParams = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextToTextCompletionTuningParams' as const,
-
     encode(
         message: TextToTextCompletionTuningParams,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1484,16 +1356,9 @@ export const TextToTextCompletionTuningParams = {
     },
 };
 
-messageTypeRegistry.set(TextToTextCompletionTuningParams.$type, TextToTextCompletionTuningParams);
-
-const baseTextToTextCompletionTuningParams_Scheduler: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextToTextCompletionTuningParams.Scheduler',
-    warmupRatio: 0,
-};
+const baseTextToTextCompletionTuningParams_Scheduler: object = { warmupRatio: 0 };
 
 export const TextToTextCompletionTuningParams_Scheduler = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextToTextCompletionTuningParams.Scheduler' as const,
-
     encode(
         message: TextToTextCompletionTuningParams_Scheduler,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1605,18 +1470,9 @@ export const TextToTextCompletionTuningParams_Scheduler = {
     },
 };
 
-messageTypeRegistry.set(
-    TextToTextCompletionTuningParams_Scheduler.$type,
-    TextToTextCompletionTuningParams_Scheduler,
-);
-
-const baseTextToTextCompletionTuningParams_Optimizer: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextToTextCompletionTuningParams.Optimizer',
-};
+const baseTextToTextCompletionTuningParams_Optimizer: object = {};
 
 export const TextToTextCompletionTuningParams_Optimizer = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextToTextCompletionTuningParams.Optimizer' as const,
-
     encode(
         message: TextToTextCompletionTuningParams_Optimizer,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1682,13 +1538,7 @@ export const TextToTextCompletionTuningParams_Optimizer = {
     },
 };
 
-messageTypeRegistry.set(
-    TextToTextCompletionTuningParams_Optimizer.$type,
-    TextToTextCompletionTuningParams_Optimizer,
-);
-
 const baseTextClassificationMultilabelParams: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextClassificationMultilabelParams',
     seed: 0,
     lr: 0,
     nSamples: 0,
@@ -1696,8 +1546,6 @@ const baseTextClassificationMultilabelParams: object = {
 };
 
 export const TextClassificationMultilabelParams = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextClassificationMultilabelParams' as const,
-
     encode(
         message: TextClassificationMultilabelParams,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1867,19 +1715,9 @@ export const TextClassificationMultilabelParams = {
     },
 };
 
-messageTypeRegistry.set(
-    TextClassificationMultilabelParams.$type,
-    TextClassificationMultilabelParams,
-);
-
-const baseTextClassificationMultilabelParams_Scheduler: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextClassificationMultilabelParams.Scheduler',
-    warmupRatio: 0,
-};
+const baseTextClassificationMultilabelParams_Scheduler: object = { warmupRatio: 0 };
 
 export const TextClassificationMultilabelParams_Scheduler = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextClassificationMultilabelParams.Scheduler' as const,
-
     encode(
         message: TextClassificationMultilabelParams_Scheduler,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1991,18 +1829,9 @@ export const TextClassificationMultilabelParams_Scheduler = {
     },
 };
 
-messageTypeRegistry.set(
-    TextClassificationMultilabelParams_Scheduler.$type,
-    TextClassificationMultilabelParams_Scheduler,
-);
-
-const baseTextClassificationMultilabelParams_Optimizer: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextClassificationMultilabelParams.Optimizer',
-};
+const baseTextClassificationMultilabelParams_Optimizer: object = {};
 
 export const TextClassificationMultilabelParams_Optimizer = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextClassificationMultilabelParams.Optimizer' as const,
-
     encode(
         message: TextClassificationMultilabelParams_Optimizer,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2068,13 +1897,7 @@ export const TextClassificationMultilabelParams_Optimizer = {
     },
 };
 
-messageTypeRegistry.set(
-    TextClassificationMultilabelParams_Optimizer.$type,
-    TextClassificationMultilabelParams_Optimizer,
-);
-
 const baseTextClassificationMulticlassParams: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextClassificationMulticlassParams',
     seed: 0,
     lr: 0,
     nSamples: 0,
@@ -2082,8 +1905,6 @@ const baseTextClassificationMulticlassParams: object = {
 };
 
 export const TextClassificationMulticlassParams = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextClassificationMulticlassParams' as const,
-
     encode(
         message: TextClassificationMulticlassParams,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2253,19 +2074,9 @@ export const TextClassificationMulticlassParams = {
     },
 };
 
-messageTypeRegistry.set(
-    TextClassificationMulticlassParams.$type,
-    TextClassificationMulticlassParams,
-);
-
-const baseTextClassificationMulticlassParams_Scheduler: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextClassificationMulticlassParams.Scheduler',
-    warmupRatio: 0,
-};
+const baseTextClassificationMulticlassParams_Scheduler: object = { warmupRatio: 0 };
 
 export const TextClassificationMulticlassParams_Scheduler = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextClassificationMulticlassParams.Scheduler' as const,
-
     encode(
         message: TextClassificationMulticlassParams_Scheduler,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2377,18 +2188,9 @@ export const TextClassificationMulticlassParams_Scheduler = {
     },
 };
 
-messageTypeRegistry.set(
-    TextClassificationMulticlassParams_Scheduler.$type,
-    TextClassificationMulticlassParams_Scheduler,
-);
-
-const baseTextClassificationMulticlassParams_Optimizer: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextClassificationMulticlassParams.Optimizer',
-};
+const baseTextClassificationMulticlassParams_Optimizer: object = {};
 
 export const TextClassificationMulticlassParams_Optimizer = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextClassificationMulticlassParams.Optimizer' as const,
-
     encode(
         message: TextClassificationMulticlassParams_Optimizer,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2454,13 +2256,7 @@ export const TextClassificationMulticlassParams_Optimizer = {
     },
 };
 
-messageTypeRegistry.set(
-    TextClassificationMulticlassParams_Optimizer.$type,
-    TextClassificationMulticlassParams_Optimizer,
-);
-
 const baseTextEmbeddingPairParams: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingPairParams',
     seed: 0,
     lr: 0,
     nSamples: 0,
@@ -2469,8 +2265,6 @@ const baseTextEmbeddingPairParams: object = {
 };
 
 export const TextEmbeddingPairParams = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingPairParams' as const,
-
     encode(message: TextEmbeddingPairParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.seed !== 0) {
             writer.uint32(8).int64(message.seed);
@@ -2654,15 +2448,9 @@ export const TextEmbeddingPairParams = {
     },
 };
 
-messageTypeRegistry.set(TextEmbeddingPairParams.$type, TextEmbeddingPairParams);
-
-const baseTextEmbeddingPairParams_Scheduler: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingPairParams.Scheduler',
-};
+const baseTextEmbeddingPairParams_Scheduler: object = {};
 
 export const TextEmbeddingPairParams_Scheduler = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingPairParams.Scheduler' as const,
-
     encode(
         message: TextEmbeddingPairParams_Scheduler,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2771,15 +2559,9 @@ export const TextEmbeddingPairParams_Scheduler = {
     },
 };
 
-messageTypeRegistry.set(TextEmbeddingPairParams_Scheduler.$type, TextEmbeddingPairParams_Scheduler);
-
-const baseTextEmbeddingPairParams_Optimizer: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingPairParams.Optimizer',
-};
+const baseTextEmbeddingPairParams_Optimizer: object = {};
 
 export const TextEmbeddingPairParams_Optimizer = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingPairParams.Optimizer' as const,
-
     encode(
         message: TextEmbeddingPairParams_Optimizer,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2842,10 +2624,7 @@ export const TextEmbeddingPairParams_Optimizer = {
     },
 };
 
-messageTypeRegistry.set(TextEmbeddingPairParams_Optimizer.$type, TextEmbeddingPairParams_Optimizer);
-
 const baseTextEmbeddingTripletParams: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingTripletParams',
     seed: 0,
     lr: 0,
     nSamples: 0,
@@ -2854,8 +2633,6 @@ const baseTextEmbeddingTripletParams: object = {
 };
 
 export const TextEmbeddingTripletParams = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingTripletParams' as const,
-
     encode(
         message: TextEmbeddingTripletParams,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3042,15 +2819,9 @@ export const TextEmbeddingTripletParams = {
     },
 };
 
-messageTypeRegistry.set(TextEmbeddingTripletParams.$type, TextEmbeddingTripletParams);
-
-const baseTextEmbeddingTripletParams_Scheduler: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingTripletParams.Scheduler',
-};
+const baseTextEmbeddingTripletParams_Scheduler: object = {};
 
 export const TextEmbeddingTripletParams_Scheduler = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingTripletParams.Scheduler' as const,
-
     encode(
         message: TextEmbeddingTripletParams_Scheduler,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3159,18 +2930,9 @@ export const TextEmbeddingTripletParams_Scheduler = {
     },
 };
 
-messageTypeRegistry.set(
-    TextEmbeddingTripletParams_Scheduler.$type,
-    TextEmbeddingTripletParams_Scheduler,
-);
-
-const baseTextEmbeddingTripletParams_Optimizer: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingTripletParams.Optimizer',
-};
+const baseTextEmbeddingTripletParams_Optimizer: object = {};
 
 export const TextEmbeddingTripletParams_Optimizer = {
-    $type: 'yandex.cloud.ai.tuning.v1.TextEmbeddingTripletParams.Optimizer' as const,
-
     encode(
         message: TextEmbeddingTripletParams_Optimizer,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3233,19 +2995,9 @@ export const TextEmbeddingTripletParams_Optimizer = {
     },
 };
 
-messageTypeRegistry.set(
-    TextEmbeddingTripletParams_Optimizer.$type,
-    TextEmbeddingTripletParams_Optimizer,
-);
-
-const baseGetMetricsUrlRequest: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.GetMetricsUrlRequest',
-    taskId: '',
-};
+const baseGetMetricsUrlRequest: object = { taskId: '' };
 
 export const GetMetricsUrlRequest = {
-    $type: 'yandex.cloud.ai.tuning.v1.GetMetricsUrlRequest' as const,
-
     encode(message: GetMetricsUrlRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.taskId !== '') {
             writer.uint32(10).string(message.taskId);
@@ -3293,16 +3045,9 @@ export const GetMetricsUrlRequest = {
     },
 };
 
-messageTypeRegistry.set(GetMetricsUrlRequest.$type, GetMetricsUrlRequest);
-
-const baseGetMetricsUrlResponse: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.GetMetricsUrlResponse',
-    loadUrl: '',
-};
+const baseGetMetricsUrlResponse: object = { loadUrl: '' };
 
 export const GetMetricsUrlResponse = {
-    $type: 'yandex.cloud.ai.tuning.v1.GetMetricsUrlResponse' as const,
-
     encode(message: GetMetricsUrlResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.loadUrl !== '') {
             writer.uint32(10).string(message.loadUrl);
@@ -3350,16 +3095,9 @@ export const GetMetricsUrlResponse = {
     },
 };
 
-messageTypeRegistry.set(GetMetricsUrlResponse.$type, GetMetricsUrlResponse);
-
-const baseGetOptionsRequest: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.GetOptionsRequest',
-    taskId: '',
-};
+const baseGetOptionsRequest: object = { taskId: '' };
 
 export const GetOptionsRequest = {
-    $type: 'yandex.cloud.ai.tuning.v1.GetOptionsRequest' as const,
-
     encode(message: GetOptionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.taskId !== '') {
             writer.uint32(10).string(message.taskId);
@@ -3405,17 +3143,9 @@ export const GetOptionsRequest = {
     },
 };
 
-messageTypeRegistry.set(GetOptionsRequest.$type, GetOptionsRequest);
-
-const baseGetOptionsResponse: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.GetOptionsResponse',
-    taskId: '',
-    baseModelUri: '',
-};
+const baseGetOptionsResponse: object = { taskId: '', baseModelUri: '' };
 
 export const GetOptionsResponse = {
-    $type: 'yandex.cloud.ai.tuning.v1.GetOptionsResponse' as const,
-
     encode(message: GetOptionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.taskId !== '') {
             writer.uint32(10).string(message.taskId);
@@ -3594,16 +3324,9 @@ export const GetOptionsResponse = {
     },
 };
 
-messageTypeRegistry.set(GetOptionsResponse.$type, GetOptionsResponse);
-
-const baseListErrorsRequest: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.ListErrorsRequest',
-    tuningTaskId: '',
-};
+const baseListErrorsRequest: object = { tuningTaskId: '' };
 
 export const ListErrorsRequest = {
-    $type: 'yandex.cloud.ai.tuning.v1.ListErrorsRequest' as const,
-
     encode(message: ListErrorsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tuningTaskId !== '') {
             writer.uint32(10).string(message.tuningTaskId);
@@ -3651,13 +3374,9 @@ export const ListErrorsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListErrorsRequest.$type, ListErrorsRequest);
-
-const baseListErrorsResponse: object = { $type: 'yandex.cloud.ai.tuning.v1.ListErrorsResponse' };
+const baseListErrorsResponse: object = {};
 
 export const ListErrorsResponse = {
-    $type: 'yandex.cloud.ai.tuning.v1.ListErrorsResponse' as const,
-
     encode(message: ListErrorsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.tuningError) {
             TuningError.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -3710,8 +3429,6 @@ export const ListErrorsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListErrorsResponse.$type, ListErrorsResponse);
 
 export const TuningServiceService = {
     tune: {
@@ -3942,16 +3659,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -7,7 +6,6 @@ export const protobufPackage = 'yandex.cloud.lockbox.v1';
 
 /** A payload. */
 export interface Payload {
-    $type: 'yandex.cloud.lockbox.v1.Payload';
     /** ID of the version that the payload belongs to. */
     versionId: string;
     /** Payload entries. */
@@ -15,7 +13,6 @@ export interface Payload {
 }
 
 export interface Payload_Entry {
-    $type: 'yandex.cloud.lockbox.v1.Payload.Entry';
     /** Non-confidential key of the entry. */
     key: string;
     /** Text value. */
@@ -24,11 +21,9 @@ export interface Payload_Entry {
     binaryValue: Buffer | undefined;
 }
 
-const basePayload: object = { $type: 'yandex.cloud.lockbox.v1.Payload', versionId: '' };
+const basePayload: object = { versionId: '' };
 
 export const Payload = {
-    $type: 'yandex.cloud.lockbox.v1.Payload' as const,
-
     encode(message: Payload, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.versionId !== '') {
             writer.uint32(10).string(message.versionId);
@@ -90,13 +85,9 @@ export const Payload = {
     },
 };
 
-messageTypeRegistry.set(Payload.$type, Payload);
-
-const basePayload_Entry: object = { $type: 'yandex.cloud.lockbox.v1.Payload.Entry', key: '' };
+const basePayload_Entry: object = { key: '' };
 
 export const Payload_Entry = {
-    $type: 'yandex.cloud.lockbox.v1.Payload.Entry' as const,
-
     encode(message: Payload_Entry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -169,8 +160,6 @@ export const Payload_Entry = {
     },
 };
 
-messageTypeRegistry.set(Payload_Entry.$type, Payload_Entry);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -212,16 +201,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Kpi } from '../../../../../../yandex/cloud/loadtesting/api/v1/report/kpi';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.regression';
 
 /** Regression dashboard widget. */
 export interface Widget {
-    $type: 'yandex.cloud.loadtesting.api.v1.regression.Widget';
     /** Widget position. */
     position?: Widget_LayoutPosition;
     /** Chart widget. */
@@ -21,7 +19,6 @@ export interface Widget {
 
 /** Widget position. */
 export interface Widget_LayoutPosition {
-    $type: 'yandex.cloud.loadtesting.api.v1.regression.Widget.LayoutPosition';
     /** X. */
     x: number;
     /** Y. */
@@ -34,7 +31,6 @@ export interface Widget_LayoutPosition {
 
 /** Regression chart. */
 export interface ChartWidget {
-    $type: 'yandex.cloud.loadtesting.api.v1.regression.ChartWidget';
     /** ID of the chart. */
     id: string;
     /** Name of the chart. */
@@ -51,14 +47,12 @@ export interface ChartWidget {
 
 /** Text widget. */
 export interface TextWidget {
-    $type: 'yandex.cloud.loadtesting.api.v1.regression.TextWidget';
     /** Text string. */
     text: string;
 }
 
 /** Title widget. */
 export interface TitleWidget {
-    $type: 'yandex.cloud.loadtesting.api.v1.regression.TitleWidget';
     /** Title string. */
     text: string;
     /** Title size. */
@@ -121,11 +115,9 @@ export function titleWidget_TitleSizeToJSON(object: TitleWidget_TitleSize): stri
     }
 }
 
-const baseWidget: object = { $type: 'yandex.cloud.loadtesting.api.v1.regression.Widget' };
+const baseWidget: object = {};
 
 export const Widget = {
-    $type: 'yandex.cloud.loadtesting.api.v1.regression.Widget' as const,
-
     encode(message: Widget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.position !== undefined) {
             Widget_LayoutPosition.encode(message.position, writer.uint32(10).fork()).ldelim();
@@ -227,19 +219,9 @@ export const Widget = {
     },
 };
 
-messageTypeRegistry.set(Widget.$type, Widget);
-
-const baseWidget_LayoutPosition: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.regression.Widget.LayoutPosition',
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
-};
+const baseWidget_LayoutPosition: object = { x: 0, y: 0, width: 0, height: 0 };
 
 export const Widget_LayoutPosition = {
-    $type: 'yandex.cloud.loadtesting.api.v1.regression.Widget.LayoutPosition' as const,
-
     encode(message: Widget_LayoutPosition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.x !== 0) {
             writer.uint32(8).int64(message.x);
@@ -315,20 +297,9 @@ export const Widget_LayoutPosition = {
     },
 };
 
-messageTypeRegistry.set(Widget_LayoutPosition.$type, Widget_LayoutPosition);
-
-const baseChartWidget: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.regression.ChartWidget',
-    id: '',
-    name: '',
-    description: '',
-    filterStr: '',
-    testCase: '',
-};
+const baseChartWidget: object = { id: '', name: '', description: '', filterStr: '', testCase: '' };
 
 export const ChartWidget = {
-    $type: 'yandex.cloud.loadtesting.api.v1.regression.ChartWidget' as const,
-
     encode(message: ChartWidget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -432,16 +403,9 @@ export const ChartWidget = {
     },
 };
 
-messageTypeRegistry.set(ChartWidget.$type, ChartWidget);
-
-const baseTextWidget: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.regression.TextWidget',
-    text: '',
-};
+const baseTextWidget: object = { text: '' };
 
 export const TextWidget = {
-    $type: 'yandex.cloud.loadtesting.api.v1.regression.TextWidget' as const,
-
     encode(message: TextWidget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -486,17 +450,9 @@ export const TextWidget = {
     },
 };
 
-messageTypeRegistry.set(TextWidget.$type, TextWidget);
-
-const baseTitleWidget: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.regression.TitleWidget',
-    text: '',
-    size: 0,
-};
+const baseTitleWidget: object = { text: '', size: 0 };
 
 export const TitleWidget = {
-    $type: 'yandex.cloud.loadtesting.api.v1.regression.TitleWidget' as const,
-
     encode(message: TitleWidget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -553,8 +509,6 @@ export const TitleWidget = {
     },
 };
 
-messageTypeRegistry.set(TitleWidget.$type, TitleWidget);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -575,16 +529,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

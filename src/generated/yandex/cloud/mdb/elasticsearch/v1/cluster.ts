@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -16,7 +15,6 @@ export const protobufPackage = 'yandex.cloud.mdb.elasticsearch.v1';
  * For more information, see the [Concepts](/docs/managed-elasticsearch/concepts) section of the documentation.
  */
 export interface Cluster {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Cluster';
     /**
      * ID of the Elasticsearch cluster.
      * This ID is assigned at creation time.
@@ -227,14 +225,12 @@ export function cluster_StatusToJSON(object: Cluster_Status): string {
 }
 
 export interface Cluster_LabelsEntry {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Cluster.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Metadata of monitoring system. */
 export interface Monitoring {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Monitoring';
     /** Name of the monitoring system. */
     name: string;
     /** Description of the monitoring system. */
@@ -244,7 +240,6 @@ export interface Monitoring {
 }
 
 export interface ClusterConfig {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.ClusterConfig';
     /** Elasticsearch version. */
     version: string;
     /** Configuration and resource allocation for Elasticsearch nodes. */
@@ -254,7 +249,6 @@ export interface ClusterConfig {
 }
 
 export interface Elasticsearch {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Elasticsearch';
     /** Configuration and resource allocation for Elasticsearch data nodes. */
     dataNode?: Elasticsearch_DataNode;
     /** Configuration and resource allocation for Elasticsearch master nodes. */
@@ -264,7 +258,6 @@ export interface Elasticsearch {
 }
 
 export interface Elasticsearch_DataNode {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Elasticsearch.DataNode';
     /** Elasticsearch 7.x data node configuration. */
     elasticsearchConfigSet7?: ElasticsearchConfigSet7 | undefined;
     /** Resources allocated to Elasticsearch data nodes. */
@@ -272,14 +265,12 @@ export interface Elasticsearch_DataNode {
 }
 
 export interface Elasticsearch_MasterNode {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Elasticsearch.MasterNode';
     /** Resources allocated to Elasticsearch master nodes. */
     resources?: Resources;
 }
 
 /** Computational resources. */
 export interface Resources {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Resources';
     /**
      * ID of the preset for computational resources available to a host (CPU, memory etc.).
      * All available presets are listed in the [documentation](/docs/managed-elasticsearch/concepts/instance-types).
@@ -296,7 +287,6 @@ export interface Resources {
 
 /** Cluster host metadata. */
 export interface Host {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Host';
     /** Name of the host. */
     name: string;
     /** ID of the Elasticsearch cluster. */
@@ -411,7 +401,6 @@ export function host_HealthToJSON(object: Host_Health): string {
 
 /** Cluster service metadata. */
 export interface Service {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Service';
     /** Type of the service provided by the host. */
     type: Service_Type;
     /** Service health data. If the field has default value, it is not returned in the response. */
@@ -493,7 +482,6 @@ export function service_HealthToJSON(object: Service_Health): string {
 }
 
 const baseCluster: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Cluster',
     id: '',
     folderId: '',
     name: '',
@@ -508,8 +496,6 @@ const baseCluster: object = {
 };
 
 export const Cluster = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Cluster' as const,
-
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -528,11 +514,7 @@ export const Cluster = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Cluster_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.elasticsearch.v1.Cluster.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -795,17 +777,9 @@ export const Cluster = {
     },
 };
 
-messageTypeRegistry.set(Cluster.$type, Cluster);
-
-const baseCluster_LabelsEntry: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Cluster.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
 export const Cluster_LabelsEntry = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Cluster.LabelsEntry' as const,
-
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -862,18 +836,9 @@ export const Cluster_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Cluster_LabelsEntry.$type, Cluster_LabelsEntry);
-
-const baseMonitoring: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Monitoring',
-    name: '',
-    description: '',
-    link: '',
-};
+const baseMonitoring: object = { name: '', description: '', link: '' };
 
 export const Monitoring = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Monitoring' as const,
-
     encode(message: Monitoring, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -939,17 +904,9 @@ export const Monitoring = {
     },
 };
 
-messageTypeRegistry.set(Monitoring.$type, Monitoring);
-
-const baseClusterConfig: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.ClusterConfig',
-    version: '',
-    edition: '',
-};
+const baseClusterConfig: object = { version: '', edition: '' };
 
 export const ClusterConfig = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.ClusterConfig' as const,
-
     encode(message: ClusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -1023,16 +980,9 @@ export const ClusterConfig = {
     },
 };
 
-messageTypeRegistry.set(ClusterConfig.$type, ClusterConfig);
-
-const baseElasticsearch: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Elasticsearch',
-    plugins: '',
-};
+const baseElasticsearch: object = { plugins: '' };
 
 export const Elasticsearch = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Elasticsearch' as const,
-
     encode(message: Elasticsearch, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataNode !== undefined) {
             Elasticsearch_DataNode.encode(message.dataNode, writer.uint32(10).fork()).ldelim();
@@ -1118,15 +1068,9 @@ export const Elasticsearch = {
     },
 };
 
-messageTypeRegistry.set(Elasticsearch.$type, Elasticsearch);
-
-const baseElasticsearch_DataNode: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Elasticsearch.DataNode',
-};
+const baseElasticsearch_DataNode: object = {};
 
 export const Elasticsearch_DataNode = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Elasticsearch.DataNode' as const,
-
     encode(message: Elasticsearch_DataNode, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.elasticsearchConfigSet7 !== undefined) {
             ElasticsearchConfigSet7.encode(
@@ -1205,15 +1149,9 @@ export const Elasticsearch_DataNode = {
     },
 };
 
-messageTypeRegistry.set(Elasticsearch_DataNode.$type, Elasticsearch_DataNode);
-
-const baseElasticsearch_MasterNode: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Elasticsearch.MasterNode',
-};
+const baseElasticsearch_MasterNode: object = {};
 
 export const Elasticsearch_MasterNode = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Elasticsearch.MasterNode' as const,
-
     encode(
         message: Elasticsearch_MasterNode,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1270,18 +1208,9 @@ export const Elasticsearch_MasterNode = {
     },
 };
 
-messageTypeRegistry.set(Elasticsearch_MasterNode.$type, Elasticsearch_MasterNode);
-
-const baseResources: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Resources',
-    resourcePresetId: '',
-    diskSize: 0,
-    diskTypeId: '',
-};
+const baseResources: object = { resourcePresetId: '', diskSize: 0, diskTypeId: '' };
 
 export const Resources = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Resources' as const,
-
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);
@@ -1351,10 +1280,7 @@ export const Resources = {
     },
 };
 
-messageTypeRegistry.set(Resources.$type, Resources);
-
 const baseHost: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Host',
     name: '',
     clusterId: '',
     zoneId: '',
@@ -1365,8 +1291,6 @@ const baseHost: object = {
 };
 
 export const Host = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Host' as const,
-
     encode(message: Host, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1509,17 +1433,9 @@ export const Host = {
     },
 };
 
-messageTypeRegistry.set(Host.$type, Host);
-
-const baseService: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Service',
-    type: 0,
-    health: 0,
-};
+const baseService: object = { type: 0, health: 0 };
 
 export const Service = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Service' as const,
-
     encode(message: Service, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -1579,8 +1495,6 @@ export const Service = {
     },
 };
 
-messageTypeRegistry.set(Service.$type, Service);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1601,21 +1515,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

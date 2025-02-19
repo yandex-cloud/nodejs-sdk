@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
@@ -7,7 +6,6 @@ import { Timestamp } from '../../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.serverless.eventrouter.v1';
 
 export interface Bus {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Bus';
     /** ID of the bus. */
     id: string;
     /** ID of the folder that the bus belongs to. */
@@ -73,13 +71,11 @@ export function bus_StatusToJSON(object: Bus_Status): string {
 }
 
 export interface Bus_LabelsEntry {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Bus.LabelsEntry';
     key: string;
     value: string;
 }
 
 const baseBus: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Bus',
     id: '',
     folderId: '',
     cloudId: '',
@@ -90,8 +86,6 @@ const baseBus: object = {
 };
 
 export const Bus = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Bus' as const,
-
     encode(message: Bus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -112,14 +106,7 @@ export const Bus = {
             writer.uint32(50).string(message.description);
         }
         Object.entries(message.labels).forEach(([key, value]) => {
-            Bus_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.eventrouter.v1.Bus.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
-                writer.uint32(58).fork(),
-            ).ldelim();
+            Bus_LabelsEntry.encode({ key: key as any, value }, writer.uint32(58).fork()).ldelim();
         });
         if (message.deletionProtection === true) {
             writer.uint32(64).bool(message.deletionProtection);
@@ -255,17 +242,9 @@ export const Bus = {
     },
 };
 
-messageTypeRegistry.set(Bus.$type, Bus);
-
-const baseBus_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Bus.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseBus_LabelsEntry: object = { key: '', value: '' };
 
 export const Bus_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Bus.LabelsEntry' as const,
-
     encode(message: Bus_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -320,8 +299,6 @@ export const Bus_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Bus_LabelsEntry.$type, Bus_LabelsEntry);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -331,21 +308,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

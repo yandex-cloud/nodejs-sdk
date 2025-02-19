@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../../../google/protobuf/timestamp';
@@ -113,7 +112,6 @@ export function resourceTypeToJSON(object: ResourceType): string {
 }
 
 export interface ProductInstance {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.ProductInstance';
     id: string;
     resourceId: string;
     resourceType: ResourceType;
@@ -125,34 +123,23 @@ export interface ProductInstance {
 }
 
 export interface ProductInstance_ResourceMetadataEntry {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.ProductInstance.ResourceMetadataEntry';
     key: string;
     value: string;
 }
 
 export interface SaasInfo {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.SaasInfo';
     id: string;
     data: { [key: string]: string };
 }
 
 export interface SaasInfo_DataEntry {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.SaasInfo.DataEntry';
     key: string;
     value: string;
 }
 
-const baseProductInstance: object = {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.ProductInstance',
-    id: '',
-    resourceId: '',
-    resourceType: 0,
-    state: 0,
-};
+const baseProductInstance: object = { id: '', resourceId: '', resourceType: 0, state: 0 };
 
 export const ProductInstance = {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.ProductInstance' as const,
-
     encode(message: ProductInstance, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -165,11 +152,7 @@ export const ProductInstance = {
         }
         Object.entries(message.resourceMetadata).forEach(([key, value]) => {
             ProductInstance_ResourceMetadataEntry.encode(
-                {
-                    $type: 'yandex.cloud.marketplace.pim.v1.saas.ProductInstance.ResourceMetadataEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -312,17 +295,9 @@ export const ProductInstance = {
     },
 };
 
-messageTypeRegistry.set(ProductInstance.$type, ProductInstance);
-
-const baseProductInstance_ResourceMetadataEntry: object = {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.ProductInstance.ResourceMetadataEntry',
-    key: '',
-    value: '',
-};
+const baseProductInstance_ResourceMetadataEntry: object = { key: '', value: '' };
 
 export const ProductInstance_ResourceMetadataEntry = {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.ProductInstance.ResourceMetadataEntry' as const,
-
     encode(
         message: ProductInstance_ResourceMetadataEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -388,27 +363,16 @@ export const ProductInstance_ResourceMetadataEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    ProductInstance_ResourceMetadataEntry.$type,
-    ProductInstance_ResourceMetadataEntry,
-);
-
-const baseSaasInfo: object = { $type: 'yandex.cloud.marketplace.pim.v1.saas.SaasInfo', id: '' };
+const baseSaasInfo: object = { id: '' };
 
 export const SaasInfo = {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.SaasInfo' as const,
-
     encode(message: SaasInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
         }
         Object.entries(message.data).forEach(([key, value]) => {
             SaasInfo_DataEntry.encode(
-                {
-                    $type: 'yandex.cloud.marketplace.pim.v1.saas.SaasInfo.DataEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(18).fork(),
             ).ldelim();
         });
@@ -481,17 +445,9 @@ export const SaasInfo = {
     },
 };
 
-messageTypeRegistry.set(SaasInfo.$type, SaasInfo);
-
-const baseSaasInfo_DataEntry: object = {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.SaasInfo.DataEntry',
-    key: '',
-    value: '',
-};
+const baseSaasInfo_DataEntry: object = { key: '', value: '' };
 
 export const SaasInfo_DataEntry = {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.SaasInfo.DataEntry' as const,
-
     encode(message: SaasInfo_DataEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -548,8 +504,6 @@ export const SaasInfo_DataEntry = {
     },
 };
 
-messageTypeRegistry.set(SaasInfo_DataEntry.$type, SaasInfo_DataEntry);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -559,21 +513,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

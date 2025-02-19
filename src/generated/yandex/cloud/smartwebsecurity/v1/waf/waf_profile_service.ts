@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -27,13 +26,11 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.smartwebsecurity.v1.waf';
 
 export interface GetWafProfileRequest {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.GetWafProfileRequest';
     /** ID of the WafProfile resource to return. */
     wafProfileId: string;
 }
 
 export interface ListWafProfilesRequest {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.ListWafProfilesRequest';
     /**
      * ID of the folder that the WAF profile belongs to.
      * Currently page_size, page_token, filter and order_by are not supported and List method will return all WAF profiles in the folder.
@@ -42,7 +39,6 @@ export interface ListWafProfilesRequest {
 }
 
 export interface ListWafProfilesResponse {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.ListWafProfilesResponse';
     /**
      * List of WafProfile resources.
      * Currently next_page_token is not supported and List method will return all WAF profiles in the folder.
@@ -51,7 +47,6 @@ export interface ListWafProfilesResponse {
 }
 
 export interface CreateWafProfileRequest {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.CreateWafProfileRequest';
     /** ID of the folder to create a WAF profile in. */
     folderId: string;
     /** Name of the WAF profile. The name is unique within the folder. 1-50 characters long. */
@@ -71,19 +66,16 @@ export interface CreateWafProfileRequest {
 }
 
 export interface CreateWafProfileRequest_LabelsEntry {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.CreateWafProfileRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateWafProfileMetadata {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.CreateWafProfileMetadata';
     /** ID of the WAF profile that is being created. */
     wafProfileId: string;
 }
 
 export interface UpdateWafProfileRequest {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.UpdateWafProfileRequest';
     /** ID of the WAF profile to update. */
     wafProfileId: string;
     /** Field mask that specifies which fields of the WafProfile resource are going to be updated. */
@@ -105,37 +97,28 @@ export interface UpdateWafProfileRequest {
 }
 
 export interface UpdateWafProfileRequest_LabelsEntry {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.UpdateWafProfileRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateWafProfileMetadata {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.UpdateWafProfileMetadata';
     /** ID of the WafProfile resource that is being updated. */
     wafProfileId: string;
 }
 
 export interface DeleteWafProfileRequest {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.DeleteWafProfileRequest';
     /** ID of the WAF profile to delete. */
     wafProfileId: string;
 }
 
 export interface DeleteWafProfileMetadata {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.DeleteWafProfileMetadata';
     /** ID of the WafProfile resource that is being deleted. */
     wafProfileId: string;
 }
 
-const baseGetWafProfileRequest: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.GetWafProfileRequest',
-    wafProfileId: '',
-};
+const baseGetWafProfileRequest: object = { wafProfileId: '' };
 
 export const GetWafProfileRequest = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.GetWafProfileRequest' as const,
-
     encode(message: GetWafProfileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.wafProfileId !== '') {
             writer.uint32(10).string(message.wafProfileId);
@@ -185,16 +168,9 @@ export const GetWafProfileRequest = {
     },
 };
 
-messageTypeRegistry.set(GetWafProfileRequest.$type, GetWafProfileRequest);
-
-const baseListWafProfilesRequest: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.ListWafProfilesRequest',
-    folderId: '',
-};
+const baseListWafProfilesRequest: object = { folderId: '' };
 
 export const ListWafProfilesRequest = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.ListWafProfilesRequest' as const,
-
     encode(message: ListWafProfilesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -244,15 +220,9 @@ export const ListWafProfilesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListWafProfilesRequest.$type, ListWafProfilesRequest);
-
-const baseListWafProfilesResponse: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.ListWafProfilesResponse',
-};
+const baseListWafProfilesResponse: object = {};
 
 export const ListWafProfilesResponse = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.ListWafProfilesResponse' as const,
-
     encode(message: ListWafProfilesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.wafProfiles) {
             WafProfile.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -306,18 +276,9 @@ export const ListWafProfilesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListWafProfilesResponse.$type, ListWafProfilesResponse);
-
-const baseCreateWafProfileRequest: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.CreateWafProfileRequest',
-    folderId: '',
-    name: '',
-    description: '',
-};
+const baseCreateWafProfileRequest: object = { folderId: '', name: '', description: '' };
 
 export const CreateWafProfileRequest = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.CreateWafProfileRequest' as const,
-
     encode(message: CreateWafProfileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -330,11 +291,7 @@ export const CreateWafProfileRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateWafProfileRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.smartwebsecurity.v1.waf.CreateWafProfileRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -507,17 +464,9 @@ export const CreateWafProfileRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateWafProfileRequest.$type, CreateWafProfileRequest);
-
-const baseCreateWafProfileRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.CreateWafProfileRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateWafProfileRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateWafProfileRequest_LabelsEntry = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.CreateWafProfileRequest.LabelsEntry' as const,
-
     encode(
         message: CreateWafProfileRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -583,19 +532,9 @@ export const CreateWafProfileRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateWafProfileRequest_LabelsEntry.$type,
-    CreateWafProfileRequest_LabelsEntry,
-);
-
-const baseCreateWafProfileMetadata: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.CreateWafProfileMetadata',
-    wafProfileId: '',
-};
+const baseCreateWafProfileMetadata: object = { wafProfileId: '' };
 
 export const CreateWafProfileMetadata = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.CreateWafProfileMetadata' as const,
-
     encode(
         message: CreateWafProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -648,18 +587,9 @@ export const CreateWafProfileMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateWafProfileMetadata.$type, CreateWafProfileMetadata);
-
-const baseUpdateWafProfileRequest: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.UpdateWafProfileRequest',
-    wafProfileId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateWafProfileRequest: object = { wafProfileId: '', name: '', description: '' };
 
 export const UpdateWafProfileRequest = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.UpdateWafProfileRequest' as const,
-
     encode(message: UpdateWafProfileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.wafProfileId !== '') {
             writer.uint32(10).string(message.wafProfileId);
@@ -675,11 +605,7 @@ export const UpdateWafProfileRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateWafProfileRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.smartwebsecurity.v1.waf.UpdateWafProfileRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -867,17 +793,9 @@ export const UpdateWafProfileRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateWafProfileRequest.$type, UpdateWafProfileRequest);
-
-const baseUpdateWafProfileRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.UpdateWafProfileRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateWafProfileRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateWafProfileRequest_LabelsEntry = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.UpdateWafProfileRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateWafProfileRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -943,19 +861,9 @@ export const UpdateWafProfileRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateWafProfileRequest_LabelsEntry.$type,
-    UpdateWafProfileRequest_LabelsEntry,
-);
-
-const baseUpdateWafProfileMetadata: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.UpdateWafProfileMetadata',
-    wafProfileId: '',
-};
+const baseUpdateWafProfileMetadata: object = { wafProfileId: '' };
 
 export const UpdateWafProfileMetadata = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.UpdateWafProfileMetadata' as const,
-
     encode(
         message: UpdateWafProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1008,16 +916,9 @@ export const UpdateWafProfileMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateWafProfileMetadata.$type, UpdateWafProfileMetadata);
-
-const baseDeleteWafProfileRequest: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.DeleteWafProfileRequest',
-    wafProfileId: '',
-};
+const baseDeleteWafProfileRequest: object = { wafProfileId: '' };
 
 export const DeleteWafProfileRequest = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.DeleteWafProfileRequest' as const,
-
     encode(message: DeleteWafProfileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.wafProfileId !== '') {
             writer.uint32(10).string(message.wafProfileId);
@@ -1067,16 +968,9 @@ export const DeleteWafProfileRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteWafProfileRequest.$type, DeleteWafProfileRequest);
-
-const baseDeleteWafProfileMetadata: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.DeleteWafProfileMetadata',
-    wafProfileId: '',
-};
+const baseDeleteWafProfileMetadata: object = { wafProfileId: '' };
 
 export const DeleteWafProfileMetadata = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.DeleteWafProfileMetadata' as const,
-
     encode(
         message: DeleteWafProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1128,8 +1022,6 @@ export const DeleteWafProfileMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteWafProfileMetadata.$type, DeleteWafProfileMetadata);
 
 /** A set of methods for managing WafProfile resources. */
 export const WafProfileServiceService = {
@@ -1308,16 +1200,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

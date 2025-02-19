@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { HardwareGeneration } from '../../../../yandex/cloud/compute/v1/hardware_generation';
@@ -10,7 +9,6 @@ export const protobufPackage = 'yandex.cloud.compute.v1';
 
 /** A Disk resource. For more information, see [Disks](/docs/compute/concepts/disk). */
 export interface Disk {
-    $type: 'yandex.cloud.compute.v1.Disk';
     /** ID of the disk. */
     id: string;
     /** ID of the folder that the disk belongs to. */
@@ -115,20 +113,17 @@ export function disk_StatusToJSON(object: Disk_Status): string {
 }
 
 export interface Disk_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.Disk.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface DiskPlacementPolicy {
-    $type: 'yandex.cloud.compute.v1.DiskPlacementPolicy';
     /** Placement group ID. */
     placementGroupId: string;
     placementGroupPartition: number;
 }
 
 export interface DiskPlacementPolicyChange {
-    $type: 'yandex.cloud.compute.v1.DiskPlacementPolicyChange';
     /** Disk ID. */
     diskId: string;
     /** Placement policy configuration for given disk. */
@@ -136,7 +131,6 @@ export interface DiskPlacementPolicyChange {
 }
 
 const baseDisk: object = {
-    $type: 'yandex.cloud.compute.v1.Disk',
     id: '',
     folderId: '',
     name: '',
@@ -151,8 +145,6 @@ const baseDisk: object = {
 };
 
 export const Disk = {
-    $type: 'yandex.cloud.compute.v1.Disk' as const,
-
     encode(message: Disk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -170,10 +162,7 @@ export const Disk = {
             writer.uint32(42).string(message.description);
         }
         Object.entries(message.labels).forEach(([key, value]) => {
-            Disk_LabelsEntry.encode(
-                { $type: 'yandex.cloud.compute.v1.Disk.LabelsEntry', key: key as any, value },
-                writer.uint32(50).fork(),
-            ).ldelim();
+            Disk_LabelsEntry.encode({ key: key as any, value }, writer.uint32(50).fork()).ldelim();
         });
         if (message.typeId !== '') {
             writer.uint32(58).string(message.typeId);
@@ -443,17 +432,9 @@ export const Disk = {
     },
 };
 
-messageTypeRegistry.set(Disk.$type, Disk);
-
-const baseDisk_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.Disk.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseDisk_LabelsEntry: object = { key: '', value: '' };
 
 export const Disk_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.Disk.LabelsEntry' as const,
-
     encode(message: Disk_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -508,17 +489,9 @@ export const Disk_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Disk_LabelsEntry.$type, Disk_LabelsEntry);
-
-const baseDiskPlacementPolicy: object = {
-    $type: 'yandex.cloud.compute.v1.DiskPlacementPolicy',
-    placementGroupId: '',
-    placementGroupPartition: 0,
-};
+const baseDiskPlacementPolicy: object = { placementGroupId: '', placementGroupPartition: 0 };
 
 export const DiskPlacementPolicy = {
-    $type: 'yandex.cloud.compute.v1.DiskPlacementPolicy' as const,
-
     encode(message: DiskPlacementPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.placementGroupId !== '') {
             writer.uint32(10).string(message.placementGroupId);
@@ -581,16 +554,9 @@ export const DiskPlacementPolicy = {
     },
 };
 
-messageTypeRegistry.set(DiskPlacementPolicy.$type, DiskPlacementPolicy);
-
-const baseDiskPlacementPolicyChange: object = {
-    $type: 'yandex.cloud.compute.v1.DiskPlacementPolicyChange',
-    diskId: '',
-};
+const baseDiskPlacementPolicyChange: object = { diskId: '' };
 
 export const DiskPlacementPolicyChange = {
-    $type: 'yandex.cloud.compute.v1.DiskPlacementPolicyChange' as const,
-
     encode(
         message: DiskPlacementPolicyChange,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -665,8 +631,6 @@ export const DiskPlacementPolicyChange = {
     },
 };
 
-messageTypeRegistry.set(DiskPlacementPolicyChange.$type, DiskPlacementPolicyChange);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -687,21 +651,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

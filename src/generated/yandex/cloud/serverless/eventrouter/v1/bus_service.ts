@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -27,13 +26,11 @@ import {
 export const protobufPackage = 'yandex.cloud.serverless.eventrouter.v1';
 
 export interface GetBusRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.GetBusRequest';
     /** ID of the bus to get. */
     busId: string;
 }
 
 export interface ListBusesRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListBusesRequest';
     /** ID of the folder to list buses in. */
     folderId: string;
     /** Maximum number of buses to return. */
@@ -52,7 +49,6 @@ export interface ListBusesRequest {
 }
 
 export interface ListBusesResponse {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListBusesResponse';
     /** List of buses. */
     buses: Bus[];
     /** Token for getting the next page of the list of buses. */
@@ -60,7 +56,6 @@ export interface ListBusesResponse {
 }
 
 export interface CreateBusRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateBusRequest';
     /** ID of the folder to create a bus in. */
     folderId: string;
     /** Name of the bus. */
@@ -74,13 +69,11 @@ export interface CreateBusRequest {
 }
 
 export interface CreateBusRequest_LabelsEntry {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateBusRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateBusMetadata {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateBusMetadata';
     /** ID of the bus that is being created. */
     busId: string;
     /** ID of the folder that the bus is being created in. */
@@ -88,7 +81,6 @@ export interface CreateBusMetadata {
 }
 
 export interface UpdateBusRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateBusRequest';
     /** ID of the bus to update. */
     busId: string;
     /** Field mask that specifies which fields of the bus are going to be updated. */
@@ -104,31 +96,26 @@ export interface UpdateBusRequest {
 }
 
 export interface UpdateBusRequest_LabelsEntry {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateBusRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateBusMetadata {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateBusMetadata';
     /** ID of the bus that is being updated. */
     busId: string;
 }
 
 export interface DeleteBusRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DeleteBusRequest';
     /** ID of the bus to delete. */
     busId: string;
 }
 
 export interface DeleteBusMetadata {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DeleteBusMetadata';
     /** ID of the bus that is being deleted. */
     busId: string;
 }
 
 export interface ListBusOperationsRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListBusOperationsRequest';
     /** ID of the bus to list operations for. */
     busId: string;
     /** Maximum number of operations to return. */
@@ -150,21 +137,15 @@ export interface ListBusOperationsRequest {
 }
 
 export interface ListBusOperationsResponse {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListBusOperationsResponse';
     /** List of operations for the specified bus. */
     operations: Operation[];
     /** Token for getting the next page of the list of operations. */
     nextPageToken: string;
 }
 
-const baseGetBusRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.GetBusRequest',
-    busId: '',
-};
+const baseGetBusRequest: object = { busId: '' };
 
 export const GetBusRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.GetBusRequest' as const,
-
     encode(message: GetBusRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== '') {
             writer.uint32(10).string(message.busId);
@@ -210,19 +191,9 @@ export const GetBusRequest = {
     },
 };
 
-messageTypeRegistry.set(GetBusRequest.$type, GetBusRequest);
-
-const baseListBusesRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListBusesRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListBusesRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListBusesRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListBusesRequest' as const,
-
     encode(message: ListBusesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -302,16 +273,9 @@ export const ListBusesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListBusesRequest.$type, ListBusesRequest);
-
-const baseListBusesResponse: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListBusesResponse',
-    nextPageToken: '',
-};
+const baseListBusesResponse: object = { nextPageToken: '' };
 
 export const ListBusesResponse = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListBusesResponse' as const,
-
     encode(message: ListBusesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.buses) {
             Bus.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -373,10 +337,7 @@ export const ListBusesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListBusesResponse.$type, ListBusesResponse);
-
 const baseCreateBusRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateBusRequest',
     folderId: '',
     name: '',
     description: '',
@@ -384,8 +345,6 @@ const baseCreateBusRequest: object = {
 };
 
 export const CreateBusRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateBusRequest' as const,
-
     encode(message: CreateBusRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -398,11 +357,7 @@ export const CreateBusRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateBusRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateBusRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -506,17 +461,9 @@ export const CreateBusRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateBusRequest.$type, CreateBusRequest);
-
-const baseCreateBusRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateBusRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateBusRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateBusRequest_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateBusRequest.LabelsEntry' as const,
-
     encode(
         message: CreateBusRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -576,17 +523,9 @@ export const CreateBusRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateBusRequest_LabelsEntry.$type, CreateBusRequest_LabelsEntry);
-
-const baseCreateBusMetadata: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateBusMetadata',
-    busId: '',
-    folderId: '',
-};
+const baseCreateBusMetadata: object = { busId: '', folderId: '' };
 
 export const CreateBusMetadata = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateBusMetadata' as const,
-
     encode(message: CreateBusMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== '') {
             writer.uint32(10).string(message.busId);
@@ -644,10 +583,7 @@ export const CreateBusMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateBusMetadata.$type, CreateBusMetadata);
-
 const baseUpdateBusRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateBusRequest',
     busId: '',
     name: '',
     description: '',
@@ -655,8 +591,6 @@ const baseUpdateBusRequest: object = {
 };
 
 export const UpdateBusRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateBusRequest' as const,
-
     encode(message: UpdateBusRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== '') {
             writer.uint32(10).string(message.busId);
@@ -672,11 +606,7 @@ export const UpdateBusRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateBusRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateBusRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -793,17 +723,9 @@ export const UpdateBusRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateBusRequest.$type, UpdateBusRequest);
-
-const baseUpdateBusRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateBusRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateBusRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateBusRequest_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateBusRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateBusRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -863,16 +785,9 @@ export const UpdateBusRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateBusRequest_LabelsEntry.$type, UpdateBusRequest_LabelsEntry);
-
-const baseUpdateBusMetadata: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateBusMetadata',
-    busId: '',
-};
+const baseUpdateBusMetadata: object = { busId: '' };
 
 export const UpdateBusMetadata = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateBusMetadata' as const,
-
     encode(message: UpdateBusMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== '') {
             writer.uint32(10).string(message.busId);
@@ -918,16 +833,9 @@ export const UpdateBusMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateBusMetadata.$type, UpdateBusMetadata);
-
-const baseDeleteBusRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DeleteBusRequest',
-    busId: '',
-};
+const baseDeleteBusRequest: object = { busId: '' };
 
 export const DeleteBusRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DeleteBusRequest' as const,
-
     encode(message: DeleteBusRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== '') {
             writer.uint32(10).string(message.busId);
@@ -973,16 +881,9 @@ export const DeleteBusRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteBusRequest.$type, DeleteBusRequest);
-
-const baseDeleteBusMetadata: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DeleteBusMetadata',
-    busId: '',
-};
+const baseDeleteBusMetadata: object = { busId: '' };
 
 export const DeleteBusMetadata = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DeleteBusMetadata' as const,
-
     encode(message: DeleteBusMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== '') {
             writer.uint32(10).string(message.busId);
@@ -1028,19 +929,9 @@ export const DeleteBusMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteBusMetadata.$type, DeleteBusMetadata);
-
-const baseListBusOperationsRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListBusOperationsRequest',
-    busId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListBusOperationsRequest: object = { busId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListBusOperationsRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListBusOperationsRequest' as const,
-
     encode(
         message: ListBusOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1123,16 +1014,9 @@ export const ListBusOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListBusOperationsRequest.$type, ListBusOperationsRequest);
-
-const baseListBusOperationsResponse: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListBusOperationsResponse',
-    nextPageToken: '',
-};
+const baseListBusOperationsResponse: object = { nextPageToken: '' };
 
 export const ListBusOperationsResponse = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListBusOperationsResponse' as const,
-
     encode(
         message: ListBusOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1198,8 +1082,6 @@ export const ListBusOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListBusOperationsResponse.$type, ListBusOperationsResponse);
 
 /** A set of methods for managing buses for serverless eventrouter. */
 export const BusServiceService = {
@@ -1516,16 +1398,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

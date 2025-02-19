@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { DoubleValue, BoolValue, Int64Value } from '../../../../../../google/protobuf/wrappers';
@@ -11,7 +10,6 @@ export const protobufPackage = 'yandex.cloud.mdb.mongodb.v1.config';
  * options described in [MongoDB documentation](https://docs.mongodb.com/v5.0/reference/configuration-options/).
  */
 export interface Mongodconfig50Enterprise {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise';
     /** `storage` section of mongod configuration. */
     storage?: Mongodconfig50Enterprise_Storage;
     /** `operationProfiling` section of mongod configuration. */
@@ -27,7 +25,6 @@ export interface Mongodconfig50Enterprise {
 }
 
 export interface Mongodconfig50Enterprise_Storage {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Storage';
     /** Configuration of the WiredTiger storage engine. */
     wiredTiger?: Mongodconfig50Enterprise_Storage_WiredTiger;
     /** Configuration of the MongoDB [journal](https://docs.mongodb.com/v5.0/reference/glossary/#term-journal). */
@@ -36,7 +33,6 @@ export interface Mongodconfig50Enterprise_Storage {
 
 /** Configuration of WiredTiger storage engine. */
 export interface Mongodconfig50Enterprise_Storage_WiredTiger {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Storage.WiredTiger';
     /** Engine configuration for WiredTiger. */
     engineConfig?: Mongodconfig50Enterprise_Storage_WiredTiger_EngineConfig;
     /** Collection configuration for WiredTiger. */
@@ -46,13 +42,11 @@ export interface Mongodconfig50Enterprise_Storage_WiredTiger {
 }
 
 export interface Mongodconfig50Enterprise_Storage_WiredTiger_EngineConfig {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Storage.WiredTiger.EngineConfig';
     /** The maximum size of the internal cache that WiredTiger will use for all data. */
     cacheSizeGb?: number;
 }
 
 export interface Mongodconfig50Enterprise_Storage_WiredTiger_CollectionConfig {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Storage.WiredTiger.CollectionConfig';
     /** Default type of compression to use for collection data. */
     blockCompressor: Mongodconfig50Enterprise_Storage_WiredTiger_CollectionConfig_Compressor;
 }
@@ -116,13 +110,11 @@ export function mongodconfig50Enterprise_Storage_WiredTiger_CollectionConfig_Com
 }
 
 export interface Mongodconfig50Enterprise_Storage_WiredTiger_IndexConfig {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Storage.WiredTiger.IndexConfig';
     /** Enables or disables [prefix compression](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-prefix-compression) */
     prefixCompression?: boolean;
 }
 
 export interface Mongodconfig50Enterprise_Storage_Journal {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Storage.Journal';
     /**
      * Commit interval between journal operations, in milliseconds.
      * Default: 100.
@@ -131,7 +123,6 @@ export interface Mongodconfig50Enterprise_Storage_Journal {
 }
 
 export interface Mongodconfig50Enterprise_OperationProfiling {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.OperationProfiling';
     /** Mode which specifies operations that should be profiled. */
     mode: Mongodconfig50Enterprise_OperationProfiling_Mode;
     /**
@@ -199,7 +190,6 @@ export function mongodconfig50Enterprise_OperationProfiling_ModeToJSON(
 }
 
 export interface Mongodconfig50Enterprise_Network {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Network';
     /** The maximum number of simultaneous connections that mongod will accept. */
     maxIncomingConnections?: number;
     /** Compression settings */
@@ -207,7 +197,6 @@ export interface Mongodconfig50Enterprise_Network {
 }
 
 export interface Mongodconfig50Enterprise_Network_Compression {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Network.Compression';
     /**
      * Specifies the default compressor(s) to use for communication between this mongod or mongos instance and:
      * - other members of the deployment if the instance is part of a replica set or a sharded cluster
@@ -277,7 +266,6 @@ export function mongodconfig50Enterprise_Network_Compression_CompressorToJSON(
 }
 
 export interface Mongodconfig50Enterprise_Security {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Security';
     /** If encryption at rest should be enabled or not */
     enableEncryption?: boolean;
     /** `kmip` section of mongod security config */
@@ -285,7 +273,6 @@ export interface Mongodconfig50Enterprise_Security {
 }
 
 export interface Mongodconfig50Enterprise_Security_KMIP {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Security.KMIP';
     /** KMIP server name */
     serverName: string;
     /** KMIP server port */
@@ -299,7 +286,6 @@ export interface Mongodconfig50Enterprise_Security_KMIP {
 }
 
 export interface Mongodconfig50Enterprise_AuditLog {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.AuditLog';
     /** Audit filter */
     filter: string;
     /** Allows runtime configuration of audit filter and auditAuthorizationSuccess */
@@ -307,7 +293,6 @@ export interface Mongodconfig50Enterprise_AuditLog {
 }
 
 export interface Mongodconfig50Enterprise_SetParameter {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.SetParameter';
     /** Enables the auditing of authorization successes */
     auditAuthorizationSuccess?: boolean;
     /**
@@ -321,7 +306,6 @@ export interface Mongodconfig50Enterprise_SetParameter {
 }
 
 export interface Mongocfgconfig50Enterprise {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfig5_0_enterprise';
     /** `storage` section of mongocfg configuration. */
     storage?: Mongocfgconfig50Enterprise_Storage;
     /** `operationProfiling` section of mongocfg configuration. */
@@ -331,26 +315,22 @@ export interface Mongocfgconfig50Enterprise {
 }
 
 export interface Mongocfgconfig50Enterprise_Storage {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfig5_0_enterprise.Storage';
     /** Configuration of the WiredTiger storage engine. */
     wiredTiger?: Mongocfgconfig50Enterprise_Storage_WiredTiger;
 }
 
 /** Configuration of WiredTiger storage engine. */
 export interface Mongocfgconfig50Enterprise_Storage_WiredTiger {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfig5_0_enterprise.Storage.WiredTiger';
     /** Engine configuration for WiredTiger. */
     engineConfig?: Mongocfgconfig50Enterprise_Storage_WiredTiger_EngineConfig;
 }
 
 export interface Mongocfgconfig50Enterprise_Storage_WiredTiger_EngineConfig {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfig5_0_enterprise.Storage.WiredTiger.EngineConfig';
     /** The maximum size of the internal cache that WiredTiger will use for all data. */
     cacheSizeGb?: number;
 }
 
 export interface Mongocfgconfig50Enterprise_OperationProfiling {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfig5_0_enterprise.OperationProfiling';
     /** Mode which specifies operations that should be profiled. */
     mode: Mongocfgconfig50Enterprise_OperationProfiling_Mode;
     /**
@@ -413,19 +393,16 @@ export function mongocfgconfig50Enterprise_OperationProfiling_ModeToJSON(
 }
 
 export interface Mongocfgconfig50Enterprise_Network {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfig5_0_enterprise.Network';
     /** The maximum number of simultaneous connections that mongocfg will accept. */
     maxIncomingConnections?: number;
 }
 
 export interface Mongosconfig50Enterprise {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongosConfig5_0_enterprise';
     /** Network settings for mongos. */
     net?: Mongosconfig50Enterprise_Network;
 }
 
 export interface Mongosconfig50Enterprise_Network {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongosConfig5_0_enterprise.Network';
     /** The maximum number of simultaneous connections that mongos will accept. */
     maxIncomingConnections?: number;
     /** Compression settings */
@@ -433,7 +410,6 @@ export interface Mongosconfig50Enterprise_Network {
 }
 
 export interface Mongosconfig50Enterprise_Network_Compression {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongosConfig5_0_enterprise.Network.Compression';
     /**
      * Specifies the default compressor(s) to use for communication between this mongod or mongos instance and:
      * - other members of the deployment if the instance is part of a replica set or a sharded cluster
@@ -503,7 +479,6 @@ export function mongosconfig50Enterprise_Network_Compression_CompressorToJSON(
 }
 
 export interface Mongodconfigset50Enterprise {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfigSet5_0_enterprise';
     /**
      * Effective mongod settings for a MongoDB 5.0 cluster (a combination of settings defined
      * in [user_config] and [default_config]).
@@ -516,7 +491,6 @@ export interface Mongodconfigset50Enterprise {
 }
 
 export interface Mongocfgconfigset50Enterprise {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfigSet5_0_enterprise';
     /**
      * Effective mongocfg settings for a MongoDB 5.0 cluster (a combination of settings defined
      * in [user_config] and [default_config]).
@@ -529,7 +503,6 @@ export interface Mongocfgconfigset50Enterprise {
 }
 
 export interface Mongosconfigset50Enterprise {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongosConfigSet5_0_enterprise';
     /**
      * Effective mongos settings for a MongoDB 5.0 cluster (a combination of settings defined
      * in [user_config] and [default_config]).
@@ -541,13 +514,9 @@ export interface Mongosconfigset50Enterprise {
     defaultConfig?: Mongosconfig50Enterprise;
 }
 
-const baseMongodconfig50Enterprise: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise',
-};
+const baseMongodconfig50Enterprise: object = {};
 
 export const Mongodconfig50Enterprise = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise' as const,
-
     encode(
         message: Mongodconfig50Enterprise,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -726,15 +695,9 @@ export const Mongodconfig50Enterprise = {
     },
 };
 
-messageTypeRegistry.set(Mongodconfig50Enterprise.$type, Mongodconfig50Enterprise);
-
-const baseMongodconfig50Enterprise_Storage: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Storage',
-};
+const baseMongodconfig50Enterprise_Storage: object = {};
 
 export const Mongodconfig50Enterprise_Storage = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Storage' as const,
-
     encode(
         message: Mongodconfig50Enterprise_Storage,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -829,15 +792,9 @@ export const Mongodconfig50Enterprise_Storage = {
     },
 };
 
-messageTypeRegistry.set(Mongodconfig50Enterprise_Storage.$type, Mongodconfig50Enterprise_Storage);
-
-const baseMongodconfig50Enterprise_Storage_WiredTiger: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Storage.WiredTiger',
-};
+const baseMongodconfig50Enterprise_Storage_WiredTiger: object = {};
 
 export const Mongodconfig50Enterprise_Storage_WiredTiger = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Storage.WiredTiger' as const,
-
     encode(
         message: Mongodconfig50Enterprise_Storage_WiredTiger,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -980,27 +937,15 @@ export const Mongodconfig50Enterprise_Storage_WiredTiger = {
     },
 };
 
-messageTypeRegistry.set(
-    Mongodconfig50Enterprise_Storage_WiredTiger.$type,
-    Mongodconfig50Enterprise_Storage_WiredTiger,
-);
-
-const baseMongodconfig50Enterprise_Storage_WiredTiger_EngineConfig: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Storage.WiredTiger.EngineConfig',
-};
+const baseMongodconfig50Enterprise_Storage_WiredTiger_EngineConfig: object = {};
 
 export const Mongodconfig50Enterprise_Storage_WiredTiger_EngineConfig = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Storage.WiredTiger.EngineConfig' as const,
-
     encode(
         message: Mongodconfig50Enterprise_Storage_WiredTiger_EngineConfig,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.cacheSizeGb !== undefined) {
-            DoubleValue.encode(
-                { $type: 'google.protobuf.DoubleValue', value: message.cacheSizeGb! },
-                writer.uint32(10).fork(),
-            ).ldelim();
+            DoubleValue.encode({ value: message.cacheSizeGb! }, writer.uint32(10).fork()).ldelim();
         }
         return writer;
     },
@@ -1056,19 +1001,11 @@ export const Mongodconfig50Enterprise_Storage_WiredTiger_EngineConfig = {
     },
 };
 
-messageTypeRegistry.set(
-    Mongodconfig50Enterprise_Storage_WiredTiger_EngineConfig.$type,
-    Mongodconfig50Enterprise_Storage_WiredTiger_EngineConfig,
-);
-
 const baseMongodconfig50Enterprise_Storage_WiredTiger_CollectionConfig: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Storage.WiredTiger.CollectionConfig',
     blockCompressor: 0,
 };
 
 export const Mongodconfig50Enterprise_Storage_WiredTiger_CollectionConfig = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Storage.WiredTiger.CollectionConfig' as const,
-
     encode(
         message: Mongodconfig50Enterprise_Storage_WiredTiger_CollectionConfig,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1139,25 +1076,16 @@ export const Mongodconfig50Enterprise_Storage_WiredTiger_CollectionConfig = {
     },
 };
 
-messageTypeRegistry.set(
-    Mongodconfig50Enterprise_Storage_WiredTiger_CollectionConfig.$type,
-    Mongodconfig50Enterprise_Storage_WiredTiger_CollectionConfig,
-);
-
-const baseMongodconfig50Enterprise_Storage_WiredTiger_IndexConfig: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Storage.WiredTiger.IndexConfig',
-};
+const baseMongodconfig50Enterprise_Storage_WiredTiger_IndexConfig: object = {};
 
 export const Mongodconfig50Enterprise_Storage_WiredTiger_IndexConfig = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Storage.WiredTiger.IndexConfig' as const,
-
     encode(
         message: Mongodconfig50Enterprise_Storage_WiredTiger_IndexConfig,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.prefixCompression !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.prefixCompression! },
+                { value: message.prefixCompression! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
@@ -1216,25 +1144,16 @@ export const Mongodconfig50Enterprise_Storage_WiredTiger_IndexConfig = {
     },
 };
 
-messageTypeRegistry.set(
-    Mongodconfig50Enterprise_Storage_WiredTiger_IndexConfig.$type,
-    Mongodconfig50Enterprise_Storage_WiredTiger_IndexConfig,
-);
-
-const baseMongodconfig50Enterprise_Storage_Journal: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Storage.Journal',
-};
+const baseMongodconfig50Enterprise_Storage_Journal: object = {};
 
 export const Mongodconfig50Enterprise_Storage_Journal = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Storage.Journal' as const,
-
     encode(
         message: Mongodconfig50Enterprise_Storage_Journal,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.commitInterval !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.commitInterval! },
+                { value: message.commitInterval! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
@@ -1292,19 +1211,9 @@ export const Mongodconfig50Enterprise_Storage_Journal = {
     },
 };
 
-messageTypeRegistry.set(
-    Mongodconfig50Enterprise_Storage_Journal.$type,
-    Mongodconfig50Enterprise_Storage_Journal,
-);
-
-const baseMongodconfig50Enterprise_OperationProfiling: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.OperationProfiling',
-    mode: 0,
-};
+const baseMongodconfig50Enterprise_OperationProfiling: object = { mode: 0 };
 
 export const Mongodconfig50Enterprise_OperationProfiling = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.OperationProfiling' as const,
-
     encode(
         message: Mongodconfig50Enterprise_OperationProfiling,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1314,13 +1223,13 @@ export const Mongodconfig50Enterprise_OperationProfiling = {
         }
         if (message.slowOpThreshold !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.slowOpThreshold! },
+                { value: message.slowOpThreshold! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
         if (message.slowOpSampleRate !== undefined) {
             DoubleValue.encode(
-                { $type: 'google.protobuf.DoubleValue', value: message.slowOpSampleRate! },
+                { value: message.slowOpSampleRate! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
@@ -1397,25 +1306,16 @@ export const Mongodconfig50Enterprise_OperationProfiling = {
     },
 };
 
-messageTypeRegistry.set(
-    Mongodconfig50Enterprise_OperationProfiling.$type,
-    Mongodconfig50Enterprise_OperationProfiling,
-);
-
-const baseMongodconfig50Enterprise_Network: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Network',
-};
+const baseMongodconfig50Enterprise_Network: object = {};
 
 export const Mongodconfig50Enterprise_Network = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Network' as const,
-
     encode(
         message: Mongodconfig50Enterprise_Network,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.maxIncomingConnections !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxIncomingConnections! },
+                { value: message.maxIncomingConnections! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
@@ -1498,16 +1398,9 @@ export const Mongodconfig50Enterprise_Network = {
     },
 };
 
-messageTypeRegistry.set(Mongodconfig50Enterprise_Network.$type, Mongodconfig50Enterprise_Network);
-
-const baseMongodconfig50Enterprise_Network_Compression: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Network.Compression',
-    compressors: 0,
-};
+const baseMongodconfig50Enterprise_Network_Compression: object = { compressors: 0 };
 
 export const Mongodconfig50Enterprise_Network_Compression = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Network.Compression' as const,
-
     encode(
         message: Mongodconfig50Enterprise_Network_Compression,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1584,25 +1477,16 @@ export const Mongodconfig50Enterprise_Network_Compression = {
     },
 };
 
-messageTypeRegistry.set(
-    Mongodconfig50Enterprise_Network_Compression.$type,
-    Mongodconfig50Enterprise_Network_Compression,
-);
-
-const baseMongodconfig50Enterprise_Security: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Security',
-};
+const baseMongodconfig50Enterprise_Security: object = {};
 
 export const Mongodconfig50Enterprise_Security = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Security' as const,
-
     encode(
         message: Mongodconfig50Enterprise_Security,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.enableEncryption !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.enableEncryption! },
+                { value: message.enableEncryption! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
@@ -1681,10 +1565,7 @@ export const Mongodconfig50Enterprise_Security = {
     },
 };
 
-messageTypeRegistry.set(Mongodconfig50Enterprise_Security.$type, Mongodconfig50Enterprise_Security);
-
 const baseMongodconfig50Enterprise_Security_KMIP: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Security.KMIP',
     serverName: '',
     serverCa: '',
     clientCertificate: '',
@@ -1692,8 +1573,6 @@ const baseMongodconfig50Enterprise_Security_KMIP: object = {
 };
 
 export const Mongodconfig50Enterprise_Security_KMIP = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.Security.KMIP' as const,
-
     encode(
         message: Mongodconfig50Enterprise_Security_KMIP,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1702,10 +1581,7 @@ export const Mongodconfig50Enterprise_Security_KMIP = {
             writer.uint32(10).string(message.serverName);
         }
         if (message.port !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.port! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.port! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.serverCa !== '') {
             writer.uint32(26).string(message.serverCa);
@@ -1805,19 +1681,9 @@ export const Mongodconfig50Enterprise_Security_KMIP = {
     },
 };
 
-messageTypeRegistry.set(
-    Mongodconfig50Enterprise_Security_KMIP.$type,
-    Mongodconfig50Enterprise_Security_KMIP,
-);
-
-const baseMongodconfig50Enterprise_AuditLog: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.AuditLog',
-    filter: '',
-};
+const baseMongodconfig50Enterprise_AuditLog: object = { filter: '' };
 
 export const Mongodconfig50Enterprise_AuditLog = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.AuditLog' as const,
-
     encode(
         message: Mongodconfig50Enterprise_AuditLog,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1827,7 +1693,7 @@ export const Mongodconfig50Enterprise_AuditLog = {
         }
         if (message.runtimeConfiguration !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.runtimeConfiguration! },
+                { value: message.runtimeConfiguration! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
@@ -1890,37 +1756,28 @@ export const Mongodconfig50Enterprise_AuditLog = {
     },
 };
 
-messageTypeRegistry.set(Mongodconfig50Enterprise_AuditLog.$type, Mongodconfig50Enterprise_AuditLog);
-
-const baseMongodconfig50Enterprise_SetParameter: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.SetParameter',
-};
+const baseMongodconfig50Enterprise_SetParameter: object = {};
 
 export const Mongodconfig50Enterprise_SetParameter = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfig5_0_enterprise.SetParameter' as const,
-
     encode(
         message: Mongodconfig50Enterprise_SetParameter,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.auditAuthorizationSuccess !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.auditAuthorizationSuccess! },
+                { value: message.auditAuthorizationSuccess! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
         if (message.enableFlowControl !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.enableFlowControl! },
+                { value: message.enableFlowControl! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
         if (message.minSnapshotHistoryWindowInSeconds !== undefined) {
             Int64Value.encode(
-                {
-                    $type: 'google.protobuf.Int64Value',
-                    value: message.minSnapshotHistoryWindowInSeconds!,
-                },
+                { value: message.minSnapshotHistoryWindowInSeconds! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
@@ -2005,18 +1862,9 @@ export const Mongodconfig50Enterprise_SetParameter = {
     },
 };
 
-messageTypeRegistry.set(
-    Mongodconfig50Enterprise_SetParameter.$type,
-    Mongodconfig50Enterprise_SetParameter,
-);
-
-const baseMongocfgconfig50Enterprise: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfig5_0_enterprise',
-};
+const baseMongocfgconfig50Enterprise: object = {};
 
 export const Mongocfgconfig50Enterprise = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfig5_0_enterprise' as const,
-
     encode(
         message: Mongocfgconfig50Enterprise,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2132,15 +1980,9 @@ export const Mongocfgconfig50Enterprise = {
     },
 };
 
-messageTypeRegistry.set(Mongocfgconfig50Enterprise.$type, Mongocfgconfig50Enterprise);
-
-const baseMongocfgconfig50Enterprise_Storage: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfig5_0_enterprise.Storage',
-};
+const baseMongocfgconfig50Enterprise_Storage: object = {};
 
 export const Mongocfgconfig50Enterprise_Storage = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfig5_0_enterprise.Storage' as const,
-
     encode(
         message: Mongocfgconfig50Enterprise_Storage,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2211,18 +2053,9 @@ export const Mongocfgconfig50Enterprise_Storage = {
     },
 };
 
-messageTypeRegistry.set(
-    Mongocfgconfig50Enterprise_Storage.$type,
-    Mongocfgconfig50Enterprise_Storage,
-);
-
-const baseMongocfgconfig50Enterprise_Storage_WiredTiger: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfig5_0_enterprise.Storage.WiredTiger',
-};
+const baseMongocfgconfig50Enterprise_Storage_WiredTiger: object = {};
 
 export const Mongocfgconfig50Enterprise_Storage_WiredTiger = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfig5_0_enterprise.Storage.WiredTiger' as const,
-
     encode(
         message: Mongocfgconfig50Enterprise_Storage_WiredTiger,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2303,27 +2136,15 @@ export const Mongocfgconfig50Enterprise_Storage_WiredTiger = {
     },
 };
 
-messageTypeRegistry.set(
-    Mongocfgconfig50Enterprise_Storage_WiredTiger.$type,
-    Mongocfgconfig50Enterprise_Storage_WiredTiger,
-);
-
-const baseMongocfgconfig50Enterprise_Storage_WiredTiger_EngineConfig: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfig5_0_enterprise.Storage.WiredTiger.EngineConfig',
-};
+const baseMongocfgconfig50Enterprise_Storage_WiredTiger_EngineConfig: object = {};
 
 export const Mongocfgconfig50Enterprise_Storage_WiredTiger_EngineConfig = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfig5_0_enterprise.Storage.WiredTiger.EngineConfig' as const,
-
     encode(
         message: Mongocfgconfig50Enterprise_Storage_WiredTiger_EngineConfig,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.cacheSizeGb !== undefined) {
-            DoubleValue.encode(
-                { $type: 'google.protobuf.DoubleValue', value: message.cacheSizeGb! },
-                writer.uint32(10).fork(),
-            ).ldelim();
+            DoubleValue.encode({ value: message.cacheSizeGb! }, writer.uint32(10).fork()).ldelim();
         }
         return writer;
     },
@@ -2379,19 +2200,9 @@ export const Mongocfgconfig50Enterprise_Storage_WiredTiger_EngineConfig = {
     },
 };
 
-messageTypeRegistry.set(
-    Mongocfgconfig50Enterprise_Storage_WiredTiger_EngineConfig.$type,
-    Mongocfgconfig50Enterprise_Storage_WiredTiger_EngineConfig,
-);
-
-const baseMongocfgconfig50Enterprise_OperationProfiling: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfig5_0_enterprise.OperationProfiling',
-    mode: 0,
-};
+const baseMongocfgconfig50Enterprise_OperationProfiling: object = { mode: 0 };
 
 export const Mongocfgconfig50Enterprise_OperationProfiling = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfig5_0_enterprise.OperationProfiling' as const,
-
     encode(
         message: Mongocfgconfig50Enterprise_OperationProfiling,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2401,7 +2212,7 @@ export const Mongocfgconfig50Enterprise_OperationProfiling = {
         }
         if (message.slowOpThreshold !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.slowOpThreshold! },
+                { value: message.slowOpThreshold! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
@@ -2469,25 +2280,16 @@ export const Mongocfgconfig50Enterprise_OperationProfiling = {
     },
 };
 
-messageTypeRegistry.set(
-    Mongocfgconfig50Enterprise_OperationProfiling.$type,
-    Mongocfgconfig50Enterprise_OperationProfiling,
-);
-
-const baseMongocfgconfig50Enterprise_Network: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfig5_0_enterprise.Network',
-};
+const baseMongocfgconfig50Enterprise_Network: object = {};
 
 export const Mongocfgconfig50Enterprise_Network = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfig5_0_enterprise.Network' as const,
-
     encode(
         message: Mongocfgconfig50Enterprise_Network,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.maxIncomingConnections !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxIncomingConnections! },
+                { value: message.maxIncomingConnections! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
@@ -2546,18 +2348,9 @@ export const Mongocfgconfig50Enterprise_Network = {
     },
 };
 
-messageTypeRegistry.set(
-    Mongocfgconfig50Enterprise_Network.$type,
-    Mongocfgconfig50Enterprise_Network,
-);
-
-const baseMongosconfig50Enterprise: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongosConfig5_0_enterprise',
-};
+const baseMongosconfig50Enterprise: object = {};
 
 export const Mongosconfig50Enterprise = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongosConfig5_0_enterprise' as const,
-
     encode(
         message: Mongosconfig50Enterprise,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2616,22 +2409,16 @@ export const Mongosconfig50Enterprise = {
     },
 };
 
-messageTypeRegistry.set(Mongosconfig50Enterprise.$type, Mongosconfig50Enterprise);
-
-const baseMongosconfig50Enterprise_Network: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongosConfig5_0_enterprise.Network',
-};
+const baseMongosconfig50Enterprise_Network: object = {};
 
 export const Mongosconfig50Enterprise_Network = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongosConfig5_0_enterprise.Network' as const,
-
     encode(
         message: Mongosconfig50Enterprise_Network,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.maxIncomingConnections !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxIncomingConnections! },
+                { value: message.maxIncomingConnections! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
@@ -2714,16 +2501,9 @@ export const Mongosconfig50Enterprise_Network = {
     },
 };
 
-messageTypeRegistry.set(Mongosconfig50Enterprise_Network.$type, Mongosconfig50Enterprise_Network);
-
-const baseMongosconfig50Enterprise_Network_Compression: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongosConfig5_0_enterprise.Network.Compression',
-    compressors: 0,
-};
+const baseMongosconfig50Enterprise_Network_Compression: object = { compressors: 0 };
 
 export const Mongosconfig50Enterprise_Network_Compression = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongosConfig5_0_enterprise.Network.Compression' as const,
-
     encode(
         message: Mongosconfig50Enterprise_Network_Compression,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2800,18 +2580,9 @@ export const Mongosconfig50Enterprise_Network_Compression = {
     },
 };
 
-messageTypeRegistry.set(
-    Mongosconfig50Enterprise_Network_Compression.$type,
-    Mongosconfig50Enterprise_Network_Compression,
-);
-
-const baseMongodconfigset50Enterprise: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfigSet5_0_enterprise',
-};
+const baseMongodconfigset50Enterprise: object = {};
 
 export const Mongodconfigset50Enterprise = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongodConfigSet5_0_enterprise' as const,
-
     encode(
         message: Mongodconfigset50Enterprise,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2918,15 +2689,9 @@ export const Mongodconfigset50Enterprise = {
     },
 };
 
-messageTypeRegistry.set(Mongodconfigset50Enterprise.$type, Mongodconfigset50Enterprise);
-
-const baseMongocfgconfigset50Enterprise: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfigSet5_0_enterprise',
-};
+const baseMongocfgconfigset50Enterprise: object = {};
 
 export const Mongocfgconfigset50Enterprise = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongoCfgConfigSet5_0_enterprise' as const,
-
     encode(
         message: Mongocfgconfigset50Enterprise,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3036,15 +2801,9 @@ export const Mongocfgconfigset50Enterprise = {
     },
 };
 
-messageTypeRegistry.set(Mongocfgconfigset50Enterprise.$type, Mongocfgconfigset50Enterprise);
-
-const baseMongosconfigset50Enterprise: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongosConfigSet5_0_enterprise',
-};
+const baseMongosconfigset50Enterprise: object = {};
 
 export const Mongosconfigset50Enterprise = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.config.MongosConfigSet5_0_enterprise' as const,
-
     encode(
         message: Mongosconfigset50Enterprise,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3151,8 +2910,6 @@ export const Mongosconfigset50Enterprise = {
     },
 };
 
-messageTypeRegistry.set(Mongosconfigset50Enterprise.$type, Mongosconfigset50Enterprise);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -3162,16 +2919,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,18 +18,15 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.loadtesting.agent.v1';
 
 export interface RegisterRequest {
-    $type: 'yandex.cloud.loadtesting.agent.v1.RegisterRequest';
     computeInstanceId: string;
     agentVersion: string;
 }
 
 export interface RegisterResponse {
-    $type: 'yandex.cloud.loadtesting.agent.v1.RegisterResponse';
     agentInstanceId: string;
 }
 
 export interface ExternalAgentRegisterRequest {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ExternalAgentRegisterRequest';
     folderId: string;
     computeInstanceId: string;
     name: string;
@@ -39,25 +35,17 @@ export interface ExternalAgentRegisterRequest {
 }
 
 export interface ExternalAgentRegisterRequest_LabelsEntry {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ExternalAgentRegisterRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface ExternalAgentRegisterMetadata {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ExternalAgentRegisterMetadata';
     agentInstanceId: string;
 }
 
-const baseRegisterRequest: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.RegisterRequest',
-    computeInstanceId: '',
-    agentVersion: '',
-};
+const baseRegisterRequest: object = { computeInstanceId: '', agentVersion: '' };
 
 export const RegisterRequest = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.RegisterRequest' as const,
-
     encode(message: RegisterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -118,16 +106,9 @@ export const RegisterRequest = {
     },
 };
 
-messageTypeRegistry.set(RegisterRequest.$type, RegisterRequest);
-
-const baseRegisterResponse: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.RegisterResponse',
-    agentInstanceId: '',
-};
+const baseRegisterResponse: object = { agentInstanceId: '' };
 
 export const RegisterResponse = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.RegisterResponse' as const,
-
     encode(message: RegisterResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentInstanceId !== '') {
             writer.uint32(10).string(message.agentInstanceId);
@@ -175,10 +156,7 @@ export const RegisterResponse = {
     },
 };
 
-messageTypeRegistry.set(RegisterResponse.$type, RegisterResponse);
-
 const baseExternalAgentRegisterRequest: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ExternalAgentRegisterRequest',
     folderId: '',
     computeInstanceId: '',
     name: '',
@@ -186,8 +164,6 @@ const baseExternalAgentRegisterRequest: object = {
 };
 
 export const ExternalAgentRegisterRequest = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ExternalAgentRegisterRequest' as const,
-
     encode(
         message: ExternalAgentRegisterRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -206,11 +182,7 @@ export const ExternalAgentRegisterRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             ExternalAgentRegisterRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.loadtesting.agent.v1.ExternalAgentRegisterRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -316,17 +288,9 @@ export const ExternalAgentRegisterRequest = {
     },
 };
 
-messageTypeRegistry.set(ExternalAgentRegisterRequest.$type, ExternalAgentRegisterRequest);
-
-const baseExternalAgentRegisterRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ExternalAgentRegisterRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseExternalAgentRegisterRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const ExternalAgentRegisterRequest_LabelsEntry = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ExternalAgentRegisterRequest.LabelsEntry' as const,
-
     encode(
         message: ExternalAgentRegisterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -395,19 +359,9 @@ export const ExternalAgentRegisterRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    ExternalAgentRegisterRequest_LabelsEntry.$type,
-    ExternalAgentRegisterRequest_LabelsEntry,
-);
-
-const baseExternalAgentRegisterMetadata: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ExternalAgentRegisterMetadata',
-    agentInstanceId: '',
-};
+const baseExternalAgentRegisterMetadata: object = { agentInstanceId: '' };
 
 export const ExternalAgentRegisterMetadata = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ExternalAgentRegisterMetadata' as const,
-
     encode(
         message: ExternalAgentRegisterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -459,8 +413,6 @@ export const ExternalAgentRegisterMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ExternalAgentRegisterMetadata.$type, ExternalAgentRegisterMetadata);
 
 export const AgentRegistrationServiceService = {
     /** Registers specified agent. */
@@ -551,16 +503,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

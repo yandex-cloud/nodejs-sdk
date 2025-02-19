@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -31,13 +30,11 @@ export const protobufPackage = 'yandex.cloud.cdn.v1';
 
 /** A request to get a resource. */
 export interface GetResourceRequest {
-    $type: 'yandex.cloud.cdn.v1.GetResourceRequest';
     /** ID of the requested resource. */
     resourceId: string;
 }
 
 export interface ListResourcesRequest {
-    $type: 'yandex.cloud.cdn.v1.ListResourcesRequest';
     /** ID of the folder to request listing for. */
     folderId: string;
     /**
@@ -56,7 +53,6 @@ export interface ListResourcesRequest {
 }
 
 export interface ListResourcesResponse {
-    $type: 'yandex.cloud.cdn.v1.ListResourcesResponse';
     /** List of the resources */
     resources: Resource[];
     /**
@@ -70,7 +66,6 @@ export interface ListResourcesResponse {
 }
 
 export interface CreateResourceRequest {
-    $type: 'yandex.cloud.cdn.v1.CreateResourceRequest';
     /** ID of the to bind with new resource. */
     folderId: string;
     /** CDN endpoint CNAME, must be unique among clients's resources. */
@@ -96,7 +91,6 @@ export interface CreateResourceRequest {
 }
 
 export interface CreateResourceRequest_Origin {
-    $type: 'yandex.cloud.cdn.v1.CreateResourceRequest.Origin';
     /** ID of pre-created origin group. */
     originGroupId: number | undefined;
     /**
@@ -109,14 +103,12 @@ export interface CreateResourceRequest_Origin {
 }
 
 export interface CreateResourceRequest_LabelsEntry {
-    $type: 'yandex.cloud.cdn.v1.CreateResourceRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** A set of resource origin parameters. */
 export interface ResourceOriginParams {
-    $type: 'yandex.cloud.cdn.v1.ResourceOriginParams';
     /** Source of the content. */
     source: string;
     /** Set up type of the origin. */
@@ -124,13 +116,11 @@ export interface ResourceOriginParams {
 }
 
 export interface CreateResourceMetadata {
-    $type: 'yandex.cloud.cdn.v1.CreateResourceMetadata';
     /** ID of created resource. */
     resourceId: string;
 }
 
 export interface UpdateResourceRequest {
-    $type: 'yandex.cloud.cdn.v1.UpdateResourceRequest';
     /** ID of updated resource. */
     resourceId: string;
     /** ID of updated origin group. */
@@ -156,51 +146,40 @@ export interface UpdateResourceRequest {
 }
 
 export interface UpdateResourceRequest_LabelsEntry {
-    $type: 'yandex.cloud.cdn.v1.UpdateResourceRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateResourceMetadata {
-    $type: 'yandex.cloud.cdn.v1.UpdateResourceMetadata';
     /** ID of updated resource. */
     resourceId: string;
 }
 
 export interface DeleteResourceRequest {
-    $type: 'yandex.cloud.cdn.v1.DeleteResourceRequest';
     /** ID of resource to delete. */
     resourceId: string;
 }
 
 export interface DeleteResourceMetadata {
-    $type: 'yandex.cloud.cdn.v1.DeleteResourceMetadata';
     /** ID of deleted resource. */
     resourceId: string;
 }
 
 export interface GetProviderCNameRequest {
-    $type: 'yandex.cloud.cdn.v1.GetProviderCNameRequest';
     /** Folder ID to get provider's CNAME. */
     folderId: string;
 }
 
 export interface GetProviderCNameResponse {
-    $type: 'yandex.cloud.cdn.v1.GetProviderCNameResponse';
     /** Provider's CNAME. */
     cname: string;
     /** ID of the folder that the provider belongs to. */
     folderId: string;
 }
 
-const baseGetResourceRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.GetResourceRequest',
-    resourceId: '',
-};
+const baseGetResourceRequest: object = { resourceId: '' };
 
 export const GetResourceRequest = {
-    $type: 'yandex.cloud.cdn.v1.GetResourceRequest' as const,
-
     encode(message: GetResourceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -250,18 +229,9 @@ export const GetResourceRequest = {
     },
 };
 
-messageTypeRegistry.set(GetResourceRequest.$type, GetResourceRequest);
-
-const baseListResourcesRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.ListResourcesRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListResourcesRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
 export const ListResourcesRequest = {
-    $type: 'yandex.cloud.cdn.v1.ListResourcesRequest' as const,
-
     encode(message: ListResourcesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -333,16 +303,9 @@ export const ListResourcesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListResourcesRequest.$type, ListResourcesRequest);
-
-const baseListResourcesResponse: object = {
-    $type: 'yandex.cloud.cdn.v1.ListResourcesResponse',
-    nextPageToken: '',
-};
+const baseListResourcesResponse: object = { nextPageToken: '' };
 
 export const ListResourcesResponse = {
-    $type: 'yandex.cloud.cdn.v1.ListResourcesResponse' as const,
-
     encode(message: ListResourcesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.resources) {
             Resource.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -406,18 +369,9 @@ export const ListResourcesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListResourcesResponse.$type, ListResourcesResponse);
-
-const baseCreateResourceRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.CreateResourceRequest',
-    folderId: '',
-    cname: '',
-    originProtocol: 0,
-};
+const baseCreateResourceRequest: object = { folderId: '', cname: '', originProtocol: 0 };
 
 export const CreateResourceRequest = {
-    $type: 'yandex.cloud.cdn.v1.CreateResourceRequest' as const,
-
     encode(message: CreateResourceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -438,10 +392,7 @@ export const CreateResourceRequest = {
             writer.uint32(40).int32(message.originProtocol);
         }
         if (message.active !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.active! },
-                writer.uint32(50).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.active! }, writer.uint32(50).fork()).ldelim();
         }
         if (message.options !== undefined) {
             ResourceOptions.encode(message.options, writer.uint32(58).fork()).ldelim();
@@ -451,11 +402,7 @@ export const CreateResourceRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateResourceRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.cdn.v1.CreateResourceRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(74).fork(),
             ).ldelim();
         });
@@ -620,15 +567,9 @@ export const CreateResourceRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateResourceRequest.$type, CreateResourceRequest);
-
-const baseCreateResourceRequest_Origin: object = {
-    $type: 'yandex.cloud.cdn.v1.CreateResourceRequest.Origin',
-};
+const baseCreateResourceRequest_Origin: object = {};
 
 export const CreateResourceRequest_Origin = {
-    $type: 'yandex.cloud.cdn.v1.CreateResourceRequest.Origin' as const,
-
     encode(
         message: CreateResourceRequest_Origin,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -718,17 +659,9 @@ export const CreateResourceRequest_Origin = {
     },
 };
 
-messageTypeRegistry.set(CreateResourceRequest_Origin.$type, CreateResourceRequest_Origin);
-
-const baseCreateResourceRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.cdn.v1.CreateResourceRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateResourceRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateResourceRequest_LabelsEntry = {
-    $type: 'yandex.cloud.cdn.v1.CreateResourceRequest.LabelsEntry' as const,
-
     encode(
         message: CreateResourceRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -794,16 +727,9 @@ export const CreateResourceRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateResourceRequest_LabelsEntry.$type, CreateResourceRequest_LabelsEntry);
-
-const baseResourceOriginParams: object = {
-    $type: 'yandex.cloud.cdn.v1.ResourceOriginParams',
-    source: '',
-};
+const baseResourceOriginParams: object = { source: '' };
 
 export const ResourceOriginParams = {
-    $type: 'yandex.cloud.cdn.v1.ResourceOriginParams' as const,
-
     encode(message: ResourceOriginParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.source !== '') {
             writer.uint32(10).string(message.source);
@@ -867,16 +793,9 @@ export const ResourceOriginParams = {
     },
 };
 
-messageTypeRegistry.set(ResourceOriginParams.$type, ResourceOriginParams);
-
-const baseCreateResourceMetadata: object = {
-    $type: 'yandex.cloud.cdn.v1.CreateResourceMetadata',
-    resourceId: '',
-};
+const baseCreateResourceMetadata: object = { resourceId: '' };
 
 export const CreateResourceMetadata = {
-    $type: 'yandex.cloud.cdn.v1.CreateResourceMetadata' as const,
-
     encode(message: CreateResourceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -926,27 +845,19 @@ export const CreateResourceMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateResourceMetadata.$type, CreateResourceMetadata);
-
 const baseUpdateResourceRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.UpdateResourceRequest',
     resourceId: '',
     originProtocol: 0,
     removeLabels: false,
 };
 
 export const UpdateResourceRequest = {
-    $type: 'yandex.cloud.cdn.v1.UpdateResourceRequest' as const,
-
     encode(message: UpdateResourceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
         }
         if (message.originGroupId !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.originGroupId! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.originGroupId! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.secondaryHostnames !== undefined) {
             SecondaryHostnames.encode(
@@ -961,21 +872,14 @@ export const UpdateResourceRequest = {
             writer.uint32(40).int32(message.originProtocol);
         }
         if (message.active !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.active! },
-                writer.uint32(50).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.active! }, writer.uint32(50).fork()).ldelim();
         }
         if (message.sslCertificate !== undefined) {
             SSLTargetCertificate.encode(message.sslCertificate, writer.uint32(58).fork()).ldelim();
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateResourceRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.cdn.v1.UpdateResourceRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(66).fork(),
             ).ldelim();
         });
@@ -1139,17 +1043,9 @@ export const UpdateResourceRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateResourceRequest.$type, UpdateResourceRequest);
-
-const baseUpdateResourceRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.cdn.v1.UpdateResourceRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateResourceRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateResourceRequest_LabelsEntry = {
-    $type: 'yandex.cloud.cdn.v1.UpdateResourceRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateResourceRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1215,16 +1111,9 @@ export const UpdateResourceRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateResourceRequest_LabelsEntry.$type, UpdateResourceRequest_LabelsEntry);
-
-const baseUpdateResourceMetadata: object = {
-    $type: 'yandex.cloud.cdn.v1.UpdateResourceMetadata',
-    resourceId: '',
-};
+const baseUpdateResourceMetadata: object = { resourceId: '' };
 
 export const UpdateResourceMetadata = {
-    $type: 'yandex.cloud.cdn.v1.UpdateResourceMetadata' as const,
-
     encode(message: UpdateResourceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -1274,16 +1163,9 @@ export const UpdateResourceMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateResourceMetadata.$type, UpdateResourceMetadata);
-
-const baseDeleteResourceRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.DeleteResourceRequest',
-    resourceId: '',
-};
+const baseDeleteResourceRequest: object = { resourceId: '' };
 
 export const DeleteResourceRequest = {
-    $type: 'yandex.cloud.cdn.v1.DeleteResourceRequest' as const,
-
     encode(message: DeleteResourceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -1333,16 +1215,9 @@ export const DeleteResourceRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteResourceRequest.$type, DeleteResourceRequest);
-
-const baseDeleteResourceMetadata: object = {
-    $type: 'yandex.cloud.cdn.v1.DeleteResourceMetadata',
-    resourceId: '',
-};
+const baseDeleteResourceMetadata: object = { resourceId: '' };
 
 export const DeleteResourceMetadata = {
-    $type: 'yandex.cloud.cdn.v1.DeleteResourceMetadata' as const,
-
     encode(message: DeleteResourceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -1392,16 +1267,9 @@ export const DeleteResourceMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteResourceMetadata.$type, DeleteResourceMetadata);
-
-const baseGetProviderCNameRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.GetProviderCNameRequest',
-    folderId: '',
-};
+const baseGetProviderCNameRequest: object = { folderId: '' };
 
 export const GetProviderCNameRequest = {
-    $type: 'yandex.cloud.cdn.v1.GetProviderCNameRequest' as const,
-
     encode(message: GetProviderCNameRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1451,17 +1319,9 @@ export const GetProviderCNameRequest = {
     },
 };
 
-messageTypeRegistry.set(GetProviderCNameRequest.$type, GetProviderCNameRequest);
-
-const baseGetProviderCNameResponse: object = {
-    $type: 'yandex.cloud.cdn.v1.GetProviderCNameResponse',
-    cname: '',
-    folderId: '',
-};
+const baseGetProviderCNameResponse: object = { cname: '', folderId: '' };
 
 export const GetProviderCNameResponse = {
-    $type: 'yandex.cloud.cdn.v1.GetProviderCNameResponse' as const,
-
     encode(
         message: GetProviderCNameResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1523,8 +1383,6 @@ export const GetProviderCNameResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(GetProviderCNameResponse.$type, GetProviderCNameResponse);
 
 /** Provider's resources management service. */
 export const ResourceServiceService = {
@@ -1786,16 +1644,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

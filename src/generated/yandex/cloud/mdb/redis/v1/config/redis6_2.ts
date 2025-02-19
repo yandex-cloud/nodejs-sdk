@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Int64Value } from '../../../../../../google/protobuf/wrappers';
@@ -11,7 +10,6 @@ export const protobufPackage = 'yandex.cloud.mdb.redis.v1.config';
  * parameters.
  */
 export interface Redisconfig62 {
-    $type: 'yandex.cloud.mdb.redis.v1.config.RedisConfig6_2';
     /**
      * Redis key eviction policy for a dataset that reaches maximum memory,
      * available to the host. Redis maxmemory setting depends on Managed
@@ -132,7 +130,6 @@ export function redisconfig62_MaxmemoryPolicyToJSON(object: Redisconfig62_Maxmem
 }
 
 export interface Redisconfig62_ClientOutputBufferLimit {
-    $type: 'yandex.cloud.mdb.redis.v1.config.RedisConfig6_2.ClientOutputBufferLimit';
     /** Total limit in bytes. */
     hardLimit?: number;
     /** Limit in bytes during certain time period. */
@@ -142,7 +139,6 @@ export interface Redisconfig62_ClientOutputBufferLimit {
 }
 
 export interface Redisconfigset62 {
-    $type: 'yandex.cloud.mdb.redis.v1.config.RedisConfigSet6_2';
     /**
      * Effective settings for a Redis 6.2 cluster (a combination of settings
      * defined in [user_config] and [default_config]).
@@ -154,46 +150,30 @@ export interface Redisconfigset62 {
     defaultConfig?: Redisconfig62;
 }
 
-const baseRedisconfig62: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.config.RedisConfig6_2',
-    maxmemoryPolicy: 0,
-    password: '',
-    notifyKeyspaceEvents: '',
-};
+const baseRedisconfig62: object = { maxmemoryPolicy: 0, password: '', notifyKeyspaceEvents: '' };
 
 export const Redisconfig62 = {
-    $type: 'yandex.cloud.mdb.redis.v1.config.RedisConfig6_2' as const,
-
     encode(message: Redisconfig62, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxmemoryPolicy !== 0) {
             writer.uint32(8).int32(message.maxmemoryPolicy);
         }
         if (message.timeout !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.timeout! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.timeout! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.password !== '') {
             writer.uint32(26).string(message.password);
         }
         if (message.databases !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.databases! },
-                writer.uint32(34).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.databases! }, writer.uint32(34).fork()).ldelim();
         }
         if (message.slowlogLogSlowerThan !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.slowlogLogSlowerThan! },
+                { value: message.slowlogLogSlowerThan! },
                 writer.uint32(42).fork(),
             ).ldelim();
         }
         if (message.slowlogMaxLen !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.slowlogMaxLen! },
-                writer.uint32(50).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.slowlogMaxLen! }, writer.uint32(50).fork()).ldelim();
         }
         if (message.notifyKeyspaceEvents !== '') {
             writer.uint32(58).string(message.notifyKeyspaceEvents);
@@ -212,7 +192,7 @@ export const Redisconfig62 = {
         }
         if (message.maxmemoryPercent !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxmemoryPercent! },
+                { value: message.maxmemoryPercent! },
                 writer.uint32(82).fork(),
             ).ldelim();
         }
@@ -373,36 +353,21 @@ export const Redisconfig62 = {
     },
 };
 
-messageTypeRegistry.set(Redisconfig62.$type, Redisconfig62);
-
-const baseRedisconfig62_ClientOutputBufferLimit: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.config.RedisConfig6_2.ClientOutputBufferLimit',
-};
+const baseRedisconfig62_ClientOutputBufferLimit: object = {};
 
 export const Redisconfig62_ClientOutputBufferLimit = {
-    $type: 'yandex.cloud.mdb.redis.v1.config.RedisConfig6_2.ClientOutputBufferLimit' as const,
-
     encode(
         message: Redisconfig62_ClientOutputBufferLimit,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.hardLimit !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.hardLimit! },
-                writer.uint32(10).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.hardLimit! }, writer.uint32(10).fork()).ldelim();
         }
         if (message.softLimit !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.softLimit! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.softLimit! }, writer.uint32(26).fork()).ldelim();
         }
         if (message.softSeconds !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.softSeconds! },
-                writer.uint32(42).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.softSeconds! }, writer.uint32(42).fork()).ldelim();
         }
         return writer;
     },
@@ -473,18 +438,9 @@ export const Redisconfig62_ClientOutputBufferLimit = {
     },
 };
 
-messageTypeRegistry.set(
-    Redisconfig62_ClientOutputBufferLimit.$type,
-    Redisconfig62_ClientOutputBufferLimit,
-);
-
-const baseRedisconfigset62: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.config.RedisConfigSet6_2',
-};
+const baseRedisconfigset62: object = {};
 
 export const Redisconfigset62 = {
-    $type: 'yandex.cloud.mdb.redis.v1.config.RedisConfigSet6_2' as const,
-
     encode(message: Redisconfigset62, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             Redisconfig62.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();
@@ -574,8 +530,6 @@ export const Redisconfigset62 = {
     },
 };
 
-messageTypeRegistry.set(Redisconfigset62.$type, Redisconfigset62);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -585,16 +539,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

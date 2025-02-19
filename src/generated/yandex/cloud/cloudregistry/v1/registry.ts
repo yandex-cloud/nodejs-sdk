@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.cloudregistry.v1';
 
 /** A Registry resource. */
 export interface Registry {
-    $type: 'yandex.cloud.cloudregistry.v1.Registry';
     /** Output only. ID of the registry. */
     id: string;
     /** ID of the folder that the registry belongs to. */
@@ -168,19 +166,16 @@ export function registry_TypeToJSON(object: Registry_Type): string {
 }
 
 export interface Registry_LabelsEntry {
-    $type: 'yandex.cloud.cloudregistry.v1.Registry.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface Registry_PropertiesEntry {
-    $type: 'yandex.cloud.cloudregistry.v1.Registry.PropertiesEntry';
     key: string;
     value: string;
 }
 
 const baseRegistry: object = {
-    $type: 'yandex.cloud.cloudregistry.v1.Registry',
     id: '',
     folderId: '',
     name: '',
@@ -191,8 +186,6 @@ const baseRegistry: object = {
 };
 
 export const Registry = {
-    $type: 'yandex.cloud.cloudregistry.v1.Registry' as const,
-
     encode(message: Registry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -217,21 +210,13 @@ export const Registry = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Registry_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.cloudregistry.v1.Registry.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(66).fork(),
             ).ldelim();
         });
         Object.entries(message.properties).forEach(([key, value]) => {
             Registry_PropertiesEntry.encode(
-                {
-                    $type: 'yandex.cloud.cloudregistry.v1.Registry.PropertiesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(74).fork(),
             ).ldelim();
         });
@@ -406,17 +391,9 @@ export const Registry = {
     },
 };
 
-messageTypeRegistry.set(Registry.$type, Registry);
-
-const baseRegistry_LabelsEntry: object = {
-    $type: 'yandex.cloud.cloudregistry.v1.Registry.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseRegistry_LabelsEntry: object = { key: '', value: '' };
 
 export const Registry_LabelsEntry = {
-    $type: 'yandex.cloud.cloudregistry.v1.Registry.LabelsEntry' as const,
-
     encode(message: Registry_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -473,17 +450,9 @@ export const Registry_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Registry_LabelsEntry.$type, Registry_LabelsEntry);
-
-const baseRegistry_PropertiesEntry: object = {
-    $type: 'yandex.cloud.cloudregistry.v1.Registry.PropertiesEntry',
-    key: '',
-    value: '',
-};
+const baseRegistry_PropertiesEntry: object = { key: '', value: '' };
 
 export const Registry_PropertiesEntry = {
-    $type: 'yandex.cloud.cloudregistry.v1.Registry.PropertiesEntry' as const,
-
     encode(
         message: Registry_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -543,8 +512,6 @@ export const Registry_PropertiesEntry = {
     },
 };
 
-messageTypeRegistry.set(Registry_PropertiesEntry.$type, Registry_PropertiesEntry);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -554,21 +521,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.video.v1';
 
 /** Root entity for content separation. */
 export interface Channel {
-    $type: 'yandex.cloud.video.v1.Channel';
     /** ID of the channel. */
     id: string;
     /** ID of the organization where channel should be created. */
@@ -26,22 +24,13 @@ export interface Channel {
 }
 
 export interface Channel_LabelsEntry {
-    $type: 'yandex.cloud.video.v1.Channel.LabelsEntry';
     key: string;
     value: string;
 }
 
-const baseChannel: object = {
-    $type: 'yandex.cloud.video.v1.Channel',
-    id: '',
-    organizationId: '',
-    title: '',
-    description: '',
-};
+const baseChannel: object = { id: '', organizationId: '', title: '', description: '' };
 
 export const Channel = {
-    $type: 'yandex.cloud.video.v1.Channel' as const,
-
     encode(message: Channel, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -63,7 +52,7 @@ export const Channel = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Channel_LabelsEntry.encode(
-                { $type: 'yandex.cloud.video.v1.Channel.LabelsEntry', key: key as any, value },
+                { key: key as any, value },
                 writer.uint32(1602).fork(),
             ).ldelim();
         });
@@ -179,17 +168,9 @@ export const Channel = {
     },
 };
 
-messageTypeRegistry.set(Channel.$type, Channel);
-
-const baseChannel_LabelsEntry: object = {
-    $type: 'yandex.cloud.video.v1.Channel.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseChannel_LabelsEntry: object = { key: '', value: '' };
 
 export const Channel_LabelsEntry = {
-    $type: 'yandex.cloud.video.v1.Channel.LabelsEntry' as const,
-
     encode(message: Channel_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -246,8 +227,6 @@ export const Channel_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Channel_LabelsEntry.$type, Channel_LabelsEntry);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -257,21 +236,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

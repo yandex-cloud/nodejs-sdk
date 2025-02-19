@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Quantiles } from '../../../../../../../yandex/cloud/loadtesting/api/v1/common/quantiles';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.report.table';
 
 /** Aggregated test results. */
 export interface Report {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.table.Report';
     /** Total count of HTTP responses, grouped by HTTP response code. */
     httpCodes: { [key: number]: number };
     /** Total count of network responses, grouped by response code. */
@@ -18,40 +16,28 @@ export interface Report {
 }
 
 export interface Report_HttpCodesEntry {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.table.Report.HttpCodesEntry';
     key: number;
     value: number;
 }
 
 export interface Report_NetCodesEntry {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.table.Report.NetCodesEntry';
     key: number;
     value: number;
 }
 
-const baseReport: object = { $type: 'yandex.cloud.loadtesting.api.v1.report.table.Report' };
+const baseReport: object = {};
 
 export const Report = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.table.Report' as const,
-
     encode(message: Report, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         Object.entries(message.httpCodes).forEach(([key, value]) => {
             Report_HttpCodesEntry.encode(
-                {
-                    $type: 'yandex.cloud.loadtesting.api.v1.report.table.Report.HttpCodesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(10).fork(),
             ).ldelim();
         });
         Object.entries(message.netCodes).forEach(([key, value]) => {
             Report_NetCodesEntry.encode(
-                {
-                    $type: 'yandex.cloud.loadtesting.api.v1.report.table.Report.NetCodesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(18).fork(),
             ).ldelim();
         });
@@ -161,17 +147,9 @@ export const Report = {
     },
 };
 
-messageTypeRegistry.set(Report.$type, Report);
-
-const baseReport_HttpCodesEntry: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.table.Report.HttpCodesEntry',
-    key: 0,
-    value: 0,
-};
+const baseReport_HttpCodesEntry: object = { key: 0, value: 0 };
 
 export const Report_HttpCodesEntry = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.table.Report.HttpCodesEntry' as const,
-
     encode(message: Report_HttpCodesEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== 0) {
             writer.uint32(8).int64(message.key);
@@ -228,17 +206,9 @@ export const Report_HttpCodesEntry = {
     },
 };
 
-messageTypeRegistry.set(Report_HttpCodesEntry.$type, Report_HttpCodesEntry);
-
-const baseReport_NetCodesEntry: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.table.Report.NetCodesEntry',
-    key: 0,
-    value: 0,
-};
+const baseReport_NetCodesEntry: object = { key: 0, value: 0 };
 
 export const Report_NetCodesEntry = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.table.Report.NetCodesEntry' as const,
-
     encode(message: Report_NetCodesEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== 0) {
             writer.uint32(8).int64(message.key);
@@ -295,8 +265,6 @@ export const Report_NetCodesEntry = {
     },
 };
 
-messageTypeRegistry.set(Report_NetCodesEntry.$type, Report_NetCodesEntry);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -317,16 +285,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

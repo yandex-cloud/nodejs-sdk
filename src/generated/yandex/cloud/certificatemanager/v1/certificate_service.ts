@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -67,7 +66,6 @@ export function certificateViewToJSON(object: CertificateView): string {
 }
 
 export interface GetCertificateRequest {
-    $type: 'yandex.cloud.certificatemanager.v1.GetCertificateRequest';
     /**
      * ID of the certificate to return.
      *
@@ -79,7 +77,6 @@ export interface GetCertificateRequest {
 }
 
 export interface ListCertificatesRequest {
-    $type: 'yandex.cloud.certificatemanager.v1.ListCertificatesRequest';
     /** ID of the folder to list certificate in. */
     folderId: string;
     /**
@@ -99,7 +96,6 @@ export interface ListCertificatesRequest {
 }
 
 export interface ListCertificatesResponse {
-    $type: 'yandex.cloud.certificatemanager.v1.ListCertificatesResponse';
     /** List of certificates in the specified folder. */
     certificates: Certificate[];
     /**
@@ -113,7 +109,6 @@ export interface ListCertificatesResponse {
 }
 
 export interface ListVersionsRequest {
-    $type: 'yandex.cloud.certificatemanager.v1.ListVersionsRequest';
     /** ID of the certificate to list versions for. */
     certificateId: string;
     /**
@@ -129,7 +124,6 @@ export interface ListVersionsRequest {
 }
 
 export interface ListVersionsResponse {
-    $type: 'yandex.cloud.certificatemanager.v1.ListVersionsResponse';
     /** List of versions for the specified certificate. */
     versions: Version[];
     /**
@@ -143,7 +137,6 @@ export interface ListVersionsResponse {
 }
 
 export interface CreateCertificateRequest {
-    $type: 'yandex.cloud.certificatemanager.v1.CreateCertificateRequest';
     /** ID of the folder to create a certificate in. */
     folderId: string;
     /**
@@ -166,19 +159,16 @@ export interface CreateCertificateRequest {
 }
 
 export interface CreateCertificateRequest_LabelsEntry {
-    $type: 'yandex.cloud.certificatemanager.v1.CreateCertificateRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateCertificateMetadata {
-    $type: 'yandex.cloud.certificatemanager.v1.CreateCertificateMetadata';
     /** ID of the certificate being created. */
     certificateId: string;
 }
 
 export interface UpdateCertificateRequest {
-    $type: 'yandex.cloud.certificatemanager.v1.UpdateCertificateRequest';
     /**
      * ID of the certificate to update.
      * To get the ID of a certificate use a [CertificateService.List] request.
@@ -203,31 +193,26 @@ export interface UpdateCertificateRequest {
 }
 
 export interface UpdateCertificateRequest_LabelsEntry {
-    $type: 'yandex.cloud.certificatemanager.v1.UpdateCertificateRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateCertificateMetadata {
-    $type: 'yandex.cloud.certificatemanager.v1.UpdateCertificateMetadata';
     /** ID of the certificate being updated. */
     certificateId: string;
 }
 
 export interface DeleteCertificateRequest {
-    $type: 'yandex.cloud.certificatemanager.v1.DeleteCertificateRequest';
     /** ID of the certificate to be deleted. */
     certificateId: string;
 }
 
 export interface DeleteCertificateMetadata {
-    $type: 'yandex.cloud.certificatemanager.v1.DeleteCertificateMetadata';
     /** ID of the certificate being deleted. */
     certificateId: string;
 }
 
 export interface RequestNewCertificateRequest {
-    $type: 'yandex.cloud.certificatemanager.v1.RequestNewCertificateRequest';
     /** ID of the folder to create a certificate in. */
     folderId: string;
     /** Name of the certificate. */
@@ -245,19 +230,16 @@ export interface RequestNewCertificateRequest {
 }
 
 export interface RequestNewCertificateRequest_LabelsEntry {
-    $type: 'yandex.cloud.certificatemanager.v1.RequestNewCertificateRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface RequestNewCertificateMetadata {
-    $type: 'yandex.cloud.certificatemanager.v1.RequestNewCertificateMetadata';
     /** ID of the certificate that is being requested. */
     certificateId: string;
 }
 
 export interface ListCertificateOperationsRequest {
-    $type: 'yandex.cloud.certificatemanager.v1.ListCertificateOperationsRequest';
     /**
      * ID of the certificate to list operations for.
      *
@@ -279,7 +261,6 @@ export interface ListCertificateOperationsRequest {
 }
 
 export interface ListCertificateOperationsResponse {
-    $type: 'yandex.cloud.certificatemanager.v1.ListCertificateOperationsResponse';
     /** List of operations for the specified certificate. */
     operations: Operation[];
     /**
@@ -291,15 +272,9 @@ export interface ListCertificateOperationsResponse {
     nextPageToken: string;
 }
 
-const baseGetCertificateRequest: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.GetCertificateRequest',
-    certificateId: '',
-    view: 0,
-};
+const baseGetCertificateRequest: object = { certificateId: '', view: 0 };
 
 export const GetCertificateRequest = {
-    $type: 'yandex.cloud.certificatemanager.v1.GetCertificateRequest' as const,
-
     encode(message: GetCertificateRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.certificateId !== '') {
             writer.uint32(10).string(message.certificateId);
@@ -361,19 +336,9 @@ export const GetCertificateRequest = {
     },
 };
 
-messageTypeRegistry.set(GetCertificateRequest.$type, GetCertificateRequest);
-
-const baseListCertificatesRequest: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.ListCertificatesRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    view: 0,
-};
+const baseListCertificatesRequest: object = { folderId: '', pageSize: 0, pageToken: '', view: 0 };
 
 export const ListCertificatesRequest = {
-    $type: 'yandex.cloud.certificatemanager.v1.ListCertificatesRequest' as const,
-
     encode(message: ListCertificatesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -457,16 +422,9 @@ export const ListCertificatesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListCertificatesRequest.$type, ListCertificatesRequest);
-
-const baseListCertificatesResponse: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.ListCertificatesResponse',
-    nextPageToken: '',
-};
+const baseListCertificatesResponse: object = { nextPageToken: '' };
 
 export const ListCertificatesResponse = {
-    $type: 'yandex.cloud.certificatemanager.v1.ListCertificatesResponse' as const,
-
     encode(
         message: ListCertificatesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -535,18 +493,9 @@ export const ListCertificatesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListCertificatesResponse.$type, ListCertificatesResponse);
-
-const baseListVersionsRequest: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.ListVersionsRequest',
-    certificateId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListVersionsRequest: object = { certificateId: '', pageSize: 0, pageToken: '' };
 
 export const ListVersionsRequest = {
-    $type: 'yandex.cloud.certificatemanager.v1.ListVersionsRequest' as const,
-
     encode(message: ListVersionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.certificateId !== '') {
             writer.uint32(10).string(message.certificateId);
@@ -618,16 +567,9 @@ export const ListVersionsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListVersionsRequest.$type, ListVersionsRequest);
-
-const baseListVersionsResponse: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.ListVersionsResponse',
-    nextPageToken: '',
-};
+const baseListVersionsResponse: object = { nextPageToken: '' };
 
 export const ListVersionsResponse = {
-    $type: 'yandex.cloud.certificatemanager.v1.ListVersionsResponse' as const,
-
     encode(message: ListVersionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.versions) {
             Version.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -691,10 +633,7 @@ export const ListVersionsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListVersionsResponse.$type, ListVersionsResponse);
-
 const baseCreateCertificateRequest: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.CreateCertificateRequest',
     folderId: '',
     name: '',
     description: '',
@@ -705,8 +644,6 @@ const baseCreateCertificateRequest: object = {
 };
 
 export const CreateCertificateRequest = {
-    $type: 'yandex.cloud.certificatemanager.v1.CreateCertificateRequest' as const,
-
     encode(
         message: CreateCertificateRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -722,11 +659,7 @@ export const CreateCertificateRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateCertificateRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.certificatemanager.v1.CreateCertificateRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -869,17 +802,9 @@ export const CreateCertificateRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateCertificateRequest.$type, CreateCertificateRequest);
-
-const baseCreateCertificateRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.CreateCertificateRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateCertificateRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateCertificateRequest_LabelsEntry = {
-    $type: 'yandex.cloud.certificatemanager.v1.CreateCertificateRequest.LabelsEntry' as const,
-
     encode(
         message: CreateCertificateRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -945,19 +870,9 @@ export const CreateCertificateRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateCertificateRequest_LabelsEntry.$type,
-    CreateCertificateRequest_LabelsEntry,
-);
-
-const baseCreateCertificateMetadata: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.CreateCertificateMetadata',
-    certificateId: '',
-};
+const baseCreateCertificateMetadata: object = { certificateId: '' };
 
 export const CreateCertificateMetadata = {
-    $type: 'yandex.cloud.certificatemanager.v1.CreateCertificateMetadata' as const,
-
     encode(
         message: CreateCertificateMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1010,10 +925,7 @@ export const CreateCertificateMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateCertificateMetadata.$type, CreateCertificateMetadata);
-
 const baseUpdateCertificateRequest: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.UpdateCertificateRequest',
     certificateId: '',
     name: '',
     description: '',
@@ -1024,8 +936,6 @@ const baseUpdateCertificateRequest: object = {
 };
 
 export const UpdateCertificateRequest = {
-    $type: 'yandex.cloud.certificatemanager.v1.UpdateCertificateRequest' as const,
-
     encode(
         message: UpdateCertificateRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1044,11 +954,7 @@ export const UpdateCertificateRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateCertificateRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.certificatemanager.v1.UpdateCertificateRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -1206,17 +1112,9 @@ export const UpdateCertificateRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateCertificateRequest.$type, UpdateCertificateRequest);
-
-const baseUpdateCertificateRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.UpdateCertificateRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateCertificateRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateCertificateRequest_LabelsEntry = {
-    $type: 'yandex.cloud.certificatemanager.v1.UpdateCertificateRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateCertificateRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1282,19 +1180,9 @@ export const UpdateCertificateRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateCertificateRequest_LabelsEntry.$type,
-    UpdateCertificateRequest_LabelsEntry,
-);
-
-const baseUpdateCertificateMetadata: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.UpdateCertificateMetadata',
-    certificateId: '',
-};
+const baseUpdateCertificateMetadata: object = { certificateId: '' };
 
 export const UpdateCertificateMetadata = {
-    $type: 'yandex.cloud.certificatemanager.v1.UpdateCertificateMetadata' as const,
-
     encode(
         message: UpdateCertificateMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1347,16 +1235,9 @@ export const UpdateCertificateMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateCertificateMetadata.$type, UpdateCertificateMetadata);
-
-const baseDeleteCertificateRequest: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.DeleteCertificateRequest',
-    certificateId: '',
-};
+const baseDeleteCertificateRequest: object = { certificateId: '' };
 
 export const DeleteCertificateRequest = {
-    $type: 'yandex.cloud.certificatemanager.v1.DeleteCertificateRequest' as const,
-
     encode(
         message: DeleteCertificateRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1409,16 +1290,9 @@ export const DeleteCertificateRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteCertificateRequest.$type, DeleteCertificateRequest);
-
-const baseDeleteCertificateMetadata: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.DeleteCertificateMetadata',
-    certificateId: '',
-};
+const baseDeleteCertificateMetadata: object = { certificateId: '' };
 
 export const DeleteCertificateMetadata = {
-    $type: 'yandex.cloud.certificatemanager.v1.DeleteCertificateMetadata' as const,
-
     encode(
         message: DeleteCertificateMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1471,10 +1345,7 @@ export const DeleteCertificateMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteCertificateMetadata.$type, DeleteCertificateMetadata);
-
 const baseRequestNewCertificateRequest: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.RequestNewCertificateRequest',
     folderId: '',
     name: '',
     description: '',
@@ -1484,8 +1355,6 @@ const baseRequestNewCertificateRequest: object = {
 };
 
 export const RequestNewCertificateRequest = {
-    $type: 'yandex.cloud.certificatemanager.v1.RequestNewCertificateRequest' as const,
-
     encode(
         message: RequestNewCertificateRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1501,11 +1370,7 @@ export const RequestNewCertificateRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             RequestNewCertificateRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.certificatemanager.v1.RequestNewCertificateRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -1641,17 +1506,9 @@ export const RequestNewCertificateRequest = {
     },
 };
 
-messageTypeRegistry.set(RequestNewCertificateRequest.$type, RequestNewCertificateRequest);
-
-const baseRequestNewCertificateRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.RequestNewCertificateRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseRequestNewCertificateRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const RequestNewCertificateRequest_LabelsEntry = {
-    $type: 'yandex.cloud.certificatemanager.v1.RequestNewCertificateRequest.LabelsEntry' as const,
-
     encode(
         message: RequestNewCertificateRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1720,19 +1577,9 @@ export const RequestNewCertificateRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    RequestNewCertificateRequest_LabelsEntry.$type,
-    RequestNewCertificateRequest_LabelsEntry,
-);
-
-const baseRequestNewCertificateMetadata: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.RequestNewCertificateMetadata',
-    certificateId: '',
-};
+const baseRequestNewCertificateMetadata: object = { certificateId: '' };
 
 export const RequestNewCertificateMetadata = {
-    $type: 'yandex.cloud.certificatemanager.v1.RequestNewCertificateMetadata' as const,
-
     encode(
         message: RequestNewCertificateMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1785,18 +1632,13 @@ export const RequestNewCertificateMetadata = {
     },
 };
 
-messageTypeRegistry.set(RequestNewCertificateMetadata.$type, RequestNewCertificateMetadata);
-
 const baseListCertificateOperationsRequest: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.ListCertificateOperationsRequest',
     certificateId: '',
     pageSize: 0,
     pageToken: '',
 };
 
 export const ListCertificateOperationsRequest = {
-    $type: 'yandex.cloud.certificatemanager.v1.ListCertificateOperationsRequest' as const,
-
     encode(
         message: ListCertificateOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1877,16 +1719,9 @@ export const ListCertificateOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListCertificateOperationsRequest.$type, ListCertificateOperationsRequest);
-
-const baseListCertificateOperationsResponse: object = {
-    $type: 'yandex.cloud.certificatemanager.v1.ListCertificateOperationsResponse',
-    nextPageToken: '',
-};
+const baseListCertificateOperationsResponse: object = { nextPageToken: '' };
 
 export const ListCertificateOperationsResponse = {
-    $type: 'yandex.cloud.certificatemanager.v1.ListCertificateOperationsResponse' as const,
-
     encode(
         message: ListCertificateOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1958,8 +1793,6 @@ export const ListCertificateOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListCertificateOperationsResponse.$type, ListCertificateOperationsResponse);
 
 /** A set of methods for managing certificates. */
 export const CertificateServiceService = {
@@ -2338,16 +2171,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

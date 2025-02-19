@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -29,25 +28,21 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.ai.dataset.v1';
 
 export interface DescribeDatasetRequest {
-    $type: 'yandex.cloud.ai.dataset.v1.DescribeDatasetRequest';
     /** ID of the dataset to describe. */
     datasetId: string;
 }
 
 export interface DescribeDatasetResponse {
-    $type: 'yandex.cloud.ai.dataset.v1.DescribeDatasetResponse';
     /** Information about the dataset. */
     dataset?: DatasetInfo;
 }
 
 export interface ValidateDatasetRequest {
-    $type: 'yandex.cloud.ai.dataset.v1.ValidateDatasetRequest';
     /** ID of the dataset to validate. */
     datasetId: string;
 }
 
 export interface ValidateDatasetMetadata {
-    $type: 'yandex.cloud.ai.dataset.v1.ValidateDatasetMetadata';
     /** ID of the dataset. */
     datasetId: string;
     /** Count of valid rows among currently processed rows in the dataset. */
@@ -59,7 +54,6 @@ export interface ValidateDatasetMetadata {
 }
 
 export interface ValidateDatasetResponse {
-    $type: 'yandex.cloud.ai.dataset.v1.ValidateDatasetResponse';
     /** ID of the dataset. */
     datasetId: string;
     /** Validity marker. */
@@ -69,17 +63,13 @@ export interface ValidateDatasetResponse {
 }
 
 export interface DeleteDatasetRequest {
-    $type: 'yandex.cloud.ai.dataset.v1.DeleteDatasetRequest';
     /** ID of the dataset to delete. */
     datasetId: string;
 }
 
-export interface DeleteDatasetResponse {
-    $type: 'yandex.cloud.ai.dataset.v1.DeleteDatasetResponse';
-}
+export interface DeleteDatasetResponse {}
 
 export interface CreateDatasetRequest {
-    $type: 'yandex.cloud.ai.dataset.v1.CreateDatasetRequest';
     /** Name of the dataset. */
     name: string;
     /** Folder ID of the dataset. */
@@ -102,13 +92,11 @@ export interface CreateDatasetRequest {
 }
 
 export interface CreateDatasetRequest_LabelsEntry {
-    $type: 'yandex.cloud.ai.dataset.v1.CreateDatasetRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateDatasetResponse {
-    $type: 'yandex.cloud.ai.dataset.v1.CreateDatasetResponse';
     /** ID of the created dataset. */
     datasetId: string;
     /** Information about the dataset. */
@@ -116,7 +104,6 @@ export interface CreateDatasetResponse {
 }
 
 export interface UpdateDatasetRequest {
-    $type: 'yandex.cloud.ai.dataset.v1.UpdateDatasetRequest';
     /** ID of the dataset to update. */
     datasetId: string;
     /** gRPC field mask. */
@@ -130,19 +117,16 @@ export interface UpdateDatasetRequest {
 }
 
 export interface UpdateDatasetRequest_LabelsEntry {
-    $type: 'yandex.cloud.ai.dataset.v1.UpdateDatasetRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateDatasetResponse {
-    $type: 'yandex.cloud.ai.dataset.v1.UpdateDatasetResponse';
     /** Information about updated dataset. */
     dataset?: DatasetInfo;
 }
 
 export interface GetUploadDraftUrlRequest {
-    $type: 'yandex.cloud.ai.dataset.v1.GetUploadDraftUrlRequest';
     /** ID of the dataset to upload. */
     datasetId: string;
     /** Size in bytes of the dataset to upload. */
@@ -150,7 +134,6 @@ export interface GetUploadDraftUrlRequest {
 }
 
 export interface GetUploadDraftUrlResponse {
-    $type: 'yandex.cloud.ai.dataset.v1.GetUploadDraftUrlResponse';
     /** ID of the dataset. */
     datasetId: string;
     /** S3 presigned URL for upload. */
@@ -158,7 +141,6 @@ export interface GetUploadDraftUrlResponse {
 }
 
 export interface StartMultipartUploadDraftRequest {
-    $type: 'yandex.cloud.ai.dataset.v1.StartMultipartUploadDraftRequest';
     /** ID of the dataset to multipart upload. */
     datasetId: string;
     /** Size in bytes of the dataset to upload. */
@@ -172,7 +154,6 @@ export interface StartMultipartUploadDraftRequest {
 }
 
 export interface StartMultipartUploadDraftResponse {
-    $type: 'yandex.cloud.ai.dataset.v1.StartMultipartUploadDraftResponse';
     /** ID of the dataset. */
     datasetId: string;
     /** List of S3 presigned URLs for multipart upload. */
@@ -180,7 +161,6 @@ export interface StartMultipartUploadDraftResponse {
 }
 
 export interface UploadedPartInfo {
-    $type: 'yandex.cloud.ai.dataset.v1.UploadedPartInfo';
     /** Sequence number of the uploaded part. */
     partNum: number;
     /** Etag of the uploaded part. */
@@ -188,7 +168,6 @@ export interface UploadedPartInfo {
 }
 
 export interface FinishMultipartUploadDraftRequest {
-    $type: 'yandex.cloud.ai.dataset.v1.FinishMultipartUploadDraftRequest';
     /** ID of the dataset. */
     datasetId: string;
     /** Information about uploaded parts from S3 API. */
@@ -196,13 +175,11 @@ export interface FinishMultipartUploadDraftRequest {
 }
 
 export interface FinishMultipartUploadDraftResponse {
-    $type: 'yandex.cloud.ai.dataset.v1.FinishMultipartUploadDraftResponse';
     /** ID of the dataset. */
     datasetId: string;
 }
 
 export interface ListDatasetsRequest {
-    $type: 'yandex.cloud.ai.dataset.v1.ListDatasetsRequest';
     /** Folder ID of the datasets to list. */
     folderId: string;
     /** Status of the datasets to list. Optional. */
@@ -226,7 +203,6 @@ export interface ListDatasetsRequest {
 }
 
 export interface ListDatasetsResponse {
-    $type: 'yandex.cloud.ai.dataset.v1.ListDatasetsResponse';
     /** Information about listed datasets. */
     datasets: DatasetInfo[];
     /**
@@ -240,47 +216,38 @@ export interface ListDatasetsResponse {
 }
 
 export interface ListUploadFormatsRequest {
-    $type: 'yandex.cloud.ai.dataset.v1.ListUploadFormatsRequest';
     /** Dataset task type to list upload formats. */
     taskType: string;
 }
 
 export interface ListUploadFormatsResponse {
-    $type: 'yandex.cloud.ai.dataset.v1.ListUploadFormatsResponse';
     /** List of upload formats for the specified dataset task type. */
     formats: string[];
 }
 
 export interface ListUploadSchemasRequest {
-    $type: 'yandex.cloud.ai.dataset.v1.ListUploadSchemasRequest';
     /** Dataset task type to list schemas. */
     taskType: string;
 }
 
 export interface ListUploadSchemasResponse {
-    $type: 'yandex.cloud.ai.dataset.v1.ListUploadSchemasResponse';
     /** List of dataset schemas for the specified dataset task type. */
     schemas: DatasetUploadSchema[];
 }
 
-export interface ListTypesRequest {
-    $type: 'yandex.cloud.ai.dataset.v1.ListTypesRequest';
-}
+export interface ListTypesRequest {}
 
 export interface ListTypesResponse {
-    $type: 'yandex.cloud.ai.dataset.v1.ListTypesResponse';
     /** List of dataset type */
     types: string[];
 }
 
 export interface GetDatasetPreviewRequest {
-    $type: 'yandex.cloud.ai.dataset.v1.GetDatasetPreviewRequest';
     /** ID of the dataset. */
     datasetId: string;
 }
 
 export interface GetDatasetPreviewResponse {
-    $type: 'yandex.cloud.ai.dataset.v1.GetDatasetPreviewResponse';
     /** ID of the dataset. */
     datasetId: string;
     /** List of dataset preview lines */
@@ -288,42 +255,32 @@ export interface GetDatasetPreviewResponse {
 }
 
 export interface GetDownloadUrlsRequest {
-    $type: 'yandex.cloud.ai.dataset.v1.GetDownloadUrlsRequest';
     /** ID of the dataset. */
     datasetId: string;
 }
 
 export interface GetDownloadUrlsResponse {
-    $type: 'yandex.cloud.ai.dataset.v1.GetDownloadUrlsResponse';
     /** ID of the dataset. */
     datasetId: string;
     downloadUrls: DatasetFileDownloadUrl[];
 }
 
 export interface ListOperationsIdsRequest {
-    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsRequest';
     datasetId: string[];
 }
 
 export interface ListOperationsIdsResponse {
-    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsResponse';
     datasetIdToOperationId: { [key: string]: string };
 }
 
 export interface ListOperationsIdsResponse_DatasetIdToOperationIdEntry {
-    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsResponse.DatasetIdToOperationIdEntry';
     key: string;
     value: string;
 }
 
-const baseDescribeDatasetRequest: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.DescribeDatasetRequest',
-    datasetId: '',
-};
+const baseDescribeDatasetRequest: object = { datasetId: '' };
 
 export const DescribeDatasetRequest = {
-    $type: 'yandex.cloud.ai.dataset.v1.DescribeDatasetRequest' as const,
-
     encode(message: DescribeDatasetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -373,15 +330,9 @@ export const DescribeDatasetRequest = {
     },
 };
 
-messageTypeRegistry.set(DescribeDatasetRequest.$type, DescribeDatasetRequest);
-
-const baseDescribeDatasetResponse: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.DescribeDatasetResponse',
-};
+const baseDescribeDatasetResponse: object = {};
 
 export const DescribeDatasetResponse = {
-    $type: 'yandex.cloud.ai.dataset.v1.DescribeDatasetResponse' as const,
-
     encode(message: DescribeDatasetResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataset !== undefined) {
             DatasetInfo.encode(message.dataset, writer.uint32(10).fork()).ldelim();
@@ -435,16 +386,9 @@ export const DescribeDatasetResponse = {
     },
 };
 
-messageTypeRegistry.set(DescribeDatasetResponse.$type, DescribeDatasetResponse);
-
-const baseValidateDatasetRequest: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.ValidateDatasetRequest',
-    datasetId: '',
-};
+const baseValidateDatasetRequest: object = { datasetId: '' };
 
 export const ValidateDatasetRequest = {
-    $type: 'yandex.cloud.ai.dataset.v1.ValidateDatasetRequest' as const,
-
     encode(message: ValidateDatasetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -494,10 +438,7 @@ export const ValidateDatasetRequest = {
     },
 };
 
-messageTypeRegistry.set(ValidateDatasetRequest.$type, ValidateDatasetRequest);
-
 const baseValidateDatasetMetadata: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.ValidateDatasetMetadata',
     datasetId: '',
     validRows: 0,
     processedRows: 0,
@@ -505,8 +446,6 @@ const baseValidateDatasetMetadata: object = {
 };
 
 export const ValidateDatasetMetadata = {
-    $type: 'yandex.cloud.ai.dataset.v1.ValidateDatasetMetadata' as const,
-
     encode(message: ValidateDatasetMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -593,17 +532,9 @@ export const ValidateDatasetMetadata = {
     },
 };
 
-messageTypeRegistry.set(ValidateDatasetMetadata.$type, ValidateDatasetMetadata);
-
-const baseValidateDatasetResponse: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.ValidateDatasetResponse',
-    datasetId: '',
-    isValid: false,
-};
+const baseValidateDatasetResponse: object = { datasetId: '', isValid: false };
 
 export const ValidateDatasetResponse = {
-    $type: 'yandex.cloud.ai.dataset.v1.ValidateDatasetResponse' as const,
-
     encode(message: ValidateDatasetResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -679,16 +610,9 @@ export const ValidateDatasetResponse = {
     },
 };
 
-messageTypeRegistry.set(ValidateDatasetResponse.$type, ValidateDatasetResponse);
-
-const baseDeleteDatasetRequest: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.DeleteDatasetRequest',
-    datasetId: '',
-};
+const baseDeleteDatasetRequest: object = { datasetId: '' };
 
 export const DeleteDatasetRequest = {
-    $type: 'yandex.cloud.ai.dataset.v1.DeleteDatasetRequest' as const,
-
     encode(message: DeleteDatasetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -738,15 +662,9 @@ export const DeleteDatasetRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteDatasetRequest.$type, DeleteDatasetRequest);
-
-const baseDeleteDatasetResponse: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.DeleteDatasetResponse',
-};
+const baseDeleteDatasetResponse: object = {};
 
 export const DeleteDatasetResponse = {
-    $type: 'yandex.cloud.ai.dataset.v1.DeleteDatasetResponse' as const,
-
     encode(_: DeleteDatasetResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -784,10 +702,7 @@ export const DeleteDatasetResponse = {
     },
 };
 
-messageTypeRegistry.set(DeleteDatasetResponse.$type, DeleteDatasetResponse);
-
 const baseCreateDatasetRequest: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.CreateDatasetRequest',
     name: '',
     folderId: '',
     description: '',
@@ -798,8 +713,6 @@ const baseCreateDatasetRequest: object = {
 };
 
 export const CreateDatasetRequest = {
-    $type: 'yandex.cloud.ai.dataset.v1.CreateDatasetRequest' as const,
-
     encode(message: CreateDatasetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -818,11 +731,7 @@ export const CreateDatasetRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateDatasetRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.dataset.v1.CreateDatasetRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -957,17 +866,9 @@ export const CreateDatasetRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateDatasetRequest.$type, CreateDatasetRequest);
-
-const baseCreateDatasetRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.CreateDatasetRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateDatasetRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateDatasetRequest_LabelsEntry = {
-    $type: 'yandex.cloud.ai.dataset.v1.CreateDatasetRequest.LabelsEntry' as const,
-
     encode(
         message: CreateDatasetRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1033,16 +934,9 @@ export const CreateDatasetRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateDatasetRequest_LabelsEntry.$type, CreateDatasetRequest_LabelsEntry);
-
-const baseCreateDatasetResponse: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.CreateDatasetResponse',
-    datasetId: '',
-};
+const baseCreateDatasetResponse: object = { datasetId: '' };
 
 export const CreateDatasetResponse = {
-    $type: 'yandex.cloud.ai.dataset.v1.CreateDatasetResponse' as const,
-
     encode(message: CreateDatasetResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -1108,18 +1002,9 @@ export const CreateDatasetResponse = {
     },
 };
 
-messageTypeRegistry.set(CreateDatasetResponse.$type, CreateDatasetResponse);
-
-const baseUpdateDatasetRequest: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.UpdateDatasetRequest',
-    datasetId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateDatasetRequest: object = { datasetId: '', name: '', description: '' };
 
 export const UpdateDatasetRequest = {
-    $type: 'yandex.cloud.ai.dataset.v1.UpdateDatasetRequest' as const,
-
     encode(message: UpdateDatasetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -1135,11 +1020,7 @@ export const UpdateDatasetRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateDatasetRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.dataset.v1.UpdateDatasetRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -1247,17 +1128,9 @@ export const UpdateDatasetRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateDatasetRequest.$type, UpdateDatasetRequest);
-
-const baseUpdateDatasetRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.UpdateDatasetRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateDatasetRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateDatasetRequest_LabelsEntry = {
-    $type: 'yandex.cloud.ai.dataset.v1.UpdateDatasetRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateDatasetRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1323,15 +1196,9 @@ export const UpdateDatasetRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateDatasetRequest_LabelsEntry.$type, UpdateDatasetRequest_LabelsEntry);
-
-const baseUpdateDatasetResponse: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.UpdateDatasetResponse',
-};
+const baseUpdateDatasetResponse: object = {};
 
 export const UpdateDatasetResponse = {
-    $type: 'yandex.cloud.ai.dataset.v1.UpdateDatasetResponse' as const,
-
     encode(message: UpdateDatasetResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataset !== undefined) {
             DatasetInfo.encode(message.dataset, writer.uint32(10).fork()).ldelim();
@@ -1385,17 +1252,9 @@ export const UpdateDatasetResponse = {
     },
 };
 
-messageTypeRegistry.set(UpdateDatasetResponse.$type, UpdateDatasetResponse);
-
-const baseGetUploadDraftUrlRequest: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.GetUploadDraftUrlRequest',
-    datasetId: '',
-    sizeBytes: 0,
-};
+const baseGetUploadDraftUrlRequest: object = { datasetId: '', sizeBytes: 0 };
 
 export const GetUploadDraftUrlRequest = {
-    $type: 'yandex.cloud.ai.dataset.v1.GetUploadDraftUrlRequest' as const,
-
     encode(
         message: GetUploadDraftUrlRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1460,17 +1319,9 @@ export const GetUploadDraftUrlRequest = {
     },
 };
 
-messageTypeRegistry.set(GetUploadDraftUrlRequest.$type, GetUploadDraftUrlRequest);
-
-const baseGetUploadDraftUrlResponse: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.GetUploadDraftUrlResponse',
-    datasetId: '',
-    uploadUrl: '',
-};
+const baseGetUploadDraftUrlResponse: object = { datasetId: '', uploadUrl: '' };
 
 export const GetUploadDraftUrlResponse = {
-    $type: 'yandex.cloud.ai.dataset.v1.GetUploadDraftUrlResponse' as const,
-
     encode(
         message: GetUploadDraftUrlResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1535,18 +1386,9 @@ export const GetUploadDraftUrlResponse = {
     },
 };
 
-messageTypeRegistry.set(GetUploadDraftUrlResponse.$type, GetUploadDraftUrlResponse);
-
-const baseStartMultipartUploadDraftRequest: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.StartMultipartUploadDraftRequest',
-    datasetId: '',
-    sizeBytes: 0,
-    parts: 0,
-};
+const baseStartMultipartUploadDraftRequest: object = { datasetId: '', sizeBytes: 0, parts: 0 };
 
 export const StartMultipartUploadDraftRequest = {
-    $type: 'yandex.cloud.ai.dataset.v1.StartMultipartUploadDraftRequest' as const,
-
     encode(
         message: StartMultipartUploadDraftRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1627,17 +1469,9 @@ export const StartMultipartUploadDraftRequest = {
     },
 };
 
-messageTypeRegistry.set(StartMultipartUploadDraftRequest.$type, StartMultipartUploadDraftRequest);
-
-const baseStartMultipartUploadDraftResponse: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.StartMultipartUploadDraftResponse',
-    datasetId: '',
-    multipartUploadUrls: '',
-};
+const baseStartMultipartUploadDraftResponse: object = { datasetId: '', multipartUploadUrls: '' };
 
 export const StartMultipartUploadDraftResponse = {
-    $type: 'yandex.cloud.ai.dataset.v1.StartMultipartUploadDraftResponse' as const,
-
     encode(
         message: StartMultipartUploadDraftResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1710,17 +1544,9 @@ export const StartMultipartUploadDraftResponse = {
     },
 };
 
-messageTypeRegistry.set(StartMultipartUploadDraftResponse.$type, StartMultipartUploadDraftResponse);
-
-const baseUploadedPartInfo: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.UploadedPartInfo',
-    partNum: 0,
-    etag: '',
-};
+const baseUploadedPartInfo: object = { partNum: 0, etag: '' };
 
 export const UploadedPartInfo = {
-    $type: 'yandex.cloud.ai.dataset.v1.UploadedPartInfo' as const,
-
     encode(message: UploadedPartInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.partNum !== 0) {
             writer.uint32(8).int64(message.partNum);
@@ -1775,16 +1601,9 @@ export const UploadedPartInfo = {
     },
 };
 
-messageTypeRegistry.set(UploadedPartInfo.$type, UploadedPartInfo);
-
-const baseFinishMultipartUploadDraftRequest: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.FinishMultipartUploadDraftRequest',
-    datasetId: '',
-};
+const baseFinishMultipartUploadDraftRequest: object = { datasetId: '' };
 
 export const FinishMultipartUploadDraftRequest = {
-    $type: 'yandex.cloud.ai.dataset.v1.FinishMultipartUploadDraftRequest' as const,
-
     encode(
         message: FinishMultipartUploadDraftRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1862,16 +1681,9 @@ export const FinishMultipartUploadDraftRequest = {
     },
 };
 
-messageTypeRegistry.set(FinishMultipartUploadDraftRequest.$type, FinishMultipartUploadDraftRequest);
-
-const baseFinishMultipartUploadDraftResponse: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.FinishMultipartUploadDraftResponse',
-    datasetId: '',
-};
+const baseFinishMultipartUploadDraftResponse: object = { datasetId: '' };
 
 export const FinishMultipartUploadDraftResponse = {
-    $type: 'yandex.cloud.ai.dataset.v1.FinishMultipartUploadDraftResponse' as const,
-
     encode(
         message: FinishMultipartUploadDraftResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1930,13 +1742,7 @@ export const FinishMultipartUploadDraftResponse = {
     },
 };
 
-messageTypeRegistry.set(
-    FinishMultipartUploadDraftResponse.$type,
-    FinishMultipartUploadDraftResponse,
-);
-
 const baseListDatasetsRequest: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListDatasetsRequest',
     folderId: '',
     status: 0,
     datasetNamePattern: '',
@@ -1946,8 +1752,6 @@ const baseListDatasetsRequest: object = {
 };
 
 export const ListDatasetsRequest = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListDatasetsRequest' as const,
-
     encode(message: ListDatasetsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -2056,16 +1860,9 @@ export const ListDatasetsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListDatasetsRequest.$type, ListDatasetsRequest);
-
-const baseListDatasetsResponse: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListDatasetsResponse',
-    nextPageToken: '',
-};
+const baseListDatasetsResponse: object = { nextPageToken: '' };
 
 export const ListDatasetsResponse = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListDatasetsResponse' as const,
-
     encode(message: ListDatasetsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.datasets) {
             DatasetInfo.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -2129,16 +1926,9 @@ export const ListDatasetsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListDatasetsResponse.$type, ListDatasetsResponse);
-
-const baseListUploadFormatsRequest: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListUploadFormatsRequest',
-    taskType: '',
-};
+const baseListUploadFormatsRequest: object = { taskType: '' };
 
 export const ListUploadFormatsRequest = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListUploadFormatsRequest' as const,
-
     encode(
         message: ListUploadFormatsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2191,16 +1981,9 @@ export const ListUploadFormatsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListUploadFormatsRequest.$type, ListUploadFormatsRequest);
-
-const baseListUploadFormatsResponse: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListUploadFormatsResponse',
-    formats: '',
-};
+const baseListUploadFormatsResponse: object = { formats: '' };
 
 export const ListUploadFormatsResponse = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListUploadFormatsResponse' as const,
-
     encode(
         message: ListUploadFormatsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2255,16 +2038,9 @@ export const ListUploadFormatsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListUploadFormatsResponse.$type, ListUploadFormatsResponse);
-
-const baseListUploadSchemasRequest: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListUploadSchemasRequest',
-    taskType: '',
-};
+const baseListUploadSchemasRequest: object = { taskType: '' };
 
 export const ListUploadSchemasRequest = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListUploadSchemasRequest' as const,
-
     encode(
         message: ListUploadSchemasRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2317,15 +2093,9 @@ export const ListUploadSchemasRequest = {
     },
 };
 
-messageTypeRegistry.set(ListUploadSchemasRequest.$type, ListUploadSchemasRequest);
-
-const baseListUploadSchemasResponse: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListUploadSchemasResponse',
-};
+const baseListUploadSchemasResponse: object = {};
 
 export const ListUploadSchemasResponse = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListUploadSchemasResponse' as const,
-
     encode(
         message: ListUploadSchemasResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2382,13 +2152,9 @@ export const ListUploadSchemasResponse = {
     },
 };
 
-messageTypeRegistry.set(ListUploadSchemasResponse.$type, ListUploadSchemasResponse);
-
-const baseListTypesRequest: object = { $type: 'yandex.cloud.ai.dataset.v1.ListTypesRequest' };
+const baseListTypesRequest: object = {};
 
 export const ListTypesRequest = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListTypesRequest' as const,
-
     encode(_: ListTypesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2424,16 +2190,9 @@ export const ListTypesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListTypesRequest.$type, ListTypesRequest);
-
-const baseListTypesResponse: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListTypesResponse',
-    types: '',
-};
+const baseListTypesResponse: object = { types: '' };
 
 export const ListTypesResponse = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListTypesResponse' as const,
-
     encode(message: ListTypesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.types) {
             writer.uint32(10).string(v!);
@@ -2483,16 +2242,9 @@ export const ListTypesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListTypesResponse.$type, ListTypesResponse);
-
-const baseGetDatasetPreviewRequest: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.GetDatasetPreviewRequest',
-    datasetId: '',
-};
+const baseGetDatasetPreviewRequest: object = { datasetId: '' };
 
 export const GetDatasetPreviewRequest = {
-    $type: 'yandex.cloud.ai.dataset.v1.GetDatasetPreviewRequest' as const,
-
     encode(
         message: GetDatasetPreviewRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2545,17 +2297,9 @@ export const GetDatasetPreviewRequest = {
     },
 };
 
-messageTypeRegistry.set(GetDatasetPreviewRequest.$type, GetDatasetPreviewRequest);
-
-const baseGetDatasetPreviewResponse: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.GetDatasetPreviewResponse',
-    datasetId: '',
-    previewLines: '',
-};
+const baseGetDatasetPreviewResponse: object = { datasetId: '', previewLines: '' };
 
 export const GetDatasetPreviewResponse = {
-    $type: 'yandex.cloud.ai.dataset.v1.GetDatasetPreviewResponse' as const,
-
     encode(
         message: GetDatasetPreviewResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2622,16 +2366,9 @@ export const GetDatasetPreviewResponse = {
     },
 };
 
-messageTypeRegistry.set(GetDatasetPreviewResponse.$type, GetDatasetPreviewResponse);
-
-const baseGetDownloadUrlsRequest: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.GetDownloadUrlsRequest',
-    datasetId: '',
-};
+const baseGetDownloadUrlsRequest: object = { datasetId: '' };
 
 export const GetDownloadUrlsRequest = {
-    $type: 'yandex.cloud.ai.dataset.v1.GetDownloadUrlsRequest' as const,
-
     encode(message: GetDownloadUrlsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -2681,16 +2418,9 @@ export const GetDownloadUrlsRequest = {
     },
 };
 
-messageTypeRegistry.set(GetDownloadUrlsRequest.$type, GetDownloadUrlsRequest);
-
-const baseGetDownloadUrlsResponse: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.GetDownloadUrlsResponse',
-    datasetId: '',
-};
+const baseGetDownloadUrlsResponse: object = { datasetId: '' };
 
 export const GetDownloadUrlsResponse = {
-    $type: 'yandex.cloud.ai.dataset.v1.GetDownloadUrlsResponse' as const,
-
     encode(message: GetDownloadUrlsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -2761,16 +2491,9 @@ export const GetDownloadUrlsResponse = {
     },
 };
 
-messageTypeRegistry.set(GetDownloadUrlsResponse.$type, GetDownloadUrlsResponse);
-
-const baseListOperationsIdsRequest: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsRequest',
-    datasetId: '',
-};
+const baseListOperationsIdsRequest: object = { datasetId: '' };
 
 export const ListOperationsIdsRequest = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsRequest' as const,
-
     encode(
         message: ListOperationsIdsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2825,26 +2548,16 @@ export const ListOperationsIdsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListOperationsIdsRequest.$type, ListOperationsIdsRequest);
-
-const baseListOperationsIdsResponse: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsResponse',
-};
+const baseListOperationsIdsResponse: object = {};
 
 export const ListOperationsIdsResponse = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsResponse' as const,
-
     encode(
         message: ListOperationsIdsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         Object.entries(message.datasetIdToOperationId).forEach(([key, value]) => {
             ListOperationsIdsResponse_DatasetIdToOperationIdEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsResponse.DatasetIdToOperationIdEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(10).fork(),
             ).ldelim();
         });
@@ -2914,17 +2627,9 @@ export const ListOperationsIdsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListOperationsIdsResponse.$type, ListOperationsIdsResponse);
-
-const baseListOperationsIdsResponse_DatasetIdToOperationIdEntry: object = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsResponse.DatasetIdToOperationIdEntry',
-    key: '',
-    value: '',
-};
+const baseListOperationsIdsResponse_DatasetIdToOperationIdEntry: object = { key: '', value: '' };
 
 export const ListOperationsIdsResponse_DatasetIdToOperationIdEntry = {
-    $type: 'yandex.cloud.ai.dataset.v1.ListOperationsIdsResponse.DatasetIdToOperationIdEntry' as const,
-
     encode(
         message: ListOperationsIdsResponse_DatasetIdToOperationIdEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2992,11 +2697,6 @@ export const ListOperationsIdsResponse_DatasetIdToOperationIdEntry = {
         return message;
     },
 };
-
-messageTypeRegistry.set(
-    ListOperationsIdsResponse_DatasetIdToOperationIdEntry.$type,
-    ListOperationsIdsResponse_DatasetIdToOperationIdEntry,
-);
 
 /** A set of methods for managing datasets. */
 export const DatasetServiceService = {
@@ -3522,16 +3222,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

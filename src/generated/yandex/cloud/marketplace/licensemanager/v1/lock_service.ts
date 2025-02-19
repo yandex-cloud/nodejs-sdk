@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,13 +19,11 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.marketplace.licensemanager.v1';
 
 export interface GetLockRequest {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.GetLockRequest';
     /** ID of the subscription lock. */
     lockId: string;
 }
 
 export interface CreateLockRequest {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.CreateLockRequest';
     /** ID of the subscription instance. */
     instanceId: string;
     /** ID of the resource to which the subscription will be locked. */
@@ -34,7 +31,6 @@ export interface CreateLockRequest {
 }
 
 export interface EnsureLockRequest {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.EnsureLockRequest';
     /** ID of the subscription instance. */
     instanceId: string;
     /** ID of the resource to which the subscription will be locked. */
@@ -42,31 +38,26 @@ export interface EnsureLockRequest {
 }
 
 export interface CreateLockMetadata {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.CreateLockMetadata';
     /** ID of the subscription lock. */
     lockId: string;
 }
 
 export interface EnsureLockMetadata {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.EnsureLockMetadata';
     /** ID of the subscription lock. */
     lockId: string;
 }
 
 export interface DeleteLockRequest {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.DeleteLockRequest';
     /** ID of the subscription lock. */
     lockId: string;
 }
 
 export interface DeleteLockMetadata {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.DeleteLockMetadata';
     /** ID of the subscription lock. */
     lockId: string;
 }
 
 export interface GetLockByInstanceAndResourceRequest {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.GetLockByInstanceAndResourceRequest';
     /** ID of the subscription instance. */
     instanceId: string;
     /** ID of the resource to which the subscription will be locked. */
@@ -74,7 +65,6 @@ export interface GetLockByInstanceAndResourceRequest {
 }
 
 export interface ListLocksRequest {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.ListLocksRequest';
     /** ID of the resource that the subscription locks belong to. */
     resourceId: string;
     /** ID of the folder that the subscription locks belong to. */
@@ -106,7 +96,6 @@ export interface ListLocksRequest {
 }
 
 export interface ListLocksResponse {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.ListLocksResponse';
     /** List of subscription locks. */
     locks: Lock[];
     /**
@@ -119,14 +108,9 @@ export interface ListLocksResponse {
     nextPageToken: string;
 }
 
-const baseGetLockRequest: object = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.GetLockRequest',
-    lockId: '',
-};
+const baseGetLockRequest: object = { lockId: '' };
 
 export const GetLockRequest = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.GetLockRequest' as const,
-
     encode(message: GetLockRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lockId !== '') {
             writer.uint32(10).string(message.lockId);
@@ -172,17 +156,9 @@ export const GetLockRequest = {
     },
 };
 
-messageTypeRegistry.set(GetLockRequest.$type, GetLockRequest);
-
-const baseCreateLockRequest: object = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.CreateLockRequest',
-    instanceId: '',
-    resourceId: '',
-};
+const baseCreateLockRequest: object = { instanceId: '', resourceId: '' };
 
 export const CreateLockRequest = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.CreateLockRequest' as const,
-
     encode(message: CreateLockRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -242,17 +218,9 @@ export const CreateLockRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateLockRequest.$type, CreateLockRequest);
-
-const baseEnsureLockRequest: object = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.EnsureLockRequest',
-    instanceId: '',
-    resourceId: '',
-};
+const baseEnsureLockRequest: object = { instanceId: '', resourceId: '' };
 
 export const EnsureLockRequest = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.EnsureLockRequest' as const,
-
     encode(message: EnsureLockRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -312,16 +280,9 @@ export const EnsureLockRequest = {
     },
 };
 
-messageTypeRegistry.set(EnsureLockRequest.$type, EnsureLockRequest);
-
-const baseCreateLockMetadata: object = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.CreateLockMetadata',
-    lockId: '',
-};
+const baseCreateLockMetadata: object = { lockId: '' };
 
 export const CreateLockMetadata = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.CreateLockMetadata' as const,
-
     encode(message: CreateLockMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lockId !== '') {
             writer.uint32(10).string(message.lockId);
@@ -369,16 +330,9 @@ export const CreateLockMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateLockMetadata.$type, CreateLockMetadata);
-
-const baseEnsureLockMetadata: object = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.EnsureLockMetadata',
-    lockId: '',
-};
+const baseEnsureLockMetadata: object = { lockId: '' };
 
 export const EnsureLockMetadata = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.EnsureLockMetadata' as const,
-
     encode(message: EnsureLockMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lockId !== '') {
             writer.uint32(10).string(message.lockId);
@@ -426,16 +380,9 @@ export const EnsureLockMetadata = {
     },
 };
 
-messageTypeRegistry.set(EnsureLockMetadata.$type, EnsureLockMetadata);
-
-const baseDeleteLockRequest: object = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.DeleteLockRequest',
-    lockId: '',
-};
+const baseDeleteLockRequest: object = { lockId: '' };
 
 export const DeleteLockRequest = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.DeleteLockRequest' as const,
-
     encode(message: DeleteLockRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lockId !== '') {
             writer.uint32(10).string(message.lockId);
@@ -481,16 +428,9 @@ export const DeleteLockRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteLockRequest.$type, DeleteLockRequest);
-
-const baseDeleteLockMetadata: object = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.DeleteLockMetadata',
-    lockId: '',
-};
+const baseDeleteLockMetadata: object = { lockId: '' };
 
 export const DeleteLockMetadata = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.DeleteLockMetadata' as const,
-
     encode(message: DeleteLockMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lockId !== '') {
             writer.uint32(10).string(message.lockId);
@@ -538,17 +478,9 @@ export const DeleteLockMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteLockMetadata.$type, DeleteLockMetadata);
-
-const baseGetLockByInstanceAndResourceRequest: object = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.GetLockByInstanceAndResourceRequest',
-    instanceId: '',
-    resourceId: '',
-};
+const baseGetLockByInstanceAndResourceRequest: object = { instanceId: '', resourceId: '' };
 
 export const GetLockByInstanceAndResourceRequest = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.GetLockByInstanceAndResourceRequest' as const,
-
     encode(
         message: GetLockByInstanceAndResourceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -619,13 +551,7 @@ export const GetLockByInstanceAndResourceRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    GetLockByInstanceAndResourceRequest.$type,
-    GetLockByInstanceAndResourceRequest,
-);
-
 const baseListLocksRequest: object = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.ListLocksRequest',
     resourceId: '',
     folderId: '',
     pageSize: 0,
@@ -635,8 +561,6 @@ const baseListLocksRequest: object = {
 };
 
 export const ListLocksRequest = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.ListLocksRequest' as const,
-
     encode(message: ListLocksRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -738,16 +662,9 @@ export const ListLocksRequest = {
     },
 };
 
-messageTypeRegistry.set(ListLocksRequest.$type, ListLocksRequest);
-
-const baseListLocksResponse: object = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.ListLocksResponse',
-    nextPageToken: '',
-};
+const baseListLocksResponse: object = { nextPageToken: '' };
 
 export const ListLocksResponse = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.ListLocksResponse' as const,
-
     encode(message: ListLocksResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.locks) {
             Lock.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -808,8 +725,6 @@ export const ListLocksResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListLocksResponse.$type, ListLocksResponse);
 
 /** A set of methods for managing subscription locks. */
 export const LockServiceService = {
@@ -1037,16 +952,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -21,7 +20,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.datatransfer.v1';
 
 export interface GetEndpointRequest {
-    $type: 'yandex.cloud.datatransfer.v1.GetEndpointRequest';
     /**
      * Identifier of the endpoint to return.
      *
@@ -31,7 +29,6 @@ export interface GetEndpointRequest {
 }
 
 export interface ListEndpointsRequest {
-    $type: 'yandex.cloud.datatransfer.v1.ListEndpointsRequest';
     /** Identifier of the folder containing the endpoints to be listed. */
     folderId: string;
     /**
@@ -54,7 +51,6 @@ export interface ListEndpointsRequest {
 }
 
 export interface ListEndpointsResponse {
-    $type: 'yandex.cloud.datatransfer.v1.ListEndpointsResponse';
     /**
      * The list of endpoints. If there are more endpoints in the folder, then
      * `next_page_token` is a non-empty string to be included into the subsequent
@@ -71,7 +67,6 @@ export interface ListEndpointsResponse {
 }
 
 export interface CreateEndpointRequest {
-    $type: 'yandex.cloud.datatransfer.v1.CreateEndpointRequest';
     /**
      * ID of the folder to create the endpoint in.
      *
@@ -98,18 +93,15 @@ export interface CreateEndpointRequest {
 }
 
 export interface CreateEndpointRequest_LabelsEntry {
-    $type: 'yandex.cloud.datatransfer.v1.CreateEndpointRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateEndpointMetadata {
-    $type: 'yandex.cloud.datatransfer.v1.CreateEndpointMetadata';
     endpointId: string;
 }
 
 export interface UpdateEndpointRequest {
-    $type: 'yandex.cloud.datatransfer.v1.UpdateEndpointRequest';
     /** Identifier of the endpoint to be updated. */
     endpointId: string;
     /** The new endpoint name. Must be unique within the folder. */
@@ -136,18 +128,15 @@ export interface UpdateEndpointRequest {
 }
 
 export interface UpdateEndpointRequest_LabelsEntry {
-    $type: 'yandex.cloud.datatransfer.v1.UpdateEndpointRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateEndpointMetadata {
-    $type: 'yandex.cloud.datatransfer.v1.UpdateEndpointMetadata';
     endpointId: string;
 }
 
 export interface DeleteEndpointRequest {
-    $type: 'yandex.cloud.datatransfer.v1.DeleteEndpointRequest';
     /**
      * Identifier of the endpoint to delete.
      *
@@ -157,18 +146,12 @@ export interface DeleteEndpointRequest {
 }
 
 export interface DeleteEndpointMetadata {
-    $type: 'yandex.cloud.datatransfer.v1.DeleteEndpointMetadata';
     endpointId: string;
 }
 
-const baseGetEndpointRequest: object = {
-    $type: 'yandex.cloud.datatransfer.v1.GetEndpointRequest',
-    endpointId: '',
-};
+const baseGetEndpointRequest: object = { endpointId: '' };
 
 export const GetEndpointRequest = {
-    $type: 'yandex.cloud.datatransfer.v1.GetEndpointRequest' as const,
-
     encode(message: GetEndpointRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.endpointId !== '') {
             writer.uint32(10).string(message.endpointId);
@@ -218,18 +201,9 @@ export const GetEndpointRequest = {
     },
 };
 
-messageTypeRegistry.set(GetEndpointRequest.$type, GetEndpointRequest);
-
-const baseListEndpointsRequest: object = {
-    $type: 'yandex.cloud.datatransfer.v1.ListEndpointsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListEndpointsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
 export const ListEndpointsRequest = {
-    $type: 'yandex.cloud.datatransfer.v1.ListEndpointsRequest' as const,
-
     encode(message: ListEndpointsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -301,16 +275,9 @@ export const ListEndpointsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListEndpointsRequest.$type, ListEndpointsRequest);
-
-const baseListEndpointsResponse: object = {
-    $type: 'yandex.cloud.datatransfer.v1.ListEndpointsResponse',
-    nextPageToken: '',
-};
+const baseListEndpointsResponse: object = { nextPageToken: '' };
 
 export const ListEndpointsResponse = {
-    $type: 'yandex.cloud.datatransfer.v1.ListEndpointsResponse' as const,
-
     encode(message: ListEndpointsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.endpoints) {
             Endpoint.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -374,18 +341,9 @@ export const ListEndpointsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListEndpointsResponse.$type, ListEndpointsResponse);
-
-const baseCreateEndpointRequest: object = {
-    $type: 'yandex.cloud.datatransfer.v1.CreateEndpointRequest',
-    folderId: '',
-    name: '',
-    description: '',
-};
+const baseCreateEndpointRequest: object = { folderId: '', name: '', description: '' };
 
 export const CreateEndpointRequest = {
-    $type: 'yandex.cloud.datatransfer.v1.CreateEndpointRequest' as const,
-
     encode(message: CreateEndpointRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -398,11 +356,7 @@ export const CreateEndpointRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateEndpointRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.datatransfer.v1.CreateEndpointRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -516,17 +470,9 @@ export const CreateEndpointRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateEndpointRequest.$type, CreateEndpointRequest);
-
-const baseCreateEndpointRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.datatransfer.v1.CreateEndpointRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateEndpointRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateEndpointRequest_LabelsEntry = {
-    $type: 'yandex.cloud.datatransfer.v1.CreateEndpointRequest.LabelsEntry' as const,
-
     encode(
         message: CreateEndpointRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -592,16 +538,9 @@ export const CreateEndpointRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateEndpointRequest_LabelsEntry.$type, CreateEndpointRequest_LabelsEntry);
-
-const baseCreateEndpointMetadata: object = {
-    $type: 'yandex.cloud.datatransfer.v1.CreateEndpointMetadata',
-    endpointId: '',
-};
+const baseCreateEndpointMetadata: object = { endpointId: '' };
 
 export const CreateEndpointMetadata = {
-    $type: 'yandex.cloud.datatransfer.v1.CreateEndpointMetadata' as const,
-
     encode(message: CreateEndpointMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.endpointId !== '') {
             writer.uint32(10).string(message.endpointId);
@@ -651,18 +590,9 @@ export const CreateEndpointMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateEndpointMetadata.$type, CreateEndpointMetadata);
-
-const baseUpdateEndpointRequest: object = {
-    $type: 'yandex.cloud.datatransfer.v1.UpdateEndpointRequest',
-    endpointId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateEndpointRequest: object = { endpointId: '', name: '', description: '' };
 
 export const UpdateEndpointRequest = {
-    $type: 'yandex.cloud.datatransfer.v1.UpdateEndpointRequest' as const,
-
     encode(message: UpdateEndpointRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.endpointId !== '') {
             writer.uint32(82).string(message.endpointId);
@@ -675,11 +605,7 @@ export const UpdateEndpointRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateEndpointRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.datatransfer.v1.UpdateEndpointRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(106).fork(),
             ).ldelim();
         });
@@ -811,17 +737,9 @@ export const UpdateEndpointRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateEndpointRequest.$type, UpdateEndpointRequest);
-
-const baseUpdateEndpointRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.datatransfer.v1.UpdateEndpointRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateEndpointRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateEndpointRequest_LabelsEntry = {
-    $type: 'yandex.cloud.datatransfer.v1.UpdateEndpointRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateEndpointRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -887,16 +805,9 @@ export const UpdateEndpointRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateEndpointRequest_LabelsEntry.$type, UpdateEndpointRequest_LabelsEntry);
-
-const baseUpdateEndpointMetadata: object = {
-    $type: 'yandex.cloud.datatransfer.v1.UpdateEndpointMetadata',
-    endpointId: '',
-};
+const baseUpdateEndpointMetadata: object = { endpointId: '' };
 
 export const UpdateEndpointMetadata = {
-    $type: 'yandex.cloud.datatransfer.v1.UpdateEndpointMetadata' as const,
-
     encode(message: UpdateEndpointMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.endpointId !== '') {
             writer.uint32(10).string(message.endpointId);
@@ -946,16 +857,9 @@ export const UpdateEndpointMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateEndpointMetadata.$type, UpdateEndpointMetadata);
-
-const baseDeleteEndpointRequest: object = {
-    $type: 'yandex.cloud.datatransfer.v1.DeleteEndpointRequest',
-    endpointId: '',
-};
+const baseDeleteEndpointRequest: object = { endpointId: '' };
 
 export const DeleteEndpointRequest = {
-    $type: 'yandex.cloud.datatransfer.v1.DeleteEndpointRequest' as const,
-
     encode(message: DeleteEndpointRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.endpointId !== '') {
             writer.uint32(10).string(message.endpointId);
@@ -1005,16 +909,9 @@ export const DeleteEndpointRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteEndpointRequest.$type, DeleteEndpointRequest);
-
-const baseDeleteEndpointMetadata: object = {
-    $type: 'yandex.cloud.datatransfer.v1.DeleteEndpointMetadata',
-    endpointId: '',
-};
+const baseDeleteEndpointMetadata: object = { endpointId: '' };
 
 export const DeleteEndpointMetadata = {
-    $type: 'yandex.cloud.datatransfer.v1.DeleteEndpointMetadata' as const,
-
     encode(message: DeleteEndpointMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.endpointId !== '') {
             writer.uint32(10).string(message.endpointId);
@@ -1063,8 +960,6 @@ export const DeleteEndpointMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteEndpointMetadata.$type, DeleteEndpointMetadata);
 
 /**
  * A set of methods for managing [endpoints]({{ api-url-prefix
@@ -1269,16 +1164,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

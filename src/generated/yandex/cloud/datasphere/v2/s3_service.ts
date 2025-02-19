@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,26 +18,18 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.datasphere.v2';
 
 export interface ActivateS3Request {
-    $type: 'yandex.cloud.datasphere.v2.ActivateS3Request';
     s3Id: string;
     projectId: string;
 }
 
 export interface DeactivateS3Request {
-    $type: 'yandex.cloud.datasphere.v2.DeactivateS3Request';
     s3Id: string;
     projectId: string;
 }
 
-const baseActivateS3Request: object = {
-    $type: 'yandex.cloud.datasphere.v2.ActivateS3Request',
-    s3Id: '',
-    projectId: '',
-};
+const baseActivateS3Request: object = { s3Id: '', projectId: '' };
 
 export const ActivateS3Request = {
-    $type: 'yandex.cloud.datasphere.v2.ActivateS3Request' as const,
-
     encode(message: ActivateS3Request, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.s3Id !== '') {
             writer.uint32(10).string(message.s3Id);
@@ -95,17 +86,9 @@ export const ActivateS3Request = {
     },
 };
 
-messageTypeRegistry.set(ActivateS3Request.$type, ActivateS3Request);
-
-const baseDeactivateS3Request: object = {
-    $type: 'yandex.cloud.datasphere.v2.DeactivateS3Request',
-    s3Id: '',
-    projectId: '',
-};
+const baseDeactivateS3Request: object = { s3Id: '', projectId: '' };
 
 export const DeactivateS3Request = {
-    $type: 'yandex.cloud.datasphere.v2.DeactivateS3Request' as const,
-
     encode(message: DeactivateS3Request, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.s3Id !== '') {
             writer.uint32(10).string(message.s3Id);
@@ -163,8 +146,6 @@ export const DeactivateS3Request = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeactivateS3Request.$type, DeactivateS3Request);
 
 /** A set of methods for managing S3 configurations. */
 export const S3ServiceService = {
@@ -255,16 +236,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

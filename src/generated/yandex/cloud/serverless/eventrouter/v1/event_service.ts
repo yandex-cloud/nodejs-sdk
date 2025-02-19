@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,22 +18,15 @@ import { Empty } from '../../../../../google/protobuf/empty';
 export const protobufPackage = 'yandex.cloud.serverless.eventrouter.v1';
 
 export interface PutEventRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.PutEventRequest';
     /** ID of the bus to put event. */
     busId: string;
     /** Event body. */
     body: string;
 }
 
-const basePutEventRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.PutEventRequest',
-    busId: '',
-    body: '',
-};
+const basePutEventRequest: object = { busId: '', body: '' };
 
 export const PutEventRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.PutEventRequest' as const,
-
     encode(message: PutEventRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== '') {
             writer.uint32(10).string(message.busId);
@@ -88,8 +80,6 @@ export const PutEventRequest = {
         return message;
     },
 };
-
-messageTypeRegistry.set(PutEventRequest.$type, PutEventRequest);
 
 /** Service for put events to bus for serverless eventrouter. */
 export const EventServiceService = {
@@ -151,16 +141,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

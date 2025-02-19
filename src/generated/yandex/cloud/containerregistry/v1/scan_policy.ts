@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../google/protobuf/duration';
@@ -8,7 +7,6 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.containerregistry.v1';
 
 export interface ScanPolicy {
-    $type: 'yandex.cloud.containerregistry.v1.ScanPolicy';
     /** Output only. ID of the scan policy. */
     id: string;
     /**
@@ -32,7 +30,6 @@ export interface ScanPolicy {
 }
 
 export interface ScanRules {
-    $type: 'yandex.cloud.containerregistry.v1.ScanRules';
     /** Description of on-push scan rule. */
     pushRule?: PushRule;
     /** Description of time based rescan rule. */
@@ -40,7 +37,6 @@ export interface ScanRules {
 }
 
 export interface PushRule {
-    $type: 'yandex.cloud.containerregistry.v1.PushRule';
     /** List of repositories that are scanned with rule. Child repositories are included into parent node. "*" - means all repositories in registry */
     repositoryPrefixes: string[];
     /** Turns off scan rule. */
@@ -48,7 +44,6 @@ export interface PushRule {
 }
 
 export interface ScheduledRule {
-    $type: 'yandex.cloud.containerregistry.v1.ScheduledRule';
     /** List of repositories that are scanned with rule. Child repositories are included into parent node. "*" - means all repositories in registry */
     repositoryPrefixes: string[];
     /** Period of time since last scan to trigger automatic rescan. */
@@ -58,7 +53,6 @@ export interface ScheduledRule {
 }
 
 const baseScanPolicy: object = {
-    $type: 'yandex.cloud.containerregistry.v1.ScanPolicy',
     id: '',
     registryId: '',
     name: '',
@@ -67,8 +61,6 @@ const baseScanPolicy: object = {
 };
 
 export const ScanPolicy = {
-    $type: 'yandex.cloud.containerregistry.v1.ScanPolicy' as const,
-
     encode(message: ScanPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -186,13 +178,9 @@ export const ScanPolicy = {
     },
 };
 
-messageTypeRegistry.set(ScanPolicy.$type, ScanPolicy);
-
-const baseScanRules: object = { $type: 'yandex.cloud.containerregistry.v1.ScanRules' };
+const baseScanRules: object = {};
 
 export const ScanRules = {
-    $type: 'yandex.cloud.containerregistry.v1.ScanRules' as const,
-
     encode(message: ScanRules, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pushRule !== undefined) {
             PushRule.encode(message.pushRule, writer.uint32(10).fork()).ldelim();
@@ -263,17 +251,9 @@ export const ScanRules = {
     },
 };
 
-messageTypeRegistry.set(ScanRules.$type, ScanRules);
-
-const basePushRule: object = {
-    $type: 'yandex.cloud.containerregistry.v1.PushRule',
-    repositoryPrefixes: '',
-    disabled: false,
-};
+const basePushRule: object = { repositoryPrefixes: '', disabled: false };
 
 export const PushRule = {
-    $type: 'yandex.cloud.containerregistry.v1.PushRule' as const,
-
     encode(message: PushRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.repositoryPrefixes) {
             writer.uint32(10).string(v!);
@@ -335,17 +315,9 @@ export const PushRule = {
     },
 };
 
-messageTypeRegistry.set(PushRule.$type, PushRule);
-
-const baseScheduledRule: object = {
-    $type: 'yandex.cloud.containerregistry.v1.ScheduledRule',
-    repositoryPrefixes: '',
-    disabled: false,
-};
+const baseScheduledRule: object = { repositoryPrefixes: '', disabled: false };
 
 export const ScheduledRule = {
-    $type: 'yandex.cloud.containerregistry.v1.ScheduledRule' as const,
-
     encode(message: ScheduledRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.repositoryPrefixes) {
             writer.uint32(10).string(v!);
@@ -425,8 +397,6 @@ export const ScheduledRule = {
     },
 };
 
-messageTypeRegistry.set(ScheduledRule.$type, ScheduledRule);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -436,21 +406,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

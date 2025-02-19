@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -35,13 +34,11 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.smartcaptcha.v1';
 
 export interface GetCaptchaRequest {
-    $type: 'yandex.cloud.smartcaptcha.v1.GetCaptchaRequest';
     /** ID of the Captcha resource to return. */
     captchaId: string;
 }
 
 export interface ListCaptchasRequest {
-    $type: 'yandex.cloud.smartcaptcha.v1.ListCaptchasRequest';
     /**
      * ID of the folder that the captcha belongs to.
      * Currently page_size, page_token, filter and order_by are not supported and List method will return all captchas in the folder.
@@ -50,7 +47,6 @@ export interface ListCaptchasRequest {
 }
 
 export interface ListCaptchasResponse {
-    $type: 'yandex.cloud.smartcaptcha.v1.ListCaptchasResponse';
     /**
      * List of Captcha resources.
      * Currently next_page_token is not supported and List method will return all captchas in the folder.
@@ -59,7 +55,6 @@ export interface ListCaptchasResponse {
 }
 
 export interface CreateCaptchaRequest {
-    $type: 'yandex.cloud.smartcaptcha.v1.CreateCaptchaRequest';
     /** ID of the folder to create a captcha in. */
     folderId: string;
     /**
@@ -88,25 +83,21 @@ export interface CreateCaptchaRequest {
 }
 
 export interface CreateCaptchaMetadata {
-    $type: 'yandex.cloud.smartcaptcha.v1.CreateCaptchaMetadata';
     /** ID of the captcha that is being created. */
     captchaId: string;
 }
 
 export interface DeleteCaptchaRequest {
-    $type: 'yandex.cloud.smartcaptcha.v1.DeleteCaptchaRequest';
     /** ID of the captcha to delete. */
     captchaId: string;
 }
 
 export interface DeleteCaptchaMetadata {
-    $type: 'yandex.cloud.smartcaptcha.v1.DeleteCaptchaMetadata';
     /** ID of the Captcha resource that is being deleted. */
     captchaId: string;
 }
 
 export interface UpdateCaptchaRequest {
-    $type: 'yandex.cloud.smartcaptcha.v1.UpdateCaptchaRequest';
     /** ID of the captcha to update. */
     captchaId: string;
     /** Field mask that specifies which fields of the Captcha resource are going to be updated. */
@@ -137,19 +128,13 @@ export interface UpdateCaptchaRequest {
 }
 
 export interface UpdateCaptchaMetadata {
-    $type: 'yandex.cloud.smartcaptcha.v1.UpdateCaptchaMetadata';
     /** ID of the Captcha resource that is being updated. */
     captchaId: string;
 }
 
-const baseGetCaptchaRequest: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.GetCaptchaRequest',
-    captchaId: '',
-};
+const baseGetCaptchaRequest: object = { captchaId: '' };
 
 export const GetCaptchaRequest = {
-    $type: 'yandex.cloud.smartcaptcha.v1.GetCaptchaRequest' as const,
-
     encode(message: GetCaptchaRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.captchaId !== '') {
             writer.uint32(10).string(message.captchaId);
@@ -197,16 +182,9 @@ export const GetCaptchaRequest = {
     },
 };
 
-messageTypeRegistry.set(GetCaptchaRequest.$type, GetCaptchaRequest);
-
-const baseListCaptchasRequest: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.ListCaptchasRequest',
-    folderId: '',
-};
+const baseListCaptchasRequest: object = { folderId: '' };
 
 export const ListCaptchasRequest = {
-    $type: 'yandex.cloud.smartcaptcha.v1.ListCaptchasRequest' as const,
-
     encode(message: ListCaptchasRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -256,15 +234,9 @@ export const ListCaptchasRequest = {
     },
 };
 
-messageTypeRegistry.set(ListCaptchasRequest.$type, ListCaptchasRequest);
-
-const baseListCaptchasResponse: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.ListCaptchasResponse',
-};
+const baseListCaptchasResponse: object = {};
 
 export const ListCaptchasResponse = {
-    $type: 'yandex.cloud.smartcaptcha.v1.ListCaptchasResponse' as const,
-
     encode(message: ListCaptchasResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.resources) {
             Captcha.encode(v!, writer.uint32(26).fork()).ldelim();
@@ -316,10 +288,7 @@ export const ListCaptchasResponse = {
     },
 };
 
-messageTypeRegistry.set(ListCaptchasResponse.$type, ListCaptchasResponse);
-
 const baseCreateCaptchaRequest: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.CreateCaptchaRequest',
     folderId: '',
     name: '',
     allowedSites: '',
@@ -332,8 +301,6 @@ const baseCreateCaptchaRequest: object = {
 };
 
 export const CreateCaptchaRequest = {
-    $type: 'yandex.cloud.smartcaptcha.v1.CreateCaptchaRequest' as const,
-
     encode(message: CreateCaptchaRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -520,16 +487,9 @@ export const CreateCaptchaRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateCaptchaRequest.$type, CreateCaptchaRequest);
-
-const baseCreateCaptchaMetadata: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.CreateCaptchaMetadata',
-    captchaId: '',
-};
+const baseCreateCaptchaMetadata: object = { captchaId: '' };
 
 export const CreateCaptchaMetadata = {
-    $type: 'yandex.cloud.smartcaptcha.v1.CreateCaptchaMetadata' as const,
-
     encode(message: CreateCaptchaMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.captchaId !== '') {
             writer.uint32(10).string(message.captchaId);
@@ -579,16 +539,9 @@ export const CreateCaptchaMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateCaptchaMetadata.$type, CreateCaptchaMetadata);
-
-const baseDeleteCaptchaRequest: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.DeleteCaptchaRequest',
-    captchaId: '',
-};
+const baseDeleteCaptchaRequest: object = { captchaId: '' };
 
 export const DeleteCaptchaRequest = {
-    $type: 'yandex.cloud.smartcaptcha.v1.DeleteCaptchaRequest' as const,
-
     encode(message: DeleteCaptchaRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.captchaId !== '') {
             writer.uint32(10).string(message.captchaId);
@@ -638,16 +591,9 @@ export const DeleteCaptchaRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteCaptchaRequest.$type, DeleteCaptchaRequest);
-
-const baseDeleteCaptchaMetadata: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.DeleteCaptchaMetadata',
-    captchaId: '',
-};
+const baseDeleteCaptchaMetadata: object = { captchaId: '' };
 
 export const DeleteCaptchaMetadata = {
-    $type: 'yandex.cloud.smartcaptcha.v1.DeleteCaptchaMetadata' as const,
-
     encode(message: DeleteCaptchaMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.captchaId !== '') {
             writer.uint32(10).string(message.captchaId);
@@ -697,10 +643,7 @@ export const DeleteCaptchaMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteCaptchaMetadata.$type, DeleteCaptchaMetadata);
-
 const baseUpdateCaptchaRequest: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.UpdateCaptchaRequest',
     captchaId: '',
     name: '',
     allowedSites: '',
@@ -713,8 +656,6 @@ const baseUpdateCaptchaRequest: object = {
 };
 
 export const UpdateCaptchaRequest = {
-    $type: 'yandex.cloud.smartcaptcha.v1.UpdateCaptchaRequest' as const,
-
     encode(message: UpdateCaptchaRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.captchaId !== '') {
             writer.uint32(10).string(message.captchaId);
@@ -919,16 +860,9 @@ export const UpdateCaptchaRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateCaptchaRequest.$type, UpdateCaptchaRequest);
-
-const baseUpdateCaptchaMetadata: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.UpdateCaptchaMetadata',
-    captchaId: '',
-};
+const baseUpdateCaptchaMetadata: object = { captchaId: '' };
 
 export const UpdateCaptchaMetadata = {
-    $type: 'yandex.cloud.smartcaptcha.v1.UpdateCaptchaMetadata' as const,
-
     encode(message: UpdateCaptchaMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.captchaId !== '') {
             writer.uint32(10).string(message.captchaId);
@@ -977,8 +911,6 @@ export const UpdateCaptchaMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(UpdateCaptchaMetadata.$type, UpdateCaptchaMetadata);
 
 /** A set of methods for managing Captcha resources. */
 export const CaptchaServiceService = {
@@ -1187,16 +1119,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

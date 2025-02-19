@@ -1,12 +1,10 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.cloudrouter.v1';
 
 export interface RoutingInstance {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance';
     /** ID of the routingInstance. */
     id: string;
     /**
@@ -89,19 +87,16 @@ export function routingInstance_StatusToJSON(object: RoutingInstance_Status): st
 }
 
 export interface RoutingInstance_LabelsEntry {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface RoutingInstance_CicPrivateConnectionInfo {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.CicPrivateConnectionInfo';
     /** ID of the cicPrivateConnection that is attached to the routingInstance. */
     cicPrivateConnectionId: string;
 }
 
 export interface RoutingInstance_VpcInfo {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.VpcInfo';
     /** ID of the vpcNetwork that is attached to the routingInstance. */
     vpcNetworkId: string;
     /** List of the az-related info about vpcNetworks which are attached to routingInstance */
@@ -109,13 +104,11 @@ export interface RoutingInstance_VpcInfo {
 }
 
 export interface RoutingInstance_VpcAzInfo {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.VpcAzInfo';
     /** VpcInfo which is set by user */
     manualInfo?: RoutingInstance_VpcManualInfo;
 }
 
 export interface RoutingInstance_VpcManualInfo {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.VpcManualInfo';
     /** ID of the AZ */
     azId: string;
     /** List of prefixes to announce */
@@ -123,7 +116,6 @@ export interface RoutingInstance_VpcManualInfo {
 }
 
 const baseRoutingInstance: object = {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance',
     id: '',
     name: '',
     description: '',
@@ -133,8 +125,6 @@ const baseRoutingInstance: object = {
 };
 
 export const RoutingInstance = {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance' as const,
-
     encode(message: RoutingInstance, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -162,11 +152,7 @@ export const RoutingInstance = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             RoutingInstance_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(194).fork(),
             ).ldelim();
         });
@@ -316,17 +302,9 @@ export const RoutingInstance = {
     },
 };
 
-messageTypeRegistry.set(RoutingInstance.$type, RoutingInstance);
-
-const baseRoutingInstance_LabelsEntry: object = {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseRoutingInstance_LabelsEntry: object = { key: '', value: '' };
 
 export const RoutingInstance_LabelsEntry = {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.LabelsEntry' as const,
-
     encode(
         message: RoutingInstance_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -386,16 +364,9 @@ export const RoutingInstance_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(RoutingInstance_LabelsEntry.$type, RoutingInstance_LabelsEntry);
-
-const baseRoutingInstance_CicPrivateConnectionInfo: object = {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.CicPrivateConnectionInfo',
-    cicPrivateConnectionId: '',
-};
+const baseRoutingInstance_CicPrivateConnectionInfo: object = { cicPrivateConnectionId: '' };
 
 export const RoutingInstance_CicPrivateConnectionInfo = {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.CicPrivateConnectionInfo' as const,
-
     encode(
         message: RoutingInstance_CicPrivateConnectionInfo,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -458,19 +429,9 @@ export const RoutingInstance_CicPrivateConnectionInfo = {
     },
 };
 
-messageTypeRegistry.set(
-    RoutingInstance_CicPrivateConnectionInfo.$type,
-    RoutingInstance_CicPrivateConnectionInfo,
-);
-
-const baseRoutingInstance_VpcInfo: object = {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.VpcInfo',
-    vpcNetworkId: '',
-};
+const baseRoutingInstance_VpcInfo: object = { vpcNetworkId: '' };
 
 export const RoutingInstance_VpcInfo = {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.VpcInfo' as const,
-
     encode(message: RoutingInstance_VpcInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.vpcNetworkId !== '') {
             writer.uint32(10).string(message.vpcNetworkId);
@@ -539,15 +500,9 @@ export const RoutingInstance_VpcInfo = {
     },
 };
 
-messageTypeRegistry.set(RoutingInstance_VpcInfo.$type, RoutingInstance_VpcInfo);
-
-const baseRoutingInstance_VpcAzInfo: object = {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.VpcAzInfo',
-};
+const baseRoutingInstance_VpcAzInfo: object = {};
 
 export const RoutingInstance_VpcAzInfo = {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.VpcAzInfo' as const,
-
     encode(
         message: RoutingInstance_VpcAzInfo,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -612,17 +567,9 @@ export const RoutingInstance_VpcAzInfo = {
     },
 };
 
-messageTypeRegistry.set(RoutingInstance_VpcAzInfo.$type, RoutingInstance_VpcAzInfo);
-
-const baseRoutingInstance_VpcManualInfo: object = {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.VpcManualInfo',
-    azId: '',
-    prefixes: '',
-};
+const baseRoutingInstance_VpcManualInfo: object = { azId: '', prefixes: '' };
 
 export const RoutingInstance_VpcManualInfo = {
-    $type: 'yandex.cloud.cloudrouter.v1.RoutingInstance.VpcManualInfo' as const,
-
     encode(
         message: RoutingInstance_VpcManualInfo,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -686,8 +633,6 @@ export const RoutingInstance_VpcManualInfo = {
     },
 };
 
-messageTypeRegistry.set(RoutingInstance_VpcManualInfo.$type, RoutingInstance_VpcManualInfo);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -697,16 +642,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -28,7 +27,6 @@ import {
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
 export interface GetSnapshotRequest {
-    $type: 'yandex.cloud.compute.v1.GetSnapshotRequest';
     /**
      * ID of the Snapshot resource to return.
      * To get the snapshot ID, use a [SnapshotService.List] request.
@@ -37,7 +35,6 @@ export interface GetSnapshotRequest {
 }
 
 export interface ListSnapshotsRequest {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotsRequest';
     /**
      * ID of the folder to list snapshots in.
      * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -75,7 +72,6 @@ export interface ListSnapshotsRequest {
 }
 
 export interface ListSnapshotsResponse {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotsResponse';
     /** List of snapshots. */
     snapshots: Snapshot[];
     /**
@@ -90,7 +86,6 @@ export interface ListSnapshotsResponse {
 }
 
 export interface CreateSnapshotRequest {
-    $type: 'yandex.cloud.compute.v1.CreateSnapshotRequest';
     /**
      * ID of the folder to create a snapshot in.
      * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -115,13 +110,11 @@ export interface CreateSnapshotRequest {
 }
 
 export interface CreateSnapshotRequest_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.CreateSnapshotRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateSnapshotMetadata {
-    $type: 'yandex.cloud.compute.v1.CreateSnapshotMetadata';
     /** ID of the snapshot that is being created. */
     snapshotId: string;
     /** ID of the source disk used to create this snapshot. */
@@ -129,7 +122,6 @@ export interface CreateSnapshotMetadata {
 }
 
 export interface UpdateSnapshotRequest {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotRequest';
     /**
      * ID of the Snapshot resource to update.
      * To get the snapshot ID use a [SnapshotService.List] request.
@@ -150,19 +142,16 @@ export interface UpdateSnapshotRequest {
 }
 
 export interface UpdateSnapshotRequest_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateSnapshotMetadata {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotMetadata';
     /** ID of the Snapshot resource that is being updated. */
     snapshotId: string;
 }
 
 export interface DeleteSnapshotRequest {
-    $type: 'yandex.cloud.compute.v1.DeleteSnapshotRequest';
     /**
      * ID of the snapshot to delete.
      * To get the snapshot ID, use a [SnapshotService.List] request.
@@ -171,13 +160,11 @@ export interface DeleteSnapshotRequest {
 }
 
 export interface DeleteSnapshotMetadata {
-    $type: 'yandex.cloud.compute.v1.DeleteSnapshotMetadata';
     /** ID of the snapshot that is being deleted. */
     snapshotId: string;
 }
 
 export interface ListSnapshotOperationsRequest {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotOperationsRequest';
     /** ID of the Snapshot resource to list operations for. */
     snapshotId: string;
     /**
@@ -194,7 +181,6 @@ export interface ListSnapshotOperationsRequest {
 }
 
 export interface ListSnapshotOperationsResponse {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotOperationsResponse';
     /** List of operations for the specified snapshot. */
     operations: Operation[];
     /**
@@ -206,14 +192,9 @@ export interface ListSnapshotOperationsResponse {
     nextPageToken: string;
 }
 
-const baseGetSnapshotRequest: object = {
-    $type: 'yandex.cloud.compute.v1.GetSnapshotRequest',
-    snapshotId: '',
-};
+const baseGetSnapshotRequest: object = { snapshotId: '' };
 
 export const GetSnapshotRequest = {
-    $type: 'yandex.cloud.compute.v1.GetSnapshotRequest' as const,
-
     encode(message: GetSnapshotRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.snapshotId !== '') {
             writer.uint32(10).string(message.snapshotId);
@@ -263,10 +244,7 @@ export const GetSnapshotRequest = {
     },
 };
 
-messageTypeRegistry.set(GetSnapshotRequest.$type, GetSnapshotRequest);
-
 const baseListSnapshotsRequest: object = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotsRequest',
     folderId: '',
     pageSize: 0,
     pageToken: '',
@@ -275,8 +253,6 @@ const baseListSnapshotsRequest: object = {
 };
 
 export const ListSnapshotsRequest = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotsRequest' as const,
-
     encode(message: ListSnapshotsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -368,16 +344,9 @@ export const ListSnapshotsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListSnapshotsRequest.$type, ListSnapshotsRequest);
-
-const baseListSnapshotsResponse: object = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotsResponse',
-    nextPageToken: '',
-};
+const baseListSnapshotsResponse: object = { nextPageToken: '' };
 
 export const ListSnapshotsResponse = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotsResponse' as const,
-
     encode(message: ListSnapshotsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.snapshots) {
             Snapshot.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -441,19 +410,9 @@ export const ListSnapshotsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListSnapshotsResponse.$type, ListSnapshotsResponse);
-
-const baseCreateSnapshotRequest: object = {
-    $type: 'yandex.cloud.compute.v1.CreateSnapshotRequest',
-    folderId: '',
-    diskId: '',
-    name: '',
-    description: '',
-};
+const baseCreateSnapshotRequest: object = { folderId: '', diskId: '', name: '', description: '' };
 
 export const CreateSnapshotRequest = {
-    $type: 'yandex.cloud.compute.v1.CreateSnapshotRequest' as const,
-
     encode(message: CreateSnapshotRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -469,11 +428,7 @@ export const CreateSnapshotRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateSnapshotRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.compute.v1.CreateSnapshotRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -597,17 +552,9 @@ export const CreateSnapshotRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateSnapshotRequest.$type, CreateSnapshotRequest);
-
-const baseCreateSnapshotRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.CreateSnapshotRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateSnapshotRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateSnapshotRequest_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.CreateSnapshotRequest.LabelsEntry' as const,
-
     encode(
         message: CreateSnapshotRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -673,17 +620,9 @@ export const CreateSnapshotRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateSnapshotRequest_LabelsEntry.$type, CreateSnapshotRequest_LabelsEntry);
-
-const baseCreateSnapshotMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.CreateSnapshotMetadata',
-    snapshotId: '',
-    diskId: '',
-};
+const baseCreateSnapshotMetadata: object = { snapshotId: '', diskId: '' };
 
 export const CreateSnapshotMetadata = {
-    $type: 'yandex.cloud.compute.v1.CreateSnapshotMetadata' as const,
-
     encode(message: CreateSnapshotMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.snapshotId !== '') {
             writer.uint32(10).string(message.snapshotId);
@@ -743,18 +682,9 @@ export const CreateSnapshotMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateSnapshotMetadata.$type, CreateSnapshotMetadata);
-
-const baseUpdateSnapshotRequest: object = {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotRequest',
-    snapshotId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateSnapshotRequest: object = { snapshotId: '', name: '', description: '' };
 
 export const UpdateSnapshotRequest = {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotRequest' as const,
-
     encode(message: UpdateSnapshotRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.snapshotId !== '') {
             writer.uint32(10).string(message.snapshotId);
@@ -770,11 +700,7 @@ export const UpdateSnapshotRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateSnapshotRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.compute.v1.UpdateSnapshotRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -885,17 +811,9 @@ export const UpdateSnapshotRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateSnapshotRequest.$type, UpdateSnapshotRequest);
-
-const baseUpdateSnapshotRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateSnapshotRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateSnapshotRequest_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateSnapshotRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -961,16 +879,9 @@ export const UpdateSnapshotRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateSnapshotRequest_LabelsEntry.$type, UpdateSnapshotRequest_LabelsEntry);
-
-const baseUpdateSnapshotMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotMetadata',
-    snapshotId: '',
-};
+const baseUpdateSnapshotMetadata: object = { snapshotId: '' };
 
 export const UpdateSnapshotMetadata = {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotMetadata' as const,
-
     encode(message: UpdateSnapshotMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.snapshotId !== '') {
             writer.uint32(10).string(message.snapshotId);
@@ -1020,16 +931,9 @@ export const UpdateSnapshotMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateSnapshotMetadata.$type, UpdateSnapshotMetadata);
-
-const baseDeleteSnapshotRequest: object = {
-    $type: 'yandex.cloud.compute.v1.DeleteSnapshotRequest',
-    snapshotId: '',
-};
+const baseDeleteSnapshotRequest: object = { snapshotId: '' };
 
 export const DeleteSnapshotRequest = {
-    $type: 'yandex.cloud.compute.v1.DeleteSnapshotRequest' as const,
-
     encode(message: DeleteSnapshotRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.snapshotId !== '') {
             writer.uint32(10).string(message.snapshotId);
@@ -1079,16 +983,9 @@ export const DeleteSnapshotRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteSnapshotRequest.$type, DeleteSnapshotRequest);
-
-const baseDeleteSnapshotMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.DeleteSnapshotMetadata',
-    snapshotId: '',
-};
+const baseDeleteSnapshotMetadata: object = { snapshotId: '' };
 
 export const DeleteSnapshotMetadata = {
-    $type: 'yandex.cloud.compute.v1.DeleteSnapshotMetadata' as const,
-
     encode(message: DeleteSnapshotMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.snapshotId !== '') {
             writer.uint32(10).string(message.snapshotId);
@@ -1138,18 +1035,9 @@ export const DeleteSnapshotMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteSnapshotMetadata.$type, DeleteSnapshotMetadata);
-
-const baseListSnapshotOperationsRequest: object = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotOperationsRequest',
-    snapshotId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListSnapshotOperationsRequest: object = { snapshotId: '', pageSize: 0, pageToken: '' };
 
 export const ListSnapshotOperationsRequest = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotOperationsRequest' as const,
-
     encode(
         message: ListSnapshotOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1224,16 +1112,9 @@ export const ListSnapshotOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListSnapshotOperationsRequest.$type, ListSnapshotOperationsRequest);
-
-const baseListSnapshotOperationsResponse: object = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotOperationsResponse',
-    nextPageToken: '',
-};
+const baseListSnapshotOperationsResponse: object = { nextPageToken: '' };
 
 export const ListSnapshotOperationsResponse = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotOperationsResponse' as const,
-
     encode(
         message: ListSnapshotOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1299,8 +1180,6 @@ export const ListSnapshotOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListSnapshotOperationsResponse.$type, ListSnapshotOperationsResponse);
 
 /** A set of methods for managing Snapshot resources. */
 export const SnapshotServiceService = {
@@ -1644,16 +1523,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

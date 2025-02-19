@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -21,19 +20,16 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.cdn.v1';
 
 export interface ListResourceRulesRequest {
-    $type: 'yandex.cloud.cdn.v1.ListResourceRulesRequest';
     /** ID of resource. */
     resourceId: string;
 }
 
 export interface ListResourceRulesResponse {
-    $type: 'yandex.cloud.cdn.v1.ListResourceRulesResponse';
     /** List of the resource rules. */
     rules: Rule[];
 }
 
 export interface CreateResourceRuleRequest {
-    $type: 'yandex.cloud.cdn.v1.CreateResourceRuleRequest';
     /** ID of resource. */
     resourceId: string;
     /** Name of created resource rule. */
@@ -44,7 +40,6 @@ export interface CreateResourceRuleRequest {
 }
 
 export interface CreateResourceRuleMetadata {
-    $type: 'yandex.cloud.cdn.v1.CreateResourceRuleMetadata';
     /** ID of resource. */
     resourceId: string;
     /** ID of created resource rule. */
@@ -52,7 +47,6 @@ export interface CreateResourceRuleMetadata {
 }
 
 export interface GetResourceRuleRequest {
-    $type: 'yandex.cloud.cdn.v1.GetResourceRuleRequest';
     /** ID of resource. */
     resourceId: string;
     /** ID of the requested resource rule. */
@@ -60,7 +54,6 @@ export interface GetResourceRuleRequest {
 }
 
 export interface UpdateResourceRuleRequest {
-    $type: 'yandex.cloud.cdn.v1.UpdateResourceRuleRequest';
     /** ID of resource. */
     resourceId: string;
     /** ID of updated resource rule. */
@@ -73,7 +66,6 @@ export interface UpdateResourceRuleRequest {
 }
 
 export interface UpdateResourceRuleMetadata {
-    $type: 'yandex.cloud.cdn.v1.UpdateResourceRuleMetadata';
     /** ID of resource. */
     resourceId: string;
     /** ID of updated resource rule. */
@@ -81,7 +73,6 @@ export interface UpdateResourceRuleMetadata {
 }
 
 export interface DeleteResourceRuleRequest {
-    $type: 'yandex.cloud.cdn.v1.DeleteResourceRuleRequest';
     /** ID of resource. */
     resourceId: string;
     /** ID of deleted resource rule. */
@@ -89,21 +80,15 @@ export interface DeleteResourceRuleRequest {
 }
 
 export interface DeleteResourceRuleMetadata {
-    $type: 'yandex.cloud.cdn.v1.DeleteResourceRuleMetadata';
     /** ID of resource. */
     resourceId: string;
     /** ID of deleted resource rule. */
     ruleId: number;
 }
 
-const baseListResourceRulesRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.ListResourceRulesRequest',
-    resourceId: '',
-};
+const baseListResourceRulesRequest: object = { resourceId: '' };
 
 export const ListResourceRulesRequest = {
-    $type: 'yandex.cloud.cdn.v1.ListResourceRulesRequest' as const,
-
     encode(
         message: ListResourceRulesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -156,15 +141,9 @@ export const ListResourceRulesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListResourceRulesRequest.$type, ListResourceRulesRequest);
-
-const baseListResourceRulesResponse: object = {
-    $type: 'yandex.cloud.cdn.v1.ListResourceRulesResponse',
-};
+const baseListResourceRulesResponse: object = {};
 
 export const ListResourceRulesResponse = {
-    $type: 'yandex.cloud.cdn.v1.ListResourceRulesResponse' as const,
-
     encode(
         message: ListResourceRulesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -219,18 +198,9 @@ export const ListResourceRulesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListResourceRulesResponse.$type, ListResourceRulesResponse);
-
-const baseCreateResourceRuleRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.CreateResourceRuleRequest',
-    resourceId: '',
-    name: '',
-    rulePattern: '',
-};
+const baseCreateResourceRuleRequest: object = { resourceId: '', name: '', rulePattern: '' };
 
 export const CreateResourceRuleRequest = {
-    $type: 'yandex.cloud.cdn.v1.CreateResourceRuleRequest' as const,
-
     encode(
         message: CreateResourceRuleRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -320,17 +290,9 @@ export const CreateResourceRuleRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateResourceRuleRequest.$type, CreateResourceRuleRequest);
-
-const baseCreateResourceRuleMetadata: object = {
-    $type: 'yandex.cloud.cdn.v1.CreateResourceRuleMetadata',
-    resourceId: '',
-    ruleId: 0,
-};
+const baseCreateResourceRuleMetadata: object = { resourceId: '', ruleId: 0 };
 
 export const CreateResourceRuleMetadata = {
-    $type: 'yandex.cloud.cdn.v1.CreateResourceRuleMetadata' as const,
-
     encode(
         message: CreateResourceRuleMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -393,17 +355,9 @@ export const CreateResourceRuleMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateResourceRuleMetadata.$type, CreateResourceRuleMetadata);
-
-const baseGetResourceRuleRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.GetResourceRuleRequest',
-    resourceId: '',
-    ruleId: 0,
-};
+const baseGetResourceRuleRequest: object = { resourceId: '', ruleId: 0 };
 
 export const GetResourceRuleRequest = {
-    $type: 'yandex.cloud.cdn.v1.GetResourceRuleRequest' as const,
-
     encode(message: GetResourceRuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -463,10 +417,7 @@ export const GetResourceRuleRequest = {
     },
 };
 
-messageTypeRegistry.set(GetResourceRuleRequest.$type, GetResourceRuleRequest);
-
 const baseUpdateResourceRuleRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.UpdateResourceRuleRequest',
     resourceId: '',
     ruleId: 0,
     name: '',
@@ -474,8 +425,6 @@ const baseUpdateResourceRuleRequest: object = {
 };
 
 export const UpdateResourceRuleRequest = {
-    $type: 'yandex.cloud.cdn.v1.UpdateResourceRuleRequest' as const,
-
     encode(
         message: UpdateResourceRuleRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -575,17 +524,9 @@ export const UpdateResourceRuleRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateResourceRuleRequest.$type, UpdateResourceRuleRequest);
-
-const baseUpdateResourceRuleMetadata: object = {
-    $type: 'yandex.cloud.cdn.v1.UpdateResourceRuleMetadata',
-    resourceId: '',
-    ruleId: 0,
-};
+const baseUpdateResourceRuleMetadata: object = { resourceId: '', ruleId: 0 };
 
 export const UpdateResourceRuleMetadata = {
-    $type: 'yandex.cloud.cdn.v1.UpdateResourceRuleMetadata' as const,
-
     encode(
         message: UpdateResourceRuleMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -648,17 +589,9 @@ export const UpdateResourceRuleMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateResourceRuleMetadata.$type, UpdateResourceRuleMetadata);
-
-const baseDeleteResourceRuleRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.DeleteResourceRuleRequest',
-    resourceId: '',
-    ruleId: 0,
-};
+const baseDeleteResourceRuleRequest: object = { resourceId: '', ruleId: 0 };
 
 export const DeleteResourceRuleRequest = {
-    $type: 'yandex.cloud.cdn.v1.DeleteResourceRuleRequest' as const,
-
     encode(
         message: DeleteResourceRuleRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -721,17 +654,9 @@ export const DeleteResourceRuleRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteResourceRuleRequest.$type, DeleteResourceRuleRequest);
-
-const baseDeleteResourceRuleMetadata: object = {
-    $type: 'yandex.cloud.cdn.v1.DeleteResourceRuleMetadata',
-    resourceId: '',
-    ruleId: 0,
-};
+const baseDeleteResourceRuleMetadata: object = { resourceId: '', ruleId: 0 };
 
 export const DeleteResourceRuleMetadata = {
-    $type: 'yandex.cloud.cdn.v1.DeleteResourceRuleMetadata' as const,
-
     encode(
         message: DeleteResourceRuleMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -793,8 +718,6 @@ export const DeleteResourceRuleMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteResourceRuleMetadata.$type, DeleteResourceRuleMetadata);
 
 /**
  * Rules management service.
@@ -988,16 +911,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

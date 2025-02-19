@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -23,7 +22,6 @@ import {
 export const protobufPackage = 'yandex.cloud.mdb.postgresql.v1';
 
 export interface ListRawStatementsRequest {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ListRawStatementsRequest';
     /**
      * ID of a PostgreSQL cluster to request query statistics for.
      *
@@ -41,7 +39,6 @@ export interface ListRawStatementsRequest {
 }
 
 export interface ListRawSessionStatesRequest {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ListRawSessionStatesRequest';
     /**
      * ID of a PostgreSQL cluster to request session statistics for.
      *
@@ -59,7 +56,6 @@ export interface ListRawSessionStatesRequest {
 }
 
 export interface ListRawSessionStatesResponse {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ListRawSessionStatesResponse';
     /** List of PostgreSQL sessions. */
     sessionStates: SessionState[];
     /** This token allows you to get the next page of results when requesting the PostgreSQL session list. If the number of the results is larger than [ListRawSessionStatesRequest.page_size], use the [next_page_token] as the value for the [ListRawSessionStatesRequest.page_token] parameter in the next request. Each subsequent request will have its own [next_page_token] to continue paging through the results. */
@@ -67,23 +63,15 @@ export interface ListRawSessionStatesResponse {
 }
 
 export interface ListRawStatementsResponse {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ListRawStatementsResponse';
     /** List of SQL statements (queries). */
     statements: QueryStatement[];
     /** This token allows you to get the next page of results when requesting the PostgreSQL session list. If the number of the results is larger than [ListRawStatementsRequest.page_size], use the [next_page_token] as the value for the [ListRawStatementsRequest.page_token] parameter in the next request. Each subsequent request will have its own [next_page_token] to continue paging through the results. */
     nextPageToken: string;
 }
 
-const baseListRawStatementsRequest: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ListRawStatementsRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListRawStatementsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListRawStatementsRequest = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ListRawStatementsRequest' as const,
-
     encode(
         message: ListRawStatementsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -182,18 +170,9 @@ export const ListRawStatementsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListRawStatementsRequest.$type, ListRawStatementsRequest);
-
-const baseListRawSessionStatesRequest: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ListRawSessionStatesRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListRawSessionStatesRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListRawSessionStatesRequest = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ListRawSessionStatesRequest' as const,
-
     encode(
         message: ListRawSessionStatesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -292,16 +271,9 @@ export const ListRawSessionStatesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListRawSessionStatesRequest.$type, ListRawSessionStatesRequest);
-
-const baseListRawSessionStatesResponse: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ListRawSessionStatesResponse',
-    nextPageToken: '',
-};
+const baseListRawSessionStatesResponse: object = { nextPageToken: '' };
 
 export const ListRawSessionStatesResponse = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ListRawSessionStatesResponse' as const,
-
     encode(
         message: ListRawSessionStatesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -372,16 +344,9 @@ export const ListRawSessionStatesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListRawSessionStatesResponse.$type, ListRawSessionStatesResponse);
-
-const baseListRawStatementsResponse: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ListRawStatementsResponse',
-    nextPageToken: '',
-};
+const baseListRawStatementsResponse: object = { nextPageToken: '' };
 
 export const ListRawStatementsResponse = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ListRawStatementsResponse' as const,
-
     encode(
         message: ListRawStatementsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -449,8 +414,6 @@ export const ListRawStatementsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListRawStatementsResponse.$type, ListRawStatementsResponse);
 
 /** A set of methods for PostgreSQL performance diagnostics. */
 export const PerformanceDiagnosticsServiceService = {
@@ -557,21 +520,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

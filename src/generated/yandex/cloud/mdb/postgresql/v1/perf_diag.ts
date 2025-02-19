@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
@@ -7,7 +6,6 @@ import { Timestamp } from '../../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.mdb.postgresql.v1';
 
 export interface SessionState {
-    $type: 'yandex.cloud.mdb.postgresql.v1.SessionState';
     /** Time of collecting statistics on sessions (in the [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format). */
     time?: Date;
     /** Host of the connected client. */
@@ -85,7 +83,6 @@ export interface SessionState {
 }
 
 export interface PrimaryKey {
-    $type: 'yandex.cloud.mdb.postgresql.v1.PrimaryKey';
     /** Host of the connected client. */
     host: string;
     /** User ID. */
@@ -101,7 +98,6 @@ export interface PrimaryKey {
 }
 
 export interface QueryStats {
-    $type: 'yandex.cloud.mdb.postgresql.v1.QueryStats';
     /** Time of collecting statistics on planning and execution of queries. */
     time?: Date;
     /** Statement text. */
@@ -245,7 +241,6 @@ export interface QueryStats {
 }
 
 export interface QueryStatement {
-    $type: 'yandex.cloud.mdb.postgresql.v1.QueryStatement';
     /** Primary keys in tables with the statistics on planning and execution of queries. */
     key?: PrimaryKey;
     /** Statistics on planning and execution of queries. */
@@ -253,7 +248,6 @@ export interface QueryStatement {
 }
 
 const baseSessionState: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.SessionState',
     host: '',
     pid: 0,
     database: '',
@@ -274,8 +268,6 @@ const baseSessionState: object = {
 };
 
 export const SessionState = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.SessionState' as const,
-
     encode(message: SessionState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.time !== undefined) {
             Timestamp.encode(toTimestamp(message.time), writer.uint32(10).fork()).ldelim();
@@ -561,10 +553,7 @@ export const SessionState = {
     },
 };
 
-messageTypeRegistry.set(SessionState.$type, SessionState);
-
 const basePrimaryKey: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.PrimaryKey',
     host: '',
     user: '',
     database: '',
@@ -574,8 +563,6 @@ const basePrimaryKey: object = {
 };
 
 export const PrimaryKey = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.PrimaryKey' as const,
-
     encode(message: PrimaryKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.host !== '') {
             writer.uint32(10).string(message.host);
@@ -673,10 +660,7 @@ export const PrimaryKey = {
     },
 };
 
-messageTypeRegistry.set(PrimaryKey.$type, PrimaryKey);
-
 const baseQueryStats: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.QueryStats',
     query: '',
     normalizedPlan: '',
     examplePlan: '',
@@ -729,8 +713,6 @@ const baseQueryStats: object = {
 };
 
 export const QueryStats = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.QueryStats' as const,
-
     encode(message: QueryStats, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.time !== undefined) {
             Timestamp.encode(toTimestamp(message.time), writer.uint32(10).fork()).ldelim();
@@ -1352,13 +1334,9 @@ export const QueryStats = {
     },
 };
 
-messageTypeRegistry.set(QueryStats.$type, QueryStats);
-
-const baseQueryStatement: object = { $type: 'yandex.cloud.mdb.postgresql.v1.QueryStatement' };
+const baseQueryStatement: object = {};
 
 export const QueryStatement = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.QueryStatement' as const,
-
     encode(message: QueryStatement, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== undefined) {
             PrimaryKey.encode(message.key, writer.uint32(10).fork()).ldelim();
@@ -1426,8 +1404,6 @@ export const QueryStatement = {
     },
 };
 
-messageTypeRegistry.set(QueryStatement.$type, QueryStatement);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1448,21 +1424,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

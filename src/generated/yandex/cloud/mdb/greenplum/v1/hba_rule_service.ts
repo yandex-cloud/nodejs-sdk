@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,7 +19,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.mdb.greenplum.v1';
 
 export interface CreateHBARuleRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreateHBARuleRequest';
     /**
      * ID of the Greenplum cluster.
      * To get the Greenplum cluster ID use a [ClusterService.List] request.
@@ -31,7 +29,6 @@ export interface CreateHBARuleRequest {
 }
 
 export interface UpdateHBARuleRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdateHBARuleRequest';
     /**
      * ID of the Greenplum cluster.
      * To get the Greenplum cluster ID use a [ClusterService.List] request.
@@ -42,7 +39,6 @@ export interface UpdateHBARuleRequest {
 }
 
 export interface DeleteHBARuleRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeleteHBARuleRequest';
     /**
      * ID of the Greenplum cluster.
      * To get the Greenplum cluster ID use a [ClusterService.List] request.
@@ -53,7 +49,6 @@ export interface DeleteHBARuleRequest {
 }
 
 export interface ListHBARulesRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListHBARulesRequest';
     /**
      * ID of the Greenplum cluster.
      * To get the Greenplum cluster ID use a [ClusterService.List] request.
@@ -62,7 +57,6 @@ export interface ListHBARulesRequest {
 }
 
 export interface ListHBARulesAtRevisionRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListHBARulesAtRevisionRequest';
     /**
      * ID of the Greenplum cluster.
      * To get the Greenplum cluster ID use a [ClusterService.List] request.
@@ -73,13 +67,11 @@ export interface ListHBARulesAtRevisionRequest {
 }
 
 export interface ListHBARulesResponse {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListHBARulesResponse';
     /** Requested list of hba rules for the cluster. */
     hbaRules: HBARule[];
 }
 
 export interface BatchUpdateHBARulesRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.BatchUpdateHBARulesRequest';
     /**
      * ID of the Greenplum cluster.
      * To get the Greenplum cluster ID use a [ClusterService.List] request.
@@ -90,19 +82,13 @@ export interface BatchUpdateHBARulesRequest {
 }
 
 export interface HBARulesMetadata {
-    $type: 'yandex.cloud.mdb.greenplum.v1.HBARulesMetadata';
     /** ID of the Greenplum cluster which HBA rules was affected. */
     clusterId: string;
 }
 
-const baseCreateHBARuleRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreateHBARuleRequest',
-    clusterId: '',
-};
+const baseCreateHBARuleRequest: object = { clusterId: '' };
 
 export const CreateHBARuleRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreateHBARuleRequest' as const,
-
     encode(message: CreateHBARuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -168,16 +154,9 @@ export const CreateHBARuleRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateHBARuleRequest.$type, CreateHBARuleRequest);
-
-const baseUpdateHBARuleRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdateHBARuleRequest',
-    clusterId: '',
-};
+const baseUpdateHBARuleRequest: object = { clusterId: '' };
 
 export const UpdateHBARuleRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdateHBARuleRequest' as const,
-
     encode(message: UpdateHBARuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -243,17 +222,9 @@ export const UpdateHBARuleRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateHBARuleRequest.$type, UpdateHBARuleRequest);
-
-const baseDeleteHBARuleRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeleteHBARuleRequest',
-    clusterId: '',
-    priority: 0,
-};
+const baseDeleteHBARuleRequest: object = { clusterId: '', priority: 0 };
 
 export const DeleteHBARuleRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeleteHBARuleRequest' as const,
-
     encode(message: DeleteHBARuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -313,16 +284,9 @@ export const DeleteHBARuleRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteHBARuleRequest.$type, DeleteHBARuleRequest);
-
-const baseListHBARulesRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListHBARulesRequest',
-    clusterId: '',
-};
+const baseListHBARulesRequest: object = { clusterId: '' };
 
 export const ListHBARulesRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListHBARulesRequest' as const,
-
     encode(message: ListHBARulesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -372,17 +336,9 @@ export const ListHBARulesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListHBARulesRequest.$type, ListHBARulesRequest);
-
-const baseListHBARulesAtRevisionRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListHBARulesAtRevisionRequest',
-    clusterId: '',
-    revision: 0,
-};
+const baseListHBARulesAtRevisionRequest: object = { clusterId: '', revision: 0 };
 
 export const ListHBARulesAtRevisionRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListHBARulesAtRevisionRequest' as const,
-
     encode(
         message: ListHBARulesAtRevisionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -445,15 +401,9 @@ export const ListHBARulesAtRevisionRequest = {
     },
 };
 
-messageTypeRegistry.set(ListHBARulesAtRevisionRequest.$type, ListHBARulesAtRevisionRequest);
-
-const baseListHBARulesResponse: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListHBARulesResponse',
-};
+const baseListHBARulesResponse: object = {};
 
 export const ListHBARulesResponse = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListHBARulesResponse' as const,
-
     encode(message: ListHBARulesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.hbaRules) {
             HBARule.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -505,16 +455,9 @@ export const ListHBARulesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListHBARulesResponse.$type, ListHBARulesResponse);
-
-const baseBatchUpdateHBARulesRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.BatchUpdateHBARulesRequest',
-    clusterId: '',
-};
+const baseBatchUpdateHBARulesRequest: object = { clusterId: '' };
 
 export const BatchUpdateHBARulesRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.BatchUpdateHBARulesRequest' as const,
-
     encode(
         message: BatchUpdateHBARulesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -581,16 +524,9 @@ export const BatchUpdateHBARulesRequest = {
     },
 };
 
-messageTypeRegistry.set(BatchUpdateHBARulesRequest.$type, BatchUpdateHBARulesRequest);
-
-const baseHBARulesMetadata: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.HBARulesMetadata',
-    clusterId: '',
-};
+const baseHBARulesMetadata: object = { clusterId: '' };
 
 export const HBARulesMetadata = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.HBARulesMetadata' as const,
-
     encode(message: HBARulesMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -637,8 +573,6 @@ export const HBARulesMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(HBARulesMetadata.$type, HBARulesMetadata);
 
 /** A set of methods for managing Greenplum clusters. */
 export const HBARuleServiceService = {
@@ -858,16 +792,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

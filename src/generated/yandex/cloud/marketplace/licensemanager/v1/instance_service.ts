@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,13 +18,11 @@ import { Instance } from '../../../../../yandex/cloud/marketplace/licensemanager
 export const protobufPackage = 'yandex.cloud.marketplace.licensemanager.v1';
 
 export interface GetInstanceRequest {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.GetInstanceRequest';
     /** ID of the subscription instance. */
     instanceId: string;
 }
 
 export interface ListInstancesRequest {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.ListInstancesRequest';
     /** ID of the folder that the subscription instance belongs to. */
     folderId: string;
     /**
@@ -55,7 +52,6 @@ export interface ListInstancesRequest {
 }
 
 export interface ListInstancesResponse {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.ListInstancesResponse';
     /** List of subscription instances. */
     instances: Instance[];
     /**
@@ -68,14 +64,9 @@ export interface ListInstancesResponse {
     nextPageToken: string;
 }
 
-const baseGetInstanceRequest: object = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.GetInstanceRequest',
-    instanceId: '',
-};
+const baseGetInstanceRequest: object = { instanceId: '' };
 
 export const GetInstanceRequest = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.GetInstanceRequest' as const,
-
     encode(message: GetInstanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -125,10 +116,7 @@ export const GetInstanceRequest = {
     },
 };
 
-messageTypeRegistry.set(GetInstanceRequest.$type, GetInstanceRequest);
-
 const baseListInstancesRequest: object = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.ListInstancesRequest',
     folderId: '',
     pageSize: 0,
     pageToken: '',
@@ -137,8 +125,6 @@ const baseListInstancesRequest: object = {
 };
 
 export const ListInstancesRequest = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.ListInstancesRequest' as const,
-
     encode(message: ListInstancesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -230,16 +216,9 @@ export const ListInstancesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListInstancesRequest.$type, ListInstancesRequest);
-
-const baseListInstancesResponse: object = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.ListInstancesResponse',
-    nextPageToken: '',
-};
+const baseListInstancesResponse: object = { nextPageToken: '' };
 
 export const ListInstancesResponse = {
-    $type: 'yandex.cloud.marketplace.licensemanager.v1.ListInstancesResponse' as const,
-
     encode(message: ListInstancesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.instances) {
             Instance.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -302,8 +281,6 @@ export const ListInstancesResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListInstancesResponse.$type, ListInstancesResponse);
 
 /** A set of methods for managing subscription instances. */
 export const InstanceServiceService = {
@@ -418,16 +395,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

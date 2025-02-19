@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -11,7 +10,6 @@ export const protobufPackage = 'yandex.cloud.api';
  * in response [google.protobuf.Any] (for successful operation).
  */
 export interface Operation {
-    $type: 'yandex.cloud.api.Operation';
     /**
      * Optional. If present, rpc returns operation which metadata field will
      * contains message of specified type.
@@ -24,11 +22,9 @@ export interface Operation {
     response: string;
 }
 
-const baseOperation: object = { $type: 'yandex.cloud.api.Operation', metadata: '', response: '' };
+const baseOperation: object = { metadata: '', response: '' };
 
 export const Operation = {
-    $type: 'yandex.cloud.api.Operation' as const,
-
     encode(message: Operation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.metadata !== '') {
             writer.uint32(10).string(message.metadata);
@@ -88,8 +84,6 @@ export const Operation = {
     },
 };
 
-messageTypeRegistry.set(Operation.$type, Operation);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -99,16 +93,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

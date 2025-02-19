@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../google/protobuf/duration';
@@ -64,7 +63,6 @@ export function symmetricAlgorithmToJSON(object: SymmetricAlgorithm): string {
 
 /** A symmetric KMS key that may contain several versions of the cryptographic material. */
 export interface SymmetricKey {
-    $type: 'yandex.cloud.kms.v1.SymmetricKey';
     /** ID of the key. */
     id: string;
     /** ID of the folder that the key belongs to. */
@@ -151,14 +149,12 @@ export function symmetricKey_StatusToJSON(object: SymmetricKey_Status): string {
 }
 
 export interface SymmetricKey_LabelsEntry {
-    $type: 'yandex.cloud.kms.v1.SymmetricKey.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Symmetric KMS key version: metadata about actual cryptographic data. */
 export interface SymmetricKeyVersion {
-    $type: 'yandex.cloud.kms.v1.SymmetricKeyVersion';
     /** ID of the key version. */
     id: string;
     /** ID of the symmetric KMS key that the version belongs to. */
@@ -235,7 +231,6 @@ export function symmetricKeyVersion_StatusToJSON(object: SymmetricKeyVersion_Sta
 }
 
 const baseSymmetricKey: object = {
-    $type: 'yandex.cloud.kms.v1.SymmetricKey',
     id: '',
     folderId: '',
     name: '',
@@ -246,8 +241,6 @@ const baseSymmetricKey: object = {
 };
 
 export const SymmetricKey = {
-    $type: 'yandex.cloud.kms.v1.SymmetricKey' as const,
-
     encode(message: SymmetricKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -266,7 +259,7 @@ export const SymmetricKey = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             SymmetricKey_LabelsEntry.encode(
-                { $type: 'yandex.cloud.kms.v1.SymmetricKey.LabelsEntry', key: key as any, value },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -458,17 +451,9 @@ export const SymmetricKey = {
     },
 };
 
-messageTypeRegistry.set(SymmetricKey.$type, SymmetricKey);
-
-const baseSymmetricKey_LabelsEntry: object = {
-    $type: 'yandex.cloud.kms.v1.SymmetricKey.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseSymmetricKey_LabelsEntry: object = { key: '', value: '' };
 
 export const SymmetricKey_LabelsEntry = {
-    $type: 'yandex.cloud.kms.v1.SymmetricKey.LabelsEntry' as const,
-
     encode(
         message: SymmetricKey_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -528,10 +513,7 @@ export const SymmetricKey_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(SymmetricKey_LabelsEntry.$type, SymmetricKey_LabelsEntry);
-
 const baseSymmetricKeyVersion: object = {
-    $type: 'yandex.cloud.kms.v1.SymmetricKeyVersion',
     id: '',
     keyId: '',
     status: 0,
@@ -541,8 +523,6 @@ const baseSymmetricKeyVersion: object = {
 };
 
 export const SymmetricKeyVersion = {
-    $type: 'yandex.cloud.kms.v1.SymmetricKeyVersion' as const,
-
     encode(message: SymmetricKeyVersion, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -673,8 +653,6 @@ export const SymmetricKeyVersion = {
     },
 };
 
-messageTypeRegistry.set(SymmetricKeyVersion.$type, SymmetricKeyVersion);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -684,21 +662,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

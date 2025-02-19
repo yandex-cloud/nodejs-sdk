@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -22,13 +21,11 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.monitoring.v3';
 
 export interface GetDashboardRequest {
-    $type: 'yandex.cloud.monitoring.v3.GetDashboardRequest';
     /** Required. Dashboard ID. */
     dashboardId: string;
 }
 
 export interface ListDashboardsRequest {
-    $type: 'yandex.cloud.monitoring.v3.ListDashboardsRequest';
     /** Required. Folder ID. */
     folderId: string | undefined;
     /**
@@ -54,7 +51,6 @@ export interface ListDashboardsRequest {
 }
 
 export interface ListDashboardsResponse {
-    $type: 'yandex.cloud.monitoring.v3.ListDashboardsResponse';
     /** List of dashboards. */
     dashboards: Dashboard[];
     /** Token to retrieve the next page of results, or empty if there are no more results in the list. */
@@ -62,7 +58,6 @@ export interface ListDashboardsResponse {
 }
 
 export interface CreateDashboardRequest {
-    $type: 'yandex.cloud.monitoring.v3.CreateDashboardRequest';
     /** Required. Folder ID. */
     folderId: string | undefined;
     /** Required. Dashboard name. */
@@ -90,19 +85,16 @@ export interface CreateDashboardRequest {
 }
 
 export interface CreateDashboardRequest_LabelsEntry {
-    $type: 'yandex.cloud.monitoring.v3.CreateDashboardRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateDashboardMetadata {
-    $type: 'yandex.cloud.monitoring.v3.CreateDashboardMetadata';
     /** Dashboard ID. */
     dashboardId: string;
 }
 
 export interface UpdateDashboardRequest {
-    $type: 'yandex.cloud.monitoring.v3.UpdateDashboardRequest';
     /** Required. Dashboard ID. */
     dashboardId: string;
     /** Required. Dashboard name. */
@@ -136,19 +128,16 @@ export interface UpdateDashboardRequest {
 }
 
 export interface UpdateDashboardRequest_LabelsEntry {
-    $type: 'yandex.cloud.monitoring.v3.UpdateDashboardRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateDashboardMetadata {
-    $type: 'yandex.cloud.monitoring.v3.UpdateDashboardMetadata';
     /** Dashboard ID. */
     dashboardId: string;
 }
 
 export interface DeleteDashboardRequest {
-    $type: 'yandex.cloud.monitoring.v3.DeleteDashboardRequest';
     /** Required. Dashboard ID. */
     dashboardId: string;
     /** The current etag of the dashboard. */
@@ -156,13 +145,11 @@ export interface DeleteDashboardRequest {
 }
 
 export interface DeleteDashboardMetadata {
-    $type: 'yandex.cloud.monitoring.v3.DeleteDashboardMetadata';
     /** Dashboard ID. */
     dashboardId: string;
 }
 
 export interface ListDashboardOperationsRequest {
-    $type: 'yandex.cloud.monitoring.v3.ListDashboardOperationsRequest';
     /** ID of the dashboard to list operations for. */
     dashboardId: string;
     /**
@@ -179,7 +166,6 @@ export interface ListDashboardOperationsRequest {
 }
 
 export interface ListDashboardOperationsResponse {
-    $type: 'yandex.cloud.monitoring.v3.ListDashboardOperationsResponse';
     /** List of operations for the specified dashboard. */
     operations: Operation[];
     /**
@@ -191,14 +177,9 @@ export interface ListDashboardOperationsResponse {
     nextPageToken: string;
 }
 
-const baseGetDashboardRequest: object = {
-    $type: 'yandex.cloud.monitoring.v3.GetDashboardRequest',
-    dashboardId: '',
-};
+const baseGetDashboardRequest: object = { dashboardId: '' };
 
 export const GetDashboardRequest = {
-    $type: 'yandex.cloud.monitoring.v3.GetDashboardRequest' as const,
-
     encode(message: GetDashboardRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dashboardId !== '') {
             writer.uint32(10).string(message.dashboardId);
@@ -248,18 +229,9 @@ export const GetDashboardRequest = {
     },
 };
 
-messageTypeRegistry.set(GetDashboardRequest.$type, GetDashboardRequest);
-
-const baseListDashboardsRequest: object = {
-    $type: 'yandex.cloud.monitoring.v3.ListDashboardsRequest',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListDashboardsRequest: object = { pageSize: 0, pageToken: '', filter: '' };
 
 export const ListDashboardsRequest = {
-    $type: 'yandex.cloud.monitoring.v3.ListDashboardsRequest' as const,
-
     encode(message: ListDashboardsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== undefined) {
             writer.uint32(18).string(message.folderId);
@@ -341,16 +313,9 @@ export const ListDashboardsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListDashboardsRequest.$type, ListDashboardsRequest);
-
-const baseListDashboardsResponse: object = {
-    $type: 'yandex.cloud.monitoring.v3.ListDashboardsResponse',
-    nextPageToken: '',
-};
+const baseListDashboardsResponse: object = { nextPageToken: '' };
 
 export const ListDashboardsResponse = {
-    $type: 'yandex.cloud.monitoring.v3.ListDashboardsResponse' as const,
-
     encode(message: ListDashboardsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.dashboards) {
             Dashboard.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -414,10 +379,7 @@ export const ListDashboardsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListDashboardsResponse.$type, ListDashboardsResponse);
-
 const baseCreateDashboardRequest: object = {
-    $type: 'yandex.cloud.monitoring.v3.CreateDashboardRequest',
     name: '',
     description: '',
     title: '',
@@ -426,8 +388,6 @@ const baseCreateDashboardRequest: object = {
 };
 
 export const CreateDashboardRequest = {
-    $type: 'yandex.cloud.monitoring.v3.CreateDashboardRequest' as const,
-
     encode(message: CreateDashboardRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== undefined) {
             writer.uint32(18).string(message.folderId);
@@ -440,11 +400,7 @@ export const CreateDashboardRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateDashboardRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.monitoring.v3.CreateDashboardRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(170).fork(),
             ).ldelim();
         });
@@ -606,17 +562,9 @@ export const CreateDashboardRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateDashboardRequest.$type, CreateDashboardRequest);
-
-const baseCreateDashboardRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.monitoring.v3.CreateDashboardRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateDashboardRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateDashboardRequest_LabelsEntry = {
-    $type: 'yandex.cloud.monitoring.v3.CreateDashboardRequest.LabelsEntry' as const,
-
     encode(
         message: CreateDashboardRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -682,19 +630,9 @@ export const CreateDashboardRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateDashboardRequest_LabelsEntry.$type,
-    CreateDashboardRequest_LabelsEntry,
-);
-
-const baseCreateDashboardMetadata: object = {
-    $type: 'yandex.cloud.monitoring.v3.CreateDashboardMetadata',
-    dashboardId: '',
-};
+const baseCreateDashboardMetadata: object = { dashboardId: '' };
 
 export const CreateDashboardMetadata = {
-    $type: 'yandex.cloud.monitoring.v3.CreateDashboardMetadata' as const,
-
     encode(message: CreateDashboardMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dashboardId !== '') {
             writer.uint32(10).string(message.dashboardId);
@@ -744,10 +682,7 @@ export const CreateDashboardMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateDashboardMetadata.$type, CreateDashboardMetadata);
-
 const baseUpdateDashboardRequest: object = {
-    $type: 'yandex.cloud.monitoring.v3.UpdateDashboardRequest',
     dashboardId: '',
     name: '',
     description: '',
@@ -758,8 +693,6 @@ const baseUpdateDashboardRequest: object = {
 };
 
 export const UpdateDashboardRequest = {
-    $type: 'yandex.cloud.monitoring.v3.UpdateDashboardRequest' as const,
-
     encode(message: UpdateDashboardRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dashboardId !== '') {
             writer.uint32(10).string(message.dashboardId);
@@ -772,11 +705,7 @@ export const UpdateDashboardRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateDashboardRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.monitoring.v3.UpdateDashboardRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -947,17 +876,9 @@ export const UpdateDashboardRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateDashboardRequest.$type, UpdateDashboardRequest);
-
-const baseUpdateDashboardRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.monitoring.v3.UpdateDashboardRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateDashboardRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateDashboardRequest_LabelsEntry = {
-    $type: 'yandex.cloud.monitoring.v3.UpdateDashboardRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateDashboardRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1023,19 +944,9 @@ export const UpdateDashboardRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateDashboardRequest_LabelsEntry.$type,
-    UpdateDashboardRequest_LabelsEntry,
-);
-
-const baseUpdateDashboardMetadata: object = {
-    $type: 'yandex.cloud.monitoring.v3.UpdateDashboardMetadata',
-    dashboardId: '',
-};
+const baseUpdateDashboardMetadata: object = { dashboardId: '' };
 
 export const UpdateDashboardMetadata = {
-    $type: 'yandex.cloud.monitoring.v3.UpdateDashboardMetadata' as const,
-
     encode(message: UpdateDashboardMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dashboardId !== '') {
             writer.uint32(10).string(message.dashboardId);
@@ -1085,17 +996,9 @@ export const UpdateDashboardMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateDashboardMetadata.$type, UpdateDashboardMetadata);
-
-const baseDeleteDashboardRequest: object = {
-    $type: 'yandex.cloud.monitoring.v3.DeleteDashboardRequest',
-    dashboardId: '',
-    etag: '',
-};
+const baseDeleteDashboardRequest: object = { dashboardId: '', etag: '' };
 
 export const DeleteDashboardRequest = {
-    $type: 'yandex.cloud.monitoring.v3.DeleteDashboardRequest' as const,
-
     encode(message: DeleteDashboardRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dashboardId !== '') {
             writer.uint32(10).string(message.dashboardId);
@@ -1154,16 +1057,9 @@ export const DeleteDashboardRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteDashboardRequest.$type, DeleteDashboardRequest);
-
-const baseDeleteDashboardMetadata: object = {
-    $type: 'yandex.cloud.monitoring.v3.DeleteDashboardMetadata',
-    dashboardId: '',
-};
+const baseDeleteDashboardMetadata: object = { dashboardId: '' };
 
 export const DeleteDashboardMetadata = {
-    $type: 'yandex.cloud.monitoring.v3.DeleteDashboardMetadata' as const,
-
     encode(message: DeleteDashboardMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dashboardId !== '') {
             writer.uint32(10).string(message.dashboardId);
@@ -1213,18 +1109,9 @@ export const DeleteDashboardMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteDashboardMetadata.$type, DeleteDashboardMetadata);
-
-const baseListDashboardOperationsRequest: object = {
-    $type: 'yandex.cloud.monitoring.v3.ListDashboardOperationsRequest',
-    dashboardId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListDashboardOperationsRequest: object = { dashboardId: '', pageSize: 0, pageToken: '' };
 
 export const ListDashboardOperationsRequest = {
-    $type: 'yandex.cloud.monitoring.v3.ListDashboardOperationsRequest' as const,
-
     encode(
         message: ListDashboardOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1299,16 +1186,9 @@ export const ListDashboardOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListDashboardOperationsRequest.$type, ListDashboardOperationsRequest);
-
-const baseListDashboardOperationsResponse: object = {
-    $type: 'yandex.cloud.monitoring.v3.ListDashboardOperationsResponse',
-    nextPageToken: '',
-};
+const baseListDashboardOperationsResponse: object = { nextPageToken: '' };
 
 export const ListDashboardOperationsResponse = {
-    $type: 'yandex.cloud.monitoring.v3.ListDashboardOperationsResponse' as const,
-
     encode(
         message: ListDashboardOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1380,8 +1260,6 @@ export const ListDashboardOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListDashboardOperationsResponse.$type, ListDashboardOperationsResponse);
 
 /** A set of methods for managing dashboards. */
 export const DashboardServiceService = {
@@ -1604,16 +1482,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

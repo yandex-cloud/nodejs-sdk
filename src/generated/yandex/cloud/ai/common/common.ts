@@ -1,12 +1,10 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.ai.common';
 
 export interface ExpirationConfig {
-    $type: 'yandex.cloud.ai.common.ExpirationConfig';
     expirationPolicy: ExpirationConfig_ExpirationPolicy;
     ttlDays: number;
 }
@@ -54,20 +52,13 @@ export function expirationConfig_ExpirationPolicyToJSON(
 }
 
 export interface Error {
-    $type: 'yandex.cloud.ai.common.Error';
     code: number;
     message: string;
 }
 
-const baseExpirationConfig: object = {
-    $type: 'yandex.cloud.ai.common.ExpirationConfig',
-    expirationPolicy: 0,
-    ttlDays: 0,
-};
+const baseExpirationConfig: object = { expirationPolicy: 0, ttlDays: 0 };
 
 export const ExpirationConfig = {
-    $type: 'yandex.cloud.ai.common.ExpirationConfig' as const,
-
     encode(message: ExpirationConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.expirationPolicy !== 0) {
             writer.uint32(8).int32(message.expirationPolicy);
@@ -128,13 +119,9 @@ export const ExpirationConfig = {
     },
 };
 
-messageTypeRegistry.set(ExpirationConfig.$type, ExpirationConfig);
-
-const baseError: object = { $type: 'yandex.cloud.ai.common.Error', code: 0, message: '' };
+const baseError: object = { code: 0, message: '' };
 
 export const Error = {
-    $type: 'yandex.cloud.ai.common.Error' as const,
-
     encode(message: Error, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.code !== 0) {
             writer.uint32(8).int64(message.code);
@@ -189,8 +176,6 @@ export const Error = {
     },
 };
 
-messageTypeRegistry.set(Error.$type, Error);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -211,16 +196,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

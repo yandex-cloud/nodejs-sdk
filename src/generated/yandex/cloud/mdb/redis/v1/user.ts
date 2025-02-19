@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { StringValue, BoolValue } from '../../../../../google/protobuf/wrappers';
@@ -11,7 +10,6 @@ export const protobufPackage = 'yandex.cloud.mdb.redis.v1';
  * [Developer's Guide](/docs/managed-redis/concepts).
  */
 export interface User {
-    $type: 'yandex.cloud.mdb.redis.v1.User';
     /** Name of the Redis user. */
     name: string;
     /** ID of the Redis cluster the user belongs to. */
@@ -25,7 +23,6 @@ export interface User {
 }
 
 export interface Permissions {
-    $type: 'yandex.cloud.mdb.redis.v1.Permissions';
     /** Keys patterns user has permission to. */
     patterns?: string;
     /** Channel patterns user has permissions to. */
@@ -39,7 +36,6 @@ export interface Permissions {
 }
 
 export interface UserSpec {
-    $type: 'yandex.cloud.mdb.redis.v1.UserSpec';
     /** Name of the Redis user. */
     name: string;
     /** Password of the Redis user. */
@@ -50,17 +46,9 @@ export interface UserSpec {
     enabled?: boolean;
 }
 
-const baseUser: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.User',
-    name: '',
-    clusterId: '',
-    enabled: false,
-    aclOptions: '',
-};
+const baseUser: object = { name: '', clusterId: '', enabled: false, aclOptions: '' };
 
 export const User = {
-    $type: 'yandex.cloud.mdb.redis.v1.User' as const,
-
     encode(message: User, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -159,41 +147,28 @@ export const User = {
     },
 };
 
-messageTypeRegistry.set(User.$type, User);
-
-const basePermissions: object = { $type: 'yandex.cloud.mdb.redis.v1.Permissions' };
+const basePermissions: object = {};
 
 export const Permissions = {
-    $type: 'yandex.cloud.mdb.redis.v1.Permissions' as const,
-
     encode(message: Permissions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.patterns !== undefined) {
-            StringValue.encode(
-                { $type: 'google.protobuf.StringValue', value: message.patterns! },
-                writer.uint32(10).fork(),
-            ).ldelim();
+            StringValue.encode({ value: message.patterns! }, writer.uint32(10).fork()).ldelim();
         }
         if (message.pubSubChannels !== undefined) {
             StringValue.encode(
-                { $type: 'google.protobuf.StringValue', value: message.pubSubChannels! },
+                { value: message.pubSubChannels! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
         if (message.categories !== undefined) {
-            StringValue.encode(
-                { $type: 'google.protobuf.StringValue', value: message.categories! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            StringValue.encode({ value: message.categories! }, writer.uint32(26).fork()).ldelim();
         }
         if (message.commands !== undefined) {
-            StringValue.encode(
-                { $type: 'google.protobuf.StringValue', value: message.commands! },
-                writer.uint32(34).fork(),
-            ).ldelim();
+            StringValue.encode({ value: message.commands! }, writer.uint32(34).fork()).ldelim();
         }
         if (message.sanitizePayload !== undefined) {
             StringValue.encode(
-                { $type: 'google.protobuf.StringValue', value: message.sanitizePayload! },
+                { value: message.sanitizePayload! },
                 writer.uint32(42).fork(),
             ).ldelim();
         }
@@ -276,17 +251,9 @@ export const Permissions = {
     },
 };
 
-messageTypeRegistry.set(Permissions.$type, Permissions);
-
-const baseUserSpec: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.UserSpec',
-    name: '',
-    passwords: '',
-};
+const baseUserSpec: object = { name: '', passwords: '' };
 
 export const UserSpec = {
-    $type: 'yandex.cloud.mdb.redis.v1.UserSpec' as const,
-
     encode(message: UserSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -298,10 +265,7 @@ export const UserSpec = {
             Permissions.encode(message.permissions, writer.uint32(26).fork()).ldelim();
         }
         if (message.enabled !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.enabled! },
-                writer.uint32(34).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.enabled! }, writer.uint32(34).fork()).ldelim();
         }
         return writer;
     },
@@ -378,8 +342,6 @@ export const UserSpec = {
     },
 };
 
-messageTypeRegistry.set(UserSpec.$type, UserSpec);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -389,16 +351,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

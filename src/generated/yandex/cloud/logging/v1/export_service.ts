@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -28,7 +27,6 @@ import {
 export const protobufPackage = 'yandex.cloud.logging.v1';
 
 export interface RunExportRequest {
-    $type: 'yandex.cloud.logging.v1.RunExportRequest';
     groupId: string;
     sinkId: string;
     params?: ExportParams;
@@ -38,7 +36,6 @@ export interface RunExportRequest {
 }
 
 export interface RunExportDetails {
-    $type: 'yandex.cloud.logging.v1.RunExportDetails';
     groupId: string;
     sinkId: string;
     params?: ExportParams;
@@ -48,14 +45,12 @@ export interface RunExportDetails {
 }
 
 export interface RunExportMetadata {
-    $type: 'yandex.cloud.logging.v1.RunExportMetadata';
     groupId: string;
     sinkId: string;
     resultFilename: string;
 }
 
 export interface GetExportRequest {
-    $type: 'yandex.cloud.logging.v1.GetExportRequest';
     /**
      * ID of the export to return.
      *
@@ -65,7 +60,6 @@ export interface GetExportRequest {
 }
 
 export interface ListExportsRequest {
-    $type: 'yandex.cloud.logging.v1.ListExportsRequest';
     /**
      * Folder ID of the exports to return.
      *
@@ -98,7 +92,6 @@ export interface ListExportsRequest {
 }
 
 export interface ListExportsResponse {
-    $type: 'yandex.cloud.logging.v1.ListExportsResponse';
     /** List of exports in the specified folder. */
     exports: Export[];
     /**
@@ -112,7 +105,6 @@ export interface ListExportsResponse {
 }
 
 export interface CreateExportRequest {
-    $type: 'yandex.cloud.logging.v1.CreateExportRequest';
     /**
      * ID of the folder to create a export in.
      *
@@ -137,19 +129,16 @@ export interface CreateExportRequest {
 }
 
 export interface CreateExportRequest_LabelsEntry {
-    $type: 'yandex.cloud.logging.v1.CreateExportRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateExportMetadata {
-    $type: 'yandex.cloud.logging.v1.CreateExportMetadata';
     /** ID of the export being created. */
     exportId: string;
 }
 
 export interface UpdateExportRequest {
-    $type: 'yandex.cloud.logging.v1.UpdateExportRequest';
     /**
      * ID of the export to update.
      *
@@ -176,19 +165,16 @@ export interface UpdateExportRequest {
 }
 
 export interface UpdateExportRequest_LabelsEntry {
-    $type: 'yandex.cloud.logging.v1.UpdateExportRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateExportMetadata {
-    $type: 'yandex.cloud.logging.v1.UpdateExportMetadata';
     /** ID of the export being updated. */
     exportId: string;
 }
 
 export interface DeleteExportRequest {
-    $type: 'yandex.cloud.logging.v1.DeleteExportRequest';
     /**
      * ID of the export to delete.
      *
@@ -198,13 +184,11 @@ export interface DeleteExportRequest {
 }
 
 export interface DeleteExportMetadata {
-    $type: 'yandex.cloud.logging.v1.DeleteExportMetadata';
     /** ID of the export being deleted. */
     exportId: string;
 }
 
 export interface ListExportOperationsRequest {
-    $type: 'yandex.cloud.logging.v1.ListExportOperationsRequest';
     /**
      * ID of the export to list operations for.
      *
@@ -237,7 +221,6 @@ export interface ListExportOperationsRequest {
 }
 
 export interface ListExportOperationsResponse {
-    $type: 'yandex.cloud.logging.v1.ListExportOperationsResponse';
     /** List of operations for the specified export. */
     operations: Operation[];
     /**
@@ -250,16 +233,9 @@ export interface ListExportOperationsResponse {
     nextPageToken: string;
 }
 
-const baseRunExportRequest: object = {
-    $type: 'yandex.cloud.logging.v1.RunExportRequest',
-    groupId: '',
-    sinkId: '',
-    resultFilename: '',
-};
+const baseRunExportRequest: object = { groupId: '', sinkId: '', resultFilename: '' };
 
 export const RunExportRequest = {
-    $type: 'yandex.cloud.logging.v1.RunExportRequest' as const,
-
     encode(message: RunExportRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.groupId !== '') {
             writer.uint32(10).string(message.groupId);
@@ -367,18 +343,9 @@ export const RunExportRequest = {
     },
 };
 
-messageTypeRegistry.set(RunExportRequest.$type, RunExportRequest);
-
-const baseRunExportDetails: object = {
-    $type: 'yandex.cloud.logging.v1.RunExportDetails',
-    groupId: '',
-    sinkId: '',
-    resultFilename: '',
-};
+const baseRunExportDetails: object = { groupId: '', sinkId: '', resultFilename: '' };
 
 export const RunExportDetails = {
-    $type: 'yandex.cloud.logging.v1.RunExportDetails' as const,
-
     encode(message: RunExportDetails, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.groupId !== '') {
             writer.uint32(10).string(message.groupId);
@@ -486,18 +453,9 @@ export const RunExportDetails = {
     },
 };
 
-messageTypeRegistry.set(RunExportDetails.$type, RunExportDetails);
-
-const baseRunExportMetadata: object = {
-    $type: 'yandex.cloud.logging.v1.RunExportMetadata',
-    groupId: '',
-    sinkId: '',
-    resultFilename: '',
-};
+const baseRunExportMetadata: object = { groupId: '', sinkId: '', resultFilename: '' };
 
 export const RunExportMetadata = {
-    $type: 'yandex.cloud.logging.v1.RunExportMetadata' as const,
-
     encode(message: RunExportMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.groupId !== '') {
             writer.uint32(10).string(message.groupId);
@@ -565,16 +523,9 @@ export const RunExportMetadata = {
     },
 };
 
-messageTypeRegistry.set(RunExportMetadata.$type, RunExportMetadata);
-
-const baseGetExportRequest: object = {
-    $type: 'yandex.cloud.logging.v1.GetExportRequest',
-    exportId: '',
-};
+const baseGetExportRequest: object = { exportId: '' };
 
 export const GetExportRequest = {
-    $type: 'yandex.cloud.logging.v1.GetExportRequest' as const,
-
     encode(message: GetExportRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.exportId !== '') {
             writer.uint32(10).string(message.exportId);
@@ -622,19 +573,9 @@ export const GetExportRequest = {
     },
 };
 
-messageTypeRegistry.set(GetExportRequest.$type, GetExportRequest);
-
-const baseListExportsRequest: object = {
-    $type: 'yandex.cloud.logging.v1.ListExportsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListExportsRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListExportsRequest = {
-    $type: 'yandex.cloud.logging.v1.ListExportsRequest' as const,
-
     encode(message: ListExportsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -716,16 +657,9 @@ export const ListExportsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListExportsRequest.$type, ListExportsRequest);
-
-const baseListExportsResponse: object = {
-    $type: 'yandex.cloud.logging.v1.ListExportsResponse',
-    nextPageToken: '',
-};
+const baseListExportsResponse: object = { nextPageToken: '' };
 
 export const ListExportsResponse = {
-    $type: 'yandex.cloud.logging.v1.ListExportsResponse' as const,
-
     encode(message: ListExportsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.exports) {
             Export.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -789,10 +723,7 @@ export const ListExportsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListExportsResponse.$type, ListExportsResponse);
-
 const baseCreateExportRequest: object = {
-    $type: 'yandex.cloud.logging.v1.CreateExportRequest',
     folderId: '',
     name: '',
     description: '',
@@ -801,8 +732,6 @@ const baseCreateExportRequest: object = {
 };
 
 export const CreateExportRequest = {
-    $type: 'yandex.cloud.logging.v1.CreateExportRequest' as const,
-
     encode(message: CreateExportRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -815,11 +744,7 @@ export const CreateExportRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateExportRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.logging.v1.CreateExportRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -948,17 +873,9 @@ export const CreateExportRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateExportRequest.$type, CreateExportRequest);
-
-const baseCreateExportRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.logging.v1.CreateExportRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateExportRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateExportRequest_LabelsEntry = {
-    $type: 'yandex.cloud.logging.v1.CreateExportRequest.LabelsEntry' as const,
-
     encode(
         message: CreateExportRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1024,16 +941,9 @@ export const CreateExportRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateExportRequest_LabelsEntry.$type, CreateExportRequest_LabelsEntry);
-
-const baseCreateExportMetadata: object = {
-    $type: 'yandex.cloud.logging.v1.CreateExportMetadata',
-    exportId: '',
-};
+const baseCreateExportMetadata: object = { exportId: '' };
 
 export const CreateExportMetadata = {
-    $type: 'yandex.cloud.logging.v1.CreateExportMetadata' as const,
-
     encode(message: CreateExportMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.exportId !== '') {
             writer.uint32(10).string(message.exportId);
@@ -1083,10 +993,7 @@ export const CreateExportMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateExportMetadata.$type, CreateExportMetadata);
-
 const baseUpdateExportRequest: object = {
-    $type: 'yandex.cloud.logging.v1.UpdateExportRequest',
     exportId: '',
     name: '',
     description: '',
@@ -1095,8 +1002,6 @@ const baseUpdateExportRequest: object = {
 };
 
 export const UpdateExportRequest = {
-    $type: 'yandex.cloud.logging.v1.UpdateExportRequest' as const,
-
     encode(message: UpdateExportRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.exportId !== '') {
             writer.uint32(10).string(message.exportId);
@@ -1112,11 +1017,7 @@ export const UpdateExportRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateExportRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.logging.v1.UpdateExportRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -1260,17 +1161,9 @@ export const UpdateExportRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateExportRequest.$type, UpdateExportRequest);
-
-const baseUpdateExportRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.logging.v1.UpdateExportRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateExportRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateExportRequest_LabelsEntry = {
-    $type: 'yandex.cloud.logging.v1.UpdateExportRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateExportRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1336,16 +1229,9 @@ export const UpdateExportRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateExportRequest_LabelsEntry.$type, UpdateExportRequest_LabelsEntry);
-
-const baseUpdateExportMetadata: object = {
-    $type: 'yandex.cloud.logging.v1.UpdateExportMetadata',
-    exportId: '',
-};
+const baseUpdateExportMetadata: object = { exportId: '' };
 
 export const UpdateExportMetadata = {
-    $type: 'yandex.cloud.logging.v1.UpdateExportMetadata' as const,
-
     encode(message: UpdateExportMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.exportId !== '') {
             writer.uint32(10).string(message.exportId);
@@ -1395,16 +1281,9 @@ export const UpdateExportMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateExportMetadata.$type, UpdateExportMetadata);
-
-const baseDeleteExportRequest: object = {
-    $type: 'yandex.cloud.logging.v1.DeleteExportRequest',
-    exportId: '',
-};
+const baseDeleteExportRequest: object = { exportId: '' };
 
 export const DeleteExportRequest = {
-    $type: 'yandex.cloud.logging.v1.DeleteExportRequest' as const,
-
     encode(message: DeleteExportRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.exportId !== '') {
             writer.uint32(10).string(message.exportId);
@@ -1454,16 +1333,9 @@ export const DeleteExportRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteExportRequest.$type, DeleteExportRequest);
-
-const baseDeleteExportMetadata: object = {
-    $type: 'yandex.cloud.logging.v1.DeleteExportMetadata',
-    exportId: '',
-};
+const baseDeleteExportMetadata: object = { exportId: '' };
 
 export const DeleteExportMetadata = {
-    $type: 'yandex.cloud.logging.v1.DeleteExportMetadata' as const,
-
     encode(message: DeleteExportMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.exportId !== '') {
             writer.uint32(10).string(message.exportId);
@@ -1513,10 +1385,7 @@ export const DeleteExportMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteExportMetadata.$type, DeleteExportMetadata);
-
 const baseListExportOperationsRequest: object = {
-    $type: 'yandex.cloud.logging.v1.ListExportOperationsRequest',
     exportId: '',
     pageSize: 0,
     pageToken: '',
@@ -1524,8 +1393,6 @@ const baseListExportOperationsRequest: object = {
 };
 
 export const ListExportOperationsRequest = {
-    $type: 'yandex.cloud.logging.v1.ListExportOperationsRequest' as const,
-
     encode(
         message: ListExportOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1610,16 +1477,9 @@ export const ListExportOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListExportOperationsRequest.$type, ListExportOperationsRequest);
-
-const baseListExportOperationsResponse: object = {
-    $type: 'yandex.cloud.logging.v1.ListExportOperationsResponse',
-    nextPageToken: '',
-};
+const baseListExportOperationsResponse: object = { nextPageToken: '' };
 
 export const ListExportOperationsResponse = {
-    $type: 'yandex.cloud.logging.v1.ListExportOperationsResponse' as const,
-
     encode(
         message: ListExportOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1685,8 +1545,6 @@ export const ListExportOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListExportOperationsResponse.$type, ListExportOperationsResponse);
 
 /** A set of methods for managing log exports. */
 export const ExportServiceService = {
@@ -2035,21 +1893,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

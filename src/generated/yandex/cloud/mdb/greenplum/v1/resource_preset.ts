@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -7,7 +6,6 @@ export const protobufPackage = 'yandex.cloud.mdb.greenplum.v1';
 
 /** A preset of resources for hardware configuration of Greenplum® hosts. */
 export interface ResourcePreset {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ResourcePreset';
     /** ID of the resource preset. */
     id: string;
     /** IDs of availability zones where the resource preset is available. */
@@ -67,7 +65,6 @@ export function resourcePreset_TypeToJSON(object: ResourcePreset_Type): string {
 }
 
 const baseResourcePreset: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ResourcePreset',
     id: '',
     zoneIds: '',
     diskTypeIds: '',
@@ -79,8 +76,6 @@ const baseResourcePreset: object = {
 };
 
 export const ResourcePreset = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ResourcePreset' as const,
-
     encode(message: ResourcePreset, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -211,8 +206,6 @@ export const ResourcePreset = {
     },
 };
 
-messageTypeRegistry.set(ResourcePreset.$type, ResourcePreset);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -233,16 +226,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

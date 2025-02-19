@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -47,7 +46,6 @@ export function ipVersionToJSON(object: IpVersion): string {
 }
 
 export interface Node {
-    $type: 'yandex.cloud.k8s.v1.Node';
     /** Computed node status. */
     status: Node_Status;
     /** Node specificaion. */
@@ -151,7 +149,6 @@ export function node_StatusToJSON(object: Node_Status): string {
 
 /** Kubernetes node info */
 export interface Node_KubernetesStatus {
-    $type: 'yandex.cloud.k8s.v1.Node.KubernetesStatus';
     /** Node id (and instance name) */
     id: string;
     /**
@@ -167,7 +164,6 @@ export interface Node_KubernetesStatus {
 
 /** Cloud instance info */
 export interface Node_CloudStatus {
-    $type: 'yandex.cloud.k8s.v1.Node.CloudStatus';
     /** Compute instance id */
     id: string;
     /** IG instance status */
@@ -178,7 +174,6 @@ export interface Node_CloudStatus {
 
 /** Node specification. */
 export interface Node_Spec {
-    $type: 'yandex.cloud.k8s.v1.Node.Spec';
     /** Node group specified resources. */
     resources?: ResourcesSpec;
     /** Node group specified disk. */
@@ -186,7 +181,6 @@ export interface Node_Spec {
 }
 
 export interface Condition {
-    $type: 'yandex.cloud.k8s.v1.Condition';
     /** Type of node condition. */
     type: string;
     /** Status is the status of the condition. */
@@ -200,7 +194,6 @@ export interface Condition {
 }
 
 export interface Taint {
-    $type: 'yandex.cloud.k8s.v1.Taint';
     /** The taint key to be applied to a node. */
     key: string;
     /** The taint value corresponding to the taint key. */
@@ -266,7 +259,6 @@ export function taint_EffectToJSON(object: Taint_Effect): string {
 
 /** AttachedVolume describes a volume attached to a node */
 export interface AttachedVolume {
-    $type: 'yandex.cloud.k8s.v1.AttachedVolume';
     /** Name of the driver which has attached the volume */
     driverName: string;
     /** Volume handle (cloud disk id) */
@@ -274,7 +266,6 @@ export interface AttachedVolume {
 }
 
 export interface NodeTemplate {
-    $type: 'yandex.cloud.k8s.v1.NodeTemplate';
     /**
      * Name of the instance.
      * In order to be unique it must contain at least on of instance unique placeholders:
@@ -324,19 +315,16 @@ export interface NodeTemplate {
 }
 
 export interface NodeTemplate_LabelsEntry {
-    $type: 'yandex.cloud.k8s.v1.NodeTemplate.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface NodeTemplate_MetadataEntry {
-    $type: 'yandex.cloud.k8s.v1.NodeTemplate.MetadataEntry';
     key: string;
     value: string;
 }
 
 export interface NodeTemplate_NetworkSettings {
-    $type: 'yandex.cloud.k8s.v1.NodeTemplate.NetworkSettings';
     type: NodeTemplate_NetworkSettings_Type;
 }
 
@@ -387,7 +375,6 @@ export function nodeTemplate_NetworkSettings_TypeToJSON(
 }
 
 export interface NodeTemplate_ContainerRuntimeSettings {
-    $type: 'yandex.cloud.k8s.v1.NodeTemplate.ContainerRuntimeSettings';
     type: NodeTemplate_ContainerRuntimeSettings_Type;
 }
 
@@ -434,12 +421,10 @@ export function nodeTemplate_ContainerRuntimeSettings_TypeToJSON(
 }
 
 export interface NodeTemplate_ContainerNetworkSettings {
-    $type: 'yandex.cloud.k8s.v1.NodeTemplate.ContainerNetworkSettings';
     podMtu: number;
 }
 
 export interface GpuSettings {
-    $type: 'yandex.cloud.k8s.v1.GpuSettings';
     /** GPU cluster id, that mk8s node will join. */
     gpuClusterId: string;
     /** GPU environment configured on node. */
@@ -492,7 +477,6 @@ export function gpuSettings_GpuEnvironmentToJSON(object: GpuSettings_GpuEnvironm
 }
 
 export interface NetworkInterfaceSpec {
-    $type: 'yandex.cloud.k8s.v1.NetworkInterfaceSpec';
     /** IDs of the subnets. */
     subnetIds: string[];
     /** Primary IPv4 address that is assigned to the instance for this network interface. */
@@ -504,7 +488,6 @@ export interface NetworkInterfaceSpec {
 }
 
 export interface NodeAddressSpec {
-    $type: 'yandex.cloud.k8s.v1.NodeAddressSpec';
     /** One-to-one NAT configuration. Setting up one-to-one NAT ensures that public IP addresses are assigned to nodes, and therefore internet is accessible for all nodes of the node group. If the field is not set, NAT will not be set up. */
     oneToOneNatSpec?: OneToOneNatSpec;
     /** Internal DNS configuration. */
@@ -512,7 +495,6 @@ export interface NodeAddressSpec {
 }
 
 export interface DnsRecordSpec {
-    $type: 'yandex.cloud.k8s.v1.DnsRecordSpec';
     /** FQDN (required). */
     fqdn: string;
     /** DNS zone id (optional, if not set, private zone is used). */
@@ -524,13 +506,11 @@ export interface DnsRecordSpec {
 }
 
 export interface OneToOneNatSpec {
-    $type: 'yandex.cloud.k8s.v1.OneToOneNatSpec';
     /** IP version for the public IP address. */
     ipVersion: IpVersion;
 }
 
 export interface ResourcesSpec {
-    $type: 'yandex.cloud.k8s.v1.ResourcesSpec';
     /** Amount of memory available to the node, specified in bytes. */
     memory: number;
     /** Number of cores available to the node. */
@@ -545,7 +525,6 @@ export interface ResourcesSpec {
 }
 
 export interface DiskSpec {
-    $type: 'yandex.cloud.k8s.v1.DiskSpec';
     /** ID of the disk type. */
     diskTypeId: string;
     /** Size of the disk, specified in bytes. */
@@ -553,7 +532,6 @@ export interface DiskSpec {
 }
 
 export interface SchedulingPolicy {
-    $type: 'yandex.cloud.k8s.v1.SchedulingPolicy';
     /**
      * True for preemptible compute instances. Default value is false. Preemptible compute instances are stopped at least once every 24 hours, and can be stopped at any time
      * if their resources are needed by Compute.
@@ -563,16 +541,13 @@ export interface SchedulingPolicy {
 }
 
 export interface PlacementPolicy {
-    $type: 'yandex.cloud.k8s.v1.PlacementPolicy';
     /** Identifier of placement group */
     placementGroupId: string;
 }
 
-const baseNode: object = { $type: 'yandex.cloud.k8s.v1.Node', status: 0 };
+const baseNode: object = { status: 0 };
 
 export const Node = {
-    $type: 'yandex.cloud.k8s.v1.Node' as const,
-
     encode(message: Node, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== 0) {
             writer.uint32(8).int32(message.status);
@@ -678,16 +653,9 @@ export const Node = {
     },
 };
 
-messageTypeRegistry.set(Node.$type, Node);
-
-const baseNode_KubernetesStatus: object = {
-    $type: 'yandex.cloud.k8s.v1.Node.KubernetesStatus',
-    id: '',
-};
+const baseNode_KubernetesStatus: object = { id: '' };
 
 export const Node_KubernetesStatus = {
-    $type: 'yandex.cloud.k8s.v1.Node.KubernetesStatus' as const,
-
     encode(message: Node_KubernetesStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -781,18 +749,9 @@ export const Node_KubernetesStatus = {
     },
 };
 
-messageTypeRegistry.set(Node_KubernetesStatus.$type, Node_KubernetesStatus);
-
-const baseNode_CloudStatus: object = {
-    $type: 'yandex.cloud.k8s.v1.Node.CloudStatus',
-    id: '',
-    status: '',
-    statusMessage: '',
-};
+const baseNode_CloudStatus: object = { id: '', status: '', statusMessage: '' };
 
 export const Node_CloudStatus = {
-    $type: 'yandex.cloud.k8s.v1.Node.CloudStatus' as const,
-
     encode(message: Node_CloudStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -859,13 +818,9 @@ export const Node_CloudStatus = {
     },
 };
 
-messageTypeRegistry.set(Node_CloudStatus.$type, Node_CloudStatus);
-
-const baseNode_Spec: object = { $type: 'yandex.cloud.k8s.v1.Node.Spec' };
+const baseNode_Spec: object = {};
 
 export const Node_Spec = {
-    $type: 'yandex.cloud.k8s.v1.Node.Spec' as const,
-
     encode(message: Node_Spec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resources !== undefined) {
             ResourcesSpec.encode(message.resources, writer.uint32(10).fork()).ldelim();
@@ -935,18 +890,9 @@ export const Node_Spec = {
     },
 };
 
-messageTypeRegistry.set(Node_Spec.$type, Node_Spec);
-
-const baseCondition: object = {
-    $type: 'yandex.cloud.k8s.v1.Condition',
-    type: '',
-    status: '',
-    message: '',
-};
+const baseCondition: object = { type: '', status: '', message: '' };
 
 export const Condition = {
-    $type: 'yandex.cloud.k8s.v1.Condition' as const,
-
     encode(message: Condition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== '') {
             writer.uint32(10).string(message.type);
@@ -1047,13 +993,9 @@ export const Condition = {
     },
 };
 
-messageTypeRegistry.set(Condition.$type, Condition);
-
-const baseTaint: object = { $type: 'yandex.cloud.k8s.v1.Taint', key: '', value: '', effect: 0 };
+const baseTaint: object = { key: '', value: '', effect: 0 };
 
 export const Taint = {
-    $type: 'yandex.cloud.k8s.v1.Taint' as const,
-
     encode(message: Taint, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1120,17 +1062,9 @@ export const Taint = {
     },
 };
 
-messageTypeRegistry.set(Taint.$type, Taint);
-
-const baseAttachedVolume: object = {
-    $type: 'yandex.cloud.k8s.v1.AttachedVolume',
-    driverName: '',
-    volumeHandle: '',
-};
+const baseAttachedVolume: object = { driverName: '', volumeHandle: '' };
 
 export const AttachedVolume = {
-    $type: 'yandex.cloud.k8s.v1.AttachedVolume' as const,
-
     encode(message: AttachedVolume, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.driverName !== '') {
             writer.uint32(10).string(message.driverName);
@@ -1190,24 +1124,16 @@ export const AttachedVolume = {
     },
 };
 
-messageTypeRegistry.set(AttachedVolume.$type, AttachedVolume);
-
-const baseNodeTemplate: object = {
-    $type: 'yandex.cloud.k8s.v1.NodeTemplate',
-    name: '',
-    platformId: '',
-};
+const baseNodeTemplate: object = { name: '', platformId: '' };
 
 export const NodeTemplate = {
-    $type: 'yandex.cloud.k8s.v1.NodeTemplate' as const,
-
     encode(message: NodeTemplate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(106).string(message.name);
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             NodeTemplate_LabelsEntry.encode(
-                { $type: 'yandex.cloud.k8s.v1.NodeTemplate.LabelsEntry', key: key as any, value },
+                { key: key as any, value },
                 writer.uint32(122).fork(),
             ).ldelim();
         });
@@ -1222,7 +1148,7 @@ export const NodeTemplate = {
         }
         Object.entries(message.metadata).forEach(([key, value]) => {
             NodeTemplate_MetadataEntry.encode(
-                { $type: 'yandex.cloud.k8s.v1.NodeTemplate.MetadataEntry', key: key as any, value },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -1532,17 +1458,9 @@ export const NodeTemplate = {
     },
 };
 
-messageTypeRegistry.set(NodeTemplate.$type, NodeTemplate);
-
-const baseNodeTemplate_LabelsEntry: object = {
-    $type: 'yandex.cloud.k8s.v1.NodeTemplate.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseNodeTemplate_LabelsEntry: object = { key: '', value: '' };
 
 export const NodeTemplate_LabelsEntry = {
-    $type: 'yandex.cloud.k8s.v1.NodeTemplate.LabelsEntry' as const,
-
     encode(
         message: NodeTemplate_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1602,17 +1520,9 @@ export const NodeTemplate_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(NodeTemplate_LabelsEntry.$type, NodeTemplate_LabelsEntry);
-
-const baseNodeTemplate_MetadataEntry: object = {
-    $type: 'yandex.cloud.k8s.v1.NodeTemplate.MetadataEntry',
-    key: '',
-    value: '',
-};
+const baseNodeTemplate_MetadataEntry: object = { key: '', value: '' };
 
 export const NodeTemplate_MetadataEntry = {
-    $type: 'yandex.cloud.k8s.v1.NodeTemplate.MetadataEntry' as const,
-
     encode(
         message: NodeTemplate_MetadataEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1672,16 +1582,9 @@ export const NodeTemplate_MetadataEntry = {
     },
 };
 
-messageTypeRegistry.set(NodeTemplate_MetadataEntry.$type, NodeTemplate_MetadataEntry);
-
-const baseNodeTemplate_NetworkSettings: object = {
-    $type: 'yandex.cloud.k8s.v1.NodeTemplate.NetworkSettings',
-    type: 0,
-};
+const baseNodeTemplate_NetworkSettings: object = { type: 0 };
 
 export const NodeTemplate_NetworkSettings = {
-    $type: 'yandex.cloud.k8s.v1.NodeTemplate.NetworkSettings' as const,
-
     encode(
         message: NodeTemplate_NetworkSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1735,16 +1638,9 @@ export const NodeTemplate_NetworkSettings = {
     },
 };
 
-messageTypeRegistry.set(NodeTemplate_NetworkSettings.$type, NodeTemplate_NetworkSettings);
-
-const baseNodeTemplate_ContainerRuntimeSettings: object = {
-    $type: 'yandex.cloud.k8s.v1.NodeTemplate.ContainerRuntimeSettings',
-    type: 0,
-};
+const baseNodeTemplate_ContainerRuntimeSettings: object = { type: 0 };
 
 export const NodeTemplate_ContainerRuntimeSettings = {
-    $type: 'yandex.cloud.k8s.v1.NodeTemplate.ContainerRuntimeSettings' as const,
-
     encode(
         message: NodeTemplate_ContainerRuntimeSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1804,19 +1700,9 @@ export const NodeTemplate_ContainerRuntimeSettings = {
     },
 };
 
-messageTypeRegistry.set(
-    NodeTemplate_ContainerRuntimeSettings.$type,
-    NodeTemplate_ContainerRuntimeSettings,
-);
-
-const baseNodeTemplate_ContainerNetworkSettings: object = {
-    $type: 'yandex.cloud.k8s.v1.NodeTemplate.ContainerNetworkSettings',
-    podMtu: 0,
-};
+const baseNodeTemplate_ContainerNetworkSettings: object = { podMtu: 0 };
 
 export const NodeTemplate_ContainerNetworkSettings = {
-    $type: 'yandex.cloud.k8s.v1.NodeTemplate.ContainerNetworkSettings' as const,
-
     encode(
         message: NodeTemplate_ContainerNetworkSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1873,20 +1759,9 @@ export const NodeTemplate_ContainerNetworkSettings = {
     },
 };
 
-messageTypeRegistry.set(
-    NodeTemplate_ContainerNetworkSettings.$type,
-    NodeTemplate_ContainerNetworkSettings,
-);
-
-const baseGpuSettings: object = {
-    $type: 'yandex.cloud.k8s.v1.GpuSettings',
-    gpuClusterId: '',
-    gpuEnvironment: 0,
-};
+const baseGpuSettings: object = { gpuClusterId: '', gpuEnvironment: 0 };
 
 export const GpuSettings = {
-    $type: 'yandex.cloud.k8s.v1.GpuSettings' as const,
-
     encode(message: GpuSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gpuClusterId !== '') {
             writer.uint32(10).string(message.gpuClusterId);
@@ -1947,17 +1822,9 @@ export const GpuSettings = {
     },
 };
 
-messageTypeRegistry.set(GpuSettings.$type, GpuSettings);
-
-const baseNetworkInterfaceSpec: object = {
-    $type: 'yandex.cloud.k8s.v1.NetworkInterfaceSpec',
-    subnetIds: '',
-    securityGroupIds: '',
-};
+const baseNetworkInterfaceSpec: object = { subnetIds: '', securityGroupIds: '' };
 
 export const NetworkInterfaceSpec = {
-    $type: 'yandex.cloud.k8s.v1.NetworkInterfaceSpec' as const,
-
     encode(message: NetworkInterfaceSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.subnetIds) {
             writer.uint32(18).string(v!);
@@ -2059,13 +1926,9 @@ export const NetworkInterfaceSpec = {
     },
 };
 
-messageTypeRegistry.set(NetworkInterfaceSpec.$type, NetworkInterfaceSpec);
-
-const baseNodeAddressSpec: object = { $type: 'yandex.cloud.k8s.v1.NodeAddressSpec' };
+const baseNodeAddressSpec: object = {};
 
 export const NodeAddressSpec = {
-    $type: 'yandex.cloud.k8s.v1.NodeAddressSpec' as const,
-
     encode(message: NodeAddressSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.oneToOneNatSpec !== undefined) {
             OneToOneNatSpec.encode(message.oneToOneNatSpec, writer.uint32(10).fork()).ldelim();
@@ -2138,19 +2001,9 @@ export const NodeAddressSpec = {
     },
 };
 
-messageTypeRegistry.set(NodeAddressSpec.$type, NodeAddressSpec);
-
-const baseDnsRecordSpec: object = {
-    $type: 'yandex.cloud.k8s.v1.DnsRecordSpec',
-    fqdn: '',
-    dnsZoneId: '',
-    ttl: 0,
-    ptr: false,
-};
+const baseDnsRecordSpec: object = { fqdn: '', dnsZoneId: '', ttl: 0, ptr: false };
 
 export const DnsRecordSpec = {
-    $type: 'yandex.cloud.k8s.v1.DnsRecordSpec' as const,
-
     encode(message: DnsRecordSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fqdn !== '') {
             writer.uint32(10).string(message.fqdn);
@@ -2225,13 +2078,9 @@ export const DnsRecordSpec = {
     },
 };
 
-messageTypeRegistry.set(DnsRecordSpec.$type, DnsRecordSpec);
-
-const baseOneToOneNatSpec: object = { $type: 'yandex.cloud.k8s.v1.OneToOneNatSpec', ipVersion: 0 };
+const baseOneToOneNatSpec: object = { ipVersion: 0 };
 
 export const OneToOneNatSpec = {
-    $type: 'yandex.cloud.k8s.v1.OneToOneNatSpec' as const,
-
     encode(message: OneToOneNatSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ipVersion !== 0) {
             writer.uint32(8).int32(message.ipVersion);
@@ -2279,19 +2128,9 @@ export const OneToOneNatSpec = {
     },
 };
 
-messageTypeRegistry.set(OneToOneNatSpec.$type, OneToOneNatSpec);
-
-const baseResourcesSpec: object = {
-    $type: 'yandex.cloud.k8s.v1.ResourcesSpec',
-    memory: 0,
-    cores: 0,
-    coreFraction: 0,
-    gpus: 0,
-};
+const baseResourcesSpec: object = { memory: 0, cores: 0, coreFraction: 0, gpus: 0 };
 
 export const ResourcesSpec = {
-    $type: 'yandex.cloud.k8s.v1.ResourcesSpec' as const,
-
     encode(message: ResourcesSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.memory !== 0) {
             writer.uint32(8).int64(message.memory);
@@ -2368,13 +2207,9 @@ export const ResourcesSpec = {
     },
 };
 
-messageTypeRegistry.set(ResourcesSpec.$type, ResourcesSpec);
-
-const baseDiskSpec: object = { $type: 'yandex.cloud.k8s.v1.DiskSpec', diskTypeId: '', diskSize: 0 };
+const baseDiskSpec: object = { diskTypeId: '', diskSize: 0 };
 
 export const DiskSpec = {
-    $type: 'yandex.cloud.k8s.v1.DiskSpec' as const,
-
     encode(message: DiskSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.diskTypeId !== '') {
             writer.uint32(10).string(message.diskTypeId);
@@ -2432,16 +2267,9 @@ export const DiskSpec = {
     },
 };
 
-messageTypeRegistry.set(DiskSpec.$type, DiskSpec);
-
-const baseSchedulingPolicy: object = {
-    $type: 'yandex.cloud.k8s.v1.SchedulingPolicy',
-    preemptible: false,
-};
+const baseSchedulingPolicy: object = { preemptible: false };
 
 export const SchedulingPolicy = {
-    $type: 'yandex.cloud.k8s.v1.SchedulingPolicy' as const,
-
     encode(message: SchedulingPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.preemptible === true) {
             writer.uint32(8).bool(message.preemptible);
@@ -2489,16 +2317,9 @@ export const SchedulingPolicy = {
     },
 };
 
-messageTypeRegistry.set(SchedulingPolicy.$type, SchedulingPolicy);
-
-const basePlacementPolicy: object = {
-    $type: 'yandex.cloud.k8s.v1.PlacementPolicy',
-    placementGroupId: '',
-};
+const basePlacementPolicy: object = { placementGroupId: '' };
 
 export const PlacementPolicy = {
-    $type: 'yandex.cloud.k8s.v1.PlacementPolicy' as const,
-
     encode(message: PlacementPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.placementGroupId !== '') {
             writer.uint32(10).string(message.placementGroupId);
@@ -2546,8 +2367,6 @@ export const PlacementPolicy = {
     },
 };
 
-messageTypeRegistry.set(PlacementPolicy.$type, PlacementPolicy);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -2568,21 +2387,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

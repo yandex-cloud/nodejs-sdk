@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,7 +19,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1';
 
 export interface CreateConfigRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateConfigRequest';
     /** ID of the folder to create a config in. */
     folderId: string;
     /** Config content provided as a string in YAML format. */
@@ -30,19 +28,16 @@ export interface CreateConfigRequest {
 }
 
 export interface CreateConfigMetadata {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateConfigMetadata';
     /** ID of the config that is being created. */
     configId: string;
 }
 
 export interface GetConfigRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetConfigRequest';
     /** ID of the config to return. */
     configId: string;
 }
 
 export interface ListConfigsRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListConfigsRequest';
     /** ID of the folder to list configs in. */
     folderId: string;
     /**
@@ -62,7 +57,6 @@ export interface ListConfigsRequest {
 }
 
 export interface ListConfigsResponse {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListConfigsResponse';
     /** List of configs in the specified folder. */
     configs: Config[];
     /**
@@ -76,26 +70,18 @@ export interface ListConfigsResponse {
 }
 
 export interface DeleteConfigRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteConfigRequest';
     /** ID of the config to deleted. */
     configId: string;
 }
 
 export interface DeleteConfigMetadata {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteConfigMetadata';
     /** ID of the config that is being deleted. */
     configId: string;
 }
 
-const baseCreateConfigRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateConfigRequest',
-    folderId: '',
-    name: '',
-};
+const baseCreateConfigRequest: object = { folderId: '', name: '' };
 
 export const CreateConfigRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateConfigRequest' as const,
-
     encode(message: CreateConfigRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -166,16 +152,9 @@ export const CreateConfigRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateConfigRequest.$type, CreateConfigRequest);
-
-const baseCreateConfigMetadata: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateConfigMetadata',
-    configId: '',
-};
+const baseCreateConfigMetadata: object = { configId: '' };
 
 export const CreateConfigMetadata = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CreateConfigMetadata' as const,
-
     encode(message: CreateConfigMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.configId !== '') {
             writer.uint32(10).string(message.configId);
@@ -225,16 +204,9 @@ export const CreateConfigMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateConfigMetadata.$type, CreateConfigMetadata);
-
-const baseGetConfigRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetConfigRequest',
-    configId: '',
-};
+const baseGetConfigRequest: object = { configId: '' };
 
 export const GetConfigRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetConfigRequest' as const,
-
     encode(message: GetConfigRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.configId !== '') {
             writer.uint32(10).string(message.configId);
@@ -282,19 +254,9 @@ export const GetConfigRequest = {
     },
 };
 
-messageTypeRegistry.set(GetConfigRequest.$type, GetConfigRequest);
-
-const baseListConfigsRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListConfigsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListConfigsRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListConfigsRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListConfigsRequest' as const,
-
     encode(message: ListConfigsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -376,16 +338,9 @@ export const ListConfigsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListConfigsRequest.$type, ListConfigsRequest);
-
-const baseListConfigsResponse: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListConfigsResponse',
-    nextPageToken: '',
-};
+const baseListConfigsResponse: object = { nextPageToken: '' };
 
 export const ListConfigsResponse = {
-    $type: 'yandex.cloud.loadtesting.api.v1.ListConfigsResponse' as const,
-
     encode(message: ListConfigsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.configs) {
             Config.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -449,16 +404,9 @@ export const ListConfigsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListConfigsResponse.$type, ListConfigsResponse);
-
-const baseDeleteConfigRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteConfigRequest',
-    configId: '',
-};
+const baseDeleteConfigRequest: object = { configId: '' };
 
 export const DeleteConfigRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteConfigRequest' as const,
-
     encode(message: DeleteConfigRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.configId !== '') {
             writer.uint32(10).string(message.configId);
@@ -508,16 +456,9 @@ export const DeleteConfigRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteConfigRequest.$type, DeleteConfigRequest);
-
-const baseDeleteConfigMetadata: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteConfigMetadata',
-    configId: '',
-};
+const baseDeleteConfigMetadata: object = { configId: '' };
 
 export const DeleteConfigMetadata = {
-    $type: 'yandex.cloud.loadtesting.api.v1.DeleteConfigMetadata' as const,
-
     encode(message: DeleteConfigMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.configId !== '') {
             writer.uint32(10).string(message.configId);
@@ -566,8 +507,6 @@ export const DeleteConfigMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteConfigMetadata.$type, DeleteConfigMetadata);
 
 /** A set of methods for managing test configurations. */
 export const ConfigServiceService = {
@@ -740,16 +679,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ import { Payload } from '../../../../yandex/cloud/lockbox/v1/payload';
 export const protobufPackage = 'yandex.cloud.lockbox.v1';
 
 export interface GetPayloadRequest {
-    $type: 'yandex.cloud.lockbox.v1.GetPayloadRequest';
     /** ID of the secret. */
     secretId: string;
     /** Optional ID of the version. */
@@ -27,40 +25,30 @@ export interface GetPayloadRequest {
 }
 
 export interface GetExRequest {
-    $type: 'yandex.cloud.lockbox.v1.GetExRequest';
     secretId: string | undefined;
     folderAndName?: FolderAndName | undefined;
     versionId: string;
 }
 
 export interface FolderAndName {
-    $type: 'yandex.cloud.lockbox.v1.FolderAndName';
     folderId: string;
     secretName: string;
 }
 
 export interface GetExResponse {
-    $type: 'yandex.cloud.lockbox.v1.GetExResponse';
     secretId: string;
     versionId: string;
     entries: { [key: string]: Buffer };
 }
 
 export interface GetExResponse_EntriesEntry {
-    $type: 'yandex.cloud.lockbox.v1.GetExResponse.EntriesEntry';
     key: string;
     value: Buffer;
 }
 
-const baseGetPayloadRequest: object = {
-    $type: 'yandex.cloud.lockbox.v1.GetPayloadRequest',
-    secretId: '',
-    versionId: '',
-};
+const baseGetPayloadRequest: object = { secretId: '', versionId: '' };
 
 export const GetPayloadRequest = {
-    $type: 'yandex.cloud.lockbox.v1.GetPayloadRequest' as const,
-
     encode(message: GetPayloadRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.secretId !== '') {
             writer.uint32(10).string(message.secretId);
@@ -120,13 +108,9 @@ export const GetPayloadRequest = {
     },
 };
 
-messageTypeRegistry.set(GetPayloadRequest.$type, GetPayloadRequest);
-
-const baseGetExRequest: object = { $type: 'yandex.cloud.lockbox.v1.GetExRequest', versionId: '' };
+const baseGetExRequest: object = { versionId: '' };
 
 export const GetExRequest = {
-    $type: 'yandex.cloud.lockbox.v1.GetExRequest' as const,
-
     encode(message: GetExRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.secretId !== undefined) {
             writer.uint32(10).string(message.secretId);
@@ -204,17 +188,9 @@ export const GetExRequest = {
     },
 };
 
-messageTypeRegistry.set(GetExRequest.$type, GetExRequest);
-
-const baseFolderAndName: object = {
-    $type: 'yandex.cloud.lockbox.v1.FolderAndName',
-    folderId: '',
-    secretName: '',
-};
+const baseFolderAndName: object = { folderId: '', secretName: '' };
 
 export const FolderAndName = {
-    $type: 'yandex.cloud.lockbox.v1.FolderAndName' as const,
-
     encode(message: FolderAndName, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -274,17 +250,9 @@ export const FolderAndName = {
     },
 };
 
-messageTypeRegistry.set(FolderAndName.$type, FolderAndName);
-
-const baseGetExResponse: object = {
-    $type: 'yandex.cloud.lockbox.v1.GetExResponse',
-    secretId: '',
-    versionId: '',
-};
+const baseGetExResponse: object = { secretId: '', versionId: '' };
 
 export const GetExResponse = {
-    $type: 'yandex.cloud.lockbox.v1.GetExResponse' as const,
-
     encode(message: GetExResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.secretId !== '') {
             writer.uint32(10).string(message.secretId);
@@ -294,11 +262,7 @@ export const GetExResponse = {
         }
         Object.entries(message.entries).forEach(([key, value]) => {
             GetExResponse_EntriesEntry.encode(
-                {
-                    $type: 'yandex.cloud.lockbox.v1.GetExResponse.EntriesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(26).fork(),
             ).ldelim();
         });
@@ -383,16 +347,9 @@ export const GetExResponse = {
     },
 };
 
-messageTypeRegistry.set(GetExResponse.$type, GetExResponse);
-
-const baseGetExResponse_EntriesEntry: object = {
-    $type: 'yandex.cloud.lockbox.v1.GetExResponse.EntriesEntry',
-    key: '',
-};
+const baseGetExResponse_EntriesEntry: object = { key: '' };
 
 export const GetExResponse_EntriesEntry = {
-    $type: 'yandex.cloud.lockbox.v1.GetExResponse.EntriesEntry' as const,
-
     encode(
         message: GetExResponse_EntriesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -457,8 +414,6 @@ export const GetExResponse_EntriesEntry = {
         return message;
     },
 };
-
-messageTypeRegistry.set(GetExResponse_EntriesEntry.$type, GetExResponse_EntriesEntry);
 
 /** Set of methods to access payload of secrets. */
 export const PayloadServiceService = {
@@ -590,16 +545,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

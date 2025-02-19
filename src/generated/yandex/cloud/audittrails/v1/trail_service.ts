@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -32,7 +31,6 @@ import {
 export const protobufPackage = 'yandex.cloud.audittrails.v1';
 
 export interface GetTrailRequest {
-    $type: 'yandex.cloud.audittrails.v1.GetTrailRequest';
     /**
      * ID of the trail to return.
      *
@@ -42,7 +40,6 @@ export interface GetTrailRequest {
 }
 
 export interface ListTrailsRequest {
-    $type: 'yandex.cloud.audittrails.v1.ListTrailsRequest';
     /** ID of the folder to list trails in. */
     folderId: string;
     /**
@@ -75,7 +72,6 @@ export interface ListTrailsRequest {
 }
 
 export interface ListTrailsResponse {
-    $type: 'yandex.cloud.audittrails.v1.ListTrailsResponse';
     /** List of trails in the specified folder. */
     trails: Trail[];
     /**
@@ -89,7 +85,6 @@ export interface ListTrailsResponse {
 }
 
 export interface CreateTrailRequest {
-    $type: 'yandex.cloud.audittrails.v1.CreateTrailRequest';
     /** ID of the folder to create a trail in. */
     folderId: string;
     /** Name of the trail. */
@@ -117,13 +112,11 @@ export interface CreateTrailRequest {
 }
 
 export interface CreateTrailRequest_LabelsEntry {
-    $type: 'yandex.cloud.audittrails.v1.CreateTrailRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateTrailRequest {
-    $type: 'yandex.cloud.audittrails.v1.UpdateTrailRequest';
     /** ID of the trail to update. */
     trailId: string;
     /** Field mask that specifies which attributes of the trail are going to be updated. */
@@ -150,37 +143,31 @@ export interface UpdateTrailRequest {
 }
 
 export interface UpdateTrailRequest_LabelsEntry {
-    $type: 'yandex.cloud.audittrails.v1.UpdateTrailRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface DeleteTrailRequest {
-    $type: 'yandex.cloud.audittrails.v1.DeleteTrailRequest';
     /** ID of the trail to be deleted. */
     trailId: string;
 }
 
 export interface CreateTrailMetadata {
-    $type: 'yandex.cloud.audittrails.v1.CreateTrailMetadata';
     /** ID of the trail that is being created */
     trailId: string;
 }
 
 export interface UpdateTrailMetadata {
-    $type: 'yandex.cloud.audittrails.v1.UpdateTrailMetadata';
     /** ID of the trail that is being updated */
     trailId: string;
 }
 
 export interface DeleteTrailMetadata {
-    $type: 'yandex.cloud.audittrails.v1.DeleteTrailMetadata';
     /** ID of the trail that is being deleted */
     trailId: string;
 }
 
 export interface ListTrailOperationsRequest {
-    $type: 'yandex.cloud.audittrails.v1.ListTrailOperationsRequest';
     /** ID of the trail to get operations for. */
     trailId: string;
     /**
@@ -198,7 +185,6 @@ export interface ListTrailOperationsRequest {
 }
 
 export interface ListTrailOperationsResponse {
-    $type: 'yandex.cloud.audittrails.v1.ListTrailOperationsResponse';
     /** List of operations for the specified trail. */
     operations: Operation[];
     /**
@@ -210,14 +196,9 @@ export interface ListTrailOperationsResponse {
     nextPageToken: string;
 }
 
-const baseGetTrailRequest: object = {
-    $type: 'yandex.cloud.audittrails.v1.GetTrailRequest',
-    trailId: '',
-};
+const baseGetTrailRequest: object = { trailId: '' };
 
 export const GetTrailRequest = {
-    $type: 'yandex.cloud.audittrails.v1.GetTrailRequest' as const,
-
     encode(message: GetTrailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.trailId !== '') {
             writer.uint32(10).string(message.trailId);
@@ -263,10 +244,7 @@ export const GetTrailRequest = {
     },
 };
 
-messageTypeRegistry.set(GetTrailRequest.$type, GetTrailRequest);
-
 const baseListTrailsRequest: object = {
-    $type: 'yandex.cloud.audittrails.v1.ListTrailsRequest',
     folderId: '',
     pageSize: 0,
     pageToken: '',
@@ -275,8 +253,6 @@ const baseListTrailsRequest: object = {
 };
 
 export const ListTrailsRequest = {
-    $type: 'yandex.cloud.audittrails.v1.ListTrailsRequest' as const,
-
     encode(message: ListTrailsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -366,16 +342,9 @@ export const ListTrailsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListTrailsRequest.$type, ListTrailsRequest);
-
-const baseListTrailsResponse: object = {
-    $type: 'yandex.cloud.audittrails.v1.ListTrailsResponse',
-    nextPageToken: '',
-};
+const baseListTrailsResponse: object = { nextPageToken: '' };
 
 export const ListTrailsResponse = {
-    $type: 'yandex.cloud.audittrails.v1.ListTrailsResponse' as const,
-
     encode(message: ListTrailsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.trails) {
             Trail.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -439,10 +408,7 @@ export const ListTrailsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListTrailsResponse.$type, ListTrailsResponse);
-
 const baseCreateTrailRequest: object = {
-    $type: 'yandex.cloud.audittrails.v1.CreateTrailRequest',
     folderId: '',
     name: '',
     description: '',
@@ -450,8 +416,6 @@ const baseCreateTrailRequest: object = {
 };
 
 export const CreateTrailRequest = {
-    $type: 'yandex.cloud.audittrails.v1.CreateTrailRequest' as const,
-
     encode(message: CreateTrailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -464,11 +428,7 @@ export const CreateTrailRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateTrailRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.audittrails.v1.CreateTrailRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -628,17 +588,9 @@ export const CreateTrailRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateTrailRequest.$type, CreateTrailRequest);
-
-const baseCreateTrailRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.audittrails.v1.CreateTrailRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateTrailRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateTrailRequest_LabelsEntry = {
-    $type: 'yandex.cloud.audittrails.v1.CreateTrailRequest.LabelsEntry' as const,
-
     encode(
         message: CreateTrailRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -698,10 +650,7 @@ export const CreateTrailRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateTrailRequest_LabelsEntry.$type, CreateTrailRequest_LabelsEntry);
-
 const baseUpdateTrailRequest: object = {
-    $type: 'yandex.cloud.audittrails.v1.UpdateTrailRequest',
     trailId: '',
     name: '',
     description: '',
@@ -709,8 +658,6 @@ const baseUpdateTrailRequest: object = {
 };
 
 export const UpdateTrailRequest = {
-    $type: 'yandex.cloud.audittrails.v1.UpdateTrailRequest' as const,
-
     encode(message: UpdateTrailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.trailId !== '') {
             writer.uint32(10).string(message.trailId);
@@ -726,11 +673,7 @@ export const UpdateTrailRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateTrailRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.audittrails.v1.UpdateTrailRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -903,17 +846,9 @@ export const UpdateTrailRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateTrailRequest.$type, UpdateTrailRequest);
-
-const baseUpdateTrailRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.audittrails.v1.UpdateTrailRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateTrailRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateTrailRequest_LabelsEntry = {
-    $type: 'yandex.cloud.audittrails.v1.UpdateTrailRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateTrailRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -973,16 +908,9 @@ export const UpdateTrailRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateTrailRequest_LabelsEntry.$type, UpdateTrailRequest_LabelsEntry);
-
-const baseDeleteTrailRequest: object = {
-    $type: 'yandex.cloud.audittrails.v1.DeleteTrailRequest',
-    trailId: '',
-};
+const baseDeleteTrailRequest: object = { trailId: '' };
 
 export const DeleteTrailRequest = {
-    $type: 'yandex.cloud.audittrails.v1.DeleteTrailRequest' as const,
-
     encode(message: DeleteTrailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.trailId !== '') {
             writer.uint32(10).string(message.trailId);
@@ -1030,16 +958,9 @@ export const DeleteTrailRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteTrailRequest.$type, DeleteTrailRequest);
-
-const baseCreateTrailMetadata: object = {
-    $type: 'yandex.cloud.audittrails.v1.CreateTrailMetadata',
-    trailId: '',
-};
+const baseCreateTrailMetadata: object = { trailId: '' };
 
 export const CreateTrailMetadata = {
-    $type: 'yandex.cloud.audittrails.v1.CreateTrailMetadata' as const,
-
     encode(message: CreateTrailMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.trailId !== '') {
             writer.uint32(10).string(message.trailId);
@@ -1087,16 +1008,9 @@ export const CreateTrailMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateTrailMetadata.$type, CreateTrailMetadata);
-
-const baseUpdateTrailMetadata: object = {
-    $type: 'yandex.cloud.audittrails.v1.UpdateTrailMetadata',
-    trailId: '',
-};
+const baseUpdateTrailMetadata: object = { trailId: '' };
 
 export const UpdateTrailMetadata = {
-    $type: 'yandex.cloud.audittrails.v1.UpdateTrailMetadata' as const,
-
     encode(message: UpdateTrailMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.trailId !== '') {
             writer.uint32(10).string(message.trailId);
@@ -1144,16 +1058,9 @@ export const UpdateTrailMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateTrailMetadata.$type, UpdateTrailMetadata);
-
-const baseDeleteTrailMetadata: object = {
-    $type: 'yandex.cloud.audittrails.v1.DeleteTrailMetadata',
-    trailId: '',
-};
+const baseDeleteTrailMetadata: object = { trailId: '' };
 
 export const DeleteTrailMetadata = {
-    $type: 'yandex.cloud.audittrails.v1.DeleteTrailMetadata' as const,
-
     encode(message: DeleteTrailMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.trailId !== '') {
             writer.uint32(10).string(message.trailId);
@@ -1201,18 +1108,9 @@ export const DeleteTrailMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteTrailMetadata.$type, DeleteTrailMetadata);
-
-const baseListTrailOperationsRequest: object = {
-    $type: 'yandex.cloud.audittrails.v1.ListTrailOperationsRequest',
-    trailId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListTrailOperationsRequest: object = { trailId: '', pageSize: 0, pageToken: '' };
 
 export const ListTrailOperationsRequest = {
-    $type: 'yandex.cloud.audittrails.v1.ListTrailOperationsRequest' as const,
-
     encode(
         message: ListTrailOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1285,16 +1183,9 @@ export const ListTrailOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListTrailOperationsRequest.$type, ListTrailOperationsRequest);
-
-const baseListTrailOperationsResponse: object = {
-    $type: 'yandex.cloud.audittrails.v1.ListTrailOperationsResponse',
-    nextPageToken: '',
-};
+const baseListTrailOperationsResponse: object = { nextPageToken: '' };
 
 export const ListTrailOperationsResponse = {
-    $type: 'yandex.cloud.audittrails.v1.ListTrailOperationsResponse' as const,
-
     encode(
         message: ListTrailOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1360,8 +1251,6 @@ export const ListTrailOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListTrailOperationsResponse.$type, ListTrailOperationsResponse);
 
 /** A set of methods for managing trails. */
 export const TrailServiceService = {
@@ -1681,16 +1570,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

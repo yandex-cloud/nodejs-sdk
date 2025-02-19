@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
@@ -7,7 +6,6 @@ import { Timestamp } from '../../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.marketplace.v1.metering';
 
 export interface UsageRecord {
-    $type: 'yandex.cloud.marketplace.v1.metering.UsageRecord';
     /** Unique identifier of the usage record (UUID format). */
     uuid: string;
     /** Consumed Marketplace SKU ID, linked to `UsageRecord.product_id`. */
@@ -19,13 +17,11 @@ export interface UsageRecord {
 }
 
 export interface AcceptedUsageRecord {
-    $type: 'yandex.cloud.marketplace.v1.metering.AcceptedUsageRecord';
     /** Unique identifier of the usage record (UUID format). */
     uuid: string;
 }
 
 export interface RejectedUsageRecord {
-    $type: 'yandex.cloud.marketplace.v1.metering.RejectedUsageRecord';
     /** Unique identifier of the usage record (UUID format). */
     uuid: string;
     /** The reason of rejection. */
@@ -100,16 +96,9 @@ export function rejectedUsageRecord_ReasonToJSON(object: RejectedUsageRecord_Rea
     }
 }
 
-const baseUsageRecord: object = {
-    $type: 'yandex.cloud.marketplace.v1.metering.UsageRecord',
-    uuid: '',
-    skuId: '',
-    quantity: 0,
-};
+const baseUsageRecord: object = { uuid: '', skuId: '', quantity: 0 };
 
 export const UsageRecord = {
-    $type: 'yandex.cloud.marketplace.v1.metering.UsageRecord' as const,
-
     encode(message: UsageRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.uuid !== '') {
             writer.uint32(10).string(message.uuid);
@@ -186,16 +175,9 @@ export const UsageRecord = {
     },
 };
 
-messageTypeRegistry.set(UsageRecord.$type, UsageRecord);
-
-const baseAcceptedUsageRecord: object = {
-    $type: 'yandex.cloud.marketplace.v1.metering.AcceptedUsageRecord',
-    uuid: '',
-};
+const baseAcceptedUsageRecord: object = { uuid: '' };
 
 export const AcceptedUsageRecord = {
-    $type: 'yandex.cloud.marketplace.v1.metering.AcceptedUsageRecord' as const,
-
     encode(message: AcceptedUsageRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.uuid !== '') {
             writer.uint32(10).string(message.uuid);
@@ -242,17 +224,9 @@ export const AcceptedUsageRecord = {
     },
 };
 
-messageTypeRegistry.set(AcceptedUsageRecord.$type, AcceptedUsageRecord);
-
-const baseRejectedUsageRecord: object = {
-    $type: 'yandex.cloud.marketplace.v1.metering.RejectedUsageRecord',
-    uuid: '',
-    reason: 0,
-};
+const baseRejectedUsageRecord: object = { uuid: '', reason: 0 };
 
 export const RejectedUsageRecord = {
-    $type: 'yandex.cloud.marketplace.v1.metering.RejectedUsageRecord' as const,
-
     encode(message: RejectedUsageRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.uuid !== '') {
             writer.uint32(10).string(message.uuid);
@@ -312,8 +286,6 @@ export const RejectedUsageRecord = {
     },
 };
 
-messageTypeRegistry.set(RejectedUsageRecord.$type, RejectedUsageRecord);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -334,21 +306,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

@@ -1,12 +1,10 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.smartwebsecurity.v1.waf';
 
 export interface RuleSetDescriptor {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.RuleSetDescriptor';
     /** Name of the rule set */
     name: string;
     /** Version of the rule set */
@@ -18,7 +16,6 @@ export interface RuleSetDescriptor {
 }
 
 export interface RuleSetDescriptor_RuleDescription {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.RuleSetDescriptor.RuleDescription';
     /** ID of the rule */
     id: string;
     /**
@@ -35,16 +32,9 @@ export interface RuleSetDescriptor_RuleDescription {
     paranoiaLevel: number;
 }
 
-const baseRuleSetDescriptor: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.RuleSetDescriptor',
-    name: '',
-    version: '',
-    id: '',
-};
+const baseRuleSetDescriptor: object = { name: '', version: '', id: '' };
 
 export const RuleSetDescriptor = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.RuleSetDescriptor' as const,
-
     encode(message: RuleSetDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -129,18 +119,9 @@ export const RuleSetDescriptor = {
     },
 };
 
-messageTypeRegistry.set(RuleSetDescriptor.$type, RuleSetDescriptor);
-
-const baseRuleSetDescriptor_RuleDescription: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.RuleSetDescriptor.RuleDescription',
-    id: '',
-    anomalyScore: 0,
-    paranoiaLevel: 0,
-};
+const baseRuleSetDescriptor_RuleDescription: object = { id: '', anomalyScore: 0, paranoiaLevel: 0 };
 
 export const RuleSetDescriptor_RuleDescription = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.waf.RuleSetDescriptor.RuleDescription' as const,
-
     encode(
         message: RuleSetDescriptor_RuleDescription,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -221,8 +202,6 @@ export const RuleSetDescriptor_RuleDescription = {
     },
 };
 
-messageTypeRegistry.set(RuleSetDescriptor_RuleDescription.$type, RuleSetDescriptor_RuleDescription);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -243,16 +222,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

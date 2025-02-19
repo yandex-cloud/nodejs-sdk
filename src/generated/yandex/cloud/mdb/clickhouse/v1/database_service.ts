@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,7 +19,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.mdb.clickhouse.v1';
 
 export interface GetDatabaseRequest {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.GetDatabaseRequest';
     /**
      * ID of the ClickHouse cluster that the database belongs to.
      * To get the cluster ID, use a [ClusterService.List] request.
@@ -34,7 +32,6 @@ export interface GetDatabaseRequest {
 }
 
 export interface ListDatabasesRequest {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListDatabasesRequest';
     /**
      * ID of the ClickHouse cluster to list databases in.
      * To get the cluster ID, use a [ClusterService.List] request.
@@ -54,7 +51,6 @@ export interface ListDatabasesRequest {
 }
 
 export interface ListDatabasesResponse {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListDatabasesResponse';
     /** List of ClickHouse databases. */
     databases: Database[];
     /**
@@ -67,7 +63,6 @@ export interface ListDatabasesResponse {
 }
 
 export interface CreateDatabaseRequest {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.CreateDatabaseRequest';
     /**
      * ID of the ClickHouse cluster to create a database in.
      * To get the cluster ID, use a [ClusterService.List] request.
@@ -78,7 +73,6 @@ export interface CreateDatabaseRequest {
 }
 
 export interface CreateDatabaseMetadata {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.CreateDatabaseMetadata';
     /** ID of the ClickHouse cluster where a database is being created. */
     clusterId: string;
     /** Name of the ClickHouse database that is being created. */
@@ -86,7 +80,6 @@ export interface CreateDatabaseMetadata {
 }
 
 export interface DeleteDatabaseRequest {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DeleteDatabaseRequest';
     /**
      * ID of the ClickHouse cluster to delete a database in.
      * To get the cluster ID, use a [ClusterService.List] request.
@@ -100,22 +93,15 @@ export interface DeleteDatabaseRequest {
 }
 
 export interface DeleteDatabaseMetadata {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DeleteDatabaseMetadata';
     /** ID of the ClickHouse cluster where a database is being deleted. */
     clusterId: string;
     /** Name of the ClickHouse database that is being deleted. */
     databaseName: string;
 }
 
-const baseGetDatabaseRequest: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.GetDatabaseRequest',
-    clusterId: '',
-    databaseName: '',
-};
+const baseGetDatabaseRequest: object = { clusterId: '', databaseName: '' };
 
 export const GetDatabaseRequest = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.GetDatabaseRequest' as const,
-
     encode(message: GetDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -177,18 +163,9 @@ export const GetDatabaseRequest = {
     },
 };
 
-messageTypeRegistry.set(GetDatabaseRequest.$type, GetDatabaseRequest);
-
-const baseListDatabasesRequest: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListDatabasesRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListDatabasesRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListDatabasesRequest = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListDatabasesRequest' as const,
-
     encode(message: ListDatabasesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -260,16 +237,9 @@ export const ListDatabasesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListDatabasesRequest.$type, ListDatabasesRequest);
-
-const baseListDatabasesResponse: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListDatabasesResponse',
-    nextPageToken: '',
-};
+const baseListDatabasesResponse: object = { nextPageToken: '' };
 
 export const ListDatabasesResponse = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.ListDatabasesResponse' as const,
-
     encode(message: ListDatabasesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.databases) {
             Database.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -333,16 +303,9 @@ export const ListDatabasesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListDatabasesResponse.$type, ListDatabasesResponse);
-
-const baseCreateDatabaseRequest: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.CreateDatabaseRequest',
-    clusterId: '',
-};
+const baseCreateDatabaseRequest: object = { clusterId: '' };
 
 export const CreateDatabaseRequest = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.CreateDatabaseRequest' as const,
-
     encode(message: CreateDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -410,17 +373,9 @@ export const CreateDatabaseRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateDatabaseRequest.$type, CreateDatabaseRequest);
-
-const baseCreateDatabaseMetadata: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.CreateDatabaseMetadata',
-    clusterId: '',
-    databaseName: '',
-};
+const baseCreateDatabaseMetadata: object = { clusterId: '', databaseName: '' };
 
 export const CreateDatabaseMetadata = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.CreateDatabaseMetadata' as const,
-
     encode(message: CreateDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -482,17 +437,9 @@ export const CreateDatabaseMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateDatabaseMetadata.$type, CreateDatabaseMetadata);
-
-const baseDeleteDatabaseRequest: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DeleteDatabaseRequest',
-    clusterId: '',
-    databaseName: '',
-};
+const baseDeleteDatabaseRequest: object = { clusterId: '', databaseName: '' };
 
 export const DeleteDatabaseRequest = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DeleteDatabaseRequest' as const,
-
     encode(message: DeleteDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -554,17 +501,9 @@ export const DeleteDatabaseRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteDatabaseRequest.$type, DeleteDatabaseRequest);
-
-const baseDeleteDatabaseMetadata: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DeleteDatabaseMetadata',
-    clusterId: '',
-    databaseName: '',
-};
+const baseDeleteDatabaseMetadata: object = { clusterId: '', databaseName: '' };
 
 export const DeleteDatabaseMetadata = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DeleteDatabaseMetadata' as const,
-
     encode(message: DeleteDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -625,8 +564,6 @@ export const DeleteDatabaseMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteDatabaseMetadata.$type, DeleteDatabaseMetadata);
 
 /**
  * A set of methods for managing ClickHouse Database resources.
@@ -802,16 +739,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

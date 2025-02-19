@@ -1,12 +1,10 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.ai.vision.v2';
 
 export interface Image {
-    $type: 'yandex.cloud.ai.vision.v2.Image';
     /** bytes with data */
     content: Buffer | undefined;
     /** type of data */
@@ -52,11 +50,9 @@ export function image_ImageTypeToJSON(object: Image_ImageType): string {
     }
 }
 
-const baseImage: object = { $type: 'yandex.cloud.ai.vision.v2.Image', imageType: 0 };
+const baseImage: object = { imageType: 0 };
 
 export const Image = {
-    $type: 'yandex.cloud.ai.vision.v2.Image' as const,
-
     encode(message: Image, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.content !== undefined) {
             writer.uint32(10).bytes(message.content);
@@ -119,8 +115,6 @@ export const Image = {
     },
 };
 
-messageTypeRegistry.set(Image.$type, Image);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -162,16 +156,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

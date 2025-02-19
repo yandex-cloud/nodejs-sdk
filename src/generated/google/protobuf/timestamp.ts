@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -99,7 +98,6 @@ export const protobufPackage = 'google.protobuf';
  * ) to obtain a formatter capable of generating timestamps in this format.
  */
 export interface Timestamp {
-    $type: 'google.protobuf.Timestamp';
     /**
      * Represents seconds of UTC time since Unix epoch
      * 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to
@@ -115,11 +113,9 @@ export interface Timestamp {
     nanos: number;
 }
 
-const baseTimestamp: object = { $type: 'google.protobuf.Timestamp', seconds: 0, nanos: 0 };
+const baseTimestamp: object = { seconds: 0, nanos: 0 };
 
 export const Timestamp = {
-    $type: 'google.protobuf.Timestamp' as const,
-
     encode(message: Timestamp, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.seconds !== 0) {
             writer.uint32(8).int64(message.seconds);
@@ -175,8 +171,6 @@ export const Timestamp = {
     },
 };
 
-messageTypeRegistry.set(Timestamp.$type, Timestamp);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -197,16 +191,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

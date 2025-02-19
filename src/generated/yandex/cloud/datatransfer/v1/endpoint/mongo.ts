@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -13,7 +12,6 @@ import {
 export const protobufPackage = 'yandex.cloud.datatransfer.v1.endpoint';
 
 export interface OnPremiseMongo {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.OnPremiseMongo';
     hosts: string[];
     port: number;
     replicaSet: string;
@@ -21,7 +19,6 @@ export interface OnPremiseMongo {
 }
 
 export interface MongoConnectionOptions {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MongoConnectionOptions';
     mdbClusterId: string | undefined;
     onPremise?: OnPremiseMongo | undefined;
     /** User name */
@@ -33,18 +30,15 @@ export interface MongoConnectionOptions {
 }
 
 export interface MongoConnection {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MongoConnection';
     connectionOptions?: MongoConnectionOptions | undefined;
 }
 
 export interface MongoCollection {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MongoCollection';
     databaseName: string;
     collectionName: string;
 }
 
 export interface MongoSource {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MongoSource';
     connection?: MongoConnection;
     subnetId: string;
     /**
@@ -64,7 +58,6 @@ export interface MongoSource {
 }
 
 export interface MongoTarget {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MongoTarget';
     connection?: MongoConnection;
     /** Database name */
     database: string;
@@ -74,16 +67,9 @@ export interface MongoTarget {
     securityGroups: string[];
 }
 
-const baseOnPremiseMongo: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.OnPremiseMongo',
-    hosts: '',
-    port: 0,
-    replicaSet: '',
-};
+const baseOnPremiseMongo: object = { hosts: '', port: 0, replicaSet: '' };
 
 export const OnPremiseMongo = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.OnPremiseMongo' as const,
-
     encode(message: OnPremiseMongo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.hosts) {
             writer.uint32(10).string(v!);
@@ -170,17 +156,9 @@ export const OnPremiseMongo = {
     },
 };
 
-messageTypeRegistry.set(OnPremiseMongo.$type, OnPremiseMongo);
-
-const baseMongoConnectionOptions: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MongoConnectionOptions',
-    user: '',
-    authSource: '',
-};
+const baseMongoConnectionOptions: object = { user: '', authSource: '' };
 
 export const MongoConnectionOptions = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MongoConnectionOptions' as const,
-
     encode(message: MongoConnectionOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mdbClusterId !== undefined) {
             writer.uint32(10).string(message.mdbClusterId);
@@ -285,15 +263,9 @@ export const MongoConnectionOptions = {
     },
 };
 
-messageTypeRegistry.set(MongoConnectionOptions.$type, MongoConnectionOptions);
-
-const baseMongoConnection: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MongoConnection',
-};
+const baseMongoConnection: object = {};
 
 export const MongoConnection = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MongoConnection' as const,
-
     encode(message: MongoConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectionOptions !== undefined) {
             MongoConnectionOptions.encode(
@@ -353,17 +325,9 @@ export const MongoConnection = {
     },
 };
 
-messageTypeRegistry.set(MongoConnection.$type, MongoConnection);
-
-const baseMongoCollection: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MongoCollection',
-    databaseName: '',
-    collectionName: '',
-};
+const baseMongoCollection: object = { databaseName: '', collectionName: '' };
 
 export const MongoCollection = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MongoCollection' as const,
-
     encode(message: MongoCollection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.databaseName !== '') {
             writer.uint32(10).string(message.databaseName);
@@ -423,18 +387,9 @@ export const MongoCollection = {
     },
 };
 
-messageTypeRegistry.set(MongoCollection.$type, MongoCollection);
-
-const baseMongoSource: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MongoSource',
-    subnetId: '',
-    secondaryPreferredMode: false,
-    securityGroups: '',
-};
+const baseMongoSource: object = { subnetId: '', secondaryPreferredMode: false, securityGroups: '' };
 
 export const MongoSource = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MongoSource' as const,
-
     encode(message: MongoSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             MongoConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -566,10 +521,7 @@ export const MongoSource = {
     },
 };
 
-messageTypeRegistry.set(MongoSource.$type, MongoSource);
-
 const baseMongoTarget: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MongoTarget',
     database: '',
     cleanupPolicy: 0,
     subnetId: '',
@@ -577,8 +529,6 @@ const baseMongoTarget: object = {
 };
 
 export const MongoTarget = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MongoTarget' as const,
-
     encode(message: MongoTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             MongoConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -683,8 +633,6 @@ export const MongoTarget = {
     },
 };
 
-messageTypeRegistry.set(MongoTarget.$type, MongoTarget);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -705,16 +653,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

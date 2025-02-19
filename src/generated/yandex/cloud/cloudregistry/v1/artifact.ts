@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.cloudregistry.v1';
 
 /** A Artifact resource. */
 export interface Artifact {
-    $type: 'yandex.cloud.cloudregistry.v1.Artifact';
     /** Output only. ID of the artifact. */
     id: string;
     /** Path where the artifact is located. */
@@ -119,18 +117,9 @@ export function artifact_StatusToJSON(object: Artifact_Status): string {
     }
 }
 
-const baseArtifact: object = {
-    $type: 'yandex.cloud.cloudregistry.v1.Artifact',
-    id: '',
-    path: '',
-    name: '',
-    kind: 0,
-    status: 0,
-};
+const baseArtifact: object = { id: '', path: '', name: '', kind: 0, status: 0 };
 
 export const Artifact = {
-    $type: 'yandex.cloud.cloudregistry.v1.Artifact' as const,
-
     encode(message: Artifact, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -241,8 +230,6 @@ export const Artifact = {
     },
 };
 
-messageTypeRegistry.set(Artifact.$type, Artifact);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -252,21 +239,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

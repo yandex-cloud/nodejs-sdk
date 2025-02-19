@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -35,7 +34,6 @@ import {
 export const protobufPackage = 'yandex.cloud.kms.v1.asymmetricsignature';
 
 export interface CreateAsymmetricSignatureKeyRequest {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.CreateAsymmetricSignatureKeyRequest';
     /** ID of the folder to create a asymmetric KMS key in. */
     folderId: string;
     /** Name of the key. */
@@ -54,19 +52,16 @@ export interface CreateAsymmetricSignatureKeyRequest {
 }
 
 export interface CreateAsymmetricSignatureKeyRequest_LabelsEntry {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.CreateAsymmetricSignatureKeyRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateAsymmetricSignatureKeyMetadata {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.CreateAsymmetricSignatureKeyMetadata';
     /** ID of the key being created. */
     keyId: string;
 }
 
 export interface GetAsymmetricSignatureKeyRequest {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.GetAsymmetricSignatureKeyRequest';
     /**
      * ID of the asymmetric KMS key to return.
      * To get the ID of an asymmetric KMS key use a [AsymmetricSignatureKeyService.List] request.
@@ -75,7 +70,6 @@ export interface GetAsymmetricSignatureKeyRequest {
 }
 
 export interface ListAsymmetricSignatureKeysRequest {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.ListAsymmetricSignatureKeysRequest';
     /** ID of the folder to list asymmetric KMS keys in. */
     folderId: string;
     /**
@@ -93,7 +87,6 @@ export interface ListAsymmetricSignatureKeysRequest {
 }
 
 export interface ListAsymmetricSignatureKeysResponse {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.ListAsymmetricSignatureKeysResponse';
     /** List of asymmetric KMS keys in the specified folder. */
     keys: AsymmetricSignatureKey[];
     /**
@@ -107,7 +100,6 @@ export interface ListAsymmetricSignatureKeysResponse {
 }
 
 export interface UpdateAsymmetricSignatureKeyRequest {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.UpdateAsymmetricSignatureKeyRequest';
     /**
      * ID of the asymmetric KMS key to update.
      * To get the ID of a asymmetric KMS key use a [AsymmetricSignatureKeyService.List] request.
@@ -131,31 +123,26 @@ export interface UpdateAsymmetricSignatureKeyRequest {
 }
 
 export interface UpdateAsymmetricSignatureKeyRequest_LabelsEntry {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.UpdateAsymmetricSignatureKeyRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateAsymmetricSignatureKeyMetadata {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.UpdateAsymmetricSignatureKeyMetadata';
     /** ID of the key being updated. */
     keyId: string;
 }
 
 export interface DeleteAsymmetricSignatureKeyRequest {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.DeleteAsymmetricSignatureKeyRequest';
     /** ID of the key to be deleted. */
     keyId: string;
 }
 
 export interface DeleteAsymmetricSignatureKeyMetadata {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.DeleteAsymmetricSignatureKeyMetadata';
     /** ID of the key being deleted. */
     keyId: string;
 }
 
 export interface ListAsymmetricSignatureKeyOperationsRequest {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.ListAsymmetricSignatureKeyOperationsRequest';
     /**
      * ID of the symmetric KMS key to get operations for.
      *
@@ -177,7 +164,6 @@ export interface ListAsymmetricSignatureKeyOperationsRequest {
 }
 
 export interface ListAsymmetricSignatureKeyOperationsResponse {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.ListAsymmetricSignatureKeyOperationsResponse';
     /** List of operations for the specified key. */
     operations: Operation[];
     /**
@@ -190,7 +176,6 @@ export interface ListAsymmetricSignatureKeyOperationsResponse {
 }
 
 const baseCreateAsymmetricSignatureKeyRequest: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.CreateAsymmetricSignatureKeyRequest',
     folderId: '',
     name: '',
     description: '',
@@ -199,8 +184,6 @@ const baseCreateAsymmetricSignatureKeyRequest: object = {
 };
 
 export const CreateAsymmetricSignatureKeyRequest = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.CreateAsymmetricSignatureKeyRequest' as const,
-
     encode(
         message: CreateAsymmetricSignatureKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -216,11 +199,7 @@ export const CreateAsymmetricSignatureKeyRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateAsymmetricSignatureKeyRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.kms.v1.asymmetricsignature.CreateAsymmetricSignatureKeyRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -350,20 +329,9 @@ export const CreateAsymmetricSignatureKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateAsymmetricSignatureKeyRequest.$type,
-    CreateAsymmetricSignatureKeyRequest,
-);
-
-const baseCreateAsymmetricSignatureKeyRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.CreateAsymmetricSignatureKeyRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateAsymmetricSignatureKeyRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateAsymmetricSignatureKeyRequest_LabelsEntry = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.CreateAsymmetricSignatureKeyRequest.LabelsEntry' as const,
-
     encode(
         message: CreateAsymmetricSignatureKeyRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -432,19 +400,9 @@ export const CreateAsymmetricSignatureKeyRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateAsymmetricSignatureKeyRequest_LabelsEntry.$type,
-    CreateAsymmetricSignatureKeyRequest_LabelsEntry,
-);
-
-const baseCreateAsymmetricSignatureKeyMetadata: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.CreateAsymmetricSignatureKeyMetadata',
-    keyId: '',
-};
+const baseCreateAsymmetricSignatureKeyMetadata: object = { keyId: '' };
 
 export const CreateAsymmetricSignatureKeyMetadata = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.CreateAsymmetricSignatureKeyMetadata' as const,
-
     encode(
         message: CreateAsymmetricSignatureKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -501,19 +459,9 @@ export const CreateAsymmetricSignatureKeyMetadata = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateAsymmetricSignatureKeyMetadata.$type,
-    CreateAsymmetricSignatureKeyMetadata,
-);
-
-const baseGetAsymmetricSignatureKeyRequest: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.GetAsymmetricSignatureKeyRequest',
-    keyId: '',
-};
+const baseGetAsymmetricSignatureKeyRequest: object = { keyId: '' };
 
 export const GetAsymmetricSignatureKeyRequest = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.GetAsymmetricSignatureKeyRequest' as const,
-
     encode(
         message: GetAsymmetricSignatureKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -570,18 +518,9 @@ export const GetAsymmetricSignatureKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(GetAsymmetricSignatureKeyRequest.$type, GetAsymmetricSignatureKeyRequest);
-
-const baseListAsymmetricSignatureKeysRequest: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.ListAsymmetricSignatureKeysRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListAsymmetricSignatureKeysRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
 export const ListAsymmetricSignatureKeysRequest = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.ListAsymmetricSignatureKeysRequest' as const,
-
     encode(
         message: ListAsymmetricSignatureKeysRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -662,19 +601,9 @@ export const ListAsymmetricSignatureKeysRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    ListAsymmetricSignatureKeysRequest.$type,
-    ListAsymmetricSignatureKeysRequest,
-);
-
-const baseListAsymmetricSignatureKeysResponse: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.ListAsymmetricSignatureKeysResponse',
-    nextPageToken: '',
-};
+const baseListAsymmetricSignatureKeysResponse: object = { nextPageToken: '' };
 
 export const ListAsymmetricSignatureKeysResponse = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.ListAsymmetricSignatureKeysResponse' as const,
-
     encode(
         message: ListAsymmetricSignatureKeysResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -747,13 +676,7 @@ export const ListAsymmetricSignatureKeysResponse = {
     },
 };
 
-messageTypeRegistry.set(
-    ListAsymmetricSignatureKeysResponse.$type,
-    ListAsymmetricSignatureKeysResponse,
-);
-
 const baseUpdateAsymmetricSignatureKeyRequest: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.UpdateAsymmetricSignatureKeyRequest',
     keyId: '',
     name: '',
     description: '',
@@ -762,8 +685,6 @@ const baseUpdateAsymmetricSignatureKeyRequest: object = {
 };
 
 export const UpdateAsymmetricSignatureKeyRequest = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.UpdateAsymmetricSignatureKeyRequest' as const,
-
     encode(
         message: UpdateAsymmetricSignatureKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -785,11 +706,7 @@ export const UpdateAsymmetricSignatureKeyRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateAsymmetricSignatureKeyRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.kms.v1.asymmetricsignature.UpdateAsymmetricSignatureKeyRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -927,20 +844,9 @@ export const UpdateAsymmetricSignatureKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateAsymmetricSignatureKeyRequest.$type,
-    UpdateAsymmetricSignatureKeyRequest,
-);
-
-const baseUpdateAsymmetricSignatureKeyRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.UpdateAsymmetricSignatureKeyRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateAsymmetricSignatureKeyRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateAsymmetricSignatureKeyRequest_LabelsEntry = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.UpdateAsymmetricSignatureKeyRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateAsymmetricSignatureKeyRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1009,19 +915,9 @@ export const UpdateAsymmetricSignatureKeyRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateAsymmetricSignatureKeyRequest_LabelsEntry.$type,
-    UpdateAsymmetricSignatureKeyRequest_LabelsEntry,
-);
-
-const baseUpdateAsymmetricSignatureKeyMetadata: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.UpdateAsymmetricSignatureKeyMetadata',
-    keyId: '',
-};
+const baseUpdateAsymmetricSignatureKeyMetadata: object = { keyId: '' };
 
 export const UpdateAsymmetricSignatureKeyMetadata = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.UpdateAsymmetricSignatureKeyMetadata' as const,
-
     encode(
         message: UpdateAsymmetricSignatureKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1078,19 +974,9 @@ export const UpdateAsymmetricSignatureKeyMetadata = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateAsymmetricSignatureKeyMetadata.$type,
-    UpdateAsymmetricSignatureKeyMetadata,
-);
-
-const baseDeleteAsymmetricSignatureKeyRequest: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.DeleteAsymmetricSignatureKeyRequest',
-    keyId: '',
-};
+const baseDeleteAsymmetricSignatureKeyRequest: object = { keyId: '' };
 
 export const DeleteAsymmetricSignatureKeyRequest = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.DeleteAsymmetricSignatureKeyRequest' as const,
-
     encode(
         message: DeleteAsymmetricSignatureKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1147,19 +1033,9 @@ export const DeleteAsymmetricSignatureKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    DeleteAsymmetricSignatureKeyRequest.$type,
-    DeleteAsymmetricSignatureKeyRequest,
-);
-
-const baseDeleteAsymmetricSignatureKeyMetadata: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.DeleteAsymmetricSignatureKeyMetadata',
-    keyId: '',
-};
+const baseDeleteAsymmetricSignatureKeyMetadata: object = { keyId: '' };
 
 export const DeleteAsymmetricSignatureKeyMetadata = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.DeleteAsymmetricSignatureKeyMetadata' as const,
-
     encode(
         message: DeleteAsymmetricSignatureKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1216,21 +1092,13 @@ export const DeleteAsymmetricSignatureKeyMetadata = {
     },
 };
 
-messageTypeRegistry.set(
-    DeleteAsymmetricSignatureKeyMetadata.$type,
-    DeleteAsymmetricSignatureKeyMetadata,
-);
-
 const baseListAsymmetricSignatureKeyOperationsRequest: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.ListAsymmetricSignatureKeyOperationsRequest',
     keyId: '',
     pageSize: 0,
     pageToken: '',
 };
 
 export const ListAsymmetricSignatureKeyOperationsRequest = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.ListAsymmetricSignatureKeyOperationsRequest' as const,
-
     encode(
         message: ListAsymmetricSignatureKeyOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1312,19 +1180,9 @@ export const ListAsymmetricSignatureKeyOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    ListAsymmetricSignatureKeyOperationsRequest.$type,
-    ListAsymmetricSignatureKeyOperationsRequest,
-);
-
-const baseListAsymmetricSignatureKeyOperationsResponse: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.ListAsymmetricSignatureKeyOperationsResponse',
-    nextPageToken: '',
-};
+const baseListAsymmetricSignatureKeyOperationsResponse: object = { nextPageToken: '' };
 
 export const ListAsymmetricSignatureKeyOperationsResponse = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.ListAsymmetricSignatureKeyOperationsResponse' as const,
-
     encode(
         message: ListAsymmetricSignatureKeyOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1399,11 +1257,6 @@ export const ListAsymmetricSignatureKeyOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(
-    ListAsymmetricSignatureKeyOperationsResponse.$type,
-    ListAsymmetricSignatureKeyOperationsResponse,
-);
 
 /** Set of methods for managing asymmetric signature keys. */
 export const AsymmetricSignatureKeyServiceService = {
@@ -1774,16 +1627,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

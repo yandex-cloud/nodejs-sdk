@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -17,7 +16,6 @@ import {
 export const protobufPackage = 'yandex.cloud.datatransfer.v1.endpoint';
 
 export interface PostgresObjectTransferSettings {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.PostgresObjectTransferSettings';
     /**
      * Sequences
      *
@@ -129,7 +127,6 @@ export interface PostgresObjectTransferSettings {
 }
 
 export interface OnPremisePostgres {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.OnPremisePostgres';
     /** Will be used if the cluster ID is not specified. */
     port: number;
     /** Network interface for endpoint. If none will assume public ipv4 */
@@ -140,7 +137,6 @@ export interface OnPremisePostgres {
 }
 
 export interface PostgresConnection {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.PostgresConnection';
     /** Managed Service for PostgreSQL cluster ID */
     mdbClusterId: string | undefined;
     /** Connection options for on-premise PostgreSQL */
@@ -149,7 +145,6 @@ export interface PostgresConnection {
 }
 
 export interface PostgresSource {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.PostgresSource';
     /** Database connection settings */
     connection?: PostgresConnection;
     /** Database name */
@@ -189,7 +184,6 @@ export interface PostgresSource {
 }
 
 export interface PostgresTarget {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.PostgresTarget';
     /** Database connection settings */
     connection?: PostgresConnection;
     /** Database name */
@@ -208,7 +202,6 @@ export interface PostgresTarget {
 }
 
 const basePostgresObjectTransferSettings: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.PostgresObjectTransferSettings',
     sequence: 0,
     sequenceOwnedBy: 0,
     table: 0,
@@ -230,8 +223,6 @@ const basePostgresObjectTransferSettings: object = {
 };
 
 export const PostgresObjectTransferSettings = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.PostgresObjectTransferSettings' as const,
-
     encode(
         message: PostgresObjectTransferSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -498,18 +489,9 @@ export const PostgresObjectTransferSettings = {
     },
 };
 
-messageTypeRegistry.set(PostgresObjectTransferSettings.$type, PostgresObjectTransferSettings);
-
-const baseOnPremisePostgres: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.OnPremisePostgres',
-    port: 0,
-    subnetId: '',
-    hosts: '',
-};
+const baseOnPremisePostgres: object = { port: 0, subnetId: '', hosts: '' };
 
 export const OnPremisePostgres = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.OnPremisePostgres' as const,
-
     encode(message: OnPremisePostgres, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.port !== 0) {
             writer.uint32(16).int64(message.port);
@@ -596,15 +578,9 @@ export const OnPremisePostgres = {
     },
 };
 
-messageTypeRegistry.set(OnPremisePostgres.$type, OnPremisePostgres);
-
-const basePostgresConnection: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.PostgresConnection',
-};
+const basePostgresConnection: object = {};
 
 export const PostgresConnection = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.PostgresConnection' as const,
-
     encode(message: PostgresConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mdbClusterId !== undefined) {
             writer.uint32(10).string(message.mdbClusterId);
@@ -698,10 +674,7 @@ export const PostgresConnection = {
     },
 };
 
-messageTypeRegistry.set(PostgresConnection.$type, PostgresConnection);
-
 const basePostgresSource: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.PostgresSource',
     database: '',
     user: '',
     includeTables: '',
@@ -712,8 +685,6 @@ const basePostgresSource: object = {
 };
 
 export const PostgresSource = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.PostgresSource' as const,
-
     encode(message: PostgresSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             PostgresConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -895,19 +866,9 @@ export const PostgresSource = {
     },
 };
 
-messageTypeRegistry.set(PostgresSource.$type, PostgresSource);
-
-const basePostgresTarget: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.PostgresTarget',
-    database: '',
-    user: '',
-    cleanupPolicy: 0,
-    securityGroups: '',
-};
+const basePostgresTarget: object = { database: '', user: '', cleanupPolicy: 0, securityGroups: '' };
 
 export const PostgresTarget = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.PostgresTarget' as const,
-
     encode(message: PostgresTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             PostgresConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -1025,8 +986,6 @@ export const PostgresTarget = {
     },
 };
 
-messageTypeRegistry.set(PostgresTarget.$type, PostgresTarget);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1047,16 +1006,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

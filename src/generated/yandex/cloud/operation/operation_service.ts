@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,25 +18,18 @@ import { Operation } from '../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.operation';
 
 export interface GetOperationRequest {
-    $type: 'yandex.cloud.operation.GetOperationRequest';
     /** ID of the Operation resource to return. */
     operationId: string;
 }
 
 export interface CancelOperationRequest {
-    $type: 'yandex.cloud.operation.CancelOperationRequest';
     /** ID of the operation to cancel. */
     operationId: string;
 }
 
-const baseGetOperationRequest: object = {
-    $type: 'yandex.cloud.operation.GetOperationRequest',
-    operationId: '',
-};
+const baseGetOperationRequest: object = { operationId: '' };
 
 export const GetOperationRequest = {
-    $type: 'yandex.cloud.operation.GetOperationRequest' as const,
-
     encode(message: GetOperationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.operationId !== '') {
             writer.uint32(10).string(message.operationId);
@@ -87,16 +79,9 @@ export const GetOperationRequest = {
     },
 };
 
-messageTypeRegistry.set(GetOperationRequest.$type, GetOperationRequest);
-
-const baseCancelOperationRequest: object = {
-    $type: 'yandex.cloud.operation.CancelOperationRequest',
-    operationId: '',
-};
+const baseCancelOperationRequest: object = { operationId: '' };
 
 export const CancelOperationRequest = {
-    $type: 'yandex.cloud.operation.CancelOperationRequest' as const,
-
     encode(message: CancelOperationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.operationId !== '') {
             writer.uint32(10).string(message.operationId);
@@ -145,8 +130,6 @@ export const CancelOperationRequest = {
         return message;
     },
 };
-
-messageTypeRegistry.set(CancelOperationRequest.$type, CancelOperationRequest);
 
 /** A set of methods for managing operations for asynchronous API requests. */
 export const OperationServiceService = {
@@ -249,16 +232,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

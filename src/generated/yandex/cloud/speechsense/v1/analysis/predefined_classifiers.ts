@@ -1,12 +1,10 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.speechsense.v1.analysis';
 
 export interface RecognitionClassifierResult {
-    $type: 'yandex.cloud.speechsense.v1.analysis.RecognitionClassifierResult';
     /** Start time of the audio segment used for classification */
     startTimeMs: number;
     /** End time of the audio segment used for classification */
@@ -20,7 +18,6 @@ export interface RecognitionClassifierResult {
 }
 
 export interface PhraseHighlight {
-    $type: 'yandex.cloud.speechsense.v1.analysis.PhraseHighlight';
     /** Text transcription of the highlighted audio segment */
     text: string;
     /** offset in symbols from the beginning of whole phrase where highlight begins */
@@ -30,23 +27,15 @@ export interface PhraseHighlight {
 }
 
 export interface RecognitionClassifierLabel {
-    $type: 'yandex.cloud.speechsense.v1.analysis.RecognitionClassifierLabel';
     /** The label of the class predicted by the classifier */
     label: string;
     /** The prediction confidence */
     confidence: number;
 }
 
-const baseRecognitionClassifierResult: object = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.RecognitionClassifierResult',
-    startTimeMs: 0,
-    endTimeMs: 0,
-    classifier: '',
-};
+const baseRecognitionClassifierResult: object = { startTimeMs: 0, endTimeMs: 0, classifier: '' };
 
 export const RecognitionClassifierResult = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.RecognitionClassifierResult' as const,
-
     encode(
         message: RecognitionClassifierResult,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -157,18 +146,9 @@ export const RecognitionClassifierResult = {
     },
 };
 
-messageTypeRegistry.set(RecognitionClassifierResult.$type, RecognitionClassifierResult);
-
-const basePhraseHighlight: object = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.PhraseHighlight',
-    text: '',
-    offset: 0,
-    count: 0,
-};
+const basePhraseHighlight: object = { text: '', offset: 0, count: 0 };
 
 export const PhraseHighlight = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.PhraseHighlight' as const,
-
     encode(message: PhraseHighlight, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -233,17 +213,9 @@ export const PhraseHighlight = {
     },
 };
 
-messageTypeRegistry.set(PhraseHighlight.$type, PhraseHighlight);
-
-const baseRecognitionClassifierLabel: object = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.RecognitionClassifierLabel',
-    label: '',
-    confidence: 0,
-};
+const baseRecognitionClassifierLabel: object = { label: '', confidence: 0 };
 
 export const RecognitionClassifierLabel = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.RecognitionClassifierLabel' as const,
-
     encode(
         message: RecognitionClassifierLabel,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -306,8 +278,6 @@ export const RecognitionClassifierLabel = {
     },
 };
 
-messageTypeRegistry.set(RecognitionClassifierLabel.$type, RecognitionClassifierLabel);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -328,16 +298,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

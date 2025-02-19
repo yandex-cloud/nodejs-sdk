@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { DoubleValue, Int64Value } from '../../../../../google/protobuf/wrappers';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.ai.llm.v1alpha';
 
 /** Defines the options for text generation. */
 export interface GenerationOptions {
-    $type: 'yandex.cloud.ai.llm.v1alpha.GenerationOptions';
     /** Enables streaming of partially generated text. */
     partialResults: boolean;
     /**
@@ -25,7 +23,6 @@ export interface GenerationOptions {
 
 /** Represents an alternative generated response, including its score and token count. */
 export interface Alternative {
-    $type: 'yandex.cloud.ai.llm.v1alpha.Alternative';
     /** The generated text response. */
     text: string;
     /** The score or confidence of the generated text. */
@@ -36,7 +33,6 @@ export interface Alternative {
 
 /** Represents a message within a chat. */
 export interface Message {
-    $type: 'yandex.cloud.ai.llm.v1alpha.Message';
     /** Identifies the sender of the message. */
     role: string;
     /** The text content of the message. */
@@ -45,7 +41,6 @@ export interface Message {
 
 /** Represents a token, the basic unit of text, used by the LLM. */
 export interface Token {
-    $type: 'yandex.cloud.ai.llm.v1alpha.Token';
     /** An internal token identifier. */
     id: number;
     /** The textual representation of the token. */
@@ -54,29 +49,18 @@ export interface Token {
     special: boolean;
 }
 
-const baseGenerationOptions: object = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.GenerationOptions',
-    partialResults: false,
-};
+const baseGenerationOptions: object = { partialResults: false };
 
 export const GenerationOptions = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.GenerationOptions' as const,
-
     encode(message: GenerationOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.partialResults === true) {
             writer.uint32(8).bool(message.partialResults);
         }
         if (message.temperature !== undefined) {
-            DoubleValue.encode(
-                { $type: 'google.protobuf.DoubleValue', value: message.temperature! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            DoubleValue.encode({ value: message.temperature! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.maxTokens !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxTokens! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.maxTokens! }, writer.uint32(26).fork()).ldelim();
         }
         return writer;
     },
@@ -139,18 +123,9 @@ export const GenerationOptions = {
     },
 };
 
-messageTypeRegistry.set(GenerationOptions.$type, GenerationOptions);
-
-const baseAlternative: object = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.Alternative',
-    text: '',
-    score: 0,
-    numTokens: 0,
-};
+const baseAlternative: object = { text: '', score: 0, numTokens: 0 };
 
 export const Alternative = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.Alternative' as const,
-
     encode(message: Alternative, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -217,13 +192,9 @@ export const Alternative = {
     },
 };
 
-messageTypeRegistry.set(Alternative.$type, Alternative);
-
-const baseMessage: object = { $type: 'yandex.cloud.ai.llm.v1alpha.Message', role: '', text: '' };
+const baseMessage: object = { role: '', text: '' };
 
 export const Message = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.Message' as const,
-
     encode(message: Message, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.role !== '') {
             writer.uint32(10).string(message.role);
@@ -277,18 +248,9 @@ export const Message = {
     },
 };
 
-messageTypeRegistry.set(Message.$type, Message);
-
-const baseToken: object = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.Token',
-    id: 0,
-    text: '',
-    special: false,
-};
+const baseToken: object = { id: 0, text: '', special: false };
 
 export const Token = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.Token' as const,
-
     encode(message: Token, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== 0) {
             writer.uint32(8).int64(message.id);
@@ -354,8 +316,6 @@ export const Token = {
     },
 };
 
-messageTypeRegistry.set(Token.$type, Token);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -376,16 +336,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

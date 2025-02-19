@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ import { Timestamp } from '../../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.loadtesting.agent.v1';
 
 export interface ClaimAgentStatusRequest {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ClaimAgentStatusRequest';
     agentInstanceId: string;
     status: ClaimAgentStatusRequest_Status;
     statusMessage: string;
@@ -98,23 +96,18 @@ export function claimAgentStatusRequest_StatusToJSON(
 }
 
 export interface ClaimAgentStatusResponse {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ClaimAgentStatusResponse';
     code: number;
 }
 
 export interface ReportEventLogsRequest {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ReportEventLogsRequest';
     agentInstanceId: string;
     idempotencyKey: string;
     events: EventLog[];
 }
 
-export interface ReportEventLogsResponse {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ReportEventLogsResponse';
-}
+export interface ReportEventLogsResponse {}
 
 export interface EventLog {
-    $type: 'yandex.cloud.loadtesting.agent.v1.EventLog';
     message: string;
     severity: EventLog_Severity;
     timestamp?: Date;
@@ -178,21 +171,13 @@ export function eventLog_SeverityToJSON(object: EventLog_Severity): string {
 }
 
 export interface EventLog_MetadataEntry {
-    $type: 'yandex.cloud.loadtesting.agent.v1.EventLog.MetadataEntry';
     key: string;
     value: string;
 }
 
-const baseClaimAgentStatusRequest: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ClaimAgentStatusRequest',
-    agentInstanceId: '',
-    status: 0,
-    statusMessage: '',
-};
+const baseClaimAgentStatusRequest: object = { agentInstanceId: '', status: 0, statusMessage: '' };
 
 export const ClaimAgentStatusRequest = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ClaimAgentStatusRequest' as const,
-
     encode(message: ClaimAgentStatusRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentInstanceId !== '') {
             writer.uint32(10).string(message.agentInstanceId);
@@ -267,16 +252,9 @@ export const ClaimAgentStatusRequest = {
     },
 };
 
-messageTypeRegistry.set(ClaimAgentStatusRequest.$type, ClaimAgentStatusRequest);
-
-const baseClaimAgentStatusResponse: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ClaimAgentStatusResponse',
-    code: 0,
-};
+const baseClaimAgentStatusResponse: object = { code: 0 };
 
 export const ClaimAgentStatusResponse = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ClaimAgentStatusResponse' as const,
-
     encode(
         message: ClaimAgentStatusResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -326,17 +304,9 @@ export const ClaimAgentStatusResponse = {
     },
 };
 
-messageTypeRegistry.set(ClaimAgentStatusResponse.$type, ClaimAgentStatusResponse);
-
-const baseReportEventLogsRequest: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ReportEventLogsRequest',
-    agentInstanceId: '',
-    idempotencyKey: '',
-};
+const baseReportEventLogsRequest: object = { agentInstanceId: '', idempotencyKey: '' };
 
 export const ReportEventLogsRequest = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ReportEventLogsRequest' as const,
-
     encode(message: ReportEventLogsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentInstanceId !== '') {
             writer.uint32(10).string(message.agentInstanceId);
@@ -412,15 +382,9 @@ export const ReportEventLogsRequest = {
     },
 };
 
-messageTypeRegistry.set(ReportEventLogsRequest.$type, ReportEventLogsRequest);
-
-const baseReportEventLogsResponse: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ReportEventLogsResponse',
-};
+const baseReportEventLogsResponse: object = {};
 
 export const ReportEventLogsResponse = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ReportEventLogsResponse' as const,
-
     encode(_: ReportEventLogsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -458,17 +422,9 @@ export const ReportEventLogsResponse = {
     },
 };
 
-messageTypeRegistry.set(ReportEventLogsResponse.$type, ReportEventLogsResponse);
-
-const baseEventLog: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.EventLog',
-    message: '',
-    severity: 0,
-};
+const baseEventLog: object = { message: '', severity: 0 };
 
 export const EventLog = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.EventLog' as const,
-
     encode(message: EventLog, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.message !== '') {
             writer.uint32(10).string(message.message);
@@ -481,11 +437,7 @@ export const EventLog = {
         }
         Object.entries(message.metadata).forEach(([key, value]) => {
             EventLog_MetadataEntry.encode(
-                {
-                    $type: 'yandex.cloud.loadtesting.agent.v1.EventLog.MetadataEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -578,17 +530,9 @@ export const EventLog = {
     },
 };
 
-messageTypeRegistry.set(EventLog.$type, EventLog);
-
-const baseEventLog_MetadataEntry: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.EventLog.MetadataEntry',
-    key: '',
-    value: '',
-};
+const baseEventLog_MetadataEntry: object = { key: '', value: '' };
 
 export const EventLog_MetadataEntry = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.EventLog.MetadataEntry' as const,
-
     encode(message: EventLog_MetadataEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -644,8 +588,6 @@ export const EventLog_MetadataEntry = {
         return message;
     },
 };
-
-messageTypeRegistry.set(EventLog_MetadataEntry.$type, EventLog_MetadataEntry);
 
 export const AgentServiceService = {
     /** Claims status for the specified agent. */
@@ -745,21 +687,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

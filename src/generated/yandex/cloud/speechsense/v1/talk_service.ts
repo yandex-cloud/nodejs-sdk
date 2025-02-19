@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -70,7 +69,6 @@ export function userRoleToJSON(object: UserRole): string {
 
 /** streaming request to create audio dialog */
 export interface StreamTalkRequest {
-    $type: 'yandex.cloud.speechsense.v1.StreamTalkRequest';
     /** talk document metadata containing channel id and channel field values */
     metadata?: TalkMetadata | undefined;
     /** audio metadata or chunk */
@@ -79,7 +77,6 @@ export interface StreamTalkRequest {
 
 /** request to create audio dialog */
 export interface UploadTalkRequest {
-    $type: 'yandex.cloud.speechsense.v1.UploadTalkRequest';
     /** talk_id, blank if initial upload request and present on metadata update */
     talkId: string;
     metadata?: TalkMetadata;
@@ -88,14 +85,12 @@ export interface UploadTalkRequest {
 }
 
 export interface UploadTalkResponse {
-    $type: 'yandex.cloud.speechsense.v1.UploadTalkResponse';
     /** id of created talk document */
     talkId: string;
 }
 
 /** request to create text based dialog */
 export interface UploadTextRequest {
-    $type: 'yandex.cloud.speechsense.v1.UploadTextRequest';
     /** talk_id, blank if initial upload request and present on metadata update */
     talkId: string;
     metadata?: TalkMetadata;
@@ -103,13 +98,11 @@ export interface UploadTextRequest {
 }
 
 export interface UploadTextResponse {
-    $type: 'yandex.cloud.speechsense.v1.UploadTextResponse';
     /** id of created talk document */
     talkId: string;
 }
 
 export interface TalkMetadata {
-    $type: 'yandex.cloud.speechsense.v1.TalkMetadata';
     /** id of connection this talk belongs too */
     connectionId: string;
     /** channel defined fields */
@@ -119,26 +112,22 @@ export interface TalkMetadata {
 }
 
 export interface TalkMetadata_FieldsEntry {
-    $type: 'yandex.cloud.speechsense.v1.TalkMetadata.FieldsEntry';
     key: string;
     value: string;
 }
 
 export interface UserMetadata {
-    $type: 'yandex.cloud.speechsense.v1.UserMetadata';
     id: string;
     role: UserRole;
     fields: { [key: string]: string };
 }
 
 export interface UserMetadata_FieldsEntry {
-    $type: 'yandex.cloud.speechsense.v1.UserMetadata.FieldsEntry';
     key: string;
     value: string;
 }
 
 export interface SearchTalkRequest {
-    $type: 'yandex.cloud.speechsense.v1.SearchTalkRequest';
     /** id of organization */
     organizationId: string;
     /** id of space */
@@ -160,7 +149,6 @@ export interface SearchTalkRequest {
 }
 
 export interface SearchTalkResponse {
-    $type: 'yandex.cloud.speechsense.v1.SearchTalkResponse';
     /** page results entries */
     talkIds: string[];
     /** total documents matched */
@@ -170,7 +158,6 @@ export interface SearchTalkResponse {
 }
 
 export interface GetTalkRequest {
-    $type: 'yandex.cloud.speechsense.v1.GetTalkRequest';
     /** id of organization */
     organizationId: string;
     /** id of space */
@@ -189,15 +176,12 @@ export interface GetTalkRequest {
 }
 
 export interface GetTalkResponse {
-    $type: 'yandex.cloud.speechsense.v1.GetTalkResponse';
     talk: Talk[];
 }
 
-const baseStreamTalkRequest: object = { $type: 'yandex.cloud.speechsense.v1.StreamTalkRequest' };
+const baseStreamTalkRequest: object = {};
 
 export const StreamTalkRequest = {
-    $type: 'yandex.cloud.speechsense.v1.StreamTalkRequest' as const,
-
     encode(message: StreamTalkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.metadata !== undefined) {
             TalkMetadata.encode(message.metadata, writer.uint32(10).fork()).ldelim();
@@ -265,16 +249,9 @@ export const StreamTalkRequest = {
     },
 };
 
-messageTypeRegistry.set(StreamTalkRequest.$type, StreamTalkRequest);
-
-const baseUploadTalkRequest: object = {
-    $type: 'yandex.cloud.speechsense.v1.UploadTalkRequest',
-    talkId: '',
-};
+const baseUploadTalkRequest: object = { talkId: '' };
 
 export const UploadTalkRequest = {
-    $type: 'yandex.cloud.speechsense.v1.UploadTalkRequest' as const,
-
     encode(message: UploadTalkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.talkId !== '') {
             writer.uint32(26).string(message.talkId);
@@ -352,16 +329,9 @@ export const UploadTalkRequest = {
     },
 };
 
-messageTypeRegistry.set(UploadTalkRequest.$type, UploadTalkRequest);
-
-const baseUploadTalkResponse: object = {
-    $type: 'yandex.cloud.speechsense.v1.UploadTalkResponse',
-    talkId: '',
-};
+const baseUploadTalkResponse: object = { talkId: '' };
 
 export const UploadTalkResponse = {
-    $type: 'yandex.cloud.speechsense.v1.UploadTalkResponse' as const,
-
     encode(message: UploadTalkResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.talkId !== '') {
             writer.uint32(10).string(message.talkId);
@@ -409,16 +379,9 @@ export const UploadTalkResponse = {
     },
 };
 
-messageTypeRegistry.set(UploadTalkResponse.$type, UploadTalkResponse);
-
-const baseUploadTextRequest: object = {
-    $type: 'yandex.cloud.speechsense.v1.UploadTextRequest',
-    talkId: '',
-};
+const baseUploadTextRequest: object = { talkId: '' };
 
 export const UploadTextRequest = {
-    $type: 'yandex.cloud.speechsense.v1.UploadTextRequest' as const,
-
     encode(message: UploadTextRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.talkId !== '') {
             writer.uint32(26).string(message.talkId);
@@ -498,16 +461,9 @@ export const UploadTextRequest = {
     },
 };
 
-messageTypeRegistry.set(UploadTextRequest.$type, UploadTextRequest);
-
-const baseUploadTextResponse: object = {
-    $type: 'yandex.cloud.speechsense.v1.UploadTextResponse',
-    talkId: '',
-};
+const baseUploadTextResponse: object = { talkId: '' };
 
 export const UploadTextResponse = {
-    $type: 'yandex.cloud.speechsense.v1.UploadTextResponse' as const,
-
     encode(message: UploadTextResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.talkId !== '') {
             writer.uint32(10).string(message.talkId);
@@ -555,27 +511,16 @@ export const UploadTextResponse = {
     },
 };
 
-messageTypeRegistry.set(UploadTextResponse.$type, UploadTextResponse);
-
-const baseTalkMetadata: object = {
-    $type: 'yandex.cloud.speechsense.v1.TalkMetadata',
-    connectionId: '',
-};
+const baseTalkMetadata: object = { connectionId: '' };
 
 export const TalkMetadata = {
-    $type: 'yandex.cloud.speechsense.v1.TalkMetadata' as const,
-
     encode(message: TalkMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectionId !== '') {
             writer.uint32(10).string(message.connectionId);
         }
         Object.entries(message.fields).forEach(([key, value]) => {
             TalkMetadata_FieldsEntry.encode(
-                {
-                    $type: 'yandex.cloud.speechsense.v1.TalkMetadata.FieldsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(18).fork(),
             ).ldelim();
         });
@@ -665,17 +610,9 @@ export const TalkMetadata = {
     },
 };
 
-messageTypeRegistry.set(TalkMetadata.$type, TalkMetadata);
-
-const baseTalkMetadata_FieldsEntry: object = {
-    $type: 'yandex.cloud.speechsense.v1.TalkMetadata.FieldsEntry',
-    key: '',
-    value: '',
-};
+const baseTalkMetadata_FieldsEntry: object = { key: '', value: '' };
 
 export const TalkMetadata_FieldsEntry = {
-    $type: 'yandex.cloud.speechsense.v1.TalkMetadata.FieldsEntry' as const,
-
     encode(
         message: TalkMetadata_FieldsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -735,17 +672,9 @@ export const TalkMetadata_FieldsEntry = {
     },
 };
 
-messageTypeRegistry.set(TalkMetadata_FieldsEntry.$type, TalkMetadata_FieldsEntry);
-
-const baseUserMetadata: object = {
-    $type: 'yandex.cloud.speechsense.v1.UserMetadata',
-    id: '',
-    role: 0,
-};
+const baseUserMetadata: object = { id: '', role: 0 };
 
 export const UserMetadata = {
-    $type: 'yandex.cloud.speechsense.v1.UserMetadata' as const,
-
     encode(message: UserMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -755,11 +684,7 @@ export const UserMetadata = {
         }
         Object.entries(message.fields).forEach(([key, value]) => {
             UserMetadata_FieldsEntry.encode(
-                {
-                    $type: 'yandex.cloud.speechsense.v1.UserMetadata.FieldsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(26).fork(),
             ).ldelim();
         });
@@ -839,17 +764,9 @@ export const UserMetadata = {
     },
 };
 
-messageTypeRegistry.set(UserMetadata.$type, UserMetadata);
-
-const baseUserMetadata_FieldsEntry: object = {
-    $type: 'yandex.cloud.speechsense.v1.UserMetadata.FieldsEntry',
-    key: '',
-    value: '',
-};
+const baseUserMetadata_FieldsEntry: object = { key: '', value: '' };
 
 export const UserMetadata_FieldsEntry = {
-    $type: 'yandex.cloud.speechsense.v1.UserMetadata.FieldsEntry' as const,
-
     encode(
         message: UserMetadata_FieldsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -909,10 +826,7 @@ export const UserMetadata_FieldsEntry = {
     },
 };
 
-messageTypeRegistry.set(UserMetadata_FieldsEntry.$type, UserMetadata_FieldsEntry);
-
 const baseSearchTalkRequest: object = {
-    $type: 'yandex.cloud.speechsense.v1.SearchTalkRequest',
     organizationId: '',
     spaceId: '',
     connectionId: '',
@@ -922,8 +836,6 @@ const baseSearchTalkRequest: object = {
 };
 
 export const SearchTalkRequest = {
-    $type: 'yandex.cloud.speechsense.v1.SearchTalkRequest' as const,
-
     encode(message: SearchTalkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -1073,18 +985,9 @@ export const SearchTalkRequest = {
     },
 };
 
-messageTypeRegistry.set(SearchTalkRequest.$type, SearchTalkRequest);
-
-const baseSearchTalkResponse: object = {
-    $type: 'yandex.cloud.speechsense.v1.SearchTalkResponse',
-    talkIds: '',
-    talksCount: 0,
-    nextPageToken: '',
-};
+const baseSearchTalkResponse: object = { talkIds: '', talksCount: 0, nextPageToken: '' };
 
 export const SearchTalkResponse = {
-    $type: 'yandex.cloud.speechsense.v1.SearchTalkResponse' as const,
-
     encode(message: SearchTalkResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.talkIds) {
             writer.uint32(10).string(v!);
@@ -1160,10 +1063,7 @@ export const SearchTalkResponse = {
     },
 };
 
-messageTypeRegistry.set(SearchTalkResponse.$type, SearchTalkResponse);
-
 const baseGetTalkRequest: object = {
-    $type: 'yandex.cloud.speechsense.v1.GetTalkRequest',
     organizationId: '',
     spaceId: '',
     connectionId: '',
@@ -1172,8 +1072,6 @@ const baseGetTalkRequest: object = {
 };
 
 export const GetTalkRequest = {
-    $type: 'yandex.cloud.speechsense.v1.GetTalkRequest' as const,
-
     encode(message: GetTalkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -1287,13 +1185,9 @@ export const GetTalkRequest = {
     },
 };
 
-messageTypeRegistry.set(GetTalkRequest.$type, GetTalkRequest);
-
-const baseGetTalkResponse: object = { $type: 'yandex.cloud.speechsense.v1.GetTalkResponse' };
+const baseGetTalkResponse: object = {};
 
 export const GetTalkResponse = {
-    $type: 'yandex.cloud.speechsense.v1.GetTalkResponse' as const,
-
     encode(message: GetTalkResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.talk) {
             Talk.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1342,8 +1236,6 @@ export const GetTalkResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(GetTalkResponse.$type, GetTalkResponse);
 
 export const TalkServiceService = {
     /**
@@ -1546,16 +1438,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

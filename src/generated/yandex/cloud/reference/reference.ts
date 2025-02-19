@@ -1,12 +1,10 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.reference';
 
 export interface Reference {
-    $type: 'yandex.cloud.reference.Reference';
     referrer?: Referrer;
     type: Reference_Type;
 }
@@ -50,7 +48,6 @@ export function reference_TypeToJSON(object: Reference_Type): string {
 }
 
 export interface Referrer {
-    $type: 'yandex.cloud.reference.Referrer';
     /**
      * `type = compute.instance, id = <instance id>`
      * * `type = compute.instanceGroup, id = <instanceGroup id>`
@@ -62,11 +59,9 @@ export interface Referrer {
     id: string;
 }
 
-const baseReference: object = { $type: 'yandex.cloud.reference.Reference', type: 0 };
+const baseReference: object = { type: 0 };
 
 export const Reference = {
-    $type: 'yandex.cloud.reference.Reference' as const,
-
     encode(message: Reference, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.referrer !== undefined) {
             Referrer.encode(message.referrer, writer.uint32(10).fork()).ldelim();
@@ -130,13 +125,9 @@ export const Reference = {
     },
 };
 
-messageTypeRegistry.set(Reference.$type, Reference);
-
-const baseReferrer: object = { $type: 'yandex.cloud.reference.Referrer', type: '', id: '' };
+const baseReferrer: object = { type: '', id: '' };
 
 export const Referrer = {
-    $type: 'yandex.cloud.reference.Referrer' as const,
-
     encode(message: Referrer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== '') {
             writer.uint32(10).string(message.type);
@@ -190,8 +181,6 @@ export const Referrer = {
     },
 };
 
-messageTypeRegistry.set(Referrer.$type, Referrer);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -201,16 +190,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

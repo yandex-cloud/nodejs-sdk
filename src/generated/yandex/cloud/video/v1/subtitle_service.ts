@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,13 +19,11 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.video.v1';
 
 export interface GetSubtitleRequest {
-    $type: 'yandex.cloud.video.v1.GetSubtitleRequest';
     /** ID of the subtitle. */
     subtitleId: string;
 }
 
 export interface ListSubtitlesRequest {
-    $type: 'yandex.cloud.video.v1.ListSubtitlesRequest';
     /** The maximum number of the results per page to return. */
     pageSize: number;
     /** Page token for getting the next page of the result. */
@@ -36,14 +33,12 @@ export interface ListSubtitlesRequest {
 }
 
 export interface ListSubtitlesResponse {
-    $type: 'yandex.cloud.video.v1.ListSubtitlesResponse';
     subtitles: Subtitle[];
     /** Token for getting the next page. */
     nextPageToken: string;
 }
 
 export interface CreateSubtitleRequest {
-    $type: 'yandex.cloud.video.v1.CreateSubtitleRequest';
     /**
      * The language of the subtitles, represented as a three-letter ISO 639 code.
      * Supports ISO 639-2/T (terminological), ISO 639-2/B (bibliographical) variants and ISO 639-3.
@@ -63,48 +58,37 @@ export interface CreateSubtitleRequest {
 }
 
 export interface SubtitleUploadParams {
-    $type: 'yandex.cloud.video.v1.SubtitleUploadParams';
     filename: string;
 }
 
 export interface CreateSubtitleMetadata {
-    $type: 'yandex.cloud.video.v1.CreateSubtitleMetadata';
     /** ID of the subtitle. */
     subtitleId: string;
 }
 
 export interface GenerateSubtitleUploadURLRequest {
-    $type: 'yandex.cloud.video.v1.GenerateSubtitleUploadURLRequest';
     /** ID of the subtitle. */
     subtitleId: string;
 }
 
 export interface GenerateSubtitleUploadURLResponse {
-    $type: 'yandex.cloud.video.v1.GenerateSubtitleUploadURLResponse';
     /** Upload url. */
     uploadUrl: string;
 }
 
 export interface DeleteSubtitleRequest {
-    $type: 'yandex.cloud.video.v1.DeleteSubtitleRequest';
     /** ID of the subtitle. */
     subtitleId: string;
 }
 
 export interface DeleteSubtitleMetadata {
-    $type: 'yandex.cloud.video.v1.DeleteSubtitleMetadata';
     /** ID of the subtitle. */
     subtitleId: string;
 }
 
-const baseGetSubtitleRequest: object = {
-    $type: 'yandex.cloud.video.v1.GetSubtitleRequest',
-    subtitleId: '',
-};
+const baseGetSubtitleRequest: object = { subtitleId: '' };
 
 export const GetSubtitleRequest = {
-    $type: 'yandex.cloud.video.v1.GetSubtitleRequest' as const,
-
     encode(message: GetSubtitleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subtitleId !== '') {
             writer.uint32(10).string(message.subtitleId);
@@ -154,17 +138,9 @@ export const GetSubtitleRequest = {
     },
 };
 
-messageTypeRegistry.set(GetSubtitleRequest.$type, GetSubtitleRequest);
-
-const baseListSubtitlesRequest: object = {
-    $type: 'yandex.cloud.video.v1.ListSubtitlesRequest',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListSubtitlesRequest: object = { pageSize: 0, pageToken: '' };
 
 export const ListSubtitlesRequest = {
-    $type: 'yandex.cloud.video.v1.ListSubtitlesRequest' as const,
-
     encode(message: ListSubtitlesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(800).int64(message.pageSize);
@@ -236,16 +212,9 @@ export const ListSubtitlesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListSubtitlesRequest.$type, ListSubtitlesRequest);
-
-const baseListSubtitlesResponse: object = {
-    $type: 'yandex.cloud.video.v1.ListSubtitlesResponse',
-    nextPageToken: '',
-};
+const baseListSubtitlesResponse: object = { nextPageToken: '' };
 
 export const ListSubtitlesResponse = {
-    $type: 'yandex.cloud.video.v1.ListSubtitlesResponse' as const,
-
     encode(message: ListSubtitlesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.subtitles) {
             Subtitle.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -309,17 +278,9 @@ export const ListSubtitlesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListSubtitlesResponse.$type, ListSubtitlesResponse);
-
-const baseCreateSubtitleRequest: object = {
-    $type: 'yandex.cloud.video.v1.CreateSubtitleRequest',
-    language: '',
-    label: '',
-};
+const baseCreateSubtitleRequest: object = { language: '', label: '' };
 
 export const CreateSubtitleRequest = {
-    $type: 'yandex.cloud.video.v1.CreateSubtitleRequest' as const,
-
     encode(message: CreateSubtitleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.language !== '') {
             writer.uint32(10).string(message.language);
@@ -407,16 +368,9 @@ export const CreateSubtitleRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateSubtitleRequest.$type, CreateSubtitleRequest);
-
-const baseSubtitleUploadParams: object = {
-    $type: 'yandex.cloud.video.v1.SubtitleUploadParams',
-    filename: '',
-};
+const baseSubtitleUploadParams: object = { filename: '' };
 
 export const SubtitleUploadParams = {
-    $type: 'yandex.cloud.video.v1.SubtitleUploadParams' as const,
-
     encode(message: SubtitleUploadParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.filename !== '') {
             writer.uint32(10).string(message.filename);
@@ -466,16 +420,9 @@ export const SubtitleUploadParams = {
     },
 };
 
-messageTypeRegistry.set(SubtitleUploadParams.$type, SubtitleUploadParams);
-
-const baseCreateSubtitleMetadata: object = {
-    $type: 'yandex.cloud.video.v1.CreateSubtitleMetadata',
-    subtitleId: '',
-};
+const baseCreateSubtitleMetadata: object = { subtitleId: '' };
 
 export const CreateSubtitleMetadata = {
-    $type: 'yandex.cloud.video.v1.CreateSubtitleMetadata' as const,
-
     encode(message: CreateSubtitleMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subtitleId !== '') {
             writer.uint32(10).string(message.subtitleId);
@@ -525,16 +472,9 @@ export const CreateSubtitleMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateSubtitleMetadata.$type, CreateSubtitleMetadata);
-
-const baseGenerateSubtitleUploadURLRequest: object = {
-    $type: 'yandex.cloud.video.v1.GenerateSubtitleUploadURLRequest',
-    subtitleId: '',
-};
+const baseGenerateSubtitleUploadURLRequest: object = { subtitleId: '' };
 
 export const GenerateSubtitleUploadURLRequest = {
-    $type: 'yandex.cloud.video.v1.GenerateSubtitleUploadURLRequest' as const,
-
     encode(
         message: GenerateSubtitleUploadURLRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -593,16 +533,9 @@ export const GenerateSubtitleUploadURLRequest = {
     },
 };
 
-messageTypeRegistry.set(GenerateSubtitleUploadURLRequest.$type, GenerateSubtitleUploadURLRequest);
-
-const baseGenerateSubtitleUploadURLResponse: object = {
-    $type: 'yandex.cloud.video.v1.GenerateSubtitleUploadURLResponse',
-    uploadUrl: '',
-};
+const baseGenerateSubtitleUploadURLResponse: object = { uploadUrl: '' };
 
 export const GenerateSubtitleUploadURLResponse = {
-    $type: 'yandex.cloud.video.v1.GenerateSubtitleUploadURLResponse' as const,
-
     encode(
         message: GenerateSubtitleUploadURLResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -661,16 +594,9 @@ export const GenerateSubtitleUploadURLResponse = {
     },
 };
 
-messageTypeRegistry.set(GenerateSubtitleUploadURLResponse.$type, GenerateSubtitleUploadURLResponse);
-
-const baseDeleteSubtitleRequest: object = {
-    $type: 'yandex.cloud.video.v1.DeleteSubtitleRequest',
-    subtitleId: '',
-};
+const baseDeleteSubtitleRequest: object = { subtitleId: '' };
 
 export const DeleteSubtitleRequest = {
-    $type: 'yandex.cloud.video.v1.DeleteSubtitleRequest' as const,
-
     encode(message: DeleteSubtitleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subtitleId !== '') {
             writer.uint32(10).string(message.subtitleId);
@@ -720,16 +646,9 @@ export const DeleteSubtitleRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteSubtitleRequest.$type, DeleteSubtitleRequest);
-
-const baseDeleteSubtitleMetadata: object = {
-    $type: 'yandex.cloud.video.v1.DeleteSubtitleMetadata',
-    subtitleId: '',
-};
+const baseDeleteSubtitleMetadata: object = { subtitleId: '' };
 
 export const DeleteSubtitleMetadata = {
-    $type: 'yandex.cloud.video.v1.DeleteSubtitleMetadata' as const,
-
     encode(message: DeleteSubtitleMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subtitleId !== '') {
             writer.uint32(10).string(message.subtitleId);
@@ -778,8 +697,6 @@ export const DeleteSubtitleMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteSubtitleMetadata.$type, DeleteSubtitleMetadata);
 
 /** Subtitle management service. */
 export const SubtitleServiceService = {
@@ -973,16 +890,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

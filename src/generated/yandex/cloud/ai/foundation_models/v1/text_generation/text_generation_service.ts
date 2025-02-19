@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -30,7 +29,6 @@ export const protobufPackage = 'yandex.cloud.ai.foundation_models.v1';
 
 /** Request for the service to generate text completion. */
 export interface CompletionRequest {
-    $type: 'yandex.cloud.ai.foundation_models.v1.CompletionRequest';
     /** The [ID of the model](/docs/foundation-models/concepts/yandexgpt/models) to be used for completion generation. */
     modelUri: string;
     /** Configuration options for completion generation. */
@@ -46,7 +44,6 @@ export interface CompletionRequest {
 
 /** Response containing generated text completions. */
 export interface CompletionResponse {
-    $type: 'yandex.cloud.ai.foundation_models.v1.CompletionResponse';
     /** A list of generated completion alternatives. */
     alternatives: Alternative[];
     /** A set of statistics describing the number of content tokens used by the completion model. */
@@ -57,7 +54,6 @@ export interface CompletionResponse {
 
 /** Request for the service to tokenize input text. */
 export interface TokenizeRequest {
-    $type: 'yandex.cloud.ai.foundation_models.v1.TokenizeRequest';
     /** The identifier of the model to be used for tokenization. */
     modelUri: string;
     /** Text to be tokenized. */
@@ -66,21 +62,15 @@ export interface TokenizeRequest {
 
 /** Response containing tokenized content from request. */
 export interface TokenizeResponse {
-    $type: 'yandex.cloud.ai.foundation_models.v1.TokenizeResponse';
     /** A list of tokens obtained from tokenization. */
     tokens: Token[];
     /** Model version (changes with model releases). */
     modelVersion: string;
 }
 
-const baseCompletionRequest: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.CompletionRequest',
-    modelUri: '',
-};
+const baseCompletionRequest: object = { modelUri: '' };
 
 export const CompletionRequest = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.CompletionRequest' as const,
-
     encode(message: CompletionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.modelUri !== '') {
             writer.uint32(10).string(message.modelUri);
@@ -174,16 +164,9 @@ export const CompletionRequest = {
     },
 };
 
-messageTypeRegistry.set(CompletionRequest.$type, CompletionRequest);
-
-const baseCompletionResponse: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.CompletionResponse',
-    modelVersion: '',
-};
+const baseCompletionResponse: object = { modelVersion: '' };
 
 export const CompletionResponse = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.CompletionResponse' as const,
-
     encode(message: CompletionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.alternatives) {
             Alternative.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -265,17 +248,9 @@ export const CompletionResponse = {
     },
 };
 
-messageTypeRegistry.set(CompletionResponse.$type, CompletionResponse);
-
-const baseTokenizeRequest: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.TokenizeRequest',
-    modelUri: '',
-    text: '',
-};
+const baseTokenizeRequest: object = { modelUri: '', text: '' };
 
 export const TokenizeRequest = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.TokenizeRequest' as const,
-
     encode(message: TokenizeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.modelUri !== '') {
             writer.uint32(10).string(message.modelUri);
@@ -332,16 +307,9 @@ export const TokenizeRequest = {
     },
 };
 
-messageTypeRegistry.set(TokenizeRequest.$type, TokenizeRequest);
-
-const baseTokenizeResponse: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.TokenizeResponse',
-    modelVersion: '',
-};
+const baseTokenizeResponse: object = { modelVersion: '' };
 
 export const TokenizeResponse = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.TokenizeResponse' as const,
-
     encode(message: TokenizeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.tokens) {
             Token.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -402,8 +370,6 @@ export const TokenizeResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(TokenizeResponse.$type, TokenizeResponse);
 
 /** Service for text generation. */
 export const TextGenerationServiceService = {
@@ -593,16 +559,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;
