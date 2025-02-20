@@ -25,3 +25,7 @@ runs:
       if: steps.cache.outputs.cache-hit != 'true'
       run: npm ci
       shell: bash
+    - name: Install Depencendies for Examples
+      run: npm ci
+      working-directory: ./examples
+      shell: bash
