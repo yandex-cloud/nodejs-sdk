@@ -8,6 +8,7 @@ import { RawClient } from 'nice-grpc';
 import { DeadlineOptions } from 'nice-grpc-client-middleware-deadline';
 import { NormalizedServiceDefinition } from 'nice-grpc/lib/service-definitions';
 import { RetryOptions } from './middleware/retry';
+import { RetryConfig } from './utils/retry-policy';
 
 export interface TokenService {
     getToken: () => Promise<string>;
@@ -60,10 +61,12 @@ export interface ServiceAccountCredentialsConfig extends GenericCredentialsConfi
 }
 
 export type SessionConfig =
-    | OAuthCredentialsConfig
-    | IamTokenCredentialsConfig
-    | ServiceAccountCredentialsConfig
-    | GenericCredentialsConfig;
+    (
+        | OAuthCredentialsConfig
+        | IamTokenCredentialsConfig
+        | ServiceAccountCredentialsConfig
+        | GenericCredentialsConfig
+    ) & { retryConfig?: RetryConfig };
 
 // eslint-disable-next-line max-len
 export type WrappedServiceClientType<S extends ServiceDefinition> = RawClient<NormalizedServiceDefinition<S>, DeadlineOptions & RetryOptions>;

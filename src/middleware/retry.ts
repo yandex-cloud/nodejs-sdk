@@ -10,6 +10,8 @@ import {
 import { AbortController } from 'node-abort-controller';
 
 /**
+ * @deprecated Use retryPolicy configuration when creating a client
+ *
  * These options are added to `CallOptions` by
  * `nice-grpc-client-middleware-retry`.
  */
@@ -76,6 +78,8 @@ const defaultRetryableStatuses: Status[] = [
 ];
 
 /**
+ * @deprecated Use retryPolicy configuration when creating a client
+ *
  * Client middleware that adds automatic retries to unary calls.
  */
 export const retryMiddleware: ClientMiddleware<RetryOptions> = async function* retryMiddleware(call, options) {

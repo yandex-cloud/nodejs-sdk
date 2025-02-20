@@ -67,7 +67,7 @@
   },
   "scripts": {
     "test": "cross-env NODE_OPTIONS=\"--max-old-space-size=4096\" jest -c config/jest.ts --passWithNoTests '.*\\.test\\.ts$'",
-    "lint": "eslint src config",
+    "lint": "eslint --fix src config",
     "build": "cross-env NODE_OPTIONS=\"--max-old-space-size=4096\" tsc -p .",
     "generate-code": "ts-node scripts/generate-code.ts",
     "check-endpoints": "ts-node scripts/check-endpoints.ts",
