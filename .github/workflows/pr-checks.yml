@@ -26,6 +26,11 @@ jobs:
     steps:
       - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@9fc72bb2948886090f84c9236580fbca480bdea7
       - run: npm run lint
+  typecheck:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@9fc72bb2948886090f84c9236580fbca480bdea7
+      - run: npm run typecheck
   build:
     runs-on: ubuntu-20.04
     steps:

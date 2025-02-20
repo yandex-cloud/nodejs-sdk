@@ -1,10 +1,7 @@
-import {
-    serviceClients,
-    Session,
-    cloudApi,
-    waitForOperation,
-    decodeMessage,
-} from '@yandex-cloud/nodejs-sdk';
+import { serviceClients, Session, cloudApi, waitForOperation } from '@yandex-cloud/nodejs-sdk';
+
+import { Instance } from '@yandex-cloud/nodejs-sdk/compute-v1/instance';
+
 import { getEnv } from './utils/get-env';
 import { log } from './utils/logger';
 
@@ -94,9 +91,7 @@ const {
     const finishedCreateOp = await waitForOperation(createOp, session);
 
     if (finishedCreateOp.response) {
-        const instance = decodeMessage<cloudApi.compute.instance.Instance>(
-            finishedCreateOp.response,
-        );
+        const instance = Instance.decode(finishedCreateOp.response.value);
 
         log(`Instance ${instance.id} created`);
 
