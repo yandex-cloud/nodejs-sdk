@@ -1,7 +1,7 @@
 import {
     ChannelCredentials, ChannelOptions, credentials, Metadata, ServiceDefinition,
 } from '@grpc/grpc-js';
-import { createChannel } from 'nice-grpc';
+import { Client, createChannel, createClient } from 'nice-grpc';
 import { Required } from 'utility-types';
 import {
     ChannelSslOptions,
@@ -105,9 +105,11 @@ export class Session {
             ...config,
         };
         this.tokenCreator = newTokenCreator(this.config);
-        console.log(this.tokenCreator);
-        this.channelCredentials = newChannelCredentials(this.tokenCreator, this.config.ssl, this.config.headers);
-        console.log(this.channelCredentials);
+        if (!this.config.ssl) {
+            this.channelCredentials = credentials.createInsecure()
+        } else {
+            this.channelCredentials = newChannelCredentials(this.tokenCreator, this.config.ssl, this.config.headers);
+        }
         if (this.config.retryConfig) {
             this.retryChannelOptions = new RetryPolicy(this.config.retryConfig).toChannelOptions();
         }

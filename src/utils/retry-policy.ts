@@ -41,12 +41,12 @@ export class RetryPolicy {
         this.config = {
             methodConfig: [
                 {
-                    name: [{ service: '' }],
+                    name: [{service: ''}],
                     retryPolicy: {
-                        maxAttempts,
+                        maxAttempts: maxAttempts,
                         initialBackoff: '1s',
                         maxBackoff: '20s',
-                        backoffMultiplier: 2,
+                        backoffMultiplier: 2.0,
                         retryableStatusCodes: retryableStatusCodes.map((it) => Status[it]),
                     },
                 },
@@ -60,8 +60,6 @@ export class RetryPolicy {
     }
 
     toJSON(): string {
-        console.log(JSON.stringify(this.config));
-
         return JSON.stringify(this.config);
     }
 
