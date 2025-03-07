@@ -23,6 +23,7 @@ import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Duration } from '../../../../google/protobuf/duration';
 import { Manifest } from '../../../../yandex/cloud/video/v1/manifest';
 import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { BoolValue } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
@@ -86,6 +87,12 @@ export interface CreateVideoRequest {
     thumbnailId: string;
     /** Auto start transcoding. */
     autoTranscode: AutoTranscode;
+    /**
+     * Enable advertisement for this video.
+     * Default: true.
+     * Use this to disable advertisement for a specific video.
+     */
+    enableAd?: boolean;
     /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
     labels: { [key: string]: string };
     /** Upload video using the tus protocol. */
@@ -134,6 +141,12 @@ export interface UpdateVideoRequest {
     thumbnailId: string;
     /** Auto start transcoding. */
     autoTranscode: AutoTranscode;
+    /**
+     * Enable advertisement for this video.
+     * Default: true.
+     * Use this to disable advertisement for a specific video.
+     */
+    enableAd?: boolean;
     /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
     labels: { [key: string]: string };
     publicAccess?: VideoPublicAccessParams | undefined;
@@ -594,6 +607,9 @@ export const CreateVideoRequest = {
         if (message.autoTranscode !== 0) {
             writer.uint32(40).int32(message.autoTranscode);
         }
+        if (message.enableAd !== undefined) {
+            BoolValue.encode({ value: message.enableAd! }, writer.uint32(66).fork()).ldelim();
+        }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateVideoRequest_LabelsEntry.encode(
                 { key: key as any, value },
@@ -647,6 +663,9 @@ export const CreateVideoRequest = {
                 case 5:
                     message.autoTranscode = reader.int32() as any;
                     break;
+                case 8:
+                    message.enableAd = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 case 200:
                     const entry200 = CreateVideoRequest_LabelsEntry.decode(reader, reader.uint32());
                     if (entry200.value !== undefined) {
@@ -699,6 +718,10 @@ export const CreateVideoRequest = {
             object.autoTranscode !== undefined && object.autoTranscode !== null
                 ? autoTranscodeFromJSON(object.autoTranscode)
                 : 0;
+        message.enableAd =
+            object.enableAd !== undefined && object.enableAd !== null
+                ? Boolean(object.enableAd)
+                : undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 acc[key] = String(value);
@@ -733,6 +756,7 @@ export const CreateVideoRequest = {
         message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
         message.autoTranscode !== undefined &&
             (obj.autoTranscode = autoTranscodeToJSON(message.autoTranscode));
+        message.enableAd !== undefined && (obj.enableAd = message.enableAd);
         obj.labels = {};
         if (message.labels) {
             Object.entries(message.labels).forEach(([k, v]) => {
@@ -765,6 +789,7 @@ export const CreateVideoRequest = {
         message.description = object.description ?? '';
         message.thumbnailId = object.thumbnailId ?? '';
         message.autoTranscode = object.autoTranscode ?? 0;
+        message.enableAd = object.enableAd ?? undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 if (value !== undefined) {
@@ -1114,6 +1139,9 @@ export const UpdateVideoRequest = {
         if (message.autoTranscode !== 0) {
             writer.uint32(48).int32(message.autoTranscode);
         }
+        if (message.enableAd !== undefined) {
+            BoolValue.encode({ value: message.enableAd! }, writer.uint32(66).fork()).ldelim();
+        }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateVideoRequest_LabelsEntry.encode(
                 { key: key as any, value },
@@ -1167,6 +1195,9 @@ export const UpdateVideoRequest = {
                 case 6:
                     message.autoTranscode = reader.int32() as any;
                     break;
+                case 8:
+                    message.enableAd = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 case 200:
                     const entry200 = UpdateVideoRequest_LabelsEntry.decode(reader, reader.uint32());
                     if (entry200.value !== undefined) {
@@ -1218,6 +1249,10 @@ export const UpdateVideoRequest = {
             object.autoTranscode !== undefined && object.autoTranscode !== null
                 ? autoTranscodeFromJSON(object.autoTranscode)
                 : 0;
+        message.enableAd =
+            object.enableAd !== undefined && object.enableAd !== null
+                ? Boolean(object.enableAd)
+                : undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 acc[key] = String(value);
@@ -1250,6 +1285,7 @@ export const UpdateVideoRequest = {
         message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
         message.autoTranscode !== undefined &&
             (obj.autoTranscode = autoTranscodeToJSON(message.autoTranscode));
+        message.enableAd !== undefined && (obj.enableAd = message.enableAd);
         obj.labels = {};
         if (message.labels) {
             Object.entries(message.labels).forEach(([k, v]) => {
@@ -1284,6 +1320,7 @@ export const UpdateVideoRequest = {
         message.description = object.description ?? '';
         message.thumbnailId = object.thumbnailId ?? '';
         message.autoTranscode = object.autoTranscode ?? 0;
+        message.enableAd = object.enableAd ?? undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 if (value !== undefined) {

@@ -6,7 +6,7 @@ export const protobufPackage = 'yandex.cloud.cic.v1';
 
 /** A Partner resource. */
 export interface Partner {
-    /** ID of the routingInstance. */
+    /** ID of the partner. */
     id: string;
     /** ID of the region that the partner belongs to. */
     regionId: string;

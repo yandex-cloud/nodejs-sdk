@@ -658,6 +658,10 @@ export enum Mysqlconfig80_AuthPlugin {
     CACHING_SHA2_PASSWORD = 2,
     /** SHA256_PASSWORD - Using [SHA-256 Pluggable Authentication](https://dev.mysql.com/doc/refman/8.0/en/sha256-pluggable-authentication.html). */
     SHA256_PASSWORD = 3,
+    /** MYSQL_NO_LOGIN - Use [MYSQL_NO_LOGIN Pluggable Authentication](https://dev.mysql.com/doc/refman/8.0/en/no-login-pluggable-authentication.html). */
+    MYSQL_NO_LOGIN = 4,
+    /** MDB_IAMPROXY_AUTH - Use [IAM Pluggable Authentication](https://yandex.cloud/en/docs/iam/concepts/authorization/). */
+    MDB_IAMPROXY_AUTH = 5,
     UNRECOGNIZED = -1,
 }
 
@@ -675,6 +679,12 @@ export function mysqlconfig80_AuthPluginFromJSON(object: any): Mysqlconfig80_Aut
         case 3:
         case 'SHA256_PASSWORD':
             return Mysqlconfig80_AuthPlugin.SHA256_PASSWORD;
+        case 4:
+        case 'MYSQL_NO_LOGIN':
+            return Mysqlconfig80_AuthPlugin.MYSQL_NO_LOGIN;
+        case 5:
+        case 'MDB_IAMPROXY_AUTH':
+            return Mysqlconfig80_AuthPlugin.MDB_IAMPROXY_AUTH;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -692,6 +702,10 @@ export function mysqlconfig80_AuthPluginToJSON(object: Mysqlconfig80_AuthPlugin)
             return 'CACHING_SHA2_PASSWORD';
         case Mysqlconfig80_AuthPlugin.SHA256_PASSWORD:
             return 'SHA256_PASSWORD';
+        case Mysqlconfig80_AuthPlugin.MYSQL_NO_LOGIN:
+            return 'MYSQL_NO_LOGIN';
+        case Mysqlconfig80_AuthPlugin.MDB_IAMPROXY_AUTH:
+            return 'MDB_IAMPROXY_AUTH';
         default:
             return 'UNKNOWN';
     }

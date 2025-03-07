@@ -108,6 +108,8 @@ export interface CreateNetworkLoadBalancerRequest {
     attachedTargetGroups: AttachedTargetGroup[];
     /** Specifies if network load balancer protected from deletion. */
     deletionProtection: boolean;
+    /** Specifies if network load balancer available to zonal shift. */
+    allowZonalShift: boolean;
 }
 
 export interface CreateNetworkLoadBalancerRequest_LabelsEntry {
@@ -147,6 +149,8 @@ export interface UpdateNetworkLoadBalancerRequest {
     attachedTargetGroups: AttachedTargetGroup[];
     /** Specifies if network load balancer protected from deletion. */
     deletionProtection: boolean;
+    /** Specifies if network load balancer available to zonal shift. */
+    allowZonalShift: boolean;
 }
 
 export interface UpdateNetworkLoadBalancerRequest_LabelsEntry {
@@ -590,6 +594,7 @@ const baseCreateNetworkLoadBalancerRequest: object = {
     regionId: '',
     type: 0,
     deletionProtection: false,
+    allowZonalShift: false,
 };
 
 export const CreateNetworkLoadBalancerRequest = {
@@ -626,6 +631,9 @@ export const CreateNetworkLoadBalancerRequest = {
         }
         if (message.deletionProtection === true) {
             writer.uint32(72).bool(message.deletionProtection);
+        }
+        if (message.allowZonalShift === true) {
+            writer.uint32(80).bool(message.allowZonalShift);
         }
         return writer;
     },
@@ -677,6 +685,9 @@ export const CreateNetworkLoadBalancerRequest = {
                 case 9:
                     message.deletionProtection = reader.bool();
                     break;
+                case 10:
+                    message.allowZonalShift = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -723,6 +734,10 @@ export const CreateNetworkLoadBalancerRequest = {
             object.deletionProtection !== undefined && object.deletionProtection !== null
                 ? Boolean(object.deletionProtection)
                 : false;
+        message.allowZonalShift =
+            object.allowZonalShift !== undefined && object.allowZonalShift !== null
+                ? Boolean(object.allowZonalShift)
+                : false;
         return message;
     },
 
@@ -755,6 +770,7 @@ export const CreateNetworkLoadBalancerRequest = {
         }
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
+        message.allowZonalShift !== undefined && (obj.allowZonalShift = message.allowZonalShift);
         return obj;
     },
 
@@ -782,6 +798,7 @@ export const CreateNetworkLoadBalancerRequest = {
         message.attachedTargetGroups =
             object.attachedTargetGroups?.map((e) => AttachedTargetGroup.fromPartial(e)) || [];
         message.deletionProtection = object.deletionProtection ?? false;
+        message.allowZonalShift = object.allowZonalShift ?? false;
         return message;
     },
 };
@@ -924,6 +941,7 @@ const baseUpdateNetworkLoadBalancerRequest: object = {
     name: '',
     description: '',
     deletionProtection: false,
+    allowZonalShift: false,
 };
 
 export const UpdateNetworkLoadBalancerRequest = {
@@ -957,6 +975,9 @@ export const UpdateNetworkLoadBalancerRequest = {
         }
         if (message.deletionProtection === true) {
             writer.uint32(64).bool(message.deletionProtection);
+        }
+        if (message.allowZonalShift === true) {
+            writer.uint32(72).bool(message.allowZonalShift);
         }
         return writer;
     },
@@ -1005,6 +1026,9 @@ export const UpdateNetworkLoadBalancerRequest = {
                 case 8:
                     message.deletionProtection = reader.bool();
                     break;
+                case 9:
+                    message.allowZonalShift = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1047,6 +1071,10 @@ export const UpdateNetworkLoadBalancerRequest = {
             object.deletionProtection !== undefined && object.deletionProtection !== null
                 ? Boolean(object.deletionProtection)
                 : false;
+        message.allowZonalShift =
+            object.allowZonalShift !== undefined && object.allowZonalShift !== null
+                ? Boolean(object.allowZonalShift)
+                : false;
         return message;
     },
 
@@ -1082,6 +1110,7 @@ export const UpdateNetworkLoadBalancerRequest = {
         }
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
+        message.allowZonalShift !== undefined && (obj.allowZonalShift = message.allowZonalShift);
         return obj;
     },
 
@@ -1111,6 +1140,7 @@ export const UpdateNetworkLoadBalancerRequest = {
         message.attachedTargetGroups =
             object.attachedTargetGroups?.map((e) => AttachedTargetGroup.fromPartial(e)) || [];
         message.deletionProtection = object.deletionProtection ?? false;
+        message.allowZonalShift = object.allowZonalShift ?? false;
         return message;
     },
 };

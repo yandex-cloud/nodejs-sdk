@@ -19,6 +19,7 @@ import {
     Cluster_Environment,
     GreenplumConfig,
     CloudStorage,
+    LoggingConfig,
     GreenplumRestoreConfig,
     Cluster,
     cluster_EnvironmentFromJSON,
@@ -143,6 +144,10 @@ export interface CreateClusterRequest {
     masterHostGroupIds: string[];
     /** Host groups hosting VMs of the segment subcluster. */
     segmentHostGroupIds: string[];
+    /** ID of the service account used for access Yandex Cloud resources. */
+    serviceAccountId: string;
+    /** Cloud logging configuration */
+    logging?: LoggingConfig;
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -208,6 +213,10 @@ export interface UpdateClusterRequest {
     configSpec?: ConfigSpec;
     /** Cloud storage settings */
     cloudStorage?: CloudStorage;
+    /** ID of the service account used for access YC resources. */
+    serviceAccountId: string;
+    /** Cloud logging configuration */
+    logging?: LoggingConfig;
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
@@ -691,6 +700,8 @@ export interface RestoreClusterRequest {
     masterHostGroupIds: string[];
     /** Host groups hosting VMs of the segment subcluster. */
     segmentHostGroupIds: string[];
+    /** Service account that will be used to access a Yandex Cloud resources */
+    serviceAccountId: string;
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
@@ -921,6 +932,7 @@ const baseCreateClusterRequest: object = {
     hostGroupIds: '',
     masterHostGroupIds: '',
     segmentHostGroupIds: '',
+    serviceAccountId: '',
 };
 
 export const CreateClusterRequest = {
@@ -999,6 +1011,12 @@ export const CreateClusterRequest = {
         }
         for (const v of message.segmentHostGroupIds) {
             writer.uint32(186).string(v!);
+        }
+        if (message.serviceAccountId !== '') {
+            writer.uint32(194).string(message.serviceAccountId);
+        }
+        if (message.logging !== undefined) {
+            LoggingConfig.encode(message.logging, writer.uint32(202).fork()).ldelim();
         }
         return writer;
     },
@@ -1090,6 +1108,12 @@ export const CreateClusterRequest = {
                 case 23:
                     message.segmentHostGroupIds.push(reader.string());
                     break;
+                case 24:
+                    message.serviceAccountId = reader.string();
+                    break;
+                case 25:
+                    message.logging = LoggingConfig.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1176,6 +1200,14 @@ export const CreateClusterRequest = {
                 : undefined;
         message.masterHostGroupIds = (object.masterHostGroupIds ?? []).map((e: any) => String(e));
         message.segmentHostGroupIds = (object.segmentHostGroupIds ?? []).map((e: any) => String(e));
+        message.serviceAccountId =
+            object.serviceAccountId !== undefined && object.serviceAccountId !== null
+                ? String(object.serviceAccountId)
+                : '';
+        message.logging =
+            object.logging !== undefined && object.logging !== null
+                ? LoggingConfig.fromJSON(object.logging)
+                : undefined;
         return message;
     },
 
@@ -1245,6 +1277,9 @@ export const CreateClusterRequest = {
         } else {
             obj.segmentHostGroupIds = [];
         }
+        message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
+        message.logging !== undefined &&
+            (obj.logging = message.logging ? LoggingConfig.toJSON(message.logging) : undefined);
         return obj;
     },
 
@@ -1300,6 +1335,11 @@ export const CreateClusterRequest = {
                 : undefined;
         message.masterHostGroupIds = object.masterHostGroupIds?.map((e) => e) || [];
         message.segmentHostGroupIds = object.segmentHostGroupIds?.map((e) => e) || [];
+        message.serviceAccountId = object.serviceAccountId ?? '';
+        message.logging =
+            object.logging !== undefined && object.logging !== null
+                ? LoggingConfig.fromPartial(object.logging)
+                : undefined;
         return message;
     },
 };
@@ -1628,6 +1668,7 @@ const baseUpdateClusterRequest: object = {
     networkId: '',
     securityGroupIds: '',
     deletionProtection: false,
+    serviceAccountId: '',
 };
 
 export const UpdateClusterRequest = {
@@ -1685,6 +1726,12 @@ export const UpdateClusterRequest = {
         }
         if (message.cloudStorage !== undefined) {
             CloudStorage.encode(message.cloudStorage, writer.uint32(162).fork()).ldelim();
+        }
+        if (message.serviceAccountId !== '') {
+            writer.uint32(170).string(message.serviceAccountId);
+        }
+        if (message.logging !== undefined) {
+            LoggingConfig.encode(message.logging, writer.uint32(178).fork()).ldelim();
         }
         return writer;
     },
@@ -1751,6 +1798,12 @@ export const UpdateClusterRequest = {
                     break;
                 case 20:
                     message.cloudStorage = CloudStorage.decode(reader, reader.uint32());
+                    break;
+                case 21:
+                    message.serviceAccountId = reader.string();
+                    break;
+                case 22:
+                    message.logging = LoggingConfig.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1819,6 +1872,14 @@ export const UpdateClusterRequest = {
             object.cloudStorage !== undefined && object.cloudStorage !== null
                 ? CloudStorage.fromJSON(object.cloudStorage)
                 : undefined;
+        message.serviceAccountId =
+            object.serviceAccountId !== undefined && object.serviceAccountId !== null
+                ? String(object.serviceAccountId)
+                : '';
+        message.logging =
+            object.logging !== undefined && object.logging !== null
+                ? LoggingConfig.fromJSON(object.logging)
+                : undefined;
         return message;
     },
 
@@ -1868,6 +1929,9 @@ export const UpdateClusterRequest = {
             (obj.cloudStorage = message.cloudStorage
                 ? CloudStorage.toJSON(message.cloudStorage)
                 : undefined);
+        message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
+        message.logging !== undefined &&
+            (obj.logging = message.logging ? LoggingConfig.toJSON(message.logging) : undefined);
         return obj;
     },
 
@@ -1918,6 +1982,11 @@ export const UpdateClusterRequest = {
         message.cloudStorage =
             object.cloudStorage !== undefined && object.cloudStorage !== null
                 ? CloudStorage.fromPartial(object.cloudStorage)
+                : undefined;
+        message.serviceAccountId = object.serviceAccountId ?? '';
+        message.logging =
+            object.logging !== undefined && object.logging !== null
+                ? LoggingConfig.fromPartial(object.logging)
                 : undefined;
         return message;
     },
@@ -3933,6 +4002,7 @@ const baseRestoreClusterRequest: object = {
     restoreOnly: '',
     masterHostGroupIds: '',
     segmentHostGroupIds: '',
+    serviceAccountId: '',
 };
 
 export const RestoreClusterRequest = {
@@ -4002,6 +4072,9 @@ export const RestoreClusterRequest = {
         }
         for (const v of message.segmentHostGroupIds) {
             writer.uint32(170).string(v!);
+        }
+        if (message.serviceAccountId !== '') {
+            writer.uint32(194).string(message.serviceAccountId);
         }
         return writer;
     },
@@ -4088,6 +4161,9 @@ export const RestoreClusterRequest = {
                 case 21:
                     message.segmentHostGroupIds.push(reader.string());
                     break;
+                case 24:
+                    message.serviceAccountId = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -4167,6 +4243,10 @@ export const RestoreClusterRequest = {
         message.restoreOnly = (object.restoreOnly ?? []).map((e: any) => String(e));
         message.masterHostGroupIds = (object.masterHostGroupIds ?? []).map((e: any) => String(e));
         message.segmentHostGroupIds = (object.segmentHostGroupIds ?? []).map((e: any) => String(e));
+        message.serviceAccountId =
+            object.serviceAccountId !== undefined && object.serviceAccountId !== null
+                ? String(object.serviceAccountId)
+                : '';
         return message;
     },
 
@@ -4234,6 +4314,7 @@ export const RestoreClusterRequest = {
         } else {
             obj.segmentHostGroupIds = [];
         }
+        message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
         return obj;
     },
 
@@ -4282,6 +4363,7 @@ export const RestoreClusterRequest = {
         message.restoreOnly = object.restoreOnly?.map((e) => e) || [];
         message.masterHostGroupIds = object.masterHostGroupIds?.map((e) => e) || [];
         message.segmentHostGroupIds = object.segmentHostGroupIds?.map((e) => e) || [];
+        message.serviceAccountId = object.serviceAccountId ?? '';
         return message;
     },
 };
