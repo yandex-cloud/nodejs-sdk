@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
+import { LogOptions, Bus } from '../../../../../yandex/cloud/serverless/eventrouter/v1/bus';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Bus } from '../../../../../yandex/cloud/serverless/eventrouter/v1/bus';
 import { Operation } from '../../../../../yandex/cloud/operation/operation';
 import {
     ListAccessBindingsRequest,
@@ -66,6 +66,10 @@ export interface CreateBusRequest {
     labels: { [key: string]: string };
     /** Flag that disallow deletion of the bus. */
     deletionProtection: boolean;
+    /** Is logging from the bus enabled. */
+    loggingEnabled: boolean;
+    /** Options for logging from the bus. */
+    logOptions?: LogOptions;
 }
 
 export interface CreateBusRequest_LabelsEntry {
@@ -93,6 +97,10 @@ export interface UpdateBusRequest {
     labels: { [key: string]: string };
     /** New flag that disallow deletion of the bus. */
     deletionProtection: boolean;
+    /** Is logging from the bus enabled. */
+    loggingEnabled: boolean;
+    /** New options for logging from the bus. */
+    logOptions?: LogOptions;
 }
 
 export interface UpdateBusRequest_LabelsEntry {
@@ -342,6 +350,7 @@ const baseCreateBusRequest: object = {
     name: '',
     description: '',
     deletionProtection: false,
+    loggingEnabled: false,
 };
 
 export const CreateBusRequest = {
@@ -363,6 +372,12 @@ export const CreateBusRequest = {
         });
         if (message.deletionProtection === true) {
             writer.uint32(40).bool(message.deletionProtection);
+        }
+        if (message.loggingEnabled === true) {
+            writer.uint32(48).bool(message.loggingEnabled);
+        }
+        if (message.logOptions !== undefined) {
+            LogOptions.encode(message.logOptions, writer.uint32(58).fork()).ldelim();
         }
         return writer;
     },
@@ -392,6 +407,12 @@ export const CreateBusRequest = {
                     break;
                 case 5:
                     message.deletionProtection = reader.bool();
+                    break;
+                case 6:
+                    message.loggingEnabled = reader.bool();
+                    break;
+                case 7:
+                    message.logOptions = LogOptions.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -423,6 +444,14 @@ export const CreateBusRequest = {
             object.deletionProtection !== undefined && object.deletionProtection !== null
                 ? Boolean(object.deletionProtection)
                 : false;
+        message.loggingEnabled =
+            object.loggingEnabled !== undefined && object.loggingEnabled !== null
+                ? Boolean(object.loggingEnabled)
+                : false;
+        message.logOptions =
+            object.logOptions !== undefined && object.logOptions !== null
+                ? LogOptions.fromJSON(object.logOptions)
+                : undefined;
         return message;
     },
 
@@ -439,6 +468,11 @@ export const CreateBusRequest = {
         }
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
+        message.loggingEnabled !== undefined && (obj.loggingEnabled = message.loggingEnabled);
+        message.logOptions !== undefined &&
+            (obj.logOptions = message.logOptions
+                ? LogOptions.toJSON(message.logOptions)
+                : undefined);
         return obj;
     },
 
@@ -457,6 +491,11 @@ export const CreateBusRequest = {
             {},
         );
         message.deletionProtection = object.deletionProtection ?? false;
+        message.loggingEnabled = object.loggingEnabled ?? false;
+        message.logOptions =
+            object.logOptions !== undefined && object.logOptions !== null
+                ? LogOptions.fromPartial(object.logOptions)
+                : undefined;
         return message;
     },
 };
@@ -588,6 +627,7 @@ const baseUpdateBusRequest: object = {
     name: '',
     description: '',
     deletionProtection: false,
+    loggingEnabled: false,
 };
 
 export const UpdateBusRequest = {
@@ -612,6 +652,12 @@ export const UpdateBusRequest = {
         });
         if (message.deletionProtection === true) {
             writer.uint32(48).bool(message.deletionProtection);
+        }
+        if (message.loggingEnabled === true) {
+            writer.uint32(56).bool(message.loggingEnabled);
+        }
+        if (message.logOptions !== undefined) {
+            LogOptions.encode(message.logOptions, writer.uint32(66).fork()).ldelim();
         }
         return writer;
     },
@@ -645,6 +691,12 @@ export const UpdateBusRequest = {
                 case 6:
                     message.deletionProtection = reader.bool();
                     break;
+                case 7:
+                    message.loggingEnabled = reader.bool();
+                    break;
+                case 8:
+                    message.logOptions = LogOptions.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -677,6 +729,14 @@ export const UpdateBusRequest = {
             object.deletionProtection !== undefined && object.deletionProtection !== null
                 ? Boolean(object.deletionProtection)
                 : false;
+        message.loggingEnabled =
+            object.loggingEnabled !== undefined && object.loggingEnabled !== null
+                ? Boolean(object.loggingEnabled)
+                : false;
+        message.logOptions =
+            object.logOptions !== undefined && object.logOptions !== null
+                ? LogOptions.fromJSON(object.logOptions)
+                : undefined;
         return message;
     },
 
@@ -697,6 +757,11 @@ export const UpdateBusRequest = {
         }
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
+        message.loggingEnabled !== undefined && (obj.loggingEnabled = message.loggingEnabled);
+        message.logOptions !== undefined &&
+            (obj.logOptions = message.logOptions
+                ? LogOptions.toJSON(message.logOptions)
+                : undefined);
         return obj;
     },
 
@@ -719,6 +784,11 @@ export const UpdateBusRequest = {
             {},
         );
         message.deletionProtection = object.deletionProtection ?? false;
+        message.loggingEnabled = object.loggingEnabled ?? false;
+        message.logOptions =
+            object.logOptions !== undefined && object.logOptions !== null
+                ? LogOptions.fromPartial(object.logOptions)
+                : undefined;
         return message;
     },
 };

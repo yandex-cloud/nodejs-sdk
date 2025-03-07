@@ -119,6 +119,7 @@
       "image_service.proto",
       "instance_service.proto",
       "placement_group_service.proto",
+      "reserved_instance_pool_service.proto",
       "snapshot_schedule_service.proto",
       "snapshot_service.proto",
       "zone_service.proto"

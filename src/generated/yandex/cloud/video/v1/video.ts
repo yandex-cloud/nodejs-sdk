@@ -3,6 +3,7 @@ import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../google/protobuf/duration';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
+import { BoolValue } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
@@ -70,6 +71,12 @@ export interface Video {
      * If set to DISABLE, manual "Transcode()" call is required instead.
      */
     autoTranscode: AutoTranscode;
+    /**
+     * Enable advertisement for this video.
+     * Default: true.
+     * Use this to disable advertisement for a specific video.
+     */
+    enableAd?: boolean;
     /** IDs of active video subtitles. */
     subtitleIds: string[];
     /** Upload video using the tus protocol. */
@@ -241,6 +248,9 @@ export const Video = {
         if (message.autoTranscode !== 0) {
             writer.uint32(88).int32(message.autoTranscode);
         }
+        if (message.enableAd !== undefined) {
+            BoolValue.encode({ value: message.enableAd! }, writer.uint32(138).fork()).ldelim();
+        }
         for (const v of message.subtitleIds) {
             writer.uint32(98).string(v!);
         }
@@ -316,6 +326,9 @@ export const Video = {
                 case 11:
                     message.autoTranscode = reader.int32() as any;
                     break;
+                case 17:
+                    message.enableAd = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 case 12:
                     message.subtitleIds.push(reader.string());
                     break;
@@ -390,6 +403,10 @@ export const Video = {
             object.autoTranscode !== undefined && object.autoTranscode !== null
                 ? autoTranscodeFromJSON(object.autoTranscode)
                 : 0;
+        message.enableAd =
+            object.enableAd !== undefined && object.enableAd !== null
+                ? Boolean(object.enableAd)
+                : undefined;
         message.subtitleIds = (object.subtitleIds ?? []).map((e: any) => String(e));
         message.tusd =
             object.tusd !== undefined && object.tusd !== null
@@ -439,6 +456,7 @@ export const Video = {
             (obj.visibilityStatus = video_VisibilityStatusToJSON(message.visibilityStatus));
         message.autoTranscode !== undefined &&
             (obj.autoTranscode = autoTranscodeToJSON(message.autoTranscode));
+        message.enableAd !== undefined && (obj.enableAd = message.enableAd);
         if (message.subtitleIds) {
             obj.subtitleIds = message.subtitleIds.map((e) => e);
         } else {
@@ -483,6 +501,7 @@ export const Video = {
                 : undefined;
         message.visibilityStatus = object.visibilityStatus ?? 0;
         message.autoTranscode = object.autoTranscode ?? 0;
+        message.enableAd = object.enableAd ?? undefined;
         message.subtitleIds = object.subtitleIds?.map((e) => e) || [];
         message.tusd =
             object.tusd !== undefined && object.tusd !== null

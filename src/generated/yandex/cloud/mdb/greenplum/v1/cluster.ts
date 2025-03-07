@@ -85,6 +85,10 @@ export interface Cluster {
     masterHostGroupIds: string[];
     /** Host groups hosting VMs of the segment subcluster. */
     segmentHostGroupIds: string[];
+    /** Service account that will be used to access a Yandex Cloud resources */
+    serviceAccountId: string;
+    /** Cloud logging configuration */
+    logging?: LoggingConfig;
 }
 
 export enum Cluster_Environment {
@@ -364,6 +368,18 @@ export interface CloudStorage {
     enable: boolean;
 }
 
+export interface LoggingConfig {
+    enabled: boolean;
+    folderId: string | undefined;
+    logGroupId: string | undefined;
+    /** send Yandex Command Center logs */
+    commandCenterEnabled: boolean;
+    /** send Greenplum logs */
+    greenplumEnabled: boolean;
+    /** send Pooler logs */
+    poolerEnabled: boolean;
+}
+
 const baseCluster: object = {
     id: '',
     folderId: '',
@@ -382,6 +398,7 @@ const baseCluster: object = {
     hostGroupIds: '',
     masterHostGroupIds: '',
     segmentHostGroupIds: '',
+    serviceAccountId: '',
 };
 
 export const Cluster = {
@@ -475,6 +492,12 @@ export const Cluster = {
         }
         for (const v of message.segmentHostGroupIds) {
             writer.uint32(226).string(v!);
+        }
+        if (message.serviceAccountId !== '') {
+            writer.uint32(234).string(message.serviceAccountId);
+        }
+        if (message.logging !== undefined) {
+            LoggingConfig.encode(message.logging, writer.uint32(242).fork()).ldelim();
         }
         return writer;
     },
@@ -576,6 +599,12 @@ export const Cluster = {
                 case 28:
                     message.segmentHostGroupIds.push(reader.string());
                     break;
+                case 29:
+                    message.serviceAccountId = reader.string();
+                    break;
+                case 30:
+                    message.logging = LoggingConfig.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -676,6 +705,14 @@ export const Cluster = {
                 : undefined;
         message.masterHostGroupIds = (object.masterHostGroupIds ?? []).map((e: any) => String(e));
         message.segmentHostGroupIds = (object.segmentHostGroupIds ?? []).map((e: any) => String(e));
+        message.serviceAccountId =
+            object.serviceAccountId !== undefined && object.serviceAccountId !== null
+                ? String(object.serviceAccountId)
+                : '';
+        message.logging =
+            object.logging !== undefined && object.logging !== null
+                ? LoggingConfig.fromJSON(object.logging)
+                : undefined;
         return message;
     },
 
@@ -757,6 +794,9 @@ export const Cluster = {
         } else {
             obj.segmentHostGroupIds = [];
         }
+        message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
+        message.logging !== undefined &&
+            (obj.logging = message.logging ? LoggingConfig.toJSON(message.logging) : undefined);
         return obj;
     },
 
@@ -818,6 +858,11 @@ export const Cluster = {
                 : undefined;
         message.masterHostGroupIds = object.masterHostGroupIds?.map((e) => e) || [];
         message.segmentHostGroupIds = object.segmentHostGroupIds?.map((e) => e) || [];
+        message.serviceAccountId = object.serviceAccountId ?? '';
+        message.logging =
+            object.logging !== undefined && object.logging !== null
+                ? LoggingConfig.fromPartial(object.logging)
+                : undefined;
         return message;
     },
 };
@@ -1606,6 +1651,122 @@ export const CloudStorage = {
     fromPartial<I extends Exact<DeepPartial<CloudStorage>, I>>(object: I): CloudStorage {
         const message = { ...baseCloudStorage } as CloudStorage;
         message.enable = object.enable ?? false;
+        return message;
+    },
+};
+
+const baseLoggingConfig: object = {
+    enabled: false,
+    commandCenterEnabled: false,
+    greenplumEnabled: false,
+    poolerEnabled: false,
+};
+
+export const LoggingConfig = {
+    encode(message: LoggingConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.enabled === true) {
+            writer.uint32(8).bool(message.enabled);
+        }
+        if (message.folderId !== undefined) {
+            writer.uint32(18).string(message.folderId);
+        }
+        if (message.logGroupId !== undefined) {
+            writer.uint32(26).string(message.logGroupId);
+        }
+        if (message.commandCenterEnabled === true) {
+            writer.uint32(40).bool(message.commandCenterEnabled);
+        }
+        if (message.greenplumEnabled === true) {
+            writer.uint32(48).bool(message.greenplumEnabled);
+        }
+        if (message.poolerEnabled === true) {
+            writer.uint32(56).bool(message.poolerEnabled);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): LoggingConfig {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseLoggingConfig } as LoggingConfig;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enabled = reader.bool();
+                    break;
+                case 2:
+                    message.folderId = reader.string();
+                    break;
+                case 3:
+                    message.logGroupId = reader.string();
+                    break;
+                case 5:
+                    message.commandCenterEnabled = reader.bool();
+                    break;
+                case 6:
+                    message.greenplumEnabled = reader.bool();
+                    break;
+                case 7:
+                    message.poolerEnabled = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): LoggingConfig {
+        const message = { ...baseLoggingConfig } as LoggingConfig;
+        message.enabled =
+            object.enabled !== undefined && object.enabled !== null
+                ? Boolean(object.enabled)
+                : false;
+        message.folderId =
+            object.folderId !== undefined && object.folderId !== null
+                ? String(object.folderId)
+                : undefined;
+        message.logGroupId =
+            object.logGroupId !== undefined && object.logGroupId !== null
+                ? String(object.logGroupId)
+                : undefined;
+        message.commandCenterEnabled =
+            object.commandCenterEnabled !== undefined && object.commandCenterEnabled !== null
+                ? Boolean(object.commandCenterEnabled)
+                : false;
+        message.greenplumEnabled =
+            object.greenplumEnabled !== undefined && object.greenplumEnabled !== null
+                ? Boolean(object.greenplumEnabled)
+                : false;
+        message.poolerEnabled =
+            object.poolerEnabled !== undefined && object.poolerEnabled !== null
+                ? Boolean(object.poolerEnabled)
+                : false;
+        return message;
+    },
+
+    toJSON(message: LoggingConfig): unknown {
+        const obj: any = {};
+        message.enabled !== undefined && (obj.enabled = message.enabled);
+        message.folderId !== undefined && (obj.folderId = message.folderId);
+        message.logGroupId !== undefined && (obj.logGroupId = message.logGroupId);
+        message.commandCenterEnabled !== undefined &&
+            (obj.commandCenterEnabled = message.commandCenterEnabled);
+        message.greenplumEnabled !== undefined && (obj.greenplumEnabled = message.greenplumEnabled);
+        message.poolerEnabled !== undefined && (obj.poolerEnabled = message.poolerEnabled);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<LoggingConfig>, I>>(object: I): LoggingConfig {
+        const message = { ...baseLoggingConfig } as LoggingConfig;
+        message.enabled = object.enabled ?? false;
+        message.folderId = object.folderId ?? undefined;
+        message.logGroupId = object.logGroupId ?? undefined;
+        message.commandCenterEnabled = object.commandCenterEnabled ?? false;
+        message.greenplumEnabled = object.greenplumEnabled ?? false;
+        message.poolerEnabled = object.poolerEnabled ?? false;
         return message;
     },
 };

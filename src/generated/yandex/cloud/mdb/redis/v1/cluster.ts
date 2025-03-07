@@ -69,6 +69,8 @@ export interface Cluster {
     persistenceMode: Cluster_PersistenceMode;
     /** Enable FQDN instead of ip */
     announceHostnames: boolean;
+    /** Allows to use ACL users to auth in sentinel */
+    authSentinel: boolean;
 }
 
 export enum Cluster_Environment {
@@ -590,6 +592,7 @@ const baseCluster: object = {
     deletionProtection: false,
     persistenceMode: 0,
     announceHostnames: false,
+    authSentinel: false,
 };
 
 export const Cluster = {
@@ -659,6 +662,9 @@ export const Cluster = {
         }
         if (message.announceHostnames === true) {
             writer.uint32(160).bool(message.announceHostnames);
+        }
+        if (message.authSentinel === true) {
+            writer.uint32(168).bool(message.authSentinel);
         }
         return writer;
     },
@@ -735,6 +741,9 @@ export const Cluster = {
                     break;
                 case 20:
                     message.announceHostnames = reader.bool();
+                    break;
+                case 21:
+                    message.authSentinel = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -817,6 +826,10 @@ export const Cluster = {
             object.announceHostnames !== undefined && object.announceHostnames !== null
                 ? Boolean(object.announceHostnames)
                 : false;
+        message.authSentinel =
+            object.authSentinel !== undefined && object.authSentinel !== null
+                ? Boolean(object.authSentinel)
+                : false;
         return message;
     },
 
@@ -866,6 +879,7 @@ export const Cluster = {
             (obj.persistenceMode = cluster_PersistenceModeToJSON(message.persistenceMode));
         message.announceHostnames !== undefined &&
             (obj.announceHostnames = message.announceHostnames);
+        message.authSentinel !== undefined && (obj.authSentinel = message.authSentinel);
         return obj;
     },
 
@@ -908,6 +922,7 @@ export const Cluster = {
         message.deletionProtection = object.deletionProtection ?? false;
         message.persistenceMode = object.persistenceMode ?? 0;
         message.announceHostnames = object.announceHostnames ?? false;
+        message.authSentinel = object.authSentinel ?? false;
         return message;
     },
 };

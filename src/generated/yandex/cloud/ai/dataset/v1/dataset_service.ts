@@ -15,8 +15,8 @@ import {
 import _m0 from 'protobufjs/minimal';
 import {
     DatasetInfo,
-    DatasetInfo_Status,
     ValidationError,
+    DatasetInfo_Status,
     DatasetUploadSchema,
     DatasetFileDownloadUrl,
     datasetInfo_StatusFromJSON,
@@ -182,12 +182,12 @@ export interface FinishMultipartUploadDraftResponse {
 export interface ListDatasetsRequest {
     /** Folder ID of the datasets to list. */
     folderId: string;
-    /** Status of the datasets to list. Optional. */
-    status: DatasetInfo_Status;
+    /** Statuses of the datasets to list. Optional. */
+    status: DatasetInfo_Status[];
     /** Name substring of the datasets to list. Optional. */
     datasetNamePattern: string;
-    /** Task type of the datasets to list. Optional. */
-    taskTypeFilter: string;
+    /** Task types of the datasets to list. Optional. */
+    taskTypeFilter: string[];
     /**
      * The maximum number of results per page to return. If the number of available
      * results is larger than [page_size],
@@ -1756,14 +1756,16 @@ export const ListDatasetsRequest = {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
         }
-        if (message.status !== 0) {
-            writer.uint32(16).int32(message.status);
+        writer.uint32(18).fork();
+        for (const v of message.status) {
+            writer.int32(v);
         }
+        writer.ldelim();
         if (message.datasetNamePattern !== '') {
             writer.uint32(26).string(message.datasetNamePattern);
         }
-        if (message.taskTypeFilter !== '') {
-            writer.uint32(34).string(message.taskTypeFilter);
+        for (const v of message.taskTypeFilter) {
+            writer.uint32(34).string(v!);
         }
         if (message.pageSize !== 0) {
             writer.uint32(40).int64(message.pageSize);
@@ -1778,6 +1780,8 @@ export const ListDatasetsRequest = {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseListDatasetsRequest } as ListDatasetsRequest;
+        message.status = [];
+        message.taskTypeFilter = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1785,13 +1789,20 @@ export const ListDatasetsRequest = {
                     message.folderId = reader.string();
                     break;
                 case 2:
-                    message.status = reader.int32() as any;
+                    if ((tag & 7) === 2) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.status.push(reader.int32() as any);
+                        }
+                    } else {
+                        message.status.push(reader.int32() as any);
+                    }
                     break;
                 case 3:
                     message.datasetNamePattern = reader.string();
                     break;
                 case 4:
-                    message.taskTypeFilter = reader.string();
+                    message.taskTypeFilter.push(reader.string());
                     break;
                 case 5:
                     message.pageSize = longToNumber(reader.int64() as Long);
@@ -1813,18 +1824,12 @@ export const ListDatasetsRequest = {
             object.folderId !== undefined && object.folderId !== null
                 ? String(object.folderId)
                 : '';
-        message.status =
-            object.status !== undefined && object.status !== null
-                ? datasetInfo_StatusFromJSON(object.status)
-                : 0;
+        message.status = (object.status ?? []).map((e: any) => datasetInfo_StatusFromJSON(e));
         message.datasetNamePattern =
             object.datasetNamePattern !== undefined && object.datasetNamePattern !== null
                 ? String(object.datasetNamePattern)
                 : '';
-        message.taskTypeFilter =
-            object.taskTypeFilter !== undefined && object.taskTypeFilter !== null
-                ? String(object.taskTypeFilter)
-                : '';
+        message.taskTypeFilter = (object.taskTypeFilter ?? []).map((e: any) => String(e));
         message.pageSize =
             object.pageSize !== undefined && object.pageSize !== null ? Number(object.pageSize) : 0;
         message.pageToken =
@@ -1837,10 +1842,18 @@ export const ListDatasetsRequest = {
     toJSON(message: ListDatasetsRequest): unknown {
         const obj: any = {};
         message.folderId !== undefined && (obj.folderId = message.folderId);
-        message.status !== undefined && (obj.status = datasetInfo_StatusToJSON(message.status));
+        if (message.status) {
+            obj.status = message.status.map((e) => datasetInfo_StatusToJSON(e));
+        } else {
+            obj.status = [];
+        }
         message.datasetNamePattern !== undefined &&
             (obj.datasetNamePattern = message.datasetNamePattern);
-        message.taskTypeFilter !== undefined && (obj.taskTypeFilter = message.taskTypeFilter);
+        if (message.taskTypeFilter) {
+            obj.taskTypeFilter = message.taskTypeFilter.map((e) => e);
+        } else {
+            obj.taskTypeFilter = [];
+        }
         message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
         message.pageToken !== undefined && (obj.pageToken = message.pageToken);
         return obj;
@@ -1851,9 +1864,9 @@ export const ListDatasetsRequest = {
     ): ListDatasetsRequest {
         const message = { ...baseListDatasetsRequest } as ListDatasetsRequest;
         message.folderId = object.folderId ?? '';
-        message.status = object.status ?? 0;
+        message.status = object.status?.map((e) => e) || [];
         message.datasetNamePattern = object.datasetNamePattern ?? '';
-        message.taskTypeFilter = object.taskTypeFilter ?? '';
+        message.taskTypeFilter = object.taskTypeFilter?.map((e) => e) || [];
         message.pageSize = object.pageSize ?? 0;
         message.pageToken = object.pageToken ?? '';
         return message;

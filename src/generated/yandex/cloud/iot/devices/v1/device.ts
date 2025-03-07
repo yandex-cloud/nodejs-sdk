@@ -146,6 +146,7 @@ export interface DeviceMonitoringData {
     lastPubActivityTime?: Date;
     lastSubActivityTime?: Date;
     lastOnlineTime?: Date;
+    lastDisconnectTime?: Date;
 }
 
 const baseDevice: object = { id: '', registryId: '', name: '', description: '', status: 0 };
@@ -550,6 +551,12 @@ export const DeviceMonitoringData = {
                 writer.uint32(42).fork(),
             ).ldelim();
         }
+        if (message.lastDisconnectTime !== undefined) {
+            Timestamp.encode(
+                toTimestamp(message.lastDisconnectTime),
+                writer.uint32(50).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -578,6 +585,11 @@ export const DeviceMonitoringData = {
                     break;
                 case 5:
                     message.lastOnlineTime = fromTimestamp(
+                        Timestamp.decode(reader, reader.uint32()),
+                    );
+                    break;
+                case 6:
+                    message.lastDisconnectTime = fromTimestamp(
                         Timestamp.decode(reader, reader.uint32()),
                     );
                     break;
@@ -611,6 +623,10 @@ export const DeviceMonitoringData = {
             object.lastOnlineTime !== undefined && object.lastOnlineTime !== null
                 ? fromJsonTimestamp(object.lastOnlineTime)
                 : undefined;
+        message.lastDisconnectTime =
+            object.lastDisconnectTime !== undefined && object.lastDisconnectTime !== null
+                ? fromJsonTimestamp(object.lastDisconnectTime)
+                : undefined;
         return message;
     },
 
@@ -625,6 +641,8 @@ export const DeviceMonitoringData = {
             (obj.lastSubActivityTime = message.lastSubActivityTime.toISOString());
         message.lastOnlineTime !== undefined &&
             (obj.lastOnlineTime = message.lastOnlineTime.toISOString());
+        message.lastDisconnectTime !== undefined &&
+            (obj.lastDisconnectTime = message.lastDisconnectTime.toISOString());
         return obj;
     },
 
@@ -637,6 +655,7 @@ export const DeviceMonitoringData = {
         message.lastPubActivityTime = object.lastPubActivityTime ?? undefined;
         message.lastSubActivityTime = object.lastSubActivityTime ?? undefined;
         message.lastOnlineTime = object.lastOnlineTime ?? undefined;
+        message.lastDisconnectTime = object.lastDisconnectTime ?? undefined;
         return message;
     },
 };
