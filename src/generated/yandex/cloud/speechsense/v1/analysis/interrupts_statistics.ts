@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { AudioSegmentBoundaries } from '../../../../../yandex/cloud/speechsense/v1/analysis/statistics_common';
@@ -7,13 +6,11 @@ import { AudioSegmentBoundaries } from '../../../../../yandex/cloud/speechsense/
 export const protobufPackage = 'yandex.cloud.speechsense.v1.analysis';
 
 export interface InterruptsStatistics {
-    $type: 'yandex.cloud.speechsense.v1.analysis.InterruptsStatistics';
     /** Interrupts description for every speaker */
     speakerInterrupts: InterruptsEvaluation[];
 }
 
 export interface InterruptsEvaluation {
-    $type: 'yandex.cloud.speechsense.v1.analysis.InterruptsEvaluation';
     /** Speaker tag */
     speakerTag: string;
     /** Number of interrupts made by the speaker */
@@ -26,13 +23,9 @@ export interface InterruptsEvaluation {
     interruptsDurationSeconds: number;
 }
 
-const baseInterruptsStatistics: object = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.InterruptsStatistics',
-};
+const baseInterruptsStatistics: object = {};
 
 export const InterruptsStatistics = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.InterruptsStatistics' as const,
-
     encode(message: InterruptsStatistics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.speakerInterrupts) {
             InterruptsEvaluation.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -91,10 +84,7 @@ export const InterruptsStatistics = {
     },
 };
 
-messageTypeRegistry.set(InterruptsStatistics.$type, InterruptsStatistics);
-
 const baseInterruptsEvaluation: object = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.InterruptsEvaluation',
     speakerTag: '',
     interruptsCount: 0,
     interruptsDurationMs: 0,
@@ -102,8 +92,6 @@ const baseInterruptsEvaluation: object = {
 };
 
 export const InterruptsEvaluation = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.InterruptsEvaluation' as const,
-
     encode(message: InterruptsEvaluation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.speakerTag !== '') {
             writer.uint32(10).string(message.speakerTag);
@@ -212,8 +200,6 @@ export const InterruptsEvaluation = {
     },
 };
 
-messageTypeRegistry.set(InterruptsEvaluation.$type, InterruptsEvaluation);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -234,16 +220,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

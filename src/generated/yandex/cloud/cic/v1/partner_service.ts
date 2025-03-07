@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ import { Partner } from '../../../../yandex/cloud/cic/v1/partner';
 export const protobufPackage = 'yandex.cloud.cic.v1';
 
 export interface GetPartnerRequest {
-    $type: 'yandex.cloud.cic.v1.GetPartnerRequest';
     /**
      * ID of the Partner resource to return.
      * To get the partner ID use a [PartnerService.List] request.
@@ -28,7 +26,6 @@ export interface GetPartnerRequest {
 }
 
 export interface ListPartnersRequest {
-    $type: 'yandex.cloud.cic.v1.ListPartnersRequest';
     /**
      * The maximum number of results per page to return. If the number of available
      * results is larger than [page_size],
@@ -52,7 +49,6 @@ export interface ListPartnersRequest {
 }
 
 export interface ListPartnersResponse {
-    $type: 'yandex.cloud.cic.v1.ListPartnersResponse';
     /** List of Partner resources. */
     partners: Partner[];
     /**
@@ -66,14 +62,9 @@ export interface ListPartnersResponse {
     nextPageToken: string;
 }
 
-const baseGetPartnerRequest: object = {
-    $type: 'yandex.cloud.cic.v1.GetPartnerRequest',
-    partnerId: '',
-};
+const baseGetPartnerRequest: object = { partnerId: '' };
 
 export const GetPartnerRequest = {
-    $type: 'yandex.cloud.cic.v1.GetPartnerRequest' as const,
-
     encode(message: GetPartnerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.partnerId !== '') {
             writer.uint32(10).string(message.partnerId);
@@ -121,18 +112,9 @@ export const GetPartnerRequest = {
     },
 };
 
-messageTypeRegistry.set(GetPartnerRequest.$type, GetPartnerRequest);
-
-const baseListPartnersRequest: object = {
-    $type: 'yandex.cloud.cic.v1.ListPartnersRequest',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListPartnersRequest: object = { pageSize: 0, pageToken: '', filter: '' };
 
 export const ListPartnersRequest = {
-    $type: 'yandex.cloud.cic.v1.ListPartnersRequest' as const,
-
     encode(message: ListPartnersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(16).int64(message.pageSize);
@@ -202,16 +184,9 @@ export const ListPartnersRequest = {
     },
 };
 
-messageTypeRegistry.set(ListPartnersRequest.$type, ListPartnersRequest);
-
-const baseListPartnersResponse: object = {
-    $type: 'yandex.cloud.cic.v1.ListPartnersResponse',
-    nextPageToken: '',
-};
+const baseListPartnersResponse: object = { nextPageToken: '' };
 
 export const ListPartnersResponse = {
-    $type: 'yandex.cloud.cic.v1.ListPartnersResponse' as const,
-
     encode(message: ListPartnersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.partners) {
             Partner.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -274,8 +249,6 @@ export const ListPartnersResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListPartnersResponse.$type, ListPartnersResponse);
 
 /** A set of methods for managing Partner resources. */
 export const PartnerServiceService = {
@@ -390,16 +363,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

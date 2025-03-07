@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -29,7 +28,6 @@ import {
 export const protobufPackage = 'yandex.cloud.logging.v1';
 
 export interface GetLogGroupRequest {
-    $type: 'yandex.cloud.logging.v1.GetLogGroupRequest';
     /**
      * ID of the log group to return.
      *
@@ -39,7 +37,6 @@ export interface GetLogGroupRequest {
 }
 
 export interface GetLogGroupStatsRequest {
-    $type: 'yandex.cloud.logging.v1.GetLogGroupStatsRequest';
     /**
      * ID of the log group to return stats for.
      *
@@ -49,7 +46,6 @@ export interface GetLogGroupStatsRequest {
 }
 
 export interface ListLogGroupsRequest {
-    $type: 'yandex.cloud.logging.v1.ListLogGroupsRequest';
     /**
      * Folder ID of the log groups to return.
      *
@@ -82,7 +78,6 @@ export interface ListLogGroupsRequest {
 }
 
 export interface ListLogGroupsResponse {
-    $type: 'yandex.cloud.logging.v1.ListLogGroupsResponse';
     /** List of log groups in the specified folder. */
     groups: LogGroup[];
     /**
@@ -96,7 +91,6 @@ export interface ListLogGroupsResponse {
 }
 
 export interface CreateLogGroupRequest {
-    $type: 'yandex.cloud.logging.v1.CreateLogGroupRequest';
     /**
      * ID of the folder to create a log group in.
      *
@@ -125,19 +119,16 @@ export interface CreateLogGroupRequest {
 }
 
 export interface CreateLogGroupRequest_LabelsEntry {
-    $type: 'yandex.cloud.logging.v1.CreateLogGroupRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateLogGroupMetadata {
-    $type: 'yandex.cloud.logging.v1.CreateLogGroupMetadata';
     /** ID of the log group being created. */
     logGroupId: string;
 }
 
 export interface UpdateLogGroupRequest {
-    $type: 'yandex.cloud.logging.v1.UpdateLogGroupRequest';
     /**
      * ID of the log group to update.
      *
@@ -168,19 +159,16 @@ export interface UpdateLogGroupRequest {
 }
 
 export interface UpdateLogGroupRequest_LabelsEntry {
-    $type: 'yandex.cloud.logging.v1.UpdateLogGroupRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateLogGroupMetadata {
-    $type: 'yandex.cloud.logging.v1.UpdateLogGroupMetadata';
     /** ID of the log group being updated. */
     logGroupId: string;
 }
 
 export interface DeleteLogGroupRequest {
-    $type: 'yandex.cloud.logging.v1.DeleteLogGroupRequest';
     /**
      * ID of the log group to delete.
      *
@@ -190,13 +178,11 @@ export interface DeleteLogGroupRequest {
 }
 
 export interface DeleteLogGroupMetadata {
-    $type: 'yandex.cloud.logging.v1.DeleteLogGroupMetadata';
     /** ID of the log group being deleted. */
     logGroupId: string;
 }
 
 export interface ListResourcesRequest {
-    $type: 'yandex.cloud.logging.v1.ListResourcesRequest';
     /**
      * ID of the log group to list resources for.
      *
@@ -212,13 +198,11 @@ export interface ListResourcesRequest {
 }
 
 export interface ListResourcesResponse {
-    $type: 'yandex.cloud.logging.v1.ListResourcesResponse';
     /** List of resources present in log group. */
     resources: LogGroupResource[];
 }
 
 export interface ListOperationsRequest {
-    $type: 'yandex.cloud.logging.v1.ListOperationsRequest';
     /**
      * ID of the log group to list operations for.
      *
@@ -251,7 +235,6 @@ export interface ListOperationsRequest {
 }
 
 export interface ListOperationsResponse {
-    $type: 'yandex.cloud.logging.v1.ListOperationsResponse';
     /** List of operations for the specified log group. */
     operations: Operation[];
     /**
@@ -265,7 +248,6 @@ export interface ListOperationsResponse {
 }
 
 export interface GetLogGroupStatsResponse {
-    $type: 'yandex.cloud.logging.v1.GetLogGroupStatsResponse';
     /** Log group ID the stats are returned for. */
     logGroupId: string;
     /** Size of data in log group in bytes. */
@@ -274,14 +256,9 @@ export interface GetLogGroupStatsResponse {
     records: number;
 }
 
-const baseGetLogGroupRequest: object = {
-    $type: 'yandex.cloud.logging.v1.GetLogGroupRequest',
-    logGroupId: '',
-};
+const baseGetLogGroupRequest: object = { logGroupId: '' };
 
 export const GetLogGroupRequest = {
-    $type: 'yandex.cloud.logging.v1.GetLogGroupRequest' as const,
-
     encode(message: GetLogGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -331,16 +308,9 @@ export const GetLogGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(GetLogGroupRequest.$type, GetLogGroupRequest);
-
-const baseGetLogGroupStatsRequest: object = {
-    $type: 'yandex.cloud.logging.v1.GetLogGroupStatsRequest',
-    logGroupId: '',
-};
+const baseGetLogGroupStatsRequest: object = { logGroupId: '' };
 
 export const GetLogGroupStatsRequest = {
-    $type: 'yandex.cloud.logging.v1.GetLogGroupStatsRequest' as const,
-
     encode(message: GetLogGroupStatsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -390,19 +360,9 @@ export const GetLogGroupStatsRequest = {
     },
 };
 
-messageTypeRegistry.set(GetLogGroupStatsRequest.$type, GetLogGroupStatsRequest);
-
-const baseListLogGroupsRequest: object = {
-    $type: 'yandex.cloud.logging.v1.ListLogGroupsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListLogGroupsRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListLogGroupsRequest = {
-    $type: 'yandex.cloud.logging.v1.ListLogGroupsRequest' as const,
-
     encode(message: ListLogGroupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -484,16 +444,9 @@ export const ListLogGroupsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListLogGroupsRequest.$type, ListLogGroupsRequest);
-
-const baseListLogGroupsResponse: object = {
-    $type: 'yandex.cloud.logging.v1.ListLogGroupsResponse',
-    nextPageToken: '',
-};
+const baseListLogGroupsResponse: object = { nextPageToken: '' };
 
 export const ListLogGroupsResponse = {
-    $type: 'yandex.cloud.logging.v1.ListLogGroupsResponse' as const,
-
     encode(message: ListLogGroupsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.groups) {
             LogGroup.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -557,10 +510,7 @@ export const ListLogGroupsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListLogGroupsResponse.$type, ListLogGroupsResponse);
-
 const baseCreateLogGroupRequest: object = {
-    $type: 'yandex.cloud.logging.v1.CreateLogGroupRequest',
     folderId: '',
     name: '',
     description: '',
@@ -568,8 +518,6 @@ const baseCreateLogGroupRequest: object = {
 };
 
 export const CreateLogGroupRequest = {
-    $type: 'yandex.cloud.logging.v1.CreateLogGroupRequest' as const,
-
     encode(message: CreateLogGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -582,11 +530,7 @@ export const CreateLogGroupRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateLogGroupRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.logging.v1.CreateLogGroupRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -712,17 +656,9 @@ export const CreateLogGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateLogGroupRequest.$type, CreateLogGroupRequest);
-
-const baseCreateLogGroupRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.logging.v1.CreateLogGroupRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateLogGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateLogGroupRequest_LabelsEntry = {
-    $type: 'yandex.cloud.logging.v1.CreateLogGroupRequest.LabelsEntry' as const,
-
     encode(
         message: CreateLogGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -788,16 +724,9 @@ export const CreateLogGroupRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateLogGroupRequest_LabelsEntry.$type, CreateLogGroupRequest_LabelsEntry);
-
-const baseCreateLogGroupMetadata: object = {
-    $type: 'yandex.cloud.logging.v1.CreateLogGroupMetadata',
-    logGroupId: '',
-};
+const baseCreateLogGroupMetadata: object = { logGroupId: '' };
 
 export const CreateLogGroupMetadata = {
-    $type: 'yandex.cloud.logging.v1.CreateLogGroupMetadata' as const,
-
     encode(message: CreateLogGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -847,10 +776,7 @@ export const CreateLogGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateLogGroupMetadata.$type, CreateLogGroupMetadata);
-
 const baseUpdateLogGroupRequest: object = {
-    $type: 'yandex.cloud.logging.v1.UpdateLogGroupRequest',
     logGroupId: '',
     name: '',
     description: '',
@@ -858,8 +784,6 @@ const baseUpdateLogGroupRequest: object = {
 };
 
 export const UpdateLogGroupRequest = {
-    $type: 'yandex.cloud.logging.v1.UpdateLogGroupRequest' as const,
-
     encode(message: UpdateLogGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -875,11 +799,7 @@ export const UpdateLogGroupRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateLogGroupRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.logging.v1.UpdateLogGroupRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -1020,17 +940,9 @@ export const UpdateLogGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateLogGroupRequest.$type, UpdateLogGroupRequest);
-
-const baseUpdateLogGroupRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.logging.v1.UpdateLogGroupRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateLogGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateLogGroupRequest_LabelsEntry = {
-    $type: 'yandex.cloud.logging.v1.UpdateLogGroupRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateLogGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1096,16 +1008,9 @@ export const UpdateLogGroupRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateLogGroupRequest_LabelsEntry.$type, UpdateLogGroupRequest_LabelsEntry);
-
-const baseUpdateLogGroupMetadata: object = {
-    $type: 'yandex.cloud.logging.v1.UpdateLogGroupMetadata',
-    logGroupId: '',
-};
+const baseUpdateLogGroupMetadata: object = { logGroupId: '' };
 
 export const UpdateLogGroupMetadata = {
-    $type: 'yandex.cloud.logging.v1.UpdateLogGroupMetadata' as const,
-
     encode(message: UpdateLogGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -1155,16 +1060,9 @@ export const UpdateLogGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateLogGroupMetadata.$type, UpdateLogGroupMetadata);
-
-const baseDeleteLogGroupRequest: object = {
-    $type: 'yandex.cloud.logging.v1.DeleteLogGroupRequest',
-    logGroupId: '',
-};
+const baseDeleteLogGroupRequest: object = { logGroupId: '' };
 
 export const DeleteLogGroupRequest = {
-    $type: 'yandex.cloud.logging.v1.DeleteLogGroupRequest' as const,
-
     encode(message: DeleteLogGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -1214,16 +1112,9 @@ export const DeleteLogGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteLogGroupRequest.$type, DeleteLogGroupRequest);
-
-const baseDeleteLogGroupMetadata: object = {
-    $type: 'yandex.cloud.logging.v1.DeleteLogGroupMetadata',
-    logGroupId: '',
-};
+const baseDeleteLogGroupMetadata: object = { logGroupId: '' };
 
 export const DeleteLogGroupMetadata = {
-    $type: 'yandex.cloud.logging.v1.DeleteLogGroupMetadata' as const,
-
     encode(message: DeleteLogGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -1273,17 +1164,9 @@ export const DeleteLogGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteLogGroupMetadata.$type, DeleteLogGroupMetadata);
-
-const baseListResourcesRequest: object = {
-    $type: 'yandex.cloud.logging.v1.ListResourcesRequest',
-    logGroupId: '',
-    type: '',
-};
+const baseListResourcesRequest: object = { logGroupId: '', type: '' };
 
 export const ListResourcesRequest = {
-    $type: 'yandex.cloud.logging.v1.ListResourcesRequest' as const,
-
     encode(message: ListResourcesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -1342,15 +1225,9 @@ export const ListResourcesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListResourcesRequest.$type, ListResourcesRequest);
-
-const baseListResourcesResponse: object = {
-    $type: 'yandex.cloud.logging.v1.ListResourcesResponse',
-};
+const baseListResourcesResponse: object = {};
 
 export const ListResourcesResponse = {
-    $type: 'yandex.cloud.logging.v1.ListResourcesResponse' as const,
-
     encode(message: ListResourcesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.resources) {
             LogGroupResource.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1404,10 +1281,7 @@ export const ListResourcesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListResourcesResponse.$type, ListResourcesResponse);
-
 const baseListOperationsRequest: object = {
-    $type: 'yandex.cloud.logging.v1.ListOperationsRequest',
     logGroupId: '',
     pageSize: 0,
     pageToken: '',
@@ -1415,8 +1289,6 @@ const baseListOperationsRequest: object = {
 };
 
 export const ListOperationsRequest = {
-    $type: 'yandex.cloud.logging.v1.ListOperationsRequest' as const,
-
     encode(message: ListOperationsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -1498,16 +1370,9 @@ export const ListOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListOperationsRequest.$type, ListOperationsRequest);
-
-const baseListOperationsResponse: object = {
-    $type: 'yandex.cloud.logging.v1.ListOperationsResponse',
-    nextPageToken: '',
-};
+const baseListOperationsResponse: object = { nextPageToken: '' };
 
 export const ListOperationsResponse = {
-    $type: 'yandex.cloud.logging.v1.ListOperationsResponse' as const,
-
     encode(message: ListOperationsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.operations) {
             Operation.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1571,18 +1436,9 @@ export const ListOperationsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListOperationsResponse.$type, ListOperationsResponse);
-
-const baseGetLogGroupStatsResponse: object = {
-    $type: 'yandex.cloud.logging.v1.GetLogGroupStatsResponse',
-    logGroupId: '',
-    bytes: 0,
-    records: 0,
-};
+const baseGetLogGroupStatsResponse: object = { logGroupId: '', bytes: 0, records: 0 };
 
 export const GetLogGroupStatsResponse = {
-    $type: 'yandex.cloud.logging.v1.GetLogGroupStatsResponse' as const,
-
     encode(
         message: GetLogGroupStatsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1654,8 +1510,6 @@ export const GetLogGroupStatsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(GetLogGroupStatsResponse.$type, GetLogGroupStatsResponse);
 
 /** A set of methods for managing log groups. */
 export const LogGroupServiceService = {
@@ -2035,16 +1889,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

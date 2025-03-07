@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -7,7 +6,6 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.logging.v1';
 
 export interface Sink {
-    $type: 'yandex.cloud.logging.v1.Sink';
     /** Sink ID. */
     id: string;
     /** Sink folder ID. */
@@ -31,19 +29,16 @@ export interface Sink {
 }
 
 export interface Sink_LabelsEntry {
-    $type: 'yandex.cloud.logging.v1.Sink.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface Sink_Yds {
-    $type: 'yandex.cloud.logging.v1.Sink.Yds';
     /** Fully qualified name of data stream */
     streamName: string;
 }
 
 export interface Sink_S3 {
-    $type: 'yandex.cloud.logging.v1.Sink.S3';
     /** Object storage bucket */
     bucket: string;
     /** Prefix to use for saved log object names */
@@ -51,7 +46,6 @@ export interface Sink_S3 {
 }
 
 const baseSink: object = {
-    $type: 'yandex.cloud.logging.v1.Sink',
     id: '',
     folderId: '',
     cloudId: '',
@@ -61,8 +55,6 @@ const baseSink: object = {
 };
 
 export const Sink = {
-    $type: 'yandex.cloud.logging.v1.Sink' as const,
-
     encode(message: Sink, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -83,10 +75,7 @@ export const Sink = {
             writer.uint32(50).string(message.description);
         }
         Object.entries(message.labels).forEach(([key, value]) => {
-            Sink_LabelsEntry.encode(
-                { $type: 'yandex.cloud.logging.v1.Sink.LabelsEntry', key: key as any, value },
-                writer.uint32(58).fork(),
-            ).ldelim();
+            Sink_LabelsEntry.encode({ key: key as any, value }, writer.uint32(58).fork()).ldelim();
         });
         if (message.serviceAccountId !== '') {
             writer.uint32(66).string(message.serviceAccountId);
@@ -238,17 +227,9 @@ export const Sink = {
     },
 };
 
-messageTypeRegistry.set(Sink.$type, Sink);
-
-const baseSink_LabelsEntry: object = {
-    $type: 'yandex.cloud.logging.v1.Sink.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseSink_LabelsEntry: object = { key: '', value: '' };
 
 export const Sink_LabelsEntry = {
-    $type: 'yandex.cloud.logging.v1.Sink.LabelsEntry' as const,
-
     encode(message: Sink_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -303,13 +284,9 @@ export const Sink_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Sink_LabelsEntry.$type, Sink_LabelsEntry);
-
-const baseSink_Yds: object = { $type: 'yandex.cloud.logging.v1.Sink.Yds', streamName: '' };
+const baseSink_Yds: object = { streamName: '' };
 
 export const Sink_Yds = {
-    $type: 'yandex.cloud.logging.v1.Sink.Yds' as const,
-
     encode(message: Sink_Yds, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamName !== '') {
             writer.uint32(10).string(message.streamName);
@@ -357,13 +334,9 @@ export const Sink_Yds = {
     },
 };
 
-messageTypeRegistry.set(Sink_Yds.$type, Sink_Yds);
-
-const baseSink_S3: object = { $type: 'yandex.cloud.logging.v1.Sink.S3', bucket: '', prefix: '' };
+const baseSink_S3: object = { bucket: '', prefix: '' };
 
 export const Sink_S3 = {
-    $type: 'yandex.cloud.logging.v1.Sink.S3' as const,
-
     encode(message: Sink_S3, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucket !== '') {
             writer.uint32(10).string(message.bucket);
@@ -419,8 +392,6 @@ export const Sink_S3 = {
     },
 };
 
-messageTypeRegistry.set(Sink_S3.$type, Sink_S3);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -430,21 +401,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

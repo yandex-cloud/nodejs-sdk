@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,7 +19,6 @@ import { DoubleValue } from '../../../../google/protobuf/wrappers';
 export const protobufPackage = 'yandex.cloud.quotamanager.v1';
 
 export interface GetQuotaLimitRequest {
-    $type: 'yandex.cloud.quotamanager.v1.GetQuotaLimitRequest';
     /** The resource for which the quota limit is being requested. */
     resource?: Resource;
     /** The id of the quota to retrieve. */
@@ -28,7 +26,6 @@ export interface GetQuotaLimitRequest {
 }
 
 export interface ListQuotaLimitsRequest {
-    $type: 'yandex.cloud.quotamanager.v1.ListQuotaLimitsRequest';
     /** The resource for which quota limits are being listed. */
     resource?: Resource;
     /** The service for which quota limits are being requested. */
@@ -40,7 +37,6 @@ export interface ListQuotaLimitsRequest {
 }
 
 export interface ListQuotaLimitsResponse {
-    $type: 'yandex.cloud.quotamanager.v1.ListQuotaLimitsResponse';
     /** The associated resource for these quota limits. */
     resource?: Resource;
     /** List of quota limits for the specified resource and service. */
@@ -50,7 +46,6 @@ export interface ListQuotaLimitsResponse {
 }
 
 export interface ListServicesRequest {
-    $type: 'yandex.cloud.quotamanager.v1.ListServicesRequest';
     /** The type of resources for which services are being requested. */
     resourceType: string;
     /** The maximum number of services to return per response. */
@@ -60,7 +55,6 @@ export interface ListServicesRequest {
 }
 
 export interface ListServicesResponse {
-    $type: 'yandex.cloud.quotamanager.v1.ListServicesResponse';
     /** List of services available for quota management. */
     services: Service[];
     /** Token to retrieve the next page of results. */
@@ -68,7 +62,6 @@ export interface ListServicesResponse {
 }
 
 export interface QuotaLimit {
-    $type: 'yandex.cloud.quotamanager.v1.QuotaLimit';
     /** The unique id of the quota. */
     quotaId: string;
     /** The limit value set for this quota. */
@@ -78,21 +71,15 @@ export interface QuotaLimit {
 }
 
 export interface Service {
-    $type: 'yandex.cloud.quotamanager.v1.Service';
     /** The unique id of the service. */
     id: string;
     /** The name of the service. */
     name: string;
 }
 
-const baseGetQuotaLimitRequest: object = {
-    $type: 'yandex.cloud.quotamanager.v1.GetQuotaLimitRequest',
-    quotaId: '',
-};
+const baseGetQuotaLimitRequest: object = { quotaId: '' };
 
 export const GetQuotaLimitRequest = {
-    $type: 'yandex.cloud.quotamanager.v1.GetQuotaLimitRequest' as const,
-
     encode(message: GetQuotaLimitRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resource !== undefined) {
             Resource.encode(message.resource, writer.uint32(10).fork()).ldelim();
@@ -156,18 +143,9 @@ export const GetQuotaLimitRequest = {
     },
 };
 
-messageTypeRegistry.set(GetQuotaLimitRequest.$type, GetQuotaLimitRequest);
-
-const baseListQuotaLimitsRequest: object = {
-    $type: 'yandex.cloud.quotamanager.v1.ListQuotaLimitsRequest',
-    service: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListQuotaLimitsRequest: object = { service: '', pageSize: 0, pageToken: '' };
 
 export const ListQuotaLimitsRequest = {
-    $type: 'yandex.cloud.quotamanager.v1.ListQuotaLimitsRequest' as const,
-
     encode(message: ListQuotaLimitsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resource !== undefined) {
             Resource.encode(message.resource, writer.uint32(10).fork()).ldelim();
@@ -253,16 +231,9 @@ export const ListQuotaLimitsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListQuotaLimitsRequest.$type, ListQuotaLimitsRequest);
-
-const baseListQuotaLimitsResponse: object = {
-    $type: 'yandex.cloud.quotamanager.v1.ListQuotaLimitsResponse',
-    nextPageToken: '',
-};
+const baseListQuotaLimitsResponse: object = { nextPageToken: '' };
 
 export const ListQuotaLimitsResponse = {
-    $type: 'yandex.cloud.quotamanager.v1.ListQuotaLimitsResponse' as const,
-
     encode(message: ListQuotaLimitsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resource !== undefined) {
             Resource.encode(message.resource, writer.uint32(10).fork()).ldelim();
@@ -344,18 +315,9 @@ export const ListQuotaLimitsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListQuotaLimitsResponse.$type, ListQuotaLimitsResponse);
-
-const baseListServicesRequest: object = {
-    $type: 'yandex.cloud.quotamanager.v1.ListServicesRequest',
-    resourceType: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListServicesRequest: object = { resourceType: '', pageSize: 0, pageToken: '' };
 
 export const ListServicesRequest = {
-    $type: 'yandex.cloud.quotamanager.v1.ListServicesRequest' as const,
-
     encode(message: ListServicesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceType !== '') {
             writer.uint32(10).string(message.resourceType);
@@ -427,16 +389,9 @@ export const ListServicesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListServicesRequest.$type, ListServicesRequest);
-
-const baseListServicesResponse: object = {
-    $type: 'yandex.cloud.quotamanager.v1.ListServicesResponse',
-    nextPageToken: '',
-};
+const baseListServicesResponse: object = { nextPageToken: '' };
 
 export const ListServicesResponse = {
-    $type: 'yandex.cloud.quotamanager.v1.ListServicesResponse' as const,
-
     encode(message: ListServicesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.services) {
             Service.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -500,28 +455,18 @@ export const ListServicesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListServicesResponse.$type, ListServicesResponse);
-
-const baseQuotaLimit: object = { $type: 'yandex.cloud.quotamanager.v1.QuotaLimit', quotaId: '' };
+const baseQuotaLimit: object = { quotaId: '' };
 
 export const QuotaLimit = {
-    $type: 'yandex.cloud.quotamanager.v1.QuotaLimit' as const,
-
     encode(message: QuotaLimit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.quotaId !== '') {
             writer.uint32(10).string(message.quotaId);
         }
         if (message.limit !== undefined) {
-            DoubleValue.encode(
-                { $type: 'google.protobuf.DoubleValue', value: message.limit! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            DoubleValue.encode({ value: message.limit! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.usage !== undefined) {
-            DoubleValue.encode(
-                { $type: 'google.protobuf.DoubleValue', value: message.usage! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            DoubleValue.encode({ value: message.usage! }, writer.uint32(26).fork()).ldelim();
         }
         return writer;
     },
@@ -578,13 +523,9 @@ export const QuotaLimit = {
     },
 };
 
-messageTypeRegistry.set(QuotaLimit.$type, QuotaLimit);
-
-const baseService: object = { $type: 'yandex.cloud.quotamanager.v1.Service', id: '', name: '' };
+const baseService: object = { id: '', name: '' };
 
 export const Service = {
-    $type: 'yandex.cloud.quotamanager.v1.Service' as const,
-
     encode(message: Service, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -637,8 +578,6 @@ export const Service = {
         return message;
     },
 };
-
-messageTypeRegistry.set(Service.$type, Service);
 
 /** A set of methods for managing quota limits. */
 export const QuotaLimitServiceService = {
@@ -771,16 +710,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

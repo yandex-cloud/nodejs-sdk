@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../google/protobuf/duration';
@@ -93,7 +92,6 @@ export function loadBalancingModeToJSON(object: LoadBalancingMode): string {
  * For details about the concept, see [documentation](/docs/application-load-balancer/concepts/backend-group).
  */
 export interface BackendGroup {
-    $type: 'yandex.cloud.apploadbalancer.v1.BackendGroup';
     /** ID of the backend group. Generated at creation time. */
     id: string;
     /** Name of the backend group. The name is unique within the folder. The string length in characters is 3-63. */
@@ -119,14 +117,12 @@ export interface BackendGroup {
 }
 
 export interface BackendGroup_LabelsEntry {
-    $type: 'yandex.cloud.apploadbalancer.v1.BackendGroup.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** A stream (TCP) backend group resource. */
 export interface StreamBackendGroup {
-    $type: 'yandex.cloud.apploadbalancer.v1.StreamBackendGroup';
     /** List of stream (TCP) backends. */
     backends: StreamBackend[];
     /**
@@ -139,7 +135,6 @@ export interface StreamBackendGroup {
 
 /** An HTTP backend group resource. */
 export interface HttpBackendGroup {
-    $type: 'yandex.cloud.apploadbalancer.v1.HttpBackendGroup';
     /** List of HTTP backends. */
     backends: HttpBackend[];
     /**
@@ -156,7 +151,6 @@ export interface HttpBackendGroup {
 
 /** A gRPC backend group resource. */
 export interface GrpcBackendGroup {
-    $type: 'yandex.cloud.apploadbalancer.v1.GrpcBackendGroup';
     /** List of gRPC backends. */
     backends: GrpcBackend[];
     /**
@@ -173,14 +167,12 @@ export interface GrpcBackendGroup {
 
 /** A resource for HTTP-header-field-based session affinity configuration. */
 export interface HeaderSessionAffinity {
-    $type: 'yandex.cloud.apploadbalancer.v1.HeaderSessionAffinity';
     /** Name of the HTTP header field that is used for session affinity. */
     headerName: string;
 }
 
 /** A resource for cookie-based session affinity configuration. */
 export interface CookieSessionAffinity {
-    $type: 'yandex.cloud.apploadbalancer.v1.CookieSessionAffinity';
     /** Name of the cookie that is used for session affinity. */
     name: string;
     /**
@@ -196,14 +188,12 @@ export interface CookieSessionAffinity {
 
 /** A resource for connection-based session affinity configuration. */
 export interface ConnectionSessionAffinity {
-    $type: 'yandex.cloud.apploadbalancer.v1.ConnectionSessionAffinity';
     /** Specifies whether an IP address of the client is used to define a connection for session affinity. */
     sourceIp: boolean;
 }
 
 /** A load balancing configuration resource. */
 export interface LoadBalancingConfig {
-    $type: 'yandex.cloud.apploadbalancer.v1.LoadBalancingConfig';
     /**
      * Threshold for panic mode.
      *
@@ -254,7 +244,6 @@ export interface LoadBalancingConfig {
 
 /** A stream (TCP) backend resource. */
 export interface StreamBackend {
-    $type: 'yandex.cloud.apploadbalancer.v1.StreamBackend';
     /** Name of the backend. */
     name: string;
     /**
@@ -301,7 +290,6 @@ export interface StreamBackend {
 
 /** An HTTP backend resource. */
 export interface HttpBackend {
-    $type: 'yandex.cloud.apploadbalancer.v1.HttpBackend';
     /** Name of the backend. */
     name: string;
     /**
@@ -355,7 +343,6 @@ export interface HttpBackend {
 
 /** A gRPC backend resource. */
 export interface GrpcBackend {
-    $type: 'yandex.cloud.apploadbalancer.v1.GrpcBackend';
     /** Name of the backend. */
     name: string;
     /**
@@ -392,7 +379,6 @@ export interface GrpcBackend {
 
 /** A resource for target groups that belong to the backend. */
 export interface TargetGroupsBackend {
-    $type: 'yandex.cloud.apploadbalancer.v1.TargetGroupsBackend';
     /**
      * List of ID's of target groups that belong to the backend.
      *
@@ -402,13 +388,10 @@ export interface TargetGroupsBackend {
 }
 
 /** Transport settings to be used instead of the settings configured per-cluster */
-export interface PlaintextTransportSettings {
-    $type: 'yandex.cloud.apploadbalancer.v1.PlaintextTransportSettings';
-}
+export interface PlaintextTransportSettings {}
 
 /** Transport settings to be used instead of the settings configured per-cluster */
 export interface SecureTransportSettings {
-    $type: 'yandex.cloud.apploadbalancer.v1.SecureTransportSettings';
     /** SNI string for TLS connections. */
     sni: string;
     /** Validation context for backend TLS connections. */
@@ -417,7 +400,6 @@ export interface SecureTransportSettings {
 
 /** A resource for backend TLS settings. */
 export interface BackendTls {
-    $type: 'yandex.cloud.apploadbalancer.v1.BackendTls';
     /** Server Name Indication (SNI) string for TLS connections. */
     sni: string;
     /** Validation context for TLS connections. */
@@ -429,7 +411,6 @@ export interface BackendTls {
  * see [documentation](/docs/storage/concepts/bucket).
  */
 export interface StorageBucketBackend {
-    $type: 'yandex.cloud.apploadbalancer.v1.StorageBucketBackend';
     /** Name of the bucket. */
     bucket: string;
 }
@@ -439,7 +420,6 @@ export interface StorageBucketBackend {
  * For details about the concept, see [documentation](/docs/application-load-balancer/concepts/backend-group#health-checks).
  */
 export interface HealthCheck {
-    $type: 'yandex.cloud.apploadbalancer.v1.HealthCheck';
     /**
      * Health check timeout.
      *
@@ -489,7 +469,6 @@ export interface HealthCheck {
 
 /** A resource for TCP stream health check settings. */
 export interface HealthCheck_StreamHealthCheck {
-    $type: 'yandex.cloud.apploadbalancer.v1.HealthCheck.StreamHealthCheck';
     /**
      * Message sent to targets during TCP data transfer.
      *
@@ -506,7 +485,6 @@ export interface HealthCheck_StreamHealthCheck {
 
 /** A resource for HTTP health check settings. */
 export interface HealthCheck_HttpHealthCheck {
-    $type: 'yandex.cloud.apploadbalancer.v1.HealthCheck.HttpHealthCheck';
     /** Value for the HTTP/1.1 `Host` header or the HTTP/2 `:authority` pseudo-header used in requests to targets. */
     host: string;
     /**
@@ -529,7 +507,6 @@ export interface HealthCheck_HttpHealthCheck {
 
 /** A resource for gRPC health check settings. */
 export interface HealthCheck_GrpcHealthCheck {
-    $type: 'yandex.cloud.apploadbalancer.v1.HealthCheck.GrpcHealthCheck';
     /**
      * Name of the gRPC service to be checked.
      *
@@ -540,17 +517,9 @@ export interface HealthCheck_GrpcHealthCheck {
     serviceName: string;
 }
 
-const baseBackendGroup: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.BackendGroup',
-    id: '',
-    name: '',
-    description: '',
-    folderId: '',
-};
+const baseBackendGroup: object = { id: '', name: '', description: '', folderId: '' };
 
 export const BackendGroup = {
-    $type: 'yandex.cloud.apploadbalancer.v1.BackendGroup' as const,
-
     encode(message: BackendGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -566,11 +535,7 @@ export const BackendGroup = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             BackendGroup_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.apploadbalancer.v1.BackendGroup.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -727,17 +692,9 @@ export const BackendGroup = {
     },
 };
 
-messageTypeRegistry.set(BackendGroup.$type, BackendGroup);
-
-const baseBackendGroup_LabelsEntry: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.BackendGroup.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseBackendGroup_LabelsEntry: object = { key: '', value: '' };
 
 export const BackendGroup_LabelsEntry = {
-    $type: 'yandex.cloud.apploadbalancer.v1.BackendGroup.LabelsEntry' as const,
-
     encode(
         message: BackendGroup_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -797,15 +754,9 @@ export const BackendGroup_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(BackendGroup_LabelsEntry.$type, BackendGroup_LabelsEntry);
-
-const baseStreamBackendGroup: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.StreamBackendGroup',
-};
+const baseStreamBackendGroup: object = {};
 
 export const StreamBackendGroup = {
-    $type: 'yandex.cloud.apploadbalancer.v1.StreamBackendGroup' as const,
-
     encode(message: StreamBackendGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.backends) {
             StreamBackend.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -875,13 +826,9 @@ export const StreamBackendGroup = {
     },
 };
 
-messageTypeRegistry.set(StreamBackendGroup.$type, StreamBackendGroup);
-
-const baseHttpBackendGroup: object = { $type: 'yandex.cloud.apploadbalancer.v1.HttpBackendGroup' };
+const baseHttpBackendGroup: object = {};
 
 export const HttpBackendGroup = {
-    $type: 'yandex.cloud.apploadbalancer.v1.HttpBackendGroup' as const,
-
     encode(message: HttpBackendGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.backends) {
             HttpBackend.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -985,13 +932,9 @@ export const HttpBackendGroup = {
     },
 };
 
-messageTypeRegistry.set(HttpBackendGroup.$type, HttpBackendGroup);
-
-const baseGrpcBackendGroup: object = { $type: 'yandex.cloud.apploadbalancer.v1.GrpcBackendGroup' };
+const baseGrpcBackendGroup: object = {};
 
 export const GrpcBackendGroup = {
-    $type: 'yandex.cloud.apploadbalancer.v1.GrpcBackendGroup' as const,
-
     encode(message: GrpcBackendGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.backends) {
             GrpcBackend.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1095,16 +1038,9 @@ export const GrpcBackendGroup = {
     },
 };
 
-messageTypeRegistry.set(GrpcBackendGroup.$type, GrpcBackendGroup);
-
-const baseHeaderSessionAffinity: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.HeaderSessionAffinity',
-    headerName: '',
-};
+const baseHeaderSessionAffinity: object = { headerName: '' };
 
 export const HeaderSessionAffinity = {
-    $type: 'yandex.cloud.apploadbalancer.v1.HeaderSessionAffinity' as const,
-
     encode(message: HeaderSessionAffinity, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.headerName !== '') {
             writer.uint32(10).string(message.headerName);
@@ -1154,16 +1090,9 @@ export const HeaderSessionAffinity = {
     },
 };
 
-messageTypeRegistry.set(HeaderSessionAffinity.$type, HeaderSessionAffinity);
-
-const baseCookieSessionAffinity: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.CookieSessionAffinity',
-    name: '',
-};
+const baseCookieSessionAffinity: object = { name: '' };
 
 export const CookieSessionAffinity = {
-    $type: 'yandex.cloud.apploadbalancer.v1.CookieSessionAffinity' as const,
-
     encode(message: CookieSessionAffinity, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1226,16 +1155,9 @@ export const CookieSessionAffinity = {
     },
 };
 
-messageTypeRegistry.set(CookieSessionAffinity.$type, CookieSessionAffinity);
-
-const baseConnectionSessionAffinity: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.ConnectionSessionAffinity',
-    sourceIp: false,
-};
+const baseConnectionSessionAffinity: object = { sourceIp: false };
 
 export const ConnectionSessionAffinity = {
-    $type: 'yandex.cloud.apploadbalancer.v1.ConnectionSessionAffinity' as const,
-
     encode(
         message: ConnectionSessionAffinity,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1288,10 +1210,7 @@ export const ConnectionSessionAffinity = {
     },
 };
 
-messageTypeRegistry.set(ConnectionSessionAffinity.$type, ConnectionSessionAffinity);
-
 const baseLoadBalancingConfig: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.LoadBalancingConfig',
     panicThreshold: 0,
     localityAwareRoutingPercent: 0,
     strictLocality: false,
@@ -1299,8 +1218,6 @@ const baseLoadBalancingConfig: object = {
 };
 
 export const LoadBalancingConfig = {
-    $type: 'yandex.cloud.apploadbalancer.v1.LoadBalancingConfig' as const,
-
     encode(message: LoadBalancingConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.panicThreshold !== 0) {
             writer.uint32(8).int64(message.panicThreshold);
@@ -1389,10 +1306,7 @@ export const LoadBalancingConfig = {
     },
 };
 
-messageTypeRegistry.set(LoadBalancingConfig.$type, LoadBalancingConfig);
-
 const baseStreamBackend: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.StreamBackend',
     name: '',
     port: 0,
     enableProxyProtocol: false,
@@ -1400,17 +1314,12 @@ const baseStreamBackend: object = {
 };
 
 export const StreamBackend = {
-    $type: 'yandex.cloud.apploadbalancer.v1.StreamBackend' as const,
-
     encode(message: StreamBackend, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
         }
         if (message.backendWeight !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.backendWeight! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.backendWeight! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.loadBalancingConfig !== undefined) {
             LoadBalancingConfig.encode(
@@ -1572,27 +1481,15 @@ export const StreamBackend = {
     },
 };
 
-messageTypeRegistry.set(StreamBackend.$type, StreamBackend);
-
-const baseHttpBackend: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.HttpBackend',
-    name: '',
-    port: 0,
-    useHttp2: false,
-};
+const baseHttpBackend: object = { name: '', port: 0, useHttp2: false };
 
 export const HttpBackend = {
-    $type: 'yandex.cloud.apploadbalancer.v1.HttpBackend' as const,
-
     encode(message: HttpBackend, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
         }
         if (message.backendWeight !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.backendWeight! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.backendWeight! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.loadBalancingConfig !== undefined) {
             LoadBalancingConfig.encode(
@@ -1756,26 +1653,15 @@ export const HttpBackend = {
     },
 };
 
-messageTypeRegistry.set(HttpBackend.$type, HttpBackend);
-
-const baseGrpcBackend: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.GrpcBackend',
-    name: '',
-    port: 0,
-};
+const baseGrpcBackend: object = { name: '', port: 0 };
 
 export const GrpcBackend = {
-    $type: 'yandex.cloud.apploadbalancer.v1.GrpcBackend' as const,
-
     encode(message: GrpcBackend, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
         }
         if (message.backendWeight !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.backendWeight! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.backendWeight! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.loadBalancingConfig !== undefined) {
             LoadBalancingConfig.encode(
@@ -1909,16 +1795,9 @@ export const GrpcBackend = {
     },
 };
 
-messageTypeRegistry.set(GrpcBackend.$type, GrpcBackend);
-
-const baseTargetGroupsBackend: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.TargetGroupsBackend',
-    targetGroupIds: '',
-};
+const baseTargetGroupsBackend: object = { targetGroupIds: '' };
 
 export const TargetGroupsBackend = {
-    $type: 'yandex.cloud.apploadbalancer.v1.TargetGroupsBackend' as const,
-
     encode(message: TargetGroupsBackend, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.targetGroupIds) {
             writer.uint32(10).string(v!);
@@ -1970,15 +1849,9 @@ export const TargetGroupsBackend = {
     },
 };
 
-messageTypeRegistry.set(TargetGroupsBackend.$type, TargetGroupsBackend);
-
-const basePlaintextTransportSettings: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.PlaintextTransportSettings',
-};
+const basePlaintextTransportSettings: object = {};
 
 export const PlaintextTransportSettings = {
-    $type: 'yandex.cloud.apploadbalancer.v1.PlaintextTransportSettings' as const,
-
     encode(_: PlaintextTransportSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2016,16 +1889,9 @@ export const PlaintextTransportSettings = {
     },
 };
 
-messageTypeRegistry.set(PlaintextTransportSettings.$type, PlaintextTransportSettings);
-
-const baseSecureTransportSettings: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.SecureTransportSettings',
-    sni: '',
-};
+const baseSecureTransportSettings: object = { sni: '' };
 
 export const SecureTransportSettings = {
-    $type: 'yandex.cloud.apploadbalancer.v1.SecureTransportSettings' as const,
-
     encode(message: SecureTransportSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sni !== '') {
             writer.uint32(10).string(message.sni);
@@ -2090,13 +1956,9 @@ export const SecureTransportSettings = {
     },
 };
 
-messageTypeRegistry.set(SecureTransportSettings.$type, SecureTransportSettings);
-
-const baseBackendTls: object = { $type: 'yandex.cloud.apploadbalancer.v1.BackendTls', sni: '' };
+const baseBackendTls: object = { sni: '' };
 
 export const BackendTls = {
-    $type: 'yandex.cloud.apploadbalancer.v1.BackendTls' as const,
-
     encode(message: BackendTls, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sni !== '') {
             writer.uint32(10).string(message.sni);
@@ -2159,16 +2021,9 @@ export const BackendTls = {
     },
 };
 
-messageTypeRegistry.set(BackendTls.$type, BackendTls);
-
-const baseStorageBucketBackend: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.StorageBucketBackend',
-    bucket: '',
-};
+const baseStorageBucketBackend: object = { bucket: '' };
 
 export const StorageBucketBackend = {
-    $type: 'yandex.cloud.apploadbalancer.v1.StorageBucketBackend' as const,
-
     encode(message: StorageBucketBackend, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucket !== '') {
             writer.uint32(10).string(message.bucket);
@@ -2216,10 +2071,7 @@ export const StorageBucketBackend = {
     },
 };
 
-messageTypeRegistry.set(StorageBucketBackend.$type, StorageBucketBackend);
-
 const baseHealthCheck: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.HealthCheck',
     intervalJitterPercent: 0,
     healthyThreshold: 0,
     unhealthyThreshold: 0,
@@ -2227,8 +2079,6 @@ const baseHealthCheck: object = {
 };
 
 export const HealthCheck = {
-    $type: 'yandex.cloud.apploadbalancer.v1.HealthCheck' as const,
-
     encode(message: HealthCheck, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timeout !== undefined) {
             Duration.encode(message.timeout, writer.uint32(10).fork()).ldelim();
@@ -2436,15 +2286,9 @@ export const HealthCheck = {
     },
 };
 
-messageTypeRegistry.set(HealthCheck.$type, HealthCheck);
-
-const baseHealthCheck_StreamHealthCheck: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.HealthCheck.StreamHealthCheck',
-};
+const baseHealthCheck_StreamHealthCheck: object = {};
 
 export const HealthCheck_StreamHealthCheck = {
-    $type: 'yandex.cloud.apploadbalancer.v1.HealthCheck.StreamHealthCheck' as const,
-
     encode(
         message: HealthCheck_StreamHealthCheck,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2517,10 +2361,7 @@ export const HealthCheck_StreamHealthCheck = {
     },
 };
 
-messageTypeRegistry.set(HealthCheck_StreamHealthCheck.$type, HealthCheck_StreamHealthCheck);
-
 const baseHealthCheck_HttpHealthCheck: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.HealthCheck.HttpHealthCheck',
     host: '',
     path: '',
     useHttp2: false,
@@ -2528,8 +2369,6 @@ const baseHealthCheck_HttpHealthCheck: object = {
 };
 
 export const HealthCheck_HttpHealthCheck = {
-    $type: 'yandex.cloud.apploadbalancer.v1.HealthCheck.HttpHealthCheck' as const,
-
     encode(
         message: HealthCheck_HttpHealthCheck,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2623,16 +2462,9 @@ export const HealthCheck_HttpHealthCheck = {
     },
 };
 
-messageTypeRegistry.set(HealthCheck_HttpHealthCheck.$type, HealthCheck_HttpHealthCheck);
-
-const baseHealthCheck_GrpcHealthCheck: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.HealthCheck.GrpcHealthCheck',
-    serviceName: '',
-};
+const baseHealthCheck_GrpcHealthCheck: object = { serviceName: '' };
 
 export const HealthCheck_GrpcHealthCheck = {
-    $type: 'yandex.cloud.apploadbalancer.v1.HealthCheck.GrpcHealthCheck' as const,
-
     encode(
         message: HealthCheck_GrpcHealthCheck,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2685,8 +2517,6 @@ export const HealthCheck_GrpcHealthCheck = {
     },
 };
 
-messageTypeRegistry.set(HealthCheck_GrpcHealthCheck.$type, HealthCheck_GrpcHealthCheck);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -2707,21 +2537,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

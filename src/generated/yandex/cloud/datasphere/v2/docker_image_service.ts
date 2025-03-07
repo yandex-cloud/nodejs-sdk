@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,20 +18,13 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.datasphere.v2';
 
 export interface ActivateDockerImageRequest {
-    $type: 'yandex.cloud.datasphere.v2.ActivateDockerImageRequest';
     projectId: string;
     dockerId: string;
 }
 
-const baseActivateDockerImageRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.ActivateDockerImageRequest',
-    projectId: '',
-    dockerId: '',
-};
+const baseActivateDockerImageRequest: object = { projectId: '', dockerId: '' };
 
 export const ActivateDockerImageRequest = {
-    $type: 'yandex.cloud.datasphere.v2.ActivateDockerImageRequest' as const,
-
     encode(
         message: ActivateDockerImageRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -97,8 +89,6 @@ export const ActivateDockerImageRequest = {
     },
 };
 
-messageTypeRegistry.set(ActivateDockerImageRequest.$type, ActivateDockerImageRequest);
-
 /** A set of methods for managing Docker Images. */
 export const DockerImageServiceService = {
     /** Activates shared docker image in project */
@@ -159,16 +149,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

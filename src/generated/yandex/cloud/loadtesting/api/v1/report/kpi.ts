@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -131,7 +130,6 @@ export function comparisonToJSON(object: Comparison): string {
 
 /** KPI (Key Performance Indicator) represents some integral indicator measured during test. */
 export interface Kpi {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.Kpi';
     /** Kind of KPI. */
     selector?: KpiSelector;
     /** A condition that should be specified. */
@@ -140,7 +138,6 @@ export interface Kpi {
 
 /** KPI threshold represents a condition that an actual value of test's KPI should satisfy. */
 export interface KpiThreshold {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiThreshold';
     /** Value for comparison with an actual KPI value. */
     value: number;
     /**
@@ -153,7 +150,6 @@ export interface KpiThreshold {
 
 /** KPI selector. */
 export interface KpiSelector {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector';
     /** Response time cummulative quantile (percentile). */
     responseTime?: KpiSelector_ResponseTime | undefined;
     /** A number of instances throughout the test. */
@@ -172,25 +168,20 @@ export interface KpiSelector {
 
 /** Response time. */
 export interface KpiSelector_ResponseTime {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.ResponseTime';
     /** Cummulative quantile (percentile). */
     quantile: QuantileType;
 }
 
 /** Aggregated number of instances. */
 export interface KpiSelector_Instances {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.Instances';
     /** Aggregation function. */
     agg: Aggregation;
 }
 
 /** Imbalance RPS. */
-export interface KpiSelector_ImbalanceRps {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.ImbalanceRps';
-}
+export interface KpiSelector_ImbalanceRps {}
 
 export interface KpiSelector_ProtocolCodesAbsolute {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.ProtocolCodesAbsolute';
     /**
      * Protocol (HTTP, GRPC) code patterns to match.
      *
@@ -201,7 +192,6 @@ export interface KpiSelector_ProtocolCodesAbsolute {
 }
 
 export interface KpiSelector_ProtocolCodesRelative {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.ProtocolCodesRelative';
     /**
      * Protocol (HTTP, GRPC) code patterns to match.
      *
@@ -212,7 +202,6 @@ export interface KpiSelector_ProtocolCodesRelative {
 }
 
 export interface KpiSelector_NetworkCodesAbsolute {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.NetworkCodesAbsolute';
     /**
      * Network code patterns to match.
      *
@@ -223,7 +212,6 @@ export interface KpiSelector_NetworkCodesAbsolute {
 }
 
 export interface KpiSelector_NetworkCodesRelative {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.NetworkCodesRelative';
     /**
      * Network code patterns to match.
      *
@@ -233,11 +221,9 @@ export interface KpiSelector_NetworkCodesRelative {
     codesPatterns: string[];
 }
 
-const baseKpi: object = { $type: 'yandex.cloud.loadtesting.api.v1.report.Kpi' };
+const baseKpi: object = {};
 
 export const Kpi = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.Kpi' as const,
-
     encode(message: Kpi, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.selector !== undefined) {
             KpiSelector.encode(message.selector, writer.uint32(10).fork()).ldelim();
@@ -307,17 +293,9 @@ export const Kpi = {
     },
 };
 
-messageTypeRegistry.set(Kpi.$type, Kpi);
-
-const baseKpiThreshold: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiThreshold',
-    value: 0,
-    comparison: 0,
-};
+const baseKpiThreshold: object = { value: 0, comparison: 0 };
 
 export const KpiThreshold = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiThreshold' as const,
-
     encode(message: KpiThreshold, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.value !== 0) {
             writer.uint32(9).double(message.value);
@@ -375,13 +353,9 @@ export const KpiThreshold = {
     },
 };
 
-messageTypeRegistry.set(KpiThreshold.$type, KpiThreshold);
-
-const baseKpiSelector: object = { $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector' };
+const baseKpiSelector: object = {};
 
 export const KpiSelector = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector' as const,
-
     encode(message: KpiSelector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.responseTime !== undefined) {
             KpiSelector_ResponseTime.encode(
@@ -573,16 +547,9 @@ export const KpiSelector = {
     },
 };
 
-messageTypeRegistry.set(KpiSelector.$type, KpiSelector);
-
-const baseKpiSelector_ResponseTime: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.ResponseTime',
-    quantile: 0,
-};
+const baseKpiSelector_ResponseTime: object = { quantile: 0 };
 
 export const KpiSelector_ResponseTime = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.ResponseTime' as const,
-
     encode(
         message: KpiSelector_ResponseTime,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -635,16 +602,9 @@ export const KpiSelector_ResponseTime = {
     },
 };
 
-messageTypeRegistry.set(KpiSelector_ResponseTime.$type, KpiSelector_ResponseTime);
-
-const baseKpiSelector_Instances: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.Instances',
-    agg: 0,
-};
+const baseKpiSelector_Instances: object = { agg: 0 };
 
 export const KpiSelector_Instances = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.Instances' as const,
-
     encode(message: KpiSelector_Instances, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agg !== 0) {
             writer.uint32(8).int32(message.agg);
@@ -692,15 +652,9 @@ export const KpiSelector_Instances = {
     },
 };
 
-messageTypeRegistry.set(KpiSelector_Instances.$type, KpiSelector_Instances);
-
-const baseKpiSelector_ImbalanceRps: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.ImbalanceRps',
-};
+const baseKpiSelector_ImbalanceRps: object = {};
 
 export const KpiSelector_ImbalanceRps = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.ImbalanceRps' as const,
-
     encode(_: KpiSelector_ImbalanceRps, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -738,16 +692,9 @@ export const KpiSelector_ImbalanceRps = {
     },
 };
 
-messageTypeRegistry.set(KpiSelector_ImbalanceRps.$type, KpiSelector_ImbalanceRps);
-
-const baseKpiSelector_ProtocolCodesAbsolute: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.ProtocolCodesAbsolute',
-    codesPatterns: '',
-};
+const baseKpiSelector_ProtocolCodesAbsolute: object = { codesPatterns: '' };
 
 export const KpiSelector_ProtocolCodesAbsolute = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.ProtocolCodesAbsolute' as const,
-
     encode(
         message: KpiSelector_ProtocolCodesAbsolute,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -808,16 +755,9 @@ export const KpiSelector_ProtocolCodesAbsolute = {
     },
 };
 
-messageTypeRegistry.set(KpiSelector_ProtocolCodesAbsolute.$type, KpiSelector_ProtocolCodesAbsolute);
-
-const baseKpiSelector_ProtocolCodesRelative: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.ProtocolCodesRelative',
-    codesPatterns: '',
-};
+const baseKpiSelector_ProtocolCodesRelative: object = { codesPatterns: '' };
 
 export const KpiSelector_ProtocolCodesRelative = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.ProtocolCodesRelative' as const,
-
     encode(
         message: KpiSelector_ProtocolCodesRelative,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -878,16 +818,9 @@ export const KpiSelector_ProtocolCodesRelative = {
     },
 };
 
-messageTypeRegistry.set(KpiSelector_ProtocolCodesRelative.$type, KpiSelector_ProtocolCodesRelative);
-
-const baseKpiSelector_NetworkCodesAbsolute: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.NetworkCodesAbsolute',
-    codesPatterns: '',
-};
+const baseKpiSelector_NetworkCodesAbsolute: object = { codesPatterns: '' };
 
 export const KpiSelector_NetworkCodesAbsolute = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.NetworkCodesAbsolute' as const,
-
     encode(
         message: KpiSelector_NetworkCodesAbsolute,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -948,16 +881,9 @@ export const KpiSelector_NetworkCodesAbsolute = {
     },
 };
 
-messageTypeRegistry.set(KpiSelector_NetworkCodesAbsolute.$type, KpiSelector_NetworkCodesAbsolute);
-
-const baseKpiSelector_NetworkCodesRelative: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.NetworkCodesRelative',
-    codesPatterns: '',
-};
+const baseKpiSelector_NetworkCodesRelative: object = { codesPatterns: '' };
 
 export const KpiSelector_NetworkCodesRelative = {
-    $type: 'yandex.cloud.loadtesting.api.v1.report.KpiSelector.NetworkCodesRelative' as const,
-
     encode(
         message: KpiSelector_NetworkCodesRelative,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1018,8 +944,6 @@ export const KpiSelector_NetworkCodesRelative = {
     },
 };
 
-messageTypeRegistry.set(KpiSelector_NetworkCodesRelative.$type, KpiSelector_NetworkCodesRelative);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -1029,16 +953,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

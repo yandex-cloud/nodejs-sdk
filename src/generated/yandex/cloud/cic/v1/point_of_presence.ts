@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -7,22 +6,15 @@ export const protobufPackage = 'yandex.cloud.cic.v1';
 
 /** A PointOfPresence resource. */
 export interface PointOfPresence {
-    $type: 'yandex.cloud.cic.v1.PointOfPresence';
     /** ID of the pointOfPresence. */
     id: string;
     /** ID of the region that the pointOfPresence belongs to. */
     regionId: string;
 }
 
-const basePointOfPresence: object = {
-    $type: 'yandex.cloud.cic.v1.PointOfPresence',
-    id: '',
-    regionId: '',
-};
+const basePointOfPresence: object = { id: '', regionId: '' };
 
 export const PointOfPresence = {
-    $type: 'yandex.cloud.cic.v1.PointOfPresence' as const,
-
     encode(message: PointOfPresence, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -79,8 +71,6 @@ export const PointOfPresence = {
     },
 };
 
-messageTypeRegistry.set(PointOfPresence.$type, PointOfPresence);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -90,16 +80,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

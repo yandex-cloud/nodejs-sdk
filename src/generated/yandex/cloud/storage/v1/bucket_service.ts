@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -38,7 +37,6 @@ import { Struct } from '../../../../google/protobuf/struct';
 export const protobufPackage = 'yandex.cloud.storage.v1';
 
 export interface GetBucketRequest {
-    $type: 'yandex.cloud.storage.v1.GetBucketRequest';
     /**
      * Name of the bucket to return.
      *
@@ -112,7 +110,6 @@ export function getBucketRequest_ViewToJSON(object: GetBucketRequest_View): stri
 }
 
 export interface ListBucketsRequest {
-    $type: 'yandex.cloud.storage.v1.ListBucketsRequest';
     /**
      * ID of the folder to list buckets in.
      *
@@ -122,13 +119,11 @@ export interface ListBucketsRequest {
 }
 
 export interface ListBucketsResponse {
-    $type: 'yandex.cloud.storage.v1.ListBucketsResponse';
     /** List of buckets in the specified folder. */
     buckets: Bucket[];
 }
 
 export interface CreateBucketRequest {
-    $type: 'yandex.cloud.storage.v1.CreateBucketRequest';
     /**
      * Name of the bucket.
      *
@@ -171,13 +166,11 @@ export interface CreateBucketRequest {
 }
 
 export interface CreateBucketMetadata {
-    $type: 'yandex.cloud.storage.v1.CreateBucketMetadata';
     /** Name of the bucket that is being created. */
     name: string;
 }
 
 export interface UpdateBucketRequest {
-    $type: 'yandex.cloud.storage.v1.UpdateBucketRequest';
     /**
      * Name of the bucket to update.
      *
@@ -257,14 +250,12 @@ export interface UpdateBucketRequest {
 }
 
 export interface UpdateBucketMetadata {
-    $type: 'yandex.cloud.storage.v1.UpdateBucketMetadata';
     /** Name of the bucket that is being updated. */
     name: string;
 }
 
 /** DeleteBucketRequest deletes requested bucket from the Cloud. */
 export interface DeleteBucketRequest {
-    $type: 'yandex.cloud.storage.v1.DeleteBucketRequest';
     /**
      * Name of the bucket to update.
      *
@@ -274,25 +265,21 @@ export interface DeleteBucketRequest {
 }
 
 export interface DeleteBucketMetadata {
-    $type: 'yandex.cloud.storage.v1.DeleteBucketMetadata';
     /** Name of the bucket that is being deleted. */
     name: string;
 }
 
 export interface GetBucketStatsRequest {
-    $type: 'yandex.cloud.storage.v1.GetBucketStatsRequest';
     /** Name of the bucket to return the statistics for. */
     name: string;
 }
 
 export interface GetBucketHTTPSConfigRequest {
-    $type: 'yandex.cloud.storage.v1.GetBucketHTTPSConfigRequest';
     /** Name of the bucket to return the HTTPS configuration for. */
     name: string;
 }
 
 export interface SelfManagedHTTPSConfigParams {
-    $type: 'yandex.cloud.storage.v1.SelfManagedHTTPSConfigParams';
     /** [PEM](https://en.wikipedia.org/wiki/Privacy-Enhanced_Mail)-encoded certificate. */
     certificatePem: string;
     /** [PEM](https://en.wikipedia.org/wiki/Privacy-Enhanced_Mail)-encoded private key for the certificate. */
@@ -301,7 +288,6 @@ export interface SelfManagedHTTPSConfigParams {
 
 /** A resource for a TLS certificate from Certificate Manager. */
 export interface CertificateManagerHTTPSConfigParams {
-    $type: 'yandex.cloud.storage.v1.CertificateManagerHTTPSConfigParams';
     /**
      * ID of the certificate.
      *
@@ -312,7 +298,6 @@ export interface CertificateManagerHTTPSConfigParams {
 }
 
 export interface SetBucketHTTPSConfigRequest {
-    $type: 'yandex.cloud.storage.v1.SetBucketHTTPSConfigRequest';
     /** Name of the bucket to update the HTTPS configuration for. */
     name: string;
     /**
@@ -331,32 +316,23 @@ export interface SetBucketHTTPSConfigRequest {
 }
 
 export interface SetBucketHTTPSConfigMetadata {
-    $type: 'yandex.cloud.storage.v1.SetBucketHTTPSConfigMetadata';
     /** Name of the bucket the HTTPS configuration is being updated for. */
     name: string;
 }
 
 export interface DeleteBucketHTTPSConfigRequest {
-    $type: 'yandex.cloud.storage.v1.DeleteBucketHTTPSConfigRequest';
     /** Name of the bucket to delete the HTTPS configuration for. */
     name: string;
 }
 
 export interface DeleteBucketHTTPSConfigMetadata {
-    $type: 'yandex.cloud.storage.v1.DeleteBucketHTTPSConfigMetadata';
     /** Name of the bucket the HTTPS configuration is being deleted for. */
     name: string;
 }
 
-const baseGetBucketRequest: object = {
-    $type: 'yandex.cloud.storage.v1.GetBucketRequest',
-    name: '',
-    view: 0,
-};
+const baseGetBucketRequest: object = { name: '', view: 0 };
 
 export const GetBucketRequest = {
-    $type: 'yandex.cloud.storage.v1.GetBucketRequest' as const,
-
     encode(message: GetBucketRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -413,16 +389,9 @@ export const GetBucketRequest = {
     },
 };
 
-messageTypeRegistry.set(GetBucketRequest.$type, GetBucketRequest);
-
-const baseListBucketsRequest: object = {
-    $type: 'yandex.cloud.storage.v1.ListBucketsRequest',
-    folderId: '',
-};
+const baseListBucketsRequest: object = { folderId: '' };
 
 export const ListBucketsRequest = {
-    $type: 'yandex.cloud.storage.v1.ListBucketsRequest' as const,
-
     encode(message: ListBucketsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -472,13 +441,9 @@ export const ListBucketsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListBucketsRequest.$type, ListBucketsRequest);
-
-const baseListBucketsResponse: object = { $type: 'yandex.cloud.storage.v1.ListBucketsResponse' };
+const baseListBucketsResponse: object = {};
 
 export const ListBucketsResponse = {
-    $type: 'yandex.cloud.storage.v1.ListBucketsResponse' as const,
-
     encode(message: ListBucketsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.buckets) {
             Bucket.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -530,10 +495,7 @@ export const ListBucketsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListBucketsResponse.$type, ListBucketsResponse);
-
 const baseCreateBucketRequest: object = {
-    $type: 'yandex.cloud.storage.v1.CreateBucketRequest',
     name: '',
     folderId: '',
     defaultStorageClass: '',
@@ -541,8 +503,6 @@ const baseCreateBucketRequest: object = {
 };
 
 export const CreateBucketRequest = {
-    $type: 'yandex.cloud.storage.v1.CreateBucketRequest' as const,
-
     encode(message: CreateBucketRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -675,16 +635,9 @@ export const CreateBucketRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateBucketRequest.$type, CreateBucketRequest);
-
-const baseCreateBucketMetadata: object = {
-    $type: 'yandex.cloud.storage.v1.CreateBucketMetadata',
-    name: '',
-};
+const baseCreateBucketMetadata: object = { name: '' };
 
 export const CreateBucketMetadata = {
-    $type: 'yandex.cloud.storage.v1.CreateBucketMetadata' as const,
-
     encode(message: CreateBucketMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -731,10 +684,7 @@ export const CreateBucketMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateBucketMetadata.$type, CreateBucketMetadata);
-
 const baseUpdateBucketRequest: object = {
-    $type: 'yandex.cloud.storage.v1.UpdateBucketRequest',
     name: '',
     defaultStorageClass: '',
     maxSize: 0,
@@ -742,8 +692,6 @@ const baseUpdateBucketRequest: object = {
 };
 
 export const UpdateBucketRequest = {
-    $type: 'yandex.cloud.storage.v1.UpdateBucketRequest' as const,
-
     encode(message: UpdateBucketRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1014,16 +962,9 @@ export const UpdateBucketRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateBucketRequest.$type, UpdateBucketRequest);
-
-const baseUpdateBucketMetadata: object = {
-    $type: 'yandex.cloud.storage.v1.UpdateBucketMetadata',
-    name: '',
-};
+const baseUpdateBucketMetadata: object = { name: '' };
 
 export const UpdateBucketMetadata = {
-    $type: 'yandex.cloud.storage.v1.UpdateBucketMetadata' as const,
-
     encode(message: UpdateBucketMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1070,16 +1011,9 @@ export const UpdateBucketMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateBucketMetadata.$type, UpdateBucketMetadata);
-
-const baseDeleteBucketRequest: object = {
-    $type: 'yandex.cloud.storage.v1.DeleteBucketRequest',
-    name: '',
-};
+const baseDeleteBucketRequest: object = { name: '' };
 
 export const DeleteBucketRequest = {
-    $type: 'yandex.cloud.storage.v1.DeleteBucketRequest' as const,
-
     encode(message: DeleteBucketRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1126,16 +1060,9 @@ export const DeleteBucketRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteBucketRequest.$type, DeleteBucketRequest);
-
-const baseDeleteBucketMetadata: object = {
-    $type: 'yandex.cloud.storage.v1.DeleteBucketMetadata',
-    name: '',
-};
+const baseDeleteBucketMetadata: object = { name: '' };
 
 export const DeleteBucketMetadata = {
-    $type: 'yandex.cloud.storage.v1.DeleteBucketMetadata' as const,
-
     encode(message: DeleteBucketMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1182,16 +1109,9 @@ export const DeleteBucketMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteBucketMetadata.$type, DeleteBucketMetadata);
-
-const baseGetBucketStatsRequest: object = {
-    $type: 'yandex.cloud.storage.v1.GetBucketStatsRequest',
-    name: '',
-};
+const baseGetBucketStatsRequest: object = { name: '' };
 
 export const GetBucketStatsRequest = {
-    $type: 'yandex.cloud.storage.v1.GetBucketStatsRequest' as const,
-
     encode(message: GetBucketStatsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1238,16 +1158,9 @@ export const GetBucketStatsRequest = {
     },
 };
 
-messageTypeRegistry.set(GetBucketStatsRequest.$type, GetBucketStatsRequest);
-
-const baseGetBucketHTTPSConfigRequest: object = {
-    $type: 'yandex.cloud.storage.v1.GetBucketHTTPSConfigRequest',
-    name: '',
-};
+const baseGetBucketHTTPSConfigRequest: object = { name: '' };
 
 export const GetBucketHTTPSConfigRequest = {
-    $type: 'yandex.cloud.storage.v1.GetBucketHTTPSConfigRequest' as const,
-
     encode(
         message: GetBucketHTTPSConfigRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1297,17 +1210,9 @@ export const GetBucketHTTPSConfigRequest = {
     },
 };
 
-messageTypeRegistry.set(GetBucketHTTPSConfigRequest.$type, GetBucketHTTPSConfigRequest);
-
-const baseSelfManagedHTTPSConfigParams: object = {
-    $type: 'yandex.cloud.storage.v1.SelfManagedHTTPSConfigParams',
-    certificatePem: '',
-    privateKeyPem: '',
-};
+const baseSelfManagedHTTPSConfigParams: object = { certificatePem: '', privateKeyPem: '' };
 
 export const SelfManagedHTTPSConfigParams = {
-    $type: 'yandex.cloud.storage.v1.SelfManagedHTTPSConfigParams' as const,
-
     encode(
         message: SelfManagedHTTPSConfigParams,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1372,16 +1277,9 @@ export const SelfManagedHTTPSConfigParams = {
     },
 };
 
-messageTypeRegistry.set(SelfManagedHTTPSConfigParams.$type, SelfManagedHTTPSConfigParams);
-
-const baseCertificateManagerHTTPSConfigParams: object = {
-    $type: 'yandex.cloud.storage.v1.CertificateManagerHTTPSConfigParams',
-    certificateId: '',
-};
+const baseCertificateManagerHTTPSConfigParams: object = { certificateId: '' };
 
 export const CertificateManagerHTTPSConfigParams = {
-    $type: 'yandex.cloud.storage.v1.CertificateManagerHTTPSConfigParams' as const,
-
     encode(
         message: CertificateManagerHTTPSConfigParams,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1440,19 +1338,9 @@ export const CertificateManagerHTTPSConfigParams = {
     },
 };
 
-messageTypeRegistry.set(
-    CertificateManagerHTTPSConfigParams.$type,
-    CertificateManagerHTTPSConfigParams,
-);
-
-const baseSetBucketHTTPSConfigRequest: object = {
-    $type: 'yandex.cloud.storage.v1.SetBucketHTTPSConfigRequest',
-    name: '',
-};
+const baseSetBucketHTTPSConfigRequest: object = { name: '' };
 
 export const SetBucketHTTPSConfigRequest = {
-    $type: 'yandex.cloud.storage.v1.SetBucketHTTPSConfigRequest' as const,
-
     encode(
         message: SetBucketHTTPSConfigRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1550,16 +1438,9 @@ export const SetBucketHTTPSConfigRequest = {
     },
 };
 
-messageTypeRegistry.set(SetBucketHTTPSConfigRequest.$type, SetBucketHTTPSConfigRequest);
-
-const baseSetBucketHTTPSConfigMetadata: object = {
-    $type: 'yandex.cloud.storage.v1.SetBucketHTTPSConfigMetadata',
-    name: '',
-};
+const baseSetBucketHTTPSConfigMetadata: object = { name: '' };
 
 export const SetBucketHTTPSConfigMetadata = {
-    $type: 'yandex.cloud.storage.v1.SetBucketHTTPSConfigMetadata' as const,
-
     encode(
         message: SetBucketHTTPSConfigMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1609,16 +1490,9 @@ export const SetBucketHTTPSConfigMetadata = {
     },
 };
 
-messageTypeRegistry.set(SetBucketHTTPSConfigMetadata.$type, SetBucketHTTPSConfigMetadata);
-
-const baseDeleteBucketHTTPSConfigRequest: object = {
-    $type: 'yandex.cloud.storage.v1.DeleteBucketHTTPSConfigRequest',
-    name: '',
-};
+const baseDeleteBucketHTTPSConfigRequest: object = { name: '' };
 
 export const DeleteBucketHTTPSConfigRequest = {
-    $type: 'yandex.cloud.storage.v1.DeleteBucketHTTPSConfigRequest' as const,
-
     encode(
         message: DeleteBucketHTTPSConfigRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1668,16 +1542,9 @@ export const DeleteBucketHTTPSConfigRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteBucketHTTPSConfigRequest.$type, DeleteBucketHTTPSConfigRequest);
-
-const baseDeleteBucketHTTPSConfigMetadata: object = {
-    $type: 'yandex.cloud.storage.v1.DeleteBucketHTTPSConfigMetadata',
-    name: '',
-};
+const baseDeleteBucketHTTPSConfigMetadata: object = { name: '' };
 
 export const DeleteBucketHTTPSConfigMetadata = {
-    $type: 'yandex.cloud.storage.v1.DeleteBucketHTTPSConfigMetadata' as const,
-
     encode(
         message: DeleteBucketHTTPSConfigMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1732,8 +1599,6 @@ export const DeleteBucketHTTPSConfigMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteBucketHTTPSConfigMetadata.$type, DeleteBucketHTTPSConfigMetadata);
 
 /** A set of methods for managing buckets. */
 export const BucketServiceService = {
@@ -2093,16 +1958,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

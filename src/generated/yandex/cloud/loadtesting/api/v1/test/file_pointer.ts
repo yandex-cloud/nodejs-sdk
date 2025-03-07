@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { ObjectStorage } from '../../../../../../yandex/cloud/loadtesting/api/v1/test/object_storage';
@@ -8,16 +7,13 @@ export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.test';
 
 /** Variant-like structure for referencing files in different sources. */
 export interface FilePointer {
-    $type: 'yandex.cloud.loadtesting.api.v1.test.FilePointer';
     /** Reference to a file in Object Storage. */
     objectStorage?: ObjectStorage | undefined;
 }
 
-const baseFilePointer: object = { $type: 'yandex.cloud.loadtesting.api.v1.test.FilePointer' };
+const baseFilePointer: object = {};
 
 export const FilePointer = {
-    $type: 'yandex.cloud.loadtesting.api.v1.test.FilePointer' as const,
-
     encode(message: FilePointer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.objectStorage !== undefined) {
             ObjectStorage.encode(message.objectStorage, writer.uint32(10).fork()).ldelim();
@@ -71,8 +67,6 @@ export const FilePointer = {
     },
 };
 
-messageTypeRegistry.set(FilePointer.$type, FilePointer);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -82,16 +76,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

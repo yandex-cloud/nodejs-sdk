@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.vpc.v1';
 
 /** An Address resource. For more information, see [Address](/docs/vpc/concepts/address). */
 export interface Address {
-    $type: 'yandex.cloud.vpc.v1.Address';
     /** ID of the address. Generated at creation time. */
     id: string;
     /** ID of the folder that the address belongs to. */
@@ -128,13 +126,11 @@ export function address_IpVersionToJSON(object: Address_IpVersion): string {
 }
 
 export interface Address_LabelsEntry {
-    $type: 'yandex.cloud.vpc.v1.Address.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface ExternalIpv4Address {
-    $type: 'yandex.cloud.vpc.v1.ExternalIpv4Address';
     /** Value of address. */
     address: string;
     /** Availability zone from which the address will be allocated. */
@@ -144,7 +140,6 @@ export interface ExternalIpv4Address {
 }
 
 export interface AddressRequirements {
-    $type: 'yandex.cloud.vpc.v1.AddressRequirements';
     /** DDoS protection provider ID. */
     ddosProtectionProvider: string;
     /** Capability to send SMTP traffic. */
@@ -152,7 +147,6 @@ export interface AddressRequirements {
 }
 
 export interface DnsRecord {
-    $type: 'yandex.cloud.vpc.v1.DnsRecord';
     /** DNS record name (absolute or relative to the DNS zone in use). */
     fqdn: string;
     /** ID of the public DNS zone. */
@@ -164,7 +158,6 @@ export interface DnsRecord {
 }
 
 const baseAddress: object = {
-    $type: 'yandex.cloud.vpc.v1.Address',
     id: '',
     folderId: '',
     name: '',
@@ -177,8 +170,6 @@ const baseAddress: object = {
 };
 
 export const Address = {
-    $type: 'yandex.cloud.vpc.v1.Address' as const,
-
     encode(message: Address, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -197,7 +188,7 @@ export const Address = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Address_LabelsEntry.encode(
-                { $type: 'yandex.cloud.vpc.v1.Address.LabelsEntry', key: key as any, value },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -401,17 +392,9 @@ export const Address = {
     },
 };
 
-messageTypeRegistry.set(Address.$type, Address);
-
-const baseAddress_LabelsEntry: object = {
-    $type: 'yandex.cloud.vpc.v1.Address.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseAddress_LabelsEntry: object = { key: '', value: '' };
 
 export const Address_LabelsEntry = {
-    $type: 'yandex.cloud.vpc.v1.Address.LabelsEntry' as const,
-
     encode(message: Address_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -468,17 +451,9 @@ export const Address_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Address_LabelsEntry.$type, Address_LabelsEntry);
-
-const baseExternalIpv4Address: object = {
-    $type: 'yandex.cloud.vpc.v1.ExternalIpv4Address',
-    address: '',
-    zoneId: '',
-};
+const baseExternalIpv4Address: object = { address: '', zoneId: '' };
 
 export const ExternalIpv4Address = {
-    $type: 'yandex.cloud.vpc.v1.ExternalIpv4Address' as const,
-
     encode(message: ExternalIpv4Address, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.address !== '') {
             writer.uint32(10).string(message.address);
@@ -554,17 +529,9 @@ export const ExternalIpv4Address = {
     },
 };
 
-messageTypeRegistry.set(ExternalIpv4Address.$type, ExternalIpv4Address);
-
-const baseAddressRequirements: object = {
-    $type: 'yandex.cloud.vpc.v1.AddressRequirements',
-    ddosProtectionProvider: '',
-    outgoingSmtpCapability: '',
-};
+const baseAddressRequirements: object = { ddosProtectionProvider: '', outgoingSmtpCapability: '' };
 
 export const AddressRequirements = {
-    $type: 'yandex.cloud.vpc.v1.AddressRequirements' as const,
-
     encode(message: AddressRequirements, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ddosProtectionProvider !== '') {
             writer.uint32(10).string(message.ddosProtectionProvider);
@@ -628,19 +595,9 @@ export const AddressRequirements = {
     },
 };
 
-messageTypeRegistry.set(AddressRequirements.$type, AddressRequirements);
-
-const baseDnsRecord: object = {
-    $type: 'yandex.cloud.vpc.v1.DnsRecord',
-    fqdn: '',
-    dnsZoneId: '',
-    ttl: 0,
-    ptr: false,
-};
+const baseDnsRecord: object = { fqdn: '', dnsZoneId: '', ttl: 0, ptr: false };
 
 export const DnsRecord = {
-    $type: 'yandex.cloud.vpc.v1.DnsRecord' as const,
-
     encode(message: DnsRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fqdn !== '') {
             writer.uint32(10).string(message.fqdn);
@@ -715,8 +672,6 @@ export const DnsRecord = {
     },
 };
 
-messageTypeRegistry.set(DnsRecord.$type, DnsRecord);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -737,21 +692,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

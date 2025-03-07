@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,13 +19,11 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.video.v1';
 
 export interface GetThumbnailRequest {
-    $type: 'yandex.cloud.video.v1.GetThumbnailRequest';
     /** ID of the thumbnail. */
     thumbnailId: string;
 }
 
 export interface ListThumbnailRequest {
-    $type: 'yandex.cloud.video.v1.ListThumbnailRequest';
     /** ID of the channel. */
     channelId: string;
     /** The maximum number of the results per page to return. Default value: 100. */
@@ -36,7 +33,6 @@ export interface ListThumbnailRequest {
 }
 
 export interface ListThumbnailResponse {
-    $type: 'yandex.cloud.video.v1.ListThumbnailResponse';
     /** List of thumbnails. */
     thumbnails: Thumbnail[];
     /** Token for getting the next page. */
@@ -44,19 +40,16 @@ export interface ListThumbnailResponse {
 }
 
 export interface CreateThumbnailRequest {
-    $type: 'yandex.cloud.video.v1.CreateThumbnailRequest';
     /** ID of the channel. */
     channelId: string;
 }
 
 export interface CreateThumbnailMetadata {
-    $type: 'yandex.cloud.video.v1.CreateThumbnailMetadata';
     /** ID of the thumbnail. */
     thumbnailId: string;
 }
 
 export interface BatchGenerateDownloadURLsRequest {
-    $type: 'yandex.cloud.video.v1.BatchGenerateDownloadURLsRequest';
     /** ID of the channel. */
     channelId: string;
     /** List of thumbnails IDs. */
@@ -64,13 +57,11 @@ export interface BatchGenerateDownloadURLsRequest {
 }
 
 export interface BatchGenerateDownloadURLsResponse {
-    $type: 'yandex.cloud.video.v1.BatchGenerateDownloadURLsResponse';
     /** List of download urls. */
     downloadUrls: ThumbnailDownloadURL[];
 }
 
 export interface ThumbnailDownloadURL {
-    $type: 'yandex.cloud.video.v1.ThumbnailDownloadURL';
     /** ID of the thumbnail. */
     thumbnailId: string;
     /** Download url. */
@@ -78,37 +69,28 @@ export interface ThumbnailDownloadURL {
 }
 
 export interface GenerateThumbnailUploadURLRequest {
-    $type: 'yandex.cloud.video.v1.GenerateThumbnailUploadURLRequest';
     /** ID of the thumbnail. */
     thumbnailId: string;
 }
 
 export interface GenerateThumbnailUploadURLResponse {
-    $type: 'yandex.cloud.video.v1.GenerateThumbnailUploadURLResponse';
     /** Upload url. */
     uploadUrl: string;
 }
 
 export interface DeleteThumbnailRequest {
-    $type: 'yandex.cloud.video.v1.DeleteThumbnailRequest';
     /** ID of the thumbnail. */
     thumbnailId: string;
 }
 
 export interface DeleteThumbnailMetadata {
-    $type: 'yandex.cloud.video.v1.DeleteThumbnailMetadata';
     /** ID of the thumbnail. */
     thumbnailId: string;
 }
 
-const baseGetThumbnailRequest: object = {
-    $type: 'yandex.cloud.video.v1.GetThumbnailRequest',
-    thumbnailId: '',
-};
+const baseGetThumbnailRequest: object = { thumbnailId: '' };
 
 export const GetThumbnailRequest = {
-    $type: 'yandex.cloud.video.v1.GetThumbnailRequest' as const,
-
     encode(message: GetThumbnailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.thumbnailId !== '') {
             writer.uint32(10).string(message.thumbnailId);
@@ -158,18 +140,9 @@ export const GetThumbnailRequest = {
     },
 };
 
-messageTypeRegistry.set(GetThumbnailRequest.$type, GetThumbnailRequest);
-
-const baseListThumbnailRequest: object = {
-    $type: 'yandex.cloud.video.v1.ListThumbnailRequest',
-    channelId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListThumbnailRequest: object = { channelId: '', pageSize: 0, pageToken: '' };
 
 export const ListThumbnailRequest = {
-    $type: 'yandex.cloud.video.v1.ListThumbnailRequest' as const,
-
     encode(message: ListThumbnailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -241,16 +214,9 @@ export const ListThumbnailRequest = {
     },
 };
 
-messageTypeRegistry.set(ListThumbnailRequest.$type, ListThumbnailRequest);
-
-const baseListThumbnailResponse: object = {
-    $type: 'yandex.cloud.video.v1.ListThumbnailResponse',
-    nextPageToken: '',
-};
+const baseListThumbnailResponse: object = { nextPageToken: '' };
 
 export const ListThumbnailResponse = {
-    $type: 'yandex.cloud.video.v1.ListThumbnailResponse' as const,
-
     encode(message: ListThumbnailResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.thumbnails) {
             Thumbnail.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -314,16 +280,9 @@ export const ListThumbnailResponse = {
     },
 };
 
-messageTypeRegistry.set(ListThumbnailResponse.$type, ListThumbnailResponse);
-
-const baseCreateThumbnailRequest: object = {
-    $type: 'yandex.cloud.video.v1.CreateThumbnailRequest',
-    channelId: '',
-};
+const baseCreateThumbnailRequest: object = { channelId: '' };
 
 export const CreateThumbnailRequest = {
-    $type: 'yandex.cloud.video.v1.CreateThumbnailRequest' as const,
-
     encode(message: CreateThumbnailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -373,16 +332,9 @@ export const CreateThumbnailRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateThumbnailRequest.$type, CreateThumbnailRequest);
-
-const baseCreateThumbnailMetadata: object = {
-    $type: 'yandex.cloud.video.v1.CreateThumbnailMetadata',
-    thumbnailId: '',
-};
+const baseCreateThumbnailMetadata: object = { thumbnailId: '' };
 
 export const CreateThumbnailMetadata = {
-    $type: 'yandex.cloud.video.v1.CreateThumbnailMetadata' as const,
-
     encode(message: CreateThumbnailMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.thumbnailId !== '') {
             writer.uint32(10).string(message.thumbnailId);
@@ -432,17 +384,9 @@ export const CreateThumbnailMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateThumbnailMetadata.$type, CreateThumbnailMetadata);
-
-const baseBatchGenerateDownloadURLsRequest: object = {
-    $type: 'yandex.cloud.video.v1.BatchGenerateDownloadURLsRequest',
-    channelId: '',
-    thumbnailIds: '',
-};
+const baseBatchGenerateDownloadURLsRequest: object = { channelId: '', thumbnailIds: '' };
 
 export const BatchGenerateDownloadURLsRequest = {
-    $type: 'yandex.cloud.video.v1.BatchGenerateDownloadURLsRequest' as const,
-
     encode(
         message: BatchGenerateDownloadURLsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -515,15 +459,9 @@ export const BatchGenerateDownloadURLsRequest = {
     },
 };
 
-messageTypeRegistry.set(BatchGenerateDownloadURLsRequest.$type, BatchGenerateDownloadURLsRequest);
-
-const baseBatchGenerateDownloadURLsResponse: object = {
-    $type: 'yandex.cloud.video.v1.BatchGenerateDownloadURLsResponse',
-};
+const baseBatchGenerateDownloadURLsResponse: object = {};
 
 export const BatchGenerateDownloadURLsResponse = {
-    $type: 'yandex.cloud.video.v1.BatchGenerateDownloadURLsResponse' as const,
-
     encode(
         message: BatchGenerateDownloadURLsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -589,17 +527,9 @@ export const BatchGenerateDownloadURLsResponse = {
     },
 };
 
-messageTypeRegistry.set(BatchGenerateDownloadURLsResponse.$type, BatchGenerateDownloadURLsResponse);
-
-const baseThumbnailDownloadURL: object = {
-    $type: 'yandex.cloud.video.v1.ThumbnailDownloadURL',
-    thumbnailId: '',
-    downloadUrl: '',
-};
+const baseThumbnailDownloadURL: object = { thumbnailId: '', downloadUrl: '' };
 
 export const ThumbnailDownloadURL = {
-    $type: 'yandex.cloud.video.v1.ThumbnailDownloadURL' as const,
-
     encode(message: ThumbnailDownloadURL, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.thumbnailId !== '') {
             writer.uint32(10).string(message.thumbnailId);
@@ -661,16 +591,9 @@ export const ThumbnailDownloadURL = {
     },
 };
 
-messageTypeRegistry.set(ThumbnailDownloadURL.$type, ThumbnailDownloadURL);
-
-const baseGenerateThumbnailUploadURLRequest: object = {
-    $type: 'yandex.cloud.video.v1.GenerateThumbnailUploadURLRequest',
-    thumbnailId: '',
-};
+const baseGenerateThumbnailUploadURLRequest: object = { thumbnailId: '' };
 
 export const GenerateThumbnailUploadURLRequest = {
-    $type: 'yandex.cloud.video.v1.GenerateThumbnailUploadURLRequest' as const,
-
     encode(
         message: GenerateThumbnailUploadURLRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -729,16 +652,9 @@ export const GenerateThumbnailUploadURLRequest = {
     },
 };
 
-messageTypeRegistry.set(GenerateThumbnailUploadURLRequest.$type, GenerateThumbnailUploadURLRequest);
-
-const baseGenerateThumbnailUploadURLResponse: object = {
-    $type: 'yandex.cloud.video.v1.GenerateThumbnailUploadURLResponse',
-    uploadUrl: '',
-};
+const baseGenerateThumbnailUploadURLResponse: object = { uploadUrl: '' };
 
 export const GenerateThumbnailUploadURLResponse = {
-    $type: 'yandex.cloud.video.v1.GenerateThumbnailUploadURLResponse' as const,
-
     encode(
         message: GenerateThumbnailUploadURLResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -797,19 +713,9 @@ export const GenerateThumbnailUploadURLResponse = {
     },
 };
 
-messageTypeRegistry.set(
-    GenerateThumbnailUploadURLResponse.$type,
-    GenerateThumbnailUploadURLResponse,
-);
-
-const baseDeleteThumbnailRequest: object = {
-    $type: 'yandex.cloud.video.v1.DeleteThumbnailRequest',
-    thumbnailId: '',
-};
+const baseDeleteThumbnailRequest: object = { thumbnailId: '' };
 
 export const DeleteThumbnailRequest = {
-    $type: 'yandex.cloud.video.v1.DeleteThumbnailRequest' as const,
-
     encode(message: DeleteThumbnailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.thumbnailId !== '') {
             writer.uint32(10).string(message.thumbnailId);
@@ -859,16 +765,9 @@ export const DeleteThumbnailRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteThumbnailRequest.$type, DeleteThumbnailRequest);
-
-const baseDeleteThumbnailMetadata: object = {
-    $type: 'yandex.cloud.video.v1.DeleteThumbnailMetadata',
-    thumbnailId: '',
-};
+const baseDeleteThumbnailMetadata: object = { thumbnailId: '' };
 
 export const DeleteThumbnailMetadata = {
-    $type: 'yandex.cloud.video.v1.DeleteThumbnailMetadata' as const,
-
     encode(message: DeleteThumbnailMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.thumbnailId !== '') {
             writer.uint32(10).string(message.thumbnailId);
@@ -917,8 +816,6 @@ export const DeleteThumbnailMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteThumbnailMetadata.$type, DeleteThumbnailMetadata);
 
 /** Thumbnail management service. */
 export const ThumbnailServiceService = {
@@ -1154,16 +1051,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

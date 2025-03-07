@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -28,13 +27,11 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.smartwebsecurity.v1';
 
 export interface GetSecurityProfileRequest {
-    $type: 'yandex.cloud.smartwebsecurity.v1.GetSecurityProfileRequest';
     /** ID of the SecurityProfile resource to return. */
     securityProfileId: string;
 }
 
 export interface ListSecurityProfilesRequest {
-    $type: 'yandex.cloud.smartwebsecurity.v1.ListSecurityProfilesRequest';
     /**
      * ID of the folder that the security profile belongs to.
      * Currently page_size, page_token, filter and order_by are not supported and List method will return all security profiles in the folder.
@@ -43,7 +40,6 @@ export interface ListSecurityProfilesRequest {
 }
 
 export interface ListSecurityProfilesResponse {
-    $type: 'yandex.cloud.smartwebsecurity.v1.ListSecurityProfilesResponse';
     /**
      * List of SecurityProfile resources.
      * Currently next_page_token is not supported and List method will return all security profiles in the folder.
@@ -52,7 +48,6 @@ export interface ListSecurityProfilesResponse {
 }
 
 export interface CreateSecurityProfileRequest {
-    $type: 'yandex.cloud.smartwebsecurity.v1.CreateSecurityProfileRequest';
     /** ID of the folder to create a security profile in. */
     folderId: string;
     /** Labels as `` key:value `` pairs. Maximum of 64 per resource. */
@@ -74,19 +69,16 @@ export interface CreateSecurityProfileRequest {
 }
 
 export interface CreateSecurityProfileRequest_LabelsEntry {
-    $type: 'yandex.cloud.smartwebsecurity.v1.CreateSecurityProfileRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateSecurityProfileMetadata {
-    $type: 'yandex.cloud.smartwebsecurity.v1.CreateSecurityProfileMetadata';
     /** ID of the security profile that is being created. */
     securityProfileId: string;
 }
 
 export interface UpdateSecurityProfileRequest {
-    $type: 'yandex.cloud.smartwebsecurity.v1.UpdateSecurityProfileRequest';
     /** ID of the security profile to update. */
     securityProfileId: string;
     /** Field mask that specifies which fields of the SecurityProfile resource are going to be updated. */
@@ -110,37 +102,28 @@ export interface UpdateSecurityProfileRequest {
 }
 
 export interface UpdateSecurityProfileRequest_LabelsEntry {
-    $type: 'yandex.cloud.smartwebsecurity.v1.UpdateSecurityProfileRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateSecurityProfileMetadata {
-    $type: 'yandex.cloud.smartwebsecurity.v1.UpdateSecurityProfileMetadata';
     /** ID of the SecurityProfile resource that is being updated. */
     securityProfileId: string;
 }
 
 export interface DeleteSecurityProfileRequest {
-    $type: 'yandex.cloud.smartwebsecurity.v1.DeleteSecurityProfileRequest';
     /** ID of the security profile to delete. */
     securityProfileId: string;
 }
 
 export interface DeleteSecurityProfileMetadata {
-    $type: 'yandex.cloud.smartwebsecurity.v1.DeleteSecurityProfileMetadata';
     /** ID of the SecurityProfile resource that is being deleted. */
     securityProfileId: string;
 }
 
-const baseGetSecurityProfileRequest: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.GetSecurityProfileRequest',
-    securityProfileId: '',
-};
+const baseGetSecurityProfileRequest: object = { securityProfileId: '' };
 
 export const GetSecurityProfileRequest = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.GetSecurityProfileRequest' as const,
-
     encode(
         message: GetSecurityProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -194,16 +177,9 @@ export const GetSecurityProfileRequest = {
     },
 };
 
-messageTypeRegistry.set(GetSecurityProfileRequest.$type, GetSecurityProfileRequest);
-
-const baseListSecurityProfilesRequest: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.ListSecurityProfilesRequest',
-    folderId: '',
-};
+const baseListSecurityProfilesRequest: object = { folderId: '' };
 
 export const ListSecurityProfilesRequest = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.ListSecurityProfilesRequest' as const,
-
     encode(
         message: ListSecurityProfilesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -256,15 +232,9 @@ export const ListSecurityProfilesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListSecurityProfilesRequest.$type, ListSecurityProfilesRequest);
-
-const baseListSecurityProfilesResponse: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.ListSecurityProfilesResponse',
-};
+const baseListSecurityProfilesResponse: object = {};
 
 export const ListSecurityProfilesResponse = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.ListSecurityProfilesResponse' as const,
-
     encode(
         message: ListSecurityProfilesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -324,10 +294,7 @@ export const ListSecurityProfilesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListSecurityProfilesResponse.$type, ListSecurityProfilesResponse);
-
 const baseCreateSecurityProfileRequest: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.CreateSecurityProfileRequest',
     folderId: '',
     name: '',
     description: '',
@@ -337,8 +304,6 @@ const baseCreateSecurityProfileRequest: object = {
 };
 
 export const CreateSecurityProfileRequest = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.CreateSecurityProfileRequest' as const,
-
     encode(
         message: CreateSecurityProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -348,11 +313,7 @@ export const CreateSecurityProfileRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateSecurityProfileRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.smartwebsecurity.v1.CreateSecurityProfileRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(18).fork(),
             ).ldelim();
         });
@@ -535,17 +496,9 @@ export const CreateSecurityProfileRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateSecurityProfileRequest.$type, CreateSecurityProfileRequest);
-
-const baseCreateSecurityProfileRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.CreateSecurityProfileRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateSecurityProfileRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateSecurityProfileRequest_LabelsEntry = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.CreateSecurityProfileRequest.LabelsEntry' as const,
-
     encode(
         message: CreateSecurityProfileRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -614,19 +567,9 @@ export const CreateSecurityProfileRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateSecurityProfileRequest_LabelsEntry.$type,
-    CreateSecurityProfileRequest_LabelsEntry,
-);
-
-const baseCreateSecurityProfileMetadata: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.CreateSecurityProfileMetadata',
-    securityProfileId: '',
-};
+const baseCreateSecurityProfileMetadata: object = { securityProfileId: '' };
 
 export const CreateSecurityProfileMetadata = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.CreateSecurityProfileMetadata' as const,
-
     encode(
         message: CreateSecurityProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -680,10 +623,7 @@ export const CreateSecurityProfileMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateSecurityProfileMetadata.$type, CreateSecurityProfileMetadata);
-
 const baseUpdateSecurityProfileRequest: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.UpdateSecurityProfileRequest',
     securityProfileId: '',
     name: '',
     description: '',
@@ -693,8 +633,6 @@ const baseUpdateSecurityProfileRequest: object = {
 };
 
 export const UpdateSecurityProfileRequest = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.UpdateSecurityProfileRequest' as const,
-
     encode(
         message: UpdateSecurityProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -707,11 +645,7 @@ export const UpdateSecurityProfileRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateSecurityProfileRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.smartwebsecurity.v1.UpdateSecurityProfileRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(26).fork(),
             ).ldelim();
         });
@@ -910,17 +844,9 @@ export const UpdateSecurityProfileRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateSecurityProfileRequest.$type, UpdateSecurityProfileRequest);
-
-const baseUpdateSecurityProfileRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.UpdateSecurityProfileRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateSecurityProfileRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateSecurityProfileRequest_LabelsEntry = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.UpdateSecurityProfileRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateSecurityProfileRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -989,19 +915,9 @@ export const UpdateSecurityProfileRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateSecurityProfileRequest_LabelsEntry.$type,
-    UpdateSecurityProfileRequest_LabelsEntry,
-);
-
-const baseUpdateSecurityProfileMetadata: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.UpdateSecurityProfileMetadata',
-    securityProfileId: '',
-};
+const baseUpdateSecurityProfileMetadata: object = { securityProfileId: '' };
 
 export const UpdateSecurityProfileMetadata = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.UpdateSecurityProfileMetadata' as const,
-
     encode(
         message: UpdateSecurityProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1055,16 +971,9 @@ export const UpdateSecurityProfileMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateSecurityProfileMetadata.$type, UpdateSecurityProfileMetadata);
-
-const baseDeleteSecurityProfileRequest: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.DeleteSecurityProfileRequest',
-    securityProfileId: '',
-};
+const baseDeleteSecurityProfileRequest: object = { securityProfileId: '' };
 
 export const DeleteSecurityProfileRequest = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.DeleteSecurityProfileRequest' as const,
-
     encode(
         message: DeleteSecurityProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1118,16 +1027,9 @@ export const DeleteSecurityProfileRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteSecurityProfileRequest.$type, DeleteSecurityProfileRequest);
-
-const baseDeleteSecurityProfileMetadata: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.DeleteSecurityProfileMetadata',
-    securityProfileId: '',
-};
+const baseDeleteSecurityProfileMetadata: object = { securityProfileId: '' };
 
 export const DeleteSecurityProfileMetadata = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.DeleteSecurityProfileMetadata' as const,
-
     encode(
         message: DeleteSecurityProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1180,8 +1082,6 @@ export const DeleteSecurityProfileMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteSecurityProfileMetadata.$type, DeleteSecurityProfileMetadata);
 
 /** A set of methods for managing SecurityProfile resources. */
 export const SecurityProfileServiceService = {
@@ -1361,16 +1261,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

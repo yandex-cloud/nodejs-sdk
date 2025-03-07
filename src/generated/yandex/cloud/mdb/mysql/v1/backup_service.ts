@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,7 +19,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.mdb.mysql.v1';
 
 export interface GetBackupRequest {
-    $type: 'yandex.cloud.mdb.mysql.v1.GetBackupRequest';
     /**
      * ID of the backup to return information about.
      *
@@ -30,7 +28,6 @@ export interface GetBackupRequest {
 }
 
 export interface ListBackupsRequest {
-    $type: 'yandex.cloud.mdb.mysql.v1.ListBackupsRequest';
     /**
      * ID of the folder to list backups in.
      *
@@ -52,7 +49,6 @@ export interface ListBackupsRequest {
 }
 
 export interface ListBackupsResponse {
-    $type: 'yandex.cloud.mdb.mysql.v1.ListBackupsResponse';
     /** List of backups. */
     backups: Backup[];
     /**
@@ -66,27 +62,20 @@ export interface ListBackupsResponse {
 }
 
 export interface DeleteBackupRequest {
-    $type: 'yandex.cloud.mdb.mysql.v1.DeleteBackupRequest';
     /** Required. ID of the backup to delete. */
     backupId: string;
 }
 
 export interface DeleteBackupMetadata {
-    $type: 'yandex.cloud.mdb.mysql.v1.DeleteBackupMetadata';
     /** Required. ID of the MySQL backup that is currently being deleted. */
     backupId: string;
     /** ID of the MySQL backup that is being deleted. */
     clusterId: string;
 }
 
-const baseGetBackupRequest: object = {
-    $type: 'yandex.cloud.mdb.mysql.v1.GetBackupRequest',
-    backupId: '',
-};
+const baseGetBackupRequest: object = { backupId: '' };
 
 export const GetBackupRequest = {
-    $type: 'yandex.cloud.mdb.mysql.v1.GetBackupRequest' as const,
-
     encode(message: GetBackupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);
@@ -134,18 +123,9 @@ export const GetBackupRequest = {
     },
 };
 
-messageTypeRegistry.set(GetBackupRequest.$type, GetBackupRequest);
-
-const baseListBackupsRequest: object = {
-    $type: 'yandex.cloud.mdb.mysql.v1.ListBackupsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListBackupsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
 export const ListBackupsRequest = {
-    $type: 'yandex.cloud.mdb.mysql.v1.ListBackupsRequest' as const,
-
     encode(message: ListBackupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -217,16 +197,9 @@ export const ListBackupsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListBackupsRequest.$type, ListBackupsRequest);
-
-const baseListBackupsResponse: object = {
-    $type: 'yandex.cloud.mdb.mysql.v1.ListBackupsResponse',
-    nextPageToken: '',
-};
+const baseListBackupsResponse: object = { nextPageToken: '' };
 
 export const ListBackupsResponse = {
-    $type: 'yandex.cloud.mdb.mysql.v1.ListBackupsResponse' as const,
-
     encode(message: ListBackupsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.backups) {
             Backup.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -290,16 +263,9 @@ export const ListBackupsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListBackupsResponse.$type, ListBackupsResponse);
-
-const baseDeleteBackupRequest: object = {
-    $type: 'yandex.cloud.mdb.mysql.v1.DeleteBackupRequest',
-    backupId: '',
-};
+const baseDeleteBackupRequest: object = { backupId: '' };
 
 export const DeleteBackupRequest = {
-    $type: 'yandex.cloud.mdb.mysql.v1.DeleteBackupRequest' as const,
-
     encode(message: DeleteBackupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);
@@ -349,17 +315,9 @@ export const DeleteBackupRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteBackupRequest.$type, DeleteBackupRequest);
-
-const baseDeleteBackupMetadata: object = {
-    $type: 'yandex.cloud.mdb.mysql.v1.DeleteBackupMetadata',
-    backupId: '',
-    clusterId: '',
-};
+const baseDeleteBackupMetadata: object = { backupId: '', clusterId: '' };
 
 export const DeleteBackupMetadata = {
-    $type: 'yandex.cloud.mdb.mysql.v1.DeleteBackupMetadata' as const,
-
     encode(message: DeleteBackupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);
@@ -420,8 +378,6 @@ export const DeleteBackupMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteBackupMetadata.$type, DeleteBackupMetadata);
 
 /**
  * A set of methods for managing MySQL backups.
@@ -569,16 +525,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

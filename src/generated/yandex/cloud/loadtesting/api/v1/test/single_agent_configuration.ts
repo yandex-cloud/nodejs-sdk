@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { AgentSelector } from '../../../../../../yandex/cloud/loadtesting/api/v1/test/agent_selector';
@@ -9,7 +8,6 @@ export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.test';
 
 /** Configuration of a test. */
 export interface SingleAgentConfiguration {
-    $type: 'yandex.cloud.loadtesting.api.v1.test.SingleAgentConfiguration';
     /** ID of the config. */
     configId: string;
     /** Agent selection criterion. */
@@ -30,19 +28,13 @@ export interface SingleAgentConfiguration {
 }
 
 export interface SingleAgentConfiguration_FilesEntry {
-    $type: 'yandex.cloud.loadtesting.api.v1.test.SingleAgentConfiguration.FilesEntry';
     key: string;
     value?: FilePointer;
 }
 
-const baseSingleAgentConfiguration: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.test.SingleAgentConfiguration',
-    configId: '',
-};
+const baseSingleAgentConfiguration: object = { configId: '' };
 
 export const SingleAgentConfiguration = {
-    $type: 'yandex.cloud.loadtesting.api.v1.test.SingleAgentConfiguration' as const,
-
     encode(
         message: SingleAgentConfiguration,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -55,11 +47,7 @@ export const SingleAgentConfiguration = {
         }
         Object.entries(message.files).forEach(([key, value]) => {
             SingleAgentConfiguration_FilesEntry.encode(
-                {
-                    $type: 'yandex.cloud.loadtesting.api.v1.test.SingleAgentConfiguration.FilesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(26).fork(),
             ).ldelim();
         });
@@ -155,16 +143,9 @@ export const SingleAgentConfiguration = {
     },
 };
 
-messageTypeRegistry.set(SingleAgentConfiguration.$type, SingleAgentConfiguration);
-
-const baseSingleAgentConfiguration_FilesEntry: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.test.SingleAgentConfiguration.FilesEntry',
-    key: '',
-};
+const baseSingleAgentConfiguration_FilesEntry: object = { key: '' };
 
 export const SingleAgentConfiguration_FilesEntry = {
-    $type: 'yandex.cloud.loadtesting.api.v1.test.SingleAgentConfiguration.FilesEntry' as const,
-
     encode(
         message: SingleAgentConfiguration_FilesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -236,11 +217,6 @@ export const SingleAgentConfiguration_FilesEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    SingleAgentConfiguration_FilesEntry.$type,
-    SingleAgentConfiguration_FilesEntry,
-);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -250,16 +226,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -22,7 +21,6 @@ export const protobufPackage = 'yandex.cloud.mdb.redis.v1';
  * the Managed Service for Redis [documentation](/docs/managed-redis/concepts/).
  */
 export interface Cluster {
-    $type: 'yandex.cloud.mdb.redis.v1.Cluster';
     /**
      * ID of the Redis cluster.
      * This ID is assigned by MDB at creation time.
@@ -278,13 +276,11 @@ export function cluster_PersistenceModeToJSON(object: Cluster_PersistenceMode): 
 }
 
 export interface Cluster_LabelsEntry {
-    $type: 'yandex.cloud.mdb.redis.v1.Cluster.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface Monitoring {
-    $type: 'yandex.cloud.mdb.redis.v1.Monitoring';
     /** Name of the monitoring system. */
     name: string;
     /** Description of the monitoring system. */
@@ -294,7 +290,6 @@ export interface Monitoring {
 }
 
 export interface ClusterConfig {
-    $type: 'yandex.cloud.mdb.redis.v1.ClusterConfig';
     /** Version of Redis server software. */
     version: string;
     /** Configuration of a Redis 5.0 server. */
@@ -320,7 +315,6 @@ export interface ClusterConfig {
 }
 
 export interface Shard {
-    $type: 'yandex.cloud.mdb.redis.v1.Shard';
     /**
      * Name of the Redis shard. The shard name is assigned by user at creation time, and cannot be changed.
      * 1-63 characters long.
@@ -331,7 +325,6 @@ export interface Shard {
 }
 
 export interface Host {
-    $type: 'yandex.cloud.mdb.redis.v1.Host';
     /**
      * Name of the Redis host. The host name is assigned by MDB at creation time, and cannot be changed.
      * 1-63 characters long.
@@ -454,7 +447,6 @@ export function host_HealthToJSON(object: Host_Health): string {
 }
 
 export interface Service {
-    $type: 'yandex.cloud.mdb.redis.v1.Service';
     /** Type of the service provided by the host. If the field has default value, it is not returned in the response. */
     type: Service_Type;
     /** Aggregated health of the service. If the field has default value, it is not returned in the response. */
@@ -551,7 +543,6 @@ export function service_HealthToJSON(object: Service_Health): string {
 }
 
 export interface Resources {
-    $type: 'yandex.cloud.mdb.redis.v1.Resources';
     /**
      * ID of the preset for computational resources available to a host (CPU, memory etc.).
      * All available presets are listed in the [documentation](/docs/managed-redis/concepts/instance-types).
@@ -569,7 +560,6 @@ export interface Resources {
 }
 
 export interface Access {
-    $type: 'yandex.cloud.mdb.redis.v1.Access';
     /** Allow access for DataLens */
     dataLens: boolean;
     /** Allow access for Web SQL. */
@@ -577,7 +567,6 @@ export interface Access {
 }
 
 export interface DiskSizeAutoscaling {
-    $type: 'yandex.cloud.mdb.redis.v1.DiskSizeAutoscaling';
     /** Amount of used storage for automatic disk scaling in the maintenance window, 0 means disabled, in percent. */
     plannedUsageThreshold?: number;
     /** Amount of used storage for immediately  automatic disk scaling, 0 means disabled, in percent. */
@@ -587,7 +576,6 @@ export interface DiskSizeAutoscaling {
 }
 
 const baseCluster: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.Cluster',
     id: '',
     folderId: '',
     name: '',
@@ -605,8 +593,6 @@ const baseCluster: object = {
 };
 
 export const Cluster = {
-    $type: 'yandex.cloud.mdb.redis.v1.Cluster' as const,
-
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -625,7 +611,7 @@ export const Cluster = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Cluster_LabelsEntry.encode(
-                { $type: 'yandex.cloud.mdb.redis.v1.Cluster.LabelsEntry', key: key as any, value },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -926,17 +912,9 @@ export const Cluster = {
     },
 };
 
-messageTypeRegistry.set(Cluster.$type, Cluster);
-
-const baseCluster_LabelsEntry: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.Cluster.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
 export const Cluster_LabelsEntry = {
-    $type: 'yandex.cloud.mdb.redis.v1.Cluster.LabelsEntry' as const,
-
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -993,18 +971,9 @@ export const Cluster_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Cluster_LabelsEntry.$type, Cluster_LabelsEntry);
-
-const baseMonitoring: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.Monitoring',
-    name: '',
-    description: '',
-    link: '',
-};
+const baseMonitoring: object = { name: '', description: '', link: '' };
 
 export const Monitoring = {
-    $type: 'yandex.cloud.mdb.redis.v1.Monitoring' as const,
-
     encode(message: Monitoring, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1070,13 +1039,9 @@ export const Monitoring = {
     },
 };
 
-messageTypeRegistry.set(Monitoring.$type, Monitoring);
-
-const baseClusterConfig: object = { $type: 'yandex.cloud.mdb.redis.v1.ClusterConfig', version: '' };
+const baseClusterConfig: object = { version: '' };
 
 export const ClusterConfig = {
-    $type: 'yandex.cloud.mdb.redis.v1.ClusterConfig' as const,
-
     encode(message: ClusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -1113,7 +1078,7 @@ export const ClusterConfig = {
         }
         if (message.backupRetainPeriodDays !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.backupRetainPeriodDays! },
+                { value: message.backupRetainPeriodDays! },
                 writer.uint32(106).fork(),
             ).ldelim();
         }
@@ -1303,13 +1268,9 @@ export const ClusterConfig = {
     },
 };
 
-messageTypeRegistry.set(ClusterConfig.$type, ClusterConfig);
-
-const baseShard: object = { $type: 'yandex.cloud.mdb.redis.v1.Shard', name: '', clusterId: '' };
+const baseShard: object = { name: '', clusterId: '' };
 
 export const Shard = {
-    $type: 'yandex.cloud.mdb.redis.v1.Shard' as const,
-
     encode(message: Shard, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1366,10 +1327,7 @@ export const Shard = {
     },
 };
 
-messageTypeRegistry.set(Shard.$type, Shard);
-
 const baseHost: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.Host',
     name: '',
     clusterId: '',
     zoneId: '',
@@ -1381,8 +1339,6 @@ const baseHost: object = {
 };
 
 export const Host = {
-    $type: 'yandex.cloud.mdb.redis.v1.Host' as const,
-
     encode(message: Host, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1413,7 +1369,7 @@ export const Host = {
         }
         if (message.replicaPriority !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.replicaPriority! },
+                { value: message.replicaPriority! },
                 writer.uint32(82).fork(),
             ).ldelim();
         }
@@ -1552,13 +1508,9 @@ export const Host = {
     },
 };
 
-messageTypeRegistry.set(Host.$type, Host);
-
-const baseService: object = { $type: 'yandex.cloud.mdb.redis.v1.Service', type: 0, health: 0 };
+const baseService: object = { type: 0, health: 0 };
 
 export const Service = {
-    $type: 'yandex.cloud.mdb.redis.v1.Service' as const,
-
     encode(message: Service, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -1618,18 +1570,9 @@ export const Service = {
     },
 };
 
-messageTypeRegistry.set(Service.$type, Service);
-
-const baseResources: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.Resources',
-    resourcePresetId: '',
-    diskSize: 0,
-    diskTypeId: '',
-};
+const baseResources: object = { resourcePresetId: '', diskSize: 0, diskTypeId: '' };
 
 export const Resources = {
-    $type: 'yandex.cloud.mdb.redis.v1.Resources' as const,
-
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);
@@ -1699,17 +1642,9 @@ export const Resources = {
     },
 };
 
-messageTypeRegistry.set(Resources.$type, Resources);
-
-const baseAccess: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.Access',
-    dataLens: false,
-    webSql: false,
-};
+const baseAccess: object = { dataLens: false, webSql: false };
 
 export const Access = {
-    $type: 'yandex.cloud.mdb.redis.v1.Access' as const,
-
     encode(message: Access, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataLens === true) {
             writer.uint32(8).bool(message.dataLens);
@@ -1767,31 +1702,24 @@ export const Access = {
     },
 };
 
-messageTypeRegistry.set(Access.$type, Access);
-
-const baseDiskSizeAutoscaling: object = { $type: 'yandex.cloud.mdb.redis.v1.DiskSizeAutoscaling' };
+const baseDiskSizeAutoscaling: object = {};
 
 export const DiskSizeAutoscaling = {
-    $type: 'yandex.cloud.mdb.redis.v1.DiskSizeAutoscaling' as const,
-
     encode(message: DiskSizeAutoscaling, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.plannedUsageThreshold !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.plannedUsageThreshold! },
+                { value: message.plannedUsageThreshold! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
         if (message.emergencyUsageThreshold !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.emergencyUsageThreshold! },
+                { value: message.emergencyUsageThreshold! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
         if (message.diskSizeLimit !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.diskSizeLimit! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.diskSizeLimit! }, writer.uint32(26).fork()).ldelim();
         }
         return writer;
     },
@@ -1864,8 +1792,6 @@ export const DiskSizeAutoscaling = {
     },
 };
 
-messageTypeRegistry.set(DiskSizeAutoscaling.$type, DiskSizeAutoscaling);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1886,21 +1812,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

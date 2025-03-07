@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../google/protobuf/duration';
@@ -8,7 +7,6 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.logging.v1';
 
 export interface LogGroup {
-    $type: 'yandex.cloud.logging.v1.LogGroup';
     /** Log group ID. */
     id: string;
     /** Log group folder ID. */
@@ -100,13 +98,11 @@ export function logGroup_StatusToJSON(object: LogGroup_Status): string {
 }
 
 export interface LogGroup_LabelsEntry {
-    $type: 'yandex.cloud.logging.v1.LogGroup.LabelsEntry';
     key: string;
     value: string;
 }
 
 const baseLogGroup: object = {
-    $type: 'yandex.cloud.logging.v1.LogGroup',
     id: '',
     folderId: '',
     cloudId: '',
@@ -117,8 +113,6 @@ const baseLogGroup: object = {
 };
 
 export const LogGroup = {
-    $type: 'yandex.cloud.logging.v1.LogGroup' as const,
-
     encode(message: LogGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -140,7 +134,7 @@ export const LogGroup = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             LogGroup_LabelsEntry.encode(
-                { $type: 'yandex.cloud.logging.v1.LogGroup.LabelsEntry', key: key as any, value },
+                { key: key as any, value },
                 writer.uint32(58).fork(),
             ).ldelim();
         });
@@ -295,17 +289,9 @@ export const LogGroup = {
     },
 };
 
-messageTypeRegistry.set(LogGroup.$type, LogGroup);
-
-const baseLogGroup_LabelsEntry: object = {
-    $type: 'yandex.cloud.logging.v1.LogGroup.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseLogGroup_LabelsEntry: object = { key: '', value: '' };
 
 export const LogGroup_LabelsEntry = {
-    $type: 'yandex.cloud.logging.v1.LogGroup.LabelsEntry' as const,
-
     encode(message: LogGroup_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -362,8 +348,6 @@ export const LogGroup_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(LogGroup_LabelsEntry.$type, LogGroup_LabelsEntry);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -373,21 +357,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

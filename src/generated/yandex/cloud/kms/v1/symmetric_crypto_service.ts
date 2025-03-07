@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -23,7 +22,6 @@ import {
 export const protobufPackage = 'yandex.cloud.kms.v1';
 
 export interface SymmetricEncryptRequest {
-    $type: 'yandex.cloud.kms.v1.SymmetricEncryptRequest';
     /** ID of the symmetric KMS key to use for encryption. */
     keyId: string;
     /**
@@ -45,7 +43,6 @@ export interface SymmetricEncryptRequest {
 }
 
 export interface SymmetricEncryptResponse {
-    $type: 'yandex.cloud.kms.v1.SymmetricEncryptResponse';
     /** ID of the symmetric KMS key that was used for encryption. */
     keyId: string;
     /** ID of the key version that was used for encryption. */
@@ -55,7 +52,6 @@ export interface SymmetricEncryptResponse {
 }
 
 export interface SymmetricDecryptRequest {
-    $type: 'yandex.cloud.kms.v1.SymmetricDecryptRequest';
     /** ID of the symmetric KMS key to use for decryption. */
     keyId: string;
     /**
@@ -72,7 +68,6 @@ export interface SymmetricDecryptRequest {
 }
 
 export interface SymmetricDecryptResponse {
-    $type: 'yandex.cloud.kms.v1.SymmetricDecryptResponse';
     /** ID of the symmetric KMS key that was used for decryption. */
     keyId: string;
     /** ID of the key version that was used for decryption. */
@@ -82,7 +77,6 @@ export interface SymmetricDecryptResponse {
 }
 
 export interface GenerateDataKeyRequest {
-    $type: 'yandex.cloud.kms.v1.GenerateDataKeyRequest';
     /** ID of the symmetric KMS key that the generated data key should be encrypted with. */
     keyId: string;
     /**
@@ -106,7 +100,6 @@ export interface GenerateDataKeyRequest {
 }
 
 export interface GenerateDataKeyResponse {
-    $type: 'yandex.cloud.kms.v1.GenerateDataKeyResponse';
     /** ID of the symmetric KMS key that was used to encrypt the generated data key. */
     keyId: string;
     /** ID of the key version that was used for encryption. */
@@ -122,7 +115,6 @@ export interface GenerateDataKeyResponse {
 }
 
 export interface SymmetricReEncryptRequest {
-    $type: 'yandex.cloud.kms.v1.SymmetricReEncryptRequest';
     /** ID of the new key to be used for encryption. */
     keyId: string;
     /**
@@ -150,7 +142,6 @@ export interface SymmetricReEncryptRequest {
 }
 
 export interface SymmetricReEncryptResponse {
-    $type: 'yandex.cloud.kms.v1.SymmetricReEncryptResponse';
     /** ID of the key that the ciphertext is encrypted with now. */
     keyId: string;
     /** ID of key version that was used for encryption. */
@@ -163,15 +154,9 @@ export interface SymmetricReEncryptResponse {
     ciphertext: Buffer;
 }
 
-const baseSymmetricEncryptRequest: object = {
-    $type: 'yandex.cloud.kms.v1.SymmetricEncryptRequest',
-    keyId: '',
-    versionId: '',
-};
+const baseSymmetricEncryptRequest: object = { keyId: '', versionId: '' };
 
 export const SymmetricEncryptRequest = {
-    $type: 'yandex.cloud.kms.v1.SymmetricEncryptRequest' as const,
-
     encode(message: SymmetricEncryptRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -263,17 +248,9 @@ export const SymmetricEncryptRequest = {
     },
 };
 
-messageTypeRegistry.set(SymmetricEncryptRequest.$type, SymmetricEncryptRequest);
-
-const baseSymmetricEncryptResponse: object = {
-    $type: 'yandex.cloud.kms.v1.SymmetricEncryptResponse',
-    keyId: '',
-    versionId: '',
-};
+const baseSymmetricEncryptResponse: object = { keyId: '', versionId: '' };
 
 export const SymmetricEncryptResponse = {
-    $type: 'yandex.cloud.kms.v1.SymmetricEncryptResponse' as const,
-
     encode(
         message: SymmetricEncryptResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -352,16 +329,9 @@ export const SymmetricEncryptResponse = {
     },
 };
 
-messageTypeRegistry.set(SymmetricEncryptResponse.$type, SymmetricEncryptResponse);
-
-const baseSymmetricDecryptRequest: object = {
-    $type: 'yandex.cloud.kms.v1.SymmetricDecryptRequest',
-    keyId: '',
-};
+const baseSymmetricDecryptRequest: object = { keyId: '' };
 
 export const SymmetricDecryptRequest = {
-    $type: 'yandex.cloud.kms.v1.SymmetricDecryptRequest' as const,
-
     encode(message: SymmetricDecryptRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -441,17 +411,9 @@ export const SymmetricDecryptRequest = {
     },
 };
 
-messageTypeRegistry.set(SymmetricDecryptRequest.$type, SymmetricDecryptRequest);
-
-const baseSymmetricDecryptResponse: object = {
-    $type: 'yandex.cloud.kms.v1.SymmetricDecryptResponse',
-    keyId: '',
-    versionId: '',
-};
+const baseSymmetricDecryptResponse: object = { keyId: '', versionId: '' };
 
 export const SymmetricDecryptResponse = {
-    $type: 'yandex.cloud.kms.v1.SymmetricDecryptResponse' as const,
-
     encode(
         message: SymmetricDecryptResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -530,10 +492,7 @@ export const SymmetricDecryptResponse = {
     },
 };
 
-messageTypeRegistry.set(SymmetricDecryptResponse.$type, SymmetricDecryptResponse);
-
 const baseGenerateDataKeyRequest: object = {
-    $type: 'yandex.cloud.kms.v1.GenerateDataKeyRequest',
     keyId: '',
     versionId: '',
     dataKeySpec: 0,
@@ -541,8 +500,6 @@ const baseGenerateDataKeyRequest: object = {
 };
 
 export const GenerateDataKeyRequest = {
-    $type: 'yandex.cloud.kms.v1.GenerateDataKeyRequest' as const,
-
     encode(message: GenerateDataKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -643,17 +600,9 @@ export const GenerateDataKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(GenerateDataKeyRequest.$type, GenerateDataKeyRequest);
-
-const baseGenerateDataKeyResponse: object = {
-    $type: 'yandex.cloud.kms.v1.GenerateDataKeyResponse',
-    keyId: '',
-    versionId: '',
-};
+const baseGenerateDataKeyResponse: object = { keyId: '', versionId: '' };
 
 export const GenerateDataKeyResponse = {
-    $type: 'yandex.cloud.kms.v1.GenerateDataKeyResponse' as const,
-
     encode(message: GenerateDataKeyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -747,18 +696,9 @@ export const GenerateDataKeyResponse = {
     },
 };
 
-messageTypeRegistry.set(GenerateDataKeyResponse.$type, GenerateDataKeyResponse);
-
-const baseSymmetricReEncryptRequest: object = {
-    $type: 'yandex.cloud.kms.v1.SymmetricReEncryptRequest',
-    keyId: '',
-    versionId: '',
-    sourceKeyId: '',
-};
+const baseSymmetricReEncryptRequest: object = { keyId: '', versionId: '', sourceKeyId: '' };
 
 export const SymmetricReEncryptRequest = {
-    $type: 'yandex.cloud.kms.v1.SymmetricReEncryptRequest' as const,
-
     encode(
         message: SymmetricReEncryptRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -881,10 +821,7 @@ export const SymmetricReEncryptRequest = {
     },
 };
 
-messageTypeRegistry.set(SymmetricReEncryptRequest.$type, SymmetricReEncryptRequest);
-
 const baseSymmetricReEncryptResponse: object = {
-    $type: 'yandex.cloud.kms.v1.SymmetricReEncryptResponse',
     keyId: '',
     versionId: '',
     sourceKeyId: '',
@@ -892,8 +829,6 @@ const baseSymmetricReEncryptResponse: object = {
 };
 
 export const SymmetricReEncryptResponse = {
-    $type: 'yandex.cloud.kms.v1.SymmetricReEncryptResponse' as const,
-
     encode(
         message: SymmetricReEncryptResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -995,8 +930,6 @@ export const SymmetricReEncryptResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(SymmetricReEncryptResponse.$type, SymmetricReEncryptResponse);
 
 /** Set of methods that perform symmetric encryption and decryption. */
 export const SymmetricCryptoServiceService = {
@@ -1190,16 +1123,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

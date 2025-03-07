@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Int64Value } from '../../../../../google/protobuf/wrappers';
@@ -7,12 +6,10 @@ import { Int64Value } from '../../../../../google/protobuf/wrappers';
 export const protobufPackage = 'yandex.cloud.speechsense.v1.analysis';
 
 export interface TextClassifiers {
-    $type: 'yandex.cloud.speechsense.v1.analysis.TextClassifiers';
     classificationResult: ClassificationResult[];
 }
 
 export interface ClassificationResult {
-    $type: 'yandex.cloud.speechsense.v1.analysis.ClassificationResult';
     /** Classifier name */
     classifier: string;
     /** Classifier statistics */
@@ -20,7 +17,6 @@ export interface ClassificationResult {
 }
 
 export interface ClassifierStatistics {
-    $type: 'yandex.cloud.speechsense.v1.analysis.ClassifierStatistics';
     /** Channel number, null for whole talk */
     channelNumber?: number;
     /** classifier total count */
@@ -30,7 +26,6 @@ export interface ClassifierStatistics {
 }
 
 export interface Histogram {
-    $type: 'yandex.cloud.speechsense.v1.analysis.Histogram';
     /**
      * histogram count values. For example:
      * if len(count_values) = 2, it means that histogram is 50/50,
@@ -39,13 +34,9 @@ export interface Histogram {
     countValues: number[];
 }
 
-const baseTextClassifiers: object = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.TextClassifiers',
-};
+const baseTextClassifiers: object = {};
 
 export const TextClassifiers = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.TextClassifiers' as const,
-
     encode(message: TextClassifiers, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.classificationResult) {
             ClassificationResult.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -102,16 +93,9 @@ export const TextClassifiers = {
     },
 };
 
-messageTypeRegistry.set(TextClassifiers.$type, TextClassifiers);
-
-const baseClassificationResult: object = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.ClassificationResult',
-    classifier: '',
-};
+const baseClassificationResult: object = { classifier: '' };
 
 export const ClassificationResult = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.ClassificationResult' as const,
-
     encode(message: ClassificationResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.classifier !== '') {
             writer.uint32(10).string(message.classifier);
@@ -182,22 +166,12 @@ export const ClassificationResult = {
     },
 };
 
-messageTypeRegistry.set(ClassificationResult.$type, ClassificationResult);
-
-const baseClassifierStatistics: object = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.ClassifierStatistics',
-    totalCount: 0,
-};
+const baseClassifierStatistics: object = { totalCount: 0 };
 
 export const ClassifierStatistics = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.ClassifierStatistics' as const,
-
     encode(message: ClassifierStatistics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelNumber !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.channelNumber! },
-                writer.uint32(10).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.channelNumber! }, writer.uint32(10).fork()).ldelim();
         }
         if (message.totalCount !== 0) {
             writer.uint32(16).int64(message.totalCount);
@@ -270,16 +244,9 @@ export const ClassifierStatistics = {
     },
 };
 
-messageTypeRegistry.set(ClassifierStatistics.$type, ClassifierStatistics);
-
-const baseHistogram: object = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.Histogram',
-    countValues: 0,
-};
+const baseHistogram: object = { countValues: 0 };
 
 export const Histogram = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.Histogram' as const,
-
     encode(message: Histogram, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         writer.uint32(10).fork();
         for (const v of message.countValues) {
@@ -338,8 +305,6 @@ export const Histogram = {
     },
 };
 
-messageTypeRegistry.set(Histogram.$type, Histogram);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -360,16 +325,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

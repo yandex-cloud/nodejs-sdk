@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -14,7 +13,6 @@ export const protobufPackage = 'yandex.cloud.cic.v1';
 
 /** A TrunkConnection resource. */
 export interface TrunkConnection {
-    $type: 'yandex.cloud.cic.v1.TrunkConnection';
     /** ID of the trunkConnection. */
     id: string;
     /**
@@ -180,14 +178,12 @@ export function trunkConnection_CapacityToJSON(object: TrunkConnection_Capacity)
 }
 
 export interface TrunkConnection_LabelsEntry {
-    $type: 'yandex.cloud.cic.v1.TrunkConnection.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Config of trunkConnection that is deployed on partner joint. */
 export interface TrunkConnection_PartnerJointInfo {
-    $type: 'yandex.cloud.cic.v1.TrunkConnection.PartnerJointInfo';
     /** Reserved for future using; */
     serviceKey: string;
     /**
@@ -200,7 +196,6 @@ export interface TrunkConnection_PartnerJointInfo {
 
 /** Config of trunkConnection that is deployed on single port. */
 export interface TrunkConnection_SinglePortDirectJoint {
-    $type: 'yandex.cloud.cic.v1.TrunkConnection.SinglePortDirectJoint';
     /** Type of transceiver that the trunkConnection is deployed on. */
     transceiverType: TransceiverType;
     /** Name of port that the trunkConnection is deployed on. */
@@ -211,7 +206,6 @@ export interface TrunkConnection_SinglePortDirectJoint {
 
 /** Config of trunkConnection that is deployed on lag. */
 export interface TrunkConnection_LagDirectJoint {
-    $type: 'yandex.cloud.cic.v1.TrunkConnection.LagDirectJoint';
     /** Type of transceiver that the trunkConnection is deployed on. */
     transceiverType: TransceiverType;
     /** LAG allocation settings that the trunkConnection is deployed on. */
@@ -221,7 +215,6 @@ export interface TrunkConnection_LagDirectJoint {
 }
 
 const baseTrunkConnection: object = {
-    $type: 'yandex.cloud.cic.v1.TrunkConnection',
     id: '',
     name: '',
     description: '',
@@ -231,8 +224,6 @@ const baseTrunkConnection: object = {
 };
 
 export const TrunkConnection = {
-    $type: 'yandex.cloud.cic.v1.TrunkConnection' as const,
-
     encode(message: TrunkConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -269,7 +260,7 @@ export const TrunkConnection = {
         }
         if (message.pointOfPresenceId !== undefined) {
             StringValue.encode(
-                { $type: 'google.protobuf.StringValue', value: message.pointOfPresenceId! },
+                { value: message.pointOfPresenceId! },
                 writer.uint32(98).fork(),
             ).ldelim();
         }
@@ -278,11 +269,7 @@ export const TrunkConnection = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             TrunkConnection_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.cic.v1.TrunkConnection.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(186).fork(),
             ).ldelim();
         });
@@ -462,17 +449,9 @@ export const TrunkConnection = {
     },
 };
 
-messageTypeRegistry.set(TrunkConnection.$type, TrunkConnection);
-
-const baseTrunkConnection_LabelsEntry: object = {
-    $type: 'yandex.cloud.cic.v1.TrunkConnection.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseTrunkConnection_LabelsEntry: object = { key: '', value: '' };
 
 export const TrunkConnection_LabelsEntry = {
-    $type: 'yandex.cloud.cic.v1.TrunkConnection.LabelsEntry' as const,
-
     encode(
         message: TrunkConnection_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -532,16 +511,9 @@ export const TrunkConnection_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(TrunkConnection_LabelsEntry.$type, TrunkConnection_LabelsEntry);
-
-const baseTrunkConnection_PartnerJointInfo: object = {
-    $type: 'yandex.cloud.cic.v1.TrunkConnection.PartnerJointInfo',
-    serviceKey: '',
-};
+const baseTrunkConnection_PartnerJointInfo: object = { serviceKey: '' };
 
 export const TrunkConnection_PartnerJointInfo = {
-    $type: 'yandex.cloud.cic.v1.TrunkConnection.PartnerJointInfo' as const,
-
     encode(
         message: TrunkConnection_PartnerJointInfo,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -550,10 +522,7 @@ export const TrunkConnection_PartnerJointInfo = {
             writer.uint32(26).string(message.serviceKey);
         }
         if (message.partnerId !== undefined) {
-            StringValue.encode(
-                { $type: 'google.protobuf.StringValue', value: message.partnerId! },
-                writer.uint32(34).fork(),
-            ).ldelim();
+            StringValue.encode({ value: message.partnerId! }, writer.uint32(34).fork()).ldelim();
         }
         return writer;
     },
@@ -615,17 +584,12 @@ export const TrunkConnection_PartnerJointInfo = {
     },
 };
 
-messageTypeRegistry.set(TrunkConnection_PartnerJointInfo.$type, TrunkConnection_PartnerJointInfo);
-
 const baseTrunkConnection_SinglePortDirectJoint: object = {
-    $type: 'yandex.cloud.cic.v1.TrunkConnection.SinglePortDirectJoint',
     transceiverType: 0,
     accessDeviceName: '',
 };
 
 export const TrunkConnection_SinglePortDirectJoint = {
-    $type: 'yandex.cloud.cic.v1.TrunkConnection.SinglePortDirectJoint' as const,
-
     encode(
         message: TrunkConnection_SinglePortDirectJoint,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -634,10 +598,7 @@ export const TrunkConnection_SinglePortDirectJoint = {
             writer.uint32(8).int32(message.transceiverType);
         }
         if (message.portName !== undefined) {
-            StringValue.encode(
-                { $type: 'google.protobuf.StringValue', value: message.portName! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            StringValue.encode({ value: message.portName! }, writer.uint32(26).fork()).ldelim();
         }
         if (message.accessDeviceName !== '') {
             writer.uint32(34).string(message.accessDeviceName);
@@ -712,20 +673,9 @@ export const TrunkConnection_SinglePortDirectJoint = {
     },
 };
 
-messageTypeRegistry.set(
-    TrunkConnection_SinglePortDirectJoint.$type,
-    TrunkConnection_SinglePortDirectJoint,
-);
-
-const baseTrunkConnection_LagDirectJoint: object = {
-    $type: 'yandex.cloud.cic.v1.TrunkConnection.LagDirectJoint',
-    transceiverType: 0,
-    accessDeviceName: '',
-};
+const baseTrunkConnection_LagDirectJoint: object = { transceiverType: 0, accessDeviceName: '' };
 
 export const TrunkConnection_LagDirectJoint = {
-    $type: 'yandex.cloud.cic.v1.TrunkConnection.LagDirectJoint' as const,
-
     encode(
         message: TrunkConnection_LagDirectJoint,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -815,8 +765,6 @@ export const TrunkConnection_LagDirectJoint = {
     },
 };
 
-messageTypeRegistry.set(TrunkConnection_LagDirectJoint.$type, TrunkConnection_LagDirectJoint);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -826,16 +774,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ import { RoutingInstance } from '../../../../yandex/cloud/cloudrouter/v1/routing
 export const protobufPackage = 'yandex.cloud.cloudrouter.v1';
 
 export interface GetRoutingInstanceRequest {
-    $type: 'yandex.cloud.cloudrouter.v1.GetRoutingInstanceRequest';
     /**
      * ID of the RoutingInstance resource to return.
      * To get the routingInstance ID use a [RoutingInstanceService.List] request.
@@ -28,7 +26,6 @@ export interface GetRoutingInstanceRequest {
 }
 
 export interface GetRoutingInstanceByCicPrivateConnectionIdRequest {
-    $type: 'yandex.cloud.cloudrouter.v1.GetRoutingInstanceByCicPrivateConnectionIdRequest';
     /**
      * ID of the PrivateConnection resource to return by.
      * To get the routingInstance ID use a [RoutingInstanceService.List] request.
@@ -37,7 +34,6 @@ export interface GetRoutingInstanceByCicPrivateConnectionIdRequest {
 }
 
 export interface GetRoutingInstanceByVpcNetworkIdRequest {
-    $type: 'yandex.cloud.cloudrouter.v1.GetRoutingInstanceByVpcNetworkIdRequest';
     /**
      * ID of the VpcNetwork resource to return by.
      * To get the routingInstance ID use a [RoutingInstanceService.List] request.
@@ -46,7 +42,6 @@ export interface GetRoutingInstanceByVpcNetworkIdRequest {
 }
 
 export interface ListRoutingInstancesRequest {
-    $type: 'yandex.cloud.cloudrouter.v1.ListRoutingInstancesRequest';
     /**
      * ID of the folder to list routingInstance in.
      * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -75,7 +70,6 @@ export interface ListRoutingInstancesRequest {
 }
 
 export interface ListRoutingInstancesResponse {
-    $type: 'yandex.cloud.cloudrouter.v1.ListRoutingInstancesResponse';
     /** List of RoutingInstance resources. */
     routingInstances: RoutingInstance[];
     /**
@@ -89,14 +83,9 @@ export interface ListRoutingInstancesResponse {
     nextPageToken: string;
 }
 
-const baseGetRoutingInstanceRequest: object = {
-    $type: 'yandex.cloud.cloudrouter.v1.GetRoutingInstanceRequest',
-    routingInstanceId: '',
-};
+const baseGetRoutingInstanceRequest: object = { routingInstanceId: '' };
 
 export const GetRoutingInstanceRequest = {
-    $type: 'yandex.cloud.cloudrouter.v1.GetRoutingInstanceRequest' as const,
-
     encode(
         message: GetRoutingInstanceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -150,16 +139,11 @@ export const GetRoutingInstanceRequest = {
     },
 };
 
-messageTypeRegistry.set(GetRoutingInstanceRequest.$type, GetRoutingInstanceRequest);
-
 const baseGetRoutingInstanceByCicPrivateConnectionIdRequest: object = {
-    $type: 'yandex.cloud.cloudrouter.v1.GetRoutingInstanceByCicPrivateConnectionIdRequest',
     cicPrivateConnectionId: '',
 };
 
 export const GetRoutingInstanceByCicPrivateConnectionIdRequest = {
-    $type: 'yandex.cloud.cloudrouter.v1.GetRoutingInstanceByCicPrivateConnectionIdRequest' as const,
-
     encode(
         message: GetRoutingInstanceByCicPrivateConnectionIdRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -222,19 +206,9 @@ export const GetRoutingInstanceByCicPrivateConnectionIdRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    GetRoutingInstanceByCicPrivateConnectionIdRequest.$type,
-    GetRoutingInstanceByCicPrivateConnectionIdRequest,
-);
-
-const baseGetRoutingInstanceByVpcNetworkIdRequest: object = {
-    $type: 'yandex.cloud.cloudrouter.v1.GetRoutingInstanceByVpcNetworkIdRequest',
-    vpcNetworkId: '',
-};
+const baseGetRoutingInstanceByVpcNetworkIdRequest: object = { vpcNetworkId: '' };
 
 export const GetRoutingInstanceByVpcNetworkIdRequest = {
-    $type: 'yandex.cloud.cloudrouter.v1.GetRoutingInstanceByVpcNetworkIdRequest' as const,
-
     encode(
         message: GetRoutingInstanceByVpcNetworkIdRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -296,13 +270,7 @@ export const GetRoutingInstanceByVpcNetworkIdRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    GetRoutingInstanceByVpcNetworkIdRequest.$type,
-    GetRoutingInstanceByVpcNetworkIdRequest,
-);
-
 const baseListRoutingInstancesRequest: object = {
-    $type: 'yandex.cloud.cloudrouter.v1.ListRoutingInstancesRequest',
     folderId: '',
     pageSize: 0,
     pageToken: '',
@@ -310,8 +278,6 @@ const baseListRoutingInstancesRequest: object = {
 };
 
 export const ListRoutingInstancesRequest = {
-    $type: 'yandex.cloud.cloudrouter.v1.ListRoutingInstancesRequest' as const,
-
     encode(
         message: ListRoutingInstancesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -396,16 +362,9 @@ export const ListRoutingInstancesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListRoutingInstancesRequest.$type, ListRoutingInstancesRequest);
-
-const baseListRoutingInstancesResponse: object = {
-    $type: 'yandex.cloud.cloudrouter.v1.ListRoutingInstancesResponse',
-    nextPageToken: '',
-};
+const baseListRoutingInstancesResponse: object = { nextPageToken: '' };
 
 export const ListRoutingInstancesResponse = {
-    $type: 'yandex.cloud.cloudrouter.v1.ListRoutingInstancesResponse' as const,
-
     encode(
         message: ListRoutingInstancesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -476,8 +435,6 @@ export const ListRoutingInstancesResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListRoutingInstancesResponse.$type, ListRoutingInstancesResponse);
 
 /** A set of methods for managing RoutingInstance resources. */
 export const RoutingInstanceServiceService = {
@@ -682,16 +639,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

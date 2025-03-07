@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -22,7 +21,6 @@ import {
 export const protobufPackage = 'yandex.cloud.mdb.postgresql.v1';
 
 export interface ListBackupRetentionPoliciesRequest {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ListBackupRetentionPoliciesRequest';
     /**
      * ID of the PostgreSQL cluster.
      * To get the PostgreSQL cluster ID use a [ClusterService.List] request.
@@ -42,7 +40,6 @@ export interface ListBackupRetentionPoliciesRequest {
 }
 
 export interface ListBackupRetentionPoliciesResponse {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ListBackupRetentionPoliciesResponse';
     /** List of [BackupRetentionPolicy] associated with the cluster. */
     policies: BackupRetentionPolicy[];
     /**
@@ -55,7 +52,6 @@ export interface ListBackupRetentionPoliciesResponse {
 }
 
 export interface CreateBackupRetentionPolicyRequest {
-    $type: 'yandex.cloud.mdb.postgresql.v1.CreateBackupRetentionPolicyRequest';
     /**
      * ID of the PostgreSQL cluster.
      * To get the PostgreSQL cluster ID use a [ClusterService.List] request.
@@ -72,13 +68,11 @@ export interface CreateBackupRetentionPolicyRequest {
 }
 
 export interface CreateBackupRetentionPolicyResponse {
-    $type: 'yandex.cloud.mdb.postgresql.v1.CreateBackupRetentionPolicyResponse';
     /** Newly created [BackupRetentionPolicy]. */
     policy?: BackupRetentionPolicy;
 }
 
 export interface DeleteBackupRetentionPolicyRequest {
-    $type: 'yandex.cloud.mdb.postgresql.v1.DeleteBackupRetentionPolicyRequest';
     /** Unique identifier for the [BackupRetentionPolicy]. */
     policyId: string;
     /**
@@ -88,20 +82,15 @@ export interface DeleteBackupRetentionPolicyRequest {
     clusterId: string;
 }
 
-export interface DeleteBackupRetentionPolicyResponse {
-    $type: 'yandex.cloud.mdb.postgresql.v1.DeleteBackupRetentionPolicyResponse';
-}
+export interface DeleteBackupRetentionPolicyResponse {}
 
 const baseListBackupRetentionPoliciesRequest: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ListBackupRetentionPoliciesRequest',
     clusterId: '',
     pageSize: 0,
     pageToken: '',
 };
 
 export const ListBackupRetentionPoliciesRequest = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ListBackupRetentionPoliciesRequest' as const,
-
     encode(
         message: ListBackupRetentionPoliciesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -182,19 +171,9 @@ export const ListBackupRetentionPoliciesRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    ListBackupRetentionPoliciesRequest.$type,
-    ListBackupRetentionPoliciesRequest,
-);
-
-const baseListBackupRetentionPoliciesResponse: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ListBackupRetentionPoliciesResponse',
-    nextPageToken: '',
-};
+const baseListBackupRetentionPoliciesResponse: object = { nextPageToken: '' };
 
 export const ListBackupRetentionPoliciesResponse = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ListBackupRetentionPoliciesResponse' as const,
-
     encode(
         message: ListBackupRetentionPoliciesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -271,13 +250,7 @@ export const ListBackupRetentionPoliciesResponse = {
     },
 };
 
-messageTypeRegistry.set(
-    ListBackupRetentionPoliciesResponse.$type,
-    ListBackupRetentionPoliciesResponse,
-);
-
 const baseCreateBackupRetentionPolicyRequest: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.CreateBackupRetentionPolicyRequest',
     clusterId: '',
     retainForDays: 0,
     description: '',
@@ -285,8 +258,6 @@ const baseCreateBackupRetentionPolicyRequest: object = {
 };
 
 export const CreateBackupRetentionPolicyRequest = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.CreateBackupRetentionPolicyRequest' as const,
-
     encode(
         message: CreateBackupRetentionPolicyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -398,18 +369,9 @@ export const CreateBackupRetentionPolicyRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateBackupRetentionPolicyRequest.$type,
-    CreateBackupRetentionPolicyRequest,
-);
-
-const baseCreateBackupRetentionPolicyResponse: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.CreateBackupRetentionPolicyResponse',
-};
+const baseCreateBackupRetentionPolicyResponse: object = {};
 
 export const CreateBackupRetentionPolicyResponse = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.CreateBackupRetentionPolicyResponse' as const,
-
     encode(
         message: CreateBackupRetentionPolicyResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -474,20 +436,9 @@ export const CreateBackupRetentionPolicyResponse = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateBackupRetentionPolicyResponse.$type,
-    CreateBackupRetentionPolicyResponse,
-);
-
-const baseDeleteBackupRetentionPolicyRequest: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.DeleteBackupRetentionPolicyRequest',
-    policyId: '',
-    clusterId: '',
-};
+const baseDeleteBackupRetentionPolicyRequest: object = { policyId: '', clusterId: '' };
 
 export const DeleteBackupRetentionPolicyRequest = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.DeleteBackupRetentionPolicyRequest' as const,
-
     encode(
         message: DeleteBackupRetentionPolicyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -558,18 +509,9 @@ export const DeleteBackupRetentionPolicyRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    DeleteBackupRetentionPolicyRequest.$type,
-    DeleteBackupRetentionPolicyRequest,
-);
-
-const baseDeleteBackupRetentionPolicyResponse: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.DeleteBackupRetentionPolicyResponse',
-};
+const baseDeleteBackupRetentionPolicyResponse: object = {};
 
 export const DeleteBackupRetentionPolicyResponse = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.DeleteBackupRetentionPolicyResponse' as const,
-
     encode(
         _: DeleteBackupRetentionPolicyResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -615,11 +557,6 @@ export const DeleteBackupRetentionPolicyResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(
-    DeleteBackupRetentionPolicyResponse.$type,
-    DeleteBackupRetentionPolicyResponse,
-);
 
 /** A set of methods for managing PostgreSQL Cluster backup retention policies. */
 export const BackupRetentionPolicyServiceService = {
@@ -786,16 +723,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

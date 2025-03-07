@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -55,7 +54,6 @@ export function codeTypeToJSON(object: CodeType): string {
 
 /** Options */
 export interface TextNormalizationOptions {
-    $type: 'speechkit.stt.v3.TextNormalizationOptions';
     textNormalization: TextNormalizationOptions_TextNormalization;
     /** Profanity filter (default: false). */
     profanityFilter: boolean;
@@ -148,7 +146,6 @@ export function textNormalizationOptions_PhoneFormattingModeToJSON(
 }
 
 export interface DefaultEouClassifier {
-    $type: 'speechkit.stt.v3.DefaultEouClassifier';
     /** EOU sensitivity. Currently two levels, faster with more error and more conservative (our default). */
     type: DefaultEouClassifier_EouSensitivity;
     /** Hint for max pause between words. Our EOU detector could use this information to distinguish between end of utterance and slow speech (like one <long pause> two <long pause> three, etc). */
@@ -198,12 +195,9 @@ export function defaultEouClassifier_EouSensitivityToJSON(
 }
 
 /** Use EOU provided by user */
-export interface ExternalEouClassifier {
-    $type: 'speechkit.stt.v3.ExternalEouClassifier';
-}
+export interface ExternalEouClassifier {}
 
 export interface EouClassifierOptions {
-    $type: 'speechkit.stt.v3.EouClassifierOptions';
     /** EOU classifier provided by SpeechKit. Default. */
     defaultClassifier?: DefaultEouClassifier | undefined;
     /** EOU is enforced by external messages from user. */
@@ -211,7 +205,6 @@ export interface EouClassifierOptions {
 }
 
 export interface RecognitionClassifier {
-    $type: 'speechkit.stt.v3.RecognitionClassifier';
     /** Classifier name */
     classifier: string;
     /** Describes the types of responses to which the classification results will come */
@@ -272,13 +265,11 @@ export function recognitionClassifier_TriggerTypeToJSON(
 }
 
 export interface RecognitionClassifierOptions {
-    $type: 'speechkit.stt.v3.RecognitionClassifierOptions';
     /** List of classifiers to use */
     classifiers: RecognitionClassifier[];
 }
 
 export interface SpeechAnalysisOptions {
-    $type: 'speechkit.stt.v3.SpeechAnalysisOptions';
     /** Analyse speech for every speaker */
     enableSpeakerAnalysis: boolean;
     /** Analyse conversation of two speakers */
@@ -289,7 +280,6 @@ export interface SpeechAnalysisOptions {
 
 /** RAW Audio format spec (no container to infer type). Used in AudioFormat options. */
 export interface RawAudio {
-    $type: 'speechkit.stt.v3.RawAudio';
     /** Type of audio encoding */
     audioEncoding: RawAudio_AudioEncoding;
     /** PCM sample rate */
@@ -333,7 +323,6 @@ export function rawAudio_AudioEncodingToJSON(object: RawAudio_AudioEncoding): st
 
 /** Audio with fixed type in container. Used in AudioFormat options. */
 export interface ContainerAudio {
-    $type: 'speechkit.stt.v3.ContainerAudio';
     /** Type of audio container. */
     containerAudioType: ContainerAudio_ContainerAudioType;
 }
@@ -391,7 +380,6 @@ export function containerAudio_ContainerAudioTypeToJSON(
 
 /** Audio format options. */
 export interface AudioFormatOptions {
-    $type: 'speechkit.stt.v3.AudioFormatOptions';
     /** Audio without container. */
     rawAudio?: RawAudio | undefined;
     /** Audio is wrapped in container. */
@@ -400,7 +388,6 @@ export interface AudioFormatOptions {
 
 /** Type of restriction for the list of languages expected in the incoming speech stream. */
 export interface LanguageRestrictionOptions {
-    $type: 'speechkit.stt.v3.LanguageRestrictionOptions';
     /** Language restriction type */
     restrictionType: LanguageRestrictionOptions_LanguageRestrictionType;
     /** The list of language codes to restrict recognition in the case of an auto model */
@@ -452,7 +439,6 @@ export function languageRestrictionOptions_LanguageRestrictionTypeToJSON(
 }
 
 export interface RecognitionModelOptions {
-    $type: 'speechkit.stt.v3.RecognitionModelOptions';
     /**
      * Sets the recognition model for the cloud version of SpeechKit. Possible values: 'general', 'general:rc', 'general:deprecated'.
      * The model is ignored for SpeechKit Hybrid.
@@ -513,7 +499,6 @@ export function recognitionModelOptions_AudioProcessingTypeToJSON(
 }
 
 export interface SpeakerLabelingOptions {
-    $type: 'speechkit.stt.v3.SpeakerLabelingOptions';
     /** Specifies the execution of speaker labeling. Default is SPEAKER_LABELING_DISABLED. */
     speakerLabeling: SpeakerLabelingOptions_SpeakerLabeling;
 }
@@ -563,7 +548,6 @@ export function speakerLabelingOptions_SpeakerLabelingToJSON(
 }
 
 export interface StreamingOptions {
-    $type: 'speechkit.stt.v3.StreamingOptions';
     /** Configuration for speech recognition model. */
     recognitionModel?: RecognitionModelOptions;
     /** Configuration for end of utterance detection model. */
@@ -578,22 +562,18 @@ export interface StreamingOptions {
 
 /** Data chunk with audio. */
 export interface AudioChunk {
-    $type: 'speechkit.stt.v3.AudioChunk';
     /** Bytes with audio data. */
     data: Buffer;
 }
 
 /** Data chunk with silence. */
 export interface SilenceChunk {
-    $type: 'speechkit.stt.v3.SilenceChunk';
     /** Duration of silence chunk in ms. */
     durationMs: number;
 }
 
 /** Force EOU */
-export interface Eou {
-    $type: 'speechkit.stt.v3.Eou';
-}
+export interface Eou {}
 
 /**
  * Streaming audio request
@@ -602,7 +582,6 @@ export interface Eou {
  * The next messages are audio data chunks or control messages.
  */
 export interface StreamingRequest {
-    $type: 'speechkit.stt.v3.StreamingRequest';
     /** Session options. Should be the first message from user. */
     sessionOptions?: StreamingOptions | undefined;
     /** Chunk with audio data. */
@@ -614,7 +593,6 @@ export interface StreamingRequest {
 }
 
 export interface RecognizeFileRequest {
-    $type: 'speechkit.stt.v3.RecognizeFileRequest';
     /** Bytes with data */
     content: Buffer | undefined;
     /** S3 data url */
@@ -631,7 +609,6 @@ export interface RecognizeFileRequest {
 
 /** Recognized word. */
 export interface Word {
-    $type: 'speechkit.stt.v3.Word';
     /** Word text. */
     text: string;
     /** Estimation of word start time in ms. */
@@ -642,7 +619,6 @@ export interface Word {
 
 /** Estimation of language and its probability. */
 export interface LanguageEstimation {
-    $type: 'speechkit.stt.v3.LanguageEstimation';
     /** Language code in ISO 639-1 format. */
     languageCode: string;
     /** Estimation of language probability. */
@@ -651,7 +627,6 @@ export interface LanguageEstimation {
 
 /** Recognition of specific time frame. */
 export interface Alternative {
-    $type: 'speechkit.stt.v3.Alternative';
     /** Words in time frame. */
     words: Word[];
     /** Text in time frame. */
@@ -668,14 +643,12 @@ export interface Alternative {
 
 /** Update information for external End of Utterance. */
 export interface EouUpdate {
-    $type: 'speechkit.stt.v3.EouUpdate';
     /** EOU estimated time. */
     timeMs: number;
 }
 
 /** Update of hypothesis. */
 export interface AlternativeUpdate {
-    $type: 'speechkit.stt.v3.AlternativeUpdate';
     /** List of hypothesis for timeframes. */
     alternatives: Alternative[];
     /** @deprecated */
@@ -684,7 +657,6 @@ export interface AlternativeUpdate {
 
 /** AudioCursors are state of ASR recognition stream. */
 export interface AudioCursors {
-    $type: 'speechkit.stt.v3.AudioCursors';
     /** Amount of audio chunks server received. This cursor is moved after each audio chunk was received by server. */
     receivedDataMs: number;
     /** Input stream reset data. */
@@ -711,7 +683,6 @@ export interface AudioCursors {
 
 /** Refinement for final hypo. For example, text normalization is refinement. */
 export interface FinalRefinement {
-    $type: 'speechkit.stt.v3.FinalRefinement';
     /** Index of final for which server sends additional information. */
     finalIndex: number;
     /** Normalized text instead of raw one. */
@@ -720,7 +691,6 @@ export interface FinalRefinement {
 
 /** Status message */
 export interface StatusCode {
-    $type: 'speechkit.stt.v3.StatusCode';
     /** Code type. */
     codeType: CodeType;
     /** Human readable message. */
@@ -729,7 +699,6 @@ export interface StatusCode {
 
 /** Session identifier. */
 export interface SessionUuid {
-    $type: 'speechkit.stt.v3.SessionUuid';
     /** Internal session identifier. */
     uuid: string;
     /** User session identifier. */
@@ -737,7 +706,6 @@ export interface SessionUuid {
 }
 
 export interface PhraseHighlight {
-    $type: 'speechkit.stt.v3.PhraseHighlight';
     /** Text transcription of the highlighted audio segment */
     text: string;
     /** Start time of the highlighted audio segment */
@@ -747,7 +715,6 @@ export interface PhraseHighlight {
 }
 
 export interface RecognitionClassifierLabel {
-    $type: 'speechkit.stt.v3.RecognitionClassifierLabel';
     /** The label of the class predicted by the classifier */
     label: string;
     /** The prediction confidence */
@@ -755,7 +722,6 @@ export interface RecognitionClassifierLabel {
 }
 
 export interface RecognitionClassifierResult {
-    $type: 'speechkit.stt.v3.RecognitionClassifierResult';
     /** Name of the triggered classifier */
     classifier: string;
     /** List of highlights, i.e. parts of phrase that determine the result of the classification */
@@ -765,7 +731,6 @@ export interface RecognitionClassifierResult {
 }
 
 export interface RecognitionClassifierUpdate {
-    $type: 'speechkit.stt.v3.RecognitionClassifierUpdate';
     /** Response window type */
     windowType: RecognitionClassifierUpdate_WindowType;
     /** Start time of the audio segment used for classification */
@@ -829,7 +794,6 @@ export function recognitionClassifierUpdate_WindowTypeToJSON(
 }
 
 export interface DescriptiveStatistics {
-    $type: 'speechkit.stt.v3.DescriptiveStatistics';
     /** Minimum observed value */
     min: number;
     /** Maximum observed value */
@@ -843,7 +807,6 @@ export interface DescriptiveStatistics {
 }
 
 export interface DescriptiveStatistics_Quantile {
-    $type: 'speechkit.stt.v3.DescriptiveStatistics.Quantile';
     /** Quantile level in range (0, 1) */
     level: number;
     /** Quantile value */
@@ -851,7 +814,6 @@ export interface DescriptiveStatistics_Quantile {
 }
 
 export interface AudioSegmentBoundaries {
-    $type: 'speechkit.stt.v3.AudioSegmentBoundaries';
     /** Audio segment start time */
     startTimeMs: number;
     /** Audio segment end time */
@@ -859,7 +821,6 @@ export interface AudioSegmentBoundaries {
 }
 
 export interface SpeakerAnalysis {
-    $type: 'speechkit.stt.v3.SpeakerAnalysis';
     /** Speaker tag */
     speakerTag: string;
     /** Response window type */
@@ -934,7 +895,6 @@ export function speakerAnalysis_WindowTypeToJSON(object: SpeakerAnalysis_WindowT
 }
 
 export interface ConversationAnalysis {
-    $type: 'speechkit.stt.v3.ConversationAnalysis';
     /** Audio segment boundaries */
     conversationBoundaries?: AudioSegmentBoundaries;
     /** Total simultaneous silence duration */
@@ -958,7 +918,6 @@ export interface ConversationAnalysis {
 }
 
 export interface ConversationAnalysis_InterruptsEvaluation {
-    $type: 'speechkit.stt.v3.ConversationAnalysis.InterruptsEvaluation';
     /** Speaker tag */
     speakerTag: string;
     /** Number of interrupts made by the speaker */
@@ -976,7 +935,6 @@ export interface ConversationAnalysis_InterruptsEvaluation {
  * plus specific event
  */
 export interface StreamingResponse {
-    $type: 'speechkit.stt.v3.StreamingResponse';
     /** Session identifier */
     sessionUuid?: SessionUuid;
     /** Progress bar for stream session recognition: how many data we obtained; final and partial times; etc. */
@@ -1013,12 +971,10 @@ export interface StreamingResponse {
 }
 
 export interface DeleteRecognitionRequest {
-    $type: 'speechkit.stt.v3.DeleteRecognitionRequest';
     operationId: string;
 }
 
 const baseTextNormalizationOptions: object = {
-    $type: 'speechkit.stt.v3.TextNormalizationOptions',
     textNormalization: 0,
     profanityFilter: false,
     literatureText: false,
@@ -1026,8 +982,6 @@ const baseTextNormalizationOptions: object = {
 };
 
 export const TextNormalizationOptions = {
-    $type: 'speechkit.stt.v3.TextNormalizationOptions' as const,
-
     encode(
         message: TextNormalizationOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1122,17 +1076,9 @@ export const TextNormalizationOptions = {
     },
 };
 
-messageTypeRegistry.set(TextNormalizationOptions.$type, TextNormalizationOptions);
-
-const baseDefaultEouClassifier: object = {
-    $type: 'speechkit.stt.v3.DefaultEouClassifier',
-    type: 0,
-    maxPauseBetweenWordsHintMs: 0,
-};
+const baseDefaultEouClassifier: object = { type: 0, maxPauseBetweenWordsHintMs: 0 };
 
 export const DefaultEouClassifier = {
-    $type: 'speechkit.stt.v3.DefaultEouClassifier' as const,
-
     encode(message: DefaultEouClassifier, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -1197,13 +1143,9 @@ export const DefaultEouClassifier = {
     },
 };
 
-messageTypeRegistry.set(DefaultEouClassifier.$type, DefaultEouClassifier);
-
-const baseExternalEouClassifier: object = { $type: 'speechkit.stt.v3.ExternalEouClassifier' };
+const baseExternalEouClassifier: object = {};
 
 export const ExternalEouClassifier = {
-    $type: 'speechkit.stt.v3.ExternalEouClassifier' as const,
-
     encode(_: ExternalEouClassifier, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1241,13 +1183,9 @@ export const ExternalEouClassifier = {
     },
 };
 
-messageTypeRegistry.set(ExternalEouClassifier.$type, ExternalEouClassifier);
-
-const baseEouClassifierOptions: object = { $type: 'speechkit.stt.v3.EouClassifierOptions' };
+const baseEouClassifierOptions: object = {};
 
 export const EouClassifierOptions = {
-    $type: 'speechkit.stt.v3.EouClassifierOptions' as const,
-
     encode(message: EouClassifierOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.defaultClassifier !== undefined) {
             DefaultEouClassifier.encode(
@@ -1333,17 +1271,9 @@ export const EouClassifierOptions = {
     },
 };
 
-messageTypeRegistry.set(EouClassifierOptions.$type, EouClassifierOptions);
-
-const baseRecognitionClassifier: object = {
-    $type: 'speechkit.stt.v3.RecognitionClassifier',
-    classifier: '',
-    triggers: 0,
-};
+const baseRecognitionClassifier: object = { classifier: '', triggers: 0 };
 
 export const RecognitionClassifier = {
-    $type: 'speechkit.stt.v3.RecognitionClassifier' as const,
-
     encode(message: RecognitionClassifier, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.classifier !== '') {
             writer.uint32(10).string(message.classifier);
@@ -1418,15 +1348,9 @@ export const RecognitionClassifier = {
     },
 };
 
-messageTypeRegistry.set(RecognitionClassifier.$type, RecognitionClassifier);
-
-const baseRecognitionClassifierOptions: object = {
-    $type: 'speechkit.stt.v3.RecognitionClassifierOptions',
-};
+const baseRecognitionClassifierOptions: object = {};
 
 export const RecognitionClassifierOptions = {
-    $type: 'speechkit.stt.v3.RecognitionClassifierOptions' as const,
-
     encode(
         message: RecognitionClassifierOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1486,18 +1410,13 @@ export const RecognitionClassifierOptions = {
     },
 };
 
-messageTypeRegistry.set(RecognitionClassifierOptions.$type, RecognitionClassifierOptions);
-
 const baseSpeechAnalysisOptions: object = {
-    $type: 'speechkit.stt.v3.SpeechAnalysisOptions',
     enableSpeakerAnalysis: false,
     enableConversationAnalysis: false,
     descriptiveStatisticsQuantiles: 0,
 };
 
 export const SpeechAnalysisOptions = {
-    $type: 'speechkit.stt.v3.SpeechAnalysisOptions' as const,
-
     encode(message: SpeechAnalysisOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enableSpeakerAnalysis === true) {
             writer.uint32(8).bool(message.enableSpeakerAnalysis);
@@ -1590,18 +1509,9 @@ export const SpeechAnalysisOptions = {
     },
 };
 
-messageTypeRegistry.set(SpeechAnalysisOptions.$type, SpeechAnalysisOptions);
-
-const baseRawAudio: object = {
-    $type: 'speechkit.stt.v3.RawAudio',
-    audioEncoding: 0,
-    sampleRateHertz: 0,
-    audioChannelCount: 0,
-};
+const baseRawAudio: object = { audioEncoding: 0, sampleRateHertz: 0, audioChannelCount: 0 };
 
 export const RawAudio = {
-    $type: 'speechkit.stt.v3.RawAudio' as const,
-
     encode(message: RawAudio, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.audioEncoding !== 0) {
             writer.uint32(8).int32(message.audioEncoding);
@@ -1676,16 +1586,9 @@ export const RawAudio = {
     },
 };
 
-messageTypeRegistry.set(RawAudio.$type, RawAudio);
-
-const baseContainerAudio: object = {
-    $type: 'speechkit.stt.v3.ContainerAudio',
-    containerAudioType: 0,
-};
+const baseContainerAudio: object = { containerAudioType: 0 };
 
 export const ContainerAudio = {
-    $type: 'speechkit.stt.v3.ContainerAudio' as const,
-
     encode(message: ContainerAudio, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerAudioType !== 0) {
             writer.uint32(8).int32(message.containerAudioType);
@@ -1736,13 +1639,9 @@ export const ContainerAudio = {
     },
 };
 
-messageTypeRegistry.set(ContainerAudio.$type, ContainerAudio);
-
-const baseAudioFormatOptions: object = { $type: 'speechkit.stt.v3.AudioFormatOptions' };
+const baseAudioFormatOptions: object = {};
 
 export const AudioFormatOptions = {
-    $type: 'speechkit.stt.v3.AudioFormatOptions' as const,
-
     encode(message: AudioFormatOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.rawAudio !== undefined) {
             RawAudio.encode(message.rawAudio, writer.uint32(10).fork()).ldelim();
@@ -1814,17 +1713,9 @@ export const AudioFormatOptions = {
     },
 };
 
-messageTypeRegistry.set(AudioFormatOptions.$type, AudioFormatOptions);
-
-const baseLanguageRestrictionOptions: object = {
-    $type: 'speechkit.stt.v3.LanguageRestrictionOptions',
-    restrictionType: 0,
-    languageCode: '',
-};
+const baseLanguageRestrictionOptions: object = { restrictionType: 0, languageCode: '' };
 
 export const LanguageRestrictionOptions = {
-    $type: 'speechkit.stt.v3.LanguageRestrictionOptions' as const,
-
     encode(
         message: LanguageRestrictionOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1894,17 +1785,9 @@ export const LanguageRestrictionOptions = {
     },
 };
 
-messageTypeRegistry.set(LanguageRestrictionOptions.$type, LanguageRestrictionOptions);
-
-const baseRecognitionModelOptions: object = {
-    $type: 'speechkit.stt.v3.RecognitionModelOptions',
-    model: '',
-    audioProcessingType: 0,
-};
+const baseRecognitionModelOptions: object = { model: '', audioProcessingType: 0 };
 
 export const RecognitionModelOptions = {
-    $type: 'speechkit.stt.v3.RecognitionModelOptions' as const,
-
     encode(message: RecognitionModelOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.model !== '') {
             writer.uint32(10).string(message.model);
@@ -2033,16 +1916,9 @@ export const RecognitionModelOptions = {
     },
 };
 
-messageTypeRegistry.set(RecognitionModelOptions.$type, RecognitionModelOptions);
-
-const baseSpeakerLabelingOptions: object = {
-    $type: 'speechkit.stt.v3.SpeakerLabelingOptions',
-    speakerLabeling: 0,
-};
+const baseSpeakerLabelingOptions: object = { speakerLabeling: 0 };
 
 export const SpeakerLabelingOptions = {
-    $type: 'speechkit.stt.v3.SpeakerLabelingOptions' as const,
-
     encode(message: SpeakerLabelingOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.speakerLabeling !== 0) {
             writer.uint32(8).int32(message.speakerLabeling);
@@ -2095,13 +1971,9 @@ export const SpeakerLabelingOptions = {
     },
 };
 
-messageTypeRegistry.set(SpeakerLabelingOptions.$type, SpeakerLabelingOptions);
-
-const baseStreamingOptions: object = { $type: 'speechkit.stt.v3.StreamingOptions' };
+const baseStreamingOptions: object = {};
 
 export const StreamingOptions = {
-    $type: 'speechkit.stt.v3.StreamingOptions' as const,
-
     encode(message: StreamingOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.recognitionModel !== undefined) {
             RecognitionModelOptions.encode(
@@ -2245,13 +2117,9 @@ export const StreamingOptions = {
     },
 };
 
-messageTypeRegistry.set(StreamingOptions.$type, StreamingOptions);
-
-const baseAudioChunk: object = { $type: 'speechkit.stt.v3.AudioChunk' };
+const baseAudioChunk: object = {};
 
 export const AudioChunk = {
-    $type: 'speechkit.stt.v3.AudioChunk' as const,
-
     encode(message: AudioChunk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.data.length !== 0) {
             writer.uint32(10).bytes(message.data);
@@ -2303,13 +2171,9 @@ export const AudioChunk = {
     },
 };
 
-messageTypeRegistry.set(AudioChunk.$type, AudioChunk);
-
-const baseSilenceChunk: object = { $type: 'speechkit.stt.v3.SilenceChunk', durationMs: 0 };
+const baseSilenceChunk: object = { durationMs: 0 };
 
 export const SilenceChunk = {
-    $type: 'speechkit.stt.v3.SilenceChunk' as const,
-
     encode(message: SilenceChunk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.durationMs !== 0) {
             writer.uint32(8).int64(message.durationMs);
@@ -2357,13 +2221,9 @@ export const SilenceChunk = {
     },
 };
 
-messageTypeRegistry.set(SilenceChunk.$type, SilenceChunk);
-
-const baseEou: object = { $type: 'speechkit.stt.v3.Eou' };
+const baseEou: object = {};
 
 export const Eou = {
-    $type: 'speechkit.stt.v3.Eou' as const,
-
     encode(_: Eou, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2399,13 +2259,9 @@ export const Eou = {
     },
 };
 
-messageTypeRegistry.set(Eou.$type, Eou);
-
-const baseStreamingRequest: object = { $type: 'speechkit.stt.v3.StreamingRequest' };
+const baseStreamingRequest: object = {};
 
 export const StreamingRequest = {
-    $type: 'speechkit.stt.v3.StreamingRequest' as const,
-
     encode(message: StreamingRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sessionOptions !== undefined) {
             StreamingOptions.encode(message.sessionOptions, writer.uint32(10).fork()).ldelim();
@@ -2506,13 +2362,9 @@ export const StreamingRequest = {
     },
 };
 
-messageTypeRegistry.set(StreamingRequest.$type, StreamingRequest);
-
-const baseRecognizeFileRequest: object = { $type: 'speechkit.stt.v3.RecognizeFileRequest' };
+const baseRecognizeFileRequest: object = {};
 
 export const RecognizeFileRequest = {
-    $type: 'speechkit.stt.v3.RecognizeFileRequest' as const,
-
     encode(message: RecognizeFileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.content !== undefined) {
             writer.uint32(10).bytes(message.content);
@@ -2664,13 +2516,9 @@ export const RecognizeFileRequest = {
     },
 };
 
-messageTypeRegistry.set(RecognizeFileRequest.$type, RecognizeFileRequest);
-
-const baseWord: object = { $type: 'speechkit.stt.v3.Word', text: '', startTimeMs: 0, endTimeMs: 0 };
+const baseWord: object = { text: '', startTimeMs: 0, endTimeMs: 0 };
 
 export const Word = {
-    $type: 'speechkit.stt.v3.Word' as const,
-
     encode(message: Word, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -2739,17 +2587,9 @@ export const Word = {
     },
 };
 
-messageTypeRegistry.set(Word.$type, Word);
-
-const baseLanguageEstimation: object = {
-    $type: 'speechkit.stt.v3.LanguageEstimation',
-    languageCode: '',
-    probability: 0,
-};
+const baseLanguageEstimation: object = { languageCode: '', probability: 0 };
 
 export const LanguageEstimation = {
-    $type: 'speechkit.stt.v3.LanguageEstimation' as const,
-
     encode(message: LanguageEstimation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.languageCode !== '') {
             writer.uint32(10).string(message.languageCode);
@@ -2811,19 +2651,9 @@ export const LanguageEstimation = {
     },
 };
 
-messageTypeRegistry.set(LanguageEstimation.$type, LanguageEstimation);
-
-const baseAlternative: object = {
-    $type: 'speechkit.stt.v3.Alternative',
-    text: '',
-    startTimeMs: 0,
-    endTimeMs: 0,
-    confidence: 0,
-};
+const baseAlternative: object = { text: '', startTimeMs: 0, endTimeMs: 0, confidence: 0 };
 
 export const Alternative = {
-    $type: 'speechkit.stt.v3.Alternative' as const,
-
     encode(message: Alternative, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.words) {
             Word.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -2936,13 +2766,9 @@ export const Alternative = {
     },
 };
 
-messageTypeRegistry.set(Alternative.$type, Alternative);
-
-const baseEouUpdate: object = { $type: 'speechkit.stt.v3.EouUpdate', timeMs: 0 };
+const baseEouUpdate: object = { timeMs: 0 };
 
 export const EouUpdate = {
-    $type: 'speechkit.stt.v3.EouUpdate' as const,
-
     encode(message: EouUpdate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timeMs !== 0) {
             writer.uint32(16).int64(message.timeMs);
@@ -2988,16 +2814,9 @@ export const EouUpdate = {
     },
 };
 
-messageTypeRegistry.set(EouUpdate.$type, EouUpdate);
-
-const baseAlternativeUpdate: object = {
-    $type: 'speechkit.stt.v3.AlternativeUpdate',
-    channelTag: '',
-};
+const baseAlternativeUpdate: object = { channelTag: '' };
 
 export const AlternativeUpdate = {
-    $type: 'speechkit.stt.v3.AlternativeUpdate' as const,
-
     encode(message: AlternativeUpdate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.alternatives) {
             Alternative.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -3061,10 +2880,7 @@ export const AlternativeUpdate = {
     },
 };
 
-messageTypeRegistry.set(AlternativeUpdate.$type, AlternativeUpdate);
-
 const baseAudioCursors: object = {
-    $type: 'speechkit.stt.v3.AudioCursors',
     receivedDataMs: 0,
     resetTimeMs: 0,
     partialTimeMs: 0,
@@ -3074,8 +2890,6 @@ const baseAudioCursors: object = {
 };
 
 export const AudioCursors = {
-    $type: 'speechkit.stt.v3.AudioCursors' as const,
-
     encode(message: AudioCursors, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.receivedDataMs !== 0) {
             writer.uint32(8).int64(message.receivedDataMs);
@@ -3185,13 +2999,9 @@ export const AudioCursors = {
     },
 };
 
-messageTypeRegistry.set(AudioCursors.$type, AudioCursors);
-
-const baseFinalRefinement: object = { $type: 'speechkit.stt.v3.FinalRefinement', finalIndex: 0 };
+const baseFinalRefinement: object = { finalIndex: 0 };
 
 export const FinalRefinement = {
-    $type: 'speechkit.stt.v3.FinalRefinement' as const,
-
     encode(message: FinalRefinement, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.finalIndex !== 0) {
             writer.uint32(8).int64(message.finalIndex);
@@ -3257,13 +3067,9 @@ export const FinalRefinement = {
     },
 };
 
-messageTypeRegistry.set(FinalRefinement.$type, FinalRefinement);
-
-const baseStatusCode: object = { $type: 'speechkit.stt.v3.StatusCode', codeType: 0, message: '' };
+const baseStatusCode: object = { codeType: 0, message: '' };
 
 export const StatusCode = {
-    $type: 'speechkit.stt.v3.StatusCode' as const,
-
     encode(message: StatusCode, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.codeType !== 0) {
             writer.uint32(8).int32(message.codeType);
@@ -3321,17 +3127,9 @@ export const StatusCode = {
     },
 };
 
-messageTypeRegistry.set(StatusCode.$type, StatusCode);
-
-const baseSessionUuid: object = {
-    $type: 'speechkit.stt.v3.SessionUuid',
-    uuid: '',
-    userRequestId: '',
-};
+const baseSessionUuid: object = { uuid: '', userRequestId: '' };
 
 export const SessionUuid = {
-    $type: 'speechkit.stt.v3.SessionUuid' as const,
-
     encode(message: SessionUuid, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.uuid !== '') {
             writer.uint32(10).string(message.uuid);
@@ -3388,18 +3186,9 @@ export const SessionUuid = {
     },
 };
 
-messageTypeRegistry.set(SessionUuid.$type, SessionUuid);
-
-const basePhraseHighlight: object = {
-    $type: 'speechkit.stt.v3.PhraseHighlight',
-    text: '',
-    startTimeMs: 0,
-    endTimeMs: 0,
-};
+const basePhraseHighlight: object = { text: '', startTimeMs: 0, endTimeMs: 0 };
 
 export const PhraseHighlight = {
-    $type: 'speechkit.stt.v3.PhraseHighlight' as const,
-
     encode(message: PhraseHighlight, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -3468,17 +3257,9 @@ export const PhraseHighlight = {
     },
 };
 
-messageTypeRegistry.set(PhraseHighlight.$type, PhraseHighlight);
-
-const baseRecognitionClassifierLabel: object = {
-    $type: 'speechkit.stt.v3.RecognitionClassifierLabel',
-    label: '',
-    confidence: 0,
-};
+const baseRecognitionClassifierLabel: object = { label: '', confidence: 0 };
 
 export const RecognitionClassifierLabel = {
-    $type: 'speechkit.stt.v3.RecognitionClassifierLabel' as const,
-
     encode(
         message: RecognitionClassifierLabel,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3541,16 +3322,9 @@ export const RecognitionClassifierLabel = {
     },
 };
 
-messageTypeRegistry.set(RecognitionClassifierLabel.$type, RecognitionClassifierLabel);
-
-const baseRecognitionClassifierResult: object = {
-    $type: 'speechkit.stt.v3.RecognitionClassifierResult',
-    classifier: '',
-};
+const baseRecognitionClassifierResult: object = { classifier: '' };
 
 export const RecognitionClassifierResult = {
-    $type: 'speechkit.stt.v3.RecognitionClassifierResult' as const,
-
     encode(
         message: RecognitionClassifierResult,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3637,18 +3411,9 @@ export const RecognitionClassifierResult = {
     },
 };
 
-messageTypeRegistry.set(RecognitionClassifierResult.$type, RecognitionClassifierResult);
-
-const baseRecognitionClassifierUpdate: object = {
-    $type: 'speechkit.stt.v3.RecognitionClassifierUpdate',
-    windowType: 0,
-    startTimeMs: 0,
-    endTimeMs: 0,
-};
+const baseRecognitionClassifierUpdate: object = { windowType: 0, startTimeMs: 0, endTimeMs: 0 };
 
 export const RecognitionClassifierUpdate = {
-    $type: 'speechkit.stt.v3.RecognitionClassifierUpdate' as const,
-
     encode(
         message: RecognitionClassifierUpdate,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3750,19 +3515,9 @@ export const RecognitionClassifierUpdate = {
     },
 };
 
-messageTypeRegistry.set(RecognitionClassifierUpdate.$type, RecognitionClassifierUpdate);
-
-const baseDescriptiveStatistics: object = {
-    $type: 'speechkit.stt.v3.DescriptiveStatistics',
-    min: 0,
-    max: 0,
-    mean: 0,
-    std: 0,
-};
+const baseDescriptiveStatistics: object = { min: 0, max: 0, mean: 0, std: 0 };
 
 export const DescriptiveStatistics = {
-    $type: 'speechkit.stt.v3.DescriptiveStatistics' as const,
-
     encode(message: DescriptiveStatistics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.min !== 0) {
             writer.uint32(9).double(message.min);
@@ -3857,17 +3612,9 @@ export const DescriptiveStatistics = {
     },
 };
 
-messageTypeRegistry.set(DescriptiveStatistics.$type, DescriptiveStatistics);
-
-const baseDescriptiveStatistics_Quantile: object = {
-    $type: 'speechkit.stt.v3.DescriptiveStatistics.Quantile',
-    level: 0,
-    value: 0,
-};
+const baseDescriptiveStatistics_Quantile: object = { level: 0, value: 0 };
 
 export const DescriptiveStatistics_Quantile = {
-    $type: 'speechkit.stt.v3.DescriptiveStatistics.Quantile' as const,
-
     encode(
         message: DescriptiveStatistics_Quantile,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3928,17 +3675,9 @@ export const DescriptiveStatistics_Quantile = {
     },
 };
 
-messageTypeRegistry.set(DescriptiveStatistics_Quantile.$type, DescriptiveStatistics_Quantile);
-
-const baseAudioSegmentBoundaries: object = {
-    $type: 'speechkit.stt.v3.AudioSegmentBoundaries',
-    startTimeMs: 0,
-    endTimeMs: 0,
-};
+const baseAudioSegmentBoundaries: object = { startTimeMs: 0, endTimeMs: 0 };
 
 export const AudioSegmentBoundaries = {
-    $type: 'speechkit.stt.v3.AudioSegmentBoundaries' as const,
-
     encode(message: AudioSegmentBoundaries, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.startTimeMs !== 0) {
             writer.uint32(8).int64(message.startTimeMs);
@@ -4000,10 +3739,7 @@ export const AudioSegmentBoundaries = {
     },
 };
 
-messageTypeRegistry.set(AudioSegmentBoundaries.$type, AudioSegmentBoundaries);
-
 const baseSpeakerAnalysis: object = {
-    $type: 'speechkit.stt.v3.SpeakerAnalysis',
     speakerTag: '',
     windowType: 0,
     totalSpeechMs: 0,
@@ -4016,8 +3752,6 @@ const baseSpeakerAnalysis: object = {
 };
 
 export const SpeakerAnalysis = {
-    $type: 'speechkit.stt.v3.SpeakerAnalysis' as const,
-
     encode(message: SpeakerAnalysis, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.speakerTag !== '') {
             writer.uint32(10).string(message.speakerTag);
@@ -4305,10 +4039,7 @@ export const SpeakerAnalysis = {
     },
 };
 
-messageTypeRegistry.set(SpeakerAnalysis.$type, SpeakerAnalysis);
-
 const baseConversationAnalysis: object = {
-    $type: 'speechkit.stt.v3.ConversationAnalysis',
     totalSimultaneousSilenceDurationMs: 0,
     totalSimultaneousSilenceRatio: 0,
     totalSimultaneousSpeechDurationMs: 0,
@@ -4318,8 +4049,6 @@ const baseConversationAnalysis: object = {
 };
 
 export const ConversationAnalysis = {
-    $type: 'speechkit.stt.v3.ConversationAnalysis' as const,
-
     encode(message: ConversationAnalysis, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.conversationBoundaries !== undefined) {
             AudioSegmentBoundaries.encode(
@@ -4546,18 +4275,13 @@ export const ConversationAnalysis = {
     },
 };
 
-messageTypeRegistry.set(ConversationAnalysis.$type, ConversationAnalysis);
-
 const baseConversationAnalysis_InterruptsEvaluation: object = {
-    $type: 'speechkit.stt.v3.ConversationAnalysis.InterruptsEvaluation',
     speakerTag: '',
     interruptsCount: 0,
     interruptsDurationMs: 0,
 };
 
 export const ConversationAnalysis_InterruptsEvaluation = {
-    $type: 'speechkit.stt.v3.ConversationAnalysis.InterruptsEvaluation' as const,
-
     encode(
         message: ConversationAnalysis_InterruptsEvaluation,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4664,20 +4388,9 @@ export const ConversationAnalysis_InterruptsEvaluation = {
     },
 };
 
-messageTypeRegistry.set(
-    ConversationAnalysis_InterruptsEvaluation.$type,
-    ConversationAnalysis_InterruptsEvaluation,
-);
-
-const baseStreamingResponse: object = {
-    $type: 'speechkit.stt.v3.StreamingResponse',
-    responseWallTimeMs: 0,
-    channelTag: '',
-};
+const baseStreamingResponse: object = { responseWallTimeMs: 0, channelTag: '' };
 
 export const StreamingResponse = {
-    $type: 'speechkit.stt.v3.StreamingResponse' as const,
-
     encode(message: StreamingResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sessionUuid !== undefined) {
             SessionUuid.encode(message.sessionUuid, writer.uint32(10).fork()).ldelim();
@@ -4924,16 +4637,9 @@ export const StreamingResponse = {
     },
 };
 
-messageTypeRegistry.set(StreamingResponse.$type, StreamingResponse);
-
-const baseDeleteRecognitionRequest: object = {
-    $type: 'speechkit.stt.v3.DeleteRecognitionRequest',
-    operationId: '',
-};
+const baseDeleteRecognitionRequest: object = { operationId: '' };
 
 export const DeleteRecognitionRequest = {
-    $type: 'speechkit.stt.v3.DeleteRecognitionRequest' as const,
-
     encode(
         message: DeleteRecognitionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4986,8 +4692,6 @@ export const DeleteRecognitionRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteRecognitionRequest.$type, DeleteRecognitionRequest);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -5029,16 +4733,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

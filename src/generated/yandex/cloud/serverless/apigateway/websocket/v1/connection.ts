@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../../../google/protobuf/timestamp';
@@ -7,7 +6,6 @@ import { Timestamp } from '../../../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.serverless.apigateway.websocket.v1';
 
 export interface Connection {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.Connection';
     /** ID of the connection. */
     id: string;
     /** ID of the API Gateway. */
@@ -21,22 +19,15 @@ export interface Connection {
 }
 
 export interface Identity {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.Identity';
     /** The source IP address of the caller making the request to API Gateway. */
     sourceIp: string;
     /** The User Agent of the caller making the request to API Gateway. */
     userAgent: string;
 }
 
-const baseConnection: object = {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.Connection',
-    id: '',
-    gatewayId: '',
-};
+const baseConnection: object = { id: '', gatewayId: '' };
 
 export const Connection = {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.Connection' as const,
-
     encode(message: Connection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -134,17 +125,9 @@ export const Connection = {
     },
 };
 
-messageTypeRegistry.set(Connection.$type, Connection);
-
-const baseIdentity: object = {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.Identity',
-    sourceIp: '',
-    userAgent: '',
-};
+const baseIdentity: object = { sourceIp: '', userAgent: '' };
 
 export const Identity = {
-    $type: 'yandex.cloud.serverless.apigateway.websocket.v1.Identity' as const,
-
     encode(message: Identity, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sourceIp !== '') {
             writer.uint32(10).string(message.sourceIp);
@@ -204,8 +187,6 @@ export const Identity = {
     },
 };
 
-messageTypeRegistry.set(Identity.$type, Identity);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -215,21 +196,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

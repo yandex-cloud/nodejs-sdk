@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -29,7 +28,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.datatransfer.v1';
 
 export interface CreateTransferRequest {
-    $type: 'yandex.cloud.datatransfer.v1.CreateTransferRequest';
     /** Identifier of the source endpoint. */
     sourceId: string;
     /** Identifier of the target endpoint. */
@@ -59,18 +57,15 @@ export interface CreateTransferRequest {
 }
 
 export interface CreateTransferRequest_LabelsEntry {
-    $type: 'yandex.cloud.datatransfer.v1.CreateTransferRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateTransferMetadata {
-    $type: 'yandex.cloud.datatransfer.v1.CreateTransferMetadata';
     transferId: string;
 }
 
 export interface UpdateTransferRequest {
-    $type: 'yandex.cloud.datatransfer.v1.UpdateTransferRequest';
     /** Identifier of the transfer to be updated. */
     transferId: string;
     /** The new description for the transfer. */
@@ -98,29 +93,24 @@ export interface UpdateTransferRequest {
 }
 
 export interface UpdateTransferRequest_LabelsEntry {
-    $type: 'yandex.cloud.datatransfer.v1.UpdateTransferRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateTransferMetadata {
-    $type: 'yandex.cloud.datatransfer.v1.UpdateTransferMetadata';
     transferId: string;
 }
 
 export interface DeleteTransferRequest {
-    $type: 'yandex.cloud.datatransfer.v1.DeleteTransferRequest';
     /** Identifier of the transfer to be deleted. */
     transferId: string;
 }
 
 export interface DeleteTransferMetadata {
-    $type: 'yandex.cloud.datatransfer.v1.DeleteTransferMetadata';
     transferId: string;
 }
 
 export interface ListTransfersRequest {
-    $type: 'yandex.cloud.datatransfer.v1.ListTransfersRequest';
     /**
      * Identifier of the folder containing the transfers to be listed.
      *
@@ -149,7 +139,6 @@ export interface ListTransfersRequest {
 }
 
 export interface ListTransfersResponse {
-    $type: 'yandex.cloud.datatransfer.v1.ListTransfersResponse';
     /**
      * The list of transfers. If there are more transfers in the folder, then
      * `next_page_token` is a non-empty string to be included into the subsequent
@@ -166,7 +155,6 @@ export interface ListTransfersResponse {
 }
 
 export interface GetTransferRequest {
-    $type: 'yandex.cloud.datatransfer.v1.GetTransferRequest';
     /**
      * Identifier of the transfer to be returned.
      *
@@ -176,7 +164,6 @@ export interface GetTransferRequest {
 }
 
 export interface DeactivateTransferRequest {
-    $type: 'yandex.cloud.datatransfer.v1.DeactivateTransferRequest';
     /**
      * Identifier of the transfer to be deactivated.
      *
@@ -186,12 +173,10 @@ export interface DeactivateTransferRequest {
 }
 
 export interface DeactivateTransferMetadata {
-    $type: 'yandex.cloud.datatransfer.v1.DeactivateTransferMetadata';
     transferId: string;
 }
 
 export interface ActivateTransferRequest {
-    $type: 'yandex.cloud.datatransfer.v1.ActivateTransferRequest';
     /**
      * Identifier of the transfer to be activated.
      *
@@ -201,12 +186,10 @@ export interface ActivateTransferRequest {
 }
 
 export interface ActivateTransferMetadata {
-    $type: 'yandex.cloud.datatransfer.v1.ActivateTransferMetadata';
     transferId: string;
 }
 
 const baseCreateTransferRequest: object = {
-    $type: 'yandex.cloud.datatransfer.v1.CreateTransferRequest',
     sourceId: '',
     targetId: '',
     description: '',
@@ -216,8 +199,6 @@ const baseCreateTransferRequest: object = {
 };
 
 export const CreateTransferRequest = {
-    $type: 'yandex.cloud.datatransfer.v1.CreateTransferRequest' as const,
-
     encode(message: CreateTransferRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sourceId !== '') {
             writer.uint32(10).string(message.sourceId);
@@ -242,11 +223,7 @@ export const CreateTransferRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateTransferRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.datatransfer.v1.CreateTransferRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(66).fork(),
             ).ldelim();
         });
@@ -418,17 +395,9 @@ export const CreateTransferRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateTransferRequest.$type, CreateTransferRequest);
-
-const baseCreateTransferRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.datatransfer.v1.CreateTransferRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateTransferRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateTransferRequest_LabelsEntry = {
-    $type: 'yandex.cloud.datatransfer.v1.CreateTransferRequest.LabelsEntry' as const,
-
     encode(
         message: CreateTransferRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -494,16 +463,9 @@ export const CreateTransferRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateTransferRequest_LabelsEntry.$type, CreateTransferRequest_LabelsEntry);
-
-const baseCreateTransferMetadata: object = {
-    $type: 'yandex.cloud.datatransfer.v1.CreateTransferMetadata',
-    transferId: '',
-};
+const baseCreateTransferMetadata: object = { transferId: '' };
 
 export const CreateTransferMetadata = {
-    $type: 'yandex.cloud.datatransfer.v1.CreateTransferMetadata' as const,
-
     encode(message: CreateTransferMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.transferId !== '') {
             writer.uint32(10).string(message.transferId);
@@ -553,18 +515,9 @@ export const CreateTransferMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateTransferMetadata.$type, CreateTransferMetadata);
-
-const baseUpdateTransferRequest: object = {
-    $type: 'yandex.cloud.datatransfer.v1.UpdateTransferRequest',
-    transferId: '',
-    description: '',
-    name: '',
-};
+const baseUpdateTransferRequest: object = { transferId: '', description: '', name: '' };
 
 export const UpdateTransferRequest = {
-    $type: 'yandex.cloud.datatransfer.v1.UpdateTransferRequest' as const,
-
     encode(message: UpdateTransferRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.transferId !== '') {
             writer.uint32(10).string(message.transferId);
@@ -583,11 +536,7 @@ export const UpdateTransferRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateTransferRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.datatransfer.v1.UpdateTransferRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -747,17 +696,9 @@ export const UpdateTransferRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateTransferRequest.$type, UpdateTransferRequest);
-
-const baseUpdateTransferRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.datatransfer.v1.UpdateTransferRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateTransferRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateTransferRequest_LabelsEntry = {
-    $type: 'yandex.cloud.datatransfer.v1.UpdateTransferRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateTransferRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -823,16 +764,9 @@ export const UpdateTransferRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateTransferRequest_LabelsEntry.$type, UpdateTransferRequest_LabelsEntry);
-
-const baseUpdateTransferMetadata: object = {
-    $type: 'yandex.cloud.datatransfer.v1.UpdateTransferMetadata',
-    transferId: '',
-};
+const baseUpdateTransferMetadata: object = { transferId: '' };
 
 export const UpdateTransferMetadata = {
-    $type: 'yandex.cloud.datatransfer.v1.UpdateTransferMetadata' as const,
-
     encode(message: UpdateTransferMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.transferId !== '') {
             writer.uint32(10).string(message.transferId);
@@ -882,16 +816,9 @@ export const UpdateTransferMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateTransferMetadata.$type, UpdateTransferMetadata);
-
-const baseDeleteTransferRequest: object = {
-    $type: 'yandex.cloud.datatransfer.v1.DeleteTransferRequest',
-    transferId: '',
-};
+const baseDeleteTransferRequest: object = { transferId: '' };
 
 export const DeleteTransferRequest = {
-    $type: 'yandex.cloud.datatransfer.v1.DeleteTransferRequest' as const,
-
     encode(message: DeleteTransferRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.transferId !== '') {
             writer.uint32(10).string(message.transferId);
@@ -941,16 +868,9 @@ export const DeleteTransferRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteTransferRequest.$type, DeleteTransferRequest);
-
-const baseDeleteTransferMetadata: object = {
-    $type: 'yandex.cloud.datatransfer.v1.DeleteTransferMetadata',
-    transferId: '',
-};
+const baseDeleteTransferMetadata: object = { transferId: '' };
 
 export const DeleteTransferMetadata = {
-    $type: 'yandex.cloud.datatransfer.v1.DeleteTransferMetadata' as const,
-
     encode(message: DeleteTransferMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.transferId !== '') {
             writer.uint32(10).string(message.transferId);
@@ -1000,18 +920,9 @@ export const DeleteTransferMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteTransferMetadata.$type, DeleteTransferMetadata);
-
-const baseListTransfersRequest: object = {
-    $type: 'yandex.cloud.datatransfer.v1.ListTransfersRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListTransfersRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
 export const ListTransfersRequest = {
-    $type: 'yandex.cloud.datatransfer.v1.ListTransfersRequest' as const,
-
     encode(message: ListTransfersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(18).string(message.folderId);
@@ -1083,16 +994,9 @@ export const ListTransfersRequest = {
     },
 };
 
-messageTypeRegistry.set(ListTransfersRequest.$type, ListTransfersRequest);
-
-const baseListTransfersResponse: object = {
-    $type: 'yandex.cloud.datatransfer.v1.ListTransfersResponse',
-    nextPageToken: '',
-};
+const baseListTransfersResponse: object = { nextPageToken: '' };
 
 export const ListTransfersResponse = {
-    $type: 'yandex.cloud.datatransfer.v1.ListTransfersResponse' as const,
-
     encode(message: ListTransfersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.transfers) {
             Transfer.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1156,16 +1060,9 @@ export const ListTransfersResponse = {
     },
 };
 
-messageTypeRegistry.set(ListTransfersResponse.$type, ListTransfersResponse);
-
-const baseGetTransferRequest: object = {
-    $type: 'yandex.cloud.datatransfer.v1.GetTransferRequest',
-    transferId: '',
-};
+const baseGetTransferRequest: object = { transferId: '' };
 
 export const GetTransferRequest = {
-    $type: 'yandex.cloud.datatransfer.v1.GetTransferRequest' as const,
-
     encode(message: GetTransferRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.transferId !== '') {
             writer.uint32(10).string(message.transferId);
@@ -1215,16 +1112,9 @@ export const GetTransferRequest = {
     },
 };
 
-messageTypeRegistry.set(GetTransferRequest.$type, GetTransferRequest);
-
-const baseDeactivateTransferRequest: object = {
-    $type: 'yandex.cloud.datatransfer.v1.DeactivateTransferRequest',
-    transferId: '',
-};
+const baseDeactivateTransferRequest: object = { transferId: '' };
 
 export const DeactivateTransferRequest = {
-    $type: 'yandex.cloud.datatransfer.v1.DeactivateTransferRequest' as const,
-
     encode(
         message: DeactivateTransferRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1277,16 +1167,9 @@ export const DeactivateTransferRequest = {
     },
 };
 
-messageTypeRegistry.set(DeactivateTransferRequest.$type, DeactivateTransferRequest);
-
-const baseDeactivateTransferMetadata: object = {
-    $type: 'yandex.cloud.datatransfer.v1.DeactivateTransferMetadata',
-    transferId: '',
-};
+const baseDeactivateTransferMetadata: object = { transferId: '' };
 
 export const DeactivateTransferMetadata = {
-    $type: 'yandex.cloud.datatransfer.v1.DeactivateTransferMetadata' as const,
-
     encode(
         message: DeactivateTransferMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1339,16 +1222,9 @@ export const DeactivateTransferMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeactivateTransferMetadata.$type, DeactivateTransferMetadata);
-
-const baseActivateTransferRequest: object = {
-    $type: 'yandex.cloud.datatransfer.v1.ActivateTransferRequest',
-    transferId: '',
-};
+const baseActivateTransferRequest: object = { transferId: '' };
 
 export const ActivateTransferRequest = {
-    $type: 'yandex.cloud.datatransfer.v1.ActivateTransferRequest' as const,
-
     encode(message: ActivateTransferRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.transferId !== '') {
             writer.uint32(10).string(message.transferId);
@@ -1398,16 +1274,9 @@ export const ActivateTransferRequest = {
     },
 };
 
-messageTypeRegistry.set(ActivateTransferRequest.$type, ActivateTransferRequest);
-
-const baseActivateTransferMetadata: object = {
-    $type: 'yandex.cloud.datatransfer.v1.ActivateTransferMetadata',
-    transferId: '',
-};
+const baseActivateTransferMetadata: object = { transferId: '' };
 
 export const ActivateTransferMetadata = {
-    $type: 'yandex.cloud.datatransfer.v1.ActivateTransferMetadata' as const,
-
     encode(
         message: ActivateTransferMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1459,8 +1328,6 @@ export const ActivateTransferMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ActivateTransferMetadata.$type, ActivateTransferMetadata);
 
 export const TransferServiceService = {
     /** Creates a transfer in the specified folder. */
@@ -1743,16 +1610,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

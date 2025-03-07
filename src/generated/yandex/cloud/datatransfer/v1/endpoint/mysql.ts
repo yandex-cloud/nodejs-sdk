@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -17,7 +16,6 @@ import {
 export const protobufPackage = 'yandex.cloud.datatransfer.v1.endpoint';
 
 export interface OnPremiseMysql {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.OnPremiseMysql';
     /** Database port */
     port: number;
     /** Network interface for endpoint. If none will assume public ipv4 */
@@ -28,7 +26,6 @@ export interface OnPremiseMysql {
 }
 
 export interface MysqlConnection {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MysqlConnection';
     /** Managed Service for MySQL cluster ID */
     mdbClusterId: string | undefined;
     /** Connection options for on-premise MySQL */
@@ -37,7 +34,6 @@ export interface MysqlConnection {
 }
 
 export interface MysqlObjectTransferSettings {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MysqlObjectTransferSettings';
     /**
      * Views
      *
@@ -60,7 +56,6 @@ export interface MysqlObjectTransferSettings {
 }
 
 export interface MysqlSource {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MysqlSource';
     /** Database connection settings */
     connection?: MysqlConnection;
     /**
@@ -101,7 +96,6 @@ export interface MysqlSource {
 }
 
 export interface MysqlTarget {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MysqlTarget';
     /** Database connection settings */
     connection?: MysqlConnection;
     /**
@@ -150,16 +144,9 @@ export interface MysqlTarget {
     securityGroups: string[];
 }
 
-const baseOnPremiseMysql: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.OnPremiseMysql',
-    port: 0,
-    subnetId: '',
-    hosts: '',
-};
+const baseOnPremiseMysql: object = { port: 0, subnetId: '', hosts: '' };
 
 export const OnPremiseMysql = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.OnPremiseMysql' as const,
-
     encode(message: OnPremiseMysql, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.port !== 0) {
             writer.uint32(16).int64(message.port);
@@ -246,15 +233,9 @@ export const OnPremiseMysql = {
     },
 };
 
-messageTypeRegistry.set(OnPremiseMysql.$type, OnPremiseMysql);
-
-const baseMysqlConnection: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MysqlConnection',
-};
+const baseMysqlConnection: object = {};
 
 export const MysqlConnection = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MysqlConnection' as const,
-
     encode(message: MysqlConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mdbClusterId !== undefined) {
             writer.uint32(10).string(message.mdbClusterId);
@@ -346,19 +327,9 @@ export const MysqlConnection = {
     },
 };
 
-messageTypeRegistry.set(MysqlConnection.$type, MysqlConnection);
-
-const baseMysqlObjectTransferSettings: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MysqlObjectTransferSettings',
-    view: 0,
-    routine: 0,
-    trigger: 0,
-    tables: 0,
-};
+const baseMysqlObjectTransferSettings: object = { view: 0, routine: 0, trigger: 0, tables: 0 };
 
 export const MysqlObjectTransferSettings = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MysqlObjectTransferSettings' as const,
-
     encode(
         message: MysqlObjectTransferSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -447,10 +418,7 @@ export const MysqlObjectTransferSettings = {
     },
 };
 
-messageTypeRegistry.set(MysqlObjectTransferSettings.$type, MysqlObjectTransferSettings);
-
 const baseMysqlSource: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MysqlSource',
     database: '',
     user: '',
     timezone: '',
@@ -461,8 +429,6 @@ const baseMysqlSource: object = {
 };
 
 export const MysqlSource = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MysqlSource' as const,
-
     encode(message: MysqlSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             MysqlConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -643,10 +609,7 @@ export const MysqlSource = {
     },
 };
 
-messageTypeRegistry.set(MysqlSource.$type, MysqlSource);
-
 const baseMysqlTarget: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MysqlTarget',
     database: '',
     user: '',
     sqlMode: '',
@@ -658,8 +621,6 @@ const baseMysqlTarget: object = {
 };
 
 export const MysqlTarget = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.MysqlTarget' as const,
-
     encode(message: MysqlTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             MysqlConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -824,8 +785,6 @@ export const MysqlTarget = {
     },
 };
 
-messageTypeRegistry.set(MysqlTarget.$type, MysqlTarget);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -846,16 +805,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

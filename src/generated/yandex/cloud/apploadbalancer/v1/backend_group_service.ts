@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -29,7 +28,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.apploadbalancer.v1';
 
 export interface GetBackendGroupRequest {
-    $type: 'yandex.cloud.apploadbalancer.v1.GetBackendGroupRequest';
     /**
      * ID of the backend group to return.
      *
@@ -39,7 +37,6 @@ export interface GetBackendGroupRequest {
 }
 
 export interface ListBackendGroupsRequest {
-    $type: 'yandex.cloud.apploadbalancer.v1.ListBackendGroupsRequest';
     /**
      * ID of the folder to list backend groups in.
      *
@@ -71,7 +68,6 @@ export interface ListBackendGroupsRequest {
 }
 
 export interface ListBackendGroupsResponse {
-    $type: 'yandex.cloud.apploadbalancer.v1.ListBackendGroupsResponse';
     /** List of backend groups in the specified folder. */
     backendGroups: BackendGroup[];
     /**
@@ -85,7 +81,6 @@ export interface ListBackendGroupsResponse {
 }
 
 export interface DeleteBackendGroupRequest {
-    $type: 'yandex.cloud.apploadbalancer.v1.DeleteBackendGroupRequest';
     /**
      * ID of the backend group to delete.
      *
@@ -95,13 +90,11 @@ export interface DeleteBackendGroupRequest {
 }
 
 export interface DeleteBackendGroupMetadata {
-    $type: 'yandex.cloud.apploadbalancer.v1.DeleteBackendGroupMetadata';
     /** ID of the backend group that is being deleted. */
     backendGroupId: string;
 }
 
 export interface UpdateBackendGroupRequest {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateBackendGroupRequest';
     /**
      * ID of the backend group to update.
      *
@@ -137,19 +130,16 @@ export interface UpdateBackendGroupRequest {
 }
 
 export interface UpdateBackendGroupRequest_LabelsEntry {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateBackendGroupRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateBackendGroupMetadata {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateBackendGroupMetadata';
     /** ID of the backend group that is being updated. */
     backendGroupId: string;
 }
 
 export interface CreateBackendGroupRequest {
-    $type: 'yandex.cloud.apploadbalancer.v1.CreateBackendGroupRequest';
     /**
      * ID of the folder to create a backend group in.
      *
@@ -177,19 +167,16 @@ export interface CreateBackendGroupRequest {
 }
 
 export interface CreateBackendGroupRequest_LabelsEntry {
-    $type: 'yandex.cloud.apploadbalancer.v1.CreateBackendGroupRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateBackendGroupMetadata {
-    $type: 'yandex.cloud.apploadbalancer.v1.CreateBackendGroupMetadata';
     /** ID of the backend group that is being created. */
     backendGroupId: string;
 }
 
 export interface AddBackendRequest {
-    $type: 'yandex.cloud.apploadbalancer.v1.AddBackendRequest';
     /**
      * ID of the backend group to add a backend to.
      *
@@ -205,7 +192,6 @@ export interface AddBackendRequest {
 }
 
 export interface AddBackendMetadata {
-    $type: 'yandex.cloud.apploadbalancer.v1.AddBackendMetadata';
     /** ID of the backend group that the backend is being added to. */
     backendGroupId: string;
     /** Name of the backend that is being added to the backend group. */
@@ -213,7 +199,6 @@ export interface AddBackendMetadata {
 }
 
 export interface UpdateBackendRequest {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateBackendRequest';
     /** ID of the backend group to update the backend in. */
     backendGroupId: string;
     /** Field mask that specifies which attributes of the backend should be updated. */
@@ -227,7 +212,6 @@ export interface UpdateBackendRequest {
 }
 
 export interface UpdateBackendMetadata {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateBackendMetadata';
     /** ID of the backend group that the backend is being updated it. */
     backendGroupId: string;
     /** Name of the backend that is being updated. */
@@ -235,7 +219,6 @@ export interface UpdateBackendMetadata {
 }
 
 export interface RemoveBackendRequest {
-    $type: 'yandex.cloud.apploadbalancer.v1.RemoveBackendRequest';
     /**
      * ID of the backend group to remove a backend from.
      *
@@ -251,7 +234,6 @@ export interface RemoveBackendRequest {
 }
 
 export interface RemoveBackendMetadata {
-    $type: 'yandex.cloud.apploadbalancer.v1.RemoveBackendMetadata';
     /** ID of the backend group that the backend is being removed from. */
     backendGroupId: string;
     /** Name of the backend that is being removed. */
@@ -259,7 +241,6 @@ export interface RemoveBackendMetadata {
 }
 
 export interface ListBackendGroupOperationsRequest {
-    $type: 'yandex.cloud.apploadbalancer.v1.ListBackendGroupOperationsRequest';
     /**
      * ID of the backend group to get operations for.
      *
@@ -281,7 +262,6 @@ export interface ListBackendGroupOperationsRequest {
 }
 
 export interface ListBackendGroupOperationsResponse {
-    $type: 'yandex.cloud.apploadbalancer.v1.ListBackendGroupOperationsResponse';
     /** List of operations for the specified backend group. */
     operations: Operation[];
     /**
@@ -294,14 +274,9 @@ export interface ListBackendGroupOperationsResponse {
     nextPageToken: string;
 }
 
-const baseGetBackendGroupRequest: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.GetBackendGroupRequest',
-    backendGroupId: '',
-};
+const baseGetBackendGroupRequest: object = { backendGroupId: '' };
 
 export const GetBackendGroupRequest = {
-    $type: 'yandex.cloud.apploadbalancer.v1.GetBackendGroupRequest' as const,
-
     encode(message: GetBackendGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backendGroupId !== '') {
             writer.uint32(10).string(message.backendGroupId);
@@ -351,10 +326,7 @@ export const GetBackendGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(GetBackendGroupRequest.$type, GetBackendGroupRequest);
-
 const baseListBackendGroupsRequest: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.ListBackendGroupsRequest',
     folderId: '',
     pageSize: 0,
     pageToken: '',
@@ -362,8 +334,6 @@ const baseListBackendGroupsRequest: object = {
 };
 
 export const ListBackendGroupsRequest = {
-    $type: 'yandex.cloud.apploadbalancer.v1.ListBackendGroupsRequest' as const,
-
     encode(
         message: ListBackendGroupsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -448,16 +418,9 @@ export const ListBackendGroupsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListBackendGroupsRequest.$type, ListBackendGroupsRequest);
-
-const baseListBackendGroupsResponse: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.ListBackendGroupsResponse',
-    nextPageToken: '',
-};
+const baseListBackendGroupsResponse: object = { nextPageToken: '' };
 
 export const ListBackendGroupsResponse = {
-    $type: 'yandex.cloud.apploadbalancer.v1.ListBackendGroupsResponse' as const,
-
     encode(
         message: ListBackendGroupsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -528,16 +491,9 @@ export const ListBackendGroupsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListBackendGroupsResponse.$type, ListBackendGroupsResponse);
-
-const baseDeleteBackendGroupRequest: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.DeleteBackendGroupRequest',
-    backendGroupId: '',
-};
+const baseDeleteBackendGroupRequest: object = { backendGroupId: '' };
 
 export const DeleteBackendGroupRequest = {
-    $type: 'yandex.cloud.apploadbalancer.v1.DeleteBackendGroupRequest' as const,
-
     encode(
         message: DeleteBackendGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -590,16 +546,9 @@ export const DeleteBackendGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteBackendGroupRequest.$type, DeleteBackendGroupRequest);
-
-const baseDeleteBackendGroupMetadata: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.DeleteBackendGroupMetadata',
-    backendGroupId: '',
-};
+const baseDeleteBackendGroupMetadata: object = { backendGroupId: '' };
 
 export const DeleteBackendGroupMetadata = {
-    $type: 'yandex.cloud.apploadbalancer.v1.DeleteBackendGroupMetadata' as const,
-
     encode(
         message: DeleteBackendGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -652,18 +601,9 @@ export const DeleteBackendGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteBackendGroupMetadata.$type, DeleteBackendGroupMetadata);
-
-const baseUpdateBackendGroupRequest: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateBackendGroupRequest',
-    backendGroupId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateBackendGroupRequest: object = { backendGroupId: '', name: '', description: '' };
 
 export const UpdateBackendGroupRequest = {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateBackendGroupRequest' as const,
-
     encode(
         message: UpdateBackendGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -682,11 +622,7 @@ export const UpdateBackendGroupRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateBackendGroupRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.apploadbalancer.v1.UpdateBackendGroupRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -845,17 +781,9 @@ export const UpdateBackendGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateBackendGroupRequest.$type, UpdateBackendGroupRequest);
-
-const baseUpdateBackendGroupRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateBackendGroupRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateBackendGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateBackendGroupRequest_LabelsEntry = {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateBackendGroupRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateBackendGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -921,19 +849,9 @@ export const UpdateBackendGroupRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateBackendGroupRequest_LabelsEntry.$type,
-    UpdateBackendGroupRequest_LabelsEntry,
-);
-
-const baseUpdateBackendGroupMetadata: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateBackendGroupMetadata',
-    backendGroupId: '',
-};
+const baseUpdateBackendGroupMetadata: object = { backendGroupId: '' };
 
 export const UpdateBackendGroupMetadata = {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateBackendGroupMetadata' as const,
-
     encode(
         message: UpdateBackendGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -986,18 +904,9 @@ export const UpdateBackendGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateBackendGroupMetadata.$type, UpdateBackendGroupMetadata);
-
-const baseCreateBackendGroupRequest: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.CreateBackendGroupRequest',
-    folderId: '',
-    name: '',
-    description: '',
-};
+const baseCreateBackendGroupRequest: object = { folderId: '', name: '', description: '' };
 
 export const CreateBackendGroupRequest = {
-    $type: 'yandex.cloud.apploadbalancer.v1.CreateBackendGroupRequest' as const,
-
     encode(
         message: CreateBackendGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1013,11 +922,7 @@ export const CreateBackendGroupRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateBackendGroupRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.apploadbalancer.v1.CreateBackendGroupRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -1161,17 +1066,9 @@ export const CreateBackendGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateBackendGroupRequest.$type, CreateBackendGroupRequest);
-
-const baseCreateBackendGroupRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.CreateBackendGroupRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateBackendGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateBackendGroupRequest_LabelsEntry = {
-    $type: 'yandex.cloud.apploadbalancer.v1.CreateBackendGroupRequest.LabelsEntry' as const,
-
     encode(
         message: CreateBackendGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1237,19 +1134,9 @@ export const CreateBackendGroupRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateBackendGroupRequest_LabelsEntry.$type,
-    CreateBackendGroupRequest_LabelsEntry,
-);
-
-const baseCreateBackendGroupMetadata: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.CreateBackendGroupMetadata',
-    backendGroupId: '',
-};
+const baseCreateBackendGroupMetadata: object = { backendGroupId: '' };
 
 export const CreateBackendGroupMetadata = {
-    $type: 'yandex.cloud.apploadbalancer.v1.CreateBackendGroupMetadata' as const,
-
     encode(
         message: CreateBackendGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1302,16 +1189,9 @@ export const CreateBackendGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateBackendGroupMetadata.$type, CreateBackendGroupMetadata);
-
-const baseAddBackendRequest: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.AddBackendRequest',
-    backendGroupId: '',
-};
+const baseAddBackendRequest: object = { backendGroupId: '' };
 
 export const AddBackendRequest = {
-    $type: 'yandex.cloud.apploadbalancer.v1.AddBackendRequest' as const,
-
     encode(message: AddBackendRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backendGroupId !== '') {
             writer.uint32(10).string(message.backendGroupId);
@@ -1407,17 +1287,9 @@ export const AddBackendRequest = {
     },
 };
 
-messageTypeRegistry.set(AddBackendRequest.$type, AddBackendRequest);
-
-const baseAddBackendMetadata: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.AddBackendMetadata',
-    backendGroupId: '',
-    backendName: '',
-};
+const baseAddBackendMetadata: object = { backendGroupId: '', backendName: '' };
 
 export const AddBackendMetadata = {
-    $type: 'yandex.cloud.apploadbalancer.v1.AddBackendMetadata' as const,
-
     encode(message: AddBackendMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backendGroupId !== '') {
             writer.uint32(10).string(message.backendGroupId);
@@ -1479,16 +1351,9 @@ export const AddBackendMetadata = {
     },
 };
 
-messageTypeRegistry.set(AddBackendMetadata.$type, AddBackendMetadata);
-
-const baseUpdateBackendRequest: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateBackendRequest',
-    backendGroupId: '',
-};
+const baseUpdateBackendRequest: object = { backendGroupId: '' };
 
 export const UpdateBackendRequest = {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateBackendRequest' as const,
-
     encode(message: UpdateBackendRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backendGroupId !== '') {
             writer.uint32(10).string(message.backendGroupId);
@@ -1604,17 +1469,9 @@ export const UpdateBackendRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateBackendRequest.$type, UpdateBackendRequest);
-
-const baseUpdateBackendMetadata: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateBackendMetadata',
-    backendGroupId: '',
-    backendName: '',
-};
+const baseUpdateBackendMetadata: object = { backendGroupId: '', backendName: '' };
 
 export const UpdateBackendMetadata = {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateBackendMetadata' as const,
-
     encode(message: UpdateBackendMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backendGroupId !== '') {
             writer.uint32(10).string(message.backendGroupId);
@@ -1676,17 +1533,9 @@ export const UpdateBackendMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateBackendMetadata.$type, UpdateBackendMetadata);
-
-const baseRemoveBackendRequest: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.RemoveBackendRequest',
-    backendGroupId: '',
-    backendName: '',
-};
+const baseRemoveBackendRequest: object = { backendGroupId: '', backendName: '' };
 
 export const RemoveBackendRequest = {
-    $type: 'yandex.cloud.apploadbalancer.v1.RemoveBackendRequest' as const,
-
     encode(message: RemoveBackendRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backendGroupId !== '') {
             writer.uint32(10).string(message.backendGroupId);
@@ -1748,17 +1597,9 @@ export const RemoveBackendRequest = {
     },
 };
 
-messageTypeRegistry.set(RemoveBackendRequest.$type, RemoveBackendRequest);
-
-const baseRemoveBackendMetadata: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.RemoveBackendMetadata',
-    backendGroupId: '',
-    backendName: '',
-};
+const baseRemoveBackendMetadata: object = { backendGroupId: '', backendName: '' };
 
 export const RemoveBackendMetadata = {
-    $type: 'yandex.cloud.apploadbalancer.v1.RemoveBackendMetadata' as const,
-
     encode(message: RemoveBackendMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backendGroupId !== '') {
             writer.uint32(10).string(message.backendGroupId);
@@ -1820,18 +1661,13 @@ export const RemoveBackendMetadata = {
     },
 };
 
-messageTypeRegistry.set(RemoveBackendMetadata.$type, RemoveBackendMetadata);
-
 const baseListBackendGroupOperationsRequest: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.ListBackendGroupOperationsRequest',
     backendGroupId: '',
     pageSize: 0,
     pageToken: '',
 };
 
 export const ListBackendGroupOperationsRequest = {
-    $type: 'yandex.cloud.apploadbalancer.v1.ListBackendGroupOperationsRequest' as const,
-
     encode(
         message: ListBackendGroupOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1912,16 +1748,9 @@ export const ListBackendGroupOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListBackendGroupOperationsRequest.$type, ListBackendGroupOperationsRequest);
-
-const baseListBackendGroupOperationsResponse: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.ListBackendGroupOperationsResponse',
-    nextPageToken: '',
-};
+const baseListBackendGroupOperationsResponse: object = { nextPageToken: '' };
 
 export const ListBackendGroupOperationsResponse = {
-    $type: 'yandex.cloud.apploadbalancer.v1.ListBackendGroupOperationsResponse' as const,
-
     encode(
         message: ListBackendGroupOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1993,11 +1822,6 @@ export const ListBackendGroupOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(
-    ListBackendGroupOperationsResponse.$type,
-    ListBackendGroupOperationsResponse,
-);
 
 /** A set of methods for managing backend groups. */
 export const BackendGroupServiceService = {
@@ -2329,16 +2153,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

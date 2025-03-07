@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -7,18 +6,15 @@ export const protobufPackage = 'yandex.cloud.iam.v1';
 
 /** A Role resource. For more information, see [Roles](/docs/iam/concepts/access-control/roles). */
 export interface Role {
-    $type: 'yandex.cloud.iam.v1.Role';
     /** ID of the role. */
     id: string;
     /** Description of the role. 0-256 characters long. */
     description: string;
 }
 
-const baseRole: object = { $type: 'yandex.cloud.iam.v1.Role', id: '', description: '' };
+const baseRole: object = { id: '', description: '' };
 
 export const Role = {
-    $type: 'yandex.cloud.iam.v1.Role' as const,
-
     encode(message: Role, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -75,8 +71,6 @@ export const Role = {
     },
 };
 
-messageTypeRegistry.set(Role.$type, Role);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -86,16 +80,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

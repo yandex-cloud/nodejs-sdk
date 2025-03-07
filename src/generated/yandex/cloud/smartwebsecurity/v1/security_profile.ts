@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.smartwebsecurity.v1';
 
 /** A SecurityProfile resource. */
 export interface SecurityProfile {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityProfile';
     /** ID of the security profile. */
     id: string;
     /** ID of the folder that the security profile belongs to. */
@@ -77,7 +75,6 @@ export function securityProfile_DefaultActionToJSON(object: SecurityProfile_Defa
 }
 
 export interface SecurityProfile_AnalyzeRequestBody {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityProfile.AnalyzeRequestBody';
     /** Maximum size of body to pass to analyzer. In kilobytes. */
     sizeLimit: number;
     /** Action to perform if maximum size of body exceeded. */
@@ -130,14 +127,12 @@ export function securityProfile_AnalyzeRequestBody_ActionToJSON(
 }
 
 export interface SecurityProfile_LabelsEntry {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityProfile.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** A SecurityRule object, see [Rules](/docs/smartwebsecurity/concepts/rules). */
 export interface SecurityRule {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityRule';
     /** Name of the rule. The name is unique within the security profile. 1-50 characters long. */
     name: string;
     /**
@@ -166,7 +161,6 @@ export interface SecurityRule {
 
 /** RuleCondition object. */
 export interface SecurityRule_RuleCondition {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityRule.RuleCondition';
     /** Action to perform if this rule matched. */
     action: SecurityRule_RuleCondition_Action;
     /** The condition for matching the rule. */
@@ -220,7 +214,6 @@ export function securityRule_RuleCondition_ActionToJSON(
 
 /** SmartProtection object. */
 export interface SecurityRule_SmartProtection {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityRule.SmartProtection';
     /** Mode of protection. */
     mode: SecurityRule_SmartProtection_Mode;
     /** The condition for matching the rule. */
@@ -280,7 +273,6 @@ export function securityRule_SmartProtection_ModeToJSON(
 
 /** Waf object. */
 export interface SecurityRule_Waf {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityRule.Waf';
     /** Mode of protection. */
     mode: SecurityRule_Waf_Mode;
     /** The condition for matching the rule. */
@@ -341,7 +333,6 @@ export function securityRule_Waf_ModeToJSON(object: SecurityRule_Waf_Mode): stri
  * See [documentation](/docs/smartwebsecurity/concepts/conditions) for matchers description.
  */
 export interface Condition {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition';
     /** Match authority (Host header). */
     authority?: Condition_AuthorityMatcher;
     /** Match HTTP method. */
@@ -356,7 +347,6 @@ export interface Condition {
 
 /** StringMatcher object. */
 export interface Condition_StringMatcher {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.StringMatcher';
     exactMatch: string | undefined;
     exactNotMatch: string | undefined;
     prefixMatch: string | undefined;
@@ -367,21 +357,18 @@ export interface Condition_StringMatcher {
 
 /** HttpMethodMatcher object. */
 export interface Condition_HttpMethodMatcher {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.HttpMethodMatcher';
     /** List of HTTP methods. OR semantics implied. */
     httpMethods: Condition_StringMatcher[];
 }
 
 /** AuthorityMatcher object. */
 export interface Condition_AuthorityMatcher {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.AuthorityMatcher';
     /** List of authorities. OR semantics implied. */
     authorities: Condition_StringMatcher[];
 }
 
 /** RequestUriMatcher object. AND semantics implied. */
 export interface Condition_RequestUriMatcher {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.RequestUriMatcher';
     /** Path of the URI [RFC3986](https://datatracker.ietf.org/doc/html/rfc3986#section-3.3). */
     path?: Condition_StringMatcher;
     /** List of query matchers. AND semantics implied. */
@@ -390,7 +377,6 @@ export interface Condition_RequestUriMatcher {
 
 /** QueryMatcher object. */
 export interface Condition_QueryMatcher {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.QueryMatcher';
     /** Key of the query parameter. */
     key: string;
     /** Value of the query parameter. */
@@ -399,7 +385,6 @@ export interface Condition_QueryMatcher {
 
 /** HeaderMatcher object. */
 export interface Condition_HeaderMatcher {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.HeaderMatcher';
     /** Name of header (case insensitive). */
     name: string;
     /** Value of the header. */
@@ -408,7 +393,6 @@ export interface Condition_HeaderMatcher {
 
 /** IpMatcher object. AND semantics implied. */
 export interface Condition_IpMatcher {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.IpMatcher';
     ipRangesMatch?: Condition_IpRangesMatcher;
     ipRangesNotMatch?: Condition_IpRangesMatcher;
     geoIpMatch?: Condition_GeoIpMatcher;
@@ -417,20 +401,17 @@ export interface Condition_IpMatcher {
 
 /** IpRangesMatcher object. */
 export interface Condition_IpRangesMatcher {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.IpRangesMatcher';
     /** List of IP ranges. OR semantics implied. */
     ipRanges: string[];
 }
 
 /** GeoIpMatcher object. */
 export interface Condition_GeoIpMatcher {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.GeoIpMatcher';
     /** ISO 3166-1 alpha 2. OR semantics implied. */
     locations: string[];
 }
 
 const baseSecurityProfile: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityProfile',
     id: '',
     folderId: '',
     name: '',
@@ -442,8 +423,6 @@ const baseSecurityProfile: object = {
 };
 
 export const SecurityProfile = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityProfile' as const,
-
     encode(message: SecurityProfile, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -453,11 +432,7 @@ export const SecurityProfile = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             SecurityProfile_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityProfile.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(26).fork(),
             ).ldelim();
         });
@@ -663,17 +638,9 @@ export const SecurityProfile = {
     },
 };
 
-messageTypeRegistry.set(SecurityProfile.$type, SecurityProfile);
-
-const baseSecurityProfile_AnalyzeRequestBody: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityProfile.AnalyzeRequestBody',
-    sizeLimit: 0,
-    sizeLimitAction: 0,
-};
+const baseSecurityProfile_AnalyzeRequestBody: object = { sizeLimit: 0, sizeLimitAction: 0 };
 
 export const SecurityProfile_AnalyzeRequestBody = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityProfile.AnalyzeRequestBody' as const,
-
     encode(
         message: SecurityProfile_AnalyzeRequestBody,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -747,20 +714,9 @@ export const SecurityProfile_AnalyzeRequestBody = {
     },
 };
 
-messageTypeRegistry.set(
-    SecurityProfile_AnalyzeRequestBody.$type,
-    SecurityProfile_AnalyzeRequestBody,
-);
-
-const baseSecurityProfile_LabelsEntry: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityProfile.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseSecurityProfile_LabelsEntry: object = { key: '', value: '' };
 
 export const SecurityProfile_LabelsEntry = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityProfile.LabelsEntry' as const,
-
     encode(
         message: SecurityProfile_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -820,19 +776,9 @@ export const SecurityProfile_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(SecurityProfile_LabelsEntry.$type, SecurityProfile_LabelsEntry);
-
-const baseSecurityRule: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityRule',
-    name: '',
-    priority: 0,
-    dryRun: false,
-    description: '',
-};
+const baseSecurityRule: object = { name: '', priority: 0, dryRun: false, description: '' };
 
 export const SecurityRule = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityRule' as const,
-
     encode(message: SecurityRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -973,16 +919,9 @@ export const SecurityRule = {
     },
 };
 
-messageTypeRegistry.set(SecurityRule.$type, SecurityRule);
-
-const baseSecurityRule_RuleCondition: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityRule.RuleCondition',
-    action: 0,
-};
+const baseSecurityRule_RuleCondition: object = { action: 0 };
 
 export const SecurityRule_RuleCondition = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityRule.RuleCondition' as const,
-
     encode(
         message: SecurityRule_RuleCondition,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1052,16 +991,9 @@ export const SecurityRule_RuleCondition = {
     },
 };
 
-messageTypeRegistry.set(SecurityRule_RuleCondition.$type, SecurityRule_RuleCondition);
-
-const baseSecurityRule_SmartProtection: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityRule.SmartProtection',
-    mode: 0,
-};
+const baseSecurityRule_SmartProtection: object = { mode: 0 };
 
 export const SecurityRule_SmartProtection = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityRule.SmartProtection' as const,
-
     encode(
         message: SecurityRule_SmartProtection,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1131,17 +1063,9 @@ export const SecurityRule_SmartProtection = {
     },
 };
 
-messageTypeRegistry.set(SecurityRule_SmartProtection.$type, SecurityRule_SmartProtection);
-
-const baseSecurityRule_Waf: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityRule.Waf',
-    mode: 0,
-    wafProfileId: '',
-};
+const baseSecurityRule_Waf: object = { mode: 0, wafProfileId: '' };
 
 export const SecurityRule_Waf = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.SecurityRule.Waf' as const,
-
     encode(message: SecurityRule_Waf, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mode !== 0) {
             writer.uint32(8).int32(message.mode);
@@ -1217,13 +1141,9 @@ export const SecurityRule_Waf = {
     },
 };
 
-messageTypeRegistry.set(SecurityRule_Waf.$type, SecurityRule_Waf);
-
-const baseCondition: object = { $type: 'yandex.cloud.smartwebsecurity.v1.Condition' };
+const baseCondition: object = {};
 
 export const Condition = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition' as const,
-
     encode(message: Condition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.authority !== undefined) {
             Condition_AuthorityMatcher.encode(message.authority, writer.uint32(10).fork()).ldelim();
@@ -1361,15 +1281,9 @@ export const Condition = {
     },
 };
 
-messageTypeRegistry.set(Condition.$type, Condition);
-
-const baseCondition_StringMatcher: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.StringMatcher',
-};
+const baseCondition_StringMatcher: object = {};
 
 export const Condition_StringMatcher = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.StringMatcher' as const,
-
     encode(message: Condition_StringMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.exactMatch !== undefined) {
             writer.uint32(10).string(message.exactMatch);
@@ -1480,15 +1394,9 @@ export const Condition_StringMatcher = {
     },
 };
 
-messageTypeRegistry.set(Condition_StringMatcher.$type, Condition_StringMatcher);
-
-const baseCondition_HttpMethodMatcher: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.HttpMethodMatcher',
-};
+const baseCondition_HttpMethodMatcher: object = {};
 
 export const Condition_HttpMethodMatcher = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.HttpMethodMatcher' as const,
-
     encode(
         message: Condition_HttpMethodMatcher,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1550,15 +1458,9 @@ export const Condition_HttpMethodMatcher = {
     },
 };
 
-messageTypeRegistry.set(Condition_HttpMethodMatcher.$type, Condition_HttpMethodMatcher);
-
-const baseCondition_AuthorityMatcher: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.AuthorityMatcher',
-};
+const baseCondition_AuthorityMatcher: object = {};
 
 export const Condition_AuthorityMatcher = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.AuthorityMatcher' as const,
-
     encode(
         message: Condition_AuthorityMatcher,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1620,15 +1522,9 @@ export const Condition_AuthorityMatcher = {
     },
 };
 
-messageTypeRegistry.set(Condition_AuthorityMatcher.$type, Condition_AuthorityMatcher);
-
-const baseCondition_RequestUriMatcher: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.RequestUriMatcher',
-};
+const baseCondition_RequestUriMatcher: object = {};
 
 export const Condition_RequestUriMatcher = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.RequestUriMatcher' as const,
-
     encode(
         message: Condition_RequestUriMatcher,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1703,16 +1599,9 @@ export const Condition_RequestUriMatcher = {
     },
 };
 
-messageTypeRegistry.set(Condition_RequestUriMatcher.$type, Condition_RequestUriMatcher);
-
-const baseCondition_QueryMatcher: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.QueryMatcher',
-    key: '',
-};
+const baseCondition_QueryMatcher: object = { key: '' };
 
 export const Condition_QueryMatcher = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.QueryMatcher' as const,
-
     encode(message: Condition_QueryMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1775,16 +1664,9 @@ export const Condition_QueryMatcher = {
     },
 };
 
-messageTypeRegistry.set(Condition_QueryMatcher.$type, Condition_QueryMatcher);
-
-const baseCondition_HeaderMatcher: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.HeaderMatcher',
-    name: '',
-};
+const baseCondition_HeaderMatcher: object = { name: '' };
 
 export const Condition_HeaderMatcher = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.HeaderMatcher' as const,
-
     encode(message: Condition_HeaderMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1847,15 +1729,9 @@ export const Condition_HeaderMatcher = {
     },
 };
 
-messageTypeRegistry.set(Condition_HeaderMatcher.$type, Condition_HeaderMatcher);
-
-const baseCondition_IpMatcher: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.IpMatcher',
-};
+const baseCondition_IpMatcher: object = {};
 
 export const Condition_IpMatcher = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.IpMatcher' as const,
-
     encode(message: Condition_IpMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ipRangesMatch !== undefined) {
             Condition_IpRangesMatcher.encode(
@@ -1977,16 +1853,9 @@ export const Condition_IpMatcher = {
     },
 };
 
-messageTypeRegistry.set(Condition_IpMatcher.$type, Condition_IpMatcher);
-
-const baseCondition_IpRangesMatcher: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.IpRangesMatcher',
-    ipRanges: '',
-};
+const baseCondition_IpRangesMatcher: object = { ipRanges: '' };
 
 export const Condition_IpRangesMatcher = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.IpRangesMatcher' as const,
-
     encode(
         message: Condition_IpRangesMatcher,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2041,16 +1910,9 @@ export const Condition_IpRangesMatcher = {
     },
 };
 
-messageTypeRegistry.set(Condition_IpRangesMatcher.$type, Condition_IpRangesMatcher);
-
-const baseCondition_GeoIpMatcher: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.GeoIpMatcher',
-    locations: '',
-};
+const baseCondition_GeoIpMatcher: object = { locations: '' };
 
 export const Condition_GeoIpMatcher = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.Condition.GeoIpMatcher' as const,
-
     encode(message: Condition_GeoIpMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.locations) {
             writer.uint32(10).string(v!);
@@ -2102,8 +1964,6 @@ export const Condition_GeoIpMatcher = {
     },
 };
 
-messageTypeRegistry.set(Condition_GeoIpMatcher.$type, Condition_GeoIpMatcher);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -2124,21 +1984,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

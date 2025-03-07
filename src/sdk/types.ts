@@ -132,10 +132,7 @@ export type ClientType = <S extends ServiceDefinition>(
 
 export type SessionArg = { client: ClientType };
 
-export type TypeFromProtoc<
-    T extends { $type: string },
-    NotPartialKey extends keyof Omit<T, '$type'> = never,
-> = {
+export type TypeFromProtoc<T extends object, NotPartialKey extends keyof T = never> = {
     [Key in NotPartialKey]: T[Key];
 } & DeepPartial<T>;
 

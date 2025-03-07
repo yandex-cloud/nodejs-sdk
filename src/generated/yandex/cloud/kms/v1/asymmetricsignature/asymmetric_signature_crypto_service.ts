@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -18,7 +17,6 @@ import _m0 from 'protobufjs/minimal';
 export const protobufPackage = 'yandex.cloud.kms.v1.asymmetricsignature';
 
 export interface AsymmetricSignRequest {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignRequest';
     /** ID of the asymmetric KMS key to use for signature. */
     keyId: string;
     /**
@@ -29,7 +27,6 @@ export interface AsymmetricSignRequest {
 }
 
 export interface AsymmetricSignResponse {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignResponse';
     /** ID of the asymmetric KMS key that was used for signature. */
     keyId: string;
     /**
@@ -41,7 +38,6 @@ export interface AsymmetricSignResponse {
 }
 
 export interface AsymmetricSignHashRequest {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignHashRequest';
     /** ID of the asymmetric KMS key to use for signature. */
     keyId: string;
     /**
@@ -52,7 +48,6 @@ export interface AsymmetricSignHashRequest {
 }
 
 export interface AsymmetricSignHashResponse {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignHashResponse';
     /** ID of the asymmetric KMS key that was used for signature. */
     keyId: string;
     /**
@@ -64,13 +59,11 @@ export interface AsymmetricSignHashResponse {
 }
 
 export interface AsymmetricGetPublicKeyRequest {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricGetPublicKeyRequest';
     /** ID of the asymmetric KMS key to be used for public key retrieval. */
     keyId: string;
 }
 
 export interface AsymmetricGetPublicKeyResponse {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricGetPublicKeyResponse';
     /** ID of the asymmetric KMS key to get public key of. */
     keyId: string;
     /**
@@ -81,14 +74,9 @@ export interface AsymmetricGetPublicKeyResponse {
     publicKey: string;
 }
 
-const baseAsymmetricSignRequest: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignRequest',
-    keyId: '',
-};
+const baseAsymmetricSignRequest: object = { keyId: '' };
 
 export const AsymmetricSignRequest = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignRequest' as const,
-
     encode(message: AsymmetricSignRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -152,16 +140,9 @@ export const AsymmetricSignRequest = {
     },
 };
 
-messageTypeRegistry.set(AsymmetricSignRequest.$type, AsymmetricSignRequest);
-
-const baseAsymmetricSignResponse: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignResponse',
-    keyId: '',
-};
+const baseAsymmetricSignResponse: object = { keyId: '' };
 
 export const AsymmetricSignResponse = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignResponse' as const,
-
     encode(message: AsymmetricSignResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -225,16 +206,9 @@ export const AsymmetricSignResponse = {
     },
 };
 
-messageTypeRegistry.set(AsymmetricSignResponse.$type, AsymmetricSignResponse);
-
-const baseAsymmetricSignHashRequest: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignHashRequest',
-    keyId: '',
-};
+const baseAsymmetricSignHashRequest: object = { keyId: '' };
 
 export const AsymmetricSignHashRequest = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignHashRequest' as const,
-
     encode(
         message: AsymmetricSignHashRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -301,16 +275,9 @@ export const AsymmetricSignHashRequest = {
     },
 };
 
-messageTypeRegistry.set(AsymmetricSignHashRequest.$type, AsymmetricSignHashRequest);
-
-const baseAsymmetricSignHashResponse: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignHashResponse',
-    keyId: '',
-};
+const baseAsymmetricSignHashResponse: object = { keyId: '' };
 
 export const AsymmetricSignHashResponse = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignHashResponse' as const,
-
     encode(
         message: AsymmetricSignHashResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -377,16 +344,9 @@ export const AsymmetricSignHashResponse = {
     },
 };
 
-messageTypeRegistry.set(AsymmetricSignHashResponse.$type, AsymmetricSignHashResponse);
-
-const baseAsymmetricGetPublicKeyRequest: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricGetPublicKeyRequest',
-    keyId: '',
-};
+const baseAsymmetricGetPublicKeyRequest: object = { keyId: '' };
 
 export const AsymmetricGetPublicKeyRequest = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricGetPublicKeyRequest' as const,
-
     encode(
         message: AsymmetricGetPublicKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -437,17 +397,9 @@ export const AsymmetricGetPublicKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(AsymmetricGetPublicKeyRequest.$type, AsymmetricGetPublicKeyRequest);
-
-const baseAsymmetricGetPublicKeyResponse: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricGetPublicKeyResponse',
-    keyId: '',
-    publicKey: '',
-};
+const baseAsymmetricGetPublicKeyResponse: object = { keyId: '', publicKey: '' };
 
 export const AsymmetricGetPublicKeyResponse = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricGetPublicKeyResponse' as const,
-
     encode(
         message: AsymmetricGetPublicKeyResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -509,8 +461,6 @@ export const AsymmetricGetPublicKeyResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(AsymmetricGetPublicKeyResponse.$type, AsymmetricGetPublicKeyResponse);
 
 /** Set of methods that perform asymmetric signature. */
 export const AsymmetricSignatureCryptoServiceService = {
@@ -665,16 +615,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

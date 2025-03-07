@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.dataproc.manager.v1';
 
 /** Data Proc job. */
 export interface Job {
-    $type: 'yandex.cloud.dataproc.manager.v1.Job';
     /**
      * Unique ID of the Data Proc job.
      * This ID is assigned by MDB in the process of creating Data Proc job.
@@ -112,7 +110,6 @@ export function job_StatusToJSON(object: Job_Status): string {
 }
 
 export interface ApplicationAttempt {
-    $type: 'yandex.cloud.dataproc.manager.v1.ApplicationAttempt';
     /** ID of YARN application attempt */
     id: string;
     /** ID of YARN Application Master container */
@@ -120,7 +117,6 @@ export interface ApplicationAttempt {
 }
 
 export interface ApplicationInfo {
-    $type: 'yandex.cloud.dataproc.manager.v1.ApplicationInfo';
     /** ID of YARN application */
     id: string;
     /** YARN application attempts */
@@ -128,7 +124,6 @@ export interface ApplicationInfo {
 }
 
 export interface MapreduceJob {
-    $type: 'yandex.cloud.dataproc.manager.v1.MapreduceJob';
     /** Optional arguments to the driver. */
     args: string[];
     /** URIs of file to run. */
@@ -146,13 +141,11 @@ export interface MapreduceJob {
 }
 
 export interface MapreduceJob_PropertiesEntry {
-    $type: 'yandex.cloud.dataproc.manager.v1.MapreduceJob.PropertiesEntry';
     key: string;
     value: string;
 }
 
 export interface SparkJob {
-    $type: 'yandex.cloud.dataproc.manager.v1.SparkJob';
     /** Optional arguments to the driver. */
     args: string[];
     /** Jar file URIs to add to the CLASSPATHs of the Data Proc driver and tasks. */
@@ -176,13 +169,11 @@ export interface SparkJob {
 }
 
 export interface SparkJob_PropertiesEntry {
-    $type: 'yandex.cloud.dataproc.manager.v1.SparkJob.PropertiesEntry';
     key: string;
     value: string;
 }
 
 export interface PysparkJob {
-    $type: 'yandex.cloud.dataproc.manager.v1.PysparkJob';
     /** Optional arguments to the driver. */
     args: string[];
     /** Jar file URIs to add to the CLASSPATHs of the Data Proc driver and tasks. */
@@ -206,18 +197,15 @@ export interface PysparkJob {
 }
 
 export interface PysparkJob_PropertiesEntry {
-    $type: 'yandex.cloud.dataproc.manager.v1.PysparkJob.PropertiesEntry';
     key: string;
     value: string;
 }
 
 export interface QueryList {
-    $type: 'yandex.cloud.dataproc.manager.v1.QueryList';
     queries: string[];
 }
 
 export interface HiveJob {
-    $type: 'yandex.cloud.dataproc.manager.v1.HiveJob';
     /** A mapping of property names to values, used to configure Hive. */
     properties: { [key: string]: string };
     /** Whether to continue executing queries if a query fails. */
@@ -232,20 +220,17 @@ export interface HiveJob {
 }
 
 export interface HiveJob_PropertiesEntry {
-    $type: 'yandex.cloud.dataproc.manager.v1.HiveJob.PropertiesEntry';
     key: string;
     value: string;
 }
 
 export interface HiveJob_ScriptVariablesEntry {
-    $type: 'yandex.cloud.dataproc.manager.v1.HiveJob.ScriptVariablesEntry';
     key: string;
     value: string;
 }
 
 /** Data Proc support job. */
 export interface SupportJob {
-    $type: 'yandex.cloud.dataproc.manager.v1.SupportJob';
     /**
      * Required. Unique ID of the Data Proc job.
      * This ID is assigned by MDB in the process of creating Data Proc job.
@@ -344,18 +329,9 @@ export function supportJob_StatusToJSON(object: SupportJob_Status): string {
     }
 }
 
-const baseJob: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.Job',
-    id: '',
-    clusterId: '',
-    name: '',
-    createdBy: '',
-    status: 0,
-};
+const baseJob: object = { id: '', clusterId: '', name: '', createdBy: '', status: 0 };
 
 export const Job = {
-    $type: 'yandex.cloud.dataproc.manager.v1.Job' as const,
-
     encode(message: Job, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -567,17 +543,9 @@ export const Job = {
     },
 };
 
-messageTypeRegistry.set(Job.$type, Job);
-
-const baseApplicationAttempt: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.ApplicationAttempt',
-    id: '',
-    amContainerId: '',
-};
+const baseApplicationAttempt: object = { id: '', amContainerId: '' };
 
 export const ApplicationAttempt = {
-    $type: 'yandex.cloud.dataproc.manager.v1.ApplicationAttempt' as const,
-
     encode(message: ApplicationAttempt, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -636,16 +604,9 @@ export const ApplicationAttempt = {
     },
 };
 
-messageTypeRegistry.set(ApplicationAttempt.$type, ApplicationAttempt);
-
-const baseApplicationInfo: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.ApplicationInfo',
-    id: '',
-};
+const baseApplicationInfo: object = { id: '' };
 
 export const ApplicationInfo = {
-    $type: 'yandex.cloud.dataproc.manager.v1.ApplicationInfo' as const,
-
     encode(message: ApplicationInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -711,19 +672,9 @@ export const ApplicationInfo = {
     },
 };
 
-messageTypeRegistry.set(ApplicationInfo.$type, ApplicationInfo);
-
-const baseMapreduceJob: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.MapreduceJob',
-    args: '',
-    jarFileUris: '',
-    fileUris: '',
-    archiveUris: '',
-};
+const baseMapreduceJob: object = { args: '', jarFileUris: '', fileUris: '', archiveUris: '' };
 
 export const MapreduceJob = {
-    $type: 'yandex.cloud.dataproc.manager.v1.MapreduceJob' as const,
-
     encode(message: MapreduceJob, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.args) {
             writer.uint32(10).string(v!);
@@ -739,11 +690,7 @@ export const MapreduceJob = {
         }
         Object.entries(message.properties).forEach(([key, value]) => {
             MapreduceJob_PropertiesEntry.encode(
-                {
-                    $type: 'yandex.cloud.dataproc.manager.v1.MapreduceJob.PropertiesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -876,17 +823,9 @@ export const MapreduceJob = {
     },
 };
 
-messageTypeRegistry.set(MapreduceJob.$type, MapreduceJob);
-
-const baseMapreduceJob_PropertiesEntry: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.MapreduceJob.PropertiesEntry',
-    key: '',
-    value: '',
-};
+const baseMapreduceJob_PropertiesEntry: object = { key: '', value: '' };
 
 export const MapreduceJob_PropertiesEntry = {
-    $type: 'yandex.cloud.dataproc.manager.v1.MapreduceJob.PropertiesEntry' as const,
-
     encode(
         message: MapreduceJob_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -946,10 +885,7 @@ export const MapreduceJob_PropertiesEntry = {
     },
 };
 
-messageTypeRegistry.set(MapreduceJob_PropertiesEntry.$type, MapreduceJob_PropertiesEntry);
-
 const baseSparkJob: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.SparkJob',
     args: '',
     jarFileUris: '',
     fileUris: '',
@@ -962,8 +898,6 @@ const baseSparkJob: object = {
 };
 
 export const SparkJob = {
-    $type: 'yandex.cloud.dataproc.manager.v1.SparkJob' as const,
-
     encode(message: SparkJob, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.args) {
             writer.uint32(10).string(v!);
@@ -979,11 +913,7 @@ export const SparkJob = {
         }
         Object.entries(message.properties).forEach(([key, value]) => {
             SparkJob_PropertiesEntry.encode(
-                {
-                    $type: 'yandex.cloud.dataproc.manager.v1.SparkJob.PropertiesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -1158,17 +1088,9 @@ export const SparkJob = {
     },
 };
 
-messageTypeRegistry.set(SparkJob.$type, SparkJob);
-
-const baseSparkJob_PropertiesEntry: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.SparkJob.PropertiesEntry',
-    key: '',
-    value: '',
-};
+const baseSparkJob_PropertiesEntry: object = { key: '', value: '' };
 
 export const SparkJob_PropertiesEntry = {
-    $type: 'yandex.cloud.dataproc.manager.v1.SparkJob.PropertiesEntry' as const,
-
     encode(
         message: SparkJob_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1228,10 +1150,7 @@ export const SparkJob_PropertiesEntry = {
     },
 };
 
-messageTypeRegistry.set(SparkJob_PropertiesEntry.$type, SparkJob_PropertiesEntry);
-
 const basePysparkJob: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.PysparkJob',
     args: '',
     jarFileUris: '',
     fileUris: '',
@@ -1244,8 +1163,6 @@ const basePysparkJob: object = {
 };
 
 export const PysparkJob = {
-    $type: 'yandex.cloud.dataproc.manager.v1.PysparkJob' as const,
-
     encode(message: PysparkJob, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.args) {
             writer.uint32(10).string(v!);
@@ -1261,11 +1178,7 @@ export const PysparkJob = {
         }
         Object.entries(message.properties).forEach(([key, value]) => {
             PysparkJob_PropertiesEntry.encode(
-                {
-                    $type: 'yandex.cloud.dataproc.manager.v1.PysparkJob.PropertiesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -1443,17 +1356,9 @@ export const PysparkJob = {
     },
 };
 
-messageTypeRegistry.set(PysparkJob.$type, PysparkJob);
-
-const basePysparkJob_PropertiesEntry: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.PysparkJob.PropertiesEntry',
-    key: '',
-    value: '',
-};
+const basePysparkJob_PropertiesEntry: object = { key: '', value: '' };
 
 export const PysparkJob_PropertiesEntry = {
-    $type: 'yandex.cloud.dataproc.manager.v1.PysparkJob.PropertiesEntry' as const,
-
     encode(
         message: PysparkJob_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1513,13 +1418,9 @@ export const PysparkJob_PropertiesEntry = {
     },
 };
 
-messageTypeRegistry.set(PysparkJob_PropertiesEntry.$type, PysparkJob_PropertiesEntry);
-
-const baseQueryList: object = { $type: 'yandex.cloud.dataproc.manager.v1.QueryList', queries: '' };
+const baseQueryList: object = { queries: '' };
 
 export const QueryList = {
-    $type: 'yandex.cloud.dataproc.manager.v1.QueryList' as const,
-
     encode(message: QueryList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.queries) {
             writer.uint32(10).string(v!);
@@ -1569,25 +1470,13 @@ export const QueryList = {
     },
 };
 
-messageTypeRegistry.set(QueryList.$type, QueryList);
-
-const baseHiveJob: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.HiveJob',
-    continueOnFailure: false,
-    jarFileUris: '',
-};
+const baseHiveJob: object = { continueOnFailure: false, jarFileUris: '' };
 
 export const HiveJob = {
-    $type: 'yandex.cloud.dataproc.manager.v1.HiveJob' as const,
-
     encode(message: HiveJob, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         Object.entries(message.properties).forEach(([key, value]) => {
             HiveJob_PropertiesEntry.encode(
-                {
-                    $type: 'yandex.cloud.dataproc.manager.v1.HiveJob.PropertiesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(10).fork(),
             ).ldelim();
         });
@@ -1596,11 +1485,7 @@ export const HiveJob = {
         }
         Object.entries(message.scriptVariables).forEach(([key, value]) => {
             HiveJob_ScriptVariablesEntry.encode(
-                {
-                    $type: 'yandex.cloud.dataproc.manager.v1.HiveJob.ScriptVariablesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(26).fork(),
             ).ldelim();
         });
@@ -1744,17 +1629,9 @@ export const HiveJob = {
     },
 };
 
-messageTypeRegistry.set(HiveJob.$type, HiveJob);
-
-const baseHiveJob_PropertiesEntry: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.HiveJob.PropertiesEntry',
-    key: '',
-    value: '',
-};
+const baseHiveJob_PropertiesEntry: object = { key: '', value: '' };
 
 export const HiveJob_PropertiesEntry = {
-    $type: 'yandex.cloud.dataproc.manager.v1.HiveJob.PropertiesEntry' as const,
-
     encode(message: HiveJob_PropertiesEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1811,17 +1688,9 @@ export const HiveJob_PropertiesEntry = {
     },
 };
 
-messageTypeRegistry.set(HiveJob_PropertiesEntry.$type, HiveJob_PropertiesEntry);
-
-const baseHiveJob_ScriptVariablesEntry: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.HiveJob.ScriptVariablesEntry',
-    key: '',
-    value: '',
-};
+const baseHiveJob_ScriptVariablesEntry: object = { key: '', value: '' };
 
 export const HiveJob_ScriptVariablesEntry = {
-    $type: 'yandex.cloud.dataproc.manager.v1.HiveJob.ScriptVariablesEntry' as const,
-
     encode(
         message: HiveJob_ScriptVariablesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1881,10 +1750,7 @@ export const HiveJob_ScriptVariablesEntry = {
     },
 };
 
-messageTypeRegistry.set(HiveJob_ScriptVariablesEntry.$type, HiveJob_ScriptVariablesEntry);
-
 const baseSupportJob: object = {
-    $type: 'yandex.cloud.dataproc.manager.v1.SupportJob',
     id: '',
     clusterId: '',
     status: 0,
@@ -1894,8 +1760,6 @@ const baseSupportJob: object = {
 };
 
 export const SupportJob = {
-    $type: 'yandex.cloud.dataproc.manager.v1.SupportJob' as const,
-
     encode(message: SupportJob, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -2031,8 +1895,6 @@ export const SupportJob = {
     },
 };
 
-messageTypeRegistry.set(SupportJob.$type, SupportJob);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -2053,21 +1915,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

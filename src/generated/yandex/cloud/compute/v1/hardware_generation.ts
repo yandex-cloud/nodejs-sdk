@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -50,7 +49,6 @@ export function pCITopologyToJSON(object: PCITopology): string {
  * These features significantly determine how the instance is created, thus cannot be changed after the fact.
  */
 export interface HardwareGeneration {
-    $type: 'yandex.cloud.compute.v1.HardwareGeneration';
     legacyFeatures?: LegacyHardwareFeatures | undefined;
     generation2Features?: Generation2HardwareFeatures | undefined;
 }
@@ -60,7 +58,6 @@ export interface HardwareGeneration {
  * Allows switching to PCI_TOPOLOGY_V2 and back.
  */
 export interface LegacyHardwareFeatures {
-    $type: 'yandex.cloud.compute.v1.LegacyHardwareFeatures';
     pciTopology: PCITopology;
 }
 
@@ -68,15 +65,11 @@ export interface LegacyHardwareFeatures {
  * A second hardware generation, which by default assumes PCI_TOPOLOGY_V2
  * and UEFI boot (with UEFI related features).
  */
-export interface Generation2HardwareFeatures {
-    $type: 'yandex.cloud.compute.v1.Generation2HardwareFeatures';
-}
+export interface Generation2HardwareFeatures {}
 
-const baseHardwareGeneration: object = { $type: 'yandex.cloud.compute.v1.HardwareGeneration' };
+const baseHardwareGeneration: object = {};
 
 export const HardwareGeneration = {
-    $type: 'yandex.cloud.compute.v1.HardwareGeneration' as const,
-
     encode(message: HardwareGeneration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.legacyFeatures !== undefined) {
             LegacyHardwareFeatures.encode(
@@ -159,16 +152,9 @@ export const HardwareGeneration = {
     },
 };
 
-messageTypeRegistry.set(HardwareGeneration.$type, HardwareGeneration);
-
-const baseLegacyHardwareFeatures: object = {
-    $type: 'yandex.cloud.compute.v1.LegacyHardwareFeatures',
-    pciTopology: 0,
-};
+const baseLegacyHardwareFeatures: object = { pciTopology: 0 };
 
 export const LegacyHardwareFeatures = {
-    $type: 'yandex.cloud.compute.v1.LegacyHardwareFeatures' as const,
-
     encode(message: LegacyHardwareFeatures, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pciTopology !== 0) {
             writer.uint32(8).int32(message.pciTopology);
@@ -219,15 +205,9 @@ export const LegacyHardwareFeatures = {
     },
 };
 
-messageTypeRegistry.set(LegacyHardwareFeatures.$type, LegacyHardwareFeatures);
-
-const baseGeneration2HardwareFeatures: object = {
-    $type: 'yandex.cloud.compute.v1.Generation2HardwareFeatures',
-};
+const baseGeneration2HardwareFeatures: object = {};
 
 export const Generation2HardwareFeatures = {
-    $type: 'yandex.cloud.compute.v1.Generation2HardwareFeatures' as const,
-
     encode(_: Generation2HardwareFeatures, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -265,8 +245,6 @@ export const Generation2HardwareFeatures = {
     },
 };
 
-messageTypeRegistry.set(Generation2HardwareFeatures.$type, Generation2HardwareFeatures);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -276,16 +254,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

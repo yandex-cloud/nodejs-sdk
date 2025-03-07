@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -28,7 +27,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.iot.devices.v1';
 
 export interface GetRegistryRequest {
-    $type: 'yandex.cloud.iot.devices.v1.GetRegistryRequest';
     /**
      * ID of the registry to return.
      *
@@ -38,7 +36,6 @@ export interface GetRegistryRequest {
 }
 
 export interface GetByNameRegistryRequest {
-    $type: 'yandex.cloud.iot.devices.v1.GetByNameRegistryRequest';
     /**
      * ID of the folder to list registries in.
      *
@@ -54,7 +51,6 @@ export interface GetByNameRegistryRequest {
 }
 
 export interface ListRegistriesRequest {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistriesRequest';
     /**
      * ID of the folder to list registries in.
      *
@@ -76,7 +72,6 @@ export interface ListRegistriesRequest {
 }
 
 export interface ListRegistriesResponse {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistriesResponse';
     /** List of registries. */
     registries: Registry[];
     /**
@@ -90,7 +85,6 @@ export interface ListRegistriesResponse {
 }
 
 export interface CreateRegistryRequest {
-    $type: 'yandex.cloud.iot.devices.v1.CreateRegistryRequest';
     /**
      * ID of the folder to create a registry in.
      *
@@ -116,26 +110,22 @@ export interface CreateRegistryRequest {
 }
 
 export interface CreateRegistryRequest_LabelsEntry {
-    $type: 'yandex.cloud.iot.devices.v1.CreateRegistryRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Specification of a registry certificate. */
 export interface CreateRegistryRequest_Certificate {
-    $type: 'yandex.cloud.iot.devices.v1.CreateRegistryRequest.Certificate';
     /** Public part of the registry certificate. */
     certificateData: string;
 }
 
 export interface CreateRegistryMetadata {
-    $type: 'yandex.cloud.iot.devices.v1.CreateRegistryMetadata';
     /** ID of the registry that is being created. */
     registryId: string;
 }
 
 export interface UpdateRegistryRequest {
-    $type: 'yandex.cloud.iot.devices.v1.UpdateRegistryRequest';
     /**
      * ID of the registry to update.
      *
@@ -159,19 +149,16 @@ export interface UpdateRegistryRequest {
 }
 
 export interface UpdateRegistryRequest_LabelsEntry {
-    $type: 'yandex.cloud.iot.devices.v1.UpdateRegistryRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateRegistryMetadata {
-    $type: 'yandex.cloud.iot.devices.v1.UpdateRegistryMetadata';
     /** ID of the registry that is being updated. */
     registryId: string;
 }
 
 export interface DeleteRegistryRequest {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteRegistryRequest';
     /**
      * ID of the registry to delete.
      *
@@ -181,25 +168,21 @@ export interface DeleteRegistryRequest {
 }
 
 export interface DeleteRegistryMetadata {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteRegistryMetadata';
     /** ID of the registry that is being deleted. */
     registryId: string;
 }
 
 export interface ListRegistryCertificatesRequest {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistryCertificatesRequest';
     /** ID of the registry to list certificates for. */
     registryId: string;
 }
 
 export interface ListRegistryCertificatesResponse {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistryCertificatesResponse';
     /** List of certificates for the specified registry. */
     certificates: RegistryCertificate[];
 }
 
 export interface AddRegistryCertificateRequest {
-    $type: 'yandex.cloud.iot.devices.v1.AddRegistryCertificateRequest';
     /**
      * ID of the registry for which the certificate is being added.
      *
@@ -211,7 +194,6 @@ export interface AddRegistryCertificateRequest {
 }
 
 export interface AddRegistryCertificateMetadata {
-    $type: 'yandex.cloud.iot.devices.v1.AddRegistryCertificateMetadata';
     /** ID of the registry certificate that is being added. */
     registryId: string;
     /** Fingerprint of the certificate that is being added. */
@@ -219,7 +201,6 @@ export interface AddRegistryCertificateMetadata {
 }
 
 export interface DeleteRegistryCertificateRequest {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteRegistryCertificateRequest';
     /**
      * ID of the registry to delete a certificate for.
      *
@@ -231,7 +212,6 @@ export interface DeleteRegistryCertificateRequest {
 }
 
 export interface DeleteRegistryCertificateMetadata {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteRegistryCertificateMetadata';
     /** ID of a registry for which the certificate is being delete. */
     registryId: string;
     /** Fingerprint of the certificate to deleted. */
@@ -239,7 +219,6 @@ export interface DeleteRegistryCertificateMetadata {
 }
 
 export interface ListRegistryPasswordsRequest {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistryPasswordsRequest';
     /**
      * ID of the registry to list passwords in.
      *
@@ -249,13 +228,11 @@ export interface ListRegistryPasswordsRequest {
 }
 
 export interface ListRegistryPasswordsResponse {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistryPasswordsResponse';
     /** List of passwords for the specified registry. */
     passwords: RegistryPassword[];
 }
 
 export interface AddRegistryPasswordRequest {
-    $type: 'yandex.cloud.iot.devices.v1.AddRegistryPasswordRequest';
     /**
      * ID of the registry to add a password for.
      *
@@ -271,7 +248,6 @@ export interface AddRegistryPasswordRequest {
 }
 
 export interface AddRegistryPasswordMetadata {
-    $type: 'yandex.cloud.iot.devices.v1.AddRegistryPasswordMetadata';
     /** ID of the registry for which the password is being added. */
     registryId: string;
     /** ID of a password that is being added. */
@@ -279,7 +255,6 @@ export interface AddRegistryPasswordMetadata {
 }
 
 export interface DeleteRegistryPasswordRequest {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteRegistryPasswordRequest';
     /**
      * ID of the registry to delete a password for.
      *
@@ -295,7 +270,6 @@ export interface DeleteRegistryPasswordRequest {
 }
 
 export interface DeleteRegistryPasswordMetadata {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteRegistryPasswordMetadata';
     /** ID of a registry for which the password is being delete. */
     registryId: string;
     /**
@@ -307,7 +281,6 @@ export interface DeleteRegistryPasswordMetadata {
 }
 
 export interface ListDeviceTopicAliasesRequest {
-    $type: 'yandex.cloud.iot.devices.v1.ListDeviceTopicAliasesRequest';
     /**
      * ID of the registry to list aliases for device topic.
      *
@@ -329,7 +302,6 @@ export interface ListDeviceTopicAliasesRequest {
 }
 
 export interface ListDeviceTopicAliasesResponse {
-    $type: 'yandex.cloud.iot.devices.v1.ListDeviceTopicAliasesResponse';
     /** List of device aliases for the specified registry. */
     aliases: DeviceAlias[];
     /**
@@ -343,7 +315,6 @@ export interface ListDeviceTopicAliasesResponse {
 }
 
 export interface ListRegistryOperationsRequest {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistryOperationsRequest';
     /** ID of the registry to list operations for. */
     registryId: string;
     /**
@@ -366,7 +337,6 @@ export interface ListRegistryOperationsRequest {
 }
 
 export interface ListRegistryOperationsResponse {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistryOperationsResponse';
     /** List of operations for the specified registry. */
     operations: Operation[];
     /**
@@ -380,7 +350,6 @@ export interface ListRegistryOperationsResponse {
 }
 
 export interface AddDataStreamExportRequest {
-    $type: 'yandex.cloud.iot.devices.v1.AddDataStreamExportRequest';
     /** Name of the YDS export. The name must be unique within the folder. */
     name: string;
     /**
@@ -400,7 +369,6 @@ export interface AddDataStreamExportRequest {
 }
 
 export interface AddDataStreamExportMetadata {
-    $type: 'yandex.cloud.iot.devices.v1.AddDataStreamExportMetadata';
     /** ID of the registry for which the YDS export was added. */
     registryId: string;
     /** ID of the added YDS export. */
@@ -408,7 +376,6 @@ export interface AddDataStreamExportMetadata {
 }
 
 export interface DeleteDataStreamExportRequest {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteDataStreamExportRequest';
     /** ID of a registry for which the YDS export is being deleted. */
     registryId: string;
     /** ID of the YDS export to delete. */
@@ -416,7 +383,6 @@ export interface DeleteDataStreamExportRequest {
 }
 
 export interface DeleteDataStreamExportMetadata {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteDataStreamExportMetadata';
     /** ID of a registry for which the YDS export was deleted. */
     registryId: string;
     /** ID of the deleted YDS export. */
@@ -424,7 +390,6 @@ export interface DeleteDataStreamExportMetadata {
 }
 
 export interface ListDataStreamExportsRequest {
-    $type: 'yandex.cloud.iot.devices.v1.ListDataStreamExportsRequest';
     /**
      * ID of the registry to list YDS exports in.
      *
@@ -434,43 +399,33 @@ export interface ListDataStreamExportsRequest {
 }
 
 export interface ListDataStreamExportsResponse {
-    $type: 'yandex.cloud.iot.devices.v1.ListDataStreamExportsResponse';
     /** List of YDS exports for the specified registry. */
     dataStreamExports: DataStreamExport[];
 }
 
 export interface DisableRegistryRequest {
-    $type: 'yandex.cloud.iot.devices.v1.DisableRegistryRequest';
     /** ID of the registry to disable. */
     registryId: string;
 }
 
 export interface DisableRegistryMetadata {
-    $type: 'yandex.cloud.iot.devices.v1.DisableRegistryMetadata';
     /** ID of the registry that was disabled. */
     registryId: string;
 }
 
 export interface EnableRegistryRequest {
-    $type: 'yandex.cloud.iot.devices.v1.EnableRegistryRequest';
     /** ID of the registry to enable. */
     registryId: string;
 }
 
 export interface EnableRegistryMetadata {
-    $type: 'yandex.cloud.iot.devices.v1.EnableRegistryMetadata';
     /** ID of the registry that was enabled. */
     registryId: string;
 }
 
-const baseGetRegistryRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.GetRegistryRequest',
-    registryId: '',
-};
+const baseGetRegistryRequest: object = { registryId: '' };
 
 export const GetRegistryRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.GetRegistryRequest' as const,
-
     encode(message: GetRegistryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -520,17 +475,9 @@ export const GetRegistryRequest = {
     },
 };
 
-messageTypeRegistry.set(GetRegistryRequest.$type, GetRegistryRequest);
-
-const baseGetByNameRegistryRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.GetByNameRegistryRequest',
-    folderId: '',
-    registryName: '',
-};
+const baseGetByNameRegistryRequest: object = { folderId: '', registryName: '' };
 
 export const GetByNameRegistryRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.GetByNameRegistryRequest' as const,
-
     encode(
         message: GetByNameRegistryRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -595,18 +542,9 @@ export const GetByNameRegistryRequest = {
     },
 };
 
-messageTypeRegistry.set(GetByNameRegistryRequest.$type, GetByNameRegistryRequest);
-
-const baseListRegistriesRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistriesRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListRegistriesRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
 export const ListRegistriesRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistriesRequest' as const,
-
     encode(message: ListRegistriesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -678,16 +616,9 @@ export const ListRegistriesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListRegistriesRequest.$type, ListRegistriesRequest);
-
-const baseListRegistriesResponse: object = {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistriesResponse',
-    nextPageToken: '',
-};
+const baseListRegistriesResponse: object = { nextPageToken: '' };
 
 export const ListRegistriesResponse = {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistriesResponse' as const,
-
     encode(message: ListRegistriesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.registries) {
             Registry.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -751,19 +682,9 @@ export const ListRegistriesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListRegistriesResponse.$type, ListRegistriesResponse);
-
-const baseCreateRegistryRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.CreateRegistryRequest',
-    folderId: '',
-    name: '',
-    description: '',
-    password: '',
-};
+const baseCreateRegistryRequest: object = { folderId: '', name: '', description: '', password: '' };
 
 export const CreateRegistryRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.CreateRegistryRequest' as const,
-
     encode(message: CreateRegistryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -776,11 +697,7 @@ export const CreateRegistryRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateRegistryRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.iot.devices.v1.CreateRegistryRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -927,17 +844,9 @@ export const CreateRegistryRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateRegistryRequest.$type, CreateRegistryRequest);
-
-const baseCreateRegistryRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.iot.devices.v1.CreateRegistryRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateRegistryRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateRegistryRequest_LabelsEntry = {
-    $type: 'yandex.cloud.iot.devices.v1.CreateRegistryRequest.LabelsEntry' as const,
-
     encode(
         message: CreateRegistryRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1003,16 +912,9 @@ export const CreateRegistryRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateRegistryRequest_LabelsEntry.$type, CreateRegistryRequest_LabelsEntry);
-
-const baseCreateRegistryRequest_Certificate: object = {
-    $type: 'yandex.cloud.iot.devices.v1.CreateRegistryRequest.Certificate',
-    certificateData: '',
-};
+const baseCreateRegistryRequest_Certificate: object = { certificateData: '' };
 
 export const CreateRegistryRequest_Certificate = {
-    $type: 'yandex.cloud.iot.devices.v1.CreateRegistryRequest.Certificate' as const,
-
     encode(
         message: CreateRegistryRequest_Certificate,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1071,16 +973,9 @@ export const CreateRegistryRequest_Certificate = {
     },
 };
 
-messageTypeRegistry.set(CreateRegistryRequest_Certificate.$type, CreateRegistryRequest_Certificate);
-
-const baseCreateRegistryMetadata: object = {
-    $type: 'yandex.cloud.iot.devices.v1.CreateRegistryMetadata',
-    registryId: '',
-};
+const baseCreateRegistryMetadata: object = { registryId: '' };
 
 export const CreateRegistryMetadata = {
-    $type: 'yandex.cloud.iot.devices.v1.CreateRegistryMetadata' as const,
-
     encode(message: CreateRegistryMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -1130,18 +1025,9 @@ export const CreateRegistryMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateRegistryMetadata.$type, CreateRegistryMetadata);
-
-const baseUpdateRegistryRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.UpdateRegistryRequest',
-    registryId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateRegistryRequest: object = { registryId: '', name: '', description: '' };
 
 export const UpdateRegistryRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.UpdateRegistryRequest' as const,
-
     encode(message: UpdateRegistryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -1157,11 +1043,7 @@ export const UpdateRegistryRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateRegistryRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.iot.devices.v1.UpdateRegistryRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -1290,17 +1172,9 @@ export const UpdateRegistryRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateRegistryRequest.$type, UpdateRegistryRequest);
-
-const baseUpdateRegistryRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.iot.devices.v1.UpdateRegistryRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateRegistryRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateRegistryRequest_LabelsEntry = {
-    $type: 'yandex.cloud.iot.devices.v1.UpdateRegistryRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateRegistryRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1366,16 +1240,9 @@ export const UpdateRegistryRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateRegistryRequest_LabelsEntry.$type, UpdateRegistryRequest_LabelsEntry);
-
-const baseUpdateRegistryMetadata: object = {
-    $type: 'yandex.cloud.iot.devices.v1.UpdateRegistryMetadata',
-    registryId: '',
-};
+const baseUpdateRegistryMetadata: object = { registryId: '' };
 
 export const UpdateRegistryMetadata = {
-    $type: 'yandex.cloud.iot.devices.v1.UpdateRegistryMetadata' as const,
-
     encode(message: UpdateRegistryMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -1425,16 +1292,9 @@ export const UpdateRegistryMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateRegistryMetadata.$type, UpdateRegistryMetadata);
-
-const baseDeleteRegistryRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteRegistryRequest',
-    registryId: '',
-};
+const baseDeleteRegistryRequest: object = { registryId: '' };
 
 export const DeleteRegistryRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteRegistryRequest' as const,
-
     encode(message: DeleteRegistryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -1484,16 +1344,9 @@ export const DeleteRegistryRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteRegistryRequest.$type, DeleteRegistryRequest);
-
-const baseDeleteRegistryMetadata: object = {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteRegistryMetadata',
-    registryId: '',
-};
+const baseDeleteRegistryMetadata: object = { registryId: '' };
 
 export const DeleteRegistryMetadata = {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteRegistryMetadata' as const,
-
     encode(message: DeleteRegistryMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -1543,16 +1396,9 @@ export const DeleteRegistryMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteRegistryMetadata.$type, DeleteRegistryMetadata);
-
-const baseListRegistryCertificatesRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistryCertificatesRequest',
-    registryId: '',
-};
+const baseListRegistryCertificatesRequest: object = { registryId: '' };
 
 export const ListRegistryCertificatesRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistryCertificatesRequest' as const,
-
     encode(
         message: ListRegistryCertificatesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1611,15 +1457,9 @@ export const ListRegistryCertificatesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListRegistryCertificatesRequest.$type, ListRegistryCertificatesRequest);
-
-const baseListRegistryCertificatesResponse: object = {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistryCertificatesResponse',
-};
+const baseListRegistryCertificatesResponse: object = {};
 
 export const ListRegistryCertificatesResponse = {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistryCertificatesResponse' as const,
-
     encode(
         message: ListRegistryCertificatesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1685,17 +1525,9 @@ export const ListRegistryCertificatesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListRegistryCertificatesResponse.$type, ListRegistryCertificatesResponse);
-
-const baseAddRegistryCertificateRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.AddRegistryCertificateRequest',
-    registryId: '',
-    certificateData: '',
-};
+const baseAddRegistryCertificateRequest: object = { registryId: '', certificateData: '' };
 
 export const AddRegistryCertificateRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.AddRegistryCertificateRequest' as const,
-
     encode(
         message: AddRegistryCertificateRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1760,17 +1592,9 @@ export const AddRegistryCertificateRequest = {
     },
 };
 
-messageTypeRegistry.set(AddRegistryCertificateRequest.$type, AddRegistryCertificateRequest);
-
-const baseAddRegistryCertificateMetadata: object = {
-    $type: 'yandex.cloud.iot.devices.v1.AddRegistryCertificateMetadata',
-    registryId: '',
-    fingerprint: '',
-};
+const baseAddRegistryCertificateMetadata: object = { registryId: '', fingerprint: '' };
 
 export const AddRegistryCertificateMetadata = {
-    $type: 'yandex.cloud.iot.devices.v1.AddRegistryCertificateMetadata' as const,
-
     encode(
         message: AddRegistryCertificateMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1835,17 +1659,9 @@ export const AddRegistryCertificateMetadata = {
     },
 };
 
-messageTypeRegistry.set(AddRegistryCertificateMetadata.$type, AddRegistryCertificateMetadata);
-
-const baseDeleteRegistryCertificateRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteRegistryCertificateRequest',
-    registryId: '',
-    fingerprint: '',
-};
+const baseDeleteRegistryCertificateRequest: object = { registryId: '', fingerprint: '' };
 
 export const DeleteRegistryCertificateRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteRegistryCertificateRequest' as const,
-
     encode(
         message: DeleteRegistryCertificateRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1916,17 +1732,9 @@ export const DeleteRegistryCertificateRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteRegistryCertificateRequest.$type, DeleteRegistryCertificateRequest);
-
-const baseDeleteRegistryCertificateMetadata: object = {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteRegistryCertificateMetadata',
-    registryId: '',
-    fingerprint: '',
-};
+const baseDeleteRegistryCertificateMetadata: object = { registryId: '', fingerprint: '' };
 
 export const DeleteRegistryCertificateMetadata = {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteRegistryCertificateMetadata' as const,
-
     encode(
         message: DeleteRegistryCertificateMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1997,16 +1805,9 @@ export const DeleteRegistryCertificateMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteRegistryCertificateMetadata.$type, DeleteRegistryCertificateMetadata);
-
-const baseListRegistryPasswordsRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistryPasswordsRequest',
-    registryId: '',
-};
+const baseListRegistryPasswordsRequest: object = { registryId: '' };
 
 export const ListRegistryPasswordsRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistryPasswordsRequest' as const,
-
     encode(
         message: ListRegistryPasswordsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2059,15 +1860,9 @@ export const ListRegistryPasswordsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListRegistryPasswordsRequest.$type, ListRegistryPasswordsRequest);
-
-const baseListRegistryPasswordsResponse: object = {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistryPasswordsResponse',
-};
+const baseListRegistryPasswordsResponse: object = {};
 
 export const ListRegistryPasswordsResponse = {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistryPasswordsResponse' as const,
-
     encode(
         message: ListRegistryPasswordsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2124,17 +1919,9 @@ export const ListRegistryPasswordsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListRegistryPasswordsResponse.$type, ListRegistryPasswordsResponse);
-
-const baseAddRegistryPasswordRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.AddRegistryPasswordRequest',
-    registryId: '',
-    password: '',
-};
+const baseAddRegistryPasswordRequest: object = { registryId: '', password: '' };
 
 export const AddRegistryPasswordRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.AddRegistryPasswordRequest' as const,
-
     encode(
         message: AddRegistryPasswordRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2199,17 +1986,9 @@ export const AddRegistryPasswordRequest = {
     },
 };
 
-messageTypeRegistry.set(AddRegistryPasswordRequest.$type, AddRegistryPasswordRequest);
-
-const baseAddRegistryPasswordMetadata: object = {
-    $type: 'yandex.cloud.iot.devices.v1.AddRegistryPasswordMetadata',
-    registryId: '',
-    passwordId: '',
-};
+const baseAddRegistryPasswordMetadata: object = { registryId: '', passwordId: '' };
 
 export const AddRegistryPasswordMetadata = {
-    $type: 'yandex.cloud.iot.devices.v1.AddRegistryPasswordMetadata' as const,
-
     encode(
         message: AddRegistryPasswordMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2274,17 +2053,9 @@ export const AddRegistryPasswordMetadata = {
     },
 };
 
-messageTypeRegistry.set(AddRegistryPasswordMetadata.$type, AddRegistryPasswordMetadata);
-
-const baseDeleteRegistryPasswordRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteRegistryPasswordRequest',
-    registryId: '',
-    passwordId: '',
-};
+const baseDeleteRegistryPasswordRequest: object = { registryId: '', passwordId: '' };
 
 export const DeleteRegistryPasswordRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteRegistryPasswordRequest' as const,
-
     encode(
         message: DeleteRegistryPasswordRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2349,17 +2120,9 @@ export const DeleteRegistryPasswordRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteRegistryPasswordRequest.$type, DeleteRegistryPasswordRequest);
-
-const baseDeleteRegistryPasswordMetadata: object = {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteRegistryPasswordMetadata',
-    registryId: '',
-    passwordId: '',
-};
+const baseDeleteRegistryPasswordMetadata: object = { registryId: '', passwordId: '' };
 
 export const DeleteRegistryPasswordMetadata = {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteRegistryPasswordMetadata' as const,
-
     encode(
         message: DeleteRegistryPasswordMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2424,18 +2187,9 @@ export const DeleteRegistryPasswordMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteRegistryPasswordMetadata.$type, DeleteRegistryPasswordMetadata);
-
-const baseListDeviceTopicAliasesRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.ListDeviceTopicAliasesRequest',
-    registryId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListDeviceTopicAliasesRequest: object = { registryId: '', pageSize: 0, pageToken: '' };
 
 export const ListDeviceTopicAliasesRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.ListDeviceTopicAliasesRequest' as const,
-
     encode(
         message: ListDeviceTopicAliasesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2510,16 +2264,9 @@ export const ListDeviceTopicAliasesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListDeviceTopicAliasesRequest.$type, ListDeviceTopicAliasesRequest);
-
-const baseListDeviceTopicAliasesResponse: object = {
-    $type: 'yandex.cloud.iot.devices.v1.ListDeviceTopicAliasesResponse',
-    nextPageToken: '',
-};
+const baseListDeviceTopicAliasesResponse: object = { nextPageToken: '' };
 
 export const ListDeviceTopicAliasesResponse = {
-    $type: 'yandex.cloud.iot.devices.v1.ListDeviceTopicAliasesResponse' as const,
-
     encode(
         message: ListDeviceTopicAliasesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2586,10 +2333,7 @@ export const ListDeviceTopicAliasesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListDeviceTopicAliasesResponse.$type, ListDeviceTopicAliasesResponse);
-
 const baseListRegistryOperationsRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistryOperationsRequest',
     registryId: '',
     pageSize: 0,
     pageToken: '',
@@ -2597,8 +2341,6 @@ const baseListRegistryOperationsRequest: object = {
 };
 
 export const ListRegistryOperationsRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistryOperationsRequest' as const,
-
     encode(
         message: ListRegistryOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2683,16 +2425,9 @@ export const ListRegistryOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListRegistryOperationsRequest.$type, ListRegistryOperationsRequest);
-
-const baseListRegistryOperationsResponse: object = {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistryOperationsResponse',
-    nextPageToken: '',
-};
+const baseListRegistryOperationsResponse: object = { nextPageToken: '' };
 
 export const ListRegistryOperationsResponse = {
-    $type: 'yandex.cloud.iot.devices.v1.ListRegistryOperationsResponse' as const,
-
     encode(
         message: ListRegistryOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2759,10 +2494,7 @@ export const ListRegistryOperationsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListRegistryOperationsResponse.$type, ListRegistryOperationsResponse);
-
 const baseAddDataStreamExportRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.AddDataStreamExportRequest',
     name: '',
     registryId: '',
     mqttTopicFilter: '',
@@ -2772,8 +2504,6 @@ const baseAddDataStreamExportRequest: object = {
 };
 
 export const AddDataStreamExportRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.AddDataStreamExportRequest' as const,
-
     encode(
         message: AddDataStreamExportRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2881,17 +2611,9 @@ export const AddDataStreamExportRequest = {
     },
 };
 
-messageTypeRegistry.set(AddDataStreamExportRequest.$type, AddDataStreamExportRequest);
-
-const baseAddDataStreamExportMetadata: object = {
-    $type: 'yandex.cloud.iot.devices.v1.AddDataStreamExportMetadata',
-    registryId: '',
-    dataStreamExportId: '',
-};
+const baseAddDataStreamExportMetadata: object = { registryId: '', dataStreamExportId: '' };
 
 export const AddDataStreamExportMetadata = {
-    $type: 'yandex.cloud.iot.devices.v1.AddDataStreamExportMetadata' as const,
-
     encode(
         message: AddDataStreamExportMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2957,17 +2679,9 @@ export const AddDataStreamExportMetadata = {
     },
 };
 
-messageTypeRegistry.set(AddDataStreamExportMetadata.$type, AddDataStreamExportMetadata);
-
-const baseDeleteDataStreamExportRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteDataStreamExportRequest',
-    registryId: '',
-    dataStreamExportId: '',
-};
+const baseDeleteDataStreamExportRequest: object = { registryId: '', dataStreamExportId: '' };
 
 export const DeleteDataStreamExportRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteDataStreamExportRequest' as const,
-
     encode(
         message: DeleteDataStreamExportRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3033,17 +2747,9 @@ export const DeleteDataStreamExportRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteDataStreamExportRequest.$type, DeleteDataStreamExportRequest);
-
-const baseDeleteDataStreamExportMetadata: object = {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteDataStreamExportMetadata',
-    registryId: '',
-    dataStreamExportId: '',
-};
+const baseDeleteDataStreamExportMetadata: object = { registryId: '', dataStreamExportId: '' };
 
 export const DeleteDataStreamExportMetadata = {
-    $type: 'yandex.cloud.iot.devices.v1.DeleteDataStreamExportMetadata' as const,
-
     encode(
         message: DeleteDataStreamExportMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3109,16 +2815,9 @@ export const DeleteDataStreamExportMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteDataStreamExportMetadata.$type, DeleteDataStreamExportMetadata);
-
-const baseListDataStreamExportsRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.ListDataStreamExportsRequest',
-    registryId: '',
-};
+const baseListDataStreamExportsRequest: object = { registryId: '' };
 
 export const ListDataStreamExportsRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.ListDataStreamExportsRequest' as const,
-
     encode(
         message: ListDataStreamExportsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3171,15 +2870,9 @@ export const ListDataStreamExportsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListDataStreamExportsRequest.$type, ListDataStreamExportsRequest);
-
-const baseListDataStreamExportsResponse: object = {
-    $type: 'yandex.cloud.iot.devices.v1.ListDataStreamExportsResponse',
-};
+const baseListDataStreamExportsResponse: object = {};
 
 export const ListDataStreamExportsResponse = {
-    $type: 'yandex.cloud.iot.devices.v1.ListDataStreamExportsResponse' as const,
-
     encode(
         message: ListDataStreamExportsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3241,16 +2934,9 @@ export const ListDataStreamExportsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListDataStreamExportsResponse.$type, ListDataStreamExportsResponse);
-
-const baseDisableRegistryRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.DisableRegistryRequest',
-    registryId: '',
-};
+const baseDisableRegistryRequest: object = { registryId: '' };
 
 export const DisableRegistryRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.DisableRegistryRequest' as const,
-
     encode(message: DisableRegistryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -3300,16 +2986,9 @@ export const DisableRegistryRequest = {
     },
 };
 
-messageTypeRegistry.set(DisableRegistryRequest.$type, DisableRegistryRequest);
-
-const baseDisableRegistryMetadata: object = {
-    $type: 'yandex.cloud.iot.devices.v1.DisableRegistryMetadata',
-    registryId: '',
-};
+const baseDisableRegistryMetadata: object = { registryId: '' };
 
 export const DisableRegistryMetadata = {
-    $type: 'yandex.cloud.iot.devices.v1.DisableRegistryMetadata' as const,
-
     encode(message: DisableRegistryMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -3359,16 +3038,9 @@ export const DisableRegistryMetadata = {
     },
 };
 
-messageTypeRegistry.set(DisableRegistryMetadata.$type, DisableRegistryMetadata);
-
-const baseEnableRegistryRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.EnableRegistryRequest',
-    registryId: '',
-};
+const baseEnableRegistryRequest: object = { registryId: '' };
 
 export const EnableRegistryRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.EnableRegistryRequest' as const,
-
     encode(message: EnableRegistryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -3418,16 +3090,9 @@ export const EnableRegistryRequest = {
     },
 };
 
-messageTypeRegistry.set(EnableRegistryRequest.$type, EnableRegistryRequest);
-
-const baseEnableRegistryMetadata: object = {
-    $type: 'yandex.cloud.iot.devices.v1.EnableRegistryMetadata',
-    registryId: '',
-};
+const baseEnableRegistryMetadata: object = { registryId: '' };
 
 export const EnableRegistryMetadata = {
-    $type: 'yandex.cloud.iot.devices.v1.EnableRegistryMetadata' as const,
-
     encode(message: EnableRegistryMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -3476,8 +3141,6 @@ export const EnableRegistryMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(EnableRegistryMetadata.$type, EnableRegistryMetadata);
 
 /** A set of methods for managing registry. */
 export const RegistryServiceService = {
@@ -4096,16 +3759,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -82,7 +81,6 @@ export function ydbDefaultCompressionToJSON(object: YdbDefaultCompression): stri
 }
 
 export interface YdbSource {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.YdbSource';
     /** Path in YDB where to store tables */
     database: string;
     /** Instance of YDB. example: ydb-ru-prestable.yandex.net:2135 */
@@ -101,7 +99,6 @@ export interface YdbSource {
 }
 
 export interface YdbTarget {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.YdbTarget';
     /** Path in YDB where to store tables */
     database: string;
     /** Instance of YDB. example: ydb-ru-prestable.yandex.net:2135 */
@@ -127,7 +124,6 @@ export interface YdbTarget {
 }
 
 const baseYdbSource: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.YdbSource',
     database: '',
     instance: '',
     paths: '',
@@ -140,8 +136,6 @@ const baseYdbSource: object = {
 };
 
 export const YdbSource = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.YdbSource' as const,
-
     encode(message: YdbSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.database !== '') {
             writer.uint32(10).string(message.database);
@@ -292,10 +286,7 @@ export const YdbSource = {
     },
 };
 
-messageTypeRegistry.set(YdbSource.$type, YdbSource);
-
 const baseYdbTarget: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.YdbTarget',
     database: '',
     instance: '',
     path: '',
@@ -309,8 +300,6 @@ const baseYdbTarget: object = {
 };
 
 export const YdbTarget = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.YdbTarget' as const,
-
     encode(message: YdbTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.database !== '') {
             writer.uint32(10).string(message.database);
@@ -468,8 +457,6 @@ export const YdbTarget = {
     },
 };
 
-messageTypeRegistry.set(YdbTarget.$type, YdbTarget);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -479,16 +466,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

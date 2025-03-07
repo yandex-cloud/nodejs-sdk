@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -10,7 +9,6 @@ export const protobufPackage = 'yandex.cloud.mdb.mongodb.v1';
  * [Developer's Guide](/docs/managed-mongodb/concepts).
  */
 export interface User {
-    $type: 'yandex.cloud.mdb.mongodb.v1.User';
     /** Name of the MongoDB user. */
     name: string;
     /** ID of the MongoDB cluster the user belongs to. */
@@ -20,7 +18,6 @@ export interface User {
 }
 
 export interface Permission {
-    $type: 'yandex.cloud.mdb.mongodb.v1.Permission';
     /** Name of the database that the permission grants access to. */
     databaseName: string;
     /** MongoDB roles for the [database_name] database that the permission grants. */
@@ -28,7 +25,6 @@ export interface Permission {
 }
 
 export interface UserSpec {
-    $type: 'yandex.cloud.mdb.mongodb.v1.UserSpec';
     /** Name of the MongoDB user. */
     name: string;
     /** Password of the MongoDB user. */
@@ -37,11 +33,9 @@ export interface UserSpec {
     permissions: Permission[];
 }
 
-const baseUser: object = { $type: 'yandex.cloud.mdb.mongodb.v1.User', name: '', clusterId: '' };
+const baseUser: object = { name: '', clusterId: '' };
 
 export const User = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.User' as const,
-
     encode(message: User, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -114,17 +108,9 @@ export const User = {
     },
 };
 
-messageTypeRegistry.set(User.$type, User);
-
-const basePermission: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.Permission',
-    databaseName: '',
-    roles: '',
-};
+const basePermission: object = { databaseName: '', roles: '' };
 
 export const Permission = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.Permission' as const,
-
     encode(message: Permission, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.databaseName !== '') {
             writer.uint32(10).string(message.databaseName);
@@ -186,17 +172,9 @@ export const Permission = {
     },
 };
 
-messageTypeRegistry.set(Permission.$type, Permission);
-
-const baseUserSpec: object = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.UserSpec',
-    name: '',
-    password: '',
-};
+const baseUserSpec: object = { name: '', password: '' };
 
 export const UserSpec = {
-    $type: 'yandex.cloud.mdb.mongodb.v1.UserSpec' as const,
-
     encode(message: UserSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -269,8 +247,6 @@ export const UserSpec = {
     },
 };
 
-messageTypeRegistry.set(UserSpec.$type, UserSpec);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -280,16 +256,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

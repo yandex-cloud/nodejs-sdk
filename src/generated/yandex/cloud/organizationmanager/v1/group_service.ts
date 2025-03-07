@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -27,7 +26,6 @@ import {
 export const protobufPackage = 'yandex.cloud.organizationmanager.v1';
 
 export interface GetGroupRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.GetGroupRequest';
     /**
      * ID of the Group resource to return.
      * To get the group ID, use a [GroupService.List] request.
@@ -36,7 +34,6 @@ export interface GetGroupRequest {
 }
 
 export interface ListGroupsRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupsRequest';
     /**
      * ID of the organization to list groups in.
      * To get the organization ID, use a [yandex.cloud.organizationmanager.v1.OrganizationService.List] request.
@@ -67,7 +64,6 @@ export interface ListGroupsRequest {
 }
 
 export interface ListGroupsResponse {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupsResponse';
     /** List of Group resources. */
     groups: Group[];
     /**
@@ -82,7 +78,6 @@ export interface ListGroupsResponse {
 }
 
 export interface CreateGroupRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateGroupRequest';
     /**
      * ID of the organization to create a group in.
      * To get the organization ID, use a [yandex.cloud.organizationmanager.v1.OrganizationService.List] request.
@@ -98,13 +93,11 @@ export interface CreateGroupRequest {
 }
 
 export interface CreateGroupMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateGroupMetadata';
     /** ID of the group that is being created. */
     groupId: string;
 }
 
 export interface UpdateGroupRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupRequest';
     /**
      * ID of the Group resource to update.
      * To get the group ID, use a [GroupService.List] request.
@@ -122,13 +115,11 @@ export interface UpdateGroupRequest {
 }
 
 export interface UpdateGroupMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMetadata';
     /** ID of the Group resource that is being updated. */
     groupId: string;
 }
 
 export interface DeleteGroupRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteGroupRequest';
     /**
      * ID of the group to delete.
      * To get the group ID, use a [GroupService.List] request.
@@ -137,13 +128,11 @@ export interface DeleteGroupRequest {
 }
 
 export interface DeleteGroupMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteGroupMetadata';
     /** ID of the group that is being deleted. */
     groupId: string;
 }
 
 export interface ListGroupOperationsRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupOperationsRequest';
     /** ID of the Group resource to list operations for. */
     groupId: string;
     /**
@@ -162,7 +151,6 @@ export interface ListGroupOperationsRequest {
 }
 
 export interface ListGroupOperationsResponse {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupOperationsResponse';
     /** List of operations for the specified group. */
     operations: Operation[];
     /**
@@ -175,7 +163,6 @@ export interface ListGroupOperationsResponse {
 }
 
 export interface ListGroupMembersRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupMembersRequest';
     /** ID of the Group resource to list members for. */
     groupId: string;
     /**
@@ -194,7 +181,6 @@ export interface ListGroupMembersRequest {
 }
 
 export interface ListGroupMembersResponse {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupMembersResponse';
     /** List of members for the specified group. */
     members: GroupMember[];
     /**
@@ -207,7 +193,6 @@ export interface ListGroupMembersResponse {
 }
 
 export interface GroupMember {
-    $type: 'yandex.cloud.organizationmanager.v1.GroupMember';
     /** ID of the subject. */
     subjectId: string;
     /**
@@ -221,7 +206,6 @@ export interface GroupMember {
 }
 
 export interface UpdateGroupMembersRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMembersRequest';
     /**
      * ID of the group to update.
      * To get the group ID, use a [GroupService.List] request.
@@ -232,13 +216,11 @@ export interface UpdateGroupMembersRequest {
 }
 
 export interface UpdateGroupMembersMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMembersMetadata';
     /** ID of the group that is being updated. */
     groupId: string;
 }
 
 export interface MemberDelta {
-    $type: 'yandex.cloud.organizationmanager.v1.MemberDelta';
     /** The action that is being performed on a group member. */
     action: MemberDelta_MemberAction;
     /**
@@ -291,14 +273,9 @@ export function memberDelta_MemberActionToJSON(object: MemberDelta_MemberAction)
     }
 }
 
-const baseGetGroupRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.GetGroupRequest',
-    groupId: '',
-};
+const baseGetGroupRequest: object = { groupId: '' };
 
 export const GetGroupRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.GetGroupRequest' as const,
-
     encode(message: GetGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.groupId !== '') {
             writer.uint32(10).string(message.groupId);
@@ -344,10 +321,7 @@ export const GetGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(GetGroupRequest.$type, GetGroupRequest);
-
 const baseListGroupsRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupsRequest',
     organizationId: '',
     pageSize: 0,
     pageToken: '',
@@ -355,8 +329,6 @@ const baseListGroupsRequest: object = {
 };
 
 export const ListGroupsRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupsRequest' as const,
-
     encode(message: ListGroupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -436,16 +408,9 @@ export const ListGroupsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListGroupsRequest.$type, ListGroupsRequest);
-
-const baseListGroupsResponse: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupsResponse',
-    nextPageToken: '',
-};
+const baseListGroupsResponse: object = { nextPageToken: '' };
 
 export const ListGroupsResponse = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupsResponse' as const,
-
     encode(message: ListGroupsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.groups) {
             Group.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -509,18 +474,9 @@ export const ListGroupsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListGroupsResponse.$type, ListGroupsResponse);
-
-const baseCreateGroupRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateGroupRequest',
-    organizationId: '',
-    name: '',
-    description: '',
-};
+const baseCreateGroupRequest: object = { organizationId: '', name: '', description: '' };
 
 export const CreateGroupRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateGroupRequest' as const,
-
     encode(message: CreateGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -591,16 +547,9 @@ export const CreateGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateGroupRequest.$type, CreateGroupRequest);
-
-const baseCreateGroupMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateGroupMetadata',
-    groupId: '',
-};
+const baseCreateGroupMetadata: object = { groupId: '' };
 
 export const CreateGroupMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateGroupMetadata' as const,
-
     encode(message: CreateGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.groupId !== '') {
             writer.uint32(10).string(message.groupId);
@@ -648,18 +597,9 @@ export const CreateGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateGroupMetadata.$type, CreateGroupMetadata);
-
-const baseUpdateGroupRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupRequest',
-    groupId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateGroupRequest: object = { groupId: '', name: '', description: '' };
 
 export const UpdateGroupRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupRequest' as const,
-
     encode(message: UpdateGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.groupId !== '') {
             writer.uint32(10).string(message.groupId);
@@ -746,16 +686,9 @@ export const UpdateGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateGroupRequest.$type, UpdateGroupRequest);
-
-const baseUpdateGroupMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMetadata',
-    groupId: '',
-};
+const baseUpdateGroupMetadata: object = { groupId: '' };
 
 export const UpdateGroupMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMetadata' as const,
-
     encode(message: UpdateGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.groupId !== '') {
             writer.uint32(10).string(message.groupId);
@@ -803,16 +736,9 @@ export const UpdateGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateGroupMetadata.$type, UpdateGroupMetadata);
-
-const baseDeleteGroupRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteGroupRequest',
-    groupId: '',
-};
+const baseDeleteGroupRequest: object = { groupId: '' };
 
 export const DeleteGroupRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteGroupRequest' as const,
-
     encode(message: DeleteGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.groupId !== '') {
             writer.uint32(10).string(message.groupId);
@@ -860,16 +786,9 @@ export const DeleteGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteGroupRequest.$type, DeleteGroupRequest);
-
-const baseDeleteGroupMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteGroupMetadata',
-    groupId: '',
-};
+const baseDeleteGroupMetadata: object = { groupId: '' };
 
 export const DeleteGroupMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteGroupMetadata' as const,
-
     encode(message: DeleteGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.groupId !== '') {
             writer.uint32(10).string(message.groupId);
@@ -917,18 +836,9 @@ export const DeleteGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteGroupMetadata.$type, DeleteGroupMetadata);
-
-const baseListGroupOperationsRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupOperationsRequest',
-    groupId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListGroupOperationsRequest: object = { groupId: '', pageSize: 0, pageToken: '' };
 
 export const ListGroupOperationsRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupOperationsRequest' as const,
-
     encode(
         message: ListGroupOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1001,16 +911,9 @@ export const ListGroupOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListGroupOperationsRequest.$type, ListGroupOperationsRequest);
-
-const baseListGroupOperationsResponse: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupOperationsResponse',
-    nextPageToken: '',
-};
+const baseListGroupOperationsResponse: object = { nextPageToken: '' };
 
 export const ListGroupOperationsResponse = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupOperationsResponse' as const,
-
     encode(
         message: ListGroupOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1077,18 +980,9 @@ export const ListGroupOperationsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListGroupOperationsResponse.$type, ListGroupOperationsResponse);
-
-const baseListGroupMembersRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupMembersRequest',
-    groupId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListGroupMembersRequest: object = { groupId: '', pageSize: 0, pageToken: '' };
 
 export const ListGroupMembersRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupMembersRequest' as const,
-
     encode(message: ListGroupMembersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.groupId !== '') {
             writer.uint32(10).string(message.groupId);
@@ -1158,16 +1052,9 @@ export const ListGroupMembersRequest = {
     },
 };
 
-messageTypeRegistry.set(ListGroupMembersRequest.$type, ListGroupMembersRequest);
-
-const baseListGroupMembersResponse: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupMembersResponse',
-    nextPageToken: '',
-};
+const baseListGroupMembersResponse: object = { nextPageToken: '' };
 
 export const ListGroupMembersResponse = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupMembersResponse' as const,
-
     encode(
         message: ListGroupMembersResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1234,17 +1121,9 @@ export const ListGroupMembersResponse = {
     },
 };
 
-messageTypeRegistry.set(ListGroupMembersResponse.$type, ListGroupMembersResponse);
-
-const baseGroupMember: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.GroupMember',
-    subjectId: '',
-    subjectType: '',
-};
+const baseGroupMember: object = { subjectId: '', subjectType: '' };
 
 export const GroupMember = {
-    $type: 'yandex.cloud.organizationmanager.v1.GroupMember' as const,
-
     encode(message: GroupMember, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subjectId !== '') {
             writer.uint32(10).string(message.subjectId);
@@ -1304,16 +1183,9 @@ export const GroupMember = {
     },
 };
 
-messageTypeRegistry.set(GroupMember.$type, GroupMember);
-
-const baseUpdateGroupMembersRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMembersRequest',
-    groupId: '',
-};
+const baseUpdateGroupMembersRequest: object = { groupId: '' };
 
 export const UpdateGroupMembersRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMembersRequest' as const,
-
     encode(
         message: UpdateGroupMembersRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1380,16 +1252,9 @@ export const UpdateGroupMembersRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateGroupMembersRequest.$type, UpdateGroupMembersRequest);
-
-const baseUpdateGroupMembersMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMembersMetadata',
-    groupId: '',
-};
+const baseUpdateGroupMembersMetadata: object = { groupId: '' };
 
 export const UpdateGroupMembersMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMembersMetadata' as const,
-
     encode(
         message: UpdateGroupMembersMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1440,17 +1305,9 @@ export const UpdateGroupMembersMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateGroupMembersMetadata.$type, UpdateGroupMembersMetadata);
-
-const baseMemberDelta: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.MemberDelta',
-    action: 0,
-    subjectId: '',
-};
+const baseMemberDelta: object = { action: 0, subjectId: '' };
 
 export const MemberDelta = {
-    $type: 'yandex.cloud.organizationmanager.v1.MemberDelta' as const,
-
     encode(message: MemberDelta, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.action !== 0) {
             writer.uint32(8).int32(message.action);
@@ -1510,8 +1367,6 @@ export const MemberDelta = {
         return message;
     },
 };
-
-messageTypeRegistry.set(MemberDelta.$type, MemberDelta);
 
 /** A set of methods for managing groups. */
 export const GroupServiceService = {
@@ -1890,16 +1745,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

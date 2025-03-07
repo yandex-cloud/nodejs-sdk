@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -29,13 +28,11 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.containerregistry.v1';
 
 export interface GetLifecyclePolicyRequest {
-    $type: 'yandex.cloud.containerregistry.v1.GetLifecyclePolicyRequest';
     /** ID of the lifecycle policy. */
     lifecyclePolicyId: string;
 }
 
 export interface ListLifecyclePoliciesRequest {
-    $type: 'yandex.cloud.containerregistry.v1.ListLifecyclePoliciesRequest';
     /** ID of the lifecycle policy. */
     registryId: string | undefined;
     /** Repository of the lifecycle policy. */
@@ -69,7 +66,6 @@ export interface ListLifecyclePoliciesRequest {
 }
 
 export interface ListLifecyclePoliciesResponse {
-    $type: 'yandex.cloud.containerregistry.v1.ListLifecyclePoliciesResponse';
     /** List of lifecycle policies. */
     lifecyclePolicies: LifecyclePolicy[];
     /**
@@ -83,7 +79,6 @@ export interface ListLifecyclePoliciesResponse {
 }
 
 export interface CreateLifecyclePolicyRequest {
-    $type: 'yandex.cloud.containerregistry.v1.CreateLifecyclePolicyRequest';
     /** ID of the lifecycle policy repository. */
     repositoryId: string;
     /** Name of lifecycle policy. */
@@ -97,7 +92,6 @@ export interface CreateLifecyclePolicyRequest {
 }
 
 export interface UpdateLifecyclePolicyRequest {
-    $type: 'yandex.cloud.containerregistry.v1.UpdateLifecyclePolicyRequest';
     /** ID of the lifecycle policy. */
     lifecyclePolicyId: string;
     /** Field mask that specifies which fields of the lifecycle policy resource are going to be updated. */
@@ -113,37 +107,31 @@ export interface UpdateLifecyclePolicyRequest {
 }
 
 export interface DeleteLifecyclePolicyRequest {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteLifecyclePolicyRequest';
     /** ID of the lifecycle policy. */
     lifecyclePolicyId: string;
 }
 
 export interface CreateLifecyclePolicyMetadata {
-    $type: 'yandex.cloud.containerregistry.v1.CreateLifecyclePolicyMetadata';
     /** ID of the lifecycle policy resource that is being created. */
     lifecyclePolicyId: string;
 }
 
 export interface UpdateLifecyclePolicyMetadata {
-    $type: 'yandex.cloud.containerregistry.v1.UpdateLifecyclePolicyMetadata';
     /** ID of the lifecycle policy resource that is being updated. */
     lifecyclePolicyId: string;
 }
 
 export interface DeleteLifecyclePolicyMetadata {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteLifecyclePolicyMetadata';
     /** ID of the lifecycle policy resource that is being deleted. */
     lifecyclePolicyId: string;
 }
 
 export interface DryRunLifecyclePolicyRequest {
-    $type: 'yandex.cloud.containerregistry.v1.DryRunLifecyclePolicyRequest';
     /** ID of the lifecycle policy. */
     lifecyclePolicyId: string;
 }
 
 export interface DryRunLifecyclePolicyMetadata {
-    $type: 'yandex.cloud.containerregistry.v1.DryRunLifecyclePolicyMetadata';
     /** ID of the dry run result of the lifecycle policy. */
     dryRunLifecyclePolicyResultId: string;
     /** ID of the lifecycle policy. */
@@ -151,7 +139,6 @@ export interface DryRunLifecyclePolicyMetadata {
 }
 
 export interface DryRunLifecyclePolicyResult {
-    $type: 'yandex.cloud.containerregistry.v1.DryRunLifecyclePolicyResult';
     /** ID of the dry run result of the lifecycle policy. */
     dryRunLifecyclePolicyResultId: string;
     /** ID of the lifecycle policy. */
@@ -163,13 +150,11 @@ export interface DryRunLifecyclePolicyResult {
 }
 
 export interface GetDryRunLifecyclePolicyResultRequest {
-    $type: 'yandex.cloud.containerregistry.v1.GetDryRunLifecyclePolicyResultRequest';
     /** ID of the dry run result of the lifecycle policy. */
     dryRunLifecyclePolicyResultId: string;
 }
 
 export interface ListDryRunLifecyclePolicyResultsRequest {
-    $type: 'yandex.cloud.containerregistry.v1.ListDryRunLifecyclePolicyResultsRequest';
     /** ID of the lifecycle policy. */
     lifecyclePolicyId: string;
     /**
@@ -201,7 +186,6 @@ export interface ListDryRunLifecyclePolicyResultsRequest {
 }
 
 export interface ListDryRunLifecyclePolicyResultsResponse {
-    $type: 'yandex.cloud.containerregistry.v1.ListDryRunLifecyclePolicyResultsResponse';
     /** List of results of dry runs of a lifecycle policy. */
     dryRunLifecyclePolicyResults: DryRunLifecyclePolicyResult[];
     /**
@@ -215,7 +199,6 @@ export interface ListDryRunLifecyclePolicyResultsResponse {
 }
 
 export interface ListDryRunLifecyclePolicyResultAffectedImagesRequest {
-    $type: 'yandex.cloud.containerregistry.v1.ListDryRunLifecyclePolicyResultAffectedImagesRequest';
     /** ID of the dry run result of the lifecycle policy */
     dryRunLifecyclePolicyResultId: string;
     /**
@@ -246,7 +229,6 @@ export interface ListDryRunLifecyclePolicyResultAffectedImagesRequest {
 }
 
 export interface ListDryRunLifecyclePolicyResultAffectedImagesResponse {
-    $type: 'yandex.cloud.containerregistry.v1.ListDryRunLifecyclePolicyResultAffectedImagesResponse';
     /** List of affected images. */
     affectedImages: Image[];
     /**
@@ -259,14 +241,9 @@ export interface ListDryRunLifecyclePolicyResultAffectedImagesResponse {
     nextPageToken: string;
 }
 
-const baseGetLifecyclePolicyRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.GetLifecyclePolicyRequest',
-    lifecyclePolicyId: '',
-};
+const baseGetLifecyclePolicyRequest: object = { lifecyclePolicyId: '' };
 
 export const GetLifecyclePolicyRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.GetLifecyclePolicyRequest' as const,
-
     encode(
         message: GetLifecyclePolicyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -320,10 +297,7 @@ export const GetLifecyclePolicyRequest = {
     },
 };
 
-messageTypeRegistry.set(GetLifecyclePolicyRequest.$type, GetLifecyclePolicyRequest);
-
 const baseListLifecyclePoliciesRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.ListLifecyclePoliciesRequest',
     pageSize: 0,
     pageToken: '',
     filter: '',
@@ -331,8 +305,6 @@ const baseListLifecyclePoliciesRequest: object = {
 };
 
 export const ListLifecyclePoliciesRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.ListLifecyclePoliciesRequest' as const,
-
     encode(
         message: ListLifecyclePoliciesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -439,16 +411,9 @@ export const ListLifecyclePoliciesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListLifecyclePoliciesRequest.$type, ListLifecyclePoliciesRequest);
-
-const baseListLifecyclePoliciesResponse: object = {
-    $type: 'yandex.cloud.containerregistry.v1.ListLifecyclePoliciesResponse',
-    nextPageToken: '',
-};
+const baseListLifecyclePoliciesResponse: object = { nextPageToken: '' };
 
 export const ListLifecyclePoliciesResponse = {
-    $type: 'yandex.cloud.containerregistry.v1.ListLifecyclePoliciesResponse' as const,
-
     encode(
         message: ListLifecyclePoliciesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -520,10 +485,7 @@ export const ListLifecyclePoliciesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListLifecyclePoliciesResponse.$type, ListLifecyclePoliciesResponse);
-
 const baseCreateLifecyclePolicyRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.CreateLifecyclePolicyRequest',
     repositoryId: '',
     name: '',
     description: '',
@@ -531,8 +493,6 @@ const baseCreateLifecyclePolicyRequest: object = {
 };
 
 export const CreateLifecyclePolicyRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.CreateLifecyclePolicyRequest' as const,
-
     encode(
         message: CreateLifecyclePolicyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -632,10 +592,7 @@ export const CreateLifecyclePolicyRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateLifecyclePolicyRequest.$type, CreateLifecyclePolicyRequest);
-
 const baseUpdateLifecyclePolicyRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.UpdateLifecyclePolicyRequest',
     lifecyclePolicyId: '',
     name: '',
     description: '',
@@ -643,8 +600,6 @@ const baseUpdateLifecyclePolicyRequest: object = {
 };
 
 export const UpdateLifecyclePolicyRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.UpdateLifecyclePolicyRequest' as const,
-
     encode(
         message: UpdateLifecyclePolicyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -763,16 +718,9 @@ export const UpdateLifecyclePolicyRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateLifecyclePolicyRequest.$type, UpdateLifecyclePolicyRequest);
-
-const baseDeleteLifecyclePolicyRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteLifecyclePolicyRequest',
-    lifecyclePolicyId: '',
-};
+const baseDeleteLifecyclePolicyRequest: object = { lifecyclePolicyId: '' };
 
 export const DeleteLifecyclePolicyRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteLifecyclePolicyRequest' as const,
-
     encode(
         message: DeleteLifecyclePolicyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -826,16 +774,9 @@ export const DeleteLifecyclePolicyRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteLifecyclePolicyRequest.$type, DeleteLifecyclePolicyRequest);
-
-const baseCreateLifecyclePolicyMetadata: object = {
-    $type: 'yandex.cloud.containerregistry.v1.CreateLifecyclePolicyMetadata',
-    lifecyclePolicyId: '',
-};
+const baseCreateLifecyclePolicyMetadata: object = { lifecyclePolicyId: '' };
 
 export const CreateLifecyclePolicyMetadata = {
-    $type: 'yandex.cloud.containerregistry.v1.CreateLifecyclePolicyMetadata' as const,
-
     encode(
         message: CreateLifecyclePolicyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -889,16 +830,9 @@ export const CreateLifecyclePolicyMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateLifecyclePolicyMetadata.$type, CreateLifecyclePolicyMetadata);
-
-const baseUpdateLifecyclePolicyMetadata: object = {
-    $type: 'yandex.cloud.containerregistry.v1.UpdateLifecyclePolicyMetadata',
-    lifecyclePolicyId: '',
-};
+const baseUpdateLifecyclePolicyMetadata: object = { lifecyclePolicyId: '' };
 
 export const UpdateLifecyclePolicyMetadata = {
-    $type: 'yandex.cloud.containerregistry.v1.UpdateLifecyclePolicyMetadata' as const,
-
     encode(
         message: UpdateLifecyclePolicyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -952,16 +886,9 @@ export const UpdateLifecyclePolicyMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateLifecyclePolicyMetadata.$type, UpdateLifecyclePolicyMetadata);
-
-const baseDeleteLifecyclePolicyMetadata: object = {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteLifecyclePolicyMetadata',
-    lifecyclePolicyId: '',
-};
+const baseDeleteLifecyclePolicyMetadata: object = { lifecyclePolicyId: '' };
 
 export const DeleteLifecyclePolicyMetadata = {
-    $type: 'yandex.cloud.containerregistry.v1.DeleteLifecyclePolicyMetadata' as const,
-
     encode(
         message: DeleteLifecyclePolicyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1015,16 +942,9 @@ export const DeleteLifecyclePolicyMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteLifecyclePolicyMetadata.$type, DeleteLifecyclePolicyMetadata);
-
-const baseDryRunLifecyclePolicyRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.DryRunLifecyclePolicyRequest',
-    lifecyclePolicyId: '',
-};
+const baseDryRunLifecyclePolicyRequest: object = { lifecyclePolicyId: '' };
 
 export const DryRunLifecyclePolicyRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.DryRunLifecyclePolicyRequest' as const,
-
     encode(
         message: DryRunLifecyclePolicyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1078,17 +998,12 @@ export const DryRunLifecyclePolicyRequest = {
     },
 };
 
-messageTypeRegistry.set(DryRunLifecyclePolicyRequest.$type, DryRunLifecyclePolicyRequest);
-
 const baseDryRunLifecyclePolicyMetadata: object = {
-    $type: 'yandex.cloud.containerregistry.v1.DryRunLifecyclePolicyMetadata',
     dryRunLifecyclePolicyResultId: '',
     lifecyclePolicyId: '',
 };
 
 export const DryRunLifecyclePolicyMetadata = {
-    $type: 'yandex.cloud.containerregistry.v1.DryRunLifecyclePolicyMetadata' as const,
-
     encode(
         message: DryRunLifecyclePolicyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1156,18 +1071,13 @@ export const DryRunLifecyclePolicyMetadata = {
     },
 };
 
-messageTypeRegistry.set(DryRunLifecyclePolicyMetadata.$type, DryRunLifecyclePolicyMetadata);
-
 const baseDryRunLifecyclePolicyResult: object = {
-    $type: 'yandex.cloud.containerregistry.v1.DryRunLifecyclePolicyResult',
     dryRunLifecyclePolicyResultId: '',
     lifecyclePolicyId: '',
     affectedImagesCount: 0,
 };
 
 export const DryRunLifecyclePolicyResult = {
-    $type: 'yandex.cloud.containerregistry.v1.DryRunLifecyclePolicyResult' as const,
-
     encode(
         message: DryRunLifecyclePolicyResult,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1260,16 +1170,9 @@ export const DryRunLifecyclePolicyResult = {
     },
 };
 
-messageTypeRegistry.set(DryRunLifecyclePolicyResult.$type, DryRunLifecyclePolicyResult);
-
-const baseGetDryRunLifecyclePolicyResultRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.GetDryRunLifecyclePolicyResultRequest',
-    dryRunLifecyclePolicyResultId: '',
-};
+const baseGetDryRunLifecyclePolicyResultRequest: object = { dryRunLifecyclePolicyResultId: '' };
 
 export const GetDryRunLifecyclePolicyResultRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.GetDryRunLifecyclePolicyResultRequest' as const,
-
     encode(
         message: GetDryRunLifecyclePolicyResultRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1330,13 +1233,7 @@ export const GetDryRunLifecyclePolicyResultRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    GetDryRunLifecyclePolicyResultRequest.$type,
-    GetDryRunLifecyclePolicyResultRequest,
-);
-
 const baseListDryRunLifecyclePolicyResultsRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.ListDryRunLifecyclePolicyResultsRequest',
     lifecyclePolicyId: '',
     pageSize: 0,
     pageToken: '',
@@ -1345,8 +1242,6 @@ const baseListDryRunLifecyclePolicyResultsRequest: object = {
 };
 
 export const ListDryRunLifecyclePolicyResultsRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.ListDryRunLifecyclePolicyResultsRequest' as const,
-
     encode(
         message: ListDryRunLifecyclePolicyResultsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1451,19 +1346,9 @@ export const ListDryRunLifecyclePolicyResultsRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    ListDryRunLifecyclePolicyResultsRequest.$type,
-    ListDryRunLifecyclePolicyResultsRequest,
-);
-
-const baseListDryRunLifecyclePolicyResultsResponse: object = {
-    $type: 'yandex.cloud.containerregistry.v1.ListDryRunLifecyclePolicyResultsResponse',
-    nextPageToken: '',
-};
+const baseListDryRunLifecyclePolicyResultsResponse: object = { nextPageToken: '' };
 
 export const ListDryRunLifecyclePolicyResultsResponse = {
-    $type: 'yandex.cloud.containerregistry.v1.ListDryRunLifecyclePolicyResultsResponse' as const,
-
     encode(
         message: ListDryRunLifecyclePolicyResultsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1548,13 +1433,7 @@ export const ListDryRunLifecyclePolicyResultsResponse = {
     },
 };
 
-messageTypeRegistry.set(
-    ListDryRunLifecyclePolicyResultsResponse.$type,
-    ListDryRunLifecyclePolicyResultsResponse,
-);
-
 const baseListDryRunLifecyclePolicyResultAffectedImagesRequest: object = {
-    $type: 'yandex.cloud.containerregistry.v1.ListDryRunLifecyclePolicyResultAffectedImagesRequest',
     dryRunLifecyclePolicyResultId: '',
     pageSize: 0,
     pageToken: '',
@@ -1563,8 +1442,6 @@ const baseListDryRunLifecyclePolicyResultAffectedImagesRequest: object = {
 };
 
 export const ListDryRunLifecyclePolicyResultAffectedImagesRequest = {
-    $type: 'yandex.cloud.containerregistry.v1.ListDryRunLifecyclePolicyResultAffectedImagesRequest' as const,
-
     encode(
         message: ListDryRunLifecyclePolicyResultAffectedImagesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1670,19 +1547,9 @@ export const ListDryRunLifecyclePolicyResultAffectedImagesRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    ListDryRunLifecyclePolicyResultAffectedImagesRequest.$type,
-    ListDryRunLifecyclePolicyResultAffectedImagesRequest,
-);
-
-const baseListDryRunLifecyclePolicyResultAffectedImagesResponse: object = {
-    $type: 'yandex.cloud.containerregistry.v1.ListDryRunLifecyclePolicyResultAffectedImagesResponse',
-    nextPageToken: '',
-};
+const baseListDryRunLifecyclePolicyResultAffectedImagesResponse: object = { nextPageToken: '' };
 
 export const ListDryRunLifecyclePolicyResultAffectedImagesResponse = {
-    $type: 'yandex.cloud.containerregistry.v1.ListDryRunLifecyclePolicyResultAffectedImagesResponse' as const,
-
     encode(
         message: ListDryRunLifecyclePolicyResultAffectedImagesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1759,11 +1626,6 @@ export const ListDryRunLifecyclePolicyResultAffectedImagesResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(
-    ListDryRunLifecyclePolicyResultAffectedImagesResponse.$type,
-    ListDryRunLifecyclePolicyResultAffectedImagesResponse,
-);
 
 /** A set of methods for managing Lifecycle policy resources. */
 export const LifecyclePolicyServiceService = {
@@ -2120,21 +1982,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

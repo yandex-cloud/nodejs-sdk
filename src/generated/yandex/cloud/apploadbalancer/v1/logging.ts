@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Code, codeFromJSON, codeToJSON } from '../../../../google/rpc/code';
@@ -74,7 +73,6 @@ export function httpCodeIntervalToJSON(object: HttpCodeInterval): string {
  * If neither codes or intervals are provided, rule applies to all logs.
  */
 export interface LogDiscardRule {
-    $type: 'yandex.cloud.apploadbalancer.v1.LogDiscardRule';
     /** HTTP codes that should be discarded. */
     httpCodes: number[];
     /** Groups of HTTP codes like 4xx that should be discarded. */
@@ -86,7 +84,6 @@ export interface LogDiscardRule {
 }
 
 export interface LogOptions {
-    $type: 'yandex.cloud.apploadbalancer.v1.LogOptions';
     /**
      * Cloud Logging log group ID to store access logs.
      * If not set then logs will be stored in default log group for the folder
@@ -99,16 +96,9 @@ export interface LogOptions {
     disable: boolean;
 }
 
-const baseLogDiscardRule: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.LogDiscardRule',
-    httpCodes: 0,
-    httpCodeIntervals: 0,
-    grpcCodes: 0,
-};
+const baseLogDiscardRule: object = { httpCodes: 0, httpCodeIntervals: 0, grpcCodes: 0 };
 
 export const LogDiscardRule = {
-    $type: 'yandex.cloud.apploadbalancer.v1.LogDiscardRule' as const,
-
     encode(message: LogDiscardRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         writer.uint32(10).fork();
         for (const v of message.httpCodes) {
@@ -127,7 +117,7 @@ export const LogDiscardRule = {
         writer.ldelim();
         if (message.discardPercent !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.discardPercent! },
+                { value: message.discardPercent! },
                 writer.uint32(34).fork(),
             ).ldelim();
         }
@@ -230,17 +220,9 @@ export const LogDiscardRule = {
     },
 };
 
-messageTypeRegistry.set(LogDiscardRule.$type, LogDiscardRule);
-
-const baseLogOptions: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.LogOptions',
-    logGroupId: '',
-    disable: false,
-};
+const baseLogOptions: object = { logGroupId: '', disable: false };
 
 export const LogOptions = {
-    $type: 'yandex.cloud.apploadbalancer.v1.LogOptions' as const,
-
     encode(message: LogOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -318,8 +300,6 @@ export const LogOptions = {
     },
 };
 
-messageTypeRegistry.set(LogOptions.$type, LogOptions);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -340,16 +320,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

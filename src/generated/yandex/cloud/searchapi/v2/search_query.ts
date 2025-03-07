@@ -1,12 +1,10 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.searchapi.v2';
 
 export interface SearchQuery {
-    $type: 'yandex.cloud.searchapi.v2.SearchQuery';
     /** Search type that determines the domain name that will be used for the search queries. */
     searchType: SearchQuery_SearchType;
     /** Search query text */
@@ -160,7 +158,6 @@ export function searchQuery_FixTypoModeToJSON(object: SearchQuery_FixTypoMode): 
 }
 
 const baseSearchQuery: object = {
-    $type: 'yandex.cloud.searchapi.v2.SearchQuery',
     searchType: 0,
     queryText: '',
     familyMode: 0,
@@ -169,8 +166,6 @@ const baseSearchQuery: object = {
 };
 
 export const SearchQuery = {
-    $type: 'yandex.cloud.searchapi.v2.SearchQuery' as const,
-
     encode(message: SearchQuery, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.searchType !== 0) {
             writer.uint32(8).int32(message.searchType);
@@ -266,8 +261,6 @@ export const SearchQuery = {
     },
 };
 
-messageTypeRegistry.set(SearchQuery.$type, SearchQuery);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -288,16 +281,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

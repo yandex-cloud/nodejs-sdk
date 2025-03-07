@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -21,13 +20,11 @@ import { Int64Value } from '../../../../google/protobuf/wrappers';
 export const protobufPackage = 'yandex.cloud.datasphere.v1';
 
 export interface GetFolderBudgetRequest {
-    $type: 'yandex.cloud.datasphere.v1.GetFolderBudgetRequest';
     /** ID of the folder to get a budget for. */
     folderId: string;
 }
 
 export interface GetFolderBudgetResponse {
-    $type: 'yandex.cloud.datasphere.v1.GetFolderBudgetResponse';
     /** The number of units available in the folder. */
     unitBalance?: number;
     /** The number of units that can be spent per hour. */
@@ -37,7 +34,6 @@ export interface GetFolderBudgetResponse {
 }
 
 export interface SetFolderBudgetRequest {
-    $type: 'yandex.cloud.datasphere.v1.SetFolderBudgetRequest';
     /** ID of the folder to set a budget for. */
     folderId: string;
     /** Field mask that specifies which fields of the budget are going to be set. */
@@ -50,14 +46,9 @@ export interface SetFolderBudgetRequest {
     maxUnitsPerExecution?: number;
 }
 
-const baseGetFolderBudgetRequest: object = {
-    $type: 'yandex.cloud.datasphere.v1.GetFolderBudgetRequest',
-    folderId: '',
-};
+const baseGetFolderBudgetRequest: object = { folderId: '' };
 
 export const GetFolderBudgetRequest = {
-    $type: 'yandex.cloud.datasphere.v1.GetFolderBudgetRequest' as const,
-
     encode(message: GetFolderBudgetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -107,31 +98,22 @@ export const GetFolderBudgetRequest = {
     },
 };
 
-messageTypeRegistry.set(GetFolderBudgetRequest.$type, GetFolderBudgetRequest);
-
-const baseGetFolderBudgetResponse: object = {
-    $type: 'yandex.cloud.datasphere.v1.GetFolderBudgetResponse',
-};
+const baseGetFolderBudgetResponse: object = {};
 
 export const GetFolderBudgetResponse = {
-    $type: 'yandex.cloud.datasphere.v1.GetFolderBudgetResponse' as const,
-
     encode(message: GetFolderBudgetResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.unitBalance !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.unitBalance! },
-                writer.uint32(10).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.unitBalance! }, writer.uint32(10).fork()).ldelim();
         }
         if (message.maxUnitsPerHour !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxUnitsPerHour! },
+                { value: message.maxUnitsPerHour! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
         if (message.maxUnitsPerExecution !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxUnitsPerExecution! },
+                { value: message.maxUnitsPerExecution! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
@@ -199,16 +181,9 @@ export const GetFolderBudgetResponse = {
     },
 };
 
-messageTypeRegistry.set(GetFolderBudgetResponse.$type, GetFolderBudgetResponse);
-
-const baseSetFolderBudgetRequest: object = {
-    $type: 'yandex.cloud.datasphere.v1.SetFolderBudgetRequest',
-    folderId: '',
-};
+const baseSetFolderBudgetRequest: object = { folderId: '' };
 
 export const SetFolderBudgetRequest = {
-    $type: 'yandex.cloud.datasphere.v1.SetFolderBudgetRequest' as const,
-
     encode(message: SetFolderBudgetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -217,20 +192,17 @@ export const SetFolderBudgetRequest = {
             FieldMask.encode(message.setMask, writer.uint32(18).fork()).ldelim();
         }
         if (message.unitBalance !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.unitBalance! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.unitBalance! }, writer.uint32(26).fork()).ldelim();
         }
         if (message.maxUnitsPerHour !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxUnitsPerHour! },
+                { value: message.maxUnitsPerHour! },
                 writer.uint32(34).fork(),
             ).ldelim();
         }
         if (message.maxUnitsPerExecution !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxUnitsPerExecution! },
+                { value: message.maxUnitsPerExecution! },
                 writer.uint32(42).fork(),
             ).ldelim();
         }
@@ -319,8 +291,6 @@ export const SetFolderBudgetRequest = {
         return message;
     },
 };
-
-messageTypeRegistry.set(SetFolderBudgetRequest.$type, SetFolderBudgetRequest);
 
 /** A set of methods for managing Datasphere folder budgets. */
 export const FolderBudgetServiceService = {
@@ -412,16 +382,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

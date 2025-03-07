@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -21,7 +20,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.mdb.redis.v1';
 
 export interface GetUserRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.GetUserRequest';
     /**
      * ID of the Redis cluster the user belongs to.
      * To get the cluster ID, use a [ClusterService.List] request.
@@ -35,7 +33,6 @@ export interface GetUserRequest {
 }
 
 export interface ListUsersRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.ListUsersRequest';
     /**
      * ID of the cluster to list Redis users in.
      * To get the cluster ID, use a [ClusterService.List] request.
@@ -55,7 +52,6 @@ export interface ListUsersRequest {
 }
 
 export interface ListUsersResponse {
-    $type: 'yandex.cloud.mdb.redis.v1.ListUsersResponse';
     /** List of Redis User resources. */
     users: User[];
     /**
@@ -68,7 +64,6 @@ export interface ListUsersResponse {
 }
 
 export interface CreateUserRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.CreateUserRequest';
     /**
      * ID of the Redis cluster to create a user in.
      * To get the cluster ID, use a [ClusterService.List] request.
@@ -79,7 +74,6 @@ export interface CreateUserRequest {
 }
 
 export interface CreateUserMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.CreateUserMetadata';
     /** ID of the Redis cluster the user is being created in. */
     clusterId: string;
     /** Name of the user that is being created. */
@@ -87,7 +81,6 @@ export interface CreateUserMetadata {
 }
 
 export interface UpdateUserRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateUserRequest';
     /**
      * ID of the Redis cluster the user belongs to.
      * To get the cluster ID, use a [ClusterService.List] request.
@@ -106,7 +99,6 @@ export interface UpdateUserRequest {
 }
 
 export interface UpdateUserMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateUserMetadata';
     /** ID of the Redis cluster the user belongs to. */
     clusterId: string;
     /** Name of the user that is being updated. */
@@ -114,7 +106,6 @@ export interface UpdateUserMetadata {
 }
 
 export interface DeleteUserRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteUserRequest';
     /**
      * ID of the Redis cluster the user belongs to.
      * To get the cluster ID, use a [ClusterService.List] request.
@@ -128,22 +119,15 @@ export interface DeleteUserRequest {
 }
 
 export interface DeleteUserMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteUserMetadata';
     /** ID of the Redis cluster the user belongs to. */
     clusterId: string;
     /** Name of the user that is being deleted. */
     userName: string;
 }
 
-const baseGetUserRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.GetUserRequest',
-    clusterId: '',
-    userName: '',
-};
+const baseGetUserRequest: object = { clusterId: '', userName: '' };
 
 export const GetUserRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.GetUserRequest' as const,
-
     encode(message: GetUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -203,18 +187,9 @@ export const GetUserRequest = {
     },
 };
 
-messageTypeRegistry.set(GetUserRequest.$type, GetUserRequest);
-
-const baseListUsersRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListUsersRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListUsersRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListUsersRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListUsersRequest' as const,
-
     encode(message: ListUsersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -284,16 +259,9 @@ export const ListUsersRequest = {
     },
 };
 
-messageTypeRegistry.set(ListUsersRequest.$type, ListUsersRequest);
-
-const baseListUsersResponse: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListUsersResponse',
-    nextPageToken: '',
-};
+const baseListUsersResponse: object = { nextPageToken: '' };
 
 export const ListUsersResponse = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListUsersResponse' as const,
-
     encode(message: ListUsersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.users) {
             User.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -355,16 +323,9 @@ export const ListUsersResponse = {
     },
 };
 
-messageTypeRegistry.set(ListUsersResponse.$type, ListUsersResponse);
-
-const baseCreateUserRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.CreateUserRequest',
-    clusterId: '',
-};
+const baseCreateUserRequest: object = { clusterId: '' };
 
 export const CreateUserRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.CreateUserRequest' as const,
-
     encode(message: CreateUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -428,17 +389,9 @@ export const CreateUserRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateUserRequest.$type, CreateUserRequest);
-
-const baseCreateUserMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.CreateUserMetadata',
-    clusterId: '',
-    userName: '',
-};
+const baseCreateUserMetadata: object = { clusterId: '', userName: '' };
 
 export const CreateUserMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.CreateUserMetadata' as const,
-
     encode(message: CreateUserMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -500,10 +453,7 @@ export const CreateUserMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateUserMetadata.$type, CreateUserMetadata);
-
 const baseUpdateUserRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateUserRequest',
     clusterId: '',
     userName: '',
     passwords: '',
@@ -511,8 +461,6 @@ const baseUpdateUserRequest: object = {
 };
 
 export const UpdateUserRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateUserRequest' as const,
-
     encode(message: UpdateUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -634,17 +582,9 @@ export const UpdateUserRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateUserRequest.$type, UpdateUserRequest);
-
-const baseUpdateUserMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateUserMetadata',
-    clusterId: '',
-    userName: '',
-};
+const baseUpdateUserMetadata: object = { clusterId: '', userName: '' };
 
 export const UpdateUserMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateUserMetadata' as const,
-
     encode(message: UpdateUserMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -706,17 +646,9 @@ export const UpdateUserMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateUserMetadata.$type, UpdateUserMetadata);
-
-const baseDeleteUserRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteUserRequest',
-    clusterId: '',
-    userName: '',
-};
+const baseDeleteUserRequest: object = { clusterId: '', userName: '' };
 
 export const DeleteUserRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteUserRequest' as const,
-
     encode(message: DeleteUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -776,17 +708,9 @@ export const DeleteUserRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteUserRequest.$type, DeleteUserRequest);
-
-const baseDeleteUserMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteUserMetadata',
-    clusterId: '',
-    userName: '',
-};
+const baseDeleteUserMetadata: object = { clusterId: '', userName: '' };
 
 export const DeleteUserMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteUserMetadata' as const,
-
     encode(message: DeleteUserMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -847,8 +771,6 @@ export const DeleteUserMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteUserMetadata.$type, DeleteUserMetadata);
 
 /** A set of methods for managing Redis User resources. */
 export const UserServiceService = {
@@ -1050,16 +972,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../google/protobuf/timestamp';
@@ -58,7 +57,6 @@ export function subjectTypeToJSON(object: SubjectType): string {
 
 /** Claims representation, see https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims for details. */
 export interface SubjectClaims {
-    $type: 'yandex.cloud.oauth.SubjectClaims';
     /** Subject - Identifier for the End-User at the Issuer. */
     sub: string;
     /** End-User's full name in displayable form including all name parts, possibly including titles and suffixes, ordered according to the End-User's locale and preferences. */
@@ -104,7 +102,6 @@ export interface SubjectClaims {
 
 /** Minimalistic analog of yandex.cloud.organizationmanager.v1.saml.Federation */
 export interface Federation {
-    $type: 'yandex.cloud.oauth.Federation';
     /** ID of the federation. */
     id: string;
     /** Name of the federation. The name is unique within the cloud or organization */
@@ -112,7 +109,6 @@ export interface Federation {
 }
 
 const baseSubjectClaims: object = {
-    $type: 'yandex.cloud.oauth.SubjectClaims',
     sub: '',
     name: '',
     givenName: '',
@@ -127,8 +123,6 @@ const baseSubjectClaims: object = {
 };
 
 export const SubjectClaims = {
-    $type: 'yandex.cloud.oauth.SubjectClaims' as const,
-
     encode(message: SubjectClaims, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sub !== '') {
             writer.uint32(10).string(message.sub);
@@ -321,13 +315,9 @@ export const SubjectClaims = {
     },
 };
 
-messageTypeRegistry.set(SubjectClaims.$type, SubjectClaims);
-
-const baseFederation: object = { $type: 'yandex.cloud.oauth.Federation', id: '', name: '' };
+const baseFederation: object = { id: '', name: '' };
 
 export const Federation = {
-    $type: 'yandex.cloud.oauth.Federation' as const,
-
     encode(message: Federation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -381,8 +371,6 @@ export const Federation = {
     },
 };
 
-messageTypeRegistry.set(Federation.$type, Federation);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -392,21 +380,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

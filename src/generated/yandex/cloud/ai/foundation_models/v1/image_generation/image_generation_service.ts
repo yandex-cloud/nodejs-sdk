@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -28,7 +27,6 @@ export const protobufPackage = 'yandex.cloud.ai.foundation_models.v1.image_gener
  * For examples of usage, see [step-by-step guide](/docs/foundation-models/operations/yandexart/request).
  */
 export interface ImageGenerationRequest {
-    $type: 'yandex.cloud.ai.foundation_models.v1.image_generation.ImageGenerationRequest';
     /** The [model URI](/docs/foundation-models/concepts/yandexart/models) to be used for image generation. */
     modelUri: string;
     /** A list of messages representing the context for the image generation model. */
@@ -39,21 +37,15 @@ export interface ImageGenerationRequest {
 
 /** Response containing generated image. */
 export interface ImageGenerationResponse {
-    $type: 'yandex.cloud.ai.foundation_models.v1.image_generation.ImageGenerationResponse';
     /** The image is serialized as an array of bytes encoded in [Base64](https://en.wikipedia.org/wiki/Base64). */
     image: Buffer;
     /** The model version changes with each new releases. */
     modelVersion: string;
 }
 
-const baseImageGenerationRequest: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.image_generation.ImageGenerationRequest',
-    modelUri: '',
-};
+const baseImageGenerationRequest: object = { modelUri: '' };
 
 export const ImageGenerationRequest = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.image_generation.ImageGenerationRequest' as const,
-
     encode(message: ImageGenerationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.modelUri !== '') {
             writer.uint32(10).string(message.modelUri);
@@ -141,16 +133,9 @@ export const ImageGenerationRequest = {
     },
 };
 
-messageTypeRegistry.set(ImageGenerationRequest.$type, ImageGenerationRequest);
-
-const baseImageGenerationResponse: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.image_generation.ImageGenerationResponse',
-    modelVersion: '',
-};
+const baseImageGenerationResponse: object = { modelVersion: '' };
 
 export const ImageGenerationResponse = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.image_generation.ImageGenerationResponse' as const,
-
     encode(message: ImageGenerationResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.image.length !== 0) {
             writer.uint32(10).bytes(message.image);
@@ -215,8 +200,6 @@ export const ImageGenerationResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ImageGenerationResponse.$type, ImageGenerationResponse);
 
 /** Service for creating images based on a text description. */
 export const ImageGenerationAsyncServiceService = {
@@ -310,16 +293,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

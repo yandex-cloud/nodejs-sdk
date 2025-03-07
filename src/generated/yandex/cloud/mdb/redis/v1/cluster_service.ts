@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -47,18 +46,15 @@ import { BoolValue, Int64Value } from '../../../../../google/protobuf/wrappers';
 export const protobufPackage = 'yandex.cloud.mdb.redis.v1';
 
 export interface EnableShardingClusterMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.EnableShardingClusterMetadata';
     clusterId: string;
 }
 
 export interface EnableShardingClusterRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.EnableShardingClusterRequest';
     /** Required. ID of the Redis cluster to return. */
     clusterId: string;
 }
 
 export interface GetClusterRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.GetClusterRequest';
     /**
      * ID of the Redis cluster to return.
      * To get the cluster ID use a [ClusterService.List] request.
@@ -67,7 +63,6 @@ export interface GetClusterRequest {
 }
 
 export interface ListClustersRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClustersRequest';
     /**
      * ID of the folder to list Redis clusters in.
      * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -95,7 +90,6 @@ export interface ListClustersRequest {
 }
 
 export interface ListClustersResponse {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClustersResponse';
     /** List of Redis clusters. */
     clusters: Cluster[];
     /**
@@ -108,7 +102,6 @@ export interface ListClustersResponse {
 }
 
 export interface CreateClusterRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.CreateClusterRequest';
     /** ID of the folder to create the Redis cluster in. */
     folderId: string;
     /** Name of the Redis cluster. The name must be unique within the folder. */
@@ -149,19 +142,16 @@ export interface CreateClusterRequest {
 }
 
 export interface CreateClusterRequest_LabelsEntry {
-    $type: 'yandex.cloud.mdb.redis.v1.CreateClusterRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateClusterMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.CreateClusterMetadata';
     /** ID of the Redis cluster that is being created. */
     clusterId: string;
 }
 
 export interface UpdateClusterRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateClusterRequest';
     /**
      * ID of the Redis cluster to update.
      * To get the Redis cluster ID, use a [ClusterService.List] request.
@@ -200,19 +190,16 @@ export interface UpdateClusterRequest {
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateClusterRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateClusterMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateClusterMetadata';
     /** ID of the Redis cluster that is being updated. */
     clusterId: string;
 }
 
 export interface DeleteClusterRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteClusterRequest';
     /**
      * ID of the Redis cluster to delete.
      * To get the Redis cluster ID, use a [ClusterService.List] request.
@@ -221,37 +208,31 @@ export interface DeleteClusterRequest {
 }
 
 export interface DeleteClusterMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteClusterMetadata';
     /** ID of the Redis cluster that is being deleted. */
     clusterId: string;
 }
 
 export interface StartClusterRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.StartClusterRequest';
     /** ID of the Redis cluster to start. */
     clusterId: string;
 }
 
 export interface StartClusterMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.StartClusterMetadata';
     /** ID of the Redis cluster. */
     clusterId: string;
 }
 
 export interface StopClusterRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.StopClusterRequest';
     /** ID of the Redis cluster to stop. */
     clusterId: string;
 }
 
 export interface StopClusterMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.StopClusterMetadata';
     /** ID of the Redis cluster. */
     clusterId: string;
 }
 
 export interface MoveClusterRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.MoveClusterRequest';
     /** ID of the Redis cluster to move. */
     clusterId: string;
     /** ID of the destination folder. */
@@ -259,7 +240,6 @@ export interface MoveClusterRequest {
 }
 
 export interface MoveClusterMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.MoveClusterMetadata';
     /** ID of the Redis cluster being moved. */
     clusterId: string;
     /** ID of the source folder. */
@@ -269,7 +249,6 @@ export interface MoveClusterMetadata {
 }
 
 export interface UpdateClusterHostsRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateClusterHostsRequest';
     /**
      * ID of the Redis cluster to update hosts in.
      * To get the Redis cluster ID, use a [ClusterService.List] request.
@@ -280,7 +259,6 @@ export interface UpdateClusterHostsRequest {
 }
 
 export interface UpdateClusterHostsMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateClusterHostsMetadata';
     /** ID of the Redis cluster to update hosts in. */
     clusterId: string;
     /** Names of hosts that are being updated. */
@@ -288,7 +266,6 @@ export interface UpdateClusterHostsMetadata {
 }
 
 export interface BackupClusterRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.BackupClusterRequest';
     /**
      * ID of the Redis cluster to back up.
      * To get the Redis cluster ID, use a [ClusterService.List] request.
@@ -297,13 +274,11 @@ export interface BackupClusterRequest {
 }
 
 export interface BackupClusterMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.BackupClusterMetadata';
     /** ID of the Redis cluster that is being backed up. */
     clusterId: string;
 }
 
 export interface RestoreClusterRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.RestoreClusterRequest';
     /**
      * ID of the backup to create a cluster from.
      * To get the backup ID, use a [ClusterService.ListBackups] request.
@@ -348,13 +323,11 @@ export interface RestoreClusterRequest {
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
-    $type: 'yandex.cloud.mdb.redis.v1.RestoreClusterRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface RestoreClusterMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.RestoreClusterMetadata';
     /** ID of the new Redis cluster that is being created from a backup. */
     clusterId: string;
     /** ID of the backup that is being used for creating a cluster. */
@@ -362,7 +335,6 @@ export interface RestoreClusterMetadata {
 }
 
 export interface StartClusterFailoverRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.StartClusterFailoverRequest';
     /** ID of the Redis cluster to start failover on. */
     clusterId: string;
     /** List of hostnames which should not be masters. Can be empty for sentinel clusters or can contain multiple hosts for sharded clusters. */
@@ -370,7 +342,6 @@ export interface StartClusterFailoverRequest {
 }
 
 export interface StartClusterFailoverMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.StartClusterFailoverMetadata';
     /** ID of the Redis cluster on which failover will be initiated. */
     clusterId: string;
     /** List of hostnames which should not be masters. Can be empty for sentinel clusters or can contain multiple hosts for sharded clusters. */
@@ -378,7 +349,6 @@ export interface StartClusterFailoverMetadata {
 }
 
 export interface RescheduleMaintenanceRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.RescheduleMaintenanceRequest';
     /** ID of the Redis cluster to reschedule the maintenance operation for. */
     clusterId: string;
     /** The type of reschedule request. */
@@ -439,7 +409,6 @@ export function rescheduleMaintenanceRequest_RescheduleTypeToJSON(
 }
 
 export interface RescheduleMaintenanceMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.RescheduleMaintenanceMetadata';
     /** Required. ID of the Redis cluster. */
     clusterId: string;
     /** Required. The time until which this maintenance operation is to be delayed. */
@@ -447,7 +416,6 @@ export interface RescheduleMaintenanceMetadata {
 }
 
 export interface LogRecord {
-    $type: 'yandex.cloud.mdb.redis.v1.LogRecord';
     /** Log record timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
     timestamp?: Date;
     /** Contents of the log record. */
@@ -455,13 +423,11 @@ export interface LogRecord {
 }
 
 export interface LogRecord_MessageEntry {
-    $type: 'yandex.cloud.mdb.redis.v1.LogRecord.MessageEntry';
     key: string;
     value: string;
 }
 
 export interface ListClusterLogsRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterLogsRequest';
     /**
      * ID of the Redis cluster to request logs for.
      * To get the Redis cluster ID use a [ClusterService.List] request.
@@ -528,7 +494,6 @@ export function listClusterLogsRequest_ServiceTypeToJSON(
 }
 
 export interface ListClusterLogsResponse {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterLogsResponse';
     /** Requested log records. */
     logs: LogRecord[];
     /**
@@ -542,7 +507,6 @@ export interface ListClusterLogsResponse {
 }
 
 export interface StreamLogRecord {
-    $type: 'yandex.cloud.mdb.redis.v1.StreamLogRecord';
     /** One of the requested log records. */
     record?: LogRecord;
     /**
@@ -555,7 +519,6 @@ export interface StreamLogRecord {
 }
 
 export interface StreamClusterLogsRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.StreamClusterLogsRequest';
     /** Required. ID of the Redis cluster. */
     clusterId: string;
     /** Columns from logs table to get in the response. */
@@ -623,7 +586,6 @@ export function streamClusterLogsRequest_ServiceTypeToJSON(
 }
 
 export interface ListClusterOperationsRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterOperationsRequest';
     /** ID of the Redis cluster to list operations for. */
     clusterId: string;
     /**
@@ -640,7 +602,6 @@ export interface ListClusterOperationsRequest {
 }
 
 export interface ListClusterOperationsResponse {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterOperationsResponse';
     /** List of operations for the specified Redis cluster. */
     operations: Operation[];
     /**
@@ -653,7 +614,6 @@ export interface ListClusterOperationsResponse {
 }
 
 export interface ListClusterBackupsRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterBackupsRequest';
     /**
      * ID of the Redis cluster.
      * To get the Redis cluster ID use a [ClusterService.List] request.
@@ -673,7 +633,6 @@ export interface ListClusterBackupsRequest {
 }
 
 export interface ListClusterBackupsResponse {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterBackupsResponse';
     /** List of Redis backups. */
     backups: Backup[];
     /**
@@ -686,7 +645,6 @@ export interface ListClusterBackupsResponse {
 }
 
 export interface ListClusterHostsRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterHostsRequest';
     /**
      * ID of the Redis cluster.
      * To get the Redis cluster ID use a [ClusterService.List] request.
@@ -706,7 +664,6 @@ export interface ListClusterHostsRequest {
 }
 
 export interface ListClusterHostsResponse {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterHostsResponse';
     /** List of hosts for the cluster. */
     hosts: Host[];
     /**
@@ -719,7 +676,6 @@ export interface ListClusterHostsResponse {
 }
 
 export interface AddClusterHostsRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.AddClusterHostsRequest';
     /**
      * ID of the Redis cluster to add hosts to.
      * To get the Redis cluster ID, use a [ClusterService.List] request.
@@ -730,7 +686,6 @@ export interface AddClusterHostsRequest {
 }
 
 export interface AddClusterHostsMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.AddClusterHostsMetadata';
     /** ID of the Redis cluster to which the hosts are being added. */
     clusterId: string;
     /** Names of hosts that are being added to the cluster. */
@@ -738,7 +693,6 @@ export interface AddClusterHostsMetadata {
 }
 
 export interface DeleteClusterHostsRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteClusterHostsRequest';
     /**
      * ID of the Redis cluster to remove hosts from.
      * To get the Redis cluster ID, use a [ClusterService.List] request.
@@ -749,7 +703,6 @@ export interface DeleteClusterHostsRequest {
 }
 
 export interface DeleteClusterHostsMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteClusterHostsMetadata';
     /** ID of the Redis cluster to remove hosts from. */
     clusterId: string;
     /** Names of hosts that are being deleted. */
@@ -757,7 +710,6 @@ export interface DeleteClusterHostsMetadata {
 }
 
 export interface GetClusterShardRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.GetClusterShardRequest';
     /**
      * ID of the Redis cluster the shard belongs to.
      * To get the cluster ID use a [ClusterService.List] request.
@@ -771,7 +723,6 @@ export interface GetClusterShardRequest {
 }
 
 export interface ListClusterShardsRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterShardsRequest';
     /**
      * ID of the Redis cluster to list shards in.
      * To get the cluster ID use a [ClusterService.List] request.
@@ -793,7 +744,6 @@ export interface ListClusterShardsRequest {
 }
 
 export interface ListClusterShardsResponse {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterShardsResponse';
     /** List of Redis shards. */
     shards: Shard[];
     /**
@@ -808,7 +758,6 @@ export interface ListClusterShardsResponse {
 }
 
 export interface AddClusterShardRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.AddClusterShardRequest';
     /**
      * ID of the Redis cluster to create a shard in.
      * To get the cluster ID use a [ClusterService.List] request.
@@ -827,7 +776,6 @@ export interface AddClusterShardRequest {
 }
 
 export interface AddClusterShardMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.AddClusterShardMetadata';
     /** ID of the Redis cluster that a shard is being added to. */
     clusterId: string;
     /** Name of the Redis shard that is being created. */
@@ -835,7 +783,6 @@ export interface AddClusterShardMetadata {
 }
 
 export interface DeleteClusterShardRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteClusterShardRequest';
     /**
      * ID of the Redis cluster the shard belongs to.
      * To get the cluster ID use a [ClusterService.List] request.
@@ -849,7 +796,6 @@ export interface DeleteClusterShardRequest {
 }
 
 export interface DeleteClusterShardMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteClusterShardMetadata';
     /** ID of the Redis cluster the shard belongs to. */
     clusterId: string;
     /** Name of the Redis shard that is being deleted. */
@@ -857,7 +803,6 @@ export interface DeleteClusterShardMetadata {
 }
 
 export interface RebalanceClusterRequest {
-    $type: 'yandex.cloud.mdb.redis.v1.RebalanceClusterRequest';
     /**
      * ID of the Redis cluster to rebalance.
      * To get the cluster ID use a [ClusterService.List] request.
@@ -866,13 +811,11 @@ export interface RebalanceClusterRequest {
 }
 
 export interface RebalanceClusterMetadata {
-    $type: 'yandex.cloud.mdb.redis.v1.RebalanceClusterMetadata';
     /** ID of the Redis cluster that is being rebalancing. */
     clusterId: string;
 }
 
 export interface UpdateHostSpec {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateHostSpec';
     /**
      * Name of the host to update.
      * To get the Redis host name, use a [ClusterService.ListHosts] request.
@@ -891,7 +834,6 @@ export interface UpdateHostSpec {
 }
 
 export interface HostSpec {
-    $type: 'yandex.cloud.mdb.redis.v1.HostSpec';
     /**
      * ID of the availability zone where the host resides.
      * To get a list of available zones, use the [yandex.cloud.compute.v1.ZoneService.List] request.
@@ -925,7 +867,6 @@ export interface HostSpec {
 }
 
 export interface ConfigSpec {
-    $type: 'yandex.cloud.mdb.redis.v1.ConfigSpec';
     /** Version of Redis used in the cluster. */
     version: string;
     redisConfig50?: Redisconfig50 | undefined;
@@ -946,14 +887,9 @@ export interface ConfigSpec {
     backupRetainPeriodDays?: number;
 }
 
-const baseEnableShardingClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.EnableShardingClusterMetadata',
-    clusterId: '',
-};
+const baseEnableShardingClusterMetadata: object = { clusterId: '' };
 
 export const EnableShardingClusterMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.EnableShardingClusterMetadata' as const,
-
     encode(
         message: EnableShardingClusterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1006,16 +942,9 @@ export const EnableShardingClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(EnableShardingClusterMetadata.$type, EnableShardingClusterMetadata);
-
-const baseEnableShardingClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.EnableShardingClusterRequest',
-    clusterId: '',
-};
+const baseEnableShardingClusterRequest: object = { clusterId: '' };
 
 export const EnableShardingClusterRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.EnableShardingClusterRequest' as const,
-
     encode(
         message: EnableShardingClusterRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1068,16 +997,9 @@ export const EnableShardingClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(EnableShardingClusterRequest.$type, EnableShardingClusterRequest);
-
-const baseGetClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.GetClusterRequest',
-    clusterId: '',
-};
+const baseGetClusterRequest: object = { clusterId: '' };
 
 export const GetClusterRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.GetClusterRequest' as const,
-
     encode(message: GetClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1125,19 +1047,9 @@ export const GetClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(GetClusterRequest.$type, GetClusterRequest);
-
-const baseListClustersRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClustersRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListClustersRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListClustersRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClustersRequest' as const,
-
     encode(message: ListClustersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1219,16 +1131,9 @@ export const ListClustersRequest = {
     },
 };
 
-messageTypeRegistry.set(ListClustersRequest.$type, ListClustersRequest);
-
-const baseListClustersResponse: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClustersResponse',
-    nextPageToken: '',
-};
+const baseListClustersResponse: object = { nextPageToken: '' };
 
 export const ListClustersResponse = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClustersResponse' as const,
-
     encode(message: ListClustersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.clusters) {
             Cluster.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1292,10 +1197,7 @@ export const ListClustersResponse = {
     },
 };
 
-messageTypeRegistry.set(ListClustersResponse.$type, ListClustersResponse);
-
 const baseCreateClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.CreateClusterRequest',
     folderId: '',
     name: '',
     description: '',
@@ -1310,8 +1212,6 @@ const baseCreateClusterRequest: object = {
 };
 
 export const CreateClusterRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.CreateClusterRequest' as const,
-
     encode(message: CreateClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1324,11 +1224,7 @@ export const CreateClusterRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateClusterRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.redis.v1.CreateClusterRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -1351,10 +1247,7 @@ export const CreateClusterRequest = {
             writer.uint32(98).string(v!);
         }
         if (message.tlsEnabled !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.tlsEnabled! },
-                writer.uint32(106).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.tlsEnabled! }, writer.uint32(106).fork()).ldelim();
         }
         if (message.deletionProtection === true) {
             writer.uint32(112).bool(message.deletionProtection);
@@ -1602,17 +1495,9 @@ export const CreateClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateClusterRequest.$type, CreateClusterRequest);
-
-const baseCreateClusterRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.CreateClusterRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateClusterRequest_LabelsEntry = {
-    $type: 'yandex.cloud.mdb.redis.v1.CreateClusterRequest.LabelsEntry' as const,
-
     encode(
         message: CreateClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1678,16 +1563,9 @@ export const CreateClusterRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateClusterRequest_LabelsEntry.$type, CreateClusterRequest_LabelsEntry);
-
-const baseCreateClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.CreateClusterMetadata',
-    clusterId: '',
-};
+const baseCreateClusterMetadata: object = { clusterId: '' };
 
 export const CreateClusterMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.CreateClusterMetadata' as const,
-
     encode(message: CreateClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1737,10 +1615,7 @@ export const CreateClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateClusterMetadata.$type, CreateClusterMetadata);
-
 const baseUpdateClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateClusterRequest',
     clusterId: '',
     description: '',
     name: '',
@@ -1753,8 +1628,6 @@ const baseUpdateClusterRequest: object = {
 };
 
 export const UpdateClusterRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateClusterRequest' as const,
-
     encode(message: UpdateClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1767,11 +1640,7 @@ export const UpdateClusterRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateClusterRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.redis.v1.UpdateClusterRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -1995,17 +1864,9 @@ export const UpdateClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateClusterRequest.$type, UpdateClusterRequest);
-
-const baseUpdateClusterRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateClusterRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateClusterRequest_LabelsEntry = {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateClusterRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2071,16 +1932,9 @@ export const UpdateClusterRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateClusterRequest_LabelsEntry.$type, UpdateClusterRequest_LabelsEntry);
-
-const baseUpdateClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateClusterMetadata',
-    clusterId: '',
-};
+const baseUpdateClusterMetadata: object = { clusterId: '' };
 
 export const UpdateClusterMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateClusterMetadata' as const,
-
     encode(message: UpdateClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2130,16 +1984,9 @@ export const UpdateClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateClusterMetadata.$type, UpdateClusterMetadata);
-
-const baseDeleteClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteClusterRequest',
-    clusterId: '',
-};
+const baseDeleteClusterRequest: object = { clusterId: '' };
 
 export const DeleteClusterRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteClusterRequest' as const,
-
     encode(message: DeleteClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2189,16 +2036,9 @@ export const DeleteClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteClusterRequest.$type, DeleteClusterRequest);
-
-const baseDeleteClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteClusterMetadata',
-    clusterId: '',
-};
+const baseDeleteClusterMetadata: object = { clusterId: '' };
 
 export const DeleteClusterMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteClusterMetadata' as const,
-
     encode(message: DeleteClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2248,16 +2088,9 @@ export const DeleteClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteClusterMetadata.$type, DeleteClusterMetadata);
-
-const baseStartClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.StartClusterRequest',
-    clusterId: '',
-};
+const baseStartClusterRequest: object = { clusterId: '' };
 
 export const StartClusterRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.StartClusterRequest' as const,
-
     encode(message: StartClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2307,16 +2140,9 @@ export const StartClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(StartClusterRequest.$type, StartClusterRequest);
-
-const baseStartClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.StartClusterMetadata',
-    clusterId: '',
-};
+const baseStartClusterMetadata: object = { clusterId: '' };
 
 export const StartClusterMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.StartClusterMetadata' as const,
-
     encode(message: StartClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2366,16 +2192,9 @@ export const StartClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(StartClusterMetadata.$type, StartClusterMetadata);
-
-const baseStopClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.StopClusterRequest',
-    clusterId: '',
-};
+const baseStopClusterRequest: object = { clusterId: '' };
 
 export const StopClusterRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.StopClusterRequest' as const,
-
     encode(message: StopClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2425,16 +2244,9 @@ export const StopClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(StopClusterRequest.$type, StopClusterRequest);
-
-const baseStopClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.StopClusterMetadata',
-    clusterId: '',
-};
+const baseStopClusterMetadata: object = { clusterId: '' };
 
 export const StopClusterMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.StopClusterMetadata' as const,
-
     encode(message: StopClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2484,17 +2296,9 @@ export const StopClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(StopClusterMetadata.$type, StopClusterMetadata);
-
-const baseMoveClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.MoveClusterRequest',
-    clusterId: '',
-    destinationFolderId: '',
-};
+const baseMoveClusterRequest: object = { clusterId: '', destinationFolderId: '' };
 
 export const MoveClusterRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.MoveClusterRequest' as const,
-
     encode(message: MoveClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2557,18 +2361,13 @@ export const MoveClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(MoveClusterRequest.$type, MoveClusterRequest);
-
 const baseMoveClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.MoveClusterMetadata',
     clusterId: '',
     sourceFolderId: '',
     destinationFolderId: '',
 };
 
 export const MoveClusterMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.MoveClusterMetadata' as const,
-
     encode(message: MoveClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2643,16 +2442,9 @@ export const MoveClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(MoveClusterMetadata.$type, MoveClusterMetadata);
-
-const baseUpdateClusterHostsRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateClusterHostsRequest',
-    clusterId: '',
-};
+const baseUpdateClusterHostsRequest: object = { clusterId: '' };
 
 export const UpdateClusterHostsRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateClusterHostsRequest' as const,
-
     encode(
         message: UpdateClusterHostsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2724,17 +2516,9 @@ export const UpdateClusterHostsRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateClusterHostsRequest.$type, UpdateClusterHostsRequest);
-
-const baseUpdateClusterHostsMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateClusterHostsMetadata',
-    clusterId: '',
-    hostNames: '',
-};
+const baseUpdateClusterHostsMetadata: object = { clusterId: '', hostNames: '' };
 
 export const UpdateClusterHostsMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateClusterHostsMetadata' as const,
-
     encode(
         message: UpdateClusterHostsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2801,16 +2585,9 @@ export const UpdateClusterHostsMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateClusterHostsMetadata.$type, UpdateClusterHostsMetadata);
-
-const baseBackupClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.BackupClusterRequest',
-    clusterId: '',
-};
+const baseBackupClusterRequest: object = { clusterId: '' };
 
 export const BackupClusterRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.BackupClusterRequest' as const,
-
     encode(message: BackupClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2860,16 +2637,9 @@ export const BackupClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(BackupClusterRequest.$type, BackupClusterRequest);
-
-const baseBackupClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.BackupClusterMetadata',
-    clusterId: '',
-};
+const baseBackupClusterMetadata: object = { clusterId: '' };
 
 export const BackupClusterMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.BackupClusterMetadata' as const,
-
     encode(message: BackupClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2919,10 +2689,7 @@ export const BackupClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(BackupClusterMetadata.$type, BackupClusterMetadata);
-
 const baseRestoreClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.RestoreClusterRequest',
     backupId: '',
     name: '',
     description: '',
@@ -2937,8 +2704,6 @@ const baseRestoreClusterRequest: object = {
 };
 
 export const RestoreClusterRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.RestoreClusterRequest' as const,
-
     encode(message: RestoreClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);
@@ -2951,11 +2716,7 @@ export const RestoreClusterRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             RestoreClusterRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.redis.v1.RestoreClusterRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -2978,10 +2739,7 @@ export const RestoreClusterRequest = {
             writer.uint32(82).string(v!);
         }
         if (message.tlsEnabled !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.tlsEnabled! },
-                writer.uint32(90).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.tlsEnabled! }, writer.uint32(90).fork()).ldelim();
         }
         if (message.persistenceMode !== 0) {
             writer.uint32(96).int32(message.persistenceMode);
@@ -3218,17 +2976,9 @@ export const RestoreClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(RestoreClusterRequest.$type, RestoreClusterRequest);
-
-const baseRestoreClusterRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.RestoreClusterRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseRestoreClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const RestoreClusterRequest_LabelsEntry = {
-    $type: 'yandex.cloud.mdb.redis.v1.RestoreClusterRequest.LabelsEntry' as const,
-
     encode(
         message: RestoreClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3294,17 +3044,9 @@ export const RestoreClusterRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(RestoreClusterRequest_LabelsEntry.$type, RestoreClusterRequest_LabelsEntry);
-
-const baseRestoreClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.RestoreClusterMetadata',
-    clusterId: '',
-    backupId: '',
-};
+const baseRestoreClusterMetadata: object = { clusterId: '', backupId: '' };
 
 export const RestoreClusterMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.RestoreClusterMetadata' as const,
-
     encode(message: RestoreClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -3366,17 +3108,9 @@ export const RestoreClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(RestoreClusterMetadata.$type, RestoreClusterMetadata);
-
-const baseStartClusterFailoverRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.StartClusterFailoverRequest',
-    clusterId: '',
-    hostNames: '',
-};
+const baseStartClusterFailoverRequest: object = { clusterId: '', hostNames: '' };
 
 export const StartClusterFailoverRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.StartClusterFailoverRequest' as const,
-
     encode(
         message: StartClusterFailoverRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3443,17 +3177,9 @@ export const StartClusterFailoverRequest = {
     },
 };
 
-messageTypeRegistry.set(StartClusterFailoverRequest.$type, StartClusterFailoverRequest);
-
-const baseStartClusterFailoverMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.StartClusterFailoverMetadata',
-    clusterId: '',
-    hostNames: '',
-};
+const baseStartClusterFailoverMetadata: object = { clusterId: '', hostNames: '' };
 
 export const StartClusterFailoverMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.StartClusterFailoverMetadata' as const,
-
     encode(
         message: StartClusterFailoverMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3520,17 +3246,9 @@ export const StartClusterFailoverMetadata = {
     },
 };
 
-messageTypeRegistry.set(StartClusterFailoverMetadata.$type, StartClusterFailoverMetadata);
-
-const baseRescheduleMaintenanceRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.RescheduleMaintenanceRequest',
-    clusterId: '',
-    rescheduleType: 0,
-};
+const baseRescheduleMaintenanceRequest: object = { clusterId: '', rescheduleType: 0 };
 
 export const RescheduleMaintenanceRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.RescheduleMaintenanceRequest' as const,
-
     encode(
         message: RescheduleMaintenanceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3611,16 +3329,9 @@ export const RescheduleMaintenanceRequest = {
     },
 };
 
-messageTypeRegistry.set(RescheduleMaintenanceRequest.$type, RescheduleMaintenanceRequest);
-
-const baseRescheduleMaintenanceMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.RescheduleMaintenanceMetadata',
-    clusterId: '',
-};
+const baseRescheduleMaintenanceMetadata: object = { clusterId: '' };
 
 export const RescheduleMaintenanceMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.RescheduleMaintenanceMetadata' as const,
-
     encode(
         message: RescheduleMaintenanceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3686,24 +3397,16 @@ export const RescheduleMaintenanceMetadata = {
     },
 };
 
-messageTypeRegistry.set(RescheduleMaintenanceMetadata.$type, RescheduleMaintenanceMetadata);
-
-const baseLogRecord: object = { $type: 'yandex.cloud.mdb.redis.v1.LogRecord' };
+const baseLogRecord: object = {};
 
 export const LogRecord = {
-    $type: 'yandex.cloud.mdb.redis.v1.LogRecord' as const,
-
     encode(message: LogRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timestamp !== undefined) {
             Timestamp.encode(toTimestamp(message.timestamp), writer.uint32(10).fork()).ldelim();
         }
         Object.entries(message.message).forEach(([key, value]) => {
             LogRecord_MessageEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.redis.v1.LogRecord.MessageEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(18).fork(),
             ).ldelim();
         });
@@ -3779,17 +3482,9 @@ export const LogRecord = {
     },
 };
 
-messageTypeRegistry.set(LogRecord.$type, LogRecord);
-
-const baseLogRecord_MessageEntry: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.LogRecord.MessageEntry',
-    key: '',
-    value: '',
-};
+const baseLogRecord_MessageEntry: object = { key: '', value: '' };
 
 export const LogRecord_MessageEntry = {
-    $type: 'yandex.cloud.mdb.redis.v1.LogRecord.MessageEntry' as const,
-
     encode(message: LogRecord_MessageEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -3846,10 +3541,7 @@ export const LogRecord_MessageEntry = {
     },
 };
 
-messageTypeRegistry.set(LogRecord_MessageEntry.$type, LogRecord_MessageEntry);
-
 const baseListClusterLogsRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterLogsRequest',
     clusterId: '',
     columnFilter: '',
     serviceType: 0,
@@ -3858,8 +3550,6 @@ const baseListClusterLogsRequest: object = {
 };
 
 export const ListClusterLogsRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterLogsRequest' as const,
-
     encode(message: ListClusterLogsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -3982,16 +3672,9 @@ export const ListClusterLogsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListClusterLogsRequest.$type, ListClusterLogsRequest);
-
-const baseListClusterLogsResponse: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterLogsResponse',
-    nextPageToken: '',
-};
+const baseListClusterLogsResponse: object = { nextPageToken: '' };
 
 export const ListClusterLogsResponse = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterLogsResponse' as const,
-
     encode(message: ListClusterLogsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.logs) {
             LogRecord.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -4055,16 +3738,9 @@ export const ListClusterLogsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListClusterLogsResponse.$type, ListClusterLogsResponse);
-
-const baseStreamLogRecord: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.StreamLogRecord',
-    nextRecordToken: '',
-};
+const baseStreamLogRecord: object = { nextRecordToken: '' };
 
 export const StreamLogRecord = {
-    $type: 'yandex.cloud.mdb.redis.v1.StreamLogRecord' as const,
-
     encode(message: StreamLogRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.record !== undefined) {
             LogRecord.encode(message.record, writer.uint32(10).fork()).ldelim();
@@ -4128,10 +3804,7 @@ export const StreamLogRecord = {
     },
 };
 
-messageTypeRegistry.set(StreamLogRecord.$type, StreamLogRecord);
-
 const baseStreamClusterLogsRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.StreamClusterLogsRequest',
     clusterId: '',
     columnFilter: '',
     serviceType: 0,
@@ -4140,8 +3813,6 @@ const baseStreamClusterLogsRequest: object = {
 };
 
 export const StreamClusterLogsRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.StreamClusterLogsRequest' as const,
-
     encode(
         message: StreamClusterLogsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4267,18 +3938,9 @@ export const StreamClusterLogsRequest = {
     },
 };
 
-messageTypeRegistry.set(StreamClusterLogsRequest.$type, StreamClusterLogsRequest);
-
-const baseListClusterOperationsRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterOperationsRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListClusterOperationsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListClusterOperationsRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterOperationsRequest' as const,
-
     encode(
         message: ListClusterOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4353,16 +4015,9 @@ export const ListClusterOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListClusterOperationsRequest.$type, ListClusterOperationsRequest);
-
-const baseListClusterOperationsResponse: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterOperationsResponse',
-    nextPageToken: '',
-};
+const baseListClusterOperationsResponse: object = { nextPageToken: '' };
 
 export const ListClusterOperationsResponse = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterOperationsResponse' as const,
-
     encode(
         message: ListClusterOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4429,18 +4084,9 @@ export const ListClusterOperationsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListClusterOperationsResponse.$type, ListClusterOperationsResponse);
-
-const baseListClusterBackupsRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterBackupsRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListClusterBackupsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListClusterBackupsRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterBackupsRequest' as const,
-
     encode(
         message: ListClusterBackupsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4515,16 +4161,9 @@ export const ListClusterBackupsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListClusterBackupsRequest.$type, ListClusterBackupsRequest);
-
-const baseListClusterBackupsResponse: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterBackupsResponse',
-    nextPageToken: '',
-};
+const baseListClusterBackupsResponse: object = { nextPageToken: '' };
 
 export const ListClusterBackupsResponse = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterBackupsResponse' as const,
-
     encode(
         message: ListClusterBackupsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4591,18 +4230,9 @@ export const ListClusterBackupsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListClusterBackupsResponse.$type, ListClusterBackupsResponse);
-
-const baseListClusterHostsRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterHostsRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListClusterHostsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListClusterHostsRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterHostsRequest' as const,
-
     encode(message: ListClusterHostsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -4674,16 +4304,9 @@ export const ListClusterHostsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListClusterHostsRequest.$type, ListClusterHostsRequest);
-
-const baseListClusterHostsResponse: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterHostsResponse',
-    nextPageToken: '',
-};
+const baseListClusterHostsResponse: object = { nextPageToken: '' };
 
 export const ListClusterHostsResponse = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterHostsResponse' as const,
-
     encode(
         message: ListClusterHostsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4750,16 +4373,9 @@ export const ListClusterHostsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListClusterHostsResponse.$type, ListClusterHostsResponse);
-
-const baseAddClusterHostsRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.AddClusterHostsRequest',
-    clusterId: '',
-};
+const baseAddClusterHostsRequest: object = { clusterId: '' };
 
 export const AddClusterHostsRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.AddClusterHostsRequest' as const,
-
     encode(message: AddClusterHostsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -4823,17 +4439,9 @@ export const AddClusterHostsRequest = {
     },
 };
 
-messageTypeRegistry.set(AddClusterHostsRequest.$type, AddClusterHostsRequest);
-
-const baseAddClusterHostsMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.AddClusterHostsMetadata',
-    clusterId: '',
-    hostNames: '',
-};
+const baseAddClusterHostsMetadata: object = { clusterId: '', hostNames: '' };
 
 export const AddClusterHostsMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.AddClusterHostsMetadata' as const,
-
     encode(message: AddClusterHostsMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -4897,17 +4505,9 @@ export const AddClusterHostsMetadata = {
     },
 };
 
-messageTypeRegistry.set(AddClusterHostsMetadata.$type, AddClusterHostsMetadata);
-
-const baseDeleteClusterHostsRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteClusterHostsRequest',
-    clusterId: '',
-    hostNames: '',
-};
+const baseDeleteClusterHostsRequest: object = { clusterId: '', hostNames: '' };
 
 export const DeleteClusterHostsRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteClusterHostsRequest' as const,
-
     encode(
         message: DeleteClusterHostsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4974,17 +4574,9 @@ export const DeleteClusterHostsRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteClusterHostsRequest.$type, DeleteClusterHostsRequest);
-
-const baseDeleteClusterHostsMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteClusterHostsMetadata',
-    clusterId: '',
-    hostNames: '',
-};
+const baseDeleteClusterHostsMetadata: object = { clusterId: '', hostNames: '' };
 
 export const DeleteClusterHostsMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteClusterHostsMetadata' as const,
-
     encode(
         message: DeleteClusterHostsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5051,17 +4643,9 @@ export const DeleteClusterHostsMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteClusterHostsMetadata.$type, DeleteClusterHostsMetadata);
-
-const baseGetClusterShardRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.GetClusterShardRequest',
-    clusterId: '',
-    shardName: '',
-};
+const baseGetClusterShardRequest: object = { clusterId: '', shardName: '' };
 
 export const GetClusterShardRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.GetClusterShardRequest' as const,
-
     encode(message: GetClusterShardRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -5123,18 +4707,9 @@ export const GetClusterShardRequest = {
     },
 };
 
-messageTypeRegistry.set(GetClusterShardRequest.$type, GetClusterShardRequest);
-
-const baseListClusterShardsRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterShardsRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListClusterShardsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListClusterShardsRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterShardsRequest' as const,
-
     encode(
         message: ListClusterShardsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5209,16 +4784,9 @@ export const ListClusterShardsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListClusterShardsRequest.$type, ListClusterShardsRequest);
-
-const baseListClusterShardsResponse: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterShardsResponse',
-    nextPageToken: '',
-};
+const baseListClusterShardsResponse: object = { nextPageToken: '' };
 
 export const ListClusterShardsResponse = {
-    $type: 'yandex.cloud.mdb.redis.v1.ListClusterShardsResponse' as const,
-
     encode(
         message: ListClusterShardsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5285,17 +4853,9 @@ export const ListClusterShardsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListClusterShardsResponse.$type, ListClusterShardsResponse);
-
-const baseAddClusterShardRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.AddClusterShardRequest',
-    clusterId: '',
-    shardName: '',
-};
+const baseAddClusterShardRequest: object = { clusterId: '', shardName: '' };
 
 export const AddClusterShardRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.AddClusterShardRequest' as const,
-
     encode(message: AddClusterShardRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -5371,17 +4931,9 @@ export const AddClusterShardRequest = {
     },
 };
 
-messageTypeRegistry.set(AddClusterShardRequest.$type, AddClusterShardRequest);
-
-const baseAddClusterShardMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.AddClusterShardMetadata',
-    clusterId: '',
-    shardName: '',
-};
+const baseAddClusterShardMetadata: object = { clusterId: '', shardName: '' };
 
 export const AddClusterShardMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.AddClusterShardMetadata' as const,
-
     encode(message: AddClusterShardMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -5443,17 +4995,9 @@ export const AddClusterShardMetadata = {
     },
 };
 
-messageTypeRegistry.set(AddClusterShardMetadata.$type, AddClusterShardMetadata);
-
-const baseDeleteClusterShardRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteClusterShardRequest',
-    clusterId: '',
-    shardName: '',
-};
+const baseDeleteClusterShardRequest: object = { clusterId: '', shardName: '' };
 
 export const DeleteClusterShardRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteClusterShardRequest' as const,
-
     encode(
         message: DeleteClusterShardRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5518,17 +5062,9 @@ export const DeleteClusterShardRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteClusterShardRequest.$type, DeleteClusterShardRequest);
-
-const baseDeleteClusterShardMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteClusterShardMetadata',
-    clusterId: '',
-    shardName: '',
-};
+const baseDeleteClusterShardMetadata: object = { clusterId: '', shardName: '' };
 
 export const DeleteClusterShardMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.DeleteClusterShardMetadata' as const,
-
     encode(
         message: DeleteClusterShardMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5593,16 +5129,9 @@ export const DeleteClusterShardMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteClusterShardMetadata.$type, DeleteClusterShardMetadata);
-
-const baseRebalanceClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.RebalanceClusterRequest',
-    clusterId: '',
-};
+const baseRebalanceClusterRequest: object = { clusterId: '' };
 
 export const RebalanceClusterRequest = {
-    $type: 'yandex.cloud.mdb.redis.v1.RebalanceClusterRequest' as const,
-
     encode(message: RebalanceClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -5652,16 +5181,9 @@ export const RebalanceClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(RebalanceClusterRequest.$type, RebalanceClusterRequest);
-
-const baseRebalanceClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.RebalanceClusterMetadata',
-    clusterId: '',
-};
+const baseRebalanceClusterMetadata: object = { clusterId: '' };
 
 export const RebalanceClusterMetadata = {
-    $type: 'yandex.cloud.mdb.redis.v1.RebalanceClusterMetadata' as const,
-
     encode(
         message: RebalanceClusterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5714,24 +5236,16 @@ export const RebalanceClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(RebalanceClusterMetadata.$type, RebalanceClusterMetadata);
-
-const baseUpdateHostSpec: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateHostSpec',
-    hostName: '',
-    assignPublicIp: false,
-};
+const baseUpdateHostSpec: object = { hostName: '', assignPublicIp: false };
 
 export const UpdateHostSpec = {
-    $type: 'yandex.cloud.mdb.redis.v1.UpdateHostSpec' as const,
-
     encode(message: UpdateHostSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hostName !== '') {
             writer.uint32(10).string(message.hostName);
         }
         if (message.replicaPriority !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.replicaPriority! },
+                { value: message.replicaPriority! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
@@ -5817,19 +5331,9 @@ export const UpdateHostSpec = {
     },
 };
 
-messageTypeRegistry.set(UpdateHostSpec.$type, UpdateHostSpec);
-
-const baseHostSpec: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.HostSpec',
-    zoneId: '',
-    subnetId: '',
-    shardName: '',
-    assignPublicIp: false,
-};
+const baseHostSpec: object = { zoneId: '', subnetId: '', shardName: '', assignPublicIp: false };
 
 export const HostSpec = {
-    $type: 'yandex.cloud.mdb.redis.v1.HostSpec' as const,
-
     encode(message: HostSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneId !== '') {
             writer.uint32(10).string(message.zoneId);
@@ -5842,7 +5346,7 @@ export const HostSpec = {
         }
         if (message.replicaPriority !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.replicaPriority! },
+                { value: message.replicaPriority! },
                 writer.uint32(34).fork(),
             ).ldelim();
         }
@@ -5926,13 +5430,9 @@ export const HostSpec = {
     },
 };
 
-messageTypeRegistry.set(HostSpec.$type, HostSpec);
-
-const baseConfigSpec: object = { $type: 'yandex.cloud.mdb.redis.v1.ConfigSpec', version: '' };
+const baseConfigSpec: object = { version: '' };
 
 export const ConfigSpec = {
-    $type: 'yandex.cloud.mdb.redis.v1.ConfigSpec' as const,
-
     encode(message: ConfigSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -5969,7 +5469,7 @@ export const ConfigSpec = {
         }
         if (message.backupRetainPeriodDays !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.backupRetainPeriodDays! },
+                { value: message.backupRetainPeriodDays! },
                 writer.uint32(106).fork(),
             ).ldelim();
         }
@@ -6158,8 +5658,6 @@ export const ConfigSpec = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ConfigSpec.$type, ConfigSpec);
 
 /** A set of methods for managing Redis clusters. */
 export const ClusterServiceService = {
@@ -6979,21 +6477,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

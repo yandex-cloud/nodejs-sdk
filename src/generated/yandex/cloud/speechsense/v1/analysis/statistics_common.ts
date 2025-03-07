@@ -1,12 +1,10 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.speechsense.v1.analysis';
 
 export interface DescriptiveStatistics {
-    $type: 'yandex.cloud.speechsense.v1.analysis.DescriptiveStatistics';
     /** Minimum observed value */
     min: number;
     /** Maximum observed value */
@@ -20,7 +18,6 @@ export interface DescriptiveStatistics {
 }
 
 export interface Quantile {
-    $type: 'yandex.cloud.speechsense.v1.analysis.Quantile';
     /** Quantile level in range (0, 1) */
     level: number;
     /** Quantile value */
@@ -28,7 +25,6 @@ export interface Quantile {
 }
 
 export interface AudioSegmentBoundaries {
-    $type: 'yandex.cloud.speechsense.v1.analysis.AudioSegmentBoundaries';
     /** Audio segment start time */
     startTimeMs: number;
     /** Audio segment end time */
@@ -37,17 +33,9 @@ export interface AudioSegmentBoundaries {
     durationSeconds: number;
 }
 
-const baseDescriptiveStatistics: object = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.DescriptiveStatistics',
-    min: 0,
-    max: 0,
-    mean: 0,
-    std: 0,
-};
+const baseDescriptiveStatistics: object = { min: 0, max: 0, mean: 0, std: 0 };
 
 export const DescriptiveStatistics = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.DescriptiveStatistics' as const,
-
     encode(message: DescriptiveStatistics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.min !== 0) {
             writer.uint32(9).double(message.min);
@@ -135,17 +123,9 @@ export const DescriptiveStatistics = {
     },
 };
 
-messageTypeRegistry.set(DescriptiveStatistics.$type, DescriptiveStatistics);
-
-const baseQuantile: object = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.Quantile',
-    level: 0,
-    value: 0,
-};
+const baseQuantile: object = { level: 0, value: 0 };
 
 export const Quantile = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.Quantile' as const,
-
     encode(message: Quantile, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.level !== 0) {
             writer.uint32(9).double(message.level);
@@ -201,18 +181,9 @@ export const Quantile = {
     },
 };
 
-messageTypeRegistry.set(Quantile.$type, Quantile);
-
-const baseAudioSegmentBoundaries: object = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.AudioSegmentBoundaries',
-    startTimeMs: 0,
-    endTimeMs: 0,
-    durationSeconds: 0,
-};
+const baseAudioSegmentBoundaries: object = { startTimeMs: 0, endTimeMs: 0, durationSeconds: 0 };
 
 export const AudioSegmentBoundaries = {
-    $type: 'yandex.cloud.speechsense.v1.analysis.AudioSegmentBoundaries' as const,
-
     encode(message: AudioSegmentBoundaries, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.startTimeMs !== 0) {
             writer.uint32(8).int64(message.startTimeMs);
@@ -287,8 +258,6 @@ export const AudioSegmentBoundaries = {
     },
 };
 
-messageTypeRegistry.set(AudioSegmentBoundaries.$type, AudioSegmentBoundaries);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -309,16 +278,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

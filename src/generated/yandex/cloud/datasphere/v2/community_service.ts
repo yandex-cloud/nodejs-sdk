@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -38,7 +37,6 @@ import { Empty } from '../../../../google/protobuf/empty';
 export const protobufPackage = 'yandex.cloud.datasphere.v2';
 
 export interface CreateCommunityRequest {
-    $type: 'yandex.cloud.datasphere.v2.CreateCommunityRequest';
     /** Name of the community. */
     name: string;
     /** Description of the community. */
@@ -54,25 +52,21 @@ export interface CreateCommunityRequest {
 }
 
 export interface CreateCommunityRequest_LabelsEntry {
-    $type: 'yandex.cloud.datasphere.v2.CreateCommunityRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateCommunityMetadata {
-    $type: 'yandex.cloud.datasphere.v2.CreateCommunityMetadata';
     /** ID of the community that is being created. */
     communityId: string;
 }
 
 export interface GetCommunityRequest {
-    $type: 'yandex.cloud.datasphere.v2.GetCommunityRequest';
     /** ID of the community. */
     communityId: string;
 }
 
 export interface UpdateCommunityRequest {
-    $type: 'yandex.cloud.datasphere.v2.UpdateCommunityRequest';
     /** ID of the community. */
     communityId: string;
     /** Field mask that specifies which fields of the Community resource are going to be updated. */
@@ -86,31 +80,26 @@ export interface UpdateCommunityRequest {
 }
 
 export interface UpdateCommunityRequest_LabelsEntry {
-    $type: 'yandex.cloud.datasphere.v2.UpdateCommunityRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateCommunityMetadata {
-    $type: 'yandex.cloud.datasphere.v2.UpdateCommunityMetadata';
     /** ID of the community that is being updated. */
     communityId: string;
 }
 
 export interface DeleteCommunityRequest {
-    $type: 'yandex.cloud.datasphere.v2.DeleteCommunityRequest';
     /** ID of the community. */
     communityId: string;
 }
 
 export interface DeleteCommunityMetadata {
-    $type: 'yandex.cloud.datasphere.v2.DeleteCommunityMetadata';
     /** ID of the community that is being deleted. */
     communityId: string;
 }
 
 export interface ListCommunitiesRequest {
-    $type: 'yandex.cloud.datasphere.v2.ListCommunitiesRequest';
     /**
      * The maximum number of results per page to return. If the number of available
      * results is larger than [page_size],
@@ -137,7 +126,6 @@ export interface ListCommunitiesRequest {
 }
 
 export interface ListCommunitiesResponse {
-    $type: 'yandex.cloud.datasphere.v2.ListCommunitiesResponse';
     /** List of communities matching filters in list communities request. */
     communities: Community[];
     /**
@@ -152,39 +140,33 @@ export interface ListCommunitiesResponse {
 }
 
 export interface SetCommunityAccessBindingsMetadata {
-    $type: 'yandex.cloud.datasphere.v2.SetCommunityAccessBindingsMetadata';
     /** ID of the community which access bindings are set. */
     communityId: string;
 }
 
 export interface UpdateCommunityAccessBindingsMetadata {
-    $type: 'yandex.cloud.datasphere.v2.UpdateCommunityAccessBindingsMetadata';
     /** ID of the community which access bindings are updated. */
     communityId: string;
 }
 
 export interface AddCommunityResourceRequest {
-    $type: 'yandex.cloud.datasphere.v2.AddCommunityResourceRequest';
     communityId: string;
     resourceType: ResourceType;
     resourceId: string;
 }
 
 export interface RemoveCommunityResourceRequest {
-    $type: 'yandex.cloud.datasphere.v2.RemoveCommunityResourceRequest';
     communityId: string;
     resourceType: ResourceType;
     resourceId: string;
 }
 
 export interface GetCommunityRestrictionsRequest {
-    $type: 'yandex.cloud.datasphere.v2.GetCommunityRestrictionsRequest';
     /** ID of the community. */
     communityId: string;
 }
 
 export interface SetCommunityRestrictionsRequest {
-    $type: 'yandex.cloud.datasphere.v2.SetCommunityRestrictionsRequest';
     /** ID of the community. */
     communityId: string;
     /** List of restrictions to set. */
@@ -192,7 +174,6 @@ export interface SetCommunityRestrictionsRequest {
 }
 
 const baseCreateCommunityRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.CreateCommunityRequest',
     name: '',
     description: '',
     organizationId: '',
@@ -201,8 +182,6 @@ const baseCreateCommunityRequest: object = {
 };
 
 export const CreateCommunityRequest = {
-    $type: 'yandex.cloud.datasphere.v2.CreateCommunityRequest' as const,
-
     encode(message: CreateCommunityRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -218,11 +197,7 @@ export const CreateCommunityRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateCommunityRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.datasphere.v2.CreateCommunityRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -337,17 +312,9 @@ export const CreateCommunityRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateCommunityRequest.$type, CreateCommunityRequest);
-
-const baseCreateCommunityRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.datasphere.v2.CreateCommunityRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateCommunityRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateCommunityRequest_LabelsEntry = {
-    $type: 'yandex.cloud.datasphere.v2.CreateCommunityRequest.LabelsEntry' as const,
-
     encode(
         message: CreateCommunityRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -413,19 +380,9 @@ export const CreateCommunityRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateCommunityRequest_LabelsEntry.$type,
-    CreateCommunityRequest_LabelsEntry,
-);
-
-const baseCreateCommunityMetadata: object = {
-    $type: 'yandex.cloud.datasphere.v2.CreateCommunityMetadata',
-    communityId: '',
-};
+const baseCreateCommunityMetadata: object = { communityId: '' };
 
 export const CreateCommunityMetadata = {
-    $type: 'yandex.cloud.datasphere.v2.CreateCommunityMetadata' as const,
-
     encode(message: CreateCommunityMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.communityId !== '') {
             writer.uint32(10).string(message.communityId);
@@ -475,16 +432,9 @@ export const CreateCommunityMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateCommunityMetadata.$type, CreateCommunityMetadata);
-
-const baseGetCommunityRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.GetCommunityRequest',
-    communityId: '',
-};
+const baseGetCommunityRequest: object = { communityId: '' };
 
 export const GetCommunityRequest = {
-    $type: 'yandex.cloud.datasphere.v2.GetCommunityRequest' as const,
-
     encode(message: GetCommunityRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.communityId !== '') {
             writer.uint32(10).string(message.communityId);
@@ -534,18 +484,9 @@ export const GetCommunityRequest = {
     },
 };
 
-messageTypeRegistry.set(GetCommunityRequest.$type, GetCommunityRequest);
-
-const baseUpdateCommunityRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.UpdateCommunityRequest',
-    communityId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateCommunityRequest: object = { communityId: '', name: '', description: '' };
 
 export const UpdateCommunityRequest = {
-    $type: 'yandex.cloud.datasphere.v2.UpdateCommunityRequest' as const,
-
     encode(message: UpdateCommunityRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.communityId !== '') {
             writer.uint32(10).string(message.communityId);
@@ -561,11 +502,7 @@ export const UpdateCommunityRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateCommunityRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.datasphere.v2.UpdateCommunityRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -676,17 +613,9 @@ export const UpdateCommunityRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateCommunityRequest.$type, UpdateCommunityRequest);
-
-const baseUpdateCommunityRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.datasphere.v2.UpdateCommunityRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateCommunityRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateCommunityRequest_LabelsEntry = {
-    $type: 'yandex.cloud.datasphere.v2.UpdateCommunityRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateCommunityRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -752,19 +681,9 @@ export const UpdateCommunityRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateCommunityRequest_LabelsEntry.$type,
-    UpdateCommunityRequest_LabelsEntry,
-);
-
-const baseUpdateCommunityMetadata: object = {
-    $type: 'yandex.cloud.datasphere.v2.UpdateCommunityMetadata',
-    communityId: '',
-};
+const baseUpdateCommunityMetadata: object = { communityId: '' };
 
 export const UpdateCommunityMetadata = {
-    $type: 'yandex.cloud.datasphere.v2.UpdateCommunityMetadata' as const,
-
     encode(message: UpdateCommunityMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.communityId !== '') {
             writer.uint32(10).string(message.communityId);
@@ -814,16 +733,9 @@ export const UpdateCommunityMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateCommunityMetadata.$type, UpdateCommunityMetadata);
-
-const baseDeleteCommunityRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.DeleteCommunityRequest',
-    communityId: '',
-};
+const baseDeleteCommunityRequest: object = { communityId: '' };
 
 export const DeleteCommunityRequest = {
-    $type: 'yandex.cloud.datasphere.v2.DeleteCommunityRequest' as const,
-
     encode(message: DeleteCommunityRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.communityId !== '') {
             writer.uint32(10).string(message.communityId);
@@ -873,16 +785,9 @@ export const DeleteCommunityRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteCommunityRequest.$type, DeleteCommunityRequest);
-
-const baseDeleteCommunityMetadata: object = {
-    $type: 'yandex.cloud.datasphere.v2.DeleteCommunityMetadata',
-    communityId: '',
-};
+const baseDeleteCommunityMetadata: object = { communityId: '' };
 
 export const DeleteCommunityMetadata = {
-    $type: 'yandex.cloud.datasphere.v2.DeleteCommunityMetadata' as const,
-
     encode(message: DeleteCommunityMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.communityId !== '') {
             writer.uint32(10).string(message.communityId);
@@ -932,10 +837,7 @@ export const DeleteCommunityMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteCommunityMetadata.$type, DeleteCommunityMetadata);
-
 const baseListCommunitiesRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.ListCommunitiesRequest',
     pageSize: 0,
     pageToken: '',
     nameOrDescriptionPattern: '',
@@ -945,8 +847,6 @@ const baseListCommunitiesRequest: object = {
 };
 
 export const ListCommunitiesRequest = {
-    $type: 'yandex.cloud.datasphere.v2.ListCommunitiesRequest' as const,
-
     encode(message: ListCommunitiesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -1056,16 +956,9 @@ export const ListCommunitiesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListCommunitiesRequest.$type, ListCommunitiesRequest);
-
-const baseListCommunitiesResponse: object = {
-    $type: 'yandex.cloud.datasphere.v2.ListCommunitiesResponse',
-    nextPageToken: '',
-};
+const baseListCommunitiesResponse: object = { nextPageToken: '' };
 
 export const ListCommunitiesResponse = {
-    $type: 'yandex.cloud.datasphere.v2.ListCommunitiesResponse' as const,
-
     encode(message: ListCommunitiesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.communities) {
             Community.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1129,16 +1022,9 @@ export const ListCommunitiesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListCommunitiesResponse.$type, ListCommunitiesResponse);
-
-const baseSetCommunityAccessBindingsMetadata: object = {
-    $type: 'yandex.cloud.datasphere.v2.SetCommunityAccessBindingsMetadata',
-    communityId: '',
-};
+const baseSetCommunityAccessBindingsMetadata: object = { communityId: '' };
 
 export const SetCommunityAccessBindingsMetadata = {
-    $type: 'yandex.cloud.datasphere.v2.SetCommunityAccessBindingsMetadata' as const,
-
     encode(
         message: SetCommunityAccessBindingsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1197,19 +1083,9 @@ export const SetCommunityAccessBindingsMetadata = {
     },
 };
 
-messageTypeRegistry.set(
-    SetCommunityAccessBindingsMetadata.$type,
-    SetCommunityAccessBindingsMetadata,
-);
-
-const baseUpdateCommunityAccessBindingsMetadata: object = {
-    $type: 'yandex.cloud.datasphere.v2.UpdateCommunityAccessBindingsMetadata',
-    communityId: '',
-};
+const baseUpdateCommunityAccessBindingsMetadata: object = { communityId: '' };
 
 export const UpdateCommunityAccessBindingsMetadata = {
-    $type: 'yandex.cloud.datasphere.v2.UpdateCommunityAccessBindingsMetadata' as const,
-
     encode(
         message: UpdateCommunityAccessBindingsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1268,21 +1144,13 @@ export const UpdateCommunityAccessBindingsMetadata = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateCommunityAccessBindingsMetadata.$type,
-    UpdateCommunityAccessBindingsMetadata,
-);
-
 const baseAddCommunityResourceRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.AddCommunityResourceRequest',
     communityId: '',
     resourceType: 0,
     resourceId: '',
 };
 
 export const AddCommunityResourceRequest = {
-    $type: 'yandex.cloud.datasphere.v2.AddCommunityResourceRequest' as const,
-
     encode(
         message: AddCommunityResourceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1360,18 +1228,13 @@ export const AddCommunityResourceRequest = {
     },
 };
 
-messageTypeRegistry.set(AddCommunityResourceRequest.$type, AddCommunityResourceRequest);
-
 const baseRemoveCommunityResourceRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.RemoveCommunityResourceRequest',
     communityId: '',
     resourceType: 0,
     resourceId: '',
 };
 
 export const RemoveCommunityResourceRequest = {
-    $type: 'yandex.cloud.datasphere.v2.RemoveCommunityResourceRequest' as const,
-
     encode(
         message: RemoveCommunityResourceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1449,16 +1312,9 @@ export const RemoveCommunityResourceRequest = {
     },
 };
 
-messageTypeRegistry.set(RemoveCommunityResourceRequest.$type, RemoveCommunityResourceRequest);
-
-const baseGetCommunityRestrictionsRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.GetCommunityRestrictionsRequest',
-    communityId: '',
-};
+const baseGetCommunityRestrictionsRequest: object = { communityId: '' };
 
 export const GetCommunityRestrictionsRequest = {
-    $type: 'yandex.cloud.datasphere.v2.GetCommunityRestrictionsRequest' as const,
-
     encode(
         message: GetCommunityRestrictionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1517,16 +1373,9 @@ export const GetCommunityRestrictionsRequest = {
     },
 };
 
-messageTypeRegistry.set(GetCommunityRestrictionsRequest.$type, GetCommunityRestrictionsRequest);
-
-const baseSetCommunityRestrictionsRequest: object = {
-    $type: 'yandex.cloud.datasphere.v2.SetCommunityRestrictionsRequest',
-    communityId: '',
-};
+const baseSetCommunityRestrictionsRequest: object = { communityId: '' };
 
 export const SetCommunityRestrictionsRequest = {
-    $type: 'yandex.cloud.datasphere.v2.SetCommunityRestrictionsRequest' as const,
-
     encode(
         message: SetCommunityRestrictionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1600,8 +1449,6 @@ export const SetCommunityRestrictionsRequest = {
         return message;
     },
 };
-
-messageTypeRegistry.set(SetCommunityRestrictionsRequest.$type, SetCommunityRestrictionsRequest);
 
 /** A set of methods for managing Community resources. */
 export const CommunityServiceService = {
@@ -2025,16 +1872,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

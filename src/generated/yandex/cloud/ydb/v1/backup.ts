@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { TimeOfDay } from '../../../../google/type/timeofday';
@@ -10,7 +9,6 @@ import { DayOfWeek, dayOfWeekFromJSON, dayOfWeekToJSON } from '../../../../googl
 export const protobufPackage = 'yandex.cloud.ydb.v1';
 
 export interface BackupSchedule {
-    $type: 'yandex.cloud.ydb.v1.BackupSchedule';
     dailyBackupSchedule?: DailyBackupSchedule | undefined;
     weeklyBackupSchedule?: WeeklyBackupSchedule | undefined;
     recurringBackupSchedule?: RecurringBackupSchedule | undefined;
@@ -22,7 +20,6 @@ export interface BackupSchedule {
 }
 
 export interface RecurringBackupSchedule {
-    $type: 'yandex.cloud.ydb.v1.RecurringBackupSchedule';
     /** Timestamp of the first recurrence. */
     startTime?: Date;
     /**
@@ -34,23 +31,19 @@ export interface RecurringBackupSchedule {
 }
 
 export interface DaysOfWeekBackupSchedule {
-    $type: 'yandex.cloud.ydb.v1.DaysOfWeekBackupSchedule';
     days: DayOfWeek[];
     executeTime?: TimeOfDay;
 }
 
 export interface WeeklyBackupSchedule {
-    $type: 'yandex.cloud.ydb.v1.WeeklyBackupSchedule';
     daysOfWeek: DaysOfWeekBackupSchedule[];
 }
 
 export interface DailyBackupSchedule {
-    $type: 'yandex.cloud.ydb.v1.DailyBackupSchedule';
     executeTime?: TimeOfDay;
 }
 
 export interface BackupSettings {
-    $type: 'yandex.cloud.ydb.v1.BackupSettings';
     /** name of backup settings */
     name: string;
     /** human readable description. */
@@ -188,12 +181,10 @@ export function backupSettings_StorageClassToJSON(object: BackupSettings_Storage
 }
 
 export interface BackupConfig {
-    $type: 'yandex.cloud.ydb.v1.BackupConfig';
     backupSettings: BackupSettings[];
 }
 
 export interface Backup {
-    $type: 'yandex.cloud.ydb.v1.Backup';
     id: string;
     /** human readable backup name. */
     name: string;
@@ -304,11 +295,9 @@ export function backup_TypeToJSON(object: Backup_Type): string {
     }
 }
 
-const baseBackupSchedule: object = { $type: 'yandex.cloud.ydb.v1.BackupSchedule' };
+const baseBackupSchedule: object = {};
 
 export const BackupSchedule = {
-    $type: 'yandex.cloud.ydb.v1.BackupSchedule' as const,
-
     encode(message: BackupSchedule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dailyBackupSchedule !== undefined) {
             DailyBackupSchedule.encode(
@@ -434,16 +423,9 @@ export const BackupSchedule = {
     },
 };
 
-messageTypeRegistry.set(BackupSchedule.$type, BackupSchedule);
-
-const baseRecurringBackupSchedule: object = {
-    $type: 'yandex.cloud.ydb.v1.RecurringBackupSchedule',
-    recurrence: '',
-};
+const baseRecurringBackupSchedule: object = { recurrence: '' };
 
 export const RecurringBackupSchedule = {
-    $type: 'yandex.cloud.ydb.v1.RecurringBackupSchedule' as const,
-
     encode(message: RecurringBackupSchedule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.startTime !== undefined) {
             Timestamp.encode(toTimestamp(message.startTime), writer.uint32(10).fork()).ldelim();
@@ -505,16 +487,9 @@ export const RecurringBackupSchedule = {
     },
 };
 
-messageTypeRegistry.set(RecurringBackupSchedule.$type, RecurringBackupSchedule);
-
-const baseDaysOfWeekBackupSchedule: object = {
-    $type: 'yandex.cloud.ydb.v1.DaysOfWeekBackupSchedule',
-    days: 0,
-};
+const baseDaysOfWeekBackupSchedule: object = { days: 0 };
 
 export const DaysOfWeekBackupSchedule = {
-    $type: 'yandex.cloud.ydb.v1.DaysOfWeekBackupSchedule' as const,
-
     encode(
         message: DaysOfWeekBackupSchedule,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -596,13 +571,9 @@ export const DaysOfWeekBackupSchedule = {
     },
 };
 
-messageTypeRegistry.set(DaysOfWeekBackupSchedule.$type, DaysOfWeekBackupSchedule);
-
-const baseWeeklyBackupSchedule: object = { $type: 'yandex.cloud.ydb.v1.WeeklyBackupSchedule' };
+const baseWeeklyBackupSchedule: object = {};
 
 export const WeeklyBackupSchedule = {
-    $type: 'yandex.cloud.ydb.v1.WeeklyBackupSchedule' as const,
-
     encode(message: WeeklyBackupSchedule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.daysOfWeek) {
             DaysOfWeekBackupSchedule.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -661,13 +632,9 @@ export const WeeklyBackupSchedule = {
     },
 };
 
-messageTypeRegistry.set(WeeklyBackupSchedule.$type, WeeklyBackupSchedule);
-
-const baseDailyBackupSchedule: object = { $type: 'yandex.cloud.ydb.v1.DailyBackupSchedule' };
+const baseDailyBackupSchedule: object = {};
 
 export const DailyBackupSchedule = {
-    $type: 'yandex.cloud.ydb.v1.DailyBackupSchedule' as const,
-
     encode(message: DailyBackupSchedule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.executeTime !== undefined) {
             TimeOfDay.encode(message.executeTime, writer.uint32(10).fork()).ldelim();
@@ -723,10 +690,7 @@ export const DailyBackupSchedule = {
     },
 };
 
-messageTypeRegistry.set(DailyBackupSchedule.$type, DailyBackupSchedule);
-
 const baseBackupSettings: object = {
-    $type: 'yandex.cloud.ydb.v1.BackupSettings',
     name: '',
     description: '',
     sourcePaths: '',
@@ -736,8 +700,6 @@ const baseBackupSettings: object = {
 };
 
 export const BackupSettings = {
-    $type: 'yandex.cloud.ydb.v1.BackupSettings' as const,
-
     encode(message: BackupSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -885,13 +847,9 @@ export const BackupSettings = {
     },
 };
 
-messageTypeRegistry.set(BackupSettings.$type, BackupSettings);
-
-const baseBackupConfig: object = { $type: 'yandex.cloud.ydb.v1.BackupConfig' };
+const baseBackupConfig: object = {};
 
 export const BackupConfig = {
-    $type: 'yandex.cloud.ydb.v1.BackupConfig' as const,
-
     encode(message: BackupConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.backupSettings) {
             BackupSettings.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -946,10 +904,7 @@ export const BackupConfig = {
     },
 };
 
-messageTypeRegistry.set(BackupConfig.$type, BackupConfig);
-
 const baseBackup: object = {
-    $type: 'yandex.cloud.ydb.v1.Backup',
     id: '',
     name: '',
     folderId: '',
@@ -961,8 +916,6 @@ const baseBackup: object = {
 };
 
 export const Backup = {
-    $type: 'yandex.cloud.ydb.v1.Backup' as const,
-
     encode(message: Backup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1139,8 +1092,6 @@ export const Backup = {
     },
 };
 
-messageTypeRegistry.set(Backup.$type, Backup);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1161,21 +1112,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

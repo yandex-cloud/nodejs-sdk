@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -25,7 +24,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.billing.v1';
 
 export interface GetBudgetRequest {
-    $type: 'yandex.cloud.billing.v1.GetBudgetRequest';
     /**
      * ID of the budget to return.
      * To get the budget ID, use [BudgetService.List] request.
@@ -34,7 +32,6 @@ export interface GetBudgetRequest {
 }
 
 export interface ListBudgetsRequest {
-    $type: 'yandex.cloud.billing.v1.ListBudgetsRequest';
     /**
      * ID of the billing account to list budgets corresponding to.
      * To get the billing account ID, use [BillingAccountService.List] request.
@@ -56,7 +53,6 @@ export interface ListBudgetsRequest {
 }
 
 export interface ListBudgetsResponse {
-    $type: 'yandex.cloud.billing.v1.ListBudgetsResponse';
     /** List of budgets. */
     budgets: Budget[];
     /**
@@ -71,7 +67,6 @@ export interface ListBudgetsResponse {
 }
 
 export interface CreateBudgetRequest {
-    $type: 'yandex.cloud.billing.v1.CreateBudgetRequest';
     /**
      * ID of the billing account to list budgets corresponding to.
      * To get the billing account ID, use [yandex.cloud.billing.v1.BillingAccountService.List] request.
@@ -88,16 +83,13 @@ export interface CreateBudgetRequest {
 }
 
 export interface CreateBudgetMetadata {
-    $type: 'yandex.cloud.billing.v1.CreateBudgetMetadata';
     /** ID of the budget. */
     budgetId: string;
 }
 
-const baseGetBudgetRequest: object = { $type: 'yandex.cloud.billing.v1.GetBudgetRequest', id: '' };
+const baseGetBudgetRequest: object = { id: '' };
 
 export const GetBudgetRequest = {
-    $type: 'yandex.cloud.billing.v1.GetBudgetRequest' as const,
-
     encode(message: GetBudgetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -142,18 +134,9 @@ export const GetBudgetRequest = {
     },
 };
 
-messageTypeRegistry.set(GetBudgetRequest.$type, GetBudgetRequest);
-
-const baseListBudgetsRequest: object = {
-    $type: 'yandex.cloud.billing.v1.ListBudgetsRequest',
-    billingAccountId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListBudgetsRequest: object = { billingAccountId: '', pageSize: 0, pageToken: '' };
 
 export const ListBudgetsRequest = {
-    $type: 'yandex.cloud.billing.v1.ListBudgetsRequest' as const,
-
     encode(message: ListBudgetsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.billingAccountId !== '') {
             writer.uint32(10).string(message.billingAccountId);
@@ -225,16 +208,9 @@ export const ListBudgetsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListBudgetsRequest.$type, ListBudgetsRequest);
-
-const baseListBudgetsResponse: object = {
-    $type: 'yandex.cloud.billing.v1.ListBudgetsResponse',
-    nextPageToken: '',
-};
+const baseListBudgetsResponse: object = { nextPageToken: '' };
 
 export const ListBudgetsResponse = {
-    $type: 'yandex.cloud.billing.v1.ListBudgetsResponse' as const,
-
     encode(message: ListBudgetsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.budgets) {
             Budget.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -298,17 +274,9 @@ export const ListBudgetsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListBudgetsResponse.$type, ListBudgetsResponse);
-
-const baseCreateBudgetRequest: object = {
-    $type: 'yandex.cloud.billing.v1.CreateBudgetRequest',
-    billingAccountId: '',
-    name: '',
-};
+const baseCreateBudgetRequest: object = { billingAccountId: '', name: '' };
 
 export const CreateBudgetRequest = {
-    $type: 'yandex.cloud.billing.v1.CreateBudgetRequest' as const,
-
     encode(message: CreateBudgetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.billingAccountId !== '') {
             writer.uint32(10).string(message.billingAccountId);
@@ -421,16 +389,9 @@ export const CreateBudgetRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateBudgetRequest.$type, CreateBudgetRequest);
-
-const baseCreateBudgetMetadata: object = {
-    $type: 'yandex.cloud.billing.v1.CreateBudgetMetadata',
-    budgetId: '',
-};
+const baseCreateBudgetMetadata: object = { budgetId: '' };
 
 export const CreateBudgetMetadata = {
-    $type: 'yandex.cloud.billing.v1.CreateBudgetMetadata' as const,
-
     encode(message: CreateBudgetMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.budgetId !== '') {
             writer.uint32(10).string(message.budgetId);
@@ -479,8 +440,6 @@ export const CreateBudgetMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(CreateBudgetMetadata.$type, CreateBudgetMetadata);
 
 /** A set of methods for managing Budget resources. */
 export const BudgetServiceService = {
@@ -612,16 +571,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

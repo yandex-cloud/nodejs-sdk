@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -28,7 +27,6 @@ import {
 export const protobufPackage = 'yandex.cloud.resourcemanager.v1';
 
 export interface GetFolderRequest {
-    $type: 'yandex.cloud.resourcemanager.v1.GetFolderRequest';
     /**
      * ID of the Folder resource to return.
      * To get the folder ID, use a [FolderService.List] request.
@@ -37,7 +35,6 @@ export interface GetFolderRequest {
 }
 
 export interface ListFoldersRequest {
-    $type: 'yandex.cloud.resourcemanager.v1.ListFoldersRequest';
     /**
      * ID of the cloud to list folders in.
      * To get the cloud ID, use a [yandex.cloud.resourcemanager.v1.CloudService.List] request.
@@ -68,7 +65,6 @@ export interface ListFoldersRequest {
 }
 
 export interface ListFoldersResponse {
-    $type: 'yandex.cloud.resourcemanager.v1.ListFoldersResponse';
     /** List of Folder resources. */
     folders: Folder[];
     /**
@@ -83,7 +79,6 @@ export interface ListFoldersResponse {
 }
 
 export interface CreateFolderRequest {
-    $type: 'yandex.cloud.resourcemanager.v1.CreateFolderRequest';
     /**
      * ID of the cloud to create a folder in.
      * To get the cloud ID, use a [yandex.cloud.resourcemanager.v1.CloudService.List] request.
@@ -101,19 +96,16 @@ export interface CreateFolderRequest {
 }
 
 export interface CreateFolderRequest_LabelsEntry {
-    $type: 'yandex.cloud.resourcemanager.v1.CreateFolderRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateFolderMetadata {
-    $type: 'yandex.cloud.resourcemanager.v1.CreateFolderMetadata';
     /** ID of the folder that is being created. */
     folderId: string;
 }
 
 export interface UpdateFolderRequest {
-    $type: 'yandex.cloud.resourcemanager.v1.UpdateFolderRequest';
     /**
      * ID of the Folder resource to update.
      * To get the folder ID, use a [FolderService.List] request.
@@ -133,19 +125,16 @@ export interface UpdateFolderRequest {
 }
 
 export interface UpdateFolderRequest_LabelsEntry {
-    $type: 'yandex.cloud.resourcemanager.v1.UpdateFolderRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateFolderMetadata {
-    $type: 'yandex.cloud.resourcemanager.v1.UpdateFolderMetadata';
     /** ID of the Folder resource that is being updated. */
     folderId: string;
 }
 
 export interface DeleteFolderRequest {
-    $type: 'yandex.cloud.resourcemanager.v1.DeleteFolderRequest';
     /**
      * ID of the folder to delete.
      * To get the folder ID, use a [FolderService.List] request.
@@ -163,7 +152,6 @@ export interface DeleteFolderRequest {
 }
 
 export interface DeleteFolderMetadata {
-    $type: 'yandex.cloud.resourcemanager.v1.DeleteFolderMetadata';
     /** ID of the folder that is being deleted. */
     folderId: string;
     /** The timestamp after which the process of deleting the folder should begin. */
@@ -174,7 +162,6 @@ export interface DeleteFolderMetadata {
 }
 
 export interface ListFolderOperationsRequest {
-    $type: 'yandex.cloud.resourcemanager.v1.ListFolderOperationsRequest';
     /** ID of the Folder resource to list operations for. */
     folderId: string;
     /**
@@ -193,7 +180,6 @@ export interface ListFolderOperationsRequest {
 }
 
 export interface ListFolderOperationsResponse {
-    $type: 'yandex.cloud.resourcemanager.v1.ListFolderOperationsResponse';
     /** List of operations for the specified folder. */
     operations: Operation[];
     /**
@@ -205,14 +191,9 @@ export interface ListFolderOperationsResponse {
     nextPageToken: string;
 }
 
-const baseGetFolderRequest: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.GetFolderRequest',
-    folderId: '',
-};
+const baseGetFolderRequest: object = { folderId: '' };
 
 export const GetFolderRequest = {
-    $type: 'yandex.cloud.resourcemanager.v1.GetFolderRequest' as const,
-
     encode(message: GetFolderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -260,19 +241,9 @@ export const GetFolderRequest = {
     },
 };
 
-messageTypeRegistry.set(GetFolderRequest.$type, GetFolderRequest);
-
-const baseListFoldersRequest: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.ListFoldersRequest',
-    cloudId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListFoldersRequest: object = { cloudId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListFoldersRequest = {
-    $type: 'yandex.cloud.resourcemanager.v1.ListFoldersRequest' as const,
-
     encode(message: ListFoldersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cloudId !== '') {
             writer.uint32(10).string(message.cloudId);
@@ -352,16 +323,9 @@ export const ListFoldersRequest = {
     },
 };
 
-messageTypeRegistry.set(ListFoldersRequest.$type, ListFoldersRequest);
-
-const baseListFoldersResponse: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.ListFoldersResponse',
-    nextPageToken: '',
-};
+const baseListFoldersResponse: object = { nextPageToken: '' };
 
 export const ListFoldersResponse = {
-    $type: 'yandex.cloud.resourcemanager.v1.ListFoldersResponse' as const,
-
     encode(message: ListFoldersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.folders) {
             Folder.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -425,18 +389,9 @@ export const ListFoldersResponse = {
     },
 };
 
-messageTypeRegistry.set(ListFoldersResponse.$type, ListFoldersResponse);
-
-const baseCreateFolderRequest: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.CreateFolderRequest',
-    cloudId: '',
-    name: '',
-    description: '',
-};
+const baseCreateFolderRequest: object = { cloudId: '', name: '', description: '' };
 
 export const CreateFolderRequest = {
-    $type: 'yandex.cloud.resourcemanager.v1.CreateFolderRequest' as const,
-
     encode(message: CreateFolderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cloudId !== '') {
             writer.uint32(10).string(message.cloudId);
@@ -449,11 +404,7 @@ export const CreateFolderRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateFolderRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.resourcemanager.v1.CreateFolderRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -544,17 +495,9 @@ export const CreateFolderRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateFolderRequest.$type, CreateFolderRequest);
-
-const baseCreateFolderRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.CreateFolderRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateFolderRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateFolderRequest_LabelsEntry = {
-    $type: 'yandex.cloud.resourcemanager.v1.CreateFolderRequest.LabelsEntry' as const,
-
     encode(
         message: CreateFolderRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -620,16 +563,9 @@ export const CreateFolderRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateFolderRequest_LabelsEntry.$type, CreateFolderRequest_LabelsEntry);
-
-const baseCreateFolderMetadata: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.CreateFolderMetadata',
-    folderId: '',
-};
+const baseCreateFolderMetadata: object = { folderId: '' };
 
 export const CreateFolderMetadata = {
-    $type: 'yandex.cloud.resourcemanager.v1.CreateFolderMetadata' as const,
-
     encode(message: CreateFolderMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -679,18 +615,9 @@ export const CreateFolderMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateFolderMetadata.$type, CreateFolderMetadata);
-
-const baseUpdateFolderRequest: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.UpdateFolderRequest',
-    folderId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateFolderRequest: object = { folderId: '', name: '', description: '' };
 
 export const UpdateFolderRequest = {
-    $type: 'yandex.cloud.resourcemanager.v1.UpdateFolderRequest' as const,
-
     encode(message: UpdateFolderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -706,11 +633,7 @@ export const UpdateFolderRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateFolderRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.resourcemanager.v1.UpdateFolderRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -818,17 +741,9 @@ export const UpdateFolderRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateFolderRequest.$type, UpdateFolderRequest);
-
-const baseUpdateFolderRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.UpdateFolderRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateFolderRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateFolderRequest_LabelsEntry = {
-    $type: 'yandex.cloud.resourcemanager.v1.UpdateFolderRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateFolderRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -894,16 +809,9 @@ export const UpdateFolderRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateFolderRequest_LabelsEntry.$type, UpdateFolderRequest_LabelsEntry);
-
-const baseUpdateFolderMetadata: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.UpdateFolderMetadata',
-    folderId: '',
-};
+const baseUpdateFolderMetadata: object = { folderId: '' };
 
 export const UpdateFolderMetadata = {
-    $type: 'yandex.cloud.resourcemanager.v1.UpdateFolderMetadata' as const,
-
     encode(message: UpdateFolderMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -953,16 +861,9 @@ export const UpdateFolderMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateFolderMetadata.$type, UpdateFolderMetadata);
-
-const baseDeleteFolderRequest: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.DeleteFolderRequest',
-    folderId: '',
-};
+const baseDeleteFolderRequest: object = { folderId: '' };
 
 export const DeleteFolderRequest = {
-    $type: 'yandex.cloud.resourcemanager.v1.DeleteFolderRequest' as const,
-
     encode(message: DeleteFolderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1024,17 +925,9 @@ export const DeleteFolderRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteFolderRequest.$type, DeleteFolderRequest);
-
-const baseDeleteFolderMetadata: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.DeleteFolderMetadata',
-    folderId: '',
-    cancelledBy: '',
-};
+const baseDeleteFolderMetadata: object = { folderId: '', cancelledBy: '' };
 
 export const DeleteFolderMetadata = {
-    $type: 'yandex.cloud.resourcemanager.v1.DeleteFolderMetadata' as const,
-
     encode(message: DeleteFolderMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1120,18 +1013,9 @@ export const DeleteFolderMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteFolderMetadata.$type, DeleteFolderMetadata);
-
-const baseListFolderOperationsRequest: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.ListFolderOperationsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListFolderOperationsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
 export const ListFolderOperationsRequest = {
-    $type: 'yandex.cloud.resourcemanager.v1.ListFolderOperationsRequest' as const,
-
     encode(
         message: ListFolderOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1206,16 +1090,9 @@ export const ListFolderOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListFolderOperationsRequest.$type, ListFolderOperationsRequest);
-
-const baseListFolderOperationsResponse: object = {
-    $type: 'yandex.cloud.resourcemanager.v1.ListFolderOperationsResponse',
-    nextPageToken: '',
-};
+const baseListFolderOperationsResponse: object = { nextPageToken: '' };
 
 export const ListFolderOperationsResponse = {
-    $type: 'yandex.cloud.resourcemanager.v1.ListFolderOperationsResponse' as const,
-
     encode(
         message: ListFolderOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1281,8 +1158,6 @@ export const ListFolderOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListFolderOperationsResponse.$type, ListFolderOperationsResponse);
 
 /** A set of methods for managing Folder resources. */
 export const FolderServiceService = {
@@ -1602,21 +1477,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ import { Service } from '../../../../yandex/cloud/billing/v1/service';
 export const protobufPackage = 'yandex.cloud.billing.v1';
 
 export interface GetServiceRequest {
-    $type: 'yandex.cloud.billing.v1.GetServiceRequest';
     /**
      * ID of the service to return.
      * To get the service ID, use [ServiceService.List] request.
@@ -28,7 +26,6 @@ export interface GetServiceRequest {
 }
 
 export interface ListServicesRequest {
-    $type: 'yandex.cloud.billing.v1.ListServicesRequest';
     /**
      * A filter expression that filters resources listed in the response.
      * The expression must specify:
@@ -53,7 +50,6 @@ export interface ListServicesRequest {
 }
 
 export interface ListServicesResponse {
-    $type: 'yandex.cloud.billing.v1.ListServicesResponse';
     /** List of services. */
     services: Service[];
     /**
@@ -67,14 +63,9 @@ export interface ListServicesResponse {
     nextPageToken: string;
 }
 
-const baseGetServiceRequest: object = {
-    $type: 'yandex.cloud.billing.v1.GetServiceRequest',
-    id: '',
-};
+const baseGetServiceRequest: object = { id: '' };
 
 export const GetServiceRequest = {
-    $type: 'yandex.cloud.billing.v1.GetServiceRequest' as const,
-
     encode(message: GetServiceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -119,18 +110,9 @@ export const GetServiceRequest = {
     },
 };
 
-messageTypeRegistry.set(GetServiceRequest.$type, GetServiceRequest);
-
-const baseListServicesRequest: object = {
-    $type: 'yandex.cloud.billing.v1.ListServicesRequest',
-    filter: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListServicesRequest: object = { filter: '', pageSize: 0, pageToken: '' };
 
 export const ListServicesRequest = {
-    $type: 'yandex.cloud.billing.v1.ListServicesRequest' as const,
-
     encode(message: ListServicesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.filter !== '') {
             writer.uint32(10).string(message.filter);
@@ -200,16 +182,9 @@ export const ListServicesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListServicesRequest.$type, ListServicesRequest);
-
-const baseListServicesResponse: object = {
-    $type: 'yandex.cloud.billing.v1.ListServicesResponse',
-    nextPageToken: '',
-};
+const baseListServicesResponse: object = { nextPageToken: '' };
 
 export const ListServicesResponse = {
-    $type: 'yandex.cloud.billing.v1.ListServicesResponse' as const,
-
     encode(message: ListServicesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.services) {
             Service.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -272,8 +247,6 @@ export const ListServicesResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListServicesResponse.$type, ListServicesResponse);
 
 /** A set of methods for managing Service resources. */
 export const ServiceServiceService = {
@@ -376,16 +349,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -22,13 +21,11 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.video.v1';
 
 export interface GetStreamRequest {
-    $type: 'yandex.cloud.video.v1.GetStreamRequest';
     /** ID of the stream. */
     streamId: string;
 }
 
 export interface ListStreamsRequest {
-    $type: 'yandex.cloud.video.v1.ListStreamsRequest';
     /** ID of the channel. */
     channelId: string;
     /** The maximum number of the results per page to return. Default value: 100. */
@@ -55,7 +52,6 @@ export interface ListStreamsRequest {
 }
 
 export interface ListStreamsResponse {
-    $type: 'yandex.cloud.video.v1.ListStreamsResponse';
     /** List of streams for channel. */
     streams: Stream[];
     /** Token for getting the next page. */
@@ -63,7 +59,6 @@ export interface ListStreamsResponse {
 }
 
 export interface BatchGetStreamsRequest {
-    $type: 'yandex.cloud.video.v1.BatchGetStreamsRequest';
     /** ID of the channel. */
     channelId: string;
     /** List of requested stream IDs. */
@@ -71,13 +66,11 @@ export interface BatchGetStreamsRequest {
 }
 
 export interface BatchGetStreamsResponse {
-    $type: 'yandex.cloud.video.v1.BatchGetStreamsResponse';
     /** List of streams for specific channel. */
     streams: Stream[];
 }
 
 export interface CreateStreamRequest {
-    $type: 'yandex.cloud.video.v1.CreateStreamRequest';
     /** ID of the channel. */
     channelId: string;
     /** ID of the line. */
@@ -97,29 +90,23 @@ export interface CreateStreamRequest {
 }
 
 export interface CreateStreamRequest_LabelsEntry {
-    $type: 'yandex.cloud.video.v1.CreateStreamRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
-export interface OnDemandParams {
-    $type: 'yandex.cloud.video.v1.OnDemandParams';
-}
+export interface OnDemandParams {}
 
 export interface ScheduleParams {
-    $type: 'yandex.cloud.video.v1.ScheduleParams';
     startTime?: Date;
     finishTime?: Date;
 }
 
 export interface CreateStreamMetadata {
-    $type: 'yandex.cloud.video.v1.CreateStreamMetadata';
     /** ID of the stream. */
     streamId: string;
 }
 
 export interface UpdateStreamRequest {
-    $type: 'yandex.cloud.video.v1.UpdateStreamRequest';
     /** ID of the stream. */
     streamId: string;
     /** Field mask that specifies which fields of the stream are going to be updated. */
@@ -141,31 +128,26 @@ export interface UpdateStreamRequest {
 }
 
 export interface UpdateStreamRequest_LabelsEntry {
-    $type: 'yandex.cloud.video.v1.UpdateStreamRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateStreamMetadata {
-    $type: 'yandex.cloud.video.v1.UpdateStreamMetadata';
     /** ID of the stream. */
     streamId: string;
 }
 
 export interface DeleteStreamRequest {
-    $type: 'yandex.cloud.video.v1.DeleteStreamRequest';
     /** ID of the stream. */
     streamId: string;
 }
 
 export interface DeleteStreamMetadata {
-    $type: 'yandex.cloud.video.v1.DeleteStreamMetadata';
     /** ID of the stream. */
     streamId: string;
 }
 
 export interface BatchDeleteStreamsRequest {
-    $type: 'yandex.cloud.video.v1.BatchDeleteStreamsRequest';
     /** ID of the channel. */
     channelId: string;
     /** List of stream IDs. */
@@ -173,41 +155,29 @@ export interface BatchDeleteStreamsRequest {
 }
 
 export interface BatchDeleteStreamsMetadata {
-    $type: 'yandex.cloud.video.v1.BatchDeleteStreamsMetadata';
     /** List of stream IDs. */
     streamIds: string[];
 }
 
 export interface PerformStreamActionRequest {
-    $type: 'yandex.cloud.video.v1.PerformStreamActionRequest';
     /** ID of the stream. */
     streamId: string;
     publish?: PublishAction | undefined;
     stop?: StopAction | undefined;
 }
 
-export interface PublishAction {
-    $type: 'yandex.cloud.video.v1.PublishAction';
-}
+export interface PublishAction {}
 
-export interface StopAction {
-    $type: 'yandex.cloud.video.v1.StopAction';
-}
+export interface StopAction {}
 
 export interface PerformStreamActionMetadata {
-    $type: 'yandex.cloud.video.v1.PerformStreamActionMetadata';
     /** ID of the stream. */
     streamId: string;
 }
 
-const baseGetStreamRequest: object = {
-    $type: 'yandex.cloud.video.v1.GetStreamRequest',
-    streamId: '',
-};
+const baseGetStreamRequest: object = { streamId: '' };
 
 export const GetStreamRequest = {
-    $type: 'yandex.cloud.video.v1.GetStreamRequest' as const,
-
     encode(message: GetStreamRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamId !== '') {
             writer.uint32(10).string(message.streamId);
@@ -255,10 +225,7 @@ export const GetStreamRequest = {
     },
 };
 
-messageTypeRegistry.set(GetStreamRequest.$type, GetStreamRequest);
-
 const baseListStreamsRequest: object = {
-    $type: 'yandex.cloud.video.v1.ListStreamsRequest',
     channelId: '',
     pageSize: 0,
     pageToken: '',
@@ -267,8 +234,6 @@ const baseListStreamsRequest: object = {
 };
 
 export const ListStreamsRequest = {
-    $type: 'yandex.cloud.video.v1.ListStreamsRequest' as const,
-
     encode(message: ListStreamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -360,16 +325,9 @@ export const ListStreamsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListStreamsRequest.$type, ListStreamsRequest);
-
-const baseListStreamsResponse: object = {
-    $type: 'yandex.cloud.video.v1.ListStreamsResponse',
-    nextPageToken: '',
-};
+const baseListStreamsResponse: object = { nextPageToken: '' };
 
 export const ListStreamsResponse = {
-    $type: 'yandex.cloud.video.v1.ListStreamsResponse' as const,
-
     encode(message: ListStreamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.streams) {
             Stream.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -433,17 +391,9 @@ export const ListStreamsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListStreamsResponse.$type, ListStreamsResponse);
-
-const baseBatchGetStreamsRequest: object = {
-    $type: 'yandex.cloud.video.v1.BatchGetStreamsRequest',
-    channelId: '',
-    streamIds: '',
-};
+const baseBatchGetStreamsRequest: object = { channelId: '', streamIds: '' };
 
 export const BatchGetStreamsRequest = {
-    $type: 'yandex.cloud.video.v1.BatchGetStreamsRequest' as const,
-
     encode(message: BatchGetStreamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -507,15 +457,9 @@ export const BatchGetStreamsRequest = {
     },
 };
 
-messageTypeRegistry.set(BatchGetStreamsRequest.$type, BatchGetStreamsRequest);
-
-const baseBatchGetStreamsResponse: object = {
-    $type: 'yandex.cloud.video.v1.BatchGetStreamsResponse',
-};
+const baseBatchGetStreamsResponse: object = {};
 
 export const BatchGetStreamsResponse = {
-    $type: 'yandex.cloud.video.v1.BatchGetStreamsResponse' as const,
-
     encode(message: BatchGetStreamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.streams) {
             Stream.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -567,10 +511,7 @@ export const BatchGetStreamsResponse = {
     },
 };
 
-messageTypeRegistry.set(BatchGetStreamsResponse.$type, BatchGetStreamsResponse);
-
 const baseCreateStreamRequest: object = {
-    $type: 'yandex.cloud.video.v1.CreateStreamRequest',
     channelId: '',
     lineId: '',
     title: '',
@@ -579,8 +520,6 @@ const baseCreateStreamRequest: object = {
 };
 
 export const CreateStreamRequest = {
-    $type: 'yandex.cloud.video.v1.CreateStreamRequest' as const,
-
     encode(message: CreateStreamRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -599,11 +538,7 @@ export const CreateStreamRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateStreamRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.video.v1.CreateStreamRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(1602).fork(),
             ).ldelim();
         });
@@ -748,17 +683,9 @@ export const CreateStreamRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateStreamRequest.$type, CreateStreamRequest);
-
-const baseCreateStreamRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.video.v1.CreateStreamRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateStreamRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateStreamRequest_LabelsEntry = {
-    $type: 'yandex.cloud.video.v1.CreateStreamRequest.LabelsEntry' as const,
-
     encode(
         message: CreateStreamRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -824,13 +751,9 @@ export const CreateStreamRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateStreamRequest_LabelsEntry.$type, CreateStreamRequest_LabelsEntry);
-
-const baseOnDemandParams: object = { $type: 'yandex.cloud.video.v1.OnDemandParams' };
+const baseOnDemandParams: object = {};
 
 export const OnDemandParams = {
-    $type: 'yandex.cloud.video.v1.OnDemandParams' as const,
-
     encode(_: OnDemandParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -866,13 +789,9 @@ export const OnDemandParams = {
     },
 };
 
-messageTypeRegistry.set(OnDemandParams.$type, OnDemandParams);
-
-const baseScheduleParams: object = { $type: 'yandex.cloud.video.v1.ScheduleParams' };
+const baseScheduleParams: object = {};
 
 export const ScheduleParams = {
-    $type: 'yandex.cloud.video.v1.ScheduleParams' as const,
-
     encode(message: ScheduleParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.startTime !== undefined) {
             Timestamp.encode(toTimestamp(message.startTime), writer.uint32(10).fork()).ldelim();
@@ -932,16 +851,9 @@ export const ScheduleParams = {
     },
 };
 
-messageTypeRegistry.set(ScheduleParams.$type, ScheduleParams);
-
-const baseCreateStreamMetadata: object = {
-    $type: 'yandex.cloud.video.v1.CreateStreamMetadata',
-    streamId: '',
-};
+const baseCreateStreamMetadata: object = { streamId: '' };
 
 export const CreateStreamMetadata = {
-    $type: 'yandex.cloud.video.v1.CreateStreamMetadata' as const,
-
     encode(message: CreateStreamMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamId !== '') {
             writer.uint32(10).string(message.streamId);
@@ -991,10 +903,7 @@ export const CreateStreamMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateStreamMetadata.$type, CreateStreamMetadata);
-
 const baseUpdateStreamRequest: object = {
-    $type: 'yandex.cloud.video.v1.UpdateStreamRequest',
     streamId: '',
     lineId: '',
     title: '',
@@ -1003,8 +912,6 @@ const baseUpdateStreamRequest: object = {
 };
 
 export const UpdateStreamRequest = {
-    $type: 'yandex.cloud.video.v1.UpdateStreamRequest' as const,
-
     encode(message: UpdateStreamRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamId !== '') {
             writer.uint32(10).string(message.streamId);
@@ -1026,11 +933,7 @@ export const UpdateStreamRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateStreamRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.video.v1.UpdateStreamRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(1602).fork(),
             ).ldelim();
         });
@@ -1188,17 +1091,9 @@ export const UpdateStreamRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateStreamRequest.$type, UpdateStreamRequest);
-
-const baseUpdateStreamRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.video.v1.UpdateStreamRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateStreamRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateStreamRequest_LabelsEntry = {
-    $type: 'yandex.cloud.video.v1.UpdateStreamRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateStreamRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1264,16 +1159,9 @@ export const UpdateStreamRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateStreamRequest_LabelsEntry.$type, UpdateStreamRequest_LabelsEntry);
-
-const baseUpdateStreamMetadata: object = {
-    $type: 'yandex.cloud.video.v1.UpdateStreamMetadata',
-    streamId: '',
-};
+const baseUpdateStreamMetadata: object = { streamId: '' };
 
 export const UpdateStreamMetadata = {
-    $type: 'yandex.cloud.video.v1.UpdateStreamMetadata' as const,
-
     encode(message: UpdateStreamMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamId !== '') {
             writer.uint32(10).string(message.streamId);
@@ -1323,16 +1211,9 @@ export const UpdateStreamMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateStreamMetadata.$type, UpdateStreamMetadata);
-
-const baseDeleteStreamRequest: object = {
-    $type: 'yandex.cloud.video.v1.DeleteStreamRequest',
-    streamId: '',
-};
+const baseDeleteStreamRequest: object = { streamId: '' };
 
 export const DeleteStreamRequest = {
-    $type: 'yandex.cloud.video.v1.DeleteStreamRequest' as const,
-
     encode(message: DeleteStreamRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamId !== '') {
             writer.uint32(10).string(message.streamId);
@@ -1382,16 +1263,9 @@ export const DeleteStreamRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteStreamRequest.$type, DeleteStreamRequest);
-
-const baseDeleteStreamMetadata: object = {
-    $type: 'yandex.cloud.video.v1.DeleteStreamMetadata',
-    streamId: '',
-};
+const baseDeleteStreamMetadata: object = { streamId: '' };
 
 export const DeleteStreamMetadata = {
-    $type: 'yandex.cloud.video.v1.DeleteStreamMetadata' as const,
-
     encode(message: DeleteStreamMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamId !== '') {
             writer.uint32(10).string(message.streamId);
@@ -1441,17 +1315,9 @@ export const DeleteStreamMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteStreamMetadata.$type, DeleteStreamMetadata);
-
-const baseBatchDeleteStreamsRequest: object = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteStreamsRequest',
-    channelId: '',
-    streamIds: '',
-};
+const baseBatchDeleteStreamsRequest: object = { channelId: '', streamIds: '' };
 
 export const BatchDeleteStreamsRequest = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteStreamsRequest' as const,
-
     encode(
         message: BatchDeleteStreamsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1518,16 +1384,9 @@ export const BatchDeleteStreamsRequest = {
     },
 };
 
-messageTypeRegistry.set(BatchDeleteStreamsRequest.$type, BatchDeleteStreamsRequest);
-
-const baseBatchDeleteStreamsMetadata: object = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteStreamsMetadata',
-    streamIds: '',
-};
+const baseBatchDeleteStreamsMetadata: object = { streamIds: '' };
 
 export const BatchDeleteStreamsMetadata = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteStreamsMetadata' as const,
-
     encode(
         message: BatchDeleteStreamsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1582,16 +1441,9 @@ export const BatchDeleteStreamsMetadata = {
     },
 };
 
-messageTypeRegistry.set(BatchDeleteStreamsMetadata.$type, BatchDeleteStreamsMetadata);
-
-const basePerformStreamActionRequest: object = {
-    $type: 'yandex.cloud.video.v1.PerformStreamActionRequest',
-    streamId: '',
-};
+const basePerformStreamActionRequest: object = { streamId: '' };
 
 export const PerformStreamActionRequest = {
-    $type: 'yandex.cloud.video.v1.PerformStreamActionRequest' as const,
-
     encode(
         message: PerformStreamActionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1676,13 +1528,9 @@ export const PerformStreamActionRequest = {
     },
 };
 
-messageTypeRegistry.set(PerformStreamActionRequest.$type, PerformStreamActionRequest);
-
-const basePublishAction: object = { $type: 'yandex.cloud.video.v1.PublishAction' };
+const basePublishAction: object = {};
 
 export const PublishAction = {
-    $type: 'yandex.cloud.video.v1.PublishAction' as const,
-
     encode(_: PublishAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1718,13 +1566,9 @@ export const PublishAction = {
     },
 };
 
-messageTypeRegistry.set(PublishAction.$type, PublishAction);
-
-const baseStopAction: object = { $type: 'yandex.cloud.video.v1.StopAction' };
+const baseStopAction: object = {};
 
 export const StopAction = {
-    $type: 'yandex.cloud.video.v1.StopAction' as const,
-
     encode(_: StopAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1760,16 +1604,9 @@ export const StopAction = {
     },
 };
 
-messageTypeRegistry.set(StopAction.$type, StopAction);
-
-const basePerformStreamActionMetadata: object = {
-    $type: 'yandex.cloud.video.v1.PerformStreamActionMetadata',
-    streamId: '',
-};
+const basePerformStreamActionMetadata: object = { streamId: '' };
 
 export const PerformStreamActionMetadata = {
-    $type: 'yandex.cloud.video.v1.PerformStreamActionMetadata' as const,
-
     encode(
         message: PerformStreamActionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1821,8 +1658,6 @@ export const PerformStreamActionMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(PerformStreamActionMetadata.$type, PerformStreamActionMetadata);
 
 /** Stream management service. */
 export const StreamServiceService = {
@@ -2100,21 +1935,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -24,7 +23,6 @@ export const protobufPackage = 'yandex.cloud.mdb.kafka.v1';
  * For more information, see the [Concepts](/docs/managed-kafka/concepts) section of the documentation.
  */
 export interface Cluster {
-    $type: 'yandex.cloud.mdb.kafka.v1.Cluster';
     /**
      * ID of the Apache Kafka® cluster.
      * This ID is assigned at creation time.
@@ -241,14 +239,12 @@ export function cluster_StatusToJSON(object: Cluster_Status): string {
 }
 
 export interface Cluster_LabelsEntry {
-    $type: 'yandex.cloud.mdb.kafka.v1.Cluster.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Metadata of monitoring system. */
 export interface Monitoring {
-    $type: 'yandex.cloud.mdb.kafka.v1.Monitoring';
     /** Name of the monitoring system. */
     name: string;
     /** Description of the monitoring system. */
@@ -258,7 +254,6 @@ export interface Monitoring {
 }
 
 export interface ConfigSpec {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec';
     /** Version of Apache Kafka® used in the cluster. Possible values: `2.8`, `3.0`, `3.1`, `3.2`, `3.3`, `3.4`, `3.5`, `3.6`. */
     version: string;
     /** Configuration and resource allocation for Kafka brokers. */
@@ -294,7 +289,6 @@ export interface ConfigSpec {
 }
 
 export interface ConfigSpec_Kafka {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec.Kafka';
     /** Resources allocated to Kafka brokers. */
     resources?: Resources;
     kafkaConfig28?: Kafkaconfig28 | undefined;
@@ -302,25 +296,21 @@ export interface ConfigSpec_Kafka {
 }
 
 export interface ConfigSpec_Zookeeper {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec.Zookeeper';
     /** Resources allocated to ZooKeeper hosts. */
     resources?: Resources;
 }
 
 export interface ConfigSpec_KRaft {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec.KRaft';
     /** Resources allocated to KRaft controller hosts. */
     resources?: Resources;
 }
 
 export interface ConfigSpec_RestAPIConfig {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec.RestAPIConfig';
     /** Is REST API enabled for this cluster. */
     enabled: boolean;
 }
 
 export interface Resources {
-    $type: 'yandex.cloud.mdb.kafka.v1.Resources';
     /**
      * ID of the preset for computational resources available to a host (CPU, memory, etc.).
      * All available presets are listed in the [documentation](/docs/managed-kafka/concepts/instance-types).
@@ -334,7 +324,6 @@ export interface Resources {
 
 /** Kafka version 2.8 broker configuration. */
 export interface Kafkaconfig28 {
-    $type: 'yandex.cloud.mdb.kafka.v1.KafkaConfig2_8';
     /** Cluster topics compression type. */
     compressionType: CompressionType;
     /**
@@ -414,7 +403,6 @@ export interface Kafkaconfig28 {
 
 /** Kafka version 3.x broker configuration. */
 export interface KafkaConfig3 {
-    $type: 'yandex.cloud.mdb.kafka.v1.KafkaConfig3';
     /** Cluster topics compression type. */
     compressionType: CompressionType;
     /**
@@ -494,7 +482,6 @@ export interface KafkaConfig3 {
 
 /** Cluster host metadata. */
 export interface Host {
-    $type: 'yandex.cloud.mdb.kafka.v1.Host';
     /** Name of the host. */
     name: string;
     /** ID of the Apache Kafka® cluster. */
@@ -607,13 +594,11 @@ export function host_HealthToJSON(object: Host_Health): string {
 }
 
 export interface Access {
-    $type: 'yandex.cloud.mdb.kafka.v1.Access';
     /** Allow access for DataTransfer. */
     dataTransfer: boolean;
 }
 
 export interface DiskSizeAutoscaling {
-    $type: 'yandex.cloud.mdb.kafka.v1.DiskSizeAutoscaling';
     /** Threshold of storage usage (in percent) that triggers automatic scaling of the storage during the maintenance window. Zero value means disabled threshold. */
     plannedUsageThreshold: number;
     /** Threshold of storage usage (in percent) that triggers immediate automatic scaling of the storage. Zero value means disabled threshold. */
@@ -623,7 +608,6 @@ export interface DiskSizeAutoscaling {
 }
 
 const baseCluster: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.Cluster',
     id: '',
     folderId: '',
     name: '',
@@ -638,8 +622,6 @@ const baseCluster: object = {
 };
 
 export const Cluster = {
-    $type: 'yandex.cloud.mdb.kafka.v1.Cluster' as const,
-
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -658,7 +640,7 @@ export const Cluster = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Cluster_LabelsEntry.encode(
-                { $type: 'yandex.cloud.mdb.kafka.v1.Cluster.LabelsEntry', key: key as any, value },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -923,17 +905,9 @@ export const Cluster = {
     },
 };
 
-messageTypeRegistry.set(Cluster.$type, Cluster);
-
-const baseCluster_LabelsEntry: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.Cluster.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
 export const Cluster_LabelsEntry = {
-    $type: 'yandex.cloud.mdb.kafka.v1.Cluster.LabelsEntry' as const,
-
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -990,18 +964,9 @@ export const Cluster_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Cluster_LabelsEntry.$type, Cluster_LabelsEntry);
-
-const baseMonitoring: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.Monitoring',
-    name: '',
-    description: '',
-    link: '',
-};
+const baseMonitoring: object = { name: '', description: '', link: '' };
 
 export const Monitoring = {
-    $type: 'yandex.cloud.mdb.kafka.v1.Monitoring' as const,
-
     encode(message: Monitoring, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1067,10 +1032,7 @@ export const Monitoring = {
     },
 };
 
-messageTypeRegistry.set(Monitoring.$type, Monitoring);
-
 const baseConfigSpec: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec',
     version: '',
     zoneId: '',
     assignPublicIp: false,
@@ -1079,8 +1041,6 @@ const baseConfigSpec: object = {
 };
 
 export const ConfigSpec = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec' as const,
-
     encode(message: ConfigSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -1095,10 +1055,7 @@ export const ConfigSpec = {
             writer.uint32(34).string(v!);
         }
         if (message.brokersCount !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.brokersCount! },
-                writer.uint32(42).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.brokersCount! }, writer.uint32(42).fork()).ldelim();
         }
         if (message.assignPublicIp === true) {
             writer.uint32(48).bool(message.assignPublicIp);
@@ -1305,13 +1262,9 @@ export const ConfigSpec = {
     },
 };
 
-messageTypeRegistry.set(ConfigSpec.$type, ConfigSpec);
-
-const baseConfigSpec_Kafka: object = { $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec.Kafka' };
+const baseConfigSpec_Kafka: object = {};
 
 export const ConfigSpec_Kafka = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec.Kafka' as const,
-
     encode(message: ConfigSpec_Kafka, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resources !== undefined) {
             Resources.encode(message.resources, writer.uint32(10).fork()).ldelim();
@@ -1399,15 +1352,9 @@ export const ConfigSpec_Kafka = {
     },
 };
 
-messageTypeRegistry.set(ConfigSpec_Kafka.$type, ConfigSpec_Kafka);
-
-const baseConfigSpec_Zookeeper: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec.Zookeeper',
-};
+const baseConfigSpec_Zookeeper: object = {};
 
 export const ConfigSpec_Zookeeper = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec.Zookeeper' as const,
-
     encode(message: ConfigSpec_Zookeeper, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resources !== undefined) {
             Resources.encode(message.resources, writer.uint32(10).fork()).ldelim();
@@ -1461,13 +1408,9 @@ export const ConfigSpec_Zookeeper = {
     },
 };
 
-messageTypeRegistry.set(ConfigSpec_Zookeeper.$type, ConfigSpec_Zookeeper);
-
-const baseConfigSpec_KRaft: object = { $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec.KRaft' };
+const baseConfigSpec_KRaft: object = {};
 
 export const ConfigSpec_KRaft = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec.KRaft' as const,
-
     encode(message: ConfigSpec_KRaft, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resources !== undefined) {
             Resources.encode(message.resources, writer.uint32(10).fork()).ldelim();
@@ -1519,16 +1462,9 @@ export const ConfigSpec_KRaft = {
     },
 };
 
-messageTypeRegistry.set(ConfigSpec_KRaft.$type, ConfigSpec_KRaft);
-
-const baseConfigSpec_RestAPIConfig: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec.RestAPIConfig',
-    enabled: false,
-};
+const baseConfigSpec_RestAPIConfig: object = { enabled: false };
 
 export const ConfigSpec_RestAPIConfig = {
-    $type: 'yandex.cloud.mdb.kafka.v1.ConfigSpec.RestAPIConfig' as const,
-
     encode(
         message: ConfigSpec_RestAPIConfig,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1581,18 +1517,9 @@ export const ConfigSpec_RestAPIConfig = {
     },
 };
 
-messageTypeRegistry.set(ConfigSpec_RestAPIConfig.$type, ConfigSpec_RestAPIConfig);
-
-const baseResources: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.Resources',
-    resourcePresetId: '',
-    diskSize: 0,
-    diskTypeId: '',
-};
+const baseResources: object = { resourcePresetId: '', diskSize: 0, diskTypeId: '' };
 
 export const Resources = {
-    $type: 'yandex.cloud.mdb.kafka.v1.Resources' as const,
-
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);
@@ -1662,118 +1589,107 @@ export const Resources = {
     },
 };
 
-messageTypeRegistry.set(Resources.$type, Resources);
-
 const baseKafkaconfig28: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.KafkaConfig2_8',
     compressionType: 0,
     sslCipherSuites: '',
     saslEnabledMechanisms: 0,
 };
 
 export const Kafkaconfig28 = {
-    $type: 'yandex.cloud.mdb.kafka.v1.KafkaConfig2_8' as const,
-
     encode(message: Kafkaconfig28, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.compressionType !== 0) {
             writer.uint32(8).int32(message.compressionType);
         }
         if (message.logFlushIntervalMessages !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.logFlushIntervalMessages! },
+                { value: message.logFlushIntervalMessages! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
         if (message.logFlushIntervalMs !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.logFlushIntervalMs! },
+                { value: message.logFlushIntervalMs! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
         if (message.logFlushSchedulerIntervalMs !== undefined) {
             Int64Value.encode(
-                {
-                    $type: 'google.protobuf.Int64Value',
-                    value: message.logFlushSchedulerIntervalMs!,
-                },
+                { value: message.logFlushSchedulerIntervalMs! },
                 writer.uint32(34).fork(),
             ).ldelim();
         }
         if (message.logRetentionBytes !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.logRetentionBytes! },
+                { value: message.logRetentionBytes! },
                 writer.uint32(42).fork(),
             ).ldelim();
         }
         if (message.logRetentionHours !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.logRetentionHours! },
+                { value: message.logRetentionHours! },
                 writer.uint32(50).fork(),
             ).ldelim();
         }
         if (message.logRetentionMinutes !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.logRetentionMinutes! },
+                { value: message.logRetentionMinutes! },
                 writer.uint32(58).fork(),
             ).ldelim();
         }
         if (message.logRetentionMs !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.logRetentionMs! },
+                { value: message.logRetentionMs! },
                 writer.uint32(66).fork(),
             ).ldelim();
         }
         if (message.logSegmentBytes !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.logSegmentBytes! },
+                { value: message.logSegmentBytes! },
                 writer.uint32(74).fork(),
             ).ldelim();
         }
         if (message.logPreallocate !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.logPreallocate! },
-                writer.uint32(82).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.logPreallocate! }, writer.uint32(82).fork()).ldelim();
         }
         if (message.socketSendBufferBytes !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.socketSendBufferBytes! },
+                { value: message.socketSendBufferBytes! },
                 writer.uint32(90).fork(),
             ).ldelim();
         }
         if (message.socketReceiveBufferBytes !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.socketReceiveBufferBytes! },
+                { value: message.socketReceiveBufferBytes! },
                 writer.uint32(98).fork(),
             ).ldelim();
         }
         if (message.autoCreateTopicsEnable !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.autoCreateTopicsEnable! },
+                { value: message.autoCreateTopicsEnable! },
                 writer.uint32(106).fork(),
             ).ldelim();
         }
         if (message.numPartitions !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.numPartitions! },
+                { value: message.numPartitions! },
                 writer.uint32(114).fork(),
             ).ldelim();
         }
         if (message.defaultReplicationFactor !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.defaultReplicationFactor! },
+                { value: message.defaultReplicationFactor! },
                 writer.uint32(122).fork(),
             ).ldelim();
         }
         if (message.messageMaxBytes !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.messageMaxBytes! },
+                { value: message.messageMaxBytes! },
                 writer.uint32(130).fork(),
             ).ldelim();
         }
         if (message.replicaFetchMaxBytes !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.replicaFetchMaxBytes! },
+                { value: message.replicaFetchMaxBytes! },
                 writer.uint32(138).fork(),
             ).ldelim();
         }
@@ -1782,7 +1698,7 @@ export const Kafkaconfig28 = {
         }
         if (message.offsetsRetentionMinutes !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.offsetsRetentionMinutes! },
+                { value: message.offsetsRetentionMinutes! },
                 writer.uint32(154).fork(),
             ).ldelim();
         }
@@ -2058,118 +1974,107 @@ export const Kafkaconfig28 = {
     },
 };
 
-messageTypeRegistry.set(Kafkaconfig28.$type, Kafkaconfig28);
-
 const baseKafkaConfig3: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.KafkaConfig3',
     compressionType: 0,
     sslCipherSuites: '',
     saslEnabledMechanisms: 0,
 };
 
 export const KafkaConfig3 = {
-    $type: 'yandex.cloud.mdb.kafka.v1.KafkaConfig3' as const,
-
     encode(message: KafkaConfig3, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.compressionType !== 0) {
             writer.uint32(8).int32(message.compressionType);
         }
         if (message.logFlushIntervalMessages !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.logFlushIntervalMessages! },
+                { value: message.logFlushIntervalMessages! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
         if (message.logFlushIntervalMs !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.logFlushIntervalMs! },
+                { value: message.logFlushIntervalMs! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
         if (message.logFlushSchedulerIntervalMs !== undefined) {
             Int64Value.encode(
-                {
-                    $type: 'google.protobuf.Int64Value',
-                    value: message.logFlushSchedulerIntervalMs!,
-                },
+                { value: message.logFlushSchedulerIntervalMs! },
                 writer.uint32(34).fork(),
             ).ldelim();
         }
         if (message.logRetentionBytes !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.logRetentionBytes! },
+                { value: message.logRetentionBytes! },
                 writer.uint32(42).fork(),
             ).ldelim();
         }
         if (message.logRetentionHours !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.logRetentionHours! },
+                { value: message.logRetentionHours! },
                 writer.uint32(50).fork(),
             ).ldelim();
         }
         if (message.logRetentionMinutes !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.logRetentionMinutes! },
+                { value: message.logRetentionMinutes! },
                 writer.uint32(58).fork(),
             ).ldelim();
         }
         if (message.logRetentionMs !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.logRetentionMs! },
+                { value: message.logRetentionMs! },
                 writer.uint32(66).fork(),
             ).ldelim();
         }
         if (message.logSegmentBytes !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.logSegmentBytes! },
+                { value: message.logSegmentBytes! },
                 writer.uint32(74).fork(),
             ).ldelim();
         }
         if (message.logPreallocate !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.logPreallocate! },
-                writer.uint32(82).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.logPreallocate! }, writer.uint32(82).fork()).ldelim();
         }
         if (message.socketSendBufferBytes !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.socketSendBufferBytes! },
+                { value: message.socketSendBufferBytes! },
                 writer.uint32(90).fork(),
             ).ldelim();
         }
         if (message.socketReceiveBufferBytes !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.socketReceiveBufferBytes! },
+                { value: message.socketReceiveBufferBytes! },
                 writer.uint32(98).fork(),
             ).ldelim();
         }
         if (message.autoCreateTopicsEnable !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.autoCreateTopicsEnable! },
+                { value: message.autoCreateTopicsEnable! },
                 writer.uint32(106).fork(),
             ).ldelim();
         }
         if (message.numPartitions !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.numPartitions! },
+                { value: message.numPartitions! },
                 writer.uint32(114).fork(),
             ).ldelim();
         }
         if (message.defaultReplicationFactor !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.defaultReplicationFactor! },
+                { value: message.defaultReplicationFactor! },
                 writer.uint32(122).fork(),
             ).ldelim();
         }
         if (message.messageMaxBytes !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.messageMaxBytes! },
+                { value: message.messageMaxBytes! },
                 writer.uint32(130).fork(),
             ).ldelim();
         }
         if (message.replicaFetchMaxBytes !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.replicaFetchMaxBytes! },
+                { value: message.replicaFetchMaxBytes! },
                 writer.uint32(138).fork(),
             ).ldelim();
         }
@@ -2178,7 +2083,7 @@ export const KafkaConfig3 = {
         }
         if (message.offsetsRetentionMinutes !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.offsetsRetentionMinutes! },
+                { value: message.offsetsRetentionMinutes! },
                 writer.uint32(154).fork(),
             ).ldelim();
         }
@@ -2454,10 +2359,7 @@ export const KafkaConfig3 = {
     },
 };
 
-messageTypeRegistry.set(KafkaConfig3.$type, KafkaConfig3);
-
 const baseHost: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.Host',
     name: '',
     clusterId: '',
     zoneId: '',
@@ -2468,8 +2370,6 @@ const baseHost: object = {
 };
 
 export const Host = {
-    $type: 'yandex.cloud.mdb.kafka.v1.Host' as const,
-
     encode(message: Host, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -2598,13 +2498,9 @@ export const Host = {
     },
 };
 
-messageTypeRegistry.set(Host.$type, Host);
-
-const baseAccess: object = { $type: 'yandex.cloud.mdb.kafka.v1.Access', dataTransfer: false };
+const baseAccess: object = { dataTransfer: false };
 
 export const Access = {
-    $type: 'yandex.cloud.mdb.kafka.v1.Access' as const,
-
     encode(message: Access, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataTransfer === true) {
             writer.uint32(8).bool(message.dataTransfer);
@@ -2652,18 +2548,13 @@ export const Access = {
     },
 };
 
-messageTypeRegistry.set(Access.$type, Access);
-
 const baseDiskSizeAutoscaling: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.DiskSizeAutoscaling',
     plannedUsageThreshold: 0,
     emergencyUsageThreshold: 0,
     diskSizeLimit: 0,
 };
 
 export const DiskSizeAutoscaling = {
-    $type: 'yandex.cloud.mdb.kafka.v1.DiskSizeAutoscaling' as const,
-
     encode(message: DiskSizeAutoscaling, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.plannedUsageThreshold !== 0) {
             writer.uint32(8).int64(message.plannedUsageThreshold);
@@ -2740,8 +2631,6 @@ export const DiskSizeAutoscaling = {
     },
 };
 
-messageTypeRegistry.set(DiskSizeAutoscaling.$type, DiskSizeAutoscaling);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -2762,21 +2651,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

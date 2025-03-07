@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -21,12 +20,10 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.loadtesting.agent.v1';
 
 export interface GetTestRequest {
-    $type: 'yandex.cloud.loadtesting.agent.v1.GetTestRequest';
     testId: string;
 }
 
 export interface UpdateTestRequest {
-    $type: 'yandex.cloud.loadtesting.agent.v1.UpdateTestRequest';
     testId: string;
     updateMask?: FieldMask;
     /** @deprecated */
@@ -45,24 +42,17 @@ export interface UpdateTestRequest {
 }
 
 export interface UpdateTestRequest_LabelsEntry {
-    $type: 'yandex.cloud.loadtesting.agent.v1.UpdateTestRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateTestMetadata {
-    $type: 'yandex.cloud.loadtesting.agent.v1.UpdateTestMetadata';
     testId: string;
 }
 
-const baseGetTestRequest: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.GetTestRequest',
-    testId: '',
-};
+const baseGetTestRequest: object = { testId: '' };
 
 export const GetTestRequest = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.GetTestRequest' as const,
-
     encode(message: GetTestRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -108,10 +98,7 @@ export const GetTestRequest = {
     },
 };
 
-messageTypeRegistry.set(GetTestRequest.$type, GetTestRequest);
-
 const baseUpdateTestRequest: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.UpdateTestRequest',
     testId: '',
     name: '',
     description: '',
@@ -123,8 +110,6 @@ const baseUpdateTestRequest: object = {
 };
 
 export const UpdateTestRequest = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.UpdateTestRequest' as const,
-
     encode(message: UpdateTestRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -140,11 +125,7 @@ export const UpdateTestRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateTestRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.loadtesting.agent.v1.UpdateTestRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -309,17 +290,9 @@ export const UpdateTestRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateTestRequest.$type, UpdateTestRequest);
-
-const baseUpdateTestRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.UpdateTestRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateTestRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateTestRequest_LabelsEntry = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.UpdateTestRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateTestRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -379,16 +352,9 @@ export const UpdateTestRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateTestRequest_LabelsEntry.$type, UpdateTestRequest_LabelsEntry);
-
-const baseUpdateTestMetadata: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.UpdateTestMetadata',
-    testId: '',
-};
+const baseUpdateTestMetadata: object = { testId: '' };
 
 export const UpdateTestMetadata = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.UpdateTestMetadata' as const,
-
     encode(message: UpdateTestMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -435,8 +401,6 @@ export const UpdateTestMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(UpdateTestMetadata.$type, UpdateTestMetadata);
 
 export const TestServiceService = {
     /** Returns test by test id. */
@@ -537,16 +501,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

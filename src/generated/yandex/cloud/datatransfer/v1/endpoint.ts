@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { MysqlSource, MysqlTarget } from '../../../../yandex/cloud/datatransfer/v1/endpoint/mysql';
@@ -20,7 +19,6 @@ import { MetrikaSource } from '../../../../yandex/cloud/datatransfer/v1/endpoint
 export const protobufPackage = 'yandex.cloud.datatransfer.v1';
 
 export interface Endpoint {
-    $type: 'yandex.cloud.datatransfer.v1.Endpoint';
     id: string;
     folderId: string;
     name: string;
@@ -30,13 +28,11 @@ export interface Endpoint {
 }
 
 export interface Endpoint_LabelsEntry {
-    $type: 'yandex.cloud.datatransfer.v1.Endpoint.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface EndpointSettings {
-    $type: 'yandex.cloud.datatransfer.v1.EndpointSettings';
     mysqlSource?: MysqlSource | undefined;
     postgresSource?: PostgresSource | undefined;
     ydbSource?: YdbSource | undefined;
@@ -54,17 +50,9 @@ export interface EndpointSettings {
     ydsTarget?: YDSTarget | undefined;
 }
 
-const baseEndpoint: object = {
-    $type: 'yandex.cloud.datatransfer.v1.Endpoint',
-    id: '',
-    folderId: '',
-    name: '',
-    description: '',
-};
+const baseEndpoint: object = { id: '', folderId: '', name: '', description: '' };
 
 export const Endpoint = {
-    $type: 'yandex.cloud.datatransfer.v1.Endpoint' as const,
-
     encode(message: Endpoint, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -80,11 +68,7 @@ export const Endpoint = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Endpoint_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.datatransfer.v1.Endpoint.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -199,17 +183,9 @@ export const Endpoint = {
     },
 };
 
-messageTypeRegistry.set(Endpoint.$type, Endpoint);
-
-const baseEndpoint_LabelsEntry: object = {
-    $type: 'yandex.cloud.datatransfer.v1.Endpoint.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseEndpoint_LabelsEntry: object = { key: '', value: '' };
 
 export const Endpoint_LabelsEntry = {
-    $type: 'yandex.cloud.datatransfer.v1.Endpoint.LabelsEntry' as const,
-
     encode(message: Endpoint_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -266,13 +242,9 @@ export const Endpoint_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Endpoint_LabelsEntry.$type, Endpoint_LabelsEntry);
-
-const baseEndpointSettings: object = { $type: 'yandex.cloud.datatransfer.v1.EndpointSettings' };
+const baseEndpointSettings: object = {};
 
 export const EndpointSettings = {
-    $type: 'yandex.cloud.datatransfer.v1.EndpointSettings' as const,
-
     encode(message: EndpointSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mysqlSource !== undefined) {
             MysqlSource.encode(message.mysqlSource, writer.uint32(10).fork()).ldelim();
@@ -570,8 +542,6 @@ export const EndpointSettings = {
     },
 };
 
-messageTypeRegistry.set(EndpointSettings.$type, EndpointSettings);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -581,16 +551,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

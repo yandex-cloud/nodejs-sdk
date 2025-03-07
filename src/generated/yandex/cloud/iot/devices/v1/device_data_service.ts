@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -18,7 +17,6 @@ import _m0 from 'protobufjs/minimal';
 export const protobufPackage = 'yandex.cloud.iot.devices.v1';
 
 export interface PublishDeviceDataRequest {
-    $type: 'yandex.cloud.iot.devices.v1.PublishDeviceDataRequest';
     /** ID of device publishing message */
     deviceId: string;
     /** Topic where message should be published */
@@ -27,19 +25,11 @@ export interface PublishDeviceDataRequest {
     data: Buffer;
 }
 
-export interface PublishDeviceDataResponse {
-    $type: 'yandex.cloud.iot.devices.v1.PublishDeviceDataResponse';
-}
+export interface PublishDeviceDataResponse {}
 
-const basePublishDeviceDataRequest: object = {
-    $type: 'yandex.cloud.iot.devices.v1.PublishDeviceDataRequest',
-    deviceId: '',
-    topic: '',
-};
+const basePublishDeviceDataRequest: object = { deviceId: '', topic: '' };
 
 export const PublishDeviceDataRequest = {
-    $type: 'yandex.cloud.iot.devices.v1.PublishDeviceDataRequest' as const,
-
     encode(
         message: PublishDeviceDataRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -118,15 +108,9 @@ export const PublishDeviceDataRequest = {
     },
 };
 
-messageTypeRegistry.set(PublishDeviceDataRequest.$type, PublishDeviceDataRequest);
-
-const basePublishDeviceDataResponse: object = {
-    $type: 'yandex.cloud.iot.devices.v1.PublishDeviceDataResponse',
-};
+const basePublishDeviceDataResponse: object = {};
 
 export const PublishDeviceDataResponse = {
-    $type: 'yandex.cloud.iot.devices.v1.PublishDeviceDataResponse' as const,
-
     encode(_: PublishDeviceDataResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -163,8 +147,6 @@ export const PublishDeviceDataResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(PublishDeviceDataResponse.$type, PublishDeviceDataResponse);
 
 /** A set of methods to work with IoT Core messages on behalf of device */
 export const DeviceDataServiceService = {
@@ -259,16 +241,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
@@ -126,7 +125,6 @@ export function asymmetricSignatureAlgorithmToJSON(object: AsymmetricSignatureAl
 
 /** An asymmetric KMS key that may contain several versions of the cryptographic material. */
 export interface AsymmetricSignatureKey {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignatureKey';
     /** ID of the key. */
     id: string;
     /** ID of the folder that the key belongs to. */
@@ -201,13 +199,11 @@ export function asymmetricSignatureKey_StatusToJSON(object: AsymmetricSignatureK
 }
 
 export interface AsymmetricSignatureKey_LabelsEntry {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignatureKey.LabelsEntry';
     key: string;
     value: string;
 }
 
 const baseAsymmetricSignatureKey: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignatureKey',
     id: '',
     folderId: '',
     name: '',
@@ -218,8 +214,6 @@ const baseAsymmetricSignatureKey: object = {
 };
 
 export const AsymmetricSignatureKey = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignatureKey' as const,
-
     encode(message: AsymmetricSignatureKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -238,11 +232,7 @@ export const AsymmetricSignatureKey = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             AsymmetricSignatureKey_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignatureKey.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -394,17 +384,9 @@ export const AsymmetricSignatureKey = {
     },
 };
 
-messageTypeRegistry.set(AsymmetricSignatureKey.$type, AsymmetricSignatureKey);
-
-const baseAsymmetricSignatureKey_LabelsEntry: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignatureKey.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseAsymmetricSignatureKey_LabelsEntry: object = { key: '', value: '' };
 
 export const AsymmetricSignatureKey_LabelsEntry = {
-    $type: 'yandex.cloud.kms.v1.asymmetricsignature.AsymmetricSignatureKey.LabelsEntry' as const,
-
     encode(
         message: AsymmetricSignatureKey_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -470,11 +452,6 @@ export const AsymmetricSignatureKey_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    AsymmetricSignatureKey_LabelsEntry.$type,
-    AsymmetricSignatureKey_LabelsEntry,
-);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -484,21 +461,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

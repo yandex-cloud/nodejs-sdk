@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.organizationmanager.v1';
 
 /** An Organization resource. For more information, see [Organization](/docs/organization/enable-org). */
 export interface Organization {
-    $type: 'yandex.cloud.organizationmanager.v1.Organization';
     /** ID of the organization. */
     id: string;
     /** Creation timestamp. */
@@ -24,22 +22,13 @@ export interface Organization {
 }
 
 export interface Organization_LabelsEntry {
-    $type: 'yandex.cloud.organizationmanager.v1.Organization.LabelsEntry';
     key: string;
     value: string;
 }
 
-const baseOrganization: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.Organization',
-    id: '',
-    name: '',
-    description: '',
-    title: '',
-};
+const baseOrganization: object = { id: '', name: '', description: '', title: '' };
 
 export const Organization = {
-    $type: 'yandex.cloud.organizationmanager.v1.Organization' as const,
-
     encode(message: Organization, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -58,11 +47,7 @@ export const Organization = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Organization_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.organizationmanager.v1.Organization.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(58).fork(),
             ).ldelim();
         });
@@ -166,17 +151,9 @@ export const Organization = {
     },
 };
 
-messageTypeRegistry.set(Organization.$type, Organization);
-
-const baseOrganization_LabelsEntry: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.Organization.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseOrganization_LabelsEntry: object = { key: '', value: '' };
 
 export const Organization_LabelsEntry = {
-    $type: 'yandex.cloud.organizationmanager.v1.Organization.LabelsEntry' as const,
-
     encode(
         message: Organization_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -236,8 +213,6 @@ export const Organization_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Organization_LabelsEntry.$type, Organization_LabelsEntry);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -247,21 +222,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -46,7 +45,6 @@ export function ipPermissionDeltaActionToJSON(object: IpPermissionDeltaAction): 
 }
 
 export interface IpPermission {
-    $type: 'yandex.cloud.cloudregistry.v1.IpPermission';
     action: IpPermission_Action;
     ip: string;
 }
@@ -90,22 +88,15 @@ export function ipPermission_ActionToJSON(object: IpPermission_Action): string {
 }
 
 export interface IpPermissionDelta {
-    $type: 'yandex.cloud.cloudregistry.v1.IpPermissionDelta';
     /** The action that is being performed on an ip permission. */
     action: IpPermissionDeltaAction;
     /** Ip permission. */
     ipPermission?: IpPermission;
 }
 
-const baseIpPermission: object = {
-    $type: 'yandex.cloud.cloudregistry.v1.IpPermission',
-    action: 0,
-    ip: '',
-};
+const baseIpPermission: object = { action: 0, ip: '' };
 
 export const IpPermission = {
-    $type: 'yandex.cloud.cloudregistry.v1.IpPermission' as const,
-
     encode(message: IpPermission, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.action !== 0) {
             writer.uint32(8).int32(message.action);
@@ -162,16 +153,9 @@ export const IpPermission = {
     },
 };
 
-messageTypeRegistry.set(IpPermission.$type, IpPermission);
-
-const baseIpPermissionDelta: object = {
-    $type: 'yandex.cloud.cloudregistry.v1.IpPermissionDelta',
-    action: 0,
-};
+const baseIpPermissionDelta: object = { action: 0 };
 
 export const IpPermissionDelta = {
-    $type: 'yandex.cloud.cloudregistry.v1.IpPermissionDelta' as const,
-
     encode(message: IpPermissionDelta, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.action !== 0) {
             writer.uint32(8).int32(message.action);
@@ -238,8 +222,6 @@ export const IpPermissionDelta = {
     },
 };
 
-messageTypeRegistry.set(IpPermissionDelta.$type, IpPermissionDelta);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -249,16 +231,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

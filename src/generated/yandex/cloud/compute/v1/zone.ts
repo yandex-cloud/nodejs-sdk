@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -7,7 +6,6 @@ export const protobufPackage = 'yandex.cloud.compute.v1';
 
 /** Availability zone. For more information, see [Availability zones](/docs/overview/concepts/geo-scope). */
 export interface Zone {
-    $type: 'yandex.cloud.compute.v1.Zone';
     /** ID of the zone. */
     id: string;
     /** ID of the region. */
@@ -56,11 +54,9 @@ export function zone_StatusToJSON(object: Zone_Status): string {
     }
 }
 
-const baseZone: object = { $type: 'yandex.cloud.compute.v1.Zone', id: '', regionId: '', status: 0 };
+const baseZone: object = { id: '', regionId: '', status: 0 };
 
 export const Zone = {
-    $type: 'yandex.cloud.compute.v1.Zone' as const,
-
     encode(message: Zone, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -129,8 +125,6 @@ export const Zone = {
     },
 };
 
-messageTypeRegistry.set(Zone.$type, Zone);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -140,16 +134,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

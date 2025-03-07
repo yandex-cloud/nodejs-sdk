@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -27,7 +26,6 @@ import {
 export const protobufPackage = 'yandex.cloud.organizationmanager.v1';
 
 export interface GetOrganizationRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.GetOrganizationRequest';
     /**
      * ID of the Organization resource to return.
      * To get the organization ID, use a [OrganizationService.List] request.
@@ -36,7 +34,6 @@ export interface GetOrganizationRequest {
 }
 
 export interface ListOrganizationsRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.ListOrganizationsRequest';
     /**
      * The maximum number of results per page to return. If the number of available
      * results is larger than [page_size],
@@ -62,7 +59,6 @@ export interface ListOrganizationsRequest {
 }
 
 export interface ListOrganizationsResponse {
-    $type: 'yandex.cloud.organizationmanager.v1.ListOrganizationsResponse';
     /** List of Organization resources. */
     organizations: Organization[];
     /**
@@ -77,7 +73,6 @@ export interface ListOrganizationsResponse {
 }
 
 export interface UpdateOrganizationRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOrganizationRequest';
     /**
      * ID of the organization to update.
      * To get the organization ID, use a [OrganizationService.List] request.
@@ -96,19 +91,16 @@ export interface UpdateOrganizationRequest {
 }
 
 export interface UpdateOrganizationRequest_LabelsEntry {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOrganizationRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateOrganizationMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOrganizationMetadata';
     /** ID of the organization that is being updated. */
     organizationId: string;
 }
 
 export interface ListOrganizationOperationsRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.ListOrganizationOperationsRequest';
     /** ID of the Organization resource to list operations for. */
     organizationId: string;
     /**
@@ -127,7 +119,6 @@ export interface ListOrganizationOperationsRequest {
 }
 
 export interface ListOrganizationOperationsResponse {
-    $type: 'yandex.cloud.organizationmanager.v1.ListOrganizationOperationsResponse';
     /** List of operations for the specified organization. */
     operations: Operation[];
     /**
@@ -139,14 +130,9 @@ export interface ListOrganizationOperationsResponse {
     nextPageToken: string;
 }
 
-const baseGetOrganizationRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.GetOrganizationRequest',
-    organizationId: '',
-};
+const baseGetOrganizationRequest: object = { organizationId: '' };
 
 export const GetOrganizationRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.GetOrganizationRequest' as const,
-
     encode(message: GetOrganizationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -196,18 +182,9 @@ export const GetOrganizationRequest = {
     },
 };
 
-messageTypeRegistry.set(GetOrganizationRequest.$type, GetOrganizationRequest);
-
-const baseListOrganizationsRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListOrganizationsRequest',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListOrganizationsRequest: object = { pageSize: 0, pageToken: '', filter: '' };
 
 export const ListOrganizationsRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListOrganizationsRequest' as const,
-
     encode(
         message: ListOrganizationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -280,16 +257,9 @@ export const ListOrganizationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListOrganizationsRequest.$type, ListOrganizationsRequest);
-
-const baseListOrganizationsResponse: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListOrganizationsResponse',
-    nextPageToken: '',
-};
+const baseListOrganizationsResponse: object = { nextPageToken: '' };
 
 export const ListOrganizationsResponse = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListOrganizationsResponse' as const,
-
     encode(
         message: ListOrganizationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -360,10 +330,7 @@ export const ListOrganizationsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListOrganizationsResponse.$type, ListOrganizationsResponse);
-
 const baseUpdateOrganizationRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOrganizationRequest',
     organizationId: '',
     name: '',
     description: '',
@@ -371,8 +338,6 @@ const baseUpdateOrganizationRequest: object = {
 };
 
 export const UpdateOrganizationRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOrganizationRequest' as const,
-
     encode(
         message: UpdateOrganizationRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -394,11 +359,7 @@ export const UpdateOrganizationRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateOrganizationRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.organizationmanager.v1.UpdateOrganizationRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -516,17 +477,9 @@ export const UpdateOrganizationRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateOrganizationRequest.$type, UpdateOrganizationRequest);
-
-const baseUpdateOrganizationRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOrganizationRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateOrganizationRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateOrganizationRequest_LabelsEntry = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOrganizationRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateOrganizationRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -592,19 +545,9 @@ export const UpdateOrganizationRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateOrganizationRequest_LabelsEntry.$type,
-    UpdateOrganizationRequest_LabelsEntry,
-);
-
-const baseUpdateOrganizationMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOrganizationMetadata',
-    organizationId: '',
-};
+const baseUpdateOrganizationMetadata: object = { organizationId: '' };
 
 export const UpdateOrganizationMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateOrganizationMetadata' as const,
-
     encode(
         message: UpdateOrganizationMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -657,18 +600,13 @@ export const UpdateOrganizationMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateOrganizationMetadata.$type, UpdateOrganizationMetadata);
-
 const baseListOrganizationOperationsRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListOrganizationOperationsRequest',
     organizationId: '',
     pageSize: 0,
     pageToken: '',
 };
 
 export const ListOrganizationOperationsRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListOrganizationOperationsRequest' as const,
-
     encode(
         message: ListOrganizationOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -749,16 +687,9 @@ export const ListOrganizationOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListOrganizationOperationsRequest.$type, ListOrganizationOperationsRequest);
-
-const baseListOrganizationOperationsResponse: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListOrganizationOperationsResponse',
-    nextPageToken: '',
-};
+const baseListOrganizationOperationsResponse: object = { nextPageToken: '' };
 
 export const ListOrganizationOperationsResponse = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListOrganizationOperationsResponse' as const,
-
     encode(
         message: ListOrganizationOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -830,11 +761,6 @@ export const ListOrganizationOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(
-    ListOrganizationOperationsResponse.$type,
-    ListOrganizationOperationsResponse,
-);
 
 /** A set of methods for managing Organization resources. */
 export const OrganizationServiceService = {
@@ -1109,16 +1035,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

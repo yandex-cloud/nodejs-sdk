@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { HardwareGeneration } from '../../../../yandex/cloud/compute/v1/hardware_generation';
@@ -10,7 +9,6 @@ export const protobufPackage = 'yandex.cloud.compute.v1';
 
 /** An Image resource. */
 export interface Image {
-    $type: 'yandex.cloud.compute.v1.Image';
     /** ID of the image. */
     id: string;
     /** ID of the folder that the image belongs to. */
@@ -115,13 +113,11 @@ export function image_StatusToJSON(object: Image_Status): string {
 }
 
 export interface Image_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.Image.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface Os {
-    $type: 'yandex.cloud.compute.v1.Os';
     /**
      * Operating system type. The default is `LINUX`.
      *
@@ -171,7 +167,6 @@ export function os_TypeToJSON(object: Os_Type): string {
 }
 
 const baseImage: object = {
-    $type: 'yandex.cloud.compute.v1.Image',
     id: '',
     folderId: '',
     name: '',
@@ -185,8 +180,6 @@ const baseImage: object = {
 };
 
 export const Image = {
-    $type: 'yandex.cloud.compute.v1.Image' as const,
-
     encode(message: Image, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -204,10 +197,7 @@ export const Image = {
             writer.uint32(42).string(message.description);
         }
         Object.entries(message.labels).forEach(([key, value]) => {
-            Image_LabelsEntry.encode(
-                { $type: 'yandex.cloud.compute.v1.Image.LabelsEntry', key: key as any, value },
-                writer.uint32(50).fork(),
-            ).ldelim();
+            Image_LabelsEntry.encode({ key: key as any, value }, writer.uint32(50).fork()).ldelim();
         });
         if (message.family !== '') {
             writer.uint32(58).string(message.family);
@@ -429,17 +419,9 @@ export const Image = {
     },
 };
 
-messageTypeRegistry.set(Image.$type, Image);
-
-const baseImage_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.Image.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseImage_LabelsEntry: object = { key: '', value: '' };
 
 export const Image_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.Image.LabelsEntry' as const,
-
     encode(message: Image_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -494,13 +476,9 @@ export const Image_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Image_LabelsEntry.$type, Image_LabelsEntry);
-
-const baseOs: object = { $type: 'yandex.cloud.compute.v1.Os', type: 0 };
+const baseOs: object = { type: 0 };
 
 export const Os = {
-    $type: 'yandex.cloud.compute.v1.Os' as const,
-
     encode(message: Os, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -546,8 +524,6 @@ export const Os = {
     },
 };
 
-messageTypeRegistry.set(Os.$type, Os);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -568,21 +544,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

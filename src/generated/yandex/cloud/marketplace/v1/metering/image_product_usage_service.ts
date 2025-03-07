@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -23,7 +22,6 @@ import {
 export const protobufPackage = 'yandex.cloud.marketplace.v1.metering';
 
 export interface WriteImageProductUsageRequest {
-    $type: 'yandex.cloud.marketplace.v1.metering.WriteImageProductUsageRequest';
     /** Checks whether you have the access required for the emit usage. */
     validateOnly: boolean;
     /** Marketplace Product's ID. */
@@ -33,22 +31,15 @@ export interface WriteImageProductUsageRequest {
 }
 
 export interface WriteImageProductUsageResponse {
-    $type: 'yandex.cloud.marketplace.v1.metering.WriteImageProductUsageResponse';
     /** List of accepted product usage records. */
     accepted: AcceptedUsageRecord[];
     /** List of rejected product usage records (with reason). */
     rejected: RejectedUsageRecord[];
 }
 
-const baseWriteImageProductUsageRequest: object = {
-    $type: 'yandex.cloud.marketplace.v1.metering.WriteImageProductUsageRequest',
-    validateOnly: false,
-    productId: '',
-};
+const baseWriteImageProductUsageRequest: object = { validateOnly: false, productId: '' };
 
 export const WriteImageProductUsageRequest = {
-    $type: 'yandex.cloud.marketplace.v1.metering.WriteImageProductUsageRequest' as const,
-
     encode(
         message: WriteImageProductUsageRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -129,15 +120,9 @@ export const WriteImageProductUsageRequest = {
     },
 };
 
-messageTypeRegistry.set(WriteImageProductUsageRequest.$type, WriteImageProductUsageRequest);
-
-const baseWriteImageProductUsageResponse: object = {
-    $type: 'yandex.cloud.marketplace.v1.metering.WriteImageProductUsageResponse',
-};
+const baseWriteImageProductUsageResponse: object = {};
 
 export const WriteImageProductUsageResponse = {
-    $type: 'yandex.cloud.marketplace.v1.metering.WriteImageProductUsageResponse' as const,
-
     encode(
         message: WriteImageProductUsageResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -210,8 +195,6 @@ export const WriteImageProductUsageResponse = {
     },
 };
 
-messageTypeRegistry.set(WriteImageProductUsageResponse.$type, WriteImageProductUsageResponse);
-
 /** A set of methods for managing image product's usage. */
 export const ImageProductUsageServiceService = {
     /** Writes image product's usage. Authentication is by user's service account. */
@@ -273,16 +256,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

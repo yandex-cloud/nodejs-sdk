@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -29,7 +28,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.k8s.v1';
 
 export interface GetNodeGroupRequest {
-    $type: 'yandex.cloud.k8s.v1.GetNodeGroupRequest';
     /**
      * ID of the node group to return.
      * To get the node group ID use a [NodeGroupService.List] request.
@@ -38,7 +36,6 @@ export interface GetNodeGroupRequest {
 }
 
 export interface ListNodeGroupsRequest {
-    $type: 'yandex.cloud.k8s.v1.ListNodeGroupsRequest';
     /**
      * ID of the folder to list node groups in.
      * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -68,7 +65,6 @@ export interface ListNodeGroupsRequest {
 }
 
 export interface ListNodeGroupsResponse {
-    $type: 'yandex.cloud.k8s.v1.ListNodeGroupsResponse';
     /** List of node groups. */
     nodeGroups: NodeGroup[];
     /**
@@ -83,7 +79,6 @@ export interface ListNodeGroupsResponse {
 }
 
 export interface ListNodeGroupNodesRequest {
-    $type: 'yandex.cloud.k8s.v1.ListNodeGroupNodesRequest';
     /**
      * ID of the node group to list.
      * To get the node group ID use a [NodeGroupService.List] request.
@@ -105,7 +100,6 @@ export interface ListNodeGroupNodesRequest {
 }
 
 export interface ListNodeGroupNodesResponse {
-    $type: 'yandex.cloud.k8s.v1.ListNodeGroupNodesResponse';
     /** List of nodes. */
     nodes: Node[];
     /**
@@ -120,7 +114,6 @@ export interface ListNodeGroupNodesResponse {
 }
 
 export interface DeleteNodeGroupRequest {
-    $type: 'yandex.cloud.k8s.v1.DeleteNodeGroupRequest';
     /**
      * ID of the node group to delete.
      * To get node group ID use a [NodeGroupService.List] request.
@@ -129,13 +122,11 @@ export interface DeleteNodeGroupRequest {
 }
 
 export interface DeleteNodeGroupMetadata {
-    $type: 'yandex.cloud.k8s.v1.DeleteNodeGroupMetadata';
     /** ID of the node group that is being deleted. */
     nodeGroupId: string;
 }
 
 export interface UpdateNodeGroupRequest {
-    $type: 'yandex.cloud.k8s.v1.UpdateNodeGroupRequest';
     /**
      * ID of the node group to update.
      * To get the node group ID use a [NodeGroupService.List] request.
@@ -183,25 +174,21 @@ export interface UpdateNodeGroupRequest {
 }
 
 export interface UpdateNodeGroupRequest_LabelsEntry {
-    $type: 'yandex.cloud.k8s.v1.UpdateNodeGroupRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateNodeGroupRequest_NodeLabelsEntry {
-    $type: 'yandex.cloud.k8s.v1.UpdateNodeGroupRequest.NodeLabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateNodeGroupMetadata {
-    $type: 'yandex.cloud.k8s.v1.UpdateNodeGroupMetadata';
     /** ID of the Node group that is being updated. */
     nodeGroupId: string;
 }
 
 export interface CreateNodeGroupRequest {
-    $type: 'yandex.cloud.k8s.v1.CreateNodeGroupRequest';
     /**
      * ID of the Kubernetes cluster to create a node group in.
      * To get the Kubernetes cluster ID, use a [ClusterService.List] request.
@@ -240,31 +227,26 @@ export interface CreateNodeGroupRequest {
 }
 
 export interface CreateNodeGroupRequest_LabelsEntry {
-    $type: 'yandex.cloud.k8s.v1.CreateNodeGroupRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateNodeGroupRequest_NodeLabelsEntry {
-    $type: 'yandex.cloud.k8s.v1.CreateNodeGroupRequest.NodeLabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateNodeGroupMetadata {
-    $type: 'yandex.cloud.k8s.v1.CreateNodeGroupMetadata';
     /** ID of the node group that is being created. */
     nodeGroupId: string;
 }
 
 export interface AutoUpgradeNodeGroupMetadata {
-    $type: 'yandex.cloud.k8s.v1.AutoUpgradeNodeGroupMetadata';
     /** ID of the node group that is being auto upgraded. */
     nodeGroupId: string;
 }
 
 export interface ListNodeGroupOperationsRequest {
-    $type: 'yandex.cloud.k8s.v1.ListNodeGroupOperationsRequest';
     /** ID of the node group to list operations for. */
     nodeGroupId: string;
     /**
@@ -287,7 +269,6 @@ export interface ListNodeGroupOperationsRequest {
 }
 
 export interface ListNodeGroupOperationsResponse {
-    $type: 'yandex.cloud.k8s.v1.ListNodeGroupOperationsResponse';
     /** List of operations for the specified node group. */
     operations: Operation[];
     /**
@@ -299,14 +280,9 @@ export interface ListNodeGroupOperationsResponse {
     nextPageToken: string;
 }
 
-const baseGetNodeGroupRequest: object = {
-    $type: 'yandex.cloud.k8s.v1.GetNodeGroupRequest',
-    nodeGroupId: '',
-};
+const baseGetNodeGroupRequest: object = { nodeGroupId: '' };
 
 export const GetNodeGroupRequest = {
-    $type: 'yandex.cloud.k8s.v1.GetNodeGroupRequest' as const,
-
     encode(message: GetNodeGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.nodeGroupId !== '') {
             writer.uint32(10).string(message.nodeGroupId);
@@ -356,19 +332,9 @@ export const GetNodeGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(GetNodeGroupRequest.$type, GetNodeGroupRequest);
-
-const baseListNodeGroupsRequest: object = {
-    $type: 'yandex.cloud.k8s.v1.ListNodeGroupsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListNodeGroupsRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListNodeGroupsRequest = {
-    $type: 'yandex.cloud.k8s.v1.ListNodeGroupsRequest' as const,
-
     encode(message: ListNodeGroupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -450,16 +416,9 @@ export const ListNodeGroupsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListNodeGroupsRequest.$type, ListNodeGroupsRequest);
-
-const baseListNodeGroupsResponse: object = {
-    $type: 'yandex.cloud.k8s.v1.ListNodeGroupsResponse',
-    nextPageToken: '',
-};
+const baseListNodeGroupsResponse: object = { nextPageToken: '' };
 
 export const ListNodeGroupsResponse = {
-    $type: 'yandex.cloud.k8s.v1.ListNodeGroupsResponse' as const,
-
     encode(message: ListNodeGroupsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.nodeGroups) {
             NodeGroup.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -523,18 +482,9 @@ export const ListNodeGroupsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListNodeGroupsResponse.$type, ListNodeGroupsResponse);
-
-const baseListNodeGroupNodesRequest: object = {
-    $type: 'yandex.cloud.k8s.v1.ListNodeGroupNodesRequest',
-    nodeGroupId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListNodeGroupNodesRequest: object = { nodeGroupId: '', pageSize: 0, pageToken: '' };
 
 export const ListNodeGroupNodesRequest = {
-    $type: 'yandex.cloud.k8s.v1.ListNodeGroupNodesRequest' as const,
-
     encode(
         message: ListNodeGroupNodesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -609,16 +559,9 @@ export const ListNodeGroupNodesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListNodeGroupNodesRequest.$type, ListNodeGroupNodesRequest);
-
-const baseListNodeGroupNodesResponse: object = {
-    $type: 'yandex.cloud.k8s.v1.ListNodeGroupNodesResponse',
-    nextPageToken: '',
-};
+const baseListNodeGroupNodesResponse: object = { nextPageToken: '' };
 
 export const ListNodeGroupNodesResponse = {
-    $type: 'yandex.cloud.k8s.v1.ListNodeGroupNodesResponse' as const,
-
     encode(
         message: ListNodeGroupNodesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -685,16 +628,9 @@ export const ListNodeGroupNodesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListNodeGroupNodesResponse.$type, ListNodeGroupNodesResponse);
-
-const baseDeleteNodeGroupRequest: object = {
-    $type: 'yandex.cloud.k8s.v1.DeleteNodeGroupRequest',
-    nodeGroupId: '',
-};
+const baseDeleteNodeGroupRequest: object = { nodeGroupId: '' };
 
 export const DeleteNodeGroupRequest = {
-    $type: 'yandex.cloud.k8s.v1.DeleteNodeGroupRequest' as const,
-
     encode(message: DeleteNodeGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.nodeGroupId !== '') {
             writer.uint32(10).string(message.nodeGroupId);
@@ -744,16 +680,9 @@ export const DeleteNodeGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteNodeGroupRequest.$type, DeleteNodeGroupRequest);
-
-const baseDeleteNodeGroupMetadata: object = {
-    $type: 'yandex.cloud.k8s.v1.DeleteNodeGroupMetadata',
-    nodeGroupId: '',
-};
+const baseDeleteNodeGroupMetadata: object = { nodeGroupId: '' };
 
 export const DeleteNodeGroupMetadata = {
-    $type: 'yandex.cloud.k8s.v1.DeleteNodeGroupMetadata' as const,
-
     encode(message: DeleteNodeGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.nodeGroupId !== '') {
             writer.uint32(10).string(message.nodeGroupId);
@@ -803,10 +732,7 @@ export const DeleteNodeGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteNodeGroupMetadata.$type, DeleteNodeGroupMetadata);
-
 const baseUpdateNodeGroupRequest: object = {
-    $type: 'yandex.cloud.k8s.v1.UpdateNodeGroupRequest',
     nodeGroupId: '',
     name: '',
     description: '',
@@ -814,8 +740,6 @@ const baseUpdateNodeGroupRequest: object = {
 };
 
 export const UpdateNodeGroupRequest = {
-    $type: 'yandex.cloud.k8s.v1.UpdateNodeGroupRequest' as const,
-
     encode(message: UpdateNodeGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.nodeGroupId !== '') {
             writer.uint32(10).string(message.nodeGroupId);
@@ -831,11 +755,7 @@ export const UpdateNodeGroupRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateNodeGroupRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.k8s.v1.UpdateNodeGroupRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -871,11 +791,7 @@ export const UpdateNodeGroupRequest = {
         }
         Object.entries(message.nodeLabels).forEach(([key, value]) => {
             UpdateNodeGroupRequest_NodeLabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.k8s.v1.UpdateNodeGroupRequest.NodeLabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(114).fork(),
             ).ldelim();
         });
@@ -1134,17 +1050,9 @@ export const UpdateNodeGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateNodeGroupRequest.$type, UpdateNodeGroupRequest);
-
-const baseUpdateNodeGroupRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.k8s.v1.UpdateNodeGroupRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateNodeGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateNodeGroupRequest_LabelsEntry = {
-    $type: 'yandex.cloud.k8s.v1.UpdateNodeGroupRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateNodeGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1210,20 +1118,9 @@ export const UpdateNodeGroupRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateNodeGroupRequest_LabelsEntry.$type,
-    UpdateNodeGroupRequest_LabelsEntry,
-);
-
-const baseUpdateNodeGroupRequest_NodeLabelsEntry: object = {
-    $type: 'yandex.cloud.k8s.v1.UpdateNodeGroupRequest.NodeLabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateNodeGroupRequest_NodeLabelsEntry: object = { key: '', value: '' };
 
 export const UpdateNodeGroupRequest_NodeLabelsEntry = {
-    $type: 'yandex.cloud.k8s.v1.UpdateNodeGroupRequest.NodeLabelsEntry' as const,
-
     encode(
         message: UpdateNodeGroupRequest_NodeLabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1292,19 +1189,9 @@ export const UpdateNodeGroupRequest_NodeLabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateNodeGroupRequest_NodeLabelsEntry.$type,
-    UpdateNodeGroupRequest_NodeLabelsEntry,
-);
-
-const baseUpdateNodeGroupMetadata: object = {
-    $type: 'yandex.cloud.k8s.v1.UpdateNodeGroupMetadata',
-    nodeGroupId: '',
-};
+const baseUpdateNodeGroupMetadata: object = { nodeGroupId: '' };
 
 export const UpdateNodeGroupMetadata = {
-    $type: 'yandex.cloud.k8s.v1.UpdateNodeGroupMetadata' as const,
-
     encode(message: UpdateNodeGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.nodeGroupId !== '') {
             writer.uint32(10).string(message.nodeGroupId);
@@ -1354,10 +1241,7 @@ export const UpdateNodeGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateNodeGroupMetadata.$type, UpdateNodeGroupMetadata);
-
 const baseCreateNodeGroupRequest: object = {
-    $type: 'yandex.cloud.k8s.v1.CreateNodeGroupRequest',
     clusterId: '',
     name: '',
     description: '',
@@ -1366,8 +1250,6 @@ const baseCreateNodeGroupRequest: object = {
 };
 
 export const CreateNodeGroupRequest = {
-    $type: 'yandex.cloud.k8s.v1.CreateNodeGroupRequest' as const,
-
     encode(message: CreateNodeGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1380,11 +1262,7 @@ export const CreateNodeGroupRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateNodeGroupRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.k8s.v1.CreateNodeGroupRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -1420,11 +1298,7 @@ export const CreateNodeGroupRequest = {
         }
         Object.entries(message.nodeLabels).forEach(([key, value]) => {
             CreateNodeGroupRequest_NodeLabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.k8s.v1.CreateNodeGroupRequest.NodeLabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(98).fork(),
             ).ldelim();
         });
@@ -1662,17 +1536,9 @@ export const CreateNodeGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateNodeGroupRequest.$type, CreateNodeGroupRequest);
-
-const baseCreateNodeGroupRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.k8s.v1.CreateNodeGroupRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateNodeGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateNodeGroupRequest_LabelsEntry = {
-    $type: 'yandex.cloud.k8s.v1.CreateNodeGroupRequest.LabelsEntry' as const,
-
     encode(
         message: CreateNodeGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1738,20 +1604,9 @@ export const CreateNodeGroupRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateNodeGroupRequest_LabelsEntry.$type,
-    CreateNodeGroupRequest_LabelsEntry,
-);
-
-const baseCreateNodeGroupRequest_NodeLabelsEntry: object = {
-    $type: 'yandex.cloud.k8s.v1.CreateNodeGroupRequest.NodeLabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateNodeGroupRequest_NodeLabelsEntry: object = { key: '', value: '' };
 
 export const CreateNodeGroupRequest_NodeLabelsEntry = {
-    $type: 'yandex.cloud.k8s.v1.CreateNodeGroupRequest.NodeLabelsEntry' as const,
-
     encode(
         message: CreateNodeGroupRequest_NodeLabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1820,19 +1675,9 @@ export const CreateNodeGroupRequest_NodeLabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateNodeGroupRequest_NodeLabelsEntry.$type,
-    CreateNodeGroupRequest_NodeLabelsEntry,
-);
-
-const baseCreateNodeGroupMetadata: object = {
-    $type: 'yandex.cloud.k8s.v1.CreateNodeGroupMetadata',
-    nodeGroupId: '',
-};
+const baseCreateNodeGroupMetadata: object = { nodeGroupId: '' };
 
 export const CreateNodeGroupMetadata = {
-    $type: 'yandex.cloud.k8s.v1.CreateNodeGroupMetadata' as const,
-
     encode(message: CreateNodeGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.nodeGroupId !== '') {
             writer.uint32(10).string(message.nodeGroupId);
@@ -1882,16 +1727,9 @@ export const CreateNodeGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateNodeGroupMetadata.$type, CreateNodeGroupMetadata);
-
-const baseAutoUpgradeNodeGroupMetadata: object = {
-    $type: 'yandex.cloud.k8s.v1.AutoUpgradeNodeGroupMetadata',
-    nodeGroupId: '',
-};
+const baseAutoUpgradeNodeGroupMetadata: object = { nodeGroupId: '' };
 
 export const AutoUpgradeNodeGroupMetadata = {
-    $type: 'yandex.cloud.k8s.v1.AutoUpgradeNodeGroupMetadata' as const,
-
     encode(
         message: AutoUpgradeNodeGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1944,10 +1782,7 @@ export const AutoUpgradeNodeGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(AutoUpgradeNodeGroupMetadata.$type, AutoUpgradeNodeGroupMetadata);
-
 const baseListNodeGroupOperationsRequest: object = {
-    $type: 'yandex.cloud.k8s.v1.ListNodeGroupOperationsRequest',
     nodeGroupId: '',
     pageSize: 0,
     pageToken: '',
@@ -1955,8 +1790,6 @@ const baseListNodeGroupOperationsRequest: object = {
 };
 
 export const ListNodeGroupOperationsRequest = {
-    $type: 'yandex.cloud.k8s.v1.ListNodeGroupOperationsRequest' as const,
-
     encode(
         message: ListNodeGroupOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2041,16 +1874,9 @@ export const ListNodeGroupOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListNodeGroupOperationsRequest.$type, ListNodeGroupOperationsRequest);
-
-const baseListNodeGroupOperationsResponse: object = {
-    $type: 'yandex.cloud.k8s.v1.ListNodeGroupOperationsResponse',
-    nextPageToken: '',
-};
+const baseListNodeGroupOperationsResponse: object = { nextPageToken: '' };
 
 export const ListNodeGroupOperationsResponse = {
-    $type: 'yandex.cloud.k8s.v1.ListNodeGroupOperationsResponse' as const,
-
     encode(
         message: ListNodeGroupOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2122,8 +1948,6 @@ export const ListNodeGroupOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListNodeGroupOperationsResponse.$type, ListNodeGroupOperationsResponse);
 
 /** A set of methods for managing node groups. */
 export const NodeGroupServiceService = {
@@ -2388,16 +2212,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

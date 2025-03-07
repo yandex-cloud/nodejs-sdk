@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ import { DiskType } from '../../../../yandex/cloud/compute/v1/disk_type';
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
 export interface GetDiskTypeRequest {
-    $type: 'yandex.cloud.compute.v1.GetDiskTypeRequest';
     /**
      * ID of the disk type to return information about.
      * To get the disk type ID use a [DiskTypeService.List] request.
@@ -28,7 +26,6 @@ export interface GetDiskTypeRequest {
 }
 
 export interface ListDiskTypesRequest {
-    $type: 'yandex.cloud.compute.v1.ListDiskTypesRequest';
     /**
      * The maximum number of results per page to return. If the number of available
      * results is larger than [page_size],
@@ -44,7 +41,6 @@ export interface ListDiskTypesRequest {
 }
 
 export interface ListDiskTypesResponse {
-    $type: 'yandex.cloud.compute.v1.ListDiskTypesResponse';
     /** List of disk types. */
     diskTypes: DiskType[];
     /**
@@ -58,14 +54,9 @@ export interface ListDiskTypesResponse {
     nextPageToken: string;
 }
 
-const baseGetDiskTypeRequest: object = {
-    $type: 'yandex.cloud.compute.v1.GetDiskTypeRequest',
-    diskTypeId: '',
-};
+const baseGetDiskTypeRequest: object = { diskTypeId: '' };
 
 export const GetDiskTypeRequest = {
-    $type: 'yandex.cloud.compute.v1.GetDiskTypeRequest' as const,
-
     encode(message: GetDiskTypeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.diskTypeId !== '') {
             writer.uint32(10).string(message.diskTypeId);
@@ -115,17 +106,9 @@ export const GetDiskTypeRequest = {
     },
 };
 
-messageTypeRegistry.set(GetDiskTypeRequest.$type, GetDiskTypeRequest);
-
-const baseListDiskTypesRequest: object = {
-    $type: 'yandex.cloud.compute.v1.ListDiskTypesRequest',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListDiskTypesRequest: object = { pageSize: 0, pageToken: '' };
 
 export const ListDiskTypesRequest = {
-    $type: 'yandex.cloud.compute.v1.ListDiskTypesRequest' as const,
-
     encode(message: ListDiskTypesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -185,16 +168,9 @@ export const ListDiskTypesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListDiskTypesRequest.$type, ListDiskTypesRequest);
-
-const baseListDiskTypesResponse: object = {
-    $type: 'yandex.cloud.compute.v1.ListDiskTypesResponse',
-    nextPageToken: '',
-};
+const baseListDiskTypesResponse: object = { nextPageToken: '' };
 
 export const ListDiskTypesResponse = {
-    $type: 'yandex.cloud.compute.v1.ListDiskTypesResponse' as const,
-
     encode(message: ListDiskTypesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.diskTypes) {
             DiskType.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -257,8 +233,6 @@ export const ListDiskTypesResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListDiskTypesResponse.$type, ListDiskTypesResponse);
 
 /** A set of methods to retrieve information about disk types. */
 export const DiskTypeServiceService = {
@@ -373,16 +347,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

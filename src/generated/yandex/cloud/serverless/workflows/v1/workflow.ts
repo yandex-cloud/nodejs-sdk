@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -12,7 +11,6 @@ import { Timestamp } from '../../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.serverless.workflows.v1';
 
 export interface Workflow {
-    $type: 'yandex.cloud.serverless.workflows.v1.Workflow';
     /** ID of the Workflow. Generated at creation time. */
     id: string;
     /** ID of the folder that the Workflow belongs to. */
@@ -99,13 +97,11 @@ export function workflow_StatusToJSON(object: Workflow_Status): string {
 }
 
 export interface Workflow_LabelsEntry {
-    $type: 'yandex.cloud.serverless.workflows.v1.Workflow.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface WorkflowPreview {
-    $type: 'yandex.cloud.serverless.workflows.v1.WorkflowPreview';
     /** ID of the Workflow. Generated at creation time. */
     id: string;
     /** ID of the folder that the Workflow belongs to. */
@@ -129,19 +125,16 @@ export interface WorkflowPreview {
 }
 
 export interface WorkflowPreview_LabelsEntry {
-    $type: 'yandex.cloud.serverless.workflows.v1.WorkflowPreview.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface WorkflowSpecification {
-    $type: 'yandex.cloud.serverless.workflows.v1.WorkflowSpecification';
     /** Workflow specification in YAML format. */
     specYaml: string | undefined;
 }
 
 export interface LogOptions {
-    $type: 'yandex.cloud.serverless.workflows.v1.LogOptions';
     /** Is logging from Workflow disabled. */
     disabled: boolean;
     /** ID of the logging group which should be used for Workflows logs. */
@@ -157,7 +150,6 @@ export interface LogOptions {
 }
 
 const baseWorkflow: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.Workflow',
     id: '',
     folderId: '',
     name: '',
@@ -168,8 +160,6 @@ const baseWorkflow: object = {
 };
 
 export const Workflow = {
-    $type: 'yandex.cloud.serverless.workflows.v1.Workflow' as const,
-
     encode(message: Workflow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -191,11 +181,7 @@ export const Workflow = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Workflow_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.workflows.v1.Workflow.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(58).fork(),
             ).ldelim();
         });
@@ -370,17 +356,9 @@ export const Workflow = {
     },
 };
 
-messageTypeRegistry.set(Workflow.$type, Workflow);
-
-const baseWorkflow_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.Workflow.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseWorkflow_LabelsEntry: object = { key: '', value: '' };
 
 export const Workflow_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.workflows.v1.Workflow.LabelsEntry' as const,
-
     encode(message: Workflow_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -437,10 +415,7 @@ export const Workflow_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Workflow_LabelsEntry.$type, Workflow_LabelsEntry);
-
 const baseWorkflowPreview: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.WorkflowPreview',
     id: '',
     folderId: '',
     name: '',
@@ -451,8 +426,6 @@ const baseWorkflowPreview: object = {
 };
 
 export const WorkflowPreview = {
-    $type: 'yandex.cloud.serverless.workflows.v1.WorkflowPreview' as const,
-
     encode(message: WorkflowPreview, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -471,11 +444,7 @@ export const WorkflowPreview = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             WorkflowPreview_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.workflows.v1.WorkflowPreview.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -635,17 +604,9 @@ export const WorkflowPreview = {
     },
 };
 
-messageTypeRegistry.set(WorkflowPreview.$type, WorkflowPreview);
-
-const baseWorkflowPreview_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.WorkflowPreview.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseWorkflowPreview_LabelsEntry: object = { key: '', value: '' };
 
 export const WorkflowPreview_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.workflows.v1.WorkflowPreview.LabelsEntry' as const,
-
     encode(
         message: WorkflowPreview_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -705,15 +666,9 @@ export const WorkflowPreview_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(WorkflowPreview_LabelsEntry.$type, WorkflowPreview_LabelsEntry);
-
-const baseWorkflowSpecification: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.WorkflowSpecification',
-};
+const baseWorkflowSpecification: object = {};
 
 export const WorkflowSpecification = {
-    $type: 'yandex.cloud.serverless.workflows.v1.WorkflowSpecification' as const,
-
     encode(message: WorkflowSpecification, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.specYaml !== undefined) {
             writer.uint32(10).string(message.specYaml);
@@ -763,17 +718,9 @@ export const WorkflowSpecification = {
     },
 };
 
-messageTypeRegistry.set(WorkflowSpecification.$type, WorkflowSpecification);
-
-const baseLogOptions: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.LogOptions',
-    disabled: false,
-    minLevel: 0,
-};
+const baseLogOptions: object = { disabled: false, minLevel: 0 };
 
 export const LogOptions = {
-    $type: 'yandex.cloud.serverless.workflows.v1.LogOptions' as const,
-
     encode(message: LogOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.disabled === true) {
             writer.uint32(8).bool(message.disabled);
@@ -857,8 +804,6 @@ export const LogOptions = {
     },
 };
 
-messageTypeRegistry.set(LogOptions.$type, LogOptions);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -868,21 +813,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -29,7 +28,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.apploadbalancer.v1';
 
 export interface GetVirtualHostRequest {
-    $type: 'yandex.cloud.apploadbalancer.v1.GetVirtualHostRequest';
     /**
      * ID of the HTTP router that the virtual host belongs to.
      *
@@ -45,7 +43,6 @@ export interface GetVirtualHostRequest {
 }
 
 export interface ListVirtualHostsRequest {
-    $type: 'yandex.cloud.apploadbalancer.v1.ListVirtualHostsRequest';
     /**
      * ID of the HTTP router to list virtual hosts in.
      *
@@ -67,7 +64,6 @@ export interface ListVirtualHostsRequest {
 }
 
 export interface ListVirtualHostsResponse {
-    $type: 'yandex.cloud.apploadbalancer.v1.ListVirtualHostsResponse';
     /** List of virtual hosts of the specified HTTP router. */
     virtualHosts: VirtualHost[];
     /**
@@ -81,7 +77,6 @@ export interface ListVirtualHostsResponse {
 }
 
 export interface CreateVirtualHostRequest {
-    $type: 'yandex.cloud.apploadbalancer.v1.CreateVirtualHostRequest';
     /**
      * ID of the HTTP router to create a virtual host in.
      *
@@ -130,7 +125,6 @@ export interface CreateVirtualHostRequest {
 }
 
 export interface CreateVirtualHostMetadata {
-    $type: 'yandex.cloud.apploadbalancer.v1.CreateVirtualHostMetadata';
     /** ID of the HTTP router that the virtual host is being created in. */
     httpRouterId: string;
     /** Name of the virtual host that is being created. */
@@ -138,7 +132,6 @@ export interface CreateVirtualHostMetadata {
 }
 
 export interface UpdateVirtualHostRequest {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateVirtualHostRequest';
     /**
      * ID of the HTTP router to update a virtual host in.
      *
@@ -207,7 +200,6 @@ export interface UpdateVirtualHostRequest {
 }
 
 export interface UpdateVirtualHostMetadata {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateVirtualHostMetadata';
     /** ID of the HTTP router that the virtual host is being updated in. */
     httpRouterId: string;
     /** Name of the virtual host that is being updated. */
@@ -215,7 +207,6 @@ export interface UpdateVirtualHostMetadata {
 }
 
 export interface DeleteVirtualHostRequest {
-    $type: 'yandex.cloud.apploadbalancer.v1.DeleteVirtualHostRequest';
     /**
      * ID of the HTTP router to delete a virtual host from.
      *
@@ -231,7 +222,6 @@ export interface DeleteVirtualHostRequest {
 }
 
 export interface DeleteVirtualHostMetadata {
-    $type: 'yandex.cloud.apploadbalancer.v1.DeleteVirtualHostMetadata';
     /** ID of the HTTP router that the virtual host is being deleted from. */
     httpRouterId: string;
     /** Name of the virtual host that is being deleted. */
@@ -239,7 +229,6 @@ export interface DeleteVirtualHostMetadata {
 }
 
 export interface RemoveRouteRequest {
-    $type: 'yandex.cloud.apploadbalancer.v1.RemoveRouteRequest';
     /**
      * ID of the HTTP router to delete a route from.
      *
@@ -261,7 +250,6 @@ export interface RemoveRouteRequest {
 }
 
 export interface RemoveRouteMetadata {
-    $type: 'yandex.cloud.apploadbalancer.v1.RemoveRouteMetadata';
     /** ID of the HTTP router that the route is being deleted from. */
     httpRouterId: string;
     /** Name of the virtual host that the route is being deleted from. */
@@ -271,7 +259,6 @@ export interface RemoveRouteMetadata {
 }
 
 export interface UpdateRouteRequest {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateRouteRequest';
     /**
      * ID of the HTTP router to update a route in.
      *
@@ -301,7 +288,6 @@ export interface UpdateRouteRequest {
 }
 
 export interface UpdateRouteMetadata {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateRouteMetadata';
     /** ID of the HTTP router that the route is being updated in. */
     httpRouterId: string;
     /** Name of the virtual host that the route is being updated in. */
@@ -310,15 +296,9 @@ export interface UpdateRouteMetadata {
     routeName: string;
 }
 
-const baseGetVirtualHostRequest: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.GetVirtualHostRequest',
-    httpRouterId: '',
-    virtualHostName: '',
-};
+const baseGetVirtualHostRequest: object = { httpRouterId: '', virtualHostName: '' };
 
 export const GetVirtualHostRequest = {
-    $type: 'yandex.cloud.apploadbalancer.v1.GetVirtualHostRequest' as const,
-
     encode(message: GetVirtualHostRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.httpRouterId !== '') {
             writer.uint32(10).string(message.httpRouterId);
@@ -380,18 +360,9 @@ export const GetVirtualHostRequest = {
     },
 };
 
-messageTypeRegistry.set(GetVirtualHostRequest.$type, GetVirtualHostRequest);
-
-const baseListVirtualHostsRequest: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.ListVirtualHostsRequest',
-    httpRouterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListVirtualHostsRequest: object = { httpRouterId: '', pageSize: 0, pageToken: '' };
 
 export const ListVirtualHostsRequest = {
-    $type: 'yandex.cloud.apploadbalancer.v1.ListVirtualHostsRequest' as const,
-
     encode(message: ListVirtualHostsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.httpRouterId !== '') {
             writer.uint32(10).string(message.httpRouterId);
@@ -463,16 +434,9 @@ export const ListVirtualHostsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListVirtualHostsRequest.$type, ListVirtualHostsRequest);
-
-const baseListVirtualHostsResponse: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.ListVirtualHostsResponse',
-    nextPageToken: '',
-};
+const baseListVirtualHostsResponse: object = { nextPageToken: '' };
 
 export const ListVirtualHostsResponse = {
-    $type: 'yandex.cloud.apploadbalancer.v1.ListVirtualHostsResponse' as const,
-
     encode(
         message: ListVirtualHostsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -541,18 +505,9 @@ export const ListVirtualHostsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListVirtualHostsResponse.$type, ListVirtualHostsResponse);
-
-const baseCreateVirtualHostRequest: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.CreateVirtualHostRequest',
-    httpRouterId: '',
-    name: '',
-    authority: '',
-};
+const baseCreateVirtualHostRequest: object = { httpRouterId: '', name: '', authority: '' };
 
 export const CreateVirtualHostRequest = {
-    $type: 'yandex.cloud.apploadbalancer.v1.CreateVirtualHostRequest' as const,
-
     encode(
         message: CreateVirtualHostRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -718,17 +673,9 @@ export const CreateVirtualHostRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateVirtualHostRequest.$type, CreateVirtualHostRequest);
-
-const baseCreateVirtualHostMetadata: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.CreateVirtualHostMetadata',
-    httpRouterId: '',
-    virtualHostName: '',
-};
+const baseCreateVirtualHostMetadata: object = { httpRouterId: '', virtualHostName: '' };
 
 export const CreateVirtualHostMetadata = {
-    $type: 'yandex.cloud.apploadbalancer.v1.CreateVirtualHostMetadata' as const,
-
     encode(
         message: CreateVirtualHostMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -793,18 +740,13 @@ export const CreateVirtualHostMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateVirtualHostMetadata.$type, CreateVirtualHostMetadata);
-
 const baseUpdateVirtualHostRequest: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateVirtualHostRequest',
     httpRouterId: '',
     virtualHostName: '',
     authority: '',
 };
 
 export const UpdateVirtualHostRequest = {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateVirtualHostRequest' as const,
-
     encode(
         message: UpdateVirtualHostRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -991,17 +933,9 @@ export const UpdateVirtualHostRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateVirtualHostRequest.$type, UpdateVirtualHostRequest);
-
-const baseUpdateVirtualHostMetadata: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateVirtualHostMetadata',
-    httpRouterId: '',
-    virtualHostName: '',
-};
+const baseUpdateVirtualHostMetadata: object = { httpRouterId: '', virtualHostName: '' };
 
 export const UpdateVirtualHostMetadata = {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateVirtualHostMetadata' as const,
-
     encode(
         message: UpdateVirtualHostMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1066,17 +1000,9 @@ export const UpdateVirtualHostMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateVirtualHostMetadata.$type, UpdateVirtualHostMetadata);
-
-const baseDeleteVirtualHostRequest: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.DeleteVirtualHostRequest',
-    httpRouterId: '',
-    virtualHostName: '',
-};
+const baseDeleteVirtualHostRequest: object = { httpRouterId: '', virtualHostName: '' };
 
 export const DeleteVirtualHostRequest = {
-    $type: 'yandex.cloud.apploadbalancer.v1.DeleteVirtualHostRequest' as const,
-
     encode(
         message: DeleteVirtualHostRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1141,17 +1067,9 @@ export const DeleteVirtualHostRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteVirtualHostRequest.$type, DeleteVirtualHostRequest);
-
-const baseDeleteVirtualHostMetadata: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.DeleteVirtualHostMetadata',
-    httpRouterId: '',
-    virtualHostName: '',
-};
+const baseDeleteVirtualHostMetadata: object = { httpRouterId: '', virtualHostName: '' };
 
 export const DeleteVirtualHostMetadata = {
-    $type: 'yandex.cloud.apploadbalancer.v1.DeleteVirtualHostMetadata' as const,
-
     encode(
         message: DeleteVirtualHostMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1216,18 +1134,9 @@ export const DeleteVirtualHostMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteVirtualHostMetadata.$type, DeleteVirtualHostMetadata);
-
-const baseRemoveRouteRequest: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.RemoveRouteRequest',
-    httpRouterId: '',
-    virtualHostName: '',
-    routeName: '',
-};
+const baseRemoveRouteRequest: object = { httpRouterId: '', virtualHostName: '', routeName: '' };
 
 export const RemoveRouteRequest = {
-    $type: 'yandex.cloud.apploadbalancer.v1.RemoveRouteRequest' as const,
-
     encode(message: RemoveRouteRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.httpRouterId !== '') {
             writer.uint32(10).string(message.httpRouterId);
@@ -1301,18 +1210,9 @@ export const RemoveRouteRequest = {
     },
 };
 
-messageTypeRegistry.set(RemoveRouteRequest.$type, RemoveRouteRequest);
-
-const baseRemoveRouteMetadata: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.RemoveRouteMetadata',
-    httpRouterId: '',
-    virtualHostName: '',
-    routeName: '',
-};
+const baseRemoveRouteMetadata: object = { httpRouterId: '', virtualHostName: '', routeName: '' };
 
 export const RemoveRouteMetadata = {
-    $type: 'yandex.cloud.apploadbalancer.v1.RemoveRouteMetadata' as const,
-
     encode(message: RemoveRouteMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.httpRouterId !== '') {
             writer.uint32(10).string(message.httpRouterId);
@@ -1386,18 +1286,9 @@ export const RemoveRouteMetadata = {
     },
 };
 
-messageTypeRegistry.set(RemoveRouteMetadata.$type, RemoveRouteMetadata);
-
-const baseUpdateRouteRequest: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateRouteRequest',
-    httpRouterId: '',
-    virtualHostName: '',
-    routeName: '',
-};
+const baseUpdateRouteRequest: object = { httpRouterId: '', virtualHostName: '', routeName: '' };
 
 export const UpdateRouteRequest = {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateRouteRequest' as const,
-
     encode(message: UpdateRouteRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.httpRouterId !== '') {
             writer.uint32(10).string(message.httpRouterId);
@@ -1539,18 +1430,9 @@ export const UpdateRouteRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateRouteRequest.$type, UpdateRouteRequest);
-
-const baseUpdateRouteMetadata: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateRouteMetadata',
-    httpRouterId: '',
-    virtualHostName: '',
-    routeName: '',
-};
+const baseUpdateRouteMetadata: object = { httpRouterId: '', virtualHostName: '', routeName: '' };
 
 export const UpdateRouteMetadata = {
-    $type: 'yandex.cloud.apploadbalancer.v1.UpdateRouteMetadata' as const,
-
     encode(message: UpdateRouteMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.httpRouterId !== '') {
             writer.uint32(10).string(message.httpRouterId);
@@ -1623,8 +1505,6 @@ export const UpdateRouteMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(UpdateRouteMetadata.$type, UpdateRouteMetadata);
 
 /** A set of methods for managing virtual hosts of HTTP routers. */
 export const VirtualHostServiceService = {
@@ -1884,16 +1764,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

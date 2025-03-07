@@ -1,12 +1,10 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.mdb.elasticsearch.v1';
 
 export interface Extension {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Extension';
     /** Name of the extension. */
     name: string;
     /** Unique ID of the extension. */
@@ -20,7 +18,6 @@ export interface Extension {
 }
 
 export interface ExtensionSpec {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.ExtensionSpec';
     /** Name of the extension. */
     name: string;
     /** URI of the zip archive to create the new extension from. Currently only supports links that are stored in Object Storage. */
@@ -29,18 +26,9 @@ export interface ExtensionSpec {
     disabled: boolean;
 }
 
-const baseExtension: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Extension',
-    name: '',
-    id: '',
-    clusterId: '',
-    version: 0,
-    active: false,
-};
+const baseExtension: object = { name: '', id: '', clusterId: '', version: 0, active: false };
 
 export const Extension = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.Extension' as const,
-
     encode(message: Extension, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -126,18 +114,9 @@ export const Extension = {
     },
 };
 
-messageTypeRegistry.set(Extension.$type, Extension);
-
-const baseExtensionSpec: object = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.ExtensionSpec',
-    name: '',
-    uri: '',
-    disabled: false,
-};
+const baseExtensionSpec: object = { name: '', uri: '', disabled: false };
 
 export const ExtensionSpec = {
-    $type: 'yandex.cloud.mdb.elasticsearch.v1.ExtensionSpec' as const,
-
     encode(message: ExtensionSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -203,8 +182,6 @@ export const ExtensionSpec = {
     },
 };
 
-messageTypeRegistry.set(ExtensionSpec.$type, ExtensionSpec);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -225,16 +202,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

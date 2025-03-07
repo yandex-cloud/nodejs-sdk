@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -18,7 +17,6 @@ import _m0 from 'protobufjs/minimal';
 export const protobufPackage = 'yandex.cloud.loadtesting.agent.v1';
 
 export interface Job {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Job';
     id: string;
     config: string;
     ammo?: File;
@@ -29,26 +27,22 @@ export interface Job {
 }
 
 export interface File {
-    $type: 'yandex.cloud.loadtesting.agent.v1.File';
     name: string;
     content: Buffer;
 }
 
 export interface StorageObject {
-    $type: 'yandex.cloud.loadtesting.agent.v1.StorageObject';
     objectStorageBucket: string;
     objectStorageFilename: string;
 }
 
 export interface TestDataEntry {
-    $type: 'yandex.cloud.loadtesting.agent.v1.TestDataEntry';
     name: string;
     isTransient: boolean;
     storageObject?: StorageObject;
 }
 
 export interface TestArtifactUploadSettings {
-    $type: 'yandex.cloud.loadtesting.agent.v1.TestArtifactUploadSettings';
     outputBucket: string;
     outputName: string;
     isArchive: boolean;
@@ -57,20 +51,17 @@ export interface TestArtifactUploadSettings {
 }
 
 export interface GetJobTransientFile {
-    $type: 'yandex.cloud.loadtesting.agent.v1.GetJobTransientFile';
     jobId: string;
     name: string;
 }
 
 export interface GetJobRequest {
-    $type: 'yandex.cloud.loadtesting.agent.v1.GetJobRequest';
     computeInstanceId: string;
     agentInstanceId: string;
     jobId: string;
 }
 
 export interface ClaimJobStatusRequest {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ClaimJobStatusRequest';
     jobId: string;
     status: ClaimJobStatusRequest_JobStatus;
     error: string;
@@ -174,17 +165,14 @@ export function claimJobStatusRequest_JobStatusToJSON(
 }
 
 export interface ClaimJobStatusResponse {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ClaimJobStatusResponse';
     code: number;
 }
 
 export interface JobSignalRequest {
-    $type: 'yandex.cloud.loadtesting.agent.v1.JobSignalRequest';
     jobId: string;
 }
 
 export interface JobSignalResponse {
-    $type: 'yandex.cloud.loadtesting.agent.v1.JobSignalResponse';
     signal: JobSignalResponse_Signal;
     /** seconds */
     waitDuration: number;
@@ -236,16 +224,9 @@ export function jobSignalResponse_SignalToJSON(object: JobSignalResponse_Signal)
     }
 }
 
-const baseJob: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Job',
-    id: '',
-    config: '',
-    loggingLogGroupId: '',
-};
+const baseJob: object = { id: '', config: '', loggingLogGroupId: '' };
 
 export const Job = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Job' as const,
-
     encode(message: Job, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -385,13 +366,9 @@ export const Job = {
     },
 };
 
-messageTypeRegistry.set(Job.$type, Job);
-
-const baseFile: object = { $type: 'yandex.cloud.loadtesting.agent.v1.File', name: '' };
+const baseFile: object = { name: '' };
 
 export const File = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.File' as const,
-
     encode(message: File, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -452,17 +429,9 @@ export const File = {
     },
 };
 
-messageTypeRegistry.set(File.$type, File);
-
-const baseStorageObject: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.StorageObject',
-    objectStorageBucket: '',
-    objectStorageFilename: '',
-};
+const baseStorageObject: object = { objectStorageBucket: '', objectStorageFilename: '' };
 
 export const StorageObject = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.StorageObject' as const,
-
     encode(message: StorageObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.objectStorageBucket !== '') {
             writer.uint32(10).string(message.objectStorageBucket);
@@ -524,17 +493,9 @@ export const StorageObject = {
     },
 };
 
-messageTypeRegistry.set(StorageObject.$type, StorageObject);
-
-const baseTestDataEntry: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.TestDataEntry',
-    name: '',
-    isTransient: false,
-};
+const baseTestDataEntry: object = { name: '', isTransient: false };
 
 export const TestDataEntry = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.TestDataEntry' as const,
-
     encode(message: TestDataEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -609,10 +570,7 @@ export const TestDataEntry = {
     },
 };
 
-messageTypeRegistry.set(TestDataEntry.$type, TestDataEntry);
-
 const baseTestArtifactUploadSettings: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.TestArtifactUploadSettings',
     outputBucket: '',
     outputName: '',
     isArchive: false,
@@ -621,8 +579,6 @@ const baseTestArtifactUploadSettings: object = {
 };
 
 export const TestArtifactUploadSettings = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.TestArtifactUploadSettings' as const,
-
     encode(
         message: TestArtifactUploadSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -727,17 +683,9 @@ export const TestArtifactUploadSettings = {
     },
 };
 
-messageTypeRegistry.set(TestArtifactUploadSettings.$type, TestArtifactUploadSettings);
-
-const baseGetJobTransientFile: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.GetJobTransientFile',
-    jobId: '',
-    name: '',
-};
+const baseGetJobTransientFile: object = { jobId: '', name: '' };
 
 export const GetJobTransientFile = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.GetJobTransientFile' as const,
-
     encode(message: GetJobTransientFile, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jobId !== '') {
             writer.uint32(10).string(message.jobId);
@@ -794,18 +742,9 @@ export const GetJobTransientFile = {
     },
 };
 
-messageTypeRegistry.set(GetJobTransientFile.$type, GetJobTransientFile);
-
-const baseGetJobRequest: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.GetJobRequest',
-    computeInstanceId: '',
-    agentInstanceId: '',
-    jobId: '',
-};
+const baseGetJobRequest: object = { computeInstanceId: '', agentInstanceId: '', jobId: '' };
 
 export const GetJobRequest = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.GetJobRequest' as const,
-
     encode(message: GetJobRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -876,18 +815,9 @@ export const GetJobRequest = {
     },
 };
 
-messageTypeRegistry.set(GetJobRequest.$type, GetJobRequest);
-
-const baseClaimJobStatusRequest: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ClaimJobStatusRequest',
-    jobId: '',
-    status: 0,
-    error: '',
-};
+const baseClaimJobStatusRequest: object = { jobId: '', status: 0, error: '' };
 
 export const ClaimJobStatusRequest = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ClaimJobStatusRequest' as const,
-
     encode(message: ClaimJobStatusRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jobId !== '') {
             writer.uint32(10).string(message.jobId);
@@ -958,16 +888,9 @@ export const ClaimJobStatusRequest = {
     },
 };
 
-messageTypeRegistry.set(ClaimJobStatusRequest.$type, ClaimJobStatusRequest);
-
-const baseClaimJobStatusResponse: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ClaimJobStatusResponse',
-    code: 0,
-};
+const baseClaimJobStatusResponse: object = { code: 0 };
 
 export const ClaimJobStatusResponse = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.ClaimJobStatusResponse' as const,
-
     encode(message: ClaimJobStatusResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.code !== 0) {
             writer.uint32(8).int64(message.code);
@@ -1014,16 +937,9 @@ export const ClaimJobStatusResponse = {
     },
 };
 
-messageTypeRegistry.set(ClaimJobStatusResponse.$type, ClaimJobStatusResponse);
-
-const baseJobSignalRequest: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.JobSignalRequest',
-    jobId: '',
-};
+const baseJobSignalRequest: object = { jobId: '' };
 
 export const JobSignalRequest = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.JobSignalRequest' as const,
-
     encode(message: JobSignalRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jobId !== '') {
             writer.uint32(10).string(message.jobId);
@@ -1069,18 +985,9 @@ export const JobSignalRequest = {
     },
 };
 
-messageTypeRegistry.set(JobSignalRequest.$type, JobSignalRequest);
-
-const baseJobSignalResponse: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.JobSignalResponse',
-    signal: 0,
-    waitDuration: 0,
-    runIn: 0,
-};
+const baseJobSignalResponse: object = { signal: 0, waitDuration: 0, runIn: 0 };
 
 export const JobSignalResponse = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.JobSignalResponse' as const,
-
     encode(message: JobSignalResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.signal !== 0) {
             writer.uint32(8).int32(message.signal);
@@ -1150,8 +1057,6 @@ export const JobSignalResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(JobSignalResponse.$type, JobSignalResponse);
 
 export const JobServiceService = {
     /** Claims status for the specified job. */
@@ -1330,16 +1235,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

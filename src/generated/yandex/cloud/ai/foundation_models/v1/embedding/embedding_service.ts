@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ export const protobufPackage = 'yandex.cloud.ai.foundation_models.v1';
 
 /** Request for the service to obtain text embeddings. */
 export interface TextEmbeddingRequest {
-    $type: 'yandex.cloud.ai.foundation_models.v1.TextEmbeddingRequest';
     /** The [model URI](/docs/foundation-models/concepts/embeddings) to be used for obtaining text embeddings. */
     modelUri: string;
     /** The input text for which the embedding is requested. */
@@ -28,7 +26,6 @@ export interface TextEmbeddingRequest {
 
 /** Response containing generated text embedding. */
 export interface TextEmbeddingResponse {
-    $type: 'yandex.cloud.ai.foundation_models.v1.TextEmbeddingResponse';
     /** A repeated list of double values representing the embedding. */
     embedding: number[];
     /** The number of tokens in the input text. */
@@ -37,15 +34,9 @@ export interface TextEmbeddingResponse {
     modelVersion: string;
 }
 
-const baseTextEmbeddingRequest: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.TextEmbeddingRequest',
-    modelUri: '',
-    text: '',
-};
+const baseTextEmbeddingRequest: object = { modelUri: '', text: '' };
 
 export const TextEmbeddingRequest = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.TextEmbeddingRequest' as const,
-
     encode(message: TextEmbeddingRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.modelUri !== '') {
             writer.uint32(10).string(message.modelUri);
@@ -104,18 +95,9 @@ export const TextEmbeddingRequest = {
     },
 };
 
-messageTypeRegistry.set(TextEmbeddingRequest.$type, TextEmbeddingRequest);
-
-const baseTextEmbeddingResponse: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.TextEmbeddingResponse',
-    embedding: 0,
-    numTokens: 0,
-    modelVersion: '',
-};
+const baseTextEmbeddingResponse: object = { embedding: 0, numTokens: 0, modelVersion: '' };
 
 export const TextEmbeddingResponse = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.TextEmbeddingResponse' as const,
-
     encode(message: TextEmbeddingResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         writer.uint32(10).fork();
         for (const v of message.embedding) {
@@ -200,8 +182,6 @@ export const TextEmbeddingResponse = {
     },
 };
 
-messageTypeRegistry.set(TextEmbeddingResponse.$type, TextEmbeddingResponse);
-
 /** Service for obtaining embeddings from input data. */
 export const EmbeddingsServiceService = {
     /** A method for obtaining embeddings from text data. */
@@ -274,16 +254,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

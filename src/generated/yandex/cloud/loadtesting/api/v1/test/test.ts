@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Details } from '../../../../../../yandex/cloud/loadtesting/api/v1/test/details';
@@ -14,7 +13,6 @@ export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.test';
  * In context of the service, Test represents a single testing task/job.
  */
 export interface Test {
-    $type: 'yandex.cloud.loadtesting.api.v1.test.Test';
     /** ID of the test. Generated at creation time. */
     id: string;
     /**
@@ -33,15 +31,9 @@ export interface Test {
     folderId: string;
 }
 
-const baseTest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.test.Test',
-    id: '',
-    folderId: '',
-};
+const baseTest: object = { id: '', folderId: '' };
 
 export const Test = {
-    $type: 'yandex.cloud.loadtesting.api.v1.test.Test' as const,
-
     encode(message: Test, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -151,8 +143,6 @@ export const Test = {
     },
 };
 
-messageTypeRegistry.set(Test.$type, Test);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -162,16 +152,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

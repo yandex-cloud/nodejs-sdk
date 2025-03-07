@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { BoolValue, Int64Value } from '../../../../../google/protobuf/wrappers';
@@ -49,7 +48,6 @@ export function userPasswordEncryptionToJSON(object: UserPasswordEncryption): st
  * the [Developer's Guide](/docs/managed-postgresql/concepts).
  */
 export interface User {
-    $type: 'yandex.cloud.mdb.postgresql.v1.User';
     /** Name of the PostgreSQL user. */
     name: string;
     /** ID of the PostgreSQL cluster the user belongs to. */
@@ -96,19 +94,16 @@ export interface User {
 }
 
 export interface Permission {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Permission';
     /** Name of the database that the permission grants access to. */
     databaseName: string;
 }
 
 export interface ConnectionManager {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ConnectionManager';
     /** ID of Connection Manager Connection */
     connectionId: string;
 }
 
 export interface UserSpec {
-    $type: 'yandex.cloud.mdb.postgresql.v1.UserSpec';
     /** Name of the PostgreSQL user. */
     name: string;
     /** Password of the PostgreSQL user. */
@@ -156,7 +151,6 @@ export interface UserSpec {
 }
 
 export interface PGAuditSettings {
-    $type: 'yandex.cloud.mdb.postgresql.v1.PGAuditSettings';
     /**
      * Defines which user queries will be written to the audit log. Corresponds to the [Pg audit log](https://yandex.cloud/en/docs/managed-postgresql/concepts/settings-list#setting-pg-audit-log) user setting.
      *
@@ -249,7 +243,6 @@ export function pGAuditSettings_PGAuditSettingsLogToJSON(
 
 /** PostgreSQL user settings. */
 export interface UserSettings {
-    $type: 'yandex.cloud.mdb.postgresql.v1.UserSettings';
     /**
      * SQL sets an isolation level for each transaction.
      * This setting defines the default isolation level to be set for all new SQL transactions.
@@ -596,7 +589,6 @@ export function userSettings_PoolingModeToJSON(object: UserSettings_PoolingMode)
 }
 
 const baseUser: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.User',
     name: '',
     clusterId: '',
     connLimit: 0,
@@ -605,8 +597,6 @@ const baseUser: object = {
 };
 
 export const User = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.User' as const,
-
     encode(message: User, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -624,17 +614,14 @@ export const User = {
             UserSettings.encode(message.settings, writer.uint32(42).fork()).ldelim();
         }
         if (message.login !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.login! },
-                writer.uint32(50).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.login! }, writer.uint32(50).fork()).ldelim();
         }
         for (const v of message.grants) {
             writer.uint32(58).string(v!);
         }
         if (message.deletionProtection !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.deletionProtection! },
+                { value: message.deletionProtection! },
                 writer.uint32(66).fork(),
             ).ldelim();
         }
@@ -783,16 +770,9 @@ export const User = {
     },
 };
 
-messageTypeRegistry.set(User.$type, User);
-
-const basePermission: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Permission',
-    databaseName: '',
-};
+const basePermission: object = { databaseName: '' };
 
 export const Permission = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.Permission' as const,
-
     encode(message: Permission, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.databaseName !== '') {
             writer.uint32(10).string(message.databaseName);
@@ -840,16 +820,9 @@ export const Permission = {
     },
 };
 
-messageTypeRegistry.set(Permission.$type, Permission);
-
-const baseConnectionManager: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ConnectionManager',
-    connectionId: '',
-};
+const baseConnectionManager: object = { connectionId: '' };
 
 export const ConnectionManager = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.ConnectionManager' as const,
-
     encode(message: ConnectionManager, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectionId !== '') {
             writer.uint32(10).string(message.connectionId);
@@ -897,19 +870,9 @@ export const ConnectionManager = {
     },
 };
 
-messageTypeRegistry.set(ConnectionManager.$type, ConnectionManager);
-
-const baseUserSpec: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.UserSpec',
-    name: '',
-    password: '',
-    grants: '',
-    userPasswordEncryption: 0,
-};
+const baseUserSpec: object = { name: '', password: '', grants: '', userPasswordEncryption: 0 };
 
 export const UserSpec = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.UserSpec' as const,
-
     encode(message: UserSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -921,26 +884,20 @@ export const UserSpec = {
             Permission.encode(v!, writer.uint32(26).fork()).ldelim();
         }
         if (message.connLimit !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.connLimit! },
-                writer.uint32(34).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.connLimit! }, writer.uint32(34).fork()).ldelim();
         }
         if (message.settings !== undefined) {
             UserSettings.encode(message.settings, writer.uint32(42).fork()).ldelim();
         }
         if (message.login !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.login! },
-                writer.uint32(50).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.login! }, writer.uint32(50).fork()).ldelim();
         }
         for (const v of message.grants) {
             writer.uint32(58).string(v!);
         }
         if (message.deletionProtection !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.deletionProtection! },
+                { value: message.deletionProtection! },
                 writer.uint32(66).fork(),
             ).ldelim();
         }
@@ -949,7 +906,7 @@ export const UserSpec = {
         }
         if (message.generatePassword !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.generatePassword! },
+                { value: message.generatePassword! },
                 writer.uint32(82).fork(),
             ).ldelim();
         }
@@ -1086,16 +1043,9 @@ export const UserSpec = {
     },
 };
 
-messageTypeRegistry.set(UserSpec.$type, UserSpec);
-
-const basePGAuditSettings: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.PGAuditSettings',
-    log: 0,
-};
+const basePGAuditSettings: object = { log: 0 };
 
 export const PGAuditSettings = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.PGAuditSettings' as const,
-
     encode(message: PGAuditSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         writer.uint32(10).fork();
         for (const v of message.log) {
@@ -1156,10 +1106,7 @@ export const PGAuditSettings = {
     },
 };
 
-messageTypeRegistry.set(PGAuditSettings.$type, PGAuditSettings);
-
 const baseUserSettings: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.UserSettings',
     defaultTransactionIsolation: 0,
     synchronousCommit: 0,
     logStatement: 0,
@@ -1167,21 +1114,16 @@ const baseUserSettings: object = {
 };
 
 export const UserSettings = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.UserSettings' as const,
-
     encode(message: UserSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.defaultTransactionIsolation !== 0) {
             writer.uint32(8).int32(message.defaultTransactionIsolation);
         }
         if (message.lockTimeout !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.lockTimeout! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.lockTimeout! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.logMinDurationStatement !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.logMinDurationStatement! },
+                { value: message.logMinDurationStatement! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
@@ -1189,10 +1131,7 @@ export const UserSettings = {
             writer.uint32(32).int32(message.synchronousCommit);
         }
         if (message.tempFileLimit !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.tempFileLimit! },
-                writer.uint32(42).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.tempFileLimit! }, writer.uint32(42).fork()).ldelim();
         }
         if (message.logStatement !== 0) {
             writer.uint32(48).int32(message.logStatement);
@@ -1202,34 +1141,31 @@ export const UserSettings = {
         }
         if (message.preparedStatementsPooling !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.preparedStatementsPooling! },
+                { value: message.preparedStatementsPooling! },
                 writer.uint32(66).fork(),
             ).ldelim();
         }
         if (message.catchupTimeout !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.catchupTimeout! },
+                { value: message.catchupTimeout! },
                 writer.uint32(74).fork(),
             ).ldelim();
         }
         if (message.walSenderTimeout !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.walSenderTimeout! },
+                { value: message.walSenderTimeout! },
                 writer.uint32(82).fork(),
             ).ldelim();
         }
         if (message.idleInTransactionSessionTimeout !== undefined) {
             Int64Value.encode(
-                {
-                    $type: 'google.protobuf.Int64Value',
-                    value: message.idleInTransactionSessionTimeout!,
-                },
+                { value: message.idleInTransactionSessionTimeout! },
                 writer.uint32(90).fork(),
             ).ldelim();
         }
         if (message.statementTimeout !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.statementTimeout! },
+                { value: message.statementTimeout! },
                 writer.uint32(98).fork(),
             ).ldelim();
         }
@@ -1415,8 +1351,6 @@ export const UserSettings = {
     },
 };
 
-messageTypeRegistry.set(UserSettings.$type, UserSettings);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1437,16 +1371,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

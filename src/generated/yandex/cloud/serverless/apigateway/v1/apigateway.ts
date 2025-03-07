@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../../google/protobuf/duration';
@@ -13,7 +12,6 @@ import { Timestamp } from '../../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.serverless.apigateway.v1';
 
 export interface ApiGateway {
-    $type: 'yandex.cloud.serverless.apigateway.v1.ApiGateway';
     /** ID of the API gateway. Generated at creation time. */
     id: string;
     /** ID of the folder that the API gateway belongs to. */
@@ -108,19 +106,16 @@ export function apiGateway_StatusToJSON(object: ApiGateway_Status): string {
 }
 
 export interface ApiGateway_LabelsEntry {
-    $type: 'yandex.cloud.serverless.apigateway.v1.ApiGateway.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface ApiGateway_VariablesEntry {
-    $type: 'yandex.cloud.serverless.apigateway.v1.ApiGateway.VariablesEntry';
     key: string;
     value?: VariableInput;
 }
 
 export interface AttachedDomain {
-    $type: 'yandex.cloud.serverless.apigateway.v1.AttachedDomain';
     /** ID of the domain. */
     domainId: string;
     /** ID of the domain certificate. */
@@ -133,7 +128,6 @@ export interface AttachedDomain {
 
 /** Gateway connectivity specification. */
 export interface Connectivity {
-    $type: 'yandex.cloud.serverless.apigateway.v1.Connectivity';
     /**
      * Network the gateway will have access to.
      * It's essential to specify network with subnets in all availability zones.
@@ -147,7 +141,6 @@ export interface Connectivity {
 }
 
 export interface LogOptions {
-    $type: 'yandex.cloud.serverless.apigateway.v1.LogOptions';
     /** Is logging from API gateway disabled. */
     disabled: boolean;
     /** Entry should be written to log group resolved by ID. */
@@ -163,7 +156,6 @@ export interface LogOptions {
 }
 
 export interface Canary {
-    $type: 'yandex.cloud.serverless.apigateway.v1.Canary';
     /** It describes percentage of requests, which will be processed by canary. */
     weight: number;
     /** Values specification variables, associated with canary. */
@@ -171,13 +163,11 @@ export interface Canary {
 }
 
 export interface Canary_VariablesEntry {
-    $type: 'yandex.cloud.serverless.apigateway.v1.Canary.VariablesEntry';
     key: string;
     value?: VariableInput;
 }
 
 export interface VariableInput {
-    $type: 'yandex.cloud.serverless.apigateway.v1.VariableInput';
     stringValue: string | undefined;
     intValue: number | undefined;
     doubleValue: number | undefined;
@@ -185,7 +175,6 @@ export interface VariableInput {
 }
 
 const baseApiGateway: object = {
-    $type: 'yandex.cloud.serverless.apigateway.v1.ApiGateway',
     id: '',
     folderId: '',
     name: '',
@@ -196,8 +185,6 @@ const baseApiGateway: object = {
 };
 
 export const ApiGateway = {
-    $type: 'yandex.cloud.serverless.apigateway.v1.ApiGateway' as const,
-
     encode(message: ApiGateway, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -216,11 +203,7 @@ export const ApiGateway = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             ApiGateway_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.apigateway.v1.ApiGateway.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(58).fork(),
             ).ldelim();
         });
@@ -244,11 +227,7 @@ export const ApiGateway = {
         }
         Object.entries(message.variables).forEach(([key, value]) => {
             ApiGateway_VariablesEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.apigateway.v1.ApiGateway.VariablesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(114).fork(),
             ).ldelim();
         });
@@ -486,17 +465,9 @@ export const ApiGateway = {
     },
 };
 
-messageTypeRegistry.set(ApiGateway.$type, ApiGateway);
-
-const baseApiGateway_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.apigateway.v1.ApiGateway.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseApiGateway_LabelsEntry: object = { key: '', value: '' };
 
 export const ApiGateway_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.apigateway.v1.ApiGateway.LabelsEntry' as const,
-
     encode(message: ApiGateway_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -553,16 +524,9 @@ export const ApiGateway_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(ApiGateway_LabelsEntry.$type, ApiGateway_LabelsEntry);
-
-const baseApiGateway_VariablesEntry: object = {
-    $type: 'yandex.cloud.serverless.apigateway.v1.ApiGateway.VariablesEntry',
-    key: '',
-};
+const baseApiGateway_VariablesEntry: object = { key: '' };
 
 export const ApiGateway_VariablesEntry = {
-    $type: 'yandex.cloud.serverless.apigateway.v1.ApiGateway.VariablesEntry' as const,
-
     encode(
         message: ApiGateway_VariablesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -628,19 +592,9 @@ export const ApiGateway_VariablesEntry = {
     },
 };
 
-messageTypeRegistry.set(ApiGateway_VariablesEntry.$type, ApiGateway_VariablesEntry);
-
-const baseAttachedDomain: object = {
-    $type: 'yandex.cloud.serverless.apigateway.v1.AttachedDomain',
-    domainId: '',
-    certificateId: '',
-    enabled: false,
-    domain: '',
-};
+const baseAttachedDomain: object = { domainId: '', certificateId: '', enabled: false, domain: '' };
 
 export const AttachedDomain = {
-    $type: 'yandex.cloud.serverless.apigateway.v1.AttachedDomain' as const,
-
     encode(message: AttachedDomain, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.domainId !== '') {
             writer.uint32(10).string(message.domainId);
@@ -722,17 +676,9 @@ export const AttachedDomain = {
     },
 };
 
-messageTypeRegistry.set(AttachedDomain.$type, AttachedDomain);
-
-const baseConnectivity: object = {
-    $type: 'yandex.cloud.serverless.apigateway.v1.Connectivity',
-    networkId: '',
-    subnetId: '',
-};
+const baseConnectivity: object = { networkId: '', subnetId: '' };
 
 export const Connectivity = {
-    $type: 'yandex.cloud.serverless.apigateway.v1.Connectivity' as const,
-
     encode(message: Connectivity, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);
@@ -794,17 +740,9 @@ export const Connectivity = {
     },
 };
 
-messageTypeRegistry.set(Connectivity.$type, Connectivity);
-
-const baseLogOptions: object = {
-    $type: 'yandex.cloud.serverless.apigateway.v1.LogOptions',
-    disabled: false,
-    minLevel: 0,
-};
+const baseLogOptions: object = { disabled: false, minLevel: 0 };
 
 export const LogOptions = {
-    $type: 'yandex.cloud.serverless.apigateway.v1.LogOptions' as const,
-
     encode(message: LogOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.disabled === true) {
             writer.uint32(8).bool(message.disabled);
@@ -888,24 +826,16 @@ export const LogOptions = {
     },
 };
 
-messageTypeRegistry.set(LogOptions.$type, LogOptions);
-
-const baseCanary: object = { $type: 'yandex.cloud.serverless.apigateway.v1.Canary', weight: 0 };
+const baseCanary: object = { weight: 0 };
 
 export const Canary = {
-    $type: 'yandex.cloud.serverless.apigateway.v1.Canary' as const,
-
     encode(message: Canary, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.weight !== 0) {
             writer.uint32(8).int64(message.weight);
         }
         Object.entries(message.variables).forEach(([key, value]) => {
             Canary_VariablesEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.apigateway.v1.Canary.VariablesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(18).fork(),
             ).ldelim();
         });
@@ -977,16 +907,9 @@ export const Canary = {
     },
 };
 
-messageTypeRegistry.set(Canary.$type, Canary);
-
-const baseCanary_VariablesEntry: object = {
-    $type: 'yandex.cloud.serverless.apigateway.v1.Canary.VariablesEntry',
-    key: '',
-};
+const baseCanary_VariablesEntry: object = { key: '' };
 
 export const Canary_VariablesEntry = {
-    $type: 'yandex.cloud.serverless.apigateway.v1.Canary.VariablesEntry' as const,
-
     encode(message: Canary_VariablesEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1049,13 +972,9 @@ export const Canary_VariablesEntry = {
     },
 };
 
-messageTypeRegistry.set(Canary_VariablesEntry.$type, Canary_VariablesEntry);
-
-const baseVariableInput: object = { $type: 'yandex.cloud.serverless.apigateway.v1.VariableInput' };
+const baseVariableInput: object = {};
 
 export const VariableInput = {
-    $type: 'yandex.cloud.serverless.apigateway.v1.VariableInput' as const,
-
     encode(message: VariableInput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.stringValue !== undefined) {
             writer.uint32(10).string(message.stringValue);
@@ -1139,8 +1058,6 @@ export const VariableInput = {
     },
 };
 
-messageTypeRegistry.set(VariableInput.$type, VariableInput);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1161,21 +1078,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

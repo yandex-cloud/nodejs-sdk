@@ -1,20 +1,14 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.datatransfer.v1.endpoint';
 
-export interface SerializerAuto {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.SerializerAuto';
-}
+export interface SerializerAuto {}
 
-export interface SerializerJSON {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.SerializerJSON';
-}
+export interface SerializerJSON {}
 
 export interface DebeziumSerializerParameter {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.DebeziumSerializerParameter';
     /** Name of the serializer parameter */
     key: string;
     /** Value of the serializer parameter */
@@ -22,14 +16,12 @@ export interface DebeziumSerializerParameter {
 }
 
 export interface SerializerDebezium {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.SerializerDebezium';
     /** Settings of sterilization parameters as key-value pairs */
     serializerParameters: DebeziumSerializerParameter[];
 }
 
 /** Data serialization format */
 export interface Serializer {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.Serializer';
     /** Select the serialization format automatically */
     serializerAuto?: SerializerAuto | undefined;
     /** Serialize data in json format */
@@ -38,13 +30,9 @@ export interface Serializer {
     serializerDebezium?: SerializerDebezium | undefined;
 }
 
-const baseSerializerAuto: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.SerializerAuto',
-};
+const baseSerializerAuto: object = {};
 
 export const SerializerAuto = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.SerializerAuto' as const,
-
     encode(_: SerializerAuto, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -80,15 +68,9 @@ export const SerializerAuto = {
     },
 };
 
-messageTypeRegistry.set(SerializerAuto.$type, SerializerAuto);
-
-const baseSerializerJSON: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.SerializerJSON',
-};
+const baseSerializerJSON: object = {};
 
 export const SerializerJSON = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.SerializerJSON' as const,
-
     encode(_: SerializerJSON, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -124,17 +106,9 @@ export const SerializerJSON = {
     },
 };
 
-messageTypeRegistry.set(SerializerJSON.$type, SerializerJSON);
-
-const baseDebeziumSerializerParameter: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.DebeziumSerializerParameter',
-    key: '',
-    value: '',
-};
+const baseDebeziumSerializerParameter: object = { key: '', value: '' };
 
 export const DebeziumSerializerParameter = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.DebeziumSerializerParameter' as const,
-
     encode(
         message: DebeziumSerializerParameter,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -194,15 +168,9 @@ export const DebeziumSerializerParameter = {
     },
 };
 
-messageTypeRegistry.set(DebeziumSerializerParameter.$type, DebeziumSerializerParameter);
-
-const baseSerializerDebezium: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.SerializerDebezium',
-};
+const baseSerializerDebezium: object = {};
 
 export const SerializerDebezium = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.SerializerDebezium' as const,
-
     encode(message: SerializerDebezium, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.serializerParameters) {
             DebeziumSerializerParameter.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -262,13 +230,9 @@ export const SerializerDebezium = {
     },
 };
 
-messageTypeRegistry.set(SerializerDebezium.$type, SerializerDebezium);
-
-const baseSerializer: object = { $type: 'yandex.cloud.datatransfer.v1.endpoint.Serializer' };
+const baseSerializer: object = {};
 
 export const Serializer = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.Serializer' as const,
-
     encode(message: Serializer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serializerAuto !== undefined) {
             SerializerAuto.encode(message.serializerAuto, writer.uint32(10).fork()).ldelim();
@@ -361,8 +325,6 @@ export const Serializer = {
     },
 };
 
-messageTypeRegistry.set(Serializer.$type, Serializer);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -372,16 +334,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

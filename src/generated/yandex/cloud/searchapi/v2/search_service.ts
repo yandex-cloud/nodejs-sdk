@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,7 +19,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.searchapi.v2';
 
 export interface SortSpec {
-    $type: 'yandex.cloud.searchapi.v2.SortSpec';
     /** Documents sorting mode. */
     sortMode: SortSpec_SortMode;
     /** Documents sorting order. */
@@ -108,7 +106,6 @@ export function sortSpec_SortModeToJSON(object: SortSpec_SortMode): string {
 }
 
 export interface GroupSpec {
-    $type: 'yandex.cloud.searchapi.v2.GroupSpec';
     /** Grouping method. */
     groupMode: GroupSpec_GroupMode;
     /** Maximum number of groups that can be returned per page with search results. */
@@ -158,7 +155,6 @@ export function groupSpec_GroupModeToJSON(object: GroupSpec_GroupMode): string {
 }
 
 export interface WebSearchRequest {
-    $type: 'yandex.cloud.searchapi.v2.WebSearchRequest';
     /** Search query. */
     query?: SearchQuery;
     /** The rules for sorting search results that define the sequence of the returned search results. */
@@ -288,20 +284,13 @@ export function webSearchRequest_FormatToJSON(object: WebSearchRequest_Format): 
 }
 
 export interface WebSearchResponse {
-    $type: 'yandex.cloud.searchapi.v2.WebSearchResponse';
     /** Search results, either in XML or HTML format depending on the request settings. */
     rawData: Buffer;
 }
 
-const baseSortSpec: object = {
-    $type: 'yandex.cloud.searchapi.v2.SortSpec',
-    sortMode: 0,
-    sortOrder: 0,
-};
+const baseSortSpec: object = { sortMode: 0, sortOrder: 0 };
 
 export const SortSpec = {
-    $type: 'yandex.cloud.searchapi.v2.SortSpec' as const,
-
     encode(message: SortSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sortMode !== 0) {
             writer.uint32(8).int32(message.sortMode);
@@ -363,18 +352,9 @@ export const SortSpec = {
     },
 };
 
-messageTypeRegistry.set(SortSpec.$type, SortSpec);
-
-const baseGroupSpec: object = {
-    $type: 'yandex.cloud.searchapi.v2.GroupSpec',
-    groupMode: 0,
-    groupsOnPage: 0,
-    docsInGroup: 0,
-};
+const baseGroupSpec: object = { groupMode: 0, groupsOnPage: 0, docsInGroup: 0 };
 
 export const GroupSpec = {
-    $type: 'yandex.cloud.searchapi.v2.GroupSpec' as const,
-
     encode(message: GroupSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.groupMode !== 0) {
             writer.uint32(8).int32(message.groupMode);
@@ -447,10 +427,7 @@ export const GroupSpec = {
     },
 };
 
-messageTypeRegistry.set(GroupSpec.$type, GroupSpec);
-
 const baseWebSearchRequest: object = {
-    $type: 'yandex.cloud.searchapi.v2.WebSearchRequest',
     maxPassages: 0,
     region: '',
     l10n: 0,
@@ -460,8 +437,6 @@ const baseWebSearchRequest: object = {
 };
 
 export const WebSearchRequest = {
-    $type: 'yandex.cloud.searchapi.v2.WebSearchRequest' as const,
-
     encode(message: WebSearchRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.query !== undefined) {
             SearchQuery.encode(message.query, writer.uint32(10).fork()).ldelim();
@@ -617,13 +592,9 @@ export const WebSearchRequest = {
     },
 };
 
-messageTypeRegistry.set(WebSearchRequest.$type, WebSearchRequest);
-
-const baseWebSearchResponse: object = { $type: 'yandex.cloud.searchapi.v2.WebSearchResponse' };
+const baseWebSearchResponse: object = {};
 
 export const WebSearchResponse = {
-    $type: 'yandex.cloud.searchapi.v2.WebSearchResponse' as const,
-
     encode(message: WebSearchResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.rawData.length !== 0) {
             writer.uint32(10).bytes(message.rawData);
@@ -674,8 +645,6 @@ export const WebSearchResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(WebSearchResponse.$type, WebSearchResponse);
 
 /** A set of methods for async search the Yandex search database. */
 export const WebSearchAsyncServiceService = {
@@ -815,16 +784,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

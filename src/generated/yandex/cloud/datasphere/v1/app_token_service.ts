@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,19 +18,13 @@ import { Empty } from '../../../../google/protobuf/empty';
 export const protobufPackage = 'yandex.cloud.datasphere.v1';
 
 export interface AppTokenValidateRequest {
-    $type: 'yandex.cloud.datasphere.v1.AppTokenValidateRequest';
     /** App token to validate. */
     token: string;
 }
 
-const baseAppTokenValidateRequest: object = {
-    $type: 'yandex.cloud.datasphere.v1.AppTokenValidateRequest',
-    token: '',
-};
+const baseAppTokenValidateRequest: object = { token: '' };
 
 export const AppTokenValidateRequest = {
-    $type: 'yandex.cloud.datasphere.v1.AppTokenValidateRequest' as const,
-
     encode(message: AppTokenValidateRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.token !== '') {
             writer.uint32(10).string(message.token);
@@ -78,8 +71,6 @@ export const AppTokenValidateRequest = {
         return message;
     },
 };
-
-messageTypeRegistry.set(AppTokenValidateRequest.$type, AppTokenValidateRequest);
 
 /** A set of methods for managing app tokens. */
 export const AppTokenServiceService = {
@@ -141,16 +132,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

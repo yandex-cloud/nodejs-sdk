@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Endpoint } from '../../../../yandex/cloud/datatransfer/v1/endpoint';
@@ -137,7 +136,6 @@ export function transferStatusToJSON(object: TransferStatus): string {
 
 /** Transfer core entity */
 export interface Transfer {
-    $type: 'yandex.cloud.datatransfer.v1.Transfer';
     id: string;
     folderId: string;
     name: string;
@@ -155,38 +153,32 @@ export interface Transfer {
 }
 
 export interface Transfer_LabelsEntry {
-    $type: 'yandex.cloud.datatransfer.v1.Transfer.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface Runtime {
-    $type: 'yandex.cloud.datatransfer.v1.Runtime';
     ycRuntime?: YcRuntime | undefined;
 }
 
 export interface ShardingUploadParams {
-    $type: 'yandex.cloud.datatransfer.v1.ShardingUploadParams';
     jobCount: number;
     processCount: number;
 }
 
 export interface YcRuntime {
-    $type: 'yandex.cloud.datatransfer.v1.YcRuntime';
     jobCount: number;
     uploadShardParams?: ShardingUploadParams;
 }
 
 /** Mask function */
 export interface MaskFunction {
-    $type: 'yandex.cloud.datatransfer.v1.MaskFunction';
     /** Hash mask function */
     maskFunctionHash?: MaskFunctionHash | undefined;
 }
 
 /** Hash data using HMAC */
 export interface MaskFunctionHash {
-    $type: 'yandex.cloud.datatransfer.v1.MaskFunctionHash';
     /**
      * This string will be used in the HMAC(sha256, salt) function applied to the
      * column data.
@@ -196,7 +188,6 @@ export interface MaskFunctionHash {
 
 /** Filter tables using lists of included and excluded tables. */
 export interface TablesFilter {
-    $type: 'yandex.cloud.datatransfer.v1.TablesFilter';
     /** List of tables that will be included to transfer */
     includeTables: string[];
     /** List of tables that will be excluded to transfer */
@@ -205,7 +196,6 @@ export interface TablesFilter {
 
 /** Filter columns using lists of included and excluded columns. */
 export interface ColumnsFilter {
-    $type: 'yandex.cloud.datatransfer.v1.ColumnsFilter';
     /** List of columns that will be included to transfer */
     includeColumns: string[];
     /** List of columns that will be excluded to transfer */
@@ -214,7 +204,6 @@ export interface ColumnsFilter {
 
 /** Mask field transformer allows you to hash data */
 export interface MaskFieldTransformer {
-    $type: 'yandex.cloud.datatransfer.v1.MaskFieldTransformer';
     /** List of included and excluded tables */
     tables?: TablesFilter;
     /** Specify the name of the column for data masking (a regular expression). */
@@ -225,7 +214,6 @@ export interface MaskFieldTransformer {
 
 /** Set up a list of table columns to transfer */
 export interface FilterColumnsTransformer {
-    $type: 'yandex.cloud.datatransfer.v1.FilterColumnsTransformer';
     /** List of the tables to filter using lists of included and excluded tables. */
     tables?: TablesFilter;
     /**
@@ -236,14 +224,12 @@ export interface FilterColumnsTransformer {
 }
 
 export interface Table {
-    $type: 'yandex.cloud.datatransfer.v1.Table';
     nameSpace: string;
     name: string;
 }
 
 /** Specify rule for renaming table */
 export interface RenameTable {
-    $type: 'yandex.cloud.datatransfer.v1.RenameTable';
     /** Specify the current names of the table in the source */
     originalName?: Table;
     /** Specify the new names for this table in the target */
@@ -255,14 +241,12 @@ export interface RenameTable {
  * the source and new names for these tables in the target.
  */
 export interface RenameTablesTransformer {
-    $type: 'yandex.cloud.datatransfer.v1.RenameTablesTransformer';
     /** List of renaming rules */
     renameTables: RenameTable[];
 }
 
 /** Override primary keys */
 export interface ReplacePrimaryKeyTransformer {
-    $type: 'yandex.cloud.datatransfer.v1.ReplacePrimaryKeyTransformer';
     /** List of included and excluded tables */
     tables?: TablesFilter;
     /** List of columns to be used as primary keys */
@@ -276,7 +260,6 @@ export interface ReplacePrimaryKeyTransformer {
  * https://cloud.yandex.com/en/docs/data-transfer/concepts/data-transformation#convert-to-string
  */
 export interface ToStringTransformer {
-    $type: 'yandex.cloud.datatransfer.v1.ToStringTransformer';
     /** List of included and excluded tables */
     tables?: TablesFilter;
     /** List of included and excluded columns */
@@ -288,7 +271,6 @@ export interface ToStringTransformer {
  * values will be used for calculating a hash to determine a shard.
  */
 export interface SharderTransformer {
-    $type: 'yandex.cloud.datatransfer.v1.SharderTransformer';
     /** List of included and excluded tables */
     tables?: TablesFilter;
     /** List of included and excluded columns */
@@ -311,7 +293,6 @@ export interface SharderTransformer {
  * from the Employees table will get to a new table named Employees@February@male.
  */
 export interface TableSplitterTransformer {
-    $type: 'yandex.cloud.datatransfer.v1.TableSplitterTransformer';
     /** List of included and excluded tables */
     tables?: TablesFilter;
     /** Specify the columns in the tables to be partitioned. */
@@ -327,7 +308,6 @@ export interface TableSplitterTransformer {
  * in a changefeed.
  */
 export interface FilterRowsTransformer {
-    $type: 'yandex.cloud.datatransfer.v1.FilterRowsTransformer';
     /** List of included and excluded tables. */
     tables?: TablesFilter;
     /**
@@ -358,7 +338,6 @@ export interface FilterRowsTransformer {
  * pairs.
  */
 export interface Transformer {
-    $type: 'yandex.cloud.datatransfer.v1.Transformer';
     maskField?: MaskFieldTransformer | undefined;
     filterColumns?: FilterColumnsTransformer | undefined;
     renameTables?: RenameTablesTransformer | undefined;
@@ -377,7 +356,6 @@ export interface Transformer {
  * Data can only be transformed if the source and target are of different types.
  */
 export interface Transformation {
-    $type: 'yandex.cloud.datatransfer.v1.Transformation';
     /**
      * Transformers are set as a list.
      * When activating a transfer, a transformation plan is made for the tables that
@@ -388,12 +366,10 @@ export interface Transformation {
 }
 
 export interface DataObjects {
-    $type: 'yandex.cloud.datatransfer.v1.DataObjects';
     includeObjects: string[];
 }
 
 const baseTransfer: object = {
-    $type: 'yandex.cloud.datatransfer.v1.Transfer',
     id: '',
     folderId: '',
     name: '',
@@ -405,8 +381,6 @@ const baseTransfer: object = {
 };
 
 export const Transfer = {
-    $type: 'yandex.cloud.datatransfer.v1.Transfer' as const,
-
     encode(message: Transfer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -422,11 +396,7 @@ export const Transfer = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Transfer_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.datatransfer.v1.Transfer.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -653,17 +623,9 @@ export const Transfer = {
     },
 };
 
-messageTypeRegistry.set(Transfer.$type, Transfer);
-
-const baseTransfer_LabelsEntry: object = {
-    $type: 'yandex.cloud.datatransfer.v1.Transfer.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseTransfer_LabelsEntry: object = { key: '', value: '' };
 
 export const Transfer_LabelsEntry = {
-    $type: 'yandex.cloud.datatransfer.v1.Transfer.LabelsEntry' as const,
-
     encode(message: Transfer_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -720,13 +682,9 @@ export const Transfer_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Transfer_LabelsEntry.$type, Transfer_LabelsEntry);
-
-const baseRuntime: object = { $type: 'yandex.cloud.datatransfer.v1.Runtime' };
+const baseRuntime: object = {};
 
 export const Runtime = {
-    $type: 'yandex.cloud.datatransfer.v1.Runtime' as const,
-
     encode(message: Runtime, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ycRuntime !== undefined) {
             YcRuntime.encode(message.ycRuntime, writer.uint32(34).fork()).ldelim();
@@ -778,17 +736,9 @@ export const Runtime = {
     },
 };
 
-messageTypeRegistry.set(Runtime.$type, Runtime);
-
-const baseShardingUploadParams: object = {
-    $type: 'yandex.cloud.datatransfer.v1.ShardingUploadParams',
-    jobCount: 0,
-    processCount: 0,
-};
+const baseShardingUploadParams: object = { jobCount: 0, processCount: 0 };
 
 export const ShardingUploadParams = {
-    $type: 'yandex.cloud.datatransfer.v1.ShardingUploadParams' as const,
-
     encode(message: ShardingUploadParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jobCount !== 0) {
             writer.uint32(8).int64(message.jobCount);
@@ -848,13 +798,9 @@ export const ShardingUploadParams = {
     },
 };
 
-messageTypeRegistry.set(ShardingUploadParams.$type, ShardingUploadParams);
-
-const baseYcRuntime: object = { $type: 'yandex.cloud.datatransfer.v1.YcRuntime', jobCount: 0 };
+const baseYcRuntime: object = { jobCount: 0 };
 
 export const YcRuntime = {
-    $type: 'yandex.cloud.datatransfer.v1.YcRuntime' as const,
-
     encode(message: YcRuntime, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jobCount !== 0) {
             writer.uint32(8).int64(message.jobCount);
@@ -924,13 +870,9 @@ export const YcRuntime = {
     },
 };
 
-messageTypeRegistry.set(YcRuntime.$type, YcRuntime);
-
-const baseMaskFunction: object = { $type: 'yandex.cloud.datatransfer.v1.MaskFunction' };
+const baseMaskFunction: object = {};
 
 export const MaskFunction = {
-    $type: 'yandex.cloud.datatransfer.v1.MaskFunction' as const,
-
     encode(message: MaskFunction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maskFunctionHash !== undefined) {
             MaskFunctionHash.encode(message.maskFunctionHash, writer.uint32(10).fork()).ldelim();
@@ -984,16 +926,9 @@ export const MaskFunction = {
     },
 };
 
-messageTypeRegistry.set(MaskFunction.$type, MaskFunction);
-
-const baseMaskFunctionHash: object = {
-    $type: 'yandex.cloud.datatransfer.v1.MaskFunctionHash',
-    userDefinedSalt: '',
-};
+const baseMaskFunctionHash: object = { userDefinedSalt: '' };
 
 export const MaskFunctionHash = {
-    $type: 'yandex.cloud.datatransfer.v1.MaskFunctionHash' as const,
-
     encode(message: MaskFunctionHash, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.userDefinedSalt !== '') {
             writer.uint32(10).string(message.userDefinedSalt);
@@ -1041,17 +976,9 @@ export const MaskFunctionHash = {
     },
 };
 
-messageTypeRegistry.set(MaskFunctionHash.$type, MaskFunctionHash);
-
-const baseTablesFilter: object = {
-    $type: 'yandex.cloud.datatransfer.v1.TablesFilter',
-    includeTables: '',
-    excludeTables: '',
-};
+const baseTablesFilter: object = { includeTables: '', excludeTables: '' };
 
 export const TablesFilter = {
-    $type: 'yandex.cloud.datatransfer.v1.TablesFilter' as const,
-
     encode(message: TablesFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.includeTables) {
             writer.uint32(10).string(v!);
@@ -1115,17 +1042,9 @@ export const TablesFilter = {
     },
 };
 
-messageTypeRegistry.set(TablesFilter.$type, TablesFilter);
-
-const baseColumnsFilter: object = {
-    $type: 'yandex.cloud.datatransfer.v1.ColumnsFilter',
-    includeColumns: '',
-    excludeColumns: '',
-};
+const baseColumnsFilter: object = { includeColumns: '', excludeColumns: '' };
 
 export const ColumnsFilter = {
-    $type: 'yandex.cloud.datatransfer.v1.ColumnsFilter' as const,
-
     encode(message: ColumnsFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.includeColumns) {
             writer.uint32(10).string(v!);
@@ -1189,16 +1108,9 @@ export const ColumnsFilter = {
     },
 };
 
-messageTypeRegistry.set(ColumnsFilter.$type, ColumnsFilter);
-
-const baseMaskFieldTransformer: object = {
-    $type: 'yandex.cloud.datatransfer.v1.MaskFieldTransformer',
-    columns: '',
-};
+const baseMaskFieldTransformer: object = { columns: '' };
 
 export const MaskFieldTransformer = {
-    $type: 'yandex.cloud.datatransfer.v1.MaskFieldTransformer' as const,
-
     encode(message: MaskFieldTransformer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tables !== undefined) {
             TablesFilter.encode(message.tables, writer.uint32(10).fork()).ldelim();
@@ -1282,15 +1194,9 @@ export const MaskFieldTransformer = {
     },
 };
 
-messageTypeRegistry.set(MaskFieldTransformer.$type, MaskFieldTransformer);
-
-const baseFilterColumnsTransformer: object = {
-    $type: 'yandex.cloud.datatransfer.v1.FilterColumnsTransformer',
-};
+const baseFilterColumnsTransformer: object = {};
 
 export const FilterColumnsTransformer = {
-    $type: 'yandex.cloud.datatransfer.v1.FilterColumnsTransformer' as const,
-
     encode(
         message: FilterColumnsTransformer,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1363,13 +1269,9 @@ export const FilterColumnsTransformer = {
     },
 };
 
-messageTypeRegistry.set(FilterColumnsTransformer.$type, FilterColumnsTransformer);
-
-const baseTable: object = { $type: 'yandex.cloud.datatransfer.v1.Table', nameSpace: '', name: '' };
+const baseTable: object = { nameSpace: '', name: '' };
 
 export const Table = {
-    $type: 'yandex.cloud.datatransfer.v1.Table' as const,
-
     encode(message: Table, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.nameSpace !== '') {
             writer.uint32(10).string(message.nameSpace);
@@ -1426,13 +1328,9 @@ export const Table = {
     },
 };
 
-messageTypeRegistry.set(Table.$type, Table);
-
-const baseRenameTable: object = { $type: 'yandex.cloud.datatransfer.v1.RenameTable' };
+const baseRenameTable: object = {};
 
 export const RenameTable = {
-    $type: 'yandex.cloud.datatransfer.v1.RenameTable' as const,
-
     encode(message: RenameTable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.originalName !== undefined) {
             Table.encode(message.originalName, writer.uint32(10).fork()).ldelim();
@@ -1502,15 +1400,9 @@ export const RenameTable = {
     },
 };
 
-messageTypeRegistry.set(RenameTable.$type, RenameTable);
-
-const baseRenameTablesTransformer: object = {
-    $type: 'yandex.cloud.datatransfer.v1.RenameTablesTransformer',
-};
+const baseRenameTablesTransformer: object = {};
 
 export const RenameTablesTransformer = {
-    $type: 'yandex.cloud.datatransfer.v1.RenameTablesTransformer' as const,
-
     encode(message: RenameTablesTransformer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.renameTables) {
             RenameTable.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1564,16 +1456,9 @@ export const RenameTablesTransformer = {
     },
 };
 
-messageTypeRegistry.set(RenameTablesTransformer.$type, RenameTablesTransformer);
-
-const baseReplacePrimaryKeyTransformer: object = {
-    $type: 'yandex.cloud.datatransfer.v1.ReplacePrimaryKeyTransformer',
-    keys: '',
-};
+const baseReplacePrimaryKeyTransformer: object = { keys: '' };
 
 export const ReplacePrimaryKeyTransformer = {
-    $type: 'yandex.cloud.datatransfer.v1.ReplacePrimaryKeyTransformer' as const,
-
     encode(
         message: ReplacePrimaryKeyTransformer,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1644,15 +1529,9 @@ export const ReplacePrimaryKeyTransformer = {
     },
 };
 
-messageTypeRegistry.set(ReplacePrimaryKeyTransformer.$type, ReplacePrimaryKeyTransformer);
-
-const baseToStringTransformer: object = {
-    $type: 'yandex.cloud.datatransfer.v1.ToStringTransformer',
-};
+const baseToStringTransformer: object = {};
 
 export const ToStringTransformer = {
-    $type: 'yandex.cloud.datatransfer.v1.ToStringTransformer' as const,
-
     encode(message: ToStringTransformer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tables !== undefined) {
             TablesFilter.encode(message.tables, writer.uint32(10).fork()).ldelim();
@@ -1722,16 +1601,9 @@ export const ToStringTransformer = {
     },
 };
 
-messageTypeRegistry.set(ToStringTransformer.$type, ToStringTransformer);
-
-const baseSharderTransformer: object = {
-    $type: 'yandex.cloud.datatransfer.v1.SharderTransformer',
-    shardsCount: 0,
-};
+const baseSharderTransformer: object = { shardsCount: 0 };
 
 export const SharderTransformer = {
-    $type: 'yandex.cloud.datatransfer.v1.SharderTransformer' as const,
-
     encode(message: SharderTransformer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tables !== undefined) {
             TablesFilter.encode(message.tables, writer.uint32(10).fork()).ldelim();
@@ -1813,17 +1685,9 @@ export const SharderTransformer = {
     },
 };
 
-messageTypeRegistry.set(SharderTransformer.$type, SharderTransformer);
-
-const baseTableSplitterTransformer: object = {
-    $type: 'yandex.cloud.datatransfer.v1.TableSplitterTransformer',
-    columns: '',
-    splitter: '',
-};
+const baseTableSplitterTransformer: object = { columns: '', splitter: '' };
 
 export const TableSplitterTransformer = {
-    $type: 'yandex.cloud.datatransfer.v1.TableSplitterTransformer' as const,
-
     encode(
         message: TableSplitterTransformer,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1906,17 +1770,9 @@ export const TableSplitterTransformer = {
     },
 };
 
-messageTypeRegistry.set(TableSplitterTransformer.$type, TableSplitterTransformer);
-
-const baseFilterRowsTransformer: object = {
-    $type: 'yandex.cloud.datatransfer.v1.FilterRowsTransformer',
-    filter: '',
-    filters: '',
-};
+const baseFilterRowsTransformer: object = { filter: '', filters: '' };
 
 export const FilterRowsTransformer = {
-    $type: 'yandex.cloud.datatransfer.v1.FilterRowsTransformer' as const,
-
     encode(message: FilterRowsTransformer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tables !== undefined) {
             TablesFilter.encode(message.tables, writer.uint32(10).fork()).ldelim();
@@ -1994,13 +1850,9 @@ export const FilterRowsTransformer = {
     },
 };
 
-messageTypeRegistry.set(FilterRowsTransformer.$type, FilterRowsTransformer);
-
-const baseTransformer: object = { $type: 'yandex.cloud.datatransfer.v1.Transformer' };
+const baseTransformer: object = {};
 
 export const Transformer = {
-    $type: 'yandex.cloud.datatransfer.v1.Transformer' as const,
-
     encode(message: Transformer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maskField !== undefined) {
             MaskFieldTransformer.encode(message.maskField, writer.uint32(10).fork()).ldelim();
@@ -2203,13 +2055,9 @@ export const Transformer = {
     },
 };
 
-messageTypeRegistry.set(Transformer.$type, Transformer);
-
-const baseTransformation: object = { $type: 'yandex.cloud.datatransfer.v1.Transformation' };
+const baseTransformation: object = {};
 
 export const Transformation = {
-    $type: 'yandex.cloud.datatransfer.v1.Transformation' as const,
-
     encode(message: Transformation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.transformers) {
             Transformer.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -2261,16 +2109,9 @@ export const Transformation = {
     },
 };
 
-messageTypeRegistry.set(Transformation.$type, Transformation);
-
-const baseDataObjects: object = {
-    $type: 'yandex.cloud.datatransfer.v1.DataObjects',
-    includeObjects: '',
-};
+const baseDataObjects: object = { includeObjects: '' };
 
 export const DataObjects = {
-    $type: 'yandex.cloud.datatransfer.v1.DataObjects' as const,
-
     encode(message: DataObjects, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.includeObjects) {
             writer.uint32(10).string(v!);
@@ -2320,8 +2161,6 @@ export const DataObjects = {
     },
 };
 
-messageTypeRegistry.set(DataObjects.$type, DataObjects);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -2342,16 +2181,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

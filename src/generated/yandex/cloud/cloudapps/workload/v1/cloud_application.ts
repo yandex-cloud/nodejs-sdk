@@ -1,12 +1,10 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.cloudapps.workload.v1';
 
 export interface CloudApplication {
-    $type: 'yandex.cloud.cloudapps.workload.v1.CloudApplication';
     /** Application Identifier */
     id: string;
     /** Application Status */
@@ -63,7 +61,6 @@ export function cloudApplication_StatusToJSON(object: CloudApplication_Status): 
 }
 
 export interface CloudApplication_Billing {
-    $type: 'yandex.cloud.cloudapps.workload.v1.CloudApplication.Billing';
     /** Type of application billing */
     type: CloudApplication_Billing_BillingType;
     /** Subscriptions bounded to cloud application */
@@ -115,22 +112,15 @@ export function cloudApplication_Billing_BillingTypeToJSON(
 }
 
 export interface CloudApplication_Billing_Subscription {
-    $type: 'yandex.cloud.cloudapps.workload.v1.CloudApplication.Billing.Subscription';
     /** Identifier of subscription instance */
     instanceId: string;
     /** Subscription template identifier */
     templateId: string;
 }
 
-const baseCloudApplication: object = {
-    $type: 'yandex.cloud.cloudapps.workload.v1.CloudApplication',
-    id: '',
-    status: 0,
-};
+const baseCloudApplication: object = { id: '', status: 0 };
 
 export const CloudApplication = {
-    $type: 'yandex.cloud.cloudapps.workload.v1.CloudApplication' as const,
-
     encode(message: CloudApplication, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -206,16 +196,9 @@ export const CloudApplication = {
     },
 };
 
-messageTypeRegistry.set(CloudApplication.$type, CloudApplication);
-
-const baseCloudApplication_Billing: object = {
-    $type: 'yandex.cloud.cloudapps.workload.v1.CloudApplication.Billing',
-    type: 0,
-};
+const baseCloudApplication_Billing: object = { type: 0 };
 
 export const CloudApplication_Billing = {
-    $type: 'yandex.cloud.cloudapps.workload.v1.CloudApplication.Billing' as const,
-
     encode(
         message: CloudApplication_Billing,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -292,17 +275,9 @@ export const CloudApplication_Billing = {
     },
 };
 
-messageTypeRegistry.set(CloudApplication_Billing.$type, CloudApplication_Billing);
-
-const baseCloudApplication_Billing_Subscription: object = {
-    $type: 'yandex.cloud.cloudapps.workload.v1.CloudApplication.Billing.Subscription',
-    instanceId: '',
-    templateId: '',
-};
+const baseCloudApplication_Billing_Subscription: object = { instanceId: '', templateId: '' };
 
 export const CloudApplication_Billing_Subscription = {
-    $type: 'yandex.cloud.cloudapps.workload.v1.CloudApplication.Billing.Subscription' as const,
-
     encode(
         message: CloudApplication_Billing_Subscription,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -373,11 +348,6 @@ export const CloudApplication_Billing_Subscription = {
     },
 };
 
-messageTypeRegistry.set(
-    CloudApplication_Billing_Subscription.$type,
-    CloudApplication_Billing_Subscription,
-);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -387,16 +357,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

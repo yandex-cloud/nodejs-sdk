@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -18,7 +17,6 @@ import _m0 from 'protobufjs/minimal';
 export const protobufPackage = 'yandex.cloud.loadtesting.agent.v1';
 
 export interface CreateTrailRequest {
-    $type: 'yandex.cloud.loadtesting.agent.v1.CreateTrailRequest';
     computeInstanceId: string;
     data: Trail[];
     jobId: string;
@@ -26,7 +24,6 @@ export interface CreateTrailRequest {
 }
 
 export interface Trail {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Trail';
     overall: number;
     caseId: string;
     time: string;
@@ -55,33 +52,23 @@ export interface Trail {
 }
 
 export interface Trail_Codes {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Trail.Codes';
     code: number;
     count: number;
 }
 
 export interface Trail_Intervals {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Trail.Intervals';
     to: number;
     count: number;
 }
 
 export interface CreateTrailResponse {
-    $type: 'yandex.cloud.loadtesting.agent.v1.CreateTrailResponse';
     trailId: string;
     code: number;
 }
 
-const baseCreateTrailRequest: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.CreateTrailRequest',
-    computeInstanceId: '',
-    jobId: '',
-    agentInstanceId: '',
-};
+const baseCreateTrailRequest: object = { computeInstanceId: '', jobId: '', agentInstanceId: '' };
 
 export const CreateTrailRequest = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.CreateTrailRequest' as const,
-
     encode(message: CreateTrailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -168,10 +155,7 @@ export const CreateTrailRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateTrailRequest.$type, CreateTrailRequest);
-
 const baseTrail: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Trail',
     overall: 0,
     caseId: '',
     time: '',
@@ -197,8 +181,6 @@ const baseTrail: object = {
 };
 
 export const Trail = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Trail' as const,
-
     encode(message: Trail, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.overall !== 0) {
             writer.uint32(8).int64(message.overall);
@@ -495,17 +477,9 @@ export const Trail = {
     },
 };
 
-messageTypeRegistry.set(Trail.$type, Trail);
-
-const baseTrail_Codes: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Trail.Codes',
-    code: 0,
-    count: 0,
-};
+const baseTrail_Codes: object = { code: 0, count: 0 };
 
 export const Trail_Codes = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Trail.Codes' as const,
-
     encode(message: Trail_Codes, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.code !== 0) {
             writer.uint32(8).int64(message.code);
@@ -560,17 +534,9 @@ export const Trail_Codes = {
     },
 };
 
-messageTypeRegistry.set(Trail_Codes.$type, Trail_Codes);
-
-const baseTrail_Intervals: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Trail.Intervals',
-    to: 0,
-    count: 0,
-};
+const baseTrail_Intervals: object = { to: 0, count: 0 };
 
 export const Trail_Intervals = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Trail.Intervals' as const,
-
     encode(message: Trail_Intervals, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.to !== 0) {
             writer.uint32(9).double(message.to);
@@ -625,17 +591,9 @@ export const Trail_Intervals = {
     },
 };
 
-messageTypeRegistry.set(Trail_Intervals.$type, Trail_Intervals);
-
-const baseCreateTrailResponse: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.CreateTrailResponse',
-    trailId: '',
-    code: 0,
-};
+const baseCreateTrailResponse: object = { trailId: '', code: 0 };
 
 export const CreateTrailResponse = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.CreateTrailResponse' as const,
-
     encode(message: CreateTrailResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.trailId !== '') {
             writer.uint32(10).string(message.trailId);
@@ -691,8 +649,6 @@ export const CreateTrailResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(CreateTrailResponse.$type, CreateTrailResponse);
 
 export const TrailServiceService = {
     /** Creates trail for specified job. */
@@ -765,16 +721,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

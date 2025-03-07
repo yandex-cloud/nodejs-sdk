@@ -61,14 +61,13 @@ const folderId = getEnv('YC_FOLDER_ID');
     const assistantId = assistant.id;
     const threadId = thread.id;
 
-    await messageClient.create(
-        messageService.CreateMessageRequest.fromPartial({
-            threadId,
-            content: {
-                content: [{ text: { content: 'What is it "qwerty"?' } }],
-            },
-        }),
-    );
+    await messageClient.create({
+        labels: {},
+        threadId,
+        content: {
+            content: [{ text: { content: 'What is it "qwerty"?' } }],
+        },
+    });
 
     const run = await runClient.create(
         runService.CreateRunRequest.fromPartial({

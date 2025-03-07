@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.video.v1';
 
 /** Entity representing an ordered list of videos or episodes. */
 export interface Playlist {
-    $type: 'yandex.cloud.video.v1.Playlist';
     /** ID of the playlist. */
     id: string;
     /** ID of the channel to create the playlist in. */
@@ -26,7 +24,6 @@ export interface Playlist {
 }
 
 export interface PlaylistItem {
-    $type: 'yandex.cloud.video.v1.PlaylistItem';
     /** ID of the video. */
     videoId: string | undefined;
     /** ID of the episode. */
@@ -35,17 +32,9 @@ export interface PlaylistItem {
     position: number;
 }
 
-const basePlaylist: object = {
-    $type: 'yandex.cloud.video.v1.Playlist',
-    id: '',
-    channelId: '',
-    title: '',
-    description: '',
-};
+const basePlaylist: object = { id: '', channelId: '', title: '', description: '' };
 
 export const Playlist = {
-    $type: 'yandex.cloud.video.v1.Playlist' as const,
-
     encode(message: Playlist, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -162,13 +151,9 @@ export const Playlist = {
     },
 };
 
-messageTypeRegistry.set(Playlist.$type, Playlist);
-
-const basePlaylistItem: object = { $type: 'yandex.cloud.video.v1.PlaylistItem', position: 0 };
+const basePlaylistItem: object = { position: 0 };
 
 export const PlaylistItem = {
-    $type: 'yandex.cloud.video.v1.PlaylistItem' as const,
-
     encode(message: PlaylistItem, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.videoId !== undefined) {
             writer.uint32(802).string(message.videoId);
@@ -238,8 +223,6 @@ export const PlaylistItem = {
     },
 };
 
-messageTypeRegistry.set(PlaylistItem.$type, PlaylistItem);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -260,21 +243,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

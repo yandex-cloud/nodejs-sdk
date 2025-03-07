@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -25,7 +24,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.cdn.v1';
 
 export interface ActivateRawLogsRequest {
-    $type: 'yandex.cloud.cdn.v1.ActivateRawLogsRequest';
     /** ID of CDN resource to switch logs storage for.. */
     resourceId: string;
     /** Raw logs settings. */
@@ -33,13 +31,11 @@ export interface ActivateRawLogsRequest {
 }
 
 export interface ActivateRawLogsMetadata {
-    $type: 'yandex.cloud.cdn.v1.ActivateRawLogsMetadata';
     /** ID of resource with activated raw logs. */
     resourceId: string;
 }
 
 export interface ActivateRawLogsResponse {
-    $type: 'yandex.cloud.cdn.v1.ActivateRawLogsResponse';
     /** Raw logs status. */
     status: RawLogsStatus;
     /** Raw logs settings. */
@@ -47,25 +43,21 @@ export interface ActivateRawLogsResponse {
 }
 
 export interface DeactivateRawLogsRequest {
-    $type: 'yandex.cloud.cdn.v1.DeactivateRawLogsRequest';
     /** ID of CDN resource to deactivate Raw Logs for. */
     resourceId: string;
 }
 
 export interface DeactivateRawLogsMetadata {
-    $type: 'yandex.cloud.cdn.v1.DeactivateRawLogsMetadata';
     /** ID of CDN resource. */
     resourceId: string;
 }
 
 export interface GetRawLogsRequest {
-    $type: 'yandex.cloud.cdn.v1.GetRawLogsRequest';
     /** ID of CDN resource to request status and settings. */
     resourceId: string;
 }
 
 export interface GetRawLogsResponse {
-    $type: 'yandex.cloud.cdn.v1.GetRawLogsResponse';
     /** Raw logs status. */
     status: RawLogsStatus;
     /** Raw logs settings. */
@@ -73,7 +65,6 @@ export interface GetRawLogsResponse {
 }
 
 export interface UpdateRawLogsRequest {
-    $type: 'yandex.cloud.cdn.v1.UpdateRawLogsRequest';
     /** ID of CDN resource. */
     resourceId: string;
     /** Raw logs settings. */
@@ -81,7 +72,6 @@ export interface UpdateRawLogsRequest {
 }
 
 export interface UpdateRawLogsResponse {
-    $type: 'yandex.cloud.cdn.v1.UpdateRawLogsResponse';
     /** Raw logs status. */
     status: RawLogsStatus;
     /** Raw logs settings. */
@@ -89,19 +79,13 @@ export interface UpdateRawLogsResponse {
 }
 
 export interface UpdateRawLogsMetadata {
-    $type: 'yandex.cloud.cdn.v1.UpdateRawLogsMetadata';
     /** ID of CDN resource. */
     resourceId: string;
 }
 
-const baseActivateRawLogsRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.ActivateRawLogsRequest',
-    resourceId: '',
-};
+const baseActivateRawLogsRequest: object = { resourceId: '' };
 
 export const ActivateRawLogsRequest = {
-    $type: 'yandex.cloud.cdn.v1.ActivateRawLogsRequest' as const,
-
     encode(message: ActivateRawLogsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -169,16 +153,9 @@ export const ActivateRawLogsRequest = {
     },
 };
 
-messageTypeRegistry.set(ActivateRawLogsRequest.$type, ActivateRawLogsRequest);
-
-const baseActivateRawLogsMetadata: object = {
-    $type: 'yandex.cloud.cdn.v1.ActivateRawLogsMetadata',
-    resourceId: '',
-};
+const baseActivateRawLogsMetadata: object = { resourceId: '' };
 
 export const ActivateRawLogsMetadata = {
-    $type: 'yandex.cloud.cdn.v1.ActivateRawLogsMetadata' as const,
-
     encode(message: ActivateRawLogsMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -228,16 +205,9 @@ export const ActivateRawLogsMetadata = {
     },
 };
 
-messageTypeRegistry.set(ActivateRawLogsMetadata.$type, ActivateRawLogsMetadata);
-
-const baseActivateRawLogsResponse: object = {
-    $type: 'yandex.cloud.cdn.v1.ActivateRawLogsResponse',
-    status: 0,
-};
+const baseActivateRawLogsResponse: object = { status: 0 };
 
 export const ActivateRawLogsResponse = {
-    $type: 'yandex.cloud.cdn.v1.ActivateRawLogsResponse' as const,
-
     encode(message: ActivateRawLogsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== 0) {
             writer.uint32(8).int32(message.status);
@@ -305,16 +275,9 @@ export const ActivateRawLogsResponse = {
     },
 };
 
-messageTypeRegistry.set(ActivateRawLogsResponse.$type, ActivateRawLogsResponse);
-
-const baseDeactivateRawLogsRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.DeactivateRawLogsRequest',
-    resourceId: '',
-};
+const baseDeactivateRawLogsRequest: object = { resourceId: '' };
 
 export const DeactivateRawLogsRequest = {
-    $type: 'yandex.cloud.cdn.v1.DeactivateRawLogsRequest' as const,
-
     encode(
         message: DeactivateRawLogsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -367,16 +330,9 @@ export const DeactivateRawLogsRequest = {
     },
 };
 
-messageTypeRegistry.set(DeactivateRawLogsRequest.$type, DeactivateRawLogsRequest);
-
-const baseDeactivateRawLogsMetadata: object = {
-    $type: 'yandex.cloud.cdn.v1.DeactivateRawLogsMetadata',
-    resourceId: '',
-};
+const baseDeactivateRawLogsMetadata: object = { resourceId: '' };
 
 export const DeactivateRawLogsMetadata = {
-    $type: 'yandex.cloud.cdn.v1.DeactivateRawLogsMetadata' as const,
-
     encode(
         message: DeactivateRawLogsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -429,16 +385,9 @@ export const DeactivateRawLogsMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeactivateRawLogsMetadata.$type, DeactivateRawLogsMetadata);
-
-const baseGetRawLogsRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.GetRawLogsRequest',
-    resourceId: '',
-};
+const baseGetRawLogsRequest: object = { resourceId: '' };
 
 export const GetRawLogsRequest = {
-    $type: 'yandex.cloud.cdn.v1.GetRawLogsRequest' as const,
-
     encode(message: GetRawLogsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -486,16 +435,9 @@ export const GetRawLogsRequest = {
     },
 };
 
-messageTypeRegistry.set(GetRawLogsRequest.$type, GetRawLogsRequest);
-
-const baseGetRawLogsResponse: object = {
-    $type: 'yandex.cloud.cdn.v1.GetRawLogsResponse',
-    status: 0,
-};
+const baseGetRawLogsResponse: object = { status: 0 };
 
 export const GetRawLogsResponse = {
-    $type: 'yandex.cloud.cdn.v1.GetRawLogsResponse' as const,
-
     encode(message: GetRawLogsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== 0) {
             writer.uint32(8).int32(message.status);
@@ -563,16 +505,9 @@ export const GetRawLogsResponse = {
     },
 };
 
-messageTypeRegistry.set(GetRawLogsResponse.$type, GetRawLogsResponse);
-
-const baseUpdateRawLogsRequest: object = {
-    $type: 'yandex.cloud.cdn.v1.UpdateRawLogsRequest',
-    resourceId: '',
-};
+const baseUpdateRawLogsRequest: object = { resourceId: '' };
 
 export const UpdateRawLogsRequest = {
-    $type: 'yandex.cloud.cdn.v1.UpdateRawLogsRequest' as const,
-
     encode(message: UpdateRawLogsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -640,16 +575,9 @@ export const UpdateRawLogsRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateRawLogsRequest.$type, UpdateRawLogsRequest);
-
-const baseUpdateRawLogsResponse: object = {
-    $type: 'yandex.cloud.cdn.v1.UpdateRawLogsResponse',
-    status: 0,
-};
+const baseUpdateRawLogsResponse: object = { status: 0 };
 
 export const UpdateRawLogsResponse = {
-    $type: 'yandex.cloud.cdn.v1.UpdateRawLogsResponse' as const,
-
     encode(message: UpdateRawLogsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== 0) {
             writer.uint32(8).int32(message.status);
@@ -717,16 +645,9 @@ export const UpdateRawLogsResponse = {
     },
 };
 
-messageTypeRegistry.set(UpdateRawLogsResponse.$type, UpdateRawLogsResponse);
-
-const baseUpdateRawLogsMetadata: object = {
-    $type: 'yandex.cloud.cdn.v1.UpdateRawLogsMetadata',
-    resourceId: '',
-};
+const baseUpdateRawLogsMetadata: object = { resourceId: '' };
 
 export const UpdateRawLogsMetadata = {
-    $type: 'yandex.cloud.cdn.v1.UpdateRawLogsMetadata' as const,
-
     encode(message: UpdateRawLogsMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -775,8 +696,6 @@ export const UpdateRawLogsMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(UpdateRawLogsMetadata.$type, UpdateRawLogsMetadata);
 
 export const RawLogsServiceService = {
     activate: {
@@ -913,16 +832,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

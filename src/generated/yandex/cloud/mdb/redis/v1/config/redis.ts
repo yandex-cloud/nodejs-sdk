@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Int64Value, BoolValue } from '../../../../../../google/protobuf/wrappers';
@@ -11,7 +10,6 @@ export const protobufPackage = 'yandex.cloud.mdb.redis.v1.config';
  * parameters.
  */
 export interface RedisConfig {
-    $type: 'yandex.cloud.mdb.redis.v1.config.RedisConfig';
     /**
      * Redis key eviction policy for a dataset that reaches maximum memory,
      * available to the host. Redis maxmemory setting depends on Managed
@@ -156,7 +154,6 @@ export function redisConfig_MaxmemoryPolicyToJSON(object: RedisConfig_MaxmemoryP
 }
 
 export interface RedisConfig_ClientOutputBufferLimit {
-    $type: 'yandex.cloud.mdb.redis.v1.config.RedisConfig.ClientOutputBufferLimit';
     /** Total limit in bytes. */
     hardLimit?: number;
     /** Limit in bytes during certain time period. */
@@ -166,7 +163,6 @@ export interface RedisConfig_ClientOutputBufferLimit {
 }
 
 export interface RedisConfigSet {
-    $type: 'yandex.cloud.mdb.redis.v1.config.RedisConfigSet';
     /**
      * Effective settings for a Redis cluster (a combination of settings
      * defined in [user_config] and [default_config]).
@@ -178,46 +174,30 @@ export interface RedisConfigSet {
     defaultConfig?: RedisConfig;
 }
 
-const baseRedisConfig: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.config.RedisConfig',
-    maxmemoryPolicy: 0,
-    password: '',
-    notifyKeyspaceEvents: '',
-};
+const baseRedisConfig: object = { maxmemoryPolicy: 0, password: '', notifyKeyspaceEvents: '' };
 
 export const RedisConfig = {
-    $type: 'yandex.cloud.mdb.redis.v1.config.RedisConfig' as const,
-
     encode(message: RedisConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxmemoryPolicy !== 0) {
             writer.uint32(8).int32(message.maxmemoryPolicy);
         }
         if (message.timeout !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.timeout! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.timeout! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.password !== '') {
             writer.uint32(26).string(message.password);
         }
         if (message.databases !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.databases! },
-                writer.uint32(34).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.databases! }, writer.uint32(34).fork()).ldelim();
         }
         if (message.slowlogLogSlowerThan !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.slowlogLogSlowerThan! },
+                { value: message.slowlogLogSlowerThan! },
                 writer.uint32(42).fork(),
             ).ldelim();
         }
         if (message.slowlogMaxLen !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.slowlogMaxLen! },
-                writer.uint32(50).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.slowlogMaxLen! }, writer.uint32(50).fork()).ldelim();
         }
         if (message.notifyKeyspaceEvents !== '') {
             writer.uint32(58).string(message.notifyKeyspaceEvents);
@@ -236,82 +216,64 @@ export const RedisConfig = {
         }
         if (message.maxmemoryPercent !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxmemoryPercent! },
+                { value: message.maxmemoryPercent! },
                 writer.uint32(82).fork(),
             ).ldelim();
         }
         if (message.luaTimeLimit !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.luaTimeLimit! },
-                writer.uint32(90).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.luaTimeLimit! }, writer.uint32(90).fork()).ldelim();
         }
         if (message.replBacklogSizePercent !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.replBacklogSizePercent! },
+                { value: message.replBacklogSizePercent! },
                 writer.uint32(98).fork(),
             ).ldelim();
         }
         if (message.clusterRequireFullCoverage !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.clusterRequireFullCoverage! },
+                { value: message.clusterRequireFullCoverage! },
                 writer.uint32(106).fork(),
             ).ldelim();
         }
         if (message.clusterAllowReadsWhenDown !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.clusterAllowReadsWhenDown! },
+                { value: message.clusterAllowReadsWhenDown! },
                 writer.uint32(114).fork(),
             ).ldelim();
         }
         if (message.clusterAllowPubsubshardWhenDown !== undefined) {
             BoolValue.encode(
-                {
-                    $type: 'google.protobuf.BoolValue',
-                    value: message.clusterAllowPubsubshardWhenDown!,
-                },
+                { value: message.clusterAllowPubsubshardWhenDown! },
                 writer.uint32(122).fork(),
             ).ldelim();
         }
         if (message.lfuDecayTime !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.lfuDecayTime! },
-                writer.uint32(130).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.lfuDecayTime! }, writer.uint32(130).fork()).ldelim();
         }
         if (message.lfuLogFactor !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.lfuLogFactor! },
-                writer.uint32(138).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.lfuLogFactor! }, writer.uint32(138).fork()).ldelim();
         }
         if (message.turnBeforeSwitchover !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.turnBeforeSwitchover! },
+                { value: message.turnBeforeSwitchover! },
                 writer.uint32(146).fork(),
             ).ldelim();
         }
         if (message.allowDataLoss !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.allowDataLoss! },
-                writer.uint32(154).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.allowDataLoss! }, writer.uint32(154).fork()).ldelim();
         }
         if (message.useLuajit !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.useLuajit! },
-                writer.uint32(162).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.useLuajit! }, writer.uint32(162).fork()).ldelim();
         }
         if (message.ioThreadsAllowed !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.ioThreadsAllowed! },
+                { value: message.ioThreadsAllowed! },
                 writer.uint32(170).fork(),
             ).ldelim();
         }
         if (message.zsetMaxListpackEntries !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.zsetMaxListpackEntries! },
+                { value: message.zsetMaxListpackEntries! },
                 writer.uint32(178).fork(),
             ).ldelim();
         }
@@ -597,36 +559,21 @@ export const RedisConfig = {
     },
 };
 
-messageTypeRegistry.set(RedisConfig.$type, RedisConfig);
-
-const baseRedisConfig_ClientOutputBufferLimit: object = {
-    $type: 'yandex.cloud.mdb.redis.v1.config.RedisConfig.ClientOutputBufferLimit',
-};
+const baseRedisConfig_ClientOutputBufferLimit: object = {};
 
 export const RedisConfig_ClientOutputBufferLimit = {
-    $type: 'yandex.cloud.mdb.redis.v1.config.RedisConfig.ClientOutputBufferLimit' as const,
-
     encode(
         message: RedisConfig_ClientOutputBufferLimit,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.hardLimit !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.hardLimit! },
-                writer.uint32(10).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.hardLimit! }, writer.uint32(10).fork()).ldelim();
         }
         if (message.softLimit !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.softLimit! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.softLimit! }, writer.uint32(26).fork()).ldelim();
         }
         if (message.softSeconds !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.softSeconds! },
-                writer.uint32(42).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.softSeconds! }, writer.uint32(42).fork()).ldelim();
         }
         return writer;
     },
@@ -697,16 +644,9 @@ export const RedisConfig_ClientOutputBufferLimit = {
     },
 };
 
-messageTypeRegistry.set(
-    RedisConfig_ClientOutputBufferLimit.$type,
-    RedisConfig_ClientOutputBufferLimit,
-);
-
-const baseRedisConfigSet: object = { $type: 'yandex.cloud.mdb.redis.v1.config.RedisConfigSet' };
+const baseRedisConfigSet: object = {};
 
 export const RedisConfigSet = {
-    $type: 'yandex.cloud.mdb.redis.v1.config.RedisConfigSet' as const,
-
     encode(message: RedisConfigSet, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             RedisConfig.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();
@@ -796,8 +736,6 @@ export const RedisConfigSet = {
     },
 };
 
-messageTypeRegistry.set(RedisConfigSet.$type, RedisConfigSet);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -807,16 +745,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

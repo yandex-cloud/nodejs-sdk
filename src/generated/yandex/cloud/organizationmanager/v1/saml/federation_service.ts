@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -29,7 +28,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.organizationmanager.v1.saml';
 
 export interface GetFederationRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.GetFederationRequest';
     /**
      * ID of the federation to return.
      * To get the federation ID, make a [FederationService.List] request.
@@ -38,7 +36,6 @@ export interface GetFederationRequest {
 }
 
 export interface ListFederationsRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.ListFederationsRequest';
     /**
      * ID of the organization to list federations in.
      * To get the organization ID, make a [yandex.cloud.organizationmanager.v1.OrganizationService.List] request.
@@ -69,7 +66,6 @@ export interface ListFederationsRequest {
 }
 
 export interface ListFederationsResponse {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.ListFederationsResponse';
     /** List of federations. */
     federations: Federation[];
     /**
@@ -84,7 +80,6 @@ export interface ListFederationsResponse {
 }
 
 export interface CreateFederationRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.CreateFederationRequest';
     /**
      * ID of the organization to create a federation in.
      * To get the organization ID, make a [yandex.cloud.organizationmanager.v1.OrganizationService.List] request.
@@ -139,19 +134,16 @@ export interface CreateFederationRequest {
 }
 
 export interface CreateFederationRequest_LabelsEntry {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.CreateFederationRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateFederationMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.CreateFederationMetadata';
     /** ID of the federation that is being created. */
     federationId: string;
 }
 
 export interface UpdateFederationRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.UpdateFederationRequest';
     /**
      * ID of the federation to update.
      * To get the federation ID, make a [FederationService.List] request.
@@ -208,19 +200,16 @@ export interface UpdateFederationRequest {
 }
 
 export interface UpdateFederationRequest_LabelsEntry {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.UpdateFederationRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateFederationMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.UpdateFederationMetadata';
     /** ID of the federation that is being updated. */
     federationId: string;
 }
 
 export interface DeleteFederationRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.DeleteFederationRequest';
     /**
      * ID of the federation to delete.
      * To get the federation ID, make a [FederationService.List] request.
@@ -229,13 +218,11 @@ export interface DeleteFederationRequest {
 }
 
 export interface DeleteFederationMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.DeleteFederationMetadata';
     /** ID of the federation that is being deleted. */
     federationId: string;
 }
 
 export interface AddFederatedUserAccountsRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.AddFederatedUserAccountsRequest';
     /** ID of the federation to add users. */
     federationId: string;
     /**
@@ -246,19 +233,16 @@ export interface AddFederatedUserAccountsRequest {
 }
 
 export interface AddFederatedUserAccountsMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.AddFederatedUserAccountsMetadata';
     /** ID of the federation that is being altered. */
     federationId: string;
 }
 
 export interface AddFederatedUserAccountsResponse {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.AddFederatedUserAccountsResponse';
     /** List of users created by [FederationService.AddUserAccounts] request. */
     userAccounts: UserAccount[];
 }
 
 export interface DeleteFederatedUserAccountsRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.DeleteFederatedUserAccountsRequest';
     /** ID of the federation to delete users from. */
     federationId: string;
     /** List of subjects to delete. */
@@ -266,13 +250,11 @@ export interface DeleteFederatedUserAccountsRequest {
 }
 
 export interface DeleteFederatedUserAccountsMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.DeleteFederatedUserAccountsMetadata';
     /** ID of the federation that is being altered. */
     federationId: string;
 }
 
 export interface DeleteFederatedUserAccountsResponse {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.DeleteFederatedUserAccountsResponse';
     /** List of subjects deleted by [FederationService.DeleteUserAccounts] request. */
     deletedSubjects: string[];
     /** List of subjects found in [FederationService.DeleteUserAccounts] request that do not exist. */
@@ -280,7 +262,6 @@ export interface DeleteFederatedUserAccountsResponse {
 }
 
 export interface ListFederatedUserAccountsRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.ListFederatedUserAccountsRequest';
     /** ID of the federation to list user accounts for. */
     federationId: string;
     /**
@@ -308,7 +289,6 @@ export interface ListFederatedUserAccountsRequest {
 }
 
 export interface ListFederatedUserAccountsResponse {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.ListFederatedUserAccountsResponse';
     /** List of user accounts for the specified federation. */
     userAccounts: UserAccount[];
     /**
@@ -321,7 +301,6 @@ export interface ListFederatedUserAccountsResponse {
 }
 
 export interface ListFederationOperationsRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.ListFederationOperationsRequest';
     /** ID of the federation to list operations for. */
     federationId: string;
     /**
@@ -340,7 +319,6 @@ export interface ListFederationOperationsRequest {
 }
 
 export interface ListFederationOperationsResponse {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.ListFederationOperationsResponse';
     /** List of operations for the specified federation. */
     operations: Operation[];
     /**
@@ -352,14 +330,9 @@ export interface ListFederationOperationsResponse {
     nextPageToken: string;
 }
 
-const baseGetFederationRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.GetFederationRequest',
-    federationId: '',
-};
+const baseGetFederationRequest: object = { federationId: '' };
 
 export const GetFederationRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.GetFederationRequest' as const,
-
     encode(message: GetFederationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.federationId !== '') {
             writer.uint32(10).string(message.federationId);
@@ -409,10 +382,7 @@ export const GetFederationRequest = {
     },
 };
 
-messageTypeRegistry.set(GetFederationRequest.$type, GetFederationRequest);
-
 const baseListFederationsRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.ListFederationsRequest',
     organizationId: '',
     pageSize: 0,
     pageToken: '',
@@ -420,8 +390,6 @@ const baseListFederationsRequest: object = {
 };
 
 export const ListFederationsRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.ListFederationsRequest' as const,
-
     encode(message: ListFederationsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(50).string(message.organizationId);
@@ -503,16 +471,9 @@ export const ListFederationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListFederationsRequest.$type, ListFederationsRequest);
-
-const baseListFederationsResponse: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.ListFederationsResponse',
-    nextPageToken: '',
-};
+const baseListFederationsResponse: object = { nextPageToken: '' };
 
 export const ListFederationsResponse = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.ListFederationsResponse' as const,
-
     encode(message: ListFederationsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.federations) {
             Federation.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -578,10 +539,7 @@ export const ListFederationsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListFederationsResponse.$type, ListFederationsResponse);
-
 const baseCreateFederationRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.CreateFederationRequest',
     organizationId: '',
     name: '',
     description: '',
@@ -593,8 +551,6 @@ const baseCreateFederationRequest: object = {
 };
 
 export const CreateFederationRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.CreateFederationRequest' as const,
-
     encode(message: CreateFederationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -631,11 +587,7 @@ export const CreateFederationRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateFederationRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.organizationmanager.v1.saml.CreateFederationRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(90).fork(),
             ).ldelim();
         });
@@ -809,17 +761,9 @@ export const CreateFederationRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateFederationRequest.$type, CreateFederationRequest);
-
-const baseCreateFederationRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.CreateFederationRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateFederationRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateFederationRequest_LabelsEntry = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.CreateFederationRequest.LabelsEntry' as const,
-
     encode(
         message: CreateFederationRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -885,19 +829,9 @@ export const CreateFederationRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateFederationRequest_LabelsEntry.$type,
-    CreateFederationRequest_LabelsEntry,
-);
-
-const baseCreateFederationMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.CreateFederationMetadata',
-    federationId: '',
-};
+const baseCreateFederationMetadata: object = { federationId: '' };
 
 export const CreateFederationMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.CreateFederationMetadata' as const,
-
     encode(
         message: CreateFederationMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -950,10 +884,7 @@ export const CreateFederationMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateFederationMetadata.$type, CreateFederationMetadata);
-
 const baseUpdateFederationRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.UpdateFederationRequest',
     federationId: '',
     name: '',
     description: '',
@@ -965,8 +896,6 @@ const baseUpdateFederationRequest: object = {
 };
 
 export const UpdateFederationRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.UpdateFederationRequest' as const,
-
     encode(message: UpdateFederationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.federationId !== '') {
             writer.uint32(10).string(message.federationId);
@@ -1006,11 +935,7 @@ export const UpdateFederationRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateFederationRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.organizationmanager.v1.saml.UpdateFederationRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(106).fork(),
             ).ldelim();
         });
@@ -1199,17 +1124,9 @@ export const UpdateFederationRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateFederationRequest.$type, UpdateFederationRequest);
-
-const baseUpdateFederationRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.UpdateFederationRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateFederationRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateFederationRequest_LabelsEntry = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.UpdateFederationRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateFederationRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1275,19 +1192,9 @@ export const UpdateFederationRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateFederationRequest_LabelsEntry.$type,
-    UpdateFederationRequest_LabelsEntry,
-);
-
-const baseUpdateFederationMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.UpdateFederationMetadata',
-    federationId: '',
-};
+const baseUpdateFederationMetadata: object = { federationId: '' };
 
 export const UpdateFederationMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.UpdateFederationMetadata' as const,
-
     encode(
         message: UpdateFederationMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1340,16 +1247,9 @@ export const UpdateFederationMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateFederationMetadata.$type, UpdateFederationMetadata);
-
-const baseDeleteFederationRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.DeleteFederationRequest',
-    federationId: '',
-};
+const baseDeleteFederationRequest: object = { federationId: '' };
 
 export const DeleteFederationRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.DeleteFederationRequest' as const,
-
     encode(message: DeleteFederationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.federationId !== '') {
             writer.uint32(10).string(message.federationId);
@@ -1399,16 +1299,9 @@ export const DeleteFederationRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteFederationRequest.$type, DeleteFederationRequest);
-
-const baseDeleteFederationMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.DeleteFederationMetadata',
-    federationId: '',
-};
+const baseDeleteFederationMetadata: object = { federationId: '' };
 
 export const DeleteFederationMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.DeleteFederationMetadata' as const,
-
     encode(
         message: DeleteFederationMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1461,17 +1354,9 @@ export const DeleteFederationMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteFederationMetadata.$type, DeleteFederationMetadata);
-
-const baseAddFederatedUserAccountsRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.AddFederatedUserAccountsRequest',
-    federationId: '',
-    nameIds: '',
-};
+const baseAddFederatedUserAccountsRequest: object = { federationId: '', nameIds: '' };
 
 export const AddFederatedUserAccountsRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.AddFederatedUserAccountsRequest' as const,
-
     encode(
         message: AddFederatedUserAccountsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1544,16 +1429,9 @@ export const AddFederatedUserAccountsRequest = {
     },
 };
 
-messageTypeRegistry.set(AddFederatedUserAccountsRequest.$type, AddFederatedUserAccountsRequest);
-
-const baseAddFederatedUserAccountsMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.AddFederatedUserAccountsMetadata',
-    federationId: '',
-};
+const baseAddFederatedUserAccountsMetadata: object = { federationId: '' };
 
 export const AddFederatedUserAccountsMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.AddFederatedUserAccountsMetadata' as const,
-
     encode(
         message: AddFederatedUserAccountsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1612,15 +1490,9 @@ export const AddFederatedUserAccountsMetadata = {
     },
 };
 
-messageTypeRegistry.set(AddFederatedUserAccountsMetadata.$type, AddFederatedUserAccountsMetadata);
-
-const baseAddFederatedUserAccountsResponse: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.AddFederatedUserAccountsResponse',
-};
+const baseAddFederatedUserAccountsResponse: object = {};
 
 export const AddFederatedUserAccountsResponse = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.AddFederatedUserAccountsResponse' as const,
-
     encode(
         message: AddFederatedUserAccountsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1683,17 +1555,9 @@ export const AddFederatedUserAccountsResponse = {
     },
 };
 
-messageTypeRegistry.set(AddFederatedUserAccountsResponse.$type, AddFederatedUserAccountsResponse);
-
-const baseDeleteFederatedUserAccountsRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.DeleteFederatedUserAccountsRequest',
-    federationId: '',
-    subjectIds: '',
-};
+const baseDeleteFederatedUserAccountsRequest: object = { federationId: '', subjectIds: '' };
 
 export const DeleteFederatedUserAccountsRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.DeleteFederatedUserAccountsRequest' as const,
-
     encode(
         message: DeleteFederatedUserAccountsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1766,19 +1630,9 @@ export const DeleteFederatedUserAccountsRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    DeleteFederatedUserAccountsRequest.$type,
-    DeleteFederatedUserAccountsRequest,
-);
-
-const baseDeleteFederatedUserAccountsMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.DeleteFederatedUserAccountsMetadata',
-    federationId: '',
-};
+const baseDeleteFederatedUserAccountsMetadata: object = { federationId: '' };
 
 export const DeleteFederatedUserAccountsMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.DeleteFederatedUserAccountsMetadata' as const,
-
     encode(
         message: DeleteFederatedUserAccountsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1837,20 +1691,12 @@ export const DeleteFederatedUserAccountsMetadata = {
     },
 };
 
-messageTypeRegistry.set(
-    DeleteFederatedUserAccountsMetadata.$type,
-    DeleteFederatedUserAccountsMetadata,
-);
-
 const baseDeleteFederatedUserAccountsResponse: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.DeleteFederatedUserAccountsResponse',
     deletedSubjects: '',
     nonExistingSubjects: '',
 };
 
 export const DeleteFederatedUserAccountsResponse = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.DeleteFederatedUserAccountsResponse' as const,
-
     encode(
         message: DeleteFederatedUserAccountsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1925,13 +1771,7 @@ export const DeleteFederatedUserAccountsResponse = {
     },
 };
 
-messageTypeRegistry.set(
-    DeleteFederatedUserAccountsResponse.$type,
-    DeleteFederatedUserAccountsResponse,
-);
-
 const baseListFederatedUserAccountsRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.ListFederatedUserAccountsRequest',
     federationId: '',
     pageSize: 0,
     pageToken: '',
@@ -1939,8 +1779,6 @@ const baseListFederatedUserAccountsRequest: object = {
 };
 
 export const ListFederatedUserAccountsRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.ListFederatedUserAccountsRequest' as const,
-
     encode(
         message: ListFederatedUserAccountsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2031,16 +1869,9 @@ export const ListFederatedUserAccountsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListFederatedUserAccountsRequest.$type, ListFederatedUserAccountsRequest);
-
-const baseListFederatedUserAccountsResponse: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.ListFederatedUserAccountsResponse',
-    nextPageToken: '',
-};
+const baseListFederatedUserAccountsResponse: object = { nextPageToken: '' };
 
 export const ListFederatedUserAccountsResponse = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.ListFederatedUserAccountsResponse' as const,
-
     encode(
         message: ListFederatedUserAccountsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2115,18 +1946,13 @@ export const ListFederatedUserAccountsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListFederatedUserAccountsResponse.$type, ListFederatedUserAccountsResponse);
-
 const baseListFederationOperationsRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.ListFederationOperationsRequest',
     federationId: '',
     pageSize: 0,
     pageToken: '',
 };
 
 export const ListFederationOperationsRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.ListFederationOperationsRequest' as const,
-
     encode(
         message: ListFederationOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2207,16 +2033,9 @@ export const ListFederationOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListFederationOperationsRequest.$type, ListFederationOperationsRequest);
-
-const baseListFederationOperationsResponse: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.ListFederationOperationsResponse',
-    nextPageToken: '',
-};
+const baseListFederationOperationsResponse: object = { nextPageToken: '' };
 
 export const ListFederationOperationsResponse = {
-    $type: 'yandex.cloud.organizationmanager.v1.saml.ListFederationOperationsResponse' as const,
-
     encode(
         message: ListFederationOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2288,8 +2107,6 @@ export const ListFederationOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListFederationOperationsResponse.$type, ListFederationOperationsResponse);
 
 /** A set of methods for managing federations. */
 export const FederationServiceService = {
@@ -2615,16 +2432,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

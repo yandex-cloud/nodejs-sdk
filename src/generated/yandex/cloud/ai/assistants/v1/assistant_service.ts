@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -27,7 +26,6 @@ export const protobufPackage = 'yandex.cloud.ai.assistants.v1';
 
 /** Request to create a new assistant. */
 export interface CreateAssistantRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.CreateAssistantRequest';
     folderId: string;
     /** Name of the assistant. */
     name: string;
@@ -56,21 +54,18 @@ export interface CreateAssistantRequest {
 }
 
 export interface CreateAssistantRequest_LabelsEntry {
-    $type: 'yandex.cloud.ai.assistants.v1.CreateAssistantRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Request message for retrieving an assistant by ID. */
 export interface GetAssistantRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.GetAssistantRequest';
     /** ID of the assistant to retrieve. */
     assistantId: string;
 }
 
 /** Request message for updating an existing assistant. */
 export interface UpdateAssistantRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.UpdateAssistantRequest';
     /** ID of the assistant to update. */
     assistantId: string;
     /** Field mask specifying which fields to update. */
@@ -96,26 +91,21 @@ export interface UpdateAssistantRequest {
 }
 
 export interface UpdateAssistantRequest_LabelsEntry {
-    $type: 'yandex.cloud.ai.assistants.v1.UpdateAssistantRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Request message for deleting an assistant by ID. */
 export interface DeleteAssistantRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.DeleteAssistantRequest';
     /** ID of the assistant to delete. */
     assistantId: string;
 }
 
 /** Response message for the delete operation. */
-export interface DeleteAssistantResponse {
-    $type: 'yandex.cloud.ai.assistants.v1.DeleteAssistantResponse';
-}
+export interface DeleteAssistantResponse {}
 
 /** Request message for listing assistants in a specific folder. */
 export interface ListAssistantsRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.ListAssistantsRequest';
     /** Folder ID from which to list assistants. */
     folderId: string;
     /** Maximum number of assistants to return per page. */
@@ -126,7 +116,6 @@ export interface ListAssistantsRequest {
 
 /** Response message for the list operation. */
 export interface ListAssistantsResponse {
-    $type: 'yandex.cloud.ai.assistants.v1.ListAssistantsResponse';
     /** List of assistants in the specified folder. */
     assistants: Assistant[];
     /** Token to retrieve the next page of results. */
@@ -135,7 +124,6 @@ export interface ListAssistantsResponse {
 
 /** Request to list all versions of a specific assistant. */
 export interface ListAssistantVersionsRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.ListAssistantVersionsRequest';
     /** ID of the assistant whose versions are to be listed. */
     assistantId: string;
     /** Maximum number of versions to return per page. */
@@ -146,7 +134,6 @@ export interface ListAssistantVersionsRequest {
 
 /** Represents a specific version of an assistant. */
 export interface AssistantVersion {
-    $type: 'yandex.cloud.ai.assistants.v1.AssistantVersion';
     /** ID of the assistant version. */
     id: string;
     /** Mask specifying which fields were updated in this version. */
@@ -157,7 +144,6 @@ export interface AssistantVersion {
 
 /** Response message containing the list versions operation. */
 export interface ListAssistantVersionsResponse {
-    $type: 'yandex.cloud.ai.assistants.v1.ListAssistantVersionsResponse';
     /** List of assistant versions. */
     versions: AssistantVersion[];
     /** Token to retrieve the next page of results. */
@@ -165,7 +151,6 @@ export interface ListAssistantVersionsResponse {
 }
 
 const baseCreateAssistantRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.CreateAssistantRequest',
     folderId: '',
     name: '',
     description: '',
@@ -174,8 +159,6 @@ const baseCreateAssistantRequest: object = {
 };
 
 export const CreateAssistantRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.CreateAssistantRequest' as const,
-
     encode(message: CreateAssistantRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -191,11 +174,7 @@ export const CreateAssistantRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateAssistantRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.assistants.v1.CreateAssistantRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -386,17 +365,9 @@ export const CreateAssistantRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateAssistantRequest.$type, CreateAssistantRequest);
-
-const baseCreateAssistantRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.CreateAssistantRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateAssistantRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateAssistantRequest_LabelsEntry = {
-    $type: 'yandex.cloud.ai.assistants.v1.CreateAssistantRequest.LabelsEntry' as const,
-
     encode(
         message: CreateAssistantRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -462,19 +433,9 @@ export const CreateAssistantRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateAssistantRequest_LabelsEntry.$type,
-    CreateAssistantRequest_LabelsEntry,
-);
-
-const baseGetAssistantRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.GetAssistantRequest',
-    assistantId: '',
-};
+const baseGetAssistantRequest: object = { assistantId: '' };
 
 export const GetAssistantRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.GetAssistantRequest' as const,
-
     encode(message: GetAssistantRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.assistantId !== '') {
             writer.uint32(10).string(message.assistantId);
@@ -524,10 +485,7 @@ export const GetAssistantRequest = {
     },
 };
 
-messageTypeRegistry.set(GetAssistantRequest.$type, GetAssistantRequest);
-
 const baseUpdateAssistantRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.UpdateAssistantRequest',
     assistantId: '',
     name: '',
     description: '',
@@ -536,8 +494,6 @@ const baseUpdateAssistantRequest: object = {
 };
 
 export const UpdateAssistantRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.UpdateAssistantRequest' as const,
-
     encode(message: UpdateAssistantRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.assistantId !== '') {
             writer.uint32(10).string(message.assistantId);
@@ -556,11 +512,7 @@ export const UpdateAssistantRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateAssistantRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.assistants.v1.UpdateAssistantRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -766,17 +718,9 @@ export const UpdateAssistantRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateAssistantRequest.$type, UpdateAssistantRequest);
-
-const baseUpdateAssistantRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.UpdateAssistantRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateAssistantRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateAssistantRequest_LabelsEntry = {
-    $type: 'yandex.cloud.ai.assistants.v1.UpdateAssistantRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateAssistantRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -842,19 +786,9 @@ export const UpdateAssistantRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateAssistantRequest_LabelsEntry.$type,
-    UpdateAssistantRequest_LabelsEntry,
-);
-
-const baseDeleteAssistantRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.DeleteAssistantRequest',
-    assistantId: '',
-};
+const baseDeleteAssistantRequest: object = { assistantId: '' };
 
 export const DeleteAssistantRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.DeleteAssistantRequest' as const,
-
     encode(message: DeleteAssistantRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.assistantId !== '') {
             writer.uint32(10).string(message.assistantId);
@@ -904,15 +838,9 @@ export const DeleteAssistantRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteAssistantRequest.$type, DeleteAssistantRequest);
-
-const baseDeleteAssistantResponse: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.DeleteAssistantResponse',
-};
+const baseDeleteAssistantResponse: object = {};
 
 export const DeleteAssistantResponse = {
-    $type: 'yandex.cloud.ai.assistants.v1.DeleteAssistantResponse' as const,
-
     encode(_: DeleteAssistantResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -950,18 +878,9 @@ export const DeleteAssistantResponse = {
     },
 };
 
-messageTypeRegistry.set(DeleteAssistantResponse.$type, DeleteAssistantResponse);
-
-const baseListAssistantsRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.ListAssistantsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListAssistantsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
 export const ListAssistantsRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.ListAssistantsRequest' as const,
-
     encode(message: ListAssistantsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1033,16 +952,9 @@ export const ListAssistantsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListAssistantsRequest.$type, ListAssistantsRequest);
-
-const baseListAssistantsResponse: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.ListAssistantsResponse',
-    nextPageToken: '',
-};
+const baseListAssistantsResponse: object = { nextPageToken: '' };
 
 export const ListAssistantsResponse = {
-    $type: 'yandex.cloud.ai.assistants.v1.ListAssistantsResponse' as const,
-
     encode(message: ListAssistantsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.assistants) {
             Assistant.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1106,18 +1018,9 @@ export const ListAssistantsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListAssistantsResponse.$type, ListAssistantsResponse);
-
-const baseListAssistantVersionsRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.ListAssistantVersionsRequest',
-    assistantId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListAssistantVersionsRequest: object = { assistantId: '', pageSize: 0, pageToken: '' };
 
 export const ListAssistantVersionsRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.ListAssistantVersionsRequest' as const,
-
     encode(
         message: ListAssistantVersionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1192,16 +1095,9 @@ export const ListAssistantVersionsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListAssistantVersionsRequest.$type, ListAssistantVersionsRequest);
-
-const baseAssistantVersion: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.AssistantVersion',
-    id: '',
-};
+const baseAssistantVersion: object = { id: '' };
 
 export const AssistantVersion = {
-    $type: 'yandex.cloud.ai.assistants.v1.AssistantVersion' as const,
-
     encode(message: AssistantVersion, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1280,16 +1176,9 @@ export const AssistantVersion = {
     },
 };
 
-messageTypeRegistry.set(AssistantVersion.$type, AssistantVersion);
-
-const baseListAssistantVersionsResponse: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.ListAssistantVersionsResponse',
-    nextPageToken: '',
-};
+const baseListAssistantVersionsResponse: object = { nextPageToken: '' };
 
 export const ListAssistantVersionsResponse = {
-    $type: 'yandex.cloud.ai.assistants.v1.ListAssistantVersionsResponse' as const,
-
     encode(
         message: ListAssistantVersionsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1357,8 +1246,6 @@ export const ListAssistantVersionsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListAssistantVersionsResponse.$type, ListAssistantVersionsResponse);
 
 /** AssistantService provides operations for managing assistants. */
 export const AssistantServiceService = {
@@ -1579,16 +1466,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

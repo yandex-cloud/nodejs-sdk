@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -7,7 +6,6 @@ export const protobufPackage = 'yandex.cloud.ai.foundation_models.v1.text_classi
 
 /** A pair of text labels and their corresponding confidence values. */
 export interface ClassificationLabel {
-    $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.ClassificationLabel';
     /** A class name label. */
     label: string;
     /** The probability of classifying text into a specific class. */
@@ -16,22 +14,15 @@ export interface ClassificationLabel {
 
 /** Description of a sample for the classification task. */
 export interface ClassificationSample {
-    $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.ClassificationSample';
     /** Text sample. */
     text: string;
     /** Expected label for a given text. */
     label: string;
 }
 
-const baseClassificationLabel: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.ClassificationLabel',
-    label: '',
-    confidence: 0,
-};
+const baseClassificationLabel: object = { label: '', confidence: 0 };
 
 export const ClassificationLabel = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.ClassificationLabel' as const,
-
     encode(message: ClassificationLabel, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.label !== '') {
             writer.uint32(10).string(message.label);
@@ -91,17 +82,9 @@ export const ClassificationLabel = {
     },
 };
 
-messageTypeRegistry.set(ClassificationLabel.$type, ClassificationLabel);
-
-const baseClassificationSample: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.ClassificationSample',
-    text: '',
-    label: '',
-};
+const baseClassificationSample: object = { text: '', label: '' };
 
 export const ClassificationSample = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.text_classification.ClassificationSample' as const,
-
     encode(message: ClassificationSample, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -158,8 +141,6 @@ export const ClassificationSample = {
     },
 };
 
-messageTypeRegistry.set(ClassificationSample.$type, ClassificationSample);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -169,16 +150,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

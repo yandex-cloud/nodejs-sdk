@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -28,7 +27,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.dataproc.v1';
 
 export interface GetSubclusterRequest {
-    $type: 'yandex.cloud.dataproc.v1.GetSubclusterRequest';
     /** ID of the Data Proc cluster that the subcluster belongs to. */
     clusterId: string;
     /**
@@ -40,7 +38,6 @@ export interface GetSubclusterRequest {
 }
 
 export interface ListSubclustersRequest {
-    $type: 'yandex.cloud.dataproc.v1.ListSubclustersRequest';
     /** ID of the Data Proc cluster to list subclusters in. */
     clusterId: string;
     /**
@@ -68,7 +65,6 @@ export interface ListSubclustersRequest {
 }
 
 export interface ListSubclustersResponse {
-    $type: 'yandex.cloud.dataproc.v1.ListSubclustersResponse';
     /** List of subclusters in the specified cluster. */
     subclusters: Subcluster[];
     /**
@@ -82,7 +78,6 @@ export interface ListSubclustersResponse {
 }
 
 export interface CreateSubclusterRequest {
-    $type: 'yandex.cloud.dataproc.v1.CreateSubclusterRequest';
     /**
      * ID of the Data Proc cluster to create a subcluster in.
      *
@@ -107,7 +102,6 @@ export interface CreateSubclusterRequest {
 }
 
 export interface CreateSubclusterMetadata {
-    $type: 'yandex.cloud.dataproc.v1.CreateSubclusterMetadata';
     /** ID of the cluster that the subcluster is being added to. */
     clusterId: string;
     /** ID of the subcluster that is being created. */
@@ -115,7 +109,6 @@ export interface CreateSubclusterMetadata {
 }
 
 export interface UpdateSubclusterRequest {
-    $type: 'yandex.cloud.dataproc.v1.UpdateSubclusterRequest';
     /**
      * ID of the cluster to update a subcluster in.
      *
@@ -143,7 +136,6 @@ export interface UpdateSubclusterRequest {
 }
 
 export interface UpdateSubclusterMetadata {
-    $type: 'yandex.cloud.dataproc.v1.UpdateSubclusterMetadata';
     /** ID of the cluster whose subcluster is being updated. */
     clusterId: string;
     /** ID of the subcluster that is being updated. */
@@ -151,7 +143,6 @@ export interface UpdateSubclusterMetadata {
 }
 
 export interface DeleteSubclusterRequest {
-    $type: 'yandex.cloud.dataproc.v1.DeleteSubclusterRequest';
     /**
      * ID of the cluster to remove a subcluster from.
      *
@@ -165,22 +156,15 @@ export interface DeleteSubclusterRequest {
 }
 
 export interface DeleteSubclusterMetadata {
-    $type: 'yandex.cloud.dataproc.v1.DeleteSubclusterMetadata';
     /** ID of the cluster whose subcluster is being deleted. */
     clusterId: string;
     /** ID of the subcluster that is being deleted. */
     subclusterId: string;
 }
 
-const baseGetSubclusterRequest: object = {
-    $type: 'yandex.cloud.dataproc.v1.GetSubclusterRequest',
-    clusterId: '',
-    subclusterId: '',
-};
+const baseGetSubclusterRequest: object = { clusterId: '', subclusterId: '' };
 
 export const GetSubclusterRequest = {
-    $type: 'yandex.cloud.dataproc.v1.GetSubclusterRequest' as const,
-
     encode(message: GetSubclusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -242,10 +226,7 @@ export const GetSubclusterRequest = {
     },
 };
 
-messageTypeRegistry.set(GetSubclusterRequest.$type, GetSubclusterRequest);
-
 const baseListSubclustersRequest: object = {
-    $type: 'yandex.cloud.dataproc.v1.ListSubclustersRequest',
     clusterId: '',
     pageSize: 0,
     pageToken: '',
@@ -253,8 +234,6 @@ const baseListSubclustersRequest: object = {
 };
 
 export const ListSubclustersRequest = {
-    $type: 'yandex.cloud.dataproc.v1.ListSubclustersRequest' as const,
-
     encode(message: ListSubclustersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -336,16 +315,9 @@ export const ListSubclustersRequest = {
     },
 };
 
-messageTypeRegistry.set(ListSubclustersRequest.$type, ListSubclustersRequest);
-
-const baseListSubclustersResponse: object = {
-    $type: 'yandex.cloud.dataproc.v1.ListSubclustersResponse',
-    nextPageToken: '',
-};
+const baseListSubclustersResponse: object = { nextPageToken: '' };
 
 export const ListSubclustersResponse = {
-    $type: 'yandex.cloud.dataproc.v1.ListSubclustersResponse' as const,
-
     encode(message: ListSubclustersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.subclusters) {
             Subcluster.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -411,10 +383,7 @@ export const ListSubclustersResponse = {
     },
 };
 
-messageTypeRegistry.set(ListSubclustersResponse.$type, ListSubclustersResponse);
-
 const baseCreateSubclusterRequest: object = {
-    $type: 'yandex.cloud.dataproc.v1.CreateSubclusterRequest',
     clusterId: '',
     name: '',
     role: 0,
@@ -423,8 +392,6 @@ const baseCreateSubclusterRequest: object = {
 };
 
 export const CreateSubclusterRequest = {
-    $type: 'yandex.cloud.dataproc.v1.CreateSubclusterRequest' as const,
-
     encode(message: CreateSubclusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -551,17 +518,9 @@ export const CreateSubclusterRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateSubclusterRequest.$type, CreateSubclusterRequest);
-
-const baseCreateSubclusterMetadata: object = {
-    $type: 'yandex.cloud.dataproc.v1.CreateSubclusterMetadata',
-    clusterId: '',
-    subclusterId: '',
-};
+const baseCreateSubclusterMetadata: object = { clusterId: '', subclusterId: '' };
 
 export const CreateSubclusterMetadata = {
-    $type: 'yandex.cloud.dataproc.v1.CreateSubclusterMetadata' as const,
-
     encode(
         message: CreateSubclusterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -626,10 +585,7 @@ export const CreateSubclusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateSubclusterMetadata.$type, CreateSubclusterMetadata);
-
 const baseUpdateSubclusterRequest: object = {
-    $type: 'yandex.cloud.dataproc.v1.UpdateSubclusterRequest',
     clusterId: '',
     subclusterId: '',
     name: '',
@@ -638,8 +594,6 @@ const baseUpdateSubclusterRequest: object = {
 };
 
 export const UpdateSubclusterRequest = {
-    $type: 'yandex.cloud.dataproc.v1.UpdateSubclusterRequest' as const,
-
     encode(message: UpdateSubclusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -787,17 +741,9 @@ export const UpdateSubclusterRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateSubclusterRequest.$type, UpdateSubclusterRequest);
-
-const baseUpdateSubclusterMetadata: object = {
-    $type: 'yandex.cloud.dataproc.v1.UpdateSubclusterMetadata',
-    clusterId: '',
-    subclusterId: '',
-};
+const baseUpdateSubclusterMetadata: object = { clusterId: '', subclusterId: '' };
 
 export const UpdateSubclusterMetadata = {
-    $type: 'yandex.cloud.dataproc.v1.UpdateSubclusterMetadata' as const,
-
     encode(
         message: UpdateSubclusterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -862,18 +808,13 @@ export const UpdateSubclusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateSubclusterMetadata.$type, UpdateSubclusterMetadata);
-
 const baseDeleteSubclusterRequest: object = {
-    $type: 'yandex.cloud.dataproc.v1.DeleteSubclusterRequest',
     clusterId: '',
     subclusterId: '',
     decommissionTimeout: 0,
 };
 
 export const DeleteSubclusterRequest = {
-    $type: 'yandex.cloud.dataproc.v1.DeleteSubclusterRequest' as const,
-
     encode(message: DeleteSubclusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -948,17 +889,9 @@ export const DeleteSubclusterRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteSubclusterRequest.$type, DeleteSubclusterRequest);
-
-const baseDeleteSubclusterMetadata: object = {
-    $type: 'yandex.cloud.dataproc.v1.DeleteSubclusterMetadata',
-    clusterId: '',
-    subclusterId: '',
-};
+const baseDeleteSubclusterMetadata: object = { clusterId: '', subclusterId: '' };
 
 export const DeleteSubclusterMetadata = {
-    $type: 'yandex.cloud.dataproc.v1.DeleteSubclusterMetadata' as const,
-
     encode(
         message: DeleteSubclusterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1022,8 +955,6 @@ export const DeleteSubclusterMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteSubclusterMetadata.$type, DeleteSubclusterMetadata);
 
 /** A set of methods for managing Data Proc subclusters. */
 export const SubclusterServiceService = {
@@ -1225,16 +1156,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

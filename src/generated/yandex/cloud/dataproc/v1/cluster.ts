@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Health, healthFromJSON, healthToJSON } from '../../../../yandex/cloud/dataproc/v1/common';
@@ -9,7 +8,6 @@ export const protobufPackage = 'yandex.cloud.dataproc.v1';
 
 /** A Data Proc cluster. For details about the concept, see [documentation](/docs/data-proc/concepts/). */
 export interface Cluster {
-    $type: 'yandex.cloud.dataproc.v1.Cluster';
     /** ID of the cluster. Generated at creation time. */
     id: string;
     /** ID of the folder that the cluster belongs to. */
@@ -161,14 +159,12 @@ export function cluster_EnvironmentToJSON(object: Cluster_Environment): string {
 }
 
 export interface Cluster_LabelsEntry {
-    $type: 'yandex.cloud.dataproc.v1.Cluster.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Metadata of a monitoring system for a Data Proc cluster. */
 export interface Monitoring {
-    $type: 'yandex.cloud.dataproc.v1.Monitoring';
     /** Name of the monitoring system. */
     name: string;
     /** Description of the monitoring system. */
@@ -182,7 +178,6 @@ export interface Monitoring {
  * their properties and settings.
  */
 export interface HadoopConfig {
-    $type: 'yandex.cloud.dataproc.v1.HadoopConfig';
     /** Set of services used in the cluster (if empty, the default set is used). */
     services: HadoopConfig_Service[];
     /**
@@ -304,13 +299,11 @@ export function hadoopConfig_ServiceToJSON(object: HadoopConfig_Service): string
 }
 
 export interface HadoopConfig_PropertiesEntry {
-    $type: 'yandex.cloud.dataproc.v1.HadoopConfig.PropertiesEntry';
     key: string;
     value: string;
 }
 
 export interface ClusterConfig {
-    $type: 'yandex.cloud.dataproc.v1.ClusterConfig';
     /**
      * Image version for cluster provisioning.
      * All available versions are listed in the [documentation](/docs/data-proc/concepts/environment).
@@ -321,7 +314,6 @@ export interface ClusterConfig {
 }
 
 export interface InitializationAction {
-    $type: 'yandex.cloud.dataproc.v1.InitializationAction';
     /** URI of the executable file */
     uri: string;
     /** Arguments to the initialization action */
@@ -331,7 +323,6 @@ export interface InitializationAction {
 }
 
 const baseCluster: object = {
-    $type: 'yandex.cloud.dataproc.v1.Cluster',
     id: '',
     folderId: '',
     name: '',
@@ -350,8 +341,6 @@ const baseCluster: object = {
 };
 
 export const Cluster = {
-    $type: 'yandex.cloud.dataproc.v1.Cluster' as const,
-
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -370,7 +359,7 @@ export const Cluster = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Cluster_LabelsEntry.encode(
-                { $type: 'yandex.cloud.dataproc.v1.Cluster.LabelsEntry', key: key as any, value },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -640,17 +629,9 @@ export const Cluster = {
     },
 };
 
-messageTypeRegistry.set(Cluster.$type, Cluster);
-
-const baseCluster_LabelsEntry: object = {
-    $type: 'yandex.cloud.dataproc.v1.Cluster.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
 export const Cluster_LabelsEntry = {
-    $type: 'yandex.cloud.dataproc.v1.Cluster.LabelsEntry' as const,
-
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -707,18 +688,9 @@ export const Cluster_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Cluster_LabelsEntry.$type, Cluster_LabelsEntry);
-
-const baseMonitoring: object = {
-    $type: 'yandex.cloud.dataproc.v1.Monitoring',
-    name: '',
-    description: '',
-    link: '',
-};
+const baseMonitoring: object = { name: '', description: '', link: '' };
 
 export const Monitoring = {
-    $type: 'yandex.cloud.dataproc.v1.Monitoring' as const,
-
     encode(message: Monitoring, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -784,17 +756,9 @@ export const Monitoring = {
     },
 };
 
-messageTypeRegistry.set(Monitoring.$type, Monitoring);
-
-const baseHadoopConfig: object = {
-    $type: 'yandex.cloud.dataproc.v1.HadoopConfig',
-    services: 0,
-    sshPublicKeys: '',
-};
+const baseHadoopConfig: object = { services: 0, sshPublicKeys: '' };
 
 export const HadoopConfig = {
-    $type: 'yandex.cloud.dataproc.v1.HadoopConfig' as const,
-
     encode(message: HadoopConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         writer.uint32(10).fork();
         for (const v of message.services) {
@@ -803,11 +767,7 @@ export const HadoopConfig = {
         writer.ldelim();
         Object.entries(message.properties).forEach(([key, value]) => {
             HadoopConfig_PropertiesEntry.encode(
-                {
-                    $type: 'yandex.cloud.dataproc.v1.HadoopConfig.PropertiesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(18).fork(),
             ).ldelim();
         });
@@ -925,17 +885,9 @@ export const HadoopConfig = {
     },
 };
 
-messageTypeRegistry.set(HadoopConfig.$type, HadoopConfig);
-
-const baseHadoopConfig_PropertiesEntry: object = {
-    $type: 'yandex.cloud.dataproc.v1.HadoopConfig.PropertiesEntry',
-    key: '',
-    value: '',
-};
+const baseHadoopConfig_PropertiesEntry: object = { key: '', value: '' };
 
 export const HadoopConfig_PropertiesEntry = {
-    $type: 'yandex.cloud.dataproc.v1.HadoopConfig.PropertiesEntry' as const,
-
     encode(
         message: HadoopConfig_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -995,16 +947,9 @@ export const HadoopConfig_PropertiesEntry = {
     },
 };
 
-messageTypeRegistry.set(HadoopConfig_PropertiesEntry.$type, HadoopConfig_PropertiesEntry);
-
-const baseClusterConfig: object = {
-    $type: 'yandex.cloud.dataproc.v1.ClusterConfig',
-    versionId: '',
-};
+const baseClusterConfig: object = { versionId: '' };
 
 export const ClusterConfig = {
-    $type: 'yandex.cloud.dataproc.v1.ClusterConfig' as const,
-
     encode(message: ClusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.versionId !== '') {
             writer.uint32(10).string(message.versionId);
@@ -1068,18 +1013,9 @@ export const ClusterConfig = {
     },
 };
 
-messageTypeRegistry.set(ClusterConfig.$type, ClusterConfig);
-
-const baseInitializationAction: object = {
-    $type: 'yandex.cloud.dataproc.v1.InitializationAction',
-    uri: '',
-    args: '',
-    timeout: 0,
-};
+const baseInitializationAction: object = { uri: '', args: '', timeout: 0 };
 
 export const InitializationAction = {
-    $type: 'yandex.cloud.dataproc.v1.InitializationAction' as const,
-
     encode(message: InitializationAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.uri !== '') {
             writer.uint32(10).string(message.uri);
@@ -1150,8 +1086,6 @@ export const InitializationAction = {
     },
 };
 
-messageTypeRegistry.set(InitializationAction.$type, InitializationAction);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1172,21 +1106,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { DoubleValue, Int64Value } from '../../../../../google/protobuf/wrappers';
@@ -9,7 +8,6 @@ export const protobufPackage = 'yandex.cloud.ai.foundation_models.v1';
 
 /** Defines the options for completion generation. */
 export interface CompletionOptions {
-    $type: 'yandex.cloud.ai.foundation_models.v1.CompletionOptions';
     /** Enables streaming of partially generated text. */
     stream: boolean;
     /**
@@ -29,7 +27,6 @@ export interface CompletionOptions {
 
 /** Represents reasoning options that enable the model's ability to perform internal reasoning before generating a response. */
 export interface ReasoningOptions {
-    $type: 'yandex.cloud.ai.foundation_models.v1.ReasoningOptions';
     /** Specifies the reasoning mode to be used. */
     mode: ReasoningOptions_ReasoningMode;
 }
@@ -82,7 +79,6 @@ export function reasoningOptions_ReasoningModeToJSON(
 
 /** A message object representing a wrapper over the inputs and outputs of the completion model. */
 export interface Message {
-    $type: 'yandex.cloud.ai.foundation_models.v1.Message';
     /**
      * The ID of the message sender. Supported roles:
      * * `system`: Special role used to define the behaviour of the completion model.
@@ -100,7 +96,6 @@ export interface Message {
 
 /** An object representing the number of content [tokens](/docs/foundation-models/concepts/yandexgpt/tokens) used by the completion model. */
 export interface ContentUsage {
-    $type: 'yandex.cloud.ai.foundation_models.v1.ContentUsage';
     /** The number of tokens in the textual part of the model input. */
     inputTextTokens: number;
     /** The number of tokens in the generated completion. */
@@ -113,14 +108,12 @@ export interface ContentUsage {
 
 /** Provides additional information about how the completion tokens were utilized. */
 export interface ContentUsage_CompletionTokensDetails {
-    $type: 'yandex.cloud.ai.foundation_models.v1.ContentUsage.CompletionTokensDetails';
     /** The number of tokens used specifically for internal reasoning performed by the model. */
     reasoningTokens: number;
 }
 
 /** Represents a generated completion alternative, including its content and generation status. */
 export interface Alternative {
-    $type: 'yandex.cloud.ai.foundation_models.v1.Alternative';
     /** A message with the content of the alternative. */
     message?: Message;
     /** The generation status of the alternative. */
@@ -195,7 +188,6 @@ export function alternative_AlternativeStatusToJSON(object: Alternative_Alternat
 
 /** Represents a token, the basic unit of content, used by the foundation model. */
 export interface Token {
-    $type: 'yandex.cloud.ai.foundation_models.v1.Token';
     /** An internal token identifier. */
     id: number;
     /** The textual representation of the token. */
@@ -206,14 +198,12 @@ export interface Token {
 
 /** Represents a tool that can be invoked during completion generation. */
 export interface Tool {
-    $type: 'yandex.cloud.ai.foundation_models.v1.Tool';
     /** Represents a function that can be called. */
     function?: FunctionTool | undefined;
 }
 
 /** Represents a function tool that can be invoked during completion generation. */
 export interface FunctionTool {
-    $type: 'yandex.cloud.ai.foundation_models.v1.FunctionTool';
     /** The name of the function. */
     name: string;
     /** A description of the function's purpose or behavior. */
@@ -227,14 +217,12 @@ export interface FunctionTool {
 
 /** Represents a call to a tool. */
 export interface ToolCall {
-    $type: 'yandex.cloud.ai.foundation_models.v1.ToolCall';
     /** Represents a call to a function. */
     functionCall?: FunctionCall | undefined;
 }
 
 /** Represents the invocation of a function with specific arguments. */
 export interface FunctionCall {
-    $type: 'yandex.cloud.ai.foundation_models.v1.FunctionCall';
     /** The name of the function being called. */
     name: string;
     /**
@@ -246,21 +234,18 @@ export interface FunctionCall {
 
 /** Represents a list of tool calls. */
 export interface ToolCallList {
-    $type: 'yandex.cloud.ai.foundation_models.v1.ToolCallList';
     /** A list of tool calls to be executed. */
     toolCalls: ToolCall[];
 }
 
 /** Represents the result of a tool call. */
 export interface ToolResult {
-    $type: 'yandex.cloud.ai.foundation_models.v1.ToolResult';
     /** Represents the result of a function call. */
     functionResult?: FunctionResult | undefined;
 }
 
 /** Represents the result of a function call. */
 export interface FunctionResult {
-    $type: 'yandex.cloud.ai.foundation_models.v1.FunctionResult';
     /** The name of the function that was executed. */
     name: string;
     /**
@@ -272,34 +257,22 @@ export interface FunctionResult {
 
 /** Represents a list of tool results. */
 export interface ToolResultList {
-    $type: 'yandex.cloud.ai.foundation_models.v1.ToolResultList';
     /** A list of tool results. */
     toolResults: ToolResult[];
 }
 
-const baseCompletionOptions: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.CompletionOptions',
-    stream: false,
-};
+const baseCompletionOptions: object = { stream: false };
 
 export const CompletionOptions = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.CompletionOptions' as const,
-
     encode(message: CompletionOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.stream === true) {
             writer.uint32(8).bool(message.stream);
         }
         if (message.temperature !== undefined) {
-            DoubleValue.encode(
-                { $type: 'google.protobuf.DoubleValue', value: message.temperature! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            DoubleValue.encode({ value: message.temperature! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.maxTokens !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxTokens! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.maxTokens! }, writer.uint32(26).fork()).ldelim();
         }
         if (message.reasoningOptions !== undefined) {
             ReasoningOptions.encode(message.reasoningOptions, writer.uint32(34).fork()).ldelim();
@@ -378,16 +351,9 @@ export const CompletionOptions = {
     },
 };
 
-messageTypeRegistry.set(CompletionOptions.$type, CompletionOptions);
-
-const baseReasoningOptions: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.ReasoningOptions',
-    mode: 0,
-};
+const baseReasoningOptions: object = { mode: 0 };
 
 export const ReasoningOptions = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.ReasoningOptions' as const,
-
     encode(message: ReasoningOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mode !== 0) {
             writer.uint32(8).int32(message.mode);
@@ -436,13 +402,9 @@ export const ReasoningOptions = {
     },
 };
 
-messageTypeRegistry.set(ReasoningOptions.$type, ReasoningOptions);
-
-const baseMessage: object = { $type: 'yandex.cloud.ai.foundation_models.v1.Message', role: '' };
+const baseMessage: object = { role: '' };
 
 export const Message = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.Message' as const,
-
     encode(message: Message, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.role !== '') {
             writer.uint32(10).string(message.role);
@@ -533,18 +495,9 @@ export const Message = {
     },
 };
 
-messageTypeRegistry.set(Message.$type, Message);
-
-const baseContentUsage: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.ContentUsage',
-    inputTextTokens: 0,
-    completionTokens: 0,
-    totalTokens: 0,
-};
+const baseContentUsage: object = { inputTextTokens: 0, completionTokens: 0, totalTokens: 0 };
 
 export const ContentUsage = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.ContentUsage' as const,
-
     encode(message: ContentUsage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.inputTextTokens !== 0) {
             writer.uint32(8).int64(message.inputTextTokens);
@@ -642,16 +595,9 @@ export const ContentUsage = {
     },
 };
 
-messageTypeRegistry.set(ContentUsage.$type, ContentUsage);
-
-const baseContentUsage_CompletionTokensDetails: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.ContentUsage.CompletionTokensDetails',
-    reasoningTokens: 0,
-};
+const baseContentUsage_CompletionTokensDetails: object = { reasoningTokens: 0 };
 
 export const ContentUsage_CompletionTokensDetails = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.ContentUsage.CompletionTokensDetails' as const,
-
     encode(
         message: ContentUsage_CompletionTokensDetails,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -711,19 +657,9 @@ export const ContentUsage_CompletionTokensDetails = {
     },
 };
 
-messageTypeRegistry.set(
-    ContentUsage_CompletionTokensDetails.$type,
-    ContentUsage_CompletionTokensDetails,
-);
-
-const baseAlternative: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.Alternative',
-    status: 0,
-};
+const baseAlternative: object = { status: 0 };
 
 export const Alternative = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.Alternative' as const,
-
     encode(message: Alternative, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.message !== undefined) {
             Message.encode(message.message, writer.uint32(10).fork()).ldelim();
@@ -788,18 +724,9 @@ export const Alternative = {
     },
 };
 
-messageTypeRegistry.set(Alternative.$type, Alternative);
-
-const baseToken: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.Token',
-    id: 0,
-    text: '',
-    special: false,
-};
+const baseToken: object = { id: 0, text: '', special: false };
 
 export const Token = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.Token' as const,
-
     encode(message: Token, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== 0) {
             writer.uint32(8).int64(message.id);
@@ -865,13 +792,9 @@ export const Token = {
     },
 };
 
-messageTypeRegistry.set(Token.$type, Token);
-
-const baseTool: object = { $type: 'yandex.cloud.ai.foundation_models.v1.Tool' };
+const baseTool: object = {};
 
 export const Tool = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.Tool' as const,
-
     encode(message: Tool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.function !== undefined) {
             FunctionTool.encode(message.function, writer.uint32(10).fork()).ldelim();
@@ -923,17 +846,9 @@ export const Tool = {
     },
 };
 
-messageTypeRegistry.set(Tool.$type, Tool);
-
-const baseFunctionTool: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.FunctionTool',
-    name: '',
-    description: '',
-};
+const baseFunctionTool: object = { name: '', description: '' };
 
 export const FunctionTool = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.FunctionTool' as const,
-
     encode(message: FunctionTool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -999,13 +914,9 @@ export const FunctionTool = {
     },
 };
 
-messageTypeRegistry.set(FunctionTool.$type, FunctionTool);
-
-const baseToolCall: object = { $type: 'yandex.cloud.ai.foundation_models.v1.ToolCall' };
+const baseToolCall: object = {};
 
 export const ToolCall = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.ToolCall' as const,
-
     encode(message: ToolCall, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionCall !== undefined) {
             FunctionCall.encode(message.functionCall, writer.uint32(10).fork()).ldelim();
@@ -1059,16 +970,9 @@ export const ToolCall = {
     },
 };
 
-messageTypeRegistry.set(ToolCall.$type, ToolCall);
-
-const baseFunctionCall: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.FunctionCall',
-    name: '',
-};
+const baseFunctionCall: object = { name: '' };
 
 export const FunctionCall = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.FunctionCall' as const,
-
     encode(message: FunctionCall, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1122,13 +1026,9 @@ export const FunctionCall = {
     },
 };
 
-messageTypeRegistry.set(FunctionCall.$type, FunctionCall);
-
-const baseToolCallList: object = { $type: 'yandex.cloud.ai.foundation_models.v1.ToolCallList' };
+const baseToolCallList: object = {};
 
 export const ToolCallList = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.ToolCallList' as const,
-
     encode(message: ToolCallList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.toolCalls) {
             ToolCall.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1178,13 +1078,9 @@ export const ToolCallList = {
     },
 };
 
-messageTypeRegistry.set(ToolCallList.$type, ToolCallList);
-
-const baseToolResult: object = { $type: 'yandex.cloud.ai.foundation_models.v1.ToolResult' };
+const baseToolResult: object = {};
 
 export const ToolResult = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.ToolResult' as const,
-
     encode(message: ToolResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionResult !== undefined) {
             FunctionResult.encode(message.functionResult, writer.uint32(10).fork()).ldelim();
@@ -1238,16 +1134,9 @@ export const ToolResult = {
     },
 };
 
-messageTypeRegistry.set(ToolResult.$type, ToolResult);
-
-const baseFunctionResult: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.FunctionResult',
-    name: '',
-};
+const baseFunctionResult: object = { name: '' };
 
 export const FunctionResult = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.FunctionResult' as const,
-
     encode(message: FunctionResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1304,13 +1193,9 @@ export const FunctionResult = {
     },
 };
 
-messageTypeRegistry.set(FunctionResult.$type, FunctionResult);
-
-const baseToolResultList: object = { $type: 'yandex.cloud.ai.foundation_models.v1.ToolResultList' };
+const baseToolResultList: object = {};
 
 export const ToolResultList = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.ToolResultList' as const,
-
     encode(message: ToolResultList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.toolResults) {
             ToolResult.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1362,8 +1247,6 @@ export const ToolResultList = {
     },
 };
 
-messageTypeRegistry.set(ToolResultList.$type, ToolResultList);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1384,16 +1267,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

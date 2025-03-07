@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../../google/protobuf/duration';
@@ -54,7 +53,6 @@ export function metadataOptionToJSON(object: MetadataOption): string {
 }
 
 export interface Container {
-    $type: 'yandex.cloud.serverless.containers.v1.Container';
     /** ID of the container. Generated at creation time. */
     id: string;
     /** ID of the folder that the container belongs to. */
@@ -128,13 +126,11 @@ export function container_StatusToJSON(object: Container_Status): string {
 }
 
 export interface Container_LabelsEntry {
-    $type: 'yandex.cloud.serverless.containers.v1.Container.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface Revision {
-    $type: 'yandex.cloud.serverless.containers.v1.Revision';
     /** ID of the revision. */
     id: string;
     /** ID of the container that the revision belongs to. */
@@ -232,7 +228,6 @@ export function revision_StatusToJSON(object: Revision_Status): string {
 
 /** Revision image specification. */
 export interface Image {
-    $type: 'yandex.cloud.serverless.containers.v1.Image';
     /** Image URL, that is used by the revision. */
     imageUrl: string;
     /** Digest of the image. Calculated at creation time. */
@@ -248,13 +243,11 @@ export interface Image {
 }
 
 export interface Image_EnvironmentEntry {
-    $type: 'yandex.cloud.serverless.containers.v1.Image.EnvironmentEntry';
     key: string;
     value: string;
 }
 
 export interface Command {
-    $type: 'yandex.cloud.serverless.containers.v1.Command';
     /**
      * Command that will override ENTRYPOINT of an image.
      *
@@ -266,7 +259,6 @@ export interface Command {
 }
 
 export interface Args {
-    $type: 'yandex.cloud.serverless.containers.v1.Args';
     /**
      * Arguments that will override CMD of an image.
      *
@@ -279,7 +271,6 @@ export interface Args {
 
 /** Resources allocated to a revision. */
 export interface Resources {
-    $type: 'yandex.cloud.serverless.containers.v1.Resources';
     /** Amount of memory available to the revision, specified in bytes, multiple of 128MB. */
     memory: number;
     /** Number of cores available to the revision. */
@@ -292,7 +283,6 @@ export interface Resources {
 }
 
 export interface ProvisionPolicy {
-    $type: 'yandex.cloud.serverless.containers.v1.ProvisionPolicy';
     /**
      * Minimum number of guaranteed provisioned container instances for all zones
      * in total.
@@ -302,7 +292,6 @@ export interface ProvisionPolicy {
 
 /** Secret that is available to the container at run time. */
 export interface Secret {
-    $type: 'yandex.cloud.serverless.containers.v1.Secret';
     /** ID of Yandex Lockbox secret. */
     id: string;
     /** ID of Yandex Lockbox secret. */
@@ -315,7 +304,6 @@ export interface Secret {
 
 /** Revision connectivity specification. */
 export interface Connectivity {
-    $type: 'yandex.cloud.serverless.containers.v1.Connectivity';
     /** Network the revision will have access to. */
     networkId: string;
     /**
@@ -327,7 +315,6 @@ export interface Connectivity {
 }
 
 export interface LogOptions {
-    $type: 'yandex.cloud.serverless.containers.v1.LogOptions';
     /** Is logging from container disabled. */
     disabled: boolean;
     /** Entry should be written to log group resolved by ID. */
@@ -343,7 +330,6 @@ export interface LogOptions {
 }
 
 export interface ScalingPolicy {
-    $type: 'yandex.cloud.serverless.containers.v1.ScalingPolicy';
     /**
      * Upper limit for instance count in each zone.
      * 0 means no limit.
@@ -358,7 +344,6 @@ export interface ScalingPolicy {
 
 /** @deprecated */
 export interface StorageMount {
-    $type: 'yandex.cloud.serverless.containers.v1.StorageMount';
     /** S3 bucket name for mounting. */
     bucketId: string;
     /** S3 bucket prefix for mounting. */
@@ -371,7 +356,6 @@ export interface StorageMount {
 
 /** Mount contains an information about version's external storage mount */
 export interface Mount {
-    $type: 'yandex.cloud.serverless.containers.v1.Mount';
     /** The absolute mount point path inside the container for mounting. */
     mountPointPath: string;
     /** Mount's mode */
@@ -422,7 +406,6 @@ export function mount_ModeToJSON(object: Mount_Mode): string {
 
 /** ObjectStorage as a mount */
 export interface Mount_ObjectStorage {
-    $type: 'yandex.cloud.serverless.containers.v1.Mount.ObjectStorage';
     /** ObjectStorage bucket name for mounting. */
     bucketId: string;
     /** ObjectStorage bucket prefix for mounting. */
@@ -431,7 +414,6 @@ export interface Mount_ObjectStorage {
 
 /** Disk as a mount */
 export interface Mount_DiskSpec {
-    $type: 'yandex.cloud.serverless.containers.v1.Mount.DiskSpec';
     /** The size of disk for mount in bytes */
     size: number;
     /** Optional block size of disk for mount in bytes */
@@ -440,23 +422,17 @@ export interface Mount_DiskSpec {
 
 /** The container's execution mode */
 export interface Runtime {
-    $type: 'yandex.cloud.serverless.containers.v1.Runtime';
     /** The classic one. You need to run an HTTP server inside the container. */
     http?: Runtime_Http | undefined;
     /** We run a process from ENTRYPOINT inside the container for each user request. */
     task?: Runtime_Task | undefined;
 }
 
-export interface Runtime_Http {
-    $type: 'yandex.cloud.serverless.containers.v1.Runtime.Http';
-}
+export interface Runtime_Http {}
 
-export interface Runtime_Task {
-    $type: 'yandex.cloud.serverless.containers.v1.Runtime.Task';
-}
+export interface Runtime_Task {}
 
 export interface MetadataOptions {
-    $type: 'yandex.cloud.serverless.containers.v1.MetadataOptions';
     /** Enabled access to GCE flavored metadata */
     gceHttpEndpoint: MetadataOption;
     /** Enabled access to AWS flavored metadata (IMDSv1) */
@@ -464,7 +440,6 @@ export interface MetadataOptions {
 }
 
 const baseContainer: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.Container',
     id: '',
     folderId: '',
     name: '',
@@ -474,8 +449,6 @@ const baseContainer: object = {
 };
 
 export const Container = {
-    $type: 'yandex.cloud.serverless.containers.v1.Container' as const,
-
     encode(message: Container, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -494,11 +467,7 @@ export const Container = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Container_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.containers.v1.Container.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -625,17 +594,9 @@ export const Container = {
     },
 };
 
-messageTypeRegistry.set(Container.$type, Container);
-
-const baseContainer_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.Container.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseContainer_LabelsEntry: object = { key: '', value: '' };
 
 export const Container_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.containers.v1.Container.LabelsEntry' as const,
-
     encode(message: Container_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -692,10 +653,7 @@ export const Container_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Container_LabelsEntry.$type, Container_LabelsEntry);
-
 const baseRevision: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.Revision',
     id: '',
     containerId: '',
     description: '',
@@ -705,8 +663,6 @@ const baseRevision: object = {
 };
 
 export const Revision = {
-    $type: 'yandex.cloud.serverless.containers.v1.Revision' as const,
-
     encode(message: Revision, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1025,18 +981,9 @@ export const Revision = {
     },
 };
 
-messageTypeRegistry.set(Revision.$type, Revision);
-
-const baseImage: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.Image',
-    imageUrl: '',
-    imageDigest: '',
-    workingDir: '',
-};
+const baseImage: object = { imageUrl: '', imageDigest: '', workingDir: '' };
 
 export const Image = {
-    $type: 'yandex.cloud.serverless.containers.v1.Image' as const,
-
     encode(message: Image, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageUrl !== '') {
             writer.uint32(10).string(message.imageUrl);
@@ -1052,11 +999,7 @@ export const Image = {
         }
         Object.entries(message.environment).forEach(([key, value]) => {
             Image_EnvironmentEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.containers.v1.Image.EnvironmentEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -1177,17 +1120,9 @@ export const Image = {
     },
 };
 
-messageTypeRegistry.set(Image.$type, Image);
-
-const baseImage_EnvironmentEntry: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.Image.EnvironmentEntry',
-    key: '',
-    value: '',
-};
+const baseImage_EnvironmentEntry: object = { key: '', value: '' };
 
 export const Image_EnvironmentEntry = {
-    $type: 'yandex.cloud.serverless.containers.v1.Image.EnvironmentEntry' as const,
-
     encode(message: Image_EnvironmentEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1244,13 +1179,9 @@ export const Image_EnvironmentEntry = {
     },
 };
 
-messageTypeRegistry.set(Image_EnvironmentEntry.$type, Image_EnvironmentEntry);
-
-const baseCommand: object = { $type: 'yandex.cloud.serverless.containers.v1.Command', command: '' };
+const baseCommand: object = { command: '' };
 
 export const Command = {
-    $type: 'yandex.cloud.serverless.containers.v1.Command' as const,
-
     encode(message: Command, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.command) {
             writer.uint32(10).string(v!);
@@ -1300,13 +1231,9 @@ export const Command = {
     },
 };
 
-messageTypeRegistry.set(Command.$type, Command);
-
-const baseArgs: object = { $type: 'yandex.cloud.serverless.containers.v1.Args', args: '' };
+const baseArgs: object = { args: '' };
 
 export const Args = {
-    $type: 'yandex.cloud.serverless.containers.v1.Args' as const,
-
     encode(message: Args, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.args) {
             writer.uint32(10).string(v!);
@@ -1356,18 +1283,9 @@ export const Args = {
     },
 };
 
-messageTypeRegistry.set(Args.$type, Args);
-
-const baseResources: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.Resources',
-    memory: 0,
-    cores: 0,
-    coreFraction: 0,
-};
+const baseResources: object = { memory: 0, cores: 0, coreFraction: 0 };
 
 export const Resources = {
-    $type: 'yandex.cloud.serverless.containers.v1.Resources' as const,
-
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.memory !== 0) {
             writer.uint32(8).int64(message.memory);
@@ -1435,16 +1353,9 @@ export const Resources = {
     },
 };
 
-messageTypeRegistry.set(Resources.$type, Resources);
-
-const baseProvisionPolicy: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.ProvisionPolicy',
-    minInstances: 0,
-};
+const baseProvisionPolicy: object = { minInstances: 0 };
 
 export const ProvisionPolicy = {
-    $type: 'yandex.cloud.serverless.containers.v1.ProvisionPolicy' as const,
-
     encode(message: ProvisionPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.minInstances !== 0) {
             writer.uint32(8).int64(message.minInstances);
@@ -1492,18 +1403,9 @@ export const ProvisionPolicy = {
     },
 };
 
-messageTypeRegistry.set(ProvisionPolicy.$type, ProvisionPolicy);
-
-const baseSecret: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.Secret',
-    id: '',
-    versionId: '',
-    key: '',
-};
+const baseSecret: object = { id: '', versionId: '', key: '' };
 
 export const Secret = {
-    $type: 'yandex.cloud.serverless.containers.v1.Secret' as const,
-
     encode(message: Secret, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1582,17 +1484,9 @@ export const Secret = {
     },
 };
 
-messageTypeRegistry.set(Secret.$type, Secret);
-
-const baseConnectivity: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.Connectivity',
-    networkId: '',
-    subnetIds: '',
-};
+const baseConnectivity: object = { networkId: '', subnetIds: '' };
 
 export const Connectivity = {
-    $type: 'yandex.cloud.serverless.containers.v1.Connectivity' as const,
-
     encode(message: Connectivity, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);
@@ -1654,17 +1548,9 @@ export const Connectivity = {
     },
 };
 
-messageTypeRegistry.set(Connectivity.$type, Connectivity);
-
-const baseLogOptions: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.LogOptions',
-    disabled: false,
-    minLevel: 0,
-};
+const baseLogOptions: object = { disabled: false, minLevel: 0 };
 
 export const LogOptions = {
-    $type: 'yandex.cloud.serverless.containers.v1.LogOptions' as const,
-
     encode(message: LogOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.disabled === true) {
             writer.uint32(8).bool(message.disabled);
@@ -1748,17 +1634,9 @@ export const LogOptions = {
     },
 };
 
-messageTypeRegistry.set(LogOptions.$type, LogOptions);
-
-const baseScalingPolicy: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.ScalingPolicy',
-    zoneInstancesLimit: 0,
-    zoneRequestsLimit: 0,
-};
+const baseScalingPolicy: object = { zoneInstancesLimit: 0, zoneRequestsLimit: 0 };
 
 export const ScalingPolicy = {
-    $type: 'yandex.cloud.serverless.containers.v1.ScalingPolicy' as const,
-
     encode(message: ScalingPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneInstancesLimit !== 0) {
             writer.uint32(8).int64(message.zoneInstancesLimit);
@@ -1820,19 +1698,9 @@ export const ScalingPolicy = {
     },
 };
 
-messageTypeRegistry.set(ScalingPolicy.$type, ScalingPolicy);
-
-const baseStorageMount: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.StorageMount',
-    bucketId: '',
-    prefix: '',
-    readOnly: false,
-    mountPointPath: '',
-};
+const baseStorageMount: object = { bucketId: '', prefix: '', readOnly: false, mountPointPath: '' };
 
 export const StorageMount = {
-    $type: 'yandex.cloud.serverless.containers.v1.StorageMount' as const,
-
     encode(message: StorageMount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucketId !== '') {
             writer.uint32(10).string(message.bucketId);
@@ -1914,17 +1782,9 @@ export const StorageMount = {
     },
 };
 
-messageTypeRegistry.set(StorageMount.$type, StorageMount);
-
-const baseMount: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.Mount',
-    mountPointPath: '',
-    mode: 0,
-};
+const baseMount: object = { mountPointPath: '', mode: 0 };
 
 export const Mount = {
-    $type: 'yandex.cloud.serverless.containers.v1.Mount' as const,
-
     encode(message: Mount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mountPointPath !== '') {
             writer.uint32(18).string(message.mountPointPath);
@@ -2018,17 +1878,9 @@ export const Mount = {
     },
 };
 
-messageTypeRegistry.set(Mount.$type, Mount);
-
-const baseMount_ObjectStorage: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.Mount.ObjectStorage',
-    bucketId: '',
-    prefix: '',
-};
+const baseMount_ObjectStorage: object = { bucketId: '', prefix: '' };
 
 export const Mount_ObjectStorage = {
-    $type: 'yandex.cloud.serverless.containers.v1.Mount.ObjectStorage' as const,
-
     encode(message: Mount_ObjectStorage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucketId !== '') {
             writer.uint32(10).string(message.bucketId);
@@ -2088,17 +1940,9 @@ export const Mount_ObjectStorage = {
     },
 };
 
-messageTypeRegistry.set(Mount_ObjectStorage.$type, Mount_ObjectStorage);
-
-const baseMount_DiskSpec: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.Mount.DiskSpec',
-    size: 0,
-    blockSize: 0,
-};
+const baseMount_DiskSpec: object = { size: 0, blockSize: 0 };
 
 export const Mount_DiskSpec = {
-    $type: 'yandex.cloud.serverless.containers.v1.Mount.DiskSpec' as const,
-
     encode(message: Mount_DiskSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.size !== 0) {
             writer.uint32(8).int64(message.size);
@@ -2155,13 +1999,9 @@ export const Mount_DiskSpec = {
     },
 };
 
-messageTypeRegistry.set(Mount_DiskSpec.$type, Mount_DiskSpec);
-
-const baseRuntime: object = { $type: 'yandex.cloud.serverless.containers.v1.Runtime' };
+const baseRuntime: object = {};
 
 export const Runtime = {
-    $type: 'yandex.cloud.serverless.containers.v1.Runtime' as const,
-
     encode(message: Runtime, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.http !== undefined) {
             Runtime_Http.encode(message.http, writer.uint32(10).fork()).ldelim();
@@ -2229,13 +2069,9 @@ export const Runtime = {
     },
 };
 
-messageTypeRegistry.set(Runtime.$type, Runtime);
-
-const baseRuntime_Http: object = { $type: 'yandex.cloud.serverless.containers.v1.Runtime.Http' };
+const baseRuntime_Http: object = {};
 
 export const Runtime_Http = {
-    $type: 'yandex.cloud.serverless.containers.v1.Runtime.Http' as const,
-
     encode(_: Runtime_Http, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2271,13 +2107,9 @@ export const Runtime_Http = {
     },
 };
 
-messageTypeRegistry.set(Runtime_Http.$type, Runtime_Http);
-
-const baseRuntime_Task: object = { $type: 'yandex.cloud.serverless.containers.v1.Runtime.Task' };
+const baseRuntime_Task: object = {};
 
 export const Runtime_Task = {
-    $type: 'yandex.cloud.serverless.containers.v1.Runtime.Task' as const,
-
     encode(_: Runtime_Task, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2313,17 +2145,9 @@ export const Runtime_Task = {
     },
 };
 
-messageTypeRegistry.set(Runtime_Task.$type, Runtime_Task);
-
-const baseMetadataOptions: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.MetadataOptions',
-    gceHttpEndpoint: 0,
-    awsV1HttpEndpoint: 0,
-};
+const baseMetadataOptions: object = { gceHttpEndpoint: 0, awsV1HttpEndpoint: 0 };
 
 export const MetadataOptions = {
-    $type: 'yandex.cloud.serverless.containers.v1.MetadataOptions' as const,
-
     encode(message: MetadataOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gceHttpEndpoint !== 0) {
             writer.uint32(8).int32(message.gceHttpEndpoint);
@@ -2385,8 +2209,6 @@ export const MetadataOptions = {
     },
 };
 
-messageTypeRegistry.set(MetadataOptions.$type, MetadataOptions);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -2407,21 +2229,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

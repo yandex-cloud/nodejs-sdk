@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ import { Struct } from '../../../../google/protobuf/struct';
 export const protobufPackage = 'yandex.cloud.datasphere.v1';
 
 export interface NodeExecutionRequest {
-    $type: 'yandex.cloud.datasphere.v1.NodeExecutionRequest';
     /** ID of the folder that will be matched with Node ACL. */
     folderId: string;
     /** ID of the Node to perform request on. */
@@ -29,13 +27,11 @@ export interface NodeExecutionRequest {
 }
 
 export interface NodeExecutionResponse {
-    $type: 'yandex.cloud.datasphere.v1.NodeExecutionResponse';
     /** Result of the execution. */
     output?: { [key: string]: any };
 }
 
 export interface AliasExecutionRequest {
-    $type: 'yandex.cloud.datasphere.v1.AliasExecutionRequest';
     /** ID of the folder that will be matched with Alias ACL */
     folderId: string;
     /** Name of the Alias to perform request on */
@@ -45,20 +41,13 @@ export interface AliasExecutionRequest {
 }
 
 export interface AliasExecutionResponse {
-    $type: 'yandex.cloud.datasphere.v1.AliasExecutionResponse';
     /** Result of the execution */
     output?: { [key: string]: any };
 }
 
-const baseNodeExecutionRequest: object = {
-    $type: 'yandex.cloud.datasphere.v1.NodeExecutionRequest',
-    folderId: '',
-    nodeId: '',
-};
+const baseNodeExecutionRequest: object = { folderId: '', nodeId: '' };
 
 export const NodeExecutionRequest = {
-    $type: 'yandex.cloud.datasphere.v1.NodeExecutionRequest' as const,
-
     encode(message: NodeExecutionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -127,15 +116,9 @@ export const NodeExecutionRequest = {
     },
 };
 
-messageTypeRegistry.set(NodeExecutionRequest.$type, NodeExecutionRequest);
-
-const baseNodeExecutionResponse: object = {
-    $type: 'yandex.cloud.datasphere.v1.NodeExecutionResponse',
-};
+const baseNodeExecutionResponse: object = {};
 
 export const NodeExecutionResponse = {
-    $type: 'yandex.cloud.datasphere.v1.NodeExecutionResponse' as const,
-
     encode(message: NodeExecutionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.output !== undefined) {
             Struct.encode(Struct.wrap(message.output), writer.uint32(10).fork()).ldelim();
@@ -182,17 +165,9 @@ export const NodeExecutionResponse = {
     },
 };
 
-messageTypeRegistry.set(NodeExecutionResponse.$type, NodeExecutionResponse);
-
-const baseAliasExecutionRequest: object = {
-    $type: 'yandex.cloud.datasphere.v1.AliasExecutionRequest',
-    folderId: '',
-    aliasName: '',
-};
+const baseAliasExecutionRequest: object = { folderId: '', aliasName: '' };
 
 export const AliasExecutionRequest = {
-    $type: 'yandex.cloud.datasphere.v1.AliasExecutionRequest' as const,
-
     encode(message: AliasExecutionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -263,15 +238,9 @@ export const AliasExecutionRequest = {
     },
 };
 
-messageTypeRegistry.set(AliasExecutionRequest.$type, AliasExecutionRequest);
-
-const baseAliasExecutionResponse: object = {
-    $type: 'yandex.cloud.datasphere.v1.AliasExecutionResponse',
-};
+const baseAliasExecutionResponse: object = {};
 
 export const AliasExecutionResponse = {
-    $type: 'yandex.cloud.datasphere.v1.AliasExecutionResponse' as const,
-
     encode(message: AliasExecutionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.output !== undefined) {
             Struct.encode(Struct.wrap(message.output), writer.uint32(10).fork()).ldelim();
@@ -317,8 +286,6 @@ export const AliasExecutionResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(AliasExecutionResponse.$type, AliasExecutionResponse);
 
 /** A set of methods for managing Node resources. */
 export const NodeServiceService = {
@@ -411,16 +378,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

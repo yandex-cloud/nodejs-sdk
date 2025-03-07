@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,7 +19,6 @@ import { Empty } from '../../../../../google/protobuf/empty';
 export const protobufPackage = 'yandex.cloud.cloudapps.workload.v1';
 
 export interface ResolveByWorkloadRequest {
-    $type: 'yandex.cloud.cloudapps.workload.v1.ResolveByWorkloadRequest';
     /** Type of workload. See WorkloadType. */
     workloadType: ResolveByWorkloadRequest_WorkloadType;
     /** Identifier of workload */
@@ -65,20 +63,13 @@ export function resolveByWorkloadRequest_WorkloadTypeToJSON(
 }
 
 export interface ResolveByWorkloadResponse {
-    $type: 'yandex.cloud.cloudapps.workload.v1.ResolveByWorkloadResponse';
     /** Details of cloud application */
     cloudApplication?: CloudApplication;
 }
 
-const baseResolveByWorkloadRequest: object = {
-    $type: 'yandex.cloud.cloudapps.workload.v1.ResolveByWorkloadRequest',
-    workloadType: 0,
-    workloadId: '',
-};
+const baseResolveByWorkloadRequest: object = { workloadType: 0, workloadId: '' };
 
 export const ResolveByWorkloadRequest = {
-    $type: 'yandex.cloud.cloudapps.workload.v1.ResolveByWorkloadRequest' as const,
-
     encode(
         message: ResolveByWorkloadRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -144,15 +135,9 @@ export const ResolveByWorkloadRequest = {
     },
 };
 
-messageTypeRegistry.set(ResolveByWorkloadRequest.$type, ResolveByWorkloadRequest);
-
-const baseResolveByWorkloadResponse: object = {
-    $type: 'yandex.cloud.cloudapps.workload.v1.ResolveByWorkloadResponse',
-};
+const baseResolveByWorkloadResponse: object = {};
 
 export const ResolveByWorkloadResponse = {
-    $type: 'yandex.cloud.cloudapps.workload.v1.ResolveByWorkloadResponse' as const,
-
     encode(
         message: ResolveByWorkloadResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -210,8 +195,6 @@ export const ResolveByWorkloadResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ResolveByWorkloadResponse.$type, ResolveByWorkloadResponse);
 
 /** Cloud Application Service to be used by Workload software inside Cloud Application installations */
 export const CloudApplicationServiceService = {
@@ -303,16 +286,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

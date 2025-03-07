@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -27,7 +26,6 @@ import {
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
 export interface GetFilesystemRequest {
-    $type: 'yandex.cloud.compute.v1.GetFilesystemRequest';
     /**
      * ID of the filesystem to return.
      *
@@ -37,7 +35,6 @@ export interface GetFilesystemRequest {
 }
 
 export interface ListFilesystemsRequest {
-    $type: 'yandex.cloud.compute.v1.ListFilesystemsRequest';
     /**
      * ID of the folder to list filesystems in.
      *
@@ -76,7 +73,6 @@ export interface ListFilesystemsRequest {
 }
 
 export interface ListFilesystemsResponse {
-    $type: 'yandex.cloud.compute.v1.ListFilesystemsResponse';
     /** List of filesystems in the specified folder. */
     filesystems: Filesystem[];
     /**
@@ -90,7 +86,6 @@ export interface ListFilesystemsResponse {
 }
 
 export interface CreateFilesystemRequest {
-    $type: 'yandex.cloud.compute.v1.CreateFilesystemRequest';
     /**
      * ID of the folder to create a filesystem in.
      *
@@ -140,19 +135,16 @@ export interface CreateFilesystemRequest {
 }
 
 export interface CreateFilesystemRequest_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.CreateFilesystemRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateFilesystemMetadata {
-    $type: 'yandex.cloud.compute.v1.CreateFilesystemMetadata';
     /** ID of the filesystem that is being created. */
     filesystemId: string;
 }
 
 export interface UpdateFilesystemRequest {
-    $type: 'yandex.cloud.compute.v1.UpdateFilesystemRequest';
     /**
      * ID of the filesystem to update.
      *
@@ -181,19 +173,16 @@ export interface UpdateFilesystemRequest {
 }
 
 export interface UpdateFilesystemRequest_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.UpdateFilesystemRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateFilesystemMetadata {
-    $type: 'yandex.cloud.compute.v1.UpdateFilesystemMetadata';
     /** ID of the filesystem that is being updated. */
     filesystemId: string;
 }
 
 export interface DeleteFilesystemRequest {
-    $type: 'yandex.cloud.compute.v1.DeleteFilesystemRequest';
     /**
      * ID of the filesystem to delete.
      *
@@ -203,13 +192,11 @@ export interface DeleteFilesystemRequest {
 }
 
 export interface DeleteFilesystemMetadata {
-    $type: 'yandex.cloud.compute.v1.DeleteFilesystemMetadata';
     /** ID of the filesystem that is being deleted. */
     filesystemId: string;
 }
 
 export interface ListFilesystemOperationsRequest {
-    $type: 'yandex.cloud.compute.v1.ListFilesystemOperationsRequest';
     /**
      * ID of the filesystem to list operations for.
      *
@@ -230,7 +217,6 @@ export interface ListFilesystemOperationsRequest {
 }
 
 export interface ListFilesystemOperationsResponse {
-    $type: 'yandex.cloud.compute.v1.ListFilesystemOperationsResponse';
     /** List of operations for the specified filesystem. */
     operations: Operation[];
     /**
@@ -243,14 +229,9 @@ export interface ListFilesystemOperationsResponse {
     nextPageToken: string;
 }
 
-const baseGetFilesystemRequest: object = {
-    $type: 'yandex.cloud.compute.v1.GetFilesystemRequest',
-    filesystemId: '',
-};
+const baseGetFilesystemRequest: object = { filesystemId: '' };
 
 export const GetFilesystemRequest = {
-    $type: 'yandex.cloud.compute.v1.GetFilesystemRequest' as const,
-
     encode(message: GetFilesystemRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.filesystemId !== '') {
             writer.uint32(10).string(message.filesystemId);
@@ -300,10 +281,7 @@ export const GetFilesystemRequest = {
     },
 };
 
-messageTypeRegistry.set(GetFilesystemRequest.$type, GetFilesystemRequest);
-
 const baseListFilesystemsRequest: object = {
-    $type: 'yandex.cloud.compute.v1.ListFilesystemsRequest',
     folderId: '',
     pageSize: 0,
     pageToken: '',
@@ -312,8 +290,6 @@ const baseListFilesystemsRequest: object = {
 };
 
 export const ListFilesystemsRequest = {
-    $type: 'yandex.cloud.compute.v1.ListFilesystemsRequest' as const,
-
     encode(message: ListFilesystemsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -405,16 +381,9 @@ export const ListFilesystemsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListFilesystemsRequest.$type, ListFilesystemsRequest);
-
-const baseListFilesystemsResponse: object = {
-    $type: 'yandex.cloud.compute.v1.ListFilesystemsResponse',
-    nextPageToken: '',
-};
+const baseListFilesystemsResponse: object = { nextPageToken: '' };
 
 export const ListFilesystemsResponse = {
-    $type: 'yandex.cloud.compute.v1.ListFilesystemsResponse' as const,
-
     encode(message: ListFilesystemsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.filesystems) {
             Filesystem.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -480,10 +449,7 @@ export const ListFilesystemsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListFilesystemsResponse.$type, ListFilesystemsResponse);
-
 const baseCreateFilesystemRequest: object = {
-    $type: 'yandex.cloud.compute.v1.CreateFilesystemRequest',
     folderId: '',
     name: '',
     description: '',
@@ -494,8 +460,6 @@ const baseCreateFilesystemRequest: object = {
 };
 
 export const CreateFilesystemRequest = {
-    $type: 'yandex.cloud.compute.v1.CreateFilesystemRequest' as const,
-
     encode(message: CreateFilesystemRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -508,11 +472,7 @@ export const CreateFilesystemRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateFilesystemRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.compute.v1.CreateFilesystemRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -649,17 +609,9 @@ export const CreateFilesystemRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateFilesystemRequest.$type, CreateFilesystemRequest);
-
-const baseCreateFilesystemRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.CreateFilesystemRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateFilesystemRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateFilesystemRequest_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.CreateFilesystemRequest.LabelsEntry' as const,
-
     encode(
         message: CreateFilesystemRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -725,19 +677,9 @@ export const CreateFilesystemRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateFilesystemRequest_LabelsEntry.$type,
-    CreateFilesystemRequest_LabelsEntry,
-);
-
-const baseCreateFilesystemMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.CreateFilesystemMetadata',
-    filesystemId: '',
-};
+const baseCreateFilesystemMetadata: object = { filesystemId: '' };
 
 export const CreateFilesystemMetadata = {
-    $type: 'yandex.cloud.compute.v1.CreateFilesystemMetadata' as const,
-
     encode(
         message: CreateFilesystemMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -790,10 +732,7 @@ export const CreateFilesystemMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateFilesystemMetadata.$type, CreateFilesystemMetadata);
-
 const baseUpdateFilesystemRequest: object = {
-    $type: 'yandex.cloud.compute.v1.UpdateFilesystemRequest',
     filesystemId: '',
     name: '',
     description: '',
@@ -801,8 +740,6 @@ const baseUpdateFilesystemRequest: object = {
 };
 
 export const UpdateFilesystemRequest = {
-    $type: 'yandex.cloud.compute.v1.UpdateFilesystemRequest' as const,
-
     encode(message: UpdateFilesystemRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.filesystemId !== '') {
             writer.uint32(10).string(message.filesystemId);
@@ -818,11 +755,7 @@ export const UpdateFilesystemRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateFilesystemRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.compute.v1.UpdateFilesystemRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -942,17 +875,9 @@ export const UpdateFilesystemRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateFilesystemRequest.$type, UpdateFilesystemRequest);
-
-const baseUpdateFilesystemRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.UpdateFilesystemRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateFilesystemRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateFilesystemRequest_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.UpdateFilesystemRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateFilesystemRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1018,19 +943,9 @@ export const UpdateFilesystemRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateFilesystemRequest_LabelsEntry.$type,
-    UpdateFilesystemRequest_LabelsEntry,
-);
-
-const baseUpdateFilesystemMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.UpdateFilesystemMetadata',
-    filesystemId: '',
-};
+const baseUpdateFilesystemMetadata: object = { filesystemId: '' };
 
 export const UpdateFilesystemMetadata = {
-    $type: 'yandex.cloud.compute.v1.UpdateFilesystemMetadata' as const,
-
     encode(
         message: UpdateFilesystemMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1083,16 +998,9 @@ export const UpdateFilesystemMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateFilesystemMetadata.$type, UpdateFilesystemMetadata);
-
-const baseDeleteFilesystemRequest: object = {
-    $type: 'yandex.cloud.compute.v1.DeleteFilesystemRequest',
-    filesystemId: '',
-};
+const baseDeleteFilesystemRequest: object = { filesystemId: '' };
 
 export const DeleteFilesystemRequest = {
-    $type: 'yandex.cloud.compute.v1.DeleteFilesystemRequest' as const,
-
     encode(message: DeleteFilesystemRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.filesystemId !== '') {
             writer.uint32(10).string(message.filesystemId);
@@ -1142,16 +1050,9 @@ export const DeleteFilesystemRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteFilesystemRequest.$type, DeleteFilesystemRequest);
-
-const baseDeleteFilesystemMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.DeleteFilesystemMetadata',
-    filesystemId: '',
-};
+const baseDeleteFilesystemMetadata: object = { filesystemId: '' };
 
 export const DeleteFilesystemMetadata = {
-    $type: 'yandex.cloud.compute.v1.DeleteFilesystemMetadata' as const,
-
     encode(
         message: DeleteFilesystemMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1204,18 +1105,13 @@ export const DeleteFilesystemMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteFilesystemMetadata.$type, DeleteFilesystemMetadata);
-
 const baseListFilesystemOperationsRequest: object = {
-    $type: 'yandex.cloud.compute.v1.ListFilesystemOperationsRequest',
     filesystemId: '',
     pageSize: 0,
     pageToken: '',
 };
 
 export const ListFilesystemOperationsRequest = {
-    $type: 'yandex.cloud.compute.v1.ListFilesystemOperationsRequest' as const,
-
     encode(
         message: ListFilesystemOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1296,16 +1192,9 @@ export const ListFilesystemOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListFilesystemOperationsRequest.$type, ListFilesystemOperationsRequest);
-
-const baseListFilesystemOperationsResponse: object = {
-    $type: 'yandex.cloud.compute.v1.ListFilesystemOperationsResponse',
-    nextPageToken: '',
-};
+const baseListFilesystemOperationsResponse: object = { nextPageToken: '' };
 
 export const ListFilesystemOperationsResponse = {
-    $type: 'yandex.cloud.compute.v1.ListFilesystemOperationsResponse' as const,
-
     encode(
         message: ListFilesystemOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1377,8 +1266,6 @@ export const ListFilesystemOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListFilesystemOperationsResponse.$type, ListFilesystemOperationsResponse);
 
 /** A set of methods for managing filesystems. */
 export const FilesystemServiceService = {
@@ -1719,16 +1606,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

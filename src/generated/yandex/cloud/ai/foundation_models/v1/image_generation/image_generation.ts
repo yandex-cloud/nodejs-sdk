@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -7,7 +6,6 @@ export const protobufPackage = 'yandex.cloud.ai.foundation_models.v1.image_gener
 
 /** The text descriptions and weights that the model uses to generate an image. */
 export interface Message {
-    $type: 'yandex.cloud.ai.foundation_models.v1.image_generation.Message';
     /** Text describing the image. */
     text: string;
     /** Message weight. Negative values indicate negative messages. */
@@ -15,7 +13,6 @@ export interface Message {
 }
 
 export interface AspectRatio {
-    $type: 'yandex.cloud.ai.foundation_models.v1.image_generation.AspectRatio';
     /** Weight of width in image. */
     widthRatio: number;
     /** Weight of height in image. */
@@ -23,7 +20,6 @@ export interface AspectRatio {
 }
 
 export interface ImageGenerationOptions {
-    $type: 'yandex.cloud.ai.foundation_models.v1.image_generation.ImageGenerationOptions';
     /**
      * The [MIME type](https://en.wikipedia.org/wiki/Media_type) of generated image format.
      * For possible specifications, see [documentation](/docs/foundation-models/concepts).
@@ -35,15 +31,9 @@ export interface ImageGenerationOptions {
     aspectRatio?: AspectRatio;
 }
 
-const baseMessage: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.image_generation.Message',
-    text: '',
-    weight: 0,
-};
+const baseMessage: object = { text: '', weight: 0 };
 
 export const Message = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.image_generation.Message' as const,
-
     encode(message: Message, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -98,17 +88,9 @@ export const Message = {
     },
 };
 
-messageTypeRegistry.set(Message.$type, Message);
-
-const baseAspectRatio: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.image_generation.AspectRatio',
-    widthRatio: 0,
-    heightRatio: 0,
-};
+const baseAspectRatio: object = { widthRatio: 0, heightRatio: 0 };
 
 export const AspectRatio = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.image_generation.AspectRatio' as const,
-
     encode(message: AspectRatio, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.widthRatio !== 0) {
             writer.uint32(8).int64(message.widthRatio);
@@ -168,17 +150,9 @@ export const AspectRatio = {
     },
 };
 
-messageTypeRegistry.set(AspectRatio.$type, AspectRatio);
-
-const baseImageGenerationOptions: object = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.image_generation.ImageGenerationOptions',
-    mimeType: '',
-    seed: 0,
-};
+const baseImageGenerationOptions: object = { mimeType: '', seed: 0 };
 
 export const ImageGenerationOptions = {
-    $type: 'yandex.cloud.ai.foundation_models.v1.image_generation.ImageGenerationOptions' as const,
-
     encode(message: ImageGenerationOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mimeType !== '') {
             writer.uint32(10).string(message.mimeType);
@@ -255,8 +229,6 @@ export const ImageGenerationOptions = {
     },
 };
 
-messageTypeRegistry.set(ImageGenerationOptions.$type, ImageGenerationOptions);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -277,16 +249,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

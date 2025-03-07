@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -23,32 +22,24 @@ import { Operation } from '../../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.marketplace.pim.v1.saas';
 
 export interface GetProductInstanceRequest {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.GetProductInstanceRequest';
     productInstanceId: string;
 }
 
 export interface ClaimProductInstanceRequest {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.ClaimProductInstanceRequest';
     token: string;
     resourceId: string;
     resourceInfo?: SaasInfo;
 }
 
 export interface ClaimProductInstanceMetadata {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.ClaimProductInstanceMetadata';
     productId: string;
     productInstanceId: string;
     licenseInstanceId: string;
 }
 
-const baseGetProductInstanceRequest: object = {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.GetProductInstanceRequest',
-    productInstanceId: '',
-};
+const baseGetProductInstanceRequest: object = { productInstanceId: '' };
 
 export const GetProductInstanceRequest = {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.GetProductInstanceRequest' as const,
-
     encode(
         message: GetProductInstanceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -102,17 +93,9 @@ export const GetProductInstanceRequest = {
     },
 };
 
-messageTypeRegistry.set(GetProductInstanceRequest.$type, GetProductInstanceRequest);
-
-const baseClaimProductInstanceRequest: object = {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.ClaimProductInstanceRequest',
-    token: '',
-    resourceId: '',
-};
+const baseClaimProductInstanceRequest: object = { token: '', resourceId: '' };
 
 export const ClaimProductInstanceRequest = {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.ClaimProductInstanceRequest' as const,
-
     encode(
         message: ClaimProductInstanceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -193,18 +176,13 @@ export const ClaimProductInstanceRequest = {
     },
 };
 
-messageTypeRegistry.set(ClaimProductInstanceRequest.$type, ClaimProductInstanceRequest);
-
 const baseClaimProductInstanceMetadata: object = {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.ClaimProductInstanceMetadata',
     productId: '',
     productInstanceId: '',
     licenseInstanceId: '',
 };
 
 export const ClaimProductInstanceMetadata = {
-    $type: 'yandex.cloud.marketplace.pim.v1.saas.ClaimProductInstanceMetadata' as const,
-
     encode(
         message: ClaimProductInstanceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -282,8 +260,6 @@ export const ClaimProductInstanceMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ClaimProductInstanceMetadata.$type, ClaimProductInstanceMetadata);
 
 export const ProductInstanceServiceService = {
     get: {
@@ -368,16 +344,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

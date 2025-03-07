@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -7,7 +6,6 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.vpc.v1';
 
 export interface SecurityGroup {
-    $type: 'yandex.cloud.vpc.v1.SecurityGroup';
     /** ID of the security group. */
     id: string;
     /** ID of the folder that the security group belongs to. */
@@ -96,13 +94,11 @@ export function securityGroup_StatusToJSON(object: SecurityGroup_Status): string
 }
 
 export interface SecurityGroup_LabelsEntry {
-    $type: 'yandex.cloud.vpc.v1.SecurityGroup.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface SecurityGroupRule {
-    $type: 'yandex.cloud.vpc.v1.SecurityGroupRule';
     /** ID of the rule. */
     id: string;
     /** Description of the rule. 0-256 characters long. */
@@ -169,13 +165,11 @@ export function securityGroupRule_DirectionToJSON(object: SecurityGroupRule_Dire
 }
 
 export interface SecurityGroupRule_LabelsEntry {
-    $type: 'yandex.cloud.vpc.v1.SecurityGroupRule.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface PortRange {
-    $type: 'yandex.cloud.vpc.v1.PortRange';
     /** The lowest port in the range. */
     fromPort: number;
     /** The highest port in the range. */
@@ -183,7 +177,6 @@ export interface PortRange {
 }
 
 export interface CidrBlocks {
-    $type: 'yandex.cloud.vpc.v1.CidrBlocks';
     /** IPv4 CIDR blocks to allow traffic to. */
     v4CidrBlocks: string[];
     /** IPv6 CIDR blocks to allow traffic to. */
@@ -191,7 +184,6 @@ export interface CidrBlocks {
 }
 
 const baseSecurityGroup: object = {
-    $type: 'yandex.cloud.vpc.v1.SecurityGroup',
     id: '',
     folderId: '',
     name: '',
@@ -202,8 +194,6 @@ const baseSecurityGroup: object = {
 };
 
 export const SecurityGroup = {
-    $type: 'yandex.cloud.vpc.v1.SecurityGroup' as const,
-
     encode(message: SecurityGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -222,7 +212,7 @@ export const SecurityGroup = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             SecurityGroup_LabelsEntry.encode(
-                { $type: 'yandex.cloud.vpc.v1.SecurityGroup.LabelsEntry', key: key as any, value },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -379,17 +369,9 @@ export const SecurityGroup = {
     },
 };
 
-messageTypeRegistry.set(SecurityGroup.$type, SecurityGroup);
-
-const baseSecurityGroup_LabelsEntry: object = {
-    $type: 'yandex.cloud.vpc.v1.SecurityGroup.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseSecurityGroup_LabelsEntry: object = { key: '', value: '' };
 
 export const SecurityGroup_LabelsEntry = {
-    $type: 'yandex.cloud.vpc.v1.SecurityGroup.LabelsEntry' as const,
-
     encode(
         message: SecurityGroup_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -449,10 +431,7 @@ export const SecurityGroup_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(SecurityGroup_LabelsEntry.$type, SecurityGroup_LabelsEntry);
-
 const baseSecurityGroupRule: object = {
-    $type: 'yandex.cloud.vpc.v1.SecurityGroupRule',
     id: '',
     description: '',
     direction: 0,
@@ -461,8 +440,6 @@ const baseSecurityGroupRule: object = {
 };
 
 export const SecurityGroupRule = {
-    $type: 'yandex.cloud.vpc.v1.SecurityGroupRule' as const,
-
     encode(message: SecurityGroupRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -472,11 +449,7 @@ export const SecurityGroupRule = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             SecurityGroupRule_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.vpc.v1.SecurityGroupRule.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(26).fork(),
             ).ldelim();
         });
@@ -654,17 +627,9 @@ export const SecurityGroupRule = {
     },
 };
 
-messageTypeRegistry.set(SecurityGroupRule.$type, SecurityGroupRule);
-
-const baseSecurityGroupRule_LabelsEntry: object = {
-    $type: 'yandex.cloud.vpc.v1.SecurityGroupRule.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseSecurityGroupRule_LabelsEntry: object = { key: '', value: '' };
 
 export const SecurityGroupRule_LabelsEntry = {
-    $type: 'yandex.cloud.vpc.v1.SecurityGroupRule.LabelsEntry' as const,
-
     encode(
         message: SecurityGroupRule_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -724,13 +689,9 @@ export const SecurityGroupRule_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(SecurityGroupRule_LabelsEntry.$type, SecurityGroupRule_LabelsEntry);
-
-const basePortRange: object = { $type: 'yandex.cloud.vpc.v1.PortRange', fromPort: 0, toPort: 0 };
+const basePortRange: object = { fromPort: 0, toPort: 0 };
 
 export const PortRange = {
-    $type: 'yandex.cloud.vpc.v1.PortRange' as const,
-
     encode(message: PortRange, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fromPort !== 0) {
             writer.uint32(8).int64(message.fromPort);
@@ -786,17 +747,9 @@ export const PortRange = {
     },
 };
 
-messageTypeRegistry.set(PortRange.$type, PortRange);
-
-const baseCidrBlocks: object = {
-    $type: 'yandex.cloud.vpc.v1.CidrBlocks',
-    v4CidrBlocks: '',
-    v6CidrBlocks: '',
-};
+const baseCidrBlocks: object = { v4CidrBlocks: '', v6CidrBlocks: '' };
 
 export const CidrBlocks = {
-    $type: 'yandex.cloud.vpc.v1.CidrBlocks' as const,
-
     encode(message: CidrBlocks, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.v4CidrBlocks) {
             writer.uint32(10).string(v!);
@@ -860,8 +813,6 @@ export const CidrBlocks = {
     },
 };
 
-messageTypeRegistry.set(CidrBlocks.$type, CidrBlocks);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -882,21 +833,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

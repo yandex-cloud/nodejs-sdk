@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Transcription } from '../../../../yandex/cloud/speechsense/v1/analysis/transcription';
@@ -190,7 +189,6 @@ export function algorithmToJSON(object: Algorithm): string {
 }
 
 export interface Talk {
-    $type: 'yandex.cloud.speechsense.v1.Talk';
     /** talk id */
     id: string;
     organizationId: string;
@@ -217,14 +215,12 @@ export interface Talk {
 }
 
 export interface TalkState {
-    $type: 'yandex.cloud.speechsense.v1.TalkState';
     processingState: ProcessingState;
     algorithmProcessingInfos: AlgorithmProcessingInfo[];
 }
 
 /** connection field value */
 export interface Field {
-    $type: 'yandex.cloud.speechsense.v1.Field';
     /** name of the field */
     name: string;
     /** field value */
@@ -234,13 +230,11 @@ export interface Field {
 }
 
 export interface AlgorithmProcessingInfo {
-    $type: 'yandex.cloud.speechsense.v1.AlgorithmProcessingInfo';
     algorithm: Algorithm;
     processingState: ProcessingState;
 }
 
 const baseTalk: object = {
-    $type: 'yandex.cloud.speechsense.v1.Talk',
     id: '',
     organizationId: '',
     spaceId: '',
@@ -251,8 +245,6 @@ const baseTalk: object = {
 };
 
 export const Talk = {
-    $type: 'yandex.cloud.speechsense.v1.Talk' as const,
-
     encode(message: Talk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -577,16 +569,9 @@ export const Talk = {
     },
 };
 
-messageTypeRegistry.set(Talk.$type, Talk);
-
-const baseTalkState: object = {
-    $type: 'yandex.cloud.speechsense.v1.TalkState',
-    processingState: 0,
-};
+const baseTalkState: object = { processingState: 0 };
 
 export const TalkState = {
-    $type: 'yandex.cloud.speechsense.v1.TalkState' as const,
-
     encode(message: TalkState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.processingState !== 0) {
             writer.uint32(8).int32(message.processingState);
@@ -657,18 +642,9 @@ export const TalkState = {
     },
 };
 
-messageTypeRegistry.set(TalkState.$type, TalkState);
-
-const baseField: object = {
-    $type: 'yandex.cloud.speechsense.v1.Field',
-    name: '',
-    value: '',
-    type: 0,
-};
+const baseField: object = { name: '', value: '', type: 0 };
 
 export const Field = {
-    $type: 'yandex.cloud.speechsense.v1.Field' as const,
-
     encode(message: Field, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -733,17 +709,9 @@ export const Field = {
     },
 };
 
-messageTypeRegistry.set(Field.$type, Field);
-
-const baseAlgorithmProcessingInfo: object = {
-    $type: 'yandex.cloud.speechsense.v1.AlgorithmProcessingInfo',
-    algorithm: 0,
-    processingState: 0,
-};
+const baseAlgorithmProcessingInfo: object = { algorithm: 0, processingState: 0 };
 
 export const AlgorithmProcessingInfo = {
-    $type: 'yandex.cloud.speechsense.v1.AlgorithmProcessingInfo' as const,
-
     encode(message: AlgorithmProcessingInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.algorithm !== 0) {
             writer.uint32(8).int32(message.algorithm);
@@ -806,8 +774,6 @@ export const AlgorithmProcessingInfo = {
     },
 };
 
-messageTypeRegistry.set(AlgorithmProcessingInfo.$type, AlgorithmProcessingInfo);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -817,21 +783,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

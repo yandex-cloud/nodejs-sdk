@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -34,7 +33,6 @@ import {
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
 export interface GetSnapshotScheduleRequest {
-    $type: 'yandex.cloud.compute.v1.GetSnapshotScheduleRequest';
     /**
      * ID of the snapshot schedule to return.
      *
@@ -44,7 +42,6 @@ export interface GetSnapshotScheduleRequest {
 }
 
 export interface ListSnapshotSchedulesRequest {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotSchedulesRequest';
     /**
      * ID of the folder to list snapshot schedules in.
      *
@@ -84,7 +81,6 @@ export interface ListSnapshotSchedulesRequest {
 }
 
 export interface ListSnapshotSchedulesResponse {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotSchedulesResponse';
     /** List of snapshot schedules in the specified folder. */
     snapshotSchedules: SnapshotSchedule[];
     /**
@@ -98,7 +94,6 @@ export interface ListSnapshotSchedulesResponse {
 }
 
 export interface CreateSnapshotScheduleRequest {
-    $type: 'yandex.cloud.compute.v1.CreateSnapshotScheduleRequest';
     /**
      * ID of the folder to create a snapshot schedule in.
      *
@@ -142,19 +137,16 @@ export interface CreateSnapshotScheduleRequest {
 }
 
 export interface CreateSnapshotScheduleRequest_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.CreateSnapshotScheduleRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateSnapshotScheduleMetadata {
-    $type: 'yandex.cloud.compute.v1.CreateSnapshotScheduleMetadata';
     /** ID of the snapshot schedule that is being created. */
     snapshotScheduleId: string;
 }
 
 export interface UpdateSnapshotScheduleRequest {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotScheduleRequest';
     /**
      * ID of the snapshot schedule to update.
      *
@@ -199,19 +191,16 @@ export interface UpdateSnapshotScheduleRequest {
 }
 
 export interface UpdateSnapshotScheduleRequest_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotScheduleRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateSnapshotScheduleMetadata {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotScheduleMetadata';
     /** ID of the snapshot schedule that is being updated. */
     snapshotScheduleId: string;
 }
 
 export interface DeleteSnapshotScheduleRequest {
-    $type: 'yandex.cloud.compute.v1.DeleteSnapshotScheduleRequest';
     /**
      * ID of the snapshot schedule to delete.
      *
@@ -221,13 +210,11 @@ export interface DeleteSnapshotScheduleRequest {
 }
 
 export interface DeleteSnapshotScheduleMetadata {
-    $type: 'yandex.cloud.compute.v1.DeleteSnapshotScheduleMetadata';
     /** ID of the snapshot schedule that is being deleted. */
     snapshotScheduleId: string;
 }
 
 export interface DisableSnapshotScheduleRequest {
-    $type: 'yandex.cloud.compute.v1.DisableSnapshotScheduleRequest';
     /**
      * ID of the snapshot schedule to disable.
      *
@@ -237,13 +224,11 @@ export interface DisableSnapshotScheduleRequest {
 }
 
 export interface DisableSnapshotScheduleMetadata {
-    $type: 'yandex.cloud.compute.v1.DisableSnapshotScheduleMetadata';
     /** ID of the snapshot schedule that is being disabled. */
     snapshotScheduleId: string;
 }
 
 export interface EnableSnapshotScheduleRequest {
-    $type: 'yandex.cloud.compute.v1.EnableSnapshotScheduleRequest';
     /**
      * ID of the snapshot schedule to enable.
      *
@@ -253,13 +238,11 @@ export interface EnableSnapshotScheduleRequest {
 }
 
 export interface EnableSnapshotScheduleMetadata {
-    $type: 'yandex.cloud.compute.v1.EnableSnapshotScheduleMetadata';
     /** ID of the snapshot schedule that is being enabled. */
     snapshotScheduleId: string;
 }
 
 export interface ListSnapshotScheduleOperationsRequest {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotScheduleOperationsRequest';
     /**
      * ID of the snapshot schedule to list operations for.
      *
@@ -282,7 +265,6 @@ export interface ListSnapshotScheduleOperationsRequest {
 }
 
 export interface ListSnapshotScheduleOperationsResponse {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotScheduleOperationsResponse';
     /** List of operations for the specified snapshot schedule. */
     operations: Operation[];
     /**
@@ -296,7 +278,6 @@ export interface ListSnapshotScheduleOperationsResponse {
 }
 
 export interface ListSnapshotScheduleSnapshotsRequest {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotScheduleSnapshotsRequest';
     /**
      * ID of the snapshot schedule to list created snapshots for.
      *
@@ -319,7 +300,6 @@ export interface ListSnapshotScheduleSnapshotsRequest {
 }
 
 export interface ListSnapshotScheduleSnapshotsResponse {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotScheduleSnapshotsResponse';
     /** List of snapshots created by the specified snapshot schedule. */
     snapshots: Snapshot[];
     /**
@@ -333,7 +313,6 @@ export interface ListSnapshotScheduleSnapshotsResponse {
 }
 
 export interface ListSnapshotScheduleDisksRequest {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotScheduleDisksRequest';
     /**
      * ID of the snapshot schedule to list attached disks for.
      *
@@ -356,7 +335,6 @@ export interface ListSnapshotScheduleDisksRequest {
 }
 
 export interface ListSnapshotScheduleDisksResponse {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotScheduleDisksResponse';
     /** List of disks attached to the specified snapshot schedule. */
     disks: Disk[];
     /**
@@ -370,7 +348,6 @@ export interface ListSnapshotScheduleDisksResponse {
 }
 
 export interface UpdateSnapshotScheduleDisksRequest {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotScheduleDisksRequest';
     /**
      * ID of the snapshot schedule to update.
      *
@@ -392,19 +369,13 @@ export interface UpdateSnapshotScheduleDisksRequest {
 }
 
 export interface UpdateSnapshotScheduleDisksMetadata {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotScheduleDisksMetadata';
     /** ID of the snapshot schedule that is being updated. */
     snapshotScheduleId: string;
 }
 
-const baseGetSnapshotScheduleRequest: object = {
-    $type: 'yandex.cloud.compute.v1.GetSnapshotScheduleRequest',
-    snapshotScheduleId: '',
-};
+const baseGetSnapshotScheduleRequest: object = { snapshotScheduleId: '' };
 
 export const GetSnapshotScheduleRequest = {
-    $type: 'yandex.cloud.compute.v1.GetSnapshotScheduleRequest' as const,
-
     encode(
         message: GetSnapshotScheduleRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -458,10 +429,7 @@ export const GetSnapshotScheduleRequest = {
     },
 };
 
-messageTypeRegistry.set(GetSnapshotScheduleRequest.$type, GetSnapshotScheduleRequest);
-
 const baseListSnapshotSchedulesRequest: object = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotSchedulesRequest',
     folderId: '',
     pageSize: 0,
     pageToken: '',
@@ -470,8 +438,6 @@ const baseListSnapshotSchedulesRequest: object = {
 };
 
 export const ListSnapshotSchedulesRequest = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotSchedulesRequest' as const,
-
     encode(
         message: ListSnapshotSchedulesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -566,16 +532,9 @@ export const ListSnapshotSchedulesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListSnapshotSchedulesRequest.$type, ListSnapshotSchedulesRequest);
-
-const baseListSnapshotSchedulesResponse: object = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotSchedulesResponse',
-    nextPageToken: '',
-};
+const baseListSnapshotSchedulesResponse: object = { nextPageToken: '' };
 
 export const ListSnapshotSchedulesResponse = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotSchedulesResponse' as const,
-
     encode(
         message: ListSnapshotSchedulesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -649,10 +608,7 @@ export const ListSnapshotSchedulesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListSnapshotSchedulesResponse.$type, ListSnapshotSchedulesResponse);
-
 const baseCreateSnapshotScheduleRequest: object = {
-    $type: 'yandex.cloud.compute.v1.CreateSnapshotScheduleRequest',
     folderId: '',
     name: '',
     description: '',
@@ -660,8 +616,6 @@ const baseCreateSnapshotScheduleRequest: object = {
 };
 
 export const CreateSnapshotScheduleRequest = {
-    $type: 'yandex.cloud.compute.v1.CreateSnapshotScheduleRequest' as const,
-
     encode(
         message: CreateSnapshotScheduleRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -677,11 +631,7 @@ export const CreateSnapshotScheduleRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateSnapshotScheduleRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.compute.v1.CreateSnapshotScheduleRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -858,17 +808,9 @@ export const CreateSnapshotScheduleRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateSnapshotScheduleRequest.$type, CreateSnapshotScheduleRequest);
-
-const baseCreateSnapshotScheduleRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.CreateSnapshotScheduleRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateSnapshotScheduleRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateSnapshotScheduleRequest_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.CreateSnapshotScheduleRequest.LabelsEntry' as const,
-
     encode(
         message: CreateSnapshotScheduleRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -937,19 +879,9 @@ export const CreateSnapshotScheduleRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateSnapshotScheduleRequest_LabelsEntry.$type,
-    CreateSnapshotScheduleRequest_LabelsEntry,
-);
-
-const baseCreateSnapshotScheduleMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.CreateSnapshotScheduleMetadata',
-    snapshotScheduleId: '',
-};
+const baseCreateSnapshotScheduleMetadata: object = { snapshotScheduleId: '' };
 
 export const CreateSnapshotScheduleMetadata = {
-    $type: 'yandex.cloud.compute.v1.CreateSnapshotScheduleMetadata' as const,
-
     encode(
         message: CreateSnapshotScheduleMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1003,18 +935,13 @@ export const CreateSnapshotScheduleMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateSnapshotScheduleMetadata.$type, CreateSnapshotScheduleMetadata);
-
 const baseUpdateSnapshotScheduleRequest: object = {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotScheduleRequest',
     snapshotScheduleId: '',
     name: '',
     description: '',
 };
 
 export const UpdateSnapshotScheduleRequest = {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotScheduleRequest' as const,
-
     encode(
         message: UpdateSnapshotScheduleRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1033,11 +960,7 @@ export const UpdateSnapshotScheduleRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateSnapshotScheduleRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.compute.v1.UpdateSnapshotScheduleRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -1216,17 +1139,9 @@ export const UpdateSnapshotScheduleRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateSnapshotScheduleRequest.$type, UpdateSnapshotScheduleRequest);
-
-const baseUpdateSnapshotScheduleRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotScheduleRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateSnapshotScheduleRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateSnapshotScheduleRequest_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotScheduleRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateSnapshotScheduleRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1295,19 +1210,9 @@ export const UpdateSnapshotScheduleRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateSnapshotScheduleRequest_LabelsEntry.$type,
-    UpdateSnapshotScheduleRequest_LabelsEntry,
-);
-
-const baseUpdateSnapshotScheduleMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotScheduleMetadata',
-    snapshotScheduleId: '',
-};
+const baseUpdateSnapshotScheduleMetadata: object = { snapshotScheduleId: '' };
 
 export const UpdateSnapshotScheduleMetadata = {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotScheduleMetadata' as const,
-
     encode(
         message: UpdateSnapshotScheduleMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1361,16 +1266,9 @@ export const UpdateSnapshotScheduleMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateSnapshotScheduleMetadata.$type, UpdateSnapshotScheduleMetadata);
-
-const baseDeleteSnapshotScheduleRequest: object = {
-    $type: 'yandex.cloud.compute.v1.DeleteSnapshotScheduleRequest',
-    snapshotScheduleId: '',
-};
+const baseDeleteSnapshotScheduleRequest: object = { snapshotScheduleId: '' };
 
 export const DeleteSnapshotScheduleRequest = {
-    $type: 'yandex.cloud.compute.v1.DeleteSnapshotScheduleRequest' as const,
-
     encode(
         message: DeleteSnapshotScheduleRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1424,16 +1322,9 @@ export const DeleteSnapshotScheduleRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteSnapshotScheduleRequest.$type, DeleteSnapshotScheduleRequest);
-
-const baseDeleteSnapshotScheduleMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.DeleteSnapshotScheduleMetadata',
-    snapshotScheduleId: '',
-};
+const baseDeleteSnapshotScheduleMetadata: object = { snapshotScheduleId: '' };
 
 export const DeleteSnapshotScheduleMetadata = {
-    $type: 'yandex.cloud.compute.v1.DeleteSnapshotScheduleMetadata' as const,
-
     encode(
         message: DeleteSnapshotScheduleMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1487,16 +1378,9 @@ export const DeleteSnapshotScheduleMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteSnapshotScheduleMetadata.$type, DeleteSnapshotScheduleMetadata);
-
-const baseDisableSnapshotScheduleRequest: object = {
-    $type: 'yandex.cloud.compute.v1.DisableSnapshotScheduleRequest',
-    snapshotScheduleId: '',
-};
+const baseDisableSnapshotScheduleRequest: object = { snapshotScheduleId: '' };
 
 export const DisableSnapshotScheduleRequest = {
-    $type: 'yandex.cloud.compute.v1.DisableSnapshotScheduleRequest' as const,
-
     encode(
         message: DisableSnapshotScheduleRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1550,16 +1434,9 @@ export const DisableSnapshotScheduleRequest = {
     },
 };
 
-messageTypeRegistry.set(DisableSnapshotScheduleRequest.$type, DisableSnapshotScheduleRequest);
-
-const baseDisableSnapshotScheduleMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.DisableSnapshotScheduleMetadata',
-    snapshotScheduleId: '',
-};
+const baseDisableSnapshotScheduleMetadata: object = { snapshotScheduleId: '' };
 
 export const DisableSnapshotScheduleMetadata = {
-    $type: 'yandex.cloud.compute.v1.DisableSnapshotScheduleMetadata' as const,
-
     encode(
         message: DisableSnapshotScheduleMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1619,16 +1496,9 @@ export const DisableSnapshotScheduleMetadata = {
     },
 };
 
-messageTypeRegistry.set(DisableSnapshotScheduleMetadata.$type, DisableSnapshotScheduleMetadata);
-
-const baseEnableSnapshotScheduleRequest: object = {
-    $type: 'yandex.cloud.compute.v1.EnableSnapshotScheduleRequest',
-    snapshotScheduleId: '',
-};
+const baseEnableSnapshotScheduleRequest: object = { snapshotScheduleId: '' };
 
 export const EnableSnapshotScheduleRequest = {
-    $type: 'yandex.cloud.compute.v1.EnableSnapshotScheduleRequest' as const,
-
     encode(
         message: EnableSnapshotScheduleRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1682,16 +1552,9 @@ export const EnableSnapshotScheduleRequest = {
     },
 };
 
-messageTypeRegistry.set(EnableSnapshotScheduleRequest.$type, EnableSnapshotScheduleRequest);
-
-const baseEnableSnapshotScheduleMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.EnableSnapshotScheduleMetadata',
-    snapshotScheduleId: '',
-};
+const baseEnableSnapshotScheduleMetadata: object = { snapshotScheduleId: '' };
 
 export const EnableSnapshotScheduleMetadata = {
-    $type: 'yandex.cloud.compute.v1.EnableSnapshotScheduleMetadata' as const,
-
     encode(
         message: EnableSnapshotScheduleMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1745,18 +1608,13 @@ export const EnableSnapshotScheduleMetadata = {
     },
 };
 
-messageTypeRegistry.set(EnableSnapshotScheduleMetadata.$type, EnableSnapshotScheduleMetadata);
-
 const baseListSnapshotScheduleOperationsRequest: object = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotScheduleOperationsRequest',
     snapshotScheduleId: '',
     pageSize: 0,
     pageToken: '',
 };
 
 export const ListSnapshotScheduleOperationsRequest = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotScheduleOperationsRequest' as const,
-
     encode(
         message: ListSnapshotScheduleOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1838,19 +1696,9 @@ export const ListSnapshotScheduleOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    ListSnapshotScheduleOperationsRequest.$type,
-    ListSnapshotScheduleOperationsRequest,
-);
-
-const baseListSnapshotScheduleOperationsResponse: object = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotScheduleOperationsResponse',
-    nextPageToken: '',
-};
+const baseListSnapshotScheduleOperationsResponse: object = { nextPageToken: '' };
 
 export const ListSnapshotScheduleOperationsResponse = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotScheduleOperationsResponse' as const,
-
     encode(
         message: ListSnapshotScheduleOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1926,21 +1774,13 @@ export const ListSnapshotScheduleOperationsResponse = {
     },
 };
 
-messageTypeRegistry.set(
-    ListSnapshotScheduleOperationsResponse.$type,
-    ListSnapshotScheduleOperationsResponse,
-);
-
 const baseListSnapshotScheduleSnapshotsRequest: object = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotScheduleSnapshotsRequest',
     snapshotScheduleId: '',
     pageSize: 0,
     pageToken: '',
 };
 
 export const ListSnapshotScheduleSnapshotsRequest = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotScheduleSnapshotsRequest' as const,
-
     encode(
         message: ListSnapshotScheduleSnapshotsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2022,19 +1862,9 @@ export const ListSnapshotScheduleSnapshotsRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    ListSnapshotScheduleSnapshotsRequest.$type,
-    ListSnapshotScheduleSnapshotsRequest,
-);
-
-const baseListSnapshotScheduleSnapshotsResponse: object = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotScheduleSnapshotsResponse',
-    nextPageToken: '',
-};
+const baseListSnapshotScheduleSnapshotsResponse: object = { nextPageToken: '' };
 
 export const ListSnapshotScheduleSnapshotsResponse = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotScheduleSnapshotsResponse' as const,
-
     encode(
         message: ListSnapshotScheduleSnapshotsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2107,21 +1937,13 @@ export const ListSnapshotScheduleSnapshotsResponse = {
     },
 };
 
-messageTypeRegistry.set(
-    ListSnapshotScheduleSnapshotsResponse.$type,
-    ListSnapshotScheduleSnapshotsResponse,
-);
-
 const baseListSnapshotScheduleDisksRequest: object = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotScheduleDisksRequest',
     snapshotScheduleId: '',
     pageSize: 0,
     pageToken: '',
 };
 
 export const ListSnapshotScheduleDisksRequest = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotScheduleDisksRequest' as const,
-
     encode(
         message: ListSnapshotScheduleDisksRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2203,16 +2025,9 @@ export const ListSnapshotScheduleDisksRequest = {
     },
 };
 
-messageTypeRegistry.set(ListSnapshotScheduleDisksRequest.$type, ListSnapshotScheduleDisksRequest);
-
-const baseListSnapshotScheduleDisksResponse: object = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotScheduleDisksResponse',
-    nextPageToken: '',
-};
+const baseListSnapshotScheduleDisksResponse: object = { nextPageToken: '' };
 
 export const ListSnapshotScheduleDisksResponse = {
-    $type: 'yandex.cloud.compute.v1.ListSnapshotScheduleDisksResponse' as const,
-
     encode(
         message: ListSnapshotScheduleDisksResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2285,18 +2100,13 @@ export const ListSnapshotScheduleDisksResponse = {
     },
 };
 
-messageTypeRegistry.set(ListSnapshotScheduleDisksResponse.$type, ListSnapshotScheduleDisksResponse);
-
 const baseUpdateSnapshotScheduleDisksRequest: object = {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotScheduleDisksRequest',
     snapshotScheduleId: '',
     remove: '',
     add: '',
 };
 
 export const UpdateSnapshotScheduleDisksRequest = {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotScheduleDisksRequest' as const,
-
     encode(
         message: UpdateSnapshotScheduleDisksRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2384,19 +2194,9 @@ export const UpdateSnapshotScheduleDisksRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateSnapshotScheduleDisksRequest.$type,
-    UpdateSnapshotScheduleDisksRequest,
-);
-
-const baseUpdateSnapshotScheduleDisksMetadata: object = {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotScheduleDisksMetadata',
-    snapshotScheduleId: '',
-};
+const baseUpdateSnapshotScheduleDisksMetadata: object = { snapshotScheduleId: '' };
 
 export const UpdateSnapshotScheduleDisksMetadata = {
-    $type: 'yandex.cloud.compute.v1.UpdateSnapshotScheduleDisksMetadata' as const,
-
     encode(
         message: UpdateSnapshotScheduleDisksMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2455,11 +2255,6 @@ export const UpdateSnapshotScheduleDisksMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(
-    UpdateSnapshotScheduleDisksMetadata.$type,
-    UpdateSnapshotScheduleDisksMetadata,
-);
 
 /** A set of methods for managing snapshot schedules. */
 export const SnapshotScheduleServiceService = {
@@ -3033,16 +2828,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

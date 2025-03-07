@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -21,35 +20,29 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.mdb.greenplum.v1';
 
 export interface CreateResourceGroupMetadata {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreateResourceGroupMetadata';
     clusterId: string;
     resourceGroupName: string;
 }
 
 export interface UpdateResourceGroupMetadata {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdateResourceGroupMetadata';
     clusterId: string;
     resourceGroupName: string;
 }
 
 export interface DeleteResourceGroupMetadata {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeleteResourceGroupMetadata';
     clusterId: string;
     resourceGroupName: string;
 }
 
 export interface ListResourceGroupsRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListResourceGroupsRequest';
     clusterId: string;
 }
 
 export interface ListResourceGroupsResponse {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListResourceGroupsResponse';
     resourceGroups: ResourceGroup[];
 }
 
 export interface GetResourceGroupAtRevisionRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GetResourceGroupAtRevisionRequest';
     /** ID of the Greenplum cluster. */
     clusterId: string;
     /** Cluster revision */
@@ -58,33 +51,24 @@ export interface GetResourceGroupAtRevisionRequest {
 }
 
 export interface CreateResourceGroupRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreateResourceGroupRequest';
     clusterId: string;
     resourceGroup?: ResourceGroup;
 }
 
 export interface UpdateResourceGroupRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdateResourceGroupRequest';
     clusterId: string;
     updateMask?: FieldMask;
     resourceGroup?: ResourceGroup;
 }
 
 export interface DeleteResourceGroupRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeleteResourceGroupRequest';
     clusterId: string;
     resourceGroupName: string;
 }
 
-const baseCreateResourceGroupMetadata: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreateResourceGroupMetadata',
-    clusterId: '',
-    resourceGroupName: '',
-};
+const baseCreateResourceGroupMetadata: object = { clusterId: '', resourceGroupName: '' };
 
 export const CreateResourceGroupMetadata = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreateResourceGroupMetadata' as const,
-
     encode(
         message: CreateResourceGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -150,17 +134,9 @@ export const CreateResourceGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateResourceGroupMetadata.$type, CreateResourceGroupMetadata);
-
-const baseUpdateResourceGroupMetadata: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdateResourceGroupMetadata',
-    clusterId: '',
-    resourceGroupName: '',
-};
+const baseUpdateResourceGroupMetadata: object = { clusterId: '', resourceGroupName: '' };
 
 export const UpdateResourceGroupMetadata = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdateResourceGroupMetadata' as const,
-
     encode(
         message: UpdateResourceGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -226,17 +202,9 @@ export const UpdateResourceGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateResourceGroupMetadata.$type, UpdateResourceGroupMetadata);
-
-const baseDeleteResourceGroupMetadata: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeleteResourceGroupMetadata',
-    clusterId: '',
-    resourceGroupName: '',
-};
+const baseDeleteResourceGroupMetadata: object = { clusterId: '', resourceGroupName: '' };
 
 export const DeleteResourceGroupMetadata = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeleteResourceGroupMetadata' as const,
-
     encode(
         message: DeleteResourceGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -302,16 +270,9 @@ export const DeleteResourceGroupMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteResourceGroupMetadata.$type, DeleteResourceGroupMetadata);
-
-const baseListResourceGroupsRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListResourceGroupsRequest',
-    clusterId: '',
-};
+const baseListResourceGroupsRequest: object = { clusterId: '' };
 
 export const ListResourceGroupsRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListResourceGroupsRequest' as const,
-
     encode(
         message: ListResourceGroupsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -364,15 +325,9 @@ export const ListResourceGroupsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListResourceGroupsRequest.$type, ListResourceGroupsRequest);
-
-const baseListResourceGroupsResponse: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListResourceGroupsResponse',
-};
+const baseListResourceGroupsResponse: object = {};
 
 export const ListResourceGroupsResponse = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListResourceGroupsResponse' as const,
-
     encode(
         message: ListResourceGroupsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -432,18 +387,13 @@ export const ListResourceGroupsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListResourceGroupsResponse.$type, ListResourceGroupsResponse);
-
 const baseGetResourceGroupAtRevisionRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GetResourceGroupAtRevisionRequest',
     clusterId: '',
     revision: 0,
     resourceGroupName: '',
 };
 
 export const GetResourceGroupAtRevisionRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GetResourceGroupAtRevisionRequest' as const,
-
     encode(
         message: GetResourceGroupAtRevisionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -525,16 +475,9 @@ export const GetResourceGroupAtRevisionRequest = {
     },
 };
 
-messageTypeRegistry.set(GetResourceGroupAtRevisionRequest.$type, GetResourceGroupAtRevisionRequest);
-
-const baseCreateResourceGroupRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreateResourceGroupRequest',
-    clusterId: '',
-};
+const baseCreateResourceGroupRequest: object = { clusterId: '' };
 
 export const CreateResourceGroupRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreateResourceGroupRequest' as const,
-
     encode(
         message: CreateResourceGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -605,16 +548,9 @@ export const CreateResourceGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateResourceGroupRequest.$type, CreateResourceGroupRequest);
-
-const baseUpdateResourceGroupRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdateResourceGroupRequest',
-    clusterId: '',
-};
+const baseUpdateResourceGroupRequest: object = { clusterId: '' };
 
 export const UpdateResourceGroupRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdateResourceGroupRequest' as const,
-
     encode(
         message: UpdateResourceGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -703,17 +639,9 @@ export const UpdateResourceGroupRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateResourceGroupRequest.$type, UpdateResourceGroupRequest);
-
-const baseDeleteResourceGroupRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeleteResourceGroupRequest',
-    clusterId: '',
-    resourceGroupName: '',
-};
+const baseDeleteResourceGroupRequest: object = { clusterId: '', resourceGroupName: '' };
 
 export const DeleteResourceGroupRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeleteResourceGroupRequest' as const,
-
     encode(
         message: DeleteResourceGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -778,8 +706,6 @@ export const DeleteResourceGroupRequest = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteResourceGroupRequest.$type, DeleteResourceGroupRequest);
 
 export const ResourceGroupServiceService = {
     /** List all resource group */
@@ -969,16 +895,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

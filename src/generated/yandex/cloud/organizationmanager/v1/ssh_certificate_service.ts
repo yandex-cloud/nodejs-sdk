@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -18,7 +17,6 @@ import _m0 from 'protobufjs/minimal';
 export const protobufPackage = 'yandex.cloud.organizationmanager.v1';
 
 export interface GenerateSshCertificateRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.GenerateSshCertificateRequest';
     /** the cloud must be attached to an organization */
     cloudId: string | undefined;
     organizationId: string | undefined;
@@ -30,19 +28,13 @@ export interface GenerateSshCertificateRequest {
 }
 
 export interface GenerateSshCertificateResponse {
-    $type: 'yandex.cloud.organizationmanager.v1.GenerateSshCertificateResponse';
     /** as per specification https://cvsweb.openbsd.org/src/usr.bin/ssh/PROTOCOL.certkeys?annotate=HEAD */
     signedCertificate: string;
 }
 
-const baseGenerateSshCertificateRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.GenerateSshCertificateRequest',
-    publicKey: '',
-};
+const baseGenerateSshCertificateRequest: object = { publicKey: '' };
 
 export const GenerateSshCertificateRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.GenerateSshCertificateRequest' as const,
-
     encode(
         message: GenerateSshCertificateRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -143,16 +135,9 @@ export const GenerateSshCertificateRequest = {
     },
 };
 
-messageTypeRegistry.set(GenerateSshCertificateRequest.$type, GenerateSshCertificateRequest);
-
-const baseGenerateSshCertificateResponse: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.GenerateSshCertificateResponse',
-    signedCertificate: '',
-};
+const baseGenerateSshCertificateResponse: object = { signedCertificate: '' };
 
 export const GenerateSshCertificateResponse = {
-    $type: 'yandex.cloud.organizationmanager.v1.GenerateSshCertificateResponse' as const,
-
     encode(
         message: GenerateSshCertificateResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -205,8 +190,6 @@ export const GenerateSshCertificateResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(GenerateSshCertificateResponse.$type, GenerateSshCertificateResponse);
 
 export const SshCertificateServiceService = {
     /**
@@ -277,16 +260,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

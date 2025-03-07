@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { TextWidget } from '../../../../yandex/cloud/monitoring/v3/text_widget';
@@ -11,7 +10,6 @@ export const protobufPackage = 'yandex.cloud.monitoring.v3';
 
 /** Widget. */
 export interface Widget {
-    $type: 'yandex.cloud.monitoring.v3.Widget';
     /** Required. Widget layout position. */
     position?: Widget_LayoutPosition;
     /** Text widget. */
@@ -26,7 +24,6 @@ export interface Widget {
 
 /** Layout item for widget item positioning. */
 export interface Widget_LayoutPosition {
-    $type: 'yandex.cloud.monitoring.v3.Widget.LayoutPosition';
     /** Required. X-axis top-left corner coordinate. */
     x: number;
     /** Required. Y-axis top-left corner coordinate. */
@@ -37,11 +34,9 @@ export interface Widget_LayoutPosition {
     h: number;
 }
 
-const baseWidget: object = { $type: 'yandex.cloud.monitoring.v3.Widget' };
+const baseWidget: object = {};
 
 export const Widget = {
-    $type: 'yandex.cloud.monitoring.v3.Widget' as const,
-
     encode(message: Widget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.position !== undefined) {
             Widget_LayoutPosition.encode(message.position, writer.uint32(10).fork()).ldelim();
@@ -167,19 +162,9 @@ export const Widget = {
     },
 };
 
-messageTypeRegistry.set(Widget.$type, Widget);
-
-const baseWidget_LayoutPosition: object = {
-    $type: 'yandex.cloud.monitoring.v3.Widget.LayoutPosition',
-    x: 0,
-    y: 0,
-    w: 0,
-    h: 0,
-};
+const baseWidget_LayoutPosition: object = { x: 0, y: 0, w: 0, h: 0 };
 
 export const Widget_LayoutPosition = {
-    $type: 'yandex.cloud.monitoring.v3.Widget.LayoutPosition' as const,
-
     encode(message: Widget_LayoutPosition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.x !== 0) {
             writer.uint32(8).int64(message.x);
@@ -253,8 +238,6 @@ export const Widget_LayoutPosition = {
     },
 };
 
-messageTypeRegistry.set(Widget_LayoutPosition.$type, Widget_LayoutPosition);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -275,16 +258,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

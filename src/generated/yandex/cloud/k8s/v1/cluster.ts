@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -63,7 +62,6 @@ export function releaseChannelToJSON(object: ReleaseChannel): string {
 
 /** A Kubernetes cluster. */
 export interface Cluster {
-    $type: 'yandex.cloud.k8s.v1.Cluster';
     /** ID of the Kubernetes cluster. */
     id: string;
     /** ID of the folder that the Kubernetes cluster belongs to. */
@@ -224,13 +222,11 @@ export function cluster_HealthToJSON(object: Cluster_Health): string {
 }
 
 export interface Cluster_LabelsEntry {
-    $type: 'yandex.cloud.k8s.v1.Cluster.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface Master {
-    $type: 'yandex.cloud.k8s.v1.Master';
     /** Parameters of the availability zone for the master. */
     zonalMaster?: ZonalMaster | undefined;
     /** Parameters of the region for the master. */
@@ -259,13 +255,11 @@ export interface Master {
 }
 
 export interface MasterAuth {
-    $type: 'yandex.cloud.k8s.v1.MasterAuth';
     /** PEM-encoded public certificate that is the root of trust for the Kubernetes cluster. */
     clusterCaCertificate: string;
 }
 
 export interface ZonalMaster {
-    $type: 'yandex.cloud.k8s.v1.ZonalMaster';
     /** ID of the availability zone where the master resides. */
     zoneId: string;
     /** IPv4 internal network address that is assigned to the master. */
@@ -275,7 +269,6 @@ export interface ZonalMaster {
 }
 
 export interface RegionalMaster {
-    $type: 'yandex.cloud.k8s.v1.RegionalMaster';
     /** ID of the region where the master resides. */
     regionId: string;
     /** IPv4 internal network address that is assigned to the master. */
@@ -287,7 +280,6 @@ export interface RegionalMaster {
 }
 
 export interface Location {
-    $type: 'yandex.cloud.k8s.v1.Location';
     /** ID of the availability zone where the master resides. */
     zoneId: string;
     /** ID of the VPC network's subnet where the master resides. */
@@ -295,7 +287,6 @@ export interface Location {
 }
 
 export interface MasterEndpoints {
-    $type: 'yandex.cloud.k8s.v1.MasterEndpoints';
     /** Internal endpoint that can be used to connect to the master from cloud networks. */
     internalV4Endpoint: string;
     /** External endpoint that can be used to access Kubernetes cluster API from the internet (outside of the cloud). */
@@ -305,7 +296,6 @@ export interface MasterEndpoints {
 }
 
 export interface IPAllocationPolicy {
-    $type: 'yandex.cloud.k8s.v1.IPAllocationPolicy';
     /**
      * CIDR block. IP range for allocating pod addresses.
      *
@@ -332,7 +322,6 @@ export interface IPAllocationPolicy {
 }
 
 export interface MasterMaintenancePolicy {
-    $type: 'yandex.cloud.k8s.v1.MasterMaintenancePolicy';
     /**
      * If set to true, automatic updates are installed in the specified period of time with no interaction from the user.
      * If set to false, automatic upgrades are disabled.
@@ -346,7 +335,6 @@ export interface MasterMaintenancePolicy {
 }
 
 export interface MasterLogging {
-    $type: 'yandex.cloud.k8s.v1.MasterLogging';
     /** Identifies whether Cloud Logging is enabled for master components. */
     enabled: boolean;
     /** ID of the log group where logs of master components should be stored. */
@@ -364,7 +352,6 @@ export interface MasterLogging {
 }
 
 export interface NetworkPolicy {
-    $type: 'yandex.cloud.k8s.v1.NetworkPolicy';
     provider: NetworkPolicy_Provider;
 }
 
@@ -401,7 +388,6 @@ export function networkPolicy_ProviderToJSON(object: NetworkPolicy_Provider): st
 }
 
 export interface KMSProvider {
-    $type: 'yandex.cloud.k8s.v1.KMSProvider';
     /**
      * KMS key ID for secrets encryption.
      * To obtain a KMS key ID use a [yandex.cloud.kms.v1.SymmetricKeyService.List] request.
@@ -410,7 +396,6 @@ export interface KMSProvider {
 }
 
 export interface Cilium {
-    $type: 'yandex.cloud.k8s.v1.Cilium';
     routingMode: Cilium_RoutingMode;
 }
 
@@ -447,7 +432,6 @@ export function cilium_RoutingModeToJSON(object: Cilium_RoutingMode): string {
 }
 
 const baseCluster: object = {
-    $type: 'yandex.cloud.k8s.v1.Cluster',
     id: '',
     folderId: '',
     name: '',
@@ -462,8 +446,6 @@ const baseCluster: object = {
 };
 
 export const Cluster = {
-    $type: 'yandex.cloud.k8s.v1.Cluster' as const,
-
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -482,7 +464,7 @@ export const Cluster = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Cluster_LabelsEntry.encode(
-                { $type: 'yandex.cloud.k8s.v1.Cluster.LabelsEntry', key: key as any, value },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -800,17 +782,9 @@ export const Cluster = {
     },
 };
 
-messageTypeRegistry.set(Cluster.$type, Cluster);
-
-const baseCluster_LabelsEntry: object = {
-    $type: 'yandex.cloud.k8s.v1.Cluster.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
 export const Cluster_LabelsEntry = {
-    $type: 'yandex.cloud.k8s.v1.Cluster.LabelsEntry' as const,
-
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -867,18 +841,9 @@ export const Cluster_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Cluster_LabelsEntry.$type, Cluster_LabelsEntry);
-
-const baseMaster: object = {
-    $type: 'yandex.cloud.k8s.v1.Master',
-    etcdClusterSize: 0,
-    version: '',
-    securityGroupIds: '',
-};
+const baseMaster: object = { etcdClusterSize: 0, version: '', securityGroupIds: '' };
 
 export const Master = {
-    $type: 'yandex.cloud.k8s.v1.Master' as const,
-
     encode(message: Master, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zonalMaster !== undefined) {
             ZonalMaster.encode(message.zonalMaster, writer.uint32(10).fork()).ldelim();
@@ -1097,16 +1062,9 @@ export const Master = {
     },
 };
 
-messageTypeRegistry.set(Master.$type, Master);
-
-const baseMasterAuth: object = {
-    $type: 'yandex.cloud.k8s.v1.MasterAuth',
-    clusterCaCertificate: '',
-};
+const baseMasterAuth: object = { clusterCaCertificate: '' };
 
 export const MasterAuth = {
-    $type: 'yandex.cloud.k8s.v1.MasterAuth' as const,
-
     encode(message: MasterAuth, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterCaCertificate !== '') {
             writer.uint32(10).string(message.clusterCaCertificate);
@@ -1155,18 +1113,9 @@ export const MasterAuth = {
     },
 };
 
-messageTypeRegistry.set(MasterAuth.$type, MasterAuth);
-
-const baseZonalMaster: object = {
-    $type: 'yandex.cloud.k8s.v1.ZonalMaster',
-    zoneId: '',
-    internalV4Address: '',
-    externalV4Address: '',
-};
+const baseZonalMaster: object = { zoneId: '', internalV4Address: '', externalV4Address: '' };
 
 export const ZonalMaster = {
-    $type: 'yandex.cloud.k8s.v1.ZonalMaster' as const,
-
     encode(message: ZonalMaster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneId !== '') {
             writer.uint32(10).string(message.zoneId);
@@ -1238,10 +1187,7 @@ export const ZonalMaster = {
     },
 };
 
-messageTypeRegistry.set(ZonalMaster.$type, ZonalMaster);
-
 const baseRegionalMaster: object = {
-    $type: 'yandex.cloud.k8s.v1.RegionalMaster',
     regionId: '',
     internalV4Address: '',
     externalV4Address: '',
@@ -1249,8 +1195,6 @@ const baseRegionalMaster: object = {
 };
 
 export const RegionalMaster = {
-    $type: 'yandex.cloud.k8s.v1.RegionalMaster' as const,
-
     encode(message: RegionalMaster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.regionId !== '') {
             writer.uint32(10).string(message.regionId);
@@ -1337,13 +1281,9 @@ export const RegionalMaster = {
     },
 };
 
-messageTypeRegistry.set(RegionalMaster.$type, RegionalMaster);
-
-const baseLocation: object = { $type: 'yandex.cloud.k8s.v1.Location', zoneId: '', subnetId: '' };
+const baseLocation: object = { zoneId: '', subnetId: '' };
 
 export const Location = {
-    $type: 'yandex.cloud.k8s.v1.Location' as const,
-
     encode(message: Location, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneId !== '') {
             writer.uint32(10).string(message.zoneId);
@@ -1401,18 +1341,13 @@ export const Location = {
     },
 };
 
-messageTypeRegistry.set(Location.$type, Location);
-
 const baseMasterEndpoints: object = {
-    $type: 'yandex.cloud.k8s.v1.MasterEndpoints',
     internalV4Endpoint: '',
     externalV4Endpoint: '',
     externalV6Endpoint: '',
 };
 
 export const MasterEndpoints = {
-    $type: 'yandex.cloud.k8s.v1.MasterEndpoints' as const,
-
     encode(message: MasterEndpoints, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.internalV4Endpoint !== '') {
             writer.uint32(10).string(message.internalV4Endpoint);
@@ -1487,10 +1422,7 @@ export const MasterEndpoints = {
     },
 };
 
-messageTypeRegistry.set(MasterEndpoints.$type, MasterEndpoints);
-
 const baseIPAllocationPolicy: object = {
-    $type: 'yandex.cloud.k8s.v1.IPAllocationPolicy',
     clusterIpv4CidrBlock: '',
     nodeIpv4CidrMaskSize: 0,
     serviceIpv4CidrBlock: '',
@@ -1499,8 +1431,6 @@ const baseIPAllocationPolicy: object = {
 };
 
 export const IPAllocationPolicy = {
-    $type: 'yandex.cloud.k8s.v1.IPAllocationPolicy' as const,
-
     encode(message: IPAllocationPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterIpv4CidrBlock !== '') {
             writer.uint32(10).string(message.clusterIpv4CidrBlock);
@@ -1603,16 +1533,9 @@ export const IPAllocationPolicy = {
     },
 };
 
-messageTypeRegistry.set(IPAllocationPolicy.$type, IPAllocationPolicy);
-
-const baseMasterMaintenancePolicy: object = {
-    $type: 'yandex.cloud.k8s.v1.MasterMaintenancePolicy',
-    autoUpgrade: false,
-};
+const baseMasterMaintenancePolicy: object = { autoUpgrade: false };
 
 export const MasterMaintenancePolicy = {
-    $type: 'yandex.cloud.k8s.v1.MasterMaintenancePolicy' as const,
-
     encode(message: MasterMaintenancePolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.autoUpgrade === true) {
             writer.uint32(8).bool(message.autoUpgrade);
@@ -1680,10 +1603,7 @@ export const MasterMaintenancePolicy = {
     },
 };
 
-messageTypeRegistry.set(MasterMaintenancePolicy.$type, MasterMaintenancePolicy);
-
 const baseMasterLogging: object = {
-    $type: 'yandex.cloud.k8s.v1.MasterLogging',
     enabled: false,
     auditEnabled: false,
     clusterAutoscalerEnabled: false,
@@ -1692,8 +1612,6 @@ const baseMasterLogging: object = {
 };
 
 export const MasterLogging = {
-    $type: 'yandex.cloud.k8s.v1.MasterLogging' as const,
-
     encode(message: MasterLogging, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enabled === true) {
             writer.uint32(8).bool(message.enabled);
@@ -1816,13 +1734,9 @@ export const MasterLogging = {
     },
 };
 
-messageTypeRegistry.set(MasterLogging.$type, MasterLogging);
-
-const baseNetworkPolicy: object = { $type: 'yandex.cloud.k8s.v1.NetworkPolicy', provider: 0 };
+const baseNetworkPolicy: object = { provider: 0 };
 
 export const NetworkPolicy = {
-    $type: 'yandex.cloud.k8s.v1.NetworkPolicy' as const,
-
     encode(message: NetworkPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.provider !== 0) {
             writer.uint32(8).int32(message.provider);
@@ -1871,13 +1785,9 @@ export const NetworkPolicy = {
     },
 };
 
-messageTypeRegistry.set(NetworkPolicy.$type, NetworkPolicy);
-
-const baseKMSProvider: object = { $type: 'yandex.cloud.k8s.v1.KMSProvider', keyId: '' };
+const baseKMSProvider: object = { keyId: '' };
 
 export const KMSProvider = {
-    $type: 'yandex.cloud.k8s.v1.KMSProvider' as const,
-
     encode(message: KMSProvider, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -1923,13 +1833,9 @@ export const KMSProvider = {
     },
 };
 
-messageTypeRegistry.set(KMSProvider.$type, KMSProvider);
-
-const baseCilium: object = { $type: 'yandex.cloud.k8s.v1.Cilium', routingMode: 0 };
+const baseCilium: object = { routingMode: 0 };
 
 export const Cilium = {
-    $type: 'yandex.cloud.k8s.v1.Cilium' as const,
-
     encode(message: Cilium, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.routingMode !== 0) {
             writer.uint32(8).int32(message.routingMode);
@@ -1978,8 +1884,6 @@ export const Cilium = {
     },
 };
 
-messageTypeRegistry.set(Cilium.$type, Cilium);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -2000,21 +1904,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

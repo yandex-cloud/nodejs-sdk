@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -18,7 +17,6 @@ import _m0 from 'protobufjs/minimal';
 export const protobufPackage = 'yandex.cloud.iot.broker.v1';
 
 export interface PublishBrokerDataRequest {
-    $type: 'yandex.cloud.iot.broker.v1.PublishBrokerDataRequest';
     /** ID of broker publishing message */
     brokerId: string;
     /** Topic where message should be published */
@@ -27,19 +25,11 @@ export interface PublishBrokerDataRequest {
     data: Buffer;
 }
 
-export interface PublishBrokerDataResponse {
-    $type: 'yandex.cloud.iot.broker.v1.PublishBrokerDataResponse';
-}
+export interface PublishBrokerDataResponse {}
 
-const basePublishBrokerDataRequest: object = {
-    $type: 'yandex.cloud.iot.broker.v1.PublishBrokerDataRequest',
-    brokerId: '',
-    topic: '',
-};
+const basePublishBrokerDataRequest: object = { brokerId: '', topic: '' };
 
 export const PublishBrokerDataRequest = {
-    $type: 'yandex.cloud.iot.broker.v1.PublishBrokerDataRequest' as const,
-
     encode(
         message: PublishBrokerDataRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -118,15 +108,9 @@ export const PublishBrokerDataRequest = {
     },
 };
 
-messageTypeRegistry.set(PublishBrokerDataRequest.$type, PublishBrokerDataRequest);
-
-const basePublishBrokerDataResponse: object = {
-    $type: 'yandex.cloud.iot.broker.v1.PublishBrokerDataResponse',
-};
+const basePublishBrokerDataResponse: object = {};
 
 export const PublishBrokerDataResponse = {
-    $type: 'yandex.cloud.iot.broker.v1.PublishBrokerDataResponse' as const,
-
     encode(_: PublishBrokerDataResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -163,8 +147,6 @@ export const PublishBrokerDataResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(PublishBrokerDataResponse.$type, PublishBrokerDataResponse);
 
 /** A set of methods to work with IoT Core messages on behalf of broker */
 export const BrokerDataServiceService = {
@@ -259,16 +241,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -7,7 +6,6 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.video.v1';
 
 export interface Episode {
-    $type: 'yandex.cloud.video.v1.Episode';
     /** ID of the episode. */
     id: string;
     /** ID of the stream. Optional, empty if the episode is linked to the line */
@@ -83,20 +81,13 @@ export function episode_VisibilityStatusToJSON(object: Episode_VisibilityStatus)
     }
 }
 
-export interface EpisodePublicAccessRights {
-    $type: 'yandex.cloud.video.v1.EpisodePublicAccessRights';
-}
+export interface EpisodePublicAccessRights {}
 
-export interface EpisodeAuthSystemAccessRights {
-    $type: 'yandex.cloud.video.v1.EpisodeAuthSystemAccessRights';
-}
+export interface EpisodeAuthSystemAccessRights {}
 
-export interface EpisodeSignURLAccessRights {
-    $type: 'yandex.cloud.video.v1.EpisodeSignURLAccessRights';
-}
+export interface EpisodeSignURLAccessRights {}
 
 const baseEpisode: object = {
-    $type: 'yandex.cloud.video.v1.Episode',
     id: '',
     streamId: '',
     lineId: '',
@@ -108,8 +99,6 @@ const baseEpisode: object = {
 };
 
 export const Episode = {
-    $type: 'yandex.cloud.video.v1.Episode' as const,
-
     encode(message: Episode, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -355,15 +344,9 @@ export const Episode = {
     },
 };
 
-messageTypeRegistry.set(Episode.$type, Episode);
-
-const baseEpisodePublicAccessRights: object = {
-    $type: 'yandex.cloud.video.v1.EpisodePublicAccessRights',
-};
+const baseEpisodePublicAccessRights: object = {};
 
 export const EpisodePublicAccessRights = {
-    $type: 'yandex.cloud.video.v1.EpisodePublicAccessRights' as const,
-
     encode(_: EpisodePublicAccessRights, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -401,15 +384,9 @@ export const EpisodePublicAccessRights = {
     },
 };
 
-messageTypeRegistry.set(EpisodePublicAccessRights.$type, EpisodePublicAccessRights);
-
-const baseEpisodeAuthSystemAccessRights: object = {
-    $type: 'yandex.cloud.video.v1.EpisodeAuthSystemAccessRights',
-};
+const baseEpisodeAuthSystemAccessRights: object = {};
 
 export const EpisodeAuthSystemAccessRights = {
-    $type: 'yandex.cloud.video.v1.EpisodeAuthSystemAccessRights' as const,
-
     encode(_: EpisodeAuthSystemAccessRights, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -447,15 +424,9 @@ export const EpisodeAuthSystemAccessRights = {
     },
 };
 
-messageTypeRegistry.set(EpisodeAuthSystemAccessRights.$type, EpisodeAuthSystemAccessRights);
-
-const baseEpisodeSignURLAccessRights: object = {
-    $type: 'yandex.cloud.video.v1.EpisodeSignURLAccessRights',
-};
+const baseEpisodeSignURLAccessRights: object = {};
 
 export const EpisodeSignURLAccessRights = {
-    $type: 'yandex.cloud.video.v1.EpisodeSignURLAccessRights' as const,
-
     encode(_: EpisodeSignURLAccessRights, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -493,8 +464,6 @@ export const EpisodeSignURLAccessRights = {
     },
 };
 
-messageTypeRegistry.set(EpisodeSignURLAccessRights.$type, EpisodeSignURLAccessRights);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -515,21 +484,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

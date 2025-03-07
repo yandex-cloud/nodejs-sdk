@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -22,7 +21,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.ai.ocr.v1';
 
 export interface RecognizeTextRequest {
-    $type: 'yandex.cloud.ai.ocr.v1.RecognizeTextRequest';
     /** Bytes with data */
     content: Buffer | undefined;
     /**
@@ -43,7 +41,6 @@ export interface RecognizeTextRequest {
 }
 
 export interface RecognizeTextResponse {
-    $type: 'yandex.cloud.ai.ocr.v1.RecognizeTextResponse';
     /** Recognized text blocks in page or text from entities. */
     textAnnotation?: TextAnnotation;
     /** Page number in PDF file. */
@@ -51,21 +48,13 @@ export interface RecognizeTextResponse {
 }
 
 export interface GetRecognitionRequest {
-    $type: 'yandex.cloud.ai.ocr.v1.GetRecognitionRequest';
     /** Operation ID of async recognition request. */
     operationId: string;
 }
 
-const baseRecognizeTextRequest: object = {
-    $type: 'yandex.cloud.ai.ocr.v1.RecognizeTextRequest',
-    mimeType: '',
-    languageCodes: '',
-    model: '',
-};
+const baseRecognizeTextRequest: object = { mimeType: '', languageCodes: '', model: '' };
 
 export const RecognizeTextRequest = {
-    $type: 'yandex.cloud.ai.ocr.v1.RecognizeTextRequest' as const,
-
     encode(message: RecognizeTextRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.content !== undefined) {
             writer.uint32(10).bytes(message.content);
@@ -153,16 +142,9 @@ export const RecognizeTextRequest = {
     },
 };
 
-messageTypeRegistry.set(RecognizeTextRequest.$type, RecognizeTextRequest);
-
-const baseRecognizeTextResponse: object = {
-    $type: 'yandex.cloud.ai.ocr.v1.RecognizeTextResponse',
-    page: 0,
-};
+const baseRecognizeTextResponse: object = { page: 0 };
 
 export const RecognizeTextResponse = {
-    $type: 'yandex.cloud.ai.ocr.v1.RecognizeTextResponse' as const,
-
     encode(message: RecognizeTextResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.textAnnotation !== undefined) {
             TextAnnotation.encode(message.textAnnotation, writer.uint32(10).fork()).ldelim();
@@ -227,16 +209,9 @@ export const RecognizeTextResponse = {
     },
 };
 
-messageTypeRegistry.set(RecognizeTextResponse.$type, RecognizeTextResponse);
-
-const baseGetRecognitionRequest: object = {
-    $type: 'yandex.cloud.ai.ocr.v1.GetRecognitionRequest',
-    operationId: '',
-};
+const baseGetRecognitionRequest: object = { operationId: '' };
 
 export const GetRecognitionRequest = {
-    $type: 'yandex.cloud.ai.ocr.v1.GetRecognitionRequest' as const,
-
     encode(message: GetRecognitionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.operationId !== '') {
             writer.uint32(10).string(message.operationId);
@@ -285,8 +260,6 @@ export const GetRecognitionRequest = {
         return message;
     },
 };
-
-messageTypeRegistry.set(GetRecognitionRequest.$type, GetRecognitionRequest);
 
 /** A set of methods for the Vision OCR service. */
 export const TextRecognitionServiceService = {
@@ -450,16 +423,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

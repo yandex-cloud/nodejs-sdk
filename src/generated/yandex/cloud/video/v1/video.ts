@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../google/protobuf/duration';
@@ -49,7 +48,6 @@ export function autoTranscodeToJSON(object: AutoTranscode): string {
 }
 
 export interface Video {
-    $type: 'yandex.cloud.video.v1.Video';
     /** ID of the video. */
     id: string;
     /** ID of the channel where the video was created. */
@@ -187,31 +185,22 @@ export function video_VisibilityStatusToJSON(object: Video_VisibilityStatus): st
 }
 
 export interface Video_LabelsEntry {
-    $type: 'yandex.cloud.video.v1.Video.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface VideoTUSDSource {
-    $type: 'yandex.cloud.video.v1.VideoTUSDSource';
     /** URL for uploading video via the tus protocol. */
     url: string;
 }
 
-export interface VideoPublicAccessRights {
-    $type: 'yandex.cloud.video.v1.VideoPublicAccessRights';
-}
+export interface VideoPublicAccessRights {}
 
-export interface VideoAuthSystemAccessRights {
-    $type: 'yandex.cloud.video.v1.VideoAuthSystemAccessRights';
-}
+export interface VideoAuthSystemAccessRights {}
 
-export interface VideoSignURLAccessRights {
-    $type: 'yandex.cloud.video.v1.VideoSignURLAccessRights';
-}
+export interface VideoSignURLAccessRights {}
 
 const baseVideo: object = {
-    $type: 'yandex.cloud.video.v1.Video',
     id: '',
     channelId: '',
     title: '',
@@ -224,8 +213,6 @@ const baseVideo: object = {
 };
 
 export const Video = {
-    $type: 'yandex.cloud.video.v1.Video' as const,
-
     encode(message: Video, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -286,7 +273,7 @@ export const Video = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Video_LabelsEntry.encode(
-                { $type: 'yandex.cloud.video.v1.Video.LabelsEntry', key: key as any, value },
+                { key: key as any, value },
                 writer.uint32(1602).fork(),
             ).ldelim();
         });
@@ -528,17 +515,9 @@ export const Video = {
     },
 };
 
-messageTypeRegistry.set(Video.$type, Video);
-
-const baseVideo_LabelsEntry: object = {
-    $type: 'yandex.cloud.video.v1.Video.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseVideo_LabelsEntry: object = { key: '', value: '' };
 
 export const Video_LabelsEntry = {
-    $type: 'yandex.cloud.video.v1.Video.LabelsEntry' as const,
-
     encode(message: Video_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -593,13 +572,9 @@ export const Video_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Video_LabelsEntry.$type, Video_LabelsEntry);
-
-const baseVideoTUSDSource: object = { $type: 'yandex.cloud.video.v1.VideoTUSDSource', url: '' };
+const baseVideoTUSDSource: object = { url: '' };
 
 export const VideoTUSDSource = {
-    $type: 'yandex.cloud.video.v1.VideoTUSDSource' as const,
-
     encode(message: VideoTUSDSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(10).string(message.url);
@@ -644,15 +619,9 @@ export const VideoTUSDSource = {
     },
 };
 
-messageTypeRegistry.set(VideoTUSDSource.$type, VideoTUSDSource);
-
-const baseVideoPublicAccessRights: object = {
-    $type: 'yandex.cloud.video.v1.VideoPublicAccessRights',
-};
+const baseVideoPublicAccessRights: object = {};
 
 export const VideoPublicAccessRights = {
-    $type: 'yandex.cloud.video.v1.VideoPublicAccessRights' as const,
-
     encode(_: VideoPublicAccessRights, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -690,15 +659,9 @@ export const VideoPublicAccessRights = {
     },
 };
 
-messageTypeRegistry.set(VideoPublicAccessRights.$type, VideoPublicAccessRights);
-
-const baseVideoAuthSystemAccessRights: object = {
-    $type: 'yandex.cloud.video.v1.VideoAuthSystemAccessRights',
-};
+const baseVideoAuthSystemAccessRights: object = {};
 
 export const VideoAuthSystemAccessRights = {
-    $type: 'yandex.cloud.video.v1.VideoAuthSystemAccessRights' as const,
-
     encode(_: VideoAuthSystemAccessRights, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -736,15 +699,9 @@ export const VideoAuthSystemAccessRights = {
     },
 };
 
-messageTypeRegistry.set(VideoAuthSystemAccessRights.$type, VideoAuthSystemAccessRights);
-
-const baseVideoSignURLAccessRights: object = {
-    $type: 'yandex.cloud.video.v1.VideoSignURLAccessRights',
-};
+const baseVideoSignURLAccessRights: object = {};
 
 export const VideoSignURLAccessRights = {
-    $type: 'yandex.cloud.video.v1.VideoSignURLAccessRights' as const,
-
     encode(_: VideoSignURLAccessRights, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -782,8 +739,6 @@ export const VideoSignURLAccessRights = {
     },
 };
 
-messageTypeRegistry.set(VideoSignURLAccessRights.$type, VideoSignURLAccessRights);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -793,21 +748,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

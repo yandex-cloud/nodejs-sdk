@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -98,7 +97,6 @@ export function quantileTypeToJSON(object: QuantileType): string {
 
 /** Statistical data aggregated by predefined set of quantiles. */
 export interface Quantiles {
-    $type: 'yandex.cloud.loadtesting.api.v1.common.Quantiles';
     /** 50 percentile (median). */
     q50: number;
     /** 75 percentile. */
@@ -120,7 +118,6 @@ export interface Quantiles {
 }
 
 const baseQuantiles: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.common.Quantiles',
     q50: 0,
     q75: 0,
     q80: 0,
@@ -133,8 +130,6 @@ const baseQuantiles: object = {
 };
 
 export const Quantiles = {
-    $type: 'yandex.cloud.loadtesting.api.v1.common.Quantiles' as const,
-
     encode(message: Quantiles, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.q50 !== 0) {
             writer.uint32(9).double(message.q50);
@@ -251,8 +246,6 @@ export const Quantiles = {
     },
 };
 
-messageTypeRegistry.set(Quantiles.$type, Quantiles);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -262,16 +255,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

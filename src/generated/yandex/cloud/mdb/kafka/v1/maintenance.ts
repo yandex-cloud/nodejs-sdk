@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
@@ -7,17 +6,13 @@ import { Timestamp } from '../../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.mdb.kafka.v1';
 
 export interface MaintenanceWindow {
-    $type: 'yandex.cloud.mdb.kafka.v1.MaintenanceWindow';
     anytime?: AnytimeMaintenanceWindow | undefined;
     weeklyMaintenanceWindow?: WeeklyMaintenanceWindow | undefined;
 }
 
-export interface AnytimeMaintenanceWindow {
-    $type: 'yandex.cloud.mdb.kafka.v1.AnytimeMaintenanceWindow';
-}
+export interface AnytimeMaintenanceWindow {}
 
 export interface WeeklyMaintenanceWindow {
-    $type: 'yandex.cloud.mdb.kafka.v1.WeeklyMaintenanceWindow';
     day: WeeklyMaintenanceWindow_WeekDay;
     /** Hour of the day in UTC. */
     hour: number;
@@ -96,16 +91,13 @@ export function weeklyMaintenanceWindow_WeekDayToJSON(
 }
 
 export interface MaintenanceOperation {
-    $type: 'yandex.cloud.mdb.kafka.v1.MaintenanceOperation';
     info: string;
     delayedUntil?: Date;
 }
 
-const baseMaintenanceWindow: object = { $type: 'yandex.cloud.mdb.kafka.v1.MaintenanceWindow' };
+const baseMaintenanceWindow: object = {};
 
 export const MaintenanceWindow = {
-    $type: 'yandex.cloud.mdb.kafka.v1.MaintenanceWindow' as const,
-
     encode(message: MaintenanceWindow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.anytime !== undefined) {
             AnytimeMaintenanceWindow.encode(message.anytime, writer.uint32(10).fork()).ldelim();
@@ -183,15 +175,9 @@ export const MaintenanceWindow = {
     },
 };
 
-messageTypeRegistry.set(MaintenanceWindow.$type, MaintenanceWindow);
-
-const baseAnytimeMaintenanceWindow: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.AnytimeMaintenanceWindow',
-};
+const baseAnytimeMaintenanceWindow: object = {};
 
 export const AnytimeMaintenanceWindow = {
-    $type: 'yandex.cloud.mdb.kafka.v1.AnytimeMaintenanceWindow' as const,
-
     encode(_: AnytimeMaintenanceWindow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -229,17 +215,9 @@ export const AnytimeMaintenanceWindow = {
     },
 };
 
-messageTypeRegistry.set(AnytimeMaintenanceWindow.$type, AnytimeMaintenanceWindow);
-
-const baseWeeklyMaintenanceWindow: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.WeeklyMaintenanceWindow',
-    day: 0,
-    hour: 0,
-};
+const baseWeeklyMaintenanceWindow: object = { day: 0, hour: 0 };
 
 export const WeeklyMaintenanceWindow = {
-    $type: 'yandex.cloud.mdb.kafka.v1.WeeklyMaintenanceWindow' as const,
-
     encode(message: WeeklyMaintenanceWindow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.day !== 0) {
             writer.uint32(8).int32(message.day);
@@ -298,16 +276,9 @@ export const WeeklyMaintenanceWindow = {
     },
 };
 
-messageTypeRegistry.set(WeeklyMaintenanceWindow.$type, WeeklyMaintenanceWindow);
-
-const baseMaintenanceOperation: object = {
-    $type: 'yandex.cloud.mdb.kafka.v1.MaintenanceOperation',
-    info: '',
-};
+const baseMaintenanceOperation: object = { info: '' };
 
 export const MaintenanceOperation = {
-    $type: 'yandex.cloud.mdb.kafka.v1.MaintenanceOperation' as const,
-
     encode(message: MaintenanceOperation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.info !== '') {
             writer.uint32(10).string(message.info);
@@ -367,8 +338,6 @@ export const MaintenanceOperation = {
     },
 };
 
-messageTypeRegistry.set(MaintenanceOperation.$type, MaintenanceOperation);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -389,21 +358,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

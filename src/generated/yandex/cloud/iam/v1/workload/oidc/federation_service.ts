@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -21,7 +20,6 @@ import { Operation } from '../../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.iam.v1.workload.oidc';
 
 export interface GetFederationRequest {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.GetFederationRequest';
     /**
      * ID of the OIDC workload identity federation to return.
      * To get the OIDC workload identity federation ID, make a [FederationService.List] request.
@@ -30,7 +28,6 @@ export interface GetFederationRequest {
 }
 
 export interface ListFederationsRequest {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.ListFederationsRequest';
     /**
      * ID of the folder to list OIDC workload identity federations in.
      * To get the folder ID, make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -53,7 +50,6 @@ export interface ListFederationsRequest {
 }
 
 export interface ListFederationsResponse {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.ListFederationsResponse';
     /** List of OIDC workload identity federations. */
     federations: Federation[];
     /**
@@ -68,7 +64,6 @@ export interface ListFederationsResponse {
 }
 
 export interface CreateFederationRequest {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.CreateFederationRequest';
     /**
      * ID of the folder to create an OIDC workload identity federation in.
      * To get the folder ID, make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -97,19 +92,16 @@ export interface CreateFederationRequest {
 }
 
 export interface CreateFederationRequest_LabelsEntry {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.CreateFederationRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateFederationMetadata {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.CreateFederationMetadata';
     /** ID of the OIDC workload identity federation that is being created. */
     federationId: string;
 }
 
 export interface UpdateFederationRequest {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.UpdateFederationRequest';
     /**
      * ID of the OIDC workload identity federation to update.
      * To get the OIDC workload identity federation ID, make a [FederationService.List] request.
@@ -138,19 +130,16 @@ export interface UpdateFederationRequest {
 }
 
 export interface UpdateFederationRequest_LabelsEntry {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.UpdateFederationRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateFederationMetadata {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.UpdateFederationMetadata';
     /** ID of the OIDC workload identity federation that is being updated. */
     federationId: string;
 }
 
 export interface DeleteFederationRequest {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.DeleteFederationRequest';
     /**
      * ID of the OIDC workload identity federation to delete.
      * To get the OIDC workload identity federation ID, make a [FederationService.List] request.
@@ -159,19 +148,13 @@ export interface DeleteFederationRequest {
 }
 
 export interface DeleteFederationMetadata {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.DeleteFederationMetadata';
     /** ID of the OIDC workload identity federation that is being deleted. */
     federationId: string;
 }
 
-const baseGetFederationRequest: object = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.GetFederationRequest',
-    federationId: '',
-};
+const baseGetFederationRequest: object = { federationId: '' };
 
 export const GetFederationRequest = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.GetFederationRequest' as const,
-
     encode(message: GetFederationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.federationId !== '') {
             writer.uint32(10).string(message.federationId);
@@ -221,18 +204,9 @@ export const GetFederationRequest = {
     },
 };
 
-messageTypeRegistry.set(GetFederationRequest.$type, GetFederationRequest);
-
-const baseListFederationsRequest: object = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.ListFederationsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListFederationsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
 export const ListFederationsRequest = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.ListFederationsRequest' as const,
-
     encode(message: ListFederationsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -304,16 +278,9 @@ export const ListFederationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListFederationsRequest.$type, ListFederationsRequest);
-
-const baseListFederationsResponse: object = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.ListFederationsResponse',
-    nextPageToken: '',
-};
+const baseListFederationsResponse: object = { nextPageToken: '' };
 
 export const ListFederationsResponse = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.ListFederationsResponse' as const,
-
     encode(message: ListFederationsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.federations) {
             Federation.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -379,10 +346,7 @@ export const ListFederationsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListFederationsResponse.$type, ListFederationsResponse);
-
 const baseCreateFederationRequest: object = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.CreateFederationRequest',
     folderId: '',
     name: '',
     description: '',
@@ -393,8 +357,6 @@ const baseCreateFederationRequest: object = {
 };
 
 export const CreateFederationRequest = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.CreateFederationRequest' as const,
-
     encode(message: CreateFederationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(18).string(message.folderId);
@@ -419,11 +381,7 @@ export const CreateFederationRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateFederationRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.iam.v1.workload.oidc.CreateFederationRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(74).fork(),
             ).ldelim();
         });
@@ -553,17 +511,9 @@ export const CreateFederationRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateFederationRequest.$type, CreateFederationRequest);
-
-const baseCreateFederationRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.CreateFederationRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateFederationRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateFederationRequest_LabelsEntry = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.CreateFederationRequest.LabelsEntry' as const,
-
     encode(
         message: CreateFederationRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -629,19 +579,9 @@ export const CreateFederationRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateFederationRequest_LabelsEntry.$type,
-    CreateFederationRequest_LabelsEntry,
-);
-
-const baseCreateFederationMetadata: object = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.CreateFederationMetadata',
-    federationId: '',
-};
+const baseCreateFederationMetadata: object = { federationId: '' };
 
 export const CreateFederationMetadata = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.CreateFederationMetadata' as const,
-
     encode(
         message: CreateFederationMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -694,10 +634,7 @@ export const CreateFederationMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateFederationMetadata.$type, CreateFederationMetadata);
-
 const baseUpdateFederationRequest: object = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.UpdateFederationRequest',
     federationId: '',
     name: '',
     description: '',
@@ -707,8 +644,6 @@ const baseUpdateFederationRequest: object = {
 };
 
 export const UpdateFederationRequest = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.UpdateFederationRequest' as const,
-
     encode(message: UpdateFederationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.federationId !== '') {
             writer.uint32(10).string(message.federationId);
@@ -733,11 +668,7 @@ export const UpdateFederationRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateFederationRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.iam.v1.workload.oidc.UpdateFederationRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(66).fork(),
             ).ldelim();
         });
@@ -875,17 +806,9 @@ export const UpdateFederationRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateFederationRequest.$type, UpdateFederationRequest);
-
-const baseUpdateFederationRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.UpdateFederationRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateFederationRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateFederationRequest_LabelsEntry = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.UpdateFederationRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateFederationRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -951,19 +874,9 @@ export const UpdateFederationRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateFederationRequest_LabelsEntry.$type,
-    UpdateFederationRequest_LabelsEntry,
-);
-
-const baseUpdateFederationMetadata: object = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.UpdateFederationMetadata',
-    federationId: '',
-};
+const baseUpdateFederationMetadata: object = { federationId: '' };
 
 export const UpdateFederationMetadata = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.UpdateFederationMetadata' as const,
-
     encode(
         message: UpdateFederationMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1016,16 +929,9 @@ export const UpdateFederationMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateFederationMetadata.$type, UpdateFederationMetadata);
-
-const baseDeleteFederationRequest: object = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.DeleteFederationRequest',
-    federationId: '',
-};
+const baseDeleteFederationRequest: object = { federationId: '' };
 
 export const DeleteFederationRequest = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.DeleteFederationRequest' as const,
-
     encode(message: DeleteFederationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.federationId !== '') {
             writer.uint32(10).string(message.federationId);
@@ -1075,16 +981,9 @@ export const DeleteFederationRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteFederationRequest.$type, DeleteFederationRequest);
-
-const baseDeleteFederationMetadata: object = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.DeleteFederationMetadata',
-    federationId: '',
-};
+const baseDeleteFederationMetadata: object = { federationId: '' };
 
 export const DeleteFederationMetadata = {
-    $type: 'yandex.cloud.iam.v1.workload.oidc.DeleteFederationMetadata' as const,
-
     encode(
         message: DeleteFederationMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1136,8 +1035,6 @@ export const DeleteFederationMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteFederationMetadata.$type, DeleteFederationMetadata);
 
 /** A set of methods for managing OIDC workload identity federations. */
 export const FederationServiceService = {
@@ -1339,16 +1236,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

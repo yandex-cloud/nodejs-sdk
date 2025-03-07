@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -9,7 +8,6 @@ export const protobufPackage = 'yandex.cloud.lockbox.v1';
 
 /** A secret that may contain several versions of the payload. */
 export interface Secret {
-    $type: 'yandex.cloud.lockbox.v1.Secret';
     /** ID of the secret. */
     id: string;
     /** ID of the folder that the secret belongs to. */
@@ -89,13 +87,11 @@ export function secret_StatusToJSON(object: Secret_Status): string {
 }
 
 export interface Secret_LabelsEntry {
-    $type: 'yandex.cloud.lockbox.v1.Secret.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface Version {
-    $type: 'yandex.cloud.lockbox.v1.Version';
     /** ID of the version. */
     id: string;
     /** ID of the secret that the version belongs to. */
@@ -167,7 +163,6 @@ export function version_StatusToJSON(object: Version_Status): string {
 }
 
 export interface PasswordPayloadSpecification {
-    $type: 'yandex.cloud.lockbox.v1.PasswordPayloadSpecification';
     /** key of the entry to store generated password value */
     passwordKey: string;
     /** password length; by default, a reasonable length will be decided */
@@ -194,7 +189,6 @@ export interface PasswordPayloadSpecification {
 }
 
 const baseSecret: object = {
-    $type: 'yandex.cloud.lockbox.v1.Secret',
     id: '',
     folderId: '',
     name: '',
@@ -205,8 +199,6 @@ const baseSecret: object = {
 };
 
 export const Secret = {
-    $type: 'yandex.cloud.lockbox.v1.Secret' as const,
-
     encode(message: Secret, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -225,7 +217,7 @@ export const Secret = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Secret_LabelsEntry.encode(
-                { $type: 'yandex.cloud.lockbox.v1.Secret.LabelsEntry', key: key as any, value },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -412,17 +404,9 @@ export const Secret = {
     },
 };
 
-messageTypeRegistry.set(Secret.$type, Secret);
-
-const baseSecret_LabelsEntry: object = {
-    $type: 'yandex.cloud.lockbox.v1.Secret.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseSecret_LabelsEntry: object = { key: '', value: '' };
 
 export const Secret_LabelsEntry = {
-    $type: 'yandex.cloud.lockbox.v1.Secret.LabelsEntry' as const,
-
     encode(message: Secret_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -479,10 +463,7 @@ export const Secret_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Secret_LabelsEntry.$type, Secret_LabelsEntry);
-
 const baseVersion: object = {
-    $type: 'yandex.cloud.lockbox.v1.Version',
     id: '',
     secretId: '',
     description: '',
@@ -491,8 +472,6 @@ const baseVersion: object = {
 };
 
 export const Version = {
-    $type: 'yandex.cloud.lockbox.v1.Version' as const,
-
     encode(message: Version, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -637,10 +616,7 @@ export const Version = {
     },
 };
 
-messageTypeRegistry.set(Version.$type, Version);
-
 const basePasswordPayloadSpecification: object = {
-    $type: 'yandex.cloud.lockbox.v1.PasswordPayloadSpecification',
     passwordKey: '',
     length: 0,
     includedPunctuation: '',
@@ -648,8 +624,6 @@ const basePasswordPayloadSpecification: object = {
 };
 
 export const PasswordPayloadSpecification = {
-    $type: 'yandex.cloud.lockbox.v1.PasswordPayloadSpecification' as const,
-
     encode(
         message: PasswordPayloadSpecification,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -662,25 +636,22 @@ export const PasswordPayloadSpecification = {
         }
         if (message.includeUppercase !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.includeUppercase! },
+                { value: message.includeUppercase! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
         if (message.includeLowercase !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.includeLowercase! },
+                { value: message.includeLowercase! },
                 writer.uint32(34).fork(),
             ).ldelim();
         }
         if (message.includeDigits !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.includeDigits! },
-                writer.uint32(42).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.includeDigits! }, writer.uint32(42).fork()).ldelim();
         }
         if (message.includePunctuation !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.includePunctuation! },
+                { value: message.includePunctuation! },
                 writer.uint32(50).fork(),
             ).ldelim();
         }
@@ -799,8 +770,6 @@ export const PasswordPayloadSpecification = {
     },
 };
 
-messageTypeRegistry.set(PasswordPayloadSpecification.$type, PasswordPayloadSpecification);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -821,21 +790,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

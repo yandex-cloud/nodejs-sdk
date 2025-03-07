@@ -1,12 +1,10 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.quota';
 
 export interface QuotaMetric {
-    $type: 'yandex.cloud.quota.QuotaMetric';
     /** formatted as <domain>.<metric>.<unit>, e.g. mdb.hdd.size */
     name: string;
     limit: number;
@@ -14,33 +12,23 @@ export interface QuotaMetric {
 }
 
 export interface MetricLimit {
-    $type: 'yandex.cloud.quota.MetricLimit';
     name: string;
     limit: number;
 }
 
 export interface QuotaFailure {
-    $type: 'yandex.cloud.quota.QuotaFailure';
     violations: QuotaFailure_Violation[];
 }
 
 export interface QuotaFailure_Violation {
-    $type: 'yandex.cloud.quota.QuotaFailure.Violation';
     metric?: QuotaMetric;
     /** new value for the MetricLimit.limit, so it is: old limit + delta */
     required: number;
 }
 
-const baseQuotaMetric: object = {
-    $type: 'yandex.cloud.quota.QuotaMetric',
-    name: '',
-    limit: 0,
-    usage: 0,
-};
+const baseQuotaMetric: object = { name: '', limit: 0, usage: 0 };
 
 export const QuotaMetric = {
-    $type: 'yandex.cloud.quota.QuotaMetric' as const,
-
     encode(message: QuotaMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -105,13 +93,9 @@ export const QuotaMetric = {
     },
 };
 
-messageTypeRegistry.set(QuotaMetric.$type, QuotaMetric);
-
-const baseMetricLimit: object = { $type: 'yandex.cloud.quota.MetricLimit', name: '', limit: 0 };
+const baseMetricLimit: object = { name: '', limit: 0 };
 
 export const MetricLimit = {
-    $type: 'yandex.cloud.quota.MetricLimit' as const,
-
     encode(message: MetricLimit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -166,13 +150,9 @@ export const MetricLimit = {
     },
 };
 
-messageTypeRegistry.set(MetricLimit.$type, MetricLimit);
-
-const baseQuotaFailure: object = { $type: 'yandex.cloud.quota.QuotaFailure' };
+const baseQuotaFailure: object = {};
 
 export const QuotaFailure = {
-    $type: 'yandex.cloud.quota.QuotaFailure' as const,
-
     encode(message: QuotaFailure, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.violations) {
             QuotaFailure_Violation.encode(v!, writer.uint32(18).fork()).ldelim();
@@ -227,16 +207,9 @@ export const QuotaFailure = {
     },
 };
 
-messageTypeRegistry.set(QuotaFailure.$type, QuotaFailure);
-
-const baseQuotaFailure_Violation: object = {
-    $type: 'yandex.cloud.quota.QuotaFailure.Violation',
-    required: 0,
-};
+const baseQuotaFailure_Violation: object = { required: 0 };
 
 export const QuotaFailure_Violation = {
-    $type: 'yandex.cloud.quota.QuotaFailure.Violation' as const,
-
     encode(message: QuotaFailure_Violation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.metric !== undefined) {
             QuotaMetric.encode(message.metric, writer.uint32(10).fork()).ldelim();
@@ -300,8 +273,6 @@ export const QuotaFailure_Violation = {
     },
 };
 
-messageTypeRegistry.set(QuotaFailure_Violation.$type, QuotaFailure_Violation);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -322,16 +293,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

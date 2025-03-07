@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -143,7 +142,6 @@ export function thresholdTypeToJSON(object: ThresholdType): string {
 
 /** A Budget resource. For more information, see [/docs/billing/concepts/budget]. */
 export interface Budget {
-    $type: 'yandex.cloud.billing.v1.Budget';
     /** ID of the budget. */
     id: string;
     /** Name of the budget. */
@@ -164,7 +162,6 @@ export interface Budget {
 
 /** Cost budget specification describes budget that can be used to control cost of cloud resources usage. */
 export interface CostBudgetSpec {
-    $type: 'yandex.cloud.billing.v1.CostBudgetSpec';
     /** Max cost threshold of the budget. Amount currency is the same as corresponding [yandex.cloud.billing.v1.BillingAccount.currency]. */
     amount: string;
     /**
@@ -198,7 +195,6 @@ export interface CostBudgetSpec {
 
 /** Expense budget specification describes budget that can be used to control expense of cloud resources usage. */
 export interface ExpenseBudgetSpec {
-    $type: 'yandex.cloud.billing.v1.ExpenseBudgetSpec';
     /** Max expense threshold of the budget. Amount currency is the same as corresponding [yandex.cloud.billing.v1.BillingAccount.currency]. */
     amount: string;
     /**
@@ -232,7 +228,6 @@ export interface ExpenseBudgetSpec {
 
 /** Balance budget specification describes budget that can be used to control [yandex.cloud.billing.v1.BillingAccount.balance]. */
 export interface BalanceBudgetSpec {
-    $type: 'yandex.cloud.billing.v1.BalanceBudgetSpec';
     /** Max balance threshold of the budget. Amount currency is the same as corresponding [yandex.cloud.billing.v1.BillingAccount.currency]. */
     amount: string;
     /**
@@ -259,7 +254,6 @@ export interface BalanceBudgetSpec {
 
 /** Filter that can be used for specific resources selection. */
 export interface ConsumptionFilter {
-    $type: 'yandex.cloud.billing.v1.ConsumptionFilter';
     /**
      * IDs of the [yandex.cloud.billing.v1.Service].
      * Only consumption of resources corresponding to the given services is used for the budget calculation.
@@ -276,7 +270,6 @@ export interface ConsumptionFilter {
 
 /** Filter that can be used for specific cloud and its folders selection. */
 export interface CloudFoldersConsumptionFilter {
-    $type: 'yandex.cloud.billing.v1.CloudFoldersConsumptionFilter';
     /**
      * ID of the [yandex.cloud.resourcemanager.v1.Cloud].
      * Only consumption within specified cloud is used for the budget calculation.
@@ -292,7 +285,6 @@ export interface CloudFoldersConsumptionFilter {
 
 /** Rules that define intermediate cost thresholds of the budget. */
 export interface ThresholdRule {
-    $type: 'yandex.cloud.billing.v1.ThresholdRule';
     /** Type of the rule. */
     type: ThresholdType;
     /**
@@ -308,17 +300,9 @@ export interface ThresholdRule {
     notificationUserAccountIds: string[];
 }
 
-const baseBudget: object = {
-    $type: 'yandex.cloud.billing.v1.Budget',
-    id: '',
-    name: '',
-    billingAccountId: '',
-    status: 0,
-};
+const baseBudget: object = { id: '', name: '', billingAccountId: '', status: 0 };
 
 export const Budget = {
-    $type: 'yandex.cloud.billing.v1.Budget' as const,
-
     encode(message: Budget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -462,18 +446,9 @@ export const Budget = {
     },
 };
 
-messageTypeRegistry.set(Budget.$type, Budget);
-
-const baseCostBudgetSpec: object = {
-    $type: 'yandex.cloud.billing.v1.CostBudgetSpec',
-    amount: '',
-    notificationUserAccountIds: '',
-    endDate: '',
-};
+const baseCostBudgetSpec: object = { amount: '', notificationUserAccountIds: '', endDate: '' };
 
 export const CostBudgetSpec = {
-    $type: 'yandex.cloud.billing.v1.CostBudgetSpec' as const,
-
     encode(message: CostBudgetSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.amount !== '') {
             writer.uint32(10).string(message.amount);
@@ -608,18 +583,9 @@ export const CostBudgetSpec = {
     },
 };
 
-messageTypeRegistry.set(CostBudgetSpec.$type, CostBudgetSpec);
-
-const baseExpenseBudgetSpec: object = {
-    $type: 'yandex.cloud.billing.v1.ExpenseBudgetSpec',
-    amount: '',
-    notificationUserAccountIds: '',
-    endDate: '',
-};
+const baseExpenseBudgetSpec: object = { amount: '', notificationUserAccountIds: '', endDate: '' };
 
 export const ExpenseBudgetSpec = {
-    $type: 'yandex.cloud.billing.v1.ExpenseBudgetSpec' as const,
-
     encode(message: ExpenseBudgetSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.amount !== '') {
             writer.uint32(10).string(message.amount);
@@ -754,10 +720,7 @@ export const ExpenseBudgetSpec = {
     },
 };
 
-messageTypeRegistry.set(ExpenseBudgetSpec.$type, ExpenseBudgetSpec);
-
 const baseBalanceBudgetSpec: object = {
-    $type: 'yandex.cloud.billing.v1.BalanceBudgetSpec',
     amount: '',
     notificationUserAccountIds: '',
     startDate: '',
@@ -765,8 +728,6 @@ const baseBalanceBudgetSpec: object = {
 };
 
 export const BalanceBudgetSpec = {
-    $type: 'yandex.cloud.billing.v1.BalanceBudgetSpec' as const,
-
     encode(message: BalanceBudgetSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.amount !== '') {
             writer.uint32(10).string(message.amount);
@@ -869,16 +830,9 @@ export const BalanceBudgetSpec = {
     },
 };
 
-messageTypeRegistry.set(BalanceBudgetSpec.$type, BalanceBudgetSpec);
-
-const baseConsumptionFilter: object = {
-    $type: 'yandex.cloud.billing.v1.ConsumptionFilter',
-    serviceIds: '',
-};
+const baseConsumptionFilter: object = { serviceIds: '' };
 
 export const ConsumptionFilter = {
-    $type: 'yandex.cloud.billing.v1.ConsumptionFilter' as const,
-
     encode(message: ConsumptionFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.serviceIds) {
             writer.uint32(10).string(v!);
@@ -950,17 +904,9 @@ export const ConsumptionFilter = {
     },
 };
 
-messageTypeRegistry.set(ConsumptionFilter.$type, ConsumptionFilter);
-
-const baseCloudFoldersConsumptionFilter: object = {
-    $type: 'yandex.cloud.billing.v1.CloudFoldersConsumptionFilter',
-    cloudId: '',
-    folderIds: '',
-};
+const baseCloudFoldersConsumptionFilter: object = { cloudId: '', folderIds: '' };
 
 export const CloudFoldersConsumptionFilter = {
-    $type: 'yandex.cloud.billing.v1.CloudFoldersConsumptionFilter' as const,
-
     encode(
         message: CloudFoldersConsumptionFilter,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1025,18 +971,9 @@ export const CloudFoldersConsumptionFilter = {
     },
 };
 
-messageTypeRegistry.set(CloudFoldersConsumptionFilter.$type, CloudFoldersConsumptionFilter);
-
-const baseThresholdRule: object = {
-    $type: 'yandex.cloud.billing.v1.ThresholdRule',
-    type: 0,
-    amount: '',
-    notificationUserAccountIds: '',
-};
+const baseThresholdRule: object = { type: 0, amount: '', notificationUserAccountIds: '' };
 
 export const ThresholdRule = {
-    $type: 'yandex.cloud.billing.v1.ThresholdRule' as const,
-
     encode(message: ThresholdRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -1110,8 +1047,6 @@ export const ThresholdRule = {
     },
 };
 
-messageTypeRegistry.set(ThresholdRule.$type, ThresholdRule);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -1121,21 +1056,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

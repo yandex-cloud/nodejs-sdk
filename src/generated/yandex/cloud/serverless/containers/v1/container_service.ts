@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -43,7 +42,6 @@ import {
 export const protobufPackage = 'yandex.cloud.serverless.containers.v1';
 
 export interface GetContainerRequest {
-    $type: 'yandex.cloud.serverless.containers.v1.GetContainerRequest';
     /**
      * ID of the container to return.
      *
@@ -53,7 +51,6 @@ export interface GetContainerRequest {
 }
 
 export interface ListContainersRequest {
-    $type: 'yandex.cloud.serverless.containers.v1.ListContainersRequest';
     /**
      * ID of the folder to list containers in.
      *
@@ -86,7 +83,6 @@ export interface ListContainersRequest {
 }
 
 export interface ListContainersResponse {
-    $type: 'yandex.cloud.serverless.containers.v1.ListContainersResponse';
     /** List of containers in the specified folder. */
     containers: Container[];
     /**
@@ -100,7 +96,6 @@ export interface ListContainersResponse {
 }
 
 export interface CreateContainerRequest {
-    $type: 'yandex.cloud.serverless.containers.v1.CreateContainerRequest';
     /**
      * ID of the folder to create a container in.
      *
@@ -119,19 +114,16 @@ export interface CreateContainerRequest {
 }
 
 export interface CreateContainerRequest_LabelsEntry {
-    $type: 'yandex.cloud.serverless.containers.v1.CreateContainerRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateContainerMetadata {
-    $type: 'yandex.cloud.serverless.containers.v1.CreateContainerMetadata';
     /** ID of the container that is being created. */
     containerId: string;
 }
 
 export interface UpdateContainerRequest {
-    $type: 'yandex.cloud.serverless.containers.v1.UpdateContainerRequest';
     /**
      * ID of the container to update.
      *
@@ -157,19 +149,16 @@ export interface UpdateContainerRequest {
 }
 
 export interface UpdateContainerRequest_LabelsEntry {
-    $type: 'yandex.cloud.serverless.containers.v1.UpdateContainerRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateContainerMetadata {
-    $type: 'yandex.cloud.serverless.containers.v1.UpdateContainerMetadata';
     /** ID of the container that is being updated. */
     containerId: string;
 }
 
 export interface DeleteContainerRequest {
-    $type: 'yandex.cloud.serverless.containers.v1.DeleteContainerRequest';
     /**
      * ID of the container to delete.
      * To get a container ID make a [ContainerService.List] request.
@@ -178,13 +167,11 @@ export interface DeleteContainerRequest {
 }
 
 export interface DeleteContainerMetadata {
-    $type: 'yandex.cloud.serverless.containers.v1.DeleteContainerMetadata';
     /** ID of the container that is being deleted. */
     containerId: string;
 }
 
 export interface GetContainerRevisionRequest {
-    $type: 'yandex.cloud.serverless.containers.v1.GetContainerRevisionRequest';
     /**
      * ID of the revision to return.
      *
@@ -194,7 +181,6 @@ export interface GetContainerRevisionRequest {
 }
 
 export interface ListContainersRevisionsRequest {
-    $type: 'yandex.cloud.serverless.containers.v1.ListContainersRevisionsRequest';
     /**
      * ID of the folder to list container revisions for.
      * To get a folder ID make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -231,7 +217,6 @@ export interface ListContainersRevisionsRequest {
 }
 
 export interface ListContainersRevisionsResponse {
-    $type: 'yandex.cloud.serverless.containers.v1.ListContainersRevisionsResponse';
     /** List of revisions for the specified folder or container. */
     revisions: Revision[];
     /**
@@ -245,7 +230,6 @@ export interface ListContainersRevisionsResponse {
 }
 
 export interface DeployContainerRevisionRequest {
-    $type: 'yandex.cloud.serverless.containers.v1.DeployContainerRevisionRequest';
     /**
      * ID of the container to create a revision for.
      *
@@ -298,7 +282,6 @@ export interface DeployContainerRevisionRequest {
 
 /** Revision image specification. */
 export interface ImageSpec {
-    $type: 'yandex.cloud.serverless.containers.v1.ImageSpec';
     /** Image URL, that is used by the revision. */
     imageUrl: string;
     /** Override for the image's ENTRYPOINT. */
@@ -312,19 +295,16 @@ export interface ImageSpec {
 }
 
 export interface ImageSpec_EnvironmentEntry {
-    $type: 'yandex.cloud.serverless.containers.v1.ImageSpec.EnvironmentEntry';
     key: string;
     value: string;
 }
 
 export interface DeployContainerRevisionMetadata {
-    $type: 'yandex.cloud.serverless.containers.v1.DeployContainerRevisionMetadata';
     /** ID of the revision that is being created. */
     containerRevisionId: string;
 }
 
 export interface RollbackContainerRequest {
-    $type: 'yandex.cloud.serverless.containers.v1.RollbackContainerRequest';
     /**
      * ID of the container to rollback to an old revision.
      *
@@ -340,7 +320,6 @@ export interface RollbackContainerRequest {
 }
 
 export interface RollbackContainerMetadata {
-    $type: 'yandex.cloud.serverless.containers.v1.RollbackContainerMetadata';
     /** ID of the container that is being rolled back. */
     containerId: string;
     /** ID of the revision that the container is being rolled back to. */
@@ -348,7 +327,6 @@ export interface RollbackContainerMetadata {
 }
 
 export interface ListContainerOperationsRequest {
-    $type: 'yandex.cloud.serverless.containers.v1.ListContainerOperationsRequest';
     /** ID of the container to list operations for. */
     containerId: string;
     /**
@@ -377,7 +355,6 @@ export interface ListContainerOperationsRequest {
 }
 
 export interface ListContainerOperationsResponse {
-    $type: 'yandex.cloud.serverless.containers.v1.ListContainerOperationsResponse';
     /** List of operations for the specified container. */
     operations: Operation[];
     /**
@@ -390,14 +367,9 @@ export interface ListContainerOperationsResponse {
     nextPageToken: string;
 }
 
-const baseGetContainerRequest: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.GetContainerRequest',
-    containerId: '',
-};
+const baseGetContainerRequest: object = { containerId: '' };
 
 export const GetContainerRequest = {
-    $type: 'yandex.cloud.serverless.containers.v1.GetContainerRequest' as const,
-
     encode(message: GetContainerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerId !== '') {
             writer.uint32(10).string(message.containerId);
@@ -447,19 +419,9 @@ export const GetContainerRequest = {
     },
 };
 
-messageTypeRegistry.set(GetContainerRequest.$type, GetContainerRequest);
-
-const baseListContainersRequest: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.ListContainersRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListContainersRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListContainersRequest = {
-    $type: 'yandex.cloud.serverless.containers.v1.ListContainersRequest' as const,
-
     encode(message: ListContainersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -541,16 +503,9 @@ export const ListContainersRequest = {
     },
 };
 
-messageTypeRegistry.set(ListContainersRequest.$type, ListContainersRequest);
-
-const baseListContainersResponse: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.ListContainersResponse',
-    nextPageToken: '',
-};
+const baseListContainersResponse: object = { nextPageToken: '' };
 
 export const ListContainersResponse = {
-    $type: 'yandex.cloud.serverless.containers.v1.ListContainersResponse' as const,
-
     encode(message: ListContainersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.containers) {
             Container.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -614,18 +569,9 @@ export const ListContainersResponse = {
     },
 };
 
-messageTypeRegistry.set(ListContainersResponse.$type, ListContainersResponse);
-
-const baseCreateContainerRequest: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.CreateContainerRequest',
-    folderId: '',
-    name: '',
-    description: '',
-};
+const baseCreateContainerRequest: object = { folderId: '', name: '', description: '' };
 
 export const CreateContainerRequest = {
-    $type: 'yandex.cloud.serverless.containers.v1.CreateContainerRequest' as const,
-
     encode(message: CreateContainerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -638,11 +584,7 @@ export const CreateContainerRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateContainerRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.containers.v1.CreateContainerRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -738,17 +680,9 @@ export const CreateContainerRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateContainerRequest.$type, CreateContainerRequest);
-
-const baseCreateContainerRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.CreateContainerRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateContainerRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateContainerRequest_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.containers.v1.CreateContainerRequest.LabelsEntry' as const,
-
     encode(
         message: CreateContainerRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -814,19 +748,9 @@ export const CreateContainerRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateContainerRequest_LabelsEntry.$type,
-    CreateContainerRequest_LabelsEntry,
-);
-
-const baseCreateContainerMetadata: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.CreateContainerMetadata',
-    containerId: '',
-};
+const baseCreateContainerMetadata: object = { containerId: '' };
 
 export const CreateContainerMetadata = {
-    $type: 'yandex.cloud.serverless.containers.v1.CreateContainerMetadata' as const,
-
     encode(message: CreateContainerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerId !== '') {
             writer.uint32(10).string(message.containerId);
@@ -876,18 +800,9 @@ export const CreateContainerMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateContainerMetadata.$type, CreateContainerMetadata);
-
-const baseUpdateContainerRequest: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.UpdateContainerRequest',
-    containerId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateContainerRequest: object = { containerId: '', name: '', description: '' };
 
 export const UpdateContainerRequest = {
-    $type: 'yandex.cloud.serverless.containers.v1.UpdateContainerRequest' as const,
-
     encode(message: UpdateContainerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerId !== '') {
             writer.uint32(10).string(message.containerId);
@@ -903,11 +818,7 @@ export const UpdateContainerRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateContainerRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.containers.v1.UpdateContainerRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -1018,17 +929,9 @@ export const UpdateContainerRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateContainerRequest.$type, UpdateContainerRequest);
-
-const baseUpdateContainerRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.UpdateContainerRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateContainerRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateContainerRequest_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.containers.v1.UpdateContainerRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateContainerRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1094,19 +997,9 @@ export const UpdateContainerRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateContainerRequest_LabelsEntry.$type,
-    UpdateContainerRequest_LabelsEntry,
-);
-
-const baseUpdateContainerMetadata: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.UpdateContainerMetadata',
-    containerId: '',
-};
+const baseUpdateContainerMetadata: object = { containerId: '' };
 
 export const UpdateContainerMetadata = {
-    $type: 'yandex.cloud.serverless.containers.v1.UpdateContainerMetadata' as const,
-
     encode(message: UpdateContainerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerId !== '') {
             writer.uint32(10).string(message.containerId);
@@ -1156,16 +1049,9 @@ export const UpdateContainerMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateContainerMetadata.$type, UpdateContainerMetadata);
-
-const baseDeleteContainerRequest: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.DeleteContainerRequest',
-    containerId: '',
-};
+const baseDeleteContainerRequest: object = { containerId: '' };
 
 export const DeleteContainerRequest = {
-    $type: 'yandex.cloud.serverless.containers.v1.DeleteContainerRequest' as const,
-
     encode(message: DeleteContainerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerId !== '') {
             writer.uint32(10).string(message.containerId);
@@ -1215,16 +1101,9 @@ export const DeleteContainerRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteContainerRequest.$type, DeleteContainerRequest);
-
-const baseDeleteContainerMetadata: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.DeleteContainerMetadata',
-    containerId: '',
-};
+const baseDeleteContainerMetadata: object = { containerId: '' };
 
 export const DeleteContainerMetadata = {
-    $type: 'yandex.cloud.serverless.containers.v1.DeleteContainerMetadata' as const,
-
     encode(message: DeleteContainerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerId !== '') {
             writer.uint32(10).string(message.containerId);
@@ -1274,16 +1153,9 @@ export const DeleteContainerMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteContainerMetadata.$type, DeleteContainerMetadata);
-
-const baseGetContainerRevisionRequest: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.GetContainerRevisionRequest',
-    containerRevisionId: '',
-};
+const baseGetContainerRevisionRequest: object = { containerRevisionId: '' };
 
 export const GetContainerRevisionRequest = {
-    $type: 'yandex.cloud.serverless.containers.v1.GetContainerRevisionRequest' as const,
-
     encode(
         message: GetContainerRevisionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1337,18 +1209,9 @@ export const GetContainerRevisionRequest = {
     },
 };
 
-messageTypeRegistry.set(GetContainerRevisionRequest.$type, GetContainerRevisionRequest);
-
-const baseListContainersRevisionsRequest: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.ListContainersRevisionsRequest',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListContainersRevisionsRequest: object = { pageSize: 0, pageToken: '', filter: '' };
 
 export const ListContainersRevisionsRequest = {
-    $type: 'yandex.cloud.serverless.containers.v1.ListContainersRevisionsRequest' as const,
-
     encode(
         message: ListContainersRevisionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1445,16 +1308,9 @@ export const ListContainersRevisionsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListContainersRevisionsRequest.$type, ListContainersRevisionsRequest);
-
-const baseListContainersRevisionsResponse: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.ListContainersRevisionsResponse',
-    nextPageToken: '',
-};
+const baseListContainersRevisionsResponse: object = { nextPageToken: '' };
 
 export const ListContainersRevisionsResponse = {
-    $type: 'yandex.cloud.serverless.containers.v1.ListContainersRevisionsResponse' as const,
-
     encode(
         message: ListContainersRevisionsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1527,10 +1383,7 @@ export const ListContainersRevisionsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListContainersRevisionsResponse.$type, ListContainersRevisionsResponse);
-
 const baseDeployContainerRevisionRequest: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.DeployContainerRevisionRequest',
     containerId: '',
     description: '',
     serviceAccountId: '',
@@ -1538,8 +1391,6 @@ const baseDeployContainerRevisionRequest: object = {
 };
 
 export const DeployContainerRevisionRequest = {
-    $type: 'yandex.cloud.serverless.containers.v1.DeployContainerRevisionRequest' as const,
-
     encode(
         message: DeployContainerRevisionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1830,17 +1681,9 @@ export const DeployContainerRevisionRequest = {
     },
 };
 
-messageTypeRegistry.set(DeployContainerRevisionRequest.$type, DeployContainerRevisionRequest);
-
-const baseImageSpec: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.ImageSpec',
-    imageUrl: '',
-    workingDir: '',
-};
+const baseImageSpec: object = { imageUrl: '', workingDir: '' };
 
 export const ImageSpec = {
-    $type: 'yandex.cloud.serverless.containers.v1.ImageSpec' as const,
-
     encode(message: ImageSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageUrl !== '') {
             writer.uint32(10).string(message.imageUrl);
@@ -1853,11 +1696,7 @@ export const ImageSpec = {
         }
         Object.entries(message.environment).forEach(([key, value]) => {
             ImageSpec_EnvironmentEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.containers.v1.ImageSpec.EnvironmentEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -1969,17 +1808,9 @@ export const ImageSpec = {
     },
 };
 
-messageTypeRegistry.set(ImageSpec.$type, ImageSpec);
-
-const baseImageSpec_EnvironmentEntry: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.ImageSpec.EnvironmentEntry',
-    key: '',
-    value: '',
-};
+const baseImageSpec_EnvironmentEntry: object = { key: '', value: '' };
 
 export const ImageSpec_EnvironmentEntry = {
-    $type: 'yandex.cloud.serverless.containers.v1.ImageSpec.EnvironmentEntry' as const,
-
     encode(
         message: ImageSpec_EnvironmentEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2039,16 +1870,9 @@ export const ImageSpec_EnvironmentEntry = {
     },
 };
 
-messageTypeRegistry.set(ImageSpec_EnvironmentEntry.$type, ImageSpec_EnvironmentEntry);
-
-const baseDeployContainerRevisionMetadata: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.DeployContainerRevisionMetadata',
-    containerRevisionId: '',
-};
+const baseDeployContainerRevisionMetadata: object = { containerRevisionId: '' };
 
 export const DeployContainerRevisionMetadata = {
-    $type: 'yandex.cloud.serverless.containers.v1.DeployContainerRevisionMetadata' as const,
-
     encode(
         message: DeployContainerRevisionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2108,17 +1932,9 @@ export const DeployContainerRevisionMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeployContainerRevisionMetadata.$type, DeployContainerRevisionMetadata);
-
-const baseRollbackContainerRequest: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.RollbackContainerRequest',
-    containerId: '',
-    revisionId: '',
-};
+const baseRollbackContainerRequest: object = { containerId: '', revisionId: '' };
 
 export const RollbackContainerRequest = {
-    $type: 'yandex.cloud.serverless.containers.v1.RollbackContainerRequest' as const,
-
     encode(
         message: RollbackContainerRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2183,17 +1999,9 @@ export const RollbackContainerRequest = {
     },
 };
 
-messageTypeRegistry.set(RollbackContainerRequest.$type, RollbackContainerRequest);
-
-const baseRollbackContainerMetadata: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.RollbackContainerMetadata',
-    containerId: '',
-    revisionId: '',
-};
+const baseRollbackContainerMetadata: object = { containerId: '', revisionId: '' };
 
 export const RollbackContainerMetadata = {
-    $type: 'yandex.cloud.serverless.containers.v1.RollbackContainerMetadata' as const,
-
     encode(
         message: RollbackContainerMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2258,10 +2066,7 @@ export const RollbackContainerMetadata = {
     },
 };
 
-messageTypeRegistry.set(RollbackContainerMetadata.$type, RollbackContainerMetadata);
-
 const baseListContainerOperationsRequest: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.ListContainerOperationsRequest',
     containerId: '',
     pageSize: 0,
     pageToken: '',
@@ -2269,8 +2074,6 @@ const baseListContainerOperationsRequest: object = {
 };
 
 export const ListContainerOperationsRequest = {
-    $type: 'yandex.cloud.serverless.containers.v1.ListContainerOperationsRequest' as const,
-
     encode(
         message: ListContainerOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2355,16 +2158,9 @@ export const ListContainerOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListContainerOperationsRequest.$type, ListContainerOperationsRequest);
-
-const baseListContainerOperationsResponse: object = {
-    $type: 'yandex.cloud.serverless.containers.v1.ListContainerOperationsResponse',
-    nextPageToken: '',
-};
+const baseListContainerOperationsResponse: object = { nextPageToken: '' };
 
 export const ListContainerOperationsResponse = {
-    $type: 'yandex.cloud.serverless.containers.v1.ListContainerOperationsResponse' as const,
-
     encode(
         message: ListContainerOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2436,8 +2232,6 @@ export const ListContainerOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListContainerOperationsResponse.$type, ListContainerOperationsResponse);
 
 /** A set of methods for managing serverless containers. */
 export const ContainerServiceService = {
@@ -2898,16 +2692,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

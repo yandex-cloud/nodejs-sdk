@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -27,13 +26,11 @@ import {
 export const protobufPackage = 'yandex.cloud.serverless.eventrouter.v1';
 
 export interface GetRuleRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.GetRuleRequest';
     /** ID of the rule to return. */
     ruleId: string;
 }
 
 export interface ListRulesRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListRulesRequest';
     /** ID of the bus to list rules in. */
     busId: string | undefined;
     /** ID of the folder to list rules in. */
@@ -54,7 +51,6 @@ export interface ListRulesRequest {
 }
 
 export interface ListRulesResponse {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListRulesResponse';
     /** List of rules. */
     rules: Rule[];
     /** Token for getting the next page of the list of rules. */
@@ -62,7 +58,6 @@ export interface ListRulesResponse {
 }
 
 export interface CreateRuleRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateRuleRequest';
     /** ID of the bus to create a rule for. */
     busId: string;
     /** Name of the rule. */
@@ -80,13 +75,11 @@ export interface CreateRuleRequest {
 }
 
 export interface CreateRuleRequest_LabelsEntry {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateRuleRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateRuleMetadata {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateRuleMetadata';
     /** ID of the rule that is being created. */
     ruleId: string;
     /** ID of the bus that the rule belongs to. */
@@ -94,7 +87,6 @@ export interface CreateRuleMetadata {
 }
 
 export interface UpdateRuleRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateRuleRequest';
     /** ID of the rule to update. */
     ruleId: string;
     /** Field mask that specifies which fields of the rule are going to be updated. */
@@ -114,31 +106,26 @@ export interface UpdateRuleRequest {
 }
 
 export interface UpdateRuleRequest_LabelsEntry {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateRuleRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateRuleMetadata {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateRuleMetadata';
     /** ID of the rule that is being updated. */
     ruleId: string;
 }
 
 export interface DeleteRuleRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DeleteRuleRequest';
     /** ID of the rule to delete. */
     ruleId: string;
 }
 
 export interface DeleteRuleMetadata {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DeleteRuleMetadata';
     /** ID of the rule that is being deleted. */
     ruleId: string;
 }
 
 export interface ListRuleOperationsRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListRuleOperationsRequest';
     /** ID of the rule to list operations for. */
     ruleId: string;
     /** The maximum number of results per response. */
@@ -160,7 +147,6 @@ export interface ListRuleOperationsRequest {
 }
 
 export interface ListRuleOperationsResponse {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListRuleOperationsResponse';
     /** List of operations for the specified rule. */
     operations: Operation[];
     /** Token for getting the next page of the list of operations. */
@@ -168,37 +154,28 @@ export interface ListRuleOperationsResponse {
 }
 
 export interface EnableRuleRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.EnableRuleRequest';
     /** ID of the rule to enable. */
     ruleId: string;
 }
 
 export interface EnableRuleMetadata {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.EnableRuleMetadata';
     /** ID of the rule that is being enabled. */
     ruleId: string;
 }
 
 export interface DisableRuleRequest {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DisableRuleRequest';
     /** ID of the rule to disable. */
     ruleId: string;
 }
 
 export interface DisableRuleMetadata {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DisableRuleMetadata';
     /** ID of the rule that is being disabled. */
     ruleId: string;
 }
 
-const baseGetRuleRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.GetRuleRequest',
-    ruleId: '',
-};
+const baseGetRuleRequest: object = { ruleId: '' };
 
 export const GetRuleRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.GetRuleRequest' as const,
-
     encode(message: GetRuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -244,18 +221,9 @@ export const GetRuleRequest = {
     },
 };
 
-messageTypeRegistry.set(GetRuleRequest.$type, GetRuleRequest);
-
-const baseListRulesRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListRulesRequest',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListRulesRequest: object = { pageSize: 0, pageToken: '', filter: '' };
 
 export const ListRulesRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListRulesRequest' as const,
-
     encode(message: ListRulesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== undefined) {
             writer.uint32(10).string(message.busId);
@@ -345,16 +313,9 @@ export const ListRulesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListRulesRequest.$type, ListRulesRequest);
-
-const baseListRulesResponse: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListRulesResponse',
-    nextPageToken: '',
-};
+const baseListRulesResponse: object = { nextPageToken: '' };
 
 export const ListRulesResponse = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListRulesResponse' as const,
-
     encode(message: ListRulesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.rules) {
             Rule.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -416,10 +377,7 @@ export const ListRulesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListRulesResponse.$type, ListRulesResponse);
-
 const baseCreateRuleRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateRuleRequest',
     busId: '',
     name: '',
     description: '',
@@ -427,8 +385,6 @@ const baseCreateRuleRequest: object = {
 };
 
 export const CreateRuleRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateRuleRequest' as const,
-
     encode(message: CreateRuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== '') {
             writer.uint32(10).string(message.busId);
@@ -441,11 +397,7 @@ export const CreateRuleRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateRuleRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateRuleRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -577,17 +529,9 @@ export const CreateRuleRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateRuleRequest.$type, CreateRuleRequest);
-
-const baseCreateRuleRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateRuleRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateRuleRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateRuleRequest_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateRuleRequest.LabelsEntry' as const,
-
     encode(
         message: CreateRuleRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -647,17 +591,9 @@ export const CreateRuleRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateRuleRequest_LabelsEntry.$type, CreateRuleRequest_LabelsEntry);
-
-const baseCreateRuleMetadata: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateRuleMetadata',
-    ruleId: '',
-    busId: '',
-};
+const baseCreateRuleMetadata: object = { ruleId: '', busId: '' };
 
 export const CreateRuleMetadata = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.CreateRuleMetadata' as const,
-
     encode(message: CreateRuleMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -715,10 +651,7 @@ export const CreateRuleMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateRuleMetadata.$type, CreateRuleMetadata);
-
 const baseUpdateRuleRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateRuleRequest',
     ruleId: '',
     name: '',
     description: '',
@@ -726,8 +659,6 @@ const baseUpdateRuleRequest: object = {
 };
 
 export const UpdateRuleRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateRuleRequest' as const,
-
     encode(message: UpdateRuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -743,11 +674,7 @@ export const UpdateRuleRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateRuleRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateRuleRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -894,17 +821,9 @@ export const UpdateRuleRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateRuleRequest.$type, UpdateRuleRequest);
-
-const baseUpdateRuleRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateRuleRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateRuleRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateRuleRequest_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateRuleRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateRuleRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -964,16 +883,9 @@ export const UpdateRuleRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateRuleRequest_LabelsEntry.$type, UpdateRuleRequest_LabelsEntry);
-
-const baseUpdateRuleMetadata: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateRuleMetadata',
-    ruleId: '',
-};
+const baseUpdateRuleMetadata: object = { ruleId: '' };
 
 export const UpdateRuleMetadata = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.UpdateRuleMetadata' as const,
-
     encode(message: UpdateRuleMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -1021,16 +933,9 @@ export const UpdateRuleMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateRuleMetadata.$type, UpdateRuleMetadata);
-
-const baseDeleteRuleRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DeleteRuleRequest',
-    ruleId: '',
-};
+const baseDeleteRuleRequest: object = { ruleId: '' };
 
 export const DeleteRuleRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DeleteRuleRequest' as const,
-
     encode(message: DeleteRuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -1076,16 +981,9 @@ export const DeleteRuleRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteRuleRequest.$type, DeleteRuleRequest);
-
-const baseDeleteRuleMetadata: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DeleteRuleMetadata',
-    ruleId: '',
-};
+const baseDeleteRuleMetadata: object = { ruleId: '' };
 
 export const DeleteRuleMetadata = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DeleteRuleMetadata' as const,
-
     encode(message: DeleteRuleMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -1133,10 +1031,7 @@ export const DeleteRuleMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteRuleMetadata.$type, DeleteRuleMetadata);
-
 const baseListRuleOperationsRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListRuleOperationsRequest',
     ruleId: '',
     pageSize: 0,
     pageToken: '',
@@ -1144,8 +1039,6 @@ const baseListRuleOperationsRequest: object = {
 };
 
 export const ListRuleOperationsRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListRuleOperationsRequest' as const,
-
     encode(
         message: ListRuleOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1228,16 +1121,9 @@ export const ListRuleOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListRuleOperationsRequest.$type, ListRuleOperationsRequest);
-
-const baseListRuleOperationsResponse: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListRuleOperationsResponse',
-    nextPageToken: '',
-};
+const baseListRuleOperationsResponse: object = { nextPageToken: '' };
 
 export const ListRuleOperationsResponse = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.ListRuleOperationsResponse' as const,
-
     encode(
         message: ListRuleOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1304,16 +1190,9 @@ export const ListRuleOperationsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListRuleOperationsResponse.$type, ListRuleOperationsResponse);
-
-const baseEnableRuleRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.EnableRuleRequest',
-    ruleId: '',
-};
+const baseEnableRuleRequest: object = { ruleId: '' };
 
 export const EnableRuleRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.EnableRuleRequest' as const,
-
     encode(message: EnableRuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -1359,16 +1238,9 @@ export const EnableRuleRequest = {
     },
 };
 
-messageTypeRegistry.set(EnableRuleRequest.$type, EnableRuleRequest);
-
-const baseEnableRuleMetadata: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.EnableRuleMetadata',
-    ruleId: '',
-};
+const baseEnableRuleMetadata: object = { ruleId: '' };
 
 export const EnableRuleMetadata = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.EnableRuleMetadata' as const,
-
     encode(message: EnableRuleMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -1416,16 +1288,9 @@ export const EnableRuleMetadata = {
     },
 };
 
-messageTypeRegistry.set(EnableRuleMetadata.$type, EnableRuleMetadata);
-
-const baseDisableRuleRequest: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DisableRuleRequest',
-    ruleId: '',
-};
+const baseDisableRuleRequest: object = { ruleId: '' };
 
 export const DisableRuleRequest = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DisableRuleRequest' as const,
-
     encode(message: DisableRuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -1473,16 +1338,9 @@ export const DisableRuleRequest = {
     },
 };
 
-messageTypeRegistry.set(DisableRuleRequest.$type, DisableRuleRequest);
-
-const baseDisableRuleMetadata: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DisableRuleMetadata',
-    ruleId: '',
-};
+const baseDisableRuleMetadata: object = { ruleId: '' };
 
 export const DisableRuleMetadata = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DisableRuleMetadata' as const,
-
     encode(message: DisableRuleMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -1529,8 +1387,6 @@ export const DisableRuleMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DisableRuleMetadata.$type, DisableRuleMetadata);
 
 /** A set of methods for managing rules for serverless eventrouter. */
 export const RuleServiceService = {
@@ -1905,16 +1761,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

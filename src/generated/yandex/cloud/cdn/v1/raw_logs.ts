@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -62,7 +61,6 @@ export function rawLogsStatusToJSON(object: RawLogsStatus): string {
 
 /** User settings for Raw logs. */
 export interface RawLogsSettings {
-    $type: 'yandex.cloud.cdn.v1.RawLogsSettings';
     /** Destination S3 bucket name, note that the suer should be owner of the bucket. */
     bucketName: string;
     /** Bucket region, unused for now, could be blank. */
@@ -78,16 +76,9 @@ export interface RawLogsSettings {
     filePrefix: string;
 }
 
-const baseRawLogsSettings: object = {
-    $type: 'yandex.cloud.cdn.v1.RawLogsSettings',
-    bucketName: '',
-    bucketRegion: '',
-    filePrefix: '',
-};
+const baseRawLogsSettings: object = { bucketName: '', bucketRegion: '', filePrefix: '' };
 
 export const RawLogsSettings = {
-    $type: 'yandex.cloud.cdn.v1.RawLogsSettings' as const,
-
     encode(message: RawLogsSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucketName !== '') {
             writer.uint32(10).string(message.bucketName);
@@ -159,8 +150,6 @@ export const RawLogsSettings = {
     },
 };
 
-messageTypeRegistry.set(RawLogsSettings.$type, RawLogsSettings);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -170,16 +159,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

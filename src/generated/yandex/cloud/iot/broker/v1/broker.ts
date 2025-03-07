@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -13,7 +12,6 @@ export const protobufPackage = 'yandex.cloud.iot.broker.v1';
 
 /** A broker. */
 export interface Broker {
-    $type: 'yandex.cloud.iot.broker.v1.Broker';
     /** ID of the broker. */
     id: string;
     /** ID of the folder that the broker belongs to. */
@@ -80,14 +78,12 @@ export function broker_StatusToJSON(object: Broker_Status): string {
 }
 
 export interface Broker_LabelsEntry {
-    $type: 'yandex.cloud.iot.broker.v1.Broker.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** A broker certificate. */
 export interface BrokerCertificate {
-    $type: 'yandex.cloud.iot.broker.v1.BrokerCertificate';
     /** ID of the broker that the certificate belongs to. */
     brokerId: string;
     /** SHA256 hash of the certificates. */
@@ -100,7 +96,6 @@ export interface BrokerCertificate {
 
 /** A broker password. */
 export interface BrokerPassword {
-    $type: 'yandex.cloud.iot.broker.v1.BrokerPassword';
     /** ID of the broker that the password belongs to. */
     brokerId: string;
     /** ID of the password. */
@@ -110,7 +105,6 @@ export interface BrokerPassword {
 }
 
 export interface LogOptions {
-    $type: 'yandex.cloud.iot.broker.v1.LogOptions';
     /** Is logging from broker disabled. */
     disabled: boolean;
     /** Entry should be written to log group resolved by ID. */
@@ -125,18 +119,9 @@ export interface LogOptions {
     minLevel: LogLevel_Level;
 }
 
-const baseBroker: object = {
-    $type: 'yandex.cloud.iot.broker.v1.Broker',
-    id: '',
-    folderId: '',
-    name: '',
-    description: '',
-    status: 0,
-};
+const baseBroker: object = { id: '', folderId: '', name: '', description: '', status: 0 };
 
 export const Broker = {
-    $type: 'yandex.cloud.iot.broker.v1.Broker' as const,
-
     encode(message: Broker, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -155,7 +140,7 @@ export const Broker = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Broker_LabelsEntry.encode(
-                { $type: 'yandex.cloud.iot.broker.v1.Broker.LabelsEntry', key: key as any, value },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -291,17 +276,9 @@ export const Broker = {
     },
 };
 
-messageTypeRegistry.set(Broker.$type, Broker);
-
-const baseBroker_LabelsEntry: object = {
-    $type: 'yandex.cloud.iot.broker.v1.Broker.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseBroker_LabelsEntry: object = { key: '', value: '' };
 
 export const Broker_LabelsEntry = {
-    $type: 'yandex.cloud.iot.broker.v1.Broker.LabelsEntry' as const,
-
     encode(message: Broker_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -358,18 +335,9 @@ export const Broker_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Broker_LabelsEntry.$type, Broker_LabelsEntry);
-
-const baseBrokerCertificate: object = {
-    $type: 'yandex.cloud.iot.broker.v1.BrokerCertificate',
-    brokerId: '',
-    fingerprint: '',
-    certificateData: '',
-};
+const baseBrokerCertificate: object = { brokerId: '', fingerprint: '', certificateData: '' };
 
 export const BrokerCertificate = {
-    $type: 'yandex.cloud.iot.broker.v1.BrokerCertificate' as const,
-
     encode(message: BrokerCertificate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.brokerId !== '') {
             writer.uint32(10).string(message.brokerId);
@@ -453,17 +421,9 @@ export const BrokerCertificate = {
     },
 };
 
-messageTypeRegistry.set(BrokerCertificate.$type, BrokerCertificate);
-
-const baseBrokerPassword: object = {
-    $type: 'yandex.cloud.iot.broker.v1.BrokerPassword',
-    brokerId: '',
-    id: '',
-};
+const baseBrokerPassword: object = { brokerId: '', id: '' };
 
 export const BrokerPassword = {
-    $type: 'yandex.cloud.iot.broker.v1.BrokerPassword' as const,
-
     encode(message: BrokerPassword, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.brokerId !== '') {
             writer.uint32(10).string(message.brokerId);
@@ -532,17 +492,9 @@ export const BrokerPassword = {
     },
 };
 
-messageTypeRegistry.set(BrokerPassword.$type, BrokerPassword);
-
-const baseLogOptions: object = {
-    $type: 'yandex.cloud.iot.broker.v1.LogOptions',
-    disabled: false,
-    minLevel: 0,
-};
+const baseLogOptions: object = { disabled: false, minLevel: 0 };
 
 export const LogOptions = {
-    $type: 'yandex.cloud.iot.broker.v1.LogOptions' as const,
-
     encode(message: LogOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.disabled === true) {
             writer.uint32(8).bool(message.disabled);
@@ -626,8 +578,6 @@ export const LogOptions = {
     },
 };
 
-messageTypeRegistry.set(LogOptions.$type, LogOptions);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -637,21 +587,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

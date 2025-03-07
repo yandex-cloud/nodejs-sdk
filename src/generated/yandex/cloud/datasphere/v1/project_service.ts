@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -28,7 +27,6 @@ import { Struct } from '../../../../google/protobuf/struct';
 export const protobufPackage = 'yandex.cloud.datasphere.v1';
 
 export interface CreateProjectRequest {
-    $type: 'yandex.cloud.datasphere.v1.CreateProjectRequest';
     /**
      * ID of the folder to create a project in.
      * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -45,13 +43,11 @@ export interface CreateProjectRequest {
 }
 
 export interface CreateProjectMetadata {
-    $type: 'yandex.cloud.datasphere.v1.CreateProjectMetadata';
     /** ID of the project that is being created. */
     projectId: string;
 }
 
 export interface UpdateProjectRequest {
-    $type: 'yandex.cloud.datasphere.v1.UpdateProjectRequest';
     /**
      * ID of the Project resource to update.
      * To get the project ID use a [ProjectService.List] request.
@@ -70,13 +66,11 @@ export interface UpdateProjectRequest {
 }
 
 export interface UpdateProjectMetadata {
-    $type: 'yandex.cloud.datasphere.v1.UpdateProjectMetadata';
     /** ID of the project that is being updated. */
     projectId: string;
 }
 
 export interface DeleteProjectRequest {
-    $type: 'yandex.cloud.datasphere.v1.DeleteProjectRequest';
     /**
      * ID of the Project resource to delete.
      * To get the project ID use a [ProjectService.List] request.
@@ -85,13 +79,11 @@ export interface DeleteProjectRequest {
 }
 
 export interface DeleteProjectMetadata {
-    $type: 'yandex.cloud.datasphere.v1.DeleteProjectMetadata';
     /** ID of the project that is being deleted. */
     projectId: string;
 }
 
 export interface OpenProjectRequest {
-    $type: 'yandex.cloud.datasphere.v1.OpenProjectRequest';
     /**
      * ID of the Project resource to open.
      * To get the project ID use a [ProjectService.List] request.
@@ -100,13 +92,11 @@ export interface OpenProjectRequest {
 }
 
 export interface OpenProjectMetadata {
-    $type: 'yandex.cloud.datasphere.v1.OpenProjectMetadata';
     /** ID of the project that is being opened. */
     projectId: string;
 }
 
 export interface OpenProjectResponse {
-    $type: 'yandex.cloud.datasphere.v1.OpenProjectResponse';
     /**
      * URL of the project that is being opened.
      * Make GET request to [project_url] with sessionToken query parameter equals to [session_token]
@@ -119,7 +109,6 @@ export interface OpenProjectResponse {
 }
 
 export interface GetProjectRequest {
-    $type: 'yandex.cloud.datasphere.v1.GetProjectRequest';
     /**
      * ID of the Project resource to return.
      * To get the project ID use a [ProjectService.List] request.
@@ -128,7 +117,6 @@ export interface GetProjectRequest {
 }
 
 export interface ListProjectsRequest {
-    $type: 'yandex.cloud.datasphere.v1.ListProjectsRequest';
     /**
      * ID of the folder to list projects in.
      * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -149,7 +137,6 @@ export interface ListProjectsRequest {
 }
 
 export interface ListProjectsResponse {
-    $type: 'yandex.cloud.datasphere.v1.ListProjectsResponse';
     /** List of Project resources. */
     projects: Project[];
     /**
@@ -164,19 +151,16 @@ export interface ListProjectsResponse {
 }
 
 export interface GetUnitBalanceRequest {
-    $type: 'yandex.cloud.datasphere.v1.GetUnitBalanceRequest';
     /** ID of the project to return the unit balance for. */
     projectId: string;
 }
 
 export interface GetUnitBalanceResponse {
-    $type: 'yandex.cloud.datasphere.v1.GetUnitBalanceResponse';
     /** The number of units available to the project. */
     unitBalance?: number;
 }
 
 export interface SetUnitBalanceRequest {
-    $type: 'yandex.cloud.datasphere.v1.SetUnitBalanceRequest';
     /** ID of the project to set the unit balance for. */
     projectId: string;
     /** The number of units available to the project. */
@@ -184,7 +168,6 @@ export interface SetUnitBalanceRequest {
 }
 
 export interface ProjectExecutionRequest {
-    $type: 'yandex.cloud.datasphere.v1.ProjectExecutionRequest';
     /** ID of the project to execute notebook/cell in. */
     projectId: string;
     /** ID of the notebook to execute. */
@@ -198,7 +181,6 @@ export interface ProjectExecutionRequest {
 }
 
 export interface ProjectExecutionMetadata {
-    $type: 'yandex.cloud.datasphere.v1.ProjectExecutionMetadata';
     /** ID of the project in which notebook is being executed. */
     projectId: string;
     /** ID of the notebook that is being executed */
@@ -207,20 +189,11 @@ export interface ProjectExecutionMetadata {
     cellId: string | undefined;
 }
 
-export interface ProjectExecutionResponse {
-    $type: 'yandex.cloud.datasphere.v1.ProjectExecutionResponse';
-}
+export interface ProjectExecutionResponse {}
 
-const baseCreateProjectRequest: object = {
-    $type: 'yandex.cloud.datasphere.v1.CreateProjectRequest',
-    folderId: '',
-    name: '',
-    description: '',
-};
+const baseCreateProjectRequest: object = { folderId: '', name: '', description: '' };
 
 export const CreateProjectRequest = {
-    $type: 'yandex.cloud.datasphere.v1.CreateProjectRequest' as const,
-
     encode(message: CreateProjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -325,16 +298,9 @@ export const CreateProjectRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateProjectRequest.$type, CreateProjectRequest);
-
-const baseCreateProjectMetadata: object = {
-    $type: 'yandex.cloud.datasphere.v1.CreateProjectMetadata',
-    projectId: '',
-};
+const baseCreateProjectMetadata: object = { projectId: '' };
 
 export const CreateProjectMetadata = {
-    $type: 'yandex.cloud.datasphere.v1.CreateProjectMetadata' as const,
-
     encode(message: CreateProjectMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -384,18 +350,9 @@ export const CreateProjectMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateProjectMetadata.$type, CreateProjectMetadata);
-
-const baseUpdateProjectRequest: object = {
-    $type: 'yandex.cloud.datasphere.v1.UpdateProjectRequest',
-    projectId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateProjectRequest: object = { projectId: '', name: '', description: '' };
 
 export const UpdateProjectRequest = {
-    $type: 'yandex.cloud.datasphere.v1.UpdateProjectRequest' as const,
-
     encode(message: UpdateProjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -518,16 +475,9 @@ export const UpdateProjectRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateProjectRequest.$type, UpdateProjectRequest);
-
-const baseUpdateProjectMetadata: object = {
-    $type: 'yandex.cloud.datasphere.v1.UpdateProjectMetadata',
-    projectId: '',
-};
+const baseUpdateProjectMetadata: object = { projectId: '' };
 
 export const UpdateProjectMetadata = {
-    $type: 'yandex.cloud.datasphere.v1.UpdateProjectMetadata' as const,
-
     encode(message: UpdateProjectMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -577,16 +527,9 @@ export const UpdateProjectMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateProjectMetadata.$type, UpdateProjectMetadata);
-
-const baseDeleteProjectRequest: object = {
-    $type: 'yandex.cloud.datasphere.v1.DeleteProjectRequest',
-    projectId: '',
-};
+const baseDeleteProjectRequest: object = { projectId: '' };
 
 export const DeleteProjectRequest = {
-    $type: 'yandex.cloud.datasphere.v1.DeleteProjectRequest' as const,
-
     encode(message: DeleteProjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -636,16 +579,9 @@ export const DeleteProjectRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteProjectRequest.$type, DeleteProjectRequest);
-
-const baseDeleteProjectMetadata: object = {
-    $type: 'yandex.cloud.datasphere.v1.DeleteProjectMetadata',
-    projectId: '',
-};
+const baseDeleteProjectMetadata: object = { projectId: '' };
 
 export const DeleteProjectMetadata = {
-    $type: 'yandex.cloud.datasphere.v1.DeleteProjectMetadata' as const,
-
     encode(message: DeleteProjectMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -695,16 +631,9 @@ export const DeleteProjectMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteProjectMetadata.$type, DeleteProjectMetadata);
-
-const baseOpenProjectRequest: object = {
-    $type: 'yandex.cloud.datasphere.v1.OpenProjectRequest',
-    projectId: '',
-};
+const baseOpenProjectRequest: object = { projectId: '' };
 
 export const OpenProjectRequest = {
-    $type: 'yandex.cloud.datasphere.v1.OpenProjectRequest' as const,
-
     encode(message: OpenProjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -754,16 +683,9 @@ export const OpenProjectRequest = {
     },
 };
 
-messageTypeRegistry.set(OpenProjectRequest.$type, OpenProjectRequest);
-
-const baseOpenProjectMetadata: object = {
-    $type: 'yandex.cloud.datasphere.v1.OpenProjectMetadata',
-    projectId: '',
-};
+const baseOpenProjectMetadata: object = { projectId: '' };
 
 export const OpenProjectMetadata = {
-    $type: 'yandex.cloud.datasphere.v1.OpenProjectMetadata' as const,
-
     encode(message: OpenProjectMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -813,17 +735,9 @@ export const OpenProjectMetadata = {
     },
 };
 
-messageTypeRegistry.set(OpenProjectMetadata.$type, OpenProjectMetadata);
-
-const baseOpenProjectResponse: object = {
-    $type: 'yandex.cloud.datasphere.v1.OpenProjectResponse',
-    projectUrl: '',
-    sessionToken: '',
-};
+const baseOpenProjectResponse: object = { projectUrl: '', sessionToken: '' };
 
 export const OpenProjectResponse = {
-    $type: 'yandex.cloud.datasphere.v1.OpenProjectResponse' as const,
-
     encode(message: OpenProjectResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectUrl !== '') {
             writer.uint32(10).string(message.projectUrl);
@@ -885,16 +799,9 @@ export const OpenProjectResponse = {
     },
 };
 
-messageTypeRegistry.set(OpenProjectResponse.$type, OpenProjectResponse);
-
-const baseGetProjectRequest: object = {
-    $type: 'yandex.cloud.datasphere.v1.GetProjectRequest',
-    projectId: '',
-};
+const baseGetProjectRequest: object = { projectId: '' };
 
 export const GetProjectRequest = {
-    $type: 'yandex.cloud.datasphere.v1.GetProjectRequest' as const,
-
     encode(message: GetProjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -942,18 +849,9 @@ export const GetProjectRequest = {
     },
 };
 
-messageTypeRegistry.set(GetProjectRequest.$type, GetProjectRequest);
-
-const baseListProjectsRequest: object = {
-    $type: 'yandex.cloud.datasphere.v1.ListProjectsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListProjectsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
 export const ListProjectsRequest = {
-    $type: 'yandex.cloud.datasphere.v1.ListProjectsRequest' as const,
-
     encode(message: ListProjectsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1025,16 +923,9 @@ export const ListProjectsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListProjectsRequest.$type, ListProjectsRequest);
-
-const baseListProjectsResponse: object = {
-    $type: 'yandex.cloud.datasphere.v1.ListProjectsResponse',
-    nextPageToken: '',
-};
+const baseListProjectsResponse: object = { nextPageToken: '' };
 
 export const ListProjectsResponse = {
-    $type: 'yandex.cloud.datasphere.v1.ListProjectsResponse' as const,
-
     encode(message: ListProjectsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.projects) {
             Project.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1098,16 +989,9 @@ export const ListProjectsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListProjectsResponse.$type, ListProjectsResponse);
-
-const baseGetUnitBalanceRequest: object = {
-    $type: 'yandex.cloud.datasphere.v1.GetUnitBalanceRequest',
-    projectId: '',
-};
+const baseGetUnitBalanceRequest: object = { projectId: '' };
 
 export const GetUnitBalanceRequest = {
-    $type: 'yandex.cloud.datasphere.v1.GetUnitBalanceRequest' as const,
-
     encode(message: GetUnitBalanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -1157,21 +1041,12 @@ export const GetUnitBalanceRequest = {
     },
 };
 
-messageTypeRegistry.set(GetUnitBalanceRequest.$type, GetUnitBalanceRequest);
-
-const baseGetUnitBalanceResponse: object = {
-    $type: 'yandex.cloud.datasphere.v1.GetUnitBalanceResponse',
-};
+const baseGetUnitBalanceResponse: object = {};
 
 export const GetUnitBalanceResponse = {
-    $type: 'yandex.cloud.datasphere.v1.GetUnitBalanceResponse' as const,
-
     encode(message: GetUnitBalanceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.unitBalance !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.unitBalance! },
-                writer.uint32(10).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.unitBalance! }, writer.uint32(10).fork()).ldelim();
         }
         return writer;
     },
@@ -1218,25 +1093,15 @@ export const GetUnitBalanceResponse = {
     },
 };
 
-messageTypeRegistry.set(GetUnitBalanceResponse.$type, GetUnitBalanceResponse);
-
-const baseSetUnitBalanceRequest: object = {
-    $type: 'yandex.cloud.datasphere.v1.SetUnitBalanceRequest',
-    projectId: '',
-};
+const baseSetUnitBalanceRequest: object = { projectId: '' };
 
 export const SetUnitBalanceRequest = {
-    $type: 'yandex.cloud.datasphere.v1.SetUnitBalanceRequest' as const,
-
     encode(message: SetUnitBalanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
         }
         if (message.unitBalance !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.unitBalance! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.unitBalance! }, writer.uint32(18).fork()).ldelim();
         }
         return writer;
     },
@@ -1292,17 +1157,9 @@ export const SetUnitBalanceRequest = {
     },
 };
 
-messageTypeRegistry.set(SetUnitBalanceRequest.$type, SetUnitBalanceRequest);
-
-const baseProjectExecutionRequest: object = {
-    $type: 'yandex.cloud.datasphere.v1.ProjectExecutionRequest',
-    projectId: '',
-    outputVariableNames: '',
-};
+const baseProjectExecutionRequest: object = { projectId: '', outputVariableNames: '' };
 
 export const ProjectExecutionRequest = {
-    $type: 'yandex.cloud.datasphere.v1.ProjectExecutionRequest' as const,
-
     encode(message: ProjectExecutionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -1400,16 +1257,9 @@ export const ProjectExecutionRequest = {
     },
 };
 
-messageTypeRegistry.set(ProjectExecutionRequest.$type, ProjectExecutionRequest);
-
-const baseProjectExecutionMetadata: object = {
-    $type: 'yandex.cloud.datasphere.v1.ProjectExecutionMetadata',
-    projectId: '',
-};
+const baseProjectExecutionMetadata: object = { projectId: '' };
 
 export const ProjectExecutionMetadata = {
-    $type: 'yandex.cloud.datasphere.v1.ProjectExecutionMetadata' as const,
-
     encode(
         message: ProjectExecutionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1486,15 +1336,9 @@ export const ProjectExecutionMetadata = {
     },
 };
 
-messageTypeRegistry.set(ProjectExecutionMetadata.$type, ProjectExecutionMetadata);
-
-const baseProjectExecutionResponse: object = {
-    $type: 'yandex.cloud.datasphere.v1.ProjectExecutionResponse',
-};
+const baseProjectExecutionResponse: object = {};
 
 export const ProjectExecutionResponse = {
-    $type: 'yandex.cloud.datasphere.v1.ProjectExecutionResponse' as const,
-
     encode(_: ProjectExecutionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1531,8 +1375,6 @@ export const ProjectExecutionResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ProjectExecutionResponse.$type, ProjectExecutionResponse);
 
 /** A set of methods for managing Project resources. */
 export const ProjectServiceService = {
@@ -1839,16 +1681,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

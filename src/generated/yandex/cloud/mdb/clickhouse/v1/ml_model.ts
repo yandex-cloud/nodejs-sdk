@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -39,7 +38,6 @@ export function mlModelTypeToJSON(object: MlModelType): string {
 }
 
 export interface MlModel {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.MlModel';
     /** Name of the the model. */
     name: string;
     /** ID of the ClickHouse cluster that the model belongs to. */
@@ -50,17 +48,9 @@ export interface MlModel {
     uri: string;
 }
 
-const baseMlModel: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.MlModel',
-    name: '',
-    clusterId: '',
-    type: 0,
-    uri: '',
-};
+const baseMlModel: object = { name: '', clusterId: '', type: 0, uri: '' };
 
 export const MlModel = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.MlModel' as const,
-
     encode(message: MlModel, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -138,8 +128,6 @@ export const MlModel = {
     },
 };
 
-messageTypeRegistry.set(MlModel.$type, MlModel);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -149,16 +137,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

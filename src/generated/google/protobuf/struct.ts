@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -49,13 +48,11 @@ export function nullValueToJSON(object: NullValue): string {
  * The JSON representation for `Struct` is JSON object.
  */
 export interface Struct {
-    $type: 'google.protobuf.Struct';
     /** Unordered map of dynamically typed values. */
     fields: { [key: string]: any };
 }
 
 export interface Struct_FieldsEntry {
-    $type: 'google.protobuf.Struct.FieldsEntry';
     key: string;
     value?: any;
 }
@@ -69,7 +66,6 @@ export interface Struct_FieldsEntry {
  * The JSON representation for `Value` is JSON value.
  */
 export interface Value {
-    $type: 'google.protobuf.Value';
     /** Represents a null value. */
     nullValue: NullValue | undefined;
     /** Represents a double value. */
@@ -90,21 +86,18 @@ export interface Value {
  * The JSON representation for `ListValue` is JSON array.
  */
 export interface ListValue {
-    $type: 'google.protobuf.ListValue';
     /** Repeated field of dynamically typed values. */
     values: any[];
 }
 
-const baseStruct: object = { $type: 'google.protobuf.Struct' };
+const baseStruct: object = {};
 
 export const Struct = {
-    $type: 'google.protobuf.Struct' as const,
-
     encode(message: Struct, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         Object.entries(message.fields).forEach(([key, value]) => {
             if (value !== undefined) {
                 Struct_FieldsEntry.encode(
-                    { $type: 'google.protobuf.Struct.FieldsEntry', key: key as any, value },
+                    { key: key as any, value },
                     writer.uint32(10).fork(),
                 ).ldelim();
             }
@@ -190,13 +183,9 @@ export const Struct = {
     },
 };
 
-messageTypeRegistry.set(Struct.$type, Struct);
-
-const baseStruct_FieldsEntry: object = { $type: 'google.protobuf.Struct.FieldsEntry', key: '' };
+const baseStruct_FieldsEntry: object = { key: '' };
 
 export const Struct_FieldsEntry = {
-    $type: 'google.protobuf.Struct.FieldsEntry' as const,
-
     encode(message: Struct_FieldsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -252,13 +241,9 @@ export const Struct_FieldsEntry = {
     },
 };
 
-messageTypeRegistry.set(Struct_FieldsEntry.$type, Struct_FieldsEntry);
-
-const baseValue: object = { $type: 'google.protobuf.Value' };
+const baseValue: object = {};
 
 export const Value = {
-    $type: 'google.protobuf.Value' as const,
-
     encode(message: Value, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.nullValue !== undefined) {
             writer.uint32(8).int32(message.nullValue);
@@ -400,13 +385,9 @@ export const Value = {
     },
 };
 
-messageTypeRegistry.set(Value.$type, Value);
-
-const baseListValue: object = { $type: 'google.protobuf.ListValue' };
+const baseListValue: object = {};
 
 export const ListValue = {
-    $type: 'google.protobuf.ListValue' as const,
-
     encode(message: ListValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.values) {
             Value.encode(Value.wrap(v!), writer.uint32(10).fork()).ldelim();
@@ -456,15 +437,13 @@ export const ListValue = {
     },
 
     wrap(value: Array<any>): ListValue {
-        return { $type: 'google.protobuf.ListValue', values: value };
+        return { values: value };
     },
 
     unwrap(message: ListValue): Array<any> {
         return message.values;
     },
 };
-
-messageTypeRegistry.set(ListValue.$type, ListValue);
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
@@ -475,16 +454,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

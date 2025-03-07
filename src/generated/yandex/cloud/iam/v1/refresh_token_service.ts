@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,14 +19,12 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.iam.v1';
 
 export interface RevokeRefreshTokenMetadata {
-    $type: 'yandex.cloud.iam.v1.RevokeRefreshTokenMetadata';
     subjectId: string;
     /** Id of revoked Refresh Tokens. */
     refreshTokenIds: string[];
 }
 
 export interface ListRefreshTokensRequest {
-    $type: 'yandex.cloud.iam.v1.ListRefreshTokensRequest';
     subjectId: string;
     /**
      * The maximum number of results per page to return. If the number of available
@@ -56,7 +53,6 @@ export interface ListRefreshTokensRequest {
 }
 
 export interface ListRefreshTokensResponse {
-    $type: 'yandex.cloud.iam.v1.ListRefreshTokensResponse';
     /** List of Refresh Tokens */
     refreshTokens: RefreshToken[];
     /**
@@ -75,7 +71,6 @@ export interface ListRefreshTokensResponse {
  * If none of the parameters refresh_token_id, refresh_token, or revoke_filter are provided, all Refresh Tokens for the current subject will be revoked.
  */
 export interface RevokeRefreshTokenRequest {
-    $type: 'yandex.cloud.iam.v1.RevokeRefreshTokenRequest';
     /** Identifier of the Refresh Token to be revoked. */
     refreshTokenId: string | undefined;
     /** The Refresh Token to be revoked. */
@@ -90,7 +85,6 @@ export interface RevokeRefreshTokenRequest {
  * When multiple fields are provided, they are combined using a logical AND operation.
  */
 export interface RevokeFilter {
-    $type: 'yandex.cloud.iam.v1.RevokeFilter';
     /** The OAuth client identifier for which the Refresh Token was issued. */
     clientId: string;
     /**
@@ -103,20 +97,13 @@ export interface RevokeFilter {
 }
 
 export interface RevokeRefreshTokenResponse {
-    $type: 'yandex.cloud.iam.v1.RevokeRefreshTokenResponse';
     /** Id of revoked Refresh Tokens. */
     refreshTokenIds: string[];
 }
 
-const baseRevokeRefreshTokenMetadata: object = {
-    $type: 'yandex.cloud.iam.v1.RevokeRefreshTokenMetadata',
-    subjectId: '',
-    refreshTokenIds: '',
-};
+const baseRevokeRefreshTokenMetadata: object = { subjectId: '', refreshTokenIds: '' };
 
 export const RevokeRefreshTokenMetadata = {
-    $type: 'yandex.cloud.iam.v1.RevokeRefreshTokenMetadata' as const,
-
     encode(
         message: RevokeRefreshTokenMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -183,10 +170,7 @@ export const RevokeRefreshTokenMetadata = {
     },
 };
 
-messageTypeRegistry.set(RevokeRefreshTokenMetadata.$type, RevokeRefreshTokenMetadata);
-
 const baseListRefreshTokensRequest: object = {
-    $type: 'yandex.cloud.iam.v1.ListRefreshTokensRequest',
     subjectId: '',
     pageSize: 0,
     pageToken: '',
@@ -194,8 +178,6 @@ const baseListRefreshTokensRequest: object = {
 };
 
 export const ListRefreshTokensRequest = {
-    $type: 'yandex.cloud.iam.v1.ListRefreshTokensRequest' as const,
-
     encode(
         message: ListRefreshTokensRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -280,16 +262,9 @@ export const ListRefreshTokensRequest = {
     },
 };
 
-messageTypeRegistry.set(ListRefreshTokensRequest.$type, ListRefreshTokensRequest);
-
-const baseListRefreshTokensResponse: object = {
-    $type: 'yandex.cloud.iam.v1.ListRefreshTokensResponse',
-    nextPageToken: '',
-};
+const baseListRefreshTokensResponse: object = { nextPageToken: '' };
 
 export const ListRefreshTokensResponse = {
-    $type: 'yandex.cloud.iam.v1.ListRefreshTokensResponse' as const,
-
     encode(
         message: ListRefreshTokensResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -360,15 +335,9 @@ export const ListRefreshTokensResponse = {
     },
 };
 
-messageTypeRegistry.set(ListRefreshTokensResponse.$type, ListRefreshTokensResponse);
-
-const baseRevokeRefreshTokenRequest: object = {
-    $type: 'yandex.cloud.iam.v1.RevokeRefreshTokenRequest',
-};
+const baseRevokeRefreshTokenRequest: object = {};
 
 export const RevokeRefreshTokenRequest = {
-    $type: 'yandex.cloud.iam.v1.RevokeRefreshTokenRequest' as const,
-
     encode(
         message: RevokeRefreshTokenRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -451,18 +420,9 @@ export const RevokeRefreshTokenRequest = {
     },
 };
 
-messageTypeRegistry.set(RevokeRefreshTokenRequest.$type, RevokeRefreshTokenRequest);
-
-const baseRevokeFilter: object = {
-    $type: 'yandex.cloud.iam.v1.RevokeFilter',
-    clientId: '',
-    subjectId: '',
-    clientInstanceInfo: '',
-};
+const baseRevokeFilter: object = { clientId: '', subjectId: '', clientInstanceInfo: '' };
 
 export const RevokeFilter = {
-    $type: 'yandex.cloud.iam.v1.RevokeFilter' as const,
-
     encode(message: RevokeFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clientId !== '') {
             writer.uint32(18).string(message.clientId);
@@ -535,16 +495,9 @@ export const RevokeFilter = {
     },
 };
 
-messageTypeRegistry.set(RevokeFilter.$type, RevokeFilter);
-
-const baseRevokeRefreshTokenResponse: object = {
-    $type: 'yandex.cloud.iam.v1.RevokeRefreshTokenResponse',
-    refreshTokenIds: '',
-};
+const baseRevokeRefreshTokenResponse: object = { refreshTokenIds: '' };
 
 export const RevokeRefreshTokenResponse = {
-    $type: 'yandex.cloud.iam.v1.RevokeRefreshTokenResponse' as const,
-
     encode(
         message: RevokeRefreshTokenResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -598,8 +551,6 @@ export const RevokeRefreshTokenResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(RevokeRefreshTokenResponse.$type, RevokeRefreshTokenResponse);
 
 /** A set of methods for managing Refresh Tokens. */
 export const RefreshTokenServiceService = {
@@ -702,16 +653,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Int64Value } from '../../../../../../google/protobuf/wrappers';
@@ -49,7 +48,6 @@ export function normalizationStrategyToJSON(object: NormalizationStrategy): stri
 
 /** Defines a chunking strategy where chunks are created with a fixed maximum chunk size and an overlap between consecutive chunks. */
 export interface StaticChunkingStrategy {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.StaticChunkingStrategy';
     /**
      * The maximum number of tokens allowed in a single chunk.
      * Constraints: must be within the range [100, 2048].
@@ -70,12 +68,10 @@ export interface StaticChunkingStrategy {
  * Currently, only StaticChunkingStrategy is supported.
  */
 export interface ChunkingStrategy {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.ChunkingStrategy';
     staticStrategy?: StaticChunkingStrategy | undefined;
 }
 
 export interface MeanCombinationStrategy {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.MeanCombinationStrategy';
     /** Technique for averaging relevance scores from different indices. Default is ARITHMETIC */
     meanEvaluationTechnique: MeanCombinationStrategy_MeanEvaluationTechnique;
     /**
@@ -138,14 +134,12 @@ export function meanCombinationStrategy_MeanEvaluationTechniqueToJSON(
 
 /** https://plg.uwaterloo.ca/~gvcormac/cormacksigir09-rrf.pdf */
 export interface ReciprocalRankFusionCombinationStrategy {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.ReciprocalRankFusionCombinationStrategy';
     /** The parameter k for RRFscore. Default is 60 */
     k?: number;
 }
 
 /** Combination strategy for merging rankings from different indices */
 export interface CombinationStrategy {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.CombinationStrategy';
     meanCombination?: MeanCombinationStrategy | undefined;
     rrfCombination?: ReciprocalRankFusionCombinationStrategy | undefined;
 }
@@ -164,22 +158,15 @@ export interface CombinationStrategy {
  * Final tokens: `[he, el, ll, lo, hel, ell, llo]`
  */
 export interface NgramTokenizer {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.NgramTokenizer';
     /** Minimum length of characters in a gram. Defaults to 3 */
     minGram?: number;
     /** Maximum length of characters in a gram. Defaults to 4 */
     maxGram?: number;
 }
 
-const baseStaticChunkingStrategy: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.StaticChunkingStrategy',
-    maxChunkSizeTokens: 0,
-    chunkOverlapTokens: 0,
-};
+const baseStaticChunkingStrategy: object = { maxChunkSizeTokens: 0, chunkOverlapTokens: 0 };
 
 export const StaticChunkingStrategy = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.StaticChunkingStrategy' as const,
-
     encode(message: StaticChunkingStrategy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxChunkSizeTokens !== 0) {
             writer.uint32(8).int64(message.maxChunkSizeTokens);
@@ -243,15 +230,9 @@ export const StaticChunkingStrategy = {
     },
 };
 
-messageTypeRegistry.set(StaticChunkingStrategy.$type, StaticChunkingStrategy);
-
-const baseChunkingStrategy: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.ChunkingStrategy',
-};
+const baseChunkingStrategy: object = {};
 
 export const ChunkingStrategy = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.ChunkingStrategy' as const,
-
     encode(message: ChunkingStrategy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.staticStrategy !== undefined) {
             StaticChunkingStrategy.encode(
@@ -308,17 +289,9 @@ export const ChunkingStrategy = {
     },
 };
 
-messageTypeRegistry.set(ChunkingStrategy.$type, ChunkingStrategy);
-
-const baseMeanCombinationStrategy: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.MeanCombinationStrategy',
-    meanEvaluationTechnique: 0,
-    weights: 0,
-};
+const baseMeanCombinationStrategy: object = { meanEvaluationTechnique: 0, weights: 0 };
 
 export const MeanCombinationStrategy = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.MeanCombinationStrategy' as const,
-
     encode(message: MeanCombinationStrategy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.meanEvaluationTechnique !== 0) {
             writer.uint32(8).int32(message.meanEvaluationTechnique);
@@ -396,24 +369,15 @@ export const MeanCombinationStrategy = {
     },
 };
 
-messageTypeRegistry.set(MeanCombinationStrategy.$type, MeanCombinationStrategy);
-
-const baseReciprocalRankFusionCombinationStrategy: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.ReciprocalRankFusionCombinationStrategy',
-};
+const baseReciprocalRankFusionCombinationStrategy: object = {};
 
 export const ReciprocalRankFusionCombinationStrategy = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.ReciprocalRankFusionCombinationStrategy' as const,
-
     encode(
         message: ReciprocalRankFusionCombinationStrategy,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.k !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.k! },
-                writer.uint32(10).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.k! }, writer.uint32(10).fork()).ldelim();
         }
         return writer;
     },
@@ -466,18 +430,9 @@ export const ReciprocalRankFusionCombinationStrategy = {
     },
 };
 
-messageTypeRegistry.set(
-    ReciprocalRankFusionCombinationStrategy.$type,
-    ReciprocalRankFusionCombinationStrategy,
-);
-
-const baseCombinationStrategy: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.CombinationStrategy',
-};
+const baseCombinationStrategy: object = {};
 
 export const CombinationStrategy = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.CombinationStrategy' as const,
-
     encode(message: CombinationStrategy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.meanCombination !== undefined) {
             MeanCombinationStrategy.encode(
@@ -563,27 +518,15 @@ export const CombinationStrategy = {
     },
 };
 
-messageTypeRegistry.set(CombinationStrategy.$type, CombinationStrategy);
-
-const baseNgramTokenizer: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.NgramTokenizer',
-};
+const baseNgramTokenizer: object = {};
 
 export const NgramTokenizer = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.NgramTokenizer' as const,
-
     encode(message: NgramTokenizer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.minGram !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.minGram! },
-                writer.uint32(10).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.minGram! }, writer.uint32(10).fork()).ldelim();
         }
         if (message.maxGram !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxGram! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.maxGram! }, writer.uint32(18).fork()).ldelim();
         }
         return writer;
     },
@@ -637,8 +580,6 @@ export const NgramTokenizer = {
     },
 };
 
-messageTypeRegistry.set(NgramTokenizer.$type, NgramTokenizer);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -659,16 +600,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

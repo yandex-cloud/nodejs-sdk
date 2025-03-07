@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { SearchIndex } from '../../../../../../yandex/cloud/ai/assistants/v1/searchindex/search_index';
@@ -9,7 +8,6 @@ import { Timestamp } from '../../../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.threads';
 
 export interface Message {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.Message';
     /** Unique identifier of the message. */
     id: string;
     /** ID of the thread that this message belongs to. */
@@ -80,14 +78,12 @@ export function message_MessageStatusToJSON(object: Message_MessageStatus): stri
 }
 
 export interface Message_LabelsEntry {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.Message.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Represents the content of a message, which can consist of multiple parts. */
 export interface MessageContent {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.MessageContent';
     /** A list of content parts that make up the message. */
     content: ContentPart[];
 }
@@ -97,7 +93,6 @@ export interface MessageContent {
  * This message is used, for example, to initialize a thread with some messages upon its creation.
  */
 export interface MessageData {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.MessageData';
     /** Author of the message, containing details about the message's creator. */
     author?: Author;
     /** Set of key-value pairs that can be used to organize and categorize the message. */
@@ -107,28 +102,24 @@ export interface MessageData {
 }
 
 export interface MessageData_LabelsEntry {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.MessageData.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Text represents a textual content part of a message. */
 export interface Text {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.Text';
     /** Text content of the message. */
     content: string;
 }
 
 /** ContentPart represents an individual part of the message content, which can be of various types. */
 export interface ContentPart {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.ContentPart';
     /** Text content of the message part. */
     text?: Text | undefined;
 }
 
 /** Author of the message, containing details about the message's creator. */
 export interface Author {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.Author';
     /** Unique identifier of the author. This could be either the user's ID or the assistant's ID, depending on the role. */
     id: string;
     /** Role of the author, indicating whether the message was created by a "user" or an "assistant". */
@@ -137,21 +128,18 @@ export interface Author {
 
 /** Represents a citation used for generating a message. */
 export interface Citation {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.Citation';
     /** List of sources for citation. */
     sources: Source[];
 }
 
 /** Represents a source used for generating a message citation. */
 export interface Source {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.Source';
     /** File chunk source. */
     chunk?: FileChunk | undefined;
 }
 
 /** FileChunk represents a chunk of a file used as a source. */
 export interface FileChunk {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.FileChunk';
     /** Search index associated with the file chunk. */
     searchIndex?: SearchIndex;
     /** The original file from which the chunk is derived. */
@@ -162,22 +150,13 @@ export interface FileChunk {
 
 /** Represents the content of a file chunk. */
 export interface ChunkContent {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.ChunkContent';
     /** A list of content parts that make up the chunk. */
     content: ContentPart[];
 }
 
-const baseMessage: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.Message',
-    id: '',
-    threadId: '',
-    createdBy: '',
-    status: 0,
-};
+const baseMessage: object = { id: '', threadId: '', createdBy: '', status: 0 };
 
 export const Message = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.Message' as const,
-
     encode(message: Message, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -196,11 +175,7 @@ export const Message = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Message_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.assistants.v1.threads.Message.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -355,17 +330,9 @@ export const Message = {
     },
 };
 
-messageTypeRegistry.set(Message.$type, Message);
-
-const baseMessage_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.Message.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseMessage_LabelsEntry: object = { key: '', value: '' };
 
 export const Message_LabelsEntry = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.Message.LabelsEntry' as const,
-
     encode(message: Message_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -422,15 +389,9 @@ export const Message_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Message_LabelsEntry.$type, Message_LabelsEntry);
-
-const baseMessageContent: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.MessageContent',
-};
+const baseMessageContent: object = {};
 
 export const MessageContent = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.MessageContent' as const,
-
     encode(message: MessageContent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.content) {
             ContentPart.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -480,24 +441,16 @@ export const MessageContent = {
     },
 };
 
-messageTypeRegistry.set(MessageContent.$type, MessageContent);
-
-const baseMessageData: object = { $type: 'yandex.cloud.ai.assistants.v1.threads.MessageData' };
+const baseMessageData: object = {};
 
 export const MessageData = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.MessageData' as const,
-
     encode(message: MessageData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.author !== undefined) {
             Author.encode(message.author, writer.uint32(10).fork()).ldelim();
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             MessageData_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.assistants.v1.threads.MessageData.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(18).fork(),
             ).ldelim();
         });
@@ -593,17 +546,9 @@ export const MessageData = {
     },
 };
 
-messageTypeRegistry.set(MessageData.$type, MessageData);
-
-const baseMessageData_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.MessageData.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseMessageData_LabelsEntry: object = { key: '', value: '' };
 
 export const MessageData_LabelsEntry = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.MessageData.LabelsEntry' as const,
-
     encode(message: MessageData_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -660,13 +605,9 @@ export const MessageData_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(MessageData_LabelsEntry.$type, MessageData_LabelsEntry);
-
-const baseText: object = { $type: 'yandex.cloud.ai.assistants.v1.threads.Text', content: '' };
+const baseText: object = { content: '' };
 
 export const Text = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.Text' as const,
-
     encode(message: Text, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.content !== '') {
             writer.uint32(10).string(message.content);
@@ -712,13 +653,9 @@ export const Text = {
     },
 };
 
-messageTypeRegistry.set(Text.$type, Text);
-
-const baseContentPart: object = { $type: 'yandex.cloud.ai.assistants.v1.threads.ContentPart' };
+const baseContentPart: object = {};
 
 export const ContentPart = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.ContentPart' as const,
-
     encode(message: ContentPart, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== undefined) {
             Text.encode(message.text, writer.uint32(10).fork()).ldelim();
@@ -770,17 +707,9 @@ export const ContentPart = {
     },
 };
 
-messageTypeRegistry.set(ContentPart.$type, ContentPart);
-
-const baseAuthor: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.Author',
-    id: '',
-    role: '',
-};
+const baseAuthor: object = { id: '', role: '' };
 
 export const Author = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.Author' as const,
-
     encode(message: Author, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -834,13 +763,9 @@ export const Author = {
     },
 };
 
-messageTypeRegistry.set(Author.$type, Author);
-
-const baseCitation: object = { $type: 'yandex.cloud.ai.assistants.v1.threads.Citation' };
+const baseCitation: object = {};
 
 export const Citation = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.Citation' as const,
-
     encode(message: Citation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.sources) {
             Source.encode(v!, writer.uint32(34).fork()).ldelim();
@@ -890,13 +815,9 @@ export const Citation = {
     },
 };
 
-messageTypeRegistry.set(Citation.$type, Citation);
-
-const baseSource: object = { $type: 'yandex.cloud.ai.assistants.v1.threads.Source' };
+const baseSource: object = {};
 
 export const Source = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.Source' as const,
-
     encode(message: Source, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.chunk !== undefined) {
             FileChunk.encode(message.chunk, writer.uint32(10).fork()).ldelim();
@@ -948,13 +869,9 @@ export const Source = {
     },
 };
 
-messageTypeRegistry.set(Source.$type, Source);
-
-const baseFileChunk: object = { $type: 'yandex.cloud.ai.assistants.v1.threads.FileChunk' };
+const baseFileChunk: object = {};
 
 export const FileChunk = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.FileChunk' as const,
-
     encode(message: FileChunk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.searchIndex !== undefined) {
             SearchIndex.encode(message.searchIndex, writer.uint32(10).fork()).ldelim();
@@ -1040,13 +957,9 @@ export const FileChunk = {
     },
 };
 
-messageTypeRegistry.set(FileChunk.$type, FileChunk);
-
-const baseChunkContent: object = { $type: 'yandex.cloud.ai.assistants.v1.threads.ChunkContent' };
+const baseChunkContent: object = {};
 
 export const ChunkContent = {
-    $type: 'yandex.cloud.ai.assistants.v1.threads.ChunkContent' as const,
-
     encode(message: ChunkContent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.content) {
             ContentPart.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1096,8 +1009,6 @@ export const ChunkContent = {
     },
 };
 
-messageTypeRegistry.set(ChunkContent.$type, ChunkContent);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -1107,21 +1018,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

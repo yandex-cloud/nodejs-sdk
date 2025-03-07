@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -26,7 +25,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.serverless.workflows.v1';
 
 export interface CreateWorkflowRequest {
-    $type: 'yandex.cloud.serverless.workflows.v1.CreateWorkflowRequest';
     /** ID of the folder to create Workflow in. */
     folderId: string;
     /**
@@ -49,19 +47,16 @@ export interface CreateWorkflowRequest {
 }
 
 export interface CreateWorkflowRequest_LabelsEntry {
-    $type: 'yandex.cloud.serverless.workflows.v1.CreateWorkflowRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateWorkflowMetadata {
-    $type: 'yandex.cloud.serverless.workflows.v1.CreateWorkflowMetadata';
     /** ID of the Workflow. */
     workflowId: string;
 }
 
 export interface UpdateWorkflowRequest {
-    $type: 'yandex.cloud.serverless.workflows.v1.UpdateWorkflowRequest';
     /** ID of the Workflow. */
     workflowId: string;
     /** Name of the Workflow. The name is unique within the folder. */
@@ -83,43 +78,36 @@ export interface UpdateWorkflowRequest {
 }
 
 export interface UpdateWorkflowRequest_LabelsEntry {
-    $type: 'yandex.cloud.serverless.workflows.v1.UpdateWorkflowRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateWorkflowMetadata {
-    $type: 'yandex.cloud.serverless.workflows.v1.UpdateWorkflowMetadata';
     /** ID of the Workflow. */
     workflowId: string;
 }
 
 export interface GetWorkflowRequest {
-    $type: 'yandex.cloud.serverless.workflows.v1.GetWorkflowRequest';
     /** ID of the Workflow. */
     workflowId: string;
 }
 
 export interface GetWorkflowResponse {
-    $type: 'yandex.cloud.serverless.workflows.v1.GetWorkflowResponse';
     /** Workflow properties. */
     workflow?: Workflow;
 }
 
 export interface DeleteWorkflowRequest {
-    $type: 'yandex.cloud.serverless.workflows.v1.DeleteWorkflowRequest';
     /** ID of the Workflow. */
     workflowId: string;
 }
 
 export interface DeleteWorkflowMetadata {
-    $type: 'yandex.cloud.serverless.workflows.v1.DeleteWorkflowMetadata';
     /** ID of the Workflow. */
     workflowId: string;
 }
 
 export interface ListWorkflowsRequest {
-    $type: 'yandex.cloud.serverless.workflows.v1.ListWorkflowsRequest';
     /** ID of the folder to list Workflows in. */
     folderId: string;
     /**
@@ -148,7 +136,6 @@ export interface ListWorkflowsRequest {
 }
 
 export interface ListWorkflowsResponse {
-    $type: 'yandex.cloud.serverless.workflows.v1.ListWorkflowsResponse';
     /** List of Workflows. */
     workflows: WorkflowPreview[];
     /**
@@ -162,7 +149,6 @@ export interface ListWorkflowsResponse {
 }
 
 export interface ListOperationsRequest {
-    $type: 'yandex.cloud.serverless.workflows.v1.ListOperationsRequest';
     /** ID of the Workflow to list operations for. */
     workflowId: string;
     /**
@@ -191,7 +177,6 @@ export interface ListOperationsRequest {
 }
 
 export interface ListOperationsResponse {
-    $type: 'yandex.cloud.serverless.workflows.v1.ListOperationsResponse';
     /** List of operations for the specified Workflow. */
     operations: Operation[];
     /**
@@ -205,7 +190,6 @@ export interface ListOperationsResponse {
 }
 
 const baseCreateWorkflowRequest: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.CreateWorkflowRequest',
     folderId: '',
     name: '',
     description: '',
@@ -214,8 +198,6 @@ const baseCreateWorkflowRequest: object = {
 };
 
 export const CreateWorkflowRequest = {
-    $type: 'yandex.cloud.serverless.workflows.v1.CreateWorkflowRequest' as const,
-
     encode(message: CreateWorkflowRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -228,11 +210,7 @@ export const CreateWorkflowRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateWorkflowRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.workflows.v1.CreateWorkflowRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -388,17 +366,9 @@ export const CreateWorkflowRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateWorkflowRequest.$type, CreateWorkflowRequest);
-
-const baseCreateWorkflowRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.CreateWorkflowRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateWorkflowRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateWorkflowRequest_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.workflows.v1.CreateWorkflowRequest.LabelsEntry' as const,
-
     encode(
         message: CreateWorkflowRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -464,16 +434,9 @@ export const CreateWorkflowRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateWorkflowRequest_LabelsEntry.$type, CreateWorkflowRequest_LabelsEntry);
-
-const baseCreateWorkflowMetadata: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.CreateWorkflowMetadata',
-    workflowId: '',
-};
+const baseCreateWorkflowMetadata: object = { workflowId: '' };
 
 export const CreateWorkflowMetadata = {
-    $type: 'yandex.cloud.serverless.workflows.v1.CreateWorkflowMetadata' as const,
-
     encode(message: CreateWorkflowMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -523,10 +486,7 @@ export const CreateWorkflowMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateWorkflowMetadata.$type, CreateWorkflowMetadata);
-
 const baseUpdateWorkflowRequest: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.UpdateWorkflowRequest',
     workflowId: '',
     name: '',
     description: '',
@@ -535,8 +495,6 @@ const baseUpdateWorkflowRequest: object = {
 };
 
 export const UpdateWorkflowRequest = {
-    $type: 'yandex.cloud.serverless.workflows.v1.UpdateWorkflowRequest' as const,
-
     encode(message: UpdateWorkflowRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -549,11 +507,7 @@ export const UpdateWorkflowRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateWorkflowRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.workflows.v1.UpdateWorkflowRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -727,17 +681,9 @@ export const UpdateWorkflowRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateWorkflowRequest.$type, UpdateWorkflowRequest);
-
-const baseUpdateWorkflowRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.UpdateWorkflowRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateWorkflowRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateWorkflowRequest_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.workflows.v1.UpdateWorkflowRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateWorkflowRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -803,16 +749,9 @@ export const UpdateWorkflowRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateWorkflowRequest_LabelsEntry.$type, UpdateWorkflowRequest_LabelsEntry);
-
-const baseUpdateWorkflowMetadata: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.UpdateWorkflowMetadata',
-    workflowId: '',
-};
+const baseUpdateWorkflowMetadata: object = { workflowId: '' };
 
 export const UpdateWorkflowMetadata = {
-    $type: 'yandex.cloud.serverless.workflows.v1.UpdateWorkflowMetadata' as const,
-
     encode(message: UpdateWorkflowMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -862,16 +801,9 @@ export const UpdateWorkflowMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateWorkflowMetadata.$type, UpdateWorkflowMetadata);
-
-const baseGetWorkflowRequest: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.GetWorkflowRequest',
-    workflowId: '',
-};
+const baseGetWorkflowRequest: object = { workflowId: '' };
 
 export const GetWorkflowRequest = {
-    $type: 'yandex.cloud.serverless.workflows.v1.GetWorkflowRequest' as const,
-
     encode(message: GetWorkflowRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -921,15 +853,9 @@ export const GetWorkflowRequest = {
     },
 };
 
-messageTypeRegistry.set(GetWorkflowRequest.$type, GetWorkflowRequest);
-
-const baseGetWorkflowResponse: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.GetWorkflowResponse',
-};
+const baseGetWorkflowResponse: object = {};
 
 export const GetWorkflowResponse = {
-    $type: 'yandex.cloud.serverless.workflows.v1.GetWorkflowResponse' as const,
-
     encode(message: GetWorkflowResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflow !== undefined) {
             Workflow.encode(message.workflow, writer.uint32(10).fork()).ldelim();
@@ -983,16 +909,9 @@ export const GetWorkflowResponse = {
     },
 };
 
-messageTypeRegistry.set(GetWorkflowResponse.$type, GetWorkflowResponse);
-
-const baseDeleteWorkflowRequest: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.DeleteWorkflowRequest',
-    workflowId: '',
-};
+const baseDeleteWorkflowRequest: object = { workflowId: '' };
 
 export const DeleteWorkflowRequest = {
-    $type: 'yandex.cloud.serverless.workflows.v1.DeleteWorkflowRequest' as const,
-
     encode(message: DeleteWorkflowRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -1042,16 +961,9 @@ export const DeleteWorkflowRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteWorkflowRequest.$type, DeleteWorkflowRequest);
-
-const baseDeleteWorkflowMetadata: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.DeleteWorkflowMetadata',
-    workflowId: '',
-};
+const baseDeleteWorkflowMetadata: object = { workflowId: '' };
 
 export const DeleteWorkflowMetadata = {
-    $type: 'yandex.cloud.serverless.workflows.v1.DeleteWorkflowMetadata' as const,
-
     encode(message: DeleteWorkflowMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -1101,19 +1013,9 @@ export const DeleteWorkflowMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteWorkflowMetadata.$type, DeleteWorkflowMetadata);
-
-const baseListWorkflowsRequest: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.ListWorkflowsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListWorkflowsRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListWorkflowsRequest = {
-    $type: 'yandex.cloud.serverless.workflows.v1.ListWorkflowsRequest' as const,
-
     encode(message: ListWorkflowsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1195,16 +1097,9 @@ export const ListWorkflowsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListWorkflowsRequest.$type, ListWorkflowsRequest);
-
-const baseListWorkflowsResponse: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.ListWorkflowsResponse',
-    nextPageToken: '',
-};
+const baseListWorkflowsResponse: object = { nextPageToken: '' };
 
 export const ListWorkflowsResponse = {
-    $type: 'yandex.cloud.serverless.workflows.v1.ListWorkflowsResponse' as const,
-
     encode(message: ListWorkflowsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.workflows) {
             WorkflowPreview.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1270,10 +1165,7 @@ export const ListWorkflowsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListWorkflowsResponse.$type, ListWorkflowsResponse);
-
 const baseListOperationsRequest: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.ListOperationsRequest',
     workflowId: '',
     pageSize: 0,
     pageToken: '',
@@ -1281,8 +1173,6 @@ const baseListOperationsRequest: object = {
 };
 
 export const ListOperationsRequest = {
-    $type: 'yandex.cloud.serverless.workflows.v1.ListOperationsRequest' as const,
-
     encode(message: ListOperationsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -1364,16 +1254,9 @@ export const ListOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListOperationsRequest.$type, ListOperationsRequest);
-
-const baseListOperationsResponse: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.ListOperationsResponse',
-    nextPageToken: '',
-};
+const baseListOperationsResponse: object = { nextPageToken: '' };
 
 export const ListOperationsResponse = {
-    $type: 'yandex.cloud.serverless.workflows.v1.ListOperationsResponse' as const,
-
     encode(message: ListOperationsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.operations) {
             Operation.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1436,8 +1319,6 @@ export const ListOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListOperationsResponse.$type, ListOperationsResponse);
 
 /** Set of methods for managing Workflows. */
 export const WorkflowServiceService = {
@@ -1658,16 +1539,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

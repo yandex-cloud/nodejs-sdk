@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -24,13 +23,11 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter';
 
 export interface GetAdvancedRateLimiterProfileRequest {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.GetAdvancedRateLimiterProfileRequest';
     /** ID of the AdvancedRateLimiterProfile resource to return. */
     advancedRateLimiterProfileId: string;
 }
 
 export interface ListAdvancedRateLimiterProfilesRequest {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.ListAdvancedRateLimiterProfilesRequest';
     /**
      * ID of the folder that the ARL profile belongs to.
      * Currently page_size, page_token, filter and order_by are not supported and List method will return all ARL profiles in the folder.
@@ -39,7 +36,6 @@ export interface ListAdvancedRateLimiterProfilesRequest {
 }
 
 export interface ListAdvancedRateLimiterProfilesResponse {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.ListAdvancedRateLimiterProfilesResponse';
     /**
      * List of AdvancedRateLimiterProfile resources.
      * Currently next_page_token is not supported and List method will return all ARL profiles in the folder.
@@ -48,7 +44,6 @@ export interface ListAdvancedRateLimiterProfilesResponse {
 }
 
 export interface CreateAdvancedRateLimiterProfileRequest {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.CreateAdvancedRateLimiterProfileRequest';
     /** ID of the folder to create a ARL profile in. */
     folderId: string;
     /** Labels as `` key:value `` pairs. Maximum of 64 per resource. */
@@ -62,19 +57,16 @@ export interface CreateAdvancedRateLimiterProfileRequest {
 }
 
 export interface CreateAdvancedRateLimiterProfileRequest_LabelsEntry {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.CreateAdvancedRateLimiterProfileRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateAdvancedRateLimiterProfileMetadata {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.CreateAdvancedRateLimiterProfileMetadata';
     /** ID of the ARL profile that is being created. */
     advancedRateLimiterProfileId: string;
 }
 
 export interface UpdateAdvancedRateLimiterProfileRequest {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.UpdateAdvancedRateLimiterProfileRequest';
     /** ID of the ARL profile to update. */
     advancedRateLimiterProfileId: string;
     /** Field mask that specifies which fields of the AdvancedRateLimiterProfile resource are going to be updated. */
@@ -90,37 +82,28 @@ export interface UpdateAdvancedRateLimiterProfileRequest {
 }
 
 export interface UpdateAdvancedRateLimiterProfileRequest_LabelsEntry {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.UpdateAdvancedRateLimiterProfileRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateAdvancedRateLimiterProfileMetadata {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.UpdateAdvancedRateLimiterProfileMetadata';
     /** ID of the AdvancedRateLimiterProfile resource that is being updated. */
     advancedRateLimiterProfileId: string;
 }
 
 export interface DeleteAdvancedRateLimiterProfileRequest {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.DeleteAdvancedRateLimiterProfileRequest';
     /** ID of the ARL profile to delete. */
     advancedRateLimiterProfileId: string;
 }
 
 export interface DeleteAdvancedRateLimiterProfileMetadata {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.DeleteAdvancedRateLimiterProfileMetadata';
     /** ID of the AdvancedRateLimiterProfile resource that is being deleted. */
     advancedRateLimiterProfileId: string;
 }
 
-const baseGetAdvancedRateLimiterProfileRequest: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.GetAdvancedRateLimiterProfileRequest',
-    advancedRateLimiterProfileId: '',
-};
+const baseGetAdvancedRateLimiterProfileRequest: object = { advancedRateLimiterProfileId: '' };
 
 export const GetAdvancedRateLimiterProfileRequest = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.GetAdvancedRateLimiterProfileRequest' as const,
-
     encode(
         message: GetAdvancedRateLimiterProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -181,19 +164,9 @@ export const GetAdvancedRateLimiterProfileRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    GetAdvancedRateLimiterProfileRequest.$type,
-    GetAdvancedRateLimiterProfileRequest,
-);
-
-const baseListAdvancedRateLimiterProfilesRequest: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.ListAdvancedRateLimiterProfilesRequest',
-    folderId: '',
-};
+const baseListAdvancedRateLimiterProfilesRequest: object = { folderId: '' };
 
 export const ListAdvancedRateLimiterProfilesRequest = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.ListAdvancedRateLimiterProfilesRequest' as const,
-
     encode(
         message: ListAdvancedRateLimiterProfilesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -255,18 +228,9 @@ export const ListAdvancedRateLimiterProfilesRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    ListAdvancedRateLimiterProfilesRequest.$type,
-    ListAdvancedRateLimiterProfilesRequest,
-);
-
-const baseListAdvancedRateLimiterProfilesResponse: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.ListAdvancedRateLimiterProfilesResponse',
-};
+const baseListAdvancedRateLimiterProfilesResponse: object = {};
 
 export const ListAdvancedRateLimiterProfilesResponse = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.ListAdvancedRateLimiterProfilesResponse' as const,
-
     encode(
         message: ListAdvancedRateLimiterProfilesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -339,21 +303,13 @@ export const ListAdvancedRateLimiterProfilesResponse = {
     },
 };
 
-messageTypeRegistry.set(
-    ListAdvancedRateLimiterProfilesResponse.$type,
-    ListAdvancedRateLimiterProfilesResponse,
-);
-
 const baseCreateAdvancedRateLimiterProfileRequest: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.CreateAdvancedRateLimiterProfileRequest',
     folderId: '',
     name: '',
     description: '',
 };
 
 export const CreateAdvancedRateLimiterProfileRequest = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.CreateAdvancedRateLimiterProfileRequest' as const,
-
     encode(
         message: CreateAdvancedRateLimiterProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -363,11 +319,7 @@ export const CreateAdvancedRateLimiterProfileRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateAdvancedRateLimiterProfileRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.CreateAdvancedRateLimiterProfileRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(18).fork(),
             ).ldelim();
         });
@@ -500,20 +452,9 @@ export const CreateAdvancedRateLimiterProfileRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateAdvancedRateLimiterProfileRequest.$type,
-    CreateAdvancedRateLimiterProfileRequest,
-);
-
-const baseCreateAdvancedRateLimiterProfileRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.CreateAdvancedRateLimiterProfileRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateAdvancedRateLimiterProfileRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateAdvancedRateLimiterProfileRequest_LabelsEntry = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.CreateAdvancedRateLimiterProfileRequest.LabelsEntry' as const,
-
     encode(
         message: CreateAdvancedRateLimiterProfileRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -582,19 +523,9 @@ export const CreateAdvancedRateLimiterProfileRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateAdvancedRateLimiterProfileRequest_LabelsEntry.$type,
-    CreateAdvancedRateLimiterProfileRequest_LabelsEntry,
-);
-
-const baseCreateAdvancedRateLimiterProfileMetadata: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.CreateAdvancedRateLimiterProfileMetadata',
-    advancedRateLimiterProfileId: '',
-};
+const baseCreateAdvancedRateLimiterProfileMetadata: object = { advancedRateLimiterProfileId: '' };
 
 export const CreateAdvancedRateLimiterProfileMetadata = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.CreateAdvancedRateLimiterProfileMetadata' as const,
-
     encode(
         message: CreateAdvancedRateLimiterProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -658,21 +589,13 @@ export const CreateAdvancedRateLimiterProfileMetadata = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateAdvancedRateLimiterProfileMetadata.$type,
-    CreateAdvancedRateLimiterProfileMetadata,
-);
-
 const baseUpdateAdvancedRateLimiterProfileRequest: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.UpdateAdvancedRateLimiterProfileRequest',
     advancedRateLimiterProfileId: '',
     name: '',
     description: '',
 };
 
 export const UpdateAdvancedRateLimiterProfileRequest = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.UpdateAdvancedRateLimiterProfileRequest' as const,
-
     encode(
         message: UpdateAdvancedRateLimiterProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -685,11 +608,7 @@ export const UpdateAdvancedRateLimiterProfileRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateAdvancedRateLimiterProfileRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.UpdateAdvancedRateLimiterProfileRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(26).fork(),
             ).ldelim();
         });
@@ -839,20 +758,9 @@ export const UpdateAdvancedRateLimiterProfileRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateAdvancedRateLimiterProfileRequest.$type,
-    UpdateAdvancedRateLimiterProfileRequest,
-);
-
-const baseUpdateAdvancedRateLimiterProfileRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.UpdateAdvancedRateLimiterProfileRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateAdvancedRateLimiterProfileRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateAdvancedRateLimiterProfileRequest_LabelsEntry = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.UpdateAdvancedRateLimiterProfileRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateAdvancedRateLimiterProfileRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -921,19 +829,9 @@ export const UpdateAdvancedRateLimiterProfileRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateAdvancedRateLimiterProfileRequest_LabelsEntry.$type,
-    UpdateAdvancedRateLimiterProfileRequest_LabelsEntry,
-);
-
-const baseUpdateAdvancedRateLimiterProfileMetadata: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.UpdateAdvancedRateLimiterProfileMetadata',
-    advancedRateLimiterProfileId: '',
-};
+const baseUpdateAdvancedRateLimiterProfileMetadata: object = { advancedRateLimiterProfileId: '' };
 
 export const UpdateAdvancedRateLimiterProfileMetadata = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.UpdateAdvancedRateLimiterProfileMetadata' as const,
-
     encode(
         message: UpdateAdvancedRateLimiterProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -997,19 +895,9 @@ export const UpdateAdvancedRateLimiterProfileMetadata = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateAdvancedRateLimiterProfileMetadata.$type,
-    UpdateAdvancedRateLimiterProfileMetadata,
-);
-
-const baseDeleteAdvancedRateLimiterProfileRequest: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.DeleteAdvancedRateLimiterProfileRequest',
-    advancedRateLimiterProfileId: '',
-};
+const baseDeleteAdvancedRateLimiterProfileRequest: object = { advancedRateLimiterProfileId: '' };
 
 export const DeleteAdvancedRateLimiterProfileRequest = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.DeleteAdvancedRateLimiterProfileRequest' as const,
-
     encode(
         message: DeleteAdvancedRateLimiterProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1073,19 +961,9 @@ export const DeleteAdvancedRateLimiterProfileRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    DeleteAdvancedRateLimiterProfileRequest.$type,
-    DeleteAdvancedRateLimiterProfileRequest,
-);
-
-const baseDeleteAdvancedRateLimiterProfileMetadata: object = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.DeleteAdvancedRateLimiterProfileMetadata',
-    advancedRateLimiterProfileId: '',
-};
+const baseDeleteAdvancedRateLimiterProfileMetadata: object = { advancedRateLimiterProfileId: '' };
 
 export const DeleteAdvancedRateLimiterProfileMetadata = {
-    $type: 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter.DeleteAdvancedRateLimiterProfileMetadata' as const,
-
     encode(
         message: DeleteAdvancedRateLimiterProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1148,11 +1026,6 @@ export const DeleteAdvancedRateLimiterProfileMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(
-    DeleteAdvancedRateLimiterProfileMetadata.$type,
-    DeleteAdvancedRateLimiterProfileMetadata,
-);
 
 /** A set of methods for managing AdvancedRateLimiterProfile resources. */
 export const AdvancedRateLimiterProfileServiceService = {
@@ -1348,16 +1221,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

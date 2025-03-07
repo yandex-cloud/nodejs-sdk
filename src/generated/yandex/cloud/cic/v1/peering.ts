@@ -1,12 +1,10 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.cic.v1';
 
 export interface Peering {
-    $type: 'yandex.cloud.cic.v1.Peering';
     /**
      * PeeringSubnet.
      * It's an ip with format ipPrefix/length where address part of ipPrefix is 0.
@@ -37,7 +35,6 @@ export interface Peering {
 }
 
 const basePeering: object = {
-    $type: 'yandex.cloud.cic.v1.Peering',
     peeringSubnet: '',
     peerIp: '',
     cloudIp: '',
@@ -47,8 +44,6 @@ const basePeering: object = {
 };
 
 export const Peering = {
-    $type: 'yandex.cloud.cic.v1.Peering' as const,
-
     encode(message: Peering, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.peeringSubnet !== '') {
             writer.uint32(10).string(message.peeringSubnet);
@@ -152,8 +147,6 @@ export const Peering = {
     },
 };
 
-messageTypeRegistry.set(Peering.$type, Peering);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -174,16 +167,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

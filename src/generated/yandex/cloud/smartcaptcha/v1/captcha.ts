@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -152,7 +151,6 @@ export function captchaChallengeTypeToJSON(object: CaptchaChallengeType): string
 
 /** A Captcha resource. */
 export interface Captcha {
-    $type: 'yandex.cloud.smartcaptcha.v1.Captcha';
     /** ID of the captcha. */
     id: string;
     /** ID of the folder that the captcha belongs to. */
@@ -189,7 +187,6 @@ export interface Captcha {
 
 /** OverrideVariant object. Contains the settings to override. */
 export interface OverrideVariant {
-    $type: 'yandex.cloud.smartcaptcha.v1.OverrideVariant';
     /** Unique identifier of the variant. */
     uuid: string;
     /** Optional description of the rule. 0-512 characters long. */
@@ -204,14 +201,12 @@ export interface OverrideVariant {
 
 /** CaptchaSecretKey object. Contains captcha data that need to keep in secret. */
 export interface CaptchaSecretKey {
-    $type: 'yandex.cloud.smartcaptcha.v1.CaptchaSecretKey';
     /** Server key of the captcha, see [CAPTCHA keys](/docs/smartcaptcha/concepts/keys). */
     serverKey: string;
 }
 
 /** SecurityRule object. Defines the condition and action: when and which variant to show. */
 export interface SecurityRule {
-    $type: 'yandex.cloud.smartcaptcha.v1.SecurityRule';
     /** Name of the rule. The name is unique within the captcha. 1-50 characters long. */
     name: string;
     /** Priority of the rule. Lower value means higher priority. */
@@ -226,7 +221,6 @@ export interface SecurityRule {
 
 /** Condition object. AND semantics implied. */
 export interface Condition {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition';
     /** Host where captcha placed. */
     host?: Condition_HostMatcher;
     /** URI where captcha placed. */
@@ -239,7 +233,6 @@ export interface Condition {
 
 /** StringMatcher object. */
 export interface Condition_StringMatcher {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.StringMatcher';
     exactMatch: string | undefined;
     exactNotMatch: string | undefined;
     prefixMatch: string | undefined;
@@ -250,14 +243,12 @@ export interface Condition_StringMatcher {
 
 /** HostMatcher object. */
 export interface Condition_HostMatcher {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.HostMatcher';
     /** List of hosts. OR semantics implied. */
     hosts: Condition_StringMatcher[];
 }
 
 /** UriMatcher object. AND semantics implied. */
 export interface Condition_UriMatcher {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.UriMatcher';
     /** Path of the URI [RFC3986](https://datatracker.ietf.org/doc/html/rfc3986#section-3.3). */
     path?: Condition_StringMatcher;
     /** List of query matchers. AND semantics implied. */
@@ -266,7 +257,6 @@ export interface Condition_UriMatcher {
 
 /** QueryMatcher object. */
 export interface Condition_QueryMatcher {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.QueryMatcher';
     /** Key of the query parameter. */
     key: string;
     /** Value of the query parameter. */
@@ -275,7 +265,6 @@ export interface Condition_QueryMatcher {
 
 /** HeaderMatcher object. */
 export interface Condition_HeaderMatcher {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.HeaderMatcher';
     /** Name of header (case insensitive). */
     name: string;
     /** Value of the header. */
@@ -284,7 +273,6 @@ export interface Condition_HeaderMatcher {
 
 /** IpMatcher object. AND semantics implied. */
 export interface Condition_IpMatcher {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.IpMatcher';
     ipRangesMatch?: Condition_IpRangesMatcher;
     ipRangesNotMatch?: Condition_IpRangesMatcher;
     geoIpMatch?: Condition_GeoIpMatcher;
@@ -293,20 +281,17 @@ export interface Condition_IpMatcher {
 
 /** IpRangesMatcher object. */
 export interface Condition_IpRangesMatcher {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.IpRangesMatcher';
     /** List of IP ranges. OR semantics implied. */
     ipRanges: string[];
 }
 
 /** GeoIpMatcher object. */
 export interface Condition_GeoIpMatcher {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.GeoIpMatcher';
     /** ISO 3166-1 alpha 2. OR semantics implied. */
     locations: string[];
 }
 
 const baseCaptcha: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.Captcha',
     id: '',
     folderId: '',
     cloudId: '',
@@ -323,8 +308,6 @@ const baseCaptcha: object = {
 };
 
 export const Captcha = {
-    $type: 'yandex.cloud.smartcaptcha.v1.Captcha' as const,
-
     encode(message: Captcha, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(170).string(message.id);
@@ -564,10 +547,7 @@ export const Captcha = {
     },
 };
 
-messageTypeRegistry.set(Captcha.$type, Captcha);
-
 const baseOverrideVariant: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.OverrideVariant',
     uuid: '',
     description: '',
     complexity: 0,
@@ -576,8 +556,6 @@ const baseOverrideVariant: object = {
 };
 
 export const OverrideVariant = {
-    $type: 'yandex.cloud.smartcaptcha.v1.OverrideVariant' as const,
-
     encode(message: OverrideVariant, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.uuid !== '') {
             writer.uint32(10).string(message.uuid);
@@ -673,16 +651,9 @@ export const OverrideVariant = {
     },
 };
 
-messageTypeRegistry.set(OverrideVariant.$type, OverrideVariant);
-
-const baseCaptchaSecretKey: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.CaptchaSecretKey',
-    serverKey: '',
-};
+const baseCaptchaSecretKey: object = { serverKey: '' };
 
 export const CaptchaSecretKey = {
-    $type: 'yandex.cloud.smartcaptcha.v1.CaptchaSecretKey' as const,
-
     encode(message: CaptchaSecretKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serverKey !== '') {
             writer.uint32(10).string(message.serverKey);
@@ -730,10 +701,7 @@ export const CaptchaSecretKey = {
     },
 };
 
-messageTypeRegistry.set(CaptchaSecretKey.$type, CaptchaSecretKey);
-
 const baseSecurityRule: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.SecurityRule',
     name: '',
     priority: 0,
     description: '',
@@ -741,8 +709,6 @@ const baseSecurityRule: object = {
 };
 
 export const SecurityRule = {
-    $type: 'yandex.cloud.smartcaptcha.v1.SecurityRule' as const,
-
     encode(message: SecurityRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -838,13 +804,9 @@ export const SecurityRule = {
     },
 };
 
-messageTypeRegistry.set(SecurityRule.$type, SecurityRule);
-
-const baseCondition: object = { $type: 'yandex.cloud.smartcaptcha.v1.Condition' };
+const baseCondition: object = {};
 
 export const Condition = {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition' as const,
-
     encode(message: Condition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.host !== undefined) {
             Condition_HostMatcher.encode(message.host, writer.uint32(10).fork()).ldelim();
@@ -948,15 +910,9 @@ export const Condition = {
     },
 };
 
-messageTypeRegistry.set(Condition.$type, Condition);
-
-const baseCondition_StringMatcher: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.StringMatcher',
-};
+const baseCondition_StringMatcher: object = {};
 
 export const Condition_StringMatcher = {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.StringMatcher' as const,
-
     encode(message: Condition_StringMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.exactMatch !== undefined) {
             writer.uint32(10).string(message.exactMatch);
@@ -1067,15 +1023,9 @@ export const Condition_StringMatcher = {
     },
 };
 
-messageTypeRegistry.set(Condition_StringMatcher.$type, Condition_StringMatcher);
-
-const baseCondition_HostMatcher: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.HostMatcher',
-};
+const baseCondition_HostMatcher: object = {};
 
 export const Condition_HostMatcher = {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.HostMatcher' as const,
-
     encode(message: Condition_HostMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.hosts) {
             Condition_StringMatcher.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1129,15 +1079,9 @@ export const Condition_HostMatcher = {
     },
 };
 
-messageTypeRegistry.set(Condition_HostMatcher.$type, Condition_HostMatcher);
-
-const baseCondition_UriMatcher: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.UriMatcher',
-};
+const baseCondition_UriMatcher: object = {};
 
 export const Condition_UriMatcher = {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.UriMatcher' as const,
-
     encode(message: Condition_UriMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.path !== undefined) {
             Condition_StringMatcher.encode(message.path, writer.uint32(10).fork()).ldelim();
@@ -1209,16 +1153,9 @@ export const Condition_UriMatcher = {
     },
 };
 
-messageTypeRegistry.set(Condition_UriMatcher.$type, Condition_UriMatcher);
-
-const baseCondition_QueryMatcher: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.QueryMatcher',
-    key: '',
-};
+const baseCondition_QueryMatcher: object = { key: '' };
 
 export const Condition_QueryMatcher = {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.QueryMatcher' as const,
-
     encode(message: Condition_QueryMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1281,16 +1218,9 @@ export const Condition_QueryMatcher = {
     },
 };
 
-messageTypeRegistry.set(Condition_QueryMatcher.$type, Condition_QueryMatcher);
-
-const baseCondition_HeaderMatcher: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.HeaderMatcher',
-    name: '',
-};
+const baseCondition_HeaderMatcher: object = { name: '' };
 
 export const Condition_HeaderMatcher = {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.HeaderMatcher' as const,
-
     encode(message: Condition_HeaderMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1353,15 +1283,9 @@ export const Condition_HeaderMatcher = {
     },
 };
 
-messageTypeRegistry.set(Condition_HeaderMatcher.$type, Condition_HeaderMatcher);
-
-const baseCondition_IpMatcher: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.IpMatcher',
-};
+const baseCondition_IpMatcher: object = {};
 
 export const Condition_IpMatcher = {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.IpMatcher' as const,
-
     encode(message: Condition_IpMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ipRangesMatch !== undefined) {
             Condition_IpRangesMatcher.encode(
@@ -1483,16 +1407,9 @@ export const Condition_IpMatcher = {
     },
 };
 
-messageTypeRegistry.set(Condition_IpMatcher.$type, Condition_IpMatcher);
-
-const baseCondition_IpRangesMatcher: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.IpRangesMatcher',
-    ipRanges: '',
-};
+const baseCondition_IpRangesMatcher: object = { ipRanges: '' };
 
 export const Condition_IpRangesMatcher = {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.IpRangesMatcher' as const,
-
     encode(
         message: Condition_IpRangesMatcher,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1547,16 +1464,9 @@ export const Condition_IpRangesMatcher = {
     },
 };
 
-messageTypeRegistry.set(Condition_IpRangesMatcher.$type, Condition_IpRangesMatcher);
-
-const baseCondition_GeoIpMatcher: object = {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.GeoIpMatcher',
-    locations: '',
-};
+const baseCondition_GeoIpMatcher: object = { locations: '' };
 
 export const Condition_GeoIpMatcher = {
-    $type: 'yandex.cloud.smartcaptcha.v1.Condition.GeoIpMatcher' as const,
-
     encode(message: Condition_GeoIpMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.locations) {
             writer.uint32(10).string(v!);
@@ -1608,8 +1518,6 @@ export const Condition_GeoIpMatcher = {
     },
 };
 
-messageTypeRegistry.set(Condition_GeoIpMatcher.$type, Condition_GeoIpMatcher);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1630,21 +1538,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

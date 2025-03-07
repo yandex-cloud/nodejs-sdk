@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -28,7 +27,6 @@ export const protobufPackage = 'yandex.cloud.ai.llm.v1alpha';
 
 /** Request for instructing the model to generate text. */
 export interface InstructRequest {
-    $type: 'yandex.cloud.ai.llm.v1alpha.InstructRequest';
     /**
      * The name or identifier of the model to be used for text generation.
      * Possible value for now: `general`.
@@ -46,7 +44,6 @@ export interface InstructRequest {
 
 /** Response containing generated text alternatives and token count. */
 export interface InstructResponse {
-    $type: 'yandex.cloud.ai.llm.v1alpha.InstructResponse';
     /** A list of alternative text responses. */
     alternatives: Alternative[];
     /** The number of tokens used in the prompt, including both the [instruction_text] and [request_text]. */
@@ -55,7 +52,6 @@ export interface InstructResponse {
 
 /** Request to engage in a chat conversation with a text generation model. */
 export interface ChatRequest {
-    $type: 'yandex.cloud.ai.llm.v1alpha.ChatRequest';
     /**
      * The name or identifier of the model to be used for the chat.
      * Possible value for now: `general`.
@@ -71,7 +67,6 @@ export interface ChatRequest {
 
 /** Contains a model-generated response for a chat query. */
 export interface ChatResponse {
-    $type: 'yandex.cloud.ai.llm.v1alpha.ChatResponse';
     /** The assistant's message in the chat conversation. */
     message?: Message;
     /** Total number of tokens used in both the chat request and chat response. */
@@ -80,7 +75,6 @@ export interface ChatResponse {
 
 /** Request to tokenize input text. */
 export interface TokenizeRequest {
-    $type: 'yandex.cloud.ai.llm.v1alpha.TokenizeRequest';
     /**
      * The name or identifier of the model to be used for tokenization.
      * Possible values for now: `general`, `general:embedding`.
@@ -92,14 +86,12 @@ export interface TokenizeRequest {
 
 /** Tokenization response. */
 export interface TokenizeResponse {
-    $type: 'yandex.cloud.ai.llm.v1alpha.TokenizeResponse';
     /** A list of tokens obtained from tokenization. */
     tokens: Token[];
 }
 
 /** Represents a request to obtain embeddings for text data. */
 export interface EmbeddingRequest {
-    $type: 'yandex.cloud.ai.llm.v1alpha.EmbeddingRequest';
     /** The type of embedding to be generated. */
     embeddingType: EmbeddingRequest_EmbeddingType;
     /** The name or identifier of the model to be used for embedding. Possible value for now: `general:embedding`. */
@@ -164,21 +156,15 @@ export function embeddingRequest_EmbeddingTypeToJSON(
 
 /** Represents a response containing embeddings for input text data. */
 export interface EmbeddingResponse {
-    $type: 'yandex.cloud.ai.llm.v1alpha.EmbeddingResponse';
     /** A repeated list of double values representing the embedding. */
     embedding: number[];
     /** The number of tokens in the input text. */
     numTokens: number;
 }
 
-const baseInstructRequest: object = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.InstructRequest',
-    model: '',
-};
+const baseInstructRequest: object = { model: '' };
 
 export const InstructRequest = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.InstructRequest' as const,
-
     encode(message: InstructRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.model !== '') {
             writer.uint32(10).string(message.model);
@@ -278,16 +264,9 @@ export const InstructRequest = {
     },
 };
 
-messageTypeRegistry.set(InstructRequest.$type, InstructRequest);
-
-const baseInstructResponse: object = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.InstructResponse',
-    numPromptTokens: 0,
-};
+const baseInstructResponse: object = { numPromptTokens: 0 };
 
 export const InstructResponse = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.InstructResponse' as const,
-
     encode(message: InstructResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.alternatives) {
             Alternative.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -352,13 +331,9 @@ export const InstructResponse = {
     },
 };
 
-messageTypeRegistry.set(InstructResponse.$type, InstructResponse);
-
-const baseChatRequest: object = { $type: 'yandex.cloud.ai.llm.v1alpha.ChatRequest', model: '' };
+const baseChatRequest: object = { model: '' };
 
 export const ChatRequest = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.ChatRequest' as const,
-
     encode(message: ChatRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.model !== '') {
             writer.uint32(10).string(message.model);
@@ -448,16 +423,9 @@ export const ChatRequest = {
     },
 };
 
-messageTypeRegistry.set(ChatRequest.$type, ChatRequest);
-
-const baseChatResponse: object = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.ChatResponse',
-    numTokens: 0,
-};
+const baseChatResponse: object = { numTokens: 0 };
 
 export const ChatResponse = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.ChatResponse' as const,
-
     encode(message: ChatResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.message !== undefined) {
             Message.encode(message.message, writer.uint32(10).fork()).ldelim();
@@ -521,17 +489,9 @@ export const ChatResponse = {
     },
 };
 
-messageTypeRegistry.set(ChatResponse.$type, ChatResponse);
-
-const baseTokenizeRequest: object = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.TokenizeRequest',
-    model: '',
-    text: '',
-};
+const baseTokenizeRequest: object = { model: '', text: '' };
 
 export const TokenizeRequest = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.TokenizeRequest' as const,
-
     encode(message: TokenizeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.model !== '') {
             writer.uint32(10).string(message.model);
@@ -586,13 +546,9 @@ export const TokenizeRequest = {
     },
 };
 
-messageTypeRegistry.set(TokenizeRequest.$type, TokenizeRequest);
-
-const baseTokenizeResponse: object = { $type: 'yandex.cloud.ai.llm.v1alpha.TokenizeResponse' };
+const baseTokenizeResponse: object = {};
 
 export const TokenizeResponse = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.TokenizeResponse' as const,
-
     encode(message: TokenizeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.tokens) {
             Token.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -642,18 +598,9 @@ export const TokenizeResponse = {
     },
 };
 
-messageTypeRegistry.set(TokenizeResponse.$type, TokenizeResponse);
-
-const baseEmbeddingRequest: object = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.EmbeddingRequest',
-    embeddingType: 0,
-    model: '',
-    text: '',
-};
+const baseEmbeddingRequest: object = { embeddingType: 0, model: '', text: '' };
 
 export const EmbeddingRequest = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.EmbeddingRequest' as const,
-
     encode(message: EmbeddingRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.embeddingType !== 0) {
             writer.uint32(8).int32(message.embeddingType);
@@ -721,17 +668,9 @@ export const EmbeddingRequest = {
     },
 };
 
-messageTypeRegistry.set(EmbeddingRequest.$type, EmbeddingRequest);
-
-const baseEmbeddingResponse: object = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.EmbeddingResponse',
-    embedding: 0,
-    numTokens: 0,
-};
+const baseEmbeddingResponse: object = { embedding: 0, numTokens: 0 };
 
 export const EmbeddingResponse = {
-    $type: 'yandex.cloud.ai.llm.v1alpha.EmbeddingResponse' as const,
-
     encode(message: EmbeddingResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         writer.uint32(10).fork();
         for (const v of message.embedding) {
@@ -801,8 +740,6 @@ export const EmbeddingResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(EmbeddingResponse.$type, EmbeddingResponse);
 
 /** Service for text generation and conversation. */
 export const TextGenerationServiceService = {
@@ -1045,16 +982,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

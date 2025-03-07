@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,25 +18,18 @@ import { Classifier } from '../../../../yandex/cloud/speechsense/v1/classifier';
 export const protobufPackage = 'yandex.cloud.speechsense.v1';
 
 export interface ListClassifiersRequest {
-    $type: 'yandex.cloud.speechsense.v1.ListClassifiersRequest';
     /** Project id */
     projectId: string;
 }
 
 export interface ListClassifiersResponse {
-    $type: 'yandex.cloud.speechsense.v1.ListClassifiersResponse';
     /** Classifiers belonging to the given project */
     classifiers: Classifier[];
 }
 
-const baseListClassifiersRequest: object = {
-    $type: 'yandex.cloud.speechsense.v1.ListClassifiersRequest',
-    projectId: '',
-};
+const baseListClassifiersRequest: object = { projectId: '' };
 
 export const ListClassifiersRequest = {
-    $type: 'yandex.cloud.speechsense.v1.ListClassifiersRequest' as const,
-
     encode(message: ListClassifiersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -87,15 +79,9 @@ export const ListClassifiersRequest = {
     },
 };
 
-messageTypeRegistry.set(ListClassifiersRequest.$type, ListClassifiersRequest);
-
-const baseListClassifiersResponse: object = {
-    $type: 'yandex.cloud.speechsense.v1.ListClassifiersResponse',
-};
+const baseListClassifiersResponse: object = {};
 
 export const ListClassifiersResponse = {
-    $type: 'yandex.cloud.speechsense.v1.ListClassifiersResponse' as const,
-
     encode(message: ListClassifiersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.classifiers) {
             Classifier.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -148,8 +134,6 @@ export const ListClassifiersResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListClassifiersResponse.$type, ListClassifiersResponse);
 
 export const ClassifiersServiceService = {
     /** Rpc for listing classifiers in a project */
@@ -211,16 +195,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

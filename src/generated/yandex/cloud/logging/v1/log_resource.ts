@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -11,7 +10,6 @@ export const protobufPackage = 'yandex.cloud.logging.v1';
  * May be used either by services and by user.
  */
 export interface LogEntryResource {
-    $type: 'yandex.cloud.logging.v1.LogEntryResource';
     /** Resource type, i.e., `serverless.function` */
     type: string;
     /** Resource ID, i.e., ID of the function producing logs. */
@@ -20,7 +18,6 @@ export interface LogEntryResource {
 
 /** Log group resource. */
 export interface LogGroupResource {
-    $type: 'yandex.cloud.logging.v1.LogGroupResource';
     /**
      * Resource type.
      *
@@ -31,15 +28,9 @@ export interface LogGroupResource {
     ids: string[];
 }
 
-const baseLogEntryResource: object = {
-    $type: 'yandex.cloud.logging.v1.LogEntryResource',
-    type: '',
-    id: '',
-};
+const baseLogEntryResource: object = { type: '', id: '' };
 
 export const LogEntryResource = {
-    $type: 'yandex.cloud.logging.v1.LogEntryResource' as const,
-
     encode(message: LogEntryResource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== '') {
             writer.uint32(10).string(message.type);
@@ -93,17 +84,9 @@ export const LogEntryResource = {
     },
 };
 
-messageTypeRegistry.set(LogEntryResource.$type, LogEntryResource);
-
-const baseLogGroupResource: object = {
-    $type: 'yandex.cloud.logging.v1.LogGroupResource',
-    type: '',
-    ids: '',
-};
+const baseLogGroupResource: object = { type: '', ids: '' };
 
 export const LogGroupResource = {
-    $type: 'yandex.cloud.logging.v1.LogGroupResource' as const,
-
     encode(message: LogGroupResource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== '') {
             writer.uint32(10).string(message.type);
@@ -162,8 +145,6 @@ export const LogGroupResource = {
     },
 };
 
-messageTypeRegistry.set(LogGroupResource.$type, LogGroupResource);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -173,16 +154,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

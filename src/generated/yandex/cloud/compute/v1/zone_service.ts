@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ import { Zone } from '../../../../yandex/cloud/compute/v1/zone';
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
 export interface ListZonesRequest {
-    $type: 'yandex.cloud.compute.v1.ListZonesRequest';
     /**
      * The maximum number of results per page to return. If the number of available
      * results is larger than [page_size],
@@ -35,7 +33,6 @@ export interface ListZonesRequest {
 }
 
 export interface ListZonesResponse {
-    $type: 'yandex.cloud.compute.v1.ListZonesResponse';
     /** List of availability zones. */
     zones: Zone[];
     /**
@@ -50,20 +47,13 @@ export interface ListZonesResponse {
 }
 
 export interface GetZoneRequest {
-    $type: 'yandex.cloud.compute.v1.GetZoneRequest';
     /** ID of the availability zone to return information about. */
     zoneId: string;
 }
 
-const baseListZonesRequest: object = {
-    $type: 'yandex.cloud.compute.v1.ListZonesRequest',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListZonesRequest: object = { pageSize: 0, pageToken: '' };
 
 export const ListZonesRequest = {
-    $type: 'yandex.cloud.compute.v1.ListZonesRequest' as const,
-
     encode(message: ListZonesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -121,16 +111,9 @@ export const ListZonesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListZonesRequest.$type, ListZonesRequest);
-
-const baseListZonesResponse: object = {
-    $type: 'yandex.cloud.compute.v1.ListZonesResponse',
-    nextPageToken: '',
-};
+const baseListZonesResponse: object = { nextPageToken: '' };
 
 export const ListZonesResponse = {
-    $type: 'yandex.cloud.compute.v1.ListZonesResponse' as const,
-
     encode(message: ListZonesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.zones) {
             Zone.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -192,13 +175,9 @@ export const ListZonesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListZonesResponse.$type, ListZonesResponse);
-
-const baseGetZoneRequest: object = { $type: 'yandex.cloud.compute.v1.GetZoneRequest', zoneId: '' };
+const baseGetZoneRequest: object = { zoneId: '' };
 
 export const GetZoneRequest = {
-    $type: 'yandex.cloud.compute.v1.GetZoneRequest' as const,
-
     encode(message: GetZoneRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneId !== '') {
             writer.uint32(10).string(message.zoneId);
@@ -243,8 +222,6 @@ export const GetZoneRequest = {
         return message;
     },
 };
-
-messageTypeRegistry.set(GetZoneRequest.$type, GetZoneRequest);
 
 /** A set of methods to retrieve information about availability zones. */
 export const ZoneServiceService = {
@@ -359,16 +336,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

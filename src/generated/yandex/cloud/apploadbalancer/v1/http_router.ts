@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -15,7 +14,6 @@ export const protobufPackage = 'yandex.cloud.apploadbalancer.v1';
  * For details about the concept, see [documentation](/docs/application-load-balancer/concepts/http-router).
  */
 export interface HttpRouter {
-    $type: 'yandex.cloud.apploadbalancer.v1.HttpRouter';
     /** ID of the router. Generated at creation time. */
     id: string;
     /** Name of the router. The name is unique within the folder. */
@@ -42,22 +40,13 @@ export interface HttpRouter {
 }
 
 export interface HttpRouter_LabelsEntry {
-    $type: 'yandex.cloud.apploadbalancer.v1.HttpRouter.LabelsEntry';
     key: string;
     value: string;
 }
 
-const baseHttpRouter: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.HttpRouter',
-    id: '',
-    name: '',
-    description: '',
-    folderId: '',
-};
+const baseHttpRouter: object = { id: '', name: '', description: '', folderId: '' };
 
 export const HttpRouter = {
-    $type: 'yandex.cloud.apploadbalancer.v1.HttpRouter' as const,
-
     encode(message: HttpRouter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -73,11 +62,7 @@ export const HttpRouter = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             HttpRouter_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.apploadbalancer.v1.HttpRouter.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -220,17 +205,9 @@ export const HttpRouter = {
     },
 };
 
-messageTypeRegistry.set(HttpRouter.$type, HttpRouter);
-
-const baseHttpRouter_LabelsEntry: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.HttpRouter.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseHttpRouter_LabelsEntry: object = { key: '', value: '' };
 
 export const HttpRouter_LabelsEntry = {
-    $type: 'yandex.cloud.apploadbalancer.v1.HttpRouter.LabelsEntry' as const,
-
     encode(message: HttpRouter_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -287,8 +264,6 @@ export const HttpRouter_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(HttpRouter_LabelsEntry.$type, HttpRouter_LabelsEntry);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -298,21 +273,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

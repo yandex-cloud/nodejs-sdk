@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -11,7 +10,6 @@ export const protobufPackage = 'yandex.cloud.apploadbalancer.v1';
  * For details about the concept, see [documentation](/docs/application-load-balancer/concepts/target-group).
  */
 export interface TargetGroup {
-    $type: 'yandex.cloud.apploadbalancer.v1.TargetGroup';
     /** ID of the target group. Generated at creation time. */
     id: string;
     /** Name of the target group. The name is unique within the folder. */
@@ -32,7 +30,6 @@ export interface TargetGroup {
 }
 
 export interface TargetGroup_LabelsEntry {
-    $type: 'yandex.cloud.apploadbalancer.v1.TargetGroup.LabelsEntry';
     key: string;
     value: string;
 }
@@ -42,7 +39,6 @@ export interface TargetGroup_LabelsEntry {
  * For details about the concept, see [documentation](/docs/application-load-balancer/concepts/target-group).
  */
 export interface Target {
-    $type: 'yandex.cloud.apploadbalancer.v1.Target';
     /** IP address of the target. */
     ipAddress: string | undefined;
     /** ID of the subnet that the target is connected to. */
@@ -56,17 +52,9 @@ export interface Target {
     privateIpv4Address: boolean;
 }
 
-const baseTargetGroup: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.TargetGroup',
-    id: '',
-    name: '',
-    description: '',
-    folderId: '',
-};
+const baseTargetGroup: object = { id: '', name: '', description: '', folderId: '' };
 
 export const TargetGroup = {
-    $type: 'yandex.cloud.apploadbalancer.v1.TargetGroup' as const,
-
     encode(message: TargetGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -82,11 +70,7 @@ export const TargetGroup = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             TargetGroup_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.apploadbalancer.v1.TargetGroup.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -209,17 +193,9 @@ export const TargetGroup = {
     },
 };
 
-messageTypeRegistry.set(TargetGroup.$type, TargetGroup);
-
-const baseTargetGroup_LabelsEntry: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.TargetGroup.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseTargetGroup_LabelsEntry: object = { key: '', value: '' };
 
 export const TargetGroup_LabelsEntry = {
-    $type: 'yandex.cloud.apploadbalancer.v1.TargetGroup.LabelsEntry' as const,
-
     encode(message: TargetGroup_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -276,17 +252,9 @@ export const TargetGroup_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(TargetGroup_LabelsEntry.$type, TargetGroup_LabelsEntry);
-
-const baseTarget: object = {
-    $type: 'yandex.cloud.apploadbalancer.v1.Target',
-    subnetId: '',
-    privateIpv4Address: false,
-};
+const baseTarget: object = { subnetId: '', privateIpv4Address: false };
 
 export const Target = {
-    $type: 'yandex.cloud.apploadbalancer.v1.Target' as const,
-
     encode(message: Target, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ipAddress !== undefined) {
             writer.uint32(10).string(message.ipAddress);
@@ -359,8 +327,6 @@ export const Target = {
     },
 };
 
-messageTypeRegistry.set(Target.$type, Target);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -370,21 +336,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

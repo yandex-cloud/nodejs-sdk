@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { TimeOfDay } from '../../../../../google/type/timeofday';
@@ -13,7 +12,6 @@ export const protobufPackage = 'yandex.cloud.mdb.mysql.v1alpha';
  * the [documentation](/docs/managed-mysql/concepts).
  */
 export interface Cluster {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.Cluster';
     /**
      * ID of the MySQL cluster.
      * This ID is assigned by Managed Service for MySQL at creation time.
@@ -220,13 +218,11 @@ export function cluster_StatusToJSON(object: Cluster_Status): string {
 }
 
 export interface Cluster_LabelsEntry {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.Cluster.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface Monitoring {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.Monitoring';
     /** Name of the monitoring system. */
     name: string;
     /** Description of the monitoring system. */
@@ -236,7 +232,6 @@ export interface Monitoring {
 }
 
 export interface ClusterConfig {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.ClusterConfig';
     /** Version of MySQL server software. */
     version: string;
     /** Configuration of a MySQL 5.7 server. */
@@ -248,7 +243,6 @@ export interface ClusterConfig {
 }
 
 export interface Host {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.Host';
     /**
      * Name of the MySQL host. The host name is assigned by Managed Service for MySQL
      * at creation time, and cannot be changed. 1-63 characters long.
@@ -368,7 +362,6 @@ export function host_HealthToJSON(object: Host_Health): string {
 }
 
 export interface Service {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.Service';
     /** Type of the service provided by the host. */
     type: Service_Type;
     /** Status code of server availability. */
@@ -464,7 +457,6 @@ export function service_HealthToJSON(object: Service_Health): string {
 }
 
 export interface Resources {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.Resources';
     /**
      * ID of the preset for computational resources available to a host (CPU, memory etc.).
      * All available presets are listed in the [documentation](/docs/managed-mysql/concepts/instance-types).
@@ -482,7 +474,6 @@ export interface Resources {
 }
 
 const baseCluster: object = {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.Cluster',
     id: '',
     folderId: '',
     name: '',
@@ -494,8 +485,6 @@ const baseCluster: object = {
 };
 
 export const Cluster = {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.Cluster' as const,
-
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -514,11 +503,7 @@ export const Cluster = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Cluster_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.mysql.v1alpha.Cluster.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -703,17 +688,9 @@ export const Cluster = {
     },
 };
 
-messageTypeRegistry.set(Cluster.$type, Cluster);
-
-const baseCluster_LabelsEntry: object = {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.Cluster.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
 export const Cluster_LabelsEntry = {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.Cluster.LabelsEntry' as const,
-
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -770,18 +747,9 @@ export const Cluster_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Cluster_LabelsEntry.$type, Cluster_LabelsEntry);
-
-const baseMonitoring: object = {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.Monitoring',
-    name: '',
-    description: '',
-    link: '',
-};
+const baseMonitoring: object = { name: '', description: '', link: '' };
 
 export const Monitoring = {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.Monitoring' as const,
-
     encode(message: Monitoring, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -847,16 +815,9 @@ export const Monitoring = {
     },
 };
 
-messageTypeRegistry.set(Monitoring.$type, Monitoring);
-
-const baseClusterConfig: object = {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.ClusterConfig',
-    version: '',
-};
+const baseClusterConfig: object = { version: '' };
 
 export const ClusterConfig = {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.ClusterConfig' as const,
-
     encode(message: ClusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -954,10 +915,7 @@ export const ClusterConfig = {
     },
 };
 
-messageTypeRegistry.set(ClusterConfig.$type, ClusterConfig);
-
 const baseHost: object = {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.Host',
     name: '',
     clusterId: '',
     zoneId: '',
@@ -968,8 +926,6 @@ const baseHost: object = {
 };
 
 export const Host = {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.Host' as const,
-
     encode(message: Host, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1112,13 +1068,9 @@ export const Host = {
     },
 };
 
-messageTypeRegistry.set(Host.$type, Host);
-
-const baseService: object = { $type: 'yandex.cloud.mdb.mysql.v1alpha.Service', type: 0, health: 0 };
+const baseService: object = { type: 0, health: 0 };
 
 export const Service = {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.Service' as const,
-
     encode(message: Service, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -1178,18 +1130,9 @@ export const Service = {
     },
 };
 
-messageTypeRegistry.set(Service.$type, Service);
-
-const baseResources: object = {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.Resources',
-    resourcePresetId: '',
-    diskSize: 0,
-    diskTypeId: '',
-};
+const baseResources: object = { resourcePresetId: '', diskSize: 0, diskTypeId: '' };
 
 export const Resources = {
-    $type: 'yandex.cloud.mdb.mysql.v1alpha.Resources' as const,
-
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);
@@ -1259,8 +1202,6 @@ export const Resources = {
     },
 };
 
-messageTypeRegistry.set(Resources.$type, Resources);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1281,21 +1222,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

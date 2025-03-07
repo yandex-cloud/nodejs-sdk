@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -38,7 +37,6 @@ export const protobufPackage = 'yandex.cloud.ai.assistants.v1.runs';
 
 /** Request message for creating a new run. */
 export interface CreateRunRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.CreateRunRequest';
     /** ID of the assistant for which the run is being created */
     assistantId: string;
     /** ID of the thread associated with the run. */
@@ -64,14 +62,12 @@ export interface CreateRunRequest {
 }
 
 export interface CreateRunRequest_LabelsEntry {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.CreateRunRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Request message for listing to a run events. */
 export interface ListenRunRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.ListenRunRequest';
     /** ID of the run to listen to. */
     runId: string;
     /** Starting index for events. If provided, listening will start from this event. */
@@ -79,7 +75,6 @@ export interface ListenRunRequest {
 }
 
 export interface AttachRunRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.AttachRunRequest';
     /** ID of the run to listen to. */
     runId: string;
     /** Starting index for events. If provided, listening will start from this event. */
@@ -90,21 +85,18 @@ export interface AttachRunRequest {
 
 /** Request message for retrieving a specific run by its ID. */
 export interface GetRunRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.GetRunRequest';
     /** ID of the run to retrieve. */
     runId: string;
 }
 
 /** Request message for retrieving the last run associated with a specific thread. */
 export interface GetLastRunByThreadRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.GetLastRunByThreadRequest';
     /** ID of the thread for which the last run is being fetched. */
     threadId: string;
 }
 
 /** Request message for listing runs. */
 export interface ListRunsRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.ListRunsRequest';
     /** Folder ID from which to list runs. */
     folderId: string;
     /** Maximum number of threads to return per page. */
@@ -115,7 +107,6 @@ export interface ListRunsRequest {
 
 /** Response message for the list operation. */
 export interface ListRunsResponse {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.ListRunsResponse';
     /** List of runs in the specified folder. */
     runs: Run[];
     /** Token to retrieve the next page of results. */
@@ -124,7 +115,6 @@ export interface ListRunsResponse {
 
 /** Represents the cursor position in a stream of events. */
 export interface StreamCursor {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.StreamCursor';
     /** Index of the current event in the stream. */
     currentEventIdx: number;
     /** The number of user events received so far. */
@@ -133,7 +123,6 @@ export interface StreamCursor {
 
 /** Represents an event in the stream of a run. */
 export interface StreamEvent {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.StreamEvent';
     /** The type of event. */
     eventType: StreamEvent_EventType;
     /** The current position in the stream. */
@@ -204,16 +193,9 @@ export function streamEvent_EventTypeToJSON(object: StreamEvent_EventType): stri
     }
 }
 
-const baseCreateRunRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.CreateRunRequest',
-    assistantId: '',
-    threadId: '',
-    stream: false,
-};
+const baseCreateRunRequest: object = { assistantId: '', threadId: '', stream: false };
 
 export const CreateRunRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.CreateRunRequest' as const,
-
     encode(message: CreateRunRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.assistantId !== '') {
             writer.uint32(10).string(message.assistantId);
@@ -223,11 +205,7 @@ export const CreateRunRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateRunRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.assistants.v1.runs.CreateRunRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(26).fork(),
             ).ldelim();
         });
@@ -405,17 +383,9 @@ export const CreateRunRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateRunRequest.$type, CreateRunRequest);
-
-const baseCreateRunRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.CreateRunRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateRunRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateRunRequest_LabelsEntry = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.CreateRunRequest.LabelsEntry' as const,
-
     encode(
         message: CreateRunRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -475,23 +445,16 @@ export const CreateRunRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateRunRequest_LabelsEntry.$type, CreateRunRequest_LabelsEntry);
-
-const baseListenRunRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.ListenRunRequest',
-    runId: '',
-};
+const baseListenRunRequest: object = { runId: '' };
 
 export const ListenRunRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.ListenRunRequest' as const,
-
     encode(message: ListenRunRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.runId !== '') {
             writer.uint32(10).string(message.runId);
         }
         if (message.eventsStartIdx !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.eventsStartIdx! },
+                { value: message.eventsStartIdx! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
@@ -545,23 +508,16 @@ export const ListenRunRequest = {
     },
 };
 
-messageTypeRegistry.set(ListenRunRequest.$type, ListenRunRequest);
-
-const baseAttachRunRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.AttachRunRequest',
-    runId: '',
-};
+const baseAttachRunRequest: object = { runId: '' };
 
 export const AttachRunRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.AttachRunRequest' as const,
-
     encode(message: AttachRunRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.runId !== '') {
             writer.uint32(10).string(message.runId);
         }
         if (message.eventsStartIdx !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.eventsStartIdx! },
+                { value: message.eventsStartIdx! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
@@ -633,16 +589,9 @@ export const AttachRunRequest = {
     },
 };
 
-messageTypeRegistry.set(AttachRunRequest.$type, AttachRunRequest);
-
-const baseGetRunRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.GetRunRequest',
-    runId: '',
-};
+const baseGetRunRequest: object = { runId: '' };
 
 export const GetRunRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.GetRunRequest' as const,
-
     encode(message: GetRunRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.runId !== '') {
             writer.uint32(10).string(message.runId);
@@ -688,16 +637,9 @@ export const GetRunRequest = {
     },
 };
 
-messageTypeRegistry.set(GetRunRequest.$type, GetRunRequest);
-
-const baseGetLastRunByThreadRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.GetLastRunByThreadRequest',
-    threadId: '',
-};
+const baseGetLastRunByThreadRequest: object = { threadId: '' };
 
 export const GetLastRunByThreadRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.GetLastRunByThreadRequest' as const,
-
     encode(
         message: GetLastRunByThreadRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -750,18 +692,9 @@ export const GetLastRunByThreadRequest = {
     },
 };
 
-messageTypeRegistry.set(GetLastRunByThreadRequest.$type, GetLastRunByThreadRequest);
-
-const baseListRunsRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.ListRunsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListRunsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
 export const ListRunsRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.ListRunsRequest' as const,
-
     encode(message: ListRunsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -831,16 +764,9 @@ export const ListRunsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListRunsRequest.$type, ListRunsRequest);
-
-const baseListRunsResponse: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.ListRunsResponse',
-    nextPageToken: '',
-};
+const baseListRunsResponse: object = { nextPageToken: '' };
 
 export const ListRunsResponse = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.ListRunsResponse' as const,
-
     encode(message: ListRunsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.runs) {
             Run.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -902,17 +828,9 @@ export const ListRunsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListRunsResponse.$type, ListRunsResponse);
-
-const baseStreamCursor: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.StreamCursor',
-    currentEventIdx: 0,
-    numUserEventsReceived: 0,
-};
+const baseStreamCursor: object = { currentEventIdx: 0, numUserEventsReceived: 0 };
 
 export const StreamCursor = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.StreamCursor' as const,
-
     encode(message: StreamCursor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.currentEventIdx !== 0) {
             writer.uint32(8).int64(message.currentEventIdx);
@@ -974,16 +892,9 @@ export const StreamCursor = {
     },
 };
 
-messageTypeRegistry.set(StreamCursor.$type, StreamCursor);
-
-const baseStreamEvent: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.StreamEvent',
-    eventType: 0,
-};
+const baseStreamEvent: object = { eventType: 0 };
 
 export const StreamEvent = {
-    $type: 'yandex.cloud.ai.assistants.v1.runs.StreamEvent' as const,
-
     encode(message: StreamEvent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.eventType !== 0) {
             writer.uint32(8).int32(message.eventType);
@@ -1119,8 +1030,6 @@ export const StreamEvent = {
         return message;
     },
 };
-
-messageTypeRegistry.set(StreamEvent.$type, StreamEvent);
 
 /** RunService provides operations for managing runs. */
 export const RunServiceService = {
@@ -1348,16 +1257,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

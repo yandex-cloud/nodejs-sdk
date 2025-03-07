@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -24,7 +23,6 @@ import { HistoryEntry } from '../../../../../yandex/cloud/serverless/workflows/v
 export const protobufPackage = 'yandex.cloud.serverless.workflows.v1';
 
 export interface StartExecutionRequest {
-    $type: 'yandex.cloud.serverless.workflows.v1.StartExecutionRequest';
     /** ID of the Workflow. */
     workflowId: string;
     /** Input for the Workflow execution */
@@ -32,55 +30,46 @@ export interface StartExecutionRequest {
 }
 
 export interface StartExecutionResponse {
-    $type: 'yandex.cloud.serverless.workflows.v1.StartExecutionResponse';
     /** ID of the Workflow execution. */
     executionId: string;
 }
 
 export interface StopExecutionRequest {
-    $type: 'yandex.cloud.serverless.workflows.v1.StopExecutionRequest';
     /** ID of the Workflow execution. */
     executionId: string;
 }
 
 export interface StopExecutionResponse {
-    $type: 'yandex.cloud.serverless.workflows.v1.StopExecutionResponse';
     /** ID of the Workflow execution. */
     executionId: string;
 }
 
 export interface TerminateExecutionRequest {
-    $type: 'yandex.cloud.serverless.workflows.v1.TerminateExecutionRequest';
     /** ID of the Workflow execution. */
     executionId: string;
 }
 
 export interface TerminateExecutionResponse {
-    $type: 'yandex.cloud.serverless.workflows.v1.TerminateExecutionResponse';
     /** ID of the Workflow execution. */
     executionId: string;
 }
 
 export interface GetExecutionRequest {
-    $type: 'yandex.cloud.serverless.workflows.v1.GetExecutionRequest';
     /** ID of the Workflow execution. */
     executionId: string;
 }
 
 export interface GetExecutionResponse {
-    $type: 'yandex.cloud.serverless.workflows.v1.GetExecutionResponse';
     /** Workflow execution details. */
     execution?: Execution;
 }
 
 export interface GetExecutionHistoryRequest {
-    $type: 'yandex.cloud.serverless.workflows.v1.GetExecutionHistoryRequest';
     /** ID of the Workflow execution. */
     executionId: string;
 }
 
 export interface GetExecutionHistoryResponse {
-    $type: 'yandex.cloud.serverless.workflows.v1.GetExecutionHistoryResponse';
     /** Workflow execution details. */
     execution?: ExecutionPreview;
     /** Workflow execution detailed history items. */
@@ -88,7 +77,6 @@ export interface GetExecutionHistoryResponse {
 }
 
 export interface ListExecutionsRequest {
-    $type: 'yandex.cloud.serverless.workflows.v1.ListExecutionsRequest';
     /** ID of the Workflow. */
     workflowId: string;
     /**
@@ -117,7 +105,6 @@ export interface ListExecutionsRequest {
 }
 
 export interface ListExecutionsResponse {
-    $type: 'yandex.cloud.serverless.workflows.v1.ListExecutionsResponse';
     /** List of Workflow executions. */
     executions: ExecutionPreview[];
     /**
@@ -130,14 +117,9 @@ export interface ListExecutionsResponse {
     nextPageToken: string;
 }
 
-const baseStartExecutionRequest: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.StartExecutionRequest',
-    workflowId: '',
-};
+const baseStartExecutionRequest: object = { workflowId: '' };
 
 export const StartExecutionRequest = {
-    $type: 'yandex.cloud.serverless.workflows.v1.StartExecutionRequest' as const,
-
     encode(message: StartExecutionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -203,16 +185,9 @@ export const StartExecutionRequest = {
     },
 };
 
-messageTypeRegistry.set(StartExecutionRequest.$type, StartExecutionRequest);
-
-const baseStartExecutionResponse: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.StartExecutionResponse',
-    executionId: '',
-};
+const baseStartExecutionResponse: object = { executionId: '' };
 
 export const StartExecutionResponse = {
-    $type: 'yandex.cloud.serverless.workflows.v1.StartExecutionResponse' as const,
-
     encode(message: StartExecutionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.executionId !== '') {
             writer.uint32(10).string(message.executionId);
@@ -262,16 +237,9 @@ export const StartExecutionResponse = {
     },
 };
 
-messageTypeRegistry.set(StartExecutionResponse.$type, StartExecutionResponse);
-
-const baseStopExecutionRequest: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.StopExecutionRequest',
-    executionId: '',
-};
+const baseStopExecutionRequest: object = { executionId: '' };
 
 export const StopExecutionRequest = {
-    $type: 'yandex.cloud.serverless.workflows.v1.StopExecutionRequest' as const,
-
     encode(message: StopExecutionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.executionId !== '') {
             writer.uint32(10).string(message.executionId);
@@ -321,16 +289,9 @@ export const StopExecutionRequest = {
     },
 };
 
-messageTypeRegistry.set(StopExecutionRequest.$type, StopExecutionRequest);
-
-const baseStopExecutionResponse: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.StopExecutionResponse',
-    executionId: '',
-};
+const baseStopExecutionResponse: object = { executionId: '' };
 
 export const StopExecutionResponse = {
-    $type: 'yandex.cloud.serverless.workflows.v1.StopExecutionResponse' as const,
-
     encode(message: StopExecutionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.executionId !== '') {
             writer.uint32(10).string(message.executionId);
@@ -380,16 +341,9 @@ export const StopExecutionResponse = {
     },
 };
 
-messageTypeRegistry.set(StopExecutionResponse.$type, StopExecutionResponse);
-
-const baseTerminateExecutionRequest: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.TerminateExecutionRequest',
-    executionId: '',
-};
+const baseTerminateExecutionRequest: object = { executionId: '' };
 
 export const TerminateExecutionRequest = {
-    $type: 'yandex.cloud.serverless.workflows.v1.TerminateExecutionRequest' as const,
-
     encode(
         message: TerminateExecutionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -442,16 +396,9 @@ export const TerminateExecutionRequest = {
     },
 };
 
-messageTypeRegistry.set(TerminateExecutionRequest.$type, TerminateExecutionRequest);
-
-const baseTerminateExecutionResponse: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.TerminateExecutionResponse',
-    executionId: '',
-};
+const baseTerminateExecutionResponse: object = { executionId: '' };
 
 export const TerminateExecutionResponse = {
-    $type: 'yandex.cloud.serverless.workflows.v1.TerminateExecutionResponse' as const,
-
     encode(
         message: TerminateExecutionResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -504,16 +451,9 @@ export const TerminateExecutionResponse = {
     },
 };
 
-messageTypeRegistry.set(TerminateExecutionResponse.$type, TerminateExecutionResponse);
-
-const baseGetExecutionRequest: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.GetExecutionRequest',
-    executionId: '',
-};
+const baseGetExecutionRequest: object = { executionId: '' };
 
 export const GetExecutionRequest = {
-    $type: 'yandex.cloud.serverless.workflows.v1.GetExecutionRequest' as const,
-
     encode(message: GetExecutionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.executionId !== '') {
             writer.uint32(10).string(message.executionId);
@@ -563,15 +503,9 @@ export const GetExecutionRequest = {
     },
 };
 
-messageTypeRegistry.set(GetExecutionRequest.$type, GetExecutionRequest);
-
-const baseGetExecutionResponse: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.GetExecutionResponse',
-};
+const baseGetExecutionResponse: object = {};
 
 export const GetExecutionResponse = {
-    $type: 'yandex.cloud.serverless.workflows.v1.GetExecutionResponse' as const,
-
     encode(message: GetExecutionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.execution !== undefined) {
             Execution.encode(message.execution, writer.uint32(10).fork()).ldelim();
@@ -625,16 +559,9 @@ export const GetExecutionResponse = {
     },
 };
 
-messageTypeRegistry.set(GetExecutionResponse.$type, GetExecutionResponse);
-
-const baseGetExecutionHistoryRequest: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.GetExecutionHistoryRequest',
-    executionId: '',
-};
+const baseGetExecutionHistoryRequest: object = { executionId: '' };
 
 export const GetExecutionHistoryRequest = {
-    $type: 'yandex.cloud.serverless.workflows.v1.GetExecutionHistoryRequest' as const,
-
     encode(
         message: GetExecutionHistoryRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -687,15 +614,9 @@ export const GetExecutionHistoryRequest = {
     },
 };
 
-messageTypeRegistry.set(GetExecutionHistoryRequest.$type, GetExecutionHistoryRequest);
-
-const baseGetExecutionHistoryResponse: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.GetExecutionHistoryResponse',
-};
+const baseGetExecutionHistoryResponse: object = {};
 
 export const GetExecutionHistoryResponse = {
-    $type: 'yandex.cloud.serverless.workflows.v1.GetExecutionHistoryResponse' as const,
-
     encode(
         message: GetExecutionHistoryResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -768,10 +689,7 @@ export const GetExecutionHistoryResponse = {
     },
 };
 
-messageTypeRegistry.set(GetExecutionHistoryResponse.$type, GetExecutionHistoryResponse);
-
 const baseListExecutionsRequest: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.ListExecutionsRequest',
     workflowId: '',
     pageSize: 0,
     pageToken: '',
@@ -779,8 +697,6 @@ const baseListExecutionsRequest: object = {
 };
 
 export const ListExecutionsRequest = {
-    $type: 'yandex.cloud.serverless.workflows.v1.ListExecutionsRequest' as const,
-
     encode(message: ListExecutionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -862,16 +778,9 @@ export const ListExecutionsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListExecutionsRequest.$type, ListExecutionsRequest);
-
-const baseListExecutionsResponse: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.ListExecutionsResponse',
-    nextPageToken: '',
-};
+const baseListExecutionsResponse: object = { nextPageToken: '' };
 
 export const ListExecutionsResponse = {
-    $type: 'yandex.cloud.serverless.workflows.v1.ListExecutionsResponse' as const,
-
     encode(message: ListExecutionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.executions) {
             ExecutionPreview.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -938,8 +847,6 @@ export const ListExecutionsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListExecutionsResponse.$type, ListExecutionsResponse);
 
 /** Set of methods for managing Workflows Executions. */
 export const ExecutionServiceService = {
@@ -1163,16 +1070,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

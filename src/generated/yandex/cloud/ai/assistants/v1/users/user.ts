@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { ExpirationConfig } from '../../../../../../yandex/cloud/ai/common/common';
@@ -8,7 +7,6 @@ import { Timestamp } from '../../../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.users';
 
 export interface User {
-    $type: 'yandex.cloud.ai.assistants.v1.users.User';
     /** Unique identifier of the user. */
     id: string;
     /** ID of the folder that the user belongs to. */
@@ -35,13 +33,11 @@ export interface User {
 }
 
 export interface User_LabelsEntry {
-    $type: 'yandex.cloud.ai.assistants.v1.users.User.LabelsEntry';
     key: string;
     value: string;
 }
 
 const baseUser: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.User',
     id: '',
     folderId: '',
     name: '',
@@ -52,8 +48,6 @@ const baseUser: object = {
 };
 
 export const User = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.User' as const,
-
     encode(message: User, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -89,14 +83,7 @@ export const User = {
             Timestamp.encode(toTimestamp(message.expiresAt), writer.uint32(90).fork()).ldelim();
         }
         Object.entries(message.labels).forEach(([key, value]) => {
-            User_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.assistants.v1.users.User.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
-                writer.uint32(98).fork(),
-            ).ldelim();
+            User_LabelsEntry.encode({ key: key as any, value }, writer.uint32(98).fork()).ldelim();
         });
         return writer;
     },
@@ -258,17 +245,9 @@ export const User = {
     },
 };
 
-messageTypeRegistry.set(User.$type, User);
-
-const baseUser_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.User.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUser_LabelsEntry: object = { key: '', value: '' };
 
 export const User_LabelsEntry = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.User.LabelsEntry' as const,
-
     encode(message: User_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -323,8 +302,6 @@ export const User_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(User_LabelsEntry.$type, User_LabelsEntry);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -334,21 +311,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

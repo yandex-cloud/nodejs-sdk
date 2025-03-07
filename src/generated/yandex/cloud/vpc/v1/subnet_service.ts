@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -28,7 +27,6 @@ import { Reference } from '../../../../yandex/cloud/reference/reference';
 export const protobufPackage = 'yandex.cloud.vpc.v1';
 
 export interface GetSubnetRequest {
-    $type: 'yandex.cloud.vpc.v1.GetSubnetRequest';
     /**
      * ID of the Subnet resource to return.
      * To get the subnet ID use a [SubnetService.List] request.
@@ -37,7 +35,6 @@ export interface GetSubnetRequest {
 }
 
 export interface ListSubnetsRequest {
-    $type: 'yandex.cloud.vpc.v1.ListSubnetsRequest';
     /**
      * ID of the folder to list subnets in.
      * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -66,7 +63,6 @@ export interface ListSubnetsRequest {
 }
 
 export interface ListSubnetsResponse {
-    $type: 'yandex.cloud.vpc.v1.ListSubnetsResponse';
     /** List of Subnet resources. */
     subnets: Subnet[];
     /**
@@ -81,7 +77,6 @@ export interface ListSubnetsResponse {
 }
 
 export interface CreateSubnetRequest {
-    $type: 'yandex.cloud.vpc.v1.CreateSubnetRequest';
     /**
      * ID of the folder to create a subnet in.
      * To get folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -116,19 +111,16 @@ export interface CreateSubnetRequest {
 }
 
 export interface CreateSubnetRequest_LabelsEntry {
-    $type: 'yandex.cloud.vpc.v1.CreateSubnetRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateSubnetMetadata {
-    $type: 'yandex.cloud.vpc.v1.CreateSubnetMetadata';
     /** ID of the subnet that is being created. */
     subnetId: string;
 }
 
 export interface UpdateSubnetRequest {
-    $type: 'yandex.cloud.vpc.v1.UpdateSubnetRequest';
     /** ID of the Subnet resource to update. */
     subnetId: string;
     /** Field mask that specifies which fields of the Subnet resource are going to be updated. */
@@ -150,19 +142,16 @@ export interface UpdateSubnetRequest {
 }
 
 export interface UpdateSubnetRequest_LabelsEntry {
-    $type: 'yandex.cloud.vpc.v1.UpdateSubnetRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateSubnetMetadata {
-    $type: 'yandex.cloud.vpc.v1.UpdateSubnetMetadata';
     /** ID of the Subnet resource that is being updated. */
     subnetId: string;
 }
 
 export interface AddSubnetCidrBlocksRequest {
-    $type: 'yandex.cloud.vpc.v1.AddSubnetCidrBlocksRequest';
     /** ID of the Subnet resource that is being updated. */
     subnetId: string;
     /**
@@ -175,13 +164,11 @@ export interface AddSubnetCidrBlocksRequest {
 }
 
 export interface AddSubnetCidrBlocksMetadata {
-    $type: 'yandex.cloud.vpc.v1.AddSubnetCidrBlocksMetadata';
     /** ID of the Subnet resource that is being updated. */
     subnetId: string;
 }
 
 export interface RemoveSubnetCidrBlocksRequest {
-    $type: 'yandex.cloud.vpc.v1.RemoveSubnetCidrBlocksRequest';
     /** ID of the Subnet resource that is being updated. */
     subnetId: string;
     /**
@@ -192,13 +179,11 @@ export interface RemoveSubnetCidrBlocksRequest {
 }
 
 export interface RemoveSubnetCidrBlocksMetadata {
-    $type: 'yandex.cloud.vpc.v1.RemoveSubnetCidrBlocksMetadata';
     /** ID of the Subnet resource that is being updated. */
     subnetId: string;
 }
 
 export interface DeleteSubnetRequest {
-    $type: 'yandex.cloud.vpc.v1.DeleteSubnetRequest';
     /**
      * ID of the subnet to delete.
      * To get the subnet ID use a [SubnetService.List] request.
@@ -207,13 +192,11 @@ export interface DeleteSubnetRequest {
 }
 
 export interface DeleteSubnetMetadata {
-    $type: 'yandex.cloud.vpc.v1.DeleteSubnetMetadata';
     /** ID of the Subnet resource that is being deleted. */
     subnetId: string;
 }
 
 export interface ListSubnetOperationsRequest {
-    $type: 'yandex.cloud.vpc.v1.ListSubnetOperationsRequest';
     /** ID of the Subnet resource to list operations for. */
     subnetId: string;
     /**
@@ -230,7 +213,6 @@ export interface ListSubnetOperationsRequest {
 }
 
 export interface ListSubnetOperationsResponse {
-    $type: 'yandex.cloud.vpc.v1.ListSubnetOperationsResponse';
     /** List of operations for the specified Subnet resource. */
     operations: Operation[];
     /**
@@ -243,7 +225,6 @@ export interface ListSubnetOperationsResponse {
 }
 
 export interface MoveSubnetRequest {
-    $type: 'yandex.cloud.vpc.v1.MoveSubnetRequest';
     /** ID of the Subnet resource to move. */
     subnetId: string;
     /** ID of the destination folder. */
@@ -251,13 +232,11 @@ export interface MoveSubnetRequest {
 }
 
 export interface MoveSubnetMetadata {
-    $type: 'yandex.cloud.vpc.v1.MoveSubnetMetadata';
     /** ID of the Subnet resource that is being moved. */
     subnetId: string;
 }
 
 export interface ListUsedAddressesRequest {
-    $type: 'yandex.cloud.vpc.v1.ListUsedAddressesRequest';
     subnetId: string;
     pageSize: number;
     pageToken: string;
@@ -265,37 +244,28 @@ export interface ListUsedAddressesRequest {
 }
 
 export interface ListUsedAddressesResponse {
-    $type: 'yandex.cloud.vpc.v1.ListUsedAddressesResponse';
     addresses: UsedAddress[];
     nextPageToken: string;
 }
 
 export interface UsedAddress {
-    $type: 'yandex.cloud.vpc.v1.UsedAddress';
     address: string;
     ipVersion: IpVersion;
     references: Reference[];
 }
 
 export interface RelocateSubnetRequest {
-    $type: 'yandex.cloud.vpc.v1.RelocateSubnetRequest';
     subnetId: string;
     destinationZoneId: string;
 }
 
 export interface RelocateSubnetMetadata {
-    $type: 'yandex.cloud.vpc.v1.RelocateSubnetMetadata';
     subnetId: string;
 }
 
-const baseGetSubnetRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.GetSubnetRequest',
-    subnetId: '',
-};
+const baseGetSubnetRequest: object = { subnetId: '' };
 
 export const GetSubnetRequest = {
-    $type: 'yandex.cloud.vpc.v1.GetSubnetRequest' as const,
-
     encode(message: GetSubnetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -343,19 +313,9 @@ export const GetSubnetRequest = {
     },
 };
 
-messageTypeRegistry.set(GetSubnetRequest.$type, GetSubnetRequest);
-
-const baseListSubnetsRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.ListSubnetsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListSubnetsRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListSubnetsRequest = {
-    $type: 'yandex.cloud.vpc.v1.ListSubnetsRequest' as const,
-
     encode(message: ListSubnetsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -437,16 +397,9 @@ export const ListSubnetsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListSubnetsRequest.$type, ListSubnetsRequest);
-
-const baseListSubnetsResponse: object = {
-    $type: 'yandex.cloud.vpc.v1.ListSubnetsResponse',
-    nextPageToken: '',
-};
+const baseListSubnetsResponse: object = { nextPageToken: '' };
 
 export const ListSubnetsResponse = {
-    $type: 'yandex.cloud.vpc.v1.ListSubnetsResponse' as const,
-
     encode(message: ListSubnetsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.subnets) {
             Subnet.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -510,10 +463,7 @@ export const ListSubnetsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListSubnetsResponse.$type, ListSubnetsResponse);
-
 const baseCreateSubnetRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.CreateSubnetRequest',
     folderId: '',
     name: '',
     description: '',
@@ -524,8 +474,6 @@ const baseCreateSubnetRequest: object = {
 };
 
 export const CreateSubnetRequest = {
-    $type: 'yandex.cloud.vpc.v1.CreateSubnetRequest' as const,
-
     encode(message: CreateSubnetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -538,11 +486,7 @@ export const CreateSubnetRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateSubnetRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.vpc.v1.CreateSubnetRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -701,17 +645,9 @@ export const CreateSubnetRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateSubnetRequest.$type, CreateSubnetRequest);
-
-const baseCreateSubnetRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.vpc.v1.CreateSubnetRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateSubnetRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateSubnetRequest_LabelsEntry = {
-    $type: 'yandex.cloud.vpc.v1.CreateSubnetRequest.LabelsEntry' as const,
-
     encode(
         message: CreateSubnetRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -777,16 +713,9 @@ export const CreateSubnetRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateSubnetRequest_LabelsEntry.$type, CreateSubnetRequest_LabelsEntry);
-
-const baseCreateSubnetMetadata: object = {
-    $type: 'yandex.cloud.vpc.v1.CreateSubnetMetadata',
-    subnetId: '',
-};
+const baseCreateSubnetMetadata: object = { subnetId: '' };
 
 export const CreateSubnetMetadata = {
-    $type: 'yandex.cloud.vpc.v1.CreateSubnetMetadata' as const,
-
     encode(message: CreateSubnetMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -836,10 +765,7 @@ export const CreateSubnetMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateSubnetMetadata.$type, CreateSubnetMetadata);
-
 const baseUpdateSubnetRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.UpdateSubnetRequest',
     subnetId: '',
     name: '',
     description: '',
@@ -848,8 +774,6 @@ const baseUpdateSubnetRequest: object = {
 };
 
 export const UpdateSubnetRequest = {
-    $type: 'yandex.cloud.vpc.v1.UpdateSubnetRequest' as const,
-
     encode(message: UpdateSubnetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -865,11 +789,7 @@ export const UpdateSubnetRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateSubnetRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.vpc.v1.UpdateSubnetRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -1021,17 +941,9 @@ export const UpdateSubnetRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateSubnetRequest.$type, UpdateSubnetRequest);
-
-const baseUpdateSubnetRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.vpc.v1.UpdateSubnetRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateSubnetRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateSubnetRequest_LabelsEntry = {
-    $type: 'yandex.cloud.vpc.v1.UpdateSubnetRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateSubnetRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1097,16 +1009,9 @@ export const UpdateSubnetRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateSubnetRequest_LabelsEntry.$type, UpdateSubnetRequest_LabelsEntry);
-
-const baseUpdateSubnetMetadata: object = {
-    $type: 'yandex.cloud.vpc.v1.UpdateSubnetMetadata',
-    subnetId: '',
-};
+const baseUpdateSubnetMetadata: object = { subnetId: '' };
 
 export const UpdateSubnetMetadata = {
-    $type: 'yandex.cloud.vpc.v1.UpdateSubnetMetadata' as const,
-
     encode(message: UpdateSubnetMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -1156,17 +1061,9 @@ export const UpdateSubnetMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateSubnetMetadata.$type, UpdateSubnetMetadata);
-
-const baseAddSubnetCidrBlocksRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.AddSubnetCidrBlocksRequest',
-    subnetId: '',
-    v4CidrBlocks: '',
-};
+const baseAddSubnetCidrBlocksRequest: object = { subnetId: '', v4CidrBlocks: '' };
 
 export const AddSubnetCidrBlocksRequest = {
-    $type: 'yandex.cloud.vpc.v1.AddSubnetCidrBlocksRequest' as const,
-
     encode(
         message: AddSubnetCidrBlocksRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1233,16 +1130,9 @@ export const AddSubnetCidrBlocksRequest = {
     },
 };
 
-messageTypeRegistry.set(AddSubnetCidrBlocksRequest.$type, AddSubnetCidrBlocksRequest);
-
-const baseAddSubnetCidrBlocksMetadata: object = {
-    $type: 'yandex.cloud.vpc.v1.AddSubnetCidrBlocksMetadata',
-    subnetId: '',
-};
+const baseAddSubnetCidrBlocksMetadata: object = { subnetId: '' };
 
 export const AddSubnetCidrBlocksMetadata = {
-    $type: 'yandex.cloud.vpc.v1.AddSubnetCidrBlocksMetadata' as const,
-
     encode(
         message: AddSubnetCidrBlocksMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1295,17 +1185,9 @@ export const AddSubnetCidrBlocksMetadata = {
     },
 };
 
-messageTypeRegistry.set(AddSubnetCidrBlocksMetadata.$type, AddSubnetCidrBlocksMetadata);
-
-const baseRemoveSubnetCidrBlocksRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.RemoveSubnetCidrBlocksRequest',
-    subnetId: '',
-    v4CidrBlocks: '',
-};
+const baseRemoveSubnetCidrBlocksRequest: object = { subnetId: '', v4CidrBlocks: '' };
 
 export const RemoveSubnetCidrBlocksRequest = {
-    $type: 'yandex.cloud.vpc.v1.RemoveSubnetCidrBlocksRequest' as const,
-
     encode(
         message: RemoveSubnetCidrBlocksRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1372,16 +1254,9 @@ export const RemoveSubnetCidrBlocksRequest = {
     },
 };
 
-messageTypeRegistry.set(RemoveSubnetCidrBlocksRequest.$type, RemoveSubnetCidrBlocksRequest);
-
-const baseRemoveSubnetCidrBlocksMetadata: object = {
-    $type: 'yandex.cloud.vpc.v1.RemoveSubnetCidrBlocksMetadata',
-    subnetId: '',
-};
+const baseRemoveSubnetCidrBlocksMetadata: object = { subnetId: '' };
 
 export const RemoveSubnetCidrBlocksMetadata = {
-    $type: 'yandex.cloud.vpc.v1.RemoveSubnetCidrBlocksMetadata' as const,
-
     encode(
         message: RemoveSubnetCidrBlocksMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1434,16 +1309,9 @@ export const RemoveSubnetCidrBlocksMetadata = {
     },
 };
 
-messageTypeRegistry.set(RemoveSubnetCidrBlocksMetadata.$type, RemoveSubnetCidrBlocksMetadata);
-
-const baseDeleteSubnetRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.DeleteSubnetRequest',
-    subnetId: '',
-};
+const baseDeleteSubnetRequest: object = { subnetId: '' };
 
 export const DeleteSubnetRequest = {
-    $type: 'yandex.cloud.vpc.v1.DeleteSubnetRequest' as const,
-
     encode(message: DeleteSubnetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -1493,16 +1361,9 @@ export const DeleteSubnetRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteSubnetRequest.$type, DeleteSubnetRequest);
-
-const baseDeleteSubnetMetadata: object = {
-    $type: 'yandex.cloud.vpc.v1.DeleteSubnetMetadata',
-    subnetId: '',
-};
+const baseDeleteSubnetMetadata: object = { subnetId: '' };
 
 export const DeleteSubnetMetadata = {
-    $type: 'yandex.cloud.vpc.v1.DeleteSubnetMetadata' as const,
-
     encode(message: DeleteSubnetMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -1552,18 +1413,9 @@ export const DeleteSubnetMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteSubnetMetadata.$type, DeleteSubnetMetadata);
-
-const baseListSubnetOperationsRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.ListSubnetOperationsRequest',
-    subnetId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListSubnetOperationsRequest: object = { subnetId: '', pageSize: 0, pageToken: '' };
 
 export const ListSubnetOperationsRequest = {
-    $type: 'yandex.cloud.vpc.v1.ListSubnetOperationsRequest' as const,
-
     encode(
         message: ListSubnetOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1638,16 +1490,9 @@ export const ListSubnetOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListSubnetOperationsRequest.$type, ListSubnetOperationsRequest);
-
-const baseListSubnetOperationsResponse: object = {
-    $type: 'yandex.cloud.vpc.v1.ListSubnetOperationsResponse',
-    nextPageToken: '',
-};
+const baseListSubnetOperationsResponse: object = { nextPageToken: '' };
 
 export const ListSubnetOperationsResponse = {
-    $type: 'yandex.cloud.vpc.v1.ListSubnetOperationsResponse' as const,
-
     encode(
         message: ListSubnetOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1714,17 +1559,9 @@ export const ListSubnetOperationsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListSubnetOperationsResponse.$type, ListSubnetOperationsResponse);
-
-const baseMoveSubnetRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.MoveSubnetRequest',
-    subnetId: '',
-    destinationFolderId: '',
-};
+const baseMoveSubnetRequest: object = { subnetId: '', destinationFolderId: '' };
 
 export const MoveSubnetRequest = {
-    $type: 'yandex.cloud.vpc.v1.MoveSubnetRequest' as const,
-
     encode(message: MoveSubnetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -1785,16 +1622,9 @@ export const MoveSubnetRequest = {
     },
 };
 
-messageTypeRegistry.set(MoveSubnetRequest.$type, MoveSubnetRequest);
-
-const baseMoveSubnetMetadata: object = {
-    $type: 'yandex.cloud.vpc.v1.MoveSubnetMetadata',
-    subnetId: '',
-};
+const baseMoveSubnetMetadata: object = { subnetId: '' };
 
 export const MoveSubnetMetadata = {
-    $type: 'yandex.cloud.vpc.v1.MoveSubnetMetadata' as const,
-
     encode(message: MoveSubnetMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -1844,10 +1674,7 @@ export const MoveSubnetMetadata = {
     },
 };
 
-messageTypeRegistry.set(MoveSubnetMetadata.$type, MoveSubnetMetadata);
-
 const baseListUsedAddressesRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.ListUsedAddressesRequest',
     subnetId: '',
     pageSize: 0,
     pageToken: '',
@@ -1855,8 +1682,6 @@ const baseListUsedAddressesRequest: object = {
 };
 
 export const ListUsedAddressesRequest = {
-    $type: 'yandex.cloud.vpc.v1.ListUsedAddressesRequest' as const,
-
     encode(
         message: ListUsedAddressesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1941,16 +1766,9 @@ export const ListUsedAddressesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListUsedAddressesRequest.$type, ListUsedAddressesRequest);
-
-const baseListUsedAddressesResponse: object = {
-    $type: 'yandex.cloud.vpc.v1.ListUsedAddressesResponse',
-    nextPageToken: '',
-};
+const baseListUsedAddressesResponse: object = { nextPageToken: '' };
 
 export const ListUsedAddressesResponse = {
-    $type: 'yandex.cloud.vpc.v1.ListUsedAddressesResponse' as const,
-
     encode(
         message: ListUsedAddressesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2017,17 +1835,9 @@ export const ListUsedAddressesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListUsedAddressesResponse.$type, ListUsedAddressesResponse);
-
-const baseUsedAddress: object = {
-    $type: 'yandex.cloud.vpc.v1.UsedAddress',
-    address: '',
-    ipVersion: 0,
-};
+const baseUsedAddress: object = { address: '', ipVersion: 0 };
 
 export const UsedAddress = {
-    $type: 'yandex.cloud.vpc.v1.UsedAddress' as const,
-
     encode(message: UsedAddress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.address !== '') {
             writer.uint32(10).string(message.address);
@@ -2099,17 +1909,9 @@ export const UsedAddress = {
     },
 };
 
-messageTypeRegistry.set(UsedAddress.$type, UsedAddress);
-
-const baseRelocateSubnetRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.RelocateSubnetRequest',
-    subnetId: '',
-    destinationZoneId: '',
-};
+const baseRelocateSubnetRequest: object = { subnetId: '', destinationZoneId: '' };
 
 export const RelocateSubnetRequest = {
-    $type: 'yandex.cloud.vpc.v1.RelocateSubnetRequest' as const,
-
     encode(message: RelocateSubnetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -2172,16 +1974,9 @@ export const RelocateSubnetRequest = {
     },
 };
 
-messageTypeRegistry.set(RelocateSubnetRequest.$type, RelocateSubnetRequest);
-
-const baseRelocateSubnetMetadata: object = {
-    $type: 'yandex.cloud.vpc.v1.RelocateSubnetMetadata',
-    subnetId: '',
-};
+const baseRelocateSubnetMetadata: object = { subnetId: '' };
 
 export const RelocateSubnetMetadata = {
-    $type: 'yandex.cloud.vpc.v1.RelocateSubnetMetadata' as const,
-
     encode(message: RelocateSubnetMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -2230,8 +2025,6 @@ export const RelocateSubnetMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(RelocateSubnetMetadata.$type, RelocateSubnetMetadata);
 
 /** A set of methods for managing Subnet resources. */
 export const SubnetServiceService = {
@@ -2642,16 +2435,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -46,7 +45,6 @@ import { Backup } from '../../../../../yandex/cloud/mdb/greenplum/v1/backup';
 export const protobufPackage = 'yandex.cloud.mdb.greenplum.v1';
 
 export interface GetClusterRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GetClusterRequest';
     /**
      * ID of the Greenplum® cluster resource to return.
      *
@@ -56,7 +54,6 @@ export interface GetClusterRequest {
 }
 
 export interface ListClustersRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClustersRequest';
     /**
      * ID of the folder to list Greenplum® clusters in.
      *
@@ -86,7 +83,6 @@ export interface ListClustersRequest {
 }
 
 export interface ListClustersResponse {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClustersResponse';
     /** List of Greenplum® cluster resources. */
     clusters: Cluster[];
     /**
@@ -100,7 +96,6 @@ export interface ListClustersResponse {
 }
 
 export interface CreateClusterRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreateClusterRequest';
     /** ID of the folder to create the Greenplum® cluster in. */
     folderId: string;
     /** Name of the Greenplum® cluster. The name must be unique within the folder. */
@@ -151,13 +146,11 @@ export interface CreateClusterRequest {
 }
 
 export interface CreateClusterRequest_LabelsEntry {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreateClusterRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface ConfigSpec {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ConfigSpec';
     greenplumConfig617?: Greenplumconfig617 | undefined;
     greenplumConfig619?: Greenplumconfig619 | undefined;
     greenplumConfig621?: Greenplumconfig621 | undefined;
@@ -171,13 +164,11 @@ export interface ConfigSpec {
 }
 
 export interface CreateClusterMetadata {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreateClusterMetadata';
     /** ID of the Greenplum® cluster that is being created. */
     clusterId: string;
 }
 
 export interface UpdateClusterRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdateClusterRequest';
     /**
      * ID of the Greenplum® cluster resource to update.
      * To get the Greenplum® cluster ID, use a [ClusterService.List] request.
@@ -220,25 +211,21 @@ export interface UpdateClusterRequest {
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdateClusterRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateClusterMetadata {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdateClusterMetadata';
     /** ID of the Greenplum® cluster resource that is being updated. */
     clusterId: string;
 }
 
 export interface AddClusterHostsMetadata {
-    $type: 'yandex.cloud.mdb.greenplum.v1.AddClusterHostsMetadata';
     /** ID of the Greenplum Cluster resource that is being updated. */
     clusterId: string;
 }
 
 export interface ExpandRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ExpandRequest';
     /**
      * ID of the Greenplum Cluster resource to update.
      * To get the Greenplum cluster ID, use a [ClusterService.List] request.
@@ -259,7 +246,6 @@ export interface ExpandRequest {
 }
 
 export interface DeleteClusterRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeleteClusterRequest';
     /**
      * ID of the Greenplum® cluster to delete.
      * To get the Greenplum® cluster ID, use a [ClusterService.List] request.
@@ -268,13 +254,11 @@ export interface DeleteClusterRequest {
 }
 
 export interface DeleteClusterMetadata {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeleteClusterMetadata';
     /** ID of the Greenplum® cluster that is being deleted. */
     clusterId: string;
 }
 
 export interface StartClusterRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.StartClusterRequest';
     /**
      * ID of the Greenplum® cluster to start.
      * To get the Greenplum® cluster ID, use a [ClusterService.List] request.
@@ -283,13 +267,11 @@ export interface StartClusterRequest {
 }
 
 export interface StartClusterMetadata {
-    $type: 'yandex.cloud.mdb.greenplum.v1.StartClusterMetadata';
     /** ID of the Greenplum® cluster being started. */
     clusterId: string;
 }
 
 export interface StopClusterRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.StopClusterRequest';
     /**
      * ID of the Greenplum® cluster to stop.
      * To get the Greenplum® cluster ID, use a [ClusterService.List] request.
@@ -298,13 +280,11 @@ export interface StopClusterRequest {
 }
 
 export interface StopClusterMetadata {
-    $type: 'yandex.cloud.mdb.greenplum.v1.StopClusterMetadata';
     /** ID of the Greenplum® cluster being stopped. */
     clusterId: string;
 }
 
 export interface MoveClusterRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.MoveClusterRequest';
     /** ID of the Greenplum® cluster to move. */
     clusterId: string;
     /** ID of the destination folder. */
@@ -312,7 +292,6 @@ export interface MoveClusterRequest {
 }
 
 export interface MoveClusterMetadata {
-    $type: 'yandex.cloud.mdb.greenplum.v1.MoveClusterMetadata';
     /** ID of the Greenplum® cluster being moved. */
     clusterId: string;
     /** ID of the source folder. */
@@ -322,7 +301,6 @@ export interface MoveClusterMetadata {
 }
 
 export interface ListClusterOperationsRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterOperationsRequest';
     /** ID of the Greenplum® cluster resource to list operations for. */
     clusterId: string;
     /**
@@ -336,7 +314,6 @@ export interface ListClusterOperationsRequest {
 }
 
 export interface ListClusterOperationsResponse {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterOperationsResponse';
     /** List of Operation resources for the specified Greenplum® cluster. */
     operations: Operation[];
     /**
@@ -350,7 +327,6 @@ export interface ListClusterOperationsResponse {
 }
 
 export interface ListClusterHostsRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterHostsRequest';
     /**
      * ID of the Greenplum® cluster.
      *
@@ -368,7 +344,6 @@ export interface ListClusterHostsRequest {
 }
 
 export interface ListClusterHostsResponse {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterHostsResponse';
     /** Requested list of hosts for the cluster. */
     hosts: Host[];
     /**
@@ -382,19 +357,16 @@ export interface ListClusterHostsResponse {
 }
 
 export interface MasterSubclusterConfigSpec {
-    $type: 'yandex.cloud.mdb.greenplum.v1.MasterSubclusterConfigSpec';
     /** Resources allocated to Greenplum® master subcluster hosts. */
     resources?: Resources;
 }
 
 export interface SegmentSubclusterConfigSpec {
-    $type: 'yandex.cloud.mdb.greenplum.v1.SegmentSubclusterConfigSpec';
     /** Resources allocated to Greenplum® segment subcluster hosts. */
     resources?: Resources;
 }
 
 export interface ListClusterLogsResponse {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterLogsResponse';
     /** Requested log records. */
     logs: LogRecord[];
     /**
@@ -410,7 +382,6 @@ export interface ListClusterLogsResponse {
 }
 
 export interface LogRecord {
-    $type: 'yandex.cloud.mdb.greenplum.v1.LogRecord';
     /** Time when the log was recorded. */
     timestamp?: Date;
     /** Contents of the log record. */
@@ -418,13 +389,11 @@ export interface LogRecord {
 }
 
 export interface LogRecord_MessageEntry {
-    $type: 'yandex.cloud.mdb.greenplum.v1.LogRecord.MessageEntry';
     key: string;
     value: string;
 }
 
 export interface ListClusterLogsRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterLogsRequest';
     /**
      * ID of the Greenplum® cluster to request logs for.
      *
@@ -523,7 +492,6 @@ export function listClusterLogsRequest_ServiceTypeToJSON(
 }
 
 export interface ListClusterBackupsRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterBackupsRequest';
     /**
      * ID of the Greenplum® cluster.
      *
@@ -541,7 +509,6 @@ export interface ListClusterBackupsRequest {
 }
 
 export interface StreamLogRecord {
-    $type: 'yandex.cloud.mdb.greenplum.v1.StreamLogRecord';
     /** One of the requested log records. */
     record?: LogRecord;
     /**
@@ -555,7 +522,6 @@ export interface StreamLogRecord {
 }
 
 export interface StreamClusterLogsRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.StreamClusterLogsRequest';
     /** ID of the Greenplum® cluster. */
     clusterId: string;
     /**
@@ -649,7 +615,6 @@ export function streamClusterLogsRequest_ServiceTypeToJSON(
 }
 
 export interface ListClusterBackupsResponse {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterBackupsResponse';
     /** List of Greenplum® backups. */
     backups: Backup[];
     /**
@@ -663,7 +628,6 @@ export interface ListClusterBackupsResponse {
 }
 
 export interface BackupClusterRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.BackupClusterRequest';
     /**
      * ID of the Greenplum cluster to back up.
      * To get the Greenplum cluster ID, use a [ClusterService.List] request.
@@ -672,14 +636,12 @@ export interface BackupClusterRequest {
 }
 
 export interface BackupClusterMetadata {
-    $type: 'yandex.cloud.mdb.greenplum.v1.BackupClusterMetadata';
     /** ID of the Greenplum cluster to back up. */
     clusterId: string;
     backupId: string;
 }
 
 export interface RestoreClusterRequest {
-    $type: 'yandex.cloud.mdb.greenplum.v1.RestoreClusterRequest';
     /**
      * ID of the backup to create a cluster from.
      *
@@ -732,27 +694,20 @@ export interface RestoreClusterRequest {
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
-    $type: 'yandex.cloud.mdb.greenplum.v1.RestoreClusterRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface RestoreClusterMetadata {
-    $type: 'yandex.cloud.mdb.greenplum.v1.RestoreClusterMetadata';
     /** ID of the new Greenplum® cluster that is being created from a backup. */
     clusterId: string;
     /** ID of the backup that is being used for creating a cluster. */
     backupId: string;
 }
 
-const baseGetClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GetClusterRequest',
-    clusterId: '',
-};
+const baseGetClusterRequest: object = { clusterId: '' };
 
 export const GetClusterRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.GetClusterRequest' as const,
-
     encode(message: GetClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -800,19 +755,9 @@ export const GetClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(GetClusterRequest.$type, GetClusterRequest);
-
-const baseListClustersRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClustersRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListClustersRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListClustersRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClustersRequest' as const,
-
     encode(message: ListClustersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -894,16 +839,9 @@ export const ListClustersRequest = {
     },
 };
 
-messageTypeRegistry.set(ListClustersRequest.$type, ListClustersRequest);
-
-const baseListClustersResponse: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClustersResponse',
-    nextPageToken: '',
-};
+const baseListClustersResponse: object = { nextPageToken: '' };
 
 export const ListClustersResponse = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClustersResponse' as const,
-
     encode(message: ListClustersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.clusters) {
             Cluster.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -967,10 +905,7 @@ export const ListClustersResponse = {
     },
 };
 
-messageTypeRegistry.set(ListClustersResponse.$type, ListClustersResponse);
-
 const baseCreateClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreateClusterRequest',
     folderId: '',
     name: '',
     description: '',
@@ -989,8 +924,6 @@ const baseCreateClusterRequest: object = {
 };
 
 export const CreateClusterRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreateClusterRequest' as const,
-
     encode(message: CreateClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1003,11 +936,7 @@ export const CreateClusterRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateClusterRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.greenplum.v1.CreateClusterRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -1375,17 +1304,9 @@ export const CreateClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateClusterRequest.$type, CreateClusterRequest);
-
-const baseCreateClusterRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreateClusterRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateClusterRequest_LabelsEntry = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreateClusterRequest.LabelsEntry' as const,
-
     encode(
         message: CreateClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1451,13 +1372,9 @@ export const CreateClusterRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateClusterRequest_LabelsEntry.$type, CreateClusterRequest_LabelsEntry);
-
-const baseConfigSpec: object = { $type: 'yandex.cloud.mdb.greenplum.v1.ConfigSpec' };
+const baseConfigSpec: object = {};
 
 export const ConfigSpec = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ConfigSpec' as const,
-
     encode(message: ConfigSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.greenplumConfig617 !== undefined) {
             Greenplumconfig617.encode(
@@ -1651,16 +1568,9 @@ export const ConfigSpec = {
     },
 };
 
-messageTypeRegistry.set(ConfigSpec.$type, ConfigSpec);
-
-const baseCreateClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreateClusterMetadata',
-    clusterId: '',
-};
+const baseCreateClusterMetadata: object = { clusterId: '' };
 
 export const CreateClusterMetadata = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.CreateClusterMetadata' as const,
-
     encode(message: CreateClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1710,10 +1620,7 @@ export const CreateClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateClusterMetadata.$type, CreateClusterMetadata);
-
 const baseUpdateClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdateClusterRequest',
     clusterId: '',
     description: '',
     name: '',
@@ -1724,8 +1631,6 @@ const baseUpdateClusterRequest: object = {
 };
 
 export const UpdateClusterRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdateClusterRequest' as const,
-
     encode(message: UpdateClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1738,11 +1643,7 @@ export const UpdateClusterRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateClusterRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.greenplum.v1.UpdateClusterRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -2022,17 +1923,9 @@ export const UpdateClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateClusterRequest.$type, UpdateClusterRequest);
-
-const baseUpdateClusterRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdateClusterRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateClusterRequest_LabelsEntry = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdateClusterRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2098,16 +1991,9 @@ export const UpdateClusterRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateClusterRequest_LabelsEntry.$type, UpdateClusterRequest_LabelsEntry);
-
-const baseUpdateClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdateClusterMetadata',
-    clusterId: '',
-};
+const baseUpdateClusterMetadata: object = { clusterId: '' };
 
 export const UpdateClusterMetadata = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.UpdateClusterMetadata' as const,
-
     encode(message: UpdateClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2157,16 +2043,9 @@ export const UpdateClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateClusterMetadata.$type, UpdateClusterMetadata);
-
-const baseAddClusterHostsMetadata: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.AddClusterHostsMetadata',
-    clusterId: '',
-};
+const baseAddClusterHostsMetadata: object = { clusterId: '' };
 
 export const AddClusterHostsMetadata = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.AddClusterHostsMetadata' as const,
-
     encode(message: AddClusterHostsMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2216,10 +2095,7 @@ export const AddClusterHostsMetadata = {
     },
 };
 
-messageTypeRegistry.set(AddClusterHostsMetadata.$type, AddClusterHostsMetadata);
-
 const baseExpandRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ExpandRequest',
     clusterId: '',
     segmentHostCount: 0,
     addSegmentsPerHostCount: 0,
@@ -2230,8 +2106,6 @@ const baseExpandRequest: object = {
 };
 
 export const ExpandRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ExpandRequest' as const,
-
     encode(message: ExpandRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2350,16 +2224,9 @@ export const ExpandRequest = {
     },
 };
 
-messageTypeRegistry.set(ExpandRequest.$type, ExpandRequest);
-
-const baseDeleteClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeleteClusterRequest',
-    clusterId: '',
-};
+const baseDeleteClusterRequest: object = { clusterId: '' };
 
 export const DeleteClusterRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeleteClusterRequest' as const,
-
     encode(message: DeleteClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2409,16 +2276,9 @@ export const DeleteClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteClusterRequest.$type, DeleteClusterRequest);
-
-const baseDeleteClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeleteClusterMetadata',
-    clusterId: '',
-};
+const baseDeleteClusterMetadata: object = { clusterId: '' };
 
 export const DeleteClusterMetadata = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.DeleteClusterMetadata' as const,
-
     encode(message: DeleteClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2468,16 +2328,9 @@ export const DeleteClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteClusterMetadata.$type, DeleteClusterMetadata);
-
-const baseStartClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.StartClusterRequest',
-    clusterId: '',
-};
+const baseStartClusterRequest: object = { clusterId: '' };
 
 export const StartClusterRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.StartClusterRequest' as const,
-
     encode(message: StartClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2527,16 +2380,9 @@ export const StartClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(StartClusterRequest.$type, StartClusterRequest);
-
-const baseStartClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.StartClusterMetadata',
-    clusterId: '',
-};
+const baseStartClusterMetadata: object = { clusterId: '' };
 
 export const StartClusterMetadata = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.StartClusterMetadata' as const,
-
     encode(message: StartClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2586,16 +2432,9 @@ export const StartClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(StartClusterMetadata.$type, StartClusterMetadata);
-
-const baseStopClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.StopClusterRequest',
-    clusterId: '',
-};
+const baseStopClusterRequest: object = { clusterId: '' };
 
 export const StopClusterRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.StopClusterRequest' as const,
-
     encode(message: StopClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2645,16 +2484,9 @@ export const StopClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(StopClusterRequest.$type, StopClusterRequest);
-
-const baseStopClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.StopClusterMetadata',
-    clusterId: '',
-};
+const baseStopClusterMetadata: object = { clusterId: '' };
 
 export const StopClusterMetadata = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.StopClusterMetadata' as const,
-
     encode(message: StopClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2704,17 +2536,9 @@ export const StopClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(StopClusterMetadata.$type, StopClusterMetadata);
-
-const baseMoveClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.MoveClusterRequest',
-    clusterId: '',
-    destinationFolderId: '',
-};
+const baseMoveClusterRequest: object = { clusterId: '', destinationFolderId: '' };
 
 export const MoveClusterRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.MoveClusterRequest' as const,
-
     encode(message: MoveClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2777,18 +2601,13 @@ export const MoveClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(MoveClusterRequest.$type, MoveClusterRequest);
-
 const baseMoveClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.MoveClusterMetadata',
     clusterId: '',
     sourceFolderId: '',
     destinationFolderId: '',
 };
 
 export const MoveClusterMetadata = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.MoveClusterMetadata' as const,
-
     encode(message: MoveClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2863,18 +2682,9 @@ export const MoveClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(MoveClusterMetadata.$type, MoveClusterMetadata);
-
-const baseListClusterOperationsRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterOperationsRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListClusterOperationsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListClusterOperationsRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterOperationsRequest' as const,
-
     encode(
         message: ListClusterOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2949,16 +2759,9 @@ export const ListClusterOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListClusterOperationsRequest.$type, ListClusterOperationsRequest);
-
-const baseListClusterOperationsResponse: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterOperationsResponse',
-    nextPageToken: '',
-};
+const baseListClusterOperationsResponse: object = { nextPageToken: '' };
 
 export const ListClusterOperationsResponse = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterOperationsResponse' as const,
-
     encode(
         message: ListClusterOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3025,18 +2828,9 @@ export const ListClusterOperationsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListClusterOperationsResponse.$type, ListClusterOperationsResponse);
-
-const baseListClusterHostsRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterHostsRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListClusterHostsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListClusterHostsRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterHostsRequest' as const,
-
     encode(message: ListClusterHostsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -3108,16 +2902,9 @@ export const ListClusterHostsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListClusterHostsRequest.$type, ListClusterHostsRequest);
-
-const baseListClusterHostsResponse: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterHostsResponse',
-    nextPageToken: '',
-};
+const baseListClusterHostsResponse: object = { nextPageToken: '' };
 
 export const ListClusterHostsResponse = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterHostsResponse' as const,
-
     encode(
         message: ListClusterHostsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3184,15 +2971,9 @@ export const ListClusterHostsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListClusterHostsResponse.$type, ListClusterHostsResponse);
-
-const baseMasterSubclusterConfigSpec: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.MasterSubclusterConfigSpec',
-};
+const baseMasterSubclusterConfigSpec: object = {};
 
 export const MasterSubclusterConfigSpec = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.MasterSubclusterConfigSpec' as const,
-
     encode(
         message: MasterSubclusterConfigSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3249,15 +3030,9 @@ export const MasterSubclusterConfigSpec = {
     },
 };
 
-messageTypeRegistry.set(MasterSubclusterConfigSpec.$type, MasterSubclusterConfigSpec);
-
-const baseSegmentSubclusterConfigSpec: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.SegmentSubclusterConfigSpec',
-};
+const baseSegmentSubclusterConfigSpec: object = {};
 
 export const SegmentSubclusterConfigSpec = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.SegmentSubclusterConfigSpec' as const,
-
     encode(
         message: SegmentSubclusterConfigSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3314,16 +3089,9 @@ export const SegmentSubclusterConfigSpec = {
     },
 };
 
-messageTypeRegistry.set(SegmentSubclusterConfigSpec.$type, SegmentSubclusterConfigSpec);
-
-const baseListClusterLogsResponse: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterLogsResponse',
-    nextPageToken: '',
-};
+const baseListClusterLogsResponse: object = { nextPageToken: '' };
 
 export const ListClusterLogsResponse = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterLogsResponse' as const,
-
     encode(message: ListClusterLogsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.logs) {
             LogRecord.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -3387,24 +3155,16 @@ export const ListClusterLogsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListClusterLogsResponse.$type, ListClusterLogsResponse);
-
-const baseLogRecord: object = { $type: 'yandex.cloud.mdb.greenplum.v1.LogRecord' };
+const baseLogRecord: object = {};
 
 export const LogRecord = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.LogRecord' as const,
-
     encode(message: LogRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timestamp !== undefined) {
             Timestamp.encode(toTimestamp(message.timestamp), writer.uint32(10).fork()).ldelim();
         }
         Object.entries(message.message).forEach(([key, value]) => {
             LogRecord_MessageEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.greenplum.v1.LogRecord.MessageEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(18).fork(),
             ).ldelim();
         });
@@ -3480,17 +3240,9 @@ export const LogRecord = {
     },
 };
 
-messageTypeRegistry.set(LogRecord.$type, LogRecord);
-
-const baseLogRecord_MessageEntry: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.LogRecord.MessageEntry',
-    key: '',
-    value: '',
-};
+const baseLogRecord_MessageEntry: object = { key: '', value: '' };
 
 export const LogRecord_MessageEntry = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.LogRecord.MessageEntry' as const,
-
     encode(message: LogRecord_MessageEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -3547,10 +3299,7 @@ export const LogRecord_MessageEntry = {
     },
 };
 
-messageTypeRegistry.set(LogRecord_MessageEntry.$type, LogRecord_MessageEntry);
-
 const baseListClusterLogsRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterLogsRequest',
     clusterId: '',
     columnFilter: '',
     serviceType: 0,
@@ -3561,8 +3310,6 @@ const baseListClusterLogsRequest: object = {
 };
 
 export const ListClusterLogsRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterLogsRequest' as const,
-
     encode(message: ListClusterLogsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -3708,18 +3455,9 @@ export const ListClusterLogsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListClusterLogsRequest.$type, ListClusterLogsRequest);
-
-const baseListClusterBackupsRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterBackupsRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListClusterBackupsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListClusterBackupsRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterBackupsRequest' as const,
-
     encode(
         message: ListClusterBackupsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3794,16 +3532,9 @@ export const ListClusterBackupsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListClusterBackupsRequest.$type, ListClusterBackupsRequest);
-
-const baseStreamLogRecord: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.StreamLogRecord',
-    nextRecordToken: '',
-};
+const baseStreamLogRecord: object = { nextRecordToken: '' };
 
 export const StreamLogRecord = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.StreamLogRecord' as const,
-
     encode(message: StreamLogRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.record !== undefined) {
             LogRecord.encode(message.record, writer.uint32(10).fork()).ldelim();
@@ -3867,10 +3598,7 @@ export const StreamLogRecord = {
     },
 };
 
-messageTypeRegistry.set(StreamLogRecord.$type, StreamLogRecord);
-
 const baseStreamClusterLogsRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.StreamClusterLogsRequest',
     clusterId: '',
     columnFilter: '',
     serviceType: 0,
@@ -3879,8 +3607,6 @@ const baseStreamClusterLogsRequest: object = {
 };
 
 export const StreamClusterLogsRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.StreamClusterLogsRequest' as const,
-
     encode(
         message: StreamClusterLogsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4006,16 +3732,9 @@ export const StreamClusterLogsRequest = {
     },
 };
 
-messageTypeRegistry.set(StreamClusterLogsRequest.$type, StreamClusterLogsRequest);
-
-const baseListClusterBackupsResponse: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterBackupsResponse',
-    nextPageToken: '',
-};
+const baseListClusterBackupsResponse: object = { nextPageToken: '' };
 
 export const ListClusterBackupsResponse = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.ListClusterBackupsResponse' as const,
-
     encode(
         message: ListClusterBackupsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4082,16 +3801,9 @@ export const ListClusterBackupsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListClusterBackupsResponse.$type, ListClusterBackupsResponse);
-
-const baseBackupClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.BackupClusterRequest',
-    clusterId: '',
-};
+const baseBackupClusterRequest: object = { clusterId: '' };
 
 export const BackupClusterRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.BackupClusterRequest' as const,
-
     encode(message: BackupClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -4141,17 +3853,9 @@ export const BackupClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(BackupClusterRequest.$type, BackupClusterRequest);
-
-const baseBackupClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.BackupClusterMetadata',
-    clusterId: '',
-    backupId: '',
-};
+const baseBackupClusterMetadata: object = { clusterId: '', backupId: '' };
 
 export const BackupClusterMetadata = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.BackupClusterMetadata' as const,
-
     encode(message: BackupClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -4213,10 +3917,7 @@ export const BackupClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(BackupClusterMetadata.$type, BackupClusterMetadata);
-
 const baseRestoreClusterRequest: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.RestoreClusterRequest',
     backupId: '',
     folderId: '',
     name: '',
@@ -4235,8 +3936,6 @@ const baseRestoreClusterRequest: object = {
 };
 
 export const RestoreClusterRequest = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.RestoreClusterRequest' as const,
-
     encode(message: RestoreClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);
@@ -4255,11 +3954,7 @@ export const RestoreClusterRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             RestoreClusterRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.greenplum.v1.RestoreClusterRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -4591,17 +4286,9 @@ export const RestoreClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(RestoreClusterRequest.$type, RestoreClusterRequest);
-
-const baseRestoreClusterRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.RestoreClusterRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseRestoreClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const RestoreClusterRequest_LabelsEntry = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.RestoreClusterRequest.LabelsEntry' as const,
-
     encode(
         message: RestoreClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4667,17 +4354,9 @@ export const RestoreClusterRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(RestoreClusterRequest_LabelsEntry.$type, RestoreClusterRequest_LabelsEntry);
-
-const baseRestoreClusterMetadata: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.RestoreClusterMetadata',
-    clusterId: '',
-    backupId: '',
-};
+const baseRestoreClusterMetadata: object = { clusterId: '', backupId: '' };
 
 export const RestoreClusterMetadata = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.RestoreClusterMetadata' as const,
-
     encode(message: RestoreClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -4738,8 +4417,6 @@ export const RestoreClusterMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(RestoreClusterMetadata.$type, RestoreClusterMetadata);
 
 /** A set of methods for managing Greenplum® clusters. */
 export const ClusterServiceService = {
@@ -5289,21 +4966,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

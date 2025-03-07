@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../../google/protobuf/duration';
@@ -121,7 +120,6 @@ export function jobStatusToJSON(object: JobStatus): string {
 
 /** Job parameters. */
 export interface JobParameters {
-    $type: 'yandex.cloud.datasphere.v2.jobs.JobParameters';
     /** List of input files. */
     inputFiles: File[];
     /** List of output files descriptions. */
@@ -151,14 +149,12 @@ export interface JobParameters {
 }
 
 export interface CloudInstanceType {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CloudInstanceType';
     /** Name of DataSphere VM configuration. */
     name: string;
 }
 
 /** Extended working storage configuration. */
 export interface ExtendedWorkingStorage {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ExtendedWorkingStorage';
     type: ExtendedWorkingStorage_StorageType;
     sizeGb: number;
 }
@@ -200,13 +196,11 @@ export function extendedWorkingStorage_StorageTypeToJSON(
 }
 
 export interface Argument {
-    $type: 'yandex.cloud.datasphere.v2.jobs.Argument';
     name: string;
     value: string;
 }
 
 export interface File {
-    $type: 'yandex.cloud.datasphere.v2.jobs.File';
     desc?: FileDesc;
     /** SHA256 of the file. */
     sha256: string;
@@ -217,14 +211,12 @@ export interface File {
 }
 
 export interface StorageFile {
-    $type: 'yandex.cloud.datasphere.v2.jobs.StorageFile';
     file?: File;
     /** File URL. */
     url: string;
 }
 
 export interface FileDesc {
-    $type: 'yandex.cloud.datasphere.v2.jobs.FileDesc';
     /** Path of the file on filesystem. */
     path: string;
     /** Variable to use in cmd substitution. */
@@ -232,7 +224,6 @@ export interface FileDesc {
 }
 
 export interface FileUploadError {
-    $type: 'yandex.cloud.datasphere.v2.jobs.FileUploadError';
     outputFileDesc?: FileDesc | undefined;
     logFileName: string | undefined;
     description: string;
@@ -278,7 +269,6 @@ export function fileUploadError_ErrorTypeToJSON(object: FileUploadError_ErrorTyp
 }
 
 export interface Environment {
-    $type: 'yandex.cloud.datasphere.v2.jobs.Environment';
     /** Environment variables. */
     vars: { [key: string]: string };
     /** DS docker image id. */
@@ -288,13 +278,11 @@ export interface Environment {
 }
 
 export interface Environment_VarsEntry {
-    $type: 'yandex.cloud.datasphere.v2.jobs.Environment.VarsEntry';
     key: string;
     value: string;
 }
 
 export interface DockerImageSpec {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DockerImageSpec';
     /** Docker image URL. */
     imageUrl: string;
     /** Username for container registry. */
@@ -306,7 +294,6 @@ export interface DockerImageSpec {
 }
 
 export interface PythonEnv {
-    $type: 'yandex.cloud.datasphere.v2.jobs.PythonEnv';
     /** Conda YAML. */
     condaYaml: string;
     /** List of local modules descriptions. */
@@ -320,7 +307,6 @@ export interface PythonEnv {
 }
 
 export interface PipOptions {
-    $type: 'yandex.cloud.datasphere.v2.jobs.PipOptions';
     /** --index-url option */
     indexUrl: string;
     /** --extra-index-urls option */
@@ -332,7 +318,6 @@ export interface PipOptions {
 }
 
 export interface OutputDatasetDesc {
-    $type: 'yandex.cloud.datasphere.v2.jobs.OutputDatasetDesc';
     /** Name to create dataset with */
     name: string;
     /** Description to show in UI */
@@ -345,13 +330,11 @@ export interface OutputDatasetDesc {
 }
 
 export interface OutputDatasetDesc_LabelsEntry {
-    $type: 'yandex.cloud.datasphere.v2.jobs.OutputDatasetDesc.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface OutputDataset {
-    $type: 'yandex.cloud.datasphere.v2.jobs.OutputDataset';
     /** Dataset description */
     desc?: OutputDatasetDesc;
     /** Id of created dataset */
@@ -360,7 +343,6 @@ export interface OutputDataset {
 
 /** Instance of the job. */
 export interface Job {
-    $type: 'yandex.cloud.datasphere.v2.jobs.Job';
     /** ID of the job. */
     id: string;
     /** Name of the job. */
@@ -407,20 +389,17 @@ export interface Job {
 }
 
 export interface JobResult {
-    $type: 'yandex.cloud.datasphere.v2.jobs.JobResult';
     /** Execution return code. */
     returnCode: number;
 }
 
 export interface GracefulShutdownParameters {
-    $type: 'yandex.cloud.datasphere.v2.jobs.GracefulShutdownParameters';
     timeout?: Duration;
     /** default 15 (SIGTERM) */
     signal: number;
 }
 
 export interface JobMetadata {
-    $type: 'yandex.cloud.datasphere.v2.jobs.JobMetadata';
     /** ID of the job. */
     id: string;
     /** Name of the job. */
@@ -448,7 +427,6 @@ export interface JobMetadata {
 }
 
 export interface JobProgress {
-    $type: 'yandex.cloud.datasphere.v2.jobs.JobProgress';
     /** Progress message */
     message: string;
     /** Progress of the job from 0 to 100 */
@@ -458,13 +436,11 @@ export interface JobProgress {
 }
 
 export interface SparkParameters {
-    $type: 'yandex.cloud.datasphere.v2.jobs.SparkParameters';
     /** ID of the Spark connector. */
     connectorId: string;
 }
 
 const baseJobParameters: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.JobParameters',
     s3MountIds: '',
     datasetIds: '',
     cmd: '',
@@ -472,8 +448,6 @@ const baseJobParameters: object = {
 };
 
 export const JobParameters = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.JobParameters' as const,
-
     encode(message: JobParameters, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.inputFiles) {
             File.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -725,16 +699,9 @@ export const JobParameters = {
     },
 };
 
-messageTypeRegistry.set(JobParameters.$type, JobParameters);
-
-const baseCloudInstanceType: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CloudInstanceType',
-    name: '',
-};
+const baseCloudInstanceType: object = { name: '' };
 
 export const CloudInstanceType = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.CloudInstanceType' as const,
-
     encode(message: CloudInstanceType, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -779,17 +746,9 @@ export const CloudInstanceType = {
     },
 };
 
-messageTypeRegistry.set(CloudInstanceType.$type, CloudInstanceType);
-
-const baseExtendedWorkingStorage: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ExtendedWorkingStorage',
-    type: 0,
-    sizeGb: 0,
-};
+const baseExtendedWorkingStorage: object = { type: 0, sizeGb: 0 };
 
 export const ExtendedWorkingStorage = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.ExtendedWorkingStorage' as const,
-
     encode(message: ExtendedWorkingStorage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -850,17 +809,9 @@ export const ExtendedWorkingStorage = {
     },
 };
 
-messageTypeRegistry.set(ExtendedWorkingStorage.$type, ExtendedWorkingStorage);
-
-const baseArgument: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.Argument',
-    name: '',
-    value: '',
-};
+const baseArgument: object = { name: '', value: '' };
 
 export const Argument = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.Argument' as const,
-
     encode(message: Argument, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -915,18 +866,9 @@ export const Argument = {
     },
 };
 
-messageTypeRegistry.set(Argument.$type, Argument);
-
-const baseFile: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.File',
-    sha256: '',
-    sizeBytes: 0,
-    compressionType: 0,
-};
+const baseFile: object = { sha256: '', sizeBytes: 0, compressionType: 0 };
 
 export const File = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.File' as const,
-
     encode(message: File, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desc !== undefined) {
             FileDesc.encode(message.desc, writer.uint32(10).fork()).ldelim();
@@ -1013,13 +955,9 @@ export const File = {
     },
 };
 
-messageTypeRegistry.set(File.$type, File);
-
-const baseStorageFile: object = { $type: 'yandex.cloud.datasphere.v2.jobs.StorageFile', url: '' };
+const baseStorageFile: object = { url: '' };
 
 export const StorageFile = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.StorageFile' as const,
-
     encode(message: StorageFile, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.file !== undefined) {
             File.encode(message.file, writer.uint32(10).fork()).ldelim();
@@ -1080,17 +1018,9 @@ export const StorageFile = {
     },
 };
 
-messageTypeRegistry.set(StorageFile.$type, StorageFile);
-
-const baseFileDesc: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.FileDesc',
-    path: '',
-    var: '',
-};
+const baseFileDesc: object = { path: '', var: '' };
 
 export const FileDesc = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.FileDesc' as const,
-
     encode(message: FileDesc, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.path !== '') {
             writer.uint32(10).string(message.path);
@@ -1144,17 +1074,9 @@ export const FileDesc = {
     },
 };
 
-messageTypeRegistry.set(FileDesc.$type, FileDesc);
-
-const baseFileUploadError: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.FileUploadError',
-    description: '',
-    type: 0,
-};
+const baseFileUploadError: object = { description: '', type: 0 };
 
 export const FileUploadError = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.FileUploadError' as const,
-
     encode(message: FileUploadError, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.outputFileDesc !== undefined) {
             FileDesc.encode(message.outputFileDesc, writer.uint32(10).fork()).ldelim();
@@ -1244,21 +1166,13 @@ export const FileUploadError = {
     },
 };
 
-messageTypeRegistry.set(FileUploadError.$type, FileUploadError);
-
-const baseEnvironment: object = { $type: 'yandex.cloud.datasphere.v2.jobs.Environment' };
+const baseEnvironment: object = {};
 
 export const Environment = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.Environment' as const,
-
     encode(message: Environment, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         Object.entries(message.vars).forEach(([key, value]) => {
             Environment_VarsEntry.encode(
-                {
-                    $type: 'yandex.cloud.datasphere.v2.jobs.Environment.VarsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(10).fork(),
             ).ldelim();
         });
@@ -1372,17 +1286,9 @@ export const Environment = {
     },
 };
 
-messageTypeRegistry.set(Environment.$type, Environment);
-
-const baseEnvironment_VarsEntry: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.Environment.VarsEntry',
-    key: '',
-    value: '',
-};
+const baseEnvironment_VarsEntry: object = { key: '', value: '' };
 
 export const Environment_VarsEntry = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.Environment.VarsEntry' as const,
-
     encode(message: Environment_VarsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1439,17 +1345,9 @@ export const Environment_VarsEntry = {
     },
 };
 
-messageTypeRegistry.set(Environment_VarsEntry.$type, Environment_VarsEntry);
-
-const baseDockerImageSpec: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DockerImageSpec',
-    imageUrl: '',
-    username: '',
-};
+const baseDockerImageSpec: object = { imageUrl: '', username: '' };
 
 export const DockerImageSpec = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.DockerImageSpec' as const,
-
     encode(message: DockerImageSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageUrl !== '') {
             writer.uint32(10).string(message.imageUrl);
@@ -1535,18 +1433,9 @@ export const DockerImageSpec = {
     },
 };
 
-messageTypeRegistry.set(DockerImageSpec.$type, DockerImageSpec);
-
-const basePythonEnv: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.PythonEnv',
-    condaYaml: '',
-    pythonVersion: '',
-    requirements: '',
-};
+const basePythonEnv: object = { condaYaml: '', pythonVersion: '', requirements: '' };
 
 export const PythonEnv = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.PythonEnv' as const,
-
     encode(message: PythonEnv, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.condaYaml !== '') {
             writer.uint32(10).string(message.condaYaml);
@@ -1652,10 +1541,7 @@ export const PythonEnv = {
     },
 };
 
-messageTypeRegistry.set(PythonEnv.$type, PythonEnv);
-
 const basePipOptions: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.PipOptions',
     indexUrl: '',
     extraIndexUrls: '',
     trustedHosts: '',
@@ -1663,8 +1549,6 @@ const basePipOptions: object = {
 };
 
 export const PipOptions = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.PipOptions' as const,
-
     encode(message: PipOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.indexUrl !== '') {
             writer.uint32(10).string(message.indexUrl);
@@ -1750,19 +1634,9 @@ export const PipOptions = {
     },
 };
 
-messageTypeRegistry.set(PipOptions.$type, PipOptions);
-
-const baseOutputDatasetDesc: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.OutputDatasetDesc',
-    name: '',
-    description: '',
-    sizeGb: 0,
-    var: '',
-};
+const baseOutputDatasetDesc: object = { name: '', description: '', sizeGb: 0, var: '' };
 
 export const OutputDatasetDesc = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.OutputDatasetDesc' as const,
-
     encode(message: OutputDatasetDesc, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1772,11 +1646,7 @@ export const OutputDatasetDesc = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             OutputDatasetDesc_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.datasphere.v2.jobs.OutputDatasetDesc.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(26).fork(),
             ).ldelim();
         });
@@ -1877,17 +1747,9 @@ export const OutputDatasetDesc = {
     },
 };
 
-messageTypeRegistry.set(OutputDatasetDesc.$type, OutputDatasetDesc);
-
-const baseOutputDatasetDesc_LabelsEntry: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.OutputDatasetDesc.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseOutputDatasetDesc_LabelsEntry: object = { key: '', value: '' };
 
 export const OutputDatasetDesc_LabelsEntry = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.OutputDatasetDesc.LabelsEntry' as const,
-
     encode(
         message: OutputDatasetDesc_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1947,16 +1809,9 @@ export const OutputDatasetDesc_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(OutputDatasetDesc_LabelsEntry.$type, OutputDatasetDesc_LabelsEntry);
-
-const baseOutputDataset: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.OutputDataset',
-    id: '',
-};
+const baseOutputDataset: object = { id: '' };
 
 export const OutputDataset = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.OutputDataset' as const,
-
     encode(message: OutputDataset, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desc !== undefined) {
             OutputDatasetDesc.encode(message.desc, writer.uint32(10).fork()).ldelim();
@@ -2017,10 +1872,7 @@ export const OutputDataset = {
     },
 };
 
-messageTypeRegistry.set(OutputDataset.$type, OutputDataset);
-
 const baseJob: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.Job',
     id: '',
     name: '',
     desc: '',
@@ -2035,8 +1887,6 @@ const baseJob: object = {
 };
 
 export const Job = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.Job' as const,
-
     encode(message: Job, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -2366,13 +2216,9 @@ export const Job = {
     },
 };
 
-messageTypeRegistry.set(Job.$type, Job);
-
-const baseJobResult: object = { $type: 'yandex.cloud.datasphere.v2.jobs.JobResult', returnCode: 0 };
+const baseJobResult: object = { returnCode: 0 };
 
 export const JobResult = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.JobResult' as const,
-
     encode(message: JobResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.returnCode !== 0) {
             writer.uint32(8).int64(message.returnCode);
@@ -2420,16 +2266,9 @@ export const JobResult = {
     },
 };
 
-messageTypeRegistry.set(JobResult.$type, JobResult);
-
-const baseGracefulShutdownParameters: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.GracefulShutdownParameters',
-    signal: 0,
-};
+const baseGracefulShutdownParameters: object = { signal: 0 };
 
 export const GracefulShutdownParameters = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.GracefulShutdownParameters' as const,
-
     encode(
         message: GracefulShutdownParameters,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2496,10 +2335,7 @@ export const GracefulShutdownParameters = {
     },
 };
 
-messageTypeRegistry.set(GracefulShutdownParameters.$type, GracefulShutdownParameters);
-
 const baseJobMetadata: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.JobMetadata',
     id: '',
     name: '',
     description: '',
@@ -2511,8 +2347,6 @@ const baseJobMetadata: object = {
 };
 
 export const JobMetadata = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.JobMetadata' as const,
-
     encode(message: JobMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -2689,17 +2523,9 @@ export const JobMetadata = {
     },
 };
 
-messageTypeRegistry.set(JobMetadata.$type, JobMetadata);
-
-const baseJobProgress: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.JobProgress',
-    message: '',
-    progress: 0,
-};
+const baseJobProgress: object = { message: '', progress: 0 };
 
 export const JobProgress = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.JobProgress' as const,
-
     encode(message: JobProgress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.message !== '') {
             writer.uint32(10).string(message.message);
@@ -2767,16 +2593,9 @@ export const JobProgress = {
     },
 };
 
-messageTypeRegistry.set(JobProgress.$type, JobProgress);
-
-const baseSparkParameters: object = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.SparkParameters',
-    connectorId: '',
-};
+const baseSparkParameters: object = { connectorId: '' };
 
 export const SparkParameters = {
-    $type: 'yandex.cloud.datasphere.v2.jobs.SparkParameters' as const,
-
     encode(message: SparkParameters, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -2824,8 +2643,6 @@ export const SparkParameters = {
     },
 };
 
-messageTypeRegistry.set(SparkParameters.$type, SparkParameters);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -2846,21 +2663,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Int64Value, DoubleValue, BoolValue } from '../../../../../../google/protobuf/wrappers';
@@ -12,7 +11,6 @@ export const protobufPackage = 'yandex.cloud.mdb.postgresql.v1.config';
  * [PostgreSQL documentation](https://www.postgresql.org/docs/11/runtime-config.html).
  */
 export interface Postgresqlhostconfig141c {
-    $type: 'yandex.cloud.mdb.postgresql.v1.config.PostgresqlHostConfig14_1C';
     /** in milliseconds. */
     recoveryMinApplyDelay?: number;
     /** in bytes. */
@@ -622,7 +620,6 @@ export function postgresqlhostconfig141c_XmlOptionToJSON(
 }
 
 const basePostgresqlhostconfig141c: object = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.config.PostgresqlHostConfig14_1C',
     constraintExclusion: 0,
     forceParallelMode: 0,
     clientMinMessages: 0,
@@ -640,57 +637,43 @@ const basePostgresqlhostconfig141c: object = {
 };
 
 export const Postgresqlhostconfig141c = {
-    $type: 'yandex.cloud.mdb.postgresql.v1.config.PostgresqlHostConfig14_1C' as const,
-
     encode(
         message: Postgresqlhostconfig141c,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.recoveryMinApplyDelay !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.recoveryMinApplyDelay! },
+                { value: message.recoveryMinApplyDelay! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
         if (message.sharedBuffers !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.sharedBuffers! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.sharedBuffers! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.tempBuffers !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.tempBuffers! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.tempBuffers! }, writer.uint32(26).fork()).ldelim();
         }
         if (message.workMem !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.workMem! },
-                writer.uint32(34).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.workMem! }, writer.uint32(34).fork()).ldelim();
         }
         if (message.tempFileLimit !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.tempFileLimit! },
-                writer.uint32(42).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.tempFileLimit! }, writer.uint32(42).fork()).ldelim();
         }
         if (message.backendFlushAfter !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.backendFlushAfter! },
+                { value: message.backendFlushAfter! },
                 writer.uint32(50).fork(),
             ).ldelim();
         }
         if (message.oldSnapshotThreshold !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.oldSnapshotThreshold! },
+                { value: message.oldSnapshotThreshold! },
                 writer.uint32(58).fork(),
             ).ldelim();
         }
         if (message.maxStandbyStreamingDelay !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxStandbyStreamingDelay! },
+                { value: message.maxStandbyStreamingDelay! },
                 writer.uint32(66).fork(),
             ).ldelim();
         }
@@ -699,19 +682,19 @@ export const Postgresqlhostconfig141c = {
         }
         if (message.cursorTupleFraction !== undefined) {
             DoubleValue.encode(
-                { $type: 'google.protobuf.DoubleValue', value: message.cursorTupleFraction! },
+                { value: message.cursorTupleFraction! },
                 writer.uint32(82).fork(),
             ).ldelim();
         }
         if (message.fromCollapseLimit !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.fromCollapseLimit! },
+                { value: message.fromCollapseLimit! },
                 writer.uint32(90).fork(),
             ).ldelim();
         }
         if (message.joinCollapseLimit !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.joinCollapseLimit! },
+                { value: message.joinCollapseLimit! },
                 writer.uint32(98).fork(),
             ).ldelim();
         }
@@ -729,82 +712,64 @@ export const Postgresqlhostconfig141c = {
         }
         if (message.logMinDurationStatement !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.logMinDurationStatement! },
+                { value: message.logMinDurationStatement! },
                 writer.uint32(138).fork(),
             ).ldelim();
         }
         if (message.logCheckpoints !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.logCheckpoints! },
+                { value: message.logCheckpoints! },
                 writer.uint32(146).fork(),
             ).ldelim();
         }
         if (message.logConnections !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.logConnections! },
+                { value: message.logConnections! },
                 writer.uint32(154).fork(),
             ).ldelim();
         }
         if (message.logDisconnections !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.logDisconnections! },
+                { value: message.logDisconnections! },
                 writer.uint32(162).fork(),
             ).ldelim();
         }
         if (message.logDuration !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.logDuration! },
-                writer.uint32(170).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.logDuration! }, writer.uint32(170).fork()).ldelim();
         }
         if (message.logErrorVerbosity !== 0) {
             writer.uint32(176).int32(message.logErrorVerbosity);
         }
         if (message.logLockWaits !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.logLockWaits! },
-                writer.uint32(186).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.logLockWaits! }, writer.uint32(186).fork()).ldelim();
         }
         if (message.logStatement !== 0) {
             writer.uint32(192).int32(message.logStatement);
         }
         if (message.logTempFiles !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.logTempFiles! },
-                writer.uint32(202).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.logTempFiles! }, writer.uint32(202).fork()).ldelim();
         }
         if (message.searchPath !== '') {
             writer.uint32(210).string(message.searchPath);
         }
         if (message.rowSecurity !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.rowSecurity! },
-                writer.uint32(218).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.rowSecurity! }, writer.uint32(218).fork()).ldelim();
         }
         if (message.defaultTransactionIsolation !== 0) {
             writer.uint32(224).int32(message.defaultTransactionIsolation);
         }
         if (message.statementTimeout !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.statementTimeout! },
+                { value: message.statementTimeout! },
                 writer.uint32(234).fork(),
             ).ldelim();
         }
         if (message.lockTimeout !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.lockTimeout! },
-                writer.uint32(242).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.lockTimeout! }, writer.uint32(242).fork()).ldelim();
         }
         if (message.idleInTransactionSessionTimeout !== undefined) {
             Int64Value.encode(
-                {
-                    $type: 'google.protobuf.Int64Value',
-                    value: message.idleInTransactionSessionTimeout!,
-                },
+                { value: message.idleInTransactionSessionTimeout! },
                 writer.uint32(250).fork(),
             ).ldelim();
         }
@@ -819,175 +784,151 @@ export const Postgresqlhostconfig141c = {
         }
         if (message.ginPendingListLimit !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.ginPendingListLimit! },
+                { value: message.ginPendingListLimit! },
                 writer.uint32(282).fork(),
             ).ldelim();
         }
         if (message.deadlockTimeout !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.deadlockTimeout! },
+                { value: message.deadlockTimeout! },
                 writer.uint32(290).fork(),
             ).ldelim();
         }
         if (message.maxLocksPerTransaction !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxLocksPerTransaction! },
+                { value: message.maxLocksPerTransaction! },
                 writer.uint32(298).fork(),
             ).ldelim();
         }
         if (message.maxPredLocksPerTransaction !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxPredLocksPerTransaction! },
+                { value: message.maxPredLocksPerTransaction! },
                 writer.uint32(306).fork(),
             ).ldelim();
         }
         if (message.arrayNulls !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.arrayNulls! },
-                writer.uint32(314).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.arrayNulls! }, writer.uint32(314).fork()).ldelim();
         }
         if (message.backslashQuote !== 0) {
             writer.uint32(320).int32(message.backslashQuote);
         }
         if (message.defaultWithOids !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.defaultWithOids! },
+                { value: message.defaultWithOids! },
                 writer.uint32(330).fork(),
             ).ldelim();
         }
         if (message.escapeStringWarning !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.escapeStringWarning! },
+                { value: message.escapeStringWarning! },
                 writer.uint32(338).fork(),
             ).ldelim();
         }
         if (message.loCompatPrivileges !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.loCompatPrivileges! },
+                { value: message.loCompatPrivileges! },
                 writer.uint32(346).fork(),
             ).ldelim();
         }
         if (message.quoteAllIdentifiers !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.quoteAllIdentifiers! },
+                { value: message.quoteAllIdentifiers! },
                 writer.uint32(362).fork(),
             ).ldelim();
         }
         if (message.standardConformingStrings !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.standardConformingStrings! },
+                { value: message.standardConformingStrings! },
                 writer.uint32(370).fork(),
             ).ldelim();
         }
         if (message.synchronizeSeqscans !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.synchronizeSeqscans! },
+                { value: message.synchronizeSeqscans! },
                 writer.uint32(378).fork(),
             ).ldelim();
         }
         if (message.transformNullEquals !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.transformNullEquals! },
+                { value: message.transformNullEquals! },
                 writer.uint32(386).fork(),
             ).ldelim();
         }
         if (message.exitOnError !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.exitOnError! },
-                writer.uint32(394).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.exitOnError! }, writer.uint32(394).fork()).ldelim();
         }
         if (message.seqPageCost !== undefined) {
-            DoubleValue.encode(
-                { $type: 'google.protobuf.DoubleValue', value: message.seqPageCost! },
-                writer.uint32(402).fork(),
-            ).ldelim();
+            DoubleValue.encode({ value: message.seqPageCost! }, writer.uint32(402).fork()).ldelim();
         }
         if (message.randomPageCost !== undefined) {
             DoubleValue.encode(
-                { $type: 'google.protobuf.DoubleValue', value: message.randomPageCost! },
+                { value: message.randomPageCost! },
                 writer.uint32(410).fork(),
             ).ldelim();
         }
         if (message.enableBitmapscan !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.enableBitmapscan! },
+                { value: message.enableBitmapscan! },
                 writer.uint32(434).fork(),
             ).ldelim();
         }
         if (message.enableHashagg !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.enableHashagg! },
-                writer.uint32(442).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.enableHashagg! }, writer.uint32(442).fork()).ldelim();
         }
         if (message.enableHashjoin !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.enableHashjoin! },
+                { value: message.enableHashjoin! },
                 writer.uint32(450).fork(),
             ).ldelim();
         }
         if (message.enableIndexscan !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.enableIndexscan! },
+                { value: message.enableIndexscan! },
                 writer.uint32(458).fork(),
             ).ldelim();
         }
         if (message.enableIndexonlyscan !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.enableIndexonlyscan! },
+                { value: message.enableIndexonlyscan! },
                 writer.uint32(466).fork(),
             ).ldelim();
         }
         if (message.enableMaterial !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.enableMaterial! },
+                { value: message.enableMaterial! },
                 writer.uint32(474).fork(),
             ).ldelim();
         }
         if (message.enableMergejoin !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.enableMergejoin! },
+                { value: message.enableMergejoin! },
                 writer.uint32(482).fork(),
             ).ldelim();
         }
         if (message.enableNestloop !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.enableNestloop! },
+                { value: message.enableNestloop! },
                 writer.uint32(490).fork(),
             ).ldelim();
         }
         if (message.enableSeqscan !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.enableSeqscan! },
-                writer.uint32(498).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.enableSeqscan! }, writer.uint32(498).fork()).ldelim();
         }
         if (message.enableSort !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.enableSort! },
-                writer.uint32(506).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.enableSort! }, writer.uint32(506).fork()).ldelim();
         }
         if (message.enableTidscan !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.enableTidscan! },
-                writer.uint32(514).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.enableTidscan! }, writer.uint32(514).fork()).ldelim();
         }
         if (message.maxParallelWorkers !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxParallelWorkers! },
+                { value: message.maxParallelWorkers! },
                 writer.uint32(522).fork(),
             ).ldelim();
         }
         if (message.maxParallelWorkersPerGather !== undefined) {
             Int64Value.encode(
-                {
-                    $type: 'google.protobuf.Int64Value',
-                    value: message.maxParallelWorkersPerGather!,
-                },
+                { value: message.maxParallelWorkersPerGather! },
                 writer.uint32(530).fork(),
             ).ldelim();
         }
@@ -996,13 +937,13 @@ export const Postgresqlhostconfig141c = {
         }
         if (message.effectiveIoConcurrency !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.effectiveIoConcurrency! },
+                { value: message.effectiveIoConcurrency! },
                 writer.uint32(546).fork(),
             ).ldelim();
         }
         if (message.effectiveCacheSize !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.effectiveCacheSize! },
+                { value: message.effectiveCacheSize! },
                 writer.uint32(554).fork(),
             ).ldelim();
         }
@@ -1722,8 +1663,6 @@ export const Postgresqlhostconfig141c = {
     },
 };
 
-messageTypeRegistry.set(Postgresqlhostconfig141c.$type, Postgresqlhostconfig141c);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -1733,16 +1672,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -30,18 +29,12 @@ import { Empty } from '../../../../../google/protobuf/empty';
 export const protobufPackage = 'speechkit.stt.v3';
 
 export interface GetRecognitionRequest {
-    $type: 'speechkit.stt.v3.GetRecognitionRequest';
     operationId: string;
 }
 
-const baseGetRecognitionRequest: object = {
-    $type: 'speechkit.stt.v3.GetRecognitionRequest',
-    operationId: '',
-};
+const baseGetRecognitionRequest: object = { operationId: '' };
 
 export const GetRecognitionRequest = {
-    $type: 'speechkit.stt.v3.GetRecognitionRequest' as const,
-
     encode(message: GetRecognitionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.operationId !== '') {
             writer.uint32(10).string(message.operationId);
@@ -90,8 +83,6 @@ export const GetRecognitionRequest = {
         return message;
     },
 };
-
-messageTypeRegistry.set(GetRecognitionRequest.$type, GetRecognitionRequest);
 
 /** A set of methods for voice recognition. */
 export const RecognizerService = {
@@ -242,16 +233,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

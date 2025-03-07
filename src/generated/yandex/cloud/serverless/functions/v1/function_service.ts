@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -42,7 +41,6 @@ import {
 export const protobufPackage = 'yandex.cloud.serverless.functions.v1';
 
 export interface GetFunctionRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.GetFunctionRequest';
     /**
      * ID of the function to return.
      *
@@ -52,7 +50,6 @@ export interface GetFunctionRequest {
 }
 
 export interface GetFunctionVersionRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.GetFunctionVersionRequest';
     /**
      * ID of the version to return.
      *
@@ -62,7 +59,6 @@ export interface GetFunctionVersionRequest {
 }
 
 export interface GetFunctionVersionByTagRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.GetFunctionVersionByTagRequest';
     /**
      * ID of the function whose versions should be listed.
      *
@@ -78,7 +74,6 @@ export interface GetFunctionVersionByTagRequest {
 }
 
 export interface ListFunctionsRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionsRequest';
     /**
      * ID of the folder to list functions in.
      *
@@ -111,7 +106,6 @@ export interface ListFunctionsRequest {
 }
 
 export interface ListFunctionsResponse {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionsResponse';
     /** List of functions in the specified folder. */
     functions: Function[];
     /**
@@ -125,7 +119,6 @@ export interface ListFunctionsResponse {
 }
 
 export interface CreateFunctionRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionRequest';
     /**
      * ID of the folder to create a function in.
      *
@@ -144,19 +137,16 @@ export interface CreateFunctionRequest {
 }
 
 export interface CreateFunctionRequest_LabelsEntry {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateFunctionMetadata {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionMetadata';
     /** ID of the function that is being created. */
     functionId: string;
 }
 
 export interface UpdateFunctionRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.UpdateFunctionRequest';
     /**
      * ID of the function to update.
      *
@@ -182,19 +172,16 @@ export interface UpdateFunctionRequest {
 }
 
 export interface UpdateFunctionRequest_LabelsEntry {
-    $type: 'yandex.cloud.serverless.functions.v1.UpdateFunctionRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateFunctionMetadata {
-    $type: 'yandex.cloud.serverless.functions.v1.UpdateFunctionMetadata';
     /** ID of the function that is being updated. */
     functionId: string;
 }
 
 export interface DeleteFunctionRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.DeleteFunctionRequest';
     /**
      * ID of the function to delete.
      * To get a function ID make a [FunctionService.List] request.
@@ -203,13 +190,11 @@ export interface DeleteFunctionRequest {
 }
 
 export interface DeleteFunctionMetadata {
-    $type: 'yandex.cloud.serverless.functions.v1.DeleteFunctionMetadata';
     /** ID of the function that is being deleted. */
     functionId: string;
 }
 
 export interface DeleteFunctionVersionRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.DeleteFunctionVersionRequest';
     /** ID of the function's version to delete. */
     functionVersionId: string;
     /**
@@ -221,23 +206,18 @@ export interface DeleteFunctionVersionRequest {
 }
 
 export interface DeleteFunctionVersionMetadata {
-    $type: 'yandex.cloud.serverless.functions.v1.DeleteFunctionVersionMetadata';
     /** ID of the function's version is being deleted. */
     functionVersionId: string;
 }
 
-export interface ListRuntimesRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.ListRuntimesRequest';
-}
+export interface ListRuntimesRequest {}
 
 export interface ListRuntimesResponse {
-    $type: 'yandex.cloud.serverless.functions.v1.ListRuntimesResponse';
     /** Runtime environments available for the specified function. */
     runtimes: string[];
 }
 
 export interface ListFunctionsVersionsRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionsVersionsRequest';
     /**
      * ID of the folder to list function versions for.
      * To get a folder ID make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
@@ -274,7 +254,6 @@ export interface ListFunctionsVersionsRequest {
 }
 
 export interface ListFunctionsVersionsResponse {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionsVersionsResponse';
     /** List of versions for the specified folder or function. */
     versions: Version[];
     /**
@@ -288,7 +267,6 @@ export interface ListFunctionsVersionsResponse {
 }
 
 export interface ListFunctionOperationsRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionOperationsRequest';
     /** ID of the function to list operations for. */
     functionId: string;
     /**
@@ -317,7 +295,6 @@ export interface ListFunctionOperationsRequest {
 }
 
 export interface ListFunctionOperationsResponse {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionOperationsResponse';
     /** List of operations for the specified function. */
     operations: Operation[];
     /**
@@ -331,7 +308,6 @@ export interface ListFunctionOperationsResponse {
 }
 
 export interface CreateFunctionVersionRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionVersionRequest';
     /**
      * ID of the function to create a version for.
      *
@@ -395,25 +371,21 @@ export interface CreateFunctionVersionRequest {
 }
 
 export interface CreateFunctionVersionRequest_EnvironmentEntry {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionVersionRequest.EnvironmentEntry';
     key: string;
     value: string;
 }
 
 export interface CreateFunctionVersionRequest_NamedServiceAccountsEntry {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionVersionRequest.NamedServiceAccountsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateFunctionVersionMetadata {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionVersionMetadata';
     /** ID of the version that is being created. */
     functionVersionId: string;
 }
 
 export interface SetFunctionTagRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.SetFunctionTagRequest';
     /**
      * ID of the version to set the tag for.
      *
@@ -425,7 +397,6 @@ export interface SetFunctionTagRequest {
 }
 
 export interface RemoveFunctionTagRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.RemoveFunctionTagRequest';
     /**
      * ID of the version to remove a tag from.
      *
@@ -437,19 +408,16 @@ export interface RemoveFunctionTagRequest {
 }
 
 export interface SetFunctionTagMetadata {
-    $type: 'yandex.cloud.serverless.functions.v1.SetFunctionTagMetadata';
     /** ID of the function versions that is being tagged. */
     functionVersionId: string;
 }
 
 export interface RemoveFunctionTagMetadata {
-    $type: 'yandex.cloud.serverless.functions.v1.RemoveFunctionTagMetadata';
     /** ID of the function versions that is being untagged. */
     functionVersionId: string;
 }
 
 export interface ListFunctionTagHistoryRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionTagHistoryRequest';
     /**
      * ID of the function to retrieve tag history for.
      *
@@ -483,7 +451,6 @@ export interface ListFunctionTagHistoryRequest {
 }
 
 export interface ListFunctionTagHistoryResponse {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionTagHistoryResponse';
     /** Set of relevant tag history records. */
     functionTagHistoryRecord: ListFunctionTagHistoryResponse_FunctionTagHistoryRecord[];
     /**
@@ -498,7 +465,6 @@ export interface ListFunctionTagHistoryResponse {
 
 /** A record in the tag history. */
 export interface ListFunctionTagHistoryResponse_FunctionTagHistoryRecord {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionTagHistoryResponse.FunctionTagHistoryRecord';
     /** ID of the function that the record is about. */
     functionId: string;
     /** ID of the function version that the record is about. */
@@ -512,7 +478,6 @@ export interface ListFunctionTagHistoryResponse_FunctionTagHistoryRecord {
 }
 
 export interface ListScalingPoliciesRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.ListScalingPoliciesRequest';
     /**
      * ID of the function to retrieve scaling policies for.
      *
@@ -535,7 +500,6 @@ export interface ListScalingPoliciesRequest {
 }
 
 export interface ListScalingPoliciesResponse {
-    $type: 'yandex.cloud.serverless.functions.v1.ListScalingPoliciesResponse';
     /** Set of relevant scaling policies. */
     scalingPolicies: ScalingPolicy[];
     /**
@@ -549,7 +513,6 @@ export interface ListScalingPoliciesResponse {
 }
 
 export interface SetScalingPolicyRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.SetScalingPolicyRequest';
     /**
      * ID of the function to retrieve scaling policies for.
      *
@@ -580,13 +543,11 @@ export interface SetScalingPolicyRequest {
 }
 
 export interface SetScalingPolicyMetadata {
-    $type: 'yandex.cloud.serverless.functions.v1.SetScalingPolicyMetadata';
     /** ID of the function for which scaling policy was set. */
     functionId: string;
 }
 
 export interface RemoveScalingPolicyRequest {
-    $type: 'yandex.cloud.serverless.functions.v1.RemoveScalingPolicyRequest';
     /**
      * ID of the function to remove scaling policies for.
      *
@@ -602,19 +563,13 @@ export interface RemoveScalingPolicyRequest {
 }
 
 export interface RemoveScalingPolicyMetadata {
-    $type: 'yandex.cloud.serverless.functions.v1.RemoveScalingPolicyMetadata';
     /** ID of the function for which scaling policy was removed. */
     functionId: string;
 }
 
-const baseGetFunctionRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.GetFunctionRequest',
-    functionId: '',
-};
+const baseGetFunctionRequest: object = { functionId: '' };
 
 export const GetFunctionRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.GetFunctionRequest' as const,
-
     encode(message: GetFunctionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -664,16 +619,9 @@ export const GetFunctionRequest = {
     },
 };
 
-messageTypeRegistry.set(GetFunctionRequest.$type, GetFunctionRequest);
-
-const baseGetFunctionVersionRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.GetFunctionVersionRequest',
-    functionVersionId: '',
-};
+const baseGetFunctionVersionRequest: object = { functionVersionId: '' };
 
 export const GetFunctionVersionRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.GetFunctionVersionRequest' as const,
-
     encode(
         message: GetFunctionVersionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -727,17 +675,9 @@ export const GetFunctionVersionRequest = {
     },
 };
 
-messageTypeRegistry.set(GetFunctionVersionRequest.$type, GetFunctionVersionRequest);
-
-const baseGetFunctionVersionByTagRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.GetFunctionVersionByTagRequest',
-    functionId: '',
-    tag: '',
-};
+const baseGetFunctionVersionByTagRequest: object = { functionId: '', tag: '' };
 
 export const GetFunctionVersionByTagRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.GetFunctionVersionByTagRequest' as const,
-
     encode(
         message: GetFunctionVersionByTagRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -799,19 +739,9 @@ export const GetFunctionVersionByTagRequest = {
     },
 };
 
-messageTypeRegistry.set(GetFunctionVersionByTagRequest.$type, GetFunctionVersionByTagRequest);
-
-const baseListFunctionsRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListFunctionsRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListFunctionsRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionsRequest' as const,
-
     encode(message: ListFunctionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -893,16 +823,9 @@ export const ListFunctionsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListFunctionsRequest.$type, ListFunctionsRequest);
-
-const baseListFunctionsResponse: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionsResponse',
-    nextPageToken: '',
-};
+const baseListFunctionsResponse: object = { nextPageToken: '' };
 
 export const ListFunctionsResponse = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionsResponse' as const,
-
     encode(message: ListFunctionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.functions) {
             Function.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -966,18 +889,9 @@ export const ListFunctionsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListFunctionsResponse.$type, ListFunctionsResponse);
-
-const baseCreateFunctionRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionRequest',
-    folderId: '',
-    name: '',
-    description: '',
-};
+const baseCreateFunctionRequest: object = { folderId: '', name: '', description: '' };
 
 export const CreateFunctionRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionRequest' as const,
-
     encode(message: CreateFunctionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -990,11 +904,7 @@ export const CreateFunctionRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateFunctionRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -1090,17 +1000,9 @@ export const CreateFunctionRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateFunctionRequest.$type, CreateFunctionRequest);
-
-const baseCreateFunctionRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateFunctionRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateFunctionRequest_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionRequest.LabelsEntry' as const,
-
     encode(
         message: CreateFunctionRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1166,16 +1068,9 @@ export const CreateFunctionRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateFunctionRequest_LabelsEntry.$type, CreateFunctionRequest_LabelsEntry);
-
-const baseCreateFunctionMetadata: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionMetadata',
-    functionId: '',
-};
+const baseCreateFunctionMetadata: object = { functionId: '' };
 
 export const CreateFunctionMetadata = {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionMetadata' as const,
-
     encode(message: CreateFunctionMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -1225,18 +1120,9 @@ export const CreateFunctionMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateFunctionMetadata.$type, CreateFunctionMetadata);
-
-const baseUpdateFunctionRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.UpdateFunctionRequest',
-    functionId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateFunctionRequest: object = { functionId: '', name: '', description: '' };
 
 export const UpdateFunctionRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.UpdateFunctionRequest' as const,
-
     encode(message: UpdateFunctionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -1252,11 +1138,7 @@ export const UpdateFunctionRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateFunctionRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.functions.v1.UpdateFunctionRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -1367,17 +1249,9 @@ export const UpdateFunctionRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateFunctionRequest.$type, UpdateFunctionRequest);
-
-const baseUpdateFunctionRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.UpdateFunctionRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateFunctionRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateFunctionRequest_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.functions.v1.UpdateFunctionRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateFunctionRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1443,16 +1317,9 @@ export const UpdateFunctionRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateFunctionRequest_LabelsEntry.$type, UpdateFunctionRequest_LabelsEntry);
-
-const baseUpdateFunctionMetadata: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.UpdateFunctionMetadata',
-    functionId: '',
-};
+const baseUpdateFunctionMetadata: object = { functionId: '' };
 
 export const UpdateFunctionMetadata = {
-    $type: 'yandex.cloud.serverless.functions.v1.UpdateFunctionMetadata' as const,
-
     encode(message: UpdateFunctionMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -1502,16 +1369,9 @@ export const UpdateFunctionMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateFunctionMetadata.$type, UpdateFunctionMetadata);
-
-const baseDeleteFunctionRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.DeleteFunctionRequest',
-    functionId: '',
-};
+const baseDeleteFunctionRequest: object = { functionId: '' };
 
 export const DeleteFunctionRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.DeleteFunctionRequest' as const,
-
     encode(message: DeleteFunctionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -1561,16 +1421,9 @@ export const DeleteFunctionRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteFunctionRequest.$type, DeleteFunctionRequest);
-
-const baseDeleteFunctionMetadata: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.DeleteFunctionMetadata',
-    functionId: '',
-};
+const baseDeleteFunctionMetadata: object = { functionId: '' };
 
 export const DeleteFunctionMetadata = {
-    $type: 'yandex.cloud.serverless.functions.v1.DeleteFunctionMetadata' as const,
-
     encode(message: DeleteFunctionMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -1620,17 +1473,9 @@ export const DeleteFunctionMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteFunctionMetadata.$type, DeleteFunctionMetadata);
-
-const baseDeleteFunctionVersionRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.DeleteFunctionVersionRequest',
-    functionVersionId: '',
-    force: false,
-};
+const baseDeleteFunctionVersionRequest: object = { functionVersionId: '', force: false };
 
 export const DeleteFunctionVersionRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.DeleteFunctionVersionRequest' as const,
-
     encode(
         message: DeleteFunctionVersionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1694,16 +1539,9 @@ export const DeleteFunctionVersionRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteFunctionVersionRequest.$type, DeleteFunctionVersionRequest);
-
-const baseDeleteFunctionVersionMetadata: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.DeleteFunctionVersionMetadata',
-    functionVersionId: '',
-};
+const baseDeleteFunctionVersionMetadata: object = { functionVersionId: '' };
 
 export const DeleteFunctionVersionMetadata = {
-    $type: 'yandex.cloud.serverless.functions.v1.DeleteFunctionVersionMetadata' as const,
-
     encode(
         message: DeleteFunctionVersionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1757,15 +1595,9 @@ export const DeleteFunctionVersionMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteFunctionVersionMetadata.$type, DeleteFunctionVersionMetadata);
-
-const baseListRuntimesRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListRuntimesRequest',
-};
+const baseListRuntimesRequest: object = {};
 
 export const ListRuntimesRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListRuntimesRequest' as const,
-
     encode(_: ListRuntimesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1801,16 +1633,9 @@ export const ListRuntimesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListRuntimesRequest.$type, ListRuntimesRequest);
-
-const baseListRuntimesResponse: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListRuntimesResponse',
-    runtimes: '',
-};
+const baseListRuntimesResponse: object = { runtimes: '' };
 
 export const ListRuntimesResponse = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListRuntimesResponse' as const,
-
     encode(message: ListRuntimesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.runtimes) {
             writer.uint32(10).string(v!);
@@ -1862,18 +1687,9 @@ export const ListRuntimesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListRuntimesResponse.$type, ListRuntimesResponse);
-
-const baseListFunctionsVersionsRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionsVersionsRequest',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListFunctionsVersionsRequest: object = { pageSize: 0, pageToken: '', filter: '' };
 
 export const ListFunctionsVersionsRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionsVersionsRequest' as const,
-
     encode(
         message: ListFunctionsVersionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1970,16 +1786,9 @@ export const ListFunctionsVersionsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListFunctionsVersionsRequest.$type, ListFunctionsVersionsRequest);
-
-const baseListFunctionsVersionsResponse: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionsVersionsResponse',
-    nextPageToken: '',
-};
+const baseListFunctionsVersionsResponse: object = { nextPageToken: '' };
 
 export const ListFunctionsVersionsResponse = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionsVersionsResponse' as const,
-
     encode(
         message: ListFunctionsVersionsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2046,10 +1855,7 @@ export const ListFunctionsVersionsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListFunctionsVersionsResponse.$type, ListFunctionsVersionsResponse);
-
 const baseListFunctionOperationsRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionOperationsRequest',
     functionId: '',
     pageSize: 0,
     pageToken: '',
@@ -2057,8 +1863,6 @@ const baseListFunctionOperationsRequest: object = {
 };
 
 export const ListFunctionOperationsRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionOperationsRequest' as const,
-
     encode(
         message: ListFunctionOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2143,16 +1947,9 @@ export const ListFunctionOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListFunctionOperationsRequest.$type, ListFunctionOperationsRequest);
-
-const baseListFunctionOperationsResponse: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionOperationsResponse',
-    nextPageToken: '',
-};
+const baseListFunctionOperationsResponse: object = { nextPageToken: '' };
 
 export const ListFunctionOperationsResponse = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionOperationsResponse' as const,
-
     encode(
         message: ListFunctionOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2219,10 +2016,7 @@ export const ListFunctionOperationsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListFunctionOperationsResponse.$type, ListFunctionOperationsResponse);
-
 const baseCreateFunctionVersionRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionVersionRequest',
     functionId: '',
     runtime: '',
     description: '',
@@ -2234,8 +2028,6 @@ const baseCreateFunctionVersionRequest: object = {
 };
 
 export const CreateFunctionVersionRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionVersionRequest' as const,
-
     encode(
         message: CreateFunctionVersionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2272,11 +2064,7 @@ export const CreateFunctionVersionRequest = {
         }
         Object.entries(message.environment).forEach(([key, value]) => {
             CreateFunctionVersionRequest_EnvironmentEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionVersionRequest.EnvironmentEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(98).fork(),
             ).ldelim();
         });
@@ -2288,11 +2076,7 @@ export const CreateFunctionVersionRequest = {
         }
         Object.entries(message.namedServiceAccounts).forEach(([key, value]) => {
             CreateFunctionVersionRequest_NamedServiceAccountsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionVersionRequest.NamedServiceAccountsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(122).fork(),
             ).ldelim();
         });
@@ -2652,17 +2436,9 @@ export const CreateFunctionVersionRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateFunctionVersionRequest.$type, CreateFunctionVersionRequest);
-
-const baseCreateFunctionVersionRequest_EnvironmentEntry: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionVersionRequest.EnvironmentEntry',
-    key: '',
-    value: '',
-};
+const baseCreateFunctionVersionRequest_EnvironmentEntry: object = { key: '', value: '' };
 
 export const CreateFunctionVersionRequest_EnvironmentEntry = {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionVersionRequest.EnvironmentEntry' as const,
-
     encode(
         message: CreateFunctionVersionRequest_EnvironmentEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2731,20 +2507,9 @@ export const CreateFunctionVersionRequest_EnvironmentEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateFunctionVersionRequest_EnvironmentEntry.$type,
-    CreateFunctionVersionRequest_EnvironmentEntry,
-);
-
-const baseCreateFunctionVersionRequest_NamedServiceAccountsEntry: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionVersionRequest.NamedServiceAccountsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateFunctionVersionRequest_NamedServiceAccountsEntry: object = { key: '', value: '' };
 
 export const CreateFunctionVersionRequest_NamedServiceAccountsEntry = {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionVersionRequest.NamedServiceAccountsEntry' as const,
-
     encode(
         message: CreateFunctionVersionRequest_NamedServiceAccountsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2813,19 +2578,9 @@ export const CreateFunctionVersionRequest_NamedServiceAccountsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateFunctionVersionRequest_NamedServiceAccountsEntry.$type,
-    CreateFunctionVersionRequest_NamedServiceAccountsEntry,
-);
-
-const baseCreateFunctionVersionMetadata: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionVersionMetadata',
-    functionVersionId: '',
-};
+const baseCreateFunctionVersionMetadata: object = { functionVersionId: '' };
 
 export const CreateFunctionVersionMetadata = {
-    $type: 'yandex.cloud.serverless.functions.v1.CreateFunctionVersionMetadata' as const,
-
     encode(
         message: CreateFunctionVersionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2879,17 +2634,9 @@ export const CreateFunctionVersionMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateFunctionVersionMetadata.$type, CreateFunctionVersionMetadata);
-
-const baseSetFunctionTagRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.SetFunctionTagRequest',
-    functionVersionId: '',
-    tag: '',
-};
+const baseSetFunctionTagRequest: object = { functionVersionId: '', tag: '' };
 
 export const SetFunctionTagRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.SetFunctionTagRequest' as const,
-
     encode(message: SetFunctionTagRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionVersionId !== '') {
             writer.uint32(10).string(message.functionVersionId);
@@ -2949,17 +2696,9 @@ export const SetFunctionTagRequest = {
     },
 };
 
-messageTypeRegistry.set(SetFunctionTagRequest.$type, SetFunctionTagRequest);
-
-const baseRemoveFunctionTagRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.RemoveFunctionTagRequest',
-    functionVersionId: '',
-    tag: '',
-};
+const baseRemoveFunctionTagRequest: object = { functionVersionId: '', tag: '' };
 
 export const RemoveFunctionTagRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.RemoveFunctionTagRequest' as const,
-
     encode(
         message: RemoveFunctionTagRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3022,16 +2761,9 @@ export const RemoveFunctionTagRequest = {
     },
 };
 
-messageTypeRegistry.set(RemoveFunctionTagRequest.$type, RemoveFunctionTagRequest);
-
-const baseSetFunctionTagMetadata: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.SetFunctionTagMetadata',
-    functionVersionId: '',
-};
+const baseSetFunctionTagMetadata: object = { functionVersionId: '' };
 
 export const SetFunctionTagMetadata = {
-    $type: 'yandex.cloud.serverless.functions.v1.SetFunctionTagMetadata' as const,
-
     encode(message: SetFunctionTagMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionVersionId !== '') {
             writer.uint32(10).string(message.functionVersionId);
@@ -3082,16 +2814,9 @@ export const SetFunctionTagMetadata = {
     },
 };
 
-messageTypeRegistry.set(SetFunctionTagMetadata.$type, SetFunctionTagMetadata);
-
-const baseRemoveFunctionTagMetadata: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.RemoveFunctionTagMetadata',
-    functionVersionId: '',
-};
+const baseRemoveFunctionTagMetadata: object = { functionVersionId: '' };
 
 export const RemoveFunctionTagMetadata = {
-    $type: 'yandex.cloud.serverless.functions.v1.RemoveFunctionTagMetadata' as const,
-
     encode(
         message: RemoveFunctionTagMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3145,10 +2870,7 @@ export const RemoveFunctionTagMetadata = {
     },
 };
 
-messageTypeRegistry.set(RemoveFunctionTagMetadata.$type, RemoveFunctionTagMetadata);
-
 const baseListFunctionTagHistoryRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionTagHistoryRequest',
     functionId: '',
     tag: '',
     pageSize: 0,
@@ -3157,8 +2879,6 @@ const baseListFunctionTagHistoryRequest: object = {
 };
 
 export const ListFunctionTagHistoryRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionTagHistoryRequest' as const,
-
     encode(
         message: ListFunctionTagHistoryRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3252,16 +2972,9 @@ export const ListFunctionTagHistoryRequest = {
     },
 };
 
-messageTypeRegistry.set(ListFunctionTagHistoryRequest.$type, ListFunctionTagHistoryRequest);
-
-const baseListFunctionTagHistoryResponse: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionTagHistoryResponse',
-    nextPageToken: '',
-};
+const baseListFunctionTagHistoryResponse: object = { nextPageToken: '' };
 
 export const ListFunctionTagHistoryResponse = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionTagHistoryResponse' as const,
-
     encode(
         message: ListFunctionTagHistoryResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3343,18 +3056,13 @@ export const ListFunctionTagHistoryResponse = {
     },
 };
 
-messageTypeRegistry.set(ListFunctionTagHistoryResponse.$type, ListFunctionTagHistoryResponse);
-
 const baseListFunctionTagHistoryResponse_FunctionTagHistoryRecord: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionTagHistoryResponse.FunctionTagHistoryRecord',
     functionId: '',
     functionVersionId: '',
     tag: '',
 };
 
 export const ListFunctionTagHistoryResponse_FunctionTagHistoryRecord = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListFunctionTagHistoryResponse.FunctionTagHistoryRecord' as const,
-
     encode(
         message: ListFunctionTagHistoryResponse_FunctionTagHistoryRecord,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3465,21 +3173,9 @@ export const ListFunctionTagHistoryResponse_FunctionTagHistoryRecord = {
     },
 };
 
-messageTypeRegistry.set(
-    ListFunctionTagHistoryResponse_FunctionTagHistoryRecord.$type,
-    ListFunctionTagHistoryResponse_FunctionTagHistoryRecord,
-);
-
-const baseListScalingPoliciesRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListScalingPoliciesRequest',
-    functionId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListScalingPoliciesRequest: object = { functionId: '', pageSize: 0, pageToken: '' };
 
 export const ListScalingPoliciesRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListScalingPoliciesRequest' as const,
-
     encode(
         message: ListScalingPoliciesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3554,16 +3250,9 @@ export const ListScalingPoliciesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListScalingPoliciesRequest.$type, ListScalingPoliciesRequest);
-
-const baseListScalingPoliciesResponse: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListScalingPoliciesResponse',
-    nextPageToken: '',
-};
+const baseListScalingPoliciesResponse: object = { nextPageToken: '' };
 
 export const ListScalingPoliciesResponse = {
-    $type: 'yandex.cloud.serverless.functions.v1.ListScalingPoliciesResponse' as const,
-
     encode(
         message: ListScalingPoliciesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3635,10 +3324,7 @@ export const ListScalingPoliciesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListScalingPoliciesResponse.$type, ListScalingPoliciesResponse);
-
 const baseSetScalingPolicyRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.SetScalingPolicyRequest',
     functionId: '',
     tag: '',
     provisionedInstancesCount: 0,
@@ -3647,8 +3333,6 @@ const baseSetScalingPolicyRequest: object = {
 };
 
 export const SetScalingPolicyRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.SetScalingPolicyRequest' as const,
-
     encode(message: SetScalingPolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -3747,16 +3431,9 @@ export const SetScalingPolicyRequest = {
     },
 };
 
-messageTypeRegistry.set(SetScalingPolicyRequest.$type, SetScalingPolicyRequest);
-
-const baseSetScalingPolicyMetadata: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.SetScalingPolicyMetadata',
-    functionId: '',
-};
+const baseSetScalingPolicyMetadata: object = { functionId: '' };
 
 export const SetScalingPolicyMetadata = {
-    $type: 'yandex.cloud.serverless.functions.v1.SetScalingPolicyMetadata' as const,
-
     encode(
         message: SetScalingPolicyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3809,17 +3486,9 @@ export const SetScalingPolicyMetadata = {
     },
 };
 
-messageTypeRegistry.set(SetScalingPolicyMetadata.$type, SetScalingPolicyMetadata);
-
-const baseRemoveScalingPolicyRequest: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.RemoveScalingPolicyRequest',
-    functionId: '',
-    tag: '',
-};
+const baseRemoveScalingPolicyRequest: object = { functionId: '', tag: '' };
 
 export const RemoveScalingPolicyRequest = {
-    $type: 'yandex.cloud.serverless.functions.v1.RemoveScalingPolicyRequest' as const,
-
     encode(
         message: RemoveScalingPolicyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3881,16 +3550,9 @@ export const RemoveScalingPolicyRequest = {
     },
 };
 
-messageTypeRegistry.set(RemoveScalingPolicyRequest.$type, RemoveScalingPolicyRequest);
-
-const baseRemoveScalingPolicyMetadata: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.RemoveScalingPolicyMetadata',
-    functionId: '',
-};
+const baseRemoveScalingPolicyMetadata: object = { functionId: '' };
 
 export const RemoveScalingPolicyMetadata = {
-    $type: 'yandex.cloud.serverless.functions.v1.RemoveScalingPolicyMetadata' as const,
-
     encode(
         message: RemoveScalingPolicyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3942,8 +3604,6 @@ export const RemoveScalingPolicyMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(RemoveScalingPolicyMetadata.$type, RemoveScalingPolicyMetadata);
 
 /** A set of methods for managing serverless functions. */
 export const FunctionServiceService = {
@@ -4681,21 +4341,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

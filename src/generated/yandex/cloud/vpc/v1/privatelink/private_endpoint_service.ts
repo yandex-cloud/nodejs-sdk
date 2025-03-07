@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -25,7 +24,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.vpc.v1.privatelink';
 
 export interface GetPrivateEndpointRequest {
-    $type: 'yandex.cloud.vpc.v1.privatelink.GetPrivateEndpointRequest';
     /**
      * ID of the PrivateEndpoint resource to return.
      *
@@ -36,7 +34,6 @@ export interface GetPrivateEndpointRequest {
 }
 
 export interface InternalIpv4AddressSpec {
-    $type: 'yandex.cloud.vpc.v1.privatelink.InternalIpv4AddressSpec';
     /** ID of the subnet that address belongs to. */
     subnetId: string;
     /** Value of address. */
@@ -44,7 +41,6 @@ export interface InternalIpv4AddressSpec {
 }
 
 export interface AddressSpec {
-    $type: 'yandex.cloud.vpc.v1.privatelink.AddressSpec';
     /** ID of IP address to associate with private endpoint. */
     addressId: string | undefined;
     /** Internal ipv4 address specification. */
@@ -52,7 +48,6 @@ export interface AddressSpec {
 }
 
 export interface CreatePrivateEndpointRequest {
-    $type: 'yandex.cloud.vpc.v1.privatelink.CreatePrivateEndpointRequest';
     /**
      * ID of the folder to create a private endpoint in.
      *
@@ -80,19 +75,16 @@ export interface CreatePrivateEndpointRequest {
 }
 
 export interface CreatePrivateEndpointRequest_LabelsEntry {
-    $type: 'yandex.cloud.vpc.v1.privatelink.CreatePrivateEndpointRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreatePrivateEndpointMetadata {
-    $type: 'yandex.cloud.vpc.v1.privatelink.CreatePrivateEndpointMetadata';
     /** ID of the private endpoint that is being created. */
     privateEndpointId: string;
 }
 
 export interface UpdatePrivateEndpointRequest {
-    $type: 'yandex.cloud.vpc.v1.privatelink.UpdatePrivateEndpointRequest';
     /**
      * ID of the private endpoint to update.
      *
@@ -130,19 +122,16 @@ export interface UpdatePrivateEndpointRequest {
 }
 
 export interface UpdatePrivateEndpointRequest_LabelsEntry {
-    $type: 'yandex.cloud.vpc.v1.privatelink.UpdatePrivateEndpointRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdatePrivateEndpointMetadata {
-    $type: 'yandex.cloud.vpc.v1.privatelink.UpdatePrivateEndpointMetadata';
     /** ID of the private endpoint that is being updated. */
     privateEndpointId: string;
 }
 
 export interface DeletePrivateEndpointRequest {
-    $type: 'yandex.cloud.vpc.v1.privatelink.DeletePrivateEndpointRequest';
     /**
      * ID of the private endpoint to delete.
      *
@@ -152,13 +141,11 @@ export interface DeletePrivateEndpointRequest {
 }
 
 export interface DeletePrivateEndpointMetadata {
-    $type: 'yandex.cloud.vpc.v1.privatelink.DeletePrivateEndpointMetadata';
     /** ID of the private endpoint that is being deleted. */
     privateEndpointId: string;
 }
 
 export interface ListPrivateEndpointsRequest {
-    $type: 'yandex.cloud.vpc.v1.privatelink.ListPrivateEndpointsRequest';
     /**
      * ID of the folder to list private endpoints in.
      *
@@ -194,7 +181,6 @@ export interface ListPrivateEndpointsRequest {
 }
 
 export interface ListPrivateEndpointsResponse {
-    $type: 'yandex.cloud.vpc.v1.privatelink.ListPrivateEndpointsResponse';
     /** List of private endpoints. */
     privateEndpoints: PrivateEndpoint[];
     /**
@@ -211,7 +197,6 @@ export interface ListPrivateEndpointsResponse {
 }
 
 export interface ListPrivateEndpointOperationsRequest {
-    $type: 'yandex.cloud.vpc.v1.privatelink.ListPrivateEndpointOperationsRequest';
     /**
      * ID of the private endpoint to list operations for.
      *
@@ -235,7 +220,6 @@ export interface ListPrivateEndpointOperationsRequest {
 }
 
 export interface ListPrivateEndpointOperationsResponse {
-    $type: 'yandex.cloud.vpc.v1.privatelink.ListPrivateEndpointOperationsResponse';
     /** List of operations for the specified private endpoint. */
     operations: Operation[];
     /**
@@ -251,14 +235,9 @@ export interface ListPrivateEndpointOperationsResponse {
     nextPageToken: string;
 }
 
-const baseGetPrivateEndpointRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.GetPrivateEndpointRequest',
-    privateEndpointId: '',
-};
+const baseGetPrivateEndpointRequest: object = { privateEndpointId: '' };
 
 export const GetPrivateEndpointRequest = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.GetPrivateEndpointRequest' as const,
-
     encode(
         message: GetPrivateEndpointRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -312,17 +291,9 @@ export const GetPrivateEndpointRequest = {
     },
 };
 
-messageTypeRegistry.set(GetPrivateEndpointRequest.$type, GetPrivateEndpointRequest);
-
-const baseInternalIpv4AddressSpec: object = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.InternalIpv4AddressSpec',
-    subnetId: '',
-    address: '',
-};
+const baseInternalIpv4AddressSpec: object = { subnetId: '', address: '' };
 
 export const InternalIpv4AddressSpec = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.InternalIpv4AddressSpec' as const,
-
     encode(message: InternalIpv4AddressSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -382,13 +353,9 @@ export const InternalIpv4AddressSpec = {
     },
 };
 
-messageTypeRegistry.set(InternalIpv4AddressSpec.$type, InternalIpv4AddressSpec);
-
-const baseAddressSpec: object = { $type: 'yandex.cloud.vpc.v1.privatelink.AddressSpec' };
+const baseAddressSpec: object = {};
 
 export const AddressSpec = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.AddressSpec' as const,
-
     encode(message: AddressSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.addressId !== undefined) {
             writer.uint32(10).string(message.addressId);
@@ -460,10 +427,7 @@ export const AddressSpec = {
     },
 };
 
-messageTypeRegistry.set(AddressSpec.$type, AddressSpec);
-
 const baseCreatePrivateEndpointRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.CreatePrivateEndpointRequest',
     folderId: '',
     name: '',
     description: '',
@@ -471,8 +435,6 @@ const baseCreatePrivateEndpointRequest: object = {
 };
 
 export const CreatePrivateEndpointRequest = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.CreatePrivateEndpointRequest' as const,
-
     encode(
         message: CreatePrivateEndpointRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -488,11 +450,7 @@ export const CreatePrivateEndpointRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreatePrivateEndpointRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.vpc.v1.privatelink.CreatePrivateEndpointRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -663,17 +621,9 @@ export const CreatePrivateEndpointRequest = {
     },
 };
 
-messageTypeRegistry.set(CreatePrivateEndpointRequest.$type, CreatePrivateEndpointRequest);
-
-const baseCreatePrivateEndpointRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.CreatePrivateEndpointRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreatePrivateEndpointRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreatePrivateEndpointRequest_LabelsEntry = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.CreatePrivateEndpointRequest.LabelsEntry' as const,
-
     encode(
         message: CreatePrivateEndpointRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -742,19 +692,9 @@ export const CreatePrivateEndpointRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreatePrivateEndpointRequest_LabelsEntry.$type,
-    CreatePrivateEndpointRequest_LabelsEntry,
-);
-
-const baseCreatePrivateEndpointMetadata: object = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.CreatePrivateEndpointMetadata',
-    privateEndpointId: '',
-};
+const baseCreatePrivateEndpointMetadata: object = { privateEndpointId: '' };
 
 export const CreatePrivateEndpointMetadata = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.CreatePrivateEndpointMetadata' as const,
-
     encode(
         message: CreatePrivateEndpointMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -808,18 +748,13 @@ export const CreatePrivateEndpointMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreatePrivateEndpointMetadata.$type, CreatePrivateEndpointMetadata);
-
 const baseUpdatePrivateEndpointRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.UpdatePrivateEndpointRequest',
     privateEndpointId: '',
     name: '',
     description: '',
 };
 
 export const UpdatePrivateEndpointRequest = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.UpdatePrivateEndpointRequest' as const,
-
     encode(
         message: UpdatePrivateEndpointRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -838,11 +773,7 @@ export const UpdatePrivateEndpointRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdatePrivateEndpointRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.vpc.v1.privatelink.UpdatePrivateEndpointRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -993,17 +924,9 @@ export const UpdatePrivateEndpointRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdatePrivateEndpointRequest.$type, UpdatePrivateEndpointRequest);
-
-const baseUpdatePrivateEndpointRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.UpdatePrivateEndpointRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdatePrivateEndpointRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdatePrivateEndpointRequest_LabelsEntry = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.UpdatePrivateEndpointRequest.LabelsEntry' as const,
-
     encode(
         message: UpdatePrivateEndpointRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1072,19 +995,9 @@ export const UpdatePrivateEndpointRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdatePrivateEndpointRequest_LabelsEntry.$type,
-    UpdatePrivateEndpointRequest_LabelsEntry,
-);
-
-const baseUpdatePrivateEndpointMetadata: object = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.UpdatePrivateEndpointMetadata',
-    privateEndpointId: '',
-};
+const baseUpdatePrivateEndpointMetadata: object = { privateEndpointId: '' };
 
 export const UpdatePrivateEndpointMetadata = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.UpdatePrivateEndpointMetadata' as const,
-
     encode(
         message: UpdatePrivateEndpointMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1138,16 +1051,9 @@ export const UpdatePrivateEndpointMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdatePrivateEndpointMetadata.$type, UpdatePrivateEndpointMetadata);
-
-const baseDeletePrivateEndpointRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.DeletePrivateEndpointRequest',
-    privateEndpointId: '',
-};
+const baseDeletePrivateEndpointRequest: object = { privateEndpointId: '' };
 
 export const DeletePrivateEndpointRequest = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.DeletePrivateEndpointRequest' as const,
-
     encode(
         message: DeletePrivateEndpointRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1201,16 +1107,9 @@ export const DeletePrivateEndpointRequest = {
     },
 };
 
-messageTypeRegistry.set(DeletePrivateEndpointRequest.$type, DeletePrivateEndpointRequest);
-
-const baseDeletePrivateEndpointMetadata: object = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.DeletePrivateEndpointMetadata',
-    privateEndpointId: '',
-};
+const baseDeletePrivateEndpointMetadata: object = { privateEndpointId: '' };
 
 export const DeletePrivateEndpointMetadata = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.DeletePrivateEndpointMetadata' as const,
-
     encode(
         message: DeletePrivateEndpointMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1264,18 +1163,9 @@ export const DeletePrivateEndpointMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeletePrivateEndpointMetadata.$type, DeletePrivateEndpointMetadata);
-
-const baseListPrivateEndpointsRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.ListPrivateEndpointsRequest',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListPrivateEndpointsRequest: object = { pageSize: 0, pageToken: '', filter: '' };
 
 export const ListPrivateEndpointsRequest = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.ListPrivateEndpointsRequest' as const,
-
     encode(
         message: ListPrivateEndpointsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1360,16 +1250,9 @@ export const ListPrivateEndpointsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListPrivateEndpointsRequest.$type, ListPrivateEndpointsRequest);
-
-const baseListPrivateEndpointsResponse: object = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.ListPrivateEndpointsResponse',
-    nextPageToken: '',
-};
+const baseListPrivateEndpointsResponse: object = { nextPageToken: '' };
 
 export const ListPrivateEndpointsResponse = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.ListPrivateEndpointsResponse' as const,
-
     encode(
         message: ListPrivateEndpointsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1441,18 +1324,13 @@ export const ListPrivateEndpointsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListPrivateEndpointsResponse.$type, ListPrivateEndpointsResponse);
-
 const baseListPrivateEndpointOperationsRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.ListPrivateEndpointOperationsRequest',
     privateEndpointId: '',
     pageSize: 0,
     pageToken: '',
 };
 
 export const ListPrivateEndpointOperationsRequest = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.ListPrivateEndpointOperationsRequest' as const,
-
     encode(
         message: ListPrivateEndpointOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1534,19 +1412,9 @@ export const ListPrivateEndpointOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    ListPrivateEndpointOperationsRequest.$type,
-    ListPrivateEndpointOperationsRequest,
-);
-
-const baseListPrivateEndpointOperationsResponse: object = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.ListPrivateEndpointOperationsResponse',
-    nextPageToken: '',
-};
+const baseListPrivateEndpointOperationsResponse: object = { nextPageToken: '' };
 
 export const ListPrivateEndpointOperationsResponse = {
-    $type: 'yandex.cloud.vpc.v1.privatelink.ListPrivateEndpointOperationsResponse' as const,
-
     encode(
         message: ListPrivateEndpointOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1618,11 +1486,6 @@ export const ListPrivateEndpointOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(
-    ListPrivateEndpointOperationsResponse.$type,
-    ListPrivateEndpointOperationsResponse,
-);
 
 /** A set of methods for managing PrivateEndpoint resources. */
 export const PrivateEndpointServiceService = {
@@ -1870,16 +1733,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

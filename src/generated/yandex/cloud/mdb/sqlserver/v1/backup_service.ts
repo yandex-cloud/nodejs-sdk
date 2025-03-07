@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ import { Backup } from '../../../../../yandex/cloud/mdb/sqlserver/v1/backup';
 export const protobufPackage = 'yandex.cloud.mdb.sqlserver.v1';
 
 export interface GetBackupRequest {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.GetBackupRequest';
     /**
      * ID of the backup to return information about.
      *
@@ -29,7 +27,6 @@ export interface GetBackupRequest {
 }
 
 export interface ListBackupsRequest {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.ListBackupsRequest';
     /**
      * ID of the folder to list backups in.
      *
@@ -47,7 +44,6 @@ export interface ListBackupsRequest {
 }
 
 export interface ListBackupsResponse {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.ListBackupsResponse';
     /** List of SQL Server backups. */
     backups: Backup[];
     /**
@@ -60,14 +56,9 @@ export interface ListBackupsResponse {
     nextPageToken: string;
 }
 
-const baseGetBackupRequest: object = {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.GetBackupRequest',
-    backupId: '',
-};
+const baseGetBackupRequest: object = { backupId: '' };
 
 export const GetBackupRequest = {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.GetBackupRequest' as const,
-
     encode(message: GetBackupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);
@@ -115,18 +106,9 @@ export const GetBackupRequest = {
     },
 };
 
-messageTypeRegistry.set(GetBackupRequest.$type, GetBackupRequest);
-
-const baseListBackupsRequest: object = {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.ListBackupsRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListBackupsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
 export const ListBackupsRequest = {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.ListBackupsRequest' as const,
-
     encode(message: ListBackupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -198,16 +180,9 @@ export const ListBackupsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListBackupsRequest.$type, ListBackupsRequest);
-
-const baseListBackupsResponse: object = {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.ListBackupsResponse',
-    nextPageToken: '',
-};
+const baseListBackupsResponse: object = { nextPageToken: '' };
 
 export const ListBackupsResponse = {
-    $type: 'yandex.cloud.mdb.sqlserver.v1.ListBackupsResponse' as const,
-
     encode(message: ListBackupsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.backups) {
             Backup.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -270,8 +245,6 @@ export const ListBackupsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListBackupsResponse.$type, ListBackupsResponse);
 
 /** A set of methods for managing SQL Server backups. */
 export const BackupServiceService = {
@@ -386,16 +359,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

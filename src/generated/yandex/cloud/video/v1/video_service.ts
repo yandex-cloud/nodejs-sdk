@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -28,13 +27,11 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.video.v1';
 
 export interface GetVideoRequest {
-    $type: 'yandex.cloud.video.v1.GetVideoRequest';
     /** ID of the video. */
     videoId: string;
 }
 
 export interface ListVideoRequest {
-    $type: 'yandex.cloud.video.v1.ListVideoRequest';
     /** ID of the channel. */
     channelId: string;
     /** The maximum number of the results per page to return. Default value: 100. */
@@ -61,14 +58,12 @@ export interface ListVideoRequest {
 }
 
 export interface ListVideoResponse {
-    $type: 'yandex.cloud.video.v1.ListVideoResponse';
     videos: Video[];
     /** Token for getting the next page. */
     nextPageToken: string;
 }
 
 export interface BatchGetVideosRequest {
-    $type: 'yandex.cloud.video.v1.BatchGetVideosRequest';
     /** ID of the channel. */
     channelId: string;
     /** List of requested video IDs. */
@@ -76,13 +71,11 @@ export interface BatchGetVideosRequest {
 }
 
 export interface BatchGetVideosResponse {
-    $type: 'yandex.cloud.video.v1.BatchGetVideosResponse';
     /** List of videos for channel. */
     videos: Video[];
 }
 
 export interface CreateVideoRequest {
-    $type: 'yandex.cloud.video.v1.CreateVideoRequest';
     /** ID of the channel. */
     channelId: string;
     /** Video title. */
@@ -106,39 +99,29 @@ export interface CreateVideoRequest {
 }
 
 export interface CreateVideoRequest_LabelsEntry {
-    $type: 'yandex.cloud.video.v1.CreateVideoRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface VideoTUSDParams {
-    $type: 'yandex.cloud.video.v1.VideoTUSDParams';
     /** File size. */
     fileSize: number;
     /** File name. */
     fileName: string;
 }
 
-export interface VideoPublicAccessParams {
-    $type: 'yandex.cloud.video.v1.VideoPublicAccessParams';
-}
+export interface VideoPublicAccessParams {}
 
-export interface VideoAuthSystemAccessParams {
-    $type: 'yandex.cloud.video.v1.VideoAuthSystemAccessParams';
-}
+export interface VideoAuthSystemAccessParams {}
 
-export interface VideoSignURLAccessParams {
-    $type: 'yandex.cloud.video.v1.VideoSignURLAccessParams';
-}
+export interface VideoSignURLAccessParams {}
 
 export interface CreateVideoMetadata {
-    $type: 'yandex.cloud.video.v1.CreateVideoMetadata';
     /** ID of the video. */
     videoId: string;
 }
 
 export interface UpdateVideoRequest {
-    $type: 'yandex.cloud.video.v1.UpdateVideoRequest';
     /** ID of the video. */
     videoId: string;
     /** Field mask that specifies which fields of the video are going to be updated. */
@@ -159,19 +142,16 @@ export interface UpdateVideoRequest {
 }
 
 export interface UpdateVideoRequest_LabelsEntry {
-    $type: 'yandex.cloud.video.v1.UpdateVideoRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateVideoMetadata {
-    $type: 'yandex.cloud.video.v1.UpdateVideoMetadata';
     /** ID of the video. */
     videoId: string;
 }
 
 export interface TranscodeVideoRequest {
-    $type: 'yandex.cloud.video.v1.TranscodeVideoRequest';
     /** ID of the video. */
     videoId: string;
     /**
@@ -184,25 +164,21 @@ export interface TranscodeVideoRequest {
 }
 
 export interface TranscodeVideoMetadata {
-    $type: 'yandex.cloud.video.v1.TranscodeVideoMetadata';
     /** ID of the video. */
     videoId: string;
 }
 
 export interface DeleteVideoRequest {
-    $type: 'yandex.cloud.video.v1.DeleteVideoRequest';
     /** ID of the video. */
     videoId: string;
 }
 
 export interface DeleteVideoMetadata {
-    $type: 'yandex.cloud.video.v1.DeleteVideoMetadata';
     /** ID of the video. */
     videoId: string;
 }
 
 export interface BatchDeleteVideosRequest {
-    $type: 'yandex.cloud.video.v1.BatchDeleteVideosRequest';
     /** ID of the channel. */
     channelId: string;
     /** List of video IDs. */
@@ -210,35 +186,27 @@ export interface BatchDeleteVideosRequest {
 }
 
 export interface BatchDeleteVideosMetadata {
-    $type: 'yandex.cloud.video.v1.BatchDeleteVideosMetadata';
     /** List of video IDs. */
     videoIds: string[];
 }
 
 export interface PerformVideoActionRequest {
-    $type: 'yandex.cloud.video.v1.PerformVideoActionRequest';
     /** ID of the video. */
     videoId: string;
     publish?: PublishVideoAction | undefined;
     unpublish?: UnpublishVideoAction | undefined;
 }
 
-export interface PublishVideoAction {
-    $type: 'yandex.cloud.video.v1.PublishVideoAction';
-}
+export interface PublishVideoAction {}
 
-export interface UnpublishVideoAction {
-    $type: 'yandex.cloud.video.v1.UnpublishVideoAction';
-}
+export interface UnpublishVideoAction {}
 
 export interface PerformVideoActionMetadata {
-    $type: 'yandex.cloud.video.v1.PerformVideoActionMetadata';
     /** ID of the video. */
     videoId: string;
 }
 
 export interface GetVideoPlayerURLRequest {
-    $type: 'yandex.cloud.video.v1.GetVideoPlayerURLRequest';
     /** ID of the video. */
     videoId: string;
     params?: VideoPlayerParams;
@@ -247,7 +215,6 @@ export interface GetVideoPlayerURLRequest {
 }
 
 export interface VideoPlayerParams {
-    $type: 'yandex.cloud.video.v1.VideoPlayerParams';
     /** If true, a player will be muted by default. */
     mute: boolean;
     /** If true, playback will start automatically. */
@@ -257,7 +224,6 @@ export interface VideoPlayerParams {
 }
 
 export interface GetVideoPlayerURLResponse {
-    $type: 'yandex.cloud.video.v1.GetVideoPlayerURLResponse';
     /** Direct link to the video. */
     playerUrl: string;
     /** HTML embed code in Iframe format. */
@@ -265,21 +231,17 @@ export interface GetVideoPlayerURLResponse {
 }
 
 export interface GetVideoManifestsRequest {
-    $type: 'yandex.cloud.video.v1.GetVideoManifestsRequest';
     /** ID of the video. */
     videoId: string;
 }
 
 export interface GetVideoManifestsResponse {
-    $type: 'yandex.cloud.video.v1.GetVideoManifestsResponse';
     manifests: Manifest[];
 }
 
-const baseGetVideoRequest: object = { $type: 'yandex.cloud.video.v1.GetVideoRequest', videoId: '' };
+const baseGetVideoRequest: object = { videoId: '' };
 
 export const GetVideoRequest = {
-    $type: 'yandex.cloud.video.v1.GetVideoRequest' as const,
-
     encode(message: GetVideoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.videoId !== '') {
             writer.uint32(10).string(message.videoId);
@@ -325,10 +287,7 @@ export const GetVideoRequest = {
     },
 };
 
-messageTypeRegistry.set(GetVideoRequest.$type, GetVideoRequest);
-
 const baseListVideoRequest: object = {
-    $type: 'yandex.cloud.video.v1.ListVideoRequest',
     channelId: '',
     pageSize: 0,
     pageToken: '',
@@ -337,8 +296,6 @@ const baseListVideoRequest: object = {
 };
 
 export const ListVideoRequest = {
-    $type: 'yandex.cloud.video.v1.ListVideoRequest' as const,
-
     encode(message: ListVideoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -428,16 +385,9 @@ export const ListVideoRequest = {
     },
 };
 
-messageTypeRegistry.set(ListVideoRequest.$type, ListVideoRequest);
-
-const baseListVideoResponse: object = {
-    $type: 'yandex.cloud.video.v1.ListVideoResponse',
-    nextPageToken: '',
-};
+const baseListVideoResponse: object = { nextPageToken: '' };
 
 export const ListVideoResponse = {
-    $type: 'yandex.cloud.video.v1.ListVideoResponse' as const,
-
     encode(message: ListVideoResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.videos) {
             Video.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -499,17 +449,9 @@ export const ListVideoResponse = {
     },
 };
 
-messageTypeRegistry.set(ListVideoResponse.$type, ListVideoResponse);
-
-const baseBatchGetVideosRequest: object = {
-    $type: 'yandex.cloud.video.v1.BatchGetVideosRequest',
-    channelId: '',
-    videoIds: '',
-};
+const baseBatchGetVideosRequest: object = { channelId: '', videoIds: '' };
 
 export const BatchGetVideosRequest = {
-    $type: 'yandex.cloud.video.v1.BatchGetVideosRequest' as const,
-
     encode(message: BatchGetVideosRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -573,15 +515,9 @@ export const BatchGetVideosRequest = {
     },
 };
 
-messageTypeRegistry.set(BatchGetVideosRequest.$type, BatchGetVideosRequest);
-
-const baseBatchGetVideosResponse: object = {
-    $type: 'yandex.cloud.video.v1.BatchGetVideosResponse',
-};
+const baseBatchGetVideosResponse: object = {};
 
 export const BatchGetVideosResponse = {
-    $type: 'yandex.cloud.video.v1.BatchGetVideosResponse' as const,
-
     encode(message: BatchGetVideosResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.videos) {
             Video.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -633,10 +569,7 @@ export const BatchGetVideosResponse = {
     },
 };
 
-messageTypeRegistry.set(BatchGetVideosResponse.$type, BatchGetVideosResponse);
-
 const baseCreateVideoRequest: object = {
-    $type: 'yandex.cloud.video.v1.CreateVideoRequest',
     channelId: '',
     title: '',
     description: '',
@@ -645,8 +578,6 @@ const baseCreateVideoRequest: object = {
 };
 
 export const CreateVideoRequest = {
-    $type: 'yandex.cloud.video.v1.CreateVideoRequest' as const,
-
     encode(message: CreateVideoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -665,11 +596,7 @@ export const CreateVideoRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateVideoRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.video.v1.CreateVideoRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(1602).fork(),
             ).ldelim();
         });
@@ -867,17 +794,9 @@ export const CreateVideoRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateVideoRequest.$type, CreateVideoRequest);
-
-const baseCreateVideoRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.video.v1.CreateVideoRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateVideoRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateVideoRequest_LabelsEntry = {
-    $type: 'yandex.cloud.video.v1.CreateVideoRequest.LabelsEntry' as const,
-
     encode(
         message: CreateVideoRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -937,17 +856,9 @@ export const CreateVideoRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateVideoRequest_LabelsEntry.$type, CreateVideoRequest_LabelsEntry);
-
-const baseVideoTUSDParams: object = {
-    $type: 'yandex.cloud.video.v1.VideoTUSDParams',
-    fileSize: 0,
-    fileName: '',
-};
+const baseVideoTUSDParams: object = { fileSize: 0, fileName: '' };
 
 export const VideoTUSDParams = {
-    $type: 'yandex.cloud.video.v1.VideoTUSDParams' as const,
-
     encode(message: VideoTUSDParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fileSize !== 0) {
             writer.uint32(8).int64(message.fileSize);
@@ -1005,15 +916,9 @@ export const VideoTUSDParams = {
     },
 };
 
-messageTypeRegistry.set(VideoTUSDParams.$type, VideoTUSDParams);
-
-const baseVideoPublicAccessParams: object = {
-    $type: 'yandex.cloud.video.v1.VideoPublicAccessParams',
-};
+const baseVideoPublicAccessParams: object = {};
 
 export const VideoPublicAccessParams = {
-    $type: 'yandex.cloud.video.v1.VideoPublicAccessParams' as const,
-
     encode(_: VideoPublicAccessParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1051,15 +956,9 @@ export const VideoPublicAccessParams = {
     },
 };
 
-messageTypeRegistry.set(VideoPublicAccessParams.$type, VideoPublicAccessParams);
-
-const baseVideoAuthSystemAccessParams: object = {
-    $type: 'yandex.cloud.video.v1.VideoAuthSystemAccessParams',
-};
+const baseVideoAuthSystemAccessParams: object = {};
 
 export const VideoAuthSystemAccessParams = {
-    $type: 'yandex.cloud.video.v1.VideoAuthSystemAccessParams' as const,
-
     encode(_: VideoAuthSystemAccessParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1097,15 +996,9 @@ export const VideoAuthSystemAccessParams = {
     },
 };
 
-messageTypeRegistry.set(VideoAuthSystemAccessParams.$type, VideoAuthSystemAccessParams);
-
-const baseVideoSignURLAccessParams: object = {
-    $type: 'yandex.cloud.video.v1.VideoSignURLAccessParams',
-};
+const baseVideoSignURLAccessParams: object = {};
 
 export const VideoSignURLAccessParams = {
-    $type: 'yandex.cloud.video.v1.VideoSignURLAccessParams' as const,
-
     encode(_: VideoSignURLAccessParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1143,16 +1036,9 @@ export const VideoSignURLAccessParams = {
     },
 };
 
-messageTypeRegistry.set(VideoSignURLAccessParams.$type, VideoSignURLAccessParams);
-
-const baseCreateVideoMetadata: object = {
-    $type: 'yandex.cloud.video.v1.CreateVideoMetadata',
-    videoId: '',
-};
+const baseCreateVideoMetadata: object = { videoId: '' };
 
 export const CreateVideoMetadata = {
-    $type: 'yandex.cloud.video.v1.CreateVideoMetadata' as const,
-
     encode(message: CreateVideoMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.videoId !== '') {
             writer.uint32(10).string(message.videoId);
@@ -1200,10 +1086,7 @@ export const CreateVideoMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateVideoMetadata.$type, CreateVideoMetadata);
-
 const baseUpdateVideoRequest: object = {
-    $type: 'yandex.cloud.video.v1.UpdateVideoRequest',
     videoId: '',
     title: '',
     description: '',
@@ -1212,8 +1095,6 @@ const baseUpdateVideoRequest: object = {
 };
 
 export const UpdateVideoRequest = {
-    $type: 'yandex.cloud.video.v1.UpdateVideoRequest' as const,
-
     encode(message: UpdateVideoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.videoId !== '') {
             writer.uint32(10).string(message.videoId);
@@ -1235,11 +1116,7 @@ export const UpdateVideoRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateVideoRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.video.v1.UpdateVideoRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(1602).fork(),
             ).ldelim();
         });
@@ -1432,17 +1309,9 @@ export const UpdateVideoRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateVideoRequest.$type, UpdateVideoRequest);
-
-const baseUpdateVideoRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.video.v1.UpdateVideoRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateVideoRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateVideoRequest_LabelsEntry = {
-    $type: 'yandex.cloud.video.v1.UpdateVideoRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateVideoRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1502,16 +1371,9 @@ export const UpdateVideoRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateVideoRequest_LabelsEntry.$type, UpdateVideoRequest_LabelsEntry);
-
-const baseUpdateVideoMetadata: object = {
-    $type: 'yandex.cloud.video.v1.UpdateVideoMetadata',
-    videoId: '',
-};
+const baseUpdateVideoMetadata: object = { videoId: '' };
 
 export const UpdateVideoMetadata = {
-    $type: 'yandex.cloud.video.v1.UpdateVideoMetadata' as const,
-
     encode(message: UpdateVideoMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.videoId !== '') {
             writer.uint32(10).string(message.videoId);
@@ -1559,17 +1421,9 @@ export const UpdateVideoMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateVideoMetadata.$type, UpdateVideoMetadata);
-
-const baseTranscodeVideoRequest: object = {
-    $type: 'yandex.cloud.video.v1.TranscodeVideoRequest',
-    videoId: '',
-    subtitleIds: '',
-};
+const baseTranscodeVideoRequest: object = { videoId: '', subtitleIds: '' };
 
 export const TranscodeVideoRequest = {
-    $type: 'yandex.cloud.video.v1.TranscodeVideoRequest' as const,
-
     encode(message: TranscodeVideoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.videoId !== '') {
             writer.uint32(10).string(message.videoId);
@@ -1647,16 +1501,9 @@ export const TranscodeVideoRequest = {
     },
 };
 
-messageTypeRegistry.set(TranscodeVideoRequest.$type, TranscodeVideoRequest);
-
-const baseTranscodeVideoMetadata: object = {
-    $type: 'yandex.cloud.video.v1.TranscodeVideoMetadata',
-    videoId: '',
-};
+const baseTranscodeVideoMetadata: object = { videoId: '' };
 
 export const TranscodeVideoMetadata = {
-    $type: 'yandex.cloud.video.v1.TranscodeVideoMetadata' as const,
-
     encode(message: TranscodeVideoMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.videoId !== '') {
             writer.uint32(10).string(message.videoId);
@@ -1704,16 +1551,9 @@ export const TranscodeVideoMetadata = {
     },
 };
 
-messageTypeRegistry.set(TranscodeVideoMetadata.$type, TranscodeVideoMetadata);
-
-const baseDeleteVideoRequest: object = {
-    $type: 'yandex.cloud.video.v1.DeleteVideoRequest',
-    videoId: '',
-};
+const baseDeleteVideoRequest: object = { videoId: '' };
 
 export const DeleteVideoRequest = {
-    $type: 'yandex.cloud.video.v1.DeleteVideoRequest' as const,
-
     encode(message: DeleteVideoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.videoId !== '') {
             writer.uint32(10).string(message.videoId);
@@ -1761,16 +1601,9 @@ export const DeleteVideoRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteVideoRequest.$type, DeleteVideoRequest);
-
-const baseDeleteVideoMetadata: object = {
-    $type: 'yandex.cloud.video.v1.DeleteVideoMetadata',
-    videoId: '',
-};
+const baseDeleteVideoMetadata: object = { videoId: '' };
 
 export const DeleteVideoMetadata = {
-    $type: 'yandex.cloud.video.v1.DeleteVideoMetadata' as const,
-
     encode(message: DeleteVideoMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.videoId !== '') {
             writer.uint32(10).string(message.videoId);
@@ -1818,17 +1651,9 @@ export const DeleteVideoMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteVideoMetadata.$type, DeleteVideoMetadata);
-
-const baseBatchDeleteVideosRequest: object = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteVideosRequest',
-    channelId: '',
-    videoIds: '',
-};
+const baseBatchDeleteVideosRequest: object = { channelId: '', videoIds: '' };
 
 export const BatchDeleteVideosRequest = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteVideosRequest' as const,
-
     encode(
         message: BatchDeleteVideosRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1895,16 +1720,9 @@ export const BatchDeleteVideosRequest = {
     },
 };
 
-messageTypeRegistry.set(BatchDeleteVideosRequest.$type, BatchDeleteVideosRequest);
-
-const baseBatchDeleteVideosMetadata: object = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteVideosMetadata',
-    videoIds: '',
-};
+const baseBatchDeleteVideosMetadata: object = { videoIds: '' };
 
 export const BatchDeleteVideosMetadata = {
-    $type: 'yandex.cloud.video.v1.BatchDeleteVideosMetadata' as const,
-
     encode(
         message: BatchDeleteVideosMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1959,16 +1777,9 @@ export const BatchDeleteVideosMetadata = {
     },
 };
 
-messageTypeRegistry.set(BatchDeleteVideosMetadata.$type, BatchDeleteVideosMetadata);
-
-const basePerformVideoActionRequest: object = {
-    $type: 'yandex.cloud.video.v1.PerformVideoActionRequest',
-    videoId: '',
-};
+const basePerformVideoActionRequest: object = { videoId: '' };
 
 export const PerformVideoActionRequest = {
-    $type: 'yandex.cloud.video.v1.PerformVideoActionRequest' as const,
-
     encode(
         message: PerformVideoActionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2055,13 +1866,9 @@ export const PerformVideoActionRequest = {
     },
 };
 
-messageTypeRegistry.set(PerformVideoActionRequest.$type, PerformVideoActionRequest);
-
-const basePublishVideoAction: object = { $type: 'yandex.cloud.video.v1.PublishVideoAction' };
+const basePublishVideoAction: object = {};
 
 export const PublishVideoAction = {
-    $type: 'yandex.cloud.video.v1.PublishVideoAction' as const,
-
     encode(_: PublishVideoAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2097,13 +1904,9 @@ export const PublishVideoAction = {
     },
 };
 
-messageTypeRegistry.set(PublishVideoAction.$type, PublishVideoAction);
-
-const baseUnpublishVideoAction: object = { $type: 'yandex.cloud.video.v1.UnpublishVideoAction' };
+const baseUnpublishVideoAction: object = {};
 
 export const UnpublishVideoAction = {
-    $type: 'yandex.cloud.video.v1.UnpublishVideoAction' as const,
-
     encode(_: UnpublishVideoAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2139,16 +1942,9 @@ export const UnpublishVideoAction = {
     },
 };
 
-messageTypeRegistry.set(UnpublishVideoAction.$type, UnpublishVideoAction);
-
-const basePerformVideoActionMetadata: object = {
-    $type: 'yandex.cloud.video.v1.PerformVideoActionMetadata',
-    videoId: '',
-};
+const basePerformVideoActionMetadata: object = { videoId: '' };
 
 export const PerformVideoActionMetadata = {
-    $type: 'yandex.cloud.video.v1.PerformVideoActionMetadata' as const,
-
     encode(
         message: PerformVideoActionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2199,16 +1995,9 @@ export const PerformVideoActionMetadata = {
     },
 };
 
-messageTypeRegistry.set(PerformVideoActionMetadata.$type, PerformVideoActionMetadata);
-
-const baseGetVideoPlayerURLRequest: object = {
-    $type: 'yandex.cloud.video.v1.GetVideoPlayerURLRequest',
-    videoId: '',
-};
+const baseGetVideoPlayerURLRequest: object = { videoId: '' };
 
 export const GetVideoPlayerURLRequest = {
-    $type: 'yandex.cloud.video.v1.GetVideoPlayerURLRequest' as const,
-
     encode(
         message: GetVideoPlayerURLRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2295,18 +2084,9 @@ export const GetVideoPlayerURLRequest = {
     },
 };
 
-messageTypeRegistry.set(GetVideoPlayerURLRequest.$type, GetVideoPlayerURLRequest);
-
-const baseVideoPlayerParams: object = {
-    $type: 'yandex.cloud.video.v1.VideoPlayerParams',
-    mute: false,
-    autoplay: false,
-    hidden: false,
-};
+const baseVideoPlayerParams: object = { mute: false, autoplay: false, hidden: false };
 
 export const VideoPlayerParams = {
-    $type: 'yandex.cloud.video.v1.VideoPlayerParams' as const,
-
     encode(message: VideoPlayerParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mute === true) {
             writer.uint32(8).bool(message.mute);
@@ -2374,17 +2154,9 @@ export const VideoPlayerParams = {
     },
 };
 
-messageTypeRegistry.set(VideoPlayerParams.$type, VideoPlayerParams);
-
-const baseGetVideoPlayerURLResponse: object = {
-    $type: 'yandex.cloud.video.v1.GetVideoPlayerURLResponse',
-    playerUrl: '',
-    html: '',
-};
+const baseGetVideoPlayerURLResponse: object = { playerUrl: '', html: '' };
 
 export const GetVideoPlayerURLResponse = {
-    $type: 'yandex.cloud.video.v1.GetVideoPlayerURLResponse' as const,
-
     encode(
         message: GetVideoPlayerURLResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2446,16 +2218,9 @@ export const GetVideoPlayerURLResponse = {
     },
 };
 
-messageTypeRegistry.set(GetVideoPlayerURLResponse.$type, GetVideoPlayerURLResponse);
-
-const baseGetVideoManifestsRequest: object = {
-    $type: 'yandex.cloud.video.v1.GetVideoManifestsRequest',
-    videoId: '',
-};
+const baseGetVideoManifestsRequest: object = { videoId: '' };
 
 export const GetVideoManifestsRequest = {
-    $type: 'yandex.cloud.video.v1.GetVideoManifestsRequest' as const,
-
     encode(
         message: GetVideoManifestsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2506,15 +2271,9 @@ export const GetVideoManifestsRequest = {
     },
 };
 
-messageTypeRegistry.set(GetVideoManifestsRequest.$type, GetVideoManifestsRequest);
-
-const baseGetVideoManifestsResponse: object = {
-    $type: 'yandex.cloud.video.v1.GetVideoManifestsResponse',
-};
+const baseGetVideoManifestsResponse: object = {};
 
 export const GetVideoManifestsResponse = {
-    $type: 'yandex.cloud.video.v1.GetVideoManifestsResponse' as const,
-
     encode(
         message: GetVideoManifestsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2568,8 +2327,6 @@ export const GetVideoManifestsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(GetVideoManifestsResponse.$type, GetVideoManifestsResponse);
 
 /** Video management service. */
 export const VideoServiceService = {
@@ -2936,16 +2693,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

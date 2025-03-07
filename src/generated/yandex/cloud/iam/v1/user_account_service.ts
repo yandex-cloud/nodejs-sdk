@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,19 +18,13 @@ import { UserAccount } from '../../../../yandex/cloud/iam/v1/user_account';
 export const protobufPackage = 'yandex.cloud.iam.v1';
 
 export interface GetUserAccountRequest {
-    $type: 'yandex.cloud.iam.v1.GetUserAccountRequest';
     /** ID of the UserAccount resource to return. */
     userAccountId: string;
 }
 
-const baseGetUserAccountRequest: object = {
-    $type: 'yandex.cloud.iam.v1.GetUserAccountRequest',
-    userAccountId: '',
-};
+const baseGetUserAccountRequest: object = { userAccountId: '' };
 
 export const GetUserAccountRequest = {
-    $type: 'yandex.cloud.iam.v1.GetUserAccountRequest' as const,
-
     encode(message: GetUserAccountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.userAccountId !== '') {
             writer.uint32(10).string(message.userAccountId);
@@ -80,8 +73,6 @@ export const GetUserAccountRequest = {
         return message;
     },
 };
-
-messageTypeRegistry.set(GetUserAccountRequest.$type, GetUserAccountRequest);
 
 /** A set of methods for managing user accounts. Currently applicable only for [Yandex accounts](/docs/iam/concepts/users/accounts#passport). */
 export const UserAccountServiceService = {
@@ -143,16 +134,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

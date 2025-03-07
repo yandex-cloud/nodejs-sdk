@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Int64Value, BoolValue } from '../../../../../google/protobuf/wrappers';
@@ -7,7 +6,6 @@ import { Int64Value, BoolValue } from '../../../../../google/protobuf/wrappers';
 export const protobufPackage = 'yandex.cloud.mdb.greenplum.v1';
 
 export interface PXFConfig {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFConfig';
     /**
      * Timeout for connection to the Apache Tomcat® server when making read requests.
      *
@@ -45,7 +43,6 @@ export interface PXFConfig {
 }
 
 export interface PXFConfigSet {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFConfigSet';
     effectiveConfig?: PXFConfig;
     /** User-defined settings. */
     userConfig?: PXFConfig;
@@ -54,7 +51,6 @@ export interface PXFConfigSet {
 }
 
 export interface PXFDatasourceS3 {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceS3';
     /** Public key to access S3 storage. */
     accessKey: string;
     /** Secret key to access S3 storage. */
@@ -70,7 +66,6 @@ export interface PXFDatasourceS3 {
 }
 
 export interface PXFDatasourceJDBC {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceJDBC';
     /**
      * JDBC driver class in Java. The possible values are the following:
      *
@@ -144,7 +139,6 @@ export interface PXFDatasourceJDBC {
 }
 
 export interface PXFDatasourceCore {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceCore';
     /** URI whose scheme and authority determine the file system implementation. */
     defaultFs: string;
     /** Rules for mapping Kerberos principals to operating system user accounts. */
@@ -152,7 +146,6 @@ export interface PXFDatasourceCore {
 }
 
 export interface PXFDatasourceKerberos {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceKerberos';
     /** Determines whether the Kerberos authentication server is used. By default, it is not used. */
     enable?: boolean;
     /** Host of the primary KDC server (Key Distribution Center). */
@@ -170,7 +163,6 @@ export interface PXFDatasourceKerberos {
 }
 
 export interface PXFDatasourceHDFSDfsNamenode {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSDfsNamenode';
     rpcAddress: string;
     serviceRpcAddress: string;
     httpAddress: string;
@@ -178,7 +170,6 @@ export interface PXFDatasourceHDFSDfsNamenode {
 }
 
 export interface PXFDatasourceHDFSDfs {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSDfs';
     /**
      * Determines whether automatic failover is enabled for the high availability of the file system.
      *
@@ -204,13 +195,11 @@ export interface PXFDatasourceHDFSDfs {
 }
 
 export interface PXFDatasourceHDFSDfs_NamenodesEntry {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSDfs.NamenodesEntry';
     key: string;
     value?: PXFDatasourceHDFSDfsNamenode;
 }
 
 export interface PXFDatasourceHDFSYarnHaRm {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSYarnHaRm';
     resourcemanagerAddress: string;
     resourcemanagerSchedulerAddress: string;
     resourcemanagerResourceTrackerAddress: string;
@@ -220,7 +209,6 @@ export interface PXFDatasourceHDFSYarnHaRm {
 }
 
 export interface PXFDatasourceHDFSYarn {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSYarn';
     /**
      * Determines whether high availability is enabled for YARN's ResourceManager services.
      *
@@ -242,13 +230,11 @@ export interface PXFDatasourceHDFSYarn {
 }
 
 export interface PXFDatasourceHDFSYarn_HaRmEntry {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSYarn.HaRmEntry';
     key: string;
     value?: PXFDatasourceHDFSYarnHaRm;
 }
 
 export interface PXFDatasourceHDFS {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFS';
     /** Settings of the file system and security rules. */
     core?: PXFDatasourceCore;
     /** Settings of the Kerberos network authentication protocol. */
@@ -280,7 +266,6 @@ export interface PXFDatasourceHDFS {
 }
 
 export interface PXFDatasourceHive {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHive';
     /** Settings of the file system and security rules. */
     core?: PXFDatasourceCore;
     /** Settings of the Kerberos network authentication protocol. */
@@ -320,7 +305,6 @@ export interface PXFDatasourceHive {
 }
 
 export interface PXFDatasource {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasource';
     /** Data source name. */
     name: string;
     /** Settings of an external S3 data source. */
@@ -333,65 +317,45 @@ export interface PXFDatasource {
     hive?: PXFDatasourceHive | undefined;
 }
 
-const basePXFConfig: object = { $type: 'yandex.cloud.mdb.greenplum.v1.PXFConfig' };
+const basePXFConfig: object = {};
 
 export const PXFConfig = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFConfig' as const,
-
     encode(message: PXFConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectionTimeout !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.connectionTimeout! },
+                { value: message.connectionTimeout! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
         if (message.uploadTimeout !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.uploadTimeout! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.uploadTimeout! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.maxThreads !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.maxThreads! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.maxThreads! }, writer.uint32(26).fork()).ldelim();
         }
         if (message.poolAllowCoreThreadTimeout !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.poolAllowCoreThreadTimeout! },
+                { value: message.poolAllowCoreThreadTimeout! },
                 writer.uint32(34).fork(),
             ).ldelim();
         }
         if (message.poolCoreSize !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.poolCoreSize! },
-                writer.uint32(42).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.poolCoreSize! }, writer.uint32(42).fork()).ldelim();
         }
         if (message.poolQueueCapacity !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.poolQueueCapacity! },
+                { value: message.poolQueueCapacity! },
                 writer.uint32(50).fork(),
             ).ldelim();
         }
         if (message.poolMaxSize !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.poolMaxSize! },
-                writer.uint32(58).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.poolMaxSize! }, writer.uint32(58).fork()).ldelim();
         }
         if (message.xmx !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.xmx! },
-                writer.uint32(66).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.xmx! }, writer.uint32(66).fork()).ldelim();
         }
         if (message.xms !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.xms! },
-                writer.uint32(74).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.xms! }, writer.uint32(74).fork()).ldelim();
         }
         return writer;
     },
@@ -511,13 +475,9 @@ export const PXFConfig = {
     },
 };
 
-messageTypeRegistry.set(PXFConfig.$type, PXFConfig);
-
-const basePXFConfigSet: object = { $type: 'yandex.cloud.mdb.greenplum.v1.PXFConfigSet' };
+const basePXFConfigSet: object = {};
 
 export const PXFConfigSet = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFConfigSet' as const,
-
     encode(message: PXFConfigSet, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             PXFConfig.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();
@@ -607,18 +567,9 @@ export const PXFConfigSet = {
     },
 };
 
-messageTypeRegistry.set(PXFConfigSet.$type, PXFConfigSet);
-
-const basePXFDatasourceS3: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceS3',
-    accessKey: '',
-    secretKey: '',
-    endpoint: '',
-};
+const basePXFDatasourceS3: object = { accessKey: '', secretKey: '', endpoint: '' };
 
 export const PXFDatasourceS3 = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceS3' as const,
-
     encode(message: PXFDatasourceS3, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.accessKey !== '') {
             writer.uint32(10).string(message.accessKey);
@@ -627,10 +578,7 @@ export const PXFDatasourceS3 = {
             writer.uint32(18).string(message.secretKey);
         }
         if (message.fastUpload !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.fastUpload! },
-                writer.uint32(26).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.fastUpload! }, writer.uint32(26).fork()).ldelim();
         }
         if (message.endpoint !== '') {
             writer.uint32(34).string(message.endpoint);
@@ -705,19 +653,9 @@ export const PXFDatasourceS3 = {
     },
 };
 
-messageTypeRegistry.set(PXFDatasourceS3.$type, PXFDatasourceS3);
-
-const basePXFDatasourceJDBC: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceJDBC',
-    driver: '',
-    url: '',
-    user: '',
-    password: '',
-};
+const basePXFDatasourceJDBC: object = { driver: '', url: '', user: '', password: '' };
 
 export const PXFDatasourceJDBC = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceJDBC' as const,
-
     encode(message: PXFDatasourceJDBC, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.driver !== '') {
             writer.uint32(10).string(message.driver);
@@ -733,49 +671,46 @@ export const PXFDatasourceJDBC = {
         }
         if (message.statementBatchSize !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.statementBatchSize! },
+                { value: message.statementBatchSize! },
                 writer.uint32(42).fork(),
             ).ldelim();
         }
         if (message.statementFetchSize !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.statementFetchSize! },
+                { value: message.statementFetchSize! },
                 writer.uint32(50).fork(),
             ).ldelim();
         }
         if (message.statementQueryTimeout !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.statementQueryTimeout! },
+                { value: message.statementQueryTimeout! },
                 writer.uint32(58).fork(),
             ).ldelim();
         }
         if (message.poolEnabled !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.poolEnabled! },
-                writer.uint32(66).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.poolEnabled! }, writer.uint32(66).fork()).ldelim();
         }
         if (message.poolMaximumSize !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.poolMaximumSize! },
+                { value: message.poolMaximumSize! },
                 writer.uint32(74).fork(),
             ).ldelim();
         }
         if (message.poolConnectionTimeout !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.poolConnectionTimeout! },
+                { value: message.poolConnectionTimeout! },
                 writer.uint32(82).fork(),
             ).ldelim();
         }
         if (message.poolIdleTimeout !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.poolIdleTimeout! },
+                { value: message.poolIdleTimeout! },
                 writer.uint32(90).fork(),
             ).ldelim();
         }
         if (message.poolMinimumIdle !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.poolMinimumIdle! },
+                { value: message.poolMinimumIdle! },
                 writer.uint32(98).fork(),
             ).ldelim();
         }
@@ -923,17 +858,9 @@ export const PXFDatasourceJDBC = {
     },
 };
 
-messageTypeRegistry.set(PXFDatasourceJDBC.$type, PXFDatasourceJDBC);
-
-const basePXFDatasourceCore: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceCore',
-    defaultFs: '',
-    securityAuthToLocal: '',
-};
+const basePXFDatasourceCore: object = { defaultFs: '', securityAuthToLocal: '' };
 
 export const PXFDatasourceCore = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceCore' as const,
-
     encode(message: PXFDatasourceCore, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.defaultFs !== '') {
             writer.uint32(10).string(message.defaultFs);
@@ -994,10 +921,7 @@ export const PXFDatasourceCore = {
     },
 };
 
-messageTypeRegistry.set(PXFDatasourceCore.$type, PXFDatasourceCore);
-
 const basePXFDatasourceKerberos: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceKerberos',
     primary: '',
     realm: '',
     kdcServers: '',
@@ -1007,14 +931,9 @@ const basePXFDatasourceKerberos: object = {
 };
 
 export const PXFDatasourceKerberos = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceKerberos' as const,
-
     encode(message: PXFDatasourceKerberos, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enable !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.enable! },
-                writer.uint32(10).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.enable! }, writer.uint32(10).fork()).ldelim();
         }
         if (message.primary !== '') {
             writer.uint32(18).string(message.primary);
@@ -1131,10 +1050,7 @@ export const PXFDatasourceKerberos = {
     },
 };
 
-messageTypeRegistry.set(PXFDatasourceKerberos.$type, PXFDatasourceKerberos);
-
 const basePXFDatasourceHDFSDfsNamenode: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSDfsNamenode',
     rpcAddress: '',
     serviceRpcAddress: '',
     httpAddress: '',
@@ -1142,8 +1058,6 @@ const basePXFDatasourceHDFSDfsNamenode: object = {
 };
 
 export const PXFDatasourceHDFSDfsNamenode = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSDfsNamenode' as const,
-
     encode(
         message: PXFDatasourceHDFSDfsNamenode,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1233,42 +1147,31 @@ export const PXFDatasourceHDFSDfsNamenode = {
     },
 };
 
-messageTypeRegistry.set(PXFDatasourceHDFSDfsNamenode.$type, PXFDatasourceHDFSDfsNamenode);
-
-const basePXFDatasourceHDFSDfs: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSDfs',
-    nameservices: '',
-};
+const basePXFDatasourceHDFSDfs: object = { nameservices: '' };
 
 export const PXFDatasourceHDFSDfs = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSDfs' as const,
-
     encode(message: PXFDatasourceHDFSDfs, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.haAutomaticFailoverEnabled !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.haAutomaticFailoverEnabled! },
+                { value: message.haAutomaticFailoverEnabled! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
         if (message.blockAccessTokenEnabled !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.blockAccessTokenEnabled! },
+                { value: message.blockAccessTokenEnabled! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
         if (message.useDatanodeHostname !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.useDatanodeHostname! },
+                { value: message.useDatanodeHostname! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
         Object.entries(message.namenodes).forEach(([key, value]) => {
             PXFDatasourceHDFSDfs_NamenodesEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSDfs.NamenodesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -1387,16 +1290,9 @@ export const PXFDatasourceHDFSDfs = {
     },
 };
 
-messageTypeRegistry.set(PXFDatasourceHDFSDfs.$type, PXFDatasourceHDFSDfs);
-
-const basePXFDatasourceHDFSDfs_NamenodesEntry: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSDfs.NamenodesEntry',
-    key: '',
-};
+const basePXFDatasourceHDFSDfs_NamenodesEntry: object = { key: '' };
 
 export const PXFDatasourceHDFSDfs_NamenodesEntry = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSDfs.NamenodesEntry' as const,
-
     encode(
         message: PXFDatasourceHDFSDfs_NamenodesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1470,13 +1366,7 @@ export const PXFDatasourceHDFSDfs_NamenodesEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    PXFDatasourceHDFSDfs_NamenodesEntry.$type,
-    PXFDatasourceHDFSDfs_NamenodesEntry,
-);
-
 const basePXFDatasourceHDFSYarnHaRm: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSYarnHaRm',
     resourcemanagerAddress: '',
     resourcemanagerSchedulerAddress: '',
     resourcemanagerResourceTrackerAddress: '',
@@ -1486,8 +1376,6 @@ const basePXFDatasourceHDFSYarnHaRm: object = {
 };
 
 export const PXFDatasourceHDFSYarnHaRm = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSYarnHaRm' as const,
-
     encode(
         message: PXFDatasourceHDFSYarnHaRm,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1613,38 +1501,25 @@ export const PXFDatasourceHDFSYarnHaRm = {
     },
 };
 
-messageTypeRegistry.set(PXFDatasourceHDFSYarnHaRm.$type, PXFDatasourceHDFSYarnHaRm);
-
-const basePXFDatasourceHDFSYarn: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSYarn',
-    resourcemanagerClusterId: '',
-};
+const basePXFDatasourceHDFSYarn: object = { resourcemanagerClusterId: '' };
 
 export const PXFDatasourceHDFSYarn = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSYarn' as const,
-
     encode(message: PXFDatasourceHDFSYarn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcemanagerHaEnabled !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.resourcemanagerHaEnabled! },
+                { value: message.resourcemanagerHaEnabled! },
                 writer.uint32(10).fork(),
             ).ldelim();
         }
         if (message.resourcemanagerHaAutoFailoverEnabled !== undefined) {
             BoolValue.encode(
-                {
-                    $type: 'google.protobuf.BoolValue',
-                    value: message.resourcemanagerHaAutoFailoverEnabled!,
-                },
+                { value: message.resourcemanagerHaAutoFailoverEnabled! },
                 writer.uint32(18).fork(),
             ).ldelim();
         }
         if (message.resourcemanagerHaAutoFailoverEmbedded !== undefined) {
             BoolValue.encode(
-                {
-                    $type: 'google.protobuf.BoolValue',
-                    value: message.resourcemanagerHaAutoFailoverEmbedded!,
-                },
+                { value: message.resourcemanagerHaAutoFailoverEmbedded! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
@@ -1653,11 +1528,7 @@ export const PXFDatasourceHDFSYarn = {
         }
         Object.entries(message.haRm).forEach(([key, value]) => {
             PXFDatasourceHDFSYarn_HaRmEntry.encode(
-                {
-                    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSYarn.HaRmEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -1781,16 +1652,9 @@ export const PXFDatasourceHDFSYarn = {
     },
 };
 
-messageTypeRegistry.set(PXFDatasourceHDFSYarn.$type, PXFDatasourceHDFSYarn);
-
-const basePXFDatasourceHDFSYarn_HaRmEntry: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSYarn.HaRmEntry',
-    key: '',
-};
+const basePXFDatasourceHDFSYarn_HaRmEntry: object = { key: '' };
 
 export const PXFDatasourceHDFSYarn_HaRmEntry = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFSYarn.HaRmEntry' as const,
-
     encode(
         message: PXFDatasourceHDFSYarn_HaRmEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1864,17 +1728,9 @@ export const PXFDatasourceHDFSYarn_HaRmEntry = {
     },
 };
 
-messageTypeRegistry.set(PXFDatasourceHDFSYarn_HaRmEntry.$type, PXFDatasourceHDFSYarn_HaRmEntry);
-
-const basePXFDatasourceHDFS: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFS',
-    username: '',
-    zkHosts: '',
-};
+const basePXFDatasourceHDFS: object = { username: '', zkHosts: '' };
 
 export const PXFDatasourceHDFS = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHDFS' as const,
-
     encode(message: PXFDatasourceHDFS, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.core !== undefined) {
             PXFDatasourceCore.encode(message.core, writer.uint32(10).fork()).ldelim();
@@ -1884,7 +1740,7 @@ export const PXFDatasourceHDFS = {
         }
         if (message.userImpersonation !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.userImpersonation! },
+                { value: message.userImpersonation! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
@@ -1893,7 +1749,7 @@ export const PXFDatasourceHDFS = {
         }
         if (message.saslConnectionRetries !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.saslConnectionRetries! },
+                { value: message.saslConnectionRetries! },
                 writer.uint32(42).fork(),
             ).ldelim();
         }
@@ -2037,10 +1893,7 @@ export const PXFDatasourceHDFS = {
     },
 };
 
-messageTypeRegistry.set(PXFDatasourceHDFS.$type, PXFDatasourceHDFS);
-
 const basePXFDatasourceHive: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHive',
     username: '',
     zkHosts: '',
     metastoreUris: '',
@@ -2049,8 +1902,6 @@ const basePXFDatasourceHive: object = {
 };
 
 export const PXFDatasourceHive = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasourceHive' as const,
-
     encode(message: PXFDatasourceHive, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.core !== undefined) {
             PXFDatasourceCore.encode(message.core, writer.uint32(10).fork()).ldelim();
@@ -2060,7 +1911,7 @@ export const PXFDatasourceHive = {
         }
         if (message.userImpersonation !== undefined) {
             BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.userImpersonation! },
+                { value: message.userImpersonation! },
                 writer.uint32(26).fork(),
             ).ldelim();
         }
@@ -2069,7 +1920,7 @@ export const PXFDatasourceHive = {
         }
         if (message.saslConnectionRetries !== undefined) {
             Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.saslConnectionRetries! },
+                { value: message.saslConnectionRetries! },
                 writer.uint32(42).fork(),
             ).ldelim();
         }
@@ -2077,10 +1928,7 @@ export const PXFDatasourceHive = {
             writer.uint32(50).string(v!);
         }
         if (message.ppd !== undefined) {
-            BoolValue.encode(
-                { $type: 'google.protobuf.BoolValue', value: message.ppd! },
-                writer.uint32(58).fork(),
-            ).ldelim();
+            BoolValue.encode({ value: message.ppd! }, writer.uint32(58).fork()).ldelim();
         }
         for (const v of message.metastoreUris) {
             writer.uint32(66).string(v!);
@@ -2235,16 +2083,9 @@ export const PXFDatasourceHive = {
     },
 };
 
-messageTypeRegistry.set(PXFDatasourceHive.$type, PXFDatasourceHive);
-
-const basePXFDatasource: object = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasource',
-    name: '',
-};
+const basePXFDatasource: object = { name: '' };
 
 export const PXFDatasource = {
-    $type: 'yandex.cloud.mdb.greenplum.v1.PXFDatasource' as const,
-
     encode(message: PXFDatasource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -2353,8 +2194,6 @@ export const PXFDatasource = {
     },
 };
 
-messageTypeRegistry.set(PXFDatasource.$type, PXFDatasource);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -2364,16 +2203,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

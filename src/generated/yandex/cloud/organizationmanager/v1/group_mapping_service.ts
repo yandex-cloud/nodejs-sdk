@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -24,17 +23,14 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.organizationmanager.v1';
 
 export interface GetGroupMappingRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.GetGroupMappingRequest';
     federationId: string;
 }
 
 export interface GetGroupMappingResponse {
-    $type: 'yandex.cloud.organizationmanager.v1.GetGroupMappingResponse';
     groupMapping?: GroupMapping;
 }
 
 export interface CreateGroupMappingRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateGroupMappingRequest';
     /** Federation the group mapping will be created for */
     federationId: string;
     /** Synchronization status. */
@@ -42,13 +38,11 @@ export interface CreateGroupMappingRequest {
 }
 
 export interface CreateGroupMappingMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateGroupMappingMetadata';
     federationId: string;
 }
 
 /** Request for updating group mapping configuration */
 export interface UpdateGroupMappingRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMappingRequest';
     /** Federation the group mapping update is requested */
     federationId: string;
     /** A set of fields that should be updated */
@@ -58,24 +52,20 @@ export interface UpdateGroupMappingRequest {
 }
 
 export interface UpdateGroupMappingMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMappingMetadata';
     federationId: string;
 }
 
 export interface DeleteGroupMappingRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteGroupMappingRequest';
     /** Federation the group mapping deletion is requested */
     federationId: string;
 }
 
 export interface DeleteGroupMappingMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteGroupMappingMetadata';
     federationId: string;
 }
 
 /** Request for updating group mapping configuration */
 export interface UpdateGroupMappingItemsRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMappingItemsRequest';
     /** Federation the group mapping update is requested */
     federationId: string;
     /** A collection of mapping items to add or remove (ignores update_fields). */
@@ -84,7 +74,6 @@ export interface UpdateGroupMappingItemsRequest {
 
 /** Message describes the user's request to change (add or remove) a single group mapping. */
 export interface GroupMappingItemDelta {
-    $type: 'yandex.cloud.organizationmanager.v1.GroupMappingItemDelta';
     item?: GroupMappingItem;
     action: GroupMappingItemDelta_Action;
 }
@@ -130,18 +119,15 @@ export function groupMappingItemDelta_ActionToJSON(object: GroupMappingItemDelta
 }
 
 export interface UpdateGroupMappingItemsMetadata {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMappingItemsMetadata';
     federationId: string;
 }
 
 export interface UpdateGroupMappingItemsResponse {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMappingItemsResponse';
     /** Effective changes that were applied */
     groupMappingItemDeltas: GroupMappingItemDelta[];
 }
 
 export interface ListGroupMappingItemsRequest {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupMappingItemsRequest';
     federationId: string;
     pageSize: number;
     pageToken: string;
@@ -149,19 +135,13 @@ export interface ListGroupMappingItemsRequest {
 }
 
 export interface ListGroupMappingItemsResponse {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupMappingItemsResponse';
     groupMappingItems: GroupMappingItem[];
     nextPageToken: string;
 }
 
-const baseGetGroupMappingRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.GetGroupMappingRequest',
-    federationId: '',
-};
+const baseGetGroupMappingRequest: object = { federationId: '' };
 
 export const GetGroupMappingRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.GetGroupMappingRequest' as const,
-
     encode(message: GetGroupMappingRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.federationId !== '') {
             writer.uint32(10).string(message.federationId);
@@ -211,15 +191,9 @@ export const GetGroupMappingRequest = {
     },
 };
 
-messageTypeRegistry.set(GetGroupMappingRequest.$type, GetGroupMappingRequest);
-
-const baseGetGroupMappingResponse: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.GetGroupMappingResponse',
-};
+const baseGetGroupMappingResponse: object = {};
 
 export const GetGroupMappingResponse = {
-    $type: 'yandex.cloud.organizationmanager.v1.GetGroupMappingResponse' as const,
-
     encode(message: GetGroupMappingResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.groupMapping !== undefined) {
             GroupMapping.encode(message.groupMapping, writer.uint32(10).fork()).ldelim();
@@ -275,17 +249,9 @@ export const GetGroupMappingResponse = {
     },
 };
 
-messageTypeRegistry.set(GetGroupMappingResponse.$type, GetGroupMappingResponse);
-
-const baseCreateGroupMappingRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateGroupMappingRequest',
-    federationId: '',
-    enabled: false,
-};
+const baseCreateGroupMappingRequest: object = { federationId: '', enabled: false };
 
 export const CreateGroupMappingRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateGroupMappingRequest' as const,
-
     encode(
         message: CreateGroupMappingRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -350,16 +316,9 @@ export const CreateGroupMappingRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateGroupMappingRequest.$type, CreateGroupMappingRequest);
-
-const baseCreateGroupMappingMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateGroupMappingMetadata',
-    federationId: '',
-};
+const baseCreateGroupMappingMetadata: object = { federationId: '' };
 
 export const CreateGroupMappingMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.CreateGroupMappingMetadata' as const,
-
     encode(
         message: CreateGroupMappingMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -412,17 +371,9 @@ export const CreateGroupMappingMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateGroupMappingMetadata.$type, CreateGroupMappingMetadata);
-
-const baseUpdateGroupMappingRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMappingRequest',
-    federationId: '',
-    enabled: false,
-};
+const baseUpdateGroupMappingRequest: object = { federationId: '', enabled: false };
 
 export const UpdateGroupMappingRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMappingRequest' as const,
-
     encode(
         message: UpdateGroupMappingRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -505,16 +456,9 @@ export const UpdateGroupMappingRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateGroupMappingRequest.$type, UpdateGroupMappingRequest);
-
-const baseUpdateGroupMappingMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMappingMetadata',
-    federationId: '',
-};
+const baseUpdateGroupMappingMetadata: object = { federationId: '' };
 
 export const UpdateGroupMappingMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMappingMetadata' as const,
-
     encode(
         message: UpdateGroupMappingMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -567,16 +511,9 @@ export const UpdateGroupMappingMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateGroupMappingMetadata.$type, UpdateGroupMappingMetadata);
-
-const baseDeleteGroupMappingRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteGroupMappingRequest',
-    federationId: '',
-};
+const baseDeleteGroupMappingRequest: object = { federationId: '' };
 
 export const DeleteGroupMappingRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteGroupMappingRequest' as const,
-
     encode(
         message: DeleteGroupMappingRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -629,16 +566,9 @@ export const DeleteGroupMappingRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteGroupMappingRequest.$type, DeleteGroupMappingRequest);
-
-const baseDeleteGroupMappingMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteGroupMappingMetadata',
-    federationId: '',
-};
+const baseDeleteGroupMappingMetadata: object = { federationId: '' };
 
 export const DeleteGroupMappingMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.DeleteGroupMappingMetadata' as const,
-
     encode(
         message: DeleteGroupMappingMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -691,16 +621,9 @@ export const DeleteGroupMappingMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteGroupMappingMetadata.$type, DeleteGroupMappingMetadata);
-
-const baseUpdateGroupMappingItemsRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMappingItemsRequest',
-    federationId: '',
-};
+const baseUpdateGroupMappingItemsRequest: object = { federationId: '' };
 
 export const UpdateGroupMappingItemsRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMappingItemsRequest' as const,
-
     encode(
         message: UpdateGroupMappingItemsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -774,16 +697,9 @@ export const UpdateGroupMappingItemsRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateGroupMappingItemsRequest.$type, UpdateGroupMappingItemsRequest);
-
-const baseGroupMappingItemDelta: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.GroupMappingItemDelta',
-    action: 0,
-};
+const baseGroupMappingItemDelta: object = { action: 0 };
 
 export const GroupMappingItemDelta = {
-    $type: 'yandex.cloud.organizationmanager.v1.GroupMappingItemDelta' as const,
-
     encode(message: GroupMappingItemDelta, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.item !== undefined) {
             GroupMappingItem.encode(message.item, writer.uint32(10).fork()).ldelim();
@@ -850,16 +766,9 @@ export const GroupMappingItemDelta = {
     },
 };
 
-messageTypeRegistry.set(GroupMappingItemDelta.$type, GroupMappingItemDelta);
-
-const baseUpdateGroupMappingItemsMetadata: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMappingItemsMetadata',
-    federationId: '',
-};
+const baseUpdateGroupMappingItemsMetadata: object = { federationId: '' };
 
 export const UpdateGroupMappingItemsMetadata = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMappingItemsMetadata' as const,
-
     encode(
         message: UpdateGroupMappingItemsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -918,15 +827,9 @@ export const UpdateGroupMappingItemsMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateGroupMappingItemsMetadata.$type, UpdateGroupMappingItemsMetadata);
-
-const baseUpdateGroupMappingItemsResponse: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMappingItemsResponse',
-};
+const baseUpdateGroupMappingItemsResponse: object = {};
 
 export const UpdateGroupMappingItemsResponse = {
-    $type: 'yandex.cloud.organizationmanager.v1.UpdateGroupMappingItemsResponse' as const,
-
     encode(
         message: UpdateGroupMappingItemsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -994,10 +897,7 @@ export const UpdateGroupMappingItemsResponse = {
     },
 };
 
-messageTypeRegistry.set(UpdateGroupMappingItemsResponse.$type, UpdateGroupMappingItemsResponse);
-
 const baseListGroupMappingItemsRequest: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupMappingItemsRequest',
     federationId: '',
     pageSize: 0,
     pageToken: '',
@@ -1005,8 +905,6 @@ const baseListGroupMappingItemsRequest: object = {
 };
 
 export const ListGroupMappingItemsRequest = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupMappingItemsRequest' as const,
-
     encode(
         message: ListGroupMappingItemsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1091,16 +989,9 @@ export const ListGroupMappingItemsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListGroupMappingItemsRequest.$type, ListGroupMappingItemsRequest);
-
-const baseListGroupMappingItemsResponse: object = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupMappingItemsResponse',
-    nextPageToken: '',
-};
+const baseListGroupMappingItemsResponse: object = { nextPageToken: '' };
 
 export const ListGroupMappingItemsResponse = {
-    $type: 'yandex.cloud.organizationmanager.v1.ListGroupMappingItemsResponse' as const,
-
     encode(
         message: ListGroupMappingItemsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1173,8 +1064,6 @@ export const ListGroupMappingItemsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListGroupMappingItemsResponse.$type, ListGroupMappingItemsResponse);
 
 /** RPC service dedicated for federation group mapping. */
 export const GroupMappingServiceService = {
@@ -1505,16 +1394,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

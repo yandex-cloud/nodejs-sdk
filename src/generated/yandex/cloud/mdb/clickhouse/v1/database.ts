@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -10,7 +9,6 @@ export const protobufPackage = 'yandex.cloud.mdb.clickhouse.v1';
  * [Developer's Guide](/docs/managed-clickhouse/concepts).
  */
 export interface Database {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.Database';
     /** Name of the database. */
     name: string;
     /** ID of the ClickHouse cluster that the database belongs to. */
@@ -18,20 +16,13 @@ export interface Database {
 }
 
 export interface DatabaseSpec {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DatabaseSpec';
     /** Name of the ClickHouse database. 1-63 characters long. */
     name: string;
 }
 
-const baseDatabase: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.Database',
-    name: '',
-    clusterId: '',
-};
+const baseDatabase: object = { name: '', clusterId: '' };
 
 export const Database = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.Database' as const,
-
     encode(message: Database, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -88,13 +79,9 @@ export const Database = {
     },
 };
 
-messageTypeRegistry.set(Database.$type, Database);
-
-const baseDatabaseSpec: object = { $type: 'yandex.cloud.mdb.clickhouse.v1.DatabaseSpec', name: '' };
+const baseDatabaseSpec: object = { name: '' };
 
 export const DatabaseSpec = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.DatabaseSpec' as const,
-
     encode(message: DatabaseSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -139,8 +126,6 @@ export const DatabaseSpec = {
     },
 };
 
-messageTypeRegistry.set(DatabaseSpec.$type, DatabaseSpec);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -150,16 +135,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

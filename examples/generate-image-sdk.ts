@@ -36,12 +36,7 @@ const folderId = getEnv('YC_FOLDER_ID');
         generationOptions: {
             mimeType: 'image/jpeg',
         },
-        messages: [
-            imageGeneration.Message.fromPartial({
-                text: 'Three cats',
-                weight: 1,
-            }),
-        ],
+        messages: [{ text: 'Three cats', weight: 1 }],
     });
 
     const imageGenerationResponse = await operationSdk.pollOperation(

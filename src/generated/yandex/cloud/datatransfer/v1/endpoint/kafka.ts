@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -52,7 +51,6 @@ export function kafkaMechanismToJSON(object: KafkaMechanism): string {
 }
 
 export interface KafkaConnectionOptions {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaConnectionOptions';
     /** Managed Service for Kafka cluster ID */
     clusterId: string | undefined;
     /** Connection options for on-premise Kafka */
@@ -60,7 +58,6 @@ export interface KafkaConnectionOptions {
 }
 
 export interface OnPremiseKafka {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.OnPremiseKafka';
     /** Kafka broker URLs */
     brokerUrls: string[];
     /** Network interface for endpoint. If none will assume public ipv4 */
@@ -70,7 +67,6 @@ export interface OnPremiseKafka {
 }
 
 export interface KafkaAuth {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaAuth';
     /** Authentication with SASL */
     sasl?: KafkaSaslSecurity | undefined;
     /** No authentication */
@@ -78,7 +74,6 @@ export interface KafkaAuth {
 }
 
 export interface KafkaSaslSecurity {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaSaslSecurity';
     /** User name */
     user: string;
     /** SASL mechanism for authentication */
@@ -88,7 +83,6 @@ export interface KafkaSaslSecurity {
 }
 
 export interface KafkaSource {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaSource';
     /** Connection settings */
     connection?: KafkaConnectionOptions;
     /** Authentication settings */
@@ -111,7 +105,6 @@ export interface KafkaSource {
 }
 
 export interface KafkaTarget {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaTarget';
     /** Connection settings */
     connection?: KafkaConnectionOptions;
     /** Authentication settings */
@@ -125,7 +118,6 @@ export interface KafkaTarget {
 }
 
 export interface KafkaTargetTopicSettings {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaTargetTopicSettings';
     /** Full topic name */
     topic?: KafkaTargetTopic | undefined;
     /**
@@ -138,7 +130,6 @@ export interface KafkaTargetTopicSettings {
 }
 
 export interface KafkaTargetTopic {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaTargetTopic';
     /** Topic name */
     topicName: string;
     /**
@@ -148,13 +139,9 @@ export interface KafkaTargetTopic {
     saveTxOrder: boolean;
 }
 
-const baseKafkaConnectionOptions: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaConnectionOptions',
-};
+const baseKafkaConnectionOptions: object = {};
 
 export const KafkaConnectionOptions = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaConnectionOptions' as const,
-
     encode(message: KafkaConnectionOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== undefined) {
             writer.uint32(10).string(message.clusterId);
@@ -222,17 +209,9 @@ export const KafkaConnectionOptions = {
     },
 };
 
-messageTypeRegistry.set(KafkaConnectionOptions.$type, KafkaConnectionOptions);
-
-const baseOnPremiseKafka: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.OnPremiseKafka',
-    brokerUrls: '',
-    subnetId: '',
-};
+const baseOnPremiseKafka: object = { brokerUrls: '', subnetId: '' };
 
 export const OnPremiseKafka = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.OnPremiseKafka' as const,
-
     encode(message: OnPremiseKafka, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.brokerUrls) {
             writer.uint32(10).string(v!);
@@ -310,13 +289,9 @@ export const OnPremiseKafka = {
     },
 };
 
-messageTypeRegistry.set(OnPremiseKafka.$type, OnPremiseKafka);
-
-const baseKafkaAuth: object = { $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaAuth' };
+const baseKafkaAuth: object = {};
 
 export const KafkaAuth = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaAuth' as const,
-
     encode(message: KafkaAuth, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sasl !== undefined) {
             KafkaSaslSecurity.encode(message.sasl, writer.uint32(10).fork()).ldelim();
@@ -384,17 +359,9 @@ export const KafkaAuth = {
     },
 };
 
-messageTypeRegistry.set(KafkaAuth.$type, KafkaAuth);
-
-const baseKafkaSaslSecurity: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaSaslSecurity',
-    user: '',
-    mechanism: 0,
-};
+const baseKafkaSaslSecurity: object = { user: '', mechanism: 0 };
 
 export const KafkaSaslSecurity = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaSaslSecurity' as const,
-
     encode(message: KafkaSaslSecurity, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.user !== '') {
             writer.uint32(10).string(message.user);
@@ -468,18 +435,9 @@ export const KafkaSaslSecurity = {
     },
 };
 
-messageTypeRegistry.set(KafkaSaslSecurity.$type, KafkaSaslSecurity);
-
-const baseKafkaSource: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaSource',
-    securityGroups: '',
-    topicName: '',
-    topicNames: '',
-};
+const baseKafkaSource: object = { securityGroups: '', topicName: '', topicNames: '' };
 
 export const KafkaSource = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaSource' as const,
-
     encode(message: KafkaSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             KafkaConnectionOptions.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -626,16 +584,9 @@ export const KafkaSource = {
     },
 };
 
-messageTypeRegistry.set(KafkaSource.$type, KafkaSource);
-
-const baseKafkaTarget: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaTarget',
-    securityGroups: '',
-};
+const baseKafkaTarget: object = { securityGroups: '' };
 
 export const KafkaTarget = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaTarget' as const,
-
     encode(message: KafkaTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             KafkaConnectionOptions.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -761,15 +712,9 @@ export const KafkaTarget = {
     },
 };
 
-messageTypeRegistry.set(KafkaTarget.$type, KafkaTarget);
-
-const baseKafkaTargetTopicSettings: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaTargetTopicSettings',
-};
+const baseKafkaTargetTopicSettings: object = {};
 
 export const KafkaTargetTopicSettings = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaTargetTopicSettings' as const,
-
     encode(
         message: KafkaTargetTopicSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -838,17 +783,9 @@ export const KafkaTargetTopicSettings = {
     },
 };
 
-messageTypeRegistry.set(KafkaTargetTopicSettings.$type, KafkaTargetTopicSettings);
-
-const baseKafkaTargetTopic: object = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaTargetTopic',
-    topicName: '',
-    saveTxOrder: false,
-};
+const baseKafkaTargetTopic: object = { topicName: '', saveTxOrder: false };
 
 export const KafkaTargetTopic = {
-    $type: 'yandex.cloud.datatransfer.v1.endpoint.KafkaTargetTopic' as const,
-
     encode(message: KafkaTargetTopic, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.topicName !== '') {
             writer.uint32(10).string(message.topicName);
@@ -908,8 +845,6 @@ export const KafkaTargetTopic = {
     },
 };
 
-messageTypeRegistry.set(KafkaTargetTopic.$type, KafkaTargetTopic);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -919,16 +854,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Image } from '../../../../../yandex/cloud/ai/vision/v2/image';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.ai.vision.v2';
 
 /** Description of single label */
 export interface Label {
-    $type: 'yandex.cloud.ai.vision.v2.Label';
     /** Label name */
     name: string;
     /** human readable description of label */
@@ -17,7 +15,6 @@ export interface Label {
 
 /** Image annotation for specific label */
 export interface ClassAnnotation {
-    $type: 'yandex.cloud.ai.vision.v2.ClassAnnotation';
     /** list of annotated labels */
     label?: Label;
     /** confidence for each label */
@@ -26,7 +23,6 @@ export interface ClassAnnotation {
 
 /** Specification of model used for annotation */
 export interface ClassifierSpecification {
-    $type: 'yandex.cloud.ai.vision.v2.ClassifierSpecification';
     /** List of labels, annotated by service */
     labels: Label[];
     /** type of annotation: exclusive (multi-class) or non-exclusive (multi-label) */
@@ -77,7 +73,6 @@ export function classifierSpecification_ClassificationTypeToJSON(
 
 /**  */
 export interface AnnotationResponse {
-    $type: 'yandex.cloud.ai.vision.v2.AnnotationResponse';
     /** internal service requestId */
     requestId: string;
     /** class specification */
@@ -88,16 +83,13 @@ export interface AnnotationResponse {
 
 /** request for annotation */
 export interface AnnotationRequest {
-    $type: 'yandex.cloud.ai.vision.v2.AnnotationRequest';
     /** image to annotate */
     image?: Image;
 }
 
-const baseLabel: object = { $type: 'yandex.cloud.ai.vision.v2.Label', name: '', description: '' };
+const baseLabel: object = { name: '', description: '' };
 
 export const Label = {
-    $type: 'yandex.cloud.ai.vision.v2.Label' as const,
-
     encode(message: Label, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -154,16 +146,9 @@ export const Label = {
     },
 };
 
-messageTypeRegistry.set(Label.$type, Label);
-
-const baseClassAnnotation: object = {
-    $type: 'yandex.cloud.ai.vision.v2.ClassAnnotation',
-    confidence: 0,
-};
+const baseClassAnnotation: object = { confidence: 0 };
 
 export const ClassAnnotation = {
-    $type: 'yandex.cloud.ai.vision.v2.ClassAnnotation' as const,
-
     encode(message: ClassAnnotation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.label !== undefined) {
             Label.encode(message.label, writer.uint32(10).fork()).ldelim();
@@ -227,16 +212,9 @@ export const ClassAnnotation = {
     },
 };
 
-messageTypeRegistry.set(ClassAnnotation.$type, ClassAnnotation);
-
-const baseClassifierSpecification: object = {
-    $type: 'yandex.cloud.ai.vision.v2.ClassifierSpecification',
-    classificationType: 0,
-};
+const baseClassifierSpecification: object = { classificationType: 0 };
 
 export const ClassifierSpecification = {
-    $type: 'yandex.cloud.ai.vision.v2.ClassifierSpecification' as const,
-
     encode(message: ClassifierSpecification, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.labels) {
             Label.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -303,16 +281,9 @@ export const ClassifierSpecification = {
     },
 };
 
-messageTypeRegistry.set(ClassifierSpecification.$type, ClassifierSpecification);
-
-const baseAnnotationResponse: object = {
-    $type: 'yandex.cloud.ai.vision.v2.AnnotationResponse',
-    requestId: '',
-};
+const baseAnnotationResponse: object = { requestId: '' };
 
 export const AnnotationResponse = {
-    $type: 'yandex.cloud.ai.vision.v2.AnnotationResponse' as const,
-
     encode(message: AnnotationResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.requestId !== '') {
             writer.uint32(10).string(message.requestId);
@@ -404,13 +375,9 @@ export const AnnotationResponse = {
     },
 };
 
-messageTypeRegistry.set(AnnotationResponse.$type, AnnotationResponse);
-
-const baseAnnotationRequest: object = { $type: 'yandex.cloud.ai.vision.v2.AnnotationRequest' };
+const baseAnnotationRequest: object = {};
 
 export const AnnotationRequest = {
-    $type: 'yandex.cloud.ai.vision.v2.AnnotationRequest' as const,
-
     encode(message: AnnotationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.image !== undefined) {
             Image.encode(message.image, writer.uint32(10).fork()).ldelim();
@@ -462,8 +429,6 @@ export const AnnotationRequest = {
     },
 };
 
-messageTypeRegistry.set(AnnotationRequest.$type, AnnotationRequest);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -473,16 +438,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

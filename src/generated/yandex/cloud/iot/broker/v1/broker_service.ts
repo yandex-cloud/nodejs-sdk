@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -26,7 +25,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.iot.broker.v1';
 
 export interface GetBrokerRequest {
-    $type: 'yandex.cloud.iot.broker.v1.GetBrokerRequest';
     /**
      * ID of the broker to return.
      *
@@ -36,7 +34,6 @@ export interface GetBrokerRequest {
 }
 
 export interface ListBrokersRequest {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokersRequest';
     /**
      * ID of the folder to list brokers in.
      *
@@ -58,7 +55,6 @@ export interface ListBrokersRequest {
 }
 
 export interface ListBrokersResponse {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokersResponse';
     /** List of brokers. */
     brokers: Broker[];
     /**
@@ -72,7 +68,6 @@ export interface ListBrokersResponse {
 }
 
 export interface CreateBrokerRequest {
-    $type: 'yandex.cloud.iot.broker.v1.CreateBrokerRequest';
     /**
      * ID of the folder to create a broker in.
      *
@@ -98,26 +93,22 @@ export interface CreateBrokerRequest {
 }
 
 export interface CreateBrokerRequest_LabelsEntry {
-    $type: 'yandex.cloud.iot.broker.v1.CreateBrokerRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Specification of a broker certificate. */
 export interface CreateBrokerRequest_Certificate {
-    $type: 'yandex.cloud.iot.broker.v1.CreateBrokerRequest.Certificate';
     /** Public part of the broker certificate. */
     certificateData: string;
 }
 
 export interface CreateBrokerMetadata {
-    $type: 'yandex.cloud.iot.broker.v1.CreateBrokerMetadata';
     /** ID of the broker that is being created. */
     brokerId: string;
 }
 
 export interface UpdateBrokerRequest {
-    $type: 'yandex.cloud.iot.broker.v1.UpdateBrokerRequest';
     /**
      * ID of the broker to update.
      *
@@ -141,19 +132,16 @@ export interface UpdateBrokerRequest {
 }
 
 export interface UpdateBrokerRequest_LabelsEntry {
-    $type: 'yandex.cloud.iot.broker.v1.UpdateBrokerRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateBrokerMetadata {
-    $type: 'yandex.cloud.iot.broker.v1.UpdateBrokerMetadata';
     /** ID of the broker that is being updated. */
     brokerId: string;
 }
 
 export interface DeleteBrokerRequest {
-    $type: 'yandex.cloud.iot.broker.v1.DeleteBrokerRequest';
     /**
      * ID of the broker to delete.
      *
@@ -163,25 +151,21 @@ export interface DeleteBrokerRequest {
 }
 
 export interface DeleteBrokerMetadata {
-    $type: 'yandex.cloud.iot.broker.v1.DeleteBrokerMetadata';
     /** ID of the broker that is being deleted. */
     brokerId: string;
 }
 
 export interface ListBrokerCertificatesRequest {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokerCertificatesRequest';
     /** ID of the broker to list certificates for. */
     brokerId: string;
 }
 
 export interface ListBrokerCertificatesResponse {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokerCertificatesResponse';
     /** List of certificates for the specified broker. */
     certificates: BrokerCertificate[];
 }
 
 export interface AddBrokerCertificateRequest {
-    $type: 'yandex.cloud.iot.broker.v1.AddBrokerCertificateRequest';
     /**
      * ID of the broker for which the certificate is being added.
      *
@@ -193,7 +177,6 @@ export interface AddBrokerCertificateRequest {
 }
 
 export interface AddBrokerCertificateMetadata {
-    $type: 'yandex.cloud.iot.broker.v1.AddBrokerCertificateMetadata';
     /** ID of the broker certificate that is being added. */
     brokerId: string;
     /** Fingerprint of the certificate that is being added. */
@@ -201,7 +184,6 @@ export interface AddBrokerCertificateMetadata {
 }
 
 export interface DeleteBrokerCertificateRequest {
-    $type: 'yandex.cloud.iot.broker.v1.DeleteBrokerCertificateRequest';
     /**
      * ID of the broker to delete a certificate for.
      *
@@ -213,7 +195,6 @@ export interface DeleteBrokerCertificateRequest {
 }
 
 export interface DeleteBrokerCertificateMetadata {
-    $type: 'yandex.cloud.iot.broker.v1.DeleteBrokerCertificateMetadata';
     /** ID of a broker for which the certificate is being delete. */
     brokerId: string;
     /** Fingerprint of the certificate to deleted. */
@@ -221,7 +202,6 @@ export interface DeleteBrokerCertificateMetadata {
 }
 
 export interface ListBrokerPasswordsRequest {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokerPasswordsRequest';
     /**
      * ID of the broker to list passwords in.
      *
@@ -231,13 +211,11 @@ export interface ListBrokerPasswordsRequest {
 }
 
 export interface ListBrokerPasswordsResponse {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokerPasswordsResponse';
     /** List of passwords for the specified broker. */
     passwords: BrokerPassword[];
 }
 
 export interface AddBrokerPasswordRequest {
-    $type: 'yandex.cloud.iot.broker.v1.AddBrokerPasswordRequest';
     /**
      * ID of the broker to add a password for.
      *
@@ -253,7 +231,6 @@ export interface AddBrokerPasswordRequest {
 }
 
 export interface AddBrokerPasswordMetadata {
-    $type: 'yandex.cloud.iot.broker.v1.AddBrokerPasswordMetadata';
     /** ID of the broker for which the password is being added. */
     brokerId: string;
     /** ID of a password that is being added. */
@@ -261,7 +238,6 @@ export interface AddBrokerPasswordMetadata {
 }
 
 export interface DeleteBrokerPasswordRequest {
-    $type: 'yandex.cloud.iot.broker.v1.DeleteBrokerPasswordRequest';
     /**
      * ID of the broker to delete a password for.
      *
@@ -277,7 +253,6 @@ export interface DeleteBrokerPasswordRequest {
 }
 
 export interface DeleteBrokerPasswordMetadata {
-    $type: 'yandex.cloud.iot.broker.v1.DeleteBrokerPasswordMetadata';
     /** ID of a broker for which the password is being delete. */
     brokerId: string;
     /**
@@ -289,7 +264,6 @@ export interface DeleteBrokerPasswordMetadata {
 }
 
 export interface ListBrokerOperationsRequest {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokerOperationsRequest';
     /** ID of the broker to list operations for. */
     brokerId: string;
     /**
@@ -312,7 +286,6 @@ export interface ListBrokerOperationsRequest {
 }
 
 export interface ListBrokerOperationsResponse {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokerOperationsResponse';
     /** List of operations for the specified broker. */
     operations: Operation[];
     /**
@@ -325,14 +298,9 @@ export interface ListBrokerOperationsResponse {
     nextPageToken: string;
 }
 
-const baseGetBrokerRequest: object = {
-    $type: 'yandex.cloud.iot.broker.v1.GetBrokerRequest',
-    brokerId: '',
-};
+const baseGetBrokerRequest: object = { brokerId: '' };
 
 export const GetBrokerRequest = {
-    $type: 'yandex.cloud.iot.broker.v1.GetBrokerRequest' as const,
-
     encode(message: GetBrokerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.brokerId !== '') {
             writer.uint32(10).string(message.brokerId);
@@ -380,18 +348,9 @@ export const GetBrokerRequest = {
     },
 };
 
-messageTypeRegistry.set(GetBrokerRequest.$type, GetBrokerRequest);
-
-const baseListBrokersRequest: object = {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokersRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListBrokersRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
 export const ListBrokersRequest = {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokersRequest' as const,
-
     encode(message: ListBrokersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -463,16 +422,9 @@ export const ListBrokersRequest = {
     },
 };
 
-messageTypeRegistry.set(ListBrokersRequest.$type, ListBrokersRequest);
-
-const baseListBrokersResponse: object = {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokersResponse',
-    nextPageToken: '',
-};
+const baseListBrokersResponse: object = { nextPageToken: '' };
 
 export const ListBrokersResponse = {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokersResponse' as const,
-
     encode(message: ListBrokersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.brokers) {
             Broker.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -536,19 +488,9 @@ export const ListBrokersResponse = {
     },
 };
 
-messageTypeRegistry.set(ListBrokersResponse.$type, ListBrokersResponse);
-
-const baseCreateBrokerRequest: object = {
-    $type: 'yandex.cloud.iot.broker.v1.CreateBrokerRequest',
-    folderId: '',
-    name: '',
-    description: '',
-    password: '',
-};
+const baseCreateBrokerRequest: object = { folderId: '', name: '', description: '', password: '' };
 
 export const CreateBrokerRequest = {
-    $type: 'yandex.cloud.iot.broker.v1.CreateBrokerRequest' as const,
-
     encode(message: CreateBrokerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -561,11 +503,7 @@ export const CreateBrokerRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateBrokerRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.iot.broker.v1.CreateBrokerRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -709,17 +647,9 @@ export const CreateBrokerRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateBrokerRequest.$type, CreateBrokerRequest);
-
-const baseCreateBrokerRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.iot.broker.v1.CreateBrokerRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateBrokerRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateBrokerRequest_LabelsEntry = {
-    $type: 'yandex.cloud.iot.broker.v1.CreateBrokerRequest.LabelsEntry' as const,
-
     encode(
         message: CreateBrokerRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -785,16 +715,9 @@ export const CreateBrokerRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateBrokerRequest_LabelsEntry.$type, CreateBrokerRequest_LabelsEntry);
-
-const baseCreateBrokerRequest_Certificate: object = {
-    $type: 'yandex.cloud.iot.broker.v1.CreateBrokerRequest.Certificate',
-    certificateData: '',
-};
+const baseCreateBrokerRequest_Certificate: object = { certificateData: '' };
 
 export const CreateBrokerRequest_Certificate = {
-    $type: 'yandex.cloud.iot.broker.v1.CreateBrokerRequest.Certificate' as const,
-
     encode(
         message: CreateBrokerRequest_Certificate,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -853,16 +776,9 @@ export const CreateBrokerRequest_Certificate = {
     },
 };
 
-messageTypeRegistry.set(CreateBrokerRequest_Certificate.$type, CreateBrokerRequest_Certificate);
-
-const baseCreateBrokerMetadata: object = {
-    $type: 'yandex.cloud.iot.broker.v1.CreateBrokerMetadata',
-    brokerId: '',
-};
+const baseCreateBrokerMetadata: object = { brokerId: '' };
 
 export const CreateBrokerMetadata = {
-    $type: 'yandex.cloud.iot.broker.v1.CreateBrokerMetadata' as const,
-
     encode(message: CreateBrokerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.brokerId !== '') {
             writer.uint32(10).string(message.brokerId);
@@ -912,18 +828,9 @@ export const CreateBrokerMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateBrokerMetadata.$type, CreateBrokerMetadata);
-
-const baseUpdateBrokerRequest: object = {
-    $type: 'yandex.cloud.iot.broker.v1.UpdateBrokerRequest',
-    brokerId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateBrokerRequest: object = { brokerId: '', name: '', description: '' };
 
 export const UpdateBrokerRequest = {
-    $type: 'yandex.cloud.iot.broker.v1.UpdateBrokerRequest' as const,
-
     encode(message: UpdateBrokerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.brokerId !== '') {
             writer.uint32(10).string(message.brokerId);
@@ -939,11 +846,7 @@ export const UpdateBrokerRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateBrokerRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.iot.broker.v1.UpdateBrokerRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -1069,17 +972,9 @@ export const UpdateBrokerRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateBrokerRequest.$type, UpdateBrokerRequest);
-
-const baseUpdateBrokerRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.iot.broker.v1.UpdateBrokerRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateBrokerRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateBrokerRequest_LabelsEntry = {
-    $type: 'yandex.cloud.iot.broker.v1.UpdateBrokerRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateBrokerRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1145,16 +1040,9 @@ export const UpdateBrokerRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateBrokerRequest_LabelsEntry.$type, UpdateBrokerRequest_LabelsEntry);
-
-const baseUpdateBrokerMetadata: object = {
-    $type: 'yandex.cloud.iot.broker.v1.UpdateBrokerMetadata',
-    brokerId: '',
-};
+const baseUpdateBrokerMetadata: object = { brokerId: '' };
 
 export const UpdateBrokerMetadata = {
-    $type: 'yandex.cloud.iot.broker.v1.UpdateBrokerMetadata' as const,
-
     encode(message: UpdateBrokerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.brokerId !== '') {
             writer.uint32(10).string(message.brokerId);
@@ -1204,16 +1092,9 @@ export const UpdateBrokerMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateBrokerMetadata.$type, UpdateBrokerMetadata);
-
-const baseDeleteBrokerRequest: object = {
-    $type: 'yandex.cloud.iot.broker.v1.DeleteBrokerRequest',
-    brokerId: '',
-};
+const baseDeleteBrokerRequest: object = { brokerId: '' };
 
 export const DeleteBrokerRequest = {
-    $type: 'yandex.cloud.iot.broker.v1.DeleteBrokerRequest' as const,
-
     encode(message: DeleteBrokerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.brokerId !== '') {
             writer.uint32(10).string(message.brokerId);
@@ -1263,16 +1144,9 @@ export const DeleteBrokerRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteBrokerRequest.$type, DeleteBrokerRequest);
-
-const baseDeleteBrokerMetadata: object = {
-    $type: 'yandex.cloud.iot.broker.v1.DeleteBrokerMetadata',
-    brokerId: '',
-};
+const baseDeleteBrokerMetadata: object = { brokerId: '' };
 
 export const DeleteBrokerMetadata = {
-    $type: 'yandex.cloud.iot.broker.v1.DeleteBrokerMetadata' as const,
-
     encode(message: DeleteBrokerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.brokerId !== '') {
             writer.uint32(10).string(message.brokerId);
@@ -1322,16 +1196,9 @@ export const DeleteBrokerMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteBrokerMetadata.$type, DeleteBrokerMetadata);
-
-const baseListBrokerCertificatesRequest: object = {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokerCertificatesRequest',
-    brokerId: '',
-};
+const baseListBrokerCertificatesRequest: object = { brokerId: '' };
 
 export const ListBrokerCertificatesRequest = {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokerCertificatesRequest' as const,
-
     encode(
         message: ListBrokerCertificatesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1384,15 +1251,9 @@ export const ListBrokerCertificatesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListBrokerCertificatesRequest.$type, ListBrokerCertificatesRequest);
-
-const baseListBrokerCertificatesResponse: object = {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokerCertificatesResponse',
-};
+const baseListBrokerCertificatesResponse: object = {};
 
 export const ListBrokerCertificatesResponse = {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokerCertificatesResponse' as const,
-
     encode(
         message: ListBrokerCertificatesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1452,17 +1313,9 @@ export const ListBrokerCertificatesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListBrokerCertificatesResponse.$type, ListBrokerCertificatesResponse);
-
-const baseAddBrokerCertificateRequest: object = {
-    $type: 'yandex.cloud.iot.broker.v1.AddBrokerCertificateRequest',
-    brokerId: '',
-    certificateData: '',
-};
+const baseAddBrokerCertificateRequest: object = { brokerId: '', certificateData: '' };
 
 export const AddBrokerCertificateRequest = {
-    $type: 'yandex.cloud.iot.broker.v1.AddBrokerCertificateRequest' as const,
-
     encode(
         message: AddBrokerCertificateRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1527,17 +1380,9 @@ export const AddBrokerCertificateRequest = {
     },
 };
 
-messageTypeRegistry.set(AddBrokerCertificateRequest.$type, AddBrokerCertificateRequest);
-
-const baseAddBrokerCertificateMetadata: object = {
-    $type: 'yandex.cloud.iot.broker.v1.AddBrokerCertificateMetadata',
-    brokerId: '',
-    fingerprint: '',
-};
+const baseAddBrokerCertificateMetadata: object = { brokerId: '', fingerprint: '' };
 
 export const AddBrokerCertificateMetadata = {
-    $type: 'yandex.cloud.iot.broker.v1.AddBrokerCertificateMetadata' as const,
-
     encode(
         message: AddBrokerCertificateMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1602,17 +1447,9 @@ export const AddBrokerCertificateMetadata = {
     },
 };
 
-messageTypeRegistry.set(AddBrokerCertificateMetadata.$type, AddBrokerCertificateMetadata);
-
-const baseDeleteBrokerCertificateRequest: object = {
-    $type: 'yandex.cloud.iot.broker.v1.DeleteBrokerCertificateRequest',
-    brokerId: '',
-    fingerprint: '',
-};
+const baseDeleteBrokerCertificateRequest: object = { brokerId: '', fingerprint: '' };
 
 export const DeleteBrokerCertificateRequest = {
-    $type: 'yandex.cloud.iot.broker.v1.DeleteBrokerCertificateRequest' as const,
-
     encode(
         message: DeleteBrokerCertificateRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1677,17 +1514,9 @@ export const DeleteBrokerCertificateRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteBrokerCertificateRequest.$type, DeleteBrokerCertificateRequest);
-
-const baseDeleteBrokerCertificateMetadata: object = {
-    $type: 'yandex.cloud.iot.broker.v1.DeleteBrokerCertificateMetadata',
-    brokerId: '',
-    fingerprint: '',
-};
+const baseDeleteBrokerCertificateMetadata: object = { brokerId: '', fingerprint: '' };
 
 export const DeleteBrokerCertificateMetadata = {
-    $type: 'yandex.cloud.iot.broker.v1.DeleteBrokerCertificateMetadata' as const,
-
     encode(
         message: DeleteBrokerCertificateMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1758,16 +1587,9 @@ export const DeleteBrokerCertificateMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteBrokerCertificateMetadata.$type, DeleteBrokerCertificateMetadata);
-
-const baseListBrokerPasswordsRequest: object = {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokerPasswordsRequest',
-    brokerId: '',
-};
+const baseListBrokerPasswordsRequest: object = { brokerId: '' };
 
 export const ListBrokerPasswordsRequest = {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokerPasswordsRequest' as const,
-
     encode(
         message: ListBrokerPasswordsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1820,15 +1642,9 @@ export const ListBrokerPasswordsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListBrokerPasswordsRequest.$type, ListBrokerPasswordsRequest);
-
-const baseListBrokerPasswordsResponse: object = {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokerPasswordsResponse',
-};
+const baseListBrokerPasswordsResponse: object = {};
 
 export const ListBrokerPasswordsResponse = {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokerPasswordsResponse' as const,
-
     encode(
         message: ListBrokerPasswordsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1885,17 +1701,9 @@ export const ListBrokerPasswordsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListBrokerPasswordsResponse.$type, ListBrokerPasswordsResponse);
-
-const baseAddBrokerPasswordRequest: object = {
-    $type: 'yandex.cloud.iot.broker.v1.AddBrokerPasswordRequest',
-    brokerId: '',
-    password: '',
-};
+const baseAddBrokerPasswordRequest: object = { brokerId: '', password: '' };
 
 export const AddBrokerPasswordRequest = {
-    $type: 'yandex.cloud.iot.broker.v1.AddBrokerPasswordRequest' as const,
-
     encode(
         message: AddBrokerPasswordRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1960,17 +1768,9 @@ export const AddBrokerPasswordRequest = {
     },
 };
 
-messageTypeRegistry.set(AddBrokerPasswordRequest.$type, AddBrokerPasswordRequest);
-
-const baseAddBrokerPasswordMetadata: object = {
-    $type: 'yandex.cloud.iot.broker.v1.AddBrokerPasswordMetadata',
-    brokerId: '',
-    passwordId: '',
-};
+const baseAddBrokerPasswordMetadata: object = { brokerId: '', passwordId: '' };
 
 export const AddBrokerPasswordMetadata = {
-    $type: 'yandex.cloud.iot.broker.v1.AddBrokerPasswordMetadata' as const,
-
     encode(
         message: AddBrokerPasswordMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2035,17 +1835,9 @@ export const AddBrokerPasswordMetadata = {
     },
 };
 
-messageTypeRegistry.set(AddBrokerPasswordMetadata.$type, AddBrokerPasswordMetadata);
-
-const baseDeleteBrokerPasswordRequest: object = {
-    $type: 'yandex.cloud.iot.broker.v1.DeleteBrokerPasswordRequest',
-    brokerId: '',
-    passwordId: '',
-};
+const baseDeleteBrokerPasswordRequest: object = { brokerId: '', passwordId: '' };
 
 export const DeleteBrokerPasswordRequest = {
-    $type: 'yandex.cloud.iot.broker.v1.DeleteBrokerPasswordRequest' as const,
-
     encode(
         message: DeleteBrokerPasswordRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2110,17 +1902,9 @@ export const DeleteBrokerPasswordRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteBrokerPasswordRequest.$type, DeleteBrokerPasswordRequest);
-
-const baseDeleteBrokerPasswordMetadata: object = {
-    $type: 'yandex.cloud.iot.broker.v1.DeleteBrokerPasswordMetadata',
-    brokerId: '',
-    passwordId: '',
-};
+const baseDeleteBrokerPasswordMetadata: object = { brokerId: '', passwordId: '' };
 
 export const DeleteBrokerPasswordMetadata = {
-    $type: 'yandex.cloud.iot.broker.v1.DeleteBrokerPasswordMetadata' as const,
-
     encode(
         message: DeleteBrokerPasswordMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2185,10 +1969,7 @@ export const DeleteBrokerPasswordMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteBrokerPasswordMetadata.$type, DeleteBrokerPasswordMetadata);
-
 const baseListBrokerOperationsRequest: object = {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokerOperationsRequest',
     brokerId: '',
     pageSize: 0,
     pageToken: '',
@@ -2196,8 +1977,6 @@ const baseListBrokerOperationsRequest: object = {
 };
 
 export const ListBrokerOperationsRequest = {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokerOperationsRequest' as const,
-
     encode(
         message: ListBrokerOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2282,16 +2061,9 @@ export const ListBrokerOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListBrokerOperationsRequest.$type, ListBrokerOperationsRequest);
-
-const baseListBrokerOperationsResponse: object = {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokerOperationsResponse',
-    nextPageToken: '',
-};
+const baseListBrokerOperationsResponse: object = { nextPageToken: '' };
 
 export const ListBrokerOperationsResponse = {
-    $type: 'yandex.cloud.iot.broker.v1.ListBrokerOperationsResponse' as const,
-
     encode(
         message: ListBrokerOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2357,8 +2129,6 @@ export const ListBrokerOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListBrokerOperationsResponse.$type, ListBrokerOperationsResponse);
 
 /** A set of methods for managing broker. */
 export const BrokerServiceService = {
@@ -2769,16 +2539,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

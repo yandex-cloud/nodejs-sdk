@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Format, formatFromJSON, formatToJSON } from '../../../../yandex/cloud/backup/v1/policy';
@@ -10,7 +9,6 @@ export const protobufPackage = 'yandex.cloud.backup.v1';
 
 /** Archive is a container that holds backups of Compute Cloud instance. */
 export interface Archive {
-    $type: 'yandex.cloud.backup.v1.Archive';
     /** ID of the backup. */
     id: string;
     /** Name of the backup. */
@@ -158,7 +156,6 @@ export function archive_ActionToJSON(object: Archive_Action): string {
 
 /** Archive attributes. */
 export interface Archive_ArchiveAttributes {
-    $type: 'yandex.cloud.backup.v1.Archive.ArchiveAttributes';
     /** Archive attribute. Default value: `0`. */
     aaib: string;
     /** URI of the backup archive. */
@@ -166,7 +163,6 @@ export interface Archive_ArchiveAttributes {
 }
 
 export interface Volume {
-    $type: 'yandex.cloud.backup.v1.Volume';
     /** Free space in the volume. */
     freeSpace: number;
     /** If this field is true, it means that the volume is bootable. */
@@ -182,7 +178,6 @@ export interface Volume {
 }
 
 export interface Disk {
-    $type: 'yandex.cloud.backup.v1.Disk';
     /** Device model. */
     deviceModel: string;
     /** Disk name. */
@@ -193,7 +188,6 @@ export interface Disk {
 }
 
 export interface Backup {
-    $type: 'yandex.cloud.backup.v1.Backup';
     /** ID of the backup. */
     id: string;
     /** ID of the backup vault. */
@@ -267,7 +261,6 @@ export function backup_TypeToJSON(object: Backup_Type): string {
 
 /** Backup attributes. */
 export interface Backup_BackupAttributes {
-    $type: 'yandex.cloud.backup.v1.Backup.BackupAttributes';
     /** Backup stream name. */
     streamName: string;
     /** URI of the backup archive. */
@@ -276,7 +269,6 @@ export interface Backup_BackupAttributes {
 
 /** BackupFile represents a single unit of file or directory system inside the backup. */
 export interface BackupFile {
-    $type: 'yandex.cloud.backup.v1.BackupFile';
     /** ID of the item. Should be used as source ID in case of listing. */
     id: string;
     /** Might be empty if this is root directory. */
@@ -334,7 +326,6 @@ export function backupFile_TypeToJSON(object: BackupFile_Type): string {
 }
 
 export interface BackupFile_Actions {
-    $type: 'yandex.cloud.backup.v1.BackupFile.Actions';
     /** Allows to send request to restore item to disk */
     restoreToDisk: boolean;
     /** Allows to move to location by id. */
@@ -342,7 +333,6 @@ export interface BackupFile_Actions {
 }
 
 const baseArchive: object = {
-    $type: 'yandex.cloud.backup.v1.Archive',
     id: '',
     name: '',
     vaultId: '',
@@ -366,8 +356,6 @@ const baseArchive: object = {
 };
 
 export const Archive = {
-    $type: 'yandex.cloud.backup.v1.Archive' as const,
-
     encode(message: Archive, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -720,17 +708,9 @@ export const Archive = {
     },
 };
 
-messageTypeRegistry.set(Archive.$type, Archive);
-
-const baseArchive_ArchiveAttributes: object = {
-    $type: 'yandex.cloud.backup.v1.Archive.ArchiveAttributes',
-    aaib: '',
-    uri: '',
-};
+const baseArchive_ArchiveAttributes: object = { aaib: '', uri: '' };
 
 export const Archive_ArchiveAttributes = {
-    $type: 'yandex.cloud.backup.v1.Archive.ArchiveAttributes' as const,
-
     encode(
         message: Archive_ArchiveAttributes,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -789,10 +769,7 @@ export const Archive_ArchiveAttributes = {
     },
 };
 
-messageTypeRegistry.set(Archive_ArchiveAttributes.$type, Archive_ArchiveAttributes);
-
 const baseVolume: object = {
-    $type: 'yandex.cloud.backup.v1.Volume',
     freeSpace: 0,
     isBootable: false,
     isSystem: false,
@@ -802,8 +779,6 @@ const baseVolume: object = {
 };
 
 export const Volume = {
-    $type: 'yandex.cloud.backup.v1.Volume' as const,
-
     encode(message: Volume, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.freeSpace !== 0) {
             writer.uint32(8).int64(message.freeSpace);
@@ -905,18 +880,9 @@ export const Volume = {
     },
 };
 
-messageTypeRegistry.set(Volume.$type, Volume);
-
-const baseDisk: object = {
-    $type: 'yandex.cloud.backup.v1.Disk',
-    deviceModel: '',
-    name: '',
-    size: 0,
-};
+const baseDisk: object = { deviceModel: '', name: '', size: 0 };
 
 export const Disk = {
-    $type: 'yandex.cloud.backup.v1.Disk' as const,
-
     encode(message: Disk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.deviceModel !== '') {
             writer.uint32(10).string(message.deviceModel);
@@ -996,10 +962,7 @@ export const Disk = {
     },
 };
 
-messageTypeRegistry.set(Disk.$type, Disk);
-
 const baseBackup: object = {
-    $type: 'yandex.cloud.backup.v1.Backup',
     id: '',
     vaultId: '',
     archiveId: '',
@@ -1015,8 +978,6 @@ const baseBackup: object = {
 };
 
 export const Backup = {
-    $type: 'yandex.cloud.backup.v1.Backup' as const,
-
     encode(message: Backup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1248,17 +1209,9 @@ export const Backup = {
     },
 };
 
-messageTypeRegistry.set(Backup.$type, Backup);
-
-const baseBackup_BackupAttributes: object = {
-    $type: 'yandex.cloud.backup.v1.Backup.BackupAttributes',
-    streamName: '',
-    uri: '',
-};
+const baseBackup_BackupAttributes: object = { streamName: '', uri: '' };
 
 export const Backup_BackupAttributes = {
-    $type: 'yandex.cloud.backup.v1.Backup.BackupAttributes' as const,
-
     encode(message: Backup_BackupAttributes, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamName !== '') {
             writer.uint32(10).string(message.streamName);
@@ -1317,29 +1270,15 @@ export const Backup_BackupAttributes = {
     },
 };
 
-messageTypeRegistry.set(Backup_BackupAttributes.$type, Backup_BackupAttributes);
-
-const baseBackupFile: object = {
-    $type: 'yandex.cloud.backup.v1.BackupFile',
-    id: '',
-    type: 0,
-    fullPath: '',
-    name: '',
-    size: 0,
-};
+const baseBackupFile: object = { id: '', type: 0, fullPath: '', name: '', size: 0 };
 
 export const BackupFile = {
-    $type: 'yandex.cloud.backup.v1.BackupFile' as const,
-
     encode(message: BackupFile, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
         }
         if (message.parentId !== undefined) {
-            StringValue.encode(
-                { $type: 'google.protobuf.StringValue', value: message.parentId! },
-                writer.uint32(18).fork(),
-            ).ldelim();
+            StringValue.encode({ value: message.parentId! }, writer.uint32(18).fork()).ldelim();
         }
         if (message.type !== 0) {
             writer.uint32(24).int32(message.type);
@@ -1462,17 +1401,9 @@ export const BackupFile = {
     },
 };
 
-messageTypeRegistry.set(BackupFile.$type, BackupFile);
-
-const baseBackupFile_Actions: object = {
-    $type: 'yandex.cloud.backup.v1.BackupFile.Actions',
-    restoreToDisk: false,
-    goToLocation: false,
-};
+const baseBackupFile_Actions: object = { restoreToDisk: false, goToLocation: false };
 
 export const BackupFile_Actions = {
-    $type: 'yandex.cloud.backup.v1.BackupFile.Actions' as const,
-
     encode(message: BackupFile_Actions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.restoreToDisk === true) {
             writer.uint32(8).bool(message.restoreToDisk);
@@ -1534,8 +1465,6 @@ export const BackupFile_Actions = {
     },
 };
 
-messageTypeRegistry.set(BackupFile_Actions.$type, BackupFile_Actions);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -1556,21 +1485,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

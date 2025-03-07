@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -24,7 +23,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.backup.v1';
 
 export interface ListPoliciesRequest {
-    $type: 'yandex.cloud.backup.v1.ListPoliciesRequest';
     /** Folder ID. Either Folder ID or Compute Cloud instance ID should be set. */
     folderId: string;
     /** Compute Cloud instance ID. Either Folder ID or Compute Cloud instance ID should be set. */
@@ -32,12 +30,10 @@ export interface ListPoliciesRequest {
 }
 
 export interface ListPoliciesResponse {
-    $type: 'yandex.cloud.backup.v1.ListPoliciesResponse';
     policies: Policy[];
 }
 
 export interface CreatePolicyRequest {
-    $type: 'yandex.cloud.backup.v1.CreatePolicyRequest';
     /** Folder ID. */
     folderId: string;
     /** Policy name. */
@@ -46,44 +42,37 @@ export interface CreatePolicyRequest {
 }
 
 export interface CreatePolicyMetadata {
-    $type: 'yandex.cloud.backup.v1.CreatePolicyMetadata';
     /** Policy ID. */
     policyId: string;
 }
 
 export interface GetPolicyRequest {
-    $type: 'yandex.cloud.backup.v1.GetPolicyRequest';
     /** Policy ID. */
     policyId: string;
 }
 
 export interface UpdatePolicyRequest {
-    $type: 'yandex.cloud.backup.v1.UpdatePolicyRequest';
     /** Policy ID. */
     policyId: string;
     settings?: PolicySettings;
 }
 
 export interface UpdatePolicyMetadata {
-    $type: 'yandex.cloud.backup.v1.UpdatePolicyMetadata';
     /** Policy ID. */
     policyId: string;
 }
 
 export interface DeletePolicyRequest {
-    $type: 'yandex.cloud.backup.v1.DeletePolicyRequest';
     /** Policy ID. */
     policyId: string;
 }
 
 export interface DeletePolicyMetadata {
-    $type: 'yandex.cloud.backup.v1.DeletePolicyMetadata';
     /** Policy ID. */
     policyId: string;
 }
 
 export interface ApplyPolicyRequest {
-    $type: 'yandex.cloud.backup.v1.ApplyPolicyRequest';
     /** Policy ID. */
     policyId: string;
     /** Compute Cloud instance ID. */
@@ -91,7 +80,6 @@ export interface ApplyPolicyRequest {
 }
 
 export interface ApplyPolicyMetadata {
-    $type: 'yandex.cloud.backup.v1.ApplyPolicyMetadata';
     /** Policy ID. */
     policyId: string;
     /** Compute Cloud instance ID. */
@@ -99,7 +87,6 @@ export interface ApplyPolicyMetadata {
 }
 
 export interface ListApplicationsRequest {
-    $type: 'yandex.cloud.backup.v1.ListApplicationsRequest';
     /** Folder ID. */
     folderId: string | undefined;
     /** Policy ID. */
@@ -111,12 +98,10 @@ export interface ListApplicationsRequest {
 }
 
 export interface ListApplicationsResponse {
-    $type: 'yandex.cloud.backup.v1.ListApplicationsResponse';
     applications: PolicyApplication[];
 }
 
 export interface ExecuteRequest {
-    $type: 'yandex.cloud.backup.v1.ExecuteRequest';
     /** Policy ID. */
     policyId: string;
     /** Compute Cloud instance ID. */
@@ -124,7 +109,6 @@ export interface ExecuteRequest {
 }
 
 export interface ExecuteMetadata {
-    $type: 'yandex.cloud.backup.v1.ExecuteMetadata';
     /** Policy ID. */
     policyId: string;
     /** Compute Cloud instance ID. */
@@ -134,7 +118,6 @@ export interface ExecuteMetadata {
 }
 
 export interface RevokeRequest {
-    $type: 'yandex.cloud.backup.v1.RevokeRequest';
     /** Policy ID. */
     policyId: string;
     /** Compute Cloud instance ID. */
@@ -142,22 +125,15 @@ export interface RevokeRequest {
 }
 
 export interface RevokeMetadata {
-    $type: 'yandex.cloud.backup.v1.RevokeMetadata';
     /** Policy ID. */
     policyId: string;
     /** Compute Cloud instance ID. */
     computeInstanceId: string;
 }
 
-const baseListPoliciesRequest: object = {
-    $type: 'yandex.cloud.backup.v1.ListPoliciesRequest',
-    folderId: '',
-    computeInstanceId: '',
-};
+const baseListPoliciesRequest: object = { folderId: '', computeInstanceId: '' };
 
 export const ListPoliciesRequest = {
-    $type: 'yandex.cloud.backup.v1.ListPoliciesRequest' as const,
-
     encode(message: ListPoliciesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -220,13 +196,9 @@ export const ListPoliciesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListPoliciesRequest.$type, ListPoliciesRequest);
-
-const baseListPoliciesResponse: object = { $type: 'yandex.cloud.backup.v1.ListPoliciesResponse' };
+const baseListPoliciesResponse: object = {};
 
 export const ListPoliciesResponse = {
-    $type: 'yandex.cloud.backup.v1.ListPoliciesResponse' as const,
-
     encode(message: ListPoliciesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.policies) {
             Policy.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -278,17 +250,9 @@ export const ListPoliciesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListPoliciesResponse.$type, ListPoliciesResponse);
-
-const baseCreatePolicyRequest: object = {
-    $type: 'yandex.cloud.backup.v1.CreatePolicyRequest',
-    folderId: '',
-    name: '',
-};
+const baseCreatePolicyRequest: object = { folderId: '', name: '' };
 
 export const CreatePolicyRequest = {
-    $type: 'yandex.cloud.backup.v1.CreatePolicyRequest' as const,
-
     encode(message: CreatePolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -363,16 +327,9 @@ export const CreatePolicyRequest = {
     },
 };
 
-messageTypeRegistry.set(CreatePolicyRequest.$type, CreatePolicyRequest);
-
-const baseCreatePolicyMetadata: object = {
-    $type: 'yandex.cloud.backup.v1.CreatePolicyMetadata',
-    policyId: '',
-};
+const baseCreatePolicyMetadata: object = { policyId: '' };
 
 export const CreatePolicyMetadata = {
-    $type: 'yandex.cloud.backup.v1.CreatePolicyMetadata' as const,
-
     encode(message: CreatePolicyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -422,16 +379,9 @@ export const CreatePolicyMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreatePolicyMetadata.$type, CreatePolicyMetadata);
-
-const baseGetPolicyRequest: object = {
-    $type: 'yandex.cloud.backup.v1.GetPolicyRequest',
-    policyId: '',
-};
+const baseGetPolicyRequest: object = { policyId: '' };
 
 export const GetPolicyRequest = {
-    $type: 'yandex.cloud.backup.v1.GetPolicyRequest' as const,
-
     encode(message: GetPolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -479,16 +429,9 @@ export const GetPolicyRequest = {
     },
 };
 
-messageTypeRegistry.set(GetPolicyRequest.$type, GetPolicyRequest);
-
-const baseUpdatePolicyRequest: object = {
-    $type: 'yandex.cloud.backup.v1.UpdatePolicyRequest',
-    policyId: '',
-};
+const baseUpdatePolicyRequest: object = { policyId: '' };
 
 export const UpdatePolicyRequest = {
-    $type: 'yandex.cloud.backup.v1.UpdatePolicyRequest' as const,
-
     encode(message: UpdatePolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -554,16 +497,9 @@ export const UpdatePolicyRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdatePolicyRequest.$type, UpdatePolicyRequest);
-
-const baseUpdatePolicyMetadata: object = {
-    $type: 'yandex.cloud.backup.v1.UpdatePolicyMetadata',
-    policyId: '',
-};
+const baseUpdatePolicyMetadata: object = { policyId: '' };
 
 export const UpdatePolicyMetadata = {
-    $type: 'yandex.cloud.backup.v1.UpdatePolicyMetadata' as const,
-
     encode(message: UpdatePolicyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -613,16 +549,9 @@ export const UpdatePolicyMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdatePolicyMetadata.$type, UpdatePolicyMetadata);
-
-const baseDeletePolicyRequest: object = {
-    $type: 'yandex.cloud.backup.v1.DeletePolicyRequest',
-    policyId: '',
-};
+const baseDeletePolicyRequest: object = { policyId: '' };
 
 export const DeletePolicyRequest = {
-    $type: 'yandex.cloud.backup.v1.DeletePolicyRequest' as const,
-
     encode(message: DeletePolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -672,16 +601,9 @@ export const DeletePolicyRequest = {
     },
 };
 
-messageTypeRegistry.set(DeletePolicyRequest.$type, DeletePolicyRequest);
-
-const baseDeletePolicyMetadata: object = {
-    $type: 'yandex.cloud.backup.v1.DeletePolicyMetadata',
-    policyId: '',
-};
+const baseDeletePolicyMetadata: object = { policyId: '' };
 
 export const DeletePolicyMetadata = {
-    $type: 'yandex.cloud.backup.v1.DeletePolicyMetadata' as const,
-
     encode(message: DeletePolicyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -731,17 +653,9 @@ export const DeletePolicyMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeletePolicyMetadata.$type, DeletePolicyMetadata);
-
-const baseApplyPolicyRequest: object = {
-    $type: 'yandex.cloud.backup.v1.ApplyPolicyRequest',
-    policyId: '',
-    computeInstanceId: '',
-};
+const baseApplyPolicyRequest: object = { policyId: '', computeInstanceId: '' };
 
 export const ApplyPolicyRequest = {
-    $type: 'yandex.cloud.backup.v1.ApplyPolicyRequest' as const,
-
     encode(message: ApplyPolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -804,17 +718,9 @@ export const ApplyPolicyRequest = {
     },
 };
 
-messageTypeRegistry.set(ApplyPolicyRequest.$type, ApplyPolicyRequest);
-
-const baseApplyPolicyMetadata: object = {
-    $type: 'yandex.cloud.backup.v1.ApplyPolicyMetadata',
-    policyId: '',
-    computeInstanceId: '',
-};
+const baseApplyPolicyMetadata: object = { policyId: '', computeInstanceId: '' };
 
 export const ApplyPolicyMetadata = {
-    $type: 'yandex.cloud.backup.v1.ApplyPolicyMetadata' as const,
-
     encode(message: ApplyPolicyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -877,16 +783,9 @@ export const ApplyPolicyMetadata = {
     },
 };
 
-messageTypeRegistry.set(ApplyPolicyMetadata.$type, ApplyPolicyMetadata);
-
-const baseListApplicationsRequest: object = {
-    $type: 'yandex.cloud.backup.v1.ListApplicationsRequest',
-    showProcessing: false,
-};
+const baseListApplicationsRequest: object = { showProcessing: false };
 
 export const ListApplicationsRequest = {
-    $type: 'yandex.cloud.backup.v1.ListApplicationsRequest' as const,
-
     encode(message: ListApplicationsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== undefined) {
             writer.uint32(10).string(message.folderId);
@@ -973,15 +872,9 @@ export const ListApplicationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListApplicationsRequest.$type, ListApplicationsRequest);
-
-const baseListApplicationsResponse: object = {
-    $type: 'yandex.cloud.backup.v1.ListApplicationsResponse',
-};
+const baseListApplicationsResponse: object = {};
 
 export const ListApplicationsResponse = {
-    $type: 'yandex.cloud.backup.v1.ListApplicationsResponse' as const,
-
     encode(
         message: ListApplicationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1041,17 +934,9 @@ export const ListApplicationsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListApplicationsResponse.$type, ListApplicationsResponse);
-
-const baseExecuteRequest: object = {
-    $type: 'yandex.cloud.backup.v1.ExecuteRequest',
-    policyId: '',
-    computeInstanceId: '',
-};
+const baseExecuteRequest: object = { policyId: '', computeInstanceId: '' };
 
 export const ExecuteRequest = {
-    $type: 'yandex.cloud.backup.v1.ExecuteRequest' as const,
-
     encode(message: ExecuteRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -1112,18 +997,9 @@ export const ExecuteRequest = {
     },
 };
 
-messageTypeRegistry.set(ExecuteRequest.$type, ExecuteRequest);
-
-const baseExecuteMetadata: object = {
-    $type: 'yandex.cloud.backup.v1.ExecuteMetadata',
-    policyId: '',
-    computeInstanceId: '',
-    progressPercentage: 0,
-};
+const baseExecuteMetadata: object = { policyId: '', computeInstanceId: '', progressPercentage: 0 };
 
 export const ExecuteMetadata = {
-    $type: 'yandex.cloud.backup.v1.ExecuteMetadata' as const,
-
     encode(message: ExecuteMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -1197,17 +1073,9 @@ export const ExecuteMetadata = {
     },
 };
 
-messageTypeRegistry.set(ExecuteMetadata.$type, ExecuteMetadata);
-
-const baseRevokeRequest: object = {
-    $type: 'yandex.cloud.backup.v1.RevokeRequest',
-    policyId: '',
-    computeInstanceId: '',
-};
+const baseRevokeRequest: object = { policyId: '', computeInstanceId: '' };
 
 export const RevokeRequest = {
-    $type: 'yandex.cloud.backup.v1.RevokeRequest' as const,
-
     encode(message: RevokeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -1268,17 +1136,9 @@ export const RevokeRequest = {
     },
 };
 
-messageTypeRegistry.set(RevokeRequest.$type, RevokeRequest);
-
-const baseRevokeMetadata: object = {
-    $type: 'yandex.cloud.backup.v1.RevokeMetadata',
-    policyId: '',
-    computeInstanceId: '',
-};
+const baseRevokeMetadata: object = { policyId: '', computeInstanceId: '' };
 
 export const RevokeMetadata = {
-    $type: 'yandex.cloud.backup.v1.RevokeMetadata' as const,
-
     encode(message: RevokeMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -1338,8 +1198,6 @@ export const RevokeMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(RevokeMetadata.$type, RevokeMetadata);
 
 /** A set of methods for managing [policies](/docs/backup/concepts/policy). */
 export const PolicyServiceService = {
@@ -1659,16 +1517,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

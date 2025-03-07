@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -19,7 +18,6 @@ import { PointOfPresence } from '../../../../yandex/cloud/cic/v1/point_of_presen
 export const protobufPackage = 'yandex.cloud.cic.v1';
 
 export interface GetPointOfPresenceRequest {
-    $type: 'yandex.cloud.cic.v1.GetPointOfPresenceRequest';
     /**
      * ID of the PointOfPresence resource to return.
      * To get the pointOfPresence ID use a [PointOfPresenceService.List] request.
@@ -28,7 +26,6 @@ export interface GetPointOfPresenceRequest {
 }
 
 export interface ListPointOfPresencesRequest {
-    $type: 'yandex.cloud.cic.v1.ListPointOfPresencesRequest';
     /**
      * The maximum number of results per page to return. If the number of available
      * results is larger than [page_size],
@@ -52,7 +49,6 @@ export interface ListPointOfPresencesRequest {
 }
 
 export interface ListPointOfPresencesResponse {
-    $type: 'yandex.cloud.cic.v1.ListPointOfPresencesResponse';
     /** List of PointOfPresence resources. */
     pointOfPresences: PointOfPresence[];
     /**
@@ -66,14 +62,9 @@ export interface ListPointOfPresencesResponse {
     nextPageToken: string;
 }
 
-const baseGetPointOfPresenceRequest: object = {
-    $type: 'yandex.cloud.cic.v1.GetPointOfPresenceRequest',
-    pointOfPresenceId: '',
-};
+const baseGetPointOfPresenceRequest: object = { pointOfPresenceId: '' };
 
 export const GetPointOfPresenceRequest = {
-    $type: 'yandex.cloud.cic.v1.GetPointOfPresenceRequest' as const,
-
     encode(
         message: GetPointOfPresenceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -127,18 +118,9 @@ export const GetPointOfPresenceRequest = {
     },
 };
 
-messageTypeRegistry.set(GetPointOfPresenceRequest.$type, GetPointOfPresenceRequest);
-
-const baseListPointOfPresencesRequest: object = {
-    $type: 'yandex.cloud.cic.v1.ListPointOfPresencesRequest',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListPointOfPresencesRequest: object = { pageSize: 0, pageToken: '', filter: '' };
 
 export const ListPointOfPresencesRequest = {
-    $type: 'yandex.cloud.cic.v1.ListPointOfPresencesRequest' as const,
-
     encode(
         message: ListPointOfPresencesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -211,16 +193,9 @@ export const ListPointOfPresencesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListPointOfPresencesRequest.$type, ListPointOfPresencesRequest);
-
-const baseListPointOfPresencesResponse: object = {
-    $type: 'yandex.cloud.cic.v1.ListPointOfPresencesResponse',
-    nextPageToken: '',
-};
+const baseListPointOfPresencesResponse: object = { nextPageToken: '' };
 
 export const ListPointOfPresencesResponse = {
-    $type: 'yandex.cloud.cic.v1.ListPointOfPresencesResponse' as const,
-
     encode(
         message: ListPointOfPresencesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -291,8 +266,6 @@ export const ListPointOfPresencesResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListPointOfPresencesResponse.$type, ListPointOfPresencesResponse);
 
 /** A set of methods for managing PointOfPresence resources. */
 export const PointOfPresenceServiceService = {
@@ -408,16 +381,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

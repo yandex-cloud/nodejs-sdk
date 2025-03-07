@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../../google/protobuf/duration';
@@ -8,7 +7,6 @@ import { Timestamp } from '../../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.serverless.workflows.v1';
 
 export interface Execution {
-    $type: 'yandex.cloud.serverless.workflows.v1.Execution';
     /** ID of the Workflow execution. Generated at creation time. */
     id: string;
     /** ID of the Workflow. */
@@ -96,7 +94,6 @@ export function execution_StatusToJSON(object: Execution_Status): string {
 }
 
 export interface ExecutionPreview {
-    $type: 'yandex.cloud.serverless.workflows.v1.ExecutionPreview';
     /** ID of the Workflow execution. Generated at creation time. */
     id: string;
     /** ID of the Workflow. */
@@ -110,35 +107,25 @@ export interface ExecutionPreview {
 }
 
 export interface ExecutionInput {
-    $type: 'yandex.cloud.serverless.workflows.v1.ExecutionInput';
     /** JSON input data for the Workflow execution. */
     inputJson: string | undefined;
 }
 
 export interface ExecutionResult {
-    $type: 'yandex.cloud.serverless.workflows.v1.ExecutionResult';
     /** JSON result of the Workflow execution. */
     resultJson: string | undefined;
 }
 
 export interface ExecutionError {
-    $type: 'yandex.cloud.serverless.workflows.v1.ExecutionError';
     /** Error message of the Workflow execution. */
     message: string;
     /** Error code of the Workflow execution. */
     errorCode: string;
 }
 
-const baseExecution: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.Execution',
-    id: '',
-    workflowId: '',
-    status: 0,
-};
+const baseExecution: object = { id: '', workflowId: '', status: 0 };
 
 export const Execution = {
-    $type: 'yandex.cloud.serverless.workflows.v1.Execution' as const,
-
     encode(message: Execution, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -283,18 +270,9 @@ export const Execution = {
     },
 };
 
-messageTypeRegistry.set(Execution.$type, Execution);
-
-const baseExecutionPreview: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.ExecutionPreview',
-    id: '',
-    workflowId: '',
-    status: 0,
-};
+const baseExecutionPreview: object = { id: '', workflowId: '', status: 0 };
 
 export const ExecutionPreview = {
-    $type: 'yandex.cloud.serverless.workflows.v1.ExecutionPreview' as const,
-
     encode(message: ExecutionPreview, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -391,13 +369,9 @@ export const ExecutionPreview = {
     },
 };
 
-messageTypeRegistry.set(ExecutionPreview.$type, ExecutionPreview);
-
-const baseExecutionInput: object = { $type: 'yandex.cloud.serverless.workflows.v1.ExecutionInput' };
+const baseExecutionInput: object = {};
 
 export const ExecutionInput = {
-    $type: 'yandex.cloud.serverless.workflows.v1.ExecutionInput' as const,
-
     encode(message: ExecutionInput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.inputJson !== undefined) {
             writer.uint32(10).string(message.inputJson);
@@ -445,15 +419,9 @@ export const ExecutionInput = {
     },
 };
 
-messageTypeRegistry.set(ExecutionInput.$type, ExecutionInput);
-
-const baseExecutionResult: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.ExecutionResult',
-};
+const baseExecutionResult: object = {};
 
 export const ExecutionResult = {
-    $type: 'yandex.cloud.serverless.workflows.v1.ExecutionResult' as const,
-
     encode(message: ExecutionResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resultJson !== undefined) {
             writer.uint32(10).string(message.resultJson);
@@ -501,17 +469,9 @@ export const ExecutionResult = {
     },
 };
 
-messageTypeRegistry.set(ExecutionResult.$type, ExecutionResult);
-
-const baseExecutionError: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.ExecutionError',
-    message: '',
-    errorCode: '',
-};
+const baseExecutionError: object = { message: '', errorCode: '' };
 
 export const ExecutionError = {
-    $type: 'yandex.cloud.serverless.workflows.v1.ExecutionError' as const,
-
     encode(message: ExecutionError, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.message !== '') {
             writer.uint32(10).string(message.message);
@@ -569,8 +529,6 @@ export const ExecutionError = {
     },
 };
 
-messageTypeRegistry.set(ExecutionError.$type, ExecutionError);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -580,21 +538,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

@@ -1,29 +1,19 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.ai.tuning.v1';
 
 export interface OptimizerAdamw {
-    $type: 'yandex.cloud.ai.tuning.v1.OptimizerAdamw';
     beta1: number;
     beta2: number;
     eps: number;
     weightDecay: number;
 }
 
-const baseOptimizerAdamw: object = {
-    $type: 'yandex.cloud.ai.tuning.v1.OptimizerAdamw',
-    beta1: 0,
-    beta2: 0,
-    eps: 0,
-    weightDecay: 0,
-};
+const baseOptimizerAdamw: object = { beta1: 0, beta2: 0, eps: 0, weightDecay: 0 };
 
 export const OptimizerAdamw = {
-    $type: 'yandex.cloud.ai.tuning.v1.OptimizerAdamw' as const,
-
     encode(message: OptimizerAdamw, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.beta1 !== 0) {
             writer.uint32(9).double(message.beta1);
@@ -100,8 +90,6 @@ export const OptimizerAdamw = {
     },
 };
 
-messageTypeRegistry.set(OptimizerAdamw.$type, OptimizerAdamw);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -111,16 +99,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

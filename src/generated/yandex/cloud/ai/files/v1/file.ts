@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { ExpirationConfig } from '../../../../../yandex/cloud/ai/common/common';
@@ -8,7 +7,6 @@ import { Timestamp } from '../../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.ai.files.v1';
 
 export interface File {
-    $type: 'yandex.cloud.ai.files.v1.File';
     /** Unique identifier of the file. */
     id: string;
     /** ID of the folder that the file belongs to. */
@@ -36,13 +34,11 @@ export interface File {
 }
 
 export interface File_LabelsEntry {
-    $type: 'yandex.cloud.ai.files.v1.File.LabelsEntry';
     key: string;
     value: string;
 }
 
 const baseFile: object = {
-    $type: 'yandex.cloud.ai.files.v1.File',
     id: '',
     folderId: '',
     name: '',
@@ -53,8 +49,6 @@ const baseFile: object = {
 };
 
 export const File = {
-    $type: 'yandex.cloud.ai.files.v1.File' as const,
-
     encode(message: File, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -90,10 +84,7 @@ export const File = {
             Timestamp.encode(toTimestamp(message.expiresAt), writer.uint32(90).fork()).ldelim();
         }
         Object.entries(message.labels).forEach(([key, value]) => {
-            File_LabelsEntry.encode(
-                { $type: 'yandex.cloud.ai.files.v1.File.LabelsEntry', key: key as any, value },
-                writer.uint32(98).fork(),
-            ).ldelim();
+            File_LabelsEntry.encode({ key: key as any, value }, writer.uint32(98).fork()).ldelim();
         });
         return writer;
     },
@@ -257,17 +248,9 @@ export const File = {
     },
 };
 
-messageTypeRegistry.set(File.$type, File);
-
-const baseFile_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.files.v1.File.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseFile_LabelsEntry: object = { key: '', value: '' };
 
 export const File_LabelsEntry = {
-    $type: 'yandex.cloud.ai.files.v1.File.LabelsEntry' as const,
-
     encode(message: File_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -322,8 +305,6 @@ export const File_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(File_LabelsEntry.$type, File_LabelsEntry);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -333,21 +314,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.iam.v1';
 
 /** Currently represents only [Yandex account](/docs/iam/concepts/users/accounts#passport). */
 export interface UserAccount {
-    $type: 'yandex.cloud.iam.v1.UserAccount';
     /** ID of the user account. */
     id: string;
     /** A YandexPassportUserAccount resource. */
@@ -23,7 +21,6 @@ export interface UserAccount {
  * For more information, see [Yandex account](/docs/iam/concepts/users/accounts#passport).
  */
 export interface YandexPassportUserAccount {
-    $type: 'yandex.cloud.iam.v1.YandexPassportUserAccount';
     /** Login of the Yandex user account. */
     login: string;
     /** Default email of the Yandex user account. */
@@ -35,7 +32,6 @@ export interface YandexPassportUserAccount {
  * For more information, see [federations](/docs/iam/concepts/federations).
  */
 export interface SamlUserAccount {
-    $type: 'yandex.cloud.iam.v1.SamlUserAccount';
     /** ID of the federation that the federation belongs to. */
     federationId: string;
     /**
@@ -48,21 +44,17 @@ export interface SamlUserAccount {
 }
 
 export interface SamlUserAccount_Attribute {
-    $type: 'yandex.cloud.iam.v1.SamlUserAccount.Attribute';
     value: string[];
 }
 
 export interface SamlUserAccount_AttributesEntry {
-    $type: 'yandex.cloud.iam.v1.SamlUserAccount.AttributesEntry';
     key: string;
     value?: SamlUserAccount_Attribute;
 }
 
-const baseUserAccount: object = { $type: 'yandex.cloud.iam.v1.UserAccount', id: '' };
+const baseUserAccount: object = { id: '' };
 
 export const UserAccount = {
-    $type: 'yandex.cloud.iam.v1.UserAccount' as const,
-
     encode(message: UserAccount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -169,17 +161,9 @@ export const UserAccount = {
     },
 };
 
-messageTypeRegistry.set(UserAccount.$type, UserAccount);
-
-const baseYandexPassportUserAccount: object = {
-    $type: 'yandex.cloud.iam.v1.YandexPassportUserAccount',
-    login: '',
-    defaultEmail: '',
-};
+const baseYandexPassportUserAccount: object = { login: '', defaultEmail: '' };
 
 export const YandexPassportUserAccount = {
-    $type: 'yandex.cloud.iam.v1.YandexPassportUserAccount' as const,
-
     encode(
         message: YandexPassportUserAccount,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -242,17 +226,9 @@ export const YandexPassportUserAccount = {
     },
 };
 
-messageTypeRegistry.set(YandexPassportUserAccount.$type, YandexPassportUserAccount);
-
-const baseSamlUserAccount: object = {
-    $type: 'yandex.cloud.iam.v1.SamlUserAccount',
-    federationId: '',
-    nameId: '',
-};
+const baseSamlUserAccount: object = { federationId: '', nameId: '' };
 
 export const SamlUserAccount = {
-    $type: 'yandex.cloud.iam.v1.SamlUserAccount' as const,
-
     encode(message: SamlUserAccount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.federationId !== '') {
             writer.uint32(10).string(message.federationId);
@@ -262,11 +238,7 @@ export const SamlUserAccount = {
         }
         Object.entries(message.attributes).forEach(([key, value]) => {
             SamlUserAccount_AttributesEntry.encode(
-                {
-                    $type: 'yandex.cloud.iam.v1.SamlUserAccount.AttributesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(26).fork(),
             ).ldelim();
         });
@@ -347,16 +319,9 @@ export const SamlUserAccount = {
     },
 };
 
-messageTypeRegistry.set(SamlUserAccount.$type, SamlUserAccount);
-
-const baseSamlUserAccount_Attribute: object = {
-    $type: 'yandex.cloud.iam.v1.SamlUserAccount.Attribute',
-    value: '',
-};
+const baseSamlUserAccount_Attribute: object = { value: '' };
 
 export const SamlUserAccount_Attribute = {
-    $type: 'yandex.cloud.iam.v1.SamlUserAccount.Attribute' as const,
-
     encode(
         message: SamlUserAccount_Attribute,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -411,16 +376,9 @@ export const SamlUserAccount_Attribute = {
     },
 };
 
-messageTypeRegistry.set(SamlUserAccount_Attribute.$type, SamlUserAccount_Attribute);
-
-const baseSamlUserAccount_AttributesEntry: object = {
-    $type: 'yandex.cloud.iam.v1.SamlUserAccount.AttributesEntry',
-    key: '',
-};
+const baseSamlUserAccount_AttributesEntry: object = { key: '' };
 
 export const SamlUserAccount_AttributesEntry = {
-    $type: 'yandex.cloud.iam.v1.SamlUserAccount.AttributesEntry' as const,
-
     encode(
         message: SamlUserAccount_AttributesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -494,8 +452,6 @@ export const SamlUserAccount_AttributesEntry = {
     },
 };
 
-messageTypeRegistry.set(SamlUserAccount_AttributesEntry.$type, SamlUserAccount_AttributesEntry);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -505,21 +461,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

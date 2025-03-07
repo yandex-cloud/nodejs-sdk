@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,7 +19,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.speechsense.v1';
 
 export interface CreateProjectRequest {
-    $type: 'yandex.cloud.speechsense.v1.CreateProjectRequest';
     /** project name */
     name: string;
     /** id of connection the project should belong too */
@@ -32,20 +30,12 @@ export interface CreateProjectRequest {
 }
 
 export interface CreateProjectMetadata {
-    $type: 'yandex.cloud.speechsense.v1.CreateProjectMetadata';
     id: string;
 }
 
-const baseCreateProjectRequest: object = {
-    $type: 'yandex.cloud.speechsense.v1.CreateProjectRequest',
-    name: '',
-    connectionId: '',
-    description: '',
-};
+const baseCreateProjectRequest: object = { name: '', connectionId: '', description: '' };
 
 export const CreateProjectRequest = {
-    $type: 'yandex.cloud.speechsense.v1.CreateProjectRequest' as const,
-
     encode(message: CreateProjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -130,16 +120,9 @@ export const CreateProjectRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateProjectRequest.$type, CreateProjectRequest);
-
-const baseCreateProjectMetadata: object = {
-    $type: 'yandex.cloud.speechsense.v1.CreateProjectMetadata',
-    id: '',
-};
+const baseCreateProjectMetadata: object = { id: '' };
 
 export const CreateProjectMetadata = {
-    $type: 'yandex.cloud.speechsense.v1.CreateProjectMetadata' as const,
-
     encode(message: CreateProjectMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -185,8 +168,6 @@ export const CreateProjectMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(CreateProjectMetadata.$type, CreateProjectMetadata);
 
 export const ProjectServiceService = {
     /** rpc for creating speechsense project */
@@ -247,16 +228,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

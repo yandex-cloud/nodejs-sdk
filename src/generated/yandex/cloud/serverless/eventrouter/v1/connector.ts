@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../../google/protobuf/duration';
@@ -8,7 +7,6 @@ import { Timestamp } from '../../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.serverless.eventrouter.v1';
 
 export interface Connector {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Connector';
     /** ID of the connector. */
     id: string;
     /** ID of the bus that the connector belongs to. */
@@ -109,20 +107,17 @@ export function connector_StatusToJSON(object: Connector_Status): string {
 }
 
 export interface Connector_LabelsEntry {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Connector.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface Source {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Source';
     dataStream?: DataStream | undefined;
     messageQueue?: MessageQueue | undefined;
     timer?: Timer | undefined;
 }
 
 export interface DataStream {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DataStream';
     /**
      * Stream database.
      * example: /ru-central1/aoegtvhtp8ob******** /cc8004q4lbo6********
@@ -137,7 +132,6 @@ export interface DataStream {
 }
 
 export interface MessageQueue {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.MessageQueue';
     /**
      * Queue ARN.
      * Example: yrn:yc:ymq:ru-central1:aoe***:test
@@ -154,7 +148,6 @@ export interface MessageQueue {
 }
 
 export interface Timer {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Timer';
     /** cron expression, with second precision */
     cronExpression: string;
     /** time zone, e.g. Europe/Moscow */
@@ -164,7 +157,6 @@ export interface Timer {
 }
 
 const baseConnector: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Connector',
     id: '',
     busId: '',
     folderId: '',
@@ -176,8 +168,6 @@ const baseConnector: object = {
 };
 
 export const Connector = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Connector' as const,
-
     encode(message: Connector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -202,11 +192,7 @@ export const Connector = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Connector_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.eventrouter.v1.Connector.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(66).fork(),
             ).ldelim();
         });
@@ -367,17 +353,9 @@ export const Connector = {
     },
 };
 
-messageTypeRegistry.set(Connector.$type, Connector);
-
-const baseConnector_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Connector.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseConnector_LabelsEntry: object = { key: '', value: '' };
 
 export const Connector_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Connector.LabelsEntry' as const,
-
     encode(message: Connector_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -434,13 +412,9 @@ export const Connector_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Connector_LabelsEntry.$type, Connector_LabelsEntry);
-
-const baseSource: object = { $type: 'yandex.cloud.serverless.eventrouter.v1.Source' };
+const baseSource: object = {};
 
 export const Source = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Source' as const,
-
     encode(message: Source, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataStream !== undefined) {
             DataStream.encode(message.dataStream, writer.uint32(10).fork()).ldelim();
@@ -528,19 +502,9 @@ export const Source = {
     },
 };
 
-messageTypeRegistry.set(Source.$type, Source);
-
-const baseDataStream: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DataStream',
-    database: '',
-    streamName: '',
-    consumer: '',
-    serviceAccountId: '',
-};
+const baseDataStream: object = { database: '', streamName: '', consumer: '', serviceAccountId: '' };
 
 export const DataStream = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.DataStream' as const,
-
     encode(message: DataStream, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.database !== '') {
             writer.uint32(10).string(message.database);
@@ -624,18 +588,9 @@ export const DataStream = {
     },
 };
 
-messageTypeRegistry.set(DataStream.$type, DataStream);
-
-const baseMessageQueue: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.MessageQueue',
-    queueArn: '',
-    serviceAccountId: '',
-    batchSize: 0,
-};
+const baseMessageQueue: object = { queueArn: '', serviceAccountId: '', batchSize: 0 };
 
 export const MessageQueue = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.MessageQueue' as const,
-
     encode(message: MessageQueue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.queueArn !== '') {
             writer.uint32(10).string(message.queueArn);
@@ -743,18 +698,9 @@ export const MessageQueue = {
     },
 };
 
-messageTypeRegistry.set(MessageQueue.$type, MessageQueue);
-
-const baseTimer: object = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Timer',
-    cronExpression: '',
-    timeZone: '',
-    payload: '',
-};
+const baseTimer: object = { cronExpression: '', timeZone: '', payload: '' };
 
 export const Timer = {
-    $type: 'yandex.cloud.serverless.eventrouter.v1.Timer' as const,
-
     encode(message: Timer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cronExpression !== '') {
             writer.uint32(10).string(message.cronExpression);
@@ -824,8 +770,6 @@ export const Timer = {
     },
 };
 
-messageTypeRegistry.set(Timer.$type, Timer);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -846,21 +790,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

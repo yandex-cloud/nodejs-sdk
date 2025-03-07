@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -34,13 +33,11 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.airflow.v1';
 
 export interface GetClusterRequest {
-    $type: 'yandex.cloud.airflow.v1.GetClusterRequest';
     /** ID of the Apache Airflow Cluster resource to return. */
     clusterId: string;
 }
 
 export interface ListClustersRequest {
-    $type: 'yandex.cloud.airflow.v1.ListClustersRequest';
     /** ID of the folder to list Apache Airflow clusters in. */
     folderId: string;
     /**
@@ -65,7 +62,6 @@ export interface ListClustersRequest {
 }
 
 export interface ListClustersResponse {
-    $type: 'yandex.cloud.airflow.v1.ListClustersResponse';
     /** List of Apache Airflow Cluster resources. */
     clusters: Cluster[];
     /**
@@ -78,7 +74,6 @@ export interface ListClustersResponse {
 }
 
 export interface CreateClusterRequest {
-    $type: 'yandex.cloud.airflow.v1.CreateClusterRequest';
     /** ID of the folder to create Apache Airflow cluster in. */
     folderId: string;
     /** Name of the Apache Airflow cluster. The name must be unique within the folder. */
@@ -107,19 +102,16 @@ export interface CreateClusterRequest {
 }
 
 export interface CreateClusterRequest_LabelsEntry {
-    $type: 'yandex.cloud.airflow.v1.CreateClusterRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateClusterMetadata {
-    $type: 'yandex.cloud.airflow.v1.CreateClusterMetadata';
     /** ID of the Apache Airflow cluster that is being created. */
     clusterId: string;
 }
 
 export interface UpdateClusterConfigSpec {
-    $type: 'yandex.cloud.airflow.v1.UpdateClusterConfigSpec';
     /** Configuration of the Apache Airflow application itself. */
     airflow?: AirflowConfig;
     /** Configuration of webserver instances. */
@@ -141,13 +133,11 @@ export interface UpdateClusterConfigSpec {
 }
 
 export interface UpdateNetworkConfigSpec {
-    $type: 'yandex.cloud.airflow.v1.UpdateNetworkConfigSpec';
     /** User security groups. */
     securityGroupIds: string[];
 }
 
 export interface UpdateClusterRequest {
-    $type: 'yandex.cloud.airflow.v1.UpdateClusterRequest';
     /** ID of the Apache Airflow Cluster resource to update. */
     clusterId: string;
     /** Field mask that specifies which fields of the Apache Airflow Cluster resource should be updated. */
@@ -181,55 +171,46 @@ export interface UpdateClusterRequest {
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
-    $type: 'yandex.cloud.airflow.v1.UpdateClusterRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateClusterMetadata {
-    $type: 'yandex.cloud.airflow.v1.UpdateClusterMetadata';
     /** ID of the Apache Airflow Cluster resource that is being updated. */
     clusterId: string;
 }
 
 export interface DeleteClusterRequest {
-    $type: 'yandex.cloud.airflow.v1.DeleteClusterRequest';
     /** ID of the Apache Airflow cluster to delete. */
     clusterId: string;
 }
 
 export interface DeleteClusterMetadata {
-    $type: 'yandex.cloud.airflow.v1.DeleteClusterMetadata';
     /** ID of the Apache Airflow cluster that is being deleted. */
     clusterId: string;
 }
 
 export interface StartClusterRequest {
-    $type: 'yandex.cloud.airflow.v1.StartClusterRequest';
     /** ID of the Apache Airflow cluster to start. */
     clusterId: string;
 }
 
 export interface StartClusterMetadata {
-    $type: 'yandex.cloud.airflow.v1.StartClusterMetadata';
     /** ID of the Apache Airflow cluster that is being started. */
     clusterId: string;
 }
 
 export interface StopClusterRequest {
-    $type: 'yandex.cloud.airflow.v1.StopClusterRequest';
     /** ID of the Apache Airflow cluster to stop. */
     clusterId: string;
 }
 
 export interface StopClusterMetadata {
-    $type: 'yandex.cloud.airflow.v1.StopClusterMetadata';
     /** ID of the Apache Airflow cluster that is being stopped. */
     clusterId: string;
 }
 
 export interface ListClusterOperationsRequest {
-    $type: 'yandex.cloud.airflow.v1.ListClusterOperationsRequest';
     /** ID of the Apache Airflow Cluster resource to list operations for. */
     clusterId: string;
     /**
@@ -246,7 +227,6 @@ export interface ListClusterOperationsRequest {
 }
 
 export interface ListClusterOperationsResponse {
-    $type: 'yandex.cloud.airflow.v1.ListClusterOperationsResponse';
     /** List of Operation resources for the specified Apache Airflow cluster. */
     operations: Operation[];
     /**
@@ -258,14 +238,9 @@ export interface ListClusterOperationsResponse {
     nextPageToken: string;
 }
 
-const baseGetClusterRequest: object = {
-    $type: 'yandex.cloud.airflow.v1.GetClusterRequest',
-    clusterId: '',
-};
+const baseGetClusterRequest: object = { clusterId: '' };
 
 export const GetClusterRequest = {
-    $type: 'yandex.cloud.airflow.v1.GetClusterRequest' as const,
-
     encode(message: GetClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -313,19 +288,9 @@ export const GetClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(GetClusterRequest.$type, GetClusterRequest);
-
-const baseListClustersRequest: object = {
-    $type: 'yandex.cloud.airflow.v1.ListClustersRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListClustersRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListClustersRequest = {
-    $type: 'yandex.cloud.airflow.v1.ListClustersRequest' as const,
-
     encode(message: ListClustersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -407,16 +372,9 @@ export const ListClustersRequest = {
     },
 };
 
-messageTypeRegistry.set(ListClustersRequest.$type, ListClustersRequest);
-
-const baseListClustersResponse: object = {
-    $type: 'yandex.cloud.airflow.v1.ListClustersResponse',
-    nextPageToken: '',
-};
+const baseListClustersResponse: object = { nextPageToken: '' };
 
 export const ListClustersResponse = {
-    $type: 'yandex.cloud.airflow.v1.ListClustersResponse' as const,
-
     encode(message: ListClustersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.clusters) {
             Cluster.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -480,10 +438,7 @@ export const ListClustersResponse = {
     },
 };
 
-messageTypeRegistry.set(ListClustersResponse.$type, ListClustersResponse);
-
 const baseCreateClusterRequest: object = {
-    $type: 'yandex.cloud.airflow.v1.CreateClusterRequest',
     folderId: '',
     name: '',
     description: '',
@@ -493,8 +448,6 @@ const baseCreateClusterRequest: object = {
 };
 
 export const CreateClusterRequest = {
-    $type: 'yandex.cloud.airflow.v1.CreateClusterRequest' as const,
-
     encode(message: CreateClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -507,11 +460,7 @@ export const CreateClusterRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateClusterRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.airflow.v1.CreateClusterRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -705,17 +654,9 @@ export const CreateClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateClusterRequest.$type, CreateClusterRequest);
-
-const baseCreateClusterRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.airflow.v1.CreateClusterRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateClusterRequest_LabelsEntry = {
-    $type: 'yandex.cloud.airflow.v1.CreateClusterRequest.LabelsEntry' as const,
-
     encode(
         message: CreateClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -781,16 +722,9 @@ export const CreateClusterRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateClusterRequest_LabelsEntry.$type, CreateClusterRequest_LabelsEntry);
-
-const baseCreateClusterMetadata: object = {
-    $type: 'yandex.cloud.airflow.v1.CreateClusterMetadata',
-    clusterId: '',
-};
+const baseCreateClusterMetadata: object = { clusterId: '' };
 
 export const CreateClusterMetadata = {
-    $type: 'yandex.cloud.airflow.v1.CreateClusterMetadata' as const,
-
     encode(message: CreateClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -840,17 +774,9 @@ export const CreateClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateClusterMetadata.$type, CreateClusterMetadata);
-
-const baseUpdateClusterConfigSpec: object = {
-    $type: 'yandex.cloud.airflow.v1.UpdateClusterConfigSpec',
-    airflowVersion: '',
-    pythonVersion: '',
-};
+const baseUpdateClusterConfigSpec: object = { airflowVersion: '', pythonVersion: '' };
 
 export const UpdateClusterConfigSpec = {
-    $type: 'yandex.cloud.airflow.v1.UpdateClusterConfigSpec' as const,
-
     encode(message: UpdateClusterConfigSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.airflow !== undefined) {
             AirflowConfig.encode(message.airflow, writer.uint32(18).fork()).ldelim();
@@ -1032,16 +958,9 @@ export const UpdateClusterConfigSpec = {
     },
 };
 
-messageTypeRegistry.set(UpdateClusterConfigSpec.$type, UpdateClusterConfigSpec);
-
-const baseUpdateNetworkConfigSpec: object = {
-    $type: 'yandex.cloud.airflow.v1.UpdateNetworkConfigSpec',
-    securityGroupIds: '',
-};
+const baseUpdateNetworkConfigSpec: object = { securityGroupIds: '' };
 
 export const UpdateNetworkConfigSpec = {
-    $type: 'yandex.cloud.airflow.v1.UpdateNetworkConfigSpec' as const,
-
     encode(message: UpdateNetworkConfigSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.securityGroupIds) {
             writer.uint32(10).string(v!);
@@ -1093,10 +1012,7 @@ export const UpdateNetworkConfigSpec = {
     },
 };
 
-messageTypeRegistry.set(UpdateNetworkConfigSpec.$type, UpdateNetworkConfigSpec);
-
 const baseUpdateClusterRequest: object = {
-    $type: 'yandex.cloud.airflow.v1.UpdateClusterRequest',
     clusterId: '',
     name: '',
     description: '',
@@ -1105,8 +1021,6 @@ const baseUpdateClusterRequest: object = {
 };
 
 export const UpdateClusterRequest = {
-    $type: 'yandex.cloud.airflow.v1.UpdateClusterRequest' as const,
-
     encode(message: UpdateClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1122,11 +1036,7 @@ export const UpdateClusterRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateClusterRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.airflow.v1.UpdateClusterRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -1327,17 +1237,9 @@ export const UpdateClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateClusterRequest.$type, UpdateClusterRequest);
-
-const baseUpdateClusterRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.airflow.v1.UpdateClusterRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateClusterRequest_LabelsEntry = {
-    $type: 'yandex.cloud.airflow.v1.UpdateClusterRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1403,16 +1305,9 @@ export const UpdateClusterRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateClusterRequest_LabelsEntry.$type, UpdateClusterRequest_LabelsEntry);
-
-const baseUpdateClusterMetadata: object = {
-    $type: 'yandex.cloud.airflow.v1.UpdateClusterMetadata',
-    clusterId: '',
-};
+const baseUpdateClusterMetadata: object = { clusterId: '' };
 
 export const UpdateClusterMetadata = {
-    $type: 'yandex.cloud.airflow.v1.UpdateClusterMetadata' as const,
-
     encode(message: UpdateClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1462,16 +1357,9 @@ export const UpdateClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateClusterMetadata.$type, UpdateClusterMetadata);
-
-const baseDeleteClusterRequest: object = {
-    $type: 'yandex.cloud.airflow.v1.DeleteClusterRequest',
-    clusterId: '',
-};
+const baseDeleteClusterRequest: object = { clusterId: '' };
 
 export const DeleteClusterRequest = {
-    $type: 'yandex.cloud.airflow.v1.DeleteClusterRequest' as const,
-
     encode(message: DeleteClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1521,16 +1409,9 @@ export const DeleteClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteClusterRequest.$type, DeleteClusterRequest);
-
-const baseDeleteClusterMetadata: object = {
-    $type: 'yandex.cloud.airflow.v1.DeleteClusterMetadata',
-    clusterId: '',
-};
+const baseDeleteClusterMetadata: object = { clusterId: '' };
 
 export const DeleteClusterMetadata = {
-    $type: 'yandex.cloud.airflow.v1.DeleteClusterMetadata' as const,
-
     encode(message: DeleteClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1580,16 +1461,9 @@ export const DeleteClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteClusterMetadata.$type, DeleteClusterMetadata);
-
-const baseStartClusterRequest: object = {
-    $type: 'yandex.cloud.airflow.v1.StartClusterRequest',
-    clusterId: '',
-};
+const baseStartClusterRequest: object = { clusterId: '' };
 
 export const StartClusterRequest = {
-    $type: 'yandex.cloud.airflow.v1.StartClusterRequest' as const,
-
     encode(message: StartClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1639,16 +1513,9 @@ export const StartClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(StartClusterRequest.$type, StartClusterRequest);
-
-const baseStartClusterMetadata: object = {
-    $type: 'yandex.cloud.airflow.v1.StartClusterMetadata',
-    clusterId: '',
-};
+const baseStartClusterMetadata: object = { clusterId: '' };
 
 export const StartClusterMetadata = {
-    $type: 'yandex.cloud.airflow.v1.StartClusterMetadata' as const,
-
     encode(message: StartClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1698,16 +1565,9 @@ export const StartClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(StartClusterMetadata.$type, StartClusterMetadata);
-
-const baseStopClusterRequest: object = {
-    $type: 'yandex.cloud.airflow.v1.StopClusterRequest',
-    clusterId: '',
-};
+const baseStopClusterRequest: object = { clusterId: '' };
 
 export const StopClusterRequest = {
-    $type: 'yandex.cloud.airflow.v1.StopClusterRequest' as const,
-
     encode(message: StopClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1757,16 +1617,9 @@ export const StopClusterRequest = {
     },
 };
 
-messageTypeRegistry.set(StopClusterRequest.$type, StopClusterRequest);
-
-const baseStopClusterMetadata: object = {
-    $type: 'yandex.cloud.airflow.v1.StopClusterMetadata',
-    clusterId: '',
-};
+const baseStopClusterMetadata: object = { clusterId: '' };
 
 export const StopClusterMetadata = {
-    $type: 'yandex.cloud.airflow.v1.StopClusterMetadata' as const,
-
     encode(message: StopClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1816,18 +1669,9 @@ export const StopClusterMetadata = {
     },
 };
 
-messageTypeRegistry.set(StopClusterMetadata.$type, StopClusterMetadata);
-
-const baseListClusterOperationsRequest: object = {
-    $type: 'yandex.cloud.airflow.v1.ListClusterOperationsRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListClusterOperationsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListClusterOperationsRequest = {
-    $type: 'yandex.cloud.airflow.v1.ListClusterOperationsRequest' as const,
-
     encode(
         message: ListClusterOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1902,16 +1746,9 @@ export const ListClusterOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListClusterOperationsRequest.$type, ListClusterOperationsRequest);
-
-const baseListClusterOperationsResponse: object = {
-    $type: 'yandex.cloud.airflow.v1.ListClusterOperationsResponse',
-    nextPageToken: '',
-};
+const baseListClusterOperationsResponse: object = { nextPageToken: '' };
 
 export const ListClusterOperationsResponse = {
-    $type: 'yandex.cloud.airflow.v1.ListClusterOperationsResponse' as const,
-
     encode(
         message: ListClusterOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1977,8 +1814,6 @@ export const ListClusterOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListClusterOperationsResponse.$type, ListClusterOperationsResponse);
 
 /** A set of methods for managing Apache Airflow Cluster resources. */
 export const ClusterServiceService = {
@@ -2256,16 +2091,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../../../google/protobuf/timestamp';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.ai.assistants.v1.searchindex';
 
 /** Represents a file that has been indexed within a search index. */
 export interface SearchIndexFile {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.SearchIndexFile';
     /** Unique identifier of the file that was used for indexing. */
     id: string;
     /** ID of the search index that contains this file. */
@@ -19,16 +17,9 @@ export interface SearchIndexFile {
     createdAt?: Date;
 }
 
-const baseSearchIndexFile: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.SearchIndexFile',
-    id: '',
-    searchIndexId: '',
-    createdBy: '',
-};
+const baseSearchIndexFile: object = { id: '', searchIndexId: '', createdBy: '' };
 
 export const SearchIndexFile = {
-    $type: 'yandex.cloud.ai.assistants.v1.searchindex.SearchIndexFile' as const,
-
     encode(message: SearchIndexFile, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -109,8 +100,6 @@ export const SearchIndexFile = {
     },
 };
 
-messageTypeRegistry.set(SearchIndexFile.$type, SearchIndexFile);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -120,21 +109,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

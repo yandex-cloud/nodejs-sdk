@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
@@ -11,7 +10,6 @@ export const protobufPackage = 'yandex.cloud.mdb.clickhouse.v1';
  * for more information.
  */
 export interface Backup {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.Backup';
     /** ID of the backup. */
     id: string;
     /** ID of the folder that the backup belongs to. */
@@ -74,7 +72,6 @@ export function backup_BackupTypeToJSON(object: Backup_BackupType): string {
 }
 
 const baseBackup: object = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.Backup',
     id: '',
     folderId: '',
     sourceClusterId: '',
@@ -84,8 +81,6 @@ const baseBackup: object = {
 };
 
 export const Backup = {
-    $type: 'yandex.cloud.mdb.clickhouse.v1.Backup' as const,
-
     encode(message: Backup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -213,8 +208,6 @@ export const Backup = {
     },
 };
 
-messageTypeRegistry.set(Backup.$type, Backup);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -235,21 +228,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

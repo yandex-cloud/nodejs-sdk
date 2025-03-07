@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -26,13 +25,11 @@ import { KpiValue } from '../../../../../yandex/cloud/loadtesting/api/v1/report/
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1';
 
 export interface GetTableReportRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetTableReportRequest';
     /** ID of the test for which report table will be returned. */
     testId: string;
 }
 
 export interface GetTableReportResponse {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetTableReportResponse';
     /** Status of report table. */
     status: Status;
     /** Result for all test cases combined ("overall" test case). */
@@ -42,13 +39,11 @@ export interface GetTableReportResponse {
 }
 
 export interface GetTableReportResponse_CasesEntry {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetTableReportResponse.CasesEntry';
     key: string;
     value?: Report;
 }
 
 export interface CalculateReportKpiValuesRequest {
-    $type: 'yandex.cloud.loadtesting.api.v1.CalculateReportKpiValuesRequest';
     /** ID of the folder containing tests. */
     folderId: string;
     /** Test filter selector to calculate KPI values for. */
@@ -64,21 +59,15 @@ export interface CalculateReportKpiValuesRequest {
 }
 
 export interface CalculateReportKpiValuesResponse {
-    $type: 'yandex.cloud.loadtesting.api.v1.CalculateReportKpiValuesResponse';
     /** ID of the folder. */
     folderId: string;
     /** Actual KPI values. */
     values: KpiValue[];
 }
 
-const baseGetTableReportRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetTableReportRequest',
-    testId: '',
-};
+const baseGetTableReportRequest: object = { testId: '' };
 
 export const GetTableReportRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetTableReportRequest' as const,
-
     encode(message: GetTableReportRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -126,16 +115,9 @@ export const GetTableReportRequest = {
     },
 };
 
-messageTypeRegistry.set(GetTableReportRequest.$type, GetTableReportRequest);
-
-const baseGetTableReportResponse: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetTableReportResponse',
-    status: 0,
-};
+const baseGetTableReportResponse: object = { status: 0 };
 
 export const GetTableReportResponse = {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetTableReportResponse' as const,
-
     encode(message: GetTableReportResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== 0) {
             writer.uint32(8).int32(message.status);
@@ -145,11 +127,7 @@ export const GetTableReportResponse = {
         }
         Object.entries(message.cases).forEach(([key, value]) => {
             GetTableReportResponse_CasesEntry.encode(
-                {
-                    $type: 'yandex.cloud.loadtesting.api.v1.GetTableReportResponse.CasesEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(26).fork(),
             ).ldelim();
         });
@@ -243,16 +221,9 @@ export const GetTableReportResponse = {
     },
 };
 
-messageTypeRegistry.set(GetTableReportResponse.$type, GetTableReportResponse);
-
-const baseGetTableReportResponse_CasesEntry: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetTableReportResponse.CasesEntry',
-    key: '',
-};
+const baseGetTableReportResponse_CasesEntry: object = { key: '' };
 
 export const GetTableReportResponse_CasesEntry = {
-    $type: 'yandex.cloud.loadtesting.api.v1.GetTableReportResponse.CasesEntry' as const,
-
     encode(
         message: GetTableReportResponse_CasesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -324,18 +295,9 @@ export const GetTableReportResponse_CasesEntry = {
     },
 };
 
-messageTypeRegistry.set(GetTableReportResponse_CasesEntry.$type, GetTableReportResponse_CasesEntry);
-
-const baseCalculateReportKpiValuesRequest: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CalculateReportKpiValuesRequest',
-    folderId: '',
-    testFilter: '',
-    testCase: '',
-};
+const baseCalculateReportKpiValuesRequest: object = { folderId: '', testFilter: '', testCase: '' };
 
 export const CalculateReportKpiValuesRequest = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CalculateReportKpiValuesRequest' as const,
-
     encode(
         message: CalculateReportKpiValuesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -431,16 +393,9 @@ export const CalculateReportKpiValuesRequest = {
     },
 };
 
-messageTypeRegistry.set(CalculateReportKpiValuesRequest.$type, CalculateReportKpiValuesRequest);
-
-const baseCalculateReportKpiValuesResponse: object = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CalculateReportKpiValuesResponse',
-    folderId: '',
-};
+const baseCalculateReportKpiValuesResponse: object = { folderId: '' };
 
 export const CalculateReportKpiValuesResponse = {
-    $type: 'yandex.cloud.loadtesting.api.v1.CalculateReportKpiValuesResponse' as const,
-
     encode(
         message: CalculateReportKpiValuesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -512,8 +467,6 @@ export const CalculateReportKpiValuesResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(CalculateReportKpiValuesResponse.$type, CalculateReportKpiValuesResponse);
 
 /** A set of methods for managing test reports. */
 export const ReportServiceService = {
@@ -609,16 +562,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -7,7 +6,6 @@ export const protobufPackage = 'yandex.cloud.cdn.v1';
 
 /** An origin. For details about the concept, see [documentation](/docs/cdn/concepts/origins). */
 export interface Origin {
-    $type: 'yandex.cloud.cdn.v1.Origin';
     /** ID of the origin. */
     id: number;
     /** ID of the parent origin group. */
@@ -38,7 +36,6 @@ export interface Origin {
 
 /** Origin parameters. For details about the concept, see [documentation](/docs/cdn/concepts/origins). */
 export interface OriginParams {
-    $type: 'yandex.cloud.cdn.v1.OriginParams';
     /** Source: IP address or Domain name of your origin and the port (if custom). */
     source: string;
     /**
@@ -65,7 +62,6 @@ export interface OriginParams {
 
 /** Origin type. For details about the concept, see [documentation](/docs/cdn/concepts/origins). */
 export interface OriginMeta {
-    $type: 'yandex.cloud.cdn.v1.OriginMeta';
     /** A server with a domain name linked to it */
     common?: OriginNamedMeta | undefined;
     /** An Object Storage bucket not configured as a static site hosting. */
@@ -81,30 +77,19 @@ export interface OriginMeta {
 
 /** Origin info. For details about the concept, see [documentation](/docs/cdn/concepts/origins). */
 export interface OriginNamedMeta {
-    $type: 'yandex.cloud.cdn.v1.OriginNamedMeta';
     /** Name of the origin. */
     name: string;
 }
 
 /** Application Load Balancer origin info. For details about the concept, see [documentation](/docs/cdn/concepts/origins). */
 export interface OriginBalancerMeta {
-    $type: 'yandex.cloud.cdn.v1.OriginBalancerMeta';
     /** ID of the origin. */
     id: string;
 }
 
-const baseOrigin: object = {
-    $type: 'yandex.cloud.cdn.v1.Origin',
-    id: 0,
-    originGroupId: 0,
-    source: '',
-    enabled: false,
-    backup: false,
-};
+const baseOrigin: object = { id: 0, originGroupId: 0, source: '', enabled: false, backup: false };
 
 export const Origin = {
-    $type: 'yandex.cloud.cdn.v1.Origin' as const,
-
     encode(message: Origin, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== 0) {
             writer.uint32(8).int64(message.id);
@@ -210,18 +195,9 @@ export const Origin = {
     },
 };
 
-messageTypeRegistry.set(Origin.$type, Origin);
-
-const baseOriginParams: object = {
-    $type: 'yandex.cloud.cdn.v1.OriginParams',
-    source: '',
-    enabled: false,
-    backup: false,
-};
+const baseOriginParams: object = { source: '', enabled: false, backup: false };
 
 export const OriginParams = {
-    $type: 'yandex.cloud.cdn.v1.OriginParams' as const,
-
     encode(message: OriginParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.source !== '') {
             writer.uint32(10).string(message.source);
@@ -305,13 +281,9 @@ export const OriginParams = {
     },
 };
 
-messageTypeRegistry.set(OriginParams.$type, OriginParams);
-
-const baseOriginMeta: object = { $type: 'yandex.cloud.cdn.v1.OriginMeta' };
+const baseOriginMeta: object = {};
 
 export const OriginMeta = {
-    $type: 'yandex.cloud.cdn.v1.OriginMeta' as const,
-
     encode(message: OriginMeta, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.common !== undefined) {
             OriginNamedMeta.encode(message.common, writer.uint32(10).fork()).ldelim();
@@ -413,13 +385,9 @@ export const OriginMeta = {
     },
 };
 
-messageTypeRegistry.set(OriginMeta.$type, OriginMeta);
-
-const baseOriginNamedMeta: object = { $type: 'yandex.cloud.cdn.v1.OriginNamedMeta', name: '' };
+const baseOriginNamedMeta: object = { name: '' };
 
 export const OriginNamedMeta = {
-    $type: 'yandex.cloud.cdn.v1.OriginNamedMeta' as const,
-
     encode(message: OriginNamedMeta, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -464,13 +432,9 @@ export const OriginNamedMeta = {
     },
 };
 
-messageTypeRegistry.set(OriginNamedMeta.$type, OriginNamedMeta);
-
-const baseOriginBalancerMeta: object = { $type: 'yandex.cloud.cdn.v1.OriginBalancerMeta', id: '' };
+const baseOriginBalancerMeta: object = { id: '' };
 
 export const OriginBalancerMeta = {
-    $type: 'yandex.cloud.cdn.v1.OriginBalancerMeta' as const,
-
     encode(message: OriginBalancerMeta, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -517,8 +481,6 @@ export const OriginBalancerMeta = {
     },
 };
 
-messageTypeRegistry.set(OriginBalancerMeta.$type, OriginBalancerMeta);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -539,16 +501,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

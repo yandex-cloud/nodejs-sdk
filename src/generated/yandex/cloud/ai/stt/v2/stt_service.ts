@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -22,41 +21,34 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.ai.stt.v2';
 
 export interface LongRunningRecognitionRequest {
-    $type: 'yandex.cloud.ai.stt.v2.LongRunningRecognitionRequest';
     config?: RecognitionConfig;
     audio?: RecognitionAudio;
 }
 
 export interface LongRunningRecognitionResponse {
-    $type: 'yandex.cloud.ai.stt.v2.LongRunningRecognitionResponse';
     chunks: SpeechRecognitionResult[];
 }
 
 export interface StreamingRecognitionRequest {
-    $type: 'yandex.cloud.ai.stt.v2.StreamingRecognitionRequest';
     config?: RecognitionConfig | undefined;
     audioContent: Buffer | undefined;
 }
 
 export interface StreamingRecognitionResponse {
-    $type: 'yandex.cloud.ai.stt.v2.StreamingRecognitionResponse';
     chunks: SpeechRecognitionChunk[];
 }
 
 export interface RecognitionAudio {
-    $type: 'yandex.cloud.ai.stt.v2.RecognitionAudio';
     content: Buffer | undefined;
     uri: string | undefined;
 }
 
 export interface RecognitionConfig {
-    $type: 'yandex.cloud.ai.stt.v2.RecognitionConfig';
     specification?: RecognitionSpec;
     folderId: string;
 }
 
 export interface RecognitionSpec {
-    $type: 'yandex.cloud.ai.stt.v2.RecognitionSpec';
     audioEncoding: RecognitionSpec_AudioEncoding;
     /** 8000, 16000, 48000 only for pcm */
     sampleRateHertz: number;
@@ -126,7 +118,6 @@ export function recognitionSpec_AudioEncodingToJSON(object: RecognitionSpec_Audi
 }
 
 export interface SpeechRecognitionChunk {
-    $type: 'yandex.cloud.ai.stt.v2.SpeechRecognitionChunk';
     alternatives: SpeechRecognitionAlternative[];
     /** This flag shows that the received chunk contains a part of the recognized text that won't be changed. */
     final: boolean;
@@ -135,33 +126,26 @@ export interface SpeechRecognitionChunk {
 }
 
 export interface SpeechRecognitionResult {
-    $type: 'yandex.cloud.ai.stt.v2.SpeechRecognitionResult';
     alternatives: SpeechRecognitionAlternative[];
     channelTag: number;
 }
 
 export interface SpeechRecognitionAlternative {
-    $type: 'yandex.cloud.ai.stt.v2.SpeechRecognitionAlternative';
     text: string;
     confidence: number;
     words: WordInfo[];
 }
 
 export interface WordInfo {
-    $type: 'yandex.cloud.ai.stt.v2.WordInfo';
     startTime?: Duration;
     endTime?: Duration;
     word: string;
     confidence: number;
 }
 
-const baseLongRunningRecognitionRequest: object = {
-    $type: 'yandex.cloud.ai.stt.v2.LongRunningRecognitionRequest',
-};
+const baseLongRunningRecognitionRequest: object = {};
 
 export const LongRunningRecognitionRequest = {
-    $type: 'yandex.cloud.ai.stt.v2.LongRunningRecognitionRequest' as const,
-
     encode(
         message: LongRunningRecognitionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -234,15 +218,9 @@ export const LongRunningRecognitionRequest = {
     },
 };
 
-messageTypeRegistry.set(LongRunningRecognitionRequest.$type, LongRunningRecognitionRequest);
-
-const baseLongRunningRecognitionResponse: object = {
-    $type: 'yandex.cloud.ai.stt.v2.LongRunningRecognitionResponse',
-};
+const baseLongRunningRecognitionResponse: object = {};
 
 export const LongRunningRecognitionResponse = {
-    $type: 'yandex.cloud.ai.stt.v2.LongRunningRecognitionResponse' as const,
-
     encode(
         message: LongRunningRecognitionResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -299,15 +277,9 @@ export const LongRunningRecognitionResponse = {
     },
 };
 
-messageTypeRegistry.set(LongRunningRecognitionResponse.$type, LongRunningRecognitionResponse);
-
-const baseStreamingRecognitionRequest: object = {
-    $type: 'yandex.cloud.ai.stt.v2.StreamingRecognitionRequest',
-};
+const baseStreamingRecognitionRequest: object = {};
 
 export const StreamingRecognitionRequest = {
-    $type: 'yandex.cloud.ai.stt.v2.StreamingRecognitionRequest' as const,
-
     encode(
         message: StreamingRecognitionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -380,15 +352,9 @@ export const StreamingRecognitionRequest = {
     },
 };
 
-messageTypeRegistry.set(StreamingRecognitionRequest.$type, StreamingRecognitionRequest);
-
-const baseStreamingRecognitionResponse: object = {
-    $type: 'yandex.cloud.ai.stt.v2.StreamingRecognitionResponse',
-};
+const baseStreamingRecognitionResponse: object = {};
 
 export const StreamingRecognitionResponse = {
-    $type: 'yandex.cloud.ai.stt.v2.StreamingRecognitionResponse' as const,
-
     encode(
         message: StreamingRecognitionResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -445,13 +411,9 @@ export const StreamingRecognitionResponse = {
     },
 };
 
-messageTypeRegistry.set(StreamingRecognitionResponse.$type, StreamingRecognitionResponse);
-
-const baseRecognitionAudio: object = { $type: 'yandex.cloud.ai.stt.v2.RecognitionAudio' };
+const baseRecognitionAudio: object = {};
 
 export const RecognitionAudio = {
-    $type: 'yandex.cloud.ai.stt.v2.RecognitionAudio' as const,
-
     encode(message: RecognitionAudio, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.content !== undefined) {
             writer.uint32(10).bytes(message.content);
@@ -511,16 +473,9 @@ export const RecognitionAudio = {
     },
 };
 
-messageTypeRegistry.set(RecognitionAudio.$type, RecognitionAudio);
-
-const baseRecognitionConfig: object = {
-    $type: 'yandex.cloud.ai.stt.v2.RecognitionConfig',
-    folderId: '',
-};
+const baseRecognitionConfig: object = { folderId: '' };
 
 export const RecognitionConfig = {
-    $type: 'yandex.cloud.ai.stt.v2.RecognitionConfig' as const,
-
     encode(message: RecognitionConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.specification !== undefined) {
             RecognitionSpec.encode(message.specification, writer.uint32(10).fork()).ldelim();
@@ -586,10 +541,7 @@ export const RecognitionConfig = {
     },
 };
 
-messageTypeRegistry.set(RecognitionConfig.$type, RecognitionConfig);
-
 const baseRecognitionSpec: object = {
-    $type: 'yandex.cloud.ai.stt.v2.RecognitionSpec',
     audioEncoding: 0,
     sampleRateHertz: 0,
     languageCode: '',
@@ -603,8 +555,6 @@ const baseRecognitionSpec: object = {
 };
 
 export const RecognitionSpec = {
-    $type: 'yandex.cloud.ai.stt.v2.RecognitionSpec' as const,
-
     encode(message: RecognitionSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.audioEncoding !== 0) {
             writer.uint32(8).int32(message.audioEncoding);
@@ -761,17 +711,9 @@ export const RecognitionSpec = {
     },
 };
 
-messageTypeRegistry.set(RecognitionSpec.$type, RecognitionSpec);
-
-const baseSpeechRecognitionChunk: object = {
-    $type: 'yandex.cloud.ai.stt.v2.SpeechRecognitionChunk',
-    final: false,
-    endOfUtterance: false,
-};
+const baseSpeechRecognitionChunk: object = { final: false, endOfUtterance: false };
 
 export const SpeechRecognitionChunk = {
-    $type: 'yandex.cloud.ai.stt.v2.SpeechRecognitionChunk' as const,
-
     encode(message: SpeechRecognitionChunk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.alternatives) {
             SpeechRecognitionAlternative.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -852,16 +794,9 @@ export const SpeechRecognitionChunk = {
     },
 };
 
-messageTypeRegistry.set(SpeechRecognitionChunk.$type, SpeechRecognitionChunk);
-
-const baseSpeechRecognitionResult: object = {
-    $type: 'yandex.cloud.ai.stt.v2.SpeechRecognitionResult',
-    channelTag: 0,
-};
+const baseSpeechRecognitionResult: object = { channelTag: 0 };
 
 export const SpeechRecognitionResult = {
-    $type: 'yandex.cloud.ai.stt.v2.SpeechRecognitionResult' as const,
-
     encode(message: SpeechRecognitionResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.alternatives) {
             SpeechRecognitionAlternative.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -932,17 +867,9 @@ export const SpeechRecognitionResult = {
     },
 };
 
-messageTypeRegistry.set(SpeechRecognitionResult.$type, SpeechRecognitionResult);
-
-const baseSpeechRecognitionAlternative: object = {
-    $type: 'yandex.cloud.ai.stt.v2.SpeechRecognitionAlternative',
-    text: '',
-    confidence: 0,
-};
+const baseSpeechRecognitionAlternative: object = { text: '', confidence: 0 };
 
 export const SpeechRecognitionAlternative = {
-    $type: 'yandex.cloud.ai.stt.v2.SpeechRecognitionAlternative' as const,
-
     encode(
         message: SpeechRecognitionAlternative,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1018,13 +945,9 @@ export const SpeechRecognitionAlternative = {
     },
 };
 
-messageTypeRegistry.set(SpeechRecognitionAlternative.$type, SpeechRecognitionAlternative);
-
-const baseWordInfo: object = { $type: 'yandex.cloud.ai.stt.v2.WordInfo', word: '', confidence: 0 };
+const baseWordInfo: object = { word: '', confidence: 0 };
 
 export const WordInfo = {
-    $type: 'yandex.cloud.ai.stt.v2.WordInfo' as const,
-
     encode(message: WordInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.startTime !== undefined) {
             Duration.encode(message.startTime, writer.uint32(10).fork()).ldelim();
@@ -1112,8 +1035,6 @@ export const WordInfo = {
         return message;
     },
 };
-
-messageTypeRegistry.set(WordInfo.$type, WordInfo);
 
 export const SttServiceService = {
     longRunningRecognize: {
@@ -1229,16 +1150,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

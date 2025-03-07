@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
@@ -12,7 +11,6 @@ export const protobufPackage = 'yandex.cloud.monitoring.v3';
 
 /** Label values parameter. */
 export interface LabelValuesParameter {
-    $type: 'yandex.cloud.monitoring.v3.LabelValuesParameter';
     /** Required. Folder ID. */
     folderId: string | undefined;
     /** Required. Selectors to select metric label values. */
@@ -27,7 +25,6 @@ export interface LabelValuesParameter {
 
 /** Custom parameter. */
 export interface CustomParameter {
-    $type: 'yandex.cloud.monitoring.v3.CustomParameter';
     /** Required. List of parameter values. */
     values: string[];
     /** Specifies the multiselectable values of parameter. */
@@ -38,14 +35,12 @@ export interface CustomParameter {
 
 /** Text parameter. */
 export interface TextParameter {
-    $type: 'yandex.cloud.monitoring.v3.TextParameter';
     /** Default value. */
     defaultValue: string;
 }
 
 /** Double parameter. */
 export interface DoubleParameter {
-    $type: 'yandex.cloud.monitoring.v3.DoubleParameter';
     /** Default value. */
     defaultValue: number;
     /** Parameter unit. */
@@ -54,7 +49,6 @@ export interface DoubleParameter {
 
 /** Integer parameter. */
 export interface IntegerParameter {
-    $type: 'yandex.cloud.monitoring.v3.IntegerParameter';
     /** Default value. */
     defaultValue: number;
     /** Parameter unit. */
@@ -63,14 +57,12 @@ export interface IntegerParameter {
 
 /** Text multiple values parameter. */
 export interface TextValuesParameter {
-    $type: 'yandex.cloud.monitoring.v3.TextValuesParameter';
     /** Default value. */
     defaultValues: string[];
 }
 
 /** Parameter. */
 export interface Parameter {
-    $type: 'yandex.cloud.monitoring.v3.Parameter';
     /** Parameter identifier. */
     name: string;
     /** UI-visible title of the parameter. */
@@ -95,7 +87,6 @@ export interface Parameter {
 
 /** Parametrization. */
 export interface Parametrization {
-    $type: 'yandex.cloud.monitoring.v3.Parametrization';
     /** Parameters. */
     parameters: Parameter[];
     /** Predefined selectors. */
@@ -103,7 +94,6 @@ export interface Parametrization {
 }
 
 const baseLabelValuesParameter: object = {
-    $type: 'yandex.cloud.monitoring.v3.LabelValuesParameter',
     selectors: '',
     labelKey: '',
     multiselectable: false,
@@ -111,8 +101,6 @@ const baseLabelValuesParameter: object = {
 };
 
 export const LabelValuesParameter = {
-    $type: 'yandex.cloud.monitoring.v3.LabelValuesParameter' as const,
-
     encode(message: LabelValuesParameter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== undefined) {
             writer.uint32(18).string(message.folderId);
@@ -212,18 +200,9 @@ export const LabelValuesParameter = {
     },
 };
 
-messageTypeRegistry.set(LabelValuesParameter.$type, LabelValuesParameter);
-
-const baseCustomParameter: object = {
-    $type: 'yandex.cloud.monitoring.v3.CustomParameter',
-    values: '',
-    multiselectable: false,
-    defaultValues: '',
-};
+const baseCustomParameter: object = { values: '', multiselectable: false, defaultValues: '' };
 
 export const CustomParameter = {
-    $type: 'yandex.cloud.monitoring.v3.CustomParameter' as const,
-
     encode(message: CustomParameter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.values) {
             writer.uint32(10).string(v!);
@@ -299,16 +278,9 @@ export const CustomParameter = {
     },
 };
 
-messageTypeRegistry.set(CustomParameter.$type, CustomParameter);
-
-const baseTextParameter: object = {
-    $type: 'yandex.cloud.monitoring.v3.TextParameter',
-    defaultValue: '',
-};
+const baseTextParameter: object = { defaultValue: '' };
 
 export const TextParameter = {
-    $type: 'yandex.cloud.monitoring.v3.TextParameter' as const,
-
     encode(message: TextParameter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.defaultValue !== '') {
             writer.uint32(10).string(message.defaultValue);
@@ -356,17 +328,9 @@ export const TextParameter = {
     },
 };
 
-messageTypeRegistry.set(TextParameter.$type, TextParameter);
-
-const baseDoubleParameter: object = {
-    $type: 'yandex.cloud.monitoring.v3.DoubleParameter',
-    defaultValue: 0,
-    unitFormat: 0,
-};
+const baseDoubleParameter: object = { defaultValue: 0, unitFormat: 0 };
 
 export const DoubleParameter = {
-    $type: 'yandex.cloud.monitoring.v3.DoubleParameter' as const,
-
     encode(message: DoubleParameter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.defaultValue !== 0) {
             writer.uint32(9).double(message.defaultValue);
@@ -426,17 +390,9 @@ export const DoubleParameter = {
     },
 };
 
-messageTypeRegistry.set(DoubleParameter.$type, DoubleParameter);
-
-const baseIntegerParameter: object = {
-    $type: 'yandex.cloud.monitoring.v3.IntegerParameter',
-    defaultValue: 0,
-    unitFormat: 0,
-};
+const baseIntegerParameter: object = { defaultValue: 0, unitFormat: 0 };
 
 export const IntegerParameter = {
-    $type: 'yandex.cloud.monitoring.v3.IntegerParameter' as const,
-
     encode(message: IntegerParameter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.defaultValue !== 0) {
             writer.uint32(8).int64(message.defaultValue);
@@ -496,16 +452,9 @@ export const IntegerParameter = {
     },
 };
 
-messageTypeRegistry.set(IntegerParameter.$type, IntegerParameter);
-
-const baseTextValuesParameter: object = {
-    $type: 'yandex.cloud.monitoring.v3.TextValuesParameter',
-    defaultValues: '',
-};
+const baseTextValuesParameter: object = { defaultValues: '' };
 
 export const TextValuesParameter = {
-    $type: 'yandex.cloud.monitoring.v3.TextValuesParameter' as const,
-
     encode(message: TextValuesParameter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.defaultValues) {
             writer.uint32(10).string(v!);
@@ -557,19 +506,9 @@ export const TextValuesParameter = {
     },
 };
 
-messageTypeRegistry.set(TextValuesParameter.$type, TextValuesParameter);
-
-const baseParameter: object = {
-    $type: 'yandex.cloud.monitoring.v3.Parameter',
-    name: '',
-    title: '',
-    hidden: false,
-    description: '',
-};
+const baseParameter: object = { name: '', title: '', hidden: false, description: '' };
 
 export const Parameter = {
-    $type: 'yandex.cloud.monitoring.v3.Parameter' as const,
-
     encode(message: Parameter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -750,16 +689,9 @@ export const Parameter = {
     },
 };
 
-messageTypeRegistry.set(Parameter.$type, Parameter);
-
-const baseParametrization: object = {
-    $type: 'yandex.cloud.monitoring.v3.Parametrization',
-    selectors: '',
-};
+const baseParametrization: object = { selectors: '' };
 
 export const Parametrization = {
-    $type: 'yandex.cloud.monitoring.v3.Parametrization' as const,
-
     encode(message: Parametrization, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.parameters) {
             Parameter.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -821,8 +753,6 @@ export const Parametrization = {
     },
 };
 
-messageTypeRegistry.set(Parametrization.$type, Parametrization);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -843,16 +773,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

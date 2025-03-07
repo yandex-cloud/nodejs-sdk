@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Downsampling } from '../../../../yandex/cloud/monitoring/v3/downsampling';
@@ -14,7 +13,6 @@ export const protobufPackage = 'yandex.cloud.monitoring.v3';
 
 /** Multi-source chart widget. */
 export interface MultiSourceChartWidget {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget';
     /** Required. Chart ID. */
     id: string;
     /** Targets. */
@@ -99,7 +97,6 @@ export function multiSourceChartWidget_FreezeDurationToJSON(
 
 /** Target settings. */
 export interface MultiSourceChartWidget_Target {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.Target';
     /** Monitoring target. */
     monitoringTarget?: MultiSourceChartWidget_Target_MonitoringTarget | undefined;
     /** Prometheus target. */
@@ -107,7 +104,6 @@ export interface MultiSourceChartWidget_Target {
 }
 
 export interface MultiSourceChartWidget_Target_MonitoringTarget {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.Target.MonitoringTarget';
     /** Required. Data source ID. */
     dataSourceId: string;
     /** Required. Query. */
@@ -121,7 +117,6 @@ export interface MultiSourceChartWidget_Target_MonitoringTarget {
 }
 
 export interface MultiSourceChartWidget_Target_PrometheusTarget {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.Target.PrometheusTarget';
     /** Required. Data source ID. */
     dataSourceId: string;
     /** Required. Workspace ID. */
@@ -138,7 +133,6 @@ export interface MultiSourceChartWidget_Target_PrometheusTarget {
 
 /** Data source settings. */
 export interface MultiSourceChartWidget_DataSource {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.DataSource';
     /** Monitoring data source. */
     monitoringDataSource?: MultiSourceChartWidget_DataSource_MonitoringDataSource | undefined;
     /** Prometheus data source. */
@@ -146,7 +140,6 @@ export interface MultiSourceChartWidget_DataSource {
 }
 
 export interface MultiSourceChartWidget_DataSource_MonitoringDataSource {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.DataSource.MonitoringDataSource';
     /** Required. Data source ID. */
     id: string;
     /** Required. Downsampling settings. */
@@ -154,7 +147,6 @@ export interface MultiSourceChartWidget_DataSource_MonitoringDataSource {
 }
 
 export interface MultiSourceChartWidget_DataSource_PrometheusDataSource {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.DataSource.PrometheusDataSource';
     /** Required. Data source ID. */
     id: string;
     /** Required. Grid step in milliseconds. */
@@ -163,7 +155,6 @@ export interface MultiSourceChartWidget_DataSource_PrometheusDataSource {
 
 /** Visualization settings. */
 export interface MultiSourceChartWidget_VisualizationSettings {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings';
     /** Visualization type. */
     type: MultiSourceChartWidget_VisualizationSettings_VisualizationType;
     /** Normalize. */
@@ -440,7 +431,6 @@ export function multiSourceChartWidget_VisualizationSettings_SeriesAggregationTo
 }
 
 export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.ColorSchemeSettings';
     /** Automatic color scheme. */
     automatic?:
         | MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme
@@ -459,16 +449,11 @@ export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSetting
         | undefined;
 }
 
-export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.ColorSchemeSettings.AutomaticColorScheme';
-}
+export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme {}
 
-export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.ColorSchemeSettings.StandardColorScheme';
-}
+export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme {}
 
 export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.ColorSchemeSettings.GradientColorScheme';
     /** Gradient green value. */
     greenValue: string;
     /** Gradient yellow value. */
@@ -479,12 +464,9 @@ export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSetting
     violetValue: string;
 }
 
-export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.ColorSchemeSettings.HashColorScheme';
-}
+export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme {}
 
 export interface MultiSourceChartWidget_VisualizationSettings_HeatmapSettings {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.HeatmapSettings';
     /** Heatmap green value. */
     greenValue: string;
     /** Heatmap yellow value. */
@@ -497,7 +479,6 @@ export interface MultiSourceChartWidget_VisualizationSettings_HeatmapSettings {
 
 /** Y axis settings. */
 export interface MultiSourceChartWidget_VisualizationSettings_Yaxis {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.Yaxis';
     /** Type. */
     type: MultiSourceChartWidget_VisualizationSettings_YaxisType;
     /** Title or empty. */
@@ -513,7 +494,6 @@ export interface MultiSourceChartWidget_VisualizationSettings_Yaxis {
 }
 
 export interface MultiSourceChartWidget_VisualizationSettings_YaxisSettings {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.YaxisSettings';
     /** Left Y axis settings. */
     left?: MultiSourceChartWidget_VisualizationSettings_Yaxis;
     /** Right Y axis settings. */
@@ -522,7 +502,6 @@ export interface MultiSourceChartWidget_VisualizationSettings_YaxisSettings {
 
 /** Series override settings. */
 export interface MultiSourceChartWidget_SeriesOverrides {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.SeriesOverrides';
     /** Series name. */
     name: string | undefined;
     /** Target index. */
@@ -636,7 +615,6 @@ export function multiSourceChartWidget_SeriesOverrides_SeriesVisualizationTypeTo
 }
 
 export interface MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.SeriesOverrides.SeriesOverrideSettings';
     /** Series name or empty. */
     name: string;
     /** Series color or empty. */
@@ -653,7 +631,6 @@ export interface MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings {
 
 /** Name hiding settings. */
 export interface MultiSourceChartWidget_NameHidingSettings {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.NameHidingSettings';
     /** True if we want to show concrete series names only, false if we want to hide concrete series names. */
     positive: boolean;
     /** Series names to show or hide. */
@@ -661,7 +638,6 @@ export interface MultiSourceChartWidget_NameHidingSettings {
 }
 
 export interface MultiSourceChartWidget_RepeatSettings {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.RepeatSettings';
     /** Parameters to repeat by. */
     repeatBy: string[];
     /** Max number of chart in one row. */
@@ -669,7 +645,6 @@ export interface MultiSourceChartWidget_RepeatSettings {
 }
 
 const baseMultiSourceChartWidget: object = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget',
     id: '',
     description: '',
     title: '',
@@ -678,8 +653,6 @@ const baseMultiSourceChartWidget: object = {
 };
 
 export const MultiSourceChartWidget = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget' as const,
-
     encode(message: MultiSourceChartWidget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -915,15 +888,9 @@ export const MultiSourceChartWidget = {
     },
 };
 
-messageTypeRegistry.set(MultiSourceChartWidget.$type, MultiSourceChartWidget);
-
-const baseMultiSourceChartWidget_Target: object = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.Target',
-};
+const baseMultiSourceChartWidget_Target: object = {};
 
 export const MultiSourceChartWidget_Target = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.Target' as const,
-
     encode(
         message: MultiSourceChartWidget_Target,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1018,10 +985,7 @@ export const MultiSourceChartWidget_Target = {
     },
 };
 
-messageTypeRegistry.set(MultiSourceChartWidget_Target.$type, MultiSourceChartWidget_Target);
-
 const baseMultiSourceChartWidget_Target_MonitoringTarget: object = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.Target.MonitoringTarget',
     dataSourceId: '',
     query: '',
     textMode: false,
@@ -1030,8 +994,6 @@ const baseMultiSourceChartWidget_Target_MonitoringTarget: object = {
 };
 
 export const MultiSourceChartWidget_Target_MonitoringTarget = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.Target.MonitoringTarget' as const,
-
     encode(
         message: MultiSourceChartWidget_Target_MonitoringTarget,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1134,13 +1096,7 @@ export const MultiSourceChartWidget_Target_MonitoringTarget = {
     },
 };
 
-messageTypeRegistry.set(
-    MultiSourceChartWidget_Target_MonitoringTarget.$type,
-    MultiSourceChartWidget_Target_MonitoringTarget,
-);
-
 const baseMultiSourceChartWidget_Target_PrometheusTarget: object = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.Target.PrometheusTarget',
     dataSourceId: '',
     workspaceId: '',
     query: '',
@@ -1150,8 +1106,6 @@ const baseMultiSourceChartWidget_Target_PrometheusTarget: object = {
 };
 
 export const MultiSourceChartWidget_Target_PrometheusTarget = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.Target.PrometheusTarget' as const,
-
     encode(
         message: MultiSourceChartWidget_Target_PrometheusTarget,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1266,18 +1220,9 @@ export const MultiSourceChartWidget_Target_PrometheusTarget = {
     },
 };
 
-messageTypeRegistry.set(
-    MultiSourceChartWidget_Target_PrometheusTarget.$type,
-    MultiSourceChartWidget_Target_PrometheusTarget,
-);
-
-const baseMultiSourceChartWidget_DataSource: object = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.DataSource',
-};
+const baseMultiSourceChartWidget_DataSource: object = {};
 
 export const MultiSourceChartWidget_DataSource = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.DataSource' as const,
-
     encode(
         message: MultiSourceChartWidget_DataSource,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1386,16 +1331,9 @@ export const MultiSourceChartWidget_DataSource = {
     },
 };
 
-messageTypeRegistry.set(MultiSourceChartWidget_DataSource.$type, MultiSourceChartWidget_DataSource);
-
-const baseMultiSourceChartWidget_DataSource_MonitoringDataSource: object = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.DataSource.MonitoringDataSource',
-    id: '',
-};
+const baseMultiSourceChartWidget_DataSource_MonitoringDataSource: object = { id: '' };
 
 export const MultiSourceChartWidget_DataSource_MonitoringDataSource = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.DataSource.MonitoringDataSource' as const,
-
     encode(
         message: MultiSourceChartWidget_DataSource_MonitoringDataSource,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1472,20 +1410,9 @@ export const MultiSourceChartWidget_DataSource_MonitoringDataSource = {
     },
 };
 
-messageTypeRegistry.set(
-    MultiSourceChartWidget_DataSource_MonitoringDataSource.$type,
-    MultiSourceChartWidget_DataSource_MonitoringDataSource,
-);
-
-const baseMultiSourceChartWidget_DataSource_PrometheusDataSource: object = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.DataSource.PrometheusDataSource',
-    id: '',
-    step: 0,
-};
+const baseMultiSourceChartWidget_DataSource_PrometheusDataSource: object = { id: '', step: 0 };
 
 export const MultiSourceChartWidget_DataSource_PrometheusDataSource = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.DataSource.PrometheusDataSource' as const,
-
     encode(
         message: MultiSourceChartWidget_DataSource_PrometheusDataSource,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1553,13 +1480,7 @@ export const MultiSourceChartWidget_DataSource_PrometheusDataSource = {
     },
 };
 
-messageTypeRegistry.set(
-    MultiSourceChartWidget_DataSource_PrometheusDataSource.$type,
-    MultiSourceChartWidget_DataSource_PrometheusDataSource,
-);
-
 const baseMultiSourceChartWidget_VisualizationSettings: object = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings',
     type: 0,
     normalize: false,
     interpolate: 0,
@@ -1569,8 +1490,6 @@ const baseMultiSourceChartWidget_VisualizationSettings: object = {
 };
 
 export const MultiSourceChartWidget_VisualizationSettings = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings' as const,
-
     encode(
         message: MultiSourceChartWidget_VisualizationSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1798,18 +1717,9 @@ export const MultiSourceChartWidget_VisualizationSettings = {
     },
 };
 
-messageTypeRegistry.set(
-    MultiSourceChartWidget_VisualizationSettings.$type,
-    MultiSourceChartWidget_VisualizationSettings,
-);
-
-const baseMultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings: object = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.ColorSchemeSettings',
-};
+const baseMultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings: object = {};
 
 export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.ColorSchemeSettings' as const,
-
     encode(
         message: MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1986,20 +1896,11 @@ export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings = 
     },
 };
 
-messageTypeRegistry.set(
-    MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings.$type,
-    MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings,
-);
-
 const baseMultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme: object =
-    {
-        $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.ColorSchemeSettings.AutomaticColorScheme',
-    };
+    {};
 
 export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme =
     {
-        $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.ColorSchemeSettings.AutomaticColorScheme' as const,
-
         encode(
             _: MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme,
             writer: _m0.Writer = _m0.Writer.create(),
@@ -2058,20 +1959,11 @@ export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_Au
         },
     };
 
-messageTypeRegistry.set(
-    MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme.$type,
-    MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme,
-);
-
 const baseMultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme: object =
-    {
-        $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.ColorSchemeSettings.StandardColorScheme',
-    };
+    {};
 
 export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme =
     {
-        $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.ColorSchemeSettings.StandardColorScheme' as const,
-
         encode(
             _: MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme,
             writer: _m0.Writer = _m0.Writer.create(),
@@ -2130,24 +2022,11 @@ export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_St
         },
     };
 
-messageTypeRegistry.set(
-    MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme.$type,
-    MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme,
-);
-
 const baseMultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme: object =
-    {
-        $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.ColorSchemeSettings.GradientColorScheme',
-        greenValue: '',
-        yellowValue: '',
-        redValue: '',
-        violetValue: '',
-    };
+    { greenValue: '', yellowValue: '', redValue: '', violetValue: '' };
 
 export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme =
     {
-        $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.ColorSchemeSettings.GradientColorScheme' as const,
-
         encode(
             message: MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme,
             writer: _m0.Writer = _m0.Writer.create(),
@@ -2254,19 +2133,10 @@ export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_Gr
         },
     };
 
-messageTypeRegistry.set(
-    MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme.$type,
-    MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme,
-);
-
 const baseMultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme: object =
-    {
-        $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.ColorSchemeSettings.HashColorScheme',
-    };
+    {};
 
 export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.ColorSchemeSettings.HashColorScheme' as const,
-
     encode(
         _: MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2323,13 +2193,7 @@ export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_Ha
     },
 };
 
-messageTypeRegistry.set(
-    MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme.$type,
-    MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme,
-);
-
 const baseMultiSourceChartWidget_VisualizationSettings_HeatmapSettings: object = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.HeatmapSettings',
     greenValue: '',
     yellowValue: '',
     redValue: '',
@@ -2337,8 +2201,6 @@ const baseMultiSourceChartWidget_VisualizationSettings_HeatmapSettings: object =
 };
 
 export const MultiSourceChartWidget_VisualizationSettings_HeatmapSettings = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.HeatmapSettings' as const,
-
     encode(
         message: MultiSourceChartWidget_VisualizationSettings_HeatmapSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2439,13 +2301,7 @@ export const MultiSourceChartWidget_VisualizationSettings_HeatmapSettings = {
     },
 };
 
-messageTypeRegistry.set(
-    MultiSourceChartWidget_VisualizationSettings_HeatmapSettings.$type,
-    MultiSourceChartWidget_VisualizationSettings_HeatmapSettings,
-);
-
 const baseMultiSourceChartWidget_VisualizationSettings_Yaxis: object = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.Yaxis',
     type: 0,
     title: '',
     min: '',
@@ -2454,8 +2310,6 @@ const baseMultiSourceChartWidget_VisualizationSettings_Yaxis: object = {
 };
 
 export const MultiSourceChartWidget_VisualizationSettings_Yaxis = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.Yaxis' as const,
-
     encode(
         message: MultiSourceChartWidget_VisualizationSettings_Yaxis,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2476,10 +2330,7 @@ export const MultiSourceChartWidget_VisualizationSettings_Yaxis = {
             writer.uint32(40).int32(message.unitFormat);
         }
         if (message.precision !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.precision! },
-                writer.uint32(50).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.precision! }, writer.uint32(50).fork()).ldelim();
         }
         return writer;
     },
@@ -2573,18 +2424,9 @@ export const MultiSourceChartWidget_VisualizationSettings_Yaxis = {
     },
 };
 
-messageTypeRegistry.set(
-    MultiSourceChartWidget_VisualizationSettings_Yaxis.$type,
-    MultiSourceChartWidget_VisualizationSettings_Yaxis,
-);
-
-const baseMultiSourceChartWidget_VisualizationSettings_YaxisSettings: object = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.YaxisSettings',
-};
+const baseMultiSourceChartWidget_VisualizationSettings_YaxisSettings: object = {};
 
 export const MultiSourceChartWidget_VisualizationSettings_YaxisSettings = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.VisualizationSettings.YaxisSettings' as const,
-
     encode(
         message: MultiSourceChartWidget_VisualizationSettings_YaxisSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2682,18 +2524,9 @@ export const MultiSourceChartWidget_VisualizationSettings_YaxisSettings = {
     },
 };
 
-messageTypeRegistry.set(
-    MultiSourceChartWidget_VisualizationSettings_YaxisSettings.$type,
-    MultiSourceChartWidget_VisualizationSettings_YaxisSettings,
-);
-
-const baseMultiSourceChartWidget_SeriesOverrides: object = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.SeriesOverrides',
-};
+const baseMultiSourceChartWidget_SeriesOverrides: object = {};
 
 export const MultiSourceChartWidget_SeriesOverrides = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.SeriesOverrides' as const,
-
     encode(
         message: MultiSourceChartWidget_SeriesOverrides,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2796,13 +2629,7 @@ export const MultiSourceChartWidget_SeriesOverrides = {
     },
 };
 
-messageTypeRegistry.set(
-    MultiSourceChartWidget_SeriesOverrides.$type,
-    MultiSourceChartWidget_SeriesOverrides,
-);
-
 const baseMultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings: object = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.SeriesOverrides.SeriesOverrideSettings',
     name: '',
     color: '',
     type: 0,
@@ -2812,8 +2639,6 @@ const baseMultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings: object 
 };
 
 export const MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.SeriesOverrides.SeriesOverrideSettings' as const,
-
     encode(
         message: MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2941,20 +2766,9 @@ export const MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings = {
     },
 };
 
-messageTypeRegistry.set(
-    MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings.$type,
-    MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings,
-);
-
-const baseMultiSourceChartWidget_NameHidingSettings: object = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.NameHidingSettings',
-    positive: false,
-    names: '',
-};
+const baseMultiSourceChartWidget_NameHidingSettings: object = { positive: false, names: '' };
 
 export const MultiSourceChartWidget_NameHidingSettings = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.NameHidingSettings' as const,
-
     encode(
         message: MultiSourceChartWidget_NameHidingSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3030,20 +2844,9 @@ export const MultiSourceChartWidget_NameHidingSettings = {
     },
 };
 
-messageTypeRegistry.set(
-    MultiSourceChartWidget_NameHidingSettings.$type,
-    MultiSourceChartWidget_NameHidingSettings,
-);
-
-const baseMultiSourceChartWidget_RepeatSettings: object = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.RepeatSettings',
-    repeatBy: '',
-    maxChartsInRow: 0,
-};
+const baseMultiSourceChartWidget_RepeatSettings: object = { repeatBy: '', maxChartsInRow: 0 };
 
 export const MultiSourceChartWidget_RepeatSettings = {
-    $type: 'yandex.cloud.monitoring.v3.MultiSourceChartWidget.RepeatSettings' as const,
-
     encode(
         message: MultiSourceChartWidget_RepeatSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3117,11 +2920,6 @@ export const MultiSourceChartWidget_RepeatSettings = {
     },
 };
 
-messageTypeRegistry.set(
-    MultiSourceChartWidget_RepeatSettings.$type,
-    MultiSourceChartWidget_RepeatSettings,
-);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -3142,16 +2940,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

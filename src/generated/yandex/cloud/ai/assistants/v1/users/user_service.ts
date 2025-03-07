@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -22,7 +21,6 @@ export const protobufPackage = 'yandex.cloud.ai.assistants.v1.users';
 
 /** Request message for creating a new user. */
 export interface CreateUserRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.users.CreateUserRequest';
     folderId: string;
     /** Name of the user. */
     name: string;
@@ -36,21 +34,18 @@ export interface CreateUserRequest {
 }
 
 export interface CreateUserRequest_LabelsEntry {
-    $type: 'yandex.cloud.ai.assistants.v1.users.CreateUserRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Request message for retrieving a user by ID. */
 export interface GetUserRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.users.GetUserRequest';
     /** ID of the user to retrieve. */
     userId: string;
 }
 
 /** Request message for updating an existing user. */
 export interface UpdateUserRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.users.UpdateUserRequest';
     /** ID of the user to update. */
     userId: string;
     /** A field mask specifying which fields to update. */
@@ -66,26 +61,21 @@ export interface UpdateUserRequest {
 }
 
 export interface UpdateUserRequest_LabelsEntry {
-    $type: 'yandex.cloud.ai.assistants.v1.users.UpdateUserRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Request message for deleting a user by ID. */
 export interface DeleteUserRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.users.DeleteUserRequest';
     /** ID of the user to delete. */
     userId: string;
 }
 
 /** Response message for the delete operation. */
-export interface DeleteUserResponse {
-    $type: 'yandex.cloud.ai.assistants.v1.users.DeleteUserResponse';
-}
+export interface DeleteUserResponse {}
 
 /** Request message for listing users in a specific folder. */
 export interface ListUsersRequest {
-    $type: 'yandex.cloud.ai.assistants.v1.users.ListUsersRequest';
     /** Folder ID from which to list users. */
     folderId: string;
     /** Maximum number of users to return per page. */
@@ -96,24 +86,15 @@ export interface ListUsersRequest {
 
 /** Response message for the list operation. */
 export interface ListUsersResponse {
-    $type: 'yandex.cloud.ai.assistants.v1.users.ListUsersResponse';
     /** List of users in the specified folder. */
     users: User[];
     /** Token to retrieve the next page of results. */
     nextPageToken: string;
 }
 
-const baseCreateUserRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.CreateUserRequest',
-    folderId: '',
-    name: '',
-    description: '',
-    source: '',
-};
+const baseCreateUserRequest: object = { folderId: '', name: '', description: '', source: '' };
 
 export const CreateUserRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.CreateUserRequest' as const,
-
     encode(message: CreateUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -132,11 +113,7 @@ export const CreateUserRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateUserRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.assistants.v1.users.CreateUserRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -249,17 +226,9 @@ export const CreateUserRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateUserRequest.$type, CreateUserRequest);
-
-const baseCreateUserRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.CreateUserRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateUserRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateUserRequest_LabelsEntry = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.CreateUserRequest.LabelsEntry' as const,
-
     encode(
         message: CreateUserRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -319,16 +288,9 @@ export const CreateUserRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateUserRequest_LabelsEntry.$type, CreateUserRequest_LabelsEntry);
-
-const baseGetUserRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.GetUserRequest',
-    userId: '',
-};
+const baseGetUserRequest: object = { userId: '' };
 
 export const GetUserRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.GetUserRequest' as const,
-
     encode(message: GetUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.userId !== '') {
             writer.uint32(10).string(message.userId);
@@ -374,18 +336,9 @@ export const GetUserRequest = {
     },
 };
 
-messageTypeRegistry.set(GetUserRequest.$type, GetUserRequest);
-
-const baseUpdateUserRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.UpdateUserRequest',
-    userId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateUserRequest: object = { userId: '', name: '', description: '' };
 
 export const UpdateUserRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.UpdateUserRequest' as const,
-
     encode(message: UpdateUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.userId !== '') {
             writer.uint32(10).string(message.userId);
@@ -404,11 +357,7 @@ export const UpdateUserRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateUserRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.assistants.v1.users.UpdateUserRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -527,17 +476,9 @@ export const UpdateUserRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateUserRequest.$type, UpdateUserRequest);
-
-const baseUpdateUserRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.UpdateUserRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateUserRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateUserRequest_LabelsEntry = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.UpdateUserRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateUserRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -597,16 +538,9 @@ export const UpdateUserRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateUserRequest_LabelsEntry.$type, UpdateUserRequest_LabelsEntry);
-
-const baseDeleteUserRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.DeleteUserRequest',
-    userId: '',
-};
+const baseDeleteUserRequest: object = { userId: '' };
 
 export const DeleteUserRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.DeleteUserRequest' as const,
-
     encode(message: DeleteUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.userId !== '') {
             writer.uint32(10).string(message.userId);
@@ -652,15 +586,9 @@ export const DeleteUserRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteUserRequest.$type, DeleteUserRequest);
-
-const baseDeleteUserResponse: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.DeleteUserResponse',
-};
+const baseDeleteUserResponse: object = {};
 
 export const DeleteUserResponse = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.DeleteUserResponse' as const,
-
     encode(_: DeleteUserResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -696,18 +624,9 @@ export const DeleteUserResponse = {
     },
 };
 
-messageTypeRegistry.set(DeleteUserResponse.$type, DeleteUserResponse);
-
-const baseListUsersRequest: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.ListUsersRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListUsersRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
 export const ListUsersRequest = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.ListUsersRequest' as const,
-
     encode(message: ListUsersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -777,16 +696,9 @@ export const ListUsersRequest = {
     },
 };
 
-messageTypeRegistry.set(ListUsersRequest.$type, ListUsersRequest);
-
-const baseListUsersResponse: object = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.ListUsersResponse',
-    nextPageToken: '',
-};
+const baseListUsersResponse: object = { nextPageToken: '' };
 
 export const ListUsersResponse = {
-    $type: 'yandex.cloud.ai.assistants.v1.users.ListUsersResponse' as const,
-
     encode(message: ListUsersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.users) {
             User.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -847,8 +759,6 @@ export const ListUsersResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListUsersResponse.$type, ListUsersResponse);
 
 /** UserService provides operations for managing users. */
 export const UserServiceService = {
@@ -1039,16 +949,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

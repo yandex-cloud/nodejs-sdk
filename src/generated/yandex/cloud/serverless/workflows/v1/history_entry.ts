@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../../google/protobuf/duration';
@@ -8,7 +7,6 @@ import { Timestamp } from '../../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.serverless.workflows.v1';
 
 export interface HistoryEntry {
-    $type: 'yandex.cloud.serverless.workflows.v1.HistoryEntry';
     /** ID of the Workflow step. */
     id: string;
     /** Title of the Workflow step. */
@@ -104,7 +102,6 @@ export function historyEntry_StatusToJSON(object: HistoryEntry_Status): string {
 }
 
 export interface HistoryEntry_FailedAttempt {
-    $type: 'yandex.cloud.serverless.workflows.v1.HistoryEntry.FailedAttempt';
     /** Start timestamp for the attempt. */
     startedAt?: Date;
     /** Duration of the attempt. */
@@ -114,19 +111,16 @@ export interface HistoryEntry_FailedAttempt {
 }
 
 export interface HistoryEntryInput {
-    $type: 'yandex.cloud.serverless.workflows.v1.HistoryEntryInput';
     /** JSON input data for the Workflow step. */
     inputJson: string | undefined;
 }
 
 export interface HistoryEntryOutput {
-    $type: 'yandex.cloud.serverless.workflows.v1.HistoryEntryOutput';
     /** JSON result for the Workflow step. */
     outputJson: string | undefined;
 }
 
 export interface HistoryEntryError {
-    $type: 'yandex.cloud.serverless.workflows.v1.HistoryEntryError';
     /** Error message of the Workflow step. */
     message: string;
     /** Error code of the Workflow step. */
@@ -134,7 +128,6 @@ export interface HistoryEntryError {
 }
 
 const baseHistoryEntry: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.HistoryEntry',
     id: '',
     title: '',
     description: '',
@@ -144,8 +137,6 @@ const baseHistoryEntry: object = {
 };
 
 export const HistoryEntry = {
-    $type: 'yandex.cloud.serverless.workflows.v1.HistoryEntry' as const,
-
     encode(message: HistoryEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -337,15 +328,9 @@ export const HistoryEntry = {
     },
 };
 
-messageTypeRegistry.set(HistoryEntry.$type, HistoryEntry);
-
-const baseHistoryEntry_FailedAttempt: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.HistoryEntry.FailedAttempt',
-};
+const baseHistoryEntry_FailedAttempt: object = {};
 
 export const HistoryEntry_FailedAttempt = {
-    $type: 'yandex.cloud.serverless.workflows.v1.HistoryEntry.FailedAttempt' as const,
-
     encode(
         message: HistoryEntry_FailedAttempt,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -430,15 +415,9 @@ export const HistoryEntry_FailedAttempt = {
     },
 };
 
-messageTypeRegistry.set(HistoryEntry_FailedAttempt.$type, HistoryEntry_FailedAttempt);
-
-const baseHistoryEntryInput: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.HistoryEntryInput',
-};
+const baseHistoryEntryInput: object = {};
 
 export const HistoryEntryInput = {
-    $type: 'yandex.cloud.serverless.workflows.v1.HistoryEntryInput' as const,
-
     encode(message: HistoryEntryInput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.inputJson !== undefined) {
             writer.uint32(10).string(message.inputJson);
@@ -486,15 +465,9 @@ export const HistoryEntryInput = {
     },
 };
 
-messageTypeRegistry.set(HistoryEntryInput.$type, HistoryEntryInput);
-
-const baseHistoryEntryOutput: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.HistoryEntryOutput',
-};
+const baseHistoryEntryOutput: object = {};
 
 export const HistoryEntryOutput = {
-    $type: 'yandex.cloud.serverless.workflows.v1.HistoryEntryOutput' as const,
-
     encode(message: HistoryEntryOutput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.outputJson !== undefined) {
             writer.uint32(10).string(message.outputJson);
@@ -544,17 +517,9 @@ export const HistoryEntryOutput = {
     },
 };
 
-messageTypeRegistry.set(HistoryEntryOutput.$type, HistoryEntryOutput);
-
-const baseHistoryEntryError: object = {
-    $type: 'yandex.cloud.serverless.workflows.v1.HistoryEntryError',
-    message: '',
-    errorCode: '',
-};
+const baseHistoryEntryError: object = { message: '', errorCode: '' };
 
 export const HistoryEntryError = {
-    $type: 'yandex.cloud.serverless.workflows.v1.HistoryEntryError' as const,
-
     encode(message: HistoryEntryError, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.message !== '') {
             writer.uint32(10).string(message.message);
@@ -612,8 +577,6 @@ export const HistoryEntryError = {
     },
 };
 
-messageTypeRegistry.set(HistoryEntryError.$type, HistoryEntryError);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -634,21 +597,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

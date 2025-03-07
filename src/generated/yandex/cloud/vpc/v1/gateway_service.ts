@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -21,7 +20,6 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.vpc.v1';
 
 export interface GetGatewayRequest {
-    $type: 'yandex.cloud.vpc.v1.GetGatewayRequest';
     /**
      * ID of the Gateway resource to return.
      *
@@ -31,7 +29,6 @@ export interface GetGatewayRequest {
 }
 
 export interface ListGatewaysRequest {
-    $type: 'yandex.cloud.vpc.v1.ListGatewaysRequest';
     /**
      * ID of the folder to list gateways in.
      *
@@ -63,7 +60,6 @@ export interface ListGatewaysRequest {
 }
 
 export interface ListGatewaysResponse {
-    $type: 'yandex.cloud.vpc.v1.ListGatewaysResponse';
     /** List of gateways. */
     gateways: Gateway[];
     /**
@@ -77,7 +73,6 @@ export interface ListGatewaysResponse {
 }
 
 export interface ListGatewayOperationsRequest {
-    $type: 'yandex.cloud.vpc.v1.ListGatewayOperationsRequest';
     /**
      * ID of the gateway to list operations for.
      *
@@ -99,7 +94,6 @@ export interface ListGatewayOperationsRequest {
 }
 
 export interface ListGatewayOperationsResponse {
-    $type: 'yandex.cloud.vpc.v1.ListGatewayOperationsResponse';
     /** List of operations for the specified gateway. */
     operations: Operation[];
     /**
@@ -112,12 +106,9 @@ export interface ListGatewayOperationsResponse {
     nextPageToken: string;
 }
 
-export interface SharedEgressGatewaySpec {
-    $type: 'yandex.cloud.vpc.v1.SharedEgressGatewaySpec';
-}
+export interface SharedEgressGatewaySpec {}
 
 export interface CreateGatewayRequest {
-    $type: 'yandex.cloud.vpc.v1.CreateGatewayRequest';
     /**
      * ID of the folder to create a gateway in.
      *
@@ -137,19 +128,16 @@ export interface CreateGatewayRequest {
 }
 
 export interface CreateGatewayRequest_LabelsEntry {
-    $type: 'yandex.cloud.vpc.v1.CreateGatewayRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateGatewayMetadata {
-    $type: 'yandex.cloud.vpc.v1.CreateGatewayMetadata';
     /** ID of the gateway that is being created. */
     gatewayId: string;
 }
 
 export interface UpdateGatewayRequest {
-    $type: 'yandex.cloud.vpc.v1.UpdateGatewayRequest';
     /**
      * ID of the gateway to update.
      *
@@ -179,19 +167,16 @@ export interface UpdateGatewayRequest {
 }
 
 export interface UpdateGatewayRequest_LabelsEntry {
-    $type: 'yandex.cloud.vpc.v1.UpdateGatewayRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateGatewayMetadata {
-    $type: 'yandex.cloud.vpc.v1.UpdateGatewayMetadata';
     /** ID of the Gateway that is being updated. */
     gatewayId: string;
 }
 
 export interface DeleteGatewayRequest {
-    $type: 'yandex.cloud.vpc.v1.DeleteGatewayRequest';
     /**
      * ID of the gateway to delete.
      *
@@ -201,30 +186,22 @@ export interface DeleteGatewayRequest {
 }
 
 export interface DeleteGatewayMetadata {
-    $type: 'yandex.cloud.vpc.v1.DeleteGatewayMetadata';
     /** ID of the gateway that is being deleted. */
     gatewayId: string;
 }
 
 export interface MoveGatewayRequest {
-    $type: 'yandex.cloud.vpc.v1.MoveGatewayRequest';
     gatewayId: string;
     destinationFolderId: string;
 }
 
 export interface MoveGatewayMetadata {
-    $type: 'yandex.cloud.vpc.v1.MoveGatewayMetadata';
     gatewayId: string;
 }
 
-const baseGetGatewayRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.GetGatewayRequest',
-    gatewayId: '',
-};
+const baseGetGatewayRequest: object = { gatewayId: '' };
 
 export const GetGatewayRequest = {
-    $type: 'yandex.cloud.vpc.v1.GetGatewayRequest' as const,
-
     encode(message: GetGatewayRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gatewayId !== '') {
             writer.uint32(10).string(message.gatewayId);
@@ -272,19 +249,9 @@ export const GetGatewayRequest = {
     },
 };
 
-messageTypeRegistry.set(GetGatewayRequest.$type, GetGatewayRequest);
-
-const baseListGatewaysRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.ListGatewaysRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-    filter: '',
-};
+const baseListGatewaysRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
 export const ListGatewaysRequest = {
-    $type: 'yandex.cloud.vpc.v1.ListGatewaysRequest' as const,
-
     encode(message: ListGatewaysRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -366,16 +333,9 @@ export const ListGatewaysRequest = {
     },
 };
 
-messageTypeRegistry.set(ListGatewaysRequest.$type, ListGatewaysRequest);
-
-const baseListGatewaysResponse: object = {
-    $type: 'yandex.cloud.vpc.v1.ListGatewaysResponse',
-    nextPageToken: '',
-};
+const baseListGatewaysResponse: object = { nextPageToken: '' };
 
 export const ListGatewaysResponse = {
-    $type: 'yandex.cloud.vpc.v1.ListGatewaysResponse' as const,
-
     encode(message: ListGatewaysResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.gateways) {
             Gateway.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -439,18 +399,9 @@ export const ListGatewaysResponse = {
     },
 };
 
-messageTypeRegistry.set(ListGatewaysResponse.$type, ListGatewaysResponse);
-
-const baseListGatewayOperationsRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.ListGatewayOperationsRequest',
-    gatewayId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListGatewayOperationsRequest: object = { gatewayId: '', pageSize: 0, pageToken: '' };
 
 export const ListGatewayOperationsRequest = {
-    $type: 'yandex.cloud.vpc.v1.ListGatewayOperationsRequest' as const,
-
     encode(
         message: ListGatewayOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -525,16 +476,9 @@ export const ListGatewayOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(ListGatewayOperationsRequest.$type, ListGatewayOperationsRequest);
-
-const baseListGatewayOperationsResponse: object = {
-    $type: 'yandex.cloud.vpc.v1.ListGatewayOperationsResponse',
-    nextPageToken: '',
-};
+const baseListGatewayOperationsResponse: object = { nextPageToken: '' };
 
 export const ListGatewayOperationsResponse = {
-    $type: 'yandex.cloud.vpc.v1.ListGatewayOperationsResponse' as const,
-
     encode(
         message: ListGatewayOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -601,15 +545,9 @@ export const ListGatewayOperationsResponse = {
     },
 };
 
-messageTypeRegistry.set(ListGatewayOperationsResponse.$type, ListGatewayOperationsResponse);
-
-const baseSharedEgressGatewaySpec: object = {
-    $type: 'yandex.cloud.vpc.v1.SharedEgressGatewaySpec',
-};
+const baseSharedEgressGatewaySpec: object = {};
 
 export const SharedEgressGatewaySpec = {
-    $type: 'yandex.cloud.vpc.v1.SharedEgressGatewaySpec' as const,
-
     encode(_: SharedEgressGatewaySpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -647,18 +585,9 @@ export const SharedEgressGatewaySpec = {
     },
 };
 
-messageTypeRegistry.set(SharedEgressGatewaySpec.$type, SharedEgressGatewaySpec);
-
-const baseCreateGatewayRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.CreateGatewayRequest',
-    folderId: '',
-    name: '',
-    description: '',
-};
+const baseCreateGatewayRequest: object = { folderId: '', name: '', description: '' };
 
 export const CreateGatewayRequest = {
-    $type: 'yandex.cloud.vpc.v1.CreateGatewayRequest' as const,
-
     encode(message: CreateGatewayRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -671,11 +600,7 @@ export const CreateGatewayRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateGatewayRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.vpc.v1.CreateGatewayRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -792,17 +717,9 @@ export const CreateGatewayRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateGatewayRequest.$type, CreateGatewayRequest);
-
-const baseCreateGatewayRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.vpc.v1.CreateGatewayRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateGatewayRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateGatewayRequest_LabelsEntry = {
-    $type: 'yandex.cloud.vpc.v1.CreateGatewayRequest.LabelsEntry' as const,
-
     encode(
         message: CreateGatewayRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -868,16 +785,9 @@ export const CreateGatewayRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateGatewayRequest_LabelsEntry.$type, CreateGatewayRequest_LabelsEntry);
-
-const baseCreateGatewayMetadata: object = {
-    $type: 'yandex.cloud.vpc.v1.CreateGatewayMetadata',
-    gatewayId: '',
-};
+const baseCreateGatewayMetadata: object = { gatewayId: '' };
 
 export const CreateGatewayMetadata = {
-    $type: 'yandex.cloud.vpc.v1.CreateGatewayMetadata' as const,
-
     encode(message: CreateGatewayMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gatewayId !== '') {
             writer.uint32(10).string(message.gatewayId);
@@ -927,18 +837,9 @@ export const CreateGatewayMetadata = {
     },
 };
 
-messageTypeRegistry.set(CreateGatewayMetadata.$type, CreateGatewayMetadata);
-
-const baseUpdateGatewayRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.UpdateGatewayRequest',
-    gatewayId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateGatewayRequest: object = { gatewayId: '', name: '', description: '' };
 
 export const UpdateGatewayRequest = {
-    $type: 'yandex.cloud.vpc.v1.UpdateGatewayRequest' as const,
-
     encode(message: UpdateGatewayRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gatewayId !== '') {
             writer.uint32(10).string(message.gatewayId);
@@ -954,11 +855,7 @@ export const UpdateGatewayRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateGatewayRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.vpc.v1.UpdateGatewayRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -1090,17 +987,9 @@ export const UpdateGatewayRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateGatewayRequest.$type, UpdateGatewayRequest);
-
-const baseUpdateGatewayRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.vpc.v1.UpdateGatewayRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateGatewayRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateGatewayRequest_LabelsEntry = {
-    $type: 'yandex.cloud.vpc.v1.UpdateGatewayRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateGatewayRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1166,16 +1055,9 @@ export const UpdateGatewayRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateGatewayRequest_LabelsEntry.$type, UpdateGatewayRequest_LabelsEntry);
-
-const baseUpdateGatewayMetadata: object = {
-    $type: 'yandex.cloud.vpc.v1.UpdateGatewayMetadata',
-    gatewayId: '',
-};
+const baseUpdateGatewayMetadata: object = { gatewayId: '' };
 
 export const UpdateGatewayMetadata = {
-    $type: 'yandex.cloud.vpc.v1.UpdateGatewayMetadata' as const,
-
     encode(message: UpdateGatewayMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gatewayId !== '') {
             writer.uint32(10).string(message.gatewayId);
@@ -1225,16 +1107,9 @@ export const UpdateGatewayMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateGatewayMetadata.$type, UpdateGatewayMetadata);
-
-const baseDeleteGatewayRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.DeleteGatewayRequest',
-    gatewayId: '',
-};
+const baseDeleteGatewayRequest: object = { gatewayId: '' };
 
 export const DeleteGatewayRequest = {
-    $type: 'yandex.cloud.vpc.v1.DeleteGatewayRequest' as const,
-
     encode(message: DeleteGatewayRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gatewayId !== '') {
             writer.uint32(10).string(message.gatewayId);
@@ -1284,16 +1159,9 @@ export const DeleteGatewayRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteGatewayRequest.$type, DeleteGatewayRequest);
-
-const baseDeleteGatewayMetadata: object = {
-    $type: 'yandex.cloud.vpc.v1.DeleteGatewayMetadata',
-    gatewayId: '',
-};
+const baseDeleteGatewayMetadata: object = { gatewayId: '' };
 
 export const DeleteGatewayMetadata = {
-    $type: 'yandex.cloud.vpc.v1.DeleteGatewayMetadata' as const,
-
     encode(message: DeleteGatewayMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gatewayId !== '') {
             writer.uint32(10).string(message.gatewayId);
@@ -1343,17 +1211,9 @@ export const DeleteGatewayMetadata = {
     },
 };
 
-messageTypeRegistry.set(DeleteGatewayMetadata.$type, DeleteGatewayMetadata);
-
-const baseMoveGatewayRequest: object = {
-    $type: 'yandex.cloud.vpc.v1.MoveGatewayRequest',
-    gatewayId: '',
-    destinationFolderId: '',
-};
+const baseMoveGatewayRequest: object = { gatewayId: '', destinationFolderId: '' };
 
 export const MoveGatewayRequest = {
-    $type: 'yandex.cloud.vpc.v1.MoveGatewayRequest' as const,
-
     encode(message: MoveGatewayRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gatewayId !== '') {
             writer.uint32(10).string(message.gatewayId);
@@ -1416,16 +1276,9 @@ export const MoveGatewayRequest = {
     },
 };
 
-messageTypeRegistry.set(MoveGatewayRequest.$type, MoveGatewayRequest);
-
-const baseMoveGatewayMetadata: object = {
-    $type: 'yandex.cloud.vpc.v1.MoveGatewayMetadata',
-    gatewayId: '',
-};
+const baseMoveGatewayMetadata: object = { gatewayId: '' };
 
 export const MoveGatewayMetadata = {
-    $type: 'yandex.cloud.vpc.v1.MoveGatewayMetadata' as const,
-
     encode(message: MoveGatewayMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gatewayId !== '') {
             writer.uint32(10).string(message.gatewayId);
@@ -1474,8 +1327,6 @@ export const MoveGatewayMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(MoveGatewayMetadata.$type, MoveGatewayMetadata);
 
 export const GatewayServiceService = {
     /**
@@ -1735,16 +1586,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

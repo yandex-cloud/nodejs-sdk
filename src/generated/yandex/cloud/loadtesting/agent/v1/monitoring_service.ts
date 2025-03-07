@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -18,7 +17,6 @@ import _m0 from 'protobufjs/minimal';
 export const protobufPackage = 'yandex.cloud.loadtesting.agent.v1';
 
 export interface AddMetricRequest {
-    $type: 'yandex.cloud.loadtesting.agent.v1.AddMetricRequest';
     computeInstanceId: string;
     jobId: string;
     chunks: MetricChunk[];
@@ -26,7 +24,6 @@ export interface AddMetricRequest {
 }
 
 export interface MetricChunk {
-    $type: 'yandex.cloud.loadtesting.agent.v1.MetricChunk';
     data: Metric[];
     timestamp: number;
     comment: string;
@@ -34,28 +31,19 @@ export interface MetricChunk {
 }
 
 export interface Metric {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Metric';
     metricType: string;
     metricName: string;
     metricValue: number;
 }
 
 export interface AddMetricResponse {
-    $type: 'yandex.cloud.loadtesting.agent.v1.AddMetricResponse';
     metricTrailId: string;
     code: number;
 }
 
-const baseAddMetricRequest: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.AddMetricRequest',
-    computeInstanceId: '',
-    jobId: '',
-    agentInstanceId: '',
-};
+const baseAddMetricRequest: object = { computeInstanceId: '', jobId: '', agentInstanceId: '' };
 
 export const AddMetricRequest = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.AddMetricRequest' as const,
-
     encode(message: AddMetricRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -140,18 +128,9 @@ export const AddMetricRequest = {
     },
 };
 
-messageTypeRegistry.set(AddMetricRequest.$type, AddMetricRequest);
-
-const baseMetricChunk: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.MetricChunk',
-    timestamp: 0,
-    comment: '',
-    instanceHost: '',
-};
+const baseMetricChunk: object = { timestamp: 0, comment: '', instanceHost: '' };
 
 export const MetricChunk = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.MetricChunk' as const,
-
     encode(message: MetricChunk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.data) {
             Metric.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -235,18 +214,9 @@ export const MetricChunk = {
     },
 };
 
-messageTypeRegistry.set(MetricChunk.$type, MetricChunk);
-
-const baseMetric: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Metric',
-    metricType: '',
-    metricName: '',
-    metricValue: 0,
-};
+const baseMetric: object = { metricType: '', metricName: '', metricValue: 0 };
 
 export const Metric = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.Metric' as const,
-
     encode(message: Metric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.metricType !== '') {
             writer.uint32(10).string(message.metricType);
@@ -318,17 +288,9 @@ export const Metric = {
     },
 };
 
-messageTypeRegistry.set(Metric.$type, Metric);
-
-const baseAddMetricResponse: object = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.AddMetricResponse',
-    metricTrailId: '',
-    code: 0,
-};
+const baseAddMetricResponse: object = { metricTrailId: '', code: 0 };
 
 export const AddMetricResponse = {
-    $type: 'yandex.cloud.loadtesting.agent.v1.AddMetricResponse' as const,
-
     encode(message: AddMetricResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.metricTrailId !== '') {
             writer.uint32(10).string(message.metricTrailId);
@@ -384,8 +346,6 @@ export const AddMetricResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(AddMetricResponse.$type, AddMetricResponse);
 
 export const MonitoringServiceService = {
     /** Saves monitoring events for specified job */
@@ -458,16 +418,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

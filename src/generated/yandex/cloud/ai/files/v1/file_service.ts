@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -22,7 +21,6 @@ export const protobufPackage = 'yandex.cloud.ai.files.v1';
 
 /** Request message for creating a new file. */
 export interface CreateFileRequest {
-    $type: 'yandex.cloud.ai.files.v1.CreateFileRequest';
     folderId: string;
     /** Name of the file. */
     name: string;
@@ -42,35 +40,30 @@ export interface CreateFileRequest {
 }
 
 export interface CreateFileRequest_LabelsEntry {
-    $type: 'yandex.cloud.ai.files.v1.CreateFileRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Request message for retrieving a file by ID. */
 export interface GetFileRequest {
-    $type: 'yandex.cloud.ai.files.v1.GetFileRequest';
     /** ID of the file to retrieve. */
     fileId: string;
 }
 
 /** Request message for retrieving the URL of a specific file. */
 export interface GetFileUrlRequest {
-    $type: 'yandex.cloud.ai.files.v1.GetFileUrlRequest';
     /** ID of the file which the URL is requested. */
     fileId: string;
 }
 
 /** Response message containing the URL to access the requested file. */
 export interface GetFileUrlResponse {
-    $type: 'yandex.cloud.ai.files.v1.GetFileUrlResponse';
     /** URL that can be used to access or download the file. */
     url: string;
 }
 
 /** Request message for updating an existing file. */
 export interface UpdateFileRequest {
-    $type: 'yandex.cloud.ai.files.v1.UpdateFileRequest';
     /** ID of the file to update. */
     fileId: string;
     /** Field mask specifying which fields to update. */
@@ -86,26 +79,21 @@ export interface UpdateFileRequest {
 }
 
 export interface UpdateFileRequest_LabelsEntry {
-    $type: 'yandex.cloud.ai.files.v1.UpdateFileRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Request message for deleting a file by ID. */
 export interface DeleteFileRequest {
-    $type: 'yandex.cloud.ai.files.v1.DeleteFileRequest';
     /** ID of the file to delete. */
     fileId: string;
 }
 
 /** Response message for the delete operation. */
-export interface DeleteFileResponse {
-    $type: 'yandex.cloud.ai.files.v1.DeleteFileResponse';
-}
+export interface DeleteFileResponse {}
 
 /** Request message for listing files in a specific folder. */
 export interface ListFilesRequest {
-    $type: 'yandex.cloud.ai.files.v1.ListFilesRequest';
     /** Folder ID from which to list files. */
     folderId: string;
     /** Maximum number of files to return per page. */
@@ -116,24 +104,15 @@ export interface ListFilesRequest {
 
 /** Response message for the list operation. */
 export interface ListFilesResponse {
-    $type: 'yandex.cloud.ai.files.v1.ListFilesResponse';
     /** List of files in the specified folder. */
     files: File[];
     /** Token to retrieve the next page of results. */
     nextPageToken: string;
 }
 
-const baseCreateFileRequest: object = {
-    $type: 'yandex.cloud.ai.files.v1.CreateFileRequest',
-    folderId: '',
-    name: '',
-    description: '',
-    mimeType: '',
-};
+const baseCreateFileRequest: object = { folderId: '', name: '', description: '', mimeType: '' };
 
 export const CreateFileRequest = {
-    $type: 'yandex.cloud.ai.files.v1.CreateFileRequest' as const,
-
     encode(message: CreateFileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -152,11 +131,7 @@ export const CreateFileRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateFileRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.files.v1.CreateFileRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -287,17 +262,9 @@ export const CreateFileRequest = {
     },
 };
 
-messageTypeRegistry.set(CreateFileRequest.$type, CreateFileRequest);
-
-const baseCreateFileRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.files.v1.CreateFileRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateFileRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateFileRequest_LabelsEntry = {
-    $type: 'yandex.cloud.ai.files.v1.CreateFileRequest.LabelsEntry' as const,
-
     encode(
         message: CreateFileRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -357,13 +324,9 @@ export const CreateFileRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(CreateFileRequest_LabelsEntry.$type, CreateFileRequest_LabelsEntry);
-
-const baseGetFileRequest: object = { $type: 'yandex.cloud.ai.files.v1.GetFileRequest', fileId: '' };
+const baseGetFileRequest: object = { fileId: '' };
 
 export const GetFileRequest = {
-    $type: 'yandex.cloud.ai.files.v1.GetFileRequest' as const,
-
     encode(message: GetFileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fileId !== '') {
             writer.uint32(10).string(message.fileId);
@@ -409,16 +372,9 @@ export const GetFileRequest = {
     },
 };
 
-messageTypeRegistry.set(GetFileRequest.$type, GetFileRequest);
-
-const baseGetFileUrlRequest: object = {
-    $type: 'yandex.cloud.ai.files.v1.GetFileUrlRequest',
-    fileId: '',
-};
+const baseGetFileUrlRequest: object = { fileId: '' };
 
 export const GetFileUrlRequest = {
-    $type: 'yandex.cloud.ai.files.v1.GetFileUrlRequest' as const,
-
     encode(message: GetFileUrlRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fileId !== '') {
             writer.uint32(10).string(message.fileId);
@@ -464,16 +420,9 @@ export const GetFileUrlRequest = {
     },
 };
 
-messageTypeRegistry.set(GetFileUrlRequest.$type, GetFileUrlRequest);
-
-const baseGetFileUrlResponse: object = {
-    $type: 'yandex.cloud.ai.files.v1.GetFileUrlResponse',
-    url: '',
-};
+const baseGetFileUrlResponse: object = { url: '' };
 
 export const GetFileUrlResponse = {
-    $type: 'yandex.cloud.ai.files.v1.GetFileUrlResponse' as const,
-
     encode(message: GetFileUrlResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(10).string(message.url);
@@ -520,18 +469,9 @@ export const GetFileUrlResponse = {
     },
 };
 
-messageTypeRegistry.set(GetFileUrlResponse.$type, GetFileUrlResponse);
-
-const baseUpdateFileRequest: object = {
-    $type: 'yandex.cloud.ai.files.v1.UpdateFileRequest',
-    fileId: '',
-    name: '',
-    description: '',
-};
+const baseUpdateFileRequest: object = { fileId: '', name: '', description: '' };
 
 export const UpdateFileRequest = {
-    $type: 'yandex.cloud.ai.files.v1.UpdateFileRequest' as const,
-
     encode(message: UpdateFileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fileId !== '') {
             writer.uint32(10).string(message.fileId);
@@ -550,11 +490,7 @@ export const UpdateFileRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateFileRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.ai.files.v1.UpdateFileRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -673,17 +609,9 @@ export const UpdateFileRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateFileRequest.$type, UpdateFileRequest);
-
-const baseUpdateFileRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.ai.files.v1.UpdateFileRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateFileRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateFileRequest_LabelsEntry = {
-    $type: 'yandex.cloud.ai.files.v1.UpdateFileRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateFileRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -743,16 +671,9 @@ export const UpdateFileRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(UpdateFileRequest_LabelsEntry.$type, UpdateFileRequest_LabelsEntry);
-
-const baseDeleteFileRequest: object = {
-    $type: 'yandex.cloud.ai.files.v1.DeleteFileRequest',
-    fileId: '',
-};
+const baseDeleteFileRequest: object = { fileId: '' };
 
 export const DeleteFileRequest = {
-    $type: 'yandex.cloud.ai.files.v1.DeleteFileRequest' as const,
-
     encode(message: DeleteFileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fileId !== '') {
             writer.uint32(10).string(message.fileId);
@@ -798,13 +719,9 @@ export const DeleteFileRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteFileRequest.$type, DeleteFileRequest);
-
-const baseDeleteFileResponse: object = { $type: 'yandex.cloud.ai.files.v1.DeleteFileResponse' };
+const baseDeleteFileResponse: object = {};
 
 export const DeleteFileResponse = {
-    $type: 'yandex.cloud.ai.files.v1.DeleteFileResponse' as const,
-
     encode(_: DeleteFileResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -840,18 +757,9 @@ export const DeleteFileResponse = {
     },
 };
 
-messageTypeRegistry.set(DeleteFileResponse.$type, DeleteFileResponse);
-
-const baseListFilesRequest: object = {
-    $type: 'yandex.cloud.ai.files.v1.ListFilesRequest',
-    folderId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListFilesRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
 export const ListFilesRequest = {
-    $type: 'yandex.cloud.ai.files.v1.ListFilesRequest' as const,
-
     encode(message: ListFilesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -921,16 +829,9 @@ export const ListFilesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListFilesRequest.$type, ListFilesRequest);
-
-const baseListFilesResponse: object = {
-    $type: 'yandex.cloud.ai.files.v1.ListFilesResponse',
-    nextPageToken: '',
-};
+const baseListFilesResponse: object = { nextPageToken: '' };
 
 export const ListFilesResponse = {
-    $type: 'yandex.cloud.ai.files.v1.ListFilesResponse' as const,
-
     encode(message: ListFilesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.files) {
             File.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -991,8 +892,6 @@ export const ListFilesResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(ListFilesResponse.$type, ListFilesResponse);
 
 /** FileService provides operations for managing files. */
 export const FileServiceService = {
@@ -1234,16 +1133,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

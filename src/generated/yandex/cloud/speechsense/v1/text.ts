@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -7,27 +6,22 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.speechsense.v1';
 
 export interface TextContent {
-    $type: 'yandex.cloud.speechsense.v1.TextContent';
     messages: Message[];
 }
 
 export interface Message {
-    $type: 'yandex.cloud.speechsense.v1.Message';
     userId: string;
     timestamp?: Date;
     text?: TextPayload | undefined;
 }
 
 export interface TextPayload {
-    $type: 'yandex.cloud.speechsense.v1.TextPayload';
     text: string;
 }
 
-const baseTextContent: object = { $type: 'yandex.cloud.speechsense.v1.TextContent' };
+const baseTextContent: object = {};
 
 export const TextContent = {
-    $type: 'yandex.cloud.speechsense.v1.TextContent' as const,
-
     encode(message: TextContent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.messages) {
             Message.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -77,13 +71,9 @@ export const TextContent = {
     },
 };
 
-messageTypeRegistry.set(TextContent.$type, TextContent);
-
-const baseMessage: object = { $type: 'yandex.cloud.speechsense.v1.Message', userId: '' };
+const baseMessage: object = { userId: '' };
 
 export const Message = {
-    $type: 'yandex.cloud.speechsense.v1.Message' as const,
-
     encode(message: Message, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.userId !== '') {
             writer.uint32(10).string(message.userId);
@@ -157,13 +147,9 @@ export const Message = {
     },
 };
 
-messageTypeRegistry.set(Message.$type, Message);
-
-const baseTextPayload: object = { $type: 'yandex.cloud.speechsense.v1.TextPayload', text: '' };
+const baseTextPayload: object = { text: '' };
 
 export const TextPayload = {
-    $type: 'yandex.cloud.speechsense.v1.TextPayload' as const,
-
     encode(message: TextPayload, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -208,8 +194,6 @@ export const TextPayload = {
     },
 };
 
-messageTypeRegistry.set(TextPayload.$type, TextPayload);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -219,21 +203,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

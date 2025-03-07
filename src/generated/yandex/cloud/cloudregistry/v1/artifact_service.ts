@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,31 +19,23 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.cloudregistry.v1';
 
 export interface GetArtifactRequest {
-    $type: 'yandex.cloud.cloudregistry.v1.GetArtifactRequest';
     /** ID of the artifact resource to return. */
     artifactId: string;
 }
 
 export interface DeleteArtifactRequest {
-    $type: 'yandex.cloud.cloudregistry.v1.DeleteArtifactRequest';
     /** ID of the artifact to delete. */
     artifactId: string;
 }
 
 export interface DeleteArtifactMetadata {
-    $type: 'yandex.cloud.cloudregistry.v1.DeleteArtifactMetadata';
     /** ID of the artifact to delete. */
     artifactId: string;
 }
 
-const baseGetArtifactRequest: object = {
-    $type: 'yandex.cloud.cloudregistry.v1.GetArtifactRequest',
-    artifactId: '',
-};
+const baseGetArtifactRequest: object = { artifactId: '' };
 
 export const GetArtifactRequest = {
-    $type: 'yandex.cloud.cloudregistry.v1.GetArtifactRequest' as const,
-
     encode(message: GetArtifactRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.artifactId !== '') {
             writer.uint32(10).string(message.artifactId);
@@ -94,16 +85,9 @@ export const GetArtifactRequest = {
     },
 };
 
-messageTypeRegistry.set(GetArtifactRequest.$type, GetArtifactRequest);
-
-const baseDeleteArtifactRequest: object = {
-    $type: 'yandex.cloud.cloudregistry.v1.DeleteArtifactRequest',
-    artifactId: '',
-};
+const baseDeleteArtifactRequest: object = { artifactId: '' };
 
 export const DeleteArtifactRequest = {
-    $type: 'yandex.cloud.cloudregistry.v1.DeleteArtifactRequest' as const,
-
     encode(message: DeleteArtifactRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.artifactId !== '') {
             writer.uint32(10).string(message.artifactId);
@@ -153,16 +137,9 @@ export const DeleteArtifactRequest = {
     },
 };
 
-messageTypeRegistry.set(DeleteArtifactRequest.$type, DeleteArtifactRequest);
-
-const baseDeleteArtifactMetadata: object = {
-    $type: 'yandex.cloud.cloudregistry.v1.DeleteArtifactMetadata',
-    artifactId: '',
-};
+const baseDeleteArtifactMetadata: object = { artifactId: '' };
 
 export const DeleteArtifactMetadata = {
-    $type: 'yandex.cloud.cloudregistry.v1.DeleteArtifactMetadata' as const,
-
     encode(message: DeleteArtifactMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.artifactId !== '') {
             writer.uint32(10).string(message.artifactId);
@@ -211,8 +188,6 @@ export const DeleteArtifactMetadata = {
         return message;
     },
 };
-
-messageTypeRegistry.set(DeleteArtifactMetadata.$type, DeleteArtifactMetadata);
 
 /** A set of methods for managing Artifacts. */
 export const ArtifactServiceService = {
@@ -315,16 +290,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

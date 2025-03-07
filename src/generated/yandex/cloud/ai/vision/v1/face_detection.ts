@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Polygon } from '../../../../../yandex/cloud/ai/vision/v1/primitives';
@@ -7,22 +6,18 @@ import { Polygon } from '../../../../../yandex/cloud/ai/vision/v1/primitives';
 export const protobufPackage = 'yandex.cloud.ai.vision.v1';
 
 export interface FaceAnnotation {
-    $type: 'yandex.cloud.ai.vision.v1.FaceAnnotation';
     /** An array of detected faces for the specified image. */
     faces: Face[];
 }
 
 export interface Face {
-    $type: 'yandex.cloud.ai.vision.v1.Face';
     /** Area on the image where the face is located. */
     boundingBox?: Polygon;
 }
 
-const baseFaceAnnotation: object = { $type: 'yandex.cloud.ai.vision.v1.FaceAnnotation' };
+const baseFaceAnnotation: object = {};
 
 export const FaceAnnotation = {
-    $type: 'yandex.cloud.ai.vision.v1.FaceAnnotation' as const,
-
     encode(message: FaceAnnotation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.faces) {
             Face.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -72,13 +67,9 @@ export const FaceAnnotation = {
     },
 };
 
-messageTypeRegistry.set(FaceAnnotation.$type, FaceAnnotation);
-
-const baseFace: object = { $type: 'yandex.cloud.ai.vision.v1.Face' };
+const baseFace: object = {};
 
 export const Face = {
-    $type: 'yandex.cloud.ai.vision.v1.Face' as const,
-
     encode(message: Face, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.boundingBox !== undefined) {
             Polygon.encode(message.boundingBox, writer.uint32(10).fork()).ldelim();
@@ -132,8 +123,6 @@ export const Face = {
     },
 };
 
-messageTypeRegistry.set(Face.$type, Face);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -143,16 +132,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

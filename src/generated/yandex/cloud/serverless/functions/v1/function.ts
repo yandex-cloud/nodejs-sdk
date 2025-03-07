@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../../google/protobuf/duration';
@@ -55,7 +54,6 @@ export function metadataOptionToJSON(object: MetadataOption): string {
 
 /** A serverless function. For details about the concept, see [Functions](/docs/functions/concepts/function). */
 export interface Function {
-    $type: 'yandex.cloud.serverless.functions.v1.Function';
     /** ID of the function. Generated at creation time. */
     id: string;
     /** ID of the folder that the function belongs to. */
@@ -129,14 +127,12 @@ export function function_StatusToJSON(object: Function_Status): string {
 }
 
 export interface Function_LabelsEntry {
-    $type: 'yandex.cloud.serverless.functions.v1.Function.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Version of a function. For details about the concept, see [Function versions](/docs/functions/concepts/function#version). */
 export interface Version {
-    $type: 'yandex.cloud.serverless.functions.v1.Version';
     /** ID of the version. */
     id: string;
     /** ID of the function that the version belongs to. */
@@ -252,27 +248,23 @@ export function version_StatusToJSON(object: Version_Status): string {
 }
 
 export interface Version_EnvironmentEntry {
-    $type: 'yandex.cloud.serverless.functions.v1.Version.EnvironmentEntry';
     key: string;
     value: string;
 }
 
 export interface Version_NamedServiceAccountsEntry {
-    $type: 'yandex.cloud.serverless.functions.v1.Version.NamedServiceAccountsEntry';
     key: string;
     value: string;
 }
 
 /** Resources allocated to a version. */
 export interface Resources {
-    $type: 'yandex.cloud.serverless.functions.v1.Resources';
     /** Amount of memory available to the version, specified in bytes, multiple of 128MB. */
     memory: number;
 }
 
 /** Version deployment package. */
 export interface Package {
-    $type: 'yandex.cloud.serverless.functions.v1.Package';
     /** Name of the bucket that stores the code for the version. */
     bucketName: string;
     /** Name of the object in the bucket that stores the code for the version. */
@@ -283,7 +275,6 @@ export interface Package {
 
 /** Version connectivity specification. */
 export interface Connectivity {
-    $type: 'yandex.cloud.serverless.functions.v1.Connectivity';
     /**
      * Network the version will have access to.
      * It's essential to specify network with subnets in all availability zones.
@@ -297,7 +288,6 @@ export interface Connectivity {
 }
 
 export interface ScalingPolicy {
-    $type: 'yandex.cloud.serverless.functions.v1.ScalingPolicy';
     /** ID of the function that the scaling policy belongs to. */
     functionId: string;
     /** Tag of the version that the scaling policy belongs to. For details, see [Version tag](/docs/functions/concepts/function#tag). */
@@ -325,7 +315,6 @@ export interface ScalingPolicy {
 
 /** Secret for serverless function. */
 export interface Secret {
-    $type: 'yandex.cloud.serverless.functions.v1.Secret';
     /** ID of Yandex Lockbox secret. */
     id: string;
     /** ID of Yandex Lockbox version. */
@@ -337,7 +326,6 @@ export interface Secret {
 }
 
 export interface LogOptions {
-    $type: 'yandex.cloud.serverless.functions.v1.LogOptions';
     /** Is logging from function disabled. */
     disabled: boolean;
     /** Entry should be written to log group resolved by ID. */
@@ -354,7 +342,6 @@ export interface LogOptions {
 
 /** @deprecated */
 export interface StorageMount {
-    $type: 'yandex.cloud.serverless.functions.v1.StorageMount';
     /** S3 bucket name for mounting. */
     bucketId: string;
     /** S3 bucket prefix for mounting. */
@@ -367,7 +354,6 @@ export interface StorageMount {
 
 /** Mount contains an information about version's external storage mount */
 export interface Mount {
-    $type: 'yandex.cloud.serverless.functions.v1.Mount';
     /** Unique mount point name. Device will be mounted into /function/storage/<name> */
     name: string;
     /** Mount's mode */
@@ -418,7 +404,6 @@ export function mount_ModeToJSON(object: Mount_Mode): string {
 
 /** ObjectStorage as a mount */
 export interface Mount_ObjectStorage {
-    $type: 'yandex.cloud.serverless.functions.v1.Mount.ObjectStorage';
     /** ObjectStorage bucket name for mounting. */
     bucketId: string;
     /** ObjectStorage bucket prefix for mounting. */
@@ -427,7 +412,6 @@ export interface Mount_ObjectStorage {
 
 /** Disk as a mount */
 export interface Mount_DiskSpec {
-    $type: 'yandex.cloud.serverless.functions.v1.Mount.DiskSpec';
     /** The size of disk for mount in bytes */
     size: number;
     /** Optional block size of disk for mount in bytes */
@@ -435,7 +419,6 @@ export interface Mount_DiskSpec {
 }
 
 export interface AsyncInvocationConfig {
-    $type: 'yandex.cloud.serverless.functions.v1.AsyncInvocationConfig';
     /** Number of retries of version invocation */
     retriesCount: number;
     /** Target for successful result of the version's invocation */
@@ -448,7 +431,6 @@ export interface AsyncInvocationConfig {
 
 /** Target to which a result of an invocation will be sent */
 export interface AsyncInvocationConfig_ResponseTarget {
-    $type: 'yandex.cloud.serverless.functions.v1.AsyncInvocationConfig.ResponseTarget';
     /** Target to ignore a result */
     emptyTarget?: EmptyTarget | undefined;
     /** Target to send a result to ymq */
@@ -456,19 +438,15 @@ export interface AsyncInvocationConfig_ResponseTarget {
 }
 
 export interface YMQTarget {
-    $type: 'yandex.cloud.serverless.functions.v1.YMQTarget';
     /** Queue ARN */
     queueArn: string;
     /** Service account which has write permission on the queue. */
     serviceAccountId: string;
 }
 
-export interface EmptyTarget {
-    $type: 'yandex.cloud.serverless.functions.v1.EmptyTarget';
-}
+export interface EmptyTarget {}
 
 export interface MetadataOptions {
-    $type: 'yandex.cloud.serverless.functions.v1.MetadataOptions';
     /** Enabled access to GCE flavored metadata */
     gceHttpEndpoint: MetadataOption;
     /** Enabled access to AWS flavored metadata (IMDSv1) */
@@ -476,7 +454,6 @@ export interface MetadataOptions {
 }
 
 const baseFunction: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.Function',
     id: '',
     folderId: '',
     name: '',
@@ -486,8 +463,6 @@ const baseFunction: object = {
 };
 
 export const Function = {
-    $type: 'yandex.cloud.serverless.functions.v1.Function' as const,
-
     encode(message: Function, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -506,11 +481,7 @@ export const Function = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Function_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.functions.v1.Function.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -640,17 +611,9 @@ export const Function = {
     },
 };
 
-messageTypeRegistry.set(Function.$type, Function);
-
-const baseFunction_LabelsEntry: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.Function.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseFunction_LabelsEntry: object = { key: '', value: '' };
 
 export const Function_LabelsEntry = {
-    $type: 'yandex.cloud.serverless.functions.v1.Function.LabelsEntry' as const,
-
     encode(message: Function_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -707,10 +670,7 @@ export const Function_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(Function_LabelsEntry.$type, Function_LabelsEntry);
-
 const baseVersion: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.Version',
     id: '',
     functionId: '',
     description: '',
@@ -725,8 +685,6 @@ const baseVersion: object = {
 };
 
 export const Version = {
-    $type: 'yandex.cloud.serverless.functions.v1.Version' as const,
-
     encode(message: Version, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -766,11 +724,7 @@ export const Version = {
         }
         Object.entries(message.environment).forEach(([key, value]) => {
             Version_EnvironmentEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.functions.v1.Version.EnvironmentEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(130).fork(),
             ).ldelim();
         });
@@ -779,11 +733,7 @@ export const Version = {
         }
         Object.entries(message.namedServiceAccounts).forEach(([key, value]) => {
             Version_NamedServiceAccountsEntry.encode(
-                {
-                    $type: 'yandex.cloud.serverless.functions.v1.Version.NamedServiceAccountsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(146).fork(),
             ).ldelim();
         });
@@ -1138,17 +1088,9 @@ export const Version = {
     },
 };
 
-messageTypeRegistry.set(Version.$type, Version);
-
-const baseVersion_EnvironmentEntry: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.Version.EnvironmentEntry',
-    key: '',
-    value: '',
-};
+const baseVersion_EnvironmentEntry: object = { key: '', value: '' };
 
 export const Version_EnvironmentEntry = {
-    $type: 'yandex.cloud.serverless.functions.v1.Version.EnvironmentEntry' as const,
-
     encode(
         message: Version_EnvironmentEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1208,17 +1150,9 @@ export const Version_EnvironmentEntry = {
     },
 };
 
-messageTypeRegistry.set(Version_EnvironmentEntry.$type, Version_EnvironmentEntry);
-
-const baseVersion_NamedServiceAccountsEntry: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.Version.NamedServiceAccountsEntry',
-    key: '',
-    value: '',
-};
+const baseVersion_NamedServiceAccountsEntry: object = { key: '', value: '' };
 
 export const Version_NamedServiceAccountsEntry = {
-    $type: 'yandex.cloud.serverless.functions.v1.Version.NamedServiceAccountsEntry' as const,
-
     encode(
         message: Version_NamedServiceAccountsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1284,16 +1218,9 @@ export const Version_NamedServiceAccountsEntry = {
     },
 };
 
-messageTypeRegistry.set(Version_NamedServiceAccountsEntry.$type, Version_NamedServiceAccountsEntry);
-
-const baseResources: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.Resources',
-    memory: 0,
-};
+const baseResources: object = { memory: 0 };
 
 export const Resources = {
-    $type: 'yandex.cloud.serverless.functions.v1.Resources' as const,
-
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.memory !== 0) {
             writer.uint32(8).int64(message.memory);
@@ -1339,18 +1266,9 @@ export const Resources = {
     },
 };
 
-messageTypeRegistry.set(Resources.$type, Resources);
-
-const basePackage: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.Package',
-    bucketName: '',
-    objectName: '',
-    sha256: '',
-};
+const basePackage: object = { bucketName: '', objectName: '', sha256: '' };
 
 export const Package = {
-    $type: 'yandex.cloud.serverless.functions.v1.Package' as const,
-
     encode(message: Package, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucketName !== '') {
             writer.uint32(10).string(message.bucketName);
@@ -1420,17 +1338,9 @@ export const Package = {
     },
 };
 
-messageTypeRegistry.set(Package.$type, Package);
-
-const baseConnectivity: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.Connectivity',
-    networkId: '',
-    subnetId: '',
-};
+const baseConnectivity: object = { networkId: '', subnetId: '' };
 
 export const Connectivity = {
-    $type: 'yandex.cloud.serverless.functions.v1.Connectivity' as const,
-
     encode(message: Connectivity, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);
@@ -1492,10 +1402,7 @@ export const Connectivity = {
     },
 };
 
-messageTypeRegistry.set(Connectivity.$type, Connectivity);
-
 const baseScalingPolicy: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.ScalingPolicy',
     functionId: '',
     tag: '',
     provisionedInstancesCount: 0,
@@ -1504,8 +1411,6 @@ const baseScalingPolicy: object = {
 };
 
 export const ScalingPolicy = {
-    $type: 'yandex.cloud.serverless.functions.v1.ScalingPolicy' as const,
-
     encode(message: ScalingPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -1626,18 +1531,9 @@ export const ScalingPolicy = {
     },
 };
 
-messageTypeRegistry.set(ScalingPolicy.$type, ScalingPolicy);
-
-const baseSecret: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.Secret',
-    id: '',
-    versionId: '',
-    key: '',
-};
+const baseSecret: object = { id: '', versionId: '', key: '' };
 
 export const Secret = {
-    $type: 'yandex.cloud.serverless.functions.v1.Secret' as const,
-
     encode(message: Secret, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1716,17 +1612,9 @@ export const Secret = {
     },
 };
 
-messageTypeRegistry.set(Secret.$type, Secret);
-
-const baseLogOptions: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.LogOptions',
-    disabled: false,
-    minLevel: 0,
-};
+const baseLogOptions: object = { disabled: false, minLevel: 0 };
 
 export const LogOptions = {
-    $type: 'yandex.cloud.serverless.functions.v1.LogOptions' as const,
-
     encode(message: LogOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.disabled === true) {
             writer.uint32(8).bool(message.disabled);
@@ -1810,19 +1698,9 @@ export const LogOptions = {
     },
 };
 
-messageTypeRegistry.set(LogOptions.$type, LogOptions);
-
-const baseStorageMount: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.StorageMount',
-    bucketId: '',
-    prefix: '',
-    mountPointName: '',
-    readOnly: false,
-};
+const baseStorageMount: object = { bucketId: '', prefix: '', mountPointName: '', readOnly: false };
 
 export const StorageMount = {
-    $type: 'yandex.cloud.serverless.functions.v1.StorageMount' as const,
-
     encode(message: StorageMount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucketId !== '') {
             writer.uint32(10).string(message.bucketId);
@@ -1904,17 +1782,9 @@ export const StorageMount = {
     },
 };
 
-messageTypeRegistry.set(StorageMount.$type, StorageMount);
-
-const baseMount: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.Mount',
-    name: '',
-    mode: 0,
-};
+const baseMount: object = { name: '', mode: 0 };
 
 export const Mount = {
-    $type: 'yandex.cloud.serverless.functions.v1.Mount' as const,
-
     encode(message: Mount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -2005,17 +1875,9 @@ export const Mount = {
     },
 };
 
-messageTypeRegistry.set(Mount.$type, Mount);
-
-const baseMount_ObjectStorage: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.Mount.ObjectStorage',
-    bucketId: '',
-    prefix: '',
-};
+const baseMount_ObjectStorage: object = { bucketId: '', prefix: '' };
 
 export const Mount_ObjectStorage = {
-    $type: 'yandex.cloud.serverless.functions.v1.Mount.ObjectStorage' as const,
-
     encode(message: Mount_ObjectStorage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucketId !== '') {
             writer.uint32(10).string(message.bucketId);
@@ -2075,17 +1937,9 @@ export const Mount_ObjectStorage = {
     },
 };
 
-messageTypeRegistry.set(Mount_ObjectStorage.$type, Mount_ObjectStorage);
-
-const baseMount_DiskSpec: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.Mount.DiskSpec',
-    size: 0,
-    blockSize: 0,
-};
+const baseMount_DiskSpec: object = { size: 0, blockSize: 0 };
 
 export const Mount_DiskSpec = {
-    $type: 'yandex.cloud.serverless.functions.v1.Mount.DiskSpec' as const,
-
     encode(message: Mount_DiskSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.size !== 0) {
             writer.uint32(8).int64(message.size);
@@ -2142,17 +1996,9 @@ export const Mount_DiskSpec = {
     },
 };
 
-messageTypeRegistry.set(Mount_DiskSpec.$type, Mount_DiskSpec);
-
-const baseAsyncInvocationConfig: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.AsyncInvocationConfig',
-    retriesCount: 0,
-    serviceAccountId: '',
-};
+const baseAsyncInvocationConfig: object = { retriesCount: 0, serviceAccountId: '' };
 
 export const AsyncInvocationConfig = {
-    $type: 'yandex.cloud.serverless.functions.v1.AsyncInvocationConfig' as const,
-
     encode(message: AsyncInvocationConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.retriesCount !== 0) {
             writer.uint32(8).int64(message.retriesCount);
@@ -2262,15 +2108,9 @@ export const AsyncInvocationConfig = {
     },
 };
 
-messageTypeRegistry.set(AsyncInvocationConfig.$type, AsyncInvocationConfig);
-
-const baseAsyncInvocationConfig_ResponseTarget: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.AsyncInvocationConfig.ResponseTarget',
-};
+const baseAsyncInvocationConfig_ResponseTarget: object = {};
 
 export const AsyncInvocationConfig_ResponseTarget = {
-    $type: 'yandex.cloud.serverless.functions.v1.AsyncInvocationConfig.ResponseTarget' as const,
-
     encode(
         message: AsyncInvocationConfig_ResponseTarget,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2351,20 +2191,9 @@ export const AsyncInvocationConfig_ResponseTarget = {
     },
 };
 
-messageTypeRegistry.set(
-    AsyncInvocationConfig_ResponseTarget.$type,
-    AsyncInvocationConfig_ResponseTarget,
-);
-
-const baseYMQTarget: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.YMQTarget',
-    queueArn: '',
-    serviceAccountId: '',
-};
+const baseYMQTarget: object = { queueArn: '', serviceAccountId: '' };
 
 export const YMQTarget = {
-    $type: 'yandex.cloud.serverless.functions.v1.YMQTarget' as const,
-
     encode(message: YMQTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.queueArn !== '') {
             writer.uint32(10).string(message.queueArn);
@@ -2424,13 +2253,9 @@ export const YMQTarget = {
     },
 };
 
-messageTypeRegistry.set(YMQTarget.$type, YMQTarget);
-
-const baseEmptyTarget: object = { $type: 'yandex.cloud.serverless.functions.v1.EmptyTarget' };
+const baseEmptyTarget: object = {};
 
 export const EmptyTarget = {
-    $type: 'yandex.cloud.serverless.functions.v1.EmptyTarget' as const,
-
     encode(_: EmptyTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2466,17 +2291,9 @@ export const EmptyTarget = {
     },
 };
 
-messageTypeRegistry.set(EmptyTarget.$type, EmptyTarget);
-
-const baseMetadataOptions: object = {
-    $type: 'yandex.cloud.serverless.functions.v1.MetadataOptions',
-    gceHttpEndpoint: 0,
-    awsV1HttpEndpoint: 0,
-};
+const baseMetadataOptions: object = { gceHttpEndpoint: 0, awsV1HttpEndpoint: 0 };
 
 export const MetadataOptions = {
-    $type: 'yandex.cloud.serverless.functions.v1.MetadataOptions' as const,
-
     encode(message: MetadataOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gceHttpEndpoint !== 0) {
             writer.uint32(8).int32(message.gceHttpEndpoint);
@@ -2538,8 +2355,6 @@ export const MetadataOptions = {
     },
 };
 
-messageTypeRegistry.set(MetadataOptions.$type, MetadataOptions);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -2560,21 +2375,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

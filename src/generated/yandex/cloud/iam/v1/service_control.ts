@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Resource } from '../../../../yandex/cloud/iam/v1/resource';
@@ -9,7 +8,6 @@ export const protobufPackage = 'yandex.cloud.iam.v1';
 
 /** A Service. */
 export interface Service {
-    $type: 'yandex.cloud.iam.v1.Service';
     /** ID of the service. */
     serviceId: string;
     /** Resource that the service belongs to. */
@@ -110,7 +108,6 @@ export function service_StatusToJSON(object: Service_Status): string {
 }
 
 export interface ServiceAgent {
-    $type: 'yandex.cloud.iam.v1.ServiceAgent';
     /** ID of the agent service account. */
     serviceAccountId: string;
     /** ID of the service. */
@@ -119,11 +116,9 @@ export interface ServiceAgent {
     microserviceId: string;
 }
 
-const baseService: object = { $type: 'yandex.cloud.iam.v1.Service', serviceId: '', status: 0 };
+const baseService: object = { serviceId: '', status: 0 };
 
 export const Service = {
-    $type: 'yandex.cloud.iam.v1.Service' as const,
-
     encode(message: Service, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceId !== '') {
             writer.uint32(10).string(message.serviceId);
@@ -211,18 +206,9 @@ export const Service = {
     },
 };
 
-messageTypeRegistry.set(Service.$type, Service);
-
-const baseServiceAgent: object = {
-    $type: 'yandex.cloud.iam.v1.ServiceAgent',
-    serviceAccountId: '',
-    serviceId: '',
-    microserviceId: '',
-};
+const baseServiceAgent: object = { serviceAccountId: '', serviceId: '', microserviceId: '' };
 
 export const ServiceAgent = {
-    $type: 'yandex.cloud.iam.v1.ServiceAgent' as const,
-
     encode(message: ServiceAgent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceAccountId !== '') {
             writer.uint32(10).string(message.serviceAccountId);
@@ -294,8 +280,6 @@ export const ServiceAgent = {
     },
 };
 
-messageTypeRegistry.set(ServiceAgent.$type, ServiceAgent);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -305,21 +289,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

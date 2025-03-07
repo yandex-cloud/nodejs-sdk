@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Peering } from '../../../../yandex/cloud/cic/v1/peering';
@@ -9,7 +8,6 @@ export const protobufPackage = 'yandex.cloud.cic.v1';
 
 /** A PrivateConnection resource. */
 export interface PrivateConnection {
-    $type: 'yandex.cloud.cic.v1.PrivateConnection';
     /** ID of the privateConnection. */
     id: string;
     /**
@@ -48,13 +46,11 @@ export interface PrivateConnection {
 }
 
 export interface PrivateConnection_LabelsEntry {
-    $type: 'yandex.cloud.cic.v1.PrivateConnection.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface PrivateConnection_StaticRoute {
-    $type: 'yandex.cloud.cic.v1.PrivateConnection.StaticRoute';
     /**
      * Prefix.
      * It's an ip with format ipPrefix/length where address part of ipPrefix is 0.
@@ -71,7 +67,6 @@ export interface PrivateConnection_StaticRoute {
 }
 
 const basePrivateConnection: object = {
-    $type: 'yandex.cloud.cic.v1.PrivateConnection',
     id: '',
     name: '',
     description: '',
@@ -81,8 +76,6 @@ const basePrivateConnection: object = {
 };
 
 export const PrivateConnection = {
-    $type: 'yandex.cloud.cic.v1.PrivateConnection' as const,
-
     encode(message: PrivateConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -103,10 +96,7 @@ export const PrivateConnection = {
             writer.uint32(58).string(message.trunkConnectionId);
         }
         if (message.vlanId !== undefined) {
-            Int64Value.encode(
-                { $type: 'google.protobuf.Int64Value', value: message.vlanId! },
-                writer.uint32(66).fork(),
-            ).ldelim();
+            Int64Value.encode({ value: message.vlanId! }, writer.uint32(66).fork()).ldelim();
         }
         if (message.ipv4Peering !== undefined) {
             Peering.encode(message.ipv4Peering, writer.uint32(74).fork()).ldelim();
@@ -116,11 +106,7 @@ export const PrivateConnection = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             PrivateConnection_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.cic.v1.PrivateConnection.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(194).fork(),
             ).ldelim();
         });
@@ -278,17 +264,9 @@ export const PrivateConnection = {
     },
 };
 
-messageTypeRegistry.set(PrivateConnection.$type, PrivateConnection);
-
-const basePrivateConnection_LabelsEntry: object = {
-    $type: 'yandex.cloud.cic.v1.PrivateConnection.LabelsEntry',
-    key: '',
-    value: '',
-};
+const basePrivateConnection_LabelsEntry: object = { key: '', value: '' };
 
 export const PrivateConnection_LabelsEntry = {
-    $type: 'yandex.cloud.cic.v1.PrivateConnection.LabelsEntry' as const,
-
     encode(
         message: PrivateConnection_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -348,17 +326,9 @@ export const PrivateConnection_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(PrivateConnection_LabelsEntry.$type, PrivateConnection_LabelsEntry);
-
-const basePrivateConnection_StaticRoute: object = {
-    $type: 'yandex.cloud.cic.v1.PrivateConnection.StaticRoute',
-    prefix: '',
-    nextHop: '',
-};
+const basePrivateConnection_StaticRoute: object = { prefix: '', nextHop: '' };
 
 export const PrivateConnection_StaticRoute = {
-    $type: 'yandex.cloud.cic.v1.PrivateConnection.StaticRoute' as const,
-
     encode(
         message: PrivateConnection_StaticRoute,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -423,8 +393,6 @@ export const PrivateConnection_StaticRoute = {
     },
 };
 
-messageTypeRegistry.set(PrivateConnection_StaticRoute.$type, PrivateConnection_StaticRoute);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -434,16 +402,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

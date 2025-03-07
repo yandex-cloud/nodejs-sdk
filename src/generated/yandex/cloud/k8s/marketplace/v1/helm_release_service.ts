@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -20,7 +19,6 @@ import { Operation } from '../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.k8s.marketplace.v1';
 
 export interface ListHelmReleasesRequest {
-    $type: 'yandex.cloud.k8s.marketplace.v1.ListHelmReleasesRequest';
     /** The ID of the Kubernetes cluster to list Helm releases from. */
     clusterId: string;
     /** The maximum number of results per page that should be returned. */
@@ -30,7 +28,6 @@ export interface ListHelmReleasesRequest {
 }
 
 export interface ListHelmReleasesResponse {
-    $type: 'yandex.cloud.k8s.marketplace.v1.ListHelmReleasesResponse';
     /** List of Helm releases in the Kubernetes cluster. */
     helmReleases: HelmRelease[];
     /** Token for retrieving the next page of Helm releases. */
@@ -38,13 +35,11 @@ export interface ListHelmReleasesResponse {
 }
 
 export interface GetHelmReleaseRequest {
-    $type: 'yandex.cloud.k8s.marketplace.v1.GetHelmReleaseRequest';
     /** The ID of the Helm release to retrieve. */
     id: string;
 }
 
 export interface InstallHelmReleaseRequest {
-    $type: 'yandex.cloud.k8s.marketplace.v1.InstallHelmReleaseRequest';
     /** The ID of the Kubernetes cluster where the Helm release is to be installed. */
     clusterId: string;
     /** The product version ID to install. */
@@ -54,7 +49,6 @@ export interface InstallHelmReleaseRequest {
 }
 
 export interface InstallHelmReleaseMetadata {
-    $type: 'yandex.cloud.k8s.marketplace.v1.InstallHelmReleaseMetadata';
     /** The ID of the Kubernetes cluster where the Helm release is being installed. */
     clusterId: string;
     /** The ID of the Helm release being installed. */
@@ -64,7 +58,6 @@ export interface InstallHelmReleaseMetadata {
 }
 
 export interface UpdateHelmReleaseRequest {
-    $type: 'yandex.cloud.k8s.marketplace.v1.UpdateHelmReleaseRequest';
     /** The ID of the Helm release to update. */
     id: string;
     /** The ID of the new product version for the release. */
@@ -74,7 +67,6 @@ export interface UpdateHelmReleaseRequest {
 }
 
 export interface UpdateHelmReleaseMetadata {
-    $type: 'yandex.cloud.k8s.marketplace.v1.UpdateHelmReleaseMetadata';
     /** The ID of the Kubernetes cluster where the Helm release is being updated. */
     clusterId: string;
     /** The ID of the Helm release being updated. */
@@ -84,13 +76,11 @@ export interface UpdateHelmReleaseMetadata {
 }
 
 export interface UninstallHelmReleaseRequest {
-    $type: 'yandex.cloud.k8s.marketplace.v1.UninstallHelmReleaseRequest';
     /** The ID of the Helm release to retrieve. */
     id: string;
 }
 
 export interface UninstallHelmReleaseMetadata {
-    $type: 'yandex.cloud.k8s.marketplace.v1.UninstallHelmReleaseMetadata';
     /** The ID of the Kubernetes cluster where the release is being uninstalled. */
     clusterId: string;
     /** The ID of the Helm release being uninstalled. */
@@ -98,7 +88,6 @@ export interface UninstallHelmReleaseMetadata {
 }
 
 export interface ValueWithKey {
-    $type: 'yandex.cloud.k8s.marketplace.v1.ValueWithKey';
     /** The key associated with the value. */
     key: string;
     /** The value associated with the key. */
@@ -106,21 +95,13 @@ export interface ValueWithKey {
 }
 
 export interface Value {
-    $type: 'yandex.cloud.k8s.marketplace.v1.Value';
     /** The typed string value. */
     typedValue: string | undefined;
 }
 
-const baseListHelmReleasesRequest: object = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.ListHelmReleasesRequest',
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-};
+const baseListHelmReleasesRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListHelmReleasesRequest = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.ListHelmReleasesRequest' as const,
-
     encode(message: ListHelmReleasesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -192,16 +173,9 @@ export const ListHelmReleasesRequest = {
     },
 };
 
-messageTypeRegistry.set(ListHelmReleasesRequest.$type, ListHelmReleasesRequest);
-
-const baseListHelmReleasesResponse: object = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.ListHelmReleasesResponse',
-    nextPageToken: '',
-};
+const baseListHelmReleasesResponse: object = { nextPageToken: '' };
 
 export const ListHelmReleasesResponse = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.ListHelmReleasesResponse' as const,
-
     encode(
         message: ListHelmReleasesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -270,16 +244,9 @@ export const ListHelmReleasesResponse = {
     },
 };
 
-messageTypeRegistry.set(ListHelmReleasesResponse.$type, ListHelmReleasesResponse);
-
-const baseGetHelmReleaseRequest: object = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.GetHelmReleaseRequest',
-    id: '',
-};
+const baseGetHelmReleaseRequest: object = { id: '' };
 
 export const GetHelmReleaseRequest = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.GetHelmReleaseRequest' as const,
-
     encode(message: GetHelmReleaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -326,17 +293,9 @@ export const GetHelmReleaseRequest = {
     },
 };
 
-messageTypeRegistry.set(GetHelmReleaseRequest.$type, GetHelmReleaseRequest);
-
-const baseInstallHelmReleaseRequest: object = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.InstallHelmReleaseRequest',
-    clusterId: '',
-    productVersionId: '',
-};
+const baseInstallHelmReleaseRequest: object = { clusterId: '', productVersionId: '' };
 
 export const InstallHelmReleaseRequest = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.InstallHelmReleaseRequest' as const,
-
     encode(
         message: InstallHelmReleaseRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -417,18 +376,13 @@ export const InstallHelmReleaseRequest = {
     },
 };
 
-messageTypeRegistry.set(InstallHelmReleaseRequest.$type, InstallHelmReleaseRequest);
-
 const baseInstallHelmReleaseMetadata: object = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.InstallHelmReleaseMetadata',
     clusterId: '',
     helmReleaseId: '',
     productVersionId: '',
 };
 
 export const InstallHelmReleaseMetadata = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.InstallHelmReleaseMetadata' as const,
-
     encode(
         message: InstallHelmReleaseMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -505,17 +459,9 @@ export const InstallHelmReleaseMetadata = {
     },
 };
 
-messageTypeRegistry.set(InstallHelmReleaseMetadata.$type, InstallHelmReleaseMetadata);
-
-const baseUpdateHelmReleaseRequest: object = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.UpdateHelmReleaseRequest',
-    id: '',
-    productVersionId: '',
-};
+const baseUpdateHelmReleaseRequest: object = { id: '', productVersionId: '' };
 
 export const UpdateHelmReleaseRequest = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.UpdateHelmReleaseRequest' as const,
-
     encode(
         message: UpdateHelmReleaseRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -593,18 +539,13 @@ export const UpdateHelmReleaseRequest = {
     },
 };
 
-messageTypeRegistry.set(UpdateHelmReleaseRequest.$type, UpdateHelmReleaseRequest);
-
 const baseUpdateHelmReleaseMetadata: object = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.UpdateHelmReleaseMetadata',
     clusterId: '',
     helmReleaseId: '',
     productVersionId: '',
 };
 
 export const UpdateHelmReleaseMetadata = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.UpdateHelmReleaseMetadata' as const,
-
     encode(
         message: UpdateHelmReleaseMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -681,16 +622,9 @@ export const UpdateHelmReleaseMetadata = {
     },
 };
 
-messageTypeRegistry.set(UpdateHelmReleaseMetadata.$type, UpdateHelmReleaseMetadata);
-
-const baseUninstallHelmReleaseRequest: object = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.UninstallHelmReleaseRequest',
-    id: '',
-};
+const baseUninstallHelmReleaseRequest: object = { id: '' };
 
 export const UninstallHelmReleaseRequest = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.UninstallHelmReleaseRequest' as const,
-
     encode(
         message: UninstallHelmReleaseRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -740,17 +674,9 @@ export const UninstallHelmReleaseRequest = {
     },
 };
 
-messageTypeRegistry.set(UninstallHelmReleaseRequest.$type, UninstallHelmReleaseRequest);
-
-const baseUninstallHelmReleaseMetadata: object = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.UninstallHelmReleaseMetadata',
-    clusterId: '',
-    helmReleaseId: '',
-};
+const baseUninstallHelmReleaseMetadata: object = { clusterId: '', helmReleaseId: '' };
 
 export const UninstallHelmReleaseMetadata = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.UninstallHelmReleaseMetadata' as const,
-
     encode(
         message: UninstallHelmReleaseMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -815,13 +741,9 @@ export const UninstallHelmReleaseMetadata = {
     },
 };
 
-messageTypeRegistry.set(UninstallHelmReleaseMetadata.$type, UninstallHelmReleaseMetadata);
-
-const baseValueWithKey: object = { $type: 'yandex.cloud.k8s.marketplace.v1.ValueWithKey', key: '' };
+const baseValueWithKey: object = { key: '' };
 
 export const ValueWithKey = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.ValueWithKey' as const,
-
     encode(message: ValueWithKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -882,13 +804,9 @@ export const ValueWithKey = {
     },
 };
 
-messageTypeRegistry.set(ValueWithKey.$type, ValueWithKey);
-
-const baseValue: object = { $type: 'yandex.cloud.k8s.marketplace.v1.Value' };
+const baseValue: object = {};
 
 export const Value = {
-    $type: 'yandex.cloud.k8s.marketplace.v1.Value' as const,
-
     encode(message: Value, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.typedValue !== undefined) {
             writer.uint32(10).string(message.typedValue);
@@ -935,8 +853,6 @@ export const Value = {
         return message;
     },
 };
-
-messageTypeRegistry.set(Value.$type, Value);
 
 /** A set of methods for managing Helm release. */
 export const HelmReleaseServiceService = {
@@ -1126,16 +1042,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

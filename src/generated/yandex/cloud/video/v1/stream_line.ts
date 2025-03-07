@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
@@ -8,7 +7,6 @@ export const protobufPackage = 'yandex.cloud.video.v1';
 
 /** Entity that is responsible for the incoming video signal settings. */
 export interface StreamLine {
-    $type: 'yandex.cloud.video.v1.StreamLine';
     /** ID of the line. */
     id: string;
     /** ID of the channel where the line was created. */
@@ -42,62 +40,51 @@ export interface StreamLine {
 }
 
 export interface StreamLine_LabelsEntry {
-    $type: 'yandex.cloud.video.v1.StreamLine.LabelsEntry';
     key: string;
     value: string;
 }
 
 /** Push stream key. */
 export interface PushStreamKey {
-    $type: 'yandex.cloud.video.v1.PushStreamKey';
     /** Unique stream key. */
     key: string;
 }
 
 export interface RTMPPushInput {
-    $type: 'yandex.cloud.video.v1.RTMPPushInput';
     /** RTMP server url. */
     url: string;
 }
 
 export interface SRTPushInput {
-    $type: 'yandex.cloud.video.v1.SRTPushInput';
     /** SRT server url. */
     url: string;
 }
 
 export interface RTMPPullInput {
-    $type: 'yandex.cloud.video.v1.RTMPPullInput';
     /** RTMP url for receiving video signal. */
     url: string;
 }
 
 export interface SRTPullInput {
-    $type: 'yandex.cloud.video.v1.SRTPullInput';
     /** SRT url for receiving video signal. */
     url: string;
 }
 
 export interface TCPPullInput {
-    $type: 'yandex.cloud.video.v1.TCPPullInput';
     /** TCP url for receiving video signal. */
     url: string;
 }
 
 export interface RTSPPullInput {
-    $type: 'yandex.cloud.video.v1.RTSPPullInput';
     /** RTSP url for receiving video signal. */
     url: string;
 }
 
 /** Manual line type. */
-export interface ManualLine {
-    $type: 'yandex.cloud.video.v1.ManualLine';
-}
+export interface ManualLine {}
 
 /** Auto line type. */
 export interface AutoLine {
-    $type: 'yandex.cloud.video.v1.AutoLine';
     /** Status of auto line. */
     status: AutoLine_AutoLineStatus;
 }
@@ -144,17 +131,9 @@ export function autoLine_AutoLineStatusToJSON(object: AutoLine_AutoLineStatus): 
     }
 }
 
-const baseStreamLine: object = {
-    $type: 'yandex.cloud.video.v1.StreamLine',
-    id: '',
-    channelId: '',
-    title: '',
-    thumbnailId: '',
-};
+const baseStreamLine: object = { id: '', channelId: '', title: '', thumbnailId: '' };
 
 export const StreamLine = {
-    $type: 'yandex.cloud.video.v1.StreamLine' as const,
-
     encode(message: StreamLine, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -200,7 +179,7 @@ export const StreamLine = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             StreamLine_LabelsEntry.encode(
-                { $type: 'yandex.cloud.video.v1.StreamLine.LabelsEntry', key: key as any, value },
+                { key: key as any, value },
                 writer.uint32(1602).fork(),
             ).ldelim();
         });
@@ -422,17 +401,9 @@ export const StreamLine = {
     },
 };
 
-messageTypeRegistry.set(StreamLine.$type, StreamLine);
-
-const baseStreamLine_LabelsEntry: object = {
-    $type: 'yandex.cloud.video.v1.StreamLine.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseStreamLine_LabelsEntry: object = { key: '', value: '' };
 
 export const StreamLine_LabelsEntry = {
-    $type: 'yandex.cloud.video.v1.StreamLine.LabelsEntry' as const,
-
     encode(message: StreamLine_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -489,13 +460,9 @@ export const StreamLine_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(StreamLine_LabelsEntry.$type, StreamLine_LabelsEntry);
-
-const basePushStreamKey: object = { $type: 'yandex.cloud.video.v1.PushStreamKey', key: '' };
+const basePushStreamKey: object = { key: '' };
 
 export const PushStreamKey = {
-    $type: 'yandex.cloud.video.v1.PushStreamKey' as const,
-
     encode(message: PushStreamKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -540,13 +507,9 @@ export const PushStreamKey = {
     },
 };
 
-messageTypeRegistry.set(PushStreamKey.$type, PushStreamKey);
-
-const baseRTMPPushInput: object = { $type: 'yandex.cloud.video.v1.RTMPPushInput', url: '' };
+const baseRTMPPushInput: object = { url: '' };
 
 export const RTMPPushInput = {
-    $type: 'yandex.cloud.video.v1.RTMPPushInput' as const,
-
     encode(message: RTMPPushInput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(10).string(message.url);
@@ -591,13 +554,9 @@ export const RTMPPushInput = {
     },
 };
 
-messageTypeRegistry.set(RTMPPushInput.$type, RTMPPushInput);
-
-const baseSRTPushInput: object = { $type: 'yandex.cloud.video.v1.SRTPushInput', url: '' };
+const baseSRTPushInput: object = { url: '' };
 
 export const SRTPushInput = {
-    $type: 'yandex.cloud.video.v1.SRTPushInput' as const,
-
     encode(message: SRTPushInput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(10).string(message.url);
@@ -642,13 +601,9 @@ export const SRTPushInput = {
     },
 };
 
-messageTypeRegistry.set(SRTPushInput.$type, SRTPushInput);
-
-const baseRTMPPullInput: object = { $type: 'yandex.cloud.video.v1.RTMPPullInput', url: '' };
+const baseRTMPPullInput: object = { url: '' };
 
 export const RTMPPullInput = {
-    $type: 'yandex.cloud.video.v1.RTMPPullInput' as const,
-
     encode(message: RTMPPullInput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(10).string(message.url);
@@ -693,13 +648,9 @@ export const RTMPPullInput = {
     },
 };
 
-messageTypeRegistry.set(RTMPPullInput.$type, RTMPPullInput);
-
-const baseSRTPullInput: object = { $type: 'yandex.cloud.video.v1.SRTPullInput', url: '' };
+const baseSRTPullInput: object = { url: '' };
 
 export const SRTPullInput = {
-    $type: 'yandex.cloud.video.v1.SRTPullInput' as const,
-
     encode(message: SRTPullInput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(10).string(message.url);
@@ -744,13 +695,9 @@ export const SRTPullInput = {
     },
 };
 
-messageTypeRegistry.set(SRTPullInput.$type, SRTPullInput);
-
-const baseTCPPullInput: object = { $type: 'yandex.cloud.video.v1.TCPPullInput', url: '' };
+const baseTCPPullInput: object = { url: '' };
 
 export const TCPPullInput = {
-    $type: 'yandex.cloud.video.v1.TCPPullInput' as const,
-
     encode(message: TCPPullInput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(10).string(message.url);
@@ -795,13 +742,9 @@ export const TCPPullInput = {
     },
 };
 
-messageTypeRegistry.set(TCPPullInput.$type, TCPPullInput);
-
-const baseRTSPPullInput: object = { $type: 'yandex.cloud.video.v1.RTSPPullInput', url: '' };
+const baseRTSPPullInput: object = { url: '' };
 
 export const RTSPPullInput = {
-    $type: 'yandex.cloud.video.v1.RTSPPullInput' as const,
-
     encode(message: RTSPPullInput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(10).string(message.url);
@@ -846,13 +789,9 @@ export const RTSPPullInput = {
     },
 };
 
-messageTypeRegistry.set(RTSPPullInput.$type, RTSPPullInput);
-
-const baseManualLine: object = { $type: 'yandex.cloud.video.v1.ManualLine' };
+const baseManualLine: object = {};
 
 export const ManualLine = {
-    $type: 'yandex.cloud.video.v1.ManualLine' as const,
-
     encode(_: ManualLine, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -888,13 +827,9 @@ export const ManualLine = {
     },
 };
 
-messageTypeRegistry.set(ManualLine.$type, ManualLine);
-
-const baseAutoLine: object = { $type: 'yandex.cloud.video.v1.AutoLine', status: 0 };
+const baseAutoLine: object = { status: 0 };
 
 export const AutoLine = {
-    $type: 'yandex.cloud.video.v1.AutoLine' as const,
-
     encode(message: AutoLine, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== 0) {
             writer.uint32(8).int32(message.status);
@@ -943,8 +878,6 @@ export const AutoLine = {
     },
 };
 
-messageTypeRegistry.set(AutoLine.$type, AutoLine);
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -954,21 +887,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../../google/protobuf/duration';
@@ -88,7 +87,6 @@ export function metadataOptionToJSON(object: MetadataOption): string {
 }
 
 export interface InstanceGroup {
-    $type: 'yandex.cloud.compute.v1.instancegroup.InstanceGroup';
     /** ID of the instance group. */
     id: string;
     /** ID of the folder that the instance group belongs to. */
@@ -252,13 +250,11 @@ export function instanceGroup_StatusToJSON(object: InstanceGroup_Status): string
 }
 
 export interface InstanceGroup_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.instancegroup.InstanceGroup.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface ApplicationLoadBalancerState {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ApplicationLoadBalancerState';
     /** ID of the Application Load Balancer target group attributed to the instance group. */
     targetGroupId: string;
     /** Status message of the target group. */
@@ -266,13 +262,11 @@ export interface ApplicationLoadBalancerState {
 }
 
 export interface Variable {
-    $type: 'yandex.cloud.compute.v1.instancegroup.Variable';
     key: string;
     value: string;
 }
 
 export interface LoadBalancerState {
-    $type: 'yandex.cloud.compute.v1.instancegroup.LoadBalancerState';
     /** ID of the Network Load Balancer target group attributed to the instance group. */
     targetGroupId: string;
     /** Status message of the target group. */
@@ -280,7 +274,6 @@ export interface LoadBalancerState {
 }
 
 export interface ManagedInstancesState {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ManagedInstancesState';
     /** Target number of instances for this instance group. */
     targetSize: number;
     /** The number of running instances that match the current instance template. For more information, see [ManagedInstance.Status.RUNNING_ACTUAL]. */
@@ -292,7 +285,6 @@ export interface ManagedInstancesState {
 }
 
 export interface ManagedInstancesState_Statuses {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ManagedInstancesState.Statuses';
     /** Instance is being created. */
     creating: number;
     /** Instance is being started. */
@@ -316,7 +308,6 @@ export interface ManagedInstancesState_Statuses {
 }
 
 export interface ScalePolicy {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ScalePolicy';
     /** [Manual scaling policy](/docs/compute/concepts/instance-groups/scale#fixed-policy) of the instance group. */
     fixedScale?: ScalePolicy_FixedScale | undefined;
     /** [Automatic scaling policy](/docs/compute/concepts/instance-groups/scale#auto-scale) of the instance group. */
@@ -326,7 +317,6 @@ export interface ScalePolicy {
 }
 
 export interface ScalePolicy_AutoScale {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ScalePolicy.AutoScale';
     /** Lower limit for instance count in each zone. */
     minZoneSize: number;
     /**
@@ -416,13 +406,11 @@ export function scalePolicy_AutoScale_AutoScaleTypeToJSON(
 }
 
 export interface ScalePolicy_CpuUtilizationRule {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ScalePolicy.CpuUtilizationRule';
     /** Target CPU utilization level. Instance Groups maintains this level for each availability zone. */
     utilizationTarget: number;
 }
 
 export interface ScalePolicy_CustomRule {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ScalePolicy.CustomRule';
     /**
      * Custom metric rule type. This field affects which label from
      * the custom metric should be used: `zone_id` or `instance_id`.
@@ -551,19 +539,16 @@ export function scalePolicy_CustomRule_MetricTypeToJSON(
 }
 
 export interface ScalePolicy_CustomRule_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ScalePolicy.CustomRule.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface ScalePolicy_FixedScale {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ScalePolicy.FixedScale';
     /** Number of instances in the instance group. */
     size: number;
 }
 
 export interface DeployPolicy {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DeployPolicy';
     /**
      * The maximum number of running instances that can be taken offline (i.e., stopped or deleted) at the same time
      * during the update process.
@@ -695,13 +680,11 @@ export function deployPolicy_MinimalActionToJSON(object: DeployPolicy_MinimalAct
 }
 
 export interface AllocationPolicy {
-    $type: 'yandex.cloud.compute.v1.instancegroup.AllocationPolicy';
     /** List of availability zones. */
     zones: AllocationPolicy_Zone[];
 }
 
 export interface AllocationPolicy_Zone {
-    $type: 'yandex.cloud.compute.v1.instancegroup.AllocationPolicy.Zone';
     /** ID of the availability zone where the instance resides. */
     zoneId: string;
     /**
@@ -714,7 +697,6 @@ export interface AllocationPolicy_Zone {
 }
 
 export interface InstanceTemplate {
-    $type: 'yandex.cloud.compute.v1.instancegroup.InstanceTemplate';
     /** Description of the instance template. */
     description: string;
     /** Resource labels as `key:value` pairs. */
@@ -803,19 +785,16 @@ export interface InstanceTemplate {
 }
 
 export interface InstanceTemplate_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.instancegroup.InstanceTemplate.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface InstanceTemplate_MetadataEntry {
-    $type: 'yandex.cloud.compute.v1.instancegroup.InstanceTemplate.MetadataEntry';
     key: string;
     value: string;
 }
 
 export interface AttachedFilesystemSpec {
-    $type: 'yandex.cloud.compute.v1.instancegroup.AttachedFilesystemSpec';
     /** Mode of access to the filesystem that should be attached. */
     mode: AttachedFilesystemSpec_Mode;
     /**
@@ -872,7 +851,6 @@ export function attachedFilesystemSpec_ModeToJSON(object: AttachedFilesystemSpec
 }
 
 export interface PlacementPolicy {
-    $type: 'yandex.cloud.compute.v1.instancegroup.PlacementPolicy';
     /** Identifier of placement group */
     placementGroupId: string;
     /** List of affinity rules. Scheduler will attempt to allocate instances according to order of rules. */
@@ -881,7 +859,6 @@ export interface PlacementPolicy {
 
 /** Affinity definition */
 export interface PlacementPolicy_HostAffinityRule {
-    $type: 'yandex.cloud.compute.v1.instancegroup.PlacementPolicy.HostAffinityRule';
     /** Affinity label or one of reserved values - 'yc.hostId', 'yc.hostGroupId' */
     key: string;
     /** Include or exclude action */
@@ -933,7 +910,6 @@ export function placementPolicy_HostAffinityRule_OperatorToJSON(
 }
 
 export interface ResourcesSpec {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ResourcesSpec';
     /** The amount of memory available to the instance, specified in bytes. */
     memory: number;
     /** The number of cores available to the instance. */
@@ -948,7 +924,6 @@ export interface ResourcesSpec {
 }
 
 export interface AttachedDiskSpec {
-    $type: 'yandex.cloud.compute.v1.instancegroup.AttachedDiskSpec';
     /** Access mode to the Disk resource. */
     mode: AttachedDiskSpec_Mode;
     /**
@@ -1010,7 +985,6 @@ export function attachedDiskSpec_ModeToJSON(object: AttachedDiskSpec_Mode): stri
 }
 
 export interface AttachedDiskSpec_DiskSpec {
-    $type: 'yandex.cloud.compute.v1.instancegroup.AttachedDiskSpec.DiskSpec';
     /** Description of the disk. */
     description: string;
     /** ID of the disk type. */
@@ -1029,7 +1003,6 @@ export interface AttachedDiskSpec_DiskSpec {
 }
 
 export interface NetworkInterfaceSpec {
-    $type: 'yandex.cloud.compute.v1.instancegroup.NetworkInterfaceSpec';
     /** ID of the network. */
     networkId: string;
     /** IDs of the subnets. */
@@ -1043,7 +1016,6 @@ export interface NetworkInterfaceSpec {
 }
 
 export interface PrimaryAddressSpec {
-    $type: 'yandex.cloud.compute.v1.instancegroup.PrimaryAddressSpec';
     /**
      * An external IP address configuration.
      * If not specified, then this managed instance will have no external internet access.
@@ -1056,7 +1028,6 @@ export interface PrimaryAddressSpec {
 }
 
 export interface OneToOneNatSpec {
-    $type: 'yandex.cloud.compute.v1.instancegroup.OneToOneNatSpec';
     /** IP version for the public IP address. */
     ipVersion: IpVersion;
     /** Manual set static public IP. To set use variables. (optional) */
@@ -1066,7 +1037,6 @@ export interface OneToOneNatSpec {
 }
 
 export interface DnsRecordSpec {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DnsRecordSpec';
     /** FQDN (required) */
     fqdn: string;
     /** DNS zone id (optional, if not set, private zone used) */
@@ -1078,7 +1048,6 @@ export interface DnsRecordSpec {
 }
 
 export interface SchedulingPolicy {
-    $type: 'yandex.cloud.compute.v1.instancegroup.SchedulingPolicy';
     /**
      * Preemptible instances are stopped at least once every 24 hours, and can be stopped at any time
      * if their resources are needed by Compute.
@@ -1088,7 +1057,6 @@ export interface SchedulingPolicy {
 }
 
 export interface NetworkSettings {
-    $type: 'yandex.cloud.compute.v1.instancegroup.NetworkSettings';
     /** Type of instance network. */
     type: NetworkSettings_Type;
 }
@@ -1138,7 +1106,6 @@ export function networkSettings_TypeToJSON(object: NetworkSettings_Type): string
 }
 
 export interface LoadBalancerSpec {
-    $type: 'yandex.cloud.compute.v1.instancegroup.LoadBalancerSpec';
     /** Specification of the target group that the instance group will be added to. For more information, see [Target groups and resources](/docs/network-load-balancer/concepts/target-resources). */
     targetGroupSpec?: TargetGroupSpec;
     /**
@@ -1151,7 +1118,6 @@ export interface LoadBalancerSpec {
 }
 
 export interface TargetGroupSpec {
-    $type: 'yandex.cloud.compute.v1.instancegroup.TargetGroupSpec';
     /** Name of the target group. */
     name: string;
     /** Description of the target group. */
@@ -1161,13 +1127,11 @@ export interface TargetGroupSpec {
 }
 
 export interface TargetGroupSpec_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.instancegroup.TargetGroupSpec.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface ApplicationLoadBalancerSpec {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ApplicationLoadBalancerSpec';
     /** Basic properties of the Application Load Balancer target group attributed to the instance group. */
     targetGroupSpec?: ApplicationTargetGroupSpec;
     /**
@@ -1180,7 +1144,6 @@ export interface ApplicationLoadBalancerSpec {
 }
 
 export interface ApplicationTargetGroupSpec {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ApplicationTargetGroupSpec';
     /** Name of the target group. */
     name: string;
     /** Description of the target group. */
@@ -1190,13 +1153,11 @@ export interface ApplicationTargetGroupSpec {
 }
 
 export interface ApplicationTargetGroupSpec_LabelsEntry {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ApplicationTargetGroupSpec.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface HealthChecksSpec {
-    $type: 'yandex.cloud.compute.v1.instancegroup.HealthChecksSpec';
     /** Health checking specification. For more information, see [Health check](/docs/network-load-balancer/concepts/health-check). */
     healthCheckSpecs: HealthCheckSpec[];
     /**
@@ -1207,7 +1168,6 @@ export interface HealthChecksSpec {
 }
 
 export interface HealthCheckSpec {
-    $type: 'yandex.cloud.compute.v1.instancegroup.HealthCheckSpec';
     /** The interval between health checks. The default is 2 seconds. */
     interval?: Duration;
     /** Timeout for the managed instance to return a response for the health check. The default is 1 second. */
@@ -1223,13 +1183,11 @@ export interface HealthCheckSpec {
 }
 
 export interface HealthCheckSpec_TcpOptions {
-    $type: 'yandex.cloud.compute.v1.instancegroup.HealthCheckSpec.TcpOptions';
     /** Port to use for TCP health checks. */
     port: number;
 }
 
 export interface HealthCheckSpec_HttpOptions {
-    $type: 'yandex.cloud.compute.v1.instancegroup.HealthCheckSpec.HttpOptions';
     /** Port to use for HTTP health checks. */
     port: number;
     /** URL path to set for health checking requests. */
@@ -1238,7 +1196,6 @@ export interface HealthCheckSpec_HttpOptions {
 
 /** A ManagedInstance resource. For more information, see [Instance Groups Concepts](/docs/compute/concepts/instance-groups/). */
 export interface ManagedInstance {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ManagedInstance';
     /** ID of the managed instance. */
     id: string;
     /** Status of the managed instance. */
@@ -1396,7 +1353,6 @@ export function managedInstance_StatusToJSON(object: ManagedInstance_Status): st
 }
 
 export interface NetworkInterface {
-    $type: 'yandex.cloud.compute.v1.instancegroup.NetworkInterface';
     /** The index of the network interface, generated by the server, 0,1,2... etc. */
     index: string;
     /** MAC address that is assigned to the network interface. */
@@ -1410,7 +1366,6 @@ export interface NetworkInterface {
 }
 
 export interface PrimaryAddress {
-    $type: 'yandex.cloud.compute.v1.instancegroup.PrimaryAddress';
     /**
      * An IPv4 internal network address that is assigned to the managed instance for this network interface.
      * If not specified by the user, an unused internal IP is assigned by the system.
@@ -1423,7 +1378,6 @@ export interface PrimaryAddress {
 }
 
 export interface OneToOneNat {
-    $type: 'yandex.cloud.compute.v1.instancegroup.OneToOneNat';
     /** An IPv4 external network address that is assigned to the managed instance for this network interface. */
     address: string;
     /** External IP address version. */
@@ -1433,7 +1387,6 @@ export interface OneToOneNat {
 }
 
 export interface DnsRecord {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DnsRecord';
     /**
      * Name of the A/AAAA record as specified when creating the instance.
      * Note that if `fqdn' has no trailing '.', it is specified relative to the zone (@see dns_zone_id).
@@ -1448,7 +1401,6 @@ export interface DnsRecord {
 }
 
 export interface LogRecord {
-    $type: 'yandex.cloud.compute.v1.instancegroup.LogRecord';
     /** Log timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
     timestamp?: Date;
     /** The log message. */
@@ -1456,7 +1408,6 @@ export interface LogRecord {
 }
 
 export interface AutoHealingPolicy {
-    $type: 'yandex.cloud.compute.v1.instancegroup.AutoHealingPolicy';
     /** Instance Groups performs [auto_healing_action] when instance becomes unhealthy. */
     autoHealingAction: AutoHealingPolicy_AutoHealingAction;
 }
@@ -1513,7 +1464,6 @@ export function autoHealingPolicy_AutoHealingActionToJSON(
 }
 
 export interface MetadataOptions {
-    $type: 'yandex.cloud.compute.v1.instancegroup.MetadataOptions';
     /** Enabled access to GCE flavored metadata */
     gceHttpEndpoint: MetadataOption;
     /** Enabled access to AWS flavored metadata (IMDSv1) */
@@ -1525,7 +1475,6 @@ export interface MetadataOptions {
 }
 
 const baseInstanceGroup: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.InstanceGroup',
     id: '',
     folderId: '',
     name: '',
@@ -1536,8 +1485,6 @@ const baseInstanceGroup: object = {
 };
 
 export const InstanceGroup = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.InstanceGroup' as const,
-
     encode(message: InstanceGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1556,11 +1503,7 @@ export const InstanceGroup = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             InstanceGroup_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.compute.v1.instancegroup.InstanceGroup.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -1937,17 +1880,9 @@ export const InstanceGroup = {
     },
 };
 
-messageTypeRegistry.set(InstanceGroup.$type, InstanceGroup);
-
-const baseInstanceGroup_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.InstanceGroup.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseInstanceGroup_LabelsEntry: object = { key: '', value: '' };
 
 export const InstanceGroup_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.InstanceGroup.LabelsEntry' as const,
-
     encode(
         message: InstanceGroup_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2007,17 +1942,9 @@ export const InstanceGroup_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(InstanceGroup_LabelsEntry.$type, InstanceGroup_LabelsEntry);
-
-const baseApplicationLoadBalancerState: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ApplicationLoadBalancerState',
-    targetGroupId: '',
-    statusMessage: '',
-};
+const baseApplicationLoadBalancerState: object = { targetGroupId: '', statusMessage: '' };
 
 export const ApplicationLoadBalancerState = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ApplicationLoadBalancerState' as const,
-
     encode(
         message: ApplicationLoadBalancerState,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2082,17 +2009,9 @@ export const ApplicationLoadBalancerState = {
     },
 };
 
-messageTypeRegistry.set(ApplicationLoadBalancerState.$type, ApplicationLoadBalancerState);
-
-const baseVariable: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.Variable',
-    key: '',
-    value: '',
-};
+const baseVariable: object = { key: '', value: '' };
 
 export const Variable = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.Variable' as const,
-
     encode(message: Variable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -2147,17 +2066,9 @@ export const Variable = {
     },
 };
 
-messageTypeRegistry.set(Variable.$type, Variable);
-
-const baseLoadBalancerState: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.LoadBalancerState',
-    targetGroupId: '',
-    statusMessage: '',
-};
+const baseLoadBalancerState: object = { targetGroupId: '', statusMessage: '' };
 
 export const LoadBalancerState = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.LoadBalancerState' as const,
-
     encode(message: LoadBalancerState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.targetGroupId !== '') {
             writer.uint32(10).string(message.targetGroupId);
@@ -2217,10 +2128,7 @@ export const LoadBalancerState = {
     },
 };
 
-messageTypeRegistry.set(LoadBalancerState.$type, LoadBalancerState);
-
 const baseManagedInstancesState: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ManagedInstancesState',
     targetSize: 0,
     runningActualCount: 0,
     runningOutdatedCount: 0,
@@ -2228,8 +2136,6 @@ const baseManagedInstancesState: object = {
 };
 
 export const ManagedInstancesState = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ManagedInstancesState' as const,
-
     encode(message: ManagedInstancesState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.targetSize !== 0) {
             writer.uint32(8).int64(message.targetSize);
@@ -2318,10 +2224,7 @@ export const ManagedInstancesState = {
     },
 };
 
-messageTypeRegistry.set(ManagedInstancesState.$type, ManagedInstancesState);
-
 const baseManagedInstancesState_Statuses: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ManagedInstancesState.Statuses',
     creating: 0,
     starting: 0,
     opening: 0,
@@ -2335,8 +2238,6 @@ const baseManagedInstancesState_Statuses: object = {
 };
 
 export const ManagedInstancesState_Statuses = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ManagedInstancesState.Statuses' as const,
-
     encode(
         message: ManagedInstancesState_Statuses,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2477,13 +2378,9 @@ export const ManagedInstancesState_Statuses = {
     },
 };
 
-messageTypeRegistry.set(ManagedInstancesState_Statuses.$type, ManagedInstancesState_Statuses);
-
-const baseScalePolicy: object = { $type: 'yandex.cloud.compute.v1.instancegroup.ScalePolicy' };
+const baseScalePolicy: object = {};
 
 export const ScalePolicy = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ScalePolicy' as const,
-
     encode(message: ScalePolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fixedScale !== undefined) {
             ScalePolicy_FixedScale.encode(message.fixedScale, writer.uint32(10).fork()).ldelim();
@@ -2573,10 +2470,7 @@ export const ScalePolicy = {
     },
 };
 
-messageTypeRegistry.set(ScalePolicy.$type, ScalePolicy);
-
 const baseScalePolicy_AutoScale: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ScalePolicy.AutoScale',
     minZoneSize: 0,
     maxSize: 0,
     initialSize: 0,
@@ -2584,8 +2478,6 @@ const baseScalePolicy_AutoScale: object = {
 };
 
 export const ScalePolicy_AutoScale = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ScalePolicy.AutoScale' as const,
-
     encode(message: ScalePolicy_AutoScale, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.minZoneSize !== 0) {
             writer.uint32(8).int64(message.minZoneSize);
@@ -2769,16 +2661,9 @@ export const ScalePolicy_AutoScale = {
     },
 };
 
-messageTypeRegistry.set(ScalePolicy_AutoScale.$type, ScalePolicy_AutoScale);
-
-const baseScalePolicy_CpuUtilizationRule: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ScalePolicy.CpuUtilizationRule',
-    utilizationTarget: 0,
-};
+const baseScalePolicy_CpuUtilizationRule: object = { utilizationTarget: 0 };
 
 export const ScalePolicy_CpuUtilizationRule = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ScalePolicy.CpuUtilizationRule' as const,
-
     encode(
         message: ScalePolicy_CpuUtilizationRule,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2832,10 +2717,7 @@ export const ScalePolicy_CpuUtilizationRule = {
     },
 };
 
-messageTypeRegistry.set(ScalePolicy_CpuUtilizationRule.$type, ScalePolicy_CpuUtilizationRule);
-
 const baseScalePolicy_CustomRule: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ScalePolicy.CustomRule',
     ruleType: 0,
     metricType: 0,
     metricName: '',
@@ -2845,8 +2727,6 @@ const baseScalePolicy_CustomRule: object = {
 };
 
 export const ScalePolicy_CustomRule = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ScalePolicy.CustomRule' as const,
-
     encode(message: ScalePolicy_CustomRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleType !== 0) {
             writer.uint32(8).int32(message.ruleType);
@@ -2859,11 +2739,7 @@ export const ScalePolicy_CustomRule = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             ScalePolicy_CustomRule_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.compute.v1.instancegroup.ScalePolicy.CustomRule.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -2996,17 +2872,9 @@ export const ScalePolicy_CustomRule = {
     },
 };
 
-messageTypeRegistry.set(ScalePolicy_CustomRule.$type, ScalePolicy_CustomRule);
-
-const baseScalePolicy_CustomRule_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ScalePolicy.CustomRule.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseScalePolicy_CustomRule_LabelsEntry: object = { key: '', value: '' };
 
 export const ScalePolicy_CustomRule_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ScalePolicy.CustomRule.LabelsEntry' as const,
-
     encode(
         message: ScalePolicy_CustomRule_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3072,19 +2940,9 @@ export const ScalePolicy_CustomRule_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    ScalePolicy_CustomRule_LabelsEntry.$type,
-    ScalePolicy_CustomRule_LabelsEntry,
-);
-
-const baseScalePolicy_FixedScale: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ScalePolicy.FixedScale',
-    size: 0,
-};
+const baseScalePolicy_FixedScale: object = { size: 0 };
 
 export const ScalePolicy_FixedScale = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ScalePolicy.FixedScale' as const,
-
     encode(message: ScalePolicy_FixedScale, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.size !== 0) {
             writer.uint32(8).int64(message.size);
@@ -3131,10 +2989,7 @@ export const ScalePolicy_FixedScale = {
     },
 };
 
-messageTypeRegistry.set(ScalePolicy_FixedScale.$type, ScalePolicy_FixedScale);
-
 const baseDeployPolicy: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DeployPolicy',
     maxUnavailable: 0,
     maxDeleting: 0,
     maxCreating: 0,
@@ -3144,8 +2999,6 @@ const baseDeployPolicy: object = {
 };
 
 export const DeployPolicy = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DeployPolicy' as const,
-
     encode(message: DeployPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxUnavailable !== 0) {
             writer.uint32(8).int64(message.maxUnavailable);
@@ -3274,15 +3127,9 @@ export const DeployPolicy = {
     },
 };
 
-messageTypeRegistry.set(DeployPolicy.$type, DeployPolicy);
-
-const baseAllocationPolicy: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.AllocationPolicy',
-};
+const baseAllocationPolicy: object = {};
 
 export const AllocationPolicy = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.AllocationPolicy' as const,
-
     encode(message: AllocationPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.zones) {
             AllocationPolicy_Zone.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -3332,17 +3179,9 @@ export const AllocationPolicy = {
     },
 };
 
-messageTypeRegistry.set(AllocationPolicy.$type, AllocationPolicy);
-
-const baseAllocationPolicy_Zone: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.AllocationPolicy.Zone',
-    zoneId: '',
-    instanceTagsPool: '',
-};
+const baseAllocationPolicy_Zone: object = { zoneId: '', instanceTagsPool: '' };
 
 export const AllocationPolicy_Zone = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.AllocationPolicy.Zone' as const,
-
     encode(message: AllocationPolicy_Zone, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneId !== '') {
             writer.uint32(10).string(message.zoneId);
@@ -3404,10 +3243,7 @@ export const AllocationPolicy_Zone = {
     },
 };
 
-messageTypeRegistry.set(AllocationPolicy_Zone.$type, AllocationPolicy_Zone);
-
 const baseInstanceTemplate: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.InstanceTemplate',
     description: '',
     platformId: '',
     serviceAccountId: '',
@@ -3416,19 +3252,13 @@ const baseInstanceTemplate: object = {
 };
 
 export const InstanceTemplate = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.InstanceTemplate' as const,
-
     encode(message: InstanceTemplate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.description !== '') {
             writer.uint32(10).string(message.description);
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             InstanceTemplate_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.compute.v1.instancegroup.InstanceTemplate.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(18).fork(),
             ).ldelim();
         });
@@ -3440,11 +3270,7 @@ export const InstanceTemplate = {
         }
         Object.entries(message.metadata).forEach(([key, value]) => {
             InstanceTemplate_MetadataEntry.encode(
-                {
-                    $type: 'yandex.cloud.compute.v1.instancegroup.InstanceTemplate.MetadataEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(42).fork(),
             ).ldelim();
         });
@@ -3759,17 +3585,9 @@ export const InstanceTemplate = {
     },
 };
 
-messageTypeRegistry.set(InstanceTemplate.$type, InstanceTemplate);
-
-const baseInstanceTemplate_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.InstanceTemplate.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseInstanceTemplate_LabelsEntry: object = { key: '', value: '' };
 
 export const InstanceTemplate_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.InstanceTemplate.LabelsEntry' as const,
-
     encode(
         message: InstanceTemplate_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3829,17 +3647,9 @@ export const InstanceTemplate_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(InstanceTemplate_LabelsEntry.$type, InstanceTemplate_LabelsEntry);
-
-const baseInstanceTemplate_MetadataEntry: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.InstanceTemplate.MetadataEntry',
-    key: '',
-    value: '',
-};
+const baseInstanceTemplate_MetadataEntry: object = { key: '', value: '' };
 
 export const InstanceTemplate_MetadataEntry = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.InstanceTemplate.MetadataEntry' as const,
-
     encode(
         message: InstanceTemplate_MetadataEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3899,18 +3709,9 @@ export const InstanceTemplate_MetadataEntry = {
     },
 };
 
-messageTypeRegistry.set(InstanceTemplate_MetadataEntry.$type, InstanceTemplate_MetadataEntry);
-
-const baseAttachedFilesystemSpec: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.AttachedFilesystemSpec',
-    mode: 0,
-    deviceName: '',
-    filesystemId: '',
-};
+const baseAttachedFilesystemSpec: object = { mode: 0, deviceName: '', filesystemId: '' };
 
 export const AttachedFilesystemSpec = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.AttachedFilesystemSpec' as const,
-
     encode(message: AttachedFilesystemSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mode !== 0) {
             writer.uint32(8).int32(message.mode);
@@ -3984,16 +3785,9 @@ export const AttachedFilesystemSpec = {
     },
 };
 
-messageTypeRegistry.set(AttachedFilesystemSpec.$type, AttachedFilesystemSpec);
-
-const basePlacementPolicy: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.PlacementPolicy',
-    placementGroupId: '',
-};
+const basePlacementPolicy: object = { placementGroupId: '' };
 
 export const PlacementPolicy = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.PlacementPolicy' as const,
-
     encode(message: PlacementPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.placementGroupId !== '') {
             writer.uint32(10).string(message.placementGroupId);
@@ -4063,18 +3857,9 @@ export const PlacementPolicy = {
     },
 };
 
-messageTypeRegistry.set(PlacementPolicy.$type, PlacementPolicy);
-
-const basePlacementPolicy_HostAffinityRule: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.PlacementPolicy.HostAffinityRule',
-    key: '',
-    op: 0,
-    values: '',
-};
+const basePlacementPolicy_HostAffinityRule: object = { key: '', op: 0, values: '' };
 
 export const PlacementPolicy_HostAffinityRule = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.PlacementPolicy.HostAffinityRule' as const,
-
     encode(
         message: PlacementPolicy_HostAffinityRule,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4157,19 +3942,9 @@ export const PlacementPolicy_HostAffinityRule = {
     },
 };
 
-messageTypeRegistry.set(PlacementPolicy_HostAffinityRule.$type, PlacementPolicy_HostAffinityRule);
-
-const baseResourcesSpec: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ResourcesSpec',
-    memory: 0,
-    cores: 0,
-    coreFraction: 0,
-    gpus: 0,
-};
+const baseResourcesSpec: object = { memory: 0, cores: 0, coreFraction: 0, gpus: 0 };
 
 export const ResourcesSpec = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ResourcesSpec' as const,
-
     encode(message: ResourcesSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.memory !== 0) {
             writer.uint32(8).int64(message.memory);
@@ -4246,19 +4021,9 @@ export const ResourcesSpec = {
     },
 };
 
-messageTypeRegistry.set(ResourcesSpec.$type, ResourcesSpec);
-
-const baseAttachedDiskSpec: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.AttachedDiskSpec',
-    mode: 0,
-    deviceName: '',
-    diskId: '',
-    name: '',
-};
+const baseAttachedDiskSpec: object = { mode: 0, deviceName: '', diskId: '', name: '' };
 
 export const AttachedDiskSpec = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.AttachedDiskSpec' as const,
-
     encode(message: AttachedDiskSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mode !== 0) {
             writer.uint32(8).int32(message.mode);
@@ -4355,10 +4120,7 @@ export const AttachedDiskSpec = {
     },
 };
 
-messageTypeRegistry.set(AttachedDiskSpec.$type, AttachedDiskSpec);
-
 const baseAttachedDiskSpec_DiskSpec: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.AttachedDiskSpec.DiskSpec',
     description: '',
     typeId: '',
     size: 0,
@@ -4366,8 +4128,6 @@ const baseAttachedDiskSpec_DiskSpec: object = {
 };
 
 export const AttachedDiskSpec_DiskSpec = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.AttachedDiskSpec.DiskSpec' as const,
-
     encode(
         message: AttachedDiskSpec_DiskSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4477,18 +4237,9 @@ export const AttachedDiskSpec_DiskSpec = {
     },
 };
 
-messageTypeRegistry.set(AttachedDiskSpec_DiskSpec.$type, AttachedDiskSpec_DiskSpec);
-
-const baseNetworkInterfaceSpec: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.NetworkInterfaceSpec',
-    networkId: '',
-    subnetIds: '',
-    securityGroupIds: '',
-};
+const baseNetworkInterfaceSpec: object = { networkId: '', subnetIds: '', securityGroupIds: '' };
 
 export const NetworkInterfaceSpec = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.NetworkInterfaceSpec' as const,
-
     encode(message: NetworkInterfaceSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);
@@ -4614,16 +4365,9 @@ export const NetworkInterfaceSpec = {
     },
 };
 
-messageTypeRegistry.set(NetworkInterfaceSpec.$type, NetworkInterfaceSpec);
-
-const basePrimaryAddressSpec: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.PrimaryAddressSpec',
-    address: '',
-};
+const basePrimaryAddressSpec: object = { address: '' };
 
 export const PrimaryAddressSpec = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.PrimaryAddressSpec' as const,
-
     encode(message: PrimaryAddressSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.oneToOneNatSpec !== undefined) {
             OneToOneNatSpec.encode(message.oneToOneNatSpec, writer.uint32(10).fork()).ldelim();
@@ -4708,17 +4452,9 @@ export const PrimaryAddressSpec = {
     },
 };
 
-messageTypeRegistry.set(PrimaryAddressSpec.$type, PrimaryAddressSpec);
-
-const baseOneToOneNatSpec: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.OneToOneNatSpec',
-    ipVersion: 0,
-    address: '',
-};
+const baseOneToOneNatSpec: object = { ipVersion: 0, address: '' };
 
 export const OneToOneNatSpec = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.OneToOneNatSpec' as const,
-
     encode(message: OneToOneNatSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ipVersion !== 0) {
             writer.uint32(8).int32(message.ipVersion);
@@ -4795,19 +4531,9 @@ export const OneToOneNatSpec = {
     },
 };
 
-messageTypeRegistry.set(OneToOneNatSpec.$type, OneToOneNatSpec);
-
-const baseDnsRecordSpec: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DnsRecordSpec',
-    fqdn: '',
-    dnsZoneId: '',
-    ttl: 0,
-    ptr: false,
-};
+const baseDnsRecordSpec: object = { fqdn: '', dnsZoneId: '', ttl: 0, ptr: false };
 
 export const DnsRecordSpec = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DnsRecordSpec' as const,
-
     encode(message: DnsRecordSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fqdn !== '') {
             writer.uint32(10).string(message.fqdn);
@@ -4882,16 +4608,9 @@ export const DnsRecordSpec = {
     },
 };
 
-messageTypeRegistry.set(DnsRecordSpec.$type, DnsRecordSpec);
-
-const baseSchedulingPolicy: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.SchedulingPolicy',
-    preemptible: false,
-};
+const baseSchedulingPolicy: object = { preemptible: false };
 
 export const SchedulingPolicy = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.SchedulingPolicy' as const,
-
     encode(message: SchedulingPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.preemptible === true) {
             writer.uint32(8).bool(message.preemptible);
@@ -4939,16 +4658,9 @@ export const SchedulingPolicy = {
     },
 };
 
-messageTypeRegistry.set(SchedulingPolicy.$type, SchedulingPolicy);
-
-const baseNetworkSettings: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.NetworkSettings',
-    type: 0,
-};
+const baseNetworkSettings: object = { type: 0 };
 
 export const NetworkSettings = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.NetworkSettings' as const,
-
     encode(message: NetworkSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -4996,16 +4708,9 @@ export const NetworkSettings = {
     },
 };
 
-messageTypeRegistry.set(NetworkSettings.$type, NetworkSettings);
-
-const baseLoadBalancerSpec: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.LoadBalancerSpec',
-    ignoreHealthChecks: false,
-};
+const baseLoadBalancerSpec: object = { ignoreHealthChecks: false };
 
 export const LoadBalancerSpec = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.LoadBalancerSpec' as const,
-
     encode(message: LoadBalancerSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.targetGroupSpec !== undefined) {
             TargetGroupSpec.encode(message.targetGroupSpec, writer.uint32(10).fork()).ldelim();
@@ -5092,17 +4797,9 @@ export const LoadBalancerSpec = {
     },
 };
 
-messageTypeRegistry.set(LoadBalancerSpec.$type, LoadBalancerSpec);
-
-const baseTargetGroupSpec: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.TargetGroupSpec',
-    name: '',
-    description: '',
-};
+const baseTargetGroupSpec: object = { name: '', description: '' };
 
 export const TargetGroupSpec = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.TargetGroupSpec' as const,
-
     encode(message: TargetGroupSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -5112,11 +4809,7 @@ export const TargetGroupSpec = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             TargetGroupSpec_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.compute.v1.instancegroup.TargetGroupSpec.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(26).fork(),
             ).ldelim();
         });
@@ -5198,17 +4891,9 @@ export const TargetGroupSpec = {
     },
 };
 
-messageTypeRegistry.set(TargetGroupSpec.$type, TargetGroupSpec);
-
-const baseTargetGroupSpec_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.TargetGroupSpec.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseTargetGroupSpec_LabelsEntry: object = { key: '', value: '' };
 
 export const TargetGroupSpec_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.TargetGroupSpec.LabelsEntry' as const,
-
     encode(
         message: TargetGroupSpec_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5268,16 +4953,9 @@ export const TargetGroupSpec_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(TargetGroupSpec_LabelsEntry.$type, TargetGroupSpec_LabelsEntry);
-
-const baseApplicationLoadBalancerSpec: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ApplicationLoadBalancerSpec',
-    ignoreHealthChecks: false,
-};
+const baseApplicationLoadBalancerSpec: object = { ignoreHealthChecks: false };
 
 export const ApplicationLoadBalancerSpec = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ApplicationLoadBalancerSpec' as const,
-
     encode(
         message: ApplicationLoadBalancerSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5375,17 +5053,9 @@ export const ApplicationLoadBalancerSpec = {
     },
 };
 
-messageTypeRegistry.set(ApplicationLoadBalancerSpec.$type, ApplicationLoadBalancerSpec);
-
-const baseApplicationTargetGroupSpec: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ApplicationTargetGroupSpec',
-    name: '',
-    description: '',
-};
+const baseApplicationTargetGroupSpec: object = { name: '', description: '' };
 
 export const ApplicationTargetGroupSpec = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ApplicationTargetGroupSpec' as const,
-
     encode(
         message: ApplicationTargetGroupSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5398,11 +5068,7 @@ export const ApplicationTargetGroupSpec = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             ApplicationTargetGroupSpec_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.compute.v1.instancegroup.ApplicationTargetGroupSpec.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(26).fork(),
             ).ldelim();
         });
@@ -5489,17 +5155,9 @@ export const ApplicationTargetGroupSpec = {
     },
 };
 
-messageTypeRegistry.set(ApplicationTargetGroupSpec.$type, ApplicationTargetGroupSpec);
-
-const baseApplicationTargetGroupSpec_LabelsEntry: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ApplicationTargetGroupSpec.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseApplicationTargetGroupSpec_LabelsEntry: object = { key: '', value: '' };
 
 export const ApplicationTargetGroupSpec_LabelsEntry = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ApplicationTargetGroupSpec.LabelsEntry' as const,
-
     encode(
         message: ApplicationTargetGroupSpec_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5568,18 +5226,9 @@ export const ApplicationTargetGroupSpec_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    ApplicationTargetGroupSpec_LabelsEntry.$type,
-    ApplicationTargetGroupSpec_LabelsEntry,
-);
-
-const baseHealthChecksSpec: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.HealthChecksSpec',
-};
+const baseHealthChecksSpec: object = {};
 
 export const HealthChecksSpec = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.HealthChecksSpec' as const,
-
     encode(message: HealthChecksSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.healthCheckSpecs) {
             HealthCheckSpec.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -5654,17 +5303,9 @@ export const HealthChecksSpec = {
     },
 };
 
-messageTypeRegistry.set(HealthChecksSpec.$type, HealthChecksSpec);
-
-const baseHealthCheckSpec: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.HealthCheckSpec',
-    unhealthyThreshold: 0,
-    healthyThreshold: 0,
-};
+const baseHealthCheckSpec: object = { unhealthyThreshold: 0, healthyThreshold: 0 };
 
 export const HealthCheckSpec = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.HealthCheckSpec' as const,
-
     encode(message: HealthCheckSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.interval !== undefined) {
             Duration.encode(message.interval, writer.uint32(10).fork()).ldelim();
@@ -5803,16 +5444,9 @@ export const HealthCheckSpec = {
     },
 };
 
-messageTypeRegistry.set(HealthCheckSpec.$type, HealthCheckSpec);
-
-const baseHealthCheckSpec_TcpOptions: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.HealthCheckSpec.TcpOptions',
-    port: 0,
-};
+const baseHealthCheckSpec_TcpOptions: object = { port: 0 };
 
 export const HealthCheckSpec_TcpOptions = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.HealthCheckSpec.TcpOptions' as const,
-
     encode(
         message: HealthCheckSpec_TcpOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5862,17 +5496,9 @@ export const HealthCheckSpec_TcpOptions = {
     },
 };
 
-messageTypeRegistry.set(HealthCheckSpec_TcpOptions.$type, HealthCheckSpec_TcpOptions);
-
-const baseHealthCheckSpec_HttpOptions: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.HealthCheckSpec.HttpOptions',
-    port: 0,
-    path: '',
-};
+const baseHealthCheckSpec_HttpOptions: object = { port: 0, path: '' };
 
 export const HealthCheckSpec_HttpOptions = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.HealthCheckSpec.HttpOptions' as const,
-
     encode(
         message: HealthCheckSpec_HttpOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5931,10 +5557,7 @@ export const HealthCheckSpec_HttpOptions = {
     },
 };
 
-messageTypeRegistry.set(HealthCheckSpec_HttpOptions.$type, HealthCheckSpec_HttpOptions);
-
 const baseManagedInstance: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ManagedInstance',
     id: '',
     status: 0,
     instanceId: '',
@@ -5946,8 +5569,6 @@ const baseManagedInstance: object = {
 };
 
 export const ManagedInstance = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.ManagedInstance' as const,
-
     encode(message: ManagedInstance, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -6107,18 +5728,9 @@ export const ManagedInstance = {
     },
 };
 
-messageTypeRegistry.set(ManagedInstance.$type, ManagedInstance);
-
-const baseNetworkInterface: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.NetworkInterface',
-    index: '',
-    macAddress: '',
-    subnetId: '',
-};
+const baseNetworkInterface: object = { index: '', macAddress: '', subnetId: '' };
 
 export const NetworkInterface = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.NetworkInterface' as const,
-
     encode(message: NetworkInterface, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.index !== '') {
             writer.uint32(10).string(message.index);
@@ -6224,16 +5836,9 @@ export const NetworkInterface = {
     },
 };
 
-messageTypeRegistry.set(NetworkInterface.$type, NetworkInterface);
-
-const basePrimaryAddress: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.PrimaryAddress',
-    address: '',
-};
+const basePrimaryAddress: object = { address: '' };
 
 export const PrimaryAddress = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.PrimaryAddress' as const,
-
     encode(message: PrimaryAddress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.address !== '') {
             writer.uint32(10).string(message.address);
@@ -6311,17 +5916,9 @@ export const PrimaryAddress = {
     },
 };
 
-messageTypeRegistry.set(PrimaryAddress.$type, PrimaryAddress);
-
-const baseOneToOneNat: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.OneToOneNat',
-    address: '',
-    ipVersion: 0,
-};
+const baseOneToOneNat: object = { address: '', ipVersion: 0 };
 
 export const OneToOneNat = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.OneToOneNat' as const,
-
     encode(message: OneToOneNat, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.address !== '') {
             writer.uint32(10).string(message.address);
@@ -6393,19 +5990,9 @@ export const OneToOneNat = {
     },
 };
 
-messageTypeRegistry.set(OneToOneNat.$type, OneToOneNat);
-
-const baseDnsRecord: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DnsRecord',
-    fqdn: '',
-    dnsZoneId: '',
-    ttl: 0,
-    ptr: false,
-};
+const baseDnsRecord: object = { fqdn: '', dnsZoneId: '', ttl: 0, ptr: false };
 
 export const DnsRecord = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.DnsRecord' as const,
-
     encode(message: DnsRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fqdn !== '') {
             writer.uint32(10).string(message.fqdn);
@@ -6480,16 +6067,9 @@ export const DnsRecord = {
     },
 };
 
-messageTypeRegistry.set(DnsRecord.$type, DnsRecord);
-
-const baseLogRecord: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.LogRecord',
-    message: '',
-};
+const baseLogRecord: object = { message: '' };
 
 export const LogRecord = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.LogRecord' as const,
-
     encode(message: LogRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timestamp !== undefined) {
             Timestamp.encode(toTimestamp(message.timestamp), writer.uint32(10).fork()).ldelim();
@@ -6547,16 +6127,9 @@ export const LogRecord = {
     },
 };
 
-messageTypeRegistry.set(LogRecord.$type, LogRecord);
-
-const baseAutoHealingPolicy: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.AutoHealingPolicy',
-    autoHealingAction: 0,
-};
+const baseAutoHealingPolicy: object = { autoHealingAction: 0 };
 
 export const AutoHealingPolicy = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.AutoHealingPolicy' as const,
-
     encode(message: AutoHealingPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.autoHealingAction !== 0) {
             writer.uint32(8).int32(message.autoHealingAction);
@@ -6607,10 +6180,7 @@ export const AutoHealingPolicy = {
     },
 };
 
-messageTypeRegistry.set(AutoHealingPolicy.$type, AutoHealingPolicy);
-
 const baseMetadataOptions: object = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.MetadataOptions',
     gceHttpEndpoint: 0,
     awsV1HttpEndpoint: 0,
     gceHttpToken: 0,
@@ -6618,8 +6188,6 @@ const baseMetadataOptions: object = {
 };
 
 export const MetadataOptions = {
-    $type: 'yandex.cloud.compute.v1.instancegroup.MetadataOptions' as const,
-
     encode(message: MetadataOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gceHttpEndpoint !== 0) {
             writer.uint32(8).int32(message.gceHttpEndpoint);
@@ -6707,8 +6275,6 @@ export const MetadataOptions = {
     },
 };
 
-messageTypeRegistry.set(MetadataOptions.$type, MetadataOptions);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -6729,21 +6295,18 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function toTimestamp(date: Date): Timestamp {
     const seconds = date.getTime() / 1_000;
     const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { $type: 'google.protobuf.Timestamp', seconds, nanos };
+    return { seconds, nanos };
 }
 
 function fromTimestamp(t: Timestamp): Date {

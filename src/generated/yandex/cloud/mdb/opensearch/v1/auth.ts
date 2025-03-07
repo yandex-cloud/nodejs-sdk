@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Int64Value } from '../../../../../google/protobuf/wrappers';
@@ -7,13 +6,11 @@ import { Int64Value } from '../../../../../google/protobuf/wrappers';
 export const protobufPackage = 'yandex.cloud.mdb.opensearch.v1';
 
 export interface AuthSettings {
-    $type: 'yandex.cloud.mdb.opensearch.v1.AuthSettings';
     /** SAML settings */
     saml?: SAMLSettings;
 }
 
 export interface SAMLSettings {
-    $type: 'yandex.cloud.mdb.opensearch.v1.SAMLSettings';
     enabled: boolean;
     /** Required. The entity ID of your IdP. */
     idpEntityId: string;
@@ -31,11 +28,9 @@ export interface SAMLSettings {
     jwtDefaultExpirationTimeout?: number;
 }
 
-const baseAuthSettings: object = { $type: 'yandex.cloud.mdb.opensearch.v1.AuthSettings' };
+const baseAuthSettings: object = {};
 
 export const AuthSettings = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.AuthSettings' as const,
-
     encode(message: AuthSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.saml !== undefined) {
             SAMLSettings.encode(message.saml, writer.uint32(10).fork()).ldelim();
@@ -87,10 +82,7 @@ export const AuthSettings = {
     },
 };
 
-messageTypeRegistry.set(AuthSettings.$type, AuthSettings);
-
 const baseSAMLSettings: object = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.SAMLSettings',
     enabled: false,
     idpEntityId: '',
     spEntityId: '',
@@ -100,8 +92,6 @@ const baseSAMLSettings: object = {
 };
 
 export const SAMLSettings = {
-    $type: 'yandex.cloud.mdb.opensearch.v1.SAMLSettings' as const,
-
     encode(message: SAMLSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enabled === true) {
             writer.uint32(8).bool(message.enabled);
@@ -126,10 +116,7 @@ export const SAMLSettings = {
         }
         if (message.jwtDefaultExpirationTimeout !== undefined) {
             Int64Value.encode(
-                {
-                    $type: 'google.protobuf.Int64Value',
-                    value: message.jwtDefaultExpirationTimeout!,
-                },
+                { value: message.jwtDefaultExpirationTimeout! },
                 writer.uint32(66).fork(),
             ).ldelim();
         }
@@ -248,8 +235,6 @@ export const SAMLSettings = {
     },
 };
 
-messageTypeRegistry.set(SAMLSettings.$type, SAMLSettings);
-
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -291,16 +276,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

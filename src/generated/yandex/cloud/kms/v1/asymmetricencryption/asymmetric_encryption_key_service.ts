@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { messageTypeRegistry } from '../../../../../typeRegistry';
 import Long from 'long';
 import {
     makeGenericClientConstructor,
@@ -35,7 +34,6 @@ import {
 export const protobufPackage = 'yandex.cloud.kms.v1.asymmetricencryption';
 
 export interface CreateAsymmetricEncryptionKeyRequest {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.CreateAsymmetricEncryptionKeyRequest';
     /** ID of the folder to create a asymmetric KMS key in. */
     folderId: string;
     /** Name of the key. */
@@ -54,19 +52,16 @@ export interface CreateAsymmetricEncryptionKeyRequest {
 }
 
 export interface CreateAsymmetricEncryptionKeyRequest_LabelsEntry {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.CreateAsymmetricEncryptionKeyRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface CreateAsymmetricEncryptionKeyMetadata {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.CreateAsymmetricEncryptionKeyMetadata';
     /** ID of the key being created. */
     keyId: string;
 }
 
 export interface GetAsymmetricEncryptionKeyRequest {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.GetAsymmetricEncryptionKeyRequest';
     /**
      * ID of the asymmetric KMS key to return.
      * To get the ID of an asymmetric KMS key use a [AsymmetricEncryptionKeyService.List] request.
@@ -75,7 +70,6 @@ export interface GetAsymmetricEncryptionKeyRequest {
 }
 
 export interface ListAsymmetricEncryptionKeysRequest {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.ListAsymmetricEncryptionKeysRequest';
     /** ID of the folder to list asymmetric KMS keys in. */
     folderId: string;
     /**
@@ -93,7 +87,6 @@ export interface ListAsymmetricEncryptionKeysRequest {
 }
 
 export interface ListAsymmetricEncryptionKeysResponse {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.ListAsymmetricEncryptionKeysResponse';
     /** List of asymmetric KMS keys in the specified folder. */
     keys: AsymmetricEncryptionKey[];
     /**
@@ -107,7 +100,6 @@ export interface ListAsymmetricEncryptionKeysResponse {
 }
 
 export interface UpdateAsymmetricEncryptionKeyRequest {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.UpdateAsymmetricEncryptionKeyRequest';
     /**
      * ID of the asymmetric KMS key to update.
      * To get the ID of a asymmetric KMS key use a [AsymmetricEncryptionKeyService.List] request.
@@ -131,31 +123,26 @@ export interface UpdateAsymmetricEncryptionKeyRequest {
 }
 
 export interface UpdateAsymmetricEncryptionKeyRequest_LabelsEntry {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.UpdateAsymmetricEncryptionKeyRequest.LabelsEntry';
     key: string;
     value: string;
 }
 
 export interface UpdateAsymmetricEncryptionKeyMetadata {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.UpdateAsymmetricEncryptionKeyMetadata';
     /** ID of the key being updated. */
     keyId: string;
 }
 
 export interface DeleteAsymmetricEncryptionKeyRequest {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.DeleteAsymmetricEncryptionKeyRequest';
     /** ID of the key to be deleted. */
     keyId: string;
 }
 
 export interface DeleteAsymmetricEncryptionKeyMetadata {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.DeleteAsymmetricEncryptionKeyMetadata';
     /** ID of the key being deleted. */
     keyId: string;
 }
 
 export interface ListAsymmetricEncryptionKeyOperationsRequest {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.ListAsymmetricEncryptionKeyOperationsRequest';
     /**
      * ID of the symmetric KMS key to get operations for.
      *
@@ -177,7 +164,6 @@ export interface ListAsymmetricEncryptionKeyOperationsRequest {
 }
 
 export interface ListAsymmetricEncryptionKeyOperationsResponse {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.ListAsymmetricEncryptionKeyOperationsResponse';
     /** List of operations for the specified key. */
     operations: Operation[];
     /**
@@ -190,7 +176,6 @@ export interface ListAsymmetricEncryptionKeyOperationsResponse {
 }
 
 const baseCreateAsymmetricEncryptionKeyRequest: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.CreateAsymmetricEncryptionKeyRequest',
     folderId: '',
     name: '',
     description: '',
@@ -199,8 +184,6 @@ const baseCreateAsymmetricEncryptionKeyRequest: object = {
 };
 
 export const CreateAsymmetricEncryptionKeyRequest = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.CreateAsymmetricEncryptionKeyRequest' as const,
-
     encode(
         message: CreateAsymmetricEncryptionKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -216,11 +199,7 @@ export const CreateAsymmetricEncryptionKeyRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateAsymmetricEncryptionKeyRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.kms.v1.asymmetricencryption.CreateAsymmetricEncryptionKeyRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(34).fork(),
             ).ldelim();
         });
@@ -350,20 +329,9 @@ export const CreateAsymmetricEncryptionKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateAsymmetricEncryptionKeyRequest.$type,
-    CreateAsymmetricEncryptionKeyRequest,
-);
-
-const baseCreateAsymmetricEncryptionKeyRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.CreateAsymmetricEncryptionKeyRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseCreateAsymmetricEncryptionKeyRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const CreateAsymmetricEncryptionKeyRequest_LabelsEntry = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.CreateAsymmetricEncryptionKeyRequest.LabelsEntry' as const,
-
     encode(
         message: CreateAsymmetricEncryptionKeyRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -432,19 +400,9 @@ export const CreateAsymmetricEncryptionKeyRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateAsymmetricEncryptionKeyRequest_LabelsEntry.$type,
-    CreateAsymmetricEncryptionKeyRequest_LabelsEntry,
-);
-
-const baseCreateAsymmetricEncryptionKeyMetadata: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.CreateAsymmetricEncryptionKeyMetadata',
-    keyId: '',
-};
+const baseCreateAsymmetricEncryptionKeyMetadata: object = { keyId: '' };
 
 export const CreateAsymmetricEncryptionKeyMetadata = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.CreateAsymmetricEncryptionKeyMetadata' as const,
-
     encode(
         message: CreateAsymmetricEncryptionKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -501,19 +459,9 @@ export const CreateAsymmetricEncryptionKeyMetadata = {
     },
 };
 
-messageTypeRegistry.set(
-    CreateAsymmetricEncryptionKeyMetadata.$type,
-    CreateAsymmetricEncryptionKeyMetadata,
-);
-
-const baseGetAsymmetricEncryptionKeyRequest: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.GetAsymmetricEncryptionKeyRequest',
-    keyId: '',
-};
+const baseGetAsymmetricEncryptionKeyRequest: object = { keyId: '' };
 
 export const GetAsymmetricEncryptionKeyRequest = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.GetAsymmetricEncryptionKeyRequest' as const,
-
     encode(
         message: GetAsymmetricEncryptionKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -570,18 +518,13 @@ export const GetAsymmetricEncryptionKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(GetAsymmetricEncryptionKeyRequest.$type, GetAsymmetricEncryptionKeyRequest);
-
 const baseListAsymmetricEncryptionKeysRequest: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.ListAsymmetricEncryptionKeysRequest',
     folderId: '',
     pageSize: 0,
     pageToken: '',
 };
 
 export const ListAsymmetricEncryptionKeysRequest = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.ListAsymmetricEncryptionKeysRequest' as const,
-
     encode(
         message: ListAsymmetricEncryptionKeysRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -662,19 +605,9 @@ export const ListAsymmetricEncryptionKeysRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    ListAsymmetricEncryptionKeysRequest.$type,
-    ListAsymmetricEncryptionKeysRequest,
-);
-
-const baseListAsymmetricEncryptionKeysResponse: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.ListAsymmetricEncryptionKeysResponse',
-    nextPageToken: '',
-};
+const baseListAsymmetricEncryptionKeysResponse: object = { nextPageToken: '' };
 
 export const ListAsymmetricEncryptionKeysResponse = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.ListAsymmetricEncryptionKeysResponse' as const,
-
     encode(
         message: ListAsymmetricEncryptionKeysResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -747,13 +680,7 @@ export const ListAsymmetricEncryptionKeysResponse = {
     },
 };
 
-messageTypeRegistry.set(
-    ListAsymmetricEncryptionKeysResponse.$type,
-    ListAsymmetricEncryptionKeysResponse,
-);
-
 const baseUpdateAsymmetricEncryptionKeyRequest: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.UpdateAsymmetricEncryptionKeyRequest',
     keyId: '',
     name: '',
     description: '',
@@ -762,8 +689,6 @@ const baseUpdateAsymmetricEncryptionKeyRequest: object = {
 };
 
 export const UpdateAsymmetricEncryptionKeyRequest = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.UpdateAsymmetricEncryptionKeyRequest' as const,
-
     encode(
         message: UpdateAsymmetricEncryptionKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -785,11 +710,7 @@ export const UpdateAsymmetricEncryptionKeyRequest = {
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateAsymmetricEncryptionKeyRequest_LabelsEntry.encode(
-                {
-                    $type: 'yandex.cloud.kms.v1.asymmetricencryption.UpdateAsymmetricEncryptionKeyRequest.LabelsEntry',
-                    key: key as any,
-                    value,
-                },
+                { key: key as any, value },
                 writer.uint32(50).fork(),
             ).ldelim();
         });
@@ -927,20 +848,9 @@ export const UpdateAsymmetricEncryptionKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateAsymmetricEncryptionKeyRequest.$type,
-    UpdateAsymmetricEncryptionKeyRequest,
-);
-
-const baseUpdateAsymmetricEncryptionKeyRequest_LabelsEntry: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.UpdateAsymmetricEncryptionKeyRequest.LabelsEntry',
-    key: '',
-    value: '',
-};
+const baseUpdateAsymmetricEncryptionKeyRequest_LabelsEntry: object = { key: '', value: '' };
 
 export const UpdateAsymmetricEncryptionKeyRequest_LabelsEntry = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.UpdateAsymmetricEncryptionKeyRequest.LabelsEntry' as const,
-
     encode(
         message: UpdateAsymmetricEncryptionKeyRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1009,19 +919,9 @@ export const UpdateAsymmetricEncryptionKeyRequest_LabelsEntry = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateAsymmetricEncryptionKeyRequest_LabelsEntry.$type,
-    UpdateAsymmetricEncryptionKeyRequest_LabelsEntry,
-);
-
-const baseUpdateAsymmetricEncryptionKeyMetadata: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.UpdateAsymmetricEncryptionKeyMetadata',
-    keyId: '',
-};
+const baseUpdateAsymmetricEncryptionKeyMetadata: object = { keyId: '' };
 
 export const UpdateAsymmetricEncryptionKeyMetadata = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.UpdateAsymmetricEncryptionKeyMetadata' as const,
-
     encode(
         message: UpdateAsymmetricEncryptionKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1078,19 +978,9 @@ export const UpdateAsymmetricEncryptionKeyMetadata = {
     },
 };
 
-messageTypeRegistry.set(
-    UpdateAsymmetricEncryptionKeyMetadata.$type,
-    UpdateAsymmetricEncryptionKeyMetadata,
-);
-
-const baseDeleteAsymmetricEncryptionKeyRequest: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.DeleteAsymmetricEncryptionKeyRequest',
-    keyId: '',
-};
+const baseDeleteAsymmetricEncryptionKeyRequest: object = { keyId: '' };
 
 export const DeleteAsymmetricEncryptionKeyRequest = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.DeleteAsymmetricEncryptionKeyRequest' as const,
-
     encode(
         message: DeleteAsymmetricEncryptionKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1147,19 +1037,9 @@ export const DeleteAsymmetricEncryptionKeyRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    DeleteAsymmetricEncryptionKeyRequest.$type,
-    DeleteAsymmetricEncryptionKeyRequest,
-);
-
-const baseDeleteAsymmetricEncryptionKeyMetadata: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.DeleteAsymmetricEncryptionKeyMetadata',
-    keyId: '',
-};
+const baseDeleteAsymmetricEncryptionKeyMetadata: object = { keyId: '' };
 
 export const DeleteAsymmetricEncryptionKeyMetadata = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.DeleteAsymmetricEncryptionKeyMetadata' as const,
-
     encode(
         message: DeleteAsymmetricEncryptionKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1216,21 +1096,13 @@ export const DeleteAsymmetricEncryptionKeyMetadata = {
     },
 };
 
-messageTypeRegistry.set(
-    DeleteAsymmetricEncryptionKeyMetadata.$type,
-    DeleteAsymmetricEncryptionKeyMetadata,
-);
-
 const baseListAsymmetricEncryptionKeyOperationsRequest: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.ListAsymmetricEncryptionKeyOperationsRequest',
     keyId: '',
     pageSize: 0,
     pageToken: '',
 };
 
 export const ListAsymmetricEncryptionKeyOperationsRequest = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.ListAsymmetricEncryptionKeyOperationsRequest' as const,
-
     encode(
         message: ListAsymmetricEncryptionKeyOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1312,19 +1184,9 @@ export const ListAsymmetricEncryptionKeyOperationsRequest = {
     },
 };
 
-messageTypeRegistry.set(
-    ListAsymmetricEncryptionKeyOperationsRequest.$type,
-    ListAsymmetricEncryptionKeyOperationsRequest,
-);
-
-const baseListAsymmetricEncryptionKeyOperationsResponse: object = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.ListAsymmetricEncryptionKeyOperationsResponse',
-    nextPageToken: '',
-};
+const baseListAsymmetricEncryptionKeyOperationsResponse: object = { nextPageToken: '' };
 
 export const ListAsymmetricEncryptionKeyOperationsResponse = {
-    $type: 'yandex.cloud.kms.v1.asymmetricencryption.ListAsymmetricEncryptionKeyOperationsResponse' as const,
-
     encode(
         message: ListAsymmetricEncryptionKeyOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1399,11 +1261,6 @@ export const ListAsymmetricEncryptionKeyOperationsResponse = {
         return message;
     },
 };
-
-messageTypeRegistry.set(
-    ListAsymmetricEncryptionKeyOperationsResponse.$type,
-    ListAsymmetricEncryptionKeyOperationsResponse,
-);
 
 /** Set of methods for managing asymmetric KMS keys. */
 export const AsymmetricEncryptionKeyServiceService = {
@@ -1777,16 +1634,13 @@ export type DeepPartial<T> = T extends Builtin
     : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : T extends {}
-    ? { [K in Exclude<keyof T, '$type'>]?: DeepPartial<T[K]> }
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
     : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-              Exclude<keyof I, KeysOfUnion<P> | '$type'>,
-              never
-          >;
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {
