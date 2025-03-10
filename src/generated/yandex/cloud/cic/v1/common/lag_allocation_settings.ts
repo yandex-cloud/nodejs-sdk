@@ -12,8 +12,6 @@ export interface LagAllocationSettingsRequest {
      * Must be from 1 to 10 inclusively.
      */
     lagSize: number | undefined;
-    /** LagInfo */
-    lagInfo?: LagInfo | undefined;
 }
 
 /** Structure that describes LAG allocation settings */
@@ -32,9 +30,6 @@ export const LagAllocationSettingsRequest = {
         if (message.lagSize !== undefined) {
             writer.uint32(104).int64(message.lagSize);
         }
-        if (message.lagInfo !== undefined) {
-            LagInfo.encode(message.lagInfo, writer.uint32(114).fork()).ldelim();
-        }
         return writer;
     },
 
@@ -47,9 +42,6 @@ export const LagAllocationSettingsRequest = {
             switch (tag >>> 3) {
                 case 13:
                     message.lagSize = longToNumber(reader.int64() as Long);
-                    break;
-                case 14:
-                    message.lagInfo = LagInfo.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -65,18 +57,12 @@ export const LagAllocationSettingsRequest = {
             object.lagSize !== undefined && object.lagSize !== null
                 ? Number(object.lagSize)
                 : undefined;
-        message.lagInfo =
-            object.lagInfo !== undefined && object.lagInfo !== null
-                ? LagInfo.fromJSON(object.lagInfo)
-                : undefined;
         return message;
     },
 
     toJSON(message: LagAllocationSettingsRequest): unknown {
         const obj: any = {};
         message.lagSize !== undefined && (obj.lagSize = Math.round(message.lagSize));
-        message.lagInfo !== undefined &&
-            (obj.lagInfo = message.lagInfo ? LagInfo.toJSON(message.lagInfo) : undefined);
         return obj;
     },
 
@@ -85,10 +71,6 @@ export const LagAllocationSettingsRequest = {
     ): LagAllocationSettingsRequest {
         const message = { ...baseLagAllocationSettingsRequest } as LagAllocationSettingsRequest;
         message.lagSize = object.lagSize ?? undefined;
-        message.lagInfo =
-            object.lagInfo !== undefined && object.lagInfo !== null
-                ? LagInfo.fromPartial(object.lagInfo)
-                : undefined;
         return message;
     },
 };

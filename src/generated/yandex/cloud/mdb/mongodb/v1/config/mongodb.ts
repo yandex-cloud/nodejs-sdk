@@ -266,9 +266,9 @@ export function mongodConfig_Network_Compression_CompressorToJSON(
 }
 
 export interface MongodConfig_Security {
-    /** If encryption at rest should be enabled or not */
+    /** If encryption at rest should be enabled or not, MongoDB Enterprise only */
     enableEncryption?: boolean;
-    /** `kmip` section of mongod security config */
+    /** `kmip` section of mongod security config, MongoDB Enterprise only */
     kmip?: MongodConfig_Security_KMIP;
 }
 
@@ -286,14 +286,20 @@ export interface MongodConfig_Security_KMIP {
 }
 
 export interface MongodConfig_AuditLog {
-    /** Audit filter */
+    /** Audit filter, should be valid JSON object string */
     filter: string;
-    /** Allows runtime configuration of audit filter and auditAuthorizationSuccess */
+    /**
+     * Allows runtime configuration of audit filter and auditAuthorizationSuccess
+     * !! Available for MongoDB Enterprise only !!
+     */
     runtimeConfiguration?: boolean;
 }
 
 export interface MongodConfig_SetParameter {
-    /** Enables the auditing of authorization successes */
+    /**
+     * Enables the auditing of authorization successes
+     * https://www.mongodb.com/docs/manual/reference/parameters/#mongodb-parameter-param.auditAuthorizationSuccess
+     */
     auditAuthorizationSuccess?: boolean;
     /**
      * Enables or disables the mechanism that controls the rate at which the primary applies its writes with the
@@ -312,6 +318,10 @@ export interface MongoCfgConfig {
     operationProfiling?: MongoCfgConfig_OperationProfiling;
     /** `net` section of mongocfg configuration. */
     net?: MongoCfgConfig_Network;
+    /** `setParameter` section of mongocfg configuration. */
+    setParameter?: MongoCfgConfig_SetParameter;
+    /** `AuditLog` section of mongocfg configuration. */
+    auditLog?: MongoCfgConfig_AuditLog;
 }
 
 export interface MongoCfgConfig_Storage {
@@ -323,11 +333,18 @@ export interface MongoCfgConfig_Storage {
 export interface MongoCfgConfig_Storage_WiredTiger {
     /** Engine configuration for WiredTiger. */
     engineConfig?: MongoCfgConfig_Storage_WiredTiger_EngineConfig;
+    /** Index configuration for WiredTiger. */
+    indexConfig?: MongoCfgConfig_Storage_WiredTiger_IndexConfig;
 }
 
 export interface MongoCfgConfig_Storage_WiredTiger_EngineConfig {
     /** The maximum size of the internal cache that WiredTiger will use for all data. */
     cacheSizeGb?: number;
+}
+
+export interface MongoCfgConfig_Storage_WiredTiger_IndexConfig {
+    /** Enables or disables [prefix compression](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-prefix-compression) */
+    prefixCompression?: boolean;
 }
 
 export interface MongoCfgConfig_OperationProfiling {
@@ -395,11 +412,105 @@ export function mongoCfgConfig_OperationProfiling_ModeToJSON(
 export interface MongoCfgConfig_Network {
     /** The maximum number of simultaneous connections that mongocfg will accept. */
     maxIncomingConnections?: number;
+    /** Compression settings */
+    compression?: MongoCfgConfig_Network_Compression;
+}
+
+export interface MongoCfgConfig_Network_Compression {
+    /**
+     * Specifies the default compressor(s) to use for communication between this mongod or mongos instance and:
+     * - other members of the deployment if the instance is part of a replica set or a sharded cluster
+     * - mongosh
+     * - drivers that support the OP_COMPRESSED message format.
+     * MongoDB supports the following compressors:
+     */
+    compressors: MongoCfgConfig_Network_Compression_Compressor[];
+}
+
+export enum MongoCfgConfig_Network_Compression_Compressor {
+    COMPRESSOR_UNSPECIFIED = 0,
+    /** SNAPPY - The [Snappy](https://docs.mongodb.com/v4.2/reference/glossary/#term-snappy) compression. */
+    SNAPPY = 1,
+    /** ZLIB - The [zlib](https://docs.mongodb.com/v4.2/reference/glossary/#term-zlib) compression. */
+    ZLIB = 2,
+    /** ZSTD - The [zstd](https://docs.mongodb.com/v4.2/reference/glossary/#term-zstd) compression. */
+    ZSTD = 3,
+    /** DISABLED - No compression */
+    DISABLED = 4,
+    UNRECOGNIZED = -1,
+}
+
+export function mongoCfgConfig_Network_Compression_CompressorFromJSON(
+    object: any,
+): MongoCfgConfig_Network_Compression_Compressor {
+    switch (object) {
+        case 0:
+        case 'COMPRESSOR_UNSPECIFIED':
+            return MongoCfgConfig_Network_Compression_Compressor.COMPRESSOR_UNSPECIFIED;
+        case 1:
+        case 'SNAPPY':
+            return MongoCfgConfig_Network_Compression_Compressor.SNAPPY;
+        case 2:
+        case 'ZLIB':
+            return MongoCfgConfig_Network_Compression_Compressor.ZLIB;
+        case 3:
+        case 'ZSTD':
+            return MongoCfgConfig_Network_Compression_Compressor.ZSTD;
+        case 4:
+        case 'DISABLED':
+            return MongoCfgConfig_Network_Compression_Compressor.DISABLED;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return MongoCfgConfig_Network_Compression_Compressor.UNRECOGNIZED;
+    }
+}
+
+export function mongoCfgConfig_Network_Compression_CompressorToJSON(
+    object: MongoCfgConfig_Network_Compression_Compressor,
+): string {
+    switch (object) {
+        case MongoCfgConfig_Network_Compression_Compressor.COMPRESSOR_UNSPECIFIED:
+            return 'COMPRESSOR_UNSPECIFIED';
+        case MongoCfgConfig_Network_Compression_Compressor.SNAPPY:
+            return 'SNAPPY';
+        case MongoCfgConfig_Network_Compression_Compressor.ZLIB:
+            return 'ZLIB';
+        case MongoCfgConfig_Network_Compression_Compressor.ZSTD:
+            return 'ZSTD';
+        case MongoCfgConfig_Network_Compression_Compressor.DISABLED:
+            return 'DISABLED';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export interface MongoCfgConfig_SetParameter {
+    /**
+     * Enables or disables the mechanism that controls the rate at which the primary applies its writes with the
+     * goal of keeping the secondary members [majority committed](https://www.mongodb.com/docs/v4.2/reference/command/replSetGetStatus/#replSetGetStatus.optimes.lastCommittedOpTime)
+     * lag under a configurable maximum value.
+     */
+    enableFlowControl?: boolean;
+    /**
+     * Enables the auditing of authorization successes
+     * https://www.mongodb.com/docs/manual/reference/parameters/#mongodb-parameter-param.auditAuthorizationSuccess
+     */
+    auditAuthorizationSuccess?: boolean;
+}
+
+export interface MongoCfgConfig_AuditLog {
+    /** Audit filter, should be valid JSON object string */
+    filter: string;
 }
 
 export interface MongosConfig {
     /** Network settings for mongos. */
     net?: MongosConfig_Network;
+    /** `setParameter` section of mongos configuration. */
+    setParameter?: MongosConfig_SetParameter;
+    /** `AuditLog` section of mongos configuration. */
+    auditLog?: MongosConfig_AuditLog;
 }
 
 export interface MongosConfig_Network {
@@ -476,6 +587,19 @@ export function mongosConfig_Network_Compression_CompressorToJSON(
         default:
             return 'UNKNOWN';
     }
+}
+
+export interface MongosConfig_SetParameter {
+    /**
+     * Enables the auditing of authorization successes
+     * https://www.mongodb.com/docs/manual/reference/parameters/#mongodb-parameter-param.auditAuthorizationSuccess
+     */
+    auditAuthorizationSuccess?: boolean;
+}
+
+export interface MongosConfig_AuditLog {
+    /** Audit filter, should be valid JSON object string */
+    filter: string;
 }
 
 export interface MongodConfigSet {
@@ -1747,6 +1871,15 @@ export const MongoCfgConfig = {
         if (message.net !== undefined) {
             MongoCfgConfig_Network.encode(message.net, writer.uint32(26).fork()).ldelim();
         }
+        if (message.setParameter !== undefined) {
+            MongoCfgConfig_SetParameter.encode(
+                message.setParameter,
+                writer.uint32(34).fork(),
+            ).ldelim();
+        }
+        if (message.auditLog !== undefined) {
+            MongoCfgConfig_AuditLog.encode(message.auditLog, writer.uint32(42).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -1768,6 +1901,15 @@ export const MongoCfgConfig = {
                     break;
                 case 3:
                     message.net = MongoCfgConfig_Network.decode(reader, reader.uint32());
+                    break;
+                case 4:
+                    message.setParameter = MongoCfgConfig_SetParameter.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 5:
+                    message.auditLog = MongoCfgConfig_AuditLog.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1791,6 +1933,14 @@ export const MongoCfgConfig = {
             object.net !== undefined && object.net !== null
                 ? MongoCfgConfig_Network.fromJSON(object.net)
                 : undefined;
+        message.setParameter =
+            object.setParameter !== undefined && object.setParameter !== null
+                ? MongoCfgConfig_SetParameter.fromJSON(object.setParameter)
+                : undefined;
+        message.auditLog =
+            object.auditLog !== undefined && object.auditLog !== null
+                ? MongoCfgConfig_AuditLog.fromJSON(object.auditLog)
+                : undefined;
         return message;
     },
 
@@ -1806,6 +1956,14 @@ export const MongoCfgConfig = {
                 : undefined);
         message.net !== undefined &&
             (obj.net = message.net ? MongoCfgConfig_Network.toJSON(message.net) : undefined);
+        message.setParameter !== undefined &&
+            (obj.setParameter = message.setParameter
+                ? MongoCfgConfig_SetParameter.toJSON(message.setParameter)
+                : undefined);
+        message.auditLog !== undefined &&
+            (obj.auditLog = message.auditLog
+                ? MongoCfgConfig_AuditLog.toJSON(message.auditLog)
+                : undefined);
         return obj;
     },
 
@@ -1822,6 +1980,14 @@ export const MongoCfgConfig = {
         message.net =
             object.net !== undefined && object.net !== null
                 ? MongoCfgConfig_Network.fromPartial(object.net)
+                : undefined;
+        message.setParameter =
+            object.setParameter !== undefined && object.setParameter !== null
+                ? MongoCfgConfig_SetParameter.fromPartial(object.setParameter)
+                : undefined;
+        message.auditLog =
+            object.auditLog !== undefined && object.auditLog !== null
+                ? MongoCfgConfig_AuditLog.fromPartial(object.auditLog)
                 : undefined;
         return message;
     },
@@ -1904,6 +2070,12 @@ export const MongoCfgConfig_Storage_WiredTiger = {
                 writer.uint32(10).fork(),
             ).ldelim();
         }
+        if (message.indexConfig !== undefined) {
+            MongoCfgConfig_Storage_WiredTiger_IndexConfig.encode(
+                message.indexConfig,
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -1918,6 +2090,12 @@ export const MongoCfgConfig_Storage_WiredTiger = {
             switch (tag >>> 3) {
                 case 1:
                     message.engineConfig = MongoCfgConfig_Storage_WiredTiger_EngineConfig.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 2:
+                    message.indexConfig = MongoCfgConfig_Storage_WiredTiger_IndexConfig.decode(
                         reader,
                         reader.uint32(),
                     );
@@ -1938,6 +2116,10 @@ export const MongoCfgConfig_Storage_WiredTiger = {
             object.engineConfig !== undefined && object.engineConfig !== null
                 ? MongoCfgConfig_Storage_WiredTiger_EngineConfig.fromJSON(object.engineConfig)
                 : undefined;
+        message.indexConfig =
+            object.indexConfig !== undefined && object.indexConfig !== null
+                ? MongoCfgConfig_Storage_WiredTiger_IndexConfig.fromJSON(object.indexConfig)
+                : undefined;
         return message;
     },
 
@@ -1946,6 +2128,10 @@ export const MongoCfgConfig_Storage_WiredTiger = {
         message.engineConfig !== undefined &&
             (obj.engineConfig = message.engineConfig
                 ? MongoCfgConfig_Storage_WiredTiger_EngineConfig.toJSON(message.engineConfig)
+                : undefined);
+        message.indexConfig !== undefined &&
+            (obj.indexConfig = message.indexConfig
+                ? MongoCfgConfig_Storage_WiredTiger_IndexConfig.toJSON(message.indexConfig)
                 : undefined);
         return obj;
     },
@@ -1959,6 +2145,10 @@ export const MongoCfgConfig_Storage_WiredTiger = {
         message.engineConfig =
             object.engineConfig !== undefined && object.engineConfig !== null
                 ? MongoCfgConfig_Storage_WiredTiger_EngineConfig.fromPartial(object.engineConfig)
+                : undefined;
+        message.indexConfig =
+            object.indexConfig !== undefined && object.indexConfig !== null
+                ? MongoCfgConfig_Storage_WiredTiger_IndexConfig.fromPartial(object.indexConfig)
                 : undefined;
         return message;
     },
@@ -2024,6 +2214,74 @@ export const MongoCfgConfig_Storage_WiredTiger_EngineConfig = {
             ...baseMongoCfgConfig_Storage_WiredTiger_EngineConfig,
         } as MongoCfgConfig_Storage_WiredTiger_EngineConfig;
         message.cacheSizeGb = object.cacheSizeGb ?? undefined;
+        return message;
+    },
+};
+
+const baseMongoCfgConfig_Storage_WiredTiger_IndexConfig: object = {};
+
+export const MongoCfgConfig_Storage_WiredTiger_IndexConfig = {
+    encode(
+        message: MongoCfgConfig_Storage_WiredTiger_IndexConfig,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.prefixCompression !== undefined) {
+            BoolValue.encode(
+                { value: message.prefixCompression! },
+                writer.uint32(10).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): MongoCfgConfig_Storage_WiredTiger_IndexConfig {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseMongoCfgConfig_Storage_WiredTiger_IndexConfig,
+        } as MongoCfgConfig_Storage_WiredTiger_IndexConfig;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.prefixCompression = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MongoCfgConfig_Storage_WiredTiger_IndexConfig {
+        const message = {
+            ...baseMongoCfgConfig_Storage_WiredTiger_IndexConfig,
+        } as MongoCfgConfig_Storage_WiredTiger_IndexConfig;
+        message.prefixCompression =
+            object.prefixCompression !== undefined && object.prefixCompression !== null
+                ? Boolean(object.prefixCompression)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: MongoCfgConfig_Storage_WiredTiger_IndexConfig): unknown {
+        const obj: any = {};
+        message.prefixCompression !== undefined &&
+            (obj.prefixCompression = message.prefixCompression);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MongoCfgConfig_Storage_WiredTiger_IndexConfig>, I>>(
+        object: I,
+    ): MongoCfgConfig_Storage_WiredTiger_IndexConfig {
+        const message = {
+            ...baseMongoCfgConfig_Storage_WiredTiger_IndexConfig,
+        } as MongoCfgConfig_Storage_WiredTiger_IndexConfig;
+        message.prefixCompression = object.prefixCompression ?? undefined;
         return message;
     },
 };
@@ -2115,6 +2373,12 @@ export const MongoCfgConfig_Network = {
                 writer.uint32(10).fork(),
             ).ldelim();
         }
+        if (message.compression !== undefined) {
+            MongoCfgConfig_Network_Compression.encode(
+                message.compression,
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -2131,6 +2395,12 @@ export const MongoCfgConfig_Network = {
                         reader.uint32(),
                     ).value;
                     break;
+                case 2:
+                    message.compression = MongoCfgConfig_Network_Compression.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2145,6 +2415,10 @@ export const MongoCfgConfig_Network = {
             object.maxIncomingConnections !== undefined && object.maxIncomingConnections !== null
                 ? Number(object.maxIncomingConnections)
                 : undefined;
+        message.compression =
+            object.compression !== undefined && object.compression !== null
+                ? MongoCfgConfig_Network_Compression.fromJSON(object.compression)
+                : undefined;
         return message;
     },
 
@@ -2152,6 +2426,10 @@ export const MongoCfgConfig_Network = {
         const obj: any = {};
         message.maxIncomingConnections !== undefined &&
             (obj.maxIncomingConnections = message.maxIncomingConnections);
+        message.compression !== undefined &&
+            (obj.compression = message.compression
+                ? MongoCfgConfig_Network_Compression.toJSON(message.compression)
+                : undefined);
         return obj;
     },
 
@@ -2160,6 +2438,215 @@ export const MongoCfgConfig_Network = {
     ): MongoCfgConfig_Network {
         const message = { ...baseMongoCfgConfig_Network } as MongoCfgConfig_Network;
         message.maxIncomingConnections = object.maxIncomingConnections ?? undefined;
+        message.compression =
+            object.compression !== undefined && object.compression !== null
+                ? MongoCfgConfig_Network_Compression.fromPartial(object.compression)
+                : undefined;
+        return message;
+    },
+};
+
+const baseMongoCfgConfig_Network_Compression: object = { compressors: 0 };
+
+export const MongoCfgConfig_Network_Compression = {
+    encode(
+        message: MongoCfgConfig_Network_Compression,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        writer.uint32(10).fork();
+        for (const v of message.compressors) {
+            writer.int32(v);
+        }
+        writer.ldelim();
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoCfgConfig_Network_Compression {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseMongoCfgConfig_Network_Compression,
+        } as MongoCfgConfig_Network_Compression;
+        message.compressors = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if ((tag & 7) === 2) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.compressors.push(reader.int32() as any);
+                        }
+                    } else {
+                        message.compressors.push(reader.int32() as any);
+                    }
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MongoCfgConfig_Network_Compression {
+        const message = {
+            ...baseMongoCfgConfig_Network_Compression,
+        } as MongoCfgConfig_Network_Compression;
+        message.compressors = (object.compressors ?? []).map((e: any) =>
+            mongoCfgConfig_Network_Compression_CompressorFromJSON(e),
+        );
+        return message;
+    },
+
+    toJSON(message: MongoCfgConfig_Network_Compression): unknown {
+        const obj: any = {};
+        if (message.compressors) {
+            obj.compressors = message.compressors.map((e) =>
+                mongoCfgConfig_Network_Compression_CompressorToJSON(e),
+            );
+        } else {
+            obj.compressors = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MongoCfgConfig_Network_Compression>, I>>(
+        object: I,
+    ): MongoCfgConfig_Network_Compression {
+        const message = {
+            ...baseMongoCfgConfig_Network_Compression,
+        } as MongoCfgConfig_Network_Compression;
+        message.compressors = object.compressors?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseMongoCfgConfig_SetParameter: object = {};
+
+export const MongoCfgConfig_SetParameter = {
+    encode(
+        message: MongoCfgConfig_SetParameter,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.enableFlowControl !== undefined) {
+            BoolValue.encode(
+                { value: message.enableFlowControl! },
+                writer.uint32(10).fork(),
+            ).ldelim();
+        }
+        if (message.auditAuthorizationSuccess !== undefined) {
+            BoolValue.encode(
+                { value: message.auditAuthorizationSuccess! },
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoCfgConfig_SetParameter {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMongoCfgConfig_SetParameter } as MongoCfgConfig_SetParameter;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enableFlowControl = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 2:
+                    message.auditAuthorizationSuccess = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MongoCfgConfig_SetParameter {
+        const message = { ...baseMongoCfgConfig_SetParameter } as MongoCfgConfig_SetParameter;
+        message.enableFlowControl =
+            object.enableFlowControl !== undefined && object.enableFlowControl !== null
+                ? Boolean(object.enableFlowControl)
+                : undefined;
+        message.auditAuthorizationSuccess =
+            object.auditAuthorizationSuccess !== undefined &&
+            object.auditAuthorizationSuccess !== null
+                ? Boolean(object.auditAuthorizationSuccess)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: MongoCfgConfig_SetParameter): unknown {
+        const obj: any = {};
+        message.enableFlowControl !== undefined &&
+            (obj.enableFlowControl = message.enableFlowControl);
+        message.auditAuthorizationSuccess !== undefined &&
+            (obj.auditAuthorizationSuccess = message.auditAuthorizationSuccess);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MongoCfgConfig_SetParameter>, I>>(
+        object: I,
+    ): MongoCfgConfig_SetParameter {
+        const message = { ...baseMongoCfgConfig_SetParameter } as MongoCfgConfig_SetParameter;
+        message.enableFlowControl = object.enableFlowControl ?? undefined;
+        message.auditAuthorizationSuccess = object.auditAuthorizationSuccess ?? undefined;
+        return message;
+    },
+};
+
+const baseMongoCfgConfig_AuditLog: object = { filter: '' };
+
+export const MongoCfgConfig_AuditLog = {
+    encode(message: MongoCfgConfig_AuditLog, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.filter !== '') {
+            writer.uint32(10).string(message.filter);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoCfgConfig_AuditLog {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMongoCfgConfig_AuditLog } as MongoCfgConfig_AuditLog;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.filter = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MongoCfgConfig_AuditLog {
+        const message = { ...baseMongoCfgConfig_AuditLog } as MongoCfgConfig_AuditLog;
+        message.filter =
+            object.filter !== undefined && object.filter !== null ? String(object.filter) : '';
+        return message;
+    },
+
+    toJSON(message: MongoCfgConfig_AuditLog): unknown {
+        const obj: any = {};
+        message.filter !== undefined && (obj.filter = message.filter);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MongoCfgConfig_AuditLog>, I>>(
+        object: I,
+    ): MongoCfgConfig_AuditLog {
+        const message = { ...baseMongoCfgConfig_AuditLog } as MongoCfgConfig_AuditLog;
+        message.filter = object.filter ?? '';
         return message;
     },
 };
@@ -2170,6 +2657,15 @@ export const MongosConfig = {
     encode(message: MongosConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.net !== undefined) {
             MongosConfig_Network.encode(message.net, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.setParameter !== undefined) {
+            MongosConfig_SetParameter.encode(
+                message.setParameter,
+                writer.uint32(34).fork(),
+            ).ldelim();
+        }
+        if (message.auditLog !== undefined) {
+            MongosConfig_AuditLog.encode(message.auditLog, writer.uint32(42).fork()).ldelim();
         }
         return writer;
     },
@@ -2183,6 +2679,15 @@ export const MongosConfig = {
             switch (tag >>> 3) {
                 case 3:
                     message.net = MongosConfig_Network.decode(reader, reader.uint32());
+                    break;
+                case 4:
+                    message.setParameter = MongosConfig_SetParameter.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 5:
+                    message.auditLog = MongosConfig_AuditLog.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2198,6 +2703,14 @@ export const MongosConfig = {
             object.net !== undefined && object.net !== null
                 ? MongosConfig_Network.fromJSON(object.net)
                 : undefined;
+        message.setParameter =
+            object.setParameter !== undefined && object.setParameter !== null
+                ? MongosConfig_SetParameter.fromJSON(object.setParameter)
+                : undefined;
+        message.auditLog =
+            object.auditLog !== undefined && object.auditLog !== null
+                ? MongosConfig_AuditLog.fromJSON(object.auditLog)
+                : undefined;
         return message;
     },
 
@@ -2205,6 +2718,14 @@ export const MongosConfig = {
         const obj: any = {};
         message.net !== undefined &&
             (obj.net = message.net ? MongosConfig_Network.toJSON(message.net) : undefined);
+        message.setParameter !== undefined &&
+            (obj.setParameter = message.setParameter
+                ? MongosConfig_SetParameter.toJSON(message.setParameter)
+                : undefined);
+        message.auditLog !== undefined &&
+            (obj.auditLog = message.auditLog
+                ? MongosConfig_AuditLog.toJSON(message.auditLog)
+                : undefined);
         return obj;
     },
 
@@ -2213,6 +2734,14 @@ export const MongosConfig = {
         message.net =
             object.net !== undefined && object.net !== null
                 ? MongosConfig_Network.fromPartial(object.net)
+                : undefined;
+        message.setParameter =
+            object.setParameter !== undefined && object.setParameter !== null
+                ? MongosConfig_SetParameter.fromPartial(object.setParameter)
+                : undefined;
+        message.auditLog =
+            object.auditLog !== undefined && object.auditLog !== null
+                ? MongosConfig_AuditLog.fromPartial(object.auditLog)
                 : undefined;
         return message;
     },
@@ -2373,6 +2902,119 @@ export const MongosConfig_Network_Compression = {
             ...baseMongosConfig_Network_Compression,
         } as MongosConfig_Network_Compression;
         message.compressors = object.compressors?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseMongosConfig_SetParameter: object = {};
+
+export const MongosConfig_SetParameter = {
+    encode(
+        message: MongosConfig_SetParameter,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.auditAuthorizationSuccess !== undefined) {
+            BoolValue.encode(
+                { value: message.auditAuthorizationSuccess! },
+                writer.uint32(10).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongosConfig_SetParameter {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMongosConfig_SetParameter } as MongosConfig_SetParameter;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.auditAuthorizationSuccess = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MongosConfig_SetParameter {
+        const message = { ...baseMongosConfig_SetParameter } as MongosConfig_SetParameter;
+        message.auditAuthorizationSuccess =
+            object.auditAuthorizationSuccess !== undefined &&
+            object.auditAuthorizationSuccess !== null
+                ? Boolean(object.auditAuthorizationSuccess)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: MongosConfig_SetParameter): unknown {
+        const obj: any = {};
+        message.auditAuthorizationSuccess !== undefined &&
+            (obj.auditAuthorizationSuccess = message.auditAuthorizationSuccess);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MongosConfig_SetParameter>, I>>(
+        object: I,
+    ): MongosConfig_SetParameter {
+        const message = { ...baseMongosConfig_SetParameter } as MongosConfig_SetParameter;
+        message.auditAuthorizationSuccess = object.auditAuthorizationSuccess ?? undefined;
+        return message;
+    },
+};
+
+const baseMongosConfig_AuditLog: object = { filter: '' };
+
+export const MongosConfig_AuditLog = {
+    encode(message: MongosConfig_AuditLog, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.filter !== '') {
+            writer.uint32(10).string(message.filter);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongosConfig_AuditLog {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMongosConfig_AuditLog } as MongosConfig_AuditLog;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.filter = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MongosConfig_AuditLog {
+        const message = { ...baseMongosConfig_AuditLog } as MongosConfig_AuditLog;
+        message.filter =
+            object.filter !== undefined && object.filter !== null ? String(object.filter) : '';
+        return message;
+    },
+
+    toJSON(message: MongosConfig_AuditLog): unknown {
+        const obj: any = {};
+        message.filter !== undefined && (obj.filter = message.filter);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MongosConfig_AuditLog>, I>>(
+        object: I,
+    ): MongosConfig_AuditLog {
+        const message = { ...baseMongosConfig_AuditLog } as MongosConfig_AuditLog;
+        message.filter = object.filter ?? '';
         return message;
     },
 };

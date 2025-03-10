@@ -797,6 +797,16 @@ export interface UserSettings {
      * More info see in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#setting-max_http_get_redirects).
      */
     maxHttpGetRedirects?: number;
+    /**
+     * Maximum length of field name in HTTP header.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#http_max_field_name_size).
+     */
+    httpMaxFieldNameSize?: number;
+    /**
+     * Maximum length of field value in HTTP header.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#http_max_field_value_size).
+     */
+    httpMaxFieldValueSize?: number;
     joinedSubqueryRequiresAlias?: boolean;
     joinUseNulls?: boolean;
     transformNullIn?: boolean;
@@ -861,11 +871,10 @@ export interface UserSettings {
      */
     asyncInsertBusyTimeout?: number;
     /**
-     * The maximum timeout in milliseconds since the last INSERT query before dumping collected data. If enabled, the settings prolongs the [async_insert_busy_timeout] with every INSERT query as long as [async_insert_max_data_size] is not exceeded.
-     *
-     * More info see in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings/#async-insert-stale-timeout-ms).
+     * If it is set to true, use adaptive busy timeout for asynchronous inserts.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#async_insert_use_adaptive_busy_timeout).
      */
-    asyncInsertStaleTimeout?: number;
+    asyncInsertUseAdaptiveBusyTimeout?: boolean;
     /**
      * Memory profiler step (in bytes).
      *
@@ -895,6 +904,16 @@ export interface UserSettings {
      * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#input-format-parallel-parsing)
      */
     inputFormatImportNestedJson?: boolean;
+    /**
+     * Avro schema registry URL.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/formats#format_avro_schema_registry_url).
+     */
+    formatAvroSchemaRegistryUrl: string;
+    /**
+     * Allows data types without explicit modifiers NULL or NOT NULL in column definition will be Nullable.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#data_type_default_nullable).
+     */
+    dataTypeDefaultNullable?: boolean;
     /** Method of reading data from local filesystem, one of: read, pread, mmap, io_uring, pread_threadpool. The 'io_uring' method is experimental and does not work for Log, TinyLog, StripeLog, File, Set and Join, and other tables with append-able files in presence of concurrent reads and writes. */
     localFilesystemReadMethod: UserSettings_LocalFilesystemReadMethod;
     /**
@@ -960,10 +979,81 @@ export interface UserSettings {
     memoryUsageOvercommitMaxWaitMicroseconds?: number;
     /**
      * Setting up query threads logging. Query threads log into the [system.query_thread_log](https://clickhouse.com/docs/en/operations/system-tables/query_thread_log) table. This setting has effect only when [log_queries](https://clickhouse.com/docs/en/operations/settings/settings#log-queries) is true. Queries threads run by ClickHouse with this setup are logged according to the rules in the [query_thread_log](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings#server_configuration_parameters-query_thread_log) server configuration parameter.
-     * Default: true
+     * Default: false
      * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#log_query_threads)
      */
     logQueryThreads?: boolean;
+    /**
+     * Enables or disables query views logging to the the system.query_view_log table.
+     * Default: true
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#log_query_views)
+     */
+    logQueryViews?: boolean;
+    /**
+     * Log queries with the specified probability.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#log_queries_probability).
+     */
+    logQueriesProbability?: number;
+    /**
+     * Enabled or disable logging of processors level profiling data to the the system.log_processors_profiles table.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#log_processors_profiles).
+     */
+    logProcessorsProfiles?: boolean;
+    /**
+     * If turned on, SELECT queries may utilize the query cache.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#use_query_cache).
+     */
+    useQueryCache?: boolean;
+    /**
+     * If turned on, results of SELECT queries are retrieved from the query cache.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#enable_reads_from_query_cache).
+     */
+    enableReadsFromQueryCache?: boolean;
+    /**
+     * If turned on, results of SELECT queries are stored in the query cache.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#enable_writes_to_query_cache).
+     */
+    enableWritesToQueryCache?: boolean;
+    /**
+     * Minimum number of times a SELECT query must run before its result is stored in the query cache.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#query_cache_min_query_runs).
+     */
+    queryCacheMinQueryRuns?: number;
+    /**
+     * Minimum duration in milliseconds a query needs to run for its result to be stored in the query cache.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#query_cache_min_query_duration).
+     */
+    queryCacheMinQueryDuration?: number;
+    /**
+     * After this time in seconds entries in the query cache become stale.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#query_cache_ttl).
+     */
+    queryCacheTtl?: number;
+    /**
+     * The maximum number of query results the current user may store in the query cache. 0 means unlimited.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#query_cache_max_entries).
+     */
+    queryCacheMaxEntries?: number;
+    /**
+     * The maximum amount of memory (in bytes) the current user may allocate in the query cache. 0 means unlimited.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#query_cache_max_size_in_bytes).
+     */
+    queryCacheMaxSizeInBytes?: number;
+    /**
+     * A string which acts as a label for query cache entries. The same queries with different tags are considered different by the query cache.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#query_cache_tag).
+     */
+    queryCacheTag: string;
+    /**
+     * If turned on, the result of SELECT queries cached in the query cache can be read by other users. It is not recommended to enable this setting due to security reasons.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#query_cache_share_between_users).
+     */
+    queryCacheShareBetweenUsers?: boolean;
+    /**
+     * Controls how the query cache handles SELECT queries with non-deterministic functions like rand() or now().
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#query_cache_nondeterministic_function_handling).
+     */
+    queryCacheNondeterministicFunctionHandling: UserSettings_QueryCacheNondeterministicFunctionHandling;
     /**
      * The maximum number of threads to execute the INSERT SELECT query.
      * Default: 0
@@ -995,11 +1085,22 @@ export interface UserSettings {
      */
     loadBalancing: UserSettings_LoadBalancing;
     /**
-     * Enables/disables preferable using the localhost replica when processing distributed queries.
+     * Enables or disables preferable using the localhost replica when processing distributed queries.
      * Default: true
      * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#prefer_localhost_replica)
      */
     preferLocalhostReplica?: boolean;
+    /**
+     * Enables or disable independent processing of partitions for SELECT queries with FINAL.
+     * Default: false
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/guides/replacing-merge-tree#exploiting-partitions-with-replacingmergetree)
+     */
+    doNotMergeAcrossPartitionsSelectFinal?: boolean;
+    /**
+     * Ignore materialized views with dropped target table during pushing to views.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#ignore_materialized_views_with_dropped_target_table).
+     */
+    ignoreMaterializedViewsWithDroppedTargetTable?: boolean;
     /**
      * The setting is deprecated and has no effect.
      *
@@ -1012,6 +1113,12 @@ export interface UserSettings {
      * @deprecated
      */
     minCountToCompile?: number;
+    /**
+     * The setting is deprecated and has no effect.
+     *
+     * @deprecated
+     */
+    asyncInsertStaleTimeout?: number;
 }
 
 export enum UserSettings_OverflowMode {
@@ -1645,6 +1752,61 @@ export function userSettings_LoadBalancingToJSON(object: UserSettings_LoadBalanc
 }
 
 /**
+ * Controls how the query cache handles SELECT queries with non-deterministic functions like rand() or now().
+ * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#query_cache_nondeterministic_function_handling).
+ */
+export enum UserSettings_QueryCacheNondeterministicFunctionHandling {
+    QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_UNSPECIFIED = 0,
+    /** QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_THROW - Throw an exception and don't cache the query result. */
+    QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_THROW = 1,
+    /** QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_SAVE - Cache the query result. */
+    QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_SAVE = 2,
+    /** QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_IGNORE - Don't cache the query result and don't throw an exception. */
+    QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_IGNORE = 3,
+    UNRECOGNIZED = -1,
+}
+
+export function userSettings_QueryCacheNondeterministicFunctionHandlingFromJSON(
+    object: any,
+): UserSettings_QueryCacheNondeterministicFunctionHandling {
+    switch (object) {
+        case 0:
+        case 'QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_UNSPECIFIED':
+            return UserSettings_QueryCacheNondeterministicFunctionHandling.QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_UNSPECIFIED;
+        case 1:
+        case 'QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_THROW':
+            return UserSettings_QueryCacheNondeterministicFunctionHandling.QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_THROW;
+        case 2:
+        case 'QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_SAVE':
+            return UserSettings_QueryCacheNondeterministicFunctionHandling.QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_SAVE;
+        case 3:
+        case 'QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_IGNORE':
+            return UserSettings_QueryCacheNondeterministicFunctionHandling.QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_IGNORE;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return UserSettings_QueryCacheNondeterministicFunctionHandling.UNRECOGNIZED;
+    }
+}
+
+export function userSettings_QueryCacheNondeterministicFunctionHandlingToJSON(
+    object: UserSettings_QueryCacheNondeterministicFunctionHandling,
+): string {
+    switch (object) {
+        case UserSettings_QueryCacheNondeterministicFunctionHandling.QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_UNSPECIFIED:
+            return 'QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_UNSPECIFIED';
+        case UserSettings_QueryCacheNondeterministicFunctionHandling.QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_THROW:
+            return 'QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_THROW';
+        case UserSettings_QueryCacheNondeterministicFunctionHandling.QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_SAVE:
+            return 'QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_SAVE';
+        case UserSettings_QueryCacheNondeterministicFunctionHandling.QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_IGNORE:
+            return 'QUERY_CACHE_NONDETERMINISTIC_FUNCTION_HANDLING_IGNORE';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+/**
  * ClickHouse quota representation. Each quota associated with an user and limits it resource usage for an interval.
  * See in-depth description [ClickHouse documentation](https://clickhouse.com/docs/en/operations/quotas/).
  */
@@ -2042,8 +2204,11 @@ const baseUserSettings: object = {
     quotaMode: 0,
     formatRegexp: '',
     formatRegexpEscapingRule: 0,
+    formatAvroSchemaRegistryUrl: '',
     localFilesystemReadMethod: 0,
     remoteFilesystemReadMethod: 0,
+    queryCacheTag: '',
+    queryCacheNondeterministicFunctionHandling: 0,
     loadBalancing: 0,
 };
 
@@ -2603,6 +2768,18 @@ export const UserSettings = {
                 writer.uint32(898).fork(),
             ).ldelim();
         }
+        if (message.httpMaxFieldNameSize !== undefined) {
+            Int64Value.encode(
+                { value: message.httpMaxFieldNameSize! },
+                writer.uint32(1202).fork(),
+            ).ldelim();
+        }
+        if (message.httpMaxFieldValueSize !== undefined) {
+            Int64Value.encode(
+                { value: message.httpMaxFieldValueSize! },
+                writer.uint32(1210).fork(),
+            ).ldelim();
+        }
         if (message.joinedSubqueryRequiresAlias !== undefined) {
             BoolValue.encode(
                 { value: message.joinedSubqueryRequiresAlias! },
@@ -2669,10 +2846,10 @@ export const UserSettings = {
                 writer.uint32(978).fork(),
             ).ldelim();
         }
-        if (message.asyncInsertStaleTimeout !== undefined) {
-            Int64Value.encode(
-                { value: message.asyncInsertStaleTimeout! },
-                writer.uint32(986).fork(),
+        if (message.asyncInsertUseAdaptiveBusyTimeout !== undefined) {
+            BoolValue.encode(
+                { value: message.asyncInsertUseAdaptiveBusyTimeout! },
+                writer.uint32(1218).fork(),
             ).ldelim();
         }
         if (message.memoryProfilerStep !== undefined) {
@@ -2703,6 +2880,15 @@ export const UserSettings = {
             BoolValue.encode(
                 { value: message.inputFormatImportNestedJson! },
                 writer.uint32(1026).fork(),
+            ).ldelim();
+        }
+        if (message.formatAvroSchemaRegistryUrl !== '') {
+            writer.uint32(1186).string(message.formatAvroSchemaRegistryUrl);
+        }
+        if (message.dataTypeDefaultNullable !== undefined) {
+            BoolValue.encode(
+                { value: message.dataTypeDefaultNullable! },
+                writer.uint32(1194).fork(),
             ).ldelim();
         }
         if (message.localFilesystemReadMethod !== 0) {
@@ -2765,6 +2951,84 @@ export const UserSettings = {
                 writer.uint32(1114).fork(),
             ).ldelim();
         }
+        if (message.logQueryViews !== undefined) {
+            BoolValue.encode(
+                { value: message.logQueryViews! },
+                writer.uint32(1170).fork(),
+            ).ldelim();
+        }
+        if (message.logQueriesProbability !== undefined) {
+            DoubleValue.encode(
+                { value: message.logQueriesProbability! },
+                writer.uint32(1226).fork(),
+            ).ldelim();
+        }
+        if (message.logProcessorsProfiles !== undefined) {
+            BoolValue.encode(
+                { value: message.logProcessorsProfiles! },
+                writer.uint32(1234).fork(),
+            ).ldelim();
+        }
+        if (message.useQueryCache !== undefined) {
+            BoolValue.encode(
+                { value: message.useQueryCache! },
+                writer.uint32(1242).fork(),
+            ).ldelim();
+        }
+        if (message.enableReadsFromQueryCache !== undefined) {
+            BoolValue.encode(
+                { value: message.enableReadsFromQueryCache! },
+                writer.uint32(1250).fork(),
+            ).ldelim();
+        }
+        if (message.enableWritesToQueryCache !== undefined) {
+            BoolValue.encode(
+                { value: message.enableWritesToQueryCache! },
+                writer.uint32(1258).fork(),
+            ).ldelim();
+        }
+        if (message.queryCacheMinQueryRuns !== undefined) {
+            Int64Value.encode(
+                { value: message.queryCacheMinQueryRuns! },
+                writer.uint32(1266).fork(),
+            ).ldelim();
+        }
+        if (message.queryCacheMinQueryDuration !== undefined) {
+            Int64Value.encode(
+                { value: message.queryCacheMinQueryDuration! },
+                writer.uint32(1274).fork(),
+            ).ldelim();
+        }
+        if (message.queryCacheTtl !== undefined) {
+            Int64Value.encode(
+                { value: message.queryCacheTtl! },
+                writer.uint32(1282).fork(),
+            ).ldelim();
+        }
+        if (message.queryCacheMaxEntries !== undefined) {
+            Int64Value.encode(
+                { value: message.queryCacheMaxEntries! },
+                writer.uint32(1290).fork(),
+            ).ldelim();
+        }
+        if (message.queryCacheMaxSizeInBytes !== undefined) {
+            Int64Value.encode(
+                { value: message.queryCacheMaxSizeInBytes! },
+                writer.uint32(1298).fork(),
+            ).ldelim();
+        }
+        if (message.queryCacheTag !== '') {
+            writer.uint32(1306).string(message.queryCacheTag);
+        }
+        if (message.queryCacheShareBetweenUsers !== undefined) {
+            BoolValue.encode(
+                { value: message.queryCacheShareBetweenUsers! },
+                writer.uint32(1314).fork(),
+            ).ldelim();
+        }
+        if (message.queryCacheNondeterministicFunctionHandling !== 0) {
+            writer.uint32(1320).int32(message.queryCacheNondeterministicFunctionHandling);
+        }
         if (message.maxInsertThreads !== undefined) {
             Int64Value.encode(
                 { value: message.maxInsertThreads! },
@@ -2798,6 +3062,18 @@ export const UserSettings = {
                 writer.uint32(1162).fork(),
             ).ldelim();
         }
+        if (message.doNotMergeAcrossPartitionsSelectFinal !== undefined) {
+            BoolValue.encode(
+                { value: message.doNotMergeAcrossPartitionsSelectFinal! },
+                writer.uint32(1178).fork(),
+            ).ldelim();
+        }
+        if (message.ignoreMaterializedViewsWithDroppedTargetTable !== undefined) {
+            BoolValue.encode(
+                { value: message.ignoreMaterializedViewsWithDroppedTargetTable! },
+                writer.uint32(1330).fork(),
+            ).ldelim();
+        }
         if (message.compile !== undefined) {
             BoolValue.encode({ value: message.compile! }, writer.uint32(354).fork()).ldelim();
         }
@@ -2805,6 +3081,12 @@ export const UserSettings = {
             Int64Value.encode(
                 { value: message.minCountToCompile! },
                 writer.uint32(362).fork(),
+            ).ldelim();
+        }
+        if (message.asyncInsertStaleTimeout !== undefined) {
+            Int64Value.encode(
+                { value: message.asyncInsertStaleTimeout! },
+                writer.uint32(986).fork(),
             ).ldelim();
         }
         return writer;
@@ -3266,6 +3548,15 @@ export const UserSettings = {
                 case 112:
                     message.maxHttpGetRedirects = Int64Value.decode(reader, reader.uint32()).value;
                     break;
+                case 150:
+                    message.httpMaxFieldNameSize = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 151:
+                    message.httpMaxFieldValueSize = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
                 case 93:
                     message.joinedSubqueryRequiresAlias = BoolValue.decode(
                         reader,
@@ -3323,8 +3614,8 @@ export const UserSettings = {
                         reader.uint32(),
                     ).value;
                     break;
-                case 123:
-                    message.asyncInsertStaleTimeout = Int64Value.decode(
+                case 152:
+                    message.asyncInsertUseAdaptiveBusyTimeout = BoolValue.decode(
                         reader,
                         reader.uint32(),
                     ).value;
@@ -3349,6 +3640,15 @@ export const UserSettings = {
                     break;
                 case 128:
                     message.inputFormatImportNestedJson = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 148:
+                    message.formatAvroSchemaRegistryUrl = reader.string();
+                    break;
+                case 149:
+                    message.dataTypeDefaultNullable = BoolValue.decode(
                         reader,
                         reader.uint32(),
                     ).value;
@@ -3404,6 +3704,69 @@ export const UserSettings = {
                 case 139:
                     message.logQueryThreads = BoolValue.decode(reader, reader.uint32()).value;
                     break;
+                case 146:
+                    message.logQueryViews = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 153:
+                    message.logQueriesProbability = DoubleValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 154:
+                    message.logProcessorsProfiles = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 155:
+                    message.useQueryCache = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 156:
+                    message.enableReadsFromQueryCache = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 157:
+                    message.enableWritesToQueryCache = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 158:
+                    message.queryCacheMinQueryRuns = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 159:
+                    message.queryCacheMinQueryDuration = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 160:
+                    message.queryCacheTtl = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 161:
+                    message.queryCacheMaxEntries = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 162:
+                    message.queryCacheMaxSizeInBytes = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 163:
+                    message.queryCacheTag = reader.string();
+                    break;
+                case 164:
+                    message.queryCacheShareBetweenUsers = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 165:
+                    message.queryCacheNondeterministicFunctionHandling = reader.int32() as any;
+                    break;
                 case 140:
                     message.maxInsertThreads = Int64Value.decode(reader, reader.uint32()).value;
                     break;
@@ -3431,11 +3794,29 @@ export const UserSettings = {
                         reader.uint32(),
                     ).value;
                     break;
+                case 147:
+                    message.doNotMergeAcrossPartitionsSelectFinal = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 166:
+                    message.ignoreMaterializedViewsWithDroppedTargetTable = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
                 case 44:
                     message.compile = BoolValue.decode(reader, reader.uint32()).value;
                     break;
                 case 45:
                     message.minCountToCompile = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 123:
+                    message.asyncInsertStaleTimeout = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -3901,6 +4282,14 @@ export const UserSettings = {
             object.maxHttpGetRedirects !== undefined && object.maxHttpGetRedirects !== null
                 ? Number(object.maxHttpGetRedirects)
                 : undefined;
+        message.httpMaxFieldNameSize =
+            object.httpMaxFieldNameSize !== undefined && object.httpMaxFieldNameSize !== null
+                ? Number(object.httpMaxFieldNameSize)
+                : undefined;
+        message.httpMaxFieldValueSize =
+            object.httpMaxFieldValueSize !== undefined && object.httpMaxFieldValueSize !== null
+                ? Number(object.httpMaxFieldValueSize)
+                : undefined;
         message.joinedSubqueryRequiresAlias =
             object.joinedSubqueryRequiresAlias !== undefined &&
             object.joinedSubqueryRequiresAlias !== null
@@ -3961,9 +4350,10 @@ export const UserSettings = {
             object.asyncInsertBusyTimeout !== undefined && object.asyncInsertBusyTimeout !== null
                 ? Number(object.asyncInsertBusyTimeout)
                 : undefined;
-        message.asyncInsertStaleTimeout =
-            object.asyncInsertStaleTimeout !== undefined && object.asyncInsertStaleTimeout !== null
-                ? Number(object.asyncInsertStaleTimeout)
+        message.asyncInsertUseAdaptiveBusyTimeout =
+            object.asyncInsertUseAdaptiveBusyTimeout !== undefined &&
+            object.asyncInsertUseAdaptiveBusyTimeout !== null
+                ? Boolean(object.asyncInsertUseAdaptiveBusyTimeout)
                 : undefined;
         message.memoryProfilerStep =
             object.memoryProfilerStep !== undefined && object.memoryProfilerStep !== null
@@ -3987,6 +4377,15 @@ export const UserSettings = {
             object.inputFormatImportNestedJson !== undefined &&
             object.inputFormatImportNestedJson !== null
                 ? Boolean(object.inputFormatImportNestedJson)
+                : undefined;
+        message.formatAvroSchemaRegistryUrl =
+            object.formatAvroSchemaRegistryUrl !== undefined &&
+            object.formatAvroSchemaRegistryUrl !== null
+                ? String(object.formatAvroSchemaRegistryUrl)
+                : '';
+        message.dataTypeDefaultNullable =
+            object.dataTypeDefaultNullable !== undefined && object.dataTypeDefaultNullable !== null
+                ? Boolean(object.dataTypeDefaultNullable)
                 : undefined;
         message.localFilesystemReadMethod =
             object.localFilesystemReadMethod !== undefined &&
@@ -4039,6 +4438,70 @@ export const UserSettings = {
             object.logQueryThreads !== undefined && object.logQueryThreads !== null
                 ? Boolean(object.logQueryThreads)
                 : undefined;
+        message.logQueryViews =
+            object.logQueryViews !== undefined && object.logQueryViews !== null
+                ? Boolean(object.logQueryViews)
+                : undefined;
+        message.logQueriesProbability =
+            object.logQueriesProbability !== undefined && object.logQueriesProbability !== null
+                ? Number(object.logQueriesProbability)
+                : undefined;
+        message.logProcessorsProfiles =
+            object.logProcessorsProfiles !== undefined && object.logProcessorsProfiles !== null
+                ? Boolean(object.logProcessorsProfiles)
+                : undefined;
+        message.useQueryCache =
+            object.useQueryCache !== undefined && object.useQueryCache !== null
+                ? Boolean(object.useQueryCache)
+                : undefined;
+        message.enableReadsFromQueryCache =
+            object.enableReadsFromQueryCache !== undefined &&
+            object.enableReadsFromQueryCache !== null
+                ? Boolean(object.enableReadsFromQueryCache)
+                : undefined;
+        message.enableWritesToQueryCache =
+            object.enableWritesToQueryCache !== undefined &&
+            object.enableWritesToQueryCache !== null
+                ? Boolean(object.enableWritesToQueryCache)
+                : undefined;
+        message.queryCacheMinQueryRuns =
+            object.queryCacheMinQueryRuns !== undefined && object.queryCacheMinQueryRuns !== null
+                ? Number(object.queryCacheMinQueryRuns)
+                : undefined;
+        message.queryCacheMinQueryDuration =
+            object.queryCacheMinQueryDuration !== undefined &&
+            object.queryCacheMinQueryDuration !== null
+                ? Number(object.queryCacheMinQueryDuration)
+                : undefined;
+        message.queryCacheTtl =
+            object.queryCacheTtl !== undefined && object.queryCacheTtl !== null
+                ? Number(object.queryCacheTtl)
+                : undefined;
+        message.queryCacheMaxEntries =
+            object.queryCacheMaxEntries !== undefined && object.queryCacheMaxEntries !== null
+                ? Number(object.queryCacheMaxEntries)
+                : undefined;
+        message.queryCacheMaxSizeInBytes =
+            object.queryCacheMaxSizeInBytes !== undefined &&
+            object.queryCacheMaxSizeInBytes !== null
+                ? Number(object.queryCacheMaxSizeInBytes)
+                : undefined;
+        message.queryCacheTag =
+            object.queryCacheTag !== undefined && object.queryCacheTag !== null
+                ? String(object.queryCacheTag)
+                : '';
+        message.queryCacheShareBetweenUsers =
+            object.queryCacheShareBetweenUsers !== undefined &&
+            object.queryCacheShareBetweenUsers !== null
+                ? Boolean(object.queryCacheShareBetweenUsers)
+                : undefined;
+        message.queryCacheNondeterministicFunctionHandling =
+            object.queryCacheNondeterministicFunctionHandling !== undefined &&
+            object.queryCacheNondeterministicFunctionHandling !== null
+                ? userSettings_QueryCacheNondeterministicFunctionHandlingFromJSON(
+                      object.queryCacheNondeterministicFunctionHandling,
+                  )
+                : 0;
         message.maxInsertThreads =
             object.maxInsertThreads !== undefined && object.maxInsertThreads !== null
                 ? Number(object.maxInsertThreads)
@@ -4064,6 +4527,16 @@ export const UserSettings = {
             object.preferLocalhostReplica !== undefined && object.preferLocalhostReplica !== null
                 ? Boolean(object.preferLocalhostReplica)
                 : undefined;
+        message.doNotMergeAcrossPartitionsSelectFinal =
+            object.doNotMergeAcrossPartitionsSelectFinal !== undefined &&
+            object.doNotMergeAcrossPartitionsSelectFinal !== null
+                ? Boolean(object.doNotMergeAcrossPartitionsSelectFinal)
+                : undefined;
+        message.ignoreMaterializedViewsWithDroppedTargetTable =
+            object.ignoreMaterializedViewsWithDroppedTargetTable !== undefined &&
+            object.ignoreMaterializedViewsWithDroppedTargetTable !== null
+                ? Boolean(object.ignoreMaterializedViewsWithDroppedTargetTable)
+                : undefined;
         message.compile =
             object.compile !== undefined && object.compile !== null
                 ? Boolean(object.compile)
@@ -4071,6 +4544,10 @@ export const UserSettings = {
         message.minCountToCompile =
             object.minCountToCompile !== undefined && object.minCountToCompile !== null
                 ? Number(object.minCountToCompile)
+                : undefined;
+        message.asyncInsertStaleTimeout =
+            object.asyncInsertStaleTimeout !== undefined && object.asyncInsertStaleTimeout !== null
+                ? Number(object.asyncInsertStaleTimeout)
                 : undefined;
         return message;
     },
@@ -4283,6 +4760,10 @@ export const UserSettings = {
                 message.cancelHttpReadonlyQueriesOnClientClose);
         message.maxHttpGetRedirects !== undefined &&
             (obj.maxHttpGetRedirects = message.maxHttpGetRedirects);
+        message.httpMaxFieldNameSize !== undefined &&
+            (obj.httpMaxFieldNameSize = message.httpMaxFieldNameSize);
+        message.httpMaxFieldValueSize !== undefined &&
+            (obj.httpMaxFieldValueSize = message.httpMaxFieldValueSize);
         message.joinedSubqueryRequiresAlias !== undefined &&
             (obj.joinedSubqueryRequiresAlias = message.joinedSubqueryRequiresAlias);
         message.joinUseNulls !== undefined && (obj.joinUseNulls = message.joinUseNulls);
@@ -4308,8 +4789,8 @@ export const UserSettings = {
             (obj.asyncInsertMaxDataSize = message.asyncInsertMaxDataSize);
         message.asyncInsertBusyTimeout !== undefined &&
             (obj.asyncInsertBusyTimeout = message.asyncInsertBusyTimeout);
-        message.asyncInsertStaleTimeout !== undefined &&
-            (obj.asyncInsertStaleTimeout = message.asyncInsertStaleTimeout);
+        message.asyncInsertUseAdaptiveBusyTimeout !== undefined &&
+            (obj.asyncInsertUseAdaptiveBusyTimeout = message.asyncInsertUseAdaptiveBusyTimeout);
         message.memoryProfilerStep !== undefined &&
             (obj.memoryProfilerStep = message.memoryProfilerStep);
         message.memoryProfilerSampleProbability !== undefined &&
@@ -4319,6 +4800,10 @@ export const UserSettings = {
             (obj.inputFormatParallelParsing = message.inputFormatParallelParsing);
         message.inputFormatImportNestedJson !== undefined &&
             (obj.inputFormatImportNestedJson = message.inputFormatImportNestedJson);
+        message.formatAvroSchemaRegistryUrl !== undefined &&
+            (obj.formatAvroSchemaRegistryUrl = message.formatAvroSchemaRegistryUrl);
+        message.dataTypeDefaultNullable !== undefined &&
+            (obj.dataTypeDefaultNullable = message.dataTypeDefaultNullable);
         message.localFilesystemReadMethod !== undefined &&
             (obj.localFilesystemReadMethod = userSettings_LocalFilesystemReadMethodToJSON(
                 message.localFilesystemReadMethod,
@@ -4345,6 +4830,33 @@ export const UserSettings = {
             (obj.memoryUsageOvercommitMaxWaitMicroseconds =
                 message.memoryUsageOvercommitMaxWaitMicroseconds);
         message.logQueryThreads !== undefined && (obj.logQueryThreads = message.logQueryThreads);
+        message.logQueryViews !== undefined && (obj.logQueryViews = message.logQueryViews);
+        message.logQueriesProbability !== undefined &&
+            (obj.logQueriesProbability = message.logQueriesProbability);
+        message.logProcessorsProfiles !== undefined &&
+            (obj.logProcessorsProfiles = message.logProcessorsProfiles);
+        message.useQueryCache !== undefined && (obj.useQueryCache = message.useQueryCache);
+        message.enableReadsFromQueryCache !== undefined &&
+            (obj.enableReadsFromQueryCache = message.enableReadsFromQueryCache);
+        message.enableWritesToQueryCache !== undefined &&
+            (obj.enableWritesToQueryCache = message.enableWritesToQueryCache);
+        message.queryCacheMinQueryRuns !== undefined &&
+            (obj.queryCacheMinQueryRuns = message.queryCacheMinQueryRuns);
+        message.queryCacheMinQueryDuration !== undefined &&
+            (obj.queryCacheMinQueryDuration = message.queryCacheMinQueryDuration);
+        message.queryCacheTtl !== undefined && (obj.queryCacheTtl = message.queryCacheTtl);
+        message.queryCacheMaxEntries !== undefined &&
+            (obj.queryCacheMaxEntries = message.queryCacheMaxEntries);
+        message.queryCacheMaxSizeInBytes !== undefined &&
+            (obj.queryCacheMaxSizeInBytes = message.queryCacheMaxSizeInBytes);
+        message.queryCacheTag !== undefined && (obj.queryCacheTag = message.queryCacheTag);
+        message.queryCacheShareBetweenUsers !== undefined &&
+            (obj.queryCacheShareBetweenUsers = message.queryCacheShareBetweenUsers);
+        message.queryCacheNondeterministicFunctionHandling !== undefined &&
+            (obj.queryCacheNondeterministicFunctionHandling =
+                userSettings_QueryCacheNondeterministicFunctionHandlingToJSON(
+                    message.queryCacheNondeterministicFunctionHandling,
+                ));
         message.maxInsertThreads !== undefined && (obj.maxInsertThreads = message.maxInsertThreads);
         message.useHedgedRequests !== undefined &&
             (obj.useHedgedRequests = message.useHedgedRequests);
@@ -4356,9 +4868,17 @@ export const UserSettings = {
             (obj.loadBalancing = userSettings_LoadBalancingToJSON(message.loadBalancing));
         message.preferLocalhostReplica !== undefined &&
             (obj.preferLocalhostReplica = message.preferLocalhostReplica);
+        message.doNotMergeAcrossPartitionsSelectFinal !== undefined &&
+            (obj.doNotMergeAcrossPartitionsSelectFinal =
+                message.doNotMergeAcrossPartitionsSelectFinal);
+        message.ignoreMaterializedViewsWithDroppedTargetTable !== undefined &&
+            (obj.ignoreMaterializedViewsWithDroppedTargetTable =
+                message.ignoreMaterializedViewsWithDroppedTargetTable);
         message.compile !== undefined && (obj.compile = message.compile);
         message.minCountToCompile !== undefined &&
             (obj.minCountToCompile = message.minCountToCompile);
+        message.asyncInsertStaleTimeout !== undefined &&
+            (obj.asyncInsertStaleTimeout = message.asyncInsertStaleTimeout);
         return obj;
     },
 
@@ -4482,6 +5002,8 @@ export const UserSettings = {
         message.cancelHttpReadonlyQueriesOnClientClose =
             object.cancelHttpReadonlyQueriesOnClientClose ?? undefined;
         message.maxHttpGetRedirects = object.maxHttpGetRedirects ?? undefined;
+        message.httpMaxFieldNameSize = object.httpMaxFieldNameSize ?? undefined;
+        message.httpMaxFieldValueSize = object.httpMaxFieldValueSize ?? undefined;
         message.joinedSubqueryRequiresAlias = object.joinedSubqueryRequiresAlias ?? undefined;
         message.joinUseNulls = object.joinUseNulls ?? undefined;
         message.transformNullIn = object.transformNullIn ?? undefined;
@@ -4496,13 +5018,16 @@ export const UserSettings = {
         message.waitForAsyncInsertTimeout = object.waitForAsyncInsertTimeout ?? undefined;
         message.asyncInsertMaxDataSize = object.asyncInsertMaxDataSize ?? undefined;
         message.asyncInsertBusyTimeout = object.asyncInsertBusyTimeout ?? undefined;
-        message.asyncInsertStaleTimeout = object.asyncInsertStaleTimeout ?? undefined;
+        message.asyncInsertUseAdaptiveBusyTimeout =
+            object.asyncInsertUseAdaptiveBusyTimeout ?? undefined;
         message.memoryProfilerStep = object.memoryProfilerStep ?? undefined;
         message.memoryProfilerSampleProbability =
             object.memoryProfilerSampleProbability ?? undefined;
         message.maxFinalThreads = object.maxFinalThreads ?? undefined;
         message.inputFormatParallelParsing = object.inputFormatParallelParsing ?? undefined;
         message.inputFormatImportNestedJson = object.inputFormatImportNestedJson ?? undefined;
+        message.formatAvroSchemaRegistryUrl = object.formatAvroSchemaRegistryUrl ?? '';
+        message.dataTypeDefaultNullable = object.dataTypeDefaultNullable ?? undefined;
         message.localFilesystemReadMethod = object.localFilesystemReadMethod ?? 0;
         message.maxReadBufferSize = object.maxReadBufferSize ?? undefined;
         message.insertKeeperMaxRetries = object.insertKeeperMaxRetries ?? undefined;
@@ -4519,14 +5044,34 @@ export const UserSettings = {
         message.memoryUsageOvercommitMaxWaitMicroseconds =
             object.memoryUsageOvercommitMaxWaitMicroseconds ?? undefined;
         message.logQueryThreads = object.logQueryThreads ?? undefined;
+        message.logQueryViews = object.logQueryViews ?? undefined;
+        message.logQueriesProbability = object.logQueriesProbability ?? undefined;
+        message.logProcessorsProfiles = object.logProcessorsProfiles ?? undefined;
+        message.useQueryCache = object.useQueryCache ?? undefined;
+        message.enableReadsFromQueryCache = object.enableReadsFromQueryCache ?? undefined;
+        message.enableWritesToQueryCache = object.enableWritesToQueryCache ?? undefined;
+        message.queryCacheMinQueryRuns = object.queryCacheMinQueryRuns ?? undefined;
+        message.queryCacheMinQueryDuration = object.queryCacheMinQueryDuration ?? undefined;
+        message.queryCacheTtl = object.queryCacheTtl ?? undefined;
+        message.queryCacheMaxEntries = object.queryCacheMaxEntries ?? undefined;
+        message.queryCacheMaxSizeInBytes = object.queryCacheMaxSizeInBytes ?? undefined;
+        message.queryCacheTag = object.queryCacheTag ?? '';
+        message.queryCacheShareBetweenUsers = object.queryCacheShareBetweenUsers ?? undefined;
+        message.queryCacheNondeterministicFunctionHandling =
+            object.queryCacheNondeterministicFunctionHandling ?? 0;
         message.maxInsertThreads = object.maxInsertThreads ?? undefined;
         message.useHedgedRequests = object.useHedgedRequests ?? undefined;
         message.idleConnectionTimeout = object.idleConnectionTimeout ?? undefined;
         message.hedgedConnectionTimeoutMs = object.hedgedConnectionTimeoutMs ?? undefined;
         message.loadBalancing = object.loadBalancing ?? 0;
         message.preferLocalhostReplica = object.preferLocalhostReplica ?? undefined;
+        message.doNotMergeAcrossPartitionsSelectFinal =
+            object.doNotMergeAcrossPartitionsSelectFinal ?? undefined;
+        message.ignoreMaterializedViewsWithDroppedTargetTable =
+            object.ignoreMaterializedViewsWithDroppedTargetTable ?? undefined;
         message.compile = object.compile ?? undefined;
         message.minCountToCompile = object.minCountToCompile ?? undefined;
+        message.asyncInsertStaleTimeout = object.asyncInsertStaleTimeout ?? undefined;
         return message;
     },
 };

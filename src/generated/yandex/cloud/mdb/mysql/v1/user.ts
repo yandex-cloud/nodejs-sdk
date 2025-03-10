@@ -89,6 +89,10 @@ export enum AuthPlugin {
     CACHING_SHA2_PASSWORD = 2,
     /** SHA256_PASSWORD - Use [SHA-256 Pluggable Authentication](https://dev.mysql.com/doc/refman/8.0/en/sha256-pluggable-authentication.html). */
     SHA256_PASSWORD = 3,
+    /** MYSQL_NO_LOGIN - Use [MYSQL_NO_LOGIN Pluggable Authentication](https://dev.mysql.com/doc/refman/8.0/en/no-login-pluggable-authentication.html). */
+    MYSQL_NO_LOGIN = 4,
+    /** MDB_IAMPROXY_AUTH - Use [IAM Pluggable Authentication](https://yandex.cloud/en/docs/iam/concepts/authorization/). */
+    MDB_IAMPROXY_AUTH = 5,
     UNRECOGNIZED = -1,
 }
 
@@ -106,6 +110,12 @@ export function authPluginFromJSON(object: any): AuthPlugin {
         case 3:
         case 'SHA256_PASSWORD':
             return AuthPlugin.SHA256_PASSWORD;
+        case 4:
+        case 'MYSQL_NO_LOGIN':
+            return AuthPlugin.MYSQL_NO_LOGIN;
+        case 5:
+        case 'MDB_IAMPROXY_AUTH':
+            return AuthPlugin.MDB_IAMPROXY_AUTH;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -123,6 +133,10 @@ export function authPluginToJSON(object: AuthPlugin): string {
             return 'CACHING_SHA2_PASSWORD';
         case AuthPlugin.SHA256_PASSWORD:
             return 'SHA256_PASSWORD';
+        case AuthPlugin.MYSQL_NO_LOGIN:
+            return 'MYSQL_NO_LOGIN';
+        case AuthPlugin.MDB_IAMPROXY_AUTH:
+            return 'MDB_IAMPROXY_AUTH';
         default:
             return 'UNKNOWN';
     }

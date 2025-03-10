@@ -233,6 +233,12 @@ export interface CreateInstanceRequest {
     maintenanceGracePeriod?: Duration;
     /** Serial port settings */
     serialPortSettings?: SerialPortSettings;
+    /**
+     * ID of the reserved instance pool that the instance should belong to.
+     * Instance will be created using resources from the reserved instance pool.
+     * Reserved instance pool resource configuration must match the resource configuration of the instance.
+     */
+    reservedInstancePoolId: string;
 }
 
 export interface CreateInstanceRequest_LabelsEntry {
@@ -314,6 +320,13 @@ export interface UpdateInstanceRequest {
     maintenanceGracePeriod?: Duration;
     /** Serial port settings */
     serialPortSettings?: SerialPortSettings;
+    /**
+     * ID of the reserved instance pool that the instance should belong to.
+     * Attaching/detaching running instance will increase/decrease the size of the reserved instance pool.
+     * Attaching/detaching stopped instance will leave the size of the reserved instance pool unchanged. Starting such attached instance will use resources from the reserved instance pool.
+     * Reserved instance pool resource configuration must match the resource configuration of the instance.
+     */
+    reservedInstancePoolId: string;
 }
 
 export interface UpdateInstanceRequest_LabelsEntry {
@@ -1142,6 +1155,7 @@ const baseCreateInstanceRequest: object = {
     hostname: '',
     serviceAccountId: '',
     maintenancePolicy: 0,
+    reservedInstancePoolId: '',
 };
 
 export const CreateInstanceRequest = {
@@ -1223,6 +1237,9 @@ export const CreateInstanceRequest = {
                 message.serialPortSettings,
                 writer.uint32(186).fork(),
             ).ldelim();
+        }
+        if (message.reservedInstancePoolId !== '') {
+            writer.uint32(194).string(message.reservedInstancePoolId);
         }
         return writer;
     },
@@ -1329,6 +1346,9 @@ export const CreateInstanceRequest = {
                 case 23:
                     message.serialPortSettings = SerialPortSettings.decode(reader, reader.uint32());
                     break;
+                case 24:
+                    message.reservedInstancePoolId = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1428,6 +1448,10 @@ export const CreateInstanceRequest = {
             object.serialPortSettings !== undefined && object.serialPortSettings !== null
                 ? SerialPortSettings.fromJSON(object.serialPortSettings)
                 : undefined;
+        message.reservedInstancePoolId =
+            object.reservedInstancePoolId !== undefined && object.reservedInstancePoolId !== null
+                ? String(object.reservedInstancePoolId)
+                : '';
         return message;
     },
 
@@ -1518,6 +1542,8 @@ export const CreateInstanceRequest = {
             (obj.serialPortSettings = message.serialPortSettings
                 ? SerialPortSettings.toJSON(message.serialPortSettings)
                 : undefined);
+        message.reservedInstancePoolId !== undefined &&
+            (obj.reservedInstancePoolId = message.reservedInstancePoolId);
         return obj;
     },
 
@@ -1595,6 +1621,7 @@ export const CreateInstanceRequest = {
             object.serialPortSettings !== undefined && object.serialPortSettings !== null
                 ? SerialPortSettings.fromPartial(object.serialPortSettings)
                 : undefined;
+        message.reservedInstancePoolId = object.reservedInstancePoolId ?? '';
         return message;
     },
 };
@@ -1794,6 +1821,7 @@ const baseUpdateInstanceRequest: object = {
     platformId: '',
     serviceAccountId: '',
     maintenancePolicy: 0,
+    reservedInstancePoolId: '',
 };
 
 export const UpdateInstanceRequest = {
@@ -1854,6 +1882,9 @@ export const UpdateInstanceRequest = {
                 message.serialPortSettings,
                 writer.uint32(130).fork(),
             ).ldelim();
+        }
+        if (message.reservedInstancePoolId !== '') {
+            writer.uint32(138).string(message.reservedInstancePoolId);
         }
         return writer;
     },
@@ -1926,6 +1957,9 @@ export const UpdateInstanceRequest = {
                     break;
                 case 16:
                     message.serialPortSettings = SerialPortSettings.decode(reader, reader.uint32());
+                    break;
+                case 17:
+                    message.reservedInstancePoolId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2004,6 +2038,10 @@ export const UpdateInstanceRequest = {
             object.serialPortSettings !== undefined && object.serialPortSettings !== null
                 ? SerialPortSettings.fromJSON(object.serialPortSettings)
                 : undefined;
+        message.reservedInstancePoolId =
+            object.reservedInstancePoolId !== undefined && object.reservedInstancePoolId !== null
+                ? String(object.reservedInstancePoolId)
+                : '';
         return message;
     },
 
@@ -2060,6 +2098,8 @@ export const UpdateInstanceRequest = {
             (obj.serialPortSettings = message.serialPortSettings
                 ? SerialPortSettings.toJSON(message.serialPortSettings)
                 : undefined);
+        message.reservedInstancePoolId !== undefined &&
+            (obj.reservedInstancePoolId = message.reservedInstancePoolId);
         return obj;
     },
 
@@ -2123,6 +2163,7 @@ export const UpdateInstanceRequest = {
             object.serialPortSettings !== undefined && object.serialPortSettings !== null
                 ? SerialPortSettings.fromPartial(object.serialPortSettings)
                 : undefined;
+        message.reservedInstancePoolId = object.reservedInstancePoolId ?? '';
         return message;
     },
 };

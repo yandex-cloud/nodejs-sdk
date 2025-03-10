@@ -1,6 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
+import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.cloudrouter.v1';
 
@@ -19,12 +20,14 @@ export interface RoutingInstance {
     folderId: string;
     /** ID of the region that the routingInstance belongs to. */
     regionId: string;
-    /** List of the info about vpcNetworks which are attached to routingInstance */
+    /** List of the info about vpcNetworks which are attached to routingInstance. */
     vpcInfo: RoutingInstance_VpcInfo[];
-    /** List of the info about privateConnections which are attached to routingInstance */
+    /** List of the info about privateConnections which are attached to routingInstance. */
     cicPrivateConnectionInfo: RoutingInstance_CicPrivateConnectionInfo[];
     /** Status of the routingInstance. */
     status: RoutingInstance_Status;
+    /** Creation timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
+    createdAt?: Date;
     /**
      * Resource labels, `key:value` pairs.
      * No more than 64 per resource.
@@ -150,6 +153,9 @@ export const RoutingInstance = {
         if (message.status !== 0) {
             writer.uint32(72).int32(message.status);
         }
+        if (message.createdAt !== undefined) {
+            Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(90).fork()).ldelim();
+        }
         Object.entries(message.labels).forEach(([key, value]) => {
             RoutingInstance_LabelsEntry.encode(
                 { key: key as any, value },
@@ -195,6 +201,9 @@ export const RoutingInstance = {
                 case 9:
                     message.status = reader.int32() as any;
                     break;
+                case 11:
+                    message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
                 case 24:
                     const entry24 = RoutingInstance_LabelsEntry.decode(reader, reader.uint32());
                     if (entry24.value !== undefined) {
@@ -235,6 +244,10 @@ export const RoutingInstance = {
             object.status !== undefined && object.status !== null
                 ? routingInstance_StatusFromJSON(object.status)
                 : 0;
+        message.createdAt =
+            object.createdAt !== undefined && object.createdAt !== null
+                ? fromJsonTimestamp(object.createdAt)
+                : undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 acc[key] = String(value);
@@ -267,6 +280,7 @@ export const RoutingInstance = {
             obj.cicPrivateConnectionInfo = [];
         }
         message.status !== undefined && (obj.status = routingInstance_StatusToJSON(message.status));
+        message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
         obj.labels = {};
         if (message.labels) {
             Object.entries(message.labels).forEach(([k, v]) => {
@@ -289,6 +303,7 @@ export const RoutingInstance = {
                 RoutingInstance_CicPrivateConnectionInfo.fromPartial(e),
             ) || [];
         message.status = object.status ?? 0;
+        message.createdAt = object.createdAt ?? undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 if (value !== undefined) {
@@ -649,6 +664,28 @@ type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
     : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
+
+function toTimestamp(date: Date): Timestamp {
+    const seconds = date.getTime() / 1_000;
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+    let millis = t.seconds * 1_000;
+    millis += t.nanos / 1_000_000;
+    return new Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+    if (o instanceof Date) {
+        return o;
+    } else if (typeof o === 'string') {
+        return new Date(o);
+    } else {
+        return fromTimestamp(Timestamp.fromJSON(o));
+    }
+}
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

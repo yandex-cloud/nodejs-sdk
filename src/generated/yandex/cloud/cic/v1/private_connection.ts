@@ -2,6 +2,7 @@
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Peering } from '../../../../yandex/cloud/cic/v1/peering';
+import { Timestamp } from '../../../../google/protobuf/timestamp';
 import { Int64Value } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.cic.v1';
@@ -43,6 +44,60 @@ export interface PrivateConnection {
      * Each key must match the regular expression `[a-z][-_0-9a-z]*`.
      */
     labels: { [key: string]: string };
+    /** Status of the privateConnection. */
+    status: PrivateConnection_Status;
+    /** Creation timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
+    createdAt?: Date;
+}
+
+export enum PrivateConnection_Status {
+    STATUS_UNSPECIFIED = 0,
+    CREATING = 1,
+    UPDATING = 2,
+    DELETING = 3,
+    ACTIVE = 4,
+    UNRECOGNIZED = -1,
+}
+
+export function privateConnection_StatusFromJSON(object: any): PrivateConnection_Status {
+    switch (object) {
+        case 0:
+        case 'STATUS_UNSPECIFIED':
+            return PrivateConnection_Status.STATUS_UNSPECIFIED;
+        case 1:
+        case 'CREATING':
+            return PrivateConnection_Status.CREATING;
+        case 2:
+        case 'UPDATING':
+            return PrivateConnection_Status.UPDATING;
+        case 3:
+        case 'DELETING':
+            return PrivateConnection_Status.DELETING;
+        case 4:
+        case 'ACTIVE':
+            return PrivateConnection_Status.ACTIVE;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return PrivateConnection_Status.UNRECOGNIZED;
+    }
+}
+
+export function privateConnection_StatusToJSON(object: PrivateConnection_Status): string {
+    switch (object) {
+        case PrivateConnection_Status.STATUS_UNSPECIFIED:
+            return 'STATUS_UNSPECIFIED';
+        case PrivateConnection_Status.CREATING:
+            return 'CREATING';
+        case PrivateConnection_Status.UPDATING:
+            return 'UPDATING';
+        case PrivateConnection_Status.DELETING:
+            return 'DELETING';
+        case PrivateConnection_Status.ACTIVE:
+            return 'ACTIVE';
+        default:
+            return 'UNKNOWN';
+    }
 }
 
 export interface PrivateConnection_LabelsEntry {
@@ -56,14 +111,6 @@ export interface PrivateConnection_StaticRoute {
      * It's an ip with format ipPrefix/length where address part of ipPrefix is 0.
      */
     prefix: string;
-    /**
-     * PeerIp.
-     * It's an ip with just an ipAddress format without mask.
-     * Will be removed in some next release
-     *
-     * @deprecated
-     */
-    nextHop: string[];
 }
 
 const basePrivateConnection: object = {
@@ -73,6 +120,7 @@ const basePrivateConnection: object = {
     folderId: '',
     regionId: '',
     trunkConnectionId: '',
+    status: 0,
 };
 
 export const PrivateConnection = {
@@ -110,6 +158,12 @@ export const PrivateConnection = {
                 writer.uint32(194).fork(),
             ).ldelim();
         });
+        if (message.status !== 0) {
+            writer.uint32(200).int32(message.status);
+        }
+        if (message.createdAt !== undefined) {
+            Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(218).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -157,6 +211,12 @@ export const PrivateConnection = {
                         message.labels[entry24.key] = entry24.value;
                     }
                     break;
+                case 25:
+                    message.status = reader.int32() as any;
+                    break;
+                case 27:
+                    message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -203,6 +263,14 @@ export const PrivateConnection = {
             },
             {},
         );
+        message.status =
+            object.status !== undefined && object.status !== null
+                ? privateConnection_StatusFromJSON(object.status)
+                : 0;
+        message.createdAt =
+            object.createdAt !== undefined && object.createdAt !== null
+                ? fromJsonTimestamp(object.createdAt)
+                : undefined;
         return message;
     },
 
@@ -233,6 +301,9 @@ export const PrivateConnection = {
                 obj.labels[k] = v;
             });
         }
+        message.status !== undefined &&
+            (obj.status = privateConnection_StatusToJSON(message.status));
+        message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
         return obj;
     },
 
@@ -260,6 +331,8 @@ export const PrivateConnection = {
             },
             {},
         );
+        message.status = object.status ?? 0;
+        message.createdAt = object.createdAt ?? undefined;
         return message;
     },
 };
@@ -326,7 +399,7 @@ export const PrivateConnection_LabelsEntry = {
     },
 };
 
-const basePrivateConnection_StaticRoute: object = { prefix: '', nextHop: '' };
+const basePrivateConnection_StaticRoute: object = { prefix: '' };
 
 export const PrivateConnection_StaticRoute = {
     encode(
@@ -336,9 +409,6 @@ export const PrivateConnection_StaticRoute = {
         if (message.prefix !== '') {
             writer.uint32(10).string(message.prefix);
         }
-        for (const v of message.nextHop) {
-            writer.uint32(18).string(v!);
-        }
         return writer;
     },
 
@@ -346,15 +416,11 @@ export const PrivateConnection_StaticRoute = {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...basePrivateConnection_StaticRoute } as PrivateConnection_StaticRoute;
-        message.nextHop = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
                     message.prefix = reader.string();
-                    break;
-                case 2:
-                    message.nextHop.push(reader.string());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -368,18 +434,12 @@ export const PrivateConnection_StaticRoute = {
         const message = { ...basePrivateConnection_StaticRoute } as PrivateConnection_StaticRoute;
         message.prefix =
             object.prefix !== undefined && object.prefix !== null ? String(object.prefix) : '';
-        message.nextHop = (object.nextHop ?? []).map((e: any) => String(e));
         return message;
     },
 
     toJSON(message: PrivateConnection_StaticRoute): unknown {
         const obj: any = {};
         message.prefix !== undefined && (obj.prefix = message.prefix);
-        if (message.nextHop) {
-            obj.nextHop = message.nextHop.map((e) => e);
-        } else {
-            obj.nextHop = [];
-        }
         return obj;
     },
 
@@ -388,7 +448,6 @@ export const PrivateConnection_StaticRoute = {
     ): PrivateConnection_StaticRoute {
         const message = { ...basePrivateConnection_StaticRoute } as PrivateConnection_StaticRoute;
         message.prefix = object.prefix ?? '';
-        message.nextHop = object.nextHop?.map((e) => e) || [];
         return message;
     },
 };
@@ -409,6 +468,28 @@ type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
     : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
+
+function toTimestamp(date: Date): Timestamp {
+    const seconds = date.getTime() / 1_000;
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+    let millis = t.seconds * 1_000;
+    millis += t.nanos / 1_000_000;
+    return new Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+    if (o instanceof Date) {
+        return o;
+    } else if (typeof o === 'string') {
+        return new Date(o);
+    } else {
+        return fromTimestamp(Timestamp.fromJSON(o));
+    }
+}
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

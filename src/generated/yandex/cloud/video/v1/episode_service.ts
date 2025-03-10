@@ -14,6 +14,7 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
+import { Duration } from '../../../../google/protobuf/duration';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 import { Episode } from '../../../../yandex/cloud/video/v1/episode';
 import { Manifest } from '../../../../yandex/cloud/video/v1/manifest';
@@ -192,6 +193,8 @@ export interface GetEpisodePlayerURLRequest {
     /** ID of the episode. */
     episodeId: string;
     params?: EpisodePlayerParams;
+    /** Optional field, used to set custom url expiration duration for episodes with sign_url_access */
+    signedUrlExpirationDuration?: Duration;
 }
 
 export interface EpisodePlayerParams {
@@ -1694,6 +1697,9 @@ export const GetEpisodePlayerURLRequest = {
         if (message.params !== undefined) {
             EpisodePlayerParams.encode(message.params, writer.uint32(18).fork()).ldelim();
         }
+        if (message.signedUrlExpirationDuration !== undefined) {
+            Duration.encode(message.signedUrlExpirationDuration, writer.uint32(26).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -1709,6 +1715,9 @@ export const GetEpisodePlayerURLRequest = {
                     break;
                 case 2:
                     message.params = EpisodePlayerParams.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.signedUrlExpirationDuration = Duration.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1728,6 +1737,11 @@ export const GetEpisodePlayerURLRequest = {
             object.params !== undefined && object.params !== null
                 ? EpisodePlayerParams.fromJSON(object.params)
                 : undefined;
+        message.signedUrlExpirationDuration =
+            object.signedUrlExpirationDuration !== undefined &&
+            object.signedUrlExpirationDuration !== null
+                ? Duration.fromJSON(object.signedUrlExpirationDuration)
+                : undefined;
         return message;
     },
 
@@ -1736,6 +1750,10 @@ export const GetEpisodePlayerURLRequest = {
         message.episodeId !== undefined && (obj.episodeId = message.episodeId);
         message.params !== undefined &&
             (obj.params = message.params ? EpisodePlayerParams.toJSON(message.params) : undefined);
+        message.signedUrlExpirationDuration !== undefined &&
+            (obj.signedUrlExpirationDuration = message.signedUrlExpirationDuration
+                ? Duration.toJSON(message.signedUrlExpirationDuration)
+                : undefined);
         return obj;
     },
 
@@ -1747,6 +1765,11 @@ export const GetEpisodePlayerURLRequest = {
         message.params =
             object.params !== undefined && object.params !== null
                 ? EpisodePlayerParams.fromPartial(object.params)
+                : undefined;
+        message.signedUrlExpirationDuration =
+            object.signedUrlExpirationDuration !== undefined &&
+            object.signedUrlExpirationDuration !== null
+                ? Duration.fromPartial(object.signedUrlExpirationDuration)
                 : undefined;
         return message;
     },

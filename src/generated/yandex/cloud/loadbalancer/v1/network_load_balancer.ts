@@ -78,6 +78,8 @@ export interface NetworkLoadBalancer {
     attachedTargetGroups: AttachedTargetGroup[];
     /** Specifies if network load balancer protected from deletion. */
     deletionProtection: boolean;
+    /** Specifies if network load balancer available to zonal shift. */
+    allowZonalShift: boolean;
 }
 
 export enum NetworkLoadBalancer_Status {
@@ -395,6 +397,7 @@ const baseNetworkLoadBalancer: object = {
     type: 0,
     sessionAffinity: 0,
     deletionProtection: false,
+    allowZonalShift: false,
 };
 
 export const NetworkLoadBalancer = {
@@ -440,6 +443,9 @@ export const NetworkLoadBalancer = {
         }
         if (message.deletionProtection === true) {
             writer.uint32(112).bool(message.deletionProtection);
+        }
+        if (message.allowZonalShift === true) {
+            writer.uint32(120).bool(message.allowZonalShift);
         }
         return writer;
     },
@@ -498,6 +504,9 @@ export const NetworkLoadBalancer = {
                 case 14:
                     message.deletionProtection = reader.bool();
                     break;
+                case 15:
+                    message.allowZonalShift = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -553,6 +562,10 @@ export const NetworkLoadBalancer = {
             object.deletionProtection !== undefined && object.deletionProtection !== null
                 ? Boolean(object.deletionProtection)
                 : false;
+        message.allowZonalShift =
+            object.allowZonalShift !== undefined && object.allowZonalShift !== null
+                ? Boolean(object.allowZonalShift)
+                : false;
         return message;
     },
 
@@ -591,6 +604,7 @@ export const NetworkLoadBalancer = {
         }
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
+        message.allowZonalShift !== undefined && (obj.allowZonalShift = message.allowZonalShift);
         return obj;
     },
 
@@ -620,6 +634,7 @@ export const NetworkLoadBalancer = {
         message.attachedTargetGroups =
             object.attachedTargetGroups?.map((e) => AttachedTargetGroup.fromPartial(e)) || [];
         message.deletionProtection = object.deletionProtection ?? false;
+        message.allowZonalShift = object.allowZonalShift ?? false;
         return message;
     },
 };

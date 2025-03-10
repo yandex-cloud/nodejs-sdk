@@ -1,9 +1,29 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
+import {
+    LogLevel_Level,
+    logLevel_LevelFromJSON,
+    logLevel_LevelToJSON,
+} from '../../../../../yandex/cloud/logging/v1/log_entry';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.serverless.eventrouter.v1';
+
+export interface LogOptions {
+    /** Entry will be written to log group resolved by ID. */
+    logGroupId: string | undefined;
+    /** Entry will be written to default log group for specified folder. */
+    folderId: string | undefined;
+    /**
+     * Minimum log entry level.
+     *
+     * See [LogLevel.Level] for details.
+     */
+    minLevel: LogLevel_Level;
+    /** Service account, which has permission to write to destination */
+    serviceAccountId: string;
+}
 
 export interface Bus {
     /** ID of the bus. */
@@ -24,6 +44,10 @@ export interface Bus {
     deletionProtection: boolean;
     /** Status of the bus. */
     status: Bus_Status;
+    /** Is logging from the bus enabled. */
+    loggingEnabled: boolean;
+    /** Options for logging from the bus. */
+    logOptions?: LogOptions;
 }
 
 export enum Bus_Status {
@@ -75,6 +99,92 @@ export interface Bus_LabelsEntry {
     value: string;
 }
 
+const baseLogOptions: object = { minLevel: 0, serviceAccountId: '' };
+
+export const LogOptions = {
+    encode(message: LogOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.logGroupId !== undefined) {
+            writer.uint32(10).string(message.logGroupId);
+        }
+        if (message.folderId !== undefined) {
+            writer.uint32(18).string(message.folderId);
+        }
+        if (message.minLevel !== 0) {
+            writer.uint32(24).int32(message.minLevel);
+        }
+        if (message.serviceAccountId !== '') {
+            writer.uint32(34).string(message.serviceAccountId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogOptions {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseLogOptions } as LogOptions;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.logGroupId = reader.string();
+                    break;
+                case 2:
+                    message.folderId = reader.string();
+                    break;
+                case 3:
+                    message.minLevel = reader.int32() as any;
+                    break;
+                case 4:
+                    message.serviceAccountId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): LogOptions {
+        const message = { ...baseLogOptions } as LogOptions;
+        message.logGroupId =
+            object.logGroupId !== undefined && object.logGroupId !== null
+                ? String(object.logGroupId)
+                : undefined;
+        message.folderId =
+            object.folderId !== undefined && object.folderId !== null
+                ? String(object.folderId)
+                : undefined;
+        message.minLevel =
+            object.minLevel !== undefined && object.minLevel !== null
+                ? logLevel_LevelFromJSON(object.minLevel)
+                : 0;
+        message.serviceAccountId =
+            object.serviceAccountId !== undefined && object.serviceAccountId !== null
+                ? String(object.serviceAccountId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: LogOptions): unknown {
+        const obj: any = {};
+        message.logGroupId !== undefined && (obj.logGroupId = message.logGroupId);
+        message.folderId !== undefined && (obj.folderId = message.folderId);
+        message.minLevel !== undefined && (obj.minLevel = logLevel_LevelToJSON(message.minLevel));
+        message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<LogOptions>, I>>(object: I): LogOptions {
+        const message = { ...baseLogOptions } as LogOptions;
+        message.logGroupId = object.logGroupId ?? undefined;
+        message.folderId = object.folderId ?? undefined;
+        message.minLevel = object.minLevel ?? 0;
+        message.serviceAccountId = object.serviceAccountId ?? '';
+        return message;
+    },
+};
+
 const baseBus: object = {
     id: '',
     folderId: '',
@@ -83,6 +193,7 @@ const baseBus: object = {
     description: '',
     deletionProtection: false,
     status: 0,
+    loggingEnabled: false,
 };
 
 export const Bus = {
@@ -113,6 +224,12 @@ export const Bus = {
         }
         if (message.status !== 0) {
             writer.uint32(72).int32(message.status);
+        }
+        if (message.loggingEnabled === true) {
+            writer.uint32(80).bool(message.loggingEnabled);
+        }
+        if (message.logOptions !== undefined) {
+            LogOptions.encode(message.logOptions, writer.uint32(90).fork()).ldelim();
         }
         return writer;
     },
@@ -155,6 +272,12 @@ export const Bus = {
                 case 9:
                     message.status = reader.int32() as any;
                     break;
+                case 10:
+                    message.loggingEnabled = reader.bool();
+                    break;
+                case 11:
+                    message.logOptions = LogOptions.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -196,6 +319,14 @@ export const Bus = {
             object.status !== undefined && object.status !== null
                 ? bus_StatusFromJSON(object.status)
                 : 0;
+        message.loggingEnabled =
+            object.loggingEnabled !== undefined && object.loggingEnabled !== null
+                ? Boolean(object.loggingEnabled)
+                : false;
+        message.logOptions =
+            object.logOptions !== undefined && object.logOptions !== null
+                ? LogOptions.fromJSON(object.logOptions)
+                : undefined;
         return message;
     },
 
@@ -216,6 +347,11 @@ export const Bus = {
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
         message.status !== undefined && (obj.status = bus_StatusToJSON(message.status));
+        message.loggingEnabled !== undefined && (obj.loggingEnabled = message.loggingEnabled);
+        message.logOptions !== undefined &&
+            (obj.logOptions = message.logOptions
+                ? LogOptions.toJSON(message.logOptions)
+                : undefined);
         return obj;
     },
 
@@ -238,6 +374,11 @@ export const Bus = {
         );
         message.deletionProtection = object.deletionProtection ?? false;
         message.status = object.status ?? 0;
+        message.loggingEnabled = object.loggingEnabled ?? false;
+        message.logOptions =
+            object.logOptions !== undefined && object.logOptions !== null
+                ? LogOptions.fromPartial(object.logOptions)
+                : undefined;
         return message;
     },
 };

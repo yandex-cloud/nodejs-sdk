@@ -461,7 +461,6 @@ export enum ListClusterLogsRequest_ServiceType {
     MONGOD = 1,
     MONGOS = 2,
     MONGOCFG = 3,
-    /** AUDIT - MongoDB Enterprise audit logs */
     AUDIT = 4,
     UNRECOGNIZED = -1,
 }
