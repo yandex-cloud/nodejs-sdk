@@ -1,7 +1,7 @@
 import { credentials } from '@grpc/grpc-js';
-import * as jwt from 'jsonwebtoken';
 import { DateTime } from 'luxon';
 import { createChannel } from 'nice-grpc';
+import { importPKCS8, SignJWT } from 'jose';
 import { cloudApi, serviceClients } from '..';
 import { getServiceClientEndpoint } from '../service-endpoints';
 import { IIAmCredentials, ISslCredentials, TokenService } from '../types';
@@ -48,21 +48,27 @@ export class IamTokenService implements TokenService {
         return clientFactory.create(IamTokenServiceClient.service, channel);
     }
 
-    private getJwtRequest() {
+    private cleanPrivateKey(key: Buffer | string): string {
+        const stringKey = Buffer.isBuffer(key) ? key.toString() : key;
+
+        return stringKey.slice(stringKey.indexOf('-----BEGIN PRIVATE KEY-----'));
+    }
+
+    private async getJwtRequest() {
         const now = DateTime.utc();
         const expires = now.plus({ milliseconds: this.jwtExpirationTimeout });
-        const payload = {
-            iss: this.iamCredentials.serviceAccountId,
-            aud: 'https://iam.api.cloud.yandex.net/iam/v1/tokens',
-            iat: Math.round(now.toSeconds()),
-            exp: Math.round(expires.toSeconds()),
-        };
-        const options: jwt.SignOptions = {
-            algorithm: 'PS256',
-            keyid: this.iamCredentials.accessKeyId,
-        };
+        const alg = 'PS256';
+        const privateKey = await importPKCS8(this.cleanPrivateKey(this.iamCredentials.privateKey), alg);
 
-        return jwt.sign(payload, this.iamCredentials.privateKey, options);
+        const jwt = await new SignJWT()
+            .setProtectedHeader({ alg, kid: this.iamCredentials.accessKeyId, typ: 'JWT' })
+            .setIssuer(this.iamCredentials.serviceAccountId)
+            .setAudience('https://iam.api.cloud.yandex.net/iam/v1/tokens')
+            .setIssuedAt(Math.round(now.toSeconds()))
+            .setExpirationTime(Math.round(expires.toSeconds()))
+            .sign(privateKey);
+
+        return jwt;
     }
 
     private async initialize() {
@@ -81,7 +87,7 @@ export class IamTokenService implements TokenService {
 
         return this.client().create(
             cloudApi.iam.iam_token_service.CreateIamTokenRequest.fromPartial({
-                jwt: this.getJwtRequest(),
+                jwt: await this.getJwtRequest(),
             }),
             { deadline },
         );
