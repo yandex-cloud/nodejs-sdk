@@ -11,7 +11,7 @@ jobs:
     name: Release
     runs-on: ubuntu-20.04
     steps:
-      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@9fc72bb2948886090f84c9236580fbca480bdea7
+      - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@d6b5322d8dbc130126ec1fa00bc0f2d6cc2f53db
         with:
           persist-credentials: false
       - env:
