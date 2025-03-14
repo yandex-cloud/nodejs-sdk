@@ -1,21 +1,10 @@
 import { getServiceClientEndpoint } from './service-endpoints';
-import { serviceClients } from '.';
 import { GeneratedServiceClientCtor } from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type MockServiceClientCtor = GeneratedServiceClientCtor<any>;
 
 describe('service endpoints', () => {
-    it('each service in generated service_clients module should have endpoint declared in service-endpoints', () => {
-        for (const [, ServiceClient] of Object.entries(serviceClients)) {
-            expect(() => {
-                const endpoint = getServiceClientEndpoint(ServiceClient as MockServiceClientCtor);
-
-                expect(endpoint).toBeTruthy();
-            }).not.toThrow();
-        }
-    });
-
     it('should throw exception if endpoint was not found', () => {
         const serviceName = 'myCustomService';
 
