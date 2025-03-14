@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as cp from 'child_process';
+import { generateServiceName } from '../common';
 
 const PROTO_DIR = path.resolve('./cloudapi');
 const TARGET = path.join(PROTO_DIR, 'yandex', 'cloud');
@@ -33,7 +34,7 @@ async function findRootServices(
     await Promise.all(dirsToVisit.map((dir) => findRootServices(dir, rootServiceCallback)));
 }
 
-type ServiceMapType = Record<string, { rootServiceList: string[] }>;
+type ServiceMapType = Record<string, { serviceName: string; rootServiceList: string[] }>;
 
 const versionRegExpStr = '(v[1-9][0-9]*(alpha)?)';
 
@@ -105,6 +106,10 @@ export const detectRootServices = async (target: string) => {
         serviceMap[relativeDir] = combinedServiceMap[relativeDir];
     });
 
+    Object.keys(serviceMap).forEach((relativeDir) => {
+        serviceMap[relativeDir].serviceName = generateServiceName(relativeDir);
+    });
+
     return serviceMap;
 };
 
@@ -138,11 +143,10 @@ export const writeToFile = (serviceMap: ServiceMapType) => {
     });
 };
 
-export type ClientsMapType = Record<string, undefined | { rootServiceList: string[] }>;
 export const readFile = () => {
     const data = fs.readFileSync(FILE_PATH, 'utf8');
     const jsonData = JSON.parse(data);
-    return jsonData as ClientsMapType;
+    return jsonData as ServiceMapType;
 };
 
 const main = async () => {

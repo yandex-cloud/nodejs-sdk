@@ -77,7 +77,7 @@
     "webpack-cli": "^5.1.4"
   },
   "scripts": {
-    "test": "cross-env NODE_OPTIONS=\"--max-old-space-size=8192\" jest -c config/jest.ts --passWithNoTests '.*\\.test\\.ts$'",
+    "test": "cross-env NODE_OPTIONS=\"--max-old-space-size=8192\" node --experimental-vm-modules node_modules/jest/bin/jest.js -c config/jest.ts --passWithNoTests '.*\\.test\\.ts$'",
     "lint": "eslint src config",
     "check-endpoints": "ts-node scripts/check-endpoints.ts",
     "prettier:fix:clients": "prettier src/clients/ --write",

@@ -6,15 +6,13 @@ import { detectRootServices, writeToFile } from '../detect_services';
 import { promisify } from 'node:util';
 import child_process from 'node:child_process';
 
+import { generateServiceName } from '../common';
+
 const exec = promisify(child_process.exec);
 
 const PROTO_DIR = PATH.resolve('./cloudapi');
 const YANDEX_CLOUD_DIR = PATH.join(PROTO_DIR, 'yandex', 'cloud');
 const CLIENTS_DIR = PATH.resolve('./src/clients');
-
-const generateServiceName = (dir: string) => {
-    return dir.split('/').join('-');
-};
 
 const regex = /[A-Za-z]/;
 const toCamelCase = (str: string) => {
