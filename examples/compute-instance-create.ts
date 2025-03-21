@@ -1,4 +1,7 @@
-import { serviceClients, Session, cloudApi, waitForOperation } from '@yandex-cloud/nodejs-sdk';
+import { Session, waitForOperation } from '@yandex-cloud/nodejs-sdk';
+
+import { networkService } from '@yandex-cloud/nodejs-sdk/vpc-v1';
+import { imageService, instanceService, instance } from '@yandex-cloud/nodejs-sdk/compute-v1';
 
 import { Instance } from '@yandex-cloud/nodejs-sdk/compute-v1/instance';
 
@@ -9,25 +12,14 @@ const AUTH_TOKEN = getEnv('YC_OAUTH_TOKEN');
 const FOLDER_ID = getEnv('YC_FOLDER_ID');
 const TARGET_ZONE_ID = 'ru-central1-a';
 
-const {
-    vpc: {
-        network_service: { ListNetworksRequest, ListNetworkSubnetsRequest },
-    },
-    compute: {
-        image_service: { GetImageLatestByFamilyRequest },
-        instance_service: { CreateInstanceRequest, DeleteInstanceRequest },
-        instance: { IpVersion },
-    },
-} = cloudApi;
-
 (async () => {
     const session = new Session({ oauthToken: AUTH_TOKEN });
-    const imageClient = session.client(serviceClients.ComputeImageServiceClient);
-    const instanceClient = session.client(serviceClients.InstanceServiceClient);
-    const networkClient = session.client(serviceClients.NetworkServiceClient);
+    const imageClient = session.client(imageService.ImageServiceClient);
+    const instanceClient = session.client(instanceService.InstanceServiceClient);
+    const networkClient = session.client(networkService.NetworkServiceClient);
 
     const networkResponse = await networkClient.list(
-        ListNetworksRequest.fromPartial({
+        networkService.ListNetworksRequest.fromPartial({
             folderId: FOLDER_ID,
         }),
     );
@@ -41,7 +33,7 @@ const {
     }
 
     const subnetsResponse = await networkClient.listSubnets(
-        ListNetworkSubnetsRequest.fromPartial({
+        networkService.ListNetworkSubnetsRequest.fromPartial({
             networkId: network.id,
         }),
     );
@@ -52,14 +44,14 @@ const {
     }
 
     const image = await imageClient.getLatestByFamily(
-        GetImageLatestByFamilyRequest.fromPartial({
+        imageService.GetImageLatestByFamilyRequest.fromPartial({
             family: 'ubuntu-1804-lts',
             folderId: 'standard-images',
         }),
     );
 
     const createOp = await instanceClient.create(
-        CreateInstanceRequest.fromPartial({
+        instanceService.CreateInstanceRequest.fromPartial({
             folderId: FOLDER_ID,
             zoneId: TARGET_ZONE_ID,
             platformId: 'standard-v2',
@@ -79,7 +71,7 @@ const {
                 {
                     subnetId: subnet.id,
                     primaryV4AddressSpec: {
-                        oneToOneNatSpec: { ipVersion: IpVersion.IPV4 },
+                        oneToOneNatSpec: { ipVersion: instance.IpVersion.IPV4 },
                     },
                 },
             ],
@@ -96,7 +88,7 @@ const {
         log(`Instance ${instance.id} created`);
 
         const removeOp = await instanceClient.delete(
-            DeleteInstanceRequest.fromPartial({
+            instanceService.DeleteInstanceRequest.fromPartial({
                 instanceId: instance.id,
             }),
         );

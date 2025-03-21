@@ -1,18 +1,35 @@
+import { readFile } from '../scripts/detect_services';
 import { getServiceClientEndpoint } from './service-endpoints';
-import { serviceClients } from '.';
 import { GeneratedServiceClientCtor } from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type MockServiceClientCtor = GeneratedServiceClientCtor<any>;
 
 describe('service endpoints', () => {
-    it('each service in generated service_clients module should have endpoint declared in service-endpoints', () => {
-        for (const [, ServiceClient] of Object.entries(serviceClients)) {
-            expect(() => {
-                const endpoint = getServiceClientEndpoint(ServiceClient as MockServiceClientCtor);
+    it('each service in generated service_clients module should have endpoint declared in service-endpoints', async () => {
+        const serviceMap = await readFile();
 
-                expect(endpoint).toBeTruthy();
-            }).not.toThrow();
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        for (const [dir, { serviceName }] of Object.entries(serviceMap)) {
+            const client = await import(`./clients/${serviceName}`);
+
+            const detectedServices = Object.keys(client).filter((importKey) =>
+                importKey.endsWith('Service'),
+            );
+
+            detectedServices.forEach((detectedService) => {
+                Object.keys(client[detectedService]).forEach((clientExportKey) => {
+                    if (clientExportKey.endsWith('ServiceClient')) {
+                        expect(() => {
+                            const endpoint = getServiceClientEndpoint({
+                                serviceName: client[detectedService][clientExportKey].serviceName,
+                            } as unknown as MockServiceClientCtor);
+
+                            expect(endpoint).toBeTruthy();
+                        }).not.toThrow();
+                    }
+                });
+            });
         }
     });
 
